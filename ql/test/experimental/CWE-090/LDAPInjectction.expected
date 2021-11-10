@@ -1,22 +1,37 @@
 edges
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:21:3:21:51 | ...+... |
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:22:3:22:33 | slice literal |
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:28:3:28:51 | ...+... |
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:29:3:29:33 | slice literal |
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:35:3:35:51 | ...+... |
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:36:3:36:33 | slice literal |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:59:3:59:11 | untrusted |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:61:3:61:51 | ...+... |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:62:3:62:33 | slice literal |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:66:3:66:11 | untrusted |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:68:3:68:51 | ...+... |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:69:3:69:33 | slice literal |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:73:3:73:11 | untrusted |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:75:3:75:51 | ...+... |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:76:3:76:33 | slice literal |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:80:22:80:30 | untrusted |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:81:25:81:33 | untrusted |
 nodes
-| LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | semmle.label | call to UserAgent : string |
-| LDAPInjectction.go:21:3:21:51 | ...+... | semmle.label | ...+... |
-| LDAPInjectction.go:22:3:22:33 | slice literal | semmle.label | slice literal |
-| LDAPInjectction.go:28:3:28:51 | ...+... | semmle.label | ...+... |
-| LDAPInjectction.go:29:3:29:33 | slice literal | semmle.label | slice literal |
-| LDAPInjectction.go:35:3:35:51 | ...+... | semmle.label | ...+... |
-| LDAPInjectction.go:36:3:36:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | semmle.label | call to UserAgent : string |
+| LDAPInjectction.go:59:3:59:11 | untrusted | semmle.label | untrusted |
+| LDAPInjectction.go:61:3:61:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:62:3:62:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:66:3:66:11 | untrusted | semmle.label | untrusted |
+| LDAPInjectction.go:68:3:68:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:69:3:69:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:73:3:73:11 | untrusted | semmle.label | untrusted |
+| LDAPInjectction.go:75:3:75:51 | ...+... | semmle.label | ...+... |
+| LDAPInjectction.go:76:3:76:33 | slice literal | semmle.label | slice literal |
+| LDAPInjectction.go:80:22:80:30 | untrusted | semmle.label | untrusted |
+| LDAPInjectction.go:81:25:81:33 | untrusted | semmle.label | untrusted |
 #select
-| LDAPInjectction.go:21:3:21:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:21:3:21:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
-| LDAPInjectction.go:22:3:22:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:22:3:22:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
-| LDAPInjectction.go:28:3:28:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:28:3:28:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
-| LDAPInjectction.go:29:3:29:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:29:3:29:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
-| LDAPInjectction.go:35:3:35:51 | ...+... | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:35:3:35:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
-| LDAPInjectction.go:36:3:36:33 | slice literal | LDAPInjectction.go:17:15:17:29 | call to UserAgent : string | LDAPInjectction.go:36:3:36:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:17:15:17:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:59:3:59:11 | untrusted | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:59:3:59:11 | untrusted | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:61:3:61:51 | ...+... | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:61:3:61:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:62:3:62:33 | slice literal | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:62:3:62:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:66:3:66:11 | untrusted | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:66:3:66:11 | untrusted | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:68:3:68:51 | ...+... | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:68:3:68:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:69:3:69:33 | slice literal | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:69:3:69:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:73:3:73:11 | untrusted | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:73:3:73:11 | untrusted | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:75:3:75:51 | ...+... | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:75:3:75:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:76:3:76:33 | slice literal | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:76:3:76:33 | slice literal | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:80:22:80:30 | untrusted | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:80:22:80:30 | untrusted | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
+| LDAPInjectction.go:81:25:81:33 | untrusted | LDAPInjectction.go:57:15:57:29 | call to UserAgent : string | LDAPInjectction.go:81:25:81:33 | untrusted | LDAP query parameter is derived from $@. | LDAPInjectction.go:57:15:57:29 | call to UserAgent | a user-provided value |
