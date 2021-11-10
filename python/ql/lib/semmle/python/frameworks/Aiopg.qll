@@ -14,7 +14,10 @@ private import semmle.python.ApiGraphs
 private module Aiopg {
   private import semmle.python.internal.Awaited
 
-  /** A `ConectionPool` is created when the result of `aiopg.create_pool()` is awaited. */
+  /**
+   * A `ConectionPool` is created when the result of `aiopg.create_pool()` is awaited.
+   * See https://aiopg.readthedocs.io/en/stable/core.html#pool
+   */
   API::Node connectionPool() {
     result = API::moduleImport("aiopg").getMember("create_pool").getReturn().getAwaited()
   }
@@ -23,6 +26,7 @@ private module Aiopg {
    * A `Connection` is created when
    * - the result of `aiopg.connect()` is awaited.
    * - the result of calling `aquire` on a `ConnectionPool` is awaited.
+   * See https://aiopg.readthedocs.io/en/stable/core.html#connection
    */
   API::Node connection() {
     result = API::moduleImport("aiopg").getMember("connect").getReturn().getAwaited()
@@ -34,6 +38,7 @@ private module Aiopg {
    * A `Cursor` is created when
    * - the result of calling `cursor` on a `ConnectionPool` is awaited.
    * - the result of calling `cursor` on a `Connection` is awaited.
+   * See https://aiopg.readthedocs.io/en/stable/core.html#cursor
    */
   API::Node cursor() {
     result = connectionPool().getMember("cursor").getReturn().getAwaited()
@@ -41,7 +46,10 @@ private module Aiopg {
     result = connection().getMember("cursor").getReturn().getAwaited()
   }
 
-  /** Calling `execute` on a `Cursor` constructs a query. */
+  /**
+   * Calling `execute` on a `Cursor` constructs a query.
+   * See https://aiopg.readthedocs.io/en/stable/core.html#aiopg.Cursor.execute
+   */
   class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
@@ -64,7 +72,10 @@ private module Aiopg {
     cursorExecuteCall(DataFlow::TypeTracker::end(), sql).flowsTo(result)
   }
 
-  /** Awaiting the result of calling `execute` executes the query. */
+  /**
+   * Awaiting the result of calling `execute` executes the query.
+   * See https://aiopg.readthedocs.io/en/stable/core.html#aiopg.Cursor.execute
+   */
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
     DataFlow::Node sql;
 
@@ -73,7 +84,10 @@ private module Aiopg {
     override DataFlow::Node getSql() { result = sql }
   }
 
-  /** An `Engine` is created when the result of calling `aiopg.sa.create_engine` is awaited. */
+  /**
+   * An `Engine` is created when the result of calling `aiopg.sa.create_engine` is awaited.
+   * See https://aiopg.readthedocs.io/en/stable/sa.html#engine
+   */
   API::Node engine() {
     result =
       API::moduleImport("aiopg").getMember("sa").getMember("create_engine").getReturn().getAwaited()
@@ -81,10 +95,14 @@ private module Aiopg {
 
   /**
    * A `SAConnection` is created when the result of calling `aquire` on an `Engine` is awaited.
+   * See https://aiopg.readthedocs.io/en/stable/sa.html#connection
    */
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }
 
-  /** Calling `execute` on a `SAConnection` constructs a query. */
+  /**
+   * Calling `execute` on a `SAConnection` constructs a query.
+   * See https://aiopg.readthedocs.io/en/stable/sa.html#aiopg.sa.SAConnection.execute
+   */
   class SAConnectionExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
     SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
 
@@ -109,7 +127,10 @@ private module Aiopg {
     saConnectionExecuteCall(DataFlow::TypeTracker::end(), sql).flowsTo(result)
   }
 
-  /** Awaiting the result of calling `execute` executes the query. */
+  /**
+   * Awaiting the result of calling `execute` executes the query.
+   * See https://aiopg.readthedocs.io/en/stable/sa.html#aiopg.sa.SAConnection.execute
+   */
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
     DataFlow::Node sql;
 
