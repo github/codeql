@@ -25,7 +25,7 @@ abstract class SimpleParameterImpl extends AstNode, TSimpleParameter {
   abstract string getNameImpl();
 }
 
-private class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParameterReal {
+class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParameterReal {
   private Ruby::Identifier g;
 
   SimpleParameterRealImpl() { this = TSimpleParameterReal(g) }
@@ -35,8 +35,10 @@ private class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParame
   override string getNameImpl() { result = g.getValue() }
 }
 
-private class SimpleParameterSynthImpl extends SimpleParameterImpl, TSimpleParameterSynth {
+class SimpleParameterSynthImpl extends SimpleParameterImpl, TSimpleParameterSynth {
   SimpleParameterSynthImpl() { this = TSimpleParameterSynth(_, _) }
+
+  LocalVariableAccessSynth getDefininingAccess() { synthChild(this, 0, result) }
 
   override LocalVariable getVariableImpl() { result = TLocalVariableSynth(this, _) }
 

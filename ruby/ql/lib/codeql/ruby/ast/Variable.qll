@@ -5,6 +5,7 @@ private import codeql.Locations
 private import internal.AST
 private import internal.TreeSitter
 private import internal.Variable
+private import internal.Parameter
 
 /** A variable declared in a scope. */
 class Variable instanceof VariableImpl {
@@ -110,7 +111,11 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
    * the access to `elements` in the parameter list is an implicit assignment,
    * as is the first access to `e`.
    */
-  predicate isImplicitWrite() { implicitWriteAccess(toGenerated(this)) }
+  predicate isImplicitWrite() {
+    implicitWriteAccess(toGenerated(this))
+    or
+    this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+  }
 
   final override string toString() { result = VariableAccessImpl.super.toString() }
 }

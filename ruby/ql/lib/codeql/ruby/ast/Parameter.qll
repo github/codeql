@@ -57,7 +57,11 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
 
   /** Gets the access that defines the underlying local variable. */
-  final VariableAccess getDefiningAccess() { result = this.getVariable().getDefiningAccess() }
+  final VariableAccess getDefiningAccess() {
+    result = this.getVariable().getDefiningAccess()
+    or
+    result = this.(SimpleParameterSynthImpl).getDefininingAccess()
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
