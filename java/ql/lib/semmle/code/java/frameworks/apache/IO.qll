@@ -1,7 +1,6 @@
 /** Definitions related to the Apache Commons IO library. */
 
 import java
-private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
 
 private class CommonsIOSummaryCsv extends SummaryModelCsv {
