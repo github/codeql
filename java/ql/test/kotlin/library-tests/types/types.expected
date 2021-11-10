@@ -1,4 +1,4 @@
-| file://:0:0:0:0 | * | Wildcard |
+| file://:0:0:0:0 | ? | Wildcard |
 | file://:0:0:0:0 | ? extends Annotation | Wildcard |
 | file://:0:0:0:0 | ? extends Attribute | Wildcard |
 | file://:0:0:0:0 | ? extends BoundMethodHandle | Wildcard |
