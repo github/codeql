@@ -54,16 +54,16 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc |
-      fc.getTarget().hasGlobalOrStdName(["system", "gethostbyname"]) and
+      fc.getTarget().hasGlobalOrStdName(["system", "gethostbyname", "getaddrinfo"]) and
       sink.asExpr() = fc.getArgument(0)
       or
-      fc.getTarget().hasGlobalOrStdName(["send", "URLDownloadToFile"]) and
+      fc.getTarget().hasGlobalOrStdName(["send", "URLDownloadToFile", "URLDownloadToCacheFile"]) and
       sink.asExpr() = fc.getArgument(1)
       or
-      fc.getTarget().hasGlobalOrStdName("curl_easy_setopt") and
+      fc.getTarget().hasGlobalOrStdName(["curl_easy_setopt", "getnameinfo"]) and
       sink.asExpr() = fc.getArgument(2)
       or
-      fc.getTarget().hasGlobalOrStdName("ShellExecute") and
+      fc.getTarget().hasGlobalOrStdName(["ShellExecute", "ShellExecuteA", "ShellExecuteW"]) and
       sink.asExpr() = fc.getArgument(3)
     )
   }
