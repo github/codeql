@@ -25,8 +25,9 @@ calls/calls.rb:
 #   67|         getReceiver: [ConstantReadAccess] X
 #  226| [ForExpr] for ... in ...
 #  226|   getDesugared: [MethodCall] call to each
-#  226|     getBlock: [SynthBlock] { ... }
+#  226|     getBlock: [BraceBlock] { ... }
 #  226|       getParameter: [SimpleParameter] __synth__0__1
+#  226|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #  226|       getStmt: [AssignExpr] ... = ...
 #  226|         getAnOperand/getRightOperand: [LocalVariableAccess] __synth__0__1
 #  226|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -37,8 +38,9 @@ calls/calls.rb:
 #  226|       getReceiver: [Self, SelfVariableAccess] self
 #  229| [ForExpr] for ... in ...
 #  229|   getDesugared: [MethodCall] call to each
-#  229|     getBlock: [SynthBlock] { ... }
+#  229|     getBlock: [BraceBlock] { ... }
 #  229|       getParameter: [SimpleParameter] __synth__0__1
+#  229|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #  229|       getStmt: [AssignExpr] ... = ...
 #  229|         getAnOperand/getRightOperand: [LocalVariableAccess] __synth__0__1
 #  229|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
@@ -221,8 +223,9 @@ calls/calls.rb:
 #  320|     getStmt: [LocalVariableAccess] __synth__4
 #  340| [ForExpr] for ... in ...
 #  340|   getDesugared: [MethodCall] call to each
-#  340|     getBlock: [SynthBlock] { ... }
+#  340|     getBlock: [BraceBlock] { ... }
 #  340|       getParameter: [SimpleParameter] __synth__0__1
+#  340|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #  340|       getStmt: [AssignExpr] ... = ...
 #  340|         getDesugared: [StmtSequence] ...
 #  340|           getStmt: [AssignExpr] ... = ...
@@ -400,8 +403,9 @@ literals/literals.rb:
 control/loops.rb:
 #    9| [ForExpr] for ... in ...
 #    9|   getDesugared: [MethodCall] call to each
-#    9|     getBlock: [SynthBlock] { ... }
+#    9|     getBlock: [BraceBlock] { ... }
 #    9|       getParameter: [SimpleParameter] __synth__0__1
+#    9|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #    9|       getStmt: [AssignExpr] ... = ...
 #    9|         getAnOperand/getRightOperand: [LocalVariableAccess] __synth__0__1
 #    9|         getAnOperand/getLeftOperand: [LocalVariableAccess] n
@@ -420,8 +424,9 @@ control/loops.rb:
 #    9|       getEnd: [IntegerLiteral] 10
 #   16| [ForExpr] for ... in ...
 #   16|   getDesugared: [MethodCall] call to each
-#   16|     getBlock: [SynthBlock] { ... }
+#   16|     getBlock: [BraceBlock] { ... }
 #   16|       getParameter: [SimpleParameter] __synth__0__1
+#   16|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #   16|       getStmt: [AssignExpr] ... = ...
 #   16|         getAnOperand/getRightOperand: [LocalVariableAccess] __synth__0__1
 #   16|         getAnOperand/getLeftOperand: [LocalVariableAccess] n
@@ -443,8 +448,9 @@ control/loops.rb:
 #   16|       getEnd: [IntegerLiteral] 10
 #   22| [ForExpr] for ... in ...
 #   22|   getDesugared: [MethodCall] call to each
-#   22|     getBlock: [SynthBlock] { ... }
+#   22|     getBlock: [BraceBlock] { ... }
 #   22|       getParameter: [SimpleParameter] __synth__0__1
+#   22|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #   22|       getStmt: [AssignExpr] ... = ...
 #   22|         getDesugared: [StmtSequence] ...
 #   22|           getStmt: [AssignExpr] ... = ...
@@ -484,8 +490,9 @@ control/loops.rb:
 #   22|         getValue: [IntegerLiteral] 1
 #   28| [ForExpr] for ... in ...
 #   28|   getDesugared: [MethodCall] call to each
-#   28|     getBlock: [SynthBlock] { ... }
+#   28|     getBlock: [BraceBlock] { ... }
 #   28|       getParameter: [SimpleParameter] __synth__0__1
+#   28|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #   28|       getStmt: [AssignExpr] ... = ...
 #   28|         getDesugared: [StmtSequence] ...
 #   28|           getStmt: [AssignExpr] ... = ...
@@ -692,8 +699,9 @@ params/params.rb:
 erb/template.html.erb:
 #   27| [ForExpr] for ... in ...
 #   27|   getDesugared: [MethodCall] call to each
-#   27|     getBlock: [SynthBlock] { ... }
+#   27|     getBlock: [BraceBlock] { ... }
 #   27|       getParameter: [SimpleParameter] __synth__0__1
+#   27|         getDefiningAccess: [LocalVariableAccess] __synth__0__1
 #   27|       getStmt: [AssignExpr] ... = ...
 #   27|         getAnOperand/getRightOperand: [LocalVariableAccess] __synth__0__1
 #   27|         getAnOperand/getLeftOperand: [LocalVariableAccess] x

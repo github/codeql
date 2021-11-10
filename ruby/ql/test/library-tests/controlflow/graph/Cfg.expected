@@ -24,6 +24,9 @@ break_ensure.rb:
 #    1| elements
 #-----|  -> elements
 
+#    2| enter { ... }
+#-----|  -> __synth__0__1
+
 #    2| call to each
 #-----|  -> elements
 #-----| raise -> [ensure: raise] elements
@@ -35,16 +38,27 @@ break_ensure.rb:
 #-----|  -> element
 
 #    2| __synth__0__1
+#-----|  -> element
+
+#    2| __synth__0__1
 #-----|  -> ... = ...
+
+#    2| exit { ... }
+
+#    2| exit { ... } (abnormal)
+#-----|  -> exit { ... }
+
+#    2| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #    2| element
 #-----|  -> __synth__0__1
 
 #    2| elements
-#-----|  -> element
+#-----|  -> { ... }
 
 #    2| do ...
-#-----|  -> { ... }
+#-----|  -> exit { ... } (normal)
 
 #    3| if ...
 #-----|  -> do ...
@@ -53,7 +67,7 @@ break_ensure.rb:
 #-----| true -> break
 #-----| raise -> for ... in ...
 #-----| false -> if ...
-#-----| raise -> [ensure: raise] elements
+#-----| raise -> exit { ... } (abnormal)
 
 #    3| element
 #-----|  -> 0
@@ -62,22 +76,16 @@ break_ensure.rb:
 #-----|  -> ... > ...
 
 #    4| break
-#-----| break -> [ensure: break] elements
+#-----| break -> exit { ... } (normal)
 
 #    7| ensure ...
 #-----|  -> exit m1 (normal)
-
-#    7| [ensure: break] ensure ...
-#-----| break -> exit m1 (normal)
 
 #    7| [ensure: raise] ensure ...
 #-----| raise -> exit m1 (abnormal)
 
 #    8| if ...
 #-----|  -> ensure ...
-
-#    8| [ensure: break] if ...
-#-----|  -> [ensure: break] ensure ...
 
 #    8| [ensure: raise] if ...
 #-----|  -> [ensure: raise] ensure ...
@@ -86,10 +94,6 @@ break_ensure.rb:
 #-----| false -> if ...
 #-----| true -> self
 
-#    8| [ensure: break] call to nil?
-#-----| false -> [ensure: break] if ...
-#-----| true -> [ensure: break] self
-
 #    8| [ensure: raise] call to nil?
 #-----| false -> [ensure: raise] if ...
 #-----| true -> [ensure: raise] self
@@ -97,17 +101,11 @@ break_ensure.rb:
 #    8| elements
 #-----|  -> call to nil?
 
-#    8| [ensure: break] elements
-#-----|  -> [ensure: break] call to nil?
-
 #    8| [ensure: raise] elements
 #-----|  -> [ensure: raise] call to nil?
 
 #    8| then ...
 #-----|  -> if ...
-
-#    8| [ensure: break] then ...
-#-----|  -> [ensure: break] if ...
 
 #    8| [ensure: raise] then ...
 #-----|  -> [ensure: raise] if ...
@@ -115,26 +113,17 @@ break_ensure.rb:
 #    9| call to puts
 #-----|  -> then ...
 
-#    9| [ensure: break] call to puts
-#-----|  -> [ensure: break] then ...
-
 #    9| [ensure: raise] call to puts
 #-----|  -> [ensure: raise] then ...
 
 #    9| self
 #-----|  -> "elements nil"
 
-#    9| [ensure: break] self
-#-----|  -> [ensure: break] "elements nil"
-
 #    9| [ensure: raise] self
 #-----|  -> [ensure: raise] "elements nil"
 
 #    9| "elements nil"
 #-----|  -> call to puts
-
-#    9| [ensure: break] "elements nil"
-#-----|  -> [ensure: break] call to puts
 
 #    9| [ensure: raise] "elements nil"
 #-----|  -> [ensure: raise] call to puts
@@ -147,14 +136,14 @@ break_ensure.rb:
 
 #   13| exit m2
 
-#   13| exit m2 (abnormal)
-#-----|  -> exit m2
-
 #   13| exit m2 (normal)
 #-----|  -> exit m2
 
 #   13| elements
 #-----|  -> elements
+
+#   14| enter { ... }
+#-----|  -> __synth__0__1
 
 #   14| call to each
 #-----|  -> exit m2 (normal)
@@ -166,16 +155,27 @@ break_ensure.rb:
 #-----|  -> element
 
 #   14| __synth__0__1
+#-----|  -> element
+
+#   14| __synth__0__1
 #-----|  -> ... = ...
+
+#   14| exit { ... }
+
+#   14| exit { ... } (abnormal)
+#-----|  -> exit { ... }
+
+#   14| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   14| element
 #-----|  -> __synth__0__1
 
 #   14| elements
-#-----|  -> element
+#-----|  -> { ... }
 
 #   14| do ...
-#-----|  -> { ... }
+#-----|  -> exit { ... } (normal)
 
 #   16| if ...
 #-----|  -> elements
@@ -198,10 +198,10 @@ break_ensure.rb:
 #-----|  -> do ...
 
 #   19| [ensure: break] ensure ...
-#-----| break -> exit m2 (normal)
+#-----| break -> exit { ... } (normal)
 
 #   19| [ensure: raise] ensure ...
-#-----| raise -> exit m2 (abnormal)
+#-----| raise -> exit { ... } (abnormal)
 
 #   20| if ...
 #-----|  -> ensure ...
@@ -309,6 +309,9 @@ break_ensure.rb:
 #   32| [ensure: return] ensure ...
 #-----| return -> exit m3 (normal)
 
+#   33| enter { ... }
+#-----|  -> __synth__0__1
+
 #   33| call to each
 #-----|  -> ensure ...
 
@@ -330,104 +333,50 @@ break_ensure.rb:
 #   33| ... = ...
 #-----|  -> self
 
-#   33| [ensure: raise] ... = ...
-#-----|  -> [ensure: raise] self
-
-#   33| [ensure: return] ... = ...
-#-----|  -> [ensure: return] self
+#   33| __synth__0__1
+#-----|  -> element
 
 #   33| __synth__0__1
 #-----|  -> ... = ...
 
-#   33| [ensure: raise] __synth__0__1
-#-----|  -> [ensure: raise] ... = ...
+#   33| exit { ... }
 
-#   33| [ensure: return] __synth__0__1
-#-----|  -> [ensure: return] ... = ...
+#   33| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   33| element
 #-----|  -> __synth__0__1
 
-#   33| [ensure: raise] element
-#-----|  -> [ensure: raise] __synth__0__1
-
-#   33| [ensure: return] element
-#-----|  -> [ensure: return] __synth__0__1
-
 #   33| elements
-#-----|  -> element
-
-#   33| [ensure: raise] elements
-#-----|  -> [ensure: raise] element
-
-#   33| [ensure: return] elements
-#-----|  -> [ensure: return] element
-
-#   33| do ...
 #-----|  -> { ... }
 
-#   33| [ensure: raise] do ...
+#   33| [ensure: raise] elements
 #-----|  -> [ensure: raise] { ... }
 
-#   33| [ensure: return] do ...
+#   33| [ensure: return] elements
 #-----|  -> [ensure: return] { ... }
+
+#   33| do ...
+#-----|  -> exit { ... } (normal)
 
 #   35| if ...
 #-----|  -> do ...
-
-#   35| [ensure: raise] if ...
-#-----|  -> [ensure: raise] do ...
-
-#   35| [ensure: return] if ...
-#-----|  -> [ensure: return] do ...
 
 #   35| ... > ...
 #-----| true -> break
 #-----| false -> if ...
 
-#   35| [ensure: raise] ... > ...
-#-----| true -> [ensure: raise] break
-#-----| false -> [ensure: raise] if ...
-
-#   35| [ensure: return] ... > ...
-#-----| true -> [ensure: return] break
-#-----| false -> [ensure: return] if ...
-
 #   35| call to x
 #-----|  -> 0
-
-#   35| [ensure: raise] call to x
-#-----|  -> [ensure: raise] 0
-
-#   35| [ensure: return] call to x
-#-----|  -> [ensure: return] 0
 
 #   35| self
 #-----|  -> call to x
 
-#   35| [ensure: raise] self
-#-----|  -> [ensure: raise] call to x
-
-#   35| [ensure: return] self
-#-----|  -> [ensure: return] call to x
-
 #   35| 0
 #-----|  -> ... > ...
 
-#   35| [ensure: raise] 0
-#-----|  -> [ensure: raise] ... > ...
-
-#   35| [ensure: return] 0
-#-----|  -> [ensure: return] ... > ...
-
 #   36| break
-#-----| break -> exit m3 (normal)
-
-#   36| [ensure: raise] break
-#-----| break -> exit m3 (normal)
-
-#   36| [ensure: return] break
-#-----| break -> exit m3 (normal)
+#-----| break -> exit { ... } (normal)
 
 #   41| call to puts
 #-----|  -> exit m3 (normal)
@@ -446,14 +395,14 @@ break_ensure.rb:
 
 #   44| exit m4
 
-#   44| exit m4 (abnormal)
-#-----|  -> exit m4
-
 #   44| exit m4 (normal)
 #-----|  -> exit m4
 
 #   44| elements
 #-----|  -> elements
+
+#   45| enter { ... }
+#-----|  -> __synth__0__1
 
 #   45| call to each
 #-----|  -> exit m4 (normal)
@@ -465,16 +414,27 @@ break_ensure.rb:
 #-----|  -> element
 
 #   45| __synth__0__1
+#-----|  -> element
+
+#   45| __synth__0__1
 #-----|  -> ... = ...
+
+#   45| exit { ... }
+
+#   45| exit { ... } (abnormal)
+#-----|  -> exit { ... }
+
+#   45| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   45| element
 #-----|  -> __synth__0__1
 
 #   45| elements
-#-----|  -> element
+#-----|  -> { ... }
 
 #   45| do ...
-#-----|  -> { ... }
+#-----|  -> exit { ... } (normal)
 
 #   47| if ...
 #-----|  -> element
@@ -503,7 +463,7 @@ break_ensure.rb:
 #-----|  -> do ...
 
 #   50| [ensure: raise] ensure ...
-#-----| raise -> exit m4 (abnormal)
+#-----| raise -> exit { ... } (abnormal)
 
 #   51| if ...
 #-----|  -> ensure ...
@@ -532,10 +492,10 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] ... > ...
 
 #   52| break
-#-----| break -> exit m4 (normal)
+#-----| break -> exit { ... } (normal)
 
 #   52| [ensure: raise] break
-#-----| break -> exit m4 (normal)
+#-----| break -> exit { ... } (normal)
 
 #   52| 10
 #-----|  -> break
@@ -1478,6 +1438,9 @@ cfg.rb:
 #   88| x
 #-----|  -> #{...}
 
+#   90| enter { ... }
+#-----|  -> __synth__0__1
+
 #   90| call to each
 #-----|  -> $global
 
@@ -1488,13 +1451,21 @@ cfg.rb:
 #-----|  -> x
 
 #   90| __synth__0__1
+#-----|  -> x
+
+#   90| __synth__0__1
 #-----|  -> ... = ...
+
+#   90| exit { ... }
+
+#   90| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   90| x
 #-----|  -> __synth__0__1
 
 #   90| call to []
-#-----|  -> x
+#-----|  -> { ... }
 
 #   90| Array
 #-----|  -> 1.4
@@ -1509,7 +1480,7 @@ cfg.rb:
 #-----|  -> call to []
 
 #   90| do ...
-#-----|  -> { ... }
+#-----|  -> exit { ... } (normal)
 
 #   91| if ...
 #-----|  -> self
@@ -1525,7 +1496,7 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #   91| next
-#-----| next -> exit cfg.rb (normal)
+#-----| next -> exit { ... } (normal)
 
 #   92| call to puts
 #-----|  -> do ...

@@ -1,11 +1,3 @@
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
-#-----| [LocalVariableAccess] __synth__0__1
 gems/Gemfile:
 #    1| [Toplevel] Gemfile
 #    1|   getStmt: [MethodCall] call to source
