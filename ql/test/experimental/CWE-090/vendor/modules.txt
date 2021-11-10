@@ -1,0 +1,15 @@
+# github.com/go-ldap/ldap v3.0.3+incompatible
+## explicit
+github.com/go-ldap/ldap
+# github.com/go-ldap/ldap/v3 v3.4.1
+## explicit
+github.com/go-ldap/ldap/v3
+# github.com/jtblin/go-ldap-client v0.0.0-20170223121919-b73f66626b33
+## explicit
+github.com/jtblin/go-ldap-client
+# gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d
+## explicit
+gopkg.in/asn1-ber.v1
+# gopkg.in/ldap.v2 v2.5.1
+## explicit
+gopkg.in/ldap.v2
