@@ -20,7 +20,7 @@ async def test_cursor():
 
     # variants using as few `async with` as possible
     pool = await aiopg.create_pool()
-    conn = pool.acquire()
+    conn = await pool.acquire()
     cur = await conn.cursor()
     await cur.execute("sql")  # $ getSql="sql" constructedSql="sql"
 
