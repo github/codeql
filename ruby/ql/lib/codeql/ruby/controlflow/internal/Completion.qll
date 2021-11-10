@@ -14,7 +14,6 @@ private import SuccessorTypes
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b in [false, true] } or
-  TEmptinessCompletion(boolean isEmpty) { isEmpty in [false, true] } or
   TMatchingCompletion(boolean isMatch) { isMatch in [false, true] } or
   TReturnCompletion() or
   TBreakCompletion() or
@@ -239,8 +238,8 @@ class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
 
 /**
  * A completion that represents evaluation of an expression, whose value determines
- * the successor. Either a Boolean completion (`BooleanCompletion`), an emptiness
- * completion (`EmptinessCompletion`), or a matching completion (`MatchingCompletion`).
+ * the successor. Either a Boolean completion (`BooleanCompletion`), or a matching
+ * completion (`MatchingCompletion`).
  */
 abstract class ConditionalCompletion extends NonNestedNormalCompletion {
   boolean value;
@@ -275,18 +274,6 @@ class TrueCompletion extends BooleanCompletion {
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
   FalseCompletion() { this.getValue() = false }
-}
-
-/**
- * A completion that represents evaluation of an emptiness test, for example
- * a test in a `for in` statement.
- */
-class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
-  EmptinessCompletion() { this = TEmptinessCompletion(value) }
-
-  override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
-
-  override string toString() { if value = true then result = "empty" else result = "non-empty" }
 }
 
 /**
