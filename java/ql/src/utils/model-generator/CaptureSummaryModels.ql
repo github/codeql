@@ -9,6 +9,8 @@ import ModelGeneratorUtils
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.internal.DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowNodes
+import semmle.code.java.dataflow.internal.DataFlowPrivate
+import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
 string captureFlow(Callable api) {
@@ -39,6 +41,36 @@ string captureQualifierFlow(Callable api) {
   result = asValueModel(api, "Argument[-1]", "ReturnValue")
 }
 
+class FieldToReturnConfig extends TaintTracking::Configuration {
+  FieldToReturnConfig() { this = "FieldToReturnConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof DataFlow::InstanceParameterNode
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNodeExt }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(DataFlow::Content f |
+      readStep(node1, f, node2) and
+      if f instanceof DataFlow::FieldContent
+      then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+      else any()
+    )
+    or
+    exists(DataFlow::Content f | storeStep(node1, f, node2) |
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
+    )
+  }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+  }
+}
+
 /**
  * Capture APIs that return tainted instance data.
  * Example of an API that returns tainted instance data:
@@ -62,15 +94,17 @@ string captureQualifierFlow(Callable api) {
  * ```
  */
 string captureFieldFlow(Callable api) {
-  exists(FieldAccess fa, ReturnNodeExt returnNode |
-    not (fa.getField().isStatic() and fa.getField().isFinal()) and
-    fa.getField().getDeclaringType() = api.getDeclaringType() and
-    returnNode.getEnclosingCallable() = api and
-    isRelevantType(api.getReturnType()) and
+  exists(FieldToReturnConfig config, ReturnNodeExt returnNodeExt |
+    config.hasFlow(_, returnNodeExt) and
+    returnNodeExt.getEnclosingCallable() = api and
     not api.getDeclaringType() instanceof EnumType and
-    TaintTracking::localTaint(DataFlow::exprNode(fa), returnNode)
+    isRelevantType(returnNodeExt.getType()) and
+    not (
+      returnNodeExt.getKind() instanceof ValueReturnKind and
+      exists(captureQualifierFlow(api))
+    )
   |
-    result = asTaintModel(api, "Argument[-1]", asOutput(api, returnNode))
+    result = asTaintModel(api, "Argument[-1]", asOutput(api, returnNodeExt))
   )
 }
 
@@ -94,12 +128,26 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
+    thisAccess(sink.(DataFlow::PostUpdateNode).getPreUpdateNode())
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(FieldAssignment a |
-      a.getSource() = sink.asExpr() and
-      a.getDest().(FieldAccess).getField().getDeclaringType() =
-        sink.getEnclosingCallable().getDeclaringType()
+      a.getSource() = node1.asExpr() and
+      DataFlow::getFieldQualifier(a.getDest()) = node2.(DataFlow::PostUpdateNode).getPreUpdateNode() and
+      isRelevantType(a.getDest().(FieldAccess).getField().getType())
     )
   }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+  }
+}
+
+private predicate thisAccess(DataFlow::Node n) {
+  n.asExpr().(InstanceAccess).isOwnInstanceAccess()
+  or
+  n.(DataFlow::ImplicitInstanceAccess).getInstanceAccess() instanceof OwnInstanceAccess
 }
 
 /**
@@ -116,28 +164,14 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
  * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
  */
 string captureFieldFlowIn(Callable api) {
-  exists(DataFlow::PathNode source, DataFlow::PathNode sink |
+  exists(DataFlow::Node source, ParameterToFieldConfig config |
     not api.isStatic() and
-    restrictedFlow(source, sink) and
-    source.getNode().asParameter().getCallable() = api
+    config.hasFlow(source, _) and
+    source.asParameter().getCallable() = api
   |
     result =
-      asTaintModel(api, "Argument[" + source.getNode().asParameter().getPosition() + "]",
-        "Argument[-1]")
+      asTaintModel(api, "Argument[" + source.asParameter().getPosition() + "]", "Argument[-1]")
   )
-}
-
-predicate restrictedEdge(DataFlow::PathNode n1, DataFlow::PathNode n2) {
-  n1.getASuccessor() = n2 and
-  n1.getNode().getEnclosingCallable().getDeclaringType() =
-    n2.getNode().getEnclosingCallable().getDeclaringType()
-}
-
-predicate restrictedFlow(DataFlow::PathNode src, DataFlow::PathNode sink) {
-  src.getConfiguration() instanceof ParameterToFieldConfig and
-  src.isSource() and
-  src.getConfiguration().isSink(sink.getNode()) and
-  restrictedEdge*(src, sink)
 }
 
 class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {

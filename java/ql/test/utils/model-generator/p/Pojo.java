@@ -1,6 +1,7 @@
 package p;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +22,12 @@ public final class Pojo {
     private String value;
 
     private int intValue = 2;
+
+    private byte[] byteArray = new byte[] {1, 2, 3} ;
+    private float[] floatArray = new float[] {1, 2, 3} ;
+    private char[] charArray = new char[] {'a', 'b', 'c'} ;
+    private List<Character> charList = Arrays.asList('a', 'b', 'c');
+    private Byte[] byteObjectArray = new Byte[] { 1, 2, 3 };
 
     public String getValue() {
         return value;
@@ -48,15 +55,15 @@ public final class Pojo {
     }
 
     public char[] getCharArray() {
-        return new char[] { (char) intValue };
+        return charArray;
     }
 
     public byte[] getByteArray() {
-        return new byte[] { (byte) intValue };
+        return byteArray;
     }
     
     public float[] getFloatArray() {
-        return new float[] { (float) intValue };
+        return floatArray;
     }
 
     public Integer[] getBoxedArray() {
@@ -68,11 +75,11 @@ public final class Pojo {
     }
 
     public List<Character> getBoxedChars() {
-        return List.of((char)intValue);
+        return charList;
     }
 
     public Byte[] getBoxedBytes() {
-        return new Byte[] { Byte.valueOf((byte) intValue) };
+        return byteObjectArray;
     }
     
     public BigInteger getBigInt() {

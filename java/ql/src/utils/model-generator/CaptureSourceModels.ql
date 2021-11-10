@@ -30,6 +30,10 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
     or
     exists(MethodAccess c | sink.asExpr() = c.getAnArgument())
   }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSourceCallContext
+  }
 }
 
 string asOutput(DataFlow::Node node) {

@@ -27,6 +27,10 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSourceCallContext
+  }
 }
 
 string asInputArgument(DataFlow::Node source) {
@@ -50,6 +54,4 @@ string captureSink(Callable api) {
 
 from TargetAPI api, string sink
 where sink = captureSink(api)
-// and
-// api.hasName("openStream")
 select sink order by sink

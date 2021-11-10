@@ -9,6 +9,9 @@
 | p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;taint |
 | p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint |
 | p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint |
+| p;InnerHolder;false;explicitSetContext;(String);;Argument[0];Argument[-1];taint |
+| p;InnerHolder;false;getValue;();;Argument[-1];ReturnValue;taint |
+| p;InnerHolder;false;setContext;(String);;Argument[0];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence);;Argument[0];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[-1];taint |
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[-1];taint |
