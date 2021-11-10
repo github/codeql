@@ -24,24 +24,33 @@ DataFlow::CallCfgNode outgoingRequestCall(string verb) {
   result = API::moduleImport("requests").getMember(verb).getACall()
 }
 
-/** Gets a reference to a falsey value (excluding None), with origin `origin`. */
-private DataFlow::TypeTrackingNode falseyNotNone(DataFlow::TypeTracker t, DataFlow::Node origin) {
-  t.start() and
-  result.asExpr().(ImmutableLiteral).booleanValue() = false and
-  not result.asExpr() instanceof None and
-  origin = result
-  or
-  exists(DataFlow::TypeTracker t2 | result = falseyNotNone(t2, origin).track(t2, t))
+/** Gets the "verfiy" argument to a outgoingRequestCall. */
+DataFlow::Node verifyArg(DataFlow::CallCfgNode call) {
+  call = outgoingRequestCall(_) and
+  result = call.getArgByName("verify")
 }
 
-/** Gets a reference to a falsey value (excluding None), with origin `origin`. */
-DataFlow::Node falseyNotNone(DataFlow::Node origin) {
-  falseyNotNone(DataFlow::TypeTracker::end(), origin).flowsTo(result)
+/** Gets a back-reference to the verify argument `arg`. */
+private DataFlow::TypeTrackingNode verifyArgBacktracker(
+  DataFlow::TypeBackTracker t, DataFlow::Node arg
+) {
+  t.start() and
+  arg = verifyArg(_) and
+  result = arg.getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = verifyArgBacktracker(t2, arg).backtrack(t2, t))
+}
+
+/** Gets a back-reference to the verify argument `arg`. */
+DataFlow::LocalSourceNode verifyArgBacktracker(DataFlow::Node arg) {
+  result = verifyArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
 }
 
 from DataFlow::CallCfgNode call, DataFlow::Node falseyOrigin, string verb
 where
   call = outgoingRequestCall(verb) and
+  falseyOrigin = verifyArgBacktracker(verifyArg(call)) and
   // requests treats `None` as the default and all other "falsey" values as `False`.
-  call.getArgByName("verify") = falseyNotNone(falseyOrigin)
+  falseyOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
+  not falseyOrigin.asExpr() instanceof None
 select call, "Call to requests." + verb + " with verify=$@", falseyOrigin, "False"
