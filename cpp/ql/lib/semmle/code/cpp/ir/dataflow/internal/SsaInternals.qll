@@ -244,17 +244,6 @@ Instruction getDestinationAddress(Instruction instr) {
     ]
 }
 
-class ReferenceToInstruction extends CopyValueInstruction {
-  ReferenceToInstruction() {
-    this.getResultType() instanceof Cpp::ReferenceType and
-    not this.getUnary().getResultType() instanceof Cpp::ReferenceType
-  }
-
-  Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
-
-  Operand getSourceAddressOperand() { result = this.getUnaryOperand() }
-}
-
 /** Gets the source address of `instr` if it is an instruction that behaves like a `LoadInstruction`. */
 Instruction getSourceAddress(Instruction instr) { result = getSourceAddressOperand(instr).getDef() }
 
@@ -266,11 +255,7 @@ Operand getSourceAddressOperand(Instruction instr) {
   result =
     [
       instr.(LoadInstruction).getSourceAddressOperand(),
-      instr.(ReadSideEffectInstruction).getArgumentOperand(),
-      // `ReferenceToInstruction` is really more of an address-of operation,
-      // but by including it in this list we break out of `flowOutOfAddressStep` at an
-      // instruction that, at the source level, looks like a use of a variable.
-      instr.(ReferenceToInstruction).getSourceAddressOperand()
+      instr.(ReadSideEffectInstruction).getArgumentOperand()
     ]
 }
 
@@ -295,10 +280,6 @@ Operand getSourceValueOperand(Instruction instr) {
   result = instr.(LoadInstruction).getSourceValueOperand()
   or
   result = instr.(ReadSideEffectInstruction).getSideEffectOperand()
-  or
-  // See the comment on the `ReferenceToInstruction` disjunct in `getSourceAddressOperand` for why
-  // this case is included.
-  result = instr.(ReferenceToInstruction).getSourceValueOperand()
 }
 
 /**

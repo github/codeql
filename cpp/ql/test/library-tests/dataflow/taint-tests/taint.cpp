@@ -233,7 +233,7 @@ void test_lambdas()
 	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
@@ -241,19 +241,19 @@ void test_lambdas()
 	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u); // clean
 	};
 	c();
 
 	auto d = [](int a, int b) {
-		sink(a); // $ ast,ir
+		sink(a); // $ ast MISSING: ir
 		sink(b); // clean
 	};
 	d(t, u);
 
 	auto e = [](int &a, int &b, int &c) {
-		sink(a); // $ ast,ir
+		sink(a); // $ ast MISSING: ir
 		sink(b); // clean
 		c = source();
 	};
