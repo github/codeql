@@ -1,12 +1,12 @@
 /**
  * @name Print AST
  * @description Outputs a representation of the Abstract Syntax Tree.
- * @id cs/print-ast
+ * @id csharp/print-ast
  * @kind graph
  */
 
 import csharp
-import PrintAst
+import semmle.code.csharp.PrintAst
 
 /**
  * Temporarily tweak this class or make a copy to control which functions are
