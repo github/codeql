@@ -36,7 +36,6 @@
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:11:1:11:2 | [post] self | local_dataflow.rb:12:3:12:5 | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:12:3:12:5 | self |
-| local_dataflow.rb:12:3:12:5 | call to p | local_dataflow.rb:10:19:13:3 | do ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
@@ -49,7 +48,6 @@
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | ... = ... |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
-| local_dataflow.rb:20:3:20:25 | if ... | local_dataflow.rb:19:16:21:3 | do ... |
 | local_dataflow.rb:24:2:24:8 | break | local_dataflow.rb:23:1:25:3 | while ... |
 | local_dataflow.rb:24:8:24:8 | 5 | local_dataflow.rb:24:2:24:8 | break |
 | local_dataflow.rb:28:5:28:26 | M | local_dataflow.rb:28:1:28:26 | ... = ... |

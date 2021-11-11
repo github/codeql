@@ -1,8 +1,8 @@
 ret
 | local_dataflow.rb:6:3:6:14 | ... = ... |
-| local_dataflow.rb:10:19:13:3 | do ... |
+| local_dataflow.rb:12:3:12:5 | call to p |
 | local_dataflow.rb:16:3:16:10 | break |
-| local_dataflow.rb:19:16:21:3 | do ... |
+| local_dataflow.rb:20:3:20:25 | if ... |
 | local_dataflow.rb:20:17:20:21 | break |
 | local_dataflow.rb:32:14:32:21 | "method" |
 | local_dataflow.rb:36:6:36:13 | return |

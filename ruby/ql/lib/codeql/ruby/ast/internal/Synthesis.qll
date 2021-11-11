@@ -3,6 +3,7 @@
 private import AST
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
+private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
@@ -880,8 +881,7 @@ private module ForLoopDesugar {
           or
           // rest of block body
           parent = block and
-          i = 2 and
-          child = RealChild(for.getBody())
+          child = RealChild(for.getBody().(Do).getStmt(i - 2))
         )
       )
     )
@@ -901,6 +901,10 @@ private module ForLoopDesugar {
     final override predicate localVariable(AstNode n, int i) {
       n instanceof TSimpleParameterSynth and
       i = 0
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(ForExpr for).getBody()
     }
   }
 }

@@ -1458,9 +1458,6 @@ cfg.rb:
 #   90| 3.4e5
 #-----|  -> call to []
 
-#   90| do ...
-#-----|  -> exit { ... } (normal)
-
 #   91| if ...
 #-----|  -> self
 
@@ -1478,7 +1475,7 @@ cfg.rb:
 #-----| next -> exit { ... } (normal)
 
 #   92| call to puts
-#-----|  -> do ...
+#-----|  -> exit { ... } (normal)
 
 #   92| self
 #-----|  -> x

@@ -61,6 +61,9 @@ module CfgScope {
 
     final override predicate exit(AstNode last, Completion c) {
       last(this.(Trees::EndBlockTree).getLastBodyChild(), last, c)
+      or
+      last(this.(Trees::EndBlockTree).getBodyChild(_, _), last, c) and
+      not c instanceof NormalCompletion
     }
   }
 
@@ -79,6 +82,9 @@ module CfgScope {
 
     final override predicate exit(AstNode last, Completion c) {
       last(this.(Trees::BraceBlockTree).getLastBodyChild(), last, c)
+      or
+      last(this.(Trees::BraceBlockTree).getBodyChild(_, _), last, c) and
+      not c instanceof NormalCompletion
     }
   }
 }
