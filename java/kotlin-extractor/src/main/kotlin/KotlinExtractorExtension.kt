@@ -410,7 +410,11 @@ open class KotlinUsesExtractor(
                         else
                             primitiveInfo.primitiveName
 
-                    type.isBoxedArray || type.isPrimitiveArray() -> shortName(type.getArrayElementType(pluginContext.irBuiltIns)) + "[]"
+                    type.isBoxedArray || type.isPrimitiveArray() -> {
+                        val elementType = type.getArrayElementType(pluginContext.irBuiltIns)
+                        val javaElementType = if (type.isPrimitiveArray()) elementType else elementType.makeNullable()
+                        shortName(javaElementType) + "[]"
+                    }
 
                     type.classifier.owner is IrClass -> {
                         val c = type.classifier.owner as IrClass
@@ -549,7 +553,8 @@ open class KotlinUsesExtractor(
         // Note the stripping of any type projection from `componentType` here mirrors the action of `IrType.getArrayElementType`,
         // and is required if we are not to produce different kotlin types for the same Java type (e.g. List[] -> Array<out List> or Array<List>)
         val owner: IrClass = arrayType.classifier.owner as IrClass
-        val kotlinClassName = getUnquotedClassLabel(owner, listOf(makeTypeProjection(componentType, Variance.INVARIANT)))
+        val kotlinTypeArgs = if (arrayType.arguments.isEmpty()) listOf() else listOf(makeTypeProjection(componentType, Variance.INVARIANT))
+        val kotlinClassName = getUnquotedClassLabel(owner, kotlinTypeArgs)
         val kotlinSignature = "$javaSignature?" // TODO: Wrong
         val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -557,14 +562,11 @@ open class KotlinUsesExtractor(
         })
         val kotlinResult = TypeResult(kotlinId, kotlinSignature)
 
-        /*
-        TODO
         tw.getLabelFor<DbMethod>("@\"callable;{$id}.clone(){$id}\"") {
             tw.writeMethods(it, "clone", "clone()", javaResult.id, kotlinResult.id, javaResult.id, it)
             // TODO: modifiers
             // tw.writeHasModifier(clone, getModifierKey("public"))
         }
-        */
 
         return TypeResults(javaResult, kotlinResult)
     }
@@ -657,19 +659,22 @@ class X {
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 var dimensions = 1
+                var isPrimitiveArray = s.isPrimitiveArray()
                 val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
                 var elementType = componentType
                 while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
                     dimensions++
+                    if(elementType.isPrimitiveArray())
+                        isPrimitiveArray = true
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
-                fun nullableIfRefType(type: IrType) = if (type.isPrimitiveType()) type else type.makeNullable()
+                fun nullableUnlessPrimitive(type: IrType) = if (isPrimitiveArray && type.isPrimitiveType()) type else type.makeNullable()
 
                 return useArrayType(
                     s,
-                    nullableIfRefType(componentType),
-                    nullableIfRefType(elementType),
+                    nullableUnlessPrimitive(componentType),
+                    nullableUnlessPrimitive(elementType),
                     dimensions
                 )
             }
