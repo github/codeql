@@ -18,6 +18,6 @@ from SensitiveSource data, LocalDatabaseOpenMethodAccess s, Expr input, Expr sto
 where
   input = s.getAnInput() and
   store = s.getAStore() and
-  data.flowsToCached(input)
+  data.flowsTo(input)
 select store, "SQLite database $@ containing $@ is stored $@. Data was added $@.", s, s.toString(),
   data, "sensitive data", store, "here", input, "here"
