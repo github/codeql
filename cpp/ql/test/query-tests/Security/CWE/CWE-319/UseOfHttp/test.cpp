@@ -4,11 +4,11 @@ struct host
 	// ...
 };
 
-host gethostbyname(char *str);
+host gethostbyname(const char *str);
 char *strcpy(char *s1, const char *s2);
 char *strcat(char *s1, const char *s2);
 
-void openUrl(char *url)
+void openUrl(const char *url)
 {
 	// ...
 
@@ -21,7 +21,7 @@ void doNothing(char *url)
 {
 }
 
-char *urls[] = { "http://example.com" };
+const char *url_g = "http://example.com"; // BAD [NOT DETECTED]
 
 void test()
 {
@@ -30,7 +30,15 @@ void test()
 	openUrl("http://localhost/example"); // GOOD (localhost)
 	openUrl("https://localhost/example"); // GOOD (https, localhost)
 	doNothing("http://example.com"); // GOOD (URL not used)
-	openUrl(urls[0]); // BAD [NOT DETECTED]
+
+	{
+		const char *url_l = "http://example.com"; // BAD
+		const char *urls[] = { "http://example.com" }; // BAD
+
+		openUrl(url_g);
+		openUrl(url_l);
+		openUrl(urls[0]);
+	}
 
 	{
 		char buffer[1024];
