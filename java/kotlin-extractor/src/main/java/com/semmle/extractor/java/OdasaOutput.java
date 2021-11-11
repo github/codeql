@@ -276,9 +276,9 @@ public class OdasaOutput {
 			// Only re-write an existing trap file if we encountered a newer version of the same class.
 			TrapClassVersion trapVersion = readVersionInfo(trap);
 			if (!currVersion.isValid()) {
-				log.warn("Not rewriting trap file for: " + sym + " " + trapVersion + " " + currVersion + " " + trap);
+				log.warn("Not rewriting trap file for: " + sym.getName() + " " + trapVersion + " " + currVersion + " " + trap);
 			} else if (currVersion.newerThan(trapVersion)) {
-				log.trace("Rewriting trap file for: " + sym + " " + trapVersion + " " + currVersion + " " + trap);
+				log.trace("Rewriting trap file for: " + sym.getName() + " " + trapVersion + " " + currVersion + " " + trap);
 				deleteTrapFileAndDependencies(sym);
 			} else {
 				return null;
