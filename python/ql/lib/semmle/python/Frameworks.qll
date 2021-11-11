@@ -6,6 +6,7 @@
 // `docs/codeql/support/reusables/frameworks.rst`
 private import semmle.python.frameworks.Aioch
 private import semmle.python.frameworks.Aiohttp
+private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.ClickhouseDriver
