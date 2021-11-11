@@ -16,3 +16,13 @@ abstract class CredentialsExpr extends Expr {
    */
   abstract string getCredentialsKind();
 }
+
+private class CredentialsFromModel extends CredentialsExpr {
+  string kind;
+
+  CredentialsFromModel() {
+    this = ModelOutput::getASinkNode("credentials[" + kind + "]").getARhs().asExpr()
+  }
+
+  override string getCredentialsKind() { result = kind }
+}
