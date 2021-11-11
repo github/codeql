@@ -1,7 +1,7 @@
 /**
  * @name Print AST
  * @description Outputs a representation of the Abstract Syntax Tree.
- * @id csharp/print-ast
+ * @id cs/print-ast
  * @kind graph
  */
 
