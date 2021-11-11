@@ -16,7 +16,7 @@ private module Aiomysql {
 
   /**
    * A `ConectionPool` is created when the result of `aiomysql.create_pool()` is awaited.
-   * See https://aiomysql.readthedocs.io/en/stable/core.html#pool
+   * See https://aiomysql.readthedocs.io/en/stable/pool.html
    */
   API::Node connectionPool() {
     result = API::moduleImport("aiomysql").getMember("create_pool").getReturn().getAwaited()
@@ -26,7 +26,7 @@ private module Aiomysql {
    * A `Connection` is created when
    * - the result of `aiomysql.connect()` is awaited.
    * - the result of calling `aquire` on a `ConnectionPool` is awaited.
-   * See https://aiomysql.readthedocs.io/en/stable/core.html#connection
+   * See https://aiomysql.readthedocs.io/en/stable/connection.html#connection
    */
   API::Node connection() {
     result = API::moduleImport("aiomysql").getMember("connect").getReturn().getAwaited()
@@ -38,7 +38,7 @@ private module Aiomysql {
    * A `Cursor` is created when
    * - the result of calling `cursor` on a `ConnectionPool` is awaited.
    * - the result of calling `cursor` on a `Connection` is awaited.
-   * See https://aiomysql.readthedocs.io/en/stable/core.html#cursor
+   * See https://aiomysql.readthedocs.io/en/stable/cursors.html
    */
   API::Node cursor() {
     result = connectionPool().getMember("cursor").getReturn().getAwaited()
@@ -48,7 +48,7 @@ private module Aiomysql {
 
   /**
    * Calling `execute` on a `Cursor` constructs a query.
-   * See https://aiomysql.readthedocs.io/en/stable/core.html#aiomysql.Cursor.execute
+   * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
   class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
@@ -74,7 +74,7 @@ private module Aiomysql {
 
   /**
    * Awaiting the result of calling `execute` executes the query.
-   * See https://aiomysql.readthedocs.io/en/stable/core.html#aiomysql.Cursor.execute
+   * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
     DataFlow::Node sql;
