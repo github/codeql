@@ -223,7 +223,7 @@ module CallGraph {
   }
 
   /**
-   * Gets a step summary that object literals we permit when tracking object literals.
+   * Gets a step summary for tracking object literals.
    *
    * To avoid false flow from callbacks passed in via "named parameters", we only track object
    * literals out of returns, not into calls.
@@ -236,6 +236,6 @@ module CallGraph {
     shouldTrackObjectLiteral(node) and
     result = node
     or
-    StepSummary::step(getAnObjectLiteralRef(node), result, [objectLiteralStep()])
+    StepSummary::step(getAnObjectLiteralRef(node), result, objectLiteralStep())
   }
 }
