@@ -51,9 +51,15 @@ class HttpStringLiteral extends StringLiteral {
 class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
   HttpStringToUrlOpenConfig() { this = "HttpStringToUrlOpenConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpStringLiteral }
+  override predicate isSource(DataFlow::Node src) {
+    // Sources are strings containing an HTTP URL not in a private domain.
+    src.asExpr() instanceof HttpStringLiteral
+  }
 
   override predicate isSink(DataFlow::Node sink) {
+    // Sinks can be anything that demonstrates the string is likely to be
+    // accessed as a URL, for example using it in a network access. Some
+    // URLs are only ever displayed or used for data processing.
     exists(FunctionCall fc |
       fc.getTarget().hasGlobalOrStdName(["system", "gethostbyname", "getaddrinfo"]) and
       sink.asExpr() = fc.getArgument(0)
