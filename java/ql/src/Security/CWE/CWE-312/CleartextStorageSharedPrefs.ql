@@ -18,6 +18,6 @@ from SensitiveSource data, SharedPreferencesEditorMethodAccess s, Expr input, Ex
 where
   input = s.getAnInput() and
   store = s.getAStore() and
-  data.flowsToCached(input)
+  data.flowsTo(input)
 select store, "'SharedPreferences' class $@ containing $@ is stored $@. Data was added $@.", s,
   s.toString(), data, "sensitive data", store, "here", input, "here"

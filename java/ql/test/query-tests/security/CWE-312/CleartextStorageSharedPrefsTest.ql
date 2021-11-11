@@ -12,7 +12,7 @@ class CleartextStorageSharedPrefsTest extends InlineExpectationsTest {
     exists(SensitiveSource data, SharedPreferencesEditorMethodAccess s, Expr input, Expr store |
       input = s.getAnInput() and
       store = s.getAStore() and
-      data.flowsToCached(input)
+      data.flowsTo(input)
     |
       input.getLocation() = location and
       element = input.toString() and
