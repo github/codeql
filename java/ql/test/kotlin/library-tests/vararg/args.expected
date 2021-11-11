@@ -1,3 +1,4 @@
+| test.kt:12:14:12:31 | listOf(...) | 0 | test.kt:12:21:12:30 | ... |
 | test.kt:13:5:13:34 | funWithOnlyVarArgs(...) | 0 | test.kt:13:24:13:33 | ... |
 | test.kt:14:5:14:50 | funWithArgsAndVarArgs(...) | 0 | test.kt:14:28:14:30 | foo |
 | test.kt:14:5:14:50 | funWithArgsAndVarArgs(...) | 1 | test.kt:14:34:14:37 | true |
