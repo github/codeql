@@ -518,6 +518,8 @@ open class KotlinUsesExtractor(
 
     fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int): TypeResults {
 
+        // TODO: Figure out what signatures should be returned
+
         val componentTypeLabels = useType(componentType)
         val elementTypeLabels = useType(elementType)
 
@@ -654,10 +656,6 @@ class X {
 */
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
-                // TODO: fix this, this is only a dummy implementation to let the tests pass
-                // TODO: Figure out what signatures should be returned
-                // TODO: Generate a short name for array types
-
                 var dimensions = 1
                 val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
                 var elementType = componentType
