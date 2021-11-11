@@ -516,6 +516,57 @@ open class KotlinUsesExtractor(
         return TypeResults(javaResult, kotlinResult)
     }
 
+    fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int): TypeResults {
+
+        val componentTypeLabels = useType(componentType)
+        val elementTypeLabels = useType(elementType)
+
+        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabels.javaResult.id}}\"") {
+            tw.writeArrays(
+                it,
+                shortName(arrayType),
+                elementTypeLabels.javaResult.id,
+                elementTypeLabels.kotlinResult.id,
+                dimensions,
+                componentTypeLabels.javaResult.id,
+                componentTypeLabels.kotlinResult.id)
+
+            extractClassCommon(arrayType.classifier.owner as IrClass, it)
+
+            // array.length
+            val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
+            val intTypeIds = useType(pluginContext.irBuiltIns.intType)
+            tw.writeFields(length, "length", intTypeIds.javaResult.id, intTypeIds.kotlinResult.id, it, length)
+            // TODO: modifiers
+            // tw.writeHasModifier(length, getModifierKey("public"))
+            // tw.writeHasModifier(length, getModifierKey("final"))
+        }
+
+        val javaSignature = "an array" // TODO: Wrong
+        val javaResult = TypeResult(id, javaSignature)
+        // Note the stripping of any type projection from `componentType` here mirrors the action of `IrType.getArrayElementType`,
+        // and is required if we are not to produce different kotlin types for the same Java type (e.g. List[] -> Array<out List> or Array<List>)
+        val owner: IrClass = s.classifier.owner as IrClass
+        val kotlinClassName = getUnquotedClassLabel(owner, listOf(makeTypeProjection(componentType, Variance.INVARIANT)))
+        val kotlinSignature = "$javaSignature?" // TODO: Wrong
+        val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
+        val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
+            tw.writeKt_nullable_types(it, id)
+        })
+        val kotlinResult = TypeResult(kotlinId, kotlinSignature)
+
+        /*
+        TODO
+        tw.getLabelFor<DbMethod>("@\"callable;{$id}.clone(){$id}\"") {
+            tw.writeMethods(it, "clone", "clone()", javaResult.id, kotlinResult.id, javaResult.id, it)
+            // TODO: modifiers
+            // tw.writeHasModifier(clone, getModifierKey("public"))
+        }
+        */
+
+        return TypeResults(javaResult, kotlinResult)
+    }
+
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
@@ -615,55 +666,14 @@ class X {
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
-                val componentTypeLabel = useType(componentType)
-                val elementTypeLabel = useType(elementType)
+                fun nullableIfRefType(type: IrType) = if (type.isPrimitiveType()) type else type.makeNullable()
 
-                fun kotlinLabelOfJavaType(type: IrType, typeLabel: Label<out DbKt_type>) =
-                    if (type.isPrimitiveType())
-                        // Java lowering distinguishes nullable and non-nullable, so keep the existing label
-                        typeLabel
-                    else
-                        // Java lowering always concerns the nullable type, so get the nullable equivalent
-                        useType(type.makeNullable()).kotlinResult.id
-
-                val kotlinComponentTypeLabel = kotlinLabelOfJavaType(componentType, componentTypeLabel.kotlinResult.id)
-                val kotlinElementTypeLabel = kotlinLabelOfJavaType(elementType, elementTypeLabel.kotlinResult.id)
-
-                val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel.javaResult.id}}\"") {
-                    tw.writeArrays(it, shortName(s), elementTypeLabel.javaResult.id, kotlinElementTypeLabel, dimensions, componentTypeLabel.javaResult.id, kotlinComponentTypeLabel)
-
-                    extractClassCommon(s.classifier.owner as IrClass, it)
-
-                    // array.length
-                    val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
-                    val intTypeIds = useType(pluginContext.irBuiltIns.intType)
-                    tw.writeFields(length, "length", intTypeIds.javaResult.id, intTypeIds.kotlinResult.id, it, length)
-                    // TODO: modifiers
-                    // tw.writeHasModifier(length, getModifierKey("public"))
-                    // tw.writeHasModifier(length, getModifierKey("final"))
-                }
-
-                val javaSignature = "an array" // TODO: Wrong
-                val javaResult = TypeResult(id, javaSignature)
-                val owner: IrClass = s.classifier.owner as IrClass
-                val kotlinClassName = getUnquotedClassLabel(owner, listOf(makeTypeProjection(componentType, Variance.INVARIANT)))
-                val kotlinSignature = "$javaSignature?" // TODO: Wrong
-                val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
-                val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-                    tw.writeKt_nullable_types(it, id)
-                })
-                val kotlinResult = TypeResult(kotlinId, kotlinSignature)
-
-                /*
-                TODO
-                tw.getLabelFor<DbMethod>("@\"callable;{$id}.clone(){$id}\"") {
-                    tw.writeMethods(it, "clone", "clone()", javaResult.id, kotlinResult.id, javaResult.id, it)
-                    // TODO: modifiers
-                    // tw.writeHasModifier(clone, getModifierKey("public"))
-                }
-                */
-
-                return TypeResults(javaResult, kotlinResult)
+                return useArrayType(
+                    s,
+                    nullableIfRefType(componentType),
+                    nullableIfRefType(elementType),
+                    dimensions
+                )
             }
 
             s.classifier.owner is IrClass -> {
