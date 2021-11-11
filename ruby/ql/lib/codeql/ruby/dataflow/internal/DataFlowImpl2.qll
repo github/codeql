@@ -3788,7 +3788,11 @@ private module Subpaths {
   private PathNodeImpl localStepToHidden(PathNodeImpl n) {
     n.getASuccessorImpl() = result and
     result.isHidden() and
-    localFlowBigStep(n.getNodeEx(), result.getNodeEx(), _, _, _, _)
+    exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
+      localFlowBigStep(n1, n2, _, _, _, _) or
+      store(n1, _, n2, _, _) or
+      read(n1, _, n2, _)
+    )
   }
 
   /**
