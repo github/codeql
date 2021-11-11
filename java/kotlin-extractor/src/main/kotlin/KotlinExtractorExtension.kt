@@ -548,7 +548,7 @@ open class KotlinUsesExtractor(
         val javaResult = TypeResult(id, javaSignature)
         // Note the stripping of any type projection from `componentType` here mirrors the action of `IrType.getArrayElementType`,
         // and is required if we are not to produce different kotlin types for the same Java type (e.g. List[] -> Array<out List> or Array<List>)
-        val owner: IrClass = s.classifier.owner as IrClass
+        val owner: IrClass = arrayType.classifier.owner as IrClass
         val kotlinClassName = getUnquotedClassLabel(owner, listOf(makeTypeProjection(componentType, Variance.INVARIANT)))
         val kotlinSignature = "$javaSignature?" // TODO: Wrong
         val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
