@@ -277,7 +277,7 @@ class FormattingFunctionCall extends Expr {
  */
 bindingset[f]
 private int lengthInBase10(float f) {
-  f = 0 and result = 0
+  f = 0 and result = 1
   or
   result = f.log10().ceil()
 }
