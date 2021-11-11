@@ -550,7 +550,10 @@ private class EffectivelyPlus extends RegExpTerm {
   EffectivelyPlus() {
     this instanceof RegExpPlus
     or
-    exists(RegExpRange range | range.getLowerBound() = 1 and range.getUpperBound() >= 30 |
+    exists(RegExpRange range |
+      range.getLowerBound() = 1 and
+      (range.getUpperBound() >= 30 or not exists(range.getUpperBound()))
+    |
       this = range
     )
   }
@@ -564,7 +567,10 @@ private class EffectivelyStar extends RegExpTerm {
   EffectivelyStar() {
     this instanceof RegExpStar
     or
-    exists(RegExpRange range | range.getLowerBound() = 0 and range.getUpperBound() >= 30 |
+    exists(RegExpRange range |
+      range.getLowerBound() = 0 and
+      (range.getUpperBound() >= 30 or not exists(range.getUpperBound()))
+    |
       this = range
     )
   }

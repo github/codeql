@@ -70,6 +70,8 @@
 | regexplib/strings.js:19:31:19:57 | [a-z&#230;&#248;&#229;0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '#@' and containing many repetitions of '#'. |
 | regexplib/strings.js:19:69:19:95 | [a-z&#230;&#248;&#229;0-9]+ | This part of the regular expression may cause exponential backtracking on strings starting with '#@#' and containing many repetitions of '##'. |
 | regexplib/strings.js:47:3:47:5 | \\S* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '!'. |
+| regexplib/strings.js:53:4:53:12 | [a-z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '00.'. |
+| regexplib/strings.js:53:14:53:24 | [\\-a-z0-9]* | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '00.0'. |
 | regexplib/strings.js:57:17:57:19 | \\d+ | This part of the regular expression may cause exponential backtracking on strings starting with '?se[' and containing many repetitions of '9'. |
 | regexplib/strings.js:81:17:81:19 | \\d+ | This part of the regular expression may cause exponential backtracking on strings starting with '?se[' and containing many repetitions of '9'. |
 | regexplib/strings.js:91:3:91:5 | \\S* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '!'. |
@@ -196,3 +198,4 @@
 | tst.js:400:6:401:1 | (e\|ee)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ee'. |
 | tst.js:404:6:405:7 | (g\|gg)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'gg'. |
 | tst.js:407:125:407:127 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with '0/*' and containing many repetitions of ' ;0'. |
+| tst.js:411:15:411:19 | a{1,} | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
