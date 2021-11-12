@@ -15,6 +15,8 @@ javac = 'javac'
 def compile_to_dir(srcs, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
     subprocess.run([kotlinc,
+                    # kotlinc can default to 256M, which isn't enough when we are extracting the build
+                    '-J-Xmx2G',
                     '-d', output,
                     '-module-name', 'codeql-kotlin-extractor',
                     '-no-reflect',
