@@ -512,10 +512,8 @@ arrays(
   unique int id: @array,
   string nodeName: string ref,
   int elementtypeid: @type ref,
-  int elementkttypeid: @kt_type ref,
   int dimension: int ref,
-  int componenttypeid: @type ref,
-  int componentkttypeid: @kt_type ref
+  int componenttypeid: @type ref
 );
 
 enclInReftype(

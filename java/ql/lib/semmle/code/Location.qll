@@ -40,7 +40,7 @@ predicate hasName(Element e, string name) {
   or
   wildcards(e, name, _)
   or
-  arrays(e, name, _, _, _, _, _)
+  arrays(e, name, _, _, _)
   or
   modifiers(e, name)
   or

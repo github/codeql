@@ -25,6 +25,7 @@ import java.util.zip.GZIPOutputStream
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.extractor.java.OdasaOutput.TrapFileManager
 import com.semmle.util.files.FileUtil
+import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import kotlin.system.exitProcess
@@ -372,6 +373,8 @@ open class KotlinUsesExtractor(
                d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
     }
 
+    fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
+
     fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
             extractExternalClassLater(c)
@@ -410,7 +413,7 @@ open class KotlinUsesExtractor(
                         else
                             primitiveInfo.primitiveName
 
-                    type.isBoxedArray || type.isPrimitiveArray() -> {
+                    isArray(type) -> {
                         val elementType = type.getArrayElementType(pluginContext.irBuiltIns)
                         val javaElementType = if (type.isPrimitiveArray()) elementType else elementType.makeNullable()
                         shortName(javaElementType) + "[]"
@@ -520,22 +523,52 @@ open class KotlinUsesExtractor(
         return TypeResults(javaResult, kotlinResult)
     }
 
-    fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int): TypeResults {
+    // Given either a primitive array or a boxed array, returns primitive arrays unchanged,
+    // but returns boxed arrays with a nullable, invariant component type, with any nested arrays
+    // similarly transformed. For example, Array<out Array<in E>> would become Array<Array<E?>?>
+    // Array<*> will become Array<Any?>.
+    fun getInvariantNullableArrayType(arrayType: IrSimpleType): IrSimpleType =
+        if (arrayType.isPrimitiveArray())
+            arrayType
+        else {
+            val componentType = arrayType.getArrayElementType(pluginContext.irBuiltIns)
+            val componentTypeBroadened = when (componentType) {
+                is IrSimpleType ->
+                    if (isArray(componentType)) getInvariantNullableArrayType(componentType) else componentType
+                else -> componentType
+            }
+            val unchanged =
+                componentType == componentTypeBroadened &&
+                        (arrayType.arguments[0] as? IrTypeProjection)?.variance == Variance.INVARIANT &&
+                        componentType.isNullable()
+            if (unchanged)
+                arrayType
+            else
+                IrSimpleTypeImpl(
+                    arrayType.classifier,
+                    true,
+                    listOf(makeTypeProjection(componentTypeBroadened, Variance.INVARIANT)),
+                    listOf()
+                )
+        }
+
+    fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
+
+        // Ensure we extract Array<Int> as Integer[], not int[], for example:
+        fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
 
         // TODO: Figure out what signatures should be returned
 
-        val componentTypeLabels = useType(componentType)
-        val elementTypeLabels = useType(elementType)
+        val componentTypeLabel = useType(nullableIfNotPrimitive(componentType)).javaResult.id
+        val elementTypeLabel = useType(nullableIfNotPrimitive(elementType)).javaResult.id
 
-        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabels.javaResult.id}}\"") {
+        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
             tw.writeArrays(
                 it,
                 shortName(arrayType),
-                elementTypeLabels.javaResult.id,
-                elementTypeLabels.kotlinResult.id,
+                elementTypeLabel,
                 dimensions,
-                componentTypeLabels.javaResult.id,
-                componentTypeLabels.kotlinResult.id)
+                componentTypeLabel)
 
             extractClassCommon(arrayType.classifier.owner as IrClass, it)
 
@@ -546,29 +579,23 @@ open class KotlinUsesExtractor(
             // TODO: modifiers
             // tw.writeHasModifier(length, getModifierKey("public"))
             // tw.writeHasModifier(length, getModifierKey("final"))
-        }
 
-        val javaSignature = "an array" // TODO: Wrong
-        val javaResult = TypeResult(id, javaSignature)
-        // Note the stripping of any type projection from `componentType` here mirrors the action of `IrType.getArrayElementType`,
-        // and is required if we are not to produce different kotlin types for the same Java type (e.g. List[] -> Array<out List> or Array<List>)
-        val owner: IrClass = arrayType.classifier.owner as IrClass
-        val kotlinTypeArgs = if (arrayType.arguments.isEmpty()) listOf() else listOf(makeTypeProjection(componentType, Variance.INVARIANT))
-        val kotlinClassName = getUnquotedClassLabel(owner, kotlinTypeArgs)
-        val kotlinSignature = "$javaSignature?" // TODO: Wrong
-        val kotlinLabel = "@\"kt_type;nullable;${kotlinClassName}\""
-        val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
-            tw.writeKt_nullable_types(it, id)
-        })
-        val kotlinResult = TypeResult(kotlinId, kotlinSignature)
+            // Note we will only emit one `clone()` method per Java array type, so we choose `Array<C?>` as its Kotlin
+            // return type, where C is the component type with any nested arrays themselves invariant and nullable.
+            val kotlinCloneReturnType = getInvariantNullableArrayType(arrayType).makeNullable()
+            val kotlinCloneReturnTypeLabel = useType(kotlinCloneReturnType).kotlinResult.id
 
-        tw.getLabelFor<DbMethod>("@\"callable;{$id}.clone(){$id}\"") {
-            tw.writeMethods(it, "clone", "clone()", javaResult.id, kotlinResult.id, javaResult.id, it)
+            val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
+            tw.writeMethods(clone, "clone", "clone()", it, kotlinCloneReturnTypeLabel, it, clone)
             // TODO: modifiers
             // tw.writeHasModifier(clone, getModifierKey("public"))
         }
 
-        return TypeResults(javaResult, kotlinResult)
+        val javaSignature = "an array" // TODO: Wrong
+        val javaResult = TypeResult(id, javaSignature)
+
+        val arrayClassResult = useSimpleTypeClass(arrayType.classifier.owner as IrClass, arrayType.arguments, arrayType.hasQuestionMark)
+        return TypeResults(javaResult, arrayClassResult.kotlinResult)
     }
 
     fun useSimpleType(s: IrSimpleType, canReturnPrimitiveTypes: Boolean): TypeResults {
@@ -669,13 +696,12 @@ class X {
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
-                fun nullableUnlessPrimitive(type: IrType) = if (isPrimitiveArray && type.isPrimitiveType()) type else type.makeNullable()
-
                 return useArrayType(
                     s,
-                    nullableUnlessPrimitive(componentType),
-                    nullableUnlessPrimitive(elementType),
-                    dimensions
+                    componentType,
+                    elementType,
+                    dimensions,
+                    isPrimitiveArray
                 )
             }
 

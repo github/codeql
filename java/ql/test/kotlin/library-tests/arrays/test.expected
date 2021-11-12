@@ -1,6 +1,6 @@
-| primitiveArrays.kt:5:12:5:24 | a | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Kotlin nullable Integer | file://:0:0:0:0 | Kotlin nullable Integer |
-| primitiveArrays.kt:5:27:5:40 | b | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Kotlin nullable Integer | file://:0:0:0:0 | Kotlin nullable Integer |
-| primitiveArrays.kt:5:43:5:53 | c | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int | file://:0:0:0:0 | int | file://:0:0:0:0 | Kotlin not-null Integer | file://:0:0:0:0 | Kotlin not-null Integer |
-| primitiveArrays.kt:5:56:5:76 | d | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Kotlin nullable Integer[] | file://:0:0:0:0 | Kotlin nullable Integer |
-| primitiveArrays.kt:5:79:5:98 | e | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Kotlin nullable Integer[] | file://:0:0:0:0 | Kotlin nullable Integer |
-| primitiveArrays.kt:5:101:5:118 | f | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int | file://:0:0:0:0 | Kotlin nullable int[] | file://:0:0:0:0 | Kotlin not-null Integer |
+| primitiveArrays.kt:5:12:5:24 | a | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Integer |
+| primitiveArrays.kt:5:27:5:40 | b | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer | file://:0:0:0:0 | Integer |
+| primitiveArrays.kt:5:43:5:53 | c | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| primitiveArrays.kt:5:56:5:76 | d | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer |
+| primitiveArrays.kt:5:79:5:98 | e | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Integer[] | file://:0:0:0:0 | Integer |
+| primitiveArrays.kt:5:101:5:118 | f | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int |
