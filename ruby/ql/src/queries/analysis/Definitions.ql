@@ -65,6 +65,13 @@ newtype DefLoc =
     not exists(MethodBase m | m.getAChild+() = write)
   }
 
+pragma[noinline]
+ConstantWriteAccess definitionOf0(string fqn) {
+  fqn = resolveConstant(_) and
+  result =
+    min(ConstantWriteAccess w | w.getQualifiedName() = fqn | w order by w.getLocation().toString())
+}
+
 /**
  * Gets the constant write that defines the given constant.
  *  Modules often don't have a unique definition, as they are opened multiple times in different
@@ -72,10 +79,5 @@ newtype DefLoc =
  *  location.
  */
 ConstantWriteAccess definitionOf(ConstantReadAccess r) {
-  result =
-    min(ConstantWriteAccess w |
-      w.getQualifiedName() = resolveConstant(r)
-    |
-      w order by w.getLocation().toString()
-    )
+  result = definitionOf0(resolveConstant(r))
 }
