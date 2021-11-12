@@ -397,7 +397,7 @@ class RegExp extends AST::RegExpLiteral {
       end = start + 2 and
       this.escapingChar(start) and
       char = this.getText().substring(start, end) and
-      char = ["\\A", "\\Z", "\\z"]
+      char = ["\\A", "\\Z", "\\z", "\\G", "\\b", "\\B"]
     )
   }
 

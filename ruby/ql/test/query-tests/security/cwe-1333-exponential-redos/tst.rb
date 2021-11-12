@@ -370,3 +370,8 @@ bad87 = /^X(\u0061|a)*Y$/
 
 # GOOD
 good43 = /^X(\u0061|b)+Y$/
+
+# NOT GOOD
+bad88 = /\G(a|\w)*$/
+bad89 = /\b(a|\w)*$/
+

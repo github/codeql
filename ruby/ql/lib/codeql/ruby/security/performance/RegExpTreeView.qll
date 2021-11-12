@@ -441,8 +441,8 @@ private int toHex(string hex) {
 /**
  * A word boundary, that is, a regular expression term of the form `\b`.
  */
-class RegExpWordBoundary extends RegExpEscape {
-  RegExpWordBoundary() { this.getUnescaped() = "b" }
+class RegExpWordBoundary extends RegExpSpecialChar {
+  RegExpWordBoundary() { this.getChar() = "\\b" }
 }
 
 /**
