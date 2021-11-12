@@ -1,7 +1,21 @@
 | file://:0:0:0:0 | ? | Wildcard |
+| file://:0:0:0:0 | ? extends A | Wildcard |
+| file://:0:0:0:0 | ? extends A | Wildcard |
+| file://:0:0:0:0 | ? extends A | Wildcard |
+| file://:0:0:0:0 | ? extends A | Wildcard |
+| file://:0:0:0:0 | ? extends A | Wildcard |
+| file://:0:0:0:0 | ? extends AccessMode | Wildcard |
+| file://:0:0:0:0 | ? extends AccessibleObject | Wildcard |
+| file://:0:0:0:0 | ? extends AnnotatedType | Wildcard |
 | file://:0:0:0:0 | ? extends Annotation | Wildcard |
+| file://:0:0:0:0 | ? extends Annotation[] | Wildcard |
 | file://:0:0:0:0 | ? extends Attribute | Wildcard |
+| file://:0:0:0:0 | ? extends Attribute | Wildcard |
+| file://:0:0:0:0 | ? extends AttributedCharacterIterator | Wildcard |
+| file://:0:0:0:0 | ? extends BasicType | Wildcard |
+| file://:0:0:0:0 | ? extends BigInteger | Wildcard |
 | file://:0:0:0:0 | ? extends BoundMethodHandle | Wildcard |
+| file://:0:0:0:0 | ? extends ByteBuffer | Wildcard |
 | file://:0:0:0:0 | ? extends Callable<T> | Wildcard |
 | file://:0:0:0:0 | ? extends Callable<T> | Wildcard |
 | file://:0:0:0:0 | ? extends Callable<T> | Wildcard |
@@ -16,19 +30,46 @@
 | file://:0:0:0:0 | ? extends Callable<T> | Wildcard |
 | file://:0:0:0:0 | ? extends Callable<T> | Wildcard |
 | file://:0:0:0:0 | ? extends Certificate | Wildcard |
+| file://:0:0:0:0 | ? extends CharSequence | Wildcard |
+| file://:0:0:0:0 | ? extends Characteristics | Wildcard |
 | file://:0:0:0:0 | ? extends ChronoLocalDate | Wildcard |
+| file://:0:0:0:0 | ? extends Class<?> | Wildcard |
+| file://:0:0:0:0 | ? extends Class<Object> | Wildcard |
+| file://:0:0:0:0 | ? extends ClassDataSlot | Wildcard |
+| file://:0:0:0:0 | ? extends ClassTypeSignature | Wildcard |
+| file://:0:0:0:0 | ? extends CodeSigner | Wildcard |
+| file://:0:0:0:0 | ? extends Constructor<?> | Wildcard |
+| file://:0:0:0:0 | ? extends CopyOption | Wildcard |
+| file://:0:0:0:0 | ? extends DateTimePrinterParser | Wildcard |
 | file://:0:0:0:0 | ? extends DoubleStream | Wildcard |
 | file://:0:0:0:0 | ? extends E | Wildcard |
 | file://:0:0:0:0 | ? extends E | Wildcard |
 | file://:0:0:0:0 | ? extends E | Wildcard |
 | file://:0:0:0:0 | ? extends E | Wildcard |
 | file://:0:0:0:0 | ? extends E | Wildcard |
+| file://:0:0:0:0 | ? extends E | Wildcard |
+| file://:0:0:0:0 | ? extends E | Wildcard |
+| file://:0:0:0:0 | ? extends E | Wildcard |
+| file://:0:0:0:0 | ? extends Entry<? extends K,? extends V> | Wildcard |
+| file://:0:0:0:0 | ? extends Entry<?,?> | Wildcard |
 | file://:0:0:0:0 | ? extends Entry<?> | Wildcard |
+| file://:0:0:0:0 | ? extends Entry<Identity,Entry<?>> | Wildcard |
 | file://:0:0:0:0 | ? extends Entry<K,V> | Wildcard |
 | file://:0:0:0:0 | ? extends Entry<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Entry<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Enum<?> | Wildcard |
+| file://:0:0:0:0 | ? extends ExceptionNode | Wildcard |
+| file://:0:0:0:0 | ? extends Field | Wildcard |
+| file://:0:0:0:0 | ? extends FieldTypeSignature | Wildcard |
+| file://:0:0:0:0 | ? extends File | Wildcard |
+| file://:0:0:0:0 | ? extends FileAttribute<?> | Wildcard |
 | file://:0:0:0:0 | ? extends FileAttributeView | Wildcard |
+| file://:0:0:0:0 | ? extends ForkJoinTask<?> | Wildcard |
+| file://:0:0:0:0 | ? extends FormalTypeParameter | Wildcard |
 | file://:0:0:0:0 | ? extends Identity | Wildcard |
+| file://:0:0:0:0 | ? extends InetAddress | Wildcard |
 | file://:0:0:0:0 | ? extends IntStream | Wildcard |
+| file://:0:0:0:0 | ? extends Item | Wildcard |
 | file://:0:0:0:0 | ? extends K | Wildcard |
 | file://:0:0:0:0 | ? extends K | Wildcard |
 | file://:0:0:0:0 | ? extends K | Wildcard |
@@ -42,17 +83,86 @@
 | file://:0:0:0:0 | ? extends K | Wildcard |
 | file://:0:0:0:0 | ? extends K | Wildcard |
 | file://:0:0:0:0 | ? extends K | Wildcard |
+| file://:0:0:0:0 | ? extends Kind<?> | Wildcard |
+| file://:0:0:0:0 | ? extends Label | Wildcard |
+| file://:0:0:0:0 | ? extends LinkOption | Wildcard |
+| file://:0:0:0:0 | ? extends Locale | Wildcard |
 | file://:0:0:0:0 | ? extends LongStream | Wildcard |
+| file://:0:0:0:0 | ? extends MemberName | Wildcard |
+| file://:0:0:0:0 | ? extends Method | Wildcard |
+| file://:0:0:0:0 | ? extends MethodHandle | Wildcard |
+| file://:0:0:0:0 | ? extends MethodHandle[] | Wildcard |
+| file://:0:0:0:0 | ? extends MethodType | Wildcard |
+| file://:0:0:0:0 | ? extends Modifier | Wildcard |
+| file://:0:0:0:0 | ? extends ModuleFinder | Wildcard |
+| file://:0:0:0:0 | ? extends Name | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
+| file://:0:0:0:0 | ? extends Node<K,V> | Wildcard |
 | file://:0:0:0:0 | ? extends Object | Wildcard |
+| file://:0:0:0:0 | ? extends ObjectStreamField | Wildcard |
 | file://:0:0:0:0 | ? extends OpenOption | Wildcard |
 | file://:0:0:0:0 | ? extends Optional<? extends T> | Wildcard |
 | file://:0:0:0:0 | ? extends Optional<? extends U> | Wildcard |
+| file://:0:0:0:0 | ? extends Package | Wildcard |
+| file://:0:0:0:0 | ? extends Parameter | Wildcard |
+| file://:0:0:0:0 | ? extends Path | Wildcard |
+| file://:0:0:0:0 | ? extends Permission | Wildcard |
 | file://:0:0:0:0 | ? extends Principal | Wildcard |
+| file://:0:0:0:0 | ? extends ProtectionDomain | Wildcard |
 | file://:0:0:0:0 | ? extends R | Wildcard |
 | file://:0:0:0:0 | ? extends R | Wildcard |
 | file://:0:0:0:0 | ? extends S | Wildcard |
 | file://:0:0:0:0 | ? extends S | Wildcard |
+| file://:0:0:0:0 | ? extends SoftReference<LambdaForm> | Wildcard |
+| file://:0:0:0:0 | ? extends SoftReference<MethodHandle> | Wildcard |
+| file://:0:0:0:0 | ? extends StackTraceElement | Wildcard |
+| file://:0:0:0:0 | ? extends StackTraceElement[] | Wildcard |
 | file://:0:0:0:0 | ? extends Stream<? extends R> | Wildcard |
+| file://:0:0:0:0 | ? extends String | Wildcard |
 | file://:0:0:0:0 | ? extends T | Wildcard |
 | file://:0:0:0:0 | ? extends T | Wildcard |
 | file://:0:0:0:0 | ? extends T | Wildcard |
@@ -101,7 +211,79 @@
 | file://:0:0:0:0 | ? extends T | Wildcard |
 | file://:0:0:0:0 | ? extends T | Wildcard |
 | file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends T | Wildcard |
+| file://:0:0:0:0 | ? extends TemporalField | Wildcard |
+| file://:0:0:0:0 | ? extends TemporalQuery<?> | Wildcard |
+| file://:0:0:0:0 | ? extends Thread | Wildcard |
+| file://:0:0:0:0 | ? extends ThreadGroup | Wildcard |
 | file://:0:0:0:0 | ? extends Throwable | Wildcard |
+| file://:0:0:0:0 | ? extends Type | Wildcard |
+| file://:0:0:0:0 | ? extends Type | Wildcard |
+| file://:0:0:0:0 | ? extends TypeArgument | Wildcard |
+| file://:0:0:0:0 | ? extends TypeSignature | Wildcard |
+| file://:0:0:0:0 | ? extends TypeVariable<?> | Wildcard |
+| file://:0:0:0:0 | ? extends TypeVariable<Class<T>> | Wildcard |
+| file://:0:0:0:0 | ? extends TypeVariable<Constructor<T>> | Wildcard |
+| file://:0:0:0:0 | ? extends TypeVariable<Method> | Wildcard |
 | file://:0:0:0:0 | ? extends U | Wildcard |
 | file://:0:0:0:0 | ? extends U | Wildcard |
 | file://:0:0:0:0 | ? extends U | Wildcard |
@@ -154,6 +336,7 @@
 | file://:0:0:0:0 | ? extends V | Wildcard |
 | file://:0:0:0:0 | ? extends V | Wildcard |
 | file://:0:0:0:0 | ? extends WeakReference<Class<?>> | Wildcard |
+| file://:0:0:0:0 | ? extends WorkQueue | Wildcard |
 | file://:0:0:0:0 | ? extends X | Wildcard |
 | file://:0:0:0:0 | ? extends X | Wildcard |
 | file://:0:0:0:0 | ? extends X | Wildcard |
@@ -162,6 +345,8 @@
 | file://:0:0:0:0 | ? super A | Wildcard |
 | file://:0:0:0:0 | ? super A | Wildcard |
 | file://:0:0:0:0 | ? super A | Wildcard |
+| file://:0:0:0:0 | ? super Boolean | Wildcard |
+| file://:0:0:0:0 | ? super Byte | Wildcard |
 | file://:0:0:0:0 | ? super Character | Wildcard |
 | file://:0:0:0:0 | ? super Class<?> | Wildcard |
 | file://:0:0:0:0 | ? super Cleaner | Wildcard |
@@ -192,6 +377,7 @@
 | file://:0:0:0:0 | ? super Entry<K,V> | Wildcard |
 | file://:0:0:0:0 | ? super Entry<K,V> | Wildcard |
 | file://:0:0:0:0 | ? super Entry<K,V> | Wildcard |
+| file://:0:0:0:0 | ? super Float | Wildcard |
 | file://:0:0:0:0 | ? super ForkJoinPool | Wildcard |
 | file://:0:0:0:0 | ? super ForkJoinTask<?> | Wildcard |
 | file://:0:0:0:0 | ? super Identity | Wildcard |
@@ -231,6 +417,7 @@
 | file://:0:0:0:0 | ? super R | Wildcard |
 | file://:0:0:0:0 | ? super R | Wildcard |
 | file://:0:0:0:0 | ? super Reference<? extends T> | Wildcard |
+| file://:0:0:0:0 | ? super Short | Wildcard |
 | file://:0:0:0:0 | ? super StackFrame | Wildcard |
 | file://:0:0:0:0 | ? super Stream<StackFrame> | Wildcard |
 | file://:0:0:0:0 | ? super T | Wildcard |
@@ -390,6 +577,435 @@
 | file://:0:0:0:0 | Annotation[][] | Array |
 | file://:0:0:0:0 | Any | Class |
 | file://:0:0:0:0 | Appendable | Interface |
+| file://:0:0:0:0 | Array | Class, GenericType, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends AccessMode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends AccessibleObject> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends AnnotatedType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Annotation> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Annotation[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Attribute> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends AttributedCharacterIterator> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends BasicType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends BigInteger> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ByteBuffer> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Certificate> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends CharSequence> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Characteristics> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Class<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Class<Object>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ClassDataSlot> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ClassTypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends CodeSigner> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Constructor<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends CopyOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends DateTimePrinterParser> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Entry<? extends K,? extends V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Entry<?,?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Entry<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Entry<Identity,Entry<?>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Entry<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Enum<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ExceptionNode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Field> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends FieldTypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends File> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends FileAttribute<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ForkJoinTask<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends FormalTypeParameter> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends InetAddress> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Item> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Kind<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Label> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends LinkOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Locale> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends MemberName> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Method> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends MethodHandle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends MethodHandle[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends MethodType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ModuleFinder> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Name> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Object> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ObjectStreamField> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends OpenOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Package> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Parameter> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Path> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Permission> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Principal> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ProtectionDomain> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends SoftReference<LambdaForm>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends SoftReference<MethodHandle>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends StackTraceElement> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends StackTraceElement[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends String> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TemporalField> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TemporalQuery<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Thread> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends ThreadGroup> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Throwable> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Type> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends Type> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeArgument> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeVariable<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeVariable<Class<T>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeVariable<Constructor<T>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends TypeVariable<Method>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<? extends WorkQueue> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<A> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AccessMode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AccessMode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AccessType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AccessibleObject> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AnnotatedType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Annotation> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Annotation[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ArrayAccess> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Attribute> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<AttributedCharacterIterator> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<BasicType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<BigInteger> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ByteBuffer> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Category> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Certificate> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<CharSequence> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Characteristics> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ChronoField> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ChronoUnit> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Class<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Class<Object>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Class> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ClassDataSlot> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ClassTypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<CodeSigner> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Constructor<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Constructor> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<CopyOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<DateTimePrinterParser> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<DayOfWeek> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<E> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry<? extends K,? extends V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry<?,?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry<Identity,Entry<?>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Entry> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Enum<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Enum> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ExceptionNode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ExtendedOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Field> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FieldTypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<File> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FileAttribute<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FileAttribute> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FilteringMode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ForkJoinTask<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ForkJoinTask> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FormalTypeParameter> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<FormatStyle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<InetAddress> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Intrinsic> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<IsoCountryCode> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<IsoEra> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Item> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Kind<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Kind> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Kind> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Label> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Level> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<LinkOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Locale> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<MemberName> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Method> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<MethodHandle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<MethodHandle[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<MethodType> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Modifier> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ModuleFinder> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Month> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Name> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node<K,V>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Node> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Object> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ObjectStreamField> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<OpenOption> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Option> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Package> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Parameter> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Path> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Permission> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Principal> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ProtectionDomain> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ResolverStyle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<RetentionPolicy> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<SettingsParser> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<SignStyle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<SoftReference<LambdaForm>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<SoftReference<MethodHandle>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<StackTraceElement> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<StackTraceElement[]> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<State> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Status> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<String> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<T> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Tag> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TemporalField> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TemporalQuery<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TemporalQuery> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TextStyle> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Thread> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<ThreadGroup> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Throwable> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TimeDefinition> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TimeUnit> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Type> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Type> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Type> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeArgument> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeSignature> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeVariable<?>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeVariable<Class<T>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeVariable<Constructor<T>>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeVariable<Method>> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<TypeVariable> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<UnicodeScript> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<WorkQueue> | Class, ParameterizedType |
+| file://:0:0:0:0 | Array<Wrapper> | Class, ParameterizedType |
 | file://:0:0:0:0 | ArrayAccess | Class |
 | file://:0:0:0:0 | ArrayAccess[] | Array |
 | file://:0:0:0:0 | ArrayAccessor | Class |
@@ -513,7 +1129,9 @@
 | file://:0:0:0:0 | BinaryOperator<V> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Boolean | Class |
 | file://:0:0:0:0 | Boolean | Class |
+| file://:0:0:0:0 | BooleanArray | Class |
 | file://:0:0:0:0 | BooleanCompanionObject | Class |
+| file://:0:0:0:0 | BooleanIterator | Class |
 | file://:0:0:0:0 | BooleanSignature | Class |
 | file://:0:0:0:0 | BottomSignature | Class |
 | file://:0:0:0:0 | BoundMethodHandle | Class |
@@ -593,10 +1211,12 @@
 | file://:0:0:0:0 | BulkTask<K,V,Void> | Class, ParameterizedType |
 | file://:0:0:0:0 | Byte | Class |
 | file://:0:0:0:0 | Byte | Class |
+| file://:0:0:0:0 | ByteArray | Class |
 | file://:0:0:0:0 | ByteBuffer | Class |
 | file://:0:0:0:0 | ByteBuffer[] | Array |
 | file://:0:0:0:0 | ByteChannel | Interface |
 | file://:0:0:0:0 | ByteCompanionObject | Class |
+| file://:0:0:0:0 | ByteIterator | Class |
 | file://:0:0:0:0 | ByteOrder | Class |
 | file://:0:0:0:0 | ByteSignature | Class |
 | file://:0:0:0:0 | ByteVector | Class |
@@ -670,6 +1290,7 @@
 | file://:0:0:0:0 | Certificate[] | Array |
 | file://:0:0:0:0 | Channel | Interface |
 | file://:0:0:0:0 | Char | Class |
+| file://:0:0:0:0 | CharArray | Class |
 | file://:0:0:0:0 | CharBuffer | Class |
 | file://:0:0:0:0 | CharCompanionObject | Class |
 | file://:0:0:0:0 | CharIterator | Class |
@@ -1147,6 +1768,8 @@
 | file://:0:0:0:0 | ConstructorRepository | Class |
 | file://:0:0:0:0 | Constructor[] | Array |
 | file://:0:0:0:0 | Consumer | GenericType, Interface, ParameterizedType |
+| file://:0:0:0:0 | Consumer<? super Boolean> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Consumer<? super Byte> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Character> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Double> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super E> | Interface, ParameterizedType |
@@ -1174,6 +1797,7 @@
 | file://:0:0:0:0 | Consumer<? super Entry<K,V>> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Entry<K,V>> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Entry<K,V>> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Consumer<? super Float> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Integer> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super K> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super K> | Interface, ParameterizedType |
@@ -1184,6 +1808,7 @@
 | file://:0:0:0:0 | Consumer<? super Long> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Path> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super Reference<? extends T>> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Consumer<? super Short> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super StackFrame> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Consumer<? super T> | Interface, ParameterizedType |
@@ -1256,6 +1881,7 @@
 | file://:0:0:0:0 | DomainCombiner | Interface |
 | file://:0:0:0:0 | Double | Class |
 | file://:0:0:0:0 | Double | Class |
+| file://:0:0:0:0 | DoubleArray | Class |
 | file://:0:0:0:0 | DoubleBinaryOperator | Interface |
 | file://:0:0:0:0 | DoubleBuffer | Class |
 | file://:0:0:0:0 | DoubleCompanionObject | Class |
@@ -1263,6 +1889,7 @@
 | file://:0:0:0:0 | DoubleFunction | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | DoubleFunction<? extends DoubleStream> | Interface, ParameterizedType |
 | file://:0:0:0:0 | DoubleFunction<? extends U> | Interface, ParameterizedType |
+| file://:0:0:0:0 | DoubleIterator | Class |
 | file://:0:0:0:0 | DoublePredicate | Interface |
 | file://:0:0:0:0 | DoubleSignature | Class |
 | file://:0:0:0:0 | DoubleStream | Interface |
@@ -1543,8 +2170,10 @@
 | file://:0:0:0:0 | FixedClock | Class |
 | file://:0:0:0:0 | Float | Class |
 | file://:0:0:0:0 | Float | Class |
+| file://:0:0:0:0 | FloatArray | Class |
 | file://:0:0:0:0 | FloatBuffer | Class |
 | file://:0:0:0:0 | FloatCompanionObject | Class |
+| file://:0:0:0:0 | FloatIterator | Class |
 | file://:0:0:0:0 | FloatSignature | Class |
 | file://:0:0:0:0 | Flushable | Interface |
 | file://:0:0:0:0 | ForEachEntryTask | Class, GenericType, ParameterizedType |
@@ -1671,6 +2300,18 @@
 | file://:0:0:0:0 | FractionPrinterParser | Class |
 | file://:0:0:0:0 | Frame | Class |
 | file://:0:0:0:0 | Function | GenericType, Interface, ParameterizedType |
+| file://:0:0:0:0 | Function | GenericType, Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1 | GenericType, Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1 | GenericType, Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Boolean> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Byte> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Character> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Double> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Float> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Integer> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Long> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,Short> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function1<Integer,T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<? super Identity,? extends Entry<?>> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<? super K,? extends U> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<? super K,? extends U> | Interface, ParameterizedType |
@@ -1722,6 +2363,8 @@
 | file://:0:0:0:0 | Function<Entry<K,V>,? extends U> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<Entry<K,V>,? extends U> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<Object,Object> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function<R> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Function<R> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<String,ClassLoader> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<T,T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Function<T,T> | Interface, ParameterizedType |
@@ -1778,6 +2421,7 @@
 | file://:0:0:0:0 | Instant | Class |
 | file://:0:0:0:0 | InstantPrinterParser | Class |
 | file://:0:0:0:0 | Int | Class |
+| file://:0:0:0:0 | IntArray | Class |
 | file://:0:0:0:0 | IntBinaryOperator | Interface |
 | file://:0:0:0:0 | IntBuffer | Class |
 | file://:0:0:0:0 | IntCompanionObject | Class |
@@ -1850,7 +2494,10 @@
 | file://:0:0:0:0 | Iterator | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<?> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<Boolean> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<Byte> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Character> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<Double> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<E> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<E> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<E> | Interface, ParameterizedType |
@@ -1872,12 +2519,15 @@
 | file://:0:0:0:0 | Iterator<Entry<K,V>> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Entry<K,V>> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Entry<String,Long>> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<Float> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Integer> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<K> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<K> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Long> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<Path> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<Short> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<String> | Interface, ParameterizedType |
+| file://:0:0:0:0 | Iterator<T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<T> | Interface, ParameterizedType |
 | file://:0:0:0:0 | Iterator<T> | Interface, ParameterizedType |
@@ -2100,6 +2750,7 @@
 | file://:0:0:0:0 | LoggerFinder | Class |
 | file://:0:0:0:0 | Long | Class |
 | file://:0:0:0:0 | Long | Class |
+| file://:0:0:0:0 | LongArray | Class |
 | file://:0:0:0:0 | LongBinaryOperator | Interface |
 | file://:0:0:0:0 | LongBuffer | Class |
 | file://:0:0:0:0 | LongCompanionObject | Class |
@@ -2434,6 +3085,8 @@
 | file://:0:0:0:0 | OptionalInt | Class |
 | file://:0:0:0:0 | OptionalLong | Class |
 | file://:0:0:0:0 | OutputStream | Class |
+| file://:0:0:0:0 | P1 | TypeVariable |
+| file://:0:0:0:0 | P1 | TypeVariable |
 | file://:0:0:0:0 | Package | Class |
 | file://:0:0:0:0 | Package[] | Array |
 | file://:0:0:0:0 | PadPrinterParserDecorator | Class |
@@ -2514,6 +3167,9 @@
 | file://:0:0:0:0 | PutField | Class |
 | file://:0:0:0:0 | Queue | GenericType, Interface, ParameterizedType |
 | file://:0:0:0:0 | Queue<E> | Interface, ParameterizedType |
+| file://:0:0:0:0 | R | TypeVariable |
+| file://:0:0:0:0 | R | TypeVariable |
+| file://:0:0:0:0 | R | TypeVariable |
 | file://:0:0:0:0 | R | TypeVariable |
 | file://:0:0:0:0 | R | TypeVariable |
 | file://:0:0:0:0 | R | TypeVariable |
@@ -2706,8 +3362,10 @@
 | file://:0:0:0:0 | SettingsParser[] | Array |
 | file://:0:0:0:0 | Short | Class |
 | file://:0:0:0:0 | Short | Class |
+| file://:0:0:0:0 | ShortArray | Class |
 | file://:0:0:0:0 | ShortBuffer | Class |
 | file://:0:0:0:0 | ShortCompanionObject | Class |
+| file://:0:0:0:0 | ShortIterator | Class |
 | file://:0:0:0:0 | ShortSignature | Class |
 | file://:0:0:0:0 | SignStyle | Class |
 | file://:0:0:0:0 | SignStyle[] | Array |
@@ -3256,6 +3914,8 @@
 | file://:0:0:0:0 | T | TypeVariable |
 | file://:0:0:0:0 | T | TypeVariable |
 | file://:0:0:0:0 | T | TypeVariable |
+| file://:0:0:0:0 | T | TypeVariable |
+| file://:0:0:0:0 | T[] | Array |
 | file://:0:0:0:0 | T[] | Array |
 | file://:0:0:0:0 | T[] | Array |
 | file://:0:0:0:0 | T[] | Array |
