@@ -1,5 +1,5 @@
 public void fileSystemStorageUnsafe(String name, String password) {
-	// BAD - sensitive data stored in plaintext
+	// BAD - sensitive data stored in cleartext
     FileWriter fw = new FileWriter("some_file.txt");
     fw.write(name + ":" + password);
     fw.close();
