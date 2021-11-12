@@ -16,12 +16,18 @@ public final class InnerHolder {
 
     private Context context = null;
 
+    private StringBuilder sb = new StringBuilder();
+
     public void setContext(String value) {
         context = new Context(value);
     }
 
     public void explicitSetContext(String value) {
         this.context = new Context(value);
+    }
+
+    public void append(String value) {
+        sb.append(value);
     }
 
     public String getValue() {

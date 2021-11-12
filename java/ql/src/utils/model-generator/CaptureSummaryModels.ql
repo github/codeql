@@ -5,7 +5,6 @@
  */
 
 import java
-import ModelGeneratorUtils
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.internal.DataFlowImplCommon
 import semmle.code.java.dataflow.internal.DataFlowNodes
@@ -148,6 +147,8 @@ private predicate thisAccess(DataFlow::Node n) {
   n.asExpr().(InstanceAccess).isOwnInstanceAccess()
   or
   n.(DataFlow::ImplicitInstanceAccess).getInstanceAccess() instanceof OwnInstanceAccess
+  or
+  n.asExpr().(FieldAccess).isOwnFieldAccess()
 }
 
 /**
