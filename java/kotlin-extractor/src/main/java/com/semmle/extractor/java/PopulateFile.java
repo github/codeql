@@ -71,15 +71,22 @@ public class PopulateFile {
 		}
 	}
 
-  public Label populateFile(File absoluteFile) {
-    String databasePath = transformer.fileAsDatabaseString(absoluteFile);
-    // Ensure the rewritten path is used from now on.
-    File normalisedFile = new File(databasePath);
-    Label result = tw.getLabelFor("@\"" + escapeKey(databasePath) + ";sourcefile" + "\"");
-    KotlinExtractorDbSchemeKt.writeFiles(tw, result, databasePath);
-    populateParents(normalisedFile, result);
-    return result;
-  }
+    public Label populateFile(File absoluteFile) {
+        return getFileLabel(absoluteFile, true);
+    }
+
+    public Label getFileLabel(File absoluteFile, boolean populateTables) {
+        String databasePath = transformer.fileAsDatabaseString(absoluteFile);
+        Label result = tw.getLabelFor("@\"" + escapeKey(databasePath) + ";sourcefile" + "\"");
+        // Ensure the rewritten path is used from now on.
+
+        if(populateTables) {
+            KotlinExtractorDbSchemeKt.writeFiles(tw, result, databasePath);
+            populateParents(new File(databasePath), result);
+        }
+
+        return result;
+    }
 
 	private Label addFolderTuple(String databasePath) {
 		Label result = tw.getLabelFor("@\"" + escapeKey(databasePath) + ";folder" + "\"");
@@ -102,17 +109,24 @@ public class PopulateFile {
 		KotlinExtractorDbSchemeKt.writeContainerparent(tw, parentLabel, label);
 	}
 
-	public Label relativeFileId(File jarFile, String pathWithinJar) {
+    public Label relativeFileId(File jarFile, String pathWithinJar) {
+        return getFileInJarLabel(jarFile, pathWithinJar, true);
+    }
+
+	public Label getFileInJarLabel(File jarFile, String pathWithinJar, boolean populateTables) {
 		if (pathWithinJar.contains("\\"))
 			throw new CatastrophicError("Invalid jar path: '" + pathWithinJar + "' should not contain '\\'.");
 
-		Label jarFileId = this.populateFile(jarFile);
-		Label jarFileLocation = tw.getLocation(jarFileId,0,0,0,0);
-		KotlinExtractorDbSchemeKt.writeHasLocation(tw, jarFileId, jarFileLocation);
+        String databasePath = transformer.fileAsDatabaseString(jarFile);
+        if(!populateTables)
+            return tw.getLabelFor("@\"" + databasePath + "/" + pathWithinJar + ";jarFile\"");
 
-		String databasePath = transformer.fileAsDatabaseString(jarFile);
+		Label jarFileId = this.populateFile(jarFile);
+        Label jarFileLocation = tw.getLocation(jarFileId, 0, 0, 0, 0);
+        KotlinExtractorDbSchemeKt.writeHasLocation(tw, jarFileId, jarFileLocation);
+
 		StringBuilder fullName = new StringBuilder(databasePath);
-		String[] split = pathWithinJar.split("/");
+        String[] split = pathWithinJar.split("/");
 		Label current = jarFileId;
 		for (int i = 0; i < split.length; i++) {
 			String shortName = split[i];

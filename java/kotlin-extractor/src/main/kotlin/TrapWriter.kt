@@ -77,6 +77,13 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
     fun flush() {
         bw.flush()
     }
+
+    /**
+     * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but with the given
+     * default file used in getLocation etc.
+     */
+    fun withTargetFile(filePath: String, sourceOffsetResolver: SourceOffsetResolver, populateFileTables: Boolean = true) =
+        FileTrapWriter(lm, bw, filePath, sourceOffsetResolver, populateFileTables)
 }
 
 abstract class SourceOffsetResolver {
@@ -112,16 +119,17 @@ open class FileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val filePath: String,
-    val sourceOffsetResolver: SourceOffsetResolver
+    val sourceOffsetResolver: SourceOffsetResolver,
+    populateFileTables: Boolean = true
 ): TrapWriter (lm, bw) {
     val populateFile = PopulateFile(this)
     val splitFilePath = filePath.split("!/")
     @Suppress("UNCHECKED_CAST")
     val fileId =
         (if(splitFilePath.size == 1)
-            populateFile.populateFile(File(filePath))
+            populateFile.getFileLabel(File(filePath), populateFileTables)
          else
-            populateFile.relativeFileId(File(splitFilePath.get(0)), splitFilePath.get(1))
+            populateFile.getFileInJarLabel(File(splitFilePath.get(0)), splitFilePath.get(1), populateFileTables)
         ) as Label<DbFile>
 
     fun getLocation(e: IrElement): Label<DbLocation> {
@@ -142,8 +150,7 @@ open class FileTrapWriter (
         val endLine =     if(unknownLoc) 0 else sourceOffsetResolver.getLineNumber(endOffset) + 1
         val endColumn =   if(unknownLoc) 0 else sourceOffsetResolver.getColumnNumber(endOffset)
         val endColumn2 =  if(zeroWidthLoc) endColumn + 1 else endColumn
-        val locFileId: Label<DbFile> = if (unknownLoc) unknownFileId else fileId
-        return getLocation(locFileId, startLine, startColumn, endLine, endColumn2)
+        return getLocation(fileId, startLine, startColumn, endLine, endColumn2)
     }
     fun getLocationString(e: IrElement): String {
         if (e.startOffset == -1 && e.endOffset == -1) {

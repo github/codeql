@@ -342,6 +342,21 @@ open class KotlinUsesExtractor(
             ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
             ?.owner
 
+    /**
+     * Gets a KotlinUsesExtractor like this one, except it attributes locations to the file that declares the given class.
+     */
+    fun withSourceFileOfClass(cls: IrClass, populateFileTables: Boolean): KotlinUsesExtractor {
+        val clsFile = cls.fileOrNull
+
+        val newTrapWriter =
+            if (isExternalDeclaration(cls) || clsFile == null)
+                tw.withTargetFile(getIrClassBinaryPath(cls), NullSourceOffsetResolver, populateFileTables)
+            else
+                tw.withTargetFile(clsFile.path, FileSourceOffsetResolver(clsFile.fileEntry))
+
+        return KotlinUsesExtractor(logger, newTrapWriter, dependencyCollector, externalClassExtractor, pluginContext)
+    }
+
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
         // TODO: only substitute in class and function signatures
         //       because within function bodies we can get things like Unit.INSTANCE
@@ -356,7 +371,7 @@ open class KotlinUsesExtractor(
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
-                extractClassInstance(extractClass, typeArgs)
+                this.withSourceFileOfClass(c, false).extractClassInstance(extractClass, typeArgs)
             }
 
             // Extract both the Kotlin and equivalent Java classes, so that we have database entries
@@ -1178,7 +1193,7 @@ open class KotlinFileExtractor(
     fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int) {
         val id = useValueParameter(vp)
         val type = useType(vp.type)
-        val locId = tw.getLocation(vp.startOffset, vp.endOffset)
+        val locId = tw.getLocation(vp)
         tw.writeParams(id, type.javaResult.id, type.kotlinResult.id, idx, parent, id)
         tw.writeHasLocation(id, locId)
         tw.writeParamName(id, vp.name.asString())
