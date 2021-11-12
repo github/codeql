@@ -32,7 +32,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 
   override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureHasSourceCallContext
+    result instanceof DataFlow::FeatureHasSinkCallContext
   }
 }
 
