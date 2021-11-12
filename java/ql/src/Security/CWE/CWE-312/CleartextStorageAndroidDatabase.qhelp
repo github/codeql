@@ -2,13 +2,13 @@
 <qhelp>
   <overview>
     <p>
-      SQLite is a lightweight database engine commonly used in Android devices to store data. By itself, SQLite does not offer any encryption mechanism by default and stores all data in plaintext, which introduces a risk if sensitive data like credentials, authentication tokens or personal identifiable information (PII) are directly stored in a SQLite database. The information could be accessed by any process or user in rooted devices, or can be disclosed through chained vulnerabilities, like unexpected access to the private storage through exposed components. 
+      SQLite is a lightweight database engine commonly used in Android devices to store data. By itself, SQLite does not offer any encryption mechanism by default and stores all data in cleartext, which introduces a risk if sensitive data like credentials, authentication tokens or personal identifiable information (PII) are directly stored in a SQLite database. The information could be accessed by any process or user in rooted devices, or can be disclosed through chained vulnerabilities, like unexpected access to the private storage through exposed components. 
     </p>
   </overview>
 
   <recommendation>
     <p>
-      Use <code>SQLCipher</code> or similar libraries to add encryption capabilities to SQLite. Alternatively, encrypt sensitive data using cryptographicaly secure algorithms before storing it in the database.
+      Use <code>SQLCipher</code> or similar libraries to add encryption capabilities to SQLite. Alternatively, encrypt sensitive data using cryptographically secure algorithms before storing it in the database.
     </p>
   </recommendation>
 
