@@ -937,15 +937,27 @@ class X {
         return id
     }
 
-    fun getPropertyLabel(p: IrProperty) : String {
+    fun getFieldLabel(p: IrField) : String {
         val parentId = useDeclarationParent(p.parent)
         val label = "@\"field;{$parentId};${p.name.asString()}\""
         return label
     }
 
-    fun useProperty(p: IrProperty): Label<out DbField> {
-        var label = getPropertyLabel(p)
+    fun useField(p: IrField): Label<out DbField> {
+        var label = getFieldLabel(p)
         val id: Label<DbField> = tw.getLabelFor(label)
+        return id
+    }
+
+    fun getPropertyLabel(p: IrProperty) : String {
+        val parentId = useDeclarationParent(p.parent)
+        val label = "@\"property;{$parentId};${p.name.asString()}\""
+        return label
+    }
+
+    fun useProperty(p: IrProperty): Label<out DbKt_property> {
+        var label = getPropertyLabel(p)
+        val id: Label<DbKt_property> = tw.getLabelFor(label)
         return id
     }
 
@@ -1216,12 +1228,15 @@ open class KotlinFileExtractor(
                     tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
                     tw.writeHasLocation(assignmentId, declLocId)
 
+                    /*
+                    TODO
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                     val lhsType = useType(backingField.type)
                     tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
                     tw.writeHasLocation(lhsId, declLocId)
                     val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
                     tw.writeVariableBinding(lhsId, vId)
+                    */
 
                     extractExpressionExpr(initializer.expression, obinitId, assignmentId, 1)
                 }
@@ -1239,7 +1254,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>) {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>): Label<out DbCallable> {
         currentFunction = f
 
         f.typeParameters.map { extractTypeParameter(it) }
@@ -1274,24 +1289,57 @@ open class KotlinFileExtractor(
         }
 
         currentFunction = null
+        return id
+    }
+
+    fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
+        val id = useField(f)
+        val locId = tw.getLocation(f)
+        val type = useType(f.type)
+        tw.writeFields(id, f.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
+        tw.writeHasLocation(id, locId)
+        return id
     }
 
     fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>) {
+        val id = useProperty(p)
+        val locId = tw.getLocation(p)
+        tw.writeKtProperties(id, p.name.asString())
+        tw.writeHasLocation(id, locId)
+
         val bf = p.backingField
-        if(bf == null) {
-            logger.warnElement(Severity.ErrorSevere, "IrProperty without backing field", p)
+        val getter = p.getter
+        val setter = p.setter
+
+        if(getter != null) {
+            @Suppress("UNCHECKED_CAST")
+            val getterId = extractFunction(getter, parentId) as Label<out DbMethod>
+            tw.writeKtPropertyGetters(id, getterId)
         } else {
-            val id = useProperty(p)
-            val locId = tw.getLocation(p)
-            val type = useType(bf.type)
-            tw.writeFields(id, p.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
-            tw.writeHasLocation(id, locId)
+            logger.warnElement(Severity.ErrorSevere, "IrProperty without a getter", p)
+        }
+
+        if(setter != null) {
+            if(!p.isVar) {
+                logger.warnElement(Severity.ErrorSevere, "!isVar property with a setter", p)
+            }
+            @Suppress("UNCHECKED_CAST")
+            val setterId = extractFunction(setter, parentId) as Label<out DbMethod>
+            tw.writeKtPropertySetters(id, setterId)
+        } else {
+            if(p.isVar) {
+                logger.warnElement(Severity.ErrorSevere, "isVar property without a setter", p)
+            }
+        }
+
+        if(bf != null) {
+            val fieldId = extractField(bf, parentId)
+            tw.writeKtPropertyBackingFields(id, fieldId)
         }
     }
 
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
         val id = useEnumEntry(ee)
-        val locId = tw.getLocation(ee)
         val parent = ee.parent
         if(parent !is IrClass) {
             logger.warnElement(Severity.ErrorSevere, "Enum entry with unexpected parent: " + parent.javaClass, ee)
@@ -1300,6 +1348,7 @@ open class KotlinFileExtractor(
         } else {
             val type = useSimpleTypeClass(parent, emptyList(), false)
             tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
+            val locId = tw.getLocation(ee)
             tw.writeHasLocation(id, locId)
         }
     }

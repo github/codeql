@@ -686,6 +686,20 @@ class InstanceField extends Field {
   InstanceField() { not this.isStatic() }
 }
 
+/** A Kotlin property. */
+class Property extends Element, @kt_property {
+  /** Gets the getter method for this property, if any. */
+  Method getGetter() { ktPropertyGetters(this, result) }
+
+  /** Gets the setter method for this property, if any. */
+  Method getSetter() { ktPropertySetters(this, result) }
+
+  /** Gets the backing field for this property, if any. */
+  Field getBackingField() { ktPropertyBackingFields(this, result) }
+
+  override string getAPrimaryQlClass() { result = "Property" }
+}
+
 /** A Kotlin extension function. */
 class ExtensionMethod extends Method {
   Type extendedType;

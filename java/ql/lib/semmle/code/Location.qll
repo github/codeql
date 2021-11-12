@@ -45,6 +45,8 @@ predicate hasName(Element e, string name) {
   modifiers(e, name)
   or
   kt_type_alias(e, name, _)
+  or
+  ktProperties(e, name)
 }
 
 /**

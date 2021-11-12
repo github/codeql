@@ -67,7 +67,7 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
     fun trace(msg: String, exn: Exception) {
         trace(msg + " // " + exn)
     }
-    fun warn(severity: Severity, msg: String, locationString: String? = null, locationId: Label<DbLocation> = tw.unknownLocation) {
+    fun warn(severity: Severity, msg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val warningLoc = getWarningLocation()
         val warningLocStr = if(warningLoc == null) "<unknown location>" else warningLoc
         val suffix =
@@ -84,6 +84,8 @@ open class Logger(val logCounter: LogCounter, open val tw: TrapWriter) {
                 }
             }
         val ts = timestamp()
+        // We don't actually make the location until after the `return` above
+        val locationId = mkLocationId()
         tw.writeDiagnostics(StarLabel(), "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $msg\n$suffix", locationId)
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         print("$ts Warning($warningLocStr): $locStr$msg\n$suffix")
@@ -118,7 +120,7 @@ class FileLogger(logCounter: LogCounter, override val tw: FileTrapWriter): Logge
 
     fun warnElement(severity: Severity, msg: String, element: IrElement) {
         val locationString = tw.getLocationString(element)
-        val locationId = tw.getLocation(element)
-        warn(severity, msg, locationString, locationId)
+        val mkLocationId = { tw.getLocation(element) }
+        warn(severity, msg, locationString, mkLocationId)
     }
 }

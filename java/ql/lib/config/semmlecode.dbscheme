@@ -948,7 +948,8 @@ javadocText(
 
 /** A program element that has a name. */
 @element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field |
-           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type | @kt_type_alias;
+           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type | @kt_type_alias |
+           @kt_property;
 
 @modifiable = @member_modifiable| @param | @localvar ;
 
@@ -960,7 +961,7 @@ javadocText(
 @locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
              | @boundedtype | @typebound | @array | @primitive
              | @import | @stmt | @expr | @whenbranch | @localvar | @javadoc | @javadocTag | @javadocText
-             | @xmllocatable | @ktcomment | @kt_type_alias;
+             | @xmllocatable | @ktcomment | @kt_type_alias | @kt_property;
 
 @top = @element | @locatable | @folder;
 
@@ -1107,4 +1108,24 @@ ktExtensionFunctions(
   unique int id: @method ref,
   int typeid: @type ref,
   int kttypeid: @kt_type ref
+)
+
+ktProperties(
+  unique int id: @kt_property,
+  string nodeName: string ref
+)
+
+ktPropertyGetters(
+  unique int id: @kt_property ref,
+  int getter: @method ref
+)
+
+ktPropertySetters(
+  unique int id: @kt_property ref,
+  int setter: @method ref
+)
+
+ktPropertyBackingFields(
+  unique int id: @kt_property ref,
+  int backingField: @field ref
 )
