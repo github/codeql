@@ -299,4 +299,51 @@ private module RestFramework {
       override string getMimetypeDefault() { none() }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Exception response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `rest_framework.exceptions.APIException` class and subclasses
+   *
+   * See https://www.django-rest-framework.org/api-guide/exceptions/#api-reference
+   */
+  module APIException {
+    /** A direct instantiation of `rest_framework.exceptions.APIException` or subclass. */
+    private class ClassInstantiation extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CallCfgNode {
+      string className;
+
+      ClassInstantiation() {
+        className in [
+            "APIException", "ValidationError", "ParseError", "AuthenticationFailed",
+            "NotAuthenticated", "PermissionDenied", "NotFound", "MethodNotAllowed", "NotAcceptable",
+            "UnsupportedMediaType", "Throttled"
+          ] and
+        this =
+          API::moduleImport("rest_framework")
+              .getMember("exceptions")
+              .getMember(className)
+              .getACall()
+      }
+
+      override DataFlow::Node getBody() {
+        className in [
+            "APIException", "ValidationError", "ParseError", "AuthenticationFailed",
+            "NotAuthenticated", "PermissionDenied", "NotFound", "NotAcceptable"
+          ] and
+        result = this.getArg(0)
+        or
+        className in ["MethodNotAllowed", "UnsupportedMediaType", "Throttled"] and
+        result = this.getArg(1)
+        or
+        result = this.getArgByName("detail")
+      }
+
+      // How to support the `headers` argument here?
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { none() }
+    }
+  }
 }

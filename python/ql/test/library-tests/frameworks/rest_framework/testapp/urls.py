@@ -14,4 +14,5 @@ urlpatterns = [
     path("class-based-view/", views.MyClass.as_view()),  # $routeSetup="lcass-based-view/"
     path("function-based-view/", views.function_based_view),  # $routeSetup="function-based-view/"
     path("cookie-test/", views.cookie_test),  # $routeSetup="function-based-view/"
+    path("exception-test/", views.exception_test),  # $routeSetup="exception-test/"
 ]

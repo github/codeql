@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 
 @api_view()
 def normal_response(request): # $ requestHandler
@@ -32,3 +33,18 @@ def setting_cookie(request):
     resp.delete_cookie("key4") # $ CookieWrite CookieName="key4"
     resp.delete_cookie(key="key4") # $ CookieWrite CookieName="key4"
     return resp
+
+################################################################################
+# Exceptions
+################################################################################
+
+# see https://www.django-rest-framework.org/api-guide/exceptions/
+
+@api_view(["GET", "POST"])
+def exception_test(request): # $ requestHandler
+    data = "exception details"
+    # note: `code details` not exposed by default
+    code = "code details"
+    e1 = APIException(data, code) # $ HttpResponse responseBody=data
+    e2 = APIException(detail=data, code=code) # $ HttpResponse responseBody=data
+    raise e2

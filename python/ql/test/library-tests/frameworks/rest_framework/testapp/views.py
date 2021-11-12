@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 
 # Viewsets
 # see https://www.django-rest-framework.org/tutorial/quickstart/
@@ -50,3 +51,9 @@ def cookie_test(request: Request):
     resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
     resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
     return resp
+
+@api_view(["GET", "POST"])
+def exception_test(request: Request):
+    # see https://www.django-rest-framework.org/api-guide/exceptions/
+    # note: `code details` not exposed by default
+    raise APIException("exception details", "code details")
