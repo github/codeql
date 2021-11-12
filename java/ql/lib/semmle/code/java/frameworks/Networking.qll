@@ -47,6 +47,7 @@ class SocketGetInputStreamMethod extends Method {
   }
 }
 
+/** The method `java.net.Socket::getOutputStream`. */
 class SocketGetOutputStreamMethod extends Method {
   SocketGetOutputStreamMethod() {
     this.getDeclaringType() instanceof TypeSocket and
@@ -164,6 +165,7 @@ class CreateSocketMethod extends Method {
   }
 }
 
+/** The method `javax.net.Socket::connect`. */
 class SocketConnectMethod extends Method {
   SocketConnectMethod() {
     this.hasName("connect") and

@@ -34,10 +34,12 @@ class SSLSession extends RefType {
   SSLSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
+/** The `javax.net.ssl.SSLEngine` class. */
 class SSLEngine extends RefType {
   SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }
 
+/** The `javax.net.ssl.SSLSocket` class. */
 class SSLSocket extends RefType {
   SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
 }
@@ -221,7 +223,7 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
       "Blowfish", "ECIES"
     ]
 }
