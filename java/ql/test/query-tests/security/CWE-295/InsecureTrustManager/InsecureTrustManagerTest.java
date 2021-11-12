@@ -39,14 +39,12 @@ public class InsecureTrustManagerTest {
 		}
 
 		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-			// BAD: Does not verify the certificate chain, allowing any certificate.
-		}
+		public void checkServerTrusted(X509Certificate[] chain, String authType)
+				throws CertificateException {}
 
 		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-		}
+		public void checkClientTrusted(X509Certificate[] chain, String authType)
+				throws CertificateException {}
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -88,8 +86,9 @@ public class InsecureTrustManagerTest {
 
 	}
 
-	private static void directSecureTrustManagerCall() throws NoSuchAlgorithmException, KeyStoreException, IOException,
-			CertificateException, FileNotFoundException, KeyManagementException, MalformedURLException {
+	private static void directSecureTrustManagerCall()
+			throws NoSuchAlgorithmException, KeyStoreException, IOException, CertificateException,
+			FileNotFoundException, KeyManagementException, MalformedURLException {
 		SSLContext context = SSLContext.getInstance("TLS");
 		File certificateFile = new File("path/to/self-signed-certificate");
 		// Create a `KeyStore` with default type
@@ -98,49 +97,46 @@ public class InsecureTrustManagerTest {
 		keyStore.load(null, null);
 		X509Certificate generatedCertificate;
 		try (InputStream cert = new FileInputStream(certificateFile)) {
-			generatedCertificate = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(cert);
+			generatedCertificate = (X509Certificate) CertificateFactory.getInstance("X509")
+					.generateCertificate(cert);
 		}
 		// Add the self-signed certificate to the key store
 		keyStore.setCertificateEntry(certificateFile.getName(), generatedCertificate);
 		// Get default `TrustManagerFactory`
-		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		TrustManagerFactory tmf =
+				TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		// Use it with our modified key store that trusts our self-signed certificate
 		tmf.init(keyStore);
 		TrustManager[] trustManagers = tmf.getTrustManagers();
-		context.init(null, trustManagers, null); // GOOD, we are not using a custom `TrustManager` but instead have
-													// added the self-signed certificate we want to trust to the key
-													// store. Note, the `trustManagers` will **only** trust this one
-													// certificate.
+		// we are not using a custom `TrustManager` but instead have added the self-signed
+		// certificate we want to trust to the key store. Note, the `trustManagers` will **only**
+		// trust this one certificate.
+		context.init(null, trustManagers, null); // Safe
 		URL url = new URL("https://self-signed.badssl.com/");
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 		conn.setSSLSocketFactory(context.getSocketFactory());
 	}
 
-	private static void directInsecureTrustManagerCall() throws NoSuchAlgorithmException, KeyManagementException {
+	private static void directInsecureTrustManagerCall()
+			throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-												// chain, allowing any certificate.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 	}
 
 	private static void namedVariableFlagDirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (TRUST_ALL) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // GOOD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // Safe: guarded by feature flag
 		}
 	}
 
 	private static void namedVariableFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (TRUST_ALL) {
-			disableTrustManager(); // GOOD [But the disableTrustManager method itself is still detected]: Calls a
-			// method that install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			disableTrustManager(); // Safe: guarded by feature flag
 		}
 	}
 
@@ -148,20 +144,15 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (SOME_NAME_THAT_IS_NOT_A_FLAG_NAME) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // $ hasTaintFlow
 		}
 	}
 
 	private static void noNamedVariableFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (SOME_NAME_THAT_IS_NOT_A_FLAG_NAME) {
-			disableTrustManager(); // BAD [This is detected in the disableTrustManager method]: Calls a method that
-									// install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			disableTrustManager(); // Alert is in the method
 		}
 	}
 
@@ -169,20 +160,15 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (Boolean.parseBoolean(System.getProperty("TRUST_ALL"))) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // GOOD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // Safe: guarded by feature flag
 		}
 	}
 
 	private static void stringLiteralFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (Boolean.parseBoolean(System.getProperty("TRUST_ALL"))) {
-			disableTrustManager(); // GOOD [But the disableTrustManager method itself is still detected]: Calls a
-			// method that install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			disableTrustManager(); // Safe: guarded by feature flag
 		}
 	}
 
@@ -190,20 +176,15 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (Boolean.parseBoolean(System.getProperty("SOME_NAME_THAT_IS_NOT_A_FLAG_NAME"))) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // $ hasTaintFlow
 		}
 	}
 
 	private static void noStringLiteralFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (Boolean.parseBoolean(System.getProperty("SOME_NAME_THAT_IS_NOT_A_FLAG_NAME"))) {
-			disableTrustManager(); // BAD [This is detected in the disableTrustManager method]: Calls a method that
-			// install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			disableTrustManager(); // Alert is in the method
 		}
 	}
 
@@ -211,20 +192,15 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (isDisableTrust()) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // GOOD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // Safe: guarded by feature flag
 		}
 	}
 
 	private static void methodAccessFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (isDisableTrust()) {
-			disableTrustManager(); // GOOD [But the disableTrustManager method itself is still detected]: Calls a
-			// method that install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. BUT it is guarded
-			// by a feature flag.
+			disableTrustManager(); // Safe: guarded by feature flag
 		}
 	}
 
@@ -232,20 +208,15 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (is42TheAnswerForEverything()) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // $ hasTaintFlow
 		}
 	}
 
 	private static void noMethodAccessFlagIndirectInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (is42TheAnswerForEverything()) {
-			disableTrustManager(); // BAD [This is detected in the disableTrustManager method]: Calls a method that
-			// install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			disableTrustManager(); // Alert is in the method
 		}
 	}
 
@@ -254,10 +225,8 @@ public class InsecureTrustManagerTest {
 		String schemaFromHttpRequest = "HTTPS";
 		if (schemaFromHttpRequest.equalsIgnoreCase("https")) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // $ hasTaintFlow
 		}
 	}
 
@@ -265,10 +234,7 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		String schemaFromHttpRequest = "HTTPS";
 		if (schemaFromHttpRequest.equalsIgnoreCase("https")) {
-			disableTrustManager(); // BAD [This is detected in the disableTrustManager method]: Calls a method that
-			// install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			disableTrustManager(); // Alert is in the method
 		}
 	}
 
@@ -277,10 +243,8 @@ public class InsecureTrustManagerTest {
 		String schemaFromHttpRequest = "HTTPS";
 		if (!schemaFromHttpRequest.equalsIgnoreCase("https")) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-			context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+			context.init(null, trustManager, null); // $ hasTaintFlow
 		}
 	}
 
@@ -288,10 +252,7 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		String schemaFromHttpRequest = "HTTPS";
 		if (!schemaFromHttpRequest.equalsIgnoreCase("https")) {
-			disableTrustManager(); // BAD [This is detected in the disableTrustManager method]: Calls a method that
-			// install a `TrustManager` that does not verify the certificate
-			// chain, allowing any certificate. It is NOT guarded
-			// by a feature flag.
+			disableTrustManager(); // Alert is in the method
 		}
 	}
 
@@ -302,10 +263,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -316,10 +275,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if and it is NOT a valid flag.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -330,10 +287,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -344,10 +299,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if and it is NOT a valid flag.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -358,10 +311,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -372,11 +323,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if and it is NOT a valid flag.
-
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 	}
 
 	private static void isEqualsIgnoreCaseNOTGuardingDirectInsecureTrustManagerCall()
@@ -387,10 +335,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if and it is NOT a valid flag.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
@@ -402,19 +348,15 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the certificate
-		// chain, allowing any certificate. It is NOT guarded
-		// by a feature flag, because it is outside the if and it is NOT a valid flag.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 
 	}
 
-	private static void disableTrustManager() throws NoSuchAlgorithmException, KeyManagementException {
+	private static void disableTrustManager()
+			throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the
-												// certificate
-		// chain, allowing any certificate. The method name suggests that this may be
-		// intentional, but we flag it anyway.
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
+		context.init(null, trustManager, null); // $ hasTaintFlow
 	}
 }
