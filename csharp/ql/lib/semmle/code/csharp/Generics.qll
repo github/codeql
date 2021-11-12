@@ -277,6 +277,9 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
 
   /** Gets a textual representation of these constraints. */
   override string toString() { result = "where " + this.getTypeParameter().getName() + ": ..." }
+
+  /** Gets a textual representation of the class */
+  override string getAPrimaryQlClass() { result = "TypeParameterConstraints" }
 }
 
 /**

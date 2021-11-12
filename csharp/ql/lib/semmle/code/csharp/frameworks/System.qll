@@ -112,6 +112,8 @@ class SystemBooleanStruct extends BoolType {
     result.getParameter(1).getType() instanceof BoolType and
     result.getReturnType() instanceof BoolType
   }
+
+  override string getAPrimaryQlClass() { result = "SystemBooleanStruct" }
 }
 
 /** Data flow for `System.Boolean`. */
@@ -1092,6 +1094,8 @@ class SystemIntPtrType extends ValueType {
     this = any(SystemNamespace n).getATypeDeclaration() and
     this.hasName("IntPtr")
   }
+
+  override string getAPrimaryQlClass() { result = "SystemIntPtrType" }
 }
 
 /** The `System.IDisposable` interface. */
