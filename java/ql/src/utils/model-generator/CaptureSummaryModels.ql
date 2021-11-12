@@ -190,8 +190,7 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNodeExt }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr().(ConstructorCall).getAnArgument() = node1.asExpr() and
-    node1.asExpr().(Argument).getCall().getCallee().fromSource()
+    node2.asExpr().(ConstructorCall).getAnArgument() = node1.asExpr()
   }
 }
 
@@ -261,6 +260,7 @@ predicate isRelevantType(Type t) {
   not t instanceof PrimitiveType and
   not t instanceof BoxedType and
   not t.(RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
+  not t.(RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
   (
     not t.(Array).getElementType() instanceof PrimitiveType or
     isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())

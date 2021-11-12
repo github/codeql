@@ -16,7 +16,7 @@ class PropagateToSinkConfiguration extends TaintTracking::Configuration {
   PropagateToSinkConfiguration() { this = "parameters or  flowing into sinks" }
 
   override predicate isSource(DataFlow::Node source) {
-    (source.asExpr() instanceof FieldAccess or source instanceof DataFlow::ParameterNode) and
+    (source.asExpr().(FieldAccess).isOwnFieldAccess() or source instanceof DataFlow::ParameterNode) and
     source.getEnclosingCallable().isPublic() and
     exists(RefType t |
       t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
