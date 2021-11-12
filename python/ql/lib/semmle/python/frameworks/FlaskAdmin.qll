@@ -42,8 +42,8 @@ private module FlaskAdmin {
   }
 
   /**
-   * A call to `flask_admin.expose_plugview`, which should be used as a decorator to make the
-   * class (which should a flask View class) exposed in the admin interface.
+   * A call to `flask_admin.expose_plugview`, which is used as a decorator to make the
+   * class (which we expect to be a flask View class) exposed in the admin interface.
    *
    * See https://flask-admin.readthedocs.io/en/latest/api/mod_base/#flask_admin.base.expose_plugview
    */
