@@ -38,15 +38,54 @@ private module NotExposed {
         )
   }
 
+  // ---------------------------------------------------------------------------
+  // Implementation below
+  // ---------------------------------------------------------------------------
+  //
+  // inherent problem with API graphs is that there doesn't need to exist a result for
+  // all the stuff we have already modeled... as an example, the following query has no
+  // results when evaluated against a django/django DB
+  //
+  // select API::moduleImport("django")
+  //       .getMember("contrib")
+  //       .getMember("admin")
+  //       .getMember("views")
+  //       .getMember("main")
+  //       .getMember("ChangeListSearchForm")
+  //
+  // therefore we use fully qualified names to capture new classes/new aliases.
+  //
+  // note that this implementation was originally created to help with automatically
+  // modeling packages in mind, and was just copied for this purpose. See
+  // https://github.com/github/codeql/pull/5632 for more discussion. I wanted to get
+  // this into the codeql-repo, so it could be of use when modeling 3rd party libraries,
+  // and save some manual effort.
+  //
+  //
   bindingset[fullyQaulified]
   string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
     result = "moduleImport(\"" + fullyQaulified.replaceAll(".", "\").getMember(\"") + "\")"
   }
 
-  // -- Specs --
   bindingset[this]
   abstract class FindSubclassesSpec extends string {
     abstract API::Node getAlreadyModeledClass();
+  }
+
+  /**
+   * Holds if `newModelFullyQualified` describes either a new subclass, or a new alias, belonging to `spec` that we should include in our automated modeling.
+   * This new element is defined by `ast`, which is defined at `loc` in the module `mod`.
+   */
+  query predicate newModel(
+    FindSubclassesSpec spec, string newModelFullyQualified, AstNode ast, Module mod, Location loc
+  ) {
+    (
+      newSubclass(spec, newModelFullyQualified, ast, mod, loc)
+      or
+      newDirectAlias(spec, newModelFullyQualified, ast, mod, loc)
+      or
+      newImportStar(spec, newModelFullyQualified, ast, mod, _, _, loc)
+    )
   }
 
   API::Node newOrExistingModeling(FindSubclassesSpec spec) {
@@ -161,30 +200,4 @@ private module NotExposed {
     not alreadyModeled(spec, newSubclassQualified) and
     isNonTestProjectCode(classExpr)
   }
-
-  /**
-   * Holds if `newModelFullyQualified` describes either a new subclass, or a new alias, belonging to `spec` that we should include in our automated modeling.
-   * This new element is defined by `ast`, which is defined at `loc` in the module `mod`.
-   */
-  query predicate newModel(
-    FindSubclassesSpec spec, string newModelFullyQualified, AstNode ast, Module mod, Location loc
-  ) {
-    (
-      newSubclass(spec, newModelFullyQualified, ast, mod, loc)
-      or
-      newDirectAlias(spec, newModelFullyQualified, ast, mod, loc)
-      or
-      newImportStar(spec, newModelFullyQualified, ast, mod, _, _, loc)
-    )
-  }
-  // inherint problem with API graphs is that there doesn't need to exist a result for all
-  // the stuff we have already modeled... as an example, the following query has no
-  // results when evaluated against Django
-  //
-  // select API::moduleImport("django")
-  //       .getMember("contrib")
-  //       .getMember("admin")
-  //       .getMember("views")
-  //       .getMember("main")
-  //       .getMember("ChangeListSearchForm")
 }
