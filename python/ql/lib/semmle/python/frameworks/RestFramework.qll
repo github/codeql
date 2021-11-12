@@ -340,7 +340,6 @@ private module RestFramework {
         result = this.getArgByName("detail")
       }
 
-      // How to support the `headers` argument here?
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
       override string getMimetypeDefault() { none() }
