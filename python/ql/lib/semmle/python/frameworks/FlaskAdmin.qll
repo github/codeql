@@ -24,7 +24,7 @@ private import semmle.python.ApiGraphs
  */
 private module FlaskAdmin {
   /**
-   * A call to `flask_admin.expose`, which should be used as a decorator to make the
+   * A call to `flask_admin.expose`, which is used as a decorator to make the
    * function exposed in the admin interface (and make it a request handler)
    *
    * See https://flask-admin.readthedocs.io/en/latest/api/mod_base/#flask_admin.base.expose
