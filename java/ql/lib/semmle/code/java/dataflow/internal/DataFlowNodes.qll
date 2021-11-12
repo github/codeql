@@ -14,14 +14,14 @@ newtype TNode =
     not e.getParent*() instanceof Annotation
   } or
   TExplicitParameterNode(Parameter p) {
-    exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
+    exists(p.getCallable().getBody()) or p.getCallable() = any(SummarizedCallable sc).asCallable()
   } or
   TImplicitVarargsArray(Call c) {
     c.getCallee().isVarargs() and
     not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
   } or
   TInstanceParameterNode(Callable c) {
-    (exists(c.getBody()) or c instanceof SummarizedCallable) and
+    (exists(c.getBody()) or c = any(SummarizedCallable sc).asCallable()) and
     not c.isStatic()
   } or
   TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
@@ -44,7 +44,8 @@ newtype TNode =
   } or
   TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  }
+  } or
+  TFieldValueNode(Field f)
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
   call instanceof MethodAccess and
@@ -94,19 +95,12 @@ module Public {
       result = this.(MallocNode).getClassInstanceExpr().getType()
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
+      or
+      result = this.(FieldValueNode).getField().getType()
     }
 
     /** Gets the callable in which this node occurs. */
-    Callable getEnclosingCallable() {
-      result = this.asExpr().getEnclosingCallable() or
-      result = this.asParameter().getCallable() or
-      result = this.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
-      result = this.(InstanceParameterNode).getCallable() or
-      result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
-      result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-      result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallable() or
-      this = TSummaryInternalNode(result, _)
-    }
+    Callable getEnclosingCallable() { result = nodeGetEnclosingCallable(this).asCallable() }
 
     private Type getImprovedTypeBound() {
       exprTypeFlow(this.asExpr(), result, _) or
@@ -258,6 +252,18 @@ module Public {
   }
 
   /**
+   * A node representing the value of a field.
+   */
+  class FieldValueNode extends Node, TFieldValueNode {
+    /** Gets the field corresponding to this node. */
+    Field getField() { this = TFieldValueNode(result) }
+
+    override string toString() { result = getField().toString() }
+
+    override Location getLocation() { result = getField().getLocation() }
+  }
+
+  /**
    * Gets the node that occurs as the qualifier of `fa`.
    */
   Node getFieldQualifier(FieldAccess fa) {
@@ -305,11 +311,21 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
 
 module Private {
   /** Gets the callable in which this node occurs. */
-  DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+  DataFlowCallable nodeGetEnclosingCallable(Node n) {
+    result.asCallable() = n.asExpr().getEnclosingCallable() or
+    result.asCallable() = n.asParameter().getCallable() or
+    result.asCallable() = n.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
+    result.asCallable() = n.(InstanceParameterNode).getCallable() or
+    result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
+    result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
+    result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
+    n = TSummaryInternalNode(result, _) or
+    result.asFieldScope() = n.(FieldValueNode).getField()
+  }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
-    p.isParameterOf(c, pos)
+    p.isParameterOf(c.asCallable(), pos)
   }
 
   /**

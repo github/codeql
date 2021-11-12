@@ -32,12 +32,18 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 /**
  * Holds if data can flow from `node1` to `node2` through a static field.
  */
-private predicate staticFieldStep(ExprNode node1, ExprNode node2) {
+private predicate staticFieldStep(Node node1, Node node2) {
+  exists(Field f |
+    f.isStatic() and
+    f.getAnAssignedValue() = node1.asExpr() and
+    node2.(FieldValueNode).getField() = f
+  )
+  or
   exists(Field f, FieldRead fr |
     f.isStatic() and
-    f.getAnAssignedValue() = node1.getExpr() and
+    node1.(FieldValueNode).getField() = f and
     fr.getField() = f and
-    fr = node2.getExpr() and
+    fr = node2.asExpr() and
     hasNonlocalValue(fr)
   )
 }
@@ -205,7 +211,30 @@ class CastNode extends ExprNode {
   CastNode() { this.getExpr() instanceof CastExpr }
 }
 
-class DataFlowCallable = Callable;
+private newtype TDataFlowCallable =
+  TCallable(Callable c) or
+  TFieldScope(Field f)
+
+class DataFlowCallable extends TDataFlowCallable {
+  Callable asCallable() { this = TCallable(result) }
+
+  Field asFieldScope() { this = TFieldScope(result) }
+
+  RefType getDeclaringType() {
+    result = asCallable().getDeclaringType() or
+    result = asFieldScope().getDeclaringType()
+  }
+
+  string toString() {
+    result = asCallable().toString() or
+    result = "Field scope: " + asFieldScope().toString()
+  }
+
+  Location getLocation() {
+    result = asCallable().getLocation() or
+    result = asFieldScope().getLocation()
+  }
+}
 
 class DataFlowExpr = Expr;
 
@@ -251,7 +280,9 @@ class SrcCall extends DataFlowCall, TCall {
 
   SrcCall() { this = TCall(call) }
 
-  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = call.getEnclosingCallable()
+  }
 
   override string toString() { result = call.toString() }
 
@@ -345,10 +376,10 @@ class LambdaCallKind = Method; // the "apply" method in the functional interface
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
     creation.asExpr() = func and
-    func.getAnonymousClass().getAMethod() = c and
+    func.getAnonymousClass().getAMethod() = c.asCallable() and
     func.getConstructedType().extendsOrImplements+(t) and
     t.getSourceDeclaration() = interface and
-    c.(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
+    c.asCallable().(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
     pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
   )
 }

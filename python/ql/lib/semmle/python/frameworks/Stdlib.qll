@@ -1534,15 +1534,36 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::TypeTrackingNode hashlibNewCallNameBacktracker(
+    DataFlow::TypeBackTracker t, DataFlow::Node arg
+  ) {
+    t.start() and
+    hashlibNewCallImpl(_, arg) and
+    result = arg.getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = hashlibNewCallNameBacktracker(t2, arg).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::LocalSourceNode hashlibNewCallNameBacktracker(DataFlow::Node arg) {
+    result = hashlibNewCallNameBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  /** Holds when `call` is a call to `hashlib.new` with `nameArg` as the first argument. */
+  private predicate hashlibNewCallImpl(DataFlow::CallCfgNode call, DataFlow::Node nameArg) {
+    call = API::moduleImport("hashlib").getMember("new").getACall() and
+    nameArg in [call.getArg(0), call.getArgByName("name")]
+  }
+
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-    exists(DataFlow::Node nameArg |
-      result = API::moduleImport("hashlib").getMember("new").getACall() and
-      nameArg in [result.getArg(0), result.getArgByName("name")] and
-      exists(StrConst str |
-        nameArg.getALocalSource() = DataFlow::exprNode(str) and
-        algorithmName = str.getText()
-      )
+    exists(DataFlow::Node origin, DataFlow::Node nameArg |
+      origin = hashlibNewCallNameBacktracker(nameArg) and
+      algorithmName = origin.asExpr().(StrConst).getText() and
+      hashlibNewCallImpl(result, nameArg)
     )
   }
 

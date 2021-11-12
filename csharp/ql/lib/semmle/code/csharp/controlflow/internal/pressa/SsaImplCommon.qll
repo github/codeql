@@ -141,25 +141,23 @@ private module Liveness {
 
 private import Liveness
 
-/** Holds if `bb1` strictly dominates `bb2`. */
-private predicate strictlyDominates(BasicBlock bb1, BasicBlock bb2) {
-  bb1 = getImmediateBasicBlockDominator+(bb2)
-}
-
-/** Holds if `bb1` dominates a predecessor of `bb2`. */
-private predicate dominatesPredecessor(BasicBlock bb1, BasicBlock bb2) {
-  exists(BasicBlock pred | pred = getABasicBlockPredecessor(bb2) |
-    bb1 = pred
-    or
-    strictlyDominates(bb1, pred)
-  )
-}
-
-/** Holds if `df` is in the dominance frontier of `bb`. */
-pragma[noinline]
+/**
+ * Holds if `df` is in the dominance frontier of `bb`.
+ *
+ * This is equivalent to:
+ *
+ * ```ql
+ * bb = getImmediateBasicBlockDominator*(getABasicBlockPredecessor(df)) and
+ * not bb = getImmediateBasicBlockDominator+(df)
+ * ```
+ */
 private predicate inDominanceFrontier(BasicBlock bb, BasicBlock df) {
-  dominatesPredecessor(bb, df) and
-  not strictlyDominates(bb, df)
+  bb = getABasicBlockPredecessor(df) and not bb = getImmediateBasicBlockDominator(df)
+  or
+  exists(BasicBlock prev | inDominanceFrontier(prev, df) |
+    bb = getImmediateBasicBlockDominator(prev) and
+    not bb = getImmediateBasicBlockDominator(df)
+  )
 }
 
 /**

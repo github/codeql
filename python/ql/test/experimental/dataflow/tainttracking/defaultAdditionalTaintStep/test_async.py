@@ -31,7 +31,7 @@ async def test_async_with():
     ctx = AsyncContext()
     taint(ctx)
     async with ctx as tainted:
-        ensure_tainted(tainted) # $ MISSING: tainted
+        ensure_tainted(tainted) # $ tainted
 
 
 class AsyncIter:
@@ -45,7 +45,7 @@ async def test_async_for():
     iter = AsyncIter()
     taint(iter)
     async for tainted in iter:
-        ensure_tainted(tainted) # $ MISSING: tainted
+        ensure_tainted(tainted) # $ tainted
 
 
 
