@@ -14,6 +14,7 @@ private import semmle.python.filters.Tests
 private module NotExposed {
   // Instructions:
   // This needs to be automated better, but for this prototype, here are some rough instructions:
+  // 0) get a database of the library you are about to model
   // 1) fill out the `getAlreadyModeledClass` body below
   // 2) quick-eval the `quickEvalMe` predicate below, and copy the output to your modeling predicate
   class MySpec extends FindSubclassesSpec {
