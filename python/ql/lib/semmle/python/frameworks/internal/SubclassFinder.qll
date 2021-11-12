@@ -42,24 +42,30 @@ private module NotExposed {
   // Implementation below
   // ---------------------------------------------------------------------------
   //
-  // inherent problem with API graphs is that there doesn't need to exist a result for
-  // all the stuff we have already modeled... as an example, the following query has no
-  // results when evaluated against a django/django DB
+  // We are looking to find all subclassed of the already modelled classes, and ideally
+  // we would identify an `API::Node` for each (then `toString` would give the API
+  // path).
   //
-  // select API::moduleImport("django")
-  //       .getMember("contrib")
-  //       .getMember("admin")
-  //       .getMember("views")
-  //       .getMember("main")
-  //       .getMember("ChangeListSearchForm")
+  // An inherent problem with API graphs is that there doesn't need to exist a result
+  // for the API graph path that we want to add to our modeling (the path to the new
+  // subclass). As an example, the following query has no results when evaluated against
+  // a django/django DB.
   //
-  // therefore we use fully qualified names to capture new classes/new aliases.
+  // select API::moduleImport("django") .getMember("contrib") .getMember("admin")
+  //       .getMember("views") .getMember("main") .getMember("ChangeListSearchForm")
   //
-  // note that this implementation was originally created to help with automatically
-  // modeling packages in mind, and was just copied for this purpose. See
-  // https://github.com/github/codeql/pull/5632 for more discussion. I wanted to get
-  // this into the codeql-repo, so it could be of use when modeling 3rd party libraries,
-  // and save some manual effort.
+  //
+  // Since it is a Form subclass that we would want to capture for our Django modeling,
+  // we want to extend our modeling (that is written in a qll file) with exactly that
+  // piece of code, but since the API::Node doesn't exist, we can't select that from a
+  // predicate and print its path. We need a different approach, and for that we use
+  // fully qualified names to capture new classes/new aliases, and transform these into
+  // API paths (to be included in the modeling that is inserted into the `.qll` files),
+  // see `fullyQualifiedToAPIGraphPath`.
+  //
+  // NOTE: this implementation was originally created to help with automatically
+  // modeling packages in mind, and has been adjusted to help with manual library
+  // modeling. See https://github.com/github/codeql/pull/5632 for more discussion.
   //
   //
   bindingset[fullyQaulified]
