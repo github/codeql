@@ -1,0 +1,20 @@
+/** Provides taint tracking configurations to be used in Trust Manager queries. */
+
+import java
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.Encryption
+import semmle.code.java.security.InsecureTrustManager
+
+/**
+ * A configuration to model the flow of an insecure `TrustManager`
+ * to the initialization of an SSL context.
+ */
+class InsecureTrustManagerConfiguration extends TaintTracking::Configuration {
+  InsecureTrustManagerConfiguration() { this = "InsecureTrustManagerConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof InsecureTrustManagerSource
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureTrustManagerSink }
+}
