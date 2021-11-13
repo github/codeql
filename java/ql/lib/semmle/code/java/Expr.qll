@@ -166,7 +166,7 @@ class CompileTimeConstantExpr extends Expr {
    */
   pragma[nomagic]
   string getStringValue() {
-    result = this.(StringLiteral).getRepresentedString()
+    result = this.(StringLiteral).getValue()
     or
     result =
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
@@ -298,18 +298,15 @@ class CompileTimeConstantExpr extends Expr {
    *
    * Note that this does not handle the following cases:
    *
-   * - values of type `long`,
-   * - `char` literals.
+   * - values of type `long`.
    */
   cached
   int getIntValue() {
     exists(IntegralType t | this.getType() = t | t.getName().toLowerCase() != "long") and
     (
-      exists(string lit | lit = this.(Literal).getValue() |
-        // `char` literals may get parsed incorrectly, so disallow.
-        not this instanceof CharacterLiteral and
-        result = lit.toInt()
-      )
+      result = this.(IntegerLiteral).getIntValue()
+      or
+      result = this.(CharacterLiteral).getCodePointValue()
       or
       exists(CastExpr cast, int val |
         cast = this and val = cast.getExpr().(CompileTimeConstantExpr).getIntValue()
@@ -719,6 +716,22 @@ class DoubleLiteral extends Literal, @doubleliteral {
 /** A character literal. For example, `'\n'`. */
 class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
+
+  /**
+   * Gets a string which consists of the single character represented by
+   * this literal.
+   *
+   * Unicode surrogate characters (U+D800 to U+DFFF) have the replacement character
+   * U+FFFD as result instead.
+   */
+  override string getValue() { result = super.getValue() }
+
+  /**
+   * Gets the Unicode code point value of the character represented by
+   * this literal. The result is the same as if the Java code had cast
+   * the character to an `int`.
+   */
+  int getCodePointValue() { result.toUnicode() = this.getValue() }
 }
 
 /**
@@ -732,9 +745,21 @@ class CharacterLiteral extends Literal, @characterliteral {
  */
 class StringLiteral extends Literal, @stringliteral {
   /**
+   * Gets the string represented by this string literal, that is, the content
+   * of the literal without enclosing quotes and with escape sequences translated.
+   *
+   * Unpaired Unicode surrogate characters (U+D800 to U+DFFF) are replaced with the
+   * replacement character U+FFFD.
+   */
+  override string getValue() { result = super.getValue() }
+
+  /**
+   * DEPRECATED: This predicate will be removed in a future version because
+   * it is just an alias for `getValue()`; that predicate should be used instead.
+   *
    * Gets the literal string without the quotes.
    */
-  string getRepresentedString() { result = this.getValue() }
+  deprecated string getRepresentedString() { result = this.getValue() }
 
   /** Holds if this string literal is a text block (`""" ... """`). */
   predicate isTextBlock() { this.getLiteral().matches("\"\"\"%") }

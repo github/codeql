@@ -17,10 +17,12 @@ private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package.
  * See https://www.djangoproject.com/.
  */
-private module Django {
+module Django {
   /** Provides models for the `django.views` module */
   module Views {
     /**
@@ -368,6 +370,52 @@ private module Django {
   }
 
   /**
+   * Provides models for the `django.contrib.auth.models.User` class
+   *
+   * See https://docs.djangoproject.com/en/3.2/ref/contrib/auth/#user-model.
+   */
+  module User {
+    /**
+     * A source of instances of `django.contrib.auth.models.User`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `User::instance()` to get references to instances of `django.contrib.auth.models.User`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.contrib.auth.models.User`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.contrib.auth.models.User" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in ["username", "first_name", "last_name", "email"]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
+  /**
    * Provides models for the `django.core.files.uploadedfile.UploadedFile` class
    *
    * See https://docs.djangoproject.com/en/3.0/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.
@@ -466,10 +514,12 @@ private module Django {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package (that we are not quite ready to publicly expose yet).
  * See https://www.djangoproject.com/.
  */
-private module PrivateDjango {
+module PrivateDjango {
   // ---------------------------------------------------------------------------
   // django
   // ---------------------------------------------------------------------------
@@ -496,6 +546,7 @@ private module PrivateDjango {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
+      /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
         DjangoDbConnection() { this = connection().getAUse() }
       }
@@ -692,6 +743,7 @@ private module PrivateDjango {
 
     /** Provides models for the `django.conf` module */
     module conf {
+      /** Provides models for the `django.conf.urls` module */
       module conf_urls {
         // -------------------------------------------------------------------------
         // django.conf.urls
@@ -890,6 +942,7 @@ private module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.
          */
         module HttpResponse {
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
           API::Node baseClassRef() {
             result = response().getMember("HttpResponse")
             or
@@ -897,7 +950,7 @@ private module PrivateDjango {
             result = http().getMember("HttpResponse")
           }
 
-          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          /** Gets a reference to the `django.http.response.HttpResponse` class or any subclass. */
           API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
@@ -1893,14 +1946,11 @@ private module PrivateDjango {
    * with the django framework.
    *
    * Most functions take a django HttpRequest as a parameter (but not all).
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `DjangoRouteHandler::Range` instead.
    */
-  private class DjangoRouteHandler extends Function {
-    DjangoRouteHandler() {
-      exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
-      or
-      any(DjangoViewClass vc).getARequestHandler() = this
-    }
-
+  class DjangoRouteHandler extends Function instanceof DjangoRouteHandler::Range {
     /**
      * Gets the index of the parameter where the first routed parameter can be passed --
      * that is, the one just after any possible `self` or HttpRequest parameters.
@@ -1918,6 +1968,24 @@ private module PrivateDjango {
 
     /** Gets the request parameter. */
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
+  }
+
+  /** Provides a class for modeling new django route handlers. */
+  module DjangoRouteHandler {
+    /**
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `DjangoRouteHandler` instead.
+     */
+    abstract class Range extends Function { }
+
+    /** Route handlers from normal usage of django. */
+    private class StandardDjangoRouteHandlers extends Range {
+      StandardDjangoRouteHandlers() {
+        exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
+        or
+        any(DjangoViewClass vc).getARequestHandler() = this
+      }
+    }
   }
 
   /**
@@ -1941,7 +2009,7 @@ private module PrivateDjango {
   }
 
   /** A data-flow node that sets up a route on a server, using the django framework. */
-  abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  abstract class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
     /** Gets the data-flow node that is used as the argument for the view handler. */
     abstract DataFlow::Node getViewArg();
 

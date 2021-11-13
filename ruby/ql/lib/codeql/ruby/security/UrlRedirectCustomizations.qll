@@ -57,9 +57,9 @@ module UrlRedirect {
         this = e.getRedirectLocation() and
         // As a rough heuristic, assume that methods with these names are handlers for POST/PUT/PATCH/DELETE requests,
         // which are not as vulnerable to URL redirection because browsers will not initiate them from clicking a link.
-        not this.getEnclosingCallable()
-            .asCallable()
-            .(Method)
+        not this.asExpr()
+            .getExpr()
+            .getEnclosingMethod()
             .getName()
             .regexpMatch(".*(create|update|destroy).*")
       )

@@ -330,8 +330,8 @@ module AiohttpWebModel {
         exists(Await await, DataFlow::CallCfgNode call, DataFlow::AttrRead read |
           this.asExpr() = await
         |
-          read.(DataFlow::AttrRead).getObject() = Request::instance() and
-          read.(DataFlow::AttrRead).getAttributeName() = "post" and
+          read.getObject() = Request::instance() and
+          read.getAttributeName() = "post" and
           call.getFunction() = read and
           await.getValue() = call.asExpr()
         )

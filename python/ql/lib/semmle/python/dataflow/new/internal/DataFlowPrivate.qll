@@ -1365,10 +1365,8 @@ module IterableUnpacking {
   }
 
   /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
-  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget {
-    UnpackingAssignmentSequenceTarget() { this instanceof SequenceNode }
-
-    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
+  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof SequenceNode {
+    ControlFlowNode getElement(int i) { result = super.getElement(i) }
 
     ControlFlowNode getAnElement() { result = this.getElement(_) }
   }

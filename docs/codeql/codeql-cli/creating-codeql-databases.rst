@@ -63,7 +63,10 @@ more than one language:
 - ``--no-run-unnecessary-builds``: used with ``--db-cluster`` to suppress the build 
   command for languages where the CodeQL CLI does not need to monitor the build 
   (for example, Python and JavaScript/TypeScript).
-   
+
+You can specify extractor options to customize the behavior of extractors that create CodeQL databases. For more information, see
+":doc:`Extractor options <extractor-options>`."
+
 For full details of all the options you can use when creating databases,
 see the `database create reference documentation <../manual/database-create>`__.  
 

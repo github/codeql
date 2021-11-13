@@ -10,7 +10,6 @@ A typical data-flow query looks like this:
 
 .. code-block:: ql
 
-::
 
     class MyConfig extends TaintTracking::Configuration {
       MyConfig() { this = "MyConfig" }
@@ -79,7 +78,8 @@ To avoid these problems, a data-flow ``Configuration`` comes with a mechanism fo
        */
       final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
 
-As noted in the documentation for ``hasPartialFlow`` (for example, in the `CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>__`) you must first enable this by adding an override of ``explorationLimit``. For example:
+As noted in the documentation for ``hasPartialFlow`` (for example, in the 
+`CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>`__) you must first enable this by adding an override of ``explorationLimit``. For example:
 
 .. code-block:: ql
 

@@ -427,7 +427,7 @@ private Element interpretElement0(
       result = t
       or
       subtypes = true and
-      result = t.(UnboundValueOrRefType).getASubTypeUnbound+()
+      result = t.getASubTypeUnbound+()
     ) and
     result = t and
     name = "" and

@@ -1,5 +1,6 @@
 package generatedtest;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -1596,6 +1597,167 @@ public class Test {
 			Parcel in = (Parcel)source();
 			out.readFromParcel(in);
 			sink(getMapValue(out)); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;ComponentName;(Context,Class);;Argument[1];Argument[-1];taint"
+			ComponentName out = null;
+			Class in = (Class) source();
+			out = new ComponentName((Context) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;ComponentName;(Context,String);;Argument[1];Argument[-1];taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = new ComponentName((Context) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;ComponentName;(Parcel);;Argument[0];Argument[-1];taint"
+			ComponentName out = null;
+			Parcel in = (Parcel) source();
+			out = new ComponentName(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[-1];taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = new ComponentName(in, (String) null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[-1];taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = new ComponentName((String) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;createRelative;(Context,String);;Argument[1];ReturnValue;taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = ComponentName.createRelative((Context) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;createRelative;(String,String);;Argument[0..1];ReturnValue;taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = ComponentName.createRelative(in, (String) null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;createRelative;(String,String);;Argument[0..1];ReturnValue;taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = ComponentName.createRelative((String) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;flattenToShortString;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			ComponentName in = (ComponentName) source();
+			out = in.flattenToShortString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;flattenToString;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			ComponentName in = (ComponentName) source();
+			out = in.flattenToString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;getClassName;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			ComponentName in = (ComponentName) source();
+			out = in.getClassName();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;getPackageName;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			ComponentName in = (ComponentName) source();
+			out = in.getPackageName();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;getShortClassName;;;Argument[-1];ReturnValue;taint"
+			String out = null;
+			ComponentName in = (ComponentName) source();
+			out = in.getShortClassName();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;ComponentName;false;unflattenFromString;;;Argument[0];ReturnValue;taint"
+			ComponentName out = null;
+			String in = (String) source();
+			out = ComponentName.unflattenFromString(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;Intent;(Context,Class);;Argument[1];Argument[-1];taint"
+			Intent out = null;
+			Class in = (Class) source();
+			out = new Intent((Context) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;Intent;(Intent);;Argument[0];Argument[-1];taint"
+			Intent out = null;
+			Intent in = (Intent) source();
+			out = new Intent(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;Intent;(String,Uri,Context,Class);;Argument[3];Argument[-1];taint"
+			Intent out = null;
+			Class in = (Class) source();
+			out = new Intent(null, null, null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setClass;;;Argument[1];Argument[-1];taint"
+			Intent out = null;
+			Class in = (Class) source();
+			out.setClass(null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setClassName;(Context,String);;Argument[1];Argument[-1];taint"
+			Intent out = null;
+			String in = (String) source();
+			out.setClassName((Context) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[-1];taint"
+			Intent out = null;
+			String in = (String) source();
+			out.setClassName(in, (String) null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[-1];taint"
+			Intent out = null;
+			String in = (String) source();
+			out.setClassName((String) null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setComponent;;;Argument[0];Argument[-1];taint"
+			Intent out = null;
+			ComponentName in = (ComponentName) source();
+			out.setComponent(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.content;Intent;true;setPackage;;;Argument[0];Argument[-1];taint"
+			Intent out = null;
+			String in = (String) source();
+			out.setPackage(in);
+			sink(out); // $ hasTaintFlow
 		}
 
 	}
