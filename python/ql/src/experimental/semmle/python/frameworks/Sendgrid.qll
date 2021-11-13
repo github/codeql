@@ -83,7 +83,7 @@ private module Sendgrid {
    * * `getFrom()`'s result would be `"from@example.com"`.
    * * `getSubject()`'s result would be `"Sending with SendGrid is Fun"`.
    */
-  private class SendGridMail extends DataFlow::CallCfgNode, EmailSender {
+  private class SendGridMail extends DataFlow::CallCfgNode, EmailSender::Range {
     SendGridMail() { this.getFunction() = sendgridApiSendCall() }
 
     override DataFlow::Node getPlainTextBody() {

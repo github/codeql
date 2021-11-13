@@ -67,7 +67,7 @@ private module FlaskMail {
    * * `getFrom()`'s result would be `"from@example.com"`.
    * * `getSubject()`'s result would be `"Subject"`.
    */
-  private class FlaskMail extends DataFlow::CallCfgNode, EmailSender {
+  private class FlaskMail extends DataFlow::CallCfgNode, EmailSender::Range {
     FlaskMail() {
       this =
         [flaskMailInstance(), flaskMailInstance().getMember("connect").getReturn()]

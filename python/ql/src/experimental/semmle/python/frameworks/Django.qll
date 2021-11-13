@@ -8,7 +8,7 @@ private import semmle.python.frameworks.Django
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.RemoteFlowSources
 
 private module PrivateDjango {
   private module django {
@@ -112,7 +112,7 @@ private module PrivateDjango {
        * * `getFrom()`'s result would be `"from@example.com"`.
        * * `getSubject()`'s result would be `"Subject"`.
        */
-      private class DjangoSendMail extends DataFlow::CallCfgNode, EmailSender {
+      private class DjangoSendMail extends DataFlow::CallCfgNode, EmailSender::Range {
         DjangoSendMail() { this = djangoMail().getMember("send_mail").getACall() }
 
         override DataFlow::Node getPlainTextBody() {
@@ -152,7 +152,7 @@ private module PrivateDjango {
        * * `getFrom()`'s result would be `none`.
        * * `getSubject()`'s result would be `"Subject"`.
        */
-      private class DjangoMailInternal extends DataFlow::CallCfgNode, EmailSender {
+      private class DjangoMailInternal extends DataFlow::CallCfgNode, EmailSender::Range {
         DjangoMailInternal() {
           this = djangoMail().getMember(["mail_admins", "mail_managers"]).getACall()
         }
