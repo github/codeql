@@ -19,6 +19,15 @@ kernelSystemCallExecutions
 | CommandExecution.rb:19:1:19:59 | call to system |
 | CommandExecution.rb:20:1:20:62 | call to system |
 | CommandExecution.rb:21:1:21:72 | call to system |
+| app/graphql/mutations/dummy.rb:10:7:10:33 | call to system |
+| app/graphql/resolvers/dummy_resolver.rb:11:7:11:33 | call to system |
+| app/graphql/types/query_type.rb:11:7:11:30 | call to system |
+| app/graphql/types/query_type.rb:19:7:19:35 | call to system |
+| app/graphql/types/query_type.rb:20:7:20:30 | call to system |
+| app/graphql/types/query_type.rb:28:7:28:40 | call to system |
+| app/graphql/types/query_type.rb:37:7:37:28 | call to system |
+| app/graphql/types/query_type.rb:38:7:38:35 | call to system |
+| app/graphql/types/query_type.rb:43:7:43:27 | call to system |
 kernelExecCallExecutions
 | CommandExecution.rb:23:1:23:16 | call to exec |
 | CommandExecution.rb:24:1:24:19 | call to exec |
