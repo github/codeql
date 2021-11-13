@@ -26,6 +26,12 @@ private module FlaskMail {
 
   /**
    * Gets a reference to an argument from `flask_mail.Message`, `flask_sendmail.Message` and `flask.ext.sendmail.Message`.
+   *
+   * Usage example:
+   *
+   * ```codeql
+   * DataFlow::Node getPlainTextBody() { result = getFlaskMailArgument(2, "body") }
+   * ```
    */
   bindingset[argumentPosition, argumentName]
   private DataFlow::Node getFlaskMailArgument(int argumentPosition, string argumentName) {
