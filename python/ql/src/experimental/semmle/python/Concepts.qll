@@ -297,37 +297,80 @@ class HeaderDeclaration extends DataFlow::Node {
   DataFlow::Node getValueArg() { result = range.getValueArg() }
 }
 
+/** Provides classes for modeling Email APIs. */
+module EmailSender {
+  /**
+   * A data-flow node that sends an email.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `EmailSender` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a data flow node holding the plaintext version of the email body.
+     */
+    abstract DataFlow::Node getPlainTextBody();
+
+    /**
+     * Gets a data flow node holding the html version of the email body.
+     */
+    abstract DataFlow::Node getHtmlBody();
+
+    /**
+     * Gets a data flow node holding the recipients of the email.
+     */
+    abstract DataFlow::Node getTo();
+
+    /**
+     * Gets a data flow node holding the senders of the email.
+     */
+    abstract DataFlow::Node getFrom();
+
+    /**
+     * Gets a data flow node holding the subject of the email.
+     */
+    abstract DataFlow::Node getSubject();
+  }
+}
+
 /**
- * An operation that sends an email.
+ * A data-flow node that sends an email..
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `EmailSender::Range` instead.
  */
-abstract class EmailSender extends DataFlow::CallCfgNode {
+class EmailSender extends DataFlow::Node {
+  EmailSender::Range range;
+
+  EmailSender() { this = range }
+
   /**
    * Gets a data flow node holding the plaintext version of the email body.
    */
-  abstract DataFlow::Node getPlainTextBody();
+  DataFlow::Node getPlainTextBody() { result = range.getPlainTextBody() }
 
   /**
    * Gets a data flow node holding the html version of the email body.
    */
-  abstract DataFlow::Node getHtmlBody();
+  DataFlow::Node getHtmlBody() { result = range.getHtmlBody() }
 
   /**
    * Gets a data flow node holding the recipients of the email.
    */
-  abstract DataFlow::Node getTo();
+  DataFlow::Node getTo() { result = range.getTo() }
 
   /**
    * Gets a data flow node holding the senders of the email.
    */
-  abstract DataFlow::Node getFrom();
+  DataFlow::Node getFrom() { result = range.getFrom() }
 
   /**
    * Gets a data flow node holding the subject of the email.
    */
-  abstract DataFlow::Node getSubject();
+  DataFlow::Node getSubject() { result = range.getSubject() }
 
   /**
    * Gets a data flow node that refers to the HTML body or plaintext body of the email.
    */
-  DataFlow::Node getABody() { result in [getPlainTextBody(), getHtmlBody()] }
+  DataFlow::Node getABody() { result in [range.getPlainTextBody(), range.getHtmlBody()] }
 }
