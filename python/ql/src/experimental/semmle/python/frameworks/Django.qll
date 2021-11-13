@@ -96,6 +96,22 @@ private module PrivateDjango {
         result = API::moduleImport("django").getMember("core").getMember("mail")
       }
 
+      /**
+       * Gets a call to `django.core.mail.send_mail()`.
+       *
+       * Given the following example:
+       *
+       * ```py
+       * send_mail("Subject", "plain-text body", "from@example.com", ["to@example.com"], html_message=django.http.request.GET.get("html"))
+       * ```
+       *
+       * * `this` would be `send_mail("Subject", "plain-text body", "from@example.com", ["to@example.com"], html_message=django.http.request.GET.get("html"))`.
+       * * `getPlainTextBody()`'s result would be `"plain-text body"`.
+       * * `getHtmlBody()`'s result would be `django.http.request.GET.get("html")`.
+       * * `getTo()`'s result would be `["to@example.com"]`.
+       * * `getFrom()`'s result would be `"from@example.com"`.
+       * * `getSubject()`'s result would be `"Subject"`.
+       */
       private class DjangoSendMail extends DataFlow::CallCfgNode, EmailSender {
         DjangoSendMail() { this = djangoMail().getMember("send_mail").getACall() }
 
@@ -120,7 +136,22 @@ private module PrivateDjango {
         }
       }
 
-      /** https://github.com/django/django/blob/ca9872905559026af82000e46cde6f7dedc897b6/django/core/mail/__init__.py#L90-L121 */
+      /**
+       * Gets a call to `django.core.mail.mail_admins()` or `django.core.mail.mail_managers()`.
+       *
+       * Given the following example:
+       *
+       * ```py
+       * mail_admins("Subject", "plain-text body", html_message=django.http.request.GET.get("html"))
+       * ```
+       *
+       * * `this` would be `mail_admins("Subject", "plain-text body", html_message=django.http.request.GET.get("html"))`.
+       * * `getPlainTextBody()`'s result would be `"plain-text body"`.
+       * * `getHtmlBody()`'s result would be `django.http.request.GET.get("html")`.
+       * * `getTo()`'s result would be `none`.
+       * * `getFrom()`'s result would be `none`.
+       * * `getSubject()`'s result would be `"Subject"`.
+       */
       private class DjangoMailInternal extends DataFlow::CallCfgNode, EmailSender {
         DjangoMailInternal() {
           this = djangoMail().getMember(["mail_admins", "mail_managers"]).getACall()
