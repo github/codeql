@@ -43,6 +43,22 @@ private module Sendgrid {
     result.(DataFlow::AttrRead).getAttributeName() in ["send", "post"]
   }
 
+  private DataFlow::Node sendgridContent(DataFlow::CallCfgNode contentCall, string mime) {
+    exists(StrConst mimeNode |
+      mimeNode.getText() = mime and
+      DataFlow::exprNode(mimeNode).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
+      result = contentCall.getArg(1)
+    )
+  }
+
+  private DataFlow::Node sendgridWrite(string attributeName) {
+    exists(DataFlow::AttrWrite attrWrite |
+      attrWrite.getObject().getALocalSource() = sendgridMailCall() and
+      attrWrite.getAttributeName() = attributeName and
+      result = attrWrite.getValue()
+    )
+  }
+
   /**
    * Gets a reference to `sg.send()` and `sg.client.mail.send.post()`.
    *
@@ -75,25 +91,12 @@ private module Sendgrid {
           sendgridMailCall().getArg(3), sendgridMailCall().getArgByName("plain_text_content")
         ]
       or
-      exists(DataFlow::CallCfgNode contentCall, StrConst mime |
-        contentCall = sendgridMailHelper().getMember("Content").getACall() and
-        mime.getText() = "text/plain" and
-        DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
-        result = contentCall.getArg(1)
-      )
+      result in [
+          sendgridContent(sendgridMailHelper().getMember("Content").getACall(), "text/plain"),
+          sendgridContent(sendgridMailInstance().getMember("add_content").getACall(), "text/plain")
+        ]
       or
-      exists(DataFlow::CallCfgNode addContentCall, StrConst mime |
-        addContentCall = sendgridMailInstance().getMember("add_content").getACall() and
-        mime.getText() = "text/plain" and
-        DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(addContentCall.getArg(1)) and
-        result = addContentCall.getArg(0)
-      )
-      or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = sendgridMailCall() and
-        bodyWrite.getAttributeName() = "plain_text_content" and
-        result = bodyWrite.getValue()
-      )
+      result = sendgridWrite("plain_text_content")
     }
 
     override DataFlow::Node getHtmlBody() {
@@ -101,25 +104,14 @@ private module Sendgrid {
       or
       result = sendgridMailInstance().getMember("set_html").getACall().getArg(0)
       or
-      exists(DataFlow::CallCfgNode contentCall, StrConst mime |
-        contentCall = sendgridMailHelper().getMember("Content").getACall() and
-        mime.getText() = ["text/html", "text/x-amp-html"] and
-        DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
-        result = contentCall.getArg(1)
-      )
+      result in [
+          sendgridContent(sendgridMailHelper().getMember("Content").getACall(),
+            ["text/html", "text/x-amp-html"]),
+          sendgridContent(sendgridMailInstance().getMember("add_content").getACall(),
+            ["text/html", "text/x-amp-html"])
+        ]
       or
-      exists(DataFlow::CallCfgNode addContentCall, StrConst mime |
-        addContentCall = sendgridMailInstance().getMember("add_content").getACall() and
-        mime.getText() = ["text/html", "text/x-amp-html"] and
-        DataFlow::exprNode(mime).(DataFlow::LocalSourceNode).flowsTo(addContentCall.getArg(1)) and
-        result = addContentCall.getArg(0)
-      )
-      or
-      exists(DataFlow::AttrWrite htmlWrite |
-        htmlWrite.getObject().getALocalSource() = sendgridMailCall() and
-        htmlWrite.getAttributeName() = "html_content" and
-        result = htmlWrite.getValue()
-      )
+      result = sendgridWrite("html_content")
       or
       exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
         content.getKey().(Str_).getS() = "content" and
@@ -134,24 +126,9 @@ private module Sendgrid {
       )
       or
       exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
-        footer.getKey().(Str_).getS() = "footer" and
+        footer.getKey().(Str_).getS() = ["footer", "subscription_tracking"] and
         footer.getValue().(Dict) = generalDict and
         // check footer is enabled
-        enablePair.getKey().(Str_).getS() = "enable" and
-        exists(enablePair.getValue().(True)) and
-        // get html content
-        htmlPair.getKey().(Str_).getS() = "html" and
-        result.asExpr() = htmlPair.getValue() and
-        // correlate generalDict with previously set KeyValuePairs
-        generalDict.getAnItem() in [enablePair, htmlPair]
-      )
-      or
-      exists(
-        KeyValuePair subTracking, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair
-      |
-        subTracking.getKey().(Str_).getS() = "subscription_tracking" and
-        subTracking.getValue().(Dict) = generalDict and
-        // check subscription tracking is enabled
         enablePair.getKey().(Str_).getS() = "enable" and
         exists(enablePair.getValue().(True)) and
         // get html content
@@ -181,11 +158,7 @@ private module Sendgrid {
       or
       result = sendgridMailInstance().getMember(["from_email", "set_from"]).getACall().getArg(0)
       or
-      exists(DataFlow::AttrWrite fromWrite |
-        fromWrite.getObject().getALocalSource() = sendgridMailCall() and
-        fromWrite.getAttributeName() = "from_email" and
-        result = fromWrite.getValue()
-      )
+      result = sendgridWrite("from_email")
     }
 
     override DataFlow::Node getSubject() {
@@ -193,11 +166,7 @@ private module Sendgrid {
       or
       result = sendgridMailInstance().getMember(["subject", "set_subject"]).getACall().getArg(0)
       or
-      exists(DataFlow::AttrWrite subjectWrite |
-        subjectWrite.getObject().getALocalSource() = sendgridMailCall() and
-        subjectWrite.getAttributeName() = "subject" and
-        result = subjectWrite.getValue()
-      )
+      result = sendgridWrite("subject")
     }
   }
 }
