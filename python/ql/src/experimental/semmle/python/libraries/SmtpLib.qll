@@ -2,89 +2,176 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.TaintTracking
 
 module SmtpLib {
-  private API::Node smtpLib() { result = API::moduleImport("smtplib") }
-
-  private API::Node smtpConnectionInstance() { result = smtpLib().getMember("SMTP_SSL") }
-
-  API::Node smtpMimeMultipartInstance() {
-    result = API::moduleImport("email.mime.multipart").getMember("MIMEMultipart")
+  /** Gets a reference to `smtplib.SMTP_SSL` */
+  private API::Node smtpConnectionInstance() {
+    result = API::moduleImport("smtplib").getMember("SMTP_SSL")
   }
 
-  API::Node smtpMimeTextInstance() {
-    result = API::moduleImport("email.mime.text").getMember("MIMEText")
+  /** Gets a reference to `email.mime.multipart.MIMEMultipart` */
+  private API::Node smtpMimeMultipartInstance() {
+    result =
+      API::moduleImport("email").getMember("mime").getMember("multipart").getMember("MIMEMultipart")
   }
 
-  DataFlow::Node smtpMimeTextHTMLInstance() {
-    // select SmtpLib::smtpMimeTextInstance().getAUse().getALocalSource().getACall()
-    exists(API::Node mimeTextInstance, DataFlow::CallCfgNode callNode |
-      mimeTextInstance = smtpMimeTextInstance().getReturn() and
-      callNode = mimeTextInstance.getACall() and
-      callNode.getArg(1).asExpr().(Unicode).getText() = "html" and
-      result = callNode
+  /** Gets a reference to `email.mime.text.MIMEText` */
+  private API::Node smtpMimeTextInstance() {
+    result = API::moduleImport("email").getMember("mime").getMember("text").getMember("MIMEText")
+  }
+
+  private DataFlow::CallCfgNode mimeText(string mimetype) {
+    result = smtpMimeTextInstance().getACall() and
+    [result.getArg(1), result.getArgByName("_subtype")].asExpr().(Str_).getS() = mimetype
+  }
+
+  /**
+   * Gets flow from `MIMEText()` to `MIMEMultipart(_subparts=(part1, part2))`'s `_subparts`
+   * argument. Used because of the impossibility to get local source nodes from `_subparts`'
+   * `(List|Tuple)` elements.
+   */
+  private class SMTPMessageConfig extends TaintTracking::Configuration {
+    SMTPMessageConfig() { this = "SMTPMessageConfig" }
+
+    override predicate isSource(DataFlow::Node source) { source = mimeText(_) }
+
+    override predicate isSink(DataFlow::Node sink) {
+      sink = smtpMimeMultipartInstance().getACall().getArgByName("_subparts")
+    }
+  }
+
+  /**
+   * Using `MimeText` call, gets the content argument whose type argument equals `mimetype`.
+   * This call flow sinto `MIMEMultipart`'s `_subparts` argument or `.attach()` method call,
+   * and both local source nodes correlate to `smtp`'s `sendmail` call 3rd argument's local source.
+   *
+   * Given the following example with `getSmtpMessage(any(SmtpLibSendMail s), "html")`:
+   *
+   * ```py
+   * part1 = MIMEText(text, "plain")
+   * part2 = MIMEText(html, "html")
+   * message = MIMEMultipart(_subparts=(part1, part2))
+   * server.sendmail(sender_email, receiver_email, message.as_string())
+   * ```
+   *
+   * * `source` would be `MIMEText(text, "html")`.
+   * * `sink` would be `MIMEMultipart(_subparts=(part1, part2))`.
+   * * Then `message` local source node is correlated to `sink`.
+   * * Then the flow from `source` to `_subparts` is checked.
+   *
+   * Given the following example with `getSmtpMessage(any(SmtpLibSendMail s), "html")`:
+   *
+   * ```py
+   * part1 = MIMEText(text, "plain")
+   * part2 = MIMEText(html, "html")
+   * message = MIMEMultipart("alternative")
+   * message.attach(part1)
+   * message.attach(part2)
+   * server.sendmail(sender_email, receiver_email, message.as_string())
+   * ```
+   *
+   * * `source` would be `MIMEText(text, "html")`.
+   * * `sink` would be `message.attach(part2)`.
+   * * Then `sink`'s object (`message`) local source is correlated to `server.sendmail`
+   * 3rd argument local source (`MIMEMultipart("alternative")`).
+   * * Then the flow from `source` to `sink` 1st argument is checked.
+   */
+  bindingset[mimetype]
+  private DataFlow::Node getSmtpMessage(DataFlow::CallCfgNode sendCall, string mimetype) {
+    exists(DataFlow::Node source, DataFlow::Node sink |
+      source = mimeText(mimetype) and
+      (
+        // via _subparts
+        sink = smtpMimeMultipartInstance().getACall() and
+        sink =
+          [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
+              .getALocalSource() and
+        DataFlow::flowsTo(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"),
+          any(SMTPMessageConfig a))
+        or
+        // via .attach()
+        sink = smtpMimeMultipartInstance().getReturn().getMember("attach").getACall() and
+        sink.(DataFlow::MethodCallNode).getObject().getALocalSource() =
+          [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
+              .getALocalSource() and
+        source.(DataFlow::CallCfgNode).flowsTo(sink.(DataFlow::CallCfgNode).getArg(0))
+      ) and
+      result = source.(DataFlow::CallCfgNode).getArg(0)
     )
   }
 
-  class SmtpLibSendMail extends DataFlow::CallCfgNode, EmailSender {
-    SmtpLibSendMail() { this = smtpConnectionInstance().getMember("sendmail").getACall() }
+  /**
+   * Gets a message subscript write by correlating subscript's object local source with
+   * `smtp`'s `sendmail` call 3rd argument's local source.
+   *
+   * Given the following example with `getSMTPSubscriptByIndex(any(SmtpLibSendMail s), "Subject")`:
+   *
+   * ```py
+   * message = MIMEMultipart("alternative")
+   * message["Subject"] = "multipart test"
+   * server.sendmail(sender_email, receiver_email, message.as_string())
+   * ```
+   *
+   * * `def` would be `message["Subject"]` (`DefinitionNode`)
+   * * `sub` would be `message["Subject"]` (`Subscript`)
+   * * `result` would be `"multipart test"`
+   */
+  private DataFlow::Node getSMTPSubscriptByIndex(DataFlow::CallCfgNode sendCall, string index) {
+    exists(DefinitionNode def, Subscript sub |
+      sub = def.getNode() and
+      DataFlow::exprNode(sub.getObject()).getALocalSource() =
+        [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
+            .getALocalSource() and
+      sub.getIndex().(Str_).getS() = index and
+      result.asCfgNode() = def.getValue()
+    )
+  }
 
-    override DataFlow::Node getPlainTextBody() {
-      result in [this.getArg(1), this.getArgByName("message")]
+  /**
+   * Gets a reference to `smtplib.SMTP_SSL().sendmail()`.
+   *
+   * Given the following example:
+   *
+   * ```py
+   * part1 = MIMEText(text, "plain")
+   * part2 = MIMEText(html, "html")
+   *
+   * message = MIMEMultipart(_subparts=(part1, part2))
+   * message["Subject"] = "multipart test"
+   * message["From"] = sender_email
+   * message["To"] = receiver_email
+   *
+   * server.login(sender_email, "SERVER_PASSWORD")
+   * server.sendmail(sender_email, receiver_email, message.as_string())
+   * ```
+   *
+   * * `this` would be `server.sendmail(sender_email, receiver_email, message.as_string())`.
+   * * `getPlainTextBody()`'s result would be `text`.
+   * * `getHtmlBody()`'s result would be `html`.
+   * * `getTo()`'s result would be `receiver_email`.
+   * * `getFrom()`'s result would be `sender_email`.
+   * * `getSubject()`'s result would be `"multipart test"`.
+   */
+  private class SmtpLibSendMail extends DataFlow::CallCfgNode, EmailSender::Range {
+    SmtpLibSendMail() {
+      this = smtpConnectionInstance().getReturn().getMember("sendmail").getACall()
     }
 
-    override DataFlow::Node getHtmlBody() {
-      result in [this.getArg(8), this.getArgByName("html_message")]
-    }
+    override DataFlow::Node getPlainTextBody() { result = getSmtpMessage(this, "plain") }
+
+    override DataFlow::Node getHtmlBody() { result = getSmtpMessage(this, "html") }
 
     override DataFlow::Node getTo() {
-      result in [this.getArg(3), this.getArgByName("recipient_list")]
+      result in [this.getArg(1), getSMTPSubscriptByIndex(this, "To")]
     }
 
     override DataFlow::Node getFrom() {
-      result in [this.getArg(2), this.getArgByName("from_email")]
+      result in [this.getArg(0), getSMTPSubscriptByIndex(this, "From")]
     }
 
     override DataFlow::Node getSubject() {
-      result in [this.getArg(0), this.getArgByName("subject")]
+      result in [this.getArg(2), getSMTPSubscriptByIndex(this, "Subject")]
     }
   }
 }
-
-// MIMEMultipart has two ways it can add tainted data:
-//    MIMEMultipart(_subparts=(part1, part2))
-//    or
-//    message = MIMEMultipart("alternative")
-//    message.attach(part1)
-//
-//
-// select SmtpLib::smtpMimeTextHTMLInstance()
-// select API::moduleImport("email.mime.multipart")
-//       .getMember("MIMEMultipart")
-//       .getACall()
-//       .getArgByName("_subparts")
-//
-// from DataFlow::Node arg1
-// where
-//   arg1 =
-//     API::moduleImport("email.mime.multipart")
-//         .getMember("MIMEMultipart")
-//         .getReturn()
-//         .getMember("attach")
-//         .getACall()
-//         .getArg(0)
-//
-// select SmtpLib::smtpMimeTextHTMLInstance() //.getReturn()
-//
-//.getArg(1) //.getAUse()
-//
-// Work on the smtpMimeTextHTMLInstance function
-from DataFlow::CallCfgNode result1
-where
-  exists(API::Node mimeTextInstance, DataFlow::CallCfgNode callNode |
-    mimeTextInstance = SmtpLib::smtpMimeTextInstance().getReturn() and
-    callNode = mimeTextInstance.getACall() and
-    callNode.getArg(1).asExpr().(Unicode).getText() = "html" and
-    result1 = callNode
-  )
-select result1

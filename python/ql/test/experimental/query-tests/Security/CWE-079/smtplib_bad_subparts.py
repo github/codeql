@@ -1,11 +1,13 @@
 # This test checks that the developer doesn't pass a MIMEText instance to a MIMEMultipart initializer via the subparts parameter.
 from flask import Flask, request
 import json
-import smtplib, ssl
+import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def email_person():
@@ -28,8 +30,8 @@ def email_person():
 
     # Create secure connection with server and send email
     context = ssl.create_default_context()
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context);
-    
+    server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context)
+
     server.login(sender_email, "SERVER_PASSWORD")
     server.sendmail(
         sender_email, receiver_email, message.as_string()
