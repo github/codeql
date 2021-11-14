@@ -65,12 +65,12 @@ where
   or
   exists(Expr exptmp, int i |
     numberArgumentModFunctions(fc.getTarget(), i) and
+    globalValueNumber(exptmp) = globalValueNumber(fc.getArgument(i)) and
+    exptmp.getAChild*() instanceof BinaryArithmeticOperation and
     not exptmp.getAChild*() instanceof FunctionCall and
     not exists(SizeofOperator so | exptmp.getAChild*() = so) and
     not exists(ArrayExpr aetmp | aetmp.getArrayOffset() = exptmp.getAChild*()) and
-    exptmp.getAChild*() instanceof BinaryArithmeticOperation and
     not exptmp.getAChild*() instanceof BinaryBitwiseOperation and
-    globalValueNumber(exptmp) = globalValueNumber(fc.getArgument(i)) and
     not exptmp.isConstant() and
     msg = "Using arithmetic to compute the mask may not be safe."
   )
