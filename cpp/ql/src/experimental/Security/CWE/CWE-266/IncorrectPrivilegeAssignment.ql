@@ -34,7 +34,7 @@ where
   fc.getArgument(0).getValue() = "0" and
   not exists(FunctionCall fctmp |
     fctmp.getTarget().hasGlobalOrStdName("umask") and
-    globalValueNumber(fctmp.getArgument(0)) != globalValueNumber(fc.getArgument(0))
+    fctmp.getArgument(0).getValue() != "0"
   ) and
   exists(FunctionCall fctmp |
     (
