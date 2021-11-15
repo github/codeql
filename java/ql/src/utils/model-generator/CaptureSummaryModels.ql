@@ -180,7 +180,6 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     exists(TargetAPI api |
-      source instanceof DataFlow::ParameterNode and
       api = source.asParameter().getCallable() and
       isRelevantType(api.getReturnType()) and
       isRelevantType(source.asParameter().getType())
