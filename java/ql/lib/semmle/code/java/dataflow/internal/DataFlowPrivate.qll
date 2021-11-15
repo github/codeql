@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
+private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
@@ -73,9 +74,14 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2) or
-  variableCaptureStep(node1, node2) or
+  staticFieldStep(node1, node2)
+  or
+  variableCaptureStep(node1, node2)
+  or
   variableCaptureStep(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+  or
+  any(AdditionalValueStep a).step(node1, node2) and
+  node1.getEnclosingCallable() != node2.getEnclosingCallable()
 }
 
 /**
