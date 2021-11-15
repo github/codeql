@@ -2432,10 +2432,28 @@ cfg.rb:
 #  196| forward_param
 #-----|  -> exit cfg.rb (normal)
 
+#  196| exit forward_param
+
+#  196| exit forward_param (normal)
+#-----|  -> exit forward_param
+
 #  196| a
 #-----|  -> b
 
 #  196| b
+#-----|  -> ...
+
+#  196| ...
+#-----|  -> self
+
+#  197| call to bar
+#-----|  -> exit forward_param (normal)
+
+#  197| self
+#-----|  -> b
+
+#  197| b
+#-----|  -> call to bar
 
 desugar.rb:
 #    1| enter m1
