@@ -3,6 +3,7 @@
  * @description Trusting all certificates allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id java/insecure-trustmanager
  * @tags security
