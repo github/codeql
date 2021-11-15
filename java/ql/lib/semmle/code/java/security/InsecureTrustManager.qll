@@ -1,3 +1,5 @@
+/** Provides classes and predicates to reason about insecure `TrustManager`s. */
+
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.security.Encryption
