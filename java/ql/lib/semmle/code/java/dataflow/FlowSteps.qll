@@ -11,6 +11,7 @@ private import semmle.code.java.dataflow.DataFlow
  */
 private module Frameworks {
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.android.AsyncTask
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Guice
