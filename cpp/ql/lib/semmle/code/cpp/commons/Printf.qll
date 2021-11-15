@@ -1104,13 +1104,9 @@ class FormatLiteral extends Literal {
             |
               cand =
                 max(float cand0 |
-                  (
-                    if lower < 0
-                    then
-                      // Calculate the value of `(unsigned)lower`.
-                      cand0 = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8) + lower
-                    else cand0 = lower
-                  )
+                  // If lower can be negative we use `(unsigned)-1` as the candidate value.
+                  lower < 0 and
+                  cand0 = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
                   or
                   cand0 = upperBound(arg.getFullyConverted())
                 )
