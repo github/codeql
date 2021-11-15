@@ -31,9 +31,9 @@ class MyServer(wsgiref.simple_server.WSGIServer):
         super().__init__(ADDRESS, wsgiref.simple_server.WSGIRequestHandler)
         self.set_app(self.my_method)
 
-    def my_method(self, _env, start_response): # $ MISSING: requestHandler
+    def my_method(self, _env, start_response): # $ requestHandler
         start_response("200 OK", [])
-        return [b"my_method"] # $ MISSING: HttpResponse responseBody=List
+        return [b"my_method"] # $ HttpResponse responseBody=List
 
 
 case = sys.argv[1]

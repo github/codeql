@@ -80,7 +80,28 @@ private DataFlow::TypeTrackingNode poorMansFunctionTracker(DataFlow::TypeTracker
  * inst = MyClass()
  * print(inst.my_method)
  * ```
+ *
+ * But is able to handle simple method calls within a class, but does not take MRO into
+ * account.
+ * ```py
+ * class MyClass:
+ *     def method1(self);
+ *         pass
+ *
+ *     def method2(self);
+ *         self.method1()
+ * ```
  */
 DataFlow::Node poorMansFunctionTracker(Function func) {
   poorMansFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
+  or
+  // simple method calls within a class
+  // TODO: Should take MRO into account
+  exists(Class cls, Function otherFunc, DataFlow::Node selfRef |
+    cls.getAMethod() = func and
+    cls.getAMethod() = otherFunc
+  |
+    selfRef.getALocalSource().(DataFlow::ParameterNode).getParameter() = otherFunc.getArg(0) and
+    result.(DataFlow::AttrRead).accesses(selfRef, func.getName())
+  )
 }

@@ -23,10 +23,10 @@ class MyClass(MyBase):
 
     def method2(self):
         print("method2", self)
-        self.method1()
+        self.method1() # $ resolved=method1
         self.base_method()
-        self.cls_method()
-        self.static()
+        self.cls_method() # $ resolved=cls_method
+        self.static() # $ resolved=static
 
 
 
