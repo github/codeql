@@ -192,6 +192,10 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr().(ConstructorCall).getAnArgument() = node1.asExpr()
   }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+  }
 }
 
 predicate paramFlowToReturnValueExists(Parameter p) {

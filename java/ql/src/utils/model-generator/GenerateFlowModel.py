@@ -80,7 +80,7 @@ def runQuery(infoMessage, query):
         __file__), query)
     resultBqrs = os.path.join(workDir, "out.bqrs")
     cmd = ['codeql', 'query', 'run', queryFile, '--database',
-           database, '--output', resultBqrs]
+           database, '--output', resultBqrs, '--threads', '8']
 
     ret = subprocess.call(cmd)
     if ret != 0:
