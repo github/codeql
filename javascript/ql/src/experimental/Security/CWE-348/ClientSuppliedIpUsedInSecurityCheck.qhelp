@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>An original client IP address is retrieved from an http header (<code>X-Forwarded-For</code> or <code>X-Real-IP</code> or <code>Proxy-Client-IP</code> 
+etc.), which is used to ensure security. Attackers can forge the value of these identifiers to
+bypass a blacklist, for example.</p>
+
+</overview>
+<recommendation>
+
+<p>Do not trust the values of HTTP headers allegedly identifying the originating IP. If you are aware your application will run behind some reverse proxies then the last entry of a <code>X-Forwarded-For</code> header value may be more trustworthy than the rest of it because some reverse proxies append the IP address they observed to the end of any remote-supplied header.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively. 
+In <code>/bad1</code> endpoint, the client IP from the <code>X-Forwarded-For</code> header is used directly to check against a whitelist. In <code>/bad2</code> endpoint, this value is split into multiple IPs, separated by a comma, but the less-trustworthy first one is used. Both of these examples could be deceived by providing a forged HTTP header. 
+The endpoint <code>/good</code> similarly splits the value from <code>X-Forwarded-For</code> header but uses the last, more trustworthy entry.</p>
+
+<sample src="examples/ClientSuppliedIpUsedInSecurityCheck.js" />
+
+</example>
+<references>
+
+<li>Dennis Schneider: <a href="https://www.dennis-schneider.com/blog/prevent-ip-address-spoofing-with-x-forwarded-for-header-and-aws-elb-in-clojure-ring/">
+Prevent IP address spoofing with X-Forwarded-For header when using AWS ELB and Clojure Ring</a>
+</li>
+
+<li>Security Rule Zero: <a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">A Warning about X-Forwarded-For</a>
+</li>
+
+</references>
+</qhelp>
