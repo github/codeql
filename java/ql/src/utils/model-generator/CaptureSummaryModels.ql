@@ -12,7 +12,7 @@ import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.InstanceAccess
 import ModelGeneratorUtils
 
-string captureFlow(Callable api) {
+string captureFlow(TargetAPI api) {
   result = captureQualifierFlow(api) or
   result = captureParameterFlowToReturnValue(api) or
   result = captureFieldFlowIn(api) or
@@ -32,7 +32,7 @@ string captureFlow(Callable api) {
  * }
  * ```
  */
-string captureQualifierFlow(Callable api) {
+string captureQualifierFlow(TargetAPI api) {
   exists(ReturnStmt rtn |
     rtn.getEnclosingCallable() = api and
     rtn.getResult().(ThisAccess).isOwnInstanceAccess()
@@ -92,7 +92,7 @@ class FieldToReturnConfig extends TaintTracking::Configuration {
  * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
  * ```
  */
-string captureFieldFlow(Callable api) {
+string captureFieldFlow(TargetAPI api) {
   exists(FieldToReturnConfig config, ReturnNodeExt returnNodeExt |
     config.hasFlow(_, returnNodeExt) and
     returnNodeExt.getEnclosingCallable() = api and
@@ -107,7 +107,7 @@ string captureFieldFlow(Callable api) {
   )
 }
 
-string asOutput(Callable api, ReturnNodeExt node) {
+string asOutput(TargetAPI api, ReturnNodeExt node) {
   if node.getKind() instanceof ValueReturnKind
   then result = "ReturnValue"
   else
@@ -164,7 +164,7 @@ private predicate thisAccess(DataFlow::Node n) {
  * Captured Model:
  * `p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint`
  */
-string captureFieldFlowIn(Callable api) {
+string captureFieldFlowIn(TargetAPI api) {
   exists(DataFlow::Node source, ParameterToFieldConfig config |
     not api.isStatic() and
     config.hasFlow(source, _) and
@@ -179,7 +179,7 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
   ParameterToReturnValueTaintConfig() { this = "ParameterToReturnValueTaintConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Callable api |
+    exists(TargetAPI api |
       source instanceof DataFlow::ParameterNode and
       api = source.asParameter().getCallable() and
       isRelevantType(api.getReturnType()) and
@@ -221,7 +221,7 @@ predicate paramFlowToReturnValueExists(Parameter p) {
  * p;Foo;true;returnData;;Argument[0];ReturnValue;taint
  * ```
  */
-string captureParameterFlowToReturnValue(Callable api) {
+string captureParameterFlowToReturnValue(TargetAPI api) {
   exists(Parameter p |
     p = api.getAParameter() and
     paramFlowToReturnValueExists(p)
@@ -246,7 +246,7 @@ string captureParameterFlowToReturnValue(Callable api) {
  * p;Foo;true;addToList;;Argument[0];Argument[1];taint
  * ```
  */
-string captureParameterToParameterFlow(Callable api) {
+string captureParameterToParameterFlow(TargetAPI api) {
   exists(DataFlow::ParameterNode source, DataFlow::PostUpdateNode sink |
     source.getEnclosingCallable() = api and
     sink.getPreUpdateNode().asExpr() = api.getAParameter().getAnAccess() and

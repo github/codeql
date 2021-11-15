@@ -55,17 +55,17 @@ private predicate isJdkInternal(CompilationUnit cu) {
 }
 
 bindingset[input, output]
-string asTaintModel(Callable api, string input, string output) {
+string asTaintModel(TargetAPI api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
 bindingset[input, output]
-string asValueModel(Callable api, string input, string output) {
+string asValueModel(TargetAPI api, string input, string output) {
   result = asSummaryModel(api, input, output, "value")
 }
 
 bindingset[input, output, kind]
-string asSummaryModel(Callable api, string input, string output, string kind) {
+string asSummaryModel(TargetAPI api, string input, string output, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
@@ -73,19 +73,19 @@ string asSummaryModel(Callable api, string input, string output, string kind) {
 }
 
 bindingset[input, kind]
-string asSinkModel(Callable api, string input, string kind) {
+string asSinkModel(TargetAPI api, string input, string kind) {
   result = asPartialModel(api) + input + ";" + kind
 }
 
 bindingset[output, kind]
-string asSourceModel(Callable api, string output, string kind) {
+string asSourceModel(TargetAPI api, string output, string kind) {
   result = asPartialModel(api) + output + ";" + kind
 }
 
 /**
  * Computes the first 6 columns for CSV rows.
  */
-private string asPartialModel(Callable api) {
+private string asPartialModel(TargetAPI api) {
   result =
     typeAsSummaryModel(api) + ";" //
       + isExtensible(bestTypeForModel(api)) + ";" //
@@ -98,9 +98,9 @@ private string asPartialModel(Callable api) {
  * Returns the appropriate type name for the model. Either the type
  * declaring the method or the supertype introducing the method.
  */
-private string typeAsSummaryModel(Callable api) { result = typeAsModel(bestTypeForModel(api)) }
+private string typeAsSummaryModel(TargetAPI api) { result = typeAsModel(bestTypeForModel(api)) }
 
-private RefType bestTypeForModel(Callable api) {
+private RefType bestTypeForModel(TargetAPI api) {
   if exists(superImpl(api))
   then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
   else result = api.getDeclaringType()

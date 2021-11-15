@@ -43,7 +43,7 @@ string asInputArgument(DataFlow::Node source) {
   result = "Argument[-1]"
 }
 
-string captureSink(Callable api) {
+string captureSink(TargetAPI api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     sinkNode(sink, kind) and
