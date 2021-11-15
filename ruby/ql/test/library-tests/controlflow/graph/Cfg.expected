@@ -2398,7 +2398,7 @@ cfg.rb:
 #-----|  -> yield ...
 
 #  194| call to run_block
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> forward_param
 
 #  194| self
 #-----|  -> { ... }
@@ -2425,6 +2425,17 @@ cfg.rb:
 
 #  194| x
 #-----|  -> call to puts
+
+#  196| enter forward_param
+#-----|  -> a
+
+#  196| forward_param
+#-----|  -> exit cfg.rb (normal)
+
+#  196| a
+#-----|  -> b
+
+#  196| b
 
 desugar.rb:
 #    1| enter m1
