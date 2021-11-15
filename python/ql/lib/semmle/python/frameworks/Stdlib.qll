@@ -1452,7 +1452,7 @@ private module StdlibPrivate {
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
           "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
-          "unlink", "link_to", "write_bytes", "write_text"
+          "unlink", "link_to", "write_bytes", "write_text", "hardlink_to"
         ] and
       pathlibPath().flowsTo(fileAccess.getObject()) and
       fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
