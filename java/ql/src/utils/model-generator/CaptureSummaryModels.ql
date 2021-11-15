@@ -47,7 +47,11 @@ class FieldToReturnConfig extends TaintTracking::Configuration {
     source instanceof DataFlow::InstanceParameterNode
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNodeExt }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof ReturnNodeExt and
+    not sink.(ReturnNode).asExpr().(ThisAccess).isOwnInstanceAccess() and
+    not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable()))
+  }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::Content f |
@@ -97,11 +101,7 @@ string captureFieldFlow(TargetAPI api) {
     config.hasFlow(_, returnNodeExt) and
     returnNodeExt.getEnclosingCallable() = api and
     not api.getDeclaringType() instanceof EnumType and
-    isRelevantType(returnNodeExt.getType()) and
-    not (
-      returnNodeExt.getKind() instanceof ValueReturnKind and
-      exists(captureQualifierFlow(api))
-    )
+    isRelevantType(returnNodeExt.getType())
   |
     result = asTaintModel(api, "Argument[-1]", asOutput(api, returnNodeExt))
   )
