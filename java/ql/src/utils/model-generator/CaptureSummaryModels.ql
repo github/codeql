@@ -95,10 +95,6 @@ string captureFieldFlow(TargetAPI api) {
   )
 }
 
-class FieldAssignment extends AssignExpr {
-  FieldAssignment() { exists(Field f | f.getAnAccess() = this.getDest()) }
-}
-
 class ParameterToFieldConfig extends TaintTracking::Configuration {
   ParameterToFieldConfig() { this = "ParameterToFieldConfig" }
 
@@ -112,11 +108,7 @@ class ParameterToFieldConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FieldAssignment a |
-      a.getSource() = node1.asExpr() and
-      DataFlow::getFieldQualifier(a.getDest()) = node2.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-      isRelevantType(a.getDest().(FieldAccess).getField().getType())
-    )
+    store(node1, _, node2, _)
   }
 
   override DataFlow::FlowFeature getAFeature() {
@@ -128,8 +120,6 @@ private predicate thisAccess(DataFlow::Node n) {
   n.asExpr().(InstanceAccess).isOwnInstanceAccess()
   or
   n.(DataFlow::ImplicitInstanceAccess).getInstanceAccess() instanceof OwnInstanceAccess
-  or
-  n.asExpr().(FieldAccess).isOwnFieldAccess()
 }
 
 /**
