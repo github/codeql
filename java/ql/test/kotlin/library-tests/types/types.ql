@@ -1,5 +1,5 @@
 import java
 
 from Type t
-select t, concat(t.getAPrimaryQlClass(), ", ")
+select t.toString(), concat(t.getAPrimaryQlClass(), ", ")
 

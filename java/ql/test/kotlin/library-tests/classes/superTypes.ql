@@ -2,5 +2,5 @@ import java
 
 from Class c
 where c.fromSource()
-select c, c.getASupertype()
+select c, c.getASupertype().toString()
 

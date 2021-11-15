@@ -1,11 +1,11 @@
-| classes.kt:2:1:2:18 | ClassOne | file://:0:0:0:0 | Object |
-| classes.kt:4:1:6:1 | ClassTwo | file://:0:0:0:0 | Object |
-| classes.kt:8:1:10:1 | ClassThree | file://:0:0:0:0 | Object |
-| classes.kt:12:1:15:1 | ClassFour | classes.kt:8:1:10:1 | ClassThree |
-| classes.kt:17:1:18:1 | ClassFive | classes.kt:12:1:15:1 | ClassFour |
-| classes.kt:28:1:30:1 | ClassSix | classes.kt:12:1:15:1 | ClassFour |
-| classes.kt:28:1:30:1 | ClassSix | classes.kt:20:1:22:1 | IF1 |
-| classes.kt:28:1:30:1 | ClassSix | classes.kt:24:1:26:1 | IF2 |
-| classes.kt:34:1:47:1 | ClassSeven | file://:0:0:0:0 | Object |
-| classes.kt:49:1:51:1 | Direction | file://:0:0:0:0 | Enum<Direction> |
-| classes.kt:53:1:57:1 | Color | file://:0:0:0:0 | Enum<Color> |
+| classes.kt:2:1:2:18 | ClassOne | Object |
+| classes.kt:4:1:6:1 | ClassTwo | Object |
+| classes.kt:8:1:10:1 | ClassThree | Object |
+| classes.kt:12:1:15:1 | ClassFour | ClassThree |
+| classes.kt:17:1:18:1 | ClassFive | ClassFour |
+| classes.kt:28:1:30:1 | ClassSix | ClassFour |
+| classes.kt:28:1:30:1 | ClassSix | IF1 |
+| classes.kt:28:1:30:1 | ClassSix | IF2 |
+| classes.kt:34:1:47:1 | ClassSeven | Object |
+| classes.kt:49:1:51:1 | Direction | Enum<Direction> |
+| classes.kt:53:1:57:1 | Color | Enum<Color> |

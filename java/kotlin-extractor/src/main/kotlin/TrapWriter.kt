@@ -82,44 +82,29 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
      * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but with the given
      * default file used in getLocation etc.
      */
-    fun withTargetFile(filePath: String, sourceOffsetResolver: SourceOffsetResolver, populateFileTables: Boolean = true) =
-        FileTrapWriter(lm, bw, filePath, sourceOffsetResolver, populateFileTables)
-}
-
-abstract class SourceOffsetResolver {
-    abstract fun getLineNumber(offset: Int): Int
-    abstract fun getColumnNumber(offset: Int): Int
-}
-
-class FileSourceOffsetResolver(val fileEntry: IrFileEntry) : SourceOffsetResolver() {
-    override fun getLineNumber(offset: Int) = fileEntry.getLineNumber(offset)
-    override fun getColumnNumber(offset: Int) = fileEntry.getColumnNumber(offset)
-}
-
-object NullSourceOffsetResolver : SourceOffsetResolver() {
-    override fun getLineNumber(offset: Int) = 0
-    override fun getColumnNumber(offset: Int) = 0
+    fun withTargetFile(filePath: String, fileEntry: IrFileEntry?, populateFileTables: Boolean = true) =
+        FileTrapWriter(lm, bw, filePath, fileEntry, populateFileTables)
 }
 
 class SourceFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     irFile: IrFile) :
-    FileTrapWriter(lm, bw, irFile.path, FileSourceOffsetResolver(irFile.fileEntry)) {
+    FileTrapWriter(lm, bw, irFile.path, irFile.fileEntry) {
 }
 
 class ClassFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     filePath: String) :
-    FileTrapWriter(lm, bw, filePath, NullSourceOffsetResolver) {
+    FileTrapWriter(lm, bw, filePath, null) {
 }
 
 open class FileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val filePath: String,
-    val sourceOffsetResolver: SourceOffsetResolver,
+    val sourceFileEntry: IrFileEntry?,
     populateFileTables: Boolean = true
 ): TrapWriter (lm, bw) {
     val populateFile = PopulateFile(this)
@@ -140,26 +125,33 @@ open class FileTrapWriter (
     }
     fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         // If the compiler doesn't have a location, then start and end are both -1
-        val unknownLoc = startOffset == -1 && endOffset == -1
-        // If this is the location for a compiler-generated element, then it will
-        // be a zero-width location. QL doesn't support these, so we translate it
-        // into a one-width location.
-        val zeroWidthLoc = !unknownLoc && startOffset == endOffset
-        val startLine =   if(unknownLoc) 0 else sourceOffsetResolver.getLineNumber(startOffset) + 1
-        val startColumn = if(unknownLoc) 0 else sourceOffsetResolver.getColumnNumber(startOffset) + 1
-        val endLine =     if(unknownLoc) 0 else sourceOffsetResolver.getLineNumber(endOffset) + 1
-        val endColumn =   if(unknownLoc) 0 else sourceOffsetResolver.getColumnNumber(endOffset)
-        val endColumn2 =  if(zeroWidthLoc) endColumn + 1 else endColumn
-        return getLocation(fileId, startLine, startColumn, endLine, endColumn2)
+        // If this isn't a source file (sourceFileEntry is null), then nothing has
+        // a source location: we report the source .class file regardless.
+        if((startOffset == -1 && endOffset == -1) || sourceFileEntry == null) {
+            val reportFileId = if (sourceFileEntry == null) fileId else unknownFileId
+            return getLocation(reportFileId, 0, 0, 0, 0)
+        } else {
+            // If this is the location for a compiler-generated element, then it will
+            // be a zero-width location. QL doesn't support these, so we translate it
+            // into a one-width location.
+            val endColumnOffset = if (startOffset == endOffset) 1 else 0
+            return getLocation(
+                fileId,
+                sourceFileEntry.getLineNumber(startOffset) + 1,
+                sourceFileEntry.getColumnNumber(startOffset) + 1,
+                sourceFileEntry.getLineNumber(endOffset) + 1,
+                sourceFileEntry.getColumnNumber(endOffset) + endColumnOffset
+            )
+        }
     }
     fun getLocationString(e: IrElement): String {
-        if (e.startOffset == -1 && e.endOffset == -1) {
+        if ((e.startOffset == -1 && e.endOffset == -1) || sourceFileEntry == null) {
             return "unknown location, while processing $filePath"
         } else {
-            val startLine =   sourceOffsetResolver.getLineNumber(e.startOffset) + 1
-            val startColumn = sourceOffsetResolver.getColumnNumber(e.startOffset) + 1
-            val endLine =     sourceOffsetResolver.getLineNumber(e.endOffset) + 1
-            val endColumn =   sourceOffsetResolver.getColumnNumber(e.endOffset)
+            val startLine =   sourceFileEntry.getLineNumber(e.startOffset) + 1
+            val startColumn = sourceFileEntry.getColumnNumber(e.startOffset) + 1
+            val endLine =     sourceFileEntry.getLineNumber(e.endOffset) + 1
+            val endColumn =   sourceFileEntry.getColumnNumber(e.endOffset)
             return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
         }
     }

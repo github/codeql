@@ -32,5 +32,5 @@ MaybeExpr initializer(Variable v) {
 
 from Variable v
 where v.fromSource()
-select v, v.getType(), initializer(v)
+select v, v.getType().toString(), initializer(v)
 

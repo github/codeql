@@ -8,7 +8,7 @@ class InterestingParameter extends Parameter {
 
 from InterestingParameter p, Array a, KotlinType ktType
 where p.getType() = a and ktType = p.getKotlinType()
-select p, a, a.getComponentType(), a.getElementType(), ktType
+select p, a, a.getComponentType().toString(), a.getElementType().toString(), ktType
 
 query predicate cloneMethods(Method m, string signature, Array declType, Type returnType, KotlinType ktReturnType) {
   any(InterestingParameter p).getType() = declType and

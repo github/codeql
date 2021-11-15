@@ -350,9 +350,9 @@ open class KotlinUsesExtractor(
 
         val newTrapWriter =
             if (isExternalDeclaration(cls) || clsFile == null)
-                tw.withTargetFile(getIrClassBinaryPath(cls), NullSourceOffsetResolver, populateFileTables)
+                tw.withTargetFile(getIrClassBinaryPath(cls), null, populateFileTables)
             else
-                tw.withTargetFile(clsFile.path, FileSourceOffsetResolver(clsFile.fileEntry))
+                tw.withTargetFile(clsFile.path, clsFile.fileEntry)
 
         return KotlinUsesExtractor(logger, newTrapWriter, dependencyCollector, externalClassExtractor, pluginContext)
     }
