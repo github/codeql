@@ -103,15 +103,8 @@ string captureFieldFlow(TargetAPI api) {
     not api.getDeclaringType() instanceof EnumType and
     isRelevantType(returnNodeExt.getType())
   |
-    result = asTaintModel(api, "Argument[-1]", asOutput(api, returnNodeExt))
+    result = asTaintModel(api, "Argument[-1]", returnNodeAsOutput(api, returnNodeExt))
   )
-}
-
-string asOutput(TargetAPI api, ReturnNodeExt node) {
-  if node.getKind() instanceof ValueReturnKind
-  then result = "ReturnValue"
-  else
-    result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
 }
 
 class FieldAssignment extends AssignExpr {
@@ -166,7 +159,6 @@ private predicate thisAccess(DataFlow::Node n) {
  */
 string captureFieldFlowIn(TargetAPI api) {
   exists(DataFlow::Node source, ParameterToFieldConfig config |
-    not api.isStatic() and
     config.hasFlow(source, _) and
     source.asParameter().getCallable() = api
   |
@@ -254,27 +246,6 @@ string captureParameterToParameterFlow(TargetAPI api) {
     result =
       asTaintModel(api, parameterAccess(source.asParameter()),
         parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable().(Parameter)))
-  )
-}
-
-predicate isRelevantType(Type t) {
-  not t instanceof TypeClass and
-  not t instanceof EnumType and
-  not t instanceof PrimitiveType and
-  not t instanceof BoxedType and
-  not t.(RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
-  not t.(RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
-  (
-    not t.(Array).getElementType() instanceof PrimitiveType or
-    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
-  ) and
-  (
-    not t.(Array).getElementType() instanceof BoxedType or
-    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
-  ) and
-  (
-    not t.(CollectionType).getElementType() instanceof BoxedType or
-    isPrimitiveTypeUsedForBulkData(t.(CollectionType).getElementType())
   )
 }
 

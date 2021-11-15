@@ -1,6 +1,7 @@
 import java
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.internal.ContainerFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.internal.ContainerFlow
+private import semmle.code.java.dataflow.internal.DataFlowImplCommon
 
 Method superImpl(Method m) {
   result = m.getAnOverride() and
@@ -108,6 +109,34 @@ private RefType bestTypeForModel(TargetAPI api) {
 
 private string typeAsModel(RefType type) {
   result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+}
+
+predicate isRelevantType(Type t) {
+  not t instanceof TypeClass and
+  not t instanceof EnumType and
+  not t instanceof PrimitiveType and
+  not t instanceof BoxedType and
+  not t.(RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
+  not t.(RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
+  (
+    not t.(Array).getElementType() instanceof PrimitiveType or
+    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+  ) and
+  (
+    not t.(Array).getElementType() instanceof BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+  ) and
+  (
+    not t.(CollectionType).getElementType() instanceof BoxedType or
+    isPrimitiveTypeUsedForBulkData(t.(CollectionType).getElementType())
+  )
+}
+
+string returnNodeAsOutput(TargetAPI api, ReturnNodeExt node) {
+  if node.getKind() instanceof ValueReturnKind
+  then result = "ReturnValue"
+  else
+    result = parameterAccess(api.getParameter(node.getKind().(ParamUpdateReturnKind).getPosition()))
 }
 
 string parameterAccess(Parameter p) {

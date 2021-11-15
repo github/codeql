@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.function.Consumer;
+import java.util.List;
 
 
 public class Sources {
@@ -16,6 +17,12 @@ public class Sources {
     public InputStream socketStream() throws IOException {
         ServerSocket socket = new ServerSocket(123);
         return socket.accept().getInputStream();
+    }
+
+    public void sourceToParameter(InputStream[] streams, List<InputStream> otherStreams) throws IOException {
+        ServerSocket socket = new ServerSocket(123);
+        streams[0] = socket.accept().getInputStream();
+        otherStreams.add(socket.accept().getInputStream());
     }
 
 }

@@ -13,6 +13,7 @@ private import ModelGeneratorUtils
 private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
+private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 
 class FromSourceConfiguration extends TaintTracking::Configuration {
@@ -22,7 +23,7 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(TargetAPI c |
-      sink instanceof ReturnNode and
+      sink instanceof ReturnNodeExt and
       sink.getEnclosingCallable() = c and
       c.isPublic() and
       c.fromSource()
@@ -32,6 +33,22 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSinkCallContext
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(DataFlow::Content f |
+      readStep(node1, f, node2) and
+      if f instanceof DataFlow::FieldContent
+      then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+      else any()
+    )
+    or
+    exists(DataFlow::Content f | storeStep(node1, f, node2) |
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
+    )
+  }
 }
 
 string captureSource(TargetAPI api) {
@@ -39,7 +56,7 @@ string captureSource(TargetAPI api) {
     config.hasFlow(source, sink) and
     sourceNode(source, kind) and
     api = source.getEnclosingCallable() and
-    result = asSourceModel(api, "ReturnValue", kind)
+    result = asSourceModel(api, returnNodeAsOutput(api, sink), kind)
   )
 }
 
