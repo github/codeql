@@ -337,4 +337,12 @@ void test6(unsigned unsigned_value, int value) {
 	sprintf(buffer, "%d", 0); // GOOD
 	sprintf(buffer, "%u", 5); // GOOD
 	sprintf(buffer, "%d", 5); // GOOD
+
+	sprintf(buffer, "%d", -1); // BAD [NOT DETECTED]
+	sprintf(buffer, "%d", 9); // GOOD
+	sprintf(buffer, "%d", 10); // BAD [NOT DETECTED]
+
+	sprintf(buffer, "%u", -1); // BAD
+	sprintf(buffer, "%u", 9); // GOOD
+	sprintf(buffer, "%u", 10); // BAD [NOT DETECTED]
 }
