@@ -852,7 +852,7 @@ private module StdlibPrivate {
     Base64EncodeCall() {
       name in [
           "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-          "encodestring", "a85encode", "b85encode", "encodebytes"
+          "encodestring", "a85encode", "b85encode", "encodebytes", "b32hexencode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -867,7 +867,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32encode" and result = "Base32"
+      name in ["b32encode", "b32hexencode"] and result = "Base32"
       or
       name = "b16encode" and result = "Base16"
       or
@@ -884,7 +884,7 @@ private module StdlibPrivate {
     Base64DecodeCall() {
       name in [
           "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-          "decodestring", "a85decode", "b85decode", "decodebytes"
+          "decodestring", "a85decode", "b85decode", "decodebytes", "b32hexdecode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -901,7 +901,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32decode" and result = "Base32"
+      name in ["b32decode", "b32hexdecode"] and result = "Base32"
       or
       name = "b16decode" and result = "Base16"
       or
