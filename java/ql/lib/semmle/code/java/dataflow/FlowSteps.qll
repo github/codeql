@@ -65,6 +65,20 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
+ * A unit class for adding additional value steps.
+ *
+ * Extend this class to add additional value-preserving steps that should apply
+ * to all data flow configurations.
+ */
+class AdditionalValueStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` is a value-preserving step and
+   * should apply to all data flow configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/**
  * A method or constructor that preserves taint.
  *
  * Extend this class and override at least one of `returnsTaintFrom` or `transfersTaint`
