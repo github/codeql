@@ -7,10 +7,10 @@ int fclose(FILE *stream);
 
 int main(int argc, char *argv[])
 {
-  //umask(0022);
+  umask(0022);
   FILE *fp;
-  fp = fopen("myFile.txt","w"); // BAD
-  //chmod("myFile.txt",0644);
+  fp = fopen("myFile.txt","w"); // GOOD
+  chmod("myFile.txt",0644);
   fprintf(fp,"%s\n","data to file");
   fclose(fp);
   return 0;
