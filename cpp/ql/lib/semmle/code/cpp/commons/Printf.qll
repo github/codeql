@@ -1069,22 +1069,25 @@ class FormatLiteral extends Literal {
             or
             // The second case uses range analysis to deduce a length that's shorter than the length
             // of the number -2^31.
-            exists(Expr arg, float lower |
+            exists(Expr arg, float lower, float upper |
               arg = this.getUse().getConversionArgument(n) and
-              lower = lowerBound(arg.getFullyConverted())
+              lower = lowerBound(arg.getFullyConverted()) and
+              upper = upperBound(arg.getFullyConverted())
             |
               cand =
                 max(int cand0 |
+                  // Include the sign bit in the length if it can be negative
                   (
-                    // Include the sign bit in the length of `lower` if it can be negative
                     if lower < 0
                     then cand0 = 1 + lengthInBase10(lower.abs())
                     else cand0 = lengthInBase10(lower)
                   )
                   or
-                  // We don't care about the sign of `upper`: if `upper` is negative, then we know
-                  // `lower` is also (possibly more) negative, and thus its length will be greater.
-                  cand0 = lengthInBase10(upperBound(arg.getFullyConverted()))
+                  (
+                    if upper < 0
+                    then cand0 = 1 + lengthInBase10(upper.abs())
+                    else cand0 = lengthInBase10(upper)
+                  )
                 )
             )
           )
