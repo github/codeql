@@ -36,9 +36,22 @@ private predicate isInTestFile(File file) {
 }
 
 private predicate isJdkInternal(CompilationUnit cu) {
-  cu.getPackage().getName().matches("com.sun") or
-  cu.getPackage().getName().matches("sun") or
-  cu.getPackage().getName().matches("")
+  cu.getPackage().getName().matches("org.graalvm%") or
+  cu.getPackage().getName().matches("com.sun%") or
+  cu.getPackage().getName().matches("javax.swing%") or
+  cu.getPackage().getName().matches("java.awt%") or
+  cu.getPackage().getName().matches("sun%") or
+  cu.getPackage().getName().matches("jdk.%") or
+  cu.getPackage().getName().matches("java2d.%") or
+  cu.getPackage().getName().matches("build.tools.%") or
+  cu.getPackage().getName().matches("propertiesparser.%") or
+  cu.getPackage().getName().matches("org.jcp.%") or
+  cu.getPackage().getName().matches("org.w3c.%") or
+  cu.getPackage().getName().matches("org.ietf.jgss.%") or
+  cu.getPackage().getName().matches("org.xml.sax%") or
+  cu.getPackage().getName() = "compileproperties" or
+  cu.getPackage().getName() = "netscape.javascript" or
+  cu.getPackage().getName() = ""
 }
 
 bindingset[input, output]
