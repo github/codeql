@@ -1227,11 +1227,13 @@ open class KotlinFileExtractor(
                     val type = useType(initializer.expression.type)
                     tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
                     tw.writeHasLocation(assignmentId, declLocId)
+                    tw.writeCallableEnclosingExpr(assignmentId, obinitId)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                     val lhsType = useType(backingField.type)
                     tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
                     tw.writeHasLocation(lhsId, declLocId)
+                    tw.writeCallableEnclosingExpr(lhsId, obinitId)
                     val vId = useField(backingField)
                     tw.writeVariableBinding(lhsId, vId)
 
@@ -1397,6 +1399,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(varId, locId)
         tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(exprId, locId)
+        tw.writeCallableEnclosingExpr(exprId, callable)
         val i = v.initializer
         if(i != null) {
             extractExpressionExpr(i, callable, exprId, 0)
@@ -1425,6 +1428,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == MINUS -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
@@ -1432,6 +1436,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_subexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == DIV -> {
                 val id = tw.getFreshIdLabel<DbDivexpr>()
@@ -1439,6 +1444,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_divexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == PERC -> {
                 val id = tw.getFreshIdLabel<DbRemexpr>()
@@ -1446,6 +1452,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == EQEQ -> {
                 val id = tw.getFreshIdLabel<DbEqexpr>()
@@ -1453,6 +1460,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == EXCLEQ -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
@@ -1460,6 +1468,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == LT -> {
                 val id = tw.getFreshIdLabel<DbLtexpr>()
@@ -1467,6 +1476,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == LTEQ -> {
                 val id = tw.getFreshIdLabel<DbLeexpr>()
@@ -1474,6 +1484,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == GT -> {
                 val id = tw.getFreshIdLabel<DbGtexpr>()
@@ -1481,6 +1492,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } c.origin == GTEQ -> {
                 val id = tw.getFreshIdLabel<DbGeexpr>()
@@ -1488,6 +1500,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(c)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 id
             } else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
@@ -1496,10 +1509,11 @@ open class KotlinFileExtractor(
                 val methodId = useFunction<DbMethod>(c.symbol.owner)
                 tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeCallableBinding(id, methodId)
 
                 // type arguments at index -2, -3, ...
-                extractTypeArguments(c, id, -2, true)
+                extractTypeArguments(c, id, callable, -2, true)
                 id
             }
         }
@@ -1518,6 +1532,7 @@ open class KotlinFileExtractor(
     private fun extractTypeArguments(
         c: IrFunctionAccessExpression,
         id: Label<out DbExprparent>,
+        callable: Label<out DbCallable>,
         startIndex: Int = 0,
         reverse: Boolean = false
     ) {
@@ -1527,6 +1542,7 @@ open class KotlinFileExtractor(
             val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
             val mul = if (reverse) -1 else 1
             tw.writeExprs_unannotatedtypeaccess(argId, argType.javaResult.id, argType.kotlinResult.id, id, argIdx * mul + startIndex)
+            tw.writeCallableEnclosingExpr(argId, callable)
         }
     }
 
@@ -1542,6 +1558,7 @@ open class KotlinFileExtractor(
         val methodId = useFunction<DbConstructor>(e.symbol.owner)
         tw.writeExprs_newexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, callable)
         tw.writeCallableBinding(id, methodId)
         for (i in 0 until e.valueArgumentsCount) {
             val arg = e.getValueArgument(i)
@@ -1557,7 +1574,8 @@ open class KotlinFileExtractor(
         if (e.typeArgumentsCount > 0) {
             val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
             tw.writeExprs_unannotatedtypeaccess(typeAccessId, type.javaResult.id, type.kotlinResult.id, id, -3)
-            extractTypeArguments(e, typeAccessId)
+            tw.writeCallableEnclosingExpr(typeAccessId, callable)
+            extractTypeArguments(e, typeAccessId, callable)
         }
     }
 
@@ -1589,6 +1607,7 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(e)
             tw.writeExprs_stmtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
             tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, callable)
             return StmtParent(id, 0)
         }
         override fun expr(e: IrExpression, callable: Label<out DbCallable>): ExprParent {
@@ -1751,6 +1770,7 @@ open class KotlinFileExtractor(
                 val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                 tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeCallableBinding(id, methodId)
             }
             is IrConstructorCall -> {
@@ -1772,6 +1792,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(e)
                 tw.writeExprs_stringtemplateexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 e.arguments.forEachIndexed { i, a ->
                     extractExpressionExpr(a, callable, id, i)
                 }
@@ -1786,6 +1807,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_integerliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Long -> {
                         val id = tw.getFreshIdLabel<DbLongliteral>()
@@ -1793,6 +1815,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_longliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Float -> {
                         val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
@@ -1800,6 +1823,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_floatingpointliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Double -> {
                         val id = tw.getFreshIdLabel<DbDoubleliteral>()
@@ -1807,6 +1831,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_doubleliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Boolean -> {
                         val id = tw.getFreshIdLabel<DbBooleanliteral>()
@@ -1814,6 +1839,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_booleanliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is Char -> {
                         val id = tw.getFreshIdLabel<DbCharacterliteral>()
@@ -1821,6 +1847,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_characterliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     } is String -> {
                         val id = tw.getFreshIdLabel<DbStringliteral>()
@@ -1828,6 +1855,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_stringliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeNamestrings(v.toString(), v.toString(), id)
                     }
                     null -> {
@@ -1836,6 +1864,7 @@ open class KotlinFileExtractor(
                         val locId = tw.getLocation(e)
                         tw.writeExprs_nullliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                         tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
                     }
                     else -> {
                         logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
@@ -1855,12 +1884,14 @@ open class KotlinFileExtractor(
                         logger.warnElement(Severity.ErrorSevere, "TODO: Qualified this access found.", e)
                     }
                     tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
                 } else {
                     val id = tw.getFreshIdLabel<DbVaraccess>()
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                     tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
 
                     val vId = useValueDeclaration(owner)
                     tw.writeVariableBinding(id, vId)
@@ -1873,6 +1904,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(e)
                 tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 val owner = e.symbol.owner
                 val vId = useEnumEntry(owner)
                 tw.writeVariableBinding(id, vId)
@@ -1884,11 +1916,13 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(e)
                 tw.writeExprs_assignexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
 
                 val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                 val lhsType = useType(e.symbol.owner.type)
                 tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(lhsId, callable)
                 val vId = useValueDeclaration(e.symbol.owner)
                 tw.writeVariableBinding(lhsId, vId)
 
@@ -1901,6 +1935,7 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(e)
                 tw.writeExprs_whenexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 if(e.origin == IF) {
                     tw.writeWhen_if(id)
                 }
@@ -1923,6 +1958,7 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_getclassexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 extractExpressionExpr(e.argument, callable, id, 0)
             }
             is IrTypeOperatorCall -> {
@@ -1936,6 +1972,7 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_varargexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 e.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, id, i) }
             }
             is IrGetObjectValue -> {
@@ -1952,6 +1989,7 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(e)
                     tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                     tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
 
                     tw.writeVariableBinding(id, instance.id)
                 }
@@ -1981,7 +2019,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractTypeAccess(t: IrType, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement) {
+    fun extractTypeAccess(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement) {
         // TODO: elementForLocation allows us to give some sort of
         // location, but a proper location for the type access will
         // require upstream changes
@@ -1990,6 +2028,7 @@ open class KotlinFileExtractor(
         tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         val locId = tw.getLocation(elementForLocation)
         tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, callable)
     }
 
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
@@ -2000,7 +2039,8 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractTypeAccess(e.typeOperand, id, 0, e)
+                tw.writeCallableEnclosingExpr(id, callable)
+                extractTypeAccess(e.typeOperand, callable, id, 0, e)
                 extractExpressionExpr(e.argument, callable, id, 1)
             }
             IrTypeOperator.IMPLICIT_CAST -> {
@@ -2010,7 +2050,8 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractTypeAccess(e.typeOperand, id, 0, e)
+                tw.writeCallableEnclosingExpr(id, callable)
+                extractTypeAccess(e.typeOperand, callable, id, 0, e)
                 extractExpressionExpr(e.argument, callable, id, 1)
             }
             IrTypeOperator.IMPLICIT_NOTNULL -> {
@@ -2020,7 +2061,8 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractTypeAccess(e.typeOperand, id, 0, e)
+                tw.writeCallableEnclosingExpr(id, callable)
+                extractTypeAccess(e.typeOperand, callable, id, 0, e)
                 extractExpressionExpr(e.argument, callable, id, 1)
             }
             IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
@@ -2030,7 +2072,8 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
-                extractTypeAccess(e.typeOperand, id, 0, e)
+                tw.writeCallableEnclosingExpr(id, callable)
+                extractTypeAccess(e.typeOperand, callable, id, 0, e)
                 extractExpressionExpr(e.argument, callable, id, 1)
             }
             IrTypeOperator.INSTANCEOF -> {
@@ -2039,8 +2082,9 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_instanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 extractExpressionExpr(e.argument, callable, id, 0)
-                extractTypeAccess(e.typeOperand, id, 1, e)
+                extractTypeAccess(e.typeOperand, callable, id, 1, e)
             }
             IrTypeOperator.NOT_INSTANCEOF -> {
                 val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
@@ -2048,8 +2092,9 @@ open class KotlinFileExtractor(
                 val type = useType(e.type)
                 tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
                 extractExpressionExpr(e.argument, callable, id, 0)
-                extractTypeAccess(e.typeOperand, id, 1, e)
+                extractTypeAccess(e.typeOperand, callable, id, 1, e)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall: " + e.render(), e)
