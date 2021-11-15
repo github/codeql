@@ -171,7 +171,7 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
                 genTable(kt, relname, columns, enum, kind, num, typ)
 
     for typ in sorted(supertypes):
-        kt.write('sealed interface Db' + upperFirst(typ))
+        kt.write('interface Db' + upperFirst(typ))
         # Sorting makes the output deterministic.
         names = sorted(supertypes[typ])
         if names:

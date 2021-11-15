@@ -2,9 +2,9 @@ package com.github.codeql.comments
 
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
+import com.github.codeql.utils.versions.Psi2Ir
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.backend.jvm.ir.getKtFile
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
@@ -17,7 +17,7 @@ class CommentExtractor(private val fileExtractor: KotlinSourceFileExtractor) {
     private val file = fileExtractor.file
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val ktFile = file.getKtFile()
+    private val ktFile = Psi2Ir().getKtFile(file)
 
     init {
         if (ktFile == null) {

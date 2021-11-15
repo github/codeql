@@ -119,7 +119,7 @@ def transform_to_embeddable(srcs):
             f.write(content)
 
 
-def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, tmp_dir):
+def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, tmp_dir, version):
     classpath = patterns_to_classpath(dependency_folder, jars)
     java_classpath = patterns_to_classpath(dependency_folder, java_jars)
 
@@ -127,6 +127,12 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         if os.path.exists(tmp_dir):
             shutil.rmtree(tmp_dir)
         shutil.copytree('src', tmp_dir)
+
+        if version.startswith('1.4'):
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
+        else:
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
+
         srcs = find_sources(tmp_dir)
 
         transform_to_embeddable(srcs)
@@ -143,7 +149,8 @@ def compile_embeddable(version):
             kotlin_dependency_folder,
             transform_to_embeddable,
             'codeql-extractor-kotlin-embeddable-%s.jar' % (version),
-            'build/temp_src')
+            'build/temp_src',
+            version)
 
 
 def compile_standalone(version):
@@ -152,7 +159,8 @@ def compile_standalone(version):
             kotlin_dependency_folder,
             lambda srcs: None,
             'codeql-extractor-kotlin-standalone-%s.jar' % (version),
-            'build/temp_src')
+            'build/temp_src',
+            version)
 
 
 for version in kotlin_plugin_versions.versions:

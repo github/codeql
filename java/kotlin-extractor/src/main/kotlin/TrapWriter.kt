@@ -1,9 +1,9 @@
 package com.github.codeql
 
+import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -82,7 +82,7 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
      * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but with the given
      * default file used in getLocation etc.
      */
-    fun withTargetFile(filePath: String, fileEntry: IrFileEntry?, populateFileTables: Boolean = true) =
+    fun withTargetFile(filePath: String, fileEntry: FileEntry?, populateFileTables: Boolean = true) =
         FileTrapWriter(lm, bw, filePath, fileEntry, populateFileTables)
 }
 
@@ -104,7 +104,7 @@ open class FileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val filePath: String,
-    val sourceFileEntry: IrFileEntry?,
+    val sourceFileEntry: FileEntry?,
     populateFileTables: Boolean = true
 ): TrapWriter (lm, bw) {
     val populateFile = PopulateFile(this)
