@@ -150,6 +150,16 @@ module IO {
     predicate isClassMethodCall() { classMethodCall = true }
   }
 
+  // TODO: better name
+  class IOIOReader extends IOReader, SystemCommandExecution::Range {
+    IOIOReader() { this.getAPI() = "IO" }
+
+    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+    // We can't reliably determine if this is the case - overapproximate this
+    override predicate isShellInterpreted(DataFlow::Node arg) { any() }
+  }
+
   /**
    * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
    * class. For example, the `IO.read call in:
