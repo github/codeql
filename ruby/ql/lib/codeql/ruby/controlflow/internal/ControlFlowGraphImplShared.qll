@@ -943,4 +943,9 @@ module Consistency {
     strictcount(getASuccessor(node, t)) > 1 and
     successor = getASuccessor(node, t)
   }
+
+  query predicate deadEnd(Node node) {
+    not node instanceof TExitNode and
+    not exists(getASuccessor(node, _))
+  }
 }
