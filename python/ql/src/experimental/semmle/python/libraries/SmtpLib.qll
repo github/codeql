@@ -2,7 +2,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.TaintTracking2
 
 module SmtpLib {
   /** Gets a reference to `smtplib.SMTP_SSL` */
@@ -31,7 +31,7 @@ module SmtpLib {
    * argument. Used because of the impossibility to get local source nodes from `_subparts`'
    * `(List|Tuple)` elements.
    */
-  private class SMTPMessageConfig extends TaintTracking::Configuration {
+  private class SMTPMessageConfig extends TaintTracking2::Configuration {
     SMTPMessageConfig() { this = "SMTPMessageConfig" }
 
     override predicate isSource(DataFlow::Node source) { source = mimeText(_) }
@@ -87,8 +87,8 @@ module SmtpLib {
         sink =
           [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
               .getALocalSource() and
-        DataFlow::flowsTo(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"),
-          any(SMTPMessageConfig a))
+        any(SMTPMessageConfig a)
+            .hasFlow(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"))
         or
         // via .attach()
         sink = smtpMimeMultipartInstance().getReturn().getMember("attach").getACall() and
