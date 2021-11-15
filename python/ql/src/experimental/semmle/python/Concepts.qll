@@ -334,7 +334,7 @@ module EmailSender {
 }
 
 /**
- * A data-flow node that sends an email..
+ * A data-flow node that sends an email.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `EmailSender::Range` instead.

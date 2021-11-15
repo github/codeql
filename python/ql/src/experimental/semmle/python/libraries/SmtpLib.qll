@@ -42,8 +42,8 @@ module SmtpLib {
   }
 
   /**
-   * Using `MimeText` call, gets the content argument whose type argument equals `mimetype`.
-   * This call flow sinto `MIMEMultipart`'s `_subparts` argument or `.attach()` method call,
+   * Using the `MimeText` call retrieves the content argument whose type argument equals `mimetype`.
+   * This call flows into `MIMEMultipart`'s `_subparts` argument or the `.attach()` method call
    * and both local source nodes correlate to `smtp`'s `sendmail` call 3rd argument's local source.
    *
    * Given the following example with `getSmtpMessage(any(SmtpLibSendMail s), "html")`:
