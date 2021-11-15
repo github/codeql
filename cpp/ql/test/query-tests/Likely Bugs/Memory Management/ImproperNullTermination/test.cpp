@@ -536,3 +536,51 @@ void test_printf(char *str)
 	}
 }
 
+void test_reassignment()
+{
+	{
+		char buffer1[1024];
+		char buffer2[1024];
+		char *buffer_ptr = buffer1;
+
+		buffer_ptr = buffer2;
+		strcpy(buffer_ptr, "content"); // null terminates buffer2
+		strdup(buffer2); // GOOD
+	}
+
+	{
+		char buffer1[1024];
+		char buffer2[1024];
+		char *buffer_ptr = buffer1;
+
+		strcpy(buffer_ptr, "content"); // null terminates buffer1
+		buffer_ptr = buffer2;
+		strdup(buffer2); // BAD
+	}
+
+	{
+		char buffer1[1024];
+		char buffer2[1024];
+		char *buffer_ptr = buffer1;
+
+		while (cond())
+		{
+			buffer_ptr = buffer2;
+			strcpy(buffer_ptr, "content"); // null terminates buffer2
+			strdup(buffer2); // GOOD
+		}
+	}
+
+	{
+		char buffer1[1024];
+		char buffer2[1024];
+		char *buffer_ptr = buffer1;
+
+		while (cond())
+		{
+			strcpy(buffer_ptr, "content"); // null terminates buffer1 or buffer2
+			buffer_ptr = buffer2;
+			strdup(buffer2); // BAD [NOT DETECTED]
+		}
+	}
+}

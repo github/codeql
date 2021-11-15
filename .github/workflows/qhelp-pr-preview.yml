@@ -1,10 +1,13 @@
 name: Query help preview
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
     paths:
       - "ruby/**/*.qhelp"
 
@@ -12,28 +15,49 @@ jobs:
   qhelp:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "${{  github.event.number }}" > pr.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: comment
+          path: pr.txt
+          retention-days: 1
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/fetch-codeql
       - name: Determine changed files
         id: changes
         run: |
-          echo -n "::set-output name=qhelp_files::"
-          (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | grep -v .inc.qhelp;
-           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
-           sort -u | xargs -d '\n' -n1 printf "'%s' "
-
-      - uses: ./.github/actions/fetch-codeql
+          (git diff -z --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -z '.qhelp$' | grep -z -v '.inc.qhelp';
+           git diff -z --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -z '.inc.qhelp$' | xargs --null -rn1 basename | xargs --null -rn1 git grep -z -l) |
+           grep -z '.qhelp$' | grep -z -v '^-' | sort -z -u > "${RUNNER_TEMP}/paths.txt"
 
       - name: QHelp preview
-        if: ${{ steps.changes.outputs.qhelp_files }}
         run: |
-          ( echo "QHelp previews:";
-          for path in ${{ steps.changes.outputs.qhelp_files }} ; do
+          EXIT_CODE=0
+          echo "QHelp previews:" > comment.txt
+          while read -r -d $'\0' path; do
+            if [ ! -f "${path}" ]; then
+               exit 1
+            fi
             echo "<details> <summary>${path}</summary>"
             echo
-            codeql generate query-help --format=markdown ${path}
+            codeql generate query-help --format=markdown -- "./${path}" 2> errors.txt || EXIT_CODE="$?"
+            if [ -s errors.txt ]; then
+               echo "# errors/warnings:"
+               echo '```'
+               cat errors.txt
+               cat errors.txt 1>&2
+               echo '```'
+            fi
             echo "</details>"
-          done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          done < "${RUNNER_TEMP}/paths.txt" >> comment.txt
+          exit "${EXIT_CODE}"
+
+      - if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: comment
+          path: comment.txt
+          retention-days: 1

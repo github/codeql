@@ -10,6 +10,11 @@ class TypeIntent extends Class {
   TypeIntent() { this.hasQualifiedName("android.content", "Intent") }
 }
 
+/** The class `android.content.ComponentName`. */
+class TypeComponentName extends Class {
+  TypeComponentName() { this.hasQualifiedName("android.content", "ComponentName") }
+}
+
 /**
  * The class `android.app.Activity`.
  */
@@ -75,6 +80,61 @@ class IntentGetParcelableExtraMethod extends Method {
     this.hasName("getParcelableExtra") and
     this.getDeclaringType() instanceof TypeIntent
   }
+}
+
+/** The class `android.os.BaseBundle`, or a class that extends it. */
+class AndroidBundle extends Class {
+  AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
+}
+
+/** An `Intent` that explicitly sets a destination component. */
+class ExplicitIntent extends Expr {
+  ExplicitIntent() {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType() instanceof TypeIntent and
+      m.hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
+      ma.getQualifier() = this
+    )
+    or
+    exists(ConstructorCall cc, Argument classArg |
+      cc.getConstructedType() instanceof TypeIntent and
+      cc.getAnArgument() = classArg and
+      classArg.getType() instanceof TypeClass and
+      not exists(NullLiteral nullLiteral | DataFlow::localExprFlow(nullLiteral, classArg)) and
+      cc = this
+    )
+  }
+}
+
+/**
+ * A sanitizer for explicit intents.
+ *
+ * Use this when you want to work only with implicit intents
+ * in a `DataFlow` or `TaintTracking` configuration.
+ */
+class ExplicitIntentSanitizer extends DataFlow::Node {
+  ExplicitIntentSanitizer() {
+    exists(ExplicitIntent explIntent | DataFlow::localExprFlow(explIntent, this.asExpr()))
+  }
+}
+
+private class BundleExtrasSyntheticField extends SyntheticField {
+  BundleExtrasSyntheticField() { this = "android.content.Intent.extras" }
+
+  override RefType getType() { result instanceof AndroidBundle }
+}
+
+/**
+ * Holds if extras may be implicitly read from the Intent `node`.
+ */
+predicate allowIntentExtrasImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  node.getType() instanceof TypeIntent and
+  (
+    c instanceof DataFlow::MapValueContent
+    or
+    c.(DataFlow::SyntheticFieldContent).getType() instanceof AndroidBundle
+  )
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {
@@ -235,6 +295,37 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.content;Intent;true;setPackage;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setType;;;Argument[-1];ReturnValue;value",
         "android.content;Intent;true;setTypeAndNormalize;;;Argument[-1];ReturnValue;value"
+      ]
+  }
+}
+
+private class IntentComponentTaintSteps extends SummaryModelCsv {
+  override predicate row(string s) {
+    s =
+      [
+        "android.content;Intent;true;Intent;(Intent);;Argument[0];Argument[-1];taint",
+        "android.content;Intent;true;Intent;(Context,Class);;Argument[1];Argument[-1];taint",
+        "android.content;Intent;true;Intent;(String,Uri,Context,Class);;Argument[3];Argument[-1];taint",
+        "android.content;Intent;true;getIntent;(String);;Argument[0];ReturnValue;taint",
+        "android.content;Intent;true;getIntentOld;(String);;Argument[0];ReturnValue;taint",
+        "android.content;Intent;true;parseUri;(String,int);;Argument[0];ReturnValue;taint",
+        "android.content;Intent;true;setPackage;;;Argument[0];Argument[-1];taint",
+        "android.content;Intent;true;setClass;;;Argument[1];Argument[-1];taint",
+        "android.content;Intent;true;setClassName;(Context,String);;Argument[1];Argument[-1];taint",
+        "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[-1];taint",
+        "android.content;Intent;true;setComponent;;;Argument[0];Argument[-1];taint",
+        "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[-1];taint",
+        "android.content;ComponentName;false;ComponentName;(Context,String);;Argument[1];Argument[-1];taint",
+        "android.content;ComponentName;false;ComponentName;(Context,Class);;Argument[1];Argument[-1];taint",
+        "android.content;ComponentName;false;ComponentName;(Parcel);;Argument[0];Argument[-1];taint",
+        "android.content;ComponentName;false;createRelative;(String,String);;Argument[0..1];ReturnValue;taint",
+        "android.content;ComponentName;false;createRelative;(Context,String);;Argument[1];ReturnValue;taint",
+        "android.content;ComponentName;false;flattenToShortString;;;Argument[-1];ReturnValue;taint",
+        "android.content;ComponentName;false;flattenToString;;;Argument[-1];ReturnValue;taint",
+        "android.content;ComponentName;false;getClassName;;;Argument[-1];ReturnValue;taint",
+        "android.content;ComponentName;false;getPackageName;;;Argument[-1];ReturnValue;taint",
+        "android.content;ComponentName;false;getShortClassName;;;Argument[-1];ReturnValue;taint",
+        "android.content;ComponentName;false;unflattenFromString;;;Argument[0];ReturnValue;taint"
       ]
   }
 }

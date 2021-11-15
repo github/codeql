@@ -17,14 +17,14 @@ import DataFlow
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getRepresentedString().length() < 100 }
+  ShortStringLiteral() { getValue().length() < 100 }
 }
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
-    getRepresentedString().regexpMatch(getInsecureAlgorithmRegex()) and
+    getValue().regexpMatch(getInsecureAlgorithmRegex()) and
     // Exclude German and French sentences.
-    not getRepresentedString().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
+    not getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }
 }
 
@@ -48,4 +48,4 @@ where
   source.getNode().asExpr() = s and
   conf.hasFlowPath(source, sink)
 select c, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", s,
-  s.getRepresentedString()
+  s.getValue()

@@ -763,10 +763,20 @@ class ReturnValueInstruction extends ReturnInstruction {
   final LoadOperand getReturnValueOperand() { result = this.getAnOperand() }
 
   /**
+   * Gets the operand that provides the address of the value being returned by the function.
+   */
+  final AddressOperand getReturnAddressOperand() { result = this.getAnOperand() }
+
+  /**
    * Gets the instruction whose result provides the value being returned by the function, if an
    * exact definition is available.
    */
   final Instruction getReturnValue() { result = this.getReturnValueOperand().getDef() }
+
+  /**
+   * Gets the instruction whose result provides the address of the value being returned by the function.
+   */
+  final Instruction getReturnAddress() { result = this.getReturnAddressOperand().getDef() }
 }
 
 /**

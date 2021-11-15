@@ -63,14 +63,14 @@ predicate cannotContainString(Type t) {
 
 predicate isNonConst(DataFlow::Node node) {
   exists(Expr e | e = node.asExpr() |
-    exists(FunctionCall fc | fc = e.(FunctionCall) |
+    exists(FunctionCall fc | fc = e |
       not (
         whitelistFunction(fc.getTarget(), _) or
         fc.getTarget().hasDefinition()
       )
     )
     or
-    exists(Parameter p | p = e.(VariableAccess).getTarget().(Parameter) |
+    exists(Parameter p | p = e.(VariableAccess).getTarget() |
       p.getFunction().getName() = "main" and p.getType() instanceof PointerType
     )
     or

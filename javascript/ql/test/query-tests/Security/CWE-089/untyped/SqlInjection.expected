@@ -68,6 +68,35 @@ nodes
 | json-schema-validator.js:59:22:59:26 | query |
 | json-schema-validator.js:61:22:61:26 | query |
 | json-schema-validator.js:61:22:61:26 | query |
+| ldap.js:20:7:20:34 | q |
+| ldap.js:20:11:20:34 | url.par ... , true) |
+| ldap.js:20:21:20:27 | req.url |
+| ldap.js:20:21:20:27 | req.url |
+| ldap.js:22:7:22:33 | username |
+| ldap.js:22:18:22:18 | q |
+| ldap.js:22:18:22:24 | q.query |
+| ldap.js:22:18:22:33 | q.query.username |
+| ldap.js:25:13:25:57 | `(\|(nam ... ame}))` |
+| ldap.js:25:24:25:31 | username |
+| ldap.js:25:46:25:53 | username |
+| ldap.js:28:30:28:34 | opts1 |
+| ldap.js:28:30:28:34 | opts1 |
+| ldap.js:32:5:32:61 | { filte ... e}))` } |
+| ldap.js:32:5:32:61 | { filte ... e}))` } |
+| ldap.js:32:15:32:59 | `(\|(nam ... ame}))` |
+| ldap.js:32:26:32:33 | username |
+| ldap.js:32:48:32:55 | username |
+| ldap.js:63:9:65:3 | parsedFilter |
+| ldap.js:63:24:65:3 | ldap.pa ... ))`\\n  ) |
+| ldap.js:64:5:64:49 | `(\|(nam ... ame}))` |
+| ldap.js:64:16:64:23 | username |
+| ldap.js:64:38:64:45 | username |
+| ldap.js:66:30:66:53 | { filte ... ilter } |
+| ldap.js:66:30:66:53 | { filte ... ilter } |
+| ldap.js:66:40:66:51 | parsedFilter |
+| ldap.js:68:27:68:42 | `cn=${username}` |
+| ldap.js:68:27:68:42 | `cn=${username}` |
+| ldap.js:68:33:68:40 | username |
 | marsdb-flow-to.js:10:9:10:18 | query |
 | marsdb-flow-to.js:10:17:10:18 | {} |
 | marsdb-flow-to.js:11:17:11:24 | req.body |
@@ -444,6 +473,37 @@ edges
 | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) | json-schema-validator.js:50:15:50:48 | query |
 | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) |
 | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) |
+| ldap.js:20:7:20:34 | q | ldap.js:22:18:22:18 | q |
+| ldap.js:20:11:20:34 | url.par ... , true) | ldap.js:20:7:20:34 | q |
+| ldap.js:20:21:20:27 | req.url | ldap.js:20:11:20:34 | url.par ... , true) |
+| ldap.js:20:21:20:27 | req.url | ldap.js:20:11:20:34 | url.par ... , true) |
+| ldap.js:22:7:22:33 | username | ldap.js:25:24:25:31 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:25:46:25:53 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:32:26:32:33 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:32:48:32:55 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:64:16:64:23 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:64:38:64:45 | username |
+| ldap.js:22:7:22:33 | username | ldap.js:68:33:68:40 | username |
+| ldap.js:22:18:22:18 | q | ldap.js:22:18:22:24 | q.query |
+| ldap.js:22:18:22:24 | q.query | ldap.js:22:18:22:33 | q.query.username |
+| ldap.js:22:18:22:33 | q.query.username | ldap.js:22:7:22:33 | username |
+| ldap.js:25:13:25:57 | `(\|(nam ... ame}))` | ldap.js:28:30:28:34 | opts1 |
+| ldap.js:25:13:25:57 | `(\|(nam ... ame}))` | ldap.js:28:30:28:34 | opts1 |
+| ldap.js:25:24:25:31 | username | ldap.js:25:13:25:57 | `(\|(nam ... ame}))` |
+| ldap.js:25:46:25:53 | username | ldap.js:25:13:25:57 | `(\|(nam ... ame}))` |
+| ldap.js:32:15:32:59 | `(\|(nam ... ame}))` | ldap.js:32:5:32:61 | { filte ... e}))` } |
+| ldap.js:32:15:32:59 | `(\|(nam ... ame}))` | ldap.js:32:5:32:61 | { filte ... e}))` } |
+| ldap.js:32:26:32:33 | username | ldap.js:32:15:32:59 | `(\|(nam ... ame}))` |
+| ldap.js:32:48:32:55 | username | ldap.js:32:15:32:59 | `(\|(nam ... ame}))` |
+| ldap.js:63:9:65:3 | parsedFilter | ldap.js:66:40:66:51 | parsedFilter |
+| ldap.js:63:24:65:3 | ldap.pa ... ))`\\n  ) | ldap.js:63:9:65:3 | parsedFilter |
+| ldap.js:64:5:64:49 | `(\|(nam ... ame}))` | ldap.js:63:24:65:3 | ldap.pa ... ))`\\n  ) |
+| ldap.js:64:16:64:23 | username | ldap.js:64:5:64:49 | `(\|(nam ... ame}))` |
+| ldap.js:64:38:64:45 | username | ldap.js:64:5:64:49 | `(\|(nam ... ame}))` |
+| ldap.js:66:40:66:51 | parsedFilter | ldap.js:66:30:66:53 | { filte ... ilter } |
+| ldap.js:66:40:66:51 | parsedFilter | ldap.js:66:30:66:53 | { filte ... ilter } |
+| ldap.js:68:33:68:40 | username | ldap.js:68:27:68:42 | `cn=${username}` |
+| ldap.js:68:33:68:40 | username | ldap.js:68:27:68:42 | `cn=${username}` |
 | marsdb-flow-to.js:10:9:10:18 | query | marsdb-flow-to.js:14:17:14:21 | query |
 | marsdb-flow-to.js:10:9:10:18 | query | marsdb-flow-to.js:14:17:14:21 | query |
 | marsdb-flow-to.js:10:17:10:18 | {} | marsdb-flow-to.js:10:9:10:18 | query |
@@ -852,6 +912,10 @@ edges
 | json-schema-validator.js:55:22:55:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:55:22:55:26 | query | This query depends on $@. | json-schema-validator.js:50:34:50:47 | req.query.data | a user-provided value |
 | json-schema-validator.js:59:22:59:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:59:22:59:26 | query | This query depends on $@. | json-schema-validator.js:50:34:50:47 | req.query.data | a user-provided value |
 | json-schema-validator.js:61:22:61:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:61:22:61:26 | query | This query depends on $@. | json-schema-validator.js:50:34:50:47 | req.query.data | a user-provided value |
+| ldap.js:28:30:28:34 | opts1 | ldap.js:20:21:20:27 | req.url | ldap.js:28:30:28:34 | opts1 | This query depends on $@. | ldap.js:20:21:20:27 | req.url | a user-provided value |
+| ldap.js:32:5:32:61 | { filte ... e}))` } | ldap.js:20:21:20:27 | req.url | ldap.js:32:5:32:61 | { filte ... e}))` } | This query depends on $@. | ldap.js:20:21:20:27 | req.url | a user-provided value |
+| ldap.js:66:30:66:53 | { filte ... ilter } | ldap.js:20:21:20:27 | req.url | ldap.js:66:30:66:53 | { filte ... ilter } | This query depends on $@. | ldap.js:20:21:20:27 | req.url | a user-provided value |
+| ldap.js:68:27:68:42 | `cn=${username}` | ldap.js:20:21:20:27 | req.url | ldap.js:68:27:68:42 | `cn=${username}` | This query depends on $@. | ldap.js:20:21:20:27 | req.url | a user-provided value |
 | marsdb-flow-to.js:14:17:14:21 | query | marsdb-flow-to.js:11:17:11:24 | req.body | marsdb-flow-to.js:14:17:14:21 | query | This query depends on $@. | marsdb-flow-to.js:11:17:11:24 | req.body | a user-provided value |
 | marsdb.js:16:12:16:16 | query | marsdb.js:13:17:13:24 | req.body | marsdb.js:16:12:16:16 | query | This query depends on $@. | marsdb.js:13:17:13:24 | req.body | a user-provided value |
 | minimongo.js:18:12:18:16 | query | minimongo.js:15:17:15:24 | req.body | minimongo.js:18:12:18:16 | query | This query depends on $@. | minimongo.js:15:17:15:24 | req.body | a user-provided value |
