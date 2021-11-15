@@ -8252,6 +8252,12 @@ Initializers.cs:
 #-----|  -> 1
 
 #   18| ... = ...
+#-----|  -> exit H (normal)
+
+#   18| exit H
+
+#   18| exit H (normal)
+#-----|  -> exit H
 
 #   18| 1
 #-----|  -> ... = ...
