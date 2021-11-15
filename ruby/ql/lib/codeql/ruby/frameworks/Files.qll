@@ -157,7 +157,7 @@ module IO {
     override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
 
     // We can't reliably determine if this is the case - overapproximate this
-    override predicate isShellInterpreted(DataFlow::Node arg) { any() }
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
 
   /**

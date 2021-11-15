@@ -236,12 +236,8 @@ class KernelOpenCall extends SystemCommandExecution::Range, KernelMethodCall {
 
   // Kernel.open invokes a subshell if the argument starts with "-".
   // We we can't reliably determine this, so assume it always invokes a subshell.
-  override predicate isShellInterpreted(DataFlow::Node arg) { any() }
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
-
- /**
-  * A system command executed via one of the `Open3` methods.
-  * These methods take the same argument forms as `Kernel.system`.
 
 /**
  * A system command executed via one of the `Open3` methods.
