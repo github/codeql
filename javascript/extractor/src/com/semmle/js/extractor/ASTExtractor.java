@@ -589,7 +589,7 @@ public class ASTExtractor {
 
       trapwriter.addTuple("literals", valueString, source, key);
       Position start = nd.getLoc().getStart();
-      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
       
       if (nd.isRegExp()) {
         OffsetTranslation offsets = new OffsetTranslation();
@@ -867,7 +867,7 @@ public class ASTExtractor {
       }
       OffsetTranslation offsets = concatResult.snd();
       Position start = nd.getLoc().getStart();
-      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn(), start.getOffset());
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
       SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
       regexpExtractor.extract(foldedString, sourceMap, nd, true);
       return;

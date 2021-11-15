@@ -121,10 +121,12 @@ public class RegExpExtractor {
   }
 
   public void emitLocation(SourceElement term, Label lbl) {
-    int sl = sourceMap.getStart(term.getLoc().getStart().getColumn()).getLine();
-    int sc = sourceMap.getStart(term.getLoc().getStart().getColumn()).getColumn() + 1; // convert to 1-based
-    int el = sourceMap.getEnd(term.getLoc().getEnd().getColumn()).getLine();
-    int ec = sourceMap.getEnd(term.getLoc().getEnd().getColumn()).getColumn() - 1; // convert to inclusive
+    int start = term.getLoc().getStart().getColumn();
+    int sl = sourceMap.getStart(start).getLine();
+    int sc = sourceMap.getStart(start).getColumn();
+    int end = term.getLoc().getEnd().getColumn();
+    int el = sourceMap.getStart(end).getLine();
+    int ec = sourceMap.getStart(end).getColumn() - 1; // convert to inclusive
     locationManager.emitSnippetLocation(lbl, sl, sc, el, ec);
   }
 

@@ -12,3 +12,20 @@ var reg4 = new RegExp(
     "baz" + 
     "qux"
 );
+
+var bad95 = new RegExp(
+    "(a" + 
+    "|" + 
+    "aa)*" + 
+    "b$"
+);
+
+var bad96 = new RegExp("(" + 
+    "(c|cc)*|" + 
+    "(d|dd)*|" +
+    "(e|ee)*" +
+")f$");
+
+var bad97 = new RegExp(
+    "(g|gg" + 
+    ")*h$");
