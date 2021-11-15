@@ -199,7 +199,6 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
 
 predicate paramFlowToReturnValueExists(Parameter p) {
   exists(ParameterToReturnValueTaintConfig config, ReturnStmt rtn |
-    rtn.getEnclosingCallable() = p.getCallable() and
     config.hasFlow(DataFlow::parameterNode(p), DataFlow::exprNode(rtn.getResult()))
   )
 }
