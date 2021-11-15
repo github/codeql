@@ -2,6 +2,8 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplCommon
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.internal.DataFlowPrivate
 
 Method superImpl(Method m) {
   result = m.getAnOverride() and
@@ -129,6 +131,22 @@ predicate isRelevantType(Type t) {
   (
     not t.(CollectionType).getElementType() instanceof BoxedType or
     isPrimitiveTypeUsedForBulkData(t.(CollectionType).getElementType())
+  )
+}
+
+predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::Content f |
+    readStep(node1, f, node2) and
+    if f instanceof DataFlow::FieldContent
+    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
+    else any()
+  )
+  or
+  exists(DataFlow::Content f | storeStep(node1, f, node2) |
+    f instanceof DataFlow::ArrayContent or
+    f instanceof DataFlow::CollectionContent or
+    f instanceof DataFlow::MapKeyContent or
+    f instanceof DataFlow::MapValueContent
   )
 }
 

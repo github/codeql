@@ -54,19 +54,7 @@ class FieldToReturnConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(DataFlow::Content f |
-      readStep(node1, f, node2) and
-      if f instanceof DataFlow::FieldContent
-      then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
-      else any()
-    )
-    or
-    exists(DataFlow::Content f | storeStep(node1, f, node2) |
-      f instanceof DataFlow::ArrayContent or
-      f instanceof DataFlow::CollectionContent or
-      f instanceof DataFlow::MapKeyContent or
-      f instanceof DataFlow::MapValueContent
-    )
+    isRelevantTaintStep(node1, node2)
   }
 
   override DataFlow::FlowFeature getAFeature() {
