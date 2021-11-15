@@ -279,7 +279,7 @@ bindingset[f]
 private int lengthInBase10(float f) {
   f = 0 and result = 1
   or
-  result = f.log10().ceil()
+  result = f.log10().floor() + 1
 }
 
 /**
