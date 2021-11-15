@@ -474,6 +474,24 @@ module TaintedWithPath {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  module Private {
+    /** Gets a predecessor `PathNode` of `pathNode`, if any. */
+    PathNode getAPredecessor(PathNode pathNode) { edges(result, pathNode) }
+
+    /** Gets the element that `pathNode` wraps, if any. */
+    Element getElementFromPathNode(PathNode pathNode) {
+      exists(DataFlow::Node node | node = pathNode.(WrapPathNode).inner().getNode() |
+        result = node.asExpr() or
+        result = node.asParameter()
+      )
+      or
+      result = pathNode.(EndpointPathNode).inner()
+    }
+  }
+
   private class WrapPathNode extends PathNode, TWrapPathNode {
     DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
 

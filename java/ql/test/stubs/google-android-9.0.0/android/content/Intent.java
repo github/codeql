@@ -2,11 +2,10 @@
 
 package android.content;
 
-import android.content.ClipData;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.IntentSender;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
+import org.xmlpull.v1.XmlPullParser;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -16,10 +15,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Set;
-import org.xmlpull.v1.XmlPullParser;
 
 public class Intent implements Cloneable, Parcelable
 {

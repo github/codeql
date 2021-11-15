@@ -924,7 +924,8 @@ module Consistency {
     succSplits(pred, predSplits, succ, succSplits, c) and
     split.hasEntry(pred, succ, c) and
     not split.getKind() = predSplits.getASplit().getKind() and
-    not split = succSplits.getASplit()
+    not split = succSplits.getASplit() and
+    split.getKind().isEnabled(succ)
   }
 
   query predicate breakInvariant5(

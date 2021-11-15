@@ -1,0 +1,6 @@
+name: codeql-csharp-consistency-queries
+version: 0.0.0
+libraryPathDependencies:
+  - codeql/csharp-all
+  - codeql/csharp-queries
+extractor: csharp

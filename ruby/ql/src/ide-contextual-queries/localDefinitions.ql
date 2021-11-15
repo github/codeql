@@ -3,7 +3,7 @@
  * @description Generates use-definition pairs that provide the data
  *              for jump-to-definition in the code viewer.
  * @kind definitions
- * @id ruby/ide-jump-to-definition
+ * @id rb/ide-jump-to-definition
  * @tags ide-contextual-queries/local-definitions
  */
 

@@ -18,6 +18,12 @@ private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract DataFlowCallable getEnclosingCallableImpl();

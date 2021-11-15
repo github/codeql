@@ -8,7 +8,7 @@ struct A {
 
 void pointer_without_allocation(const A& ra) {
   *ra.p = user_input();
-  sink(*ra.p); // $ MISSING: ast,ir
+  sink(*ra.p); // $ ir MISSING: ast
 }
 
 void argument_source(void*);
@@ -17,7 +17,7 @@ void sink(void*);
 void pointer_without_allocation_2() {
   char *raw;
   argument_source(raw);
-  sink(raw); // $ ast MISSING: ir
+  sink(raw); // $ ast,ir
 }
 
 A* makeA() {
@@ -27,14 +27,14 @@ A* makeA() {
 void no_InitializeDynamicAllocation_instruction() {
   A* pa = makeA();
   pa->x = user_input();
-  sink(pa->x); // $ ast MISSING: ir
+  sink(pa->x); // $ ast,ir
 }
 
 void fresh_or_arg(A* arg, bool unknown) {
   A* pa;
   pa = unknown ? arg : new A;
   pa->x = user_input();
-  sink(pa->x); // $ ast MISSING: ir
+  sink(pa->x); // $ ast,ir
 }
 
 struct LinkedList {
@@ -52,11 +52,11 @@ void too_many_indirections() {
   LinkedList* ll = new LinkedList;
   ll->next = new LinkedList;
   ll->next->y = user_input();
-  sink(ll->next->y); // $ ast MISSING: ir
+  sink(ll->next->y); // $ ast,ir
 }
 
 void too_many_indirections_2(LinkedList* next) {
   LinkedList* ll = new LinkedList(next);
   ll->next->y = user_input();
-  sink(ll->next->y); // $ ast MISSING: ir
+  sink(ll->next->y); // $ ast,ir
 }

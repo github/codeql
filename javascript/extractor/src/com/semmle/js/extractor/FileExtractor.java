@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
@@ -17,7 +17,6 @@ import com.semmle.js.extractor.trapcache.CachingTrapWriter;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.ResourceError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
@@ -439,16 +438,7 @@ public class FileExtractor {
     }
 
     // populate source archive
-    WholeIO wholeIO = new WholeIO(config.getDefaultEncoding(), true);
-    String source = wholeIO.read(f);
-    if (source == null) {
-      if (wholeIO.getLastException() instanceof CharacterCodingException) {
-        System.err.println("Skipped due to unsupported character encoding: " + f);
-        return 0;
-      } else {
-        throw new ResourceError("Failed to read file " + f, wholeIO.getLastException());
-      }
-    }
+    String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
     outputConfig.getSourceArchive().add(f, source);
 
     // extract language-independent bits

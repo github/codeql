@@ -445,17 +445,25 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends BarrierGuardNode {
-    StringOps::Includes contains;
-
-    ContainsDotDotSanitizer() {
-      this = contains and
-      isDotDotSlashPrefix(contains.getSubstring())
-    }
+  class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
+    ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = contains.getBaseString().asExpr() and
-      outcome = contains.getPolarity().booleanNot() and
+      e = super.getBaseString().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
+      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+    }
+  }
+
+  /**
+   * An expression of form `x.matches(/\.\./)` or similar.
+   */
+  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
+    ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      e = super.getStringOperand().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
     }
   }

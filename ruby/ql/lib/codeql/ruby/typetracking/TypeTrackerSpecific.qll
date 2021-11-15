@@ -99,11 +99,11 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, string content) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and
-    nodeTo.(DataFlowPublic::ExprNode).getExprNode() = call.getReceiver() and
+    nodeTo.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
@@ -132,7 +132,7 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = call.getExpr().(AST::MethodCall).getMethodName() and
+    content = call.getExpr().getMethodName() and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )

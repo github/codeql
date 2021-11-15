@@ -300,8 +300,8 @@ private predicate unsafeEscape(MethodAccess ma) {
   // Removing `<script>` tags using a string-replace method is
   // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
   exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getRepresentedString() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getRepresentedString() = ""
+    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
+    ma.getArgument(1).(StringLiteral).getValue() = ""
   )
 }
 
@@ -376,13 +376,6 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * `arg` is the index of the argument.
  */
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  exists(Method write |
-    method.overrides*(write) and
-    write.hasName("write") and
-    arg = 0 and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
-  )
-  or
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
 }
 

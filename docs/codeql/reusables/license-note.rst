@@ -4,7 +4,7 @@
    `GitHub CodeQL Terms and Conditions <https://securitylab.github.com/tools/codeql/license>`__.
    
    GitHub CodeQL is licensed on a per-user basis. Under the license restrictions,
-   you can CodeQL to perform the following tasks:
+   you can use CodeQL to perform the following tasks:
    
    - To perform academic research.
    - To demonstrate the software.

@@ -56,7 +56,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     result =
       concat(API::Node node, string accessPath |
         node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-        accessPath = AccessPaths::getAccessPath(node, includeStructuralInfo)
+        AccessPaths::accessPaths(node, includeStructuralInfo, accessPath, _)
       |
         accessPath, " "
       )
@@ -102,7 +102,9 @@ private string getACallBasedTokenFeatureComponent(
     //
     // would have a callee API name of `mongoose`.
     featureName = "calleeApiName" and
-    result = getAnApiName(call)
+    exists(API::Node apiNode |
+      AccessPaths::accessPaths(apiNode, false, _, result) and call = apiNode.getInducingNode()
+    )
   )
 }
 
@@ -143,16 +145,6 @@ module FunctionBodies {
           rankedToken, " " order by i
         )
   }
-}
-
-/**
- * Returns a name of the API that a node originates from, if the node originates from an API.
- *
- * This predicate may have multiple results if the node corresponds to multiple nodes in the API graph forest.
- */
-pragma[inline]
-private string getAnApiName(DataFlow::Node node) {
-  API::moduleImport(result).getASuccessor*().getInducingNode() = node
 }
 
 /**
@@ -200,65 +192,72 @@ private module AccessPaths {
   }
 
   /** Get the access path for the node. This includes structural information like `member`, `param`, and `functionalarg` if `includeStructuralInfo` is true. */
-  string getAccessPath(API::Node node, Boolean includeStructuralInfo) {
-    node = API::moduleImport(result)
+  predicate accessPaths(
+    API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
+  ) {
+    //node = API::moduleImport(result)
+    node = API::moduleImport(apiName) and accessPath = apiName
     or
-    exists(API::Node base, string baseName |
-      base.getDepth() < node.getDepth() and baseName = getAccessPath(base, includeStructuralInfo)
+    exists(API::Node previousNode, string previousAccessPath |
+      previousNode.getDepth() < node.getDepth() and
+      accessPaths(previousNode, includeStructuralInfo, previousAccessPath, apiName)
     |
       // e.g. `new X`, `X()`
-      node = [base.getInstance(), base.getReturn()] and
+      node = [previousNode.getInstance(), previousNode.getReturn()] and
       if includeStructuralInfo = true
-      then result = baseName + " instanceorreturn"
-      else result = baseName
+      then accessPath = previousAccessPath + " instanceorreturn"
+      else accessPath = previousAccessPath
       or
       // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is non-numeric and is known at analysis
       // time.
       exists(string member |
-        node = base.getMember(member) and
-        not node = base.getUnknownMember() and
+        node = previousNode.getMember(member) and
+        not node = previousNode.getUnknownMember() and
         not isNumericString(member) and
-        not (member = "default" and base = API::moduleImport(_)) and
+        not (member = "default" and previousNode = API::moduleImport(_)) and
         not member = "then" // use the 'promised' edges for .then callbacks
       |
         if includeStructuralInfo = true
-        then result = baseName + " member " + member
-        else result = baseName + " " + member
+        then accessPath = previousAccessPath + " member " + member
+        else accessPath = previousAccessPath + " " + member
       )
       or
       // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is numeric or not known at analysis time.
       (
-        node = base.getUnknownMember() or
-        node = base.getMember(any(string s | isNumericString(s)))
+        node = previousNode.getUnknownMember() or
+        node = previousNode.getMember(any(string s | isNumericString(s)))
       ) and
-      if includeStructuralInfo = true then result = baseName + " member" else result = baseName
+      if includeStructuralInfo = true
+      then accessPath = previousAccessPath + " member"
+      else accessPath = previousAccessPath
       or
       // e.g. `x.then(y => ...)`
-      node = base.getPromised() and
-      result = baseName
+      node = previousNode.getPromised() and
+      accessPath = previousAccessPath
       or
       // e.g. `x.y((a, b) => ...)`
       // Name callback parameters after their name in the source code.
       // For example, the `res` parameter in `express.get('/foo', (req, res) => {...})` will be
       // named `express member get functionalarg param res`.
       exists(string paramName |
-        node = getNamedParameter(base.getAParameter(), paramName) and
+        node = getNamedParameter(previousNode.getAParameter(), paramName) and
         (
           if includeStructuralInfo = true
-          then result = baseName + " functionalarg param " + paramName
-          else result = baseName + " " + paramName
+          then accessPath = previousAccessPath + " functionalarg param " + paramName
+          else accessPath = previousAccessPath + " " + paramName
         )
         or
         exists(string callbackName, string index |
           node =
-            getNamedParameter(base.getASuccessor("param " + index).getMember(callbackName),
+            getNamedParameter(previousNode.getASuccessor("param " + index).getMember(callbackName),
               paramName) and
           index != "-1" and // ignore receiver
           if includeStructuralInfo = true
           then
-            result =
-              baseName + " functionalarg " + index + " " + callbackName + " param " + paramName
-          else result = baseName + " " + index + " " + callbackName + " " + paramName
+            accessPath =
+              previousAccessPath + " functionalarg " + index + " " + callbackName + " param " +
+                paramName
+          else accessPath = previousAccessPath + " " + index + " " + callbackName + " " + paramName
         )
       )
     )
