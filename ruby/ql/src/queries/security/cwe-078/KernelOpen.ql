@@ -31,9 +31,7 @@ abstract class Replacement extends DataFlow::CallNode {
   abstract string getTo();
 }
 
-class KernelOpenCall extends KernelMethodCall, Replacement {
-  KernelOpenCall() { this.getMethodName() = "open" }
-
+class KernelOpenReplacementCall extends KernelOpenCall, Replacement {
   override string getFrom() { result = "Kernel.open" }
 
   override string getTo() { result = "File.open" }
@@ -53,7 +51,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(KernelOpenCall c | c.getArgument(0) = sink)
+    exists(KernelOpenReplacementCall c | c.getArgument(0) = sink)
     or
     exists(IOReadCall c | c.getArgument(0) = sink)
   }
