@@ -1228,15 +1228,12 @@ open class KotlinFileExtractor(
                     tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
                     tw.writeHasLocation(assignmentId, declLocId)
 
-                    /*
-                    TODO
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
                     val lhsType = useType(backingField.type)
                     tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
                     tw.writeHasLocation(lhsId, declLocId)
-                    val vId = useProperty(decl) // todo: fix this. We should be assigning the field, and not the property
+                    val vId = useField(backingField)
                     tw.writeVariableBinding(lhsId, vId)
-                    */
 
                     extractExpressionExpr(initializer.expression, obinitId, assignmentId, 1)
                 }
