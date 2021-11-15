@@ -19,6 +19,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        // enable the below for building with kotlinVersion=1.4.32:
+        // languageVersion = "1.5"
     }
 }
 
@@ -26,6 +28,8 @@ sourceSets {
     main {
         kotlin {
             excludes = ["utils/versions/v_1_4/*.kt"]
+            // change the above line to the below for building with kotlinVersion=1.4.32:
+            //excludes = ["utils/versions/default/*.kt"]
         }
     }
 }
