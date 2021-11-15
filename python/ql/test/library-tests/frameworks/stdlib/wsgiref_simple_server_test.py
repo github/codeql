@@ -12,18 +12,18 @@ ADDRESS = ("localhost", 8000)
 # I wanted to showcase that we handle both functions and bound-methods, so it's possible
 # to run this test-file in 2 different ways.
 
-def func(environ, start_response): # $ MISSING: requestHandler
+def func(environ, start_response): # $ requestHandler
     ensure_tainted(
-        environ, # $ MISSING: tainted
-        environ["PATH_INFO"], # $ MISSING: tainted
+        environ, # $ tainted
+        environ["PATH_INFO"], # $ tainted
     )
     write = start_response("200 OK", [("Content-Type", "text/plain")])
-    write(b"hello") # $ MISSING: HttpResponse responseBody=b"hello"
-    write(data=b" ") # $ MISSING: HttpResponse responseBody=b" "
+    write(b"hello") # $ HttpResponse responseBody=b"hello"
+    write(data=b" ") # $ HttpResponse responseBody=b" "
 
     # function return value should be an iterable that will also be written to to the
     # response.
-    return [b"world", b"!"] # $ MISSING: HttpResponse responseBody=List
+    return [b"world", b"!"] # $ HttpResponse responseBody=List
 
 
 class MyServer(wsgiref.simple_server.WSGIServer):
@@ -44,9 +44,9 @@ elif case == "2":
     server = MyServer()
 elif case == "3":
     server = MyServer()
-    def func3(_env, start_response): # $ MISSING: requestHandler
+    def func3(_env, start_response): # $ requestHandler
         start_response("200 OK", [])
-        return [b"foo"] # $ MISSING: HttpResponse responseBody=List
+        return [b"foo"] # $ HttpResponse responseBody=List
     server.set_app(func3)
 else:
     sys.exit("wrong case")
