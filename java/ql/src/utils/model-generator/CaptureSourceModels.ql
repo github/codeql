@@ -22,13 +22,11 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Callable c |
-      sink instanceof ReturnNodeExt and
+      sink instanceof ReturnNode and
       sink.getEnclosingCallable() = c and
       c.isPublic() and
       c.fromSource()
     )
-    or
-    exists(MethodAccess c | sink.asExpr() = c.getAnArgument())
   }
 
   override DataFlow::FlowFeature getAFeature() {
@@ -36,28 +34,12 @@ class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 }
 
-string asOutput(DataFlow::Node node) {
-  if node instanceof ReturnNodeExt
-  then result = "ReturnValue"
-  else
-    result =
-      "Parameter[" +
-        node.(ArgumentNode)
-            .getCall()
-            .asCall()
-            .getQualifier()
-            .(VarAccess)
-            .getVariable()
-            .(Parameter)
-            .getPosition() + "]"
-}
-
 string captureSource(Callable api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
     sourceNode(source, kind) and
     api = source.getEnclosingCallable() and
-    result = asSourceModel(api, asOutput(sink), kind)
+    result = asSourceModel(api, "ReturnValue", kind)
   )
 }
 

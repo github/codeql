@@ -18,8 +18,4 @@ public class Sources {
         return socket.accept().getInputStream();
     }
 
-    public void consumeSource(int port, Consumer<InputStream> consumer) throws IOException {
-        ServerSocket socket = new ServerSocket(port);
-        consumer.accept(socket.accept().getInputStream());
-    }
 }
