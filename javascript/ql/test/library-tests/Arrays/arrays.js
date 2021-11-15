@@ -80,4 +80,7 @@
   for (const x of uniq(arr)) {
     sink(x); // NOT OK
   }
+
+  sink(["source"].filter((x) => x))
+  sink(["source"].filter((x) => !!x))
 });
