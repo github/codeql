@@ -9,14 +9,19 @@ class Outer {
             val labelledExtensionFun = someLabelledExtensionFun@ fun ExtensionClass.() {
                 val x4: ExtensionClass = this
                 val x5: ExtensionClass = this@someLabelledExtensionFun
+                val nestedLabelledExtensionFun = someNestedLabelledExtensionFun@ fun AnotherExtensionClass.() {
+                    val x6: AnotherExtensionClass = this
+                    val x7: ExtensionClass = this@someLabelledExtensionFun
+                    val x8: AnotherExtensionClass = this@someNestedLabelledExtensionFun
+                }
             }
 
             val unLabelledExtensionFun = fun ExtensionClass.() {
-                val x6: ExtensionClass = this
+                val x9: ExtensionClass = this
             }
 
             val someLambda = { i: Int ->
-                val x7: Inner = this
+                val x10: Inner = this
             }
         }
 
@@ -57,4 +62,7 @@ fun topLevelInnerFun() {}
 fun topLevelOuterInnerFun() {}
 
 class ExtensionClass {
+}
+
+class AnotherExtensionClass {
 }
