@@ -99,7 +99,7 @@ module IO {
   }
 
   /**
-   * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
+   * A `DataFlow::MethodCallNode` that reads data using the `IO` class. For example,
    * the `IO.read call in:
    *
    * ```rb
@@ -112,7 +112,7 @@ module IO {
    * filesystem. For working with filesystem accesses specifically, see
    * `IOFileReader` or the `FileSystemReadAccess` concept.
    */
-  class IOReader extends DataFlow::CallNode {
+  class IOReader extends DataFlow::MethodCallNode {
     private boolean classMethodCall;
     private string api;
 
@@ -127,8 +127,7 @@ module IO {
       api = "IO" and
       exists(IOInstanceStrict ii |
         this.getReceiver() = ii and
-        this.asExpr().getExpr().(MethodCall).getMethodName() =
-          ioFileReaderMethodName(classMethodCall)
+        this.getMethodName() = ioFileReaderMethodName(classMethodCall)
       )
       or
       // File instance methods
@@ -136,8 +135,7 @@ module IO {
       api = "File" and
       exists(File::FileInstance fi |
         this.getReceiver() = fi and
-        this.asExpr().getExpr().(MethodCall).getMethodName() =
-          ioFileReaderMethodName(classMethodCall)
+        this.getMethodName() = ioFileReaderMethodName(classMethodCall)
       )
       // TODO: enumeration style methods such as `each`, `foreach`, etc.
     }
@@ -151,7 +149,7 @@ module IO {
   }
 
   /**
-   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
+   * A `DataFlow::MethodCallNode` that reads data from the filesystem using the `IO`
    * class. For example, the `IO.read call in:
    *
    * ```rb
@@ -219,7 +217,7 @@ module File {
   /**
    * A call to a `File` method that may return one or more filenames.
    */
-  class FileModuleFilenameSource extends FileNameSource, DataFlow::CallNode {
+  class FileModuleFilenameSource extends FileNameSource, DataFlow::MethodCallNode {
     FileModuleFilenameSource() {
       // Class methods
       this =
@@ -232,13 +230,13 @@ module File {
       // Instance methods
       exists(FileInstance fi |
         this.getReceiver() = fi and
-        this.asExpr().getExpr().(MethodCall).getMethodName() = ["path", "to_path"]
+        this.getMethodName() = ["path", "to_path"]
       )
     }
   }
 
   private class FileModulePermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::MethodCallNode {
     private DataFlow::Node permissionArg;
 
     FileModulePermissionModification() {
@@ -321,7 +319,7 @@ module FileUtils {
   }
 
   private class FileUtilsPermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::MethodCallNode {
     private DataFlow::Node permissionArg;
 
     FileUtilsPermissionModification() {

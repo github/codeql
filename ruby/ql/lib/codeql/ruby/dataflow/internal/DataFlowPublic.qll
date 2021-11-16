@@ -60,6 +60,16 @@ class CallNode extends LocalSourceNode {
   Node getKeywordArgument(string name) { result.asExpr() = node.getKeywordArgument(name) }
 }
 
+/** A data-flow node corresponding to a method call in the control-flow graph. */
+class MethodCallNode extends CallNode {
+  private CfgNodes::ExprNodes::MethodCallCfgNode node;
+
+  MethodCallNode() { node = this.asExpr() }
+
+  /** Gets the name of the the method called by the method call corresponding to this data-flow node */
+  string getMethodName() { result = node.getExpr().getMethodName() }
+}
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *

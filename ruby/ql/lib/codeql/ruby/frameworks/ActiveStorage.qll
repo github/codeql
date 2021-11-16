@@ -5,11 +5,12 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 
 /** Defines calls to  `ActiveStorage::Filename#sanitized` as path sanitizers. */
-class ActiveStorageFilenameSanitizedCall extends Path::PathSanitization::Range, DataFlow::CallNode {
+class ActiveStorageFilenameSanitizedCall extends Path::PathSanitization::Range,
+  DataFlow::MethodCallNode {
   ActiveStorageFilenameSanitizedCall() {
     this.getReceiver() =
       API::getTopLevelMember("ActiveStorage").getMember("Filename").getAnInstantiation() and
-    this.asExpr().getExpr().(MethodCall).getMethodName() = "sanitized"
+    this.getMethodName() = "sanitized"
   }
 }
 
