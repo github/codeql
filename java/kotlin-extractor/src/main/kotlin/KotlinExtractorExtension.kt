@@ -371,7 +371,7 @@ open class KotlinUsesExtractor(
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
-                this.withSourceFileOfClass(c, false).extractClassInstance(extractClass, typeArgs)
+                this.withSourceFileOfClass(extractClass, false).extractClassInstance(extractClass, typeArgs)
             }
 
             // Extract both the Kotlin and equivalent Java classes, so that we have database entries
