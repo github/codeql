@@ -280,7 +280,7 @@ private predicate getAWildcardLowerBound(RefType t) {
 }
 
 /**
- * Holds if `hasSubtype*(t, sub)`, but manuel-magic'ed with `getAWildcardUpperBound(t)`.
+ * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardUpperBound(t)`.
  */
 pragma[nomagic]
 private predicate hasSubtypeStar1(RefType t, RefType sub) {
@@ -292,7 +292,7 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 }
 
 /**
- * Holds if `hasSubtype*(t, sub)`, but manuel-magic'ed with `getAWildcardLowerBound(sub)`.
+ * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
