@@ -1,6 +1,7 @@
 /**
  * @name Uncontrolled data used in network request
  * @description Sending network requests with user-controlled data allows for request forgery attacks.
+ * @id go/ssrf
  * @kind path-problem
  * @problem.severity error
  * @precision high
