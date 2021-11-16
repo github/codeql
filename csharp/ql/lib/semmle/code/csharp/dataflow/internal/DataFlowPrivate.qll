@@ -791,12 +791,14 @@ predicate nodeIsHidden(Node n) {
     def instanceof Ssa::ImplicitCallDefinition
   )
   or
-  exists(Parameter p |
-    p = n.(ParameterNode).getParameter() and
+  exists(Parameter p | p = n.(ParameterNode).getParameter() |
     not p.fromSource()
+    or
+    p.getCallable() instanceof SummarizedCallable
   )
   or
-  n = TInstanceParameterNode(any(Callable c | not c.fromSource()))
+  n =
+    TInstanceParameterNode(any(Callable c | not c.fromSource() or c instanceof SummarizedCallable))
   or
   n instanceof YieldReturnNode
   or
