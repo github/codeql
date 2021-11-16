@@ -127,6 +127,22 @@ nodes
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
+| unsafe-jquery-plugin.js:196:29:196:35 | options |
+| unsafe-jquery-plugin.js:196:29:196:35 | options |
+| unsafe-jquery-plugin.js:197:3:197:35 | options |
+| unsafe-jquery-plugin.js:197:13:197:35 | $.exten ... tions ) |
+| unsafe-jquery-plugin.js:197:23:197:24 | {} |
+| unsafe-jquery-plugin.js:197:27:197:33 | options |
+| unsafe-jquery-plugin.js:199:18:199:24 | options |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of |
+| unsafe-jquery-plugin.js:201:23:201:29 | options |
+| unsafe-jquery-plugin.js:201:23:201:32 | options.of |
+| unsafe-jquery-plugin.js:203:23:203:29 | options |
+| unsafe-jquery-plugin.js:203:23:203:32 | options.of |
+| unsafe-jquery-plugin.js:203:82:203:88 | options |
+| unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:203:82:203:91 | options.of |
 edges
 | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
 | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
@@ -256,6 +272,30 @@ edges
 | unsafe-jquery-plugin.js:186:21:186:27 | options | unsafe-jquery-plugin.js:186:21:186:30 | options.of |
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
+| unsafe-jquery-plugin.js:196:29:196:35 | options | unsafe-jquery-plugin.js:197:27:197:33 | options |
+| unsafe-jquery-plugin.js:196:29:196:35 | options | unsafe-jquery-plugin.js:197:27:197:33 | options |
+| unsafe-jquery-plugin.js:197:3:197:35 | options | unsafe-jquery-plugin.js:199:18:199:24 | options |
+| unsafe-jquery-plugin.js:197:3:197:35 | options | unsafe-jquery-plugin.js:201:23:201:29 | options |
+| unsafe-jquery-plugin.js:197:3:197:35 | options | unsafe-jquery-plugin.js:203:23:203:29 | options |
+| unsafe-jquery-plugin.js:197:3:197:35 | options | unsafe-jquery-plugin.js:203:82:203:88 | options |
+| unsafe-jquery-plugin.js:197:13:197:35 | $.exten ... tions ) | unsafe-jquery-plugin.js:197:3:197:35 | options |
+| unsafe-jquery-plugin.js:197:23:197:24 | {} | unsafe-jquery-plugin.js:197:13:197:35 | $.exten ... tions ) |
+| unsafe-jquery-plugin.js:197:27:197:33 | options | unsafe-jquery-plugin.js:197:13:197:35 | $.exten ... tions ) |
+| unsafe-jquery-plugin.js:197:27:197:33 | options | unsafe-jquery-plugin.js:197:23:197:24 | {} |
+| unsafe-jquery-plugin.js:199:18:199:24 | options | unsafe-jquery-plugin.js:199:18:199:27 | options.of |
+| unsafe-jquery-plugin.js:199:18:199:24 | options | unsafe-jquery-plugin.js:199:18:199:27 | options.of |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of | unsafe-jquery-plugin.js:203:23:203:32 | options.of |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:201:23:201:29 | options | unsafe-jquery-plugin.js:201:23:201:32 | options.of |
+| unsafe-jquery-plugin.js:201:23:201:32 | options.of | unsafe-jquery-plugin.js:203:23:203:32 | options.of |
+| unsafe-jquery-plugin.js:201:23:201:32 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:201:23:201:32 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:203:23:203:29 | options | unsafe-jquery-plugin.js:203:23:203:32 | options.of |
+| unsafe-jquery-plugin.js:203:23:203:32 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:203:23:203:32 | options.of | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:203:82:203:88 | options | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
+| unsafe-jquery-plugin.js:203:82:203:88 | options | unsafe-jquery-plugin.js:203:82:203:91 | options.of |
 #select
 | unsafe-jquery-plugin.js:3:5:3:11 | options | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:5:5:5:18 | options.target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:5:5:5:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
@@ -280,3 +320,5 @@ edges
 | unsafe-jquery-plugin.js:170:6:170:11 | target | unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:170:6:170:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:160:19:173:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:179:5:179:18 | options.target | unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:178:18:180:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of | unsafe-jquery-plugin.js:185:28:185:34 | options | unsafe-jquery-plugin.js:192:19:192:28 | options.of | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:185:18:194:2 | functio ... et);\\n\\t} | '$.fn.position' plugin |
+| unsafe-jquery-plugin.js:199:18:199:27 | options.of | unsafe-jquery-plugin.js:196:29:196:35 | options | unsafe-jquery-plugin.js:199:18:199:27 | options.of | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:196:19:204:2 | functio ... ion)\\n\\t} | '$.fn.position2' plugin |
+| unsafe-jquery-plugin.js:203:82:203:91 | options.of | unsafe-jquery-plugin.js:196:29:196:35 | options | unsafe-jquery-plugin.js:203:82:203:91 | options.of | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:196:19:204:2 | functio ... ion)\\n\\t} | '$.fn.position2' plugin |

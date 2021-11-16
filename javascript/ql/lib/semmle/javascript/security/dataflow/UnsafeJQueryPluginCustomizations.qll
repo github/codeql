@@ -154,6 +154,23 @@ module UnsafeJQueryPlugin {
   }
 
   /**
+   * Expression like `typeof x !== "string"`, which sanitizes `x`, as it is not a string afterwards.
+   */
+  class NonStringSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    DataFlow::Node input;
+    EqualityTest test;
+
+    NonStringSanitizer() {
+      test.flow() = this and
+      TaintTracking::isTypeofGuard(test, input.asExpr(), "string")
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = test.getPolarity().booleanNot() and e = input.asExpr()
+    }
+  }
+
+  /**
    * The client-provided options object for a jQuery plugin, considered as a source for unsafe jQuery plugins.
    */
   class JQueryPluginOptionsAsSource extends Source, JQueryPluginOptions {

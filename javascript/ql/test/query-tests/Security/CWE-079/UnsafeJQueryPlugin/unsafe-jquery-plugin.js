@@ -192,4 +192,14 @@
 		var target = $( options.of ); // NOT OK
 		console.log(target);
 	};
+
+	$.fn.position2 = function (options) {
+		options = $.extend( {}, options );
+
+		var target = $(options.of); // NOT OK
+
+		var target = typeof options.of === "string" ? $(document).find(options.of) : $(options.of); // OK
+
+		var target = typeof options.of !== "string" ? $(document).find(options.of) : $(options.of); // NOT OK (flipped contition)
+	}
 });
