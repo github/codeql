@@ -1,0 +1,7 @@
+| otherfile.kt:3:1:3:29 | other | Object | Object.class | 0 |
+| test.kt:7:3:7:11 | b | String | String.class | 0 |
+| test.kt:8:3:8:24 | c | List<String> | List.class | 0 |
+| test.kt:9:3:9:28 | d | List<? extends String> | List.class | 0 |
+| test.kt:10:3:10:24 | e | DefinedHere<String> | test.kt | 14 |
+| test.kt:11:3:11:29 | f | DefinedOtherFile<String> | otherfile.kt | 3 |
+| test.kt:14:1:14:24 | other | Object | Object.class | 0 |
