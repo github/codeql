@@ -188,7 +188,7 @@ private predicate typePrefixContainsAux1(
   exists(ParameterizedPrefix pps0 |
     typePrefixContains(pps0, ppt0) and
     pps = TTypeParam(pps0, s) and
-    s instanceof Wildcard
+    s instanceof Wildcard // manual magic, implied by `typeArgumentContains(_, s, t, _)`
   )
 }
 
@@ -197,6 +197,7 @@ private predicate typePrefixContainsAux2(
   ParameterizedPrefix ppt, ParameterizedPrefix ppt0, RefType s
 ) {
   exists(GenericType g, int n, RefType t |
+    // Implies `ppt = TTypeParam(ppt0, t)`
     ppt.split(g, ppt0, t, n) and
     typeArgumentContains(g, s, t, n)
   )
@@ -268,24 +269,36 @@ private predicate wildcardExtendsObject(Wildcard wc) {
   wc.getUpperBound().getType() instanceof TypeObject
 }
 
-private predicate subtypeStarMagic1(RefType t) { t = any(Wildcard w).getUpperBound().getType() }
+// manual magic for `hasSubtypeStar1`
+private predicate getAWildcardUpperBound(RefType t) {
+  t = any(Wildcard w).getUpperBound().getType()
+}
 
-private predicate subtypeStarMagic2(RefType t) { t = any(Wildcard w).getLowerBound().getType() }
+// manual magic for `hasSubtypeStar2`
+private predicate getAWildcardLowerBound(RefType t) {
+  t = any(Wildcard w).getLowerBound().getType()
+}
 
+/**
+ * Holds if `hasSubtype*(t, sub)`, but manuel-magic'ed with `getAWildcardUpperBound(t)`.
+ */
 pragma[nomagic]
 private predicate hasSubtypeStar1(RefType t, RefType sub) {
-  sub = t and subtypeStarMagic1(t)
+  sub = t and getAWildcardUpperBound(t)
   or
-  hasSubtype(t, sub) and subtypeStarMagic1(t)
+  hasSubtype(t, sub) and getAWildcardUpperBound(t)
   or
   exists(RefType mid | hasSubtypeStar1(t, mid) and hasSubtype(mid, sub))
 }
 
+/**
+ * Holds if `hasSubtype*(t, sub)`, but manuel-magic'ed with `getAWildcardLowerBound(sub)`.
+ */
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
-  sub = t and subtypeStarMagic2(sub)
+  sub = t and getAWildcardLowerBound(sub)
   or
-  hasSubtype(t, sub) and subtypeStarMagic2(sub)
+  hasSubtype(t, sub) and getAWildcardLowerBound(sub)
   or
   exists(RefType mid | hasSubtype(t, mid) and hasSubtypeStar2(mid, sub))
 }
