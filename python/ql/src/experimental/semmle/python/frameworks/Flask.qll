@@ -121,9 +121,12 @@ module ExperimentalFlask {
     }
 
     override predicate isSameSite() {
-      this.(DataFlow::CallCfgNode).getArgByName("samesite").asExpr().(Str_).getS() in [
-          "Strict", "Lax"
-        ]
+      exists(StrConst str |
+        str.getText() in ["Strict", "Lax"] and
+        DataFlow::exprNode(str)
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("samesite"))
+      )
     }
 
     override DataFlow::Node getHeaderArg() { none() }
