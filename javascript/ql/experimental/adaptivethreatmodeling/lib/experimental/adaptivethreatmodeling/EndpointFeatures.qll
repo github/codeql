@@ -145,6 +145,67 @@ module FunctionBodies {
   }
 }
 
+/** This module provides functionality for getting the neighborhood scope body feature associated with a neighborhood around an AST node. */
+module NeighborhoodBodies {
+  /**
+   * Return the ancestor of the input AST node that has the largest number of descendants (i.e. the node nearest the
+   * root) but has no more than 128 descendants.
+   * TODO: Maybe instead of a threshold on number of descendants, we should instead have a threshold on the number of
+   * leaves in the subtree, which is a closer approximation to the number of tokens in the subtree. If we don't do this,
+   * as an optimization we can remove the sorting by location, since each ancestor of a given node will always have a
+   * different number of descendants.
+   */
+  Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
+    if getNumDescendents(node.getParentNode()) > 128
+    then result = node
+    else result = getNeighborhoodAstNode(node.getParentNode())
+  }
+
+  /** Count number of descendants of an AST node */
+  int getNumDescendents(Raw::AstNode node) { result = count(node.getAChildNode*()) }
+
+  /**
+   * Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`.
+   *
+   * We restrict `rootNode` to be a neighborhood root to avoid a potentially big result set.
+   */
+  private predicate bodyTokens(
+    DatabaseFeatures::AstNode rootNode, DatabaseFeatures::AstNode childNode, string token
+  ) {
+    childNode = rootNode.getAChild*() and
+    token = unique(string t | DatabaseFeatures::nodeAttributes(childNode, t)) 
+    // and rootNode = getANeighborhoodRoot()
+  }
+
+  /**
+   * Gets the body token feature for the specified entity.
+   *
+   * This is a string containing natural language tokens in the order that they appear in the source code for the entity.
+   */
+  string getBodyTokenFeatureForNeighborhoodNode(DatabaseFeatures::AstNode rootNode) {
+    // If a function has more than 256 body subtokens, then featurize it as absent. This
+    // approximates the behavior of the classifer on non-generic body features where large body
+    // features are replaced by the absent token.
+    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(rootNode, node, token)) > 256
+    then result = ""
+    else
+      result =
+        concat(int i, string rankedToken |
+          rankedToken =
+            rank[i](DatabaseFeatures::AstNode node, string token, Location l |
+              bodyTokens(rootNode, node, token) and l = node.getLocation()
+            |
+              token
+              order by
+                l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+                l.getEndColumn(), token
+            )
+        |
+          rankedToken, " " order by i
+        )
+  }
+}
+
 /**
  * Returns a name of the API that a node originates from, if the node originates from an API.
  *
