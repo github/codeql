@@ -423,15 +423,15 @@ module DatabaseFeatures {
   }
 
   query predicate astNodes(
-    Entity enclosingEntity, EntityOrAstNode parent, int index, AstNode node, string node_type
+    Entity enclosingEntity, EntityOrAstNode parent, int index, AstNode child, string childType
   ) {
-    node = enclosingEntity.getAstRoot(index) and
+    child = enclosingEntity.getAstRoot(index) and
     parent = enclosingEntity and
-    node_type = node.getType()
+    childType = child.getType()
     or
     astNodes(enclosingEntity, _, _, parent, _) and
-    node = parent.(AstNode).getChild(index) and
-    node_type = node.getType()
+    child = parent.(AstNode).getChild(index) and
+    childType = child.getType()
   }
 
   query predicate nodeAttributes(AstNode node, string attr) {
