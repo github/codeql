@@ -294,12 +294,12 @@ private module Cached {
         TAssignModuloExpr or TAssignMulExpr or TAssignRShiftExpr or TAssignSubExpr or
         TBareStringLiteral or TBareSymbolLiteral or TBeginBlock or TBeginExpr or
         TBitwiseAndExprReal or TBitwiseOrExprReal or TBitwiseXorExprReal or TBlockArgument or
-        TBlockParameter or TBraceBlock or TBreakStmt or TCaseEqExpr or TCaseExpr or
+        TBlockParameter or TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
         TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
         TDivExprReal or TDo or TDoBlock or TElementReference or TElse or TElsif or TEmptyStmt or
         TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or TFloatLiteral or
-        TForExpr or TForIn or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
+        TForExpr or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
         TGlobalVariableAccessReal or THashKeySymbolLiteral or THashLiteral or THashSplatExpr or
         THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or TIfModifierExpr or
         TInstanceVariableAccessReal or TIntegerLiteralReal or TKeywordParameter or TLEExpr or
@@ -311,7 +311,7 @@ private module Cached {
         TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
         TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
         TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
-        TSimpleParameter or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
+        TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
         TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
         TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
         TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
@@ -322,12 +322,13 @@ private module Cached {
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
-        TBitwiseXorExprSynth or TClassVariableAccessSynth or TConstantReadAccessSynth or
-        TDivExprSynth or TExponentExprSynth or TGlobalVariableAccessSynth or
-        TInstanceVariableAccessSynth or TIntegerLiteralSynth or TLShiftExprSynth or
-        TLocalVariableAccessSynth or TLogicalAndExprSynth or TLogicalOrExprSynth or
-        TMethodCallSynth or TModuloExprSynth or TMulExprSynth or TRShiftExprSynth or
-        TRangeLiteralSynth or TSelfSynth or TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
+        TBitwiseXorExprSynth or TBraceBlockSynth or TClassVariableAccessSynth or
+        TConstantReadAccessSynth or TDivExprSynth or TExponentExprSynth or
+        TGlobalVariableAccessSynth or TInstanceVariableAccessSynth or TIntegerLiteralSynth or
+        TLShiftExprSynth or TLocalVariableAccessSynth or TLogicalAndExprSynth or
+        TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or TMulExprSynth or
+        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
+        TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not

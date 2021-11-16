@@ -847,7 +847,7 @@ private module ForLoopDesugar {
         // receiver
         parent = eachCall and
         i = 0 and
-        child = RealChild(for.getValue()) // value is the Enumerable
+        child = childRef(for.getValue()) // value is the Enumerable
         or
         parent = eachCall and
         i = -2 and
@@ -872,7 +872,7 @@ private module ForLoopDesugar {
             parent = TAssignExprSynth(block, 1) and
             (
               i = 0 and
-              child = RealChild(for.getPattern())
+              child = childRef(for.getPattern())
               or
               i = 1 and
               child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
@@ -881,7 +881,7 @@ private module ForLoopDesugar {
           or
           // rest of block body
           parent = block and
-          child = RealChild(for.getBody().(Do).getStmt(i - 2))
+          child = childRef(for.getBody().(Do).getStmt(i - 2))
         )
       )
     )
