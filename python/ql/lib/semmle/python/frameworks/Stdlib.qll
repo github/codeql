@@ -254,7 +254,17 @@ private module StdlibPrivate {
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    API::Node path() { result = os().getMember("path") }
+    API::Node path() {
+      result = os().getMember("path")
+      or
+      // although the following modules should not be used directly, they certainly can.
+      // Each one doesn't expose the full `os.path` API, so this is an overapproximation
+      // that made implementation easy. See
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/posixpath.py#L31-L38
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/ntpath.py#L26-L32
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/genericpath.py#L9-L11
+      result = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+    }
 
     /** Provides models for the `os.path` module */
     module path {

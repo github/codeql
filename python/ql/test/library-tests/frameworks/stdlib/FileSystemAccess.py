@@ -34,3 +34,11 @@ path.isfile("filepath")  # $ getAPathArgument="filepath"
 path.isdir("filepath")  # $ getAPathArgument="filepath"
 path.islink("filepath")  # $ getAPathArgument="filepath"
 path.ismount("filepath")  # $ getAPathArgument="filepath"
+
+import posixpath
+import ntpath
+import genericpath
+
+posixpath.exists("filepath") # $ getAPathArgument="filepath"
+ntpath.exists("filepath") # $ getAPathArgument="filepath"
+genericpath.exists("filepath") # $ getAPathArgument="filepath"
