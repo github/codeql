@@ -4,6 +4,8 @@
  * Extracts data about the functions in the database for use in adaptive threat modeling (ATM).
  */
 
+private import EndpointFeatures::NeighborhoodBodies
+
 module Raw {
   private import javascript as raw
 
@@ -30,6 +32,9 @@ module Raw {
     entity.getNumBodyStmt() = 0 and not exists(entity.getAReturnedExpr())
   }
 
+  /**
+   * Wrapper for RawAstNode (could be an alias instead of a newtype)
+   */
   newtype WrappedAstNode = TAstNode(RawAstNode rawNode)
 
   /**
@@ -43,6 +48,8 @@ module Raw {
     AstNode getAChildNode() { result = TAstNode(rawNode.getAChild()) }
 
     AstNode getParentNode() { result = TAstNode(rawNode.getParent()) }
+
+    raw::StmtContainer getContainer() { result = rawNode.getContainer() }
 
     /**
      * Holds if the AST node has `result` as its `index`th attribute.
@@ -127,6 +134,11 @@ module Raw {
       )
     }
   }
+
+  /**
+   * Returns the `Raw::AstNode` wrapper of `rawNode`
+   */
+  AstNode astNode(RawAstNode rawNode) { result = TAstNode(rawNode) }
 
   /**
    * Holds if `result` is the `index`'th child of the `parent` entity. Such
@@ -325,6 +337,11 @@ module Wrapped {
   }
 
   /**
+   * Returns the `Wrapped::AstNode` for a `rawNode` in the context of `entity`
+   */
+  AstNode astNode(Raw::Entity entity, Raw::AstNode rawNode) { result = TAstNode(entity, rawNode) }
+
+  /**
    * A synthetic AST node, created to be a leaf for an otherwise non-leaf attribute.
    */
   class SyntheticAstNode extends AstNode, TSyntheticNode {
@@ -383,6 +400,8 @@ module DatabaseFeatures {
     override Location getLocation() { result = entity.getLocation() }
 
     UnderlyingFunction getDefinedFunction() { result = entity.getDefinedFunction() }
+
+    Wrapped::Entity getWrappedEntity() { result = entity }
   }
 
   class AstNode extends EntityOrAstNode, TAstNode {
@@ -392,7 +411,11 @@ module DatabaseFeatures {
 
     AstNode getChild(int index) { result = TAstNode(rawNode.getChild(index)) }
 
+    AstNode getAChild() { result = this.getChild(_) }
+
     string getAttribute(int index) { result = rawNode.getAttribute(index) }
+
+    Wrapped::AstNode getRawNode() { result = rawNode }
 
     override string getType() { result = rawNode.getType() }
 
@@ -400,6 +423,9 @@ module DatabaseFeatures {
 
     override Location getLocation() { result = rawNode.getLocation() }
   }
+
+  /** Gets the `DatabaseFeatures::AstNode` that wraps `wrapped` */
+  AstNode astNode(Wrapped::AstNode wrapped) { result.getRawNode() = wrapped }
 
   /** Consistency checks: these predicates should each have no results */
   module Consistency {
