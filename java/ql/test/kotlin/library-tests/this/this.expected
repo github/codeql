@@ -1,13 +1,13 @@
 | this.kt:5:29:5:32 | this | file://:0:0:0:0 | <none> |
 | this.kt:6:29:6:38 | this | file://:0:0:0:0 | <none> |
-| this.kt:7:29:7:38 | this | file://:0:0:0:0 | <none> |
+| this.kt:7:29:7:38 | Outer.this | this.kt:7:29:7:38 | Outer |
 | this.kt:29:38:29:41 | this | file://:0:0:0:0 | <none> |
 | this.kt:30:29:30:38 | this | file://:0:0:0:0 | <none> |
-| this.kt:31:29:31:38 | this | file://:0:0:0:0 | <none> |
+| this.kt:31:29:31:38 | Outer.this | this.kt:31:29:31:38 | Outer |
 | this.kt:32:38:32:54 | this | file://:0:0:0:0 | <none> |
-| this.kt:37:13:37:22 | this | file://:0:0:0:0 | <none> |
+| this.kt:37:13:37:22 | Outer.this | this.kt:37:13:37:22 | Outer |
 | this.kt:38:13:38:22 | this | file://:0:0:0:0 | <none> |
-| this.kt:39:13:39:30 | this | file://:0:0:0:0 | <none> |
+| this.kt:39:13:39:30 | Outer.this | this.kt:39:13:39:30 | Outer |
 | this.kt:40:13:40:30 | this | file://:0:0:0:0 | <none> |
 | this.kt:41:13:41:27 | this | file://:0:0:0:0 | <none> |
 | this.kt:42:13:42:35 | this | file://:0:0:0:0 | <none> |

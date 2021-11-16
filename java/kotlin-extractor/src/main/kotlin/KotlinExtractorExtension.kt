@@ -1174,26 +1174,6 @@ open class KotlinFileExtractor(
         return FieldResult(instanceId, instanceName)
     }
 
-    private fun isQualifiedThis(vp: IrValueParameter): Boolean {
-        return isQualifiedThisFunction(vp) ||
-               isQualifiedThisClass(vp)
-    }
-
-    private fun isQualifiedThisFunction(vp: IrValueParameter): Boolean {
-        val parent = vp.parent
-        return vp.index == -1 &&
-               parent is IrFunction &&
-               parent.dispatchReceiverParameter == vp &&
-               parent.extensionReceiverParameter != null
-    }
-
-    private fun isQualifiedThisClass(vp: IrValueParameter): Boolean {
-        val parent = vp.parent
-        return vp.index == -1 &&
-               parent is IrClass &&
-               parent.thisReceiver == vp
-    }
-
     fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int) {
         val id = useValueParameter(vp)
         val type = useType(vp.type)
@@ -1895,12 +1875,31 @@ open class KotlinFileExtractor(
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_thisaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                    if (isQualifiedThis(owner)) {
-                        // todo: add type access as child of 'id' at index 0
-                        logger.warnElement(Severity.ErrorSevere, "TODO: Qualified this access found.", e)
-                    }
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
+
+                    val ownerParent = owner.parent
+                    when(ownerParent) {
+                        is IrFunction -> {
+                            if (ownerParent.dispatchReceiverParameter == owner &&
+                                ownerParent.extensionReceiverParameter != null) {
+                                logger.warnElement(Severity.ErrorSevere, "Function-qualifier for this", e)
+                            }
+                        }
+                        is IrClass -> {
+                            if (ownerParent.thisReceiver == owner) {
+                                val qualId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+                                // TODO: Type arguments
+                                val qualType = useSimpleTypeClass(ownerParent, listOf(), false)
+                                tw.writeExprs_unannotatedtypeaccess(qualId, qualType.javaResult.id, qualType.kotlinResult.id, id, 0)
+                                tw.writeHasLocation(qualId, locId)
+                                tw.writeCallableEnclosingExpr(qualId, callable)
+                            }
+                        }
+                        else -> {
+                            logger.warnElement(Severity.ErrorSevere, "Unexpected owner parent for this access: " + ownerParent.javaClass, e)
+                        }
+                    }
                 } else {
                     val id = tw.getFreshIdLabel<DbVaraccess>()
                     val type = useType(e.type)
