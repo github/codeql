@@ -340,6 +340,12 @@ module TyConsistency {
     resolveTypeExpr(te, t)
   }
 
+  query predicate multiplePrimitives(TypeExpr te, int c, PrimitiveType t) {
+    c = strictcount(PrimitiveType t0 | resolveTypeExpr(te, t0)) and
+    c > 1 and
+    resolveTypeExpr(te, t)
+  }
+
   query predicate varDefNoType(VarDef def) {
     not exists(def.getType()) and
     not def.getLocation()
@@ -359,5 +365,11 @@ module TyConsistency {
         .getFile()
         .getAbsolutePath()
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+  }
+
+  query predicate multiplePrimitivesExpr(Expr e, int c, PrimitiveType t) {
+    c = strictcount(PrimitiveType t0 | t0 = e.getType()) and
+    c > 1 and
+    t = e.getType()
   }
 }
