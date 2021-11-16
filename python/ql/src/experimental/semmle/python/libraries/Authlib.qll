@@ -8,7 +8,7 @@ private module Authlib {
   private API::Node authlibJWT() {
     result in [
         API::moduleImport("authlib").getMember("jose").getMember("jwt"),
-        API::moduleImport("authlib.jose").getMember("JsonWebToken").getReturn()
+        API::moduleImport("authlib").getMember("jose").getMember("JsonWebToken").getReturn()
       ]
   }
 
