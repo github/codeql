@@ -8,6 +8,7 @@ private import semmle.python.frameworks.Flask
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.Flask
 
 module ExperimentalFlask {
   /**
@@ -102,33 +103,27 @@ module ExperimentalFlask {
    * * `isHttpOnly()` predicate would succeed.
    * * `isSameSite()` predicate would succeed.
    */
-  class FlaskSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
-    FlaskSetCookieCall() {
-      this =
-        [Flask::Response::classRef(), flaskMakeResponse()]
-            .getReturn()
-            .getMember("set_cookie")
-            .getACall()
-    }
+  class FlaskSetCookieCall extends Cookie::Range instanceof Flask::FlaskResponseSetCookieCall {
+    override DataFlow::Node getNameArg() { result = this.getNameArg() }
 
-    override DataFlow::Node getNameArg() { result = this.getArg(0) }
-
-    override DataFlow::Node getValueArg() { result = this.getArgByName("value") }
+    override DataFlow::Node getValueArg() { result = this.getValueArg() }
 
     override predicate isSecure() {
       DataFlow::exprNode(any(True t))
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.getArgByName("secure"))
+          .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
     }
 
     override predicate isHttpOnly() {
       DataFlow::exprNode(any(True t))
           .(DataFlow::LocalSourceNode)
-          .flowsTo(this.getArgByName("httponly"))
+          .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
     }
 
     override predicate isSameSite() {
-      this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
+      this.(DataFlow::CallCfgNode).getArgByName("samesite").asExpr().(Str_).getS() in [
+          "Strict", "Lax"
+        ]
     }
 
     override DataFlow::Node getHeaderArg() { none() }

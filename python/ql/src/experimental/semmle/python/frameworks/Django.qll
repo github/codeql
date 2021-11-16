@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 
 private module PrivateDjango {
   private module django {
@@ -32,22 +33,64 @@ private module PrivateDjango {
       module response {
         module HttpResponse {
           API::Node baseClassRef() {
-            result = response().getMember("HttpResponse").getReturn()
+            result = response().getMember("HttpResponse")
             or
             // Handle `django.http.HttpResponse` alias
-            result = http().getMember("HttpResponse").getReturn()
+            result = http().getMember("HttpResponse")
           }
+
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
+
+          /**
+           * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
+           *
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
+           * library.
+           *
+           * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
+           */
+          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          }
+
+          /** A direct instantiation of `django.http.response.HttpResponse`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
+
+            override DataFlow::Node getBody() {
+              result in [this.getArg(0), this.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() {
+              result in [this.getArg(1), this.getArgByName("content_type")]
+            }
+
+            override string getMimetypeDefault() { result = "text/html" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
           /** Gets a reference to a header instance. */
           private DataFlow::LocalSourceNode headerInstance(DataFlow::TypeTracker t) {
             t.start() and
             (
               exists(SubscriptNode subscript |
-                subscript.getObject() = baseClassRef().getAUse().asCfgNode() and
+                subscript.getObject() = baseClassRef().getReturn().getAUse().asCfgNode() and
                 result.asCfgNode() = subscript
               )
               or
-              result.(DataFlow::AttrRead).getObject() = baseClassRef().getAUse()
+              result.(DataFlow::AttrRead).getObject() = baseClassRef().getReturn().getAUse()
             )
             or
             exists(DataFlow::TypeTracker t2 | result = headerInstance(t2).track(t2, t))
@@ -106,27 +149,35 @@ private module PrivateDjango {
            * * `isHttpOnly()` predicate would succeed.
            * * `isSameSite()` predicate would succeed.
            */
-          class DjangoSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
-            DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
+          class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode, Cookie::Range {
+            DjangoResponseSetCookieCall() {
+              this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+            }
 
-            override DataFlow::Node getNameArg() { result = this.getArg(0) }
+            override DataFlow::Node getNameArg() {
+              result in [this.getArg(0), this.getArgByName("key")]
+            }
 
-            override DataFlow::Node getValueArg() { result = this.getArgByName("value") }
+            override DataFlow::Node getValueArg() {
+              result in [this.getArg(1), this.getArgByName("value")]
+            }
 
             override predicate isSecure() {
               DataFlow::exprNode(any(True t))
                   .(DataFlow::LocalSourceNode)
-                  .flowsTo(this.getArgByName("secure"))
+                  .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("secure"))
             }
 
             override predicate isHttpOnly() {
               DataFlow::exprNode(any(True t))
                   .(DataFlow::LocalSourceNode)
-                  .flowsTo(this.getArgByName("httponly"))
+                  .flowsTo(this.(DataFlow::CallCfgNode).getArgByName("httponly"))
             }
 
             override predicate isSameSite() {
-              this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
+              this.(DataFlow::CallCfgNode).getArgByName("samesite").asExpr().(Str_).getS() in [
+                  "Strict", "Lax"
+                ]
             }
 
             override DataFlow::Node getHeaderArg() { none() }
