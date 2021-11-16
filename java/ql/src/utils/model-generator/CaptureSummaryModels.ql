@@ -158,9 +158,9 @@ class ParameterToReturnValueTaintConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ReturnNode }
 
-  // track taint across objects so we consider factory methods returning newly tainted objects
+  // consider store steps to track taint across objects to model factory methods returning tainted objects
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr().(ConstructorCall).getAnArgument() = node1.asExpr()
+    store(node1, _, node2, _)
   }
 
   override DataFlow::FlowFeature getAFeature() {

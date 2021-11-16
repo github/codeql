@@ -44,4 +44,3 @@
 | p;Pojo;false;getValue;();;Argument[-1];ReturnValue;taint |
 | p;Pojo;false;setValue;(String);;Argument[0];Argument[-1];taint |
 | p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint |
-| p;PrivateFlowViaPublicInterface;true;createAnSPIWithoutTrackingFile;(File);;Argument[0];ReturnValue;taint |
