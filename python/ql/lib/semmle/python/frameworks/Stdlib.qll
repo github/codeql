@@ -274,6 +274,29 @@ private module StdlibPrivate {
   }
 
   /**
+   * The `os` module has multiple methods for getting the status of a file, like
+   * a stat() system call.
+   *
+   * Note: `os.fstat` and `os.fstatvfs` operate on file-descriptors.
+   *
+   * See:
+   * - https://docs.python.org/3.10/library/os.html#os.stat
+   * - https://docs.python.org/3.10/library/os.html#os.lstat
+   * - https://docs.python.org/3.10/library/os.html#os.statvfs
+   * - https://docs.python.org/3.10/library/os.html#os.fstat
+   * - https://docs.python.org/3.10/library/os.html#os.fstatvfs
+   */
+  private class OsProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsProbingCall() {
+      this = os().getMember(["stat", "lstat", "statvfs", "fstat", "fstatvfs"]).getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
    * The `os.path` module offers a number of methods for checking if a file exists and/or has certain
    * properties, leading to a file system access.
    * A call to `os.path.exists` or `os.path.lexists` will check if a file exists on the file system.

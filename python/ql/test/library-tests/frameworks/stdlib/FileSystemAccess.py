@@ -42,3 +42,8 @@ import genericpath
 posixpath.exists("filepath") # $ getAPathArgument="filepath"
 ntpath.exists("filepath") # $ getAPathArgument="filepath"
 genericpath.exists("filepath") # $ getAPathArgument="filepath"
+
+import os
+
+os.stat("filepath") # $ getAPathArgument="filepath"
+os.stat(path="filepath") # $ getAPathArgument="filepath"
