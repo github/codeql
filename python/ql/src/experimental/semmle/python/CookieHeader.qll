@@ -29,24 +29,39 @@ import experimental.semmle.python.Concepts
 class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   CookieHeader() {
     this instanceof HeaderDeclaration and
-    this.(HeaderDeclaration).getNameArg().asExpr().(Str_).getS() = "Set-Cookie"
+    exists(StrConst str |
+      str.getText() = "Set-Cookie" and
+      DataFlow::exprNode(str)
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.(HeaderDeclaration).getNameArg())
+    )
   }
 
   override predicate isSecure() {
-    this.(HeaderDeclaration).getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *Secure;.*")
+    exists(StrConst str |
+      str.getText().regexpMatch(".*; *Secure;.*") and
+      DataFlow::exprNode(str)
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.(HeaderDeclaration).getValueArg())
+    )
   }
 
   override predicate isHttpOnly() {
-    this.(HeaderDeclaration).getValueArg().asExpr().(Str_).getS().regexpMatch(".*; *HttpOnly;.*")
+    exists(StrConst str |
+      str.getText().regexpMatch(".*; *HttpOnly;.*") and
+      DataFlow::exprNode(str)
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.(HeaderDeclaration).getValueArg())
+    )
   }
 
   override predicate isSameSite() {
-    this.(HeaderDeclaration)
-        .getValueArg()
-        .asExpr()
-        .(Str_)
-        .getS()
-        .regexpMatch(".*; *SameSite=(Strict|Lax);.*")
+    exists(StrConst str |
+      str.getText().regexpMatch(".*; *SameSite=(Strict|Lax);.*") and
+      DataFlow::exprNode(str)
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.(HeaderDeclaration).getValueArg())
+    )
   }
 
   override DataFlow::Node getNameArg() { result = this.(HeaderDeclaration).getValueArg() }
