@@ -306,7 +306,7 @@ val primitiveTypeMapping = mapOf(
 
 open class KotlinUsesExtractor(
     open val logger: Logger,
-    open val tw: TrapWriter,
+    open val tw: FileTrapWriter,
     val dependencyCollector: TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
     val pluginContext: IrPluginContext) {
@@ -510,6 +510,9 @@ open class KotlinUsesExtractor(
         tw.writeErasure(id, unbound)
         extractClassModifiers(c, id)
         extractClassSupertypes(c, id)
+
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
 
         return id
     }
