@@ -108,7 +108,6 @@ private module XML {
     override DataFlow::Node getAnInput() { none() }
 
     override predicate mayBeDangerous() {
-      not exists(this.getArgByName(_)) or
       DataFlow::localFlow(DataFlow::exprNode(any(False falseName)), this.getArgByName("no_network")) or
       DataFlow::localFlow(DataFlow::exprNode(any(True trueName)),
         this.getArgByName(["huge_tree", "resolve_entities"])) or
