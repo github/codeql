@@ -74,23 +74,19 @@ module XMLParsing {
  * Extend this class to model new APIs. If you want to refine existing API models,
  * extend `XMLParsing` instead.
  */
-class XMLParsing extends DataFlow::Node {
-  XMLParsing::Range range;
-
-  XMLParsing() { this = range }
-
+class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
   /**
    * Gets the argument containing the content to parse.
    *
    * Specifically, this predicate holds whether the XML parsing parses/extends external
    * entities in the parsed XML stream.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 
   /**
    * Holds if the parser may be parsing the input dangerously.
    */
-  predicate mayBeDangerous() { range.mayBeDangerous() }
+  predicate mayBeDangerous() { super.mayBeDangerous() }
 }
 
 /** Provides classes for modeling XML parsers. */
@@ -123,15 +119,11 @@ module XMLParser {
  * Extend this class to model new APIs. If you want to refine existing API models,
  * extend `XMLParser` instead.
  */
-class XMLParser extends DataFlow::Node {
-  XMLParser::Range range;
-
-  XMLParser() { this = range }
-
+class XMLParser extends DataFlow::Node instanceof XMLParser::Range {
   /**
    * Gets the argument containing the content to parse.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 
   /**
    * Holds if the parser may be dangerously configured.
@@ -139,7 +131,7 @@ class XMLParser extends DataFlow::Node {
    * Specifically, this predicate holds whether the XML parser parses/extends external
    * entities in the parsed XML stream.
    */
-  predicate mayBeDangerous() { range.mayBeDangerous() }
+  predicate mayBeDangerous() { super.mayBeDangerous() }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
