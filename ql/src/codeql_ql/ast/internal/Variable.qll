@@ -1,5 +1,5 @@
 import ql
-import codeql_ql.ast.internal.AstNodes
+private import codeql_ql.ast.internal.AstNodes
 
 private class TScope =
   TClass or TAggregate or TQuantifier or TSelect or TPredicate or TNewTypeBranch;
@@ -89,4 +89,8 @@ module VarConsistency {
     decl = f.getDeclaration() and
     strictcount(f.getDeclaration()) > 1
   }
+
+  query predicate noFieldDef(FieldAccess f) { not exists(f.getDeclaration()) }
+
+  query predicate noVarDef(VarAccess v) { not exists(v.getDeclaration()) }
 }

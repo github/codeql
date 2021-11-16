@@ -139,6 +139,7 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
 }
 
 private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
+  (m.(File_).getFile().getExtension() = "qll" or not m instanceof File_) and
   exists(int last |
     resolveQualifiedName(imp, m, last) and
     last = count(int j | exists(imp.getQualifiedName(j))) - 1
@@ -281,7 +282,11 @@ module ModConsistency {
   query predicate multipleResolve(Import imp, int c, ContainerOrModule m) {
     c = strictcount(ContainerOrModule m0 | resolve(imp, m0)) and
     c > 1 and
-    resolve(imp, m)
+    resolve(imp, m) and
+    not imp.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate multipleResolveModuleExpr(ModuleExpr me, int c, ContainerOrModule m) {

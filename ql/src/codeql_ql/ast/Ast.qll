@@ -819,7 +819,7 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
  * A branch in a `newtype`.
  * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
-class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration {
+class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   QL::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
@@ -835,7 +835,7 @@ class NewTypeBranch extends TNewTypeBranch, PredicateOrBuiltin, TypeDeclaration 
   }
 
   /** Gets the body of this branch. */
-  Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
@@ -1551,7 +1551,7 @@ class ExprAggregate extends TExprAggregate, Aggregate {
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      kind.regexpMatch("(strict)?count") and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
@@ -1615,16 +1615,16 @@ class FullAggregate extends TFullAggregate, Aggregate {
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?(count|sum|min|max|rank)") and
+      kind = ["count", "strictcount"] and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
       result.getName() = "string"
     )
     or
-    kind = ["any", "min", "max", "unique"] and
+    kind = ["any", "min", "max", "unique", "rank", "sum", "strictsum"] and
     not exists(this.getExpr(_)) and
-    result = this.getArgument(0).getTypeExpr().getResolvedType()
+    result = this.getArgument(0).getType()
     or
     not kind = ["count", "strictcount"] and
     result = this.getExpr(0).getType()
@@ -1761,6 +1761,10 @@ class Super extends TSuper, Expr {
   Super() { this = TSuper(_) }
 
   override string getAPrimaryQlClass() { result = "Super" }
+
+  override Type getType() {
+    exists(MemberCall call | call.getBase() = this | result = call.getTarget().getDeclaringType())
+  }
 }
 
 /** An access to `result`. */
@@ -1794,6 +1798,7 @@ class Negation extends TNegation, Formula {
 
 /** An expression, such as `x+4`. */
 class Expr extends TExpr, AstNode {
+  cached
   Type getType() { none() }
 }
 
@@ -1874,15 +1879,14 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
     result = this.getLeftOperand().getType() and
     result = this.getRightOperand().getType()
     or
-    // Both operands are subtypes of `int`
-    result.getName() = "int" and
-    result = this.getLeftOperand().getType().getASuperType*() and
-    result = this.getRightOperand().getType().getASuperType*()
+    // Both operands are subtypes of `int` / `string` / `float`
+    exprOfPrimitiveAddType(result) = this.getLeftOperand() and
+    exprOfPrimitiveAddType(result) = this.getRightOperand()
     or
     // Coercion to from `int` to `float`
     exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
       this.getAnOperand().getType() = result and
-      this.getAnOperand().getType().getASuperType*() = i
+      this.getAnOperand() = exprOfPrimitiveAddType(i)
     )
     or
     // Coercion to `string`
@@ -1897,6 +1901,25 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
   }
+}
+
+pragma[noinline]
+private Expr exprOfPrimitiveAddType(PrimitiveType t) {
+  result.getType() = getASubTypeOfAddPrimitive(t)
+}
+
+/**
+ * Gets a subtype of the given primitive type `prim`.
+ * This predicate does not consider float to be a supertype of int.
+ */
+private Type getASubTypeOfAddPrimitive(PrimitiveType prim) {
+  result = prim and
+  result.getName() = ["int", "string", "float"]
+  or
+  exists(Type superType | superType = getASubTypeOfAddPrimitive(prim) |
+    result.getASuperType() = superType and
+    not (result.getName() = "int" and superType.getName() = "float")
+  )
 }
 
 /**
@@ -1939,15 +1962,18 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
     this.getLeftOperand().getType() = result and
     this.getRightOperand().getType() = result
     or
-    // Both operands are subtypes of `int`
-    result.getName() = "int" and
-    result = this.getLeftOperand().getType().getASuperType*() and
-    result = this.getRightOperand().getType().getASuperType*()
+    // Both operands are subtypes of `int`/`float`
+    result.getName() = ["int", "float"] and
+    exprOfPrimitiveAddType(result) = this.getLeftOperand() and
+    exprOfPrimitiveAddType(result) = this.getRightOperand()
     or
     // Coercion from `int` to `float`
     exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
-      this.getAnOperand().getType() = result and
-      this.getAnOperand().getType().getASuperType*() = i
+      this.getLeftOperand() = exprOfPrimitiveAddType(result) and
+      this.getRightOperand() = exprOfPrimitiveAddType(i)
+      or
+      this.getRightOperand() = exprOfPrimitiveAddType(result) and
+      this.getLeftOperand() = exprOfPrimitiveAddType(i)
     )
   }
 
@@ -2281,6 +2307,8 @@ module YAML {
       )
     }
 
+    YAMLListItem getListItem() { toQL(result).getParent() = yamle }
+
     /** Gets the value of this YAML entry. */
     YAMLValue getValue() {
       exists(QL::YamlKeyvaluepair pair |
@@ -2393,7 +2421,7 @@ module YAML {
         deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
       |
         deps.isRoot() and
-        deps.getKey().getQualifiedName() = "dependencies" and
+        deps.getKey().getQualifiedName() = ["dependencies", "libraryPathDependencies"] and
         entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
         entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
       )
@@ -2408,8 +2436,11 @@ module YAML {
 
     predicate hasDependency(string name, string version) {
       exists(YAMLEntry entry | this.isADependency(entry) |
-        entry.getKey().getQualifiedName() = name and
+        entry.getKey().getQualifiedName().trim() = name and
         entry.getValue().getValue() = version
+        or
+        name = entry.getListItem().getValue().getValue().trim() and
+        version = "\"*\""
       )
     }
 
@@ -2431,7 +2462,7 @@ module YAML {
      */
     QLPack getADependency() {
       exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name
+        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
       )
     }
 
