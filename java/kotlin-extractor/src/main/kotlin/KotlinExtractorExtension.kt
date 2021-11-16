@@ -372,6 +372,10 @@ open class KotlinUsesExtractor(
     }
 
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
+        if (c.isAnonymousObject) {
+            logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
+        }
+
         // TODO: only substitute in class and function signatures
         //       because within function bodies we can get things like Unit.INSTANCE
         //       and List.asIterable (an extension, i.e. static, method)
@@ -432,7 +436,22 @@ open class KotlinUsesExtractor(
             classLabelResult.shortName)
     }
 
+    open fun useAnonymousClass(c: IrClass): TypeResults {
+        throw Exception("Anonymous classes can only be accessed through source file extraction")
+    }
+
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
+        if (c.isAnonymousObject) {
+            if (args.isNotEmpty()) {
+                logger.warn(Severity.ErrorHigh, "Anonymous class with unexpected type arguments")
+            }
+            if (hasQuestionMark) {
+                logger.warn(Severity.ErrorHigh, "Unexpected nullable anonymous class")
+            }
+
+            return useAnonymousClass(c)
+        }
+
         val classInstanceResult = useClassInstance(c, args)
         val javaClassId = classInstanceResult.typeResult.id
         val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
@@ -785,7 +804,12 @@ class X {
         )
     }
 
+
     fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
+        if (c.isAnonymousObject) {
+            logger.warn(Severity.ErrorSevere, "Label generation should not be requested for an anonymous class")
+        }
+
         val unquotedLabel = getUnquotedClassLabel(c, typeArgs)
         return ClassLabelResults(
             "@\"class;${unquotedLabel.classLabel}\"",
@@ -793,6 +817,11 @@ class X {
     }
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
+        if (c.isAnonymousObject) {
+            @Suppress("UNCHECKED_CAST")
+            return useAnonymousClass(c).javaResult.id as Label<DbClass>
+        }
+
         // For source classes, the label doesn't include and type arguments
         val classId = getClassLabel(c, listOf())
         return tw.getLabelFor(classId.classLabel)
@@ -1052,8 +1081,28 @@ open class KotlinFileExtractor(
         return id
     }
 
+    private val anonymousTypeMap: MutableMap<IrClass, TypeResults> = mutableMapOf()
+
+    override fun useAnonymousClass(c: IrClass): TypeResults {
+        var res = anonymousTypeMap[c]
+        if (res == null) {
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>() , "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            res = TypeResults(javaResult, kotlinResult)
+            anonymousTypeMap[c] = res
+        }
+
+        return res
+    }
+
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
-        val id = useClassSource(c)
+        val id = if (c.isAnonymousObject) {
+            @Suppress("UNCHECKED_CAST")
+            useAnonymousClass(c).javaResult.id as Label<out DbClass>
+        } else {
+            useClassSource(c)
+        }
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val pkgId = extractPackage(pkg)
@@ -1074,24 +1123,36 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
 
-        val parent = c.parent
-        if (parent is IrClass) {
-            val parentId = useClassInstance(parent, listOf()).typeResult.id
-            tw.writeEnclInReftype(id, parentId)
-            if(c.isCompanion) {
-                // If we are a companion then our parent has a
-                //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
-                // that we need to fabricate here
-                val instance = useCompanionObjectClassInstance(c)
-                if(instance != null) {
-                    val type = useSimpleTypeClass(c, emptyList(), false)
-                    tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
-                    tw.writeHasLocation(instance.id, locId)
-                    addModifiers(instance.id, "public", "static", "final")
-                    @Suppress("UNCHECKED_CAST")
-                    tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, id as Label<DbClass>)
+        var parent: IrDeclarationParent? = c.parent
+        while (parent != null) {
+            if (parent is IrClass) {
+                val parentId =
+                    if (parent.isAnonymousObject) {
+                        @Suppress("UNCHECKED_CAST")
+                        useAnonymousClass(c).javaResult.id as Label<out DbClass>
+                    } else {
+                        useClassInstance(parent, listOf()).typeResult.id
+                    }
+                tw.writeEnclInReftype(id, parentId)
+                if(c.isCompanion) {
+                    // If we are a companion then our parent has a
+                    //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
+                    // that we need to fabricate here
+                    val instance = useCompanionObjectClassInstance(c)
+                    if(instance != null) {
+                        val type = useSimpleTypeClass(c, emptyList(), false)
+                        tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
+                        tw.writeHasLocation(instance.id, locId)
+                        addModifiers(instance.id, "public", "static", "final")
+                        @Suppress("UNCHECKED_CAST")
+                        tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, id as Label<DbClass>)
+                    }
                 }
+
+                break
             }
+
+            parent = (parent as? IrDeclaration)?.parent
         }
 
         c.typeParameters.map { extractTypeParameter(it) }
@@ -1389,6 +1450,13 @@ open class KotlinFileExtractor(
             }
             is IrVariable -> {
                 extractVariable(s, callable, parent, idx)
+            }
+            is IrClass -> {
+                if (s.isAnonymousObject) {
+                    logger.info("Skipping extracting anonymous object class. It will be extracted later where it's instantiated.")
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
+                }
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
@@ -1706,7 +1774,22 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val id = tw.getFreshIdLabel<DbNewexpr>()
-        val type = useType(e.type)
+        val type: TypeResults
+        val isAnonymous = ((e.type as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
+        if (isAnonymous) {
+            if (e.typeArgumentsCount > 0) {
+                logger.warn("Unexpected type arguments for anonymous class constructor call")
+            }
+
+            val c = (e.type as IrSimpleType).classifier.owner as IrClass
+            @Suppress("UNCHECKED_CAST")
+            val classId = extractClassSource(c) as Label<out DbClass>
+            tw.writeIsAnonymClass(classId, id)
+
+            type = useAnonymousClass(c)
+        } else {
+            type = useType(e.type)
+        }
         val locId = tw.getLocation(e)
         val methodId = useFunction<DbConstructor>(e.symbol.owner)
         tw.writeExprs_newexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)

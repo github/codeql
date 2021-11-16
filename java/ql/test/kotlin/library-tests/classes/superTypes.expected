@@ -9,3 +9,15 @@
 | classes.kt:34:1:47:1 | ClassSeven | Object | Object.class | 0 | 0 | 0 | 0 |
 | classes.kt:49:1:51:1 | Direction | Enum<Direction> | Enum.class | 0 | 0 | 0 | 0 |
 | classes.kt:53:1:57:1 | Color | Enum<Color> | Enum.class | 0 | 0 | 0 | 0 |
+| classes.kt:63:1:91:1 | Class1 | Object | Object.class | 0 | 0 | 0 | 0 |
+| classes.kt:66:20:66:54 | (no string representation) | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
+| classes.kt:66:20:66:54 | (no string representation) | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
+| classes.kt:68:20:68:74 | (no string representation) | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
+| classes.kt:68:20:68:74 | (no string representation) | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
+| classes.kt:68:20:68:74 | (no string representation) | Interface3<String> | classes.kt | 61 | 1 | 61 | 26 |
+| classes.kt:72:16:77:10 | (no string representation) | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
+| classes.kt:72:16:77:10 | (no string representation) | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
+| classes.kt:75:24:75:33 | (no string representation) | Object | Object.class | 0 | 0 | 0 | 0 |
+| classes.kt:81:16:81:38 | (no string representation) | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
+| classes.kt:85:16:85:25 | (no string representation) | Object | Object.class | 0 | 0 | 0 | 0 |
+| classes.kt:89:16:89:44 | (no string representation) | Interface3<Integer> | classes.kt | 61 | 1 | 61 | 26 |

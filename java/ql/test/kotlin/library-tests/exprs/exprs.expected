@@ -223,6 +223,24 @@
 | exprs.kt:102:27:102:31 | SOUTH | exprs.kt:101:1:104:1 | enums | VarAccess |
 | exprs.kt:103:5:103:27 | green | exprs.kt:101:1:104:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:103:23:103:27 | GREEN | exprs.kt:101:1:104:1 | enums | VarAccess |
+| exprs.kt:108:1:116:1 | <obinit>(...) | exprs.kt:108:1:116:1 | Class1 | MethodAccess |
+| exprs.kt:109:5:109:14 | ...=... | exprs.kt:108:1:116:1 | <obinit> | AssignExpr |
+| exprs.kt:109:5:109:14 | a1 | exprs.kt:108:1:116:1 | <obinit> | VarAccess |
+| exprs.kt:109:5:109:14 | a1 | exprs.kt:109:5:109:14 | <get-a1> | VarAccess |
+| exprs.kt:109:14:109:14 | 1 | exprs.kt:108:1:116:1 | <obinit> | IntegerLiteral |
+| exprs.kt:111:9:111:18 | a2 | exprs.kt:110:13:115:5 | getObject | LocalVariableDeclExpr |
+| exprs.kt:111:18:111:18 | 2 | exprs.kt:110:13:115:5 | getObject | IntegerLiteral |
+| exprs.kt:112:16:114:9 | <Stmt> | exprs.kt:110:13:115:5 | getObject | StmtExpr |
+| exprs.kt:112:16:114:9 | <obinit>(...) | exprs.kt:112:16:114:9 | <no name provided> | MethodAccess |
+| exprs.kt:112:16:114:9 | new <no name provided>(...) | exprs.kt:110:13:115:5 | getObject | ClassInstanceExpr |
+| exprs.kt:113:13:113:49 | ...=... | exprs.kt:112:16:114:9 | <obinit> | AssignExpr |
+| exprs.kt:113:13:113:49 | a3 | exprs.kt:112:16:114:9 | <obinit> | VarAccess |
+| exprs.kt:113:13:113:49 | a3 | exprs.kt:113:13:113:49 | <get-a3> | VarAccess |
+| exprs.kt:113:31:113:32 | <get-a1>(...) | exprs.kt:112:16:114:9 | <obinit> | MethodAccess |
+| exprs.kt:113:31:113:32 | this | exprs.kt:112:16:114:9 | <obinit> | ThisAccess |
+| exprs.kt:113:31:113:37 | ... + ... | exprs.kt:112:16:114:9 | <obinit> | AddExpr |
+| exprs.kt:113:36:113:37 | a2 | exprs.kt:112:16:114:9 | <obinit> | VarAccess |
+| exprs.kt:113:40:113:49 | toString(...) | exprs.kt:112:16:114:9 | <obinit> | MethodAccess |
 | file://:0:0:0:0 | Color | exprs.kt:95:6:99:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:91:6:93:1 | Direction | TypeAccess |
 | file://:0:0:0:0 | height | exprs.kt:82:1:89:1 | foo | VarAccess |

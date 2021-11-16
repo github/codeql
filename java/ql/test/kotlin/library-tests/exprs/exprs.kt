@@ -102,3 +102,15 @@ fun enums() {
     val south = Direction.SOUTH
     val green = Color.GREEN
 }
+
+interface Interface1 {}
+
+class Class1 {
+    val a1 = 1
+    private fun getObject() : Any {
+        val a2 = 2
+        return object : Interface1 {
+            val a3: String = (a1 + a2).toString()
+        }
+    }
+}

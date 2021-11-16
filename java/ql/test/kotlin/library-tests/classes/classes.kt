@@ -55,3 +55,37 @@ enum class Color(val rgb: Int) {
     GREEN(0x00FF00),
     BLUE(0x0000FF)
 }
+
+interface Interface1 {}
+interface Interface2 {}
+interface Interface3<T> {}
+
+class Class1 {
+    private fun getObject1(b: Boolean) : Any {
+        if (b)
+            return object : Interface1, Interface2 { }
+        else
+            return object : Interface1, Interface2, Interface3<String> { }
+    }
+
+    private fun getObject2() : Interface1 {
+        return object : Interface1, Interface2 {
+            val x = 1
+            fun foo(): Any {
+                return object { }
+            }
+         }
+    }
+
+    private fun getObject3() : Any {
+        return object : Interface1 { }
+    }
+
+    private fun getObject4() : Any {
+        return object { }
+    }
+
+    private fun getObject5() : Any {
+        return object : Interface3<Int?> { }
+    }
+}
