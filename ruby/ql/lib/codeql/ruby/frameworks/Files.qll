@@ -99,7 +99,7 @@ module IO {
   }
 
   /**
-   * A `DataFlow::MethodCallNode` that reads data using the `IO` class. For example,
+   * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
    * the `IO.read call in:
    *
    * ```rb
@@ -112,7 +112,7 @@ module IO {
    * filesystem. For working with filesystem accesses specifically, see
    * `IOFileReader` or the `FileSystemReadAccess` concept.
    */
-  class IOReader extends DataFlow::MethodCallNode {
+  class IOReader extends DataFlow::CallNode {
     private boolean classMethodCall;
     private string api;
 
@@ -149,7 +149,7 @@ module IO {
   }
 
   /**
-   * A `DataFlow::MethodCallNode` that reads data from the filesystem using the `IO`
+   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
    * class. For example, the `IO.read call in:
    *
    * ```rb
@@ -217,7 +217,7 @@ module File {
   /**
    * A call to a `File` method that may return one or more filenames.
    */
-  class FileModuleFilenameSource extends FileNameSource, DataFlow::MethodCallNode {
+  class FileModuleFilenameSource extends FileNameSource, DataFlow::CallNode {
     FileModuleFilenameSource() {
       // Class methods
       this =
@@ -236,7 +236,7 @@ module File {
   }
 
   private class FileModulePermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::CallNode {
     private DataFlow::Node permissionArg;
 
     FileModulePermissionModification() {
@@ -319,7 +319,7 @@ module FileUtils {
   }
 
   private class FileUtilsPermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::CallNode {
     private DataFlow::Node permissionArg;
 
     FileUtilsPermissionModification() {
