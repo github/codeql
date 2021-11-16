@@ -3,9 +3,21 @@ genericType
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:10:13:10 | T | 0 |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:13:13:13 | W | 1 |
 parameterizedType
-| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | generics.kt:11:15:11:15 | V |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | generics.kt:13:10:13:10 | T |
-| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | generics.kt:13:13:13:13 | W |
+| generics.kt:11:1:11:19 | C0 | generics.kt:11:1:11:19 | C0 | 0 | V |
+| generics.kt:11:1:11:19 | C0<?> | generics.kt:11:1:11:19 | C0 | 0 | ? |
+| generics.kt:11:1:11:19 | C0<Integer> | generics.kt:11:1:11:19 | C0 | 0 | Integer |
+| generics.kt:11:1:11:19 | C0<S> | generics.kt:11:1:11:19 | C0 | 0 | S |
+| generics.kt:11:1:11:19 | C0<W> | generics.kt:11:1:11:19 | C0 | 0 | W |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | T |
+| generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | W |
+| generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:13:1:18:1 | C1 | 0 | Integer |
+| generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:13:1:18:1 | C1 | 1 | Integer |
+| generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:13:1:18:1 | C1 | 0 | String |
+| generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:13:1:18:1 | C1 | 1 | Integer |
+| generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 0 | String |
+| generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 1 | String |
+| generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 0 | U |
+| generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 1 | U |
 genericFunction
 | generics.kt:3:1:5:1 | f0 | generics.kt:3:6:3:6 | S | 0 |
 | generics.kt:7:1:9:1 | f1 | generics.kt:7:6:7:6 | S | 0 |

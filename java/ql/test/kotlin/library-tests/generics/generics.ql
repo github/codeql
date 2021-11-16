@@ -4,9 +4,9 @@ query predicate genericType(GenericType t, TypeVariable tv, int i) {
   t.getTypeParameter(i) = tv and t.getFile().getExtension() = "kt"
 }
 
-query predicate parameterizedType(ParameterizedType t, GenericType gt, int i, RefType ta) {
+query predicate parameterizedType(ParameterizedType t, GenericType gt, int i, string ta) {
   t.getGenericType() = gt and
-  t.getTypeArgument(i) = ta and
+  t.getTypeArgument(i).toString() = ta and
   t.getFile().getExtension() = "kt"
 }
 
