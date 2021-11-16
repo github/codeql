@@ -111,9 +111,9 @@ module ExperimentalFlask {
             .getACall()
     }
 
-    override DataFlow::Node getName() { result = this.getArg(0) }
+    override DataFlow::Node getNameArg() { result = this.getArg(0) }
 
-    override DataFlow::Node getValue() { result = this.getArgByName("value") }
+    override DataFlow::Node getValueArg() { result = this.getArgByName("value") }
 
     override predicate isSecure() {
       DataFlow::exprNode(any(True t))
@@ -130,5 +130,7 @@ module ExperimentalFlask {
     override predicate isSameSite() {
       this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
     }
+
+    override DataFlow::Node getHeaderArg() { none() }
   }
 }

@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+private import semmle.python.Concepts
 
 /** Provides classes for modeling log related APIs. */
 module LogOutput {
@@ -303,35 +304,21 @@ class HeaderDeclaration extends DataFlow::Node {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Cookie::Range` instead.
  */
-class Cookie extends DataFlow::Node {
-  Cookie::Range range;
-
-  Cookie() { this = range }
-
+class Cookie extends HTTP::Server::CookieWrite instanceof Cookie::Range {
   /**
    * Holds if this cookie is secure.
    */
-  predicate isSecure() { range.isSecure() }
+  predicate isSecure() { super.isSecure() }
 
   /**
    * Holds if this cookie is HttpOnly.
    */
-  predicate isHttpOnly() { range.isHttpOnly() }
+  predicate isHttpOnly() { super.isHttpOnly() }
 
   /**
    * Holds if the cookie is SameSite
    */
-  predicate isSameSite() { range.isSameSite() }
-
-  /**
-   * Gets the argument containing the header name.
-   */
-  DataFlow::Node getName() { result = range.getName() }
-
-  /**
-   * Gets the argument containing the header value.
-   */
-  DataFlow::Node getValue() { result = range.getValue() }
+  predicate isSameSite() { super.isSameSite() }
 }
 
 /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -342,7 +329,7 @@ module Cookie {
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `Cookie` instead.
    */
-  abstract class Range extends DataFlow::Node {
+  abstract class Range extends HTTP::Server::CookieWrite::Range {
     /**
      * Holds if this cookie is secure.
      */
@@ -357,15 +344,5 @@ module Cookie {
      * Holds if the cookie is SameSite.
      */
     abstract predicate isSameSite();
-
-    /**
-     * Gets the argument containing the header name.
-     */
-    abstract DataFlow::Node getName();
-
-    /**
-     * Gets the argument containing the header value.
-     */
-    abstract DataFlow::Node getValue();
   }
 }

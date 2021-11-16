@@ -9,7 +9,7 @@ class CookieSink extends DataFlow::Node {
 
   CookieSink() {
     exists(Cookie cookie |
-      this in [cookie.getName(), cookie.getValue()] and
+      this in [cookie.getNameArg(), cookie.getValueArg()] and
       (
         not cookie.isSecure() and
         flag = "secure"
@@ -35,6 +35,6 @@ class CookieInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Cookie c | sink in [c.getName(), c.getValue()])
+    exists(Cookie c | sink in [c.getNameArg(), c.getValueArg()])
   }
 }

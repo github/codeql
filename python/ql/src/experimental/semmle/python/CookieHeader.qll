@@ -26,7 +26,7 @@ import experimental.semmle.python.Concepts
  * * `isSameSite()` predicate would fail.
  * * `getName()` and `getValue()` results would be `"name=value; Secure;"`.
  */
-class CookieHeader extends HeaderDeclaration, Cookie::Range {
+class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   CookieHeader() {
     this instanceof HeaderDeclaration and
     this.(HeaderDeclaration).getNameArg().asExpr().(Str_).getS() = "Set-Cookie"
@@ -49,7 +49,9 @@ class CookieHeader extends HeaderDeclaration, Cookie::Range {
         .regexpMatch(".*; *SameSite=(Strict|Lax);.*")
   }
 
-  override DataFlow::Node getName() { result = this.(HeaderDeclaration).getValueArg() }
+  override DataFlow::Node getNameArg() { result = this.(HeaderDeclaration).getValueArg() }
 
-  override DataFlow::Node getValue() { result = this.(HeaderDeclaration).getValueArg() }
+  override DataFlow::Node getValueArg() { result = this.(HeaderDeclaration).getValueArg() }
+
+  override DataFlow::Node getHeaderArg() { none() }
 }

@@ -109,9 +109,9 @@ private module PrivateDjango {
           class DjangoSetCookieCall extends DataFlow::CallCfgNode, Cookie::Range {
             DjangoSetCookieCall() { this = baseClassRef().getMember("set_cookie").getACall() }
 
-            override DataFlow::Node getName() { result = this.getArg(0) }
+            override DataFlow::Node getNameArg() { result = this.getArg(0) }
 
-            override DataFlow::Node getValue() { result = this.getArgByName("value") }
+            override DataFlow::Node getValueArg() { result = this.getArgByName("value") }
 
             override predicate isSecure() {
               DataFlow::exprNode(any(True t))
@@ -128,6 +128,8 @@ private module PrivateDjango {
             override predicate isSameSite() {
               this.getArgByName("samesite").asExpr().(Str_).getS() in ["Strict", "Lax"]
             }
+
+            override DataFlow::Node getHeaderArg() { none() }
           }
         }
       }
