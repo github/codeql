@@ -62,7 +62,7 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
     // accessed as a URL, for example using it in a network access. Some
     // URLs are only ever displayed or used for data processing.
     exists(FunctionCall fc |
-      fc.getTarget().hasGlobalOrStdName(["system", "gethostbyname", "getaddrinfo"]) and
+      fc.getTarget().hasGlobalOrStdName(["system", "gethostbyname", "gethostbyname2", "gethostbyname_r", "getaddrinfo", "X509_load_http", "X509_CRL_load_http"]) and
       sink.asExpr() = fc.getArgument(0)
       or
       fc.getTarget().hasGlobalOrStdName(["send", "URLDownloadToFile", "URLDownloadToCacheFile"]) and
