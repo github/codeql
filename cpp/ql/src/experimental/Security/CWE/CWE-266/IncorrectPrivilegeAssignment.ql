@@ -19,6 +19,18 @@ import cpp
 import semmle.code.cpp.exprs.BitwiseOperation
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
+/**
+ * An expression that is either a `BinaryArithmeticOperation` or the result of one or more `BinaryBitwiseOperation`s on a `BinaryArithmeticOperation`. For example `1 | (2 + 3)`.
+ */
+class ContainsArithmetic extends Expr {
+  ContainsArithmetic() {
+    this instanceof BinaryArithmeticOperation
+    or
+    // recursive search into `Operation`s
+    this.(BinaryBitwiseOperation).getAnOperand() instanceof ContainsArithmetic
+  }
+}
+
 /** Holds for a function `f` that has an argument at index `apos` used to set file permissions. */
 predicate numberArgumentModFunctions(Function f, int apos) {
   f.hasGlobalOrStdName("umask") and apos = 0
@@ -63,15 +75,9 @@ where
     msg = "not use equal argument in umask and " + fctmp.getTarget().getName() + " functions"
   )
   or
-  exists(Expr exptmp, int i |
+  exists(ContainsArithmetic exptmp, int i |
     numberArgumentModFunctions(fc.getTarget(), i) and
     globalValueNumber(exptmp) = globalValueNumber(fc.getArgument(i)) and
-    exptmp.getAChild*() instanceof BinaryArithmeticOperation and
-    not exptmp.getAChild*() instanceof FunctionCall and
-    not exists(SizeofOperator so | exptmp.getAChild*() = so) and
-    not exists(ArrayExpr aetmp | aetmp.getArrayOffset() = exptmp.getAChild*()) and
-    not exptmp.getAChild*() instanceof BinaryBitwiseOperation and
-    not exptmp.isConstant() and
     msg = "Using arithmetic to compute the mask may not be safe."
   )
 select fc, msg
