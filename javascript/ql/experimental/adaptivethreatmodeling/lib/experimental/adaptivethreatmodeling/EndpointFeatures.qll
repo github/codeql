@@ -8,6 +8,12 @@ import javascript
 import CodeToFeatures
 import EndpointScoring
 
+DatabaseFeatures::AstNode dbAstNode(ASTNode node, DatabaseFeatures::Entity dbEntity) {
+  result =
+    DatabaseFeatures::astNode(Wrapped::astNode(dbEntity.getWrappedEntity().getDefinedFunction(),
+        Raw::astNode(node)))
+}
+
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
  *
@@ -23,6 +29,18 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     // the order that they appear in the source code.
     featureName = "enclosingFunctionBody" and
     result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
+  )
+  or
+  // A feature containing natural language tokens from the neighborhood around the endpoint, in
+  // the order they appear in the source code.
+  exists(Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped |
+    featureName = "neighborhoodBody" and
+    rootNode = NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode())) and
+    rootNodeWrapped = DatabaseFeatures::astNode(Wrapped::astNode(endpoint.getContainer(), rootNode)) and
+    result =
+      unique(string x |
+        x = NeighborhoodBodies::getBodyTokenFeatureForNeighborhoodNode(rootNodeWrapped)
+      )
   )
   or
   exists(getACallBasedTokenFeatureComponent(endpoint, _, featureName)) and
@@ -175,7 +193,7 @@ module NeighborhoodBodies {
     DatabaseFeatures::AstNode rootNode, DatabaseFeatures::AstNode childNode, string token
   ) {
     childNode = rootNode.getAChild*() and
-    token = unique(string t | DatabaseFeatures::nodeAttributes(childNode, t)) 
+    token = unique(string t | DatabaseFeatures::nodeAttributes(childNode, t))
     // and rootNode = getANeighborhoodRoot()
   }
 
@@ -330,7 +348,8 @@ private string getASupportedFeatureName() {
   result =
     [
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
-      "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody"
+      "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody",
+      "neighborhoodBody"
     ]
 }
 
