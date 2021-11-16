@@ -608,6 +608,8 @@ module Trees {
     }
   }
 
+  private class ForwardParameterTree extends LeafTree, ForwardParameter { }
+
   private class ForInTree extends LeafTree, ForIn { }
 
   /**

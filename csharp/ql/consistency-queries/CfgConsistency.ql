@@ -6,13 +6,25 @@ import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 import semmle.code.csharp.controlflow.internal.Splitting
 import Consistency
 
+private predicate splitBB(ControlFlow::BasicBlock bb) {
+  exists(ControlFlow::Node first |
+    first = bb.getFirstNode() and
+    first.isJoin() and
+    strictcount(first.getAPredecessor().getElement()) = 1
+  )
+}
+
+private class RelevantBasicBlock extends ControlFlow::BasicBlock {
+  RelevantBasicBlock() { not splitBB(this) }
+}
+
 predicate bbStartInconsistency(ControlFlowElement cfe) {
-  exists(ControlFlow::BasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and
+  exists(RelevantBasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and
   not cfe = any(PreBasicBlock bb).getFirstElement()
 }
 
 predicate bbSuccInconsistency(ControlFlowElement pred, ControlFlowElement succ) {
-  exists(ControlFlow::BasicBlock predBB, ControlFlow::BasicBlock succBB |
+  exists(RelevantBasicBlock predBB, RelevantBasicBlock succBB |
     predBB.getLastNode() = pred.getAControlFlowNode() and
     succBB = predBB.getASuccessor() and
     succBB.getFirstNode() = succ.getAControlFlowNode()

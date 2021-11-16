@@ -24,4 +24,4 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink, source, sink,
   "This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@.",
-  source.getNode(), "here"
+  source.getNode(), source.getNode().(Source).describe()

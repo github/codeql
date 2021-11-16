@@ -79,6 +79,12 @@ module CallGraph {
       cls.getAClassReference(t.continue()) = result
     )
     or
+    exists(DataFlow::ObjectLiteralNode object, string prop |
+      function = object.getAPropertySource(prop) and
+      result = getAnObjectLiteralRef(object).getAPropertyRead(prop) and
+      t.start()
+    )
+    or
     exists(DataFlow::FunctionNode outer |
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
@@ -197,11 +203,39 @@ module CallGraph {
     )
     or
     exists(DataFlow::ObjectLiteralNode object, string name |
-      ref = object.getAPropertyRead(name) and
+      ref = getAnObjectLiteralRef(object).getAPropertyRead(name) and
       result = object.getPropertyGetter(name)
       or
-      ref = object.getAPropertyWrite(name) and
+      ref = getAnObjectLiteralRef(object).getAPropertyWrite(name) and
       result = object.getPropertySetter(name)
     )
+  }
+
+  private predicate shouldTrackObjectLiteral(DataFlow::ObjectLiteralNode node) {
+    (
+      node.getAPropertySource() instanceof DataFlow::FunctionNode
+      or
+      exists(node.getPropertyGetter(_))
+      or
+      exists(node.getPropertySetter(_))
+    ) and
+    not node.getTopLevel().isExterns()
+  }
+
+  /**
+   * Gets a step summary for tracking object literals.
+   *
+   * To avoid false flow from callbacks passed in via "named parameters", we only track object
+   * literals out of returns, not into calls.
+   */
+  private StepSummary objectLiteralStep() { result = LevelStep() or result = ReturnStep() }
+
+  /** Gets a node that refers to the given object literal, via a limited form of type tracking. */
+  cached
+  DataFlow::SourceNode getAnObjectLiteralRef(DataFlow::ObjectLiteralNode node) {
+    shouldTrackObjectLiteral(node) and
+    result = node
+    or
+    StepSummary::step(getAnObjectLiteralRef(node), result, objectLiteralStep())
   }
 }
