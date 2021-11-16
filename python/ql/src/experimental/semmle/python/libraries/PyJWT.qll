@@ -86,8 +86,6 @@ private module PyJWT {
     }
 
     override predicate verifiesSignature() {
-      this.hasNoVerifyArgumentOrOptions()
-      or
       not this.hasVerifySetToFalse() and
       not this.hasVerifySignatureSetToFalse()
     }

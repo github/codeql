@@ -87,9 +87,6 @@ private module PythonJose {
     }
 
     override predicate verifiesSignature() {
-      // jwt.decode(token, "key", "HS256")
-      this.hasNoOptions()
-      or
       // jwt.decode(token, key, options={"verify_signature": False})
       not this.hasVerifySignatureSetToFalse()
     }
