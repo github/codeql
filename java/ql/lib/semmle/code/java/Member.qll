@@ -285,7 +285,8 @@ private predicate overrides(Method m1, Method m2) {
     or
     m2.isProtected()
     or
-    m2.isPackageProtected() and t1.getPackage() = t2.getPackage()
+    m2.isPackageProtected() and
+    pragma[only_bind_out](t1.getPackage()) = pragma[only_bind_out](t2.getPackage())
   )
 }
 
