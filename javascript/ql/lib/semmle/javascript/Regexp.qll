@@ -155,7 +155,7 @@ class RegExpTerm extends Locatable, @regexpterm {
     exists(RegExpParent parent | parent = getRootTerm().getParent() |
       parent instanceof RegExpLiteral
       or
-      parent.(StringLiteral).flow() instanceof RegExpPatternSource
+      parent.(Expr).flow() instanceof RegExpPatternSource
     )
   }
 
@@ -1102,6 +1102,30 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
+}
+
+/**
+ * A node whose string value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+private class StringConcatRegExpPatternSource extends RegExpPatternSource {
+  DataFlow::Node parse;
+
+  StringConcatRegExpPatternSource() { this = regExpSource(parse) }
+
+  override DataFlow::Node getAParse() { result = parse }
+
+  override DataFlow::SourceNode getARegExpObject() {
+    exists(DataFlow::InvokeNode constructor |
+      constructor = DataFlow::globalVarRef("RegExp").getAnInvocation() and
+      parse = constructor.getArgument(0) and
+      result = constructor
+    )
+  }
+
+  override string getPattern() { result = getStringValue() }
+
+  override RegExpTerm getRegExpTerm() { result = asExpr().(AddExpr).asRegExp() }
 }
 
 module RegExp {
