@@ -339,38 +339,34 @@ module EmailSender {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `EmailSender::Range` instead.
  */
-class EmailSender extends DataFlow::Node {
-  EmailSender::Range range;
-
-  EmailSender() { this = range }
-
+class EmailSender extends DataFlow::Node instanceof EmailSender::Range {
   /**
    * Gets a data flow node holding the plaintext version of the email body.
    */
-  DataFlow::Node getPlainTextBody() { result = range.getPlainTextBody() }
+  DataFlow::Node getPlainTextBody() { result = super.getPlainTextBody() }
 
   /**
    * Gets a data flow node holding the html version of the email body.
    */
-  DataFlow::Node getHtmlBody() { result = range.getHtmlBody() }
+  DataFlow::Node getHtmlBody() { result = super.getHtmlBody() }
 
   /**
    * Gets a data flow node holding the recipients of the email.
    */
-  DataFlow::Node getTo() { result = range.getTo() }
+  DataFlow::Node getTo() { result = super.getTo() }
 
   /**
    * Gets a data flow node holding the senders of the email.
    */
-  DataFlow::Node getFrom() { result = range.getFrom() }
+  DataFlow::Node getFrom() { result = super.getFrom() }
 
   /**
    * Gets a data flow node holding the subject of the email.
    */
-  DataFlow::Node getSubject() { result = range.getSubject() }
+  DataFlow::Node getSubject() { result = super.getSubject() }
 
   /**
    * Gets a data flow node that refers to the HTML body or plaintext body of the email.
    */
-  DataFlow::Node getABody() { result in [range.getPlainTextBody(), range.getHtmlBody()] }
+  DataFlow::Node getABody() { result in [super.getPlainTextBody(), super.getHtmlBody()] }
 }
