@@ -34,7 +34,7 @@ private predicate pathArgSpawnsSubprocess(Expr arg) {
 private DataFlow::Node fileInstanceInstantiation() {
   result = API::getTopLevelMember("File").getAnInstantiation()
   or
-  result = API::getTopLevelMember("File").getAMethodCall("open")
+  result = API::getTopLevelMember("File").getAMethodCall(["open", "try_convert"])
   or
   // Calls to `Kernel.open` can yield `File` instances
   result.(KernelMethodCall).getMethodName() = "open" and
