@@ -11,7 +11,7 @@
 | Test.kt:13:4:13:4 | <Expr>; | Test.kt:13:8:13:9 | 10 |
 | Test.kt:14:10:16:3 | { ... } | Test.kt:15:4:15:4 | <Expr>; |
 | Test.kt:15:4:15:4 | <Expr>; | Test.kt:15:8:15:9 | 30 |
-| Test.kt:18:3:18:3 | <Expr>; | Test.kt:18:12:18:12 | y |
+| Test.kt:18:3:18:3 | <Expr>; | Test.kt:18:8:18:8 | x |
 | Test.kt:21:3:24:11 | <Expr>; | Test.kt:21:3:24:11 | when ... |
 | Test.kt:22:4:22:4 | <Expr>; | Test.kt:22:8:22:9 | 40 |
 | Test.kt:27:3:27:3 | <Expr>; | Test.kt:27:7:27:8 | 10 |
