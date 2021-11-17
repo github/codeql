@@ -6,11 +6,11 @@ query predicate fileInstances(File::FileInstance i) { any() }
 
 query predicate ioInstances(IO::IOInstance i) { any() }
 
-query predicate fileReaders(File::FileModuleReader r) { any() }
+query predicate fileModuleReaders(File::FileModuleReader r) { any() }
 
-query predicate ioReaders(IO::IOReader r, string api) { api = r.getAPI() }
+query predicate ioReaders(IO::IOReader r) { any() }
 
-query predicate ioFileReaders(IO::IOFileReader r, string api) { api = r.getAPI() }
+query predicate fileReaders(IO::FileReader r) { any() }
 
 query predicate fileModuleFilenameSources(File::FileModuleFilenameSource s) { any() }
 
