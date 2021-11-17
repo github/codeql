@@ -1,4 +1,4 @@
-/** Definitions of taint steps in Objects class of the JDK */
+/** Definitions of taint steps in `java.util.Objects` class of the JDK */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
@@ -12,6 +12,7 @@ private class ObjectsSummaryCsv extends SummaryModelCsv {
         "java.util;Objects;false;requireNonNullElse;;;Argument[0];ReturnValue;value",
         "java.util;Objects;false;requireNonNullElse;;;Argument[1];ReturnValue;value",
         "java.util;Objects;false;requireNonNullElseGet;;;Argument[0];ReturnValue;value",
+        "java.util;Objects;false;requireNonNullElseGet;;;ReturnValue of Argument[1];ReturnValue;value",
         "java.util;Objects;false;toString;;;Argument[1];ReturnValue;value"
       ]
   }
