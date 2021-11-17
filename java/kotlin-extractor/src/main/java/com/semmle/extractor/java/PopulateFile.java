@@ -126,7 +126,7 @@ public class PopulateFile {
         KotlinExtractorDbSchemeKt.writeHasLocation(tw, jarFileId, jarFileLocation);
 
 		StringBuilder fullName = new StringBuilder(databasePath);
-        String[] split = pathWithinJar.split("/");
+		String[] split = pathWithinJar.split("/");
 		Label current = jarFileId;
 		for (int i = 0; i < split.length; i++) {
 			String shortName = split[i];
