@@ -306,7 +306,7 @@ val primitiveTypeMapping = mapOf(
 
 open class KotlinUsesExtractor(
     open val logger: Logger,
-    open val tw: FileTrapWriter,
+    open val tw: TrapWriter,
     val dependencyCollector: TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
     val pluginContext: IrPluginContext) {
@@ -343,9 +343,9 @@ open class KotlinUsesExtractor(
             ?.owner
 
     /**
-     * Gets a KotlinUsesExtractor like this one, except it attributes locations to the file that declares the given class.
+     * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
      */
-    fun withSourceFileOfClass(cls: IrClass, populateFileTables: Boolean): KotlinUsesExtractor {
+    fun withSourceFileOfClass(cls: IrClass, populateFileTables: Boolean): KotlinFileExtractor {
         val clsFile = cls.fileOrNull
 
         val newTrapWriter =
@@ -354,7 +354,9 @@ open class KotlinUsesExtractor(
             else
                 tw.withTargetFile(clsFile.path, clsFile.fileEntry)
 
-        return KotlinUsesExtractor(logger, newTrapWriter, dependencyCollector, externalClassExtractor, pluginContext)
+        val newLogger = FileLogger(logger.logCounter, newTrapWriter)
+
+        return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, pluginContext)
     }
 
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
@@ -473,49 +475,6 @@ open class KotlinUsesExtractor(
 
     fun classShortName(c: IrClass, typeArgs: List<IrTypeArgument>) =
         "${c.name}${typeArgsShortName(typeArgs)}"
-
-    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
-        if (typeArgs.isEmpty()) {
-            logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
-        }
-
-        val id = addClassLabel(c, typeArgs)
-        val pkg = c.packageFqName?.asString() ?: ""
-        val cls = classShortName(c, typeArgs)
-        val pkgId = extractPackage(pkg)
-        if(c.kind == ClassKind.INTERFACE) {
-            @Suppress("UNCHECKED_CAST")
-            val interfaceId = id as Label<out DbInterface>
-            @Suppress("UNCHECKED_CAST")
-            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
-            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
-        } else {
-            @Suppress("UNCHECKED_CAST")
-            val classId = id as Label<out DbClass>
-            @Suppress("UNCHECKED_CAST")
-            val sourceClassId = useClassSource(c) as Label<out DbClass>
-            tw.writeClasses(classId, cls, pkgId, sourceClassId)
-
-            if (c.kind == ClassKind.ENUM_CLASS) {
-                tw.writeIsEnumType(classId)
-            }
-        }
-
-        for ((idx, arg) in typeArgs.withIndex()) {
-            val argId = getTypeArgumentLabel(arg)
-            tw.writeTypeArgs(argId, idx, id)
-        }
-        tw.writeIsParameterized(id)
-        val unbound = useClassSource(c)
-        tw.writeErasure(id, unbound)
-        extractClassModifiers(c, id)
-        extractClassSupertypes(c, id)
-
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
-
-        return id
-    }
 
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
         val classInstanceResult = useClassInstance(c, args)
@@ -1088,6 +1047,49 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // todo: add type bounds
+
+        return id
+    }
+
+    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
+        if (typeArgs.isEmpty()) {
+            logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
+        }
+
+        val id = addClassLabel(c, typeArgs)
+        val pkg = c.packageFqName?.asString() ?: ""
+        val cls = classShortName(c, typeArgs)
+        val pkgId = extractPackage(pkg)
+        if(c.kind == ClassKind.INTERFACE) {
+            @Suppress("UNCHECKED_CAST")
+            val interfaceId = id as Label<out DbInterface>
+            @Suppress("UNCHECKED_CAST")
+            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
+            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            val classId = id as Label<out DbClass>
+            @Suppress("UNCHECKED_CAST")
+            val sourceClassId = useClassSource(c) as Label<out DbClass>
+            tw.writeClasses(classId, cls, pkgId, sourceClassId)
+
+            if (c.kind == ClassKind.ENUM_CLASS) {
+                tw.writeIsEnumType(classId)
+            }
+        }
+
+        for ((idx, arg) in typeArgs.withIndex()) {
+            val argId = getTypeArgumentLabel(arg)
+            tw.writeTypeArgs(argId, idx, id)
+        }
+        tw.writeIsParameterized(id)
+        val unbound = useClassSource(c)
+        tw.writeErasure(id, unbound)
+        extractClassModifiers(c, id)
+        extractClassSupertypes(c, id)
+
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
 
         return id
     }
