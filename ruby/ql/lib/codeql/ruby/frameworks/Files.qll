@@ -127,8 +127,7 @@ module IO {
       api = "IO" and
       exists(IOInstanceStrict ii |
         this.getReceiver() = ii and
-        this.asExpr().getExpr().(MethodCall).getMethodName() =
-          ioFileReaderMethodName(classMethodCall)
+        this.getMethodName() = ioFileReaderMethodName(classMethodCall)
       )
       or
       // File instance methods
@@ -136,8 +135,7 @@ module IO {
       api = "File" and
       exists(File::FileInstance fi |
         this.getReceiver() = fi and
-        this.asExpr().getExpr().(MethodCall).getMethodName() =
-          ioFileReaderMethodName(classMethodCall)
+        this.getMethodName() = ioFileReaderMethodName(classMethodCall)
       )
       // TODO: enumeration style methods such as `each`, `foreach`, etc.
     }
@@ -232,7 +230,7 @@ module File {
       // Instance methods
       exists(FileInstance fi |
         this.getReceiver() = fi and
-        this.asExpr().getExpr().(MethodCall).getMethodName() = ["path", "to_path"]
+        this.getMethodName() = ["path", "to_path"]
       )
     }
   }

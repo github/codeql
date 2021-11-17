@@ -9,7 +9,7 @@ class ActiveStorageFilenameSanitizedCall extends Path::PathSanitization::Range, 
   ActiveStorageFilenameSanitizedCall() {
     this.getReceiver() =
       API::getTopLevelMember("ActiveStorage").getMember("Filename").getAnInstantiation() and
-    this.asExpr().getExpr().(MethodCall).getMethodName() = "sanitized"
+    this.getMethodName() = "sanitized"
   }
 }
 
