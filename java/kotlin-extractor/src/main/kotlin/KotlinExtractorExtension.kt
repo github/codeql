@@ -935,19 +935,17 @@ class X {
     fun useProperty(p: IrProperty): Label<out DbKt_property> =
         tw.getLabelFor(getPropertyLabel(p))
 
-    private fun getEnumEntryLabel(ee: IrEnumEntry) : String {
+    private fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent)
-        val label = "@\"field;{$parentId};${ee.name.asString()}\""
-        return label
+        return "@\"field;{$parentId};${ee.name.asString()}\""
     }
 
     fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> =
         tw.getLabelFor(getEnumEntryLabel(ee))
 
-    private fun getTypeAliasLabel(ta: IrTypeAlias) : String {
+    private fun getTypeAliasLabel(ta: IrTypeAlias): String {
         val parentId = useDeclarationParent(ta.parent)
-        val label = "@\"type_alias;{$parentId};${ta.name.asString()}\""
-        return label
+        return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }
 
     fun useTypeAlias(ta: IrTypeAlias): Label<out DbKt_type_alias> =
