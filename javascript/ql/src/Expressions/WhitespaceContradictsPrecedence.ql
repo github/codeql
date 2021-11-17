@@ -4,7 +4,7 @@
  *              are difficult to read and may even indicate a bug.
  * @kind problem
  * @problem.severity warning
- * @id js/whitespace-contradicts-precedence
+ * @id js/whitespace-cotradicts-precedence-2
  * @tags maintainability
  *       correctness
  *       statistical
