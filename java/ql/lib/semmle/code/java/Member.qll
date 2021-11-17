@@ -307,6 +307,7 @@ private predicate overridesCandidateType(RefType tsup, string sig, RefType t, Me
  * ignoring any access modifiers. Additionally, this predicate binds
  * `t1` to the type declaring `m1` and `t2` to the type declaring `m2`.
  */
+cached
 predicate overridesIgnoringAccess(Method m1, RefType t1, Method m2, RefType t2) {
   exists(string sig |
     overridesCandidateType(t2, sig, t1, m1) and
