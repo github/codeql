@@ -52,9 +52,7 @@ private DataFlow::Node fileInstance() {
   )
 }
 
-private string ioReaderClassMethodName() {
-  result = ["binread", "foreach", "read", "readlines", "try_convert"]
-}
+private string ioReaderClassMethodName() { result = ["binread", "foreach", "read", "readlines"] }
 
 private string ioReaderInstanceMethodName() {
   result =
