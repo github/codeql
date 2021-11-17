@@ -1,4 +1,5 @@
 name: codeql/java-upgrades
-upgrades: .
+version: 0.0.3
+groups: java
 library: true
-version: 0.0.2
+upgrades: .
