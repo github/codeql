@@ -495,7 +495,7 @@ abstract class VariableAccessImpl extends Expr, TVariableAccess {
 }
 
 module LocalVariableAccess {
-  predicate range(Ruby::Identifier id, LocalVariable v) {
+  predicate range(Ruby::Identifier id, TLocalVariableReal v) {
     access(id, v) and
     (
       explicitWriteAccess(id, _)
