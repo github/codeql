@@ -18,7 +18,7 @@ TODO
     val i12 = x.inv()
 */
     val i13 = x == y
-    val i14 = x != y
+    // TODO val i14 = x != y
     val i15 = x < y
     val i16 = x <= y
     val i17 = x > y
@@ -46,7 +46,7 @@ TODO
     val str2: String? = "string lit"
     val str3: String? = null
     val str4: String = "foo $str1 bar $str2 baz"
-    val str5: String = "foo ${str1 + str2} bar ${str2 + str1} baz"
+    // TODO val str5: String = "foo ${str1 + str2} bar ${str2 + str1} baz"
     val str6 = str1 + str2
 
     var variable = 10
@@ -80,11 +80,11 @@ fun typeTests(x: Root, y: Subclass1) {
 
 fun foo(p: Polygon) {
     val r = p.getBounds()
-    if(r != null) {
-        val r2: Rectangle = r
-        val height = r2.height
-        r2.height = 3
-    }
+// TODO     if(r != null) {
+// TODO         val r2: Rectangle = r
+// TODO         val height = r2.height
+// TODO         r2.height = 3
+// TODO     }
 }
 
 enum class Direction {

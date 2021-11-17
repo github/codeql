@@ -172,7 +172,7 @@ fun doFile(invocationTrapFile: String,
 }
 
 fun <T> fakeLabel(): Label<T> {
-    if (true) {
+    if (false) {
         println("Fake label")
     } else {
         val sw = StringWriter()
@@ -1414,53 +1414,144 @@ open class KotlinFileExtractor(
     }
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
-        val exprId: Label<out DbExpr> = when (c.origin) {
-            PLUS -> {
+        fun isFunction(pkgName: String, className: String?, fName: String): Boolean {
+            val verbose = false
+            fun verboseln(s: String) { if(verbose) println(s) }
+            verboseln("Attempting match for $pkgName $className $fName")
+            val target = c.symbol.owner
+            if (target.name.asString() != fName) {
+                verboseln("No match as function name is ${target.name.asString()} not $fName")
+                return false
+            }
+            val extensionReceiverParameter = target.extensionReceiverParameter
+            val targetClass = if (extensionReceiverParameter == null) target.parent
+                              else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
+            val targetPkg =
+                if (className != null) {
+                    if (targetClass !is IrClass) {
+                        verboseln("No match as didn't find target class")
+                        return false
+                    }
+                    if (targetClass.name.asString() != className) {
+                        verboseln("No match as class name is ${targetClass.name.asString()} not $className")
+                        return false
+                    }
+                    targetClass.parent
+                } else {
+                    targetClass
+                }
+            if (targetPkg !is IrPackageFragment) {
+                verboseln("No match as didn't find target package")
+                return false
+            }
+            if (targetPkg.fqName.asString() != pkgName) {
+                verboseln("No match as class name is ${targetPkg.fqName.asString()} not $pkgName")
+                return false
+            }
+            verboseln("Match")
+            return true
+        }
+
+        fun binopDisp(id: Label<out DbExpr>) {
+            val locId = tw.getLocation(c)
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, callable)
+
+            val dr = c.dispatchReceiver
+            if(dr == null) {
+                logger.warnElement(Severity.ErrorSevere, "Dispatch receiver not found", c)
+            } else {
+                extractExpressionExpr(dr, callable, id, 0)
+            }
+            if(c.valueArgumentsCount < 1) {
+                logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+            } else {
+                if(c.valueArgumentsCount > 1) {
+                    logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+                }
+                val arg = c.getValueArgument(0)
+                if(arg == null) {
+                    logger.warnElement(Severity.ErrorSevere, "RHS null", c)
+                } else {
+                    extractExpressionExpr(arg, callable, id, 1)
+                }
+            }
+        }
+
+        fun binop(id: Label<out DbExpr>) {
+            val locId = tw.getLocation(c)
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, callable)
+
+            val dr = c.dispatchReceiver
+            if(dr != null) {
+                logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
+            }
+            if(c.valueArgumentsCount < 1) {
+                logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+            } else {
+                val lhs = c.getValueArgument(0)
+                if(lhs == null) {
+                    logger.warnElement(Severity.ErrorSevere, "LHS null", c)
+                } else {
+                    extractExpressionExpr(lhs, callable, id, 0)
+                }
+                if(c.valueArgumentsCount < 2) {
+                    logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+                } else {
+                    val rhs = c.getValueArgument(1)
+                    if(rhs == null) {
+                        logger.warnElement(Severity.ErrorSevere, "RHS null", c)
+                    } else {
+                        extractExpressionExpr(rhs, callable, id, 1)
+                    }
+                }
+                if(c.valueArgumentsCount > 2) {
+                    logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+                }
+            }
+        }
+
+        when {
+            c.origin == PLUS &&
+            (isFunction("kotlin", "Int", "plus") || isFunction("kotlin", "String", "plus")) -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binopDisp(id)
                 id
             }
-            MINUS -> {
+            c.origin == MINUS && isFunction("kotlin", "Int", "minus") -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_subexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binopDisp(id)
                 id
             }
-            DIV -> {
+            c.origin == DIV && isFunction("kotlin", "Int", "div") -> {
                 val id = tw.getFreshIdLabel<DbDivexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_divexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binopDisp(id)
                 id
             }
-            PERC -> {
+            c.origin == PERC && isFunction("kotlin", "Int", "rem") -> {
                 val id = tw.getFreshIdLabel<DbRemexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binopDisp(id)
                 id
             }
-            EQEQ -> {
+            c.origin == EQEQ && isFunction("kotlin.internal.ir", null, "EQEQ") -> {
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binop(id)
                 id
             }
-            EXCLEQ -> {
+/*
+TODO
+            c.origin == EXCLEQ -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 val locId = tw.getLocation(c)
@@ -1469,40 +1560,33 @@ open class KotlinFileExtractor(
                 tw.writeCallableEnclosingExpr(id, callable)
                 id
             }
-            LT -> {
+*/
+            c.origin == LT && isFunction("kotlin.internal.ir", null, "less") -> {
                 val id = tw.getFreshIdLabel<DbLtexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binop(id)
                 id
             }
-            LTEQ -> {
+            c.origin == LTEQ && isFunction("kotlin.internal.ir", null, "lessOrEqual") -> {
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binop(id)
                 id
             }
-            GT -> {
+            c.origin == GT && isFunction("kotlin.internal.ir", null, "greater") -> {
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binop(id)
                 id
             }
-            GTEQ -> {
+            c.origin == GTEQ && isFunction("kotlin.internal.ir", null, "greaterOrEqual") -> {
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
-                val locId = tw.getLocation(c)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
+                binop(id)
                 id
             }
             else -> {
@@ -1518,16 +1602,17 @@ open class KotlinFileExtractor(
                 // type arguments at index -2, -3, ...
                 extractTypeArguments(c, id, callable, -2, true)
                 id
-            }
-        }
-        val dr = c.dispatchReceiver
-        if(dr != null) {
-            extractExpressionExpr(dr, callable, exprId, -1)
-        }
-        for(i in 0 until c.valueArgumentsCount) {
-            val arg = c.getValueArgument(i)
-            if(arg != null) {
-                extractExpressionExpr(arg, callable, exprId, i)
+
+                val dr = c.dispatchReceiver
+                if(dr != null) {
+                    extractExpressionExpr(dr, callable, id, -1)
+                }
+                for(i in 0 until c.valueArgumentsCount) {
+                    val arg = c.getValueArgument(i)
+                    if(arg != null) {
+                        extractExpressionExpr(arg, callable, id, i)
+                    }
+                }
             }
         }
     }
