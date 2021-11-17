@@ -10,6 +10,12 @@ package foo.bar
  * @constructor Creates an empty group.
  */
 class Group(val name: String) {
+
+    /**
+     * Members of this group.
+     */
+    private val members = mutableListOf<Any>()
+
     /**
      * Adds a [member] to this group.
      * @return the new size of the group.
