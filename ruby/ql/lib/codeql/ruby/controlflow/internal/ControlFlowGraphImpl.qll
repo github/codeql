@@ -1041,6 +1041,9 @@ private Scope parent(Scope n) {
   not n instanceof CfgScope::Range_
 }
 
+cached
+private CfgScope getCfgScopeImpl(AstNode n) { result = parent*(scopeOfInclSynth(n)) }
+
 /** Gets the CFG scope of node `n`. */
 pragma[inline]
 CfgScope getCfgScope(AstNode n) {
@@ -1052,13 +1055,6 @@ CfgScope getCfgScope(AstNode n) {
 
 cached
 private module Cached {
-  /** Gets the CFG scope of node `n`. */
-  cached
-  CfgScope getCfgScopeImpl(AstNode n) {
-    forceCachingInSameStage() and
-    result = parent*(scopeOfInclSynth(n))
-  }
-
   cached
   newtype TSuccessorType =
     TSuccessorSuccessor() or
