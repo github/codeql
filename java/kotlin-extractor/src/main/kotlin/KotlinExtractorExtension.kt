@@ -1039,6 +1039,7 @@ open class KotlinFileExtractor(
             is IrFunction -> return getFunctionLabel(element)
             is IrValueParameter -> return getValueParameterLabel(element)
             is IrProperty -> return getPropertyLabel(element)
+            is IrField -> return getFieldLabel(element)
 
             // Fresh entities:
             is IrBody -> return null
