@@ -276,104 +276,104 @@ break_ensure.rb:
 #   32| ensure ...
 #-----|  -> self
 
-#   32| [ensure: raise] ensure ...
-#-----| raise -> exit m3 (abnormal)
-
 #   32| [ensure: return] ensure ...
 #-----| return -> exit m3 (normal)
+
+#   32| [ensure: raise] ensure ...
+#-----| raise -> exit m3 (abnormal)
 
 #   33| while ...
 #-----|  -> ensure ...
 
-#   33| [ensure: raise] while ...
-#-----|  -> [ensure: raise] ensure ...
-
 #   33| [ensure: return] while ...
 #-----|  -> [ensure: return] ensure ...
+
+#   33| [ensure: raise] while ...
+#-----|  -> [ensure: raise] ensure ...
 
 #   33| ... < ...
 #-----| false -> while ...
 #-----| true -> x
 
-#   33| [ensure: raise] ... < ...
-#-----| false -> [ensure: raise] while ...
-#-----| true -> [ensure: raise] x
-
 #   33| [ensure: return] ... < ...
 #-----| false -> [ensure: return] while ...
 #-----| true -> [ensure: return] x
 
+#   33| [ensure: raise] ... < ...
+#-----| false -> [ensure: raise] while ...
+#-----| true -> [ensure: raise] x
+
 #   33| y
 #-----|  -> 0
-
-#   33| [ensure: raise] y
-#-----|  -> [ensure: raise] 0
 
 #   33| [ensure: return] y
 #-----|  -> [ensure: return] 0
 
+#   33| [ensure: raise] y
+#-----|  -> [ensure: raise] 0
+
 #   33| 0
 #-----|  -> ... < ...
-
-#   33| [ensure: raise] 0
-#-----|  -> [ensure: raise] ... < ...
 
 #   33| [ensure: return] 0
 #-----|  -> [ensure: return] ... < ...
 
+#   33| [ensure: raise] 0
+#-----|  -> [ensure: raise] ... < ...
+
 #   33| do ...
 
-#   33| [ensure: raise] do ...
-
 #   33| [ensure: return] do ...
+
+#   33| [ensure: raise] do ...
 
 #   35| if ...
 #-----|  -> do ...
 
-#   35| [ensure: raise] if ...
-#-----|  -> [ensure: raise] do ...
-
 #   35| [ensure: return] if ...
 #-----|  -> [ensure: return] do ...
+
+#   35| [ensure: raise] if ...
+#-----|  -> [ensure: raise] do ...
 
 #   35| ... > ...
 #-----| true -> break
 #-----| false -> if ...
 
-#   35| [ensure: raise] ... > ...
-#-----| true -> [ensure: raise] break
-#-----| false -> [ensure: raise] if ...
-
 #   35| [ensure: return] ... > ...
 #-----| true -> [ensure: return] break
 #-----| false -> [ensure: return] if ...
 
+#   35| [ensure: raise] ... > ...
+#-----| true -> [ensure: raise] break
+#-----| false -> [ensure: raise] if ...
+
 #   35| x
 #-----|  -> 0
-
-#   35| [ensure: raise] x
-#-----|  -> [ensure: raise] 0
 
 #   35| [ensure: return] x
 #-----|  -> [ensure: return] 0
 
+#   35| [ensure: raise] x
+#-----|  -> [ensure: raise] 0
+
 #   35| 0
 #-----|  -> ... > ...
-
-#   35| [ensure: raise] 0
-#-----|  -> [ensure: raise] ... > ...
 
 #   35| [ensure: return] 0
 #-----|  -> [ensure: return] ... > ...
 
+#   35| [ensure: raise] 0
+#-----|  -> [ensure: raise] ... > ...
+
 #   36| break
 #-----| break -> while ...
 
-#   36| [ensure: raise] break
-#-----| break -> [ensure: raise] while ...
-
 #   36| [ensure: return] break
 #-----| break -> [ensure: return] while ...
+
+#   36| [ensure: raise] break
+#-----| break -> [ensure: raise] while ...
 
 #   41| call to puts
 #-----|  -> exit m3 (normal)
@@ -4386,38 +4386,38 @@ raise.rb:
 #   75| ensure ...
 #-----|  -> exit m7 (normal)
 
-#   75| [ensure: raise] ensure ...
-#-----| raise -> exit m7 (abnormal)
-
 #   75| [ensure: return] ensure ...
 #-----| return -> exit m7 (normal)
+
+#   75| [ensure: raise] ensure ...
+#-----| raise -> exit m7 (abnormal)
 
 #   76| call to puts
 #-----|  -> ensure ...
 
-#   76| [ensure: raise] call to puts
-#-----|  -> [ensure: raise] ensure ...
-
 #   76| [ensure: return] call to puts
 #-----|  -> [ensure: return] ensure ...
+
+#   76| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] ensure ...
 
 #   76| self
 #-----|  -> "ensure"
 
-#   76| [ensure: raise] self
-#-----|  -> [ensure: raise] "ensure"
-
 #   76| [ensure: return] self
 #-----|  -> [ensure: return] "ensure"
+
+#   76| [ensure: raise] self
+#-----|  -> [ensure: raise] "ensure"
 
 #   76| "ensure"
 #-----|  -> call to puts
 
-#   76| [ensure: raise] "ensure"
-#-----|  -> [ensure: raise] call to puts
-
 #   76| [ensure: return] "ensure"
 #-----|  -> [ensure: return] call to puts
+
+#   76| [ensure: raise] "ensure"
+#-----|  -> [ensure: raise] call to puts
 
 #   79| enter m8
 #-----|  -> x
@@ -4501,38 +4501,38 @@ raise.rb:
 #   88| ensure ...
 #-----|  -> self
 
-#   88| [ensure: raise] ensure ...
-#-----| raise -> exit m8 (abnormal)
-
 #   88| [ensure: return] ensure ...
 #-----| return -> exit m8 (normal)
+
+#   88| [ensure: raise] ensure ...
+#-----| raise -> exit m8 (abnormal)
 
 #   89| call to puts
 #-----|  -> ensure ...
 
-#   89| [ensure: raise] call to puts
-#-----|  -> [ensure: raise] ensure ...
-
 #   89| [ensure: return] call to puts
 #-----|  -> [ensure: return] ensure ...
+
+#   89| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] ensure ...
 
 #   89| self
 #-----|  -> "ensure"
 
-#   89| [ensure: raise] self
-#-----|  -> [ensure: raise] "ensure"
-
 #   89| [ensure: return] self
 #-----|  -> [ensure: return] "ensure"
+
+#   89| [ensure: raise] self
+#-----|  -> [ensure: raise] "ensure"
 
 #   89| "ensure"
 #-----|  -> call to puts
 
-#   89| [ensure: raise] "ensure"
-#-----|  -> [ensure: raise] call to puts
-
 #   89| [ensure: return] "ensure"
 #-----|  -> [ensure: return] call to puts
+
+#   89| [ensure: raise] "ensure"
+#-----|  -> [ensure: raise] call to puts
 
 #   91| call to puts
 #-----|  -> exit m8 (normal)
@@ -4632,89 +4632,89 @@ raise.rb:
 #  103| ensure ...
 #-----|  -> self
 
-#  103| [ensure: raise] ensure ...
-#-----| raise -> [ensure: raise] self
-
 #  103| [ensure: return] ensure ...
 #-----| return -> [ensure: return] self
 
-#  104| call to puts
-#-----|  -> b1
+#  103| [ensure: raise] ensure ...
 #-----| raise -> [ensure: raise] self
 
-#  104| [ensure: raise] call to puts
-#-----|  -> [ensure: raise] b1
+#  104| call to puts
+#-----|  -> b1
 #-----| raise -> [ensure: raise] self
 
 #  104| [ensure: return] call to puts
 #-----|  -> [ensure: return] b1
 #-----| raise -> [ensure: raise] self
 
+#  104| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] b1
+#-----| raise -> [ensure: raise] self
+
 #  104| self
 #-----|  -> "outer ensure"
-
-#  104| [ensure: raise] self
-#-----|  -> [ensure: raise] "outer ensure"
 
 #  104| [ensure: return] self
 #-----|  -> [ensure: return] "outer ensure"
 
+#  104| [ensure: raise] self
+#-----|  -> [ensure: raise] "outer ensure"
+
 #  104| "outer ensure"
 #-----|  -> call to puts
-
-#  104| [ensure: raise] "outer ensure"
-#-----|  -> [ensure: raise] call to puts
 
 #  104| [ensure: return] "outer ensure"
 #-----|  -> [ensure: return] call to puts
 
+#  104| [ensure: raise] "outer ensure"
+#-----|  -> [ensure: raise] call to puts
+
 #  106| if ...
 #-----|  -> self
 
-#  106| [ensure: raise] if ...
-#-----|  -> [ensure: raise] self
-
 #  106| [ensure: return] if ...
 #-----|  -> [ensure: return] self
+
+#  106| [ensure: raise] if ...
+#-----|  -> [ensure: raise] self
 
 #  106| b1
 #-----| false -> if ...
 #-----| true -> self
 
-#  106| [ensure: raise] b1
-#-----| false -> [ensure: raise] if ...
-#-----| true -> [ensure: raise] self
-
 #  106| [ensure: return] b1
 #-----| false -> [ensure: return] if ...
 #-----| true -> [ensure: return] self
 
+#  106| [ensure: raise] b1
+#-----| false -> [ensure: raise] if ...
+#-----| true -> [ensure: raise] self
+
 #  107| call to raise
 #-----| raise -> [ensure(1): raise] self
-
-#  107| [ensure: raise] call to raise
-#-----| raise -> [ensure: raise, ensure(1): raise] self
 
 #  107| [ensure: return] call to raise
 #-----| raise -> [ensure: return, ensure(1): raise] self
 
+#  107| [ensure: raise] call to raise
+#-----| raise -> [ensure: raise, ensure(1): raise] self
+
 #  107| self
 #-----|  -> "b1 is true"
-
-#  107| [ensure: raise] self
-#-----|  -> [ensure: raise] "b1 is true"
 
 #  107| [ensure: return] self
 #-----|  -> [ensure: return] "b1 is true"
 
+#  107| [ensure: raise] self
+#-----|  -> [ensure: raise] "b1 is true"
+
 #  107| "b1 is true"
 #-----|  -> call to raise
 
-#  107| [ensure: raise] "b1 is true"
-#-----|  -> [ensure: raise] call to raise
-
 #  107| [ensure: return] "b1 is true"
 #-----|  -> [ensure: return] call to raise
+
+#  107| [ensure: raise] "b1 is true"
+#-----|  -> [ensure: raise] call to raise
 
 #  109| ensure ...
 #-----|  -> ensure ...
@@ -4722,16 +4722,16 @@ raise.rb:
 #  109| [ensure(1): raise] ensure ...
 #-----| raise -> [ensure: raise] self
 
-#  109| [ensure: raise] ensure ...
-#-----|  -> [ensure: raise] ensure ...
-
-#  109| [ensure: raise, ensure(1): raise] ensure ...
-#-----| raise -> [ensure: raise] self
-
 #  109| [ensure: return] ensure ...
 #-----|  -> [ensure: return] ensure ...
 
 #  109| [ensure: return, ensure(1): raise] ensure ...
+#-----| raise -> [ensure: raise] self
+
+#  109| [ensure: raise] ensure ...
+#-----|  -> [ensure: raise] ensure ...
+
+#  109| [ensure: raise, ensure(1): raise] ensure ...
 #-----| raise -> [ensure: raise] self
 
 #  110| call to puts
@@ -4742,14 +4742,6 @@ raise.rb:
 #-----|  -> [ensure(1): raise] ensure ...
 #-----| raise -> [ensure: raise] self
 
-#  110| [ensure: raise] call to puts
-#-----|  -> [ensure: raise] ensure ...
-#-----| raise -> [ensure: raise] self
-
-#  110| [ensure: raise, ensure(1): raise] call to puts
-#-----|  -> [ensure: raise, ensure(1): raise] ensure ...
-#-----| raise -> [ensure: raise] self
-
 #  110| [ensure: return] call to puts
 #-----|  -> [ensure: return] ensure ...
 #-----| raise -> [ensure: raise] self
@@ -4758,17 +4750,19 @@ raise.rb:
 #-----|  -> [ensure: return, ensure(1): raise] ensure ...
 #-----| raise -> [ensure: raise] self
 
+#  110| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] ensure ...
+#-----| raise -> [ensure: raise] self
+
+#  110| [ensure: raise, ensure(1): raise] call to puts
+#-----|  -> [ensure: raise, ensure(1): raise] ensure ...
+#-----| raise -> [ensure: raise] self
+
 #  110| self
 #-----|  -> "inner ensure"
 
 #  110| [ensure(1): raise] self
 #-----|  -> [ensure(1): raise] "inner ensure"
-
-#  110| [ensure: raise] self
-#-----|  -> [ensure: raise] "inner ensure"
-
-#  110| [ensure: raise, ensure(1): raise] self
-#-----|  -> [ensure: raise, ensure(1): raise] "inner ensure"
 
 #  110| [ensure: return] self
 #-----|  -> [ensure: return] "inner ensure"
@@ -4776,23 +4770,29 @@ raise.rb:
 #  110| [ensure: return, ensure(1): raise] self
 #-----|  -> [ensure: return, ensure(1): raise] "inner ensure"
 
+#  110| [ensure: raise] self
+#-----|  -> [ensure: raise] "inner ensure"
+
+#  110| [ensure: raise, ensure(1): raise] self
+#-----|  -> [ensure: raise, ensure(1): raise] "inner ensure"
+
 #  110| "inner ensure"
 #-----|  -> call to puts
 
 #  110| [ensure(1): raise] "inner ensure"
 #-----|  -> [ensure(1): raise] call to puts
 
-#  110| [ensure: raise] "inner ensure"
-#-----|  -> [ensure: raise] call to puts
-
-#  110| [ensure: raise, ensure(1): raise] "inner ensure"
-#-----|  -> [ensure: raise, ensure(1): raise] call to puts
-
 #  110| [ensure: return] "inner ensure"
 #-----|  -> [ensure: return] call to puts
 
 #  110| [ensure: return, ensure(1): raise] "inner ensure"
 #-----|  -> [ensure: return, ensure(1): raise] call to puts
+
+#  110| [ensure: raise] "inner ensure"
+#-----|  -> [ensure: raise] call to puts
+
+#  110| [ensure: raise, ensure(1): raise] "inner ensure"
+#-----|  -> [ensure: raise, ensure(1): raise] call to puts
 
 #  113| call to puts
 #-----|  -> self
@@ -4807,86 +4807,86 @@ raise.rb:
 #  114| ensure ...
 #-----|  -> exit m9 (normal)
 
-#  114| [ensure: raise] ensure ...
-#-----| raise -> exit m9 (abnormal)
-
 #  114| [ensure: return] ensure ...
 #-----| return -> exit m9 (normal)
+
+#  114| [ensure: raise] ensure ...
+#-----| raise -> exit m9 (abnormal)
 
 #  115| call to puts
 #-----|  -> b2
 
-#  115| [ensure: raise] call to puts
-#-----|  -> [ensure: raise] b2
-
 #  115| [ensure: return] call to puts
 #-----|  -> [ensure: return] b2
+
+#  115| [ensure: raise] call to puts
+#-----|  -> [ensure: raise] b2
 
 #  115| self
 #-----|  -> "method ensure"
 
-#  115| [ensure: raise] self
-#-----|  -> [ensure: raise] "method ensure"
-
 #  115| [ensure: return] self
 #-----|  -> [ensure: return] "method ensure"
+
+#  115| [ensure: raise] self
+#-----|  -> [ensure: raise] "method ensure"
 
 #  115| "method ensure"
 #-----|  -> call to puts
 
-#  115| [ensure: raise] "method ensure"
-#-----|  -> [ensure: raise] call to puts
-
 #  115| [ensure: return] "method ensure"
 #-----|  -> [ensure: return] call to puts
+
+#  115| [ensure: raise] "method ensure"
+#-----|  -> [ensure: raise] call to puts
 
 #  116| if ...
 #-----|  -> ensure ...
 
-#  116| [ensure: raise] if ...
-#-----|  -> [ensure: raise] ensure ...
-
 #  116| [ensure: return] if ...
 #-----|  -> [ensure: return] ensure ...
+
+#  116| [ensure: raise] if ...
+#-----|  -> [ensure: raise] ensure ...
 
 #  116| b2
 #-----| false -> if ...
 #-----| true -> self
 
-#  116| [ensure: raise] b2
-#-----| false -> [ensure: raise] if ...
-#-----| true -> [ensure: raise] self
-
 #  116| [ensure: return] b2
 #-----| false -> [ensure: return] if ...
 #-----| true -> [ensure: return] self
 
-#  117| call to raise
-#-----| raise -> exit m9 (abnormal)
+#  116| [ensure: raise] b2
+#-----| false -> [ensure: raise] if ...
+#-----| true -> [ensure: raise] self
 
-#  117| [ensure: raise] call to raise
+#  117| call to raise
 #-----| raise -> exit m9 (abnormal)
 
 #  117| [ensure: return] call to raise
 #-----| raise -> exit m9 (abnormal)
 
+#  117| [ensure: raise] call to raise
+#-----| raise -> exit m9 (abnormal)
+
 #  117| self
 #-----|  -> "b2 is true"
-
-#  117| [ensure: raise] self
-#-----|  -> [ensure: raise] "b2 is true"
 
 #  117| [ensure: return] self
 #-----|  -> [ensure: return] "b2 is true"
 
+#  117| [ensure: raise] self
+#-----|  -> [ensure: raise] "b2 is true"
+
 #  117| "b2 is true"
 #-----|  -> call to raise
 
-#  117| [ensure: raise] "b2 is true"
-#-----|  -> [ensure: raise] call to raise
-
 #  117| [ensure: return] "b2 is true"
 #-----|  -> [ensure: return] call to raise
+
+#  117| [ensure: raise] "b2 is true"
+#-----|  -> [ensure: raise] call to raise
 
 #  121| enter m10
 #-----|  -> p
