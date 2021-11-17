@@ -8,12 +8,6 @@ import javascript
 import CodeToFeatures
 import EndpointScoring
 
-DatabaseFeatures::AstNode dbAstNode(ASTNode node, DatabaseFeatures::Entity dbEntity) {
-  result =
-    DatabaseFeatures::astNode(Wrapped::astNode(dbEntity.getWrappedEntity().getDefinedFunction(),
-        Raw::astNode(node)))
-}
-
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
  *
@@ -31,7 +25,8 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
   )
   or
-  // A feature containing natural language tokens from the neighborhood around the endpoint, in
+  // A feature containing natural language tokens from the neighborhood around the endpoint 
+  (limited to within the function that encloses the endpoint), in
   // the order they appear in the source code. 
   exists(Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped |
     featureName = "neighborhoodBody" and
@@ -163,15 +158,13 @@ module FunctionBodies {
   }
 }
 
-/** This module provides functionality for getting the neighborhood scope body feature associated with a neighborhood around an AST node. */
+/** This module provides functionality for getting the local neighborhood around an AST node within its enclosing function body, providing a locally-scoped version of the `enclosingFunctionBody` feature. */
 module NeighborhoodBodies {
   /**
    * Return the ancestor of the input AST node that has the largest number of descendants (i.e. the node nearest the
    * root) but has no more than 128 descendants.
    * TODO: Maybe instead of a threshold on number of descendants, we should instead have a threshold on the number of
-   * leaves in the subtree, which is a closer approximation to the number of tokens in the subtree. If we don't do this,
-   * as an optimization we can remove the sorting by location, since each ancestor of a given node will always have a
-   * different number of descendants.
+   * leaves in the subtree, which is a closer approximation to the number of tokens in the subtree.
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
     if getNumDescendents(node.getParentNode()) > 128
@@ -183,22 +176,22 @@ module NeighborhoodBodies {
   int getNumDescendents(Raw::AstNode node) { result = count(node.getAChildNode*()) }
 
   /**
-   * Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`.
+   * Holds if `childNode` is an AST node under `rootNode` and `token` is a node attribute associated with `childNode`. Note that only AST leaves have node attributes.
    *
-   * We restrict `rootNode` to be a neighborhood root to avoid a potentially big result set.
+   * TODO we may need to restrict `rootNode` to be a neighborhood root to avoid a potentially big result set.
    */
   private predicate bodyTokens(
     DatabaseFeatures::AstNode rootNode, DatabaseFeatures::AstNode childNode, string token
   ) {
     childNode = rootNode.getAChild*() and
     token = unique(string t | DatabaseFeatures::nodeAttributes(childNode, t)) 
-    // and rootNode = getANeighborhoodRoot()
   }
 
   /**
-   * Gets the body token feature for the specified entity.
+   * Gets the body token feature limited to the part of the function body that lies under `rootNode` in the AST.
    *
-   * This is a string containing natural language tokens in the order that they appear in the source code for the entity.
+   * This is a string of space-separated natural language tokens (AST leaves) in the order that they appear in the source code for the AST subtree rooted at `rootNode`. This is equivalent to the portion of the code that falls under
+ * the AST subtree rooted at the given node, except that non-leaf nodes (such as operators) are excluded.
    */
   string getBodyTokenFeatureForNeighborhoodNode(DatabaseFeatures::AstNode rootNode) {
     // If a function has more than 256 body subtokens, then featurize it as absent. This
