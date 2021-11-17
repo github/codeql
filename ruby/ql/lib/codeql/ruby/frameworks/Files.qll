@@ -111,7 +111,7 @@ module IO {
    * This class includes only reads that use the `IO` class directly, not those
    * that use a subclass of `IO` such as `File`.
    */
-  class IOReader extends DataFlow::CallNode {
+  class IOReader extends DataFlow::CallNode, SystemCommandExecution::Range {
     private string receiverKind;
 
     IOReader() {
@@ -132,6 +132,14 @@ module IO {
      * Gets a string representation of the receiver kind, either "class" or "instance".
      */
     string getReceiverKind() { result = receiverKind }
+
+    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+    // IO methods can cause shell commands to be executed if the argument begins
+    // with "|". As this is not necessarily possible to determine statically, we
+    // overapproximate this by assuming that any argument may be interpreted as
+    // a shell command.
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
 
   /**

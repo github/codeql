@@ -8,6 +8,8 @@ edges
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:33:24:33:36 | "echo #{...}" |
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:34:39:34:51 | "grep #{...}" |
 | CommandInjection.rb:46:15:46:20 | call to params :  | CommandInjection.rb:50:24:50:36 | "echo #{...}" |
+| KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:4:10:4:13 | file |
+| KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:5:13:5:16 | file |
 nodes
 | CommandInjection.rb:6:15:6:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:7:10:7:15 | #{...} | semmle.label | #{...} |
@@ -20,6 +22,9 @@ nodes
 | CommandInjection.rb:34:39:34:51 | "grep #{...}" | semmle.label | "grep #{...}" |
 | CommandInjection.rb:46:15:46:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:50:24:50:36 | "echo #{...}" | semmle.label | "echo #{...}" |
+| KernelOpen.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
+| KernelOpen.rb:4:10:4:13 | file | semmle.label | file |
+| KernelOpen.rb:5:13:5:16 | file | semmle.label | file |
 subpaths
 #select
 | CommandInjection.rb:7:10:7:15 | #{...} | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:7:10:7:15 | #{...} | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
@@ -31,3 +36,5 @@ subpaths
 | CommandInjection.rb:33:24:33:36 | "echo #{...}" | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:33:24:33:36 | "echo #{...}" | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
 | CommandInjection.rb:34:39:34:51 | "grep #{...}" | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:34:39:34:51 | "grep #{...}" | This command depends on $@. | CommandInjection.rb:6:15:6:20 | call to params | a user-provided value |
 | CommandInjection.rb:50:24:50:36 | "echo #{...}" | CommandInjection.rb:46:15:46:20 | call to params :  | CommandInjection.rb:50:24:50:36 | "echo #{...}" | This command depends on $@. | CommandInjection.rb:46:15:46:20 | call to params | a user-provided value |
+| KernelOpen.rb:4:10:4:13 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:4:10:4:13 | file | This command depends on $@. | KernelOpen.rb:3:12:3:17 | call to params | a user-provided value |
+| KernelOpen.rb:5:13:5:16 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:5:13:5:16 | file | This command depends on $@. | KernelOpen.rb:3:12:3:17 | call to params | a user-provided value |
