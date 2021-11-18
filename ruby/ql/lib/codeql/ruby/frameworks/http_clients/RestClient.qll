@@ -6,6 +6,8 @@ private import codeql.ruby.ApiGraphs
  * A call that makes an HTTP request using `RestClient`.
  * ```ruby
  * RestClient.get("http://example.com").body
+ * RestClient::Resource.new("http://example.com").get.body
+ * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
 class RestClientHttpRequest extends HTTP::Client::Request::Range {
@@ -14,18 +16,29 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
   API::Node connectionNode;
 
   RestClientHttpRequest() {
-    connectionNode =
-      [
-        API::getTopLevelMember("RestClient"),
-        API::getTopLevelMember("RestClient").getMember("Resource").getInstance()
-      ] and
-    requestNode =
-      connectionNode.getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
     requestUse = requestNode.getAnImmediateUse() and
-    this = requestUse.asExpr().getExpr()
+    this = requestUse.asExpr().getExpr() and
+    (
+      connectionNode =
+        [
+          API::getTopLevelMember("RestClient"),
+          API::getTopLevelMember("RestClient").getMember("Resource").getInstance()
+        ] and
+      requestNode =
+        connectionNode.getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+      or
+      connectionNode = API::getTopLevelMember("RestClient").getMember("Request") and
+      requestNode = connectionNode.getReturn("execute")
+    )
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getURL() {
+    result = requestUse.getKeywordArgument("url")
+    or
+    result = requestUse.getArgument(0) and
+    // this rules out the alternative above
+    not result.asExpr().getExpr() instanceof Pair
+  }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
