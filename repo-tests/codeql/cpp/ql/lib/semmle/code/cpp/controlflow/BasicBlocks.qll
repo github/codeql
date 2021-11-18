@@ -201,7 +201,7 @@ class BasicBlock extends ControlFlowNodeBase {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    hasLocationInfoInternal(filepath, startline, startcolumn, filepath, endline, endcolumn)
+    this.hasLocationInfoInternal(filepath, startline, startcolumn, filepath, endline, endcolumn)
   }
 
   pragma[noinline]
@@ -276,7 +276,7 @@ class EntryBasicBlock extends BasicBlock {
  */
 class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() {
-    getEnd() instanceof Function or
-    aborting(getEnd())
+    this.getEnd() instanceof Function or
+    aborting(this.getEnd())
   }
 }

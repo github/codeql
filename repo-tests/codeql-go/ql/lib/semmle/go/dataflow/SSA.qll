@@ -10,7 +10,7 @@ private import SsaImpl
  * declared in file scope.
  */
 class SsaSourceVariable extends LocalVariable {
-  SsaSourceVariable() { not getScope() instanceof FileScope }
+  SsaSourceVariable() { not this.getScope() instanceof FileScope }
 
   /**
    * Holds if there may be indirect references of this variable that are not covered by `getAReference()`.
@@ -20,10 +20,10 @@ class SsaSourceVariable extends LocalVariable {
    */
   predicate mayHaveIndirectReferences() {
     // variables that have their address taken
-    exists(AddressExpr addr | addr.getOperand().stripParens() = getAReference())
+    exists(AddressExpr addr | addr.getOperand().stripParens() = this.getAReference())
     or
     exists(DataFlow::MethodReadNode mrn |
-      mrn.getReceiver() = getARead() and
+      mrn.getReceiver() = this.getARead() and
       mrn.getMethod().getReceiverType() instanceof PointerType
     )
     or
@@ -31,7 +31,7 @@ class SsaSourceVariable extends LocalVariable {
     // scope or a nested scope, suggesting that name resolution information may be incomplete
     exists(FunctionScope scope, FuncDef inner |
       scope = this.getScope().(LocalScope).getEnclosingFunctionScope() and
-      unresolvedReference(getName(), inner) and
+      unresolvedReference(this.getName(), inner) and
       inner.getScope().getOuterScope*() = scope
     )
   }
@@ -69,21 +69,21 @@ class SsaVariable extends TSsaDefinition {
   SsaDefinition getDefinition() { result = this }
 
   /** Gets the type of this SSA variable. */
-  Type getType() { result = getSourceVariable().getType() }
+  Type getType() { result = this.getSourceVariable().getType() }
 
   /** Gets a use in basic block `bb` that refers to this SSA variable. */
   IR::Instruction getAUseIn(ReachableBasicBlock bb) {
-    exists(int i, SsaSourceVariable v | v = getSourceVariable() |
+    exists(int i, SsaSourceVariable v | v = this.getSourceVariable() |
       result = bb.getNode(i) and
       this = getDefinition(bb, i, v)
     )
   }
 
   /** Gets a use that refers to this SSA variable. */
-  IR::Instruction getAUse() { result = getAUseIn(_) }
+  IR::Instruction getAUse() { result = this.getAUseIn(_) }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = getDefinition().prettyPrintRef() }
+  string toString() { result = this.getDefinition().prettyPrintRef() }
 
   /**
    * Holds if this element is at the specified location.
@@ -95,7 +95,7 @@ class SsaVariable extends TSsaDefinition {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getDefinition().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getDefinition().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -139,10 +139,10 @@ class SsaDefinition extends TSsaDefinition {
   abstract string prettyPrintRef();
 
   /** Gets the innermost function or file to which this SSA definition belongs. */
-  ControlFlow::Root getRoot() { result = getBasicBlock().getRoot() }
+  ControlFlow::Root getRoot() { result = this.getBasicBlock().getRoot() }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = prettyPrintDef() }
+  string toString() { result = this.prettyPrintDef() }
 
   /**
    * Holds if this element is at the specified location.
@@ -166,26 +166,26 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   /** Gets the right-hand side of the definition. */
-  IR::Instruction getRhs() { getInstruction().writes(_, result) }
+  IR::Instruction getRhs() { this.getInstruction().writes(_, result) }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     this = TExplicitDef(bb, i, v)
   }
 
-  override ReachableBasicBlock getBasicBlock() { definesAt(result, _, _) }
+  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
 
   override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, result) }
 
   override string prettyPrintRef() {
-    exists(int l, int c | hasLocationInfo(_, l, c, _, _) | result = "def@" + l + ":" + c)
+    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) | result = "def@" + l + ":" + c)
   }
 
-  override string prettyPrintDef() { result = "definition of " + getSourceVariable() }
+  override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getInstruction().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getInstruction().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -209,7 +209,9 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   abstract string getKind();
 
   override string prettyPrintRef() {
-    exists(int l, int c | hasLocationInfo(_, l, c, _, _) | result = getKind() + "@" + l + ":" + c)
+    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) |
+      result = this.getKind() + "@" + l + ":" + c
+    )
   }
 
   override predicate hasLocationInfo(
@@ -217,7 +219,7 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
 
@@ -233,18 +235,18 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
     this = TCapture(bb, i, v)
   }
 
-  override ReachableBasicBlock getBasicBlock() { definesAt(result, _, _) }
+  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
 
-  override SsaSourceVariable getSourceVariable() { definesAt(_, _, result) }
+  override SsaSourceVariable getSourceVariable() { this.definesAt(_, _, result) }
 
   override string getKind() { result = "capture" }
 
-  override string prettyPrintDef() { result = "capture variable " + getSourceVariable() }
+  override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(ReachableBasicBlock bb, int i | definesAt(bb, i, _) |
+    exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
       bb.getNode(i).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     )
   }
@@ -264,7 +266,7 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
    * Gets a textual representation of the inputs of this pseudo-definition
    * in lexicographical order.
    */
-  string ppInputs() { result = concat(getAnInput().getDefinition().prettyPrintRef(), ", ") }
+  string ppInputs() { result = concat(this.getAnInput().getDefinition().prettyPrintRef(), ", ") }
 }
 
 /**
@@ -274,11 +276,11 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  */
 class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(getBasicBlock().getAPredecessor(), getSourceVariable())
+    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(), this.getSourceVariable())
   }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    bb = getBasicBlock() and v = getSourceVariable() and i = -1
+    bb = this.getBasicBlock() and v = this.getSourceVariable() and i = -1
   }
 
   override ReachableBasicBlock getBasicBlock() { this = TPhi(result, _) }
@@ -287,14 +289,16 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
 
   override string getKind() { result = "phi" }
 
-  override string prettyPrintDef() { result = getSourceVariable() + " = phi(" + ppInputs() + ")" }
+  override string prettyPrintDef() {
+    result = this.getSourceVariable() + " = phi(" + this.ppInputs() + ")"
+  }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
 

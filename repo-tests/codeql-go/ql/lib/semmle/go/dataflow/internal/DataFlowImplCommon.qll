@@ -924,7 +924,7 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    recordDataFlowCallSite(getCall(), callable)
+    recordDataFlowCallSite(this.getCall(), callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
@@ -1195,7 +1195,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   TypedContent getHead() { this = TFrontHead(result) }
 
-  predicate isClearedAt(Node n) { clearsContentCached(n, getHead().getContent()) }
+  predicate isClearedAt(Node n) { clearsContentCached(n, this.getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

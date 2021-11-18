@@ -35,7 +35,7 @@ class Element extends @dotnet_element {
    * Gets the "language" of this program element, as defined by the extension of the filename.
    * For example, C# has language "cs", and Visual Basic has language "vb".
    */
-  final string getLanguage() { result = getLocation().getFile().getExtension() }
+  final string getLanguage() { result = this.getLocation().getFile().getExtension() }
 
   /** Gets the full textual representation of this element, including type information. */
   string toStringWithTypes() { result = this.toString() }
@@ -43,7 +43,7 @@ class Element extends @dotnet_element {
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /**
    * Gets the name of a primary CodeQL class to which this element belongs.
@@ -66,7 +66,7 @@ class NamedElement extends Element, @dotnet_named_element {
   string getName() { none() }
 
   /** Holds if this element has name 'name'. */
-  final predicate hasName(string name) { name = getName() }
+  final predicate hasName(string name) { name = this.getName() }
 
   /**
    * Gets the fully qualified name of this element, for example the

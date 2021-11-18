@@ -107,7 +107,7 @@ private predicate impliesValue(
     wholeIsTrue = true and partIsTrue = true and part = blo.getAnOperand()
     or
     wholeIsTrue = true and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, true)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, true)
   )
   or
   blo instanceof LogicalOrExpr and
@@ -115,7 +115,7 @@ private predicate impliesValue(
     wholeIsTrue = false and partIsTrue = false and part = blo.getAnOperand()
     or
     wholeIsTrue = false and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, false)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, false)
   )
 }
 
@@ -139,7 +139,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
       part.comparesLt(left, right, k, isLessThan, partIsTrue)
     )
@@ -147,13 +147,13 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
-      comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
       part.comparesEq(left, right, k, areEqual, partIsTrue)
     )
@@ -161,7 +161,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
-      comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 }
@@ -326,9 +326,9 @@ class IRGuardCondition extends Instruction {
   cached
   predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
     pred.getASuccessor() = succ and
-    controls(pred, testIsTrue)
+    this.controls(pred, testIsTrue)
     or
-    hasBranchEdge(succ, testIsTrue) and
+    this.hasBranchEdge(succ, testIsTrue) and
     branch.getCondition() = this and
     branch.getBlock() = pred
   }

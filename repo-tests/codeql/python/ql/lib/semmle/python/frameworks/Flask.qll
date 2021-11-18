@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.security.dataflow.PathInjectionCustomizations
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -73,7 +74,11 @@ module Flask {
    */
   module Blueprint {
     /** Gets a reference to the `flask.Blueprint` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Blueprint")
+      or
+      result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+    }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
     API::Node instance() { result = classRef().getReturn() }
@@ -233,7 +238,7 @@ module Flask {
   }
 
   /** A route setup made by flask (sharing handling of URL patterns). */
-  abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
@@ -292,12 +297,12 @@ module Flask {
 
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
-        func_src.flowsTo(getViewArg()) and
+        func_src.flowsTo(this.getViewArg()) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
-        getViewArg() = vc.asViewResult().getAUse() and
+        this.getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
     }
@@ -518,5 +523,50 @@ module Flask {
     override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
 
     override DataFlow::Node getValueArg() { none() }
+  }
+
+  /**
+   * A call to `flask.send_from_directory`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
+   */
+  private class FlaskSendFromDirectoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFromDirectoryCall() {
+      this = API::moduleImport("flask").getMember("send_from_directory").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("directory"),
+          // as described in the docs, the `filename` argument is restrained to be within
+          // the provided directory, so is not exposed to path-injection. (but is still a
+          // path-argument).
+          this.getArg(1), this.getArgByName("filename")
+        ]
+    }
+  }
+
+  /**
+   * To exclude `filename` argument to `flask.send_from_directory` as a path-injection sink.
+   */
+  private class FlaskSendFromDirectoryCallFilenameSanitizer extends PathInjection::Sanitizer {
+    FlaskSendFromDirectoryCallFilenameSanitizer() {
+      this = any(FlaskSendFromDirectoryCall c).getArg(1)
+      or
+      this = any(FlaskSendFromDirectoryCall c).getArgByName("filename")
+    }
+  }
+
+  /**
+   * A call to `flask.send_file`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
+   */
+  private class FlaskSendFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFileCall() { this = API::moduleImport("flask").getMember("send_file").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("filename_or_fp")]
+    }
   }
 }

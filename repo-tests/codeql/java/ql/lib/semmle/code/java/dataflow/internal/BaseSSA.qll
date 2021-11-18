@@ -484,10 +484,10 @@ class BaseSsaVariable extends TBaseSsaVariable {
 
   string toString() { none() }
 
-  Location getLocation() { result = getCFGNode().getLocation() }
+  Location getLocation() { result = this.getCFGNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
-  BasicBlock getBasicBlock() { result = getCFGNode().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.getCFGNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
   RValue getAUse() { ssaDefReachesUse(_, this, result) }
@@ -532,14 +532,16 @@ class BaseSsaVariable extends TBaseSsaVariable {
 /** An SSA variable that is defined by a `VariableUpdate`. */
 class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
   BaseSsaUpdate() {
-    exists(VariableUpdate upd | upd = this.getCFGNode() and getDestVar(upd) = getSourceVariable())
+    exists(VariableUpdate upd |
+      upd = this.getCFGNode() and getDestVar(upd) = this.getSourceVariable()
+    )
   }
 
-  override string toString() { result = "SSA def(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = getSourceVariable()
+    result = this.getCFGNode() and getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -548,30 +550,31 @@ class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
  * includes initial values of parameters, fields, and closure variables.
  */
 class BaseSsaImplicitInit extends BaseSsaVariable, TSsaEntryDef {
-  override string toString() { result = "SSA init(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA init(" + this.getSourceVariable() + ")" }
 
   /** Holds if this is a closure variable that captures the value of `capturedvar`. */
   predicate captures(BaseSsaVariable capturedvar) {
-    ssaDefReachesCapture(_, capturedvar, getSourceVariable())
+    ssaDefReachesCapture(_, capturedvar, this.getSourceVariable())
   }
 
   /**
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
   predicate isParameterDefinition(Parameter p) {
-    getSourceVariable() = TLocalVar(p.getCallable(), p) and p.getCallable().getBody() = getCFGNode()
+    this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
+    p.getCallable().getBody() = this.getCFGNode()
   }
 }
 
 /** An SSA phi node. */
 class BaseSsaPhiNode extends BaseSsaVariable, TSsaPhiNode {
-  override string toString() { result = "SSA phi(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
   /** Gets an input to the phi node defining the SSA variable. */
   BaseSsaVariable getAPhiInput() {
     exists(BasicBlock phiPred, BaseSsaSourceVariable v |
-      v = getSourceVariable() and
-      getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
+      v = this.getSourceVariable() and
+      this.getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(v, result, phiPred)
     )
   }

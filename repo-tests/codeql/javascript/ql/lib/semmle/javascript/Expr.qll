@@ -1559,6 +1559,14 @@ class URShiftExpr extends @urshift_expr, BinaryExpr {
  */
 class AddExpr extends @add_expr, BinaryExpr {
   override string getOperator() { result = "+" }
+
+  /**
+   * Gets the value of this string concatenation parsed as a regular expression, if possible.
+   *
+   * All string literals have an associated regular expression tree, provided they can
+   * be parsed without syntax errors.
+   */
+  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**

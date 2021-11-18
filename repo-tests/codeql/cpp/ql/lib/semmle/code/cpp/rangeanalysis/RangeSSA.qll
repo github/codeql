@@ -88,10 +88,10 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   ControlFlowNode getDefinition() { result = this }
 
   /** Gets the basic block containing this definition. */
-  BasicBlock getBasicBlock() { result.contains(getDefinition()) }
+  BasicBlock getBasicBlock() { result.contains(this.getDefinition()) }
 
   /** Whether this definition is a phi node for variable `v`. */
-  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this.(BasicBlock))) }
+  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this)) }
 
   /**
    * DEPRECATED: Use isGuardPhi/4 instead

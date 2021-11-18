@@ -303,14 +303,11 @@ module PrettyPrintCatCall {
   bindingset[str]
   private string createSimplifiedStringConcat(string str) {
     // Remove an initial ""+ (e.g. in `""+file`)
-    if str.prefix(5) = "\"\" + "
+    if str.matches("\"\" + %")
     then result = str.suffix(5)
     else
       // prettify `${newpath}` to just newpath
-      if
-        str.prefix(3) = "`${" and
-        str.suffix(str.length() - 2) = "}`" and
-        not str.suffix(3).matches("%{%")
+      if str.matches("`${%") and str.matches("%}`") and not str.suffix(3).matches("%{%")
       then result = str.prefix(str.length() - 2).suffix(3)
       else result = str
   }
@@ -320,7 +317,7 @@ module PrettyPrintCatCall {
    */
   string createFileThatIsReadFromCommandList(CommandCall call) {
     exists(DataFlow::ArrayCreationNode array, DataFlow::Node element |
-      array = call.getArgumentList().(DataFlow::ArrayCreationNode) and
+      array = call.getArgumentList() and
       array.getSize() = 1 and
       element = array.getElement(0)
     |

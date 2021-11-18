@@ -56,7 +56,7 @@ module Zap {
 
   /** The function `Fields` that creates an `Option` that can be added to the logger out of `Field`s. */
   class FieldsFunction extends TaintTracking::FunctionModel {
-    FieldsFunction() { hasQualifiedName(packagePath(), "Fields") }
+    FieldsFunction() { this.hasQualifiedName(packagePath(), "Fields") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()

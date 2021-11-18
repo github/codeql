@@ -61,7 +61,7 @@ class ElementBase extends @element {
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /**
    * Gets the name of a primary CodeQL class to which this element belongs.
@@ -206,9 +206,9 @@ class Element extends ElementBase {
   /** Gets the closest `Element` enclosing this one. */
   cached
   Element getEnclosingElement() {
-    result = getEnclosingElementPref()
+    result = this.getEnclosingElementPref()
     or
-    not exists(getEnclosingElementPref()) and
+    not exists(this.getEnclosingElementPref()) and
     (
       this = result.(Class).getAMember()
       or
@@ -281,7 +281,7 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
  * ```
  */
 class StaticAssert extends Locatable, @static_assert {
-  override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
+  override string toString() { result = "static_assert(..., \"" + this.getMessage() + "\")" }
 
   /**
    * Gets the expression which this static assertion ensures is true.

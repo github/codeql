@@ -101,6 +101,8 @@ predicate hasNonlocalValue(FieldRead fr) {
 predicate localFlowStep(Node node1, Node node2) {
   simpleLocalFlowStep(node1, node2)
   or
+  adjacentUseUse(node1.asExpr(), node2.asExpr())
+  or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, true)
@@ -131,7 +133,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   adjacentUseUse(node1.asExpr(), node2.asExpr()) and
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
-  )
+  ) and
+  not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(node1, _)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
@@ -155,6 +158,10 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
+  or
+  any(AdditionalValueStep a).step(node1, node2) and
+  pragma[only_bind_out](node1.getEnclosingCallable()) =
+    pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
 private newtype TContent =

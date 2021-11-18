@@ -280,7 +280,7 @@ private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) 
           .hasQualifiedName("org.springframework.http", "ResponseEntity$BodyBuilder")
     )
   or
-  DataFlow::localFlow(getABodyBuilderWithExplicitContentType(contentType), result)
+  DataFlow::localFlowStep(getABodyBuilderWithExplicitContentType(contentType), result)
 }
 
 private DataFlow::Node getASanitizedBodyBuilder() {

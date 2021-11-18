@@ -387,7 +387,7 @@ module IR {
     Method getMethod() { result = method }
 
     override predicate readsMethod(Instruction receiver, Method m) {
-      receiver = getReceiver() and m = getMethod()
+      receiver = this.getReceiver() and m = this.getMethod()
     }
   }
 
@@ -401,7 +401,7 @@ module IR {
     Instruction getIndex() { result = evalExprInstruction(e.getIndex()) }
 
     override predicate readsElement(Instruction base, Instruction index) {
-      base = getBase() and index = getIndex()
+      base = this.getBase() and index = this.getIndex()
     }
   }
 
@@ -454,8 +454,8 @@ module IR {
     Instruction getRhs() { none() }
 
     override predicate writes(ValueEntity v, Instruction rhs) {
-      getLhs().refersTo(v) and
-      rhs = getRhs()
+      this.getLhs().refersTo(v) and
+      rhs = this.getRhs()
     }
   }
 
@@ -506,7 +506,7 @@ module IR {
     /** Gets the initialized field. */
     Field getField() {
       result.getDeclaringType() = lit.getStructType() and
-      result.getName() = getFieldName()
+      result.getName() = this.getFieldName()
     }
   }
 
@@ -567,9 +567,9 @@ module IR {
     Field getField() { result = lhs.getField() }
 
     override predicate writesField(Instruction base, Field f, Instruction rhs) {
-      getBase() = base and
-      getField() = f and
-      getRhs() = rhs
+      this.getBase() = base and
+      this.getField() = f and
+      this.getRhs() = rhs
     }
   }
 
@@ -586,8 +586,8 @@ module IR {
     Instruction getIndex() { result = lhs.getIndex() }
 
     override predicate writesElement(Instruction base, Instruction index) {
-      getBase() = base and
-      getIndex() = index
+      this.getBase() = base and
+      this.getIndex() = index
     }
   }
 
@@ -635,7 +635,7 @@ module IR {
 
     override string getStringValue() { none() }
 
-    override string getExactValue() { result = getIntValue().toString() }
+    override string getExactValue() { result = this.getIntValue().toString() }
 
     override predicate isPlatformIndependentConstant() { any() }
 
@@ -681,12 +681,12 @@ module IR {
 
     override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
 
-    override string toString() { result = "assignment to " + getLhs() }
+    override string toString() { result = "assignment to " + this.getLhs() }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      getLhs().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLhs().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
@@ -829,10 +829,10 @@ module IR {
     }
 
     override string getExactValue() {
-      result = getIntValue().toString() or
-      result = getFloatValue().toString() or
-      result = getStringValue().toString() or
-      result = getBoolValue().toString()
+      result = this.getIntValue().toString() or
+      result = this.getFloatValue().toString() or
+      result = this.getStringValue().toString() or
+      result = this.getBoolValue().toString()
     }
 
     override predicate isConst() { any() }
@@ -999,7 +999,7 @@ module IR {
 
     /** Gets the instruction whose result is the (unique) result returned by this statement. */
     Instruction getResult() {
-      not returnsMultipleResults() and
+      not this.returnsMultipleResults() and
       result = evalExprInstruction(ret.getExpr())
     }
 
@@ -1386,7 +1386,7 @@ module IR {
 
     /** Gets the SSA variable being written to, if any. */
     SsaVariable asSsaVariable() {
-      getWrite() = result.getDefinition().(SsaExplicitDefinition).getInstruction()
+      this.getWrite() = result.getDefinition().(SsaExplicitDefinition).getInstruction()
     }
 
     /** Holds if `e` is the variable or field being written to. */
@@ -1451,12 +1451,12 @@ module IR {
     }
 
     /** Gets the variable this refers to, if any. */
-    Variable getVariable() { refersTo(result) }
+    Variable getVariable() { this.refersTo(result) }
 
     /** Gets the constant this refers to, if any. */
-    Constant getConstant() { refersTo(result) }
+    Constant getConstant() { this.refersTo(result) }
 
-    override string toString() { result = getName() }
+    override string toString() { result = this.getName() }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -1492,7 +1492,7 @@ module IR {
     override string getName() { exists(Field f | this.refersTo(f) | result = f.getName()) }
 
     /** Gets the field this refers to, if it can be determined. */
-    Field getField() { refersTo(result) }
+    Field getField() { this.refersTo(result) }
 
     override string toString() {
       exists(SelectorExpr sel | this = MkLhs(_, sel) |

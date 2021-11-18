@@ -28,35 +28,19 @@ class SystemFunction extends FunctionWithWrappers instanceof CommandExecutionFun
  */
 class VarargsExecFunctionCall extends FunctionCall {
   VarargsExecFunctionCall() {
-    getTarget().hasGlobalName("execl") or
-    getTarget().hasGlobalName("execle") or
-    getTarget().hasGlobalName("execlp") or
-    // Windows
-    getTarget().hasGlobalName("_execl") or
-    getTarget().hasGlobalName("_execle") or
-    getTarget().hasGlobalName("_execlp") or
-    getTarget().hasGlobalName("_execlpe") or
-    getTarget().hasGlobalName("_spawnl") or
-    getTarget().hasGlobalName("_spawnle") or
-    getTarget().hasGlobalName("_spawnlp") or
-    getTarget().hasGlobalName("_spawnlpe") or
-    getTarget().hasGlobalName("_wexecl") or
-    getTarget().hasGlobalName("_wexecle") or
-    getTarget().hasGlobalName("_wexeclp") or
-    getTarget().hasGlobalName("_wexeclpe") or
-    getTarget().hasGlobalName("_wspawnl") or
-    getTarget().hasGlobalName("_wspawnle") or
-    getTarget().hasGlobalName("_wspawnlp") or
-    getTarget().hasGlobalName("_wspawnlpe")
+    getTarget()
+        .hasGlobalName([
+            "execl", "execle", "execlp",
+            // Windows
+            "_execl", "_execle", "_execlp", "_execlpe", "_spawnl", "_spawnle", "_spawnlp",
+            "_spawnlpe", "_wexecl", "_wexecle", "_wexeclp", "_wexeclpe", "_wspawnl", "_wspawnle",
+            "_wspawnlp", "_wspawnlpe"
+          ])
   }
 
   /** Whether the last argument to the function is an environment pointer */
   predicate hasEnvironmentArgument() {
-    getTarget().hasGlobalName("execle") or
-    getTarget().hasGlobalName("_execle") or
-    getTarget().hasGlobalName("_execlpe") or
-    getTarget().hasGlobalName("_wexecle") or
-    getTarget().hasGlobalName("_wexeclpe")
+    getTarget().hasGlobalName(["execle", "_execle", "_execlpe", "_wexecle", "_wexeclpe"])
   }
 
   /**
@@ -83,11 +67,7 @@ class VarargsExecFunctionCall extends FunctionCall {
    * all the other ones start with the command.
    */
   private int getCommandIdx() {
-    if
-      getTarget().getName().matches("\\_spawn%") or
-      getTarget().getName().matches("\\_wspawn%")
-    then result = 1
-    else result = 0
+    if getTarget().getName().matches(["\\_spawn%", "\\_wspawn%"]) then result = 1 else result = 0
   }
 }
 
@@ -98,28 +78,14 @@ class VarargsExecFunctionCall extends FunctionCall {
  */
 class ArrayExecFunctionCall extends FunctionCall {
   ArrayExecFunctionCall() {
-    getTarget().hasGlobalName("execv") or
-    getTarget().hasGlobalName("execvp") or
-    getTarget().hasGlobalName("execvpe") or
-    getTarget().hasGlobalName("execve") or
-    getTarget().hasGlobalName("fexecve") or
-    // Windows variants
-    getTarget().hasGlobalName("_execv") or
-    getTarget().hasGlobalName("_execve") or
-    getTarget().hasGlobalName("_execvp") or
-    getTarget().hasGlobalName("_execvpe") or
-    getTarget().hasGlobalName("_spawnv") or
-    getTarget().hasGlobalName("_spawnve") or
-    getTarget().hasGlobalName("_spawnvp") or
-    getTarget().hasGlobalName("_spawnvpe") or
-    getTarget().hasGlobalName("_wexecv") or
-    getTarget().hasGlobalName("_wexecve") or
-    getTarget().hasGlobalName("_wexecvp") or
-    getTarget().hasGlobalName("_wexecvpe") or
-    getTarget().hasGlobalName("_wspawnv") or
-    getTarget().hasGlobalName("_wspawnve") or
-    getTarget().hasGlobalName("_wspawnvp") or
-    getTarget().hasGlobalName("_wspawnvpe")
+    getTarget()
+        .hasGlobalName([
+            "execv", "execvp", "execvpe", "execve", "fexecve",
+            // Windows variants
+            "_execv", "_execve", "_execvp", "_execvpe", "_spawnv", "_spawnve", "_spawnvp",
+            "_spawnvpe", "_wexecv", "_wexecve", "_wexecvp", "_wexecvpe", "_wspawnv", "_wspawnve",
+            "_wspawnvp", "_wspawnvpe"
+          ])
   }
 
   /** The argument with the array of command arguments */
@@ -133,11 +99,7 @@ class ArrayExecFunctionCall extends FunctionCall {
    * all the other ones start with the command.
    */
   private int getCommandIdx() {
-    if
-      getTarget().getName().matches("\\_spawn%") or
-      getTarget().getName().matches("\\_wspawn%")
-    then result = 1
-    else result = 0
+    if getTarget().getName().matches(["\\_spawn%", "\\_wspawn%"]) then result = 1 else result = 0
   }
 }
 

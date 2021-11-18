@@ -2,10 +2,10 @@
  * Provides Java-specific definitions for use in sign analysis.
  */
 module Private {
+  private import java as J
   import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
-  private import java as J
   private import Sign
   import Impl
 

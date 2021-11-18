@@ -17,7 +17,7 @@ class Expr extends Expr_, AstNode {
    * Whether this expression defines variable `v`
    * If doing dataflow, then consider using SsaVariable.getDefinition() for more precision.
    */
-  predicate defines(Variable v) { this.getASubExpression+().defines(v) }
+  predicate defines(Variable v) { this.getASubExpression().defines(v) }
 
   /** Whether this expression may have a side effect (as determined purely from its syntax) */
   predicate hasSideEffects() {
@@ -240,7 +240,7 @@ class Call extends Call_ {
   /** Gets the tuple (*) argument of this call, provided there is exactly one. */
   Expr getStarArg() {
     count(this.getStarargs()) < 2 and
-    result = getStarargs()
+    result = this.getStarargs()
   }
 }
 

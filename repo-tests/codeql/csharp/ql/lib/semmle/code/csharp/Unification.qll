@@ -297,7 +297,7 @@ module Gvn {
         or
         result =
           strictconcat(int i, int j |
-            toStringPart(i, j)
+            this.toStringPart(i, j)
           |
             this.toStringConstructedPart(i, j) order by i desc, j
           )

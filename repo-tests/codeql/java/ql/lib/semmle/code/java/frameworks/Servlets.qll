@@ -74,7 +74,7 @@ library class HttpServletRequestGetQueryStringMethod extends Method {
 /**
  * The method `getPathInfo()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetPathMethod extends Method {
+class HttpServletRequestGetPathMethod extends Method {
   HttpServletRequestGetPathMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getPathInfo") and
@@ -120,7 +120,7 @@ library class HttpServletRequestGetHeaderNamesMethod extends Method {
 /**
  * The method `getRequestURL()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetRequestURLMethod extends Method {
+class HttpServletRequestGetRequestURLMethod extends Method {
   HttpServletRequestGetRequestURLMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getRequestURL") and
@@ -131,7 +131,7 @@ library class HttpServletRequestGetRequestURLMethod extends Method {
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-library class HttpServletRequestGetRequestURIMethod extends Method {
+class HttpServletRequestGetRequestURIMethod extends Method {
   HttpServletRequestGetRequestURIMethod() {
     getDeclaringType() instanceof HttpServletRequest and
     hasName("getRequestURI") and
@@ -188,6 +188,16 @@ class HttpServletResponseSendErrorMethod extends Method {
     getNumberOfParameters() = 2 and
     getParameter(0).getType().hasName("int") and
     getParameter(1).getType() instanceof TypeString
+  }
+}
+
+/**
+ * The method `getRequestDispatcher(String)` declared in `javax.servlet.http.HttpServletRequest` or `javax.servlet.ServletRequest`.
+ */
+class ServletRequestGetRequestDispatcherMethod extends Method {
+  ServletRequestGetRequestDispatcherMethod() {
+    getDeclaringType() instanceof ServletRequest and
+    hasName("getRequestDispatcher")
   }
 }
 

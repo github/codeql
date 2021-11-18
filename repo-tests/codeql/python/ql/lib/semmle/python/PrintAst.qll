@@ -52,8 +52,7 @@ private newtype TPrintAstNode =
   TStmtListNode(StmtList list) {
     shouldPrint(list.getAnItem(), _) and
     not list = any(Module mod).getBody() and
-    not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child)) and
-    exists(list.getAnItem())
+    not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child))
   } or
   TRegExpTermNode(RegExpTerm term) {
     exists(StrConst str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))

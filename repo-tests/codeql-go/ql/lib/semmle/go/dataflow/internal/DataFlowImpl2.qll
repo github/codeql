@@ -104,12 +104,12 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowTo(Node sink) { hasFlow(_, sink) }
+  predicate hasFlowTo(Node sink) { this.hasFlow(_, sink) }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowToExpr(DataFlowExpr sink) { hasFlowTo(exprNode(sink)) }
+  predicate hasFlowToExpr(DataFlowExpr sink) { this.hasFlowTo(exprNode(sink)) }
 
   /**
    * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
@@ -2873,7 +2873,7 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
   }
 
   override string toString() {
-    result = "[" + this.toStringImpl(true) + length().toString() + ")]"
+    result = "[" + this.toStringImpl(true) + this.length().toString() + ")]"
     or
     result = "[" + this.toStringImpl(false)
   }
@@ -3008,9 +3008,11 @@ abstract private class PathNodeImpl extends PathNode {
     result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
   }
 
-  override string toString() { result = this.getNode().toString() + ppAp() }
+  override string toString() { result = this.getNode().toString() + this.ppAp() }
 
-  override string toStringWithContext() { result = this.getNode().toString() + ppAp() + ppCtx() }
+  override string toStringWithContext() {
+    result = this.getNode().toString() + this.ppAp() + this.ppCtx()
+  }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -3070,11 +3072,11 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
 
   override PathNodeImpl getASuccessorImpl() {
     // an intermediate step to another intermediate node
-    result = getSuccMid()
+    result = this.getSuccMid()
     or
     // a final step to a sink via zero steps means we merge the last two steps to prevent trivial-looking edges
     exists(PathNodeMid mid, PathNodeSink sink |
-      mid = getSuccMid() and
+      mid = this.getSuccMid() and
       mid.getNode() = sink.getNode() and
       mid.getAp() instanceof AccessPathNil and
       sink.getConfiguration() = unbindConf(mid.getConfiguration()) and

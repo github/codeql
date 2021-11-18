@@ -33,7 +33,7 @@ class Namespace extends Declaration, @namespace {
   override string toString() { result = this.getQualifiedName() }
 
   /** Holds if this is the global namespace. */
-  final predicate isGlobalNamespace() { getName() = "" }
+  final predicate isGlobalNamespace() { this.getName() = "" }
 
   /** Gets the simple name of this namespace, for example `IO` in `System.IO`. */
   final override string getName() { namespaces(this, result) }
