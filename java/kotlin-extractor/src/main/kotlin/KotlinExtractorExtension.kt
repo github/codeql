@@ -242,7 +242,7 @@ class KotlinSourceFileExtractor(
         CommentExtractor(this).extract()
     }
 
-  @OptIn(kotlin.ExperimentalStdlibApi::class)
+  @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
   fun extractFileClass(f: IrFile): Label<out DbClass> {
       val fileName = f.fileEntry.name
       val pkg = f.fqName.asString()
