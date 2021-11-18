@@ -1446,7 +1446,7 @@ open class KotlinFileExtractor(
                 return false
             }
             if (targetPkg.fqName.asString() != pkgName) {
-                verboseln("No match as class name is ${targetPkg.fqName.asString()} not $pkgName")
+                verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
                 return false
             }
             verboseln("Match")
@@ -1520,35 +1520,30 @@ open class KotlinFileExtractor(
                 val type = useType(c.type)
                 tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
-                id
             }
             c.origin == MINUS && isFunction("kotlin", "Int", "minus") -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_subexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
-                id
             }
             c.origin == DIV && isFunction("kotlin", "Int", "div") -> {
                 val id = tw.getFreshIdLabel<DbDivexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_divexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
-                id
             }
             c.origin == PERC && isFunction("kotlin", "Int", "rem") -> {
                 val id = tw.getFreshIdLabel<DbRemexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
-                id
             }
             c.origin == EQEQ && isFunction("kotlin.internal.ir", null, "EQEQ") -> {
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
-                id
             }
 /*
 TODO
@@ -1559,7 +1554,6 @@ TODO
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
-                id
             }
 */
             c.origin == LT && isFunction("kotlin.internal.ir", null, "less") -> {
@@ -1567,28 +1561,24 @@ TODO
                 val type = useType(c.type)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
-                id
             }
             c.origin == LTEQ && isFunction("kotlin.internal.ir", null, "lessOrEqual") -> {
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
-                id
             }
             c.origin == GT && isFunction("kotlin.internal.ir", null, "greater") -> {
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
-                id
             }
             c.origin == GTEQ && isFunction("kotlin.internal.ir", null, "greaterOrEqual") -> {
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
-                id
             }
             else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
@@ -1602,7 +1592,6 @@ TODO
 
                 // type arguments at index -2, -3, ...
                 extractTypeArguments(c, id, callable, -2, true)
-                id
 
                 val dr = c.dispatchReceiver
                 if(dr != null) {
