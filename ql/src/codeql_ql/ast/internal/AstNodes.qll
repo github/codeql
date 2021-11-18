@@ -8,6 +8,7 @@ newtype TAstNode =
   TQLDoc(QL::Qldoc qldoc) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
+  TFieldDecl(QL::Field field) or
   TClass(QL::Dataclass dc) or
   TCharPred(QL::Charpred pred) or
   TClassPredicate(QL::MemberPredicate pred) or
@@ -21,7 +22,6 @@ newtype TAstNode =
   TDisjunction(QL::Disjunction disj) or
   TConjunction(QL::Conjunction conj) or
   TComparisonFormula(QL::CompTerm comp) or
-  TComparisonOp(QL::Compop op) or
   TQuantifier(QL::Quantified quant) or
   TFullAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::FullAggregateBody } or
   TExprAggregate(QL::Aggregate agg) { agg.getChild(_) instanceof QL::ExprAggregateBody } or
@@ -90,7 +90,6 @@ private QL::AstNode toQLFormula(AST::AstNode n) {
   n = TConjunction(result) or
   n = TDisjunction(result) or
   n = TComparisonFormula(result) or
-  n = TComparisonOp(result) or
   n = TQuantifier(result) or
   n = TFullAggregate(result) or
   n = TIdentifier(result) or
@@ -127,6 +126,7 @@ private QL::AstNode toGenerateYAML(AST::AstNode n) {
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
  */
+cached
 QL::AstNode toQL(AST::AstNode n) {
   result = toQLExpr(n)
   or
@@ -149,6 +149,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TClasslessPredicate(result)
   or
   n = TVarDecl(result)
+  or
+  n = TFieldDecl(result)
   or
   n = TClass(result)
   or

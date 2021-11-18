@@ -49,6 +49,7 @@ class AstNode extends TAstNode {
   /**
    * Gets the parent in the AST for this node.
    */
+  cached
   AstNode getParent() { result.getAChild(_) = this }
 
   /**
@@ -74,12 +75,14 @@ class AstNode extends TAstNode {
   predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
 
   /** Gets an annotation of this AST node. */
-  Annotation getAnAnnotation() { toQL(this).getParent() = toQL(result).getParent() }
+  Annotation getAnAnnotation() {
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+  }
 
   /**
    * Gets the predicate that contains this AST node.
    */
-  pragma[noinline]
+  cached
   Predicate getEnclosingPredicate() { this = getANodeInPredicate(result) }
 }
 
@@ -563,8 +566,10 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
     )
   }
 
-  /** If this is a field, returns the class type that declares it. */
-  ClassType getDeclaringType() { result.getDeclaration().getAField() = this }
+  /** If this is declared in a field, returns the class type that declares it. */
+  ClassType getDeclaringType() {
+    exists(FieldDecl f | f.getVarDecl() = this and result = f.getParent().(Class).getType())
+  }
 
   /**
    * Holds if this is a class field that overrides the field `other`.
@@ -578,6 +583,32 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
   }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ * A field declaration;
+ */
+class FieldDecl extends TFieldDecl, AstNode {
+  QL::Field f;
+
+  FieldDecl() { this = TFieldDecl(f) }
+
+  VarDecl getVarDecl() { toQL(result) = f.getChild() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = directMember("getVarDecl") and result = this.getVarDecl()
+  }
+
+  override string getAPrimaryQlClass() { result = "FieldDecl" }
+
+  /** Holds if this field is annotated as overriding another field. */
+  predicate isOverride() { this.hasAnnotation("override") }
+
+  string getName() { result = getVarDecl().getName() }
+
+  override QLDoc getQLDoc() { result = any(Class c).getQLDocFor(this) }
 }
 
 /**
@@ -716,10 +747,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    */
   CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
-  AstNode getMember(int i) {
-    toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) or
-    toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_).(QL::Field).getChild()
-  }
+  AstNode getMember(int i) { toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -743,9 +771,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a field in this class.
    */
-  VarDecl getAField() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_).(QL::Field).getChild()
-  }
+  FieldDecl getAField() { result = getMember(_) }
 
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
@@ -1102,8 +1128,14 @@ class Conjunction extends TConjunction, AstNode, Formula {
 
   override string getAPrimaryQlClass() { result = "Conjunction" }
 
-  /** Gets an operand to this formula. */
+  /** Gets an operand to this conjunction. */
   Formula getAnOperand() { toQL(result) in [conj.getLeft(), conj.getRight()] }
+
+  /** Gets the left operand to this conjunction. */
+  Formula getLeft() { toQL(result) = conj.getLeft() }
+
+  /** Gets the right operand to this conjunction. */
+  Formula getRight() { toQL(result) = conj.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1120,31 +1152,20 @@ class Disjunction extends TDisjunction, AstNode, Formula {
 
   override string getAPrimaryQlClass() { result = "Disjunction" }
 
-  /** Gets an operand to this formula. */
+  /** Gets an operand to this disjunction. */
   Formula getAnOperand() { toQL(result) in [disj.getLeft(), disj.getRight()] }
+
+  /** Gets the left operand to this disjunction */
+  Formula getLeft() { toQL(result) = disj.getLeft() }
+
+  /** Gets the right operand to this disjunction */
+  Formula getRight() { toQL(result) = disj.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = directMember("getAnOperand") and result = this.getAnOperand()
   }
-}
-
-/**
- * A comparison operator, such as `<` or `=`.
- */
-class ComparisonOp extends TComparisonOp, AstNode {
-  QL::Compop op;
-
-  ComparisonOp() { this = TComparisonOp(op) }
-
-  /**
-   * Gets a string representing the operator.
-   * E.g. "<" or "=".
-   */
-  ComparisonSymbol getSymbol() { result = op.getValue() }
-
-  override string getAPrimaryQlClass() { result = "ComparisonOp" }
 }
 
 /**
@@ -1243,10 +1264,7 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   Expr getAnOperand() { result in [this.getLeftOperand(), this.getRightOperand()] }
 
   /** Gets the operator of this comparison. */
-  ComparisonOp getOperator() { toQL(result) = comp.getChild() }
-
-  /** Gets the symbol of this comparison (as a string). */
-  ComparisonSymbol getSymbol() { result = this.getOperator().getSymbol() }
+  ComparisonSymbol getOperator() { result = comp.getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 
@@ -1256,8 +1274,6 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     pred = directMember("getLeftOperand") and result = this.getLeftOperand()
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
-    or
-    pred = directMember("getOperator") and result = this.getOperator()
   }
 }
 
@@ -2217,6 +2233,8 @@ class Annotation extends TAnnotation, AstNode {
 
   /** Gets the node corresponding to the field `name`. */
   string getName() { result = annot.getName().getValue() }
+
+  override AstNode getParent() { result = AstNode.super.getParent() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
