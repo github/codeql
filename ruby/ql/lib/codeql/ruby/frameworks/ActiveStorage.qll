@@ -4,7 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 
-/** Defines calls to  `ActiveStorage::Filename#sanitized` as path sanitizers. */
+/** A call to  `ActiveStorage::Filename#sanitized` as path sanitizers. */
 class ActiveStorageFilenameSanitizedCall extends Path::PathSanitization::Range, DataFlow::CallNode {
   ActiveStorageFilenameSanitizedCall() {
     this.getReceiver() =
@@ -13,7 +13,7 @@ class ActiveStorageFilenameSanitizedCall extends Path::PathSanitization::Range, 
   }
 }
 
-/** Taint summary for `ActiveStorage::Filename.new`. */
+/** The taint summary for `ActiveStorage::Filename.new`. */
 class ActiveStorageFilenameNewSummary extends SummarizedCallable {
   ActiveStorageFilenameNewSummary() { this = "ActiveStorage::Filename.new" }
 
@@ -33,7 +33,7 @@ class ActiveStorageFilenameNewSummary extends SummarizedCallable {
   }
 }
 
-/** Taint summary for `ActiveStorage::Filename#sanitized`. */
+/** The taint summary for `ActiveStorage::Filename#sanitized`. */
 class ActiveStorageFilenameSanitizedSummary extends SummarizedCallable {
   ActiveStorageFilenameSanitizedSummary() { this = "ActiveStorage::Filename#sanitized" }
 

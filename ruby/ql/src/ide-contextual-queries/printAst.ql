@@ -17,7 +17,7 @@ private import codeql.ruby.printAst
 external string selectedSourceFile();
 
 /**
- * Overrides the configuration to print only nodes in the selected source file.
+ * A configuration that only prints nodes in the selected source file.
  */
 class Cfg extends PrintAstConfiguration {
   override predicate shouldPrintNode(AstNode n) {
