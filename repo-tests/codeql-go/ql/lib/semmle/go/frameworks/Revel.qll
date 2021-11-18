@@ -165,7 +165,7 @@ module Revel {
         any(Method m | m.hasQualifiedName(packagePath(), "Controller", "RenderFileName")).getACall()
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
   }
 
   /**

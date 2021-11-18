@@ -114,7 +114,7 @@ module DatabaseSql {
 
     SqlFunctionModels() {
       // signature: func Named(name string, value interface{}) NamedArg
-      hasQualifiedName("database/sql", "Named") and
+      this.hasQualifiedName("database/sql", "Named") and
       (inp.isParameter(_) and outp.isResult())
     }
 
