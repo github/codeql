@@ -11,6 +11,7 @@ private import codeql.ruby.ApiGraphs
  * # TODO: module inclusion
  * class MyClass
  *  include HTTParty
+ *  base_uri "http://example.com"
  * end
  *
  * MyClass.new("http://example.com")
