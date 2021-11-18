@@ -184,13 +184,25 @@ module NeighborhoodBodies {
    * in the subtree.
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
-    if getNumDescendents(node.getParentNode()) > maxNumDescendants()
+    if
+      // `node` will always have a parent as we start at and endpoint
+      node.getParentNode() = getOutermostEnclosingFunction(node) or
+      getNumDescendents(node.getParentNode()) > maxNumDescendants()
     then result = node
     else result = getNeighborhoodAstNode(node.getParentNode())
   }
 
   /** Count number of descendants of an AST node */
   int getNumDescendents(Raw::AstNode node) { result = count(node.getAChildNode*()) }
+
+  private ASTNode getContainer(ASTNode node) {
+    result = node.getContainer()
+  }
+
+  /** Return the AST node that is outermost enclosing function (as an AST Node) */
+  Raw::AstNode getOutermostEnclosingFunction(Raw::AstNode node) {
+    result = Raw::astNode(getContainer*(node.getNode())) and result.getContainer() instanceof TopLevel
+  }
 
   /**
    * Holds if `childNode` is an AST node under `rootNode` and `token` is a node attribute associated

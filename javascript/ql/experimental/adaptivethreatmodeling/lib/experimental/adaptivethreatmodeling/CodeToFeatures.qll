@@ -49,6 +49,8 @@ module Raw {
 
     AstNode getParentNode() { result = TAstNode(rawNode.getParent()) }
 
+    raw::ASTNode getNode() { result = rawNode }
+
     raw::StmtContainer getContainer() { result = rawNode.getContainer() }
 
     /**
