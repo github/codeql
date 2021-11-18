@@ -4,5 +4,4 @@ groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
-dependencies:
-    codeql/python-upgrades: ^0.0.3
+upgrades: upgrades
