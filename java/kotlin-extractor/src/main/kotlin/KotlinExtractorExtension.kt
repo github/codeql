@@ -501,9 +501,7 @@ open class KotlinUsesExtractor(
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
             val intTypeIds = useType(pluginContext.irBuiltIns.intType)
             tw.writeFields(length, "length", intTypeIds.javaResult.id, intTypeIds.kotlinResult.id, it, length)
-            // TODO: modifiers
-            // tw.writeHasModifier(length, getModifierKey("public"))
-            // tw.writeHasModifier(length, getModifierKey("final"))
+            addModifiers(length, "public", "final")
 
             // Note we will only emit one `clone()` method per Java array type, so we choose `Array<C?>` as its Kotlin
             // return type, where C is the component type with any nested arrays themselves invariant and nullable.
@@ -512,8 +510,7 @@ open class KotlinUsesExtractor(
 
             val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
             tw.writeMethods(clone, "clone", "clone()", it, kotlinCloneReturnTypeLabel, it, clone)
-            // TODO: modifiers
-            // tw.writeHasModifier(clone, getModifierKey("public"))
+            addModifiers(clone, "public")
         }
 
         val javaResult = TypeResult(
@@ -814,9 +811,12 @@ class X {
         return id
     }
 
+    fun addModifiers(modifiable: Label<out DbModifiable>, vararg modifiers: String) =
+        modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
+
     fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         if (c.modality == Modality.ABSTRACT) {
-            tw.writeHasModifier(id, extractModifier("abstract"))
+            addModifiers(id, "abstract")
         }
     }
 
@@ -1073,9 +1073,7 @@ open class KotlinFileExtractor(
                     val type = useSimpleTypeClass(c, emptyList(), false)
                     tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
                     tw.writeHasLocation(instance.id, locId)
-                    tw.writeHasModifier(instance.id, extractModifier("public"))
-                    tw.writeHasModifier(instance.id, extractModifier("static"))
-                    tw.writeHasModifier(instance.id, extractModifier("final"))
+                    addModifiers(instance.id, "public", "static", "final")
                     @Suppress("UNCHECKED_CAST")
                     tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, id as Label<DbClass>)
                 }
@@ -1095,9 +1093,7 @@ open class KotlinFileExtractor(
             val type = useSimpleTypeClass(c, emptyList(), false)
             tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
             tw.writeHasLocation(instance.id, locId)
-            tw.writeHasModifier(instance.id, extractModifier("public"))
-            tw.writeHasModifier(instance.id, extractModifier("static"))
-            tw.writeHasModifier(instance.id, extractModifier("final"))
+            addModifiers(instance.id, "public", "static", "final")
             @Suppress("UNCHECKED_CAST")
             tw.writeClass_object(id as Label<DbClass>, instance.id)
         }
