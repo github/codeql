@@ -241,8 +241,10 @@
 | exprs.kt:113:31:113:37 | ... + ... | exprs.kt:112:16:114:9 | <obinit> | AddExpr |
 | exprs.kt:113:36:113:37 | a2 | exprs.kt:112:16:114:9 | <obinit> | VarAccess |
 | exprs.kt:113:40:113:49 | toString(...) | exprs.kt:112:16:114:9 | <obinit> | MethodAccess |
+| file://:0:0:0:0 | C | exprs.kt:66:5:66:33 | foo | TypeAccess |
 | file://:0:0:0:0 | Color | exprs.kt:95:6:99:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:91:6:93:1 | Direction | TypeAccess |
+| file://:0:0:0:0 | Interface1 | exprs.kt:110:13:115:5 | getObject | TypeAccess |
 | file://:0:0:0:0 | height | exprs.kt:82:1:89:1 | foo | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:73:1:80:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:73:1:80:1 | typeTests | VarAccess |

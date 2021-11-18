@@ -1807,10 +1807,22 @@ open class KotlinFileExtractor(
             extractExpressionExpr(dr, callable, id, -2)
         }
 
+        val typeAccessType = if (isAnonymous) {
+            val c = (e.type as IrSimpleType).classifier.owner as IrClass
+            if (c.superTypes.size == 1) {
+                useType(c.superTypes.first())
+            } else {
+                useType(pluginContext.irBuiltIns.anyType)
+            }
+        } else {
+            type
+        }
+
+        val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+        tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, id, -3)
+        tw.writeCallableEnclosingExpr(typeAccessId, callable)
+
         if (e.typeArgumentsCount > 0) {
-            val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-            tw.writeExprs_unannotatedtypeaccess(typeAccessId, type.javaResult.id, type.kotlinResult.id, id, -3)
-            tw.writeCallableEnclosingExpr(typeAccessId, callable)
             extractTypeArguments(e, typeAccessId, callable)
         }
     }

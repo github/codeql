@@ -9,10 +9,10 @@
 | classes.kt:49:1:51:1 | Direction | Direction |
 | classes.kt:53:1:57:1 | Color | Color |
 | classes.kt:63:1:91:1 | Class1 | Class1 |
-| classes.kt:66:20:66:54 | (no string representation) | <anonymous class> |
-| classes.kt:68:20:68:74 | (no string representation) | <anonymous class> |
-| classes.kt:72:16:77:10 | (no string representation) | <anonymous class> |
-| classes.kt:75:24:75:33 | (no string representation) | <anonymous class> |
-| classes.kt:81:16:81:38 | (no string representation) | <anonymous class> |
-| classes.kt:85:16:85:25 | (no string representation) | <anonymous class> |
-| classes.kt:89:16:89:44 | (no string representation) | <anonymous class> |
+| classes.kt:66:20:66:54 | new Object(...) { ... } | <anonymous class> |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | <anonymous class> |
+| classes.kt:72:16:77:10 | new Object(...) { ... } | <anonymous class> |
+| classes.kt:75:24:75:33 | new Object(...) { ... } | <anonymous class> |
+| classes.kt:81:16:81:38 | new Interface1(...) { ... } | <anonymous class> |
+| classes.kt:85:16:85:25 | new Object(...) { ... } | <anonymous class> |
+| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | <anonymous class> |
