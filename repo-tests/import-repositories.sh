@@ -4,7 +4,7 @@ set -e
 set -x
 
 # commits relevant files from the selected repositories and stores the used commit sha in $repo.txt
-repos="codeql-ruby codeql codeql-go"
+repos="codeql codeql-go"
 for repo in $repos; do
     echo "importing $repo"
     rm -rf "$repo";
@@ -17,6 +17,6 @@ for repo in $repos; do
     # remove empty directories (git does not care though)
     find "$repo" -type d -empty -delete;
     git add "$repo" "$repo.txt";
-    git commit -m "Add $repo sources ($(tr -d '\n' < $repo.txt))";
+    git commit -nm "Add $repo sources ($(tr -d '\n' < $repo.txt))";
     echo "done"
 done
