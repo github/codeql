@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import kotlin_plugin_versions
 import glob
 import re
@@ -10,13 +11,18 @@ import os.path
 import sys
 import shlex
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dependencies', default='../../../resources/kotlin-dependencies', help='Folder containing the dependencies')
+    parser.add_argument('--many', action='store_true', help='Build for all versions/kinds')
+    parser.add_argument('--single', action='store_false', dest='many', help='Build for a single version/kind')
+    return parser.parse_args()
+
+args = parse_args()
+
 kotlinc = 'kotlinc'
 javac = 'javac'
-
-kotlin_dependency_folder = '../../../resources/kotlin-dependencies'
-if (len(sys.argv) > 1):
-    kotlin_dependency_folder = sys.argv[1]
-
+kotlin_dependency_folder = args.dependencies
 
 def run_process(cmd):
     try:
@@ -162,7 +168,9 @@ def compile_standalone(version):
             'build/temp_src',
             version)
 
-
-for version in kotlin_plugin_versions.versions:
-    compile_standalone(version)
-    compile_embeddable(version)
+if args.many:
+    for version in kotlin_plugin_versions.many_versions:
+        compile_standalone(version)
+        compile_embeddable(version)
+else:
+    compile_standalone(kotlin_plugin_versions.single_version)
