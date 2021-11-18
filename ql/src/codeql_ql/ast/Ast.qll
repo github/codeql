@@ -49,6 +49,7 @@ class AstNode extends TAstNode {
   /**
    * Gets the parent in the AST for this node.
    */
+  cached
   AstNode getParent() { result.getAChild(_) = this }
 
   /**
@@ -74,12 +75,14 @@ class AstNode extends TAstNode {
   predicate hasAnnotation(string name) { this.getAnAnnotation().getName() = name }
 
   /** Gets an annotation of this AST node. */
-  Annotation getAnAnnotation() { toQL(this).getParent() = toQL(result).getParent() }
+  Annotation getAnAnnotation() {
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+  }
 
   /**
    * Gets the predicate that contains this AST node.
    */
-  pragma[noinline]
+  cached
   Predicate getEnclosingPredicate() { this = getANodeInPredicate(result) }
 }
 
@@ -2230,6 +2233,8 @@ class Annotation extends TAnnotation, AstNode {
 
   /** Gets the node corresponding to the field `name`. */
   string getName() { result = annot.getName().getValue() }
+
+  override AstNode getParent() { result = AstNode.super.getParent() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)

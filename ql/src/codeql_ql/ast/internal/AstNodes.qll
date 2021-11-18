@@ -126,6 +126,7 @@ private QL::AstNode toGenerateYAML(AST::AstNode n) {
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
  */
+cached
 QL::AstNode toQL(AST::AstNode n) {
   result = toQLExpr(n)
   or
