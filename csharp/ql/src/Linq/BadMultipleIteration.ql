@@ -12,7 +12,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 /** The enumerable sequence is likely not to be repeatable. */
 predicate likelyNonRepeatableSequence(IEnumerableSequence seq) {
