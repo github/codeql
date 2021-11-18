@@ -260,6 +260,8 @@ module Stages {
       exists(RemoteFlowSource r)
       or
       exists(Exports::getALibraryInputParameter())
+      or
+      any(RegExpTerm t).isUsedAsRegExp()
     }
   }
 }
