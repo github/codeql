@@ -34,16 +34,7 @@ select variable, "Variable name '" + name + "' is too short."
 // Adjustable: acceptable short names
 //
 predicate allowedName(string name) {
-  name = "url" or
-  name = "cmd" or
-  name = "UK" or
-  name = "uri" or
-  name = "top" or
-  name = "row" or
-  name = "pin" or
-  name = "log" or
-  name = "key" or
-  name = "_"
+  name = ["url", "cmd", "UK", "uri", "top", "row", "pin", "log", "key", "_"]
 }
 
 //

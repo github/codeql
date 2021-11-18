@@ -3,6 +3,12 @@ private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
 
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+
 //--------
 // Data flow graph
 //--------
@@ -172,7 +178,21 @@ module EssaFlow {
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
+      not with.isAsync() and
       contextManager.strictlyDominates(var)
+    )
+    or
+    // Async with var definition
+    //  `async with f(42) as x:`
+    //  nodeFrom is `x`, cfg node
+    //  nodeTo is `x`, essa var
+    //
+    // This makes the cfg node the local source of the awaited value.
+    exists(With with, ControlFlowNode var |
+      nodeFrom.(CfgNode).getNode() = var and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      with.getOptionalVars() = var.getNode() and
+      with.isAsync()
     )
     or
     // Parameter definition
@@ -610,11 +630,11 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
 
   override string toString() { result = lambda.toString() }
 
-  override CallNode getACall() { result = getCallableValue().getACall() }
+  override CallNode getACall() { result = this.getCallableValue().getACall() }
 
   override Scope getScope() { result = lambda.getEvaluatingScope() }
 
-  override NameNode getParameter(int n) { result = getParameter(getCallableValue(), n) }
+  override NameNode getParameter(int n) { result = getParameter(this.getCallableValue(), n) }
 
   override string getName() { result = "Lambda callable" }
 
@@ -1345,10 +1365,8 @@ module IterableUnpacking {
   }
 
   /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
-  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget {
-    UnpackingAssignmentSequenceTarget() { this instanceof SequenceNode }
-
-    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
+  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof SequenceNode {
+    ControlFlowNode getElement(int i) { result = super.getElement(i) }
 
     ControlFlowNode getAnElement() { result = this.getElement(_) }
   }
@@ -1664,3 +1682,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) { none() }

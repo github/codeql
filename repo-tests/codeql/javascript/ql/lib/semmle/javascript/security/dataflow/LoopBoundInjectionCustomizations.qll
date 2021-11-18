@@ -115,66 +115,18 @@ module LoopBoundInjection {
    * Holds if `name` is a method from lodash vulnerable to a DoS attack if called with a tainted object.
    */
   predicate loopableLodashMethod(string name) {
-    name = "chunk" or
-    name = "compact" or
-    name = "difference" or
-    name = "differenceBy" or
-    name = "differenceWith" or
-    name = "drop" or
-    name = "dropRight" or
-    name = "dropRightWhile" or
-    name = "dropWhile" or
-    name = "fill" or
-    name = "findIndex" or
-    name = "findLastIndex" or
-    name = "flatten" or
-    name = "flattenDeep" or
-    name = "flattenDepth" or
-    name = "initial" or
-    name = "intersection" or
-    name = "intersectionBy" or
-    name = "intersectionWith" or
-    name = "join" or
-    name = "remove" or
-    name = "reverse" or
-    name = "slice" or
-    name = "sortedUniq" or
-    name = "sortedUniqBy" or
-    name = "tail" or
-    name = "union" or
-    name = "unionBy" or
-    name = "unionWith" or
-    name = "uniqBy" or
-    name = "unzip" or
-    name = "unzipWith" or
-    name = "without" or
-    name = "zip" or
-    name = "zipObject" or
-    name = "zipObjectDeep" or
-    name = "zipWith" or
-    name = "countBy" or
-    name = "each" or
-    name = "forEach" or
-    name = "eachRight" or
-    name = "forEachRight" or
-    name = "filter" or
-    name = "find" or
-    name = "findLast" or
-    name = "flatMap" or
-    name = "flatMapDeep" or
-    name = "flatMapDepth" or
-    name = "forEach" or
-    name = "forEachRight" or
-    name = "groupBy" or
-    name = "invokeMap" or
-    name = "keyBy" or
-    name = "map" or
-    name = "orderBy" or
-    name = "partition" or
-    name = "reduce" or
-    name = "reduceRight" or
-    name = "reject" or
-    name = "sortBy"
+    name =
+      [
+        "chunk", "compact", "difference", "differenceBy", "differenceWith", "drop", "dropRight",
+        "dropRightWhile", "dropWhile", "fill", "findIndex", "findLastIndex", "flatten",
+        "flattenDeep", "flattenDepth", "initial", "intersection", "intersectionBy",
+        "intersectionWith", "join", "remove", "reverse", "slice", "sortedUniq", "sortedUniqBy",
+        "tail", "union", "unionBy", "unionWith", "uniqBy", "unzip", "unzipWith", "without", "zip",
+        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "forEach", "eachRight",
+        "forEachRight", "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth",
+        "forEach", "forEachRight", "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition",
+        "reduce", "reduceRight", "reject", "sortBy"
+      ]
   }
 
   /**

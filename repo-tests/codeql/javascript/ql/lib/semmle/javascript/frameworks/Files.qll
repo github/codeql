@@ -429,12 +429,7 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
       this =
         DataFlow::moduleMember("node-dir",
           any(string s |
-            s = "readFiles" or
-            s = "readFilesStream" or
-            s = "files" or
-            s = "promiseFiles" or
-            s = "subdirs" or
-            s = "paths"
+            s = ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]
           )).getACall()
     )
     or

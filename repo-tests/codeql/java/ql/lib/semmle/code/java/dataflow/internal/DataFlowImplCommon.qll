@@ -2,6 +2,42 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 import Cached
 
+module DataFlowImplCommonPublic {
+  private newtype TFlowFeature =
+    TFeatureHasSourceCallContext() or
+    TFeatureHasSinkCallContext() or
+    TFeatureEqualSourceSinkCallContext()
+
+  /** A flow configuration feature for use in `Configuration::getAFeature()`. */
+  class FlowFeature extends TFlowFeature {
+    string toString() { none() }
+  }
+
+  /**
+   * A flow configuration feature that implies that sources have some existing
+   * call context.
+   */
+  class FeatureHasSourceCallContext extends FlowFeature, TFeatureHasSourceCallContext {
+    override string toString() { result = "FeatureHasSourceCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that sinks have some existing
+   * call context.
+   */
+  class FeatureHasSinkCallContext extends FlowFeature, TFeatureHasSinkCallContext {
+    override string toString() { result = "FeatureHasSinkCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that source-sink pairs have some
+   * shared existing call context.
+   */
+  class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
+    override string toString() { result = "FeatureEqualSourceSinkCallContext" }
+  }
+}
+
 /**
  * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
  *
@@ -251,7 +287,7 @@ private module Cached {
   predicate forceCachingInSameStage() { any() }
 
   cached
-  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = n.getEnclosingCallable() }
+  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = nodeGetEnclosingCallable(n) }
 
   cached
   predicate callEnclosingCallable(DataFlowCall call, DataFlowCallable c) {
@@ -316,9 +352,7 @@ private module Cached {
   }
 
   cached
-  predicate parameterNode(Node n, DataFlowCallable c, int i) {
-    n.(ParameterNode).isParameterOf(c, i)
-  }
+  predicate parameterNode(Node p, DataFlowCallable c, int pos) { isParameterNode(p, c, pos) }
 
   cached
   predicate argumentNode(Node n, DataFlowCall call, int pos) {
@@ -802,6 +836,9 @@ private module Cached {
   }
 
   cached
+  predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
+
+  cached
   newtype TCallContext =
     TAnyCallContext() or
     TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -937,7 +974,7 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    recordDataFlowCallSite(getCall(), callable)
+    recordDataFlowCallSite(this.getCall(), callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
@@ -1257,7 +1294,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   TypedContent getHead() { this = TFrontHead(result) }
 
-  predicate isClearedAt(Node n) { clearsContentCached(n, getHead().getContent()) }
+  predicate isClearedAt(Node n) { clearsContentCached(n, this.getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

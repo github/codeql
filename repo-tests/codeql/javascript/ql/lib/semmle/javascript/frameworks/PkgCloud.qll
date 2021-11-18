@@ -11,17 +11,11 @@ module PkgCloud {
   private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
     exists(DataFlow::ModuleImportNode mod, DataFlow::SourceNode receiver, string type |
       mod.getPath() = "pkgcloud" and
-      (
-        type = "compute" or
-        type = "storage" or
-        type = "database" or
-        type = "dns" or
-        type = "blockstorage" or
-        type = "loadbalancer" or
-        type = "network" or
-        type = "orchestration" or
-        type = "cdn"
-      ) and
+      type =
+        [
+          "compute", "storage", "database", "dns", "blockstorage", "loadbalancer", "network",
+          "orchestration", "cdn"
+        ] and
       (
         // require('pkgcloud').compute
         receiver = mod.getAPropertyRead(type)

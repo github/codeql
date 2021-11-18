@@ -22,12 +22,12 @@ private class StdSetConstructor extends Constructor, TaintFunction {
    * Gets the index of a parameter to this function that is an iterator.
    */
   int getAnIteratorParameterIndex() {
-    getParameter(result).getUnspecifiedType() instanceof Iterator
+    this.getParameter(result).getUnspecifiedType() instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of an iterator type to the qualifier
-    input.isParameterDeref(getAnIteratorParameterIndex()) and
+    input.isParameterDeref(this.getAnIteratorParameterIndex()) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
@@ -45,7 +45,7 @@ private class StdSetInsert extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(getNumberOfParameters() - 1) and
+    input.isParameterDeref(this.getNumberOfParameters() - 1) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -63,7 +63,7 @@ private class StdSetEmplace extends TaintFunction {
     // flow from any parameter to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -107,7 +107,7 @@ private class StdSetErase extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
-    getType().getUnderlyingType() instanceof Iterator and
+    this.getType().getUnderlyingType() instanceof Iterator and
     input.isQualifierObject() and
     output.isReturnValue()
   }

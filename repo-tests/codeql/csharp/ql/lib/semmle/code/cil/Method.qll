@@ -28,13 +28,13 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
   LocalVariable getLocalVariable(int n) { cil_local_variable(result, this, n, _) }
 
   /** Gets a local variable of this implementation, if any. */
-  LocalVariable getALocalVariable() { result = getLocalVariable(_) }
+  LocalVariable getALocalVariable() { result = this.getLocalVariable(_) }
 
   /** Gets an instruction in this implementation, if any. */
-  Instruction getAnInstruction() { result = getInstruction(_) }
+  Instruction getAnInstruction() { result = this.getInstruction(_) }
 
   /** Gets the total number of instructions in this implementation. */
-  int getNumberOfInstructions() { result = count(getAnInstruction()) }
+  int getNumberOfInstructions() { result = count(this.getAnInstruction()) }
 
   /** Gets the `i`th handler in this implementation. */
   Handler getHandler(int i) { result.getImplementation() = this and result.getIndex() = i }
@@ -49,7 +49,7 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
   /** Gets the maximum stack size of this implementation. */
   int getStackSize() { cil_method_stack_size(this, result) }
 
-  override string toString() { result = getMethod().toString() }
+  override string toString() { result = this.getMethod().toString() }
 
   /** Gets a string representing the disassembly of this implementation. */
   string getDisassembly() {
@@ -75,13 +75,13 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   MethodImplementation getAnImplementation() { result.getMethod() = this }
 
   /** Gets the "best" implementation of this method, if any. */
-  BestImplementation getImplementation() { result = getAnImplementation() }
+  BestImplementation getImplementation() { result = this.getAnImplementation() }
 
   override Method getMethod() { result = this }
 
   override string getName() { cil_method(this, result, _, _) }
 
-  override string getUndecoratedName() { result = getName() }
+  override string getUndecoratedName() { result = this.getName() }
 
   override string toString() { result = this.getName() }
 
@@ -92,25 +92,29 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   override Location getALocation() { cil_method_location(this.getUnboundDeclaration(), result) }
 
   override MethodParameter getParameter(int n) {
-    if isStatic() then result = getRawParameter(n) else (result = getRawParameter(n + 1) and n >= 0)
+    if this.isStatic()
+    then result = this.getRawParameter(n)
+    else (
+      result = this.getRawParameter(n + 1) and n >= 0
+    )
   }
 
-  override Type getType() { result = getReturnType() }
+  override Type getType() { result = this.getReturnType() }
 
   /** Gets the return type of this method. */
   override Type getReturnType() { cil_method(this, _, _, result) }
 
   /** Holds if the return type is `void`. */
-  predicate returnsVoid() { getReturnType() instanceof VoidType }
+  predicate returnsVoid() { this.getReturnType() instanceof VoidType }
 
   /** Gets the number of stack items pushed in a call to this method. */
-  int getCallPushCount() { if returnsVoid() then result = 0 else result = 1 }
+  int getCallPushCount() { if this.returnsVoid() then result = 0 else result = 1 }
 
   /** Gets the number of stack items popped in a call to this method. */
-  int getCallPopCount() { result = count(getRawParameter(_)) }
+  int getCallPopCount() { result = count(this.getRawParameter(_)) }
 
   /** Gets a method called by this method. */
-  Method getACallee() { result = getImplementation().getAnInstruction().(Call).getTarget() }
+  Method getACallee() { result = this.getImplementation().getAnInstruction().(Call).getTarget() }
 
   /** Holds if this method is `virtual`. */
   predicate isVirtual() { cil_virtual(this) }
@@ -129,43 +133,45 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   /** Gets the unbound declaration of this method, or the method itself. */
   Method getUnboundMethod() { cil_method_source_declaration(this, result) }
 
-  override Method getUnboundDeclaration() { result = getUnboundMethod() }
+  override Method getUnboundDeclaration() { result = this.getUnboundMethod() }
 
   /** Holds if this method is an instance constructor. */
-  predicate isInstanceConstructor() { isSpecial() and getName() = ".ctor" }
+  predicate isInstanceConstructor() { this.isSpecial() and this.getName() = ".ctor" }
 
   /** Holds if this method is a static class constructor. */
-  predicate isStaticConstructor() { isSpecial() and getName() = ".cctor" }
+  predicate isStaticConstructor() { this.isSpecial() and this.getName() = ".cctor" }
 
   /** Holds if this method is a constructor (static or instance). */
-  predicate isConstructor() { isStaticConstructor() or isInstanceConstructor() }
+  predicate isConstructor() { this.isStaticConstructor() or this.isInstanceConstructor() }
 
   /** Holds if this method is a destructor/finalizer. */
-  predicate isFinalizer() { getOverriddenMethod*().getQualifiedName() = "System.Object.Finalize" }
+  predicate isFinalizer() {
+    this.getOverriddenMethod*().getQualifiedName() = "System.Object.Finalize"
+  }
 
   /** Holds if this method is an operator. */
-  predicate isOperator() { isSpecial() and getName().matches("op\\_%") }
+  predicate isOperator() { this.isSpecial() and this.getName().matches("op\\_%") }
 
   /** Holds if this method is a getter. */
-  predicate isGetter() { isSpecial() and getName().matches("get\\_%") }
+  predicate isGetter() { this.isSpecial() and this.getName().matches("get\\_%") }
 
   /** Holds if this method is a setter. */
-  predicate isSetter() { isSpecial() and getName().matches("set\\_%") }
+  predicate isSetter() { this.isSpecial() and this.getName().matches("set\\_%") }
 
   /** Holds if this method is an adder/add event accessor. */
-  predicate isAdder() { isSpecial() and getName().matches("add\\_%") }
+  predicate isAdder() { this.isSpecial() and this.getName().matches("add\\_%") }
 
   /** Holds if this method is a remover/remove event accessor. */
-  predicate isRemove() { isSpecial() and getName().matches("remove\\_%") }
+  predicate isRemove() { this.isSpecial() and this.getName().matches("remove\\_%") }
 
   /** Holds if this method is an implicit conversion operator. */
-  predicate isImplicitConversion() { isSpecial() and getName() = "op_Implicit" }
+  predicate isImplicitConversion() { this.isSpecial() and this.getName() = "op_Implicit" }
 
   /** Holds if this method is an explicit conversion operator. */
-  predicate isExplicitConversion() { isSpecial() and getName() = "op_Explicit" }
+  predicate isExplicitConversion() { this.isSpecial() and this.getName() = "op_Explicit" }
 
   /** Holds if this method is a conversion operator. */
-  predicate isConversion() { isImplicitConversion() or isExplicitConversion() }
+  predicate isConversion() { this.isImplicitConversion() or this.isExplicitConversion() }
 
   /**
    * Gets a method that is overridden, either in a base class
@@ -176,7 +182,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   /** Gets a method that overrides this method, if any. */
   final Method getAnOverrider() { result.getOverriddenMethod() = this }
 
-  override predicate hasBody() { exists(getImplementation()) }
+  override predicate hasBody() { exists(this.getImplementation()) }
 
   override predicate canReturn(DotNet::Expr expr) {
     exists(Return ret | ret.getImplementation() = this.getImplementation() and expr = ret.getExpr())
@@ -206,7 +212,7 @@ class InstanceConstructor extends Constructor {
 /** A method that always returns the `this` parameter. */
 class ChainingMethod extends Method {
   ChainingMethod() {
-    forex(Return ret | ret = getImplementation().getAnInstruction() |
+    forex(Return ret | ret = this.getImplementation().getAnInstruction() |
       ret.getExpr() instanceof ThisAccess
     )
   }
@@ -231,7 +237,7 @@ class Getter extends Accessor {
  */
 class TrivialGetter extends Method {
   TrivialGetter() {
-    exists(MethodImplementation impl | impl = getAnImplementation() |
+    exists(MethodImplementation impl | impl = this.getAnImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
       impl.getInstruction(1) instanceof FieldReadAccess and
       impl.getInstruction(2) instanceof Return
@@ -239,7 +245,9 @@ class TrivialGetter extends Method {
   }
 
   /** Gets the underlying field of this getter. */
-  Field getField() { getImplementation().getAnInstruction().(FieldReadAccess).getTarget() = result }
+  Field getField() {
+    this.getImplementation().getAnInstruction().(FieldReadAccess).getTarget() = result
+  }
 }
 
 /** A setter. */
@@ -262,7 +270,7 @@ class Setter extends Accessor {
  */
 class TrivialSetter extends Method {
   TrivialSetter() {
-    exists(MethodImplementation impl | impl = getImplementation() |
+    exists(MethodImplementation impl | impl = this.getImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
       impl.getInstruction(1).(ParameterReadAccess).getTarget().getIndex() = 1 and
       impl.getInstruction(2) instanceof FieldWriteAccess
@@ -271,7 +279,7 @@ class TrivialSetter extends Method {
 
   /** Gets the underlying field of this setter. */
   Field getField() {
-    result = getImplementation().getAnInstruction().(FieldWriteAccess).getTarget()
+    result = this.getImplementation().getAnInstruction().(FieldWriteAccess).getTarget()
   }
 }
 
@@ -283,5 +291,5 @@ class Operator extends Method {
   Operator() { this.isOperator() }
 
   /** Gets the name of the implementing method (for compatibility with C# data model). */
-  string getFunctionName() { result = getName() }
+  string getFunctionName() { result = this.getName() }
 }

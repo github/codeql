@@ -43,15 +43,8 @@ class AspNetQueryStringMember extends Member {
  * request.
  */
 private string getHttpRequestFlowPropertyNames() {
-  result = "QueryString" or
-  result = "Headers" or
-  result = "RawUrl" or
-  result = "Url" or
-  result = "Cookies" or
-  result = "Form" or
-  result = "Params" or
-  result = "Path" or
-  result = "PathInfo"
+  result =
+    ["QueryString", "Headers", "RawUrl", "Url", "Cookies", "Form", "Params", "Path", "PathInfo"]
 }
 
 /** A data flow source of remote user input (ASP.NET query string). */
@@ -86,7 +79,7 @@ class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSourc
 
 /** A data flow source of remote user input (ASP.NET user input). */
 class AspNetUserInputRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ExprNode {
-  AspNetUserInputRemoteFlowSource() { getType() instanceof SystemWebUIWebControlsTextBoxClass }
+  AspNetUserInputRemoteFlowSource() { this.getType() instanceof SystemWebUIWebControlsTextBoxClass }
 
   override string getSourceType() { result = "ASP.NET user input" }
 }
@@ -113,7 +106,7 @@ class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::Paramete
 /** A data flow source of remote user input (ASP.NET request message). */
 class SystemNetHttpRequestMessageRemoteFlowSource extends RemoteFlowSource, DataFlow::ExprNode {
   SystemNetHttpRequestMessageRemoteFlowSource() {
-    getType() instanceof SystemWebHttpRequestMessageClass
+    this.getType() instanceof SystemWebHttpRequestMessageClass
   }
 
   override string getSourceType() { result = "ASP.NET request message" }

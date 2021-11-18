@@ -35,7 +35,7 @@ module Protobuf {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
 
     override DataFlow::FunctionInput getAnInput() {
@@ -89,7 +89,7 @@ module Protobuf {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
+      inp = this.getAnInput() and outp = this.getOutput()
     }
 
     override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }

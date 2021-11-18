@@ -37,10 +37,12 @@ class AndroidComponent extends Class {
   }
 
   /** Holds if this Android component is configured as `exported` in an `AndroidManifest.xml` file. */
-  predicate isExported() { getAndroidComponentXmlElement().isExported() }
+  predicate isExported() { this.getAndroidComponentXmlElement().isExported() }
 
   /** Holds if this Android component has an intent filter configured in an `AndroidManifest.xml` file. */
-  predicate hasIntentFilter() { exists(getAndroidComponentXmlElement().getAnIntentFilterElement()) }
+  predicate hasIntentFilter() {
+    exists(this.getAndroidComponentXmlElement().getAnIntentFilterElement())
+  }
 }
 
 /**
@@ -53,10 +55,10 @@ class ExportableAndroidComponent extends AndroidComponent {
    * `AndroidManifest.xml` file.
    */
   override predicate isExported() {
-    getAndroidComponentXmlElement().isExported()
+    this.getAndroidComponentXmlElement().isExported()
     or
-    hasIntentFilter() and
-    not getAndroidComponentXmlElement().isNotExported()
+    this.hasIntentFilter() and
+    not this.getAndroidComponentXmlElement().isNotExported()
   }
 }
 
@@ -88,7 +90,7 @@ class AndroidContentProvider extends ExportableAndroidComponent {
    * in an `AndroidManifest.xml` file.
    */
   predicate requiresPermissions() {
-    getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
+    this.getAndroidComponentXmlElement().(AndroidProviderXmlElement).requiresPermissions()
   }
 }
 

@@ -14,7 +14,7 @@ abstract class UnboundGeneric extends Generic {
   abstract TypeParameter getTypeParameter(int i);
 
   /** Gets a type parameter. */
-  TypeParameter getATypeParameter() { result = getTypeParameter(_) }
+  TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
   /**
    * Gets one of the constructed versions of this declaration,
@@ -32,7 +32,7 @@ abstract class ConstructedGeneric extends Generic {
   abstract Type getTypeArgument(int i);
 
   /** Gets a type argument. */
-  Type getATypeArgument() { result = getTypeArgument(_) }
+  Type getATypeArgument() { result = this.getTypeArgument(_) }
 
   /**
    * Gets the unbound generic declaration from which this declaration was

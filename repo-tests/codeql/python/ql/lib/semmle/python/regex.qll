@@ -102,15 +102,7 @@ string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
  * Gets a regular expression mode flag associated with the given value.
  */
 deprecated string mode_from_mode_object(Value obj) {
-  (
-    result = "DEBUG" or
-    result = "IGNORECASE" or
-    result = "LOCALE" or
-    result = "MULTILINE" or
-    result = "DOTALL" or
-    result = "UNICODE" or
-    result = "VERBOSE"
-  ) and
+  result in ["DEBUG", "IGNORECASE", "LOCALE", "MULTILINE", "DOTALL", "UNICODE", "VERBOSE"] and
   exists(int flag |
     flag = Value::named("sre_constants.SRE_FLAG_" + result).(OI::ObjectInternal).intValue() and
     obj.(OI::ObjectInternal).intValue().bitAnd(flag) = flag
@@ -462,6 +454,7 @@ abstract class RegexString extends Expr {
   /** Gets the number of the group in start,end */
   int getGroupNumber(int start, int end) {
     this.group(start, end) and
+    not this.non_capturing_group_start(start, _) and
     result =
       count(int i | this.group(i, _) and i < start and not this.non_capturing_group_start(i, _)) + 1
   }
@@ -611,14 +604,7 @@ abstract class RegexString extends Expr {
     this.getChar(start + 1) = "?" and
     end = start + 3 and
     c = this.getChar(start + 2) and
-    (
-      c = "i" or
-      c = "L" or
-      c = "m" or
-      c = "s" or
-      c = "u" or
-      c = "x"
-    )
+    c in ["i", "L", "m", "s", "u", "x"]
   }
 
   /**

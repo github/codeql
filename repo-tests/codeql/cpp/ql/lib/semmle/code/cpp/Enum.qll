@@ -85,7 +85,7 @@ class Enum extends UserType, IntegralOrEnumType {
  * ```
  */
 class LocalEnum extends Enum {
-  LocalEnum() { isLocal() }
+  LocalEnum() { this.isLocal() }
 
   override string getAPrimaryQlClass() { result = "LocalEnum" }
 }

@@ -49,7 +49,7 @@ class OperationMethod extends Method {
       i.getAnAttribute() instanceof ServiceContractAttribute and
       m.getDeclaringType() = i and
       m.getAnAttribute() instanceof OperationContractAttribute and
-      getImplementee() = m
+      this.getImplementee() = m
     )
   }
 }

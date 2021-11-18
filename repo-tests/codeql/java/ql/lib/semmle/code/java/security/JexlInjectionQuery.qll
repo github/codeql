@@ -168,7 +168,9 @@ private predicate createJexlEngineStep(DataFlow::Node fromNode, DataFlow::Node t
  * A method that creates a JEXL script.
  */
 private class CreateJexlScriptMethod extends Method {
-  CreateJexlScriptMethod() { getDeclaringType() instanceof JexlEngine and hasName("createScript") }
+  CreateJexlScriptMethod() {
+    this.getDeclaringType() instanceof JexlEngine and this.hasName("createScript")
+  }
 }
 
 /**
@@ -176,8 +178,11 @@ private class CreateJexlScriptMethod extends Method {
  */
 private class CreateJexlTemplateMethod extends Method {
   CreateJexlTemplateMethod() {
-    (getDeclaringType() instanceof JxltEngine or getDeclaringType() instanceof UnifiedJexl) and
-    hasName("createTemplate")
+    (
+      this.getDeclaringType() instanceof JxltEngine or
+      this.getDeclaringType() instanceof UnifiedJexl
+    ) and
+    this.hasName("createTemplate")
   }
 }
 
@@ -186,40 +191,42 @@ private class CreateJexlTemplateMethod extends Method {
  */
 private class CreateJexlExpressionMethod extends Method {
   CreateJexlExpressionMethod() {
-    (getDeclaringType() instanceof JexlEngine or getDeclaringType() instanceof JxltEngine) and
-    hasName("createExpression")
+    (this.getDeclaringType() instanceof JexlEngine or this.getDeclaringType() instanceof JxltEngine) and
+    this.hasName("createExpression")
     or
-    getDeclaringType() instanceof UnifiedJexl and hasName("parse")
+    this.getDeclaringType() instanceof UnifiedJexl and this.hasName("parse")
   }
 }
 
 private class JexlRefType extends RefType {
-  JexlRefType() { getPackage().hasName(["org.apache.commons.jexl2", "org.apache.commons.jexl3"]) }
+  JexlRefType() {
+    this.getPackage().hasName(["org.apache.commons.jexl2", "org.apache.commons.jexl3"])
+  }
 }
 
 private class JexlBuilder extends JexlRefType {
-  JexlBuilder() { hasName("JexlBuilder") }
+  JexlBuilder() { this.hasName("JexlBuilder") }
 }
 
 private class JexlEngine extends JexlRefType {
-  JexlEngine() { hasName("JexlEngine") }
+  JexlEngine() { this.hasName("JexlEngine") }
 }
 
 private class JxltEngine extends JexlRefType {
-  JxltEngine() { hasName("JxltEngine") }
+  JxltEngine() { this.hasName("JxltEngine") }
 }
 
 private class UnifiedJexl extends JexlRefType {
-  UnifiedJexl() { hasName("UnifiedJEXL") }
+  UnifiedJexl() { this.hasName("UnifiedJEXL") }
 }
 
 private class JexlUberspect extends Interface {
   JexlUberspect() {
-    hasQualifiedName("org.apache.commons.jexl2.introspection", "Uberspect") or
-    hasQualifiedName("org.apache.commons.jexl3.introspection", "JexlUberspect")
+    this.hasQualifiedName("org.apache.commons.jexl2.introspection", "Uberspect") or
+    this.hasQualifiedName("org.apache.commons.jexl3.introspection", "JexlUberspect")
   }
 }
 
 private class Reader extends RefType {
-  Reader() { hasQualifiedName("java.io", "Reader") }
+  Reader() { this.hasQualifiedName("java.io", "Reader") }
 }

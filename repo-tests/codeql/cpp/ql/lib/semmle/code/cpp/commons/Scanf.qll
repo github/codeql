@@ -24,7 +24,7 @@ abstract class ScanfFunction extends Function {
    * Holds if the default meaning of `%s` is a `wchar_t*` string
    * (rather than a `char*`).
    */
-  predicate isWideCharDefault() { exists(getName().indexOf("wscanf")) }
+  predicate isWideCharDefault() { exists(this.getName().indexOf("wscanf")) }
 }
 
 /**
@@ -34,10 +34,10 @@ class Scanf extends ScanfFunction {
   Scanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
-      hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
-      hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
-      hasGlobalName("_wscanf_l") // _wscanf_l(format, locale, args...)
+      this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
+      this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
+      this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
+      this.hasGlobalName("_wscanf_l") // _wscanf_l(format, locale, args...)
     )
   }
 
@@ -53,10 +53,10 @@ class Fscanf extends ScanfFunction {
   Fscanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
-      hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
-      hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
-      hasGlobalName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
+      this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
+      this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
+      this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
+      this.hasGlobalName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
     )
   }
 
@@ -72,10 +72,10 @@ class Sscanf extends ScanfFunction {
   Sscanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
-      hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
-      hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
-      hasGlobalName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
+      this.hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
+      this.hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
+      this.hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
+      this.hasGlobalName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
     )
   }
 
@@ -91,10 +91,10 @@ class Snscanf extends ScanfFunction {
   Snscanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalName("_snscanf") or // _snscanf(src, max_amount, format, args...)
-      hasGlobalName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
-      hasGlobalName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
-      hasGlobalName("_snwscanf_l") // _snwscanf_l(src, max_amount, format, locale, args...)
+      this.hasGlobalName("_snscanf") or // _snscanf(src, max_amount, format, args...)
+      this.hasGlobalName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
+      this.hasGlobalName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
+      this.hasGlobalName("_snwscanf_l") // _snwscanf_l(src, max_amount, format, locale, args...)
       // note that the max_amount is not a limit on the output length, it's an input length
       // limit used with non null-terminated strings.
     )
@@ -120,18 +120,18 @@ class ScanfFunctionCall extends FunctionCall {
   /**
    * Gets the `scanf`-like function that is called.
    */
-  ScanfFunction getScanfFunction() { result = getTarget() }
+  ScanfFunction getScanfFunction() { result = this.getTarget() }
 
   /**
    * Gets the position at which the input string or stream parameter occurs,
    * if this function call does not read from standard input.
    */
-  int getInputParameterIndex() { result = getScanfFunction().getInputParameterIndex() }
+  int getInputParameterIndex() { result = this.getScanfFunction().getInputParameterIndex() }
 
   /**
    * Gets the position at which the format parameter occurs.
    */
-  int getFormatParameterIndex() { result = getScanfFunction().getFormatParameterIndex() }
+  int getFormatParameterIndex() { result = this.getScanfFunction().getFormatParameterIndex() }
 
   /**
    * Gets the format expression used in this call.
@@ -142,7 +142,7 @@ class ScanfFunctionCall extends FunctionCall {
    * Holds if the default meaning of `%s` is a `wchar_t*` string
    * (rather than a `char*`).
    */
-  predicate isWideCharDefault() { getScanfFunction().isWideCharDefault() }
+  predicate isWideCharDefault() { this.getScanfFunction().isWideCharDefault() }
 }
 
 /**
@@ -158,7 +158,7 @@ class ScanfFormatLiteral extends Expr {
   ScanfFunctionCall getUse() { result.getFormat() = this }
 
   /** Holds if the default meaning of `%s` is a `wchar_t*` (rather than a `char*`). */
-  predicate isWideCharDefault() { getUse().getTarget().(ScanfFunction).isWideCharDefault() }
+  predicate isWideCharDefault() { this.getUse().getTarget().(ScanfFunction).isWideCharDefault() }
 
   /**
    * Gets the format string itself, transformed as follows:

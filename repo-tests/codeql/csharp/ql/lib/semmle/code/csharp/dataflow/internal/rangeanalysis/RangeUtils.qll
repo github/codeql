@@ -419,9 +419,9 @@ module ExprNode {
      * "else" expression of this conditional expression.
      */
     ExprNode getBranchExpr(boolean branch) {
-      branch = true and result = getTrueExpr()
+      branch = true and result = this.getTrueExpr()
       or
-      branch = false and result = getFalseExpr()
+      branch = false and result = this.getFalseExpr()
     }
   }
 }

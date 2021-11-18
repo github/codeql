@@ -183,6 +183,7 @@ class PyFunctionObject extends FunctionObject {
   }
 
   /** Factored out to help join ordering */
+  pragma[noinline]
   private predicate implicitlyReturns(Object none_, ClassObject noneType) {
     noneType = theNoneType() and
     not this.getFunction().isGenerator() and

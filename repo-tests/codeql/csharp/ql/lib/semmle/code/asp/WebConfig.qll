@@ -8,7 +8,7 @@ import csharp
  * A `Web.config` file.
  */
 class WebConfigXML extends XMLFile {
-  WebConfigXML() { getName().matches("%Web.config") }
+  WebConfigXML() { this.getName().matches("%Web.config") }
 }
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */
@@ -73,12 +73,14 @@ class FormsElement extends XMLElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
+  string getRequireSSL() {
+    result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
+  }
 
   /**
    * Holds if `requireSSL` value is true.
    */
-  predicate isRequireSSL() { getRequireSSL() = "true" }
+  predicate isRequireSSL() { this.getRequireSSL() = "true" }
 }
 
 /** A `<httpCookies>` tag in an ASP.NET configuration file. */
@@ -89,26 +91,28 @@ class HttpCookiesElement extends XMLElement {
    * Gets attribute's `httpOnlyCookies` value.
    */
   string getHttpOnlyCookies() {
-    result = getAttribute("httpOnlyCookies").getValue().trim().toLowerCase()
+    result = this.getAttribute("httpOnlyCookies").getValue().trim().toLowerCase()
   }
 
   /**
    * Holds if there is any chance that `httpOnlyCookies` is set to `true`.
    */
-  predicate isHttpOnlyCookies() { getHttpOnlyCookies() = "true" }
+  predicate isHttpOnlyCookies() { this.getHttpOnlyCookies() = "true" }
 
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
+  string getRequireSSL() {
+    result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
+  }
 
   /**
    * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
    */
   predicate isRequireSSL() {
-    getRequireSSL() = "true"
+    this.getRequireSSL() = "true"
     or
-    not getRequireSSL() = "false" and // not set all, i.e. default
-    exists(FormsElement forms | forms.getFile() = getFile() | forms.isRequireSSL())
+    not this.getRequireSSL() = "false" and // not set all, i.e. default
+    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSSL())
   }
 }

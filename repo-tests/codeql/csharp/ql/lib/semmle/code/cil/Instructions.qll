@@ -83,21 +83,21 @@ module Opcodes {
   class Ldc_i4 extends IntLiteral, @cil_ldc_i4 {
     override string getOpcodeName() { result = "ldc.i4" }
 
-    override string getExtra() { result = getValue() }
+    override string getExtra() { result = this.getValue() }
   }
 
   /** An `ldc.i8` instruction. */
   class Ldc_i8 extends IntLiteral, @cil_ldc_i8 {
     override string getOpcodeName() { result = "ldc.i8" }
 
-    override string getExtra() { result = getValue() }
+    override string getExtra() { result = this.getValue() }
   }
 
   /** An `ldc.i4.s` instruction. */
   class Ldc_i4_s extends IntLiteral, @cil_ldc_i4_s {
     override string getOpcodeName() { result = "ldc.i4.s" }
 
-    override string getExtra() { result = getValue() }
+    override string getExtra() { result = this.getValue() }
   }
 
   /** An `ldnull` instruction. */
@@ -115,7 +115,7 @@ module Opcodes {
   class Ldc_r4 extends FloatLiteral, @cil_ldc_r4 {
     override string getOpcodeName() { result = "ldc.r4" }
 
-    override string getExtra() { result = getValue() }
+    override string getExtra() { result = this.getValue() }
 
     override Type getType() { result instanceof FloatType }
   }
@@ -124,7 +124,7 @@ module Opcodes {
   class Ldc_r8 extends FloatLiteral, @cil_ldc_r8 {
     override string getOpcodeName() { result = "ldc.r8" }
 
-    override string getExtra() { result = getValue() }
+    override string getExtra() { result = this.getValue() }
 
     override Type getType() { result instanceof DoubleType }
   }
@@ -199,9 +199,9 @@ module Opcodes {
     override string getOpcodeName() { result = "neg" }
 
     override NumericType getType() {
-      result = getOperand().getType()
+      result = this.getOperand().getType()
       or
-      getOperand().getType() instanceof Enum and result instanceof IntType
+      this.getOperand().getType() instanceof Enum and result instanceof IntType
     }
   }
 
@@ -260,7 +260,7 @@ module Opcodes {
 
     override int getPushCount() { result = 2 } // This is the only instruction that pushes 2 items
 
-    override Type getType() { result = getOperand(0).getType() }
+    override Type getType() { result = this.getOperand(0).getType() }
   }
 
   /** A `ret` instruction. */
@@ -270,7 +270,7 @@ module Opcodes {
     override predicate canFlowNext() { none() }
 
     override int getPopCount() {
-      if getImplementation().getMethod().returnsVoid() then result = 0 else result = 1
+      if this.getImplementation().getMethod().returnsVoid() then result = 0 else result = 1
     }
   }
 
@@ -283,7 +283,7 @@ module Opcodes {
   class Ldstr extends StringLiteral, @cil_ldstr {
     override string getOpcodeName() { result = "ldstr" }
 
-    override string getExtra() { result = "\"" + getValue() + "\"" }
+    override string getExtra() { result = "\"" + this.getValue() + "\"" }
 
     override Type getType() { result instanceof StringType }
   }
@@ -427,11 +427,14 @@ module Opcodes {
 
     override Instruction getASuccessorType(FlowType t) {
       t instanceof NormalFlow and
-      (result = getTarget(_) or result = getImplementation().getInstruction(getIndex() + 1))
+      (
+        result = this.getTarget(_) or
+        result = this.getImplementation().getInstruction(this.getIndex() + 1)
+      )
     }
 
     override string getExtra() {
-      result = concat(int n | exists(getTarget(n)) | getTarget(n).getIndex() + ":", " ")
+      result = concat(int n | exists(this.getTarget(n)) | this.getTarget(n).getIndex() + ":", " ")
     }
   }
 
@@ -493,9 +496,9 @@ module Opcodes {
 
     // The number of items popped/pushed from the stack depends on the target of
     // the call. Also, we need to pop the function pointer itself too.
-    override int getPopCount() { result = getTargetType().getCallPopCount() + 1 }
+    override int getPopCount() { result = this.getTargetType().getCallPopCount() + 1 }
 
-    override int getPushCount() { result = getTargetType().getCallPushCount() }
+    override int getPushCount() { result = this.getTargetType().getCallPushCount() }
   }
 
   /** A `callvirt` instruction. */
@@ -524,49 +527,49 @@ module Opcodes {
     override BoolType getType() { exists(result) }
 
     /** Gets the type that is being tested against. */
-    Type getTestedType() { result = getAccess() }
+    Type getTestedType() { result = this.getAccess() }
 
-    override string getExtra() { result = getTestedType().getQualifiedName() }
+    override string getExtra() { result = this.getTestedType().getQualifiedName() }
   }
 
   /** A `castclass` instruction. */
   class Castclass extends UnaryExpr, @cil_castclass {
     override string getOpcodeName() { result = "castclass" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
 
     /** Gets the type that is being cast to. */
-    Type getTestedType() { result = getAccess() }
+    Type getTestedType() { result = this.getAccess() }
 
-    override string getExtra() { result = getTestedType().getQualifiedName() }
+    override string getExtra() { result = this.getTestedType().getQualifiedName() }
   }
 
   /** An `stloc.0` instruction. */
   class Stloc_0 extends LocalVariableWriteAccess, @cil_stloc_0 {
     override string getOpcodeName() { result = "stloc.0" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(0) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(0) }
   }
 
   /** An `stloc.1` instruction. */
   class Stloc_1 extends LocalVariableWriteAccess, @cil_stloc_1 {
     override string getOpcodeName() { result = "stloc.1" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(1) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(1) }
   }
 
   /** An `stloc.2` instruction. */
   class Stloc_2 extends LocalVariableWriteAccess, @cil_stloc_2 {
     override string getOpcodeName() { result = "stloc.2" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(2) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(2) }
   }
 
   /** An `stloc.3` instruction. */
   class Stloc_3 extends LocalVariableWriteAccess, @cil_stloc_3 {
     override string getOpcodeName() { result = "stloc.3" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(3) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(3) }
   }
 
   /** An `stloc.s` instruction. */
@@ -587,28 +590,28 @@ module Opcodes {
   class Ldloc_0 extends LocalVariableReadAccess, @cil_ldloc_0 {
     override string getOpcodeName() { result = "ldloc.0" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(0) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(0) }
   }
 
   /** An `ldloc.1` instruction. */
   class Ldloc_1 extends LocalVariableReadAccess, @cil_ldloc_1 {
     override string getOpcodeName() { result = "ldloc.1" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(1) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(1) }
   }
 
   /** An `ldloc.2` instruction. */
   class Ldloc_2 extends LocalVariableReadAccess, @cil_ldloc_2 {
     override string getOpcodeName() { result = "ldloc.2" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(2) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(2) }
   }
 
   /** An `ldloc.3` instruction. */
   class Ldloc_3 extends LocalVariableReadAccess, @cil_ldloc_3 {
     override string getOpcodeName() { result = "ldloc.3" }
 
-    override LocalVariable getTarget() { result = getImplementation().getLocalVariable(3) }
+    override LocalVariable getTarget() { result = this.getImplementation().getLocalVariable(3) }
   }
 
   /** An `ldloc.s` instruction. */
@@ -617,7 +620,7 @@ module Opcodes {
 
     override LocalVariable getTarget() { cil_access(this, result) }
 
-    override string getExtra() { result = "L" + getTarget().getIndex() }
+    override string getExtra() { result = "L" + this.getTarget().getIndex() }
   }
 
   /** An `ldloca.s` instruction. */
@@ -626,7 +629,7 @@ module Opcodes {
 
     override LocalVariable getTarget() { cil_access(this, result) }
 
-    override string getExtra() { result = "L" + getTarget().getIndex() }
+    override string getExtra() { result = "L" + this.getTarget().getIndex() }
   }
 
   /** An `ldloc` instruction. */
@@ -635,7 +638,7 @@ module Opcodes {
 
     override LocalVariable getTarget() { cil_access(this, result) }
 
-    override string getExtra() { result = "L" + getTarget().getIndex() }
+    override string getExtra() { result = "L" + this.getTarget().getIndex() }
   }
 
   /** An `ldarg.0` instruction. */
@@ -643,7 +646,7 @@ module Opcodes {
     override string getOpcodeName() { result = "ldarg.0" }
 
     override MethodParameter getTarget() {
-      result = getImplementation().getMethod().getRawParameter(0)
+      result = this.getImplementation().getMethod().getRawParameter(0)
     }
   }
 
@@ -652,7 +655,7 @@ module Opcodes {
     override string getOpcodeName() { result = "ldarg.1" }
 
     override MethodParameter getTarget() {
-      result = getImplementation().getMethod().getRawParameter(1)
+      result = this.getImplementation().getMethod().getRawParameter(1)
     }
   }
 
@@ -661,7 +664,7 @@ module Opcodes {
     override string getOpcodeName() { result = "ldarg.2" }
 
     override MethodParameter getTarget() {
-      result = getImplementation().getMethod().getRawParameter(2)
+      result = this.getImplementation().getMethod().getRawParameter(2)
     }
   }
 
@@ -670,7 +673,7 @@ module Opcodes {
     override string getOpcodeName() { result = "ldarg.3" }
 
     override MethodParameter getTarget() {
-      result = getImplementation().getMethod().getRawParameter(3)
+      result = this.getImplementation().getMethod().getRawParameter(3)
     }
   }
 
@@ -710,7 +713,7 @@ module Opcodes {
 
     override int getPopCount() { result = 1 }
 
-    override Expr getQualifier() { result = getOperand(0) }
+    override Expr getQualifier() { result = this.getOperand(0) }
   }
 
   /** An `ldflda` instruction. */
@@ -719,7 +722,7 @@ module Opcodes {
 
     override int getPopCount() { result = 1 }
 
-    override Expr getQualifier() { result = getOperand(0) }
+    override Expr getQualifier() { result = this.getOperand(0) }
   }
 
   /** An `ldsfld` instruction. */
@@ -746,9 +749,9 @@ module Opcodes {
 
     override int getPopCount() { result = 2 }
 
-    override Expr getQualifier() { result = getOperand(1) }
+    override Expr getQualifier() { result = this.getOperand(1) }
 
-    override Expr getExpr() { result = getOperand(0) }
+    override Expr getExpr() { result = this.getOperand(0) }
   }
 
   /** An `stsfld` instruction. */
@@ -759,7 +762,7 @@ module Opcodes {
 
     override Expr getQualifier() { none() }
 
-    override Expr getExpr() { result = getOperand(0) }
+    override Expr getExpr() { result = this.getOperand(0) }
   }
 
   /** A `newobj` instruction. */
@@ -772,7 +775,7 @@ module Opcodes {
 
     override Type getType() { result = this.getTarget().getDeclaringType() }
 
-    override Expr getArgument(int i) { result = getRawArgument(i) }
+    override Expr getArgument(int i) { result = this.getRawArgument(i) }
 
     pragma[noinline]
     private Parameter getARawTargetParameter() { result = this.getTarget().getARawParameter() }
@@ -796,21 +799,21 @@ module Opcodes {
   class Box extends UnaryExpr, @cil_box {
     override string getOpcodeName() { result = "box" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `unbox.any` instruction. */
   class Unbox_any extends UnaryExpr, @cil_unbox_any {
     override string getOpcodeName() { result = "unbox.any" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `unbox` instruction. */
   class Unbox extends UnaryExpr, @cil_unbox {
     override string getOpcodeName() { result = "unbox" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `ldobj` instruction. */
@@ -820,7 +823,7 @@ module Opcodes {
     /** Gets the type of the object. */
     Type getTarget() { cil_access(this, result) }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `ldtoken` instruction. */
@@ -867,31 +870,31 @@ module Opcodes {
       // Note that this is technically wrong - it should be
       // result.(ArrayType).getElementType() = getAccess()
       // However the (ArrayType) may not be in the database.
-      result = getAccess()
+      result = this.getAccess()
     }
 
-    override string getExtra() { result = getType().getQualifiedName() }
+    override string getExtra() { result = this.getType().getQualifiedName() }
   }
 
   /** An `ldelem` instruction. */
   class Ldelem extends ReadArrayElement, @cil_ldelem {
     override string getOpcodeName() { result = "ldelem" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `ldelem.ref` instruction. */
   class Ldelem_ref extends ReadArrayElement, @cil_ldelem_ref {
     override string getOpcodeName() { result = "ldelem.ref" }
 
-    override Type getType() { result = getArray().getType() }
+    override Type getType() { result = this.getArray().getType() }
   }
 
   /** An `ldelema` instruction. */
   class Ldelema extends ReadArrayElement, ReadRef, @cil_ldelema {
     override string getOpcodeName() { result = "ldelema" }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** An `stelem.ref` instruction. */
@@ -1410,7 +1413,7 @@ module Opcodes {
 
     override int getPopCount() { result = 1 }
 
-    override Type getType() { result = getAccess() }
+    override Type getType() { result = this.getAccess() }
   }
 
   /** A `refanytype` instruction. */

@@ -22,12 +22,12 @@ private class StdMapConstructor extends Constructor, TaintFunction {
    * Gets the index of a parameter to this function that is an iterator.
    */
   int getAnIteratorParameterIndex() {
-    getParameter(result).getUnspecifiedType() instanceof Iterator
+    this.getParameter(result).getUnspecifiedType() instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of an iterator type to the qualifier
-    input.isParameterDeref(getAnIteratorParameterIndex()) and
+    input.isParameterDeref(this.getAnIteratorParameterIndex()) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
@@ -47,7 +47,7 @@ private class StdMapInsert extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(getNumberOfParameters() - 1) and
+    input.isParameterDeref(this.getNumberOfParameters() - 1) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -66,7 +66,7 @@ private class StdMapEmplace extends TaintFunction {
     // construct a pair, or a pair to be copied / moved) to the qualifier and
     // return value.
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(getNumberOfParameters() - 1) and
+    input.isParameterDeref(this.getNumberOfParameters() - 1) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -87,9 +87,9 @@ private class StdMapTryEmplace extends TaintFunction {
     // flow from any parameter apart from the key to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    exists(int arg | arg = [1 .. getNumberOfParameters() - 1] |
+    exists(int arg | arg = [1 .. this.getNumberOfParameters() - 1] |
       (
-        not getUnspecifiedType() instanceof Iterator or
+        not this.getUnspecifiedType() instanceof Iterator or
         arg != 1
       ) and
       input.isParameterDeref(arg)
@@ -154,7 +154,7 @@ private class StdMapErase extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
-    getType().getUnderlyingType() instanceof Iterator and
+    this.getType().getUnderlyingType() instanceof Iterator and
     input.isQualifierObject() and
     output.isReturnValue()
   }

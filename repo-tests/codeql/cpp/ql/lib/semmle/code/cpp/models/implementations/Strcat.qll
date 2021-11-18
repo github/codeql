@@ -32,7 +32,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
   /**
    * Gets the index of the parameter that is the size of the copy (in characters).
    */
-  int getParamSize() { exists(getParameter(2)) and result = 2 }
+  int getParamSize() { exists(this.getParameter(2)) and result = 2 }
 
   /**
    * Gets the index of the parameter that is the source of the copy.
@@ -50,11 +50,11 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    getName() = ["strncat", "wcsncat", "_mbsncat", "_mbsncat_l"] and
+    this.getName() = ["strncat", "wcsncat", "_mbsncat", "_mbsncat_l"] and
     input.isParameter(2) and
     output.isParameterDeref(0)
     or
-    getName() = ["_mbsncat_l", "_mbsnbcat_l"] and
+    this.getName() = ["_mbsncat_l", "_mbsnbcat_l"] and
     input.isParameter(3) and
     output.isParameterDeref(0)
     or

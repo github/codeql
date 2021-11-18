@@ -18,19 +18,11 @@ abstract class LoggerCall extends DataFlow::CallNode {
  * Gets a log level name that is used in RFC5424, `npm`, `console`.
  */
 string getAStandardLoggerMethodName() {
-  result = "crit" or
-  result = "dir" or
-  result = "debug" or
-  result = "error" or
-  result = "emerg" or
-  result = "fatal" or
-  result = "info" or
-  result = "log" or
-  result = "notice" or
-  result = "silly" or
-  result = "trace" or
-  result = "verbose" or
-  result = "warn"
+  result =
+    [
+      "crit", "dir", "trace", "verbose", "warn", "debug", "error", "emerg", "fatal", "info", "log",
+      "notice", "silly"
+    ]
 }
 
 /**

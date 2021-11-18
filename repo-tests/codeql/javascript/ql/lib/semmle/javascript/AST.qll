@@ -207,7 +207,9 @@ private predicate isAmbientTopLevel(TopLevel tl) {
  */
 class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is minified. */
+  cached
   predicate isMinified() {
+    Stages::Ast::ref() and
     // file name contains 'min' (not as part of a longer word)
     getFile().getBaseName().regexpMatch(".*[^-._]*[-._]min([-._].*)?\\.\\w+")
     or

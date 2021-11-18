@@ -41,8 +41,8 @@ class SystemCollectionsGenericIComparerTInterface extends SystemCollectionsGener
     result.getDeclaringType() = this and
     result.hasName("Compare") and
     result.getNumberOfParameters() = 2 and
-    result.getParameter(0).getType() = getTypeParameter(0) and
-    result.getParameter(1).getType() = getTypeParameter(0) and
+    result.getParameter(0).getType() = this.getTypeParameter(0) and
+    result.getParameter(1).getType() = this.getTypeParameter(0) and
     result.getReturnType() instanceof IntType
   }
 }
@@ -56,8 +56,8 @@ class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollecti
     result.getDeclaringType() = this and
     result.hasName("Equals") and
     result.getNumberOfParameters() = 2 and
-    result.getParameter(0).getType() = getTypeParameter(0) and
-    result.getParameter(1).getType() = getTypeParameter(0) and
+    result.getParameter(0).getType() = this.getTypeParameter(0) and
+    result.getParameter(1).getType() = this.getTypeParameter(0) and
     result.getReturnType() instanceof BoolType
   }
 }

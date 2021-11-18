@@ -252,28 +252,13 @@ private module Mongoose {
        * Holds if Model method `name` returns a Query.
        */
       predicate returnsQuery(string name) {
-        name = "$where" or
-        name = "count" or
-        name = "countDocuments" or
-        name = "deleteMany" or
-        name = "deleteOne" or
-        name = "find" or
-        name = "findById" or
-        name = "findByIdAndDelete" or
-        name = "findByIdAndRemove" or
-        name = "findByIdAndUpdate" or
-        name = "findOne" or
-        name = "findOneAndDelete" or
-        name = "findOneAndRemove" or
-        name = "findOneAndReplace" or
-        name = "findOneAndUpdate" or
-        name = "geosearch" or
-        name = "remove" or
-        name = "replaceOne" or
-        name = "update" or
-        name = "updateMany" or
-        name = "updateOne" or
-        name = "where"
+        name =
+          [
+            "$where", "count", "findOne", "findOneAndDelete", "findOneAndRemove",
+            "findOneAndReplace", "findOneAndUpdate", "geosearch", "remove", "replaceOne", "update",
+            "updateMany", "countDocuments", "updateOne", "where", "deleteMany", "deleteOne", "find",
+            "findById", "findByIdAndDelete", "findByIdAndRemove", "findByIdAndUpdate"
+          ]
       }
 
       /**
@@ -347,117 +332,34 @@ private module Mongoose {
        */
       predicate interpretsArgumentAsQuery(string name, int n) {
         n = 0 and
-        (
-          name = "and" or
-          name = "count" or
-          name = "countDocuments" or
-          name = "deleteMany" or
-          name = "deleteOne" or
-          name = "elemMatch" or
-          name = "find" or
-          name = "findOne" or
-          name = "findOneAndDelete" or
-          name = "findOneAndRemove" or
-          name = "findOneAndReplace" or
-          name = "findOneAndUpdate" or
-          name = "merge" or
-          name = "nor" or
-          name = "or" or
-          name = "remove" or
-          name = "replaceOne" or
-          name = "setQuery" or
-          name = "setUpdate" or
-          name = "update" or
-          name = "updateMany" or
-          name = "updateOne" or
-          name = "where"
-        )
+        name =
+          [
+            "and", "count", "findOneAndReplace", "findOneAndUpdate", "merge", "nor", "or", "remove",
+            "replaceOne", "setQuery", "setUpdate", "update", "countDocuments", "updateMany",
+            "updateOne", "where", "deleteMany", "deleteOne", "elemMatch", "find", "findOne",
+            "findOneAndDelete", "findOneAndRemove"
+          ]
         or
         n = 1 and
-        (
-          name = "distinct" or
-          name = "findOneAndUpdate" or
-          name = "update" or
-          name = "updateMany" or
-          name = "updateOne"
-        )
+        name = ["distinct", "findOneAndUpdate", "update", "updateMany", "updateOne"]
       }
 
       /**
        * Holds if Query method `name` returns a Query.
        */
       predicate returnsQuery(string name) {
-        name = "$where" or
-        name = "J" or
-        name = "all" or
-        name = "and" or
-        name = "batchsize" or
-        name = "box" or
-        name = "center" or
-        name = "centerSphere" or
-        name = "circle" or
-        name = "collation" or
-        name = "comment" or
-        name = "count" or
-        name = "countDocuments" or
-        name = "distinct" or
-        name = "elemMatch" or
-        name = "equals" or
-        name = "error" or
-        name = "estimatedDocumentCount" or
-        name = "exists" or
-        name = "explain" or
-        name = "find" or
-        name = "findById" or
-        name = "findOne" or
-        name = "findOneAndRemove" or
-        name = "findOneAndUpdate" or
-        name = "geometry" or
-        name = "get" or
-        name = "gt" or
-        name = "gte" or
-        name = "hint" or
-        name = "in" or
-        name = "intersects" or
-        name = "lean" or
-        name = "limit" or
-        name = "lt" or
-        name = "lte" or
-        name = "map" or
-        name = "map" or
-        name = "maxDistance" or
-        name = "maxTimeMS" or
-        name = "maxscan" or
-        name = "mod" or
-        name = "ne" or
-        name = "near" or
-        name = "nearSphere" or
-        name = "nin" or
-        name = "or" or
-        name = "orFail" or
-        name = "polygon" or
-        name = "populate" or
-        name = "read" or
-        name = "readConcern" or
-        name = "regexp" or
-        name = "remove" or
-        name = "select" or
-        name = "session" or
-        name = "set" or
-        name = "setOptions" or
-        name = "setQuery" or
-        name = "setUpdate" or
-        name = "size" or
-        name = "skip" or
-        name = "slaveOk" or
-        name = "slice" or
-        name = "snapshot" or
-        name = "sort" or
-        name = "update" or
-        name = "w" or
-        name = "where" or
-        name = "within" or
-        name = "wtimeout"
+        name =
+          [
+            "$where", "J", "comment", "count", "countDocuments", "distinct", "elemMatch", "equals",
+            "error", "estimatedDocumentCount", "exists", "explain", "all", "find", "findById",
+            "findOne", "findOneAndRemove", "findOneAndUpdate", "geometry", "get", "gt", "gte",
+            "hint", "and", "in", "intersects", "lean", "limit", "lt", "lte", "map", "map",
+            "maxDistance", "maxTimeMS", "batchsize", "maxscan", "mod", "ne", "near", "nearSphere",
+            "nin", "or", "orFail", "polygon", "populate", "box", "read", "readConcern", "regexp",
+            "remove", "select", "session", "set", "setOptions", "setQuery", "setUpdate", "center",
+            "size", "skip", "slaveOk", "slice", "snapshot", "sort", "update", "w", "where",
+            "within", "centerSphere", "wtimeout", "circle", "collation"
+          ]
       }
 
       /**

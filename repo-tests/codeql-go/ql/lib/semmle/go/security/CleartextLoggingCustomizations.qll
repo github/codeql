@@ -19,7 +19,7 @@ module CleartextLogging {
   abstract class Source extends DataFlow::Node {
     Source() {
       // hard-coded strings are uninteresting
-      not exists(getStringValue())
+      not exists(this.getStringValue())
     }
 
     /** Gets a string that describes the type of this data-flow source. */
@@ -164,7 +164,7 @@ module CleartextLogging {
     string name;
 
     CallPasswordSource() {
-      name = getCalleeName() and
+      name = this.getCalleeName() and
       name.regexpMatch("(?is)getPassword")
     }
 

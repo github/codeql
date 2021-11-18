@@ -366,7 +366,7 @@ class MetricClass extends Class {
       1 +
         count(string s |
           exists(Operation op | op = this.getAnEnclosedExpression() and s = op.getOperator())
-        ) + count(string s | s = getAUsedHalsteadN1Operator())
+        ) + count(string s | s = this.getAUsedHalsteadN1Operator())
   }
 
   /**

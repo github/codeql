@@ -138,7 +138,9 @@ class Expr extends @expr, ExprParent {
    *
    * Memory allocation is not considered an observable side effect.
    */
-  predicate mayHaveSideEffects() { mayHaveOwnSideEffects() or getAChildExpr().mayHaveSideEffects() }
+  predicate mayHaveSideEffects() {
+    this.mayHaveOwnSideEffects() or this.getAChildExpr().mayHaveSideEffects()
+  }
 
   override string toString() { result = "expression" }
 }
@@ -179,9 +181,9 @@ class Ident extends @ident, Expr {
   predicate declares(Entity e) { defs(this, e) }
 
   /** Holds if this identifier refers to (that is, uses, defines or declares) `e`. */
-  predicate refersTo(Entity e) { uses(e) or declares(e) }
+  predicate refersTo(Entity e) { this.uses(e) or this.declares(e) }
 
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   override string getAPrimaryQlClass() { result = "Ident" }
 }
@@ -196,7 +198,7 @@ class Ident extends @ident, Expr {
  * ```
  */
 class BlankIdent extends Ident {
-  BlankIdent() { getName() = "_" }
+  BlankIdent() { this.getName() = "_" }
 
   override string getAPrimaryQlClass() { result = "BlankIdent" }
 }
@@ -213,7 +215,7 @@ class BlankIdent extends Ident {
  */
 class Ellipsis extends @ellipsis, Expr {
   /** Gets the operand of this ellipsis expression. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   override string toString() { result = "..." }
 
@@ -263,7 +265,7 @@ class BasicLit extends @basiclit, Literal {
 
   override predicate isPlatformIndependentConstant() { any() }
 
-  override string toString() { result = getText() }
+  override string toString() { result = this.getText() }
 }
 
 /**
@@ -358,12 +360,12 @@ class StringLit extends @stringlit, BasicLit {
  * ```
  */
 class FuncLit extends @funclit, Literal, StmtParent, FuncDef {
-  override FuncTypeExpr getTypeExpr() { result = getChildExpr(0) }
+  override FuncTypeExpr getTypeExpr() { result = this.getChildExpr(0) }
 
   override SignatureType getType() { result = Literal.super.getType() }
 
   /** Gets the body of this function literal. */
-  override BlockStmt getBody() { result = getChildStmt(1) }
+  override BlockStmt getBody() { result = this.getChildStmt(1) }
 
   override predicate isPlatformIndependentConstant() { any() }
 
@@ -384,32 +386,32 @@ class FuncLit extends @funclit, Literal, StmtParent, FuncDef {
  */
 class CompositeLit extends @compositelit, Literal {
   /** Gets the expression representing the type of this composite literal. */
-  Expr getTypeExpr() { result = getChildExpr(0) }
+  Expr getTypeExpr() { result = this.getChildExpr(0) }
 
   /** Gets the `i`th element of this composite literal (0-based). */
   Expr getElement(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /** Gets an element of this composite literal. */
-  Expr getAnElement() { result = getElement(_) }
+  Expr getAnElement() { result = this.getElement(_) }
 
   /** Gets the number of elements in this composite literal. */
-  int getNumElement() { result = count(getAnElement()) }
+  int getNumElement() { result = count(this.getAnElement()) }
 
   /**
    * Gets the `i`th key expression in this literal.
    *
    * If the `i`th element of this literal has no key, this predicate is undefined for `i`.
    */
-  Expr getKey(int i) { result = getElement(i).(KeyValueExpr).getKey() }
+  Expr getKey(int i) { result = this.getElement(i).(KeyValueExpr).getKey() }
 
   /**
    * Gets the `i`th value expression in this literal.
    */
   Expr getValue(int i) {
-    exists(Expr elt | elt = getElement(i) |
+    exists(Expr elt | elt = this.getElement(i) |
       result = elt.(KeyValueExpr).getValue()
       or
       not elt instanceof KeyValueExpr and result = elt
@@ -433,7 +435,7 @@ class CompositeLit extends @compositelit, Literal {
 class MapLit extends CompositeLit {
   MapType mt;
 
-  MapLit() { mt = getType().getUnderlyingType() }
+  MapLit() { mt = this.getType().getUnderlyingType() }
 
   /** Gets the key type of this literal. */
   Type getKeyType() { result = mt.getKeyType() }
@@ -460,7 +462,7 @@ class MapLit extends CompositeLit {
 class StructLit extends CompositeLit {
   StructType st;
 
-  StructLit() { st = getType().getUnderlyingType() }
+  StructLit() { st = this.getType().getUnderlyingType() }
 
   /** Gets the struct type underlying this literal. */
   StructType getStructType() { result = st }
@@ -487,7 +489,7 @@ class ArrayOrSliceLit extends CompositeLit {
   CompositeType type;
 
   ArrayOrSliceLit() {
-    type = getType().getUnderlyingType() and
+    type = this.getType().getUnderlyingType() and
     (
       type instanceof ArrayType
       or
@@ -550,11 +552,13 @@ class SliceLit extends ArrayOrSliceLit {
  */
 class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
-  override Expr stripParens() { result = getExpr().stripParens() }
+  override Expr stripParens() { result = this.getExpr().stripParens() }
 
-  override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
+  override predicate isPlatformIndependentConstant() {
+    this.getExpr().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = "(...)" }
 
@@ -572,23 +576,23 @@ class ParenExpr extends @parenexpr, Expr {
  */
 class SelectorExpr extends @selectorexpr, Expr {
   /** Gets the base of this selector expression. */
-  Expr getBase() { result = getChildExpr(0) }
+  Expr getBase() { result = this.getChildExpr(0) }
 
   /** Gets the selector of this selector expression. */
-  Ident getSelector() { result = getChildExpr(1) }
+  Ident getSelector() { result = this.getChildExpr(1) }
 
   /** Holds if this selector is a use of `e`. */
-  predicate uses(Entity e) { getSelector().uses(e) }
+  predicate uses(Entity e) { this.getSelector().uses(e) }
 
   /** Holds if this selector is a definition of `e` */
-  predicate declares(Entity e) { getSelector().declares(e) }
+  predicate declares(Entity e) { this.getSelector().declares(e) }
 
   /** Holds if this selector refers to (that is, uses, defines or declares) `e`. */
-  predicate refersTo(Entity e) { getSelector().refersTo(e) }
+  predicate refersTo(Entity e) { this.getSelector().refersTo(e) }
 
   override predicate mayHaveOwnSideEffects() { any() }
 
-  override string toString() { result = "selection of " + getSelector() }
+  override string toString() { result = "selection of " + this.getSelector() }
 
   override string getAPrimaryQlClass() { result = "SelectorExpr" }
 }
@@ -631,10 +635,10 @@ class PromotedSelector extends SelectorExpr {
  */
 class IndexExpr extends @indexexpr, Expr {
   /** Gets the base of this index expression. */
-  Expr getBase() { result = getChildExpr(0) }
+  Expr getBase() { result = this.getChildExpr(0) }
 
   /** Gets the index of this index expression. */
-  Expr getIndex() { result = getChildExpr(1) }
+  Expr getIndex() { result = this.getChildExpr(1) }
 
   override predicate mayHaveOwnSideEffects() { any() }
 
@@ -655,16 +659,16 @@ class IndexExpr extends @indexexpr, Expr {
  */
 class SliceExpr extends @sliceexpr, Expr {
   /** Gets the base of this slice expression. */
-  Expr getBase() { result = getChildExpr(0) }
+  Expr getBase() { result = this.getChildExpr(0) }
 
   /** Gets the lower bound of this slice expression. */
-  Expr getLow() { result = getChildExpr(1) }
+  Expr getLow() { result = this.getChildExpr(1) }
 
   /** Gets the upper bound of this slice expression. */
-  Expr getHigh() { result = getChildExpr(2) }
+  Expr getHigh() { result = this.getChildExpr(2) }
 
   /** Gets the maximum of this slice expression, if any. */
-  Expr getMax() { result = getChildExpr(3) }
+  Expr getMax() { result = this.getChildExpr(3) }
 
   override string toString() { result = "slice expression" }
 
@@ -682,14 +686,16 @@ class SliceExpr extends @sliceexpr, Expr {
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
   /** Gets the expression representing the asserted type. */
-  Expr getTypeExpr() { result = getChildExpr(1) }
+  Expr getTypeExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveOwnSideEffects() { any() }
 
-  override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
+  override predicate isPlatformIndependentConstant() {
+    this.getExpr().isPlatformIndependentConstant()
+  }
 
   override string toString() { result = "type assertion" }
 
@@ -725,16 +731,16 @@ class CallOrConversionExpr extends @callorconversionexpr, Expr {
  * ```
  */
 class ConversionExpr extends CallOrConversionExpr {
-  ConversionExpr() { isTypeExprBottomUp(getChildExpr(0)) }
+  ConversionExpr() { isTypeExprBottomUp(this.getChildExpr(0)) }
 
   /** Gets the type expression representing the target type of the conversion. */
-  Expr getTypeExpr() { result = getChildExpr(0) }
+  Expr getTypeExpr() { result = this.getChildExpr(0) }
 
   /** Gets the operand of the type conversion. */
-  Expr getOperand() { result = getChildExpr(1) }
+  Expr getOperand() { result = this.getChildExpr(1) }
 
   override predicate isPlatformIndependentConstant() {
-    getOperand().isPlatformIndependentConstant()
+    this.getOperand().isPlatformIndependentConstant()
   }
 
   override string toString() { result = "type conversion" }
@@ -757,30 +763,30 @@ class ConversionExpr extends CallOrConversionExpr {
  */
 class CallExpr extends CallOrConversionExpr {
   CallExpr() {
-    exists(Expr callee | callee = getChildExpr(0) | not isTypeExprBottomUp(callee))
+    exists(Expr callee | callee = this.getChildExpr(0) | not isTypeExprBottomUp(callee))
     or
     // only calls can have an ellipsis after their last argument
     has_ellipsis(this)
   }
 
   /** Gets the expression representing the function being called. */
-  Expr getCalleeExpr() { result = getChildExpr(0) }
+  Expr getCalleeExpr() { result = this.getChildExpr(0) }
 
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /** Gets an argument expression of this call. */
-  Expr getAnArgument() { result = getArgument(_) }
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the number of argument expressions of this call. */
-  int getNumArgument() { result = count(getAnArgument()) }
+  int getNumArgument() { result = count(this.getAnArgument()) }
 
   /** Gets the name of the invoked function or method if it can be determined syntactically. */
   string getCalleeName() {
-    exists(Expr callee | callee = getCalleeExpr().stripParens() |
+    exists(Expr callee | callee = this.getCalleeExpr().stripParens() |
       result = callee.(Ident).getName()
       or
       result = callee.(SelectorExpr).getSelector().getName()
@@ -788,20 +794,20 @@ class CallExpr extends CallOrConversionExpr {
   }
 
   /** Gets the declared target of this call. */
-  Function getTarget() { getCalleeExpr() = result.getAReference() }
+  Function getTarget() { this.getCalleeExpr() = result.getAReference() }
 
   /** Holds if this call has an ellipsis after its last argument. */
   predicate hasEllipsis() { has_ellipsis(this) }
 
   override predicate mayHaveOwnSideEffects() {
-    getTarget().mayHaveSideEffects() or
-    not exists(getTarget())
+    this.getTarget().mayHaveSideEffects() or
+    not exists(this.getTarget())
   }
 
   override string toString() {
-    result = "call to " + getCalleeName()
+    result = "call to " + this.getCalleeName()
     or
-    not exists(getCalleeName()) and
+    not exists(this.getCalleeName()) and
     result = "function call"
   }
 
@@ -819,7 +825,7 @@ class CallExpr extends CallOrConversionExpr {
  */
 class StarExpr extends @starexpr, Expr {
   /** Gets the base expression of this star expression. */
-  Expr getBase() { result = getChildExpr(0) }
+  Expr getBase() { result = this.getChildExpr(0) }
 
   override predicate mayHaveOwnSideEffects() { any() }
 
@@ -839,10 +845,10 @@ class StarExpr extends @starexpr, Expr {
  */
 class KeyValueExpr extends @keyvalueexpr, Expr {
   /** Gets the key expression of this key-value pair. */
-  Expr getKey() { result = getChildExpr(0) }
+  Expr getKey() { result = this.getChildExpr(0) }
 
   /** Gets the value expression of this key-value pair. */
-  Expr getValue() { result = getChildExpr(1) }
+  Expr getValue() { result = this.getChildExpr(1) }
 
   /** Gets the composite literal to which this key-value pair belongs. */
   CompositeLit getLiteral() { this = result.getElement(_) }
@@ -863,10 +869,10 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
  */
 class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
   /** Gets the length expression of this array type. */
-  Expr getLength() { result = getChildExpr(0) }
+  Expr getLength() { result = this.getChildExpr(0) }
 
   /** Gets the expression representing the element type of this array type. */
-  Expr getElement() { result = getChildExpr(1) }
+  Expr getElement() { result = this.getChildExpr(1) }
 
   override string toString() { result = "array type" }
 
@@ -899,25 +905,25 @@ class StructTypeExpr extends @structtypeexpr, TypeExpr, FieldParent {
  */
 class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
   /** Gets the `i`th parameter of this function type (0-based). */
-  ParameterDecl getParameterDecl(int i) { result = getField(i) and i >= 0 }
+  ParameterDecl getParameterDecl(int i) { result = this.getField(i) and i >= 0 }
 
   /** Gets a parameter of this function type. */
-  ParameterDecl getAParameterDecl() { result = getParameterDecl(_) }
+  ParameterDecl getAParameterDecl() { result = this.getParameterDecl(_) }
 
   /** Gets the number of parameters of this function type. */
-  int getNumParameter() { result = count(getAParameterDecl()) }
+  int getNumParameter() { result = count(this.getAParameterDecl()) }
 
   /** Gets the `i`th result of this function type (0-based). */
-  ResultVariableDecl getResultDecl(int i) { result = getField(-(i + 1)) }
+  ResultVariableDecl getResultDecl(int i) { result = this.getField(-(i + 1)) }
 
   /** Gets a result of this function type. */
-  ResultVariableDecl getAResultDecl() { result = getResultDecl(_) }
+  ResultVariableDecl getAResultDecl() { result = this.getResultDecl(_) }
 
   /** Gets the number of results of this function type. */
-  int getNumResult() { result = count(getAResultDecl()) }
+  int getNumResult() { result = count(this.getAResultDecl()) }
 
   /** Gets the result of this function type, if there is only one. */
-  ResultVariableDecl getResultDecl() { getNumResult() = 1 and result = getAResultDecl() }
+  ResultVariableDecl getResultDecl() { this.getNumResult() = 1 and result = this.getAResultDecl() }
 
   override string toString() { result = "function type" }
 
@@ -925,9 +931,9 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
 
   /** Gets the `i`th child of this node, parameters first followed by results. */
   override AstNode getUniquelyNumberedChild(int i) {
-    if i < getNumParameter()
-    then result = getParameterDecl(i)
-    else result = getResultDecl(i - getNumParameter())
+    if i < this.getNumParameter()
+    then result = this.getParameterDecl(i)
+    else result = this.getResultDecl(i - this.getNumParameter())
   }
 }
 
@@ -942,13 +948,13 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
  */
 class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr, FieldParent {
   /** Gets the `i`th method specification of this interface type. */
-  MethodSpec getMethod(int i) { result = getField(i) }
+  MethodSpec getMethod(int i) { result = this.getField(i) }
 
   /** Gets a method of this interface type. */
-  MethodSpec getAMethod() { result = getMethod(_) }
+  MethodSpec getAMethod() { result = this.getMethod(_) }
 
   /** Gets the number of methods of this interface type. */
-  int getNumMethod() { result = count(getAMethod()) }
+  int getNumMethod() { result = count(this.getAMethod()) }
 
   override string toString() { result = "interface type" }
 
@@ -966,16 +972,16 @@ class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr, FieldParent {
  */
 class MapTypeExpr extends @maptypeexpr, TypeExpr {
   /** Gets the expression representing the key type of this map type. */
-  Expr getKeyTypeExpr() { result = getChildExpr(0) }
+  Expr getKeyTypeExpr() { result = this.getChildExpr(0) }
 
   /** Gets the key type of this map type. */
-  Type getKeyType() { result = getKeyTypeExpr().getType() }
+  Type getKeyType() { result = this.getKeyTypeExpr().getType() }
 
   /** Gets the expression representing the value type of this map type. */
-  Expr getValueTypeExpr() { result = getChildExpr(1) }
+  Expr getValueTypeExpr() { result = this.getChildExpr(1) }
 
   /** Gets the value type of this map type. */
-  Type getValueType() { result = getValueTypeExpr().getType() }
+  Type getValueType() { result = this.getValueTypeExpr().getType() }
 
   override string toString() { result = "map type" }
 
@@ -1049,15 +1055,15 @@ class BitwiseExpr extends @bitwiseexpr, OperatorExpr { }
  */
 class UnaryExpr extends @unaryexpr, OperatorExpr {
   /** Gets the operand of this unary expression. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   override Expr getAnOperand() { result = this.getOperand() }
 
   override predicate isPlatformIndependentConstant() {
-    getOperand().isPlatformIndependentConstant()
+    this.getOperand().isPlatformIndependentConstant()
   }
 
-  override string toString() { result = getOperator() + "..." }
+  override string toString() { result = this.getOperator() + "..." }
 }
 
 /**
@@ -1214,26 +1220,26 @@ class RecvExpr extends @arrowexpr, UnaryExpr {
  */
 class BinaryExpr extends @binaryexpr, OperatorExpr {
   /** Gets the left operand of this binary expression. */
-  Expr getLeftOperand() { result = getChildExpr(0) }
+  Expr getLeftOperand() { result = this.getChildExpr(0) }
 
   /** Gets the right operand of this binary expression. */
-  Expr getRightOperand() { result = getChildExpr(1) }
+  Expr getRightOperand() { result = this.getChildExpr(1) }
 
-  override Expr getAnOperand() { result = getChildExpr([0 .. 1]) }
+  override Expr getAnOperand() { result = this.getChildExpr([0 .. 1]) }
 
   /** Holds if `e` and `f` (in either order) are the two operands of this binary expression. */
   predicate hasOperands(Expr e, Expr f) {
-    e = getAnOperand() and
-    f = getAnOperand() and
+    e = this.getAnOperand() and
+    f = this.getAnOperand() and
     e != f
   }
 
   override predicate isPlatformIndependentConstant() {
-    getLeftOperand().isPlatformIndependentConstant() and
-    getRightOperand().isPlatformIndependentConstant()
+    this.getLeftOperand().isPlatformIndependentConstant() and
+    this.getRightOperand().isPlatformIndependentConstant()
   }
 
-  override string toString() { result = "..." + getOperator() + "..." }
+  override string toString() { result = "..." + this.getOperator() + "..." }
 }
 
 /**
@@ -1417,9 +1423,9 @@ class LssExpr extends @lssexpr, RelationalComparisonExpr {
 
   override predicate isStrict() { any() }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "LssExpr" }
 }
@@ -1438,9 +1444,9 @@ class LTExpr = LssExpr;
 class LeqExpr extends @leqexpr, RelationalComparisonExpr {
   override string getOperator() { result = "<=" }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "LeqExpr" }
 }
@@ -1461,9 +1467,9 @@ class GtrExpr extends @gtrexpr, RelationalComparisonExpr {
 
   override predicate isStrict() { any() }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
   override string getAPrimaryQlClass() { result = "GtrExpr" }
 }
@@ -1482,9 +1488,9 @@ class GTExpr = GtrExpr;
 class GeqExpr extends @geqexpr, RelationalComparisonExpr {
   override string getOperator() { result = ">=" }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
   override string getAPrimaryQlClass() { result = "GeqExpr" }
 }
@@ -1685,7 +1691,7 @@ class ChanTypeExpr extends @chantypeexpr, TypeExpr {
   /**
    * Gets the expression representing the type of values flowing through the channel.
    */
-  Expr getValueTypeExpr() { result = getChildExpr(0) }
+  Expr getValueTypeExpr() { result = this.getChildExpr(0) }
 
   /** Holds if this channel can send data. */
   predicate canSend() { none() }

@@ -14,11 +14,7 @@
 import java
 
 private string suspicious() {
-  result = "%password%" or
-  result = "%passwd%" or
-  result = "%account%" or
-  result = "%accnt%" or
-  result = "%trusted%"
+  result = ["%password%", "%passwd%", "%account%", "%accnt%", "%trusted%"]
 }
 
 private string nonSuspicious() {
@@ -45,9 +41,7 @@ class SensitiveMethodAccess extends SensitiveExpr, MethodAccess {
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s |
-      this.getAnArgument().(StringLiteral).getRepresentedString().toLowerCase() = s
-    |
+    exists(string s | this.getAnArgument().(StringLiteral).getValue().toLowerCase() = s |
       s.matches(suspicious()) and
       not s.matches(nonSuspicious())
     )

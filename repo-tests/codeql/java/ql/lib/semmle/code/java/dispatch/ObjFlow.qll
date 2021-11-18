@@ -94,10 +94,9 @@ private predicate step(Node n1, Node n2) {
     n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
   )
   or
-  exists(Field f |
-    f.getAnAssignedValue() = n1.asExpr() and
-    n2.asExpr().(FieldRead).getField() = f
-  )
+  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
+  or
+  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
   or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
@@ -132,7 +131,7 @@ private predicate step(Node n1, Node n2) {
   or
   exists(Field v |
     containerStep(n1.asExpr(), v.getAnAccess()) and
-    n2.asExpr() = v.getAnAccess()
+    n2.(FieldValueNode).getField() = v
   )
 }
 

@@ -11,8 +11,8 @@ private import semmle.code.java.dataflow.FlowSteps
  */
 class Kryo extends RefType {
   Kryo() {
-    hasQualifiedName("com.esotericsoftware.kryo", "Kryo") or
-    hasQualifiedName("com.esotericsoftware.kryo5", "Kryo")
+    this.hasQualifiedName("com.esotericsoftware.kryo", "Kryo") or
+    this.hasQualifiedName("com.esotericsoftware.kryo5", "Kryo")
   }
 }
 
@@ -21,8 +21,8 @@ class Kryo extends RefType {
  */
 class KryoInput extends RefType {
   KryoInput() {
-    hasQualifiedName("com.esotericsoftware.kryo.io", "Input") or
-    hasQualifiedName("com.esotericsoftware.kryo5.io", "Input")
+    this.hasQualifiedName("com.esotericsoftware.kryo.io", "Input") or
+    this.hasQualifiedName("com.esotericsoftware.kryo5.io", "Input")
   }
 }
 
@@ -31,8 +31,8 @@ class KryoInput extends RefType {
  */
 class KryoPool extends RefType {
   KryoPool() {
-    hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool") or
-    hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool")
+    this.hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool") or
+    this.hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool")
   }
 }
 
@@ -41,8 +41,8 @@ class KryoPool extends RefType {
  */
 class KryoPoolBuilder extends RefType {
   KryoPoolBuilder() {
-    hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool$Builder") or
-    hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool$Builder")
+    this.hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool$Builder") or
+    this.hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool$Builder")
   }
 }
 
@@ -51,10 +51,10 @@ class KryoPoolBuilder extends RefType {
  */
 class KryoPoolBuilderMethod extends Method {
   KryoPoolBuilderMethod() {
-    getDeclaringType() instanceof KryoPoolBuilder and
+    this.getDeclaringType() instanceof KryoPoolBuilder and
     (
-      getReturnType() instanceof KryoPoolBuilder or
-      getReturnType() instanceof KryoPool
+      this.getReturnType() instanceof KryoPoolBuilder or
+      this.getReturnType() instanceof KryoPool
     )
   }
 }
@@ -92,7 +92,7 @@ class KryoEnableWhiteListing extends MethodAccess {
  */
 class KryoPoolRunMethod extends Method {
   KryoPoolRunMethod() {
-    getDeclaringType() instanceof KryoPool and
-    hasName("run")
+    this.getDeclaringType() instanceof KryoPool and
+    this.hasName("run")
   }
 }

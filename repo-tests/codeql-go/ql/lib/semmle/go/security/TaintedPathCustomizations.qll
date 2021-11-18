@@ -67,7 +67,7 @@ module TaintedPath {
     }
 
     override predicate checks(Expr e, boolean branch) {
-      e = getArgument(0).asExpr() and
+      e = this.getArgument(0).asExpr() and
       branch = false
     }
   }
@@ -125,7 +125,7 @@ module TaintedPath {
     }
 
     override predicate checks(Expr e, boolean branch) {
-      e = getArgument(0).asExpr() and branch = true
+      e = this.getArgument(0).asExpr() and branch = true
     }
   }
 

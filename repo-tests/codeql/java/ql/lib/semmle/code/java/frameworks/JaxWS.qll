@@ -25,9 +25,7 @@ string getAJaxRsPackage(string subpackage) { result = getAJaxRsPackage() + "." +
 class JaxWsEndpoint extends Class {
   JaxWsEndpoint() {
     exists(AnnotationType a | a = this.getAnAnnotation().getType() |
-      a.hasName("WebService") or
-      a.hasName("WebServiceProvider") or
-      a.hasName("WebServiceClient")
+      a.hasName(["WebService", "WebServiceProvider", "WebServiceClient"])
     )
   }
 
@@ -35,8 +33,7 @@ class JaxWsEndpoint extends Class {
   Callable getARemoteMethod() {
     result = this.getACallable() and
     exists(AnnotationType a | a = result.getAnAnnotation().getType() |
-      a.hasName("WebMethod") or
-      a.hasName("WebEndpoint")
+      a.hasName(["WebMethod", "WebEndpoint"])
     )
   }
 }
@@ -62,12 +59,7 @@ class JaxRsResourceMethod extends Method {
       a = this.getAnAnnotation().getType() and
       a.getPackage().getName() = getAJaxRsPackage()
     |
-      a.hasName("GET") or
-      a.hasName("POST") or
-      a.hasName("DELETE") or
-      a.hasName("PUT") or
-      a.hasName("OPTIONS") or
-      a.hasName("HEAD")
+      a.hasName(["GET", "POST", "DELETE", "PUT", "OPTIONS", "HEAD"])
     )
     or
     // A JaxRS resource method can also inherit these annotations from a supertype, but only if
@@ -201,13 +193,10 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
       a = this.getType() and
       a.getPackage().getName() = getAJaxRsPackage()
     |
-      a.hasName("BeanParam") or
-      a.hasName("CookieParam") or
-      a.hasName("FormParam") or
-      a.hasName("HeaderParam") or
-      a.hasName("MatrixParam") or
-      a.hasName("PathParam") or
-      a.hasName("QueryParam")
+      a.hasName([
+          "BeanParam", "CookieParam", "FormParam", "HeaderParam", "MatrixParam", "PathParam",
+          "QueryParam"
+        ])
     )
     or
     this.getType().hasQualifiedName(getAJaxRsPackage("core"), "Context")

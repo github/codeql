@@ -1405,14 +1405,7 @@ module DataFlow {
    */
   class Incompleteness extends string {
     Incompleteness() {
-      this = "await" or
-      this = "call" or
-      this = "eval" or
-      this = "global" or
-      this = "heap" or
-      this = "import" or
-      this = "namespace" or
-      this = "yield"
+      this = ["await", "call", "eval", "global", "heap", "import", "namespace", "yield"]
     }
   }
 

@@ -45,7 +45,7 @@ class Call extends Expr, @dotnet_call {
   Expr getArgument(int i) { none() }
 
   /** Gets an argument to this call. */
-  Expr getAnArgument() { result = getArgument(_) }
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the expression that is supplied for parameter `p`. */
   Expr getArgumentForParameter(Parameter p) { none() }

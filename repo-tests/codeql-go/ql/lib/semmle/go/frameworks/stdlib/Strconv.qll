@@ -41,39 +41,39 @@ module Strconv {
 
     FunctionModels() {
       // signature: func AppendQuote(dst []byte, s string) []byte
-      hasQualifiedName("strconv", "AppendQuote") and
+      this.hasQualifiedName("strconv", "AppendQuote") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func AppendQuoteToASCII(dst []byte, s string) []byte
-      hasQualifiedName("strconv", "AppendQuoteToASCII") and
+      this.hasQualifiedName("strconv", "AppendQuoteToASCII") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func AppendQuoteToGraphic(dst []byte, s string) []byte
-      hasQualifiedName("strconv", "AppendQuoteToGraphic") and
+      this.hasQualifiedName("strconv", "AppendQuoteToGraphic") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func Quote(s string) string
-      hasQualifiedName("strconv", "Quote") and
+      this.hasQualifiedName("strconv", "Quote") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func QuotedPrefix(s string) (string, error)
-      hasQualifiedName("strconv", "QuotedPrefix") and
+      this.hasQualifiedName("strconv", "QuotedPrefix") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func QuoteToASCII(s string) string
-      hasQualifiedName("strconv", "QuoteToASCII") and
+      this.hasQualifiedName("strconv", "QuoteToASCII") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func QuoteToGraphic(s string) string
-      hasQualifiedName("strconv", "QuoteToGraphic") and
+      this.hasQualifiedName("strconv", "QuoteToGraphic") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func Unquote(s string) (string, error)
-      hasQualifiedName("strconv", "Unquote") and
+      this.hasQualifiedName("strconv", "Unquote") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
-      hasQualifiedName("strconv", "UnquoteChar") and
+      this.hasQualifiedName("strconv", "UnquoteChar") and
       (inp.isParameter(0) and outp.isResult(2))
     }
 

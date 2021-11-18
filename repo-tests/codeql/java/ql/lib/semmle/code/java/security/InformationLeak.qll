@@ -9,9 +9,7 @@ import semmle.code.java.security.XSS
 private class DefaultInformationLeakSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "javax.servlet.http;HttpServletResponse;false;sendError;(int,String);;Argument[1];information-leak"
-      ]
+      "javax.servlet.http;HttpServletResponse;false;sendError;(int,String);;Argument[1];information-leak"
   }
 }
 

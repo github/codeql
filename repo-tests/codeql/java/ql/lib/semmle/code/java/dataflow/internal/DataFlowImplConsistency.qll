@@ -31,7 +31,7 @@ module Consistency {
   query predicate uniqueEnclosingCallable(Node n, string msg) {
     exists(int c |
       n instanceof RelevantNode and
-      c = count(n.getEnclosingCallable()) and
+      c = count(nodeGetEnclosingCallable(n)) and
       c != 1 and
       msg = "Node should have one enclosing callable but has " + c + "."
     )
@@ -85,13 +85,13 @@ module Consistency {
   }
 
   query predicate parameterCallable(ParameterNode p, string msg) {
-    exists(DataFlowCallable c | p.isParameterOf(c, _) and c != p.getEnclosingCallable()) and
+    exists(DataFlowCallable c | isParameterNode(p, c, _) and c != nodeGetEnclosingCallable(p)) and
     msg = "Callable mismatch for parameter."
   }
 
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
     simpleLocalFlowStep(n1, n2) and
-    n1.getEnclosingCallable() != n2.getEnclosingCallable() and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
 
@@ -106,7 +106,7 @@ module Consistency {
   query predicate unreachableNodeCCtx(Node n, DataFlowCall call, string msg) {
     isUnreachableInCall(n, call) and
     exists(DataFlowCallable c |
-      c = n.getEnclosingCallable() and
+      c = nodeGetEnclosingCallable(n) and
       not viableCallable(call) = c
     ) and
     msg = "Call context for isUnreachableInCall is inconsistent with call graph."
@@ -120,7 +120,7 @@ module Consistency {
       n.(ArgumentNode).argumentOf(call, _) and
       msg = "ArgumentNode and call does not share enclosing callable."
     ) and
-    n.getEnclosingCallable() != call.getEnclosingCallable()
+    nodeGetEnclosingCallable(n) != call.getEnclosingCallable()
   }
 
   // This predicate helps the compiler forget that in some languages
@@ -151,7 +151,7 @@ module Consistency {
   }
 
   query predicate postIsInSameCallable(PostUpdateNode n, string msg) {
-    n.getEnclosingCallable() != n.getPreUpdateNode().getEnclosingCallable() and
+    nodeGetEnclosingCallable(n) != nodeGetEnclosingCallable(n.getPreUpdateNode()) and
     msg = "PostUpdateNode does not share callable with its pre-update node."
   }
 
@@ -175,6 +175,7 @@ module Consistency {
 
   query predicate postWithInFlow(Node n, string msg) {
     isPostUpdateNode(n) and
+    not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }

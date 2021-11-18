@@ -69,10 +69,10 @@ private class CommandArgumentList extends SsaExplicitUpdate {
 
   /** Gets a use of the variable for which the list could be empty. */
   private RValue getAUseBeforeFirstAdd() {
-    result = getAFirstUse()
+    result = this.getAFirstUse()
     or
     exists(RValue mid |
-      mid = getAUseBeforeFirstAdd() and
+      mid = this.getAUseBeforeFirstAdd() and
       adjacentUseUse(mid, result) and
       not exists(MethodAccess ma |
         mid = ma.getQualifier() and
@@ -85,25 +85,25 @@ private class CommandArgumentList extends SsaExplicitUpdate {
    * Gets an addition to this list, i.e. a call to an `add` or `addAll` method.
    */
   MethodAccess getAnAdd() {
-    result.getQualifier() = getAUse() and
+    result.getQualifier() = this.getAUse() and
     result.getMethod().getName().matches("add%")
   }
 
   /** Gets an addition to this list which could be its first element. */
   MethodAccess getAFirstAdd() {
-    result = getAnAdd() and
-    result.getQualifier() = getAUseBeforeFirstAdd()
+    result = this.getAnAdd() and
+    result.getQualifier() = this.getAUseBeforeFirstAdd()
   }
 
   /** Gets an addition to this list which is not the first element. */
   MethodAccess getASubsequentAdd() {
-    result = getAnAdd() and
-    not result = getAFirstAdd()
+    result = this.getAnAdd() and
+    not result = this.getAFirstAdd()
   }
 
   /** Holds if the first element of this list is a shell command. */
   predicate isShell() {
-    exists(MethodAccess ma | ma = getAFirstAdd() and isShell(ma.getArgument(0)))
+    exists(MethodAccess ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
   }
 }
 
@@ -122,7 +122,7 @@ private predicate arrayLValue(ArrayAccess acc) { exists(Assignment a | a.getDest
 private class CommandArgumentArray extends SsaExplicitUpdate {
   CommandArgumentArray() {
     this.getSourceVariable().getType() instanceof ArrayOfStringType and
-    forall(ArrayAccess a | a.getArray() = getAUse() and arrayLValue(a) |
+    forall(ArrayAccess a | a.getArray() = this.getAUse() and arrayLValue(a) |
       a.getIndexExpr() instanceof CompileTimeConstantExpr
     )
   }
@@ -139,7 +139,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
   }
 
   /** Gets an expression that is written to the given index of this array. */
-  Expr getAWrite(int index) { result = getAWrite(index, _) }
+  Expr getAWrite(int index) { result = this.getAWrite(index, _) }
 }
 
 /**
@@ -147,20 +147,20 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
  */
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
-    (exists(getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
+    (exists(this.getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
     forall(RValue use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
   }
 
   /** Gets the first element of this array. */
   Expr getFirstElement() {
-    result = getAWrite(0)
+    result = this.getAWrite(0)
     or
     not exists(getAWrite(0)) and
-    result = firstElementOf(getDefiningExpr())
+    result = firstElementOf(this.getDefiningExpr())
   }
 
   /** Holds if the first element of this array is a shell command. */
-  predicate isShell() { isShell(getFirstElement()) }
+  predicate isShell() { isShell(this.getFirstElement()) }
 }
 
 /** Gets the first element of an imutable array of strings */

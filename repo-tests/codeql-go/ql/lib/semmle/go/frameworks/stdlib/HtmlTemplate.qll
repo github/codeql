@@ -17,7 +17,7 @@ module HtmlTemplate {
         or
         fn.matches("URLQueryEscape%") and kind = "url"
       |
-        hasQualifiedName("html/template", fn)
+        this.hasQualifiedName("html/template", fn)
       )
     }
 
@@ -30,31 +30,31 @@ module HtmlTemplate {
 
     FunctionModels() {
       // signature: func HTMLEscape(w io.Writer, b []byte)
-      hasQualifiedName("html/template", "HTMLEscape") and
+      this.hasQualifiedName("html/template", "HTMLEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func HTMLEscapeString(s string) string
-      hasQualifiedName("html/template", "HTMLEscapeString") and
+      this.hasQualifiedName("html/template", "HTMLEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func HTMLEscaper(args ...interface{}) string
-      hasQualifiedName("html/template", "HTMLEscaper") and
+      this.hasQualifiedName("html/template", "HTMLEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func JSEscape(w io.Writer, b []byte)
-      hasQualifiedName("html/template", "JSEscape") and
+      this.hasQualifiedName("html/template", "JSEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func JSEscapeString(s string) string
-      hasQualifiedName("html/template", "JSEscapeString") and
+      this.hasQualifiedName("html/template", "JSEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func JSEscaper(args ...interface{}) string
-      hasQualifiedName("html/template", "JSEscaper") and
+      this.hasQualifiedName("html/template", "JSEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func URLQueryEscaper(args ...interface{}) string
-      hasQualifiedName("html/template", "URLQueryEscaper") and
+      this.hasQualifiedName("html/template", "URLQueryEscaper") and
       (inp.isParameter(_) and outp.isResult())
     }
 
@@ -69,11 +69,11 @@ module HtmlTemplate {
 
     MethodModels() {
       // signature: func (*Template) Execute(wr io.Writer, data interface{}) error
-      hasQualifiedName("html/template", "Template", "Execute") and
+      this.hasQualifiedName("html/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (*Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
+      this.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }
 
@@ -100,7 +100,7 @@ module HtmlTemplate {
     string getBody() { result = text.regexpCapture("(?s)\\{\\{(.*)\\}\\}", 1) } // matches the inside of the curly bracket delimiters
 
     /** Gets the file in which this statement appears. */
-    File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template statement" }
@@ -148,7 +148,7 @@ module HtmlTemplate {
     }
 
     /** Gets the file in which this read appears. */
-    File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template read of " + text }
