@@ -25,7 +25,7 @@ predicate usesThis(ClassPredicate pred) {
 
 predicate isLiteralComparison(ComparisonFormula eq) {
   exists(Expr lhs, Expr rhs |
-    eq.getSymbol() = "=" and
+    eq.getOperator() = "=" and
     eq.getAnOperand() = lhs and
     eq.getAnOperand() = rhs and
     (

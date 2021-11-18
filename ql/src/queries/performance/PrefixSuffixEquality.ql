@@ -29,7 +29,7 @@ class SuffixPredicateCall extends Call {
 }
 
 class EqFormula extends ComparisonFormula {
-  EqFormula() { this.getSymbol() = "=" }
+  EqFormula() { this.getOperator() = "=" }
 }
 
 bindingset[s]
