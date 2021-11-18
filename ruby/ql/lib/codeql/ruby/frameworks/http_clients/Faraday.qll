@@ -11,6 +11,9 @@ private import codeql.ruby.ApiGraphs
  * # connection re-use
  * connection = Faraday.new("http://example.com")
  * connection.get("/").body
+ *
+ * connection = Faraday.new(url: "http://example.com")
+ * connection.get("/").body
  * ```
  */
 class FaradayHttpRequest extends HTTP::Client::Request::Range {
@@ -38,7 +41,8 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getURL() {
     result = requestUse.getArgument(0) or
-    result = connectionUse.(DataFlow::CallNode).getArgument(0)
+    result = connectionUse.(DataFlow::CallNode).getArgument(0) or
+    result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
   }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
