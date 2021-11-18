@@ -58,7 +58,7 @@ module Werkzeug {
 
       override string getAttributeName() { none() }
 
-      override string getMethodName() { result in ["getlist"] }
+      override string getMethodName() { result = "getlist" }
 
       override string getAsyncMethodName() { none() }
     }

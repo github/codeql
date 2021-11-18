@@ -61,20 +61,20 @@ private class StdSequenceContainerConstructor extends Constructor, TaintFunction
    * value type of the container.
    */
   int getAValueTypeParameterIndex() {
-    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
     (
-      input.isParameterDeref(getAValueTypeParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
@@ -158,21 +158,21 @@ private class StdSequenceContainerInsert extends TaintFunction {
    * value type of the container.
    */
   int getAValueTypeParameterIndex() {
-    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to container itself (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAValueTypeParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -197,20 +197,20 @@ private class StdSequenceContainerAssign extends TaintFunction {
    * value type of the container.
    */
   int getAValueTypeParameterIndex() {
-    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to container itself (qualifier)
     (
-      input.isParameterDeref(getAValueTypeParameterIndex()) or
-      input.isParameter(getAnIteratorParameterIndex())
+      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     output.isQualifierObject()
   }
@@ -246,7 +246,7 @@ class StdVectorEmplace extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter except the position iterator to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameterDeref([1 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([1 .. this.getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -263,7 +263,7 @@ class StdVectorEmplaceBack extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter to qualifier
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
 }

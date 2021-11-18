@@ -33,9 +33,9 @@ private class ExternalContextSource extends SourceModelCsv {
  */
 class FacesGetResponseWriterMethod extends Method {
   FacesGetResponseWriterMethod() {
-    getDeclaringType() instanceof FacesContext and
-    hasName("getResponseWriter") and
-    getNumberOfParameters() = 0
+    this.getDeclaringType() instanceof FacesContext and
+    this.hasName("getResponseWriter") and
+    this.getNumberOfParameters() = 0
   }
 }
 
@@ -44,9 +44,9 @@ class FacesGetResponseWriterMethod extends Method {
  */
 class FacesGetResponseStreamMethod extends Method {
   FacesGetResponseStreamMethod() {
-    getDeclaringType() instanceof FacesContext and
-    hasName("getResponseStream") and
-    getNumberOfParameters() = 0
+    this.getDeclaringType() instanceof FacesContext and
+    this.hasName("getResponseStream") and
+    this.getNumberOfParameters() = 0
   }
 }
 

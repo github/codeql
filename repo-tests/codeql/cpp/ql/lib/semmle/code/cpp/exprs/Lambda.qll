@@ -24,7 +24,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
   /**
    * Gets an implicitly or explicitly captured value of this lambda expression.
    */
-  LambdaCapture getACapture() { result = getCapture(_) }
+  LambdaCapture getACapture() { result = this.getCapture(_) }
 
   /**
    * Gets the nth implicitly or explicitly captured value of this lambda expression.
@@ -58,13 +58,13 @@ class LambdaExpression extends Expr, @lambdaexpr {
    *   - The return type.
    *   - The statements comprising the lambda body.
    */
-  Operator getLambdaFunction() { result = getType().(Closure).getLambdaFunction() }
+  Operator getLambdaFunction() { result = this.getType().(Closure).getLambdaFunction() }
 
   /**
    * Gets the initializer that initializes the captured variables in the closure, if any.
    * A lambda that does not capture any variables will not have an initializer.
    */
-  ClassAggregateLiteral getInitializer() { result = getChild(0) }
+  ClassAggregateLiteral getInitializer() { result = this.getChild(0) }
 }
 
 /**
@@ -103,7 +103,7 @@ class Closure extends Class {
  * ```
  */
 class LambdaCapture extends Locatable, @lambdacapture {
-  override string toString() { result = getField().getName() }
+  override string toString() { result = this.getField().getName() }
 
   override string getAPrimaryQlClass() { result = "LambdaCapture" }
 

@@ -34,14 +34,7 @@ private class LibraryFormatter extends PrintfStyleCall {
       returns = false and
       mod = "console" and
       (
-        (
-          meth = "debug" or
-          meth = "error" or
-          meth = "info" or
-          meth = "log" or
-          meth = "trace" or
-          meth = "warn"
-        ) and
+        meth = ["debug", "error", "info", "log", "trace", "warn"] and
         formatIndex = 0
         or
         meth = "assert" and formatIndex = 1

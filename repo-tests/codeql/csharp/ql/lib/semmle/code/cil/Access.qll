@@ -20,7 +20,7 @@ class VariableAccess extends Access, @cil_access { }
 
 /** An instruction that reads a variable. */
 class ReadAccess extends VariableAccess, Expr, @cil_read_access {
-  override Type getType() { result = getTarget().getType() }
+  override Type getType() { result = this.getTarget().getType() }
 }
 
 /** An instruction yielding an address. */
@@ -49,7 +49,7 @@ class ParameterReadAccess extends ParameterAccess, ReadAccess {
 class ParameterWriteAccess extends ParameterAccess, WriteAccess {
   override int getPopCount() { result = 1 }
 
-  override Expr getExpr() { result = getOperand(0) }
+  override Expr getExpr() { result = this.getOperand(0) }
 }
 
 /** An access to the `this` parameter. */
@@ -71,9 +71,9 @@ class LocalVariableAccess extends StackVariableAccess, @cil_local_access {
 class LocalVariableWriteAccess extends LocalVariableAccess, WriteAccess {
   override int getPopCount() { result = 1 }
 
-  override Expr getExpr() { result = getOperand(0) }
+  override Expr getExpr() { result = this.getOperand(0) }
 
-  override string getExtra() { result = "L" + getTarget().getIndex() }
+  override string getExtra() { result = "L" + this.getTarget().getIndex() }
 }
 
 /** An instruction that reads a local variable. */
@@ -85,7 +85,7 @@ class LocalVariableReadAccess extends LocalVariableAccess, ReadAccess {
 class FieldAccess extends VariableAccess, @cil_field_access {
   override Field getTarget() { result = VariableAccess.super.getTarget() }
 
-  override string getExtra() { result = getTarget().getName() }
+  override string getExtra() { result = this.getTarget().getName() }
 
   /** Gets the qualifier of the access, if any. */
   abstract Expr getQualifier();

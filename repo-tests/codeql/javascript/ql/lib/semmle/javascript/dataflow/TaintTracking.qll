@@ -924,13 +924,11 @@ module TaintTracking {
         pred = invoke.getArgument(0) and
         succ = invoke
       |
-        name = "Error" or
-        name = "EvalError" or
-        name = "RangeError" or
-        name = "ReferenceError" or
-        name = "SyntaxError" or
-        name = "TypeError" or
-        name = "URIError"
+        name =
+          [
+            "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError",
+            "URIError"
+          ]
       )
     }
   }

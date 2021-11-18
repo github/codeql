@@ -426,6 +426,17 @@ module AccessPath {
       result = AccessPath::getAReferenceTo(root, accessPath)
     )
     or
+    // step over extend calls. Handle aliasing both ways through the extend call.
+    exists(
+      DataFlow::SourceNode rootOne, DataFlow::SourceNode rootTwo, string accessPath,
+      ExtendCall extendCall
+    |
+      rootOne = [extendCall, extendCall.getAnOperand().getALocalSource()] and
+      rootTwo = [extendCall, extendCall.getAnOperand().getALocalSource()] and
+      node = pragma[only_bind_into](AccessPath::getAReferenceTo(rootOne, accessPath)) and
+      result = AccessPath::getAReferenceTo(rootTwo, accessPath)
+    )
+    or
     result = node.getALocalSource()
   }
 

@@ -19,7 +19,7 @@ class TypeContainer extends DotNet::NamedElement, @cil_type_container {
 
 /** A namespace. */
 class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
-  override string toString() { result = getQualifiedName() }
+  override string toString() { result = this.getQualifiedName() }
 
   override Namespace getParent() { result = this.getParentNamespace() }
 
@@ -39,7 +39,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   override string toString() { result = this.getName() }
 
   /** Gets the containing type of this type, if any. */
-  override Type getDeclaringType() { result = getParent() }
+  override Type getDeclaringType() { result = this.getParent() }
 
   /** Gets a member of this type, if any. */
   Member getAMember() { result.getDeclaringType() = this }
@@ -96,13 +96,13 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   Type getABaseInterface() { cil_base_interface(this, result) }
 
   /** Gets an immediate base type of this type, if any. */
-  Type getABaseType() { result = getBaseClass() or result = getABaseInterface() }
+  Type getABaseType() { result = this.getBaseClass() or result = this.getABaseInterface() }
 
   /** Gets an immediate subtype of this type, if any. */
   Type getASubtype() { result.getABaseType() = this }
 
   /** Gets the namespace directly containing this type, if any. */
-  Namespace getNamespace() { result = getParent() }
+  Namespace getNamespace() { result = this.getParent() }
 
   /**
    * Gets an index for implicit conversions. A type can be converted to another numeric type

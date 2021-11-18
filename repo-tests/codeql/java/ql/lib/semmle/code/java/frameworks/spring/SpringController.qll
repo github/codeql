@@ -9,10 +9,10 @@ import SpringWebClient
 class SpringControllerAnnotation extends AnnotationType {
   SpringControllerAnnotation() {
     // `@Controller` used directly as an annotation.
-    hasQualifiedName("org.springframework.stereotype", "Controller")
+    this.hasQualifiedName("org.springframework.stereotype", "Controller")
     or
     // `@Controller` can be used as a meta-annotation on other annotation types.
-    getAnAnnotation().getType() instanceof SpringControllerAnnotation
+    this.getAnAnnotation().getType() instanceof SpringControllerAnnotation
   }
 }
 
@@ -22,28 +22,30 @@ class SpringControllerAnnotation extends AnnotationType {
  * Rest controllers are the same as controllers, but imply the `@ResponseBody` annotation.
  */
 class SpringRestControllerAnnotation extends SpringControllerAnnotation {
-  SpringRestControllerAnnotation() { hasName("RestController") }
+  SpringRestControllerAnnotation() { this.hasName("RestController") }
 }
 
 /**
  * A class annotated, directly or indirectly, as a Spring `Controller`.
  */
 class SpringController extends Class {
-  SpringController() { getAnAnnotation().getType() instanceof SpringControllerAnnotation }
+  SpringController() { this.getAnAnnotation().getType() instanceof SpringControllerAnnotation }
 }
 
 /**
  * A class annotated, directly or indirectly, as a Spring `RestController`.
  */
 class SpringRestController extends SpringController {
-  SpringRestController() { getAnAnnotation().getType() instanceof SpringRestControllerAnnotation }
+  SpringRestController() {
+    this.getAnAnnotation().getType() instanceof SpringRestControllerAnnotation
+  }
 }
 
 /**
  * A method on a Spring controller which is accessed by the Spring MVC framework.
  */
 abstract class SpringControllerMethod extends Method {
-  SpringControllerMethod() { getDeclaringType() instanceof SpringController }
+  SpringControllerMethod() { this.getDeclaringType() instanceof SpringController }
 }
 
 /**
@@ -83,10 +85,10 @@ class SpringInitBinderMethod extends SpringControllerMethod {
 class SpringRequestMappingAnnotationType extends AnnotationType {
   SpringRequestMappingAnnotationType() {
     // `@RequestMapping` used directly as an annotation.
-    hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping")
+    this.hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping")
     or
     // `@RequestMapping` can be used as a meta-annotation on other annotation types, e.g. GetMapping, PostMapping etc.
-    getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType
+    this.getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType
   }
 }
 
@@ -96,7 +98,7 @@ class SpringRequestMappingAnnotationType extends AnnotationType {
 class SpringResponseBodyAnnotationType extends AnnotationType {
   SpringResponseBodyAnnotationType() {
     // `@ResponseBody` used directly as an annotation.
-    hasQualifiedName("org.springframework.web.bind.annotation", "ResponseBody")
+    this.hasQualifiedName("org.springframework.web.bind.annotation", "ResponseBody")
   }
 }
 
@@ -129,7 +131,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   }
 
   /** Gets a request mapping parameter. */
-  SpringRequestMappingParameter getARequestParameter() { result = getAParameter() }
+  SpringRequestMappingParameter getARequestParameter() { result = this.getAParameter() }
 
   /** Gets the "produces" @RequestMapping annotation value, if present. If an array is specified, gets the array. */
   Expr getProducesExpr() {
@@ -158,9 +160,9 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
 
   /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
-    getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
-    getDeclaringType().getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
-    getDeclaringType() instanceof SpringRestController
+    this.getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
+    this.getDeclaringType().getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
+    this.getDeclaringType() instanceof SpringRestController
   }
 }
 
@@ -185,44 +187,50 @@ class SpringServletInputAnnotation extends Annotation {
 /** An annotation of the type `org.springframework.web.bind.annotation.ModelAttribute`. */
 class SpringModelAttributeAnnotation extends Annotation {
   SpringModelAttributeAnnotation() {
-    getType().hasQualifiedName("org.springframework.web.bind.annotation", "ModelAttribute")
+    this.getType().hasQualifiedName("org.springframework.web.bind.annotation", "ModelAttribute")
   }
 }
 
 /** A parameter of a `SpringRequestMappingMethod`. */
 class SpringRequestMappingParameter extends Parameter {
-  SpringRequestMappingParameter() { getCallable() instanceof SpringRequestMappingMethod }
+  SpringRequestMappingParameter() { this.getCallable() instanceof SpringRequestMappingMethod }
 
   /** Holds if the parameter should not be consider a direct source of taint. */
   predicate isNotDirectlyTaintedInput() {
-    getType().(RefType).getAnAncestor() instanceof SpringWebRequest or
-    getType().(RefType).getAnAncestor() instanceof SpringNativeWebRequest or
-    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletRequest") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletResponse") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "HttpSession") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "PushBuilder") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.http", "HttpMethod") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "Locale") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "TimeZone") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.time", "ZoneId") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "OutputStream") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Writer") or
-    getType()
+    this.getType().(RefType).getAnAncestor() instanceof SpringWebRequest or
+    this.getType().(RefType).getAnAncestor() instanceof SpringNativeWebRequest or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletRequest") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletResponse") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "HttpSession") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "PushBuilder") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.http", "HttpMethod") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "Locale") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "TimeZone") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.time", "ZoneId") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "OutputStream") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Writer") or
+    this.getType()
         .(RefType)
         .getAnAncestor()
         .hasQualifiedName("org.springframework.web.servlet.mvc.support", "RedirectAttributes") or
     // Also covers BindingResult. Note, you can access the field value through this interface, which should be considered tainted
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.validation", "Errors") or
-    getType()
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.validation", "Errors") or
+    this.getType()
         .(RefType)
         .getAnAncestor()
         .hasQualifiedName("org.springframework.web.bind.support", "SessionStatus") or
-    getType()
+    this.getType()
         .(RefType)
         .getAnAncestor()
         .hasQualifiedName("org.springframework.web.util", "UriComponentsBuilder") or
-    getType()
+    this.getType()
         .(RefType)
         .getAnAncestor()
         .hasQualifiedName("org.springframework.data.domain", "Pageable") or
@@ -231,13 +239,13 @@ class SpringRequestMappingParameter extends Parameter {
 
   private predicate isExplicitlyTaintedInput() {
     // InputStream or Reader parameters allow access to the body of a request
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
     // The SpringServletInputAnnotations allow access to the URI, request parameters, cookie values and the body of the request
     this.getAnAnnotation() instanceof SpringServletInputAnnotation or
     // HttpEntity is like @RequestBody, but with a wrapper including the headers
     // TODO model unwrapping aspects
-    getType().(RefType).getASourceSupertype*() instanceof SpringHttpEntity or
+    this.getType().(RefType).getASourceSupertype*() instanceof SpringHttpEntity or
     this.getAnAnnotation()
         .getType()
         .hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
@@ -249,35 +257,35 @@ class SpringRequestMappingParameter extends Parameter {
   private predicate isImplicitRequestParam() {
     // Any parameter which is not explicitly handled, is consider to be an `@RequestParam`, if
     // it is a simple bean property
-    not isNotDirectlyTaintedInput() and
-    not isExplicitlyTaintedInput() and
+    not this.isNotDirectlyTaintedInput() and
+    not this.isExplicitlyTaintedInput() and
     (
-      getType() instanceof PrimitiveType or
-      getType() instanceof TypeString
+      this.getType() instanceof PrimitiveType or
+      this.getType() instanceof TypeString
     )
   }
 
   private predicate isImplicitModelAttribute() {
     // Any parameter which is not explicitly handled, is consider to be an `@ModelAttribute`, if
     // it is not an implicit request param
-    not isNotDirectlyTaintedInput() and
-    not isExplicitlyTaintedInput() and
-    not isImplicitRequestParam()
+    not this.isNotDirectlyTaintedInput() and
+    not this.isExplicitlyTaintedInput() and
+    not this.isImplicitRequestParam()
   }
 
   /** Holds if this is an explicit or implicit `@ModelAttribute` parameter. */
   predicate isModelAttribute() {
-    isImplicitModelAttribute() or
-    getAnAnnotation() instanceof SpringModelAttributeAnnotation
+    this.isImplicitModelAttribute() or
+    this.getAnAnnotation() instanceof SpringModelAttributeAnnotation
   }
 
   /** Holds if the input is tainted. */
   predicate isTaintedInput() {
-    isExplicitlyTaintedInput()
+    this.isExplicitlyTaintedInput()
     or
     // Any parameter which is not explicitly identified, is consider to be an `@RequestParam`, if
     // it is a simple bean property) or a @ModelAttribute if not
-    not isNotDirectlyTaintedInput()
+    not this.isNotDirectlyTaintedInput()
   }
 }
 
@@ -286,7 +294,7 @@ class SpringRequestMappingParameter extends Parameter {
  * the method, which will be used to render the response e.g. as a JSP file.
  */
 abstract class SpringModel extends Parameter {
-  SpringModel() { getCallable() instanceof SpringRequestMappingMethod }
+  SpringModel() { this.getCallable() instanceof SpringRequestMappingMethod }
 
   /**
    * Types for which instances are placed inside the model.
@@ -298,11 +306,11 @@ abstract class SpringModel extends Parameter {
  * A `java.util.Map` can be accepted as the model parameter for a Spring `RequestMapping` method.
  */
 class SpringModelPlainMap extends SpringModel {
-  SpringModelPlainMap() { getType() instanceof MapType }
+  SpringModelPlainMap() { this.getType() instanceof MapType }
 
   override RefType getATypeInModel() {
     exists(MethodAccess methodCall |
-      methodCall.getQualifier() = getAnAccess() and
+      methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("put")
     |
       result = methodCall.getArgument(1).getType()
@@ -316,13 +324,13 @@ class SpringModelPlainMap extends SpringModel {
  */
 class SpringModelModel extends SpringModel {
   SpringModelModel() {
-    getType().(RefType).hasQualifiedName("org.springframework.ui", "Model") or
-    getType().(RefType).hasQualifiedName("org.springframework.ui", "ModelMap")
+    this.getType().(RefType).hasQualifiedName("org.springframework.ui", "Model") or
+    this.getType().(RefType).hasQualifiedName("org.springframework.ui", "ModelMap")
   }
 
   override RefType getATypeInModel() {
     exists(MethodAccess methodCall |
-      methodCall.getQualifier() = getAnAccess() and
+      methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("addAttribute")
     |
       result = methodCall.getArgument(methodCall.getNumArgument() - 1).getType()

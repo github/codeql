@@ -177,15 +177,10 @@ class ModuleApiCallDependencyInjection extends DependencyInjection {
    * This method excludes the method names that are also present on the AngularJS '$provide' object.
    */
   private int injectableArgPos() {
-    (
-      methodName = "directive" or
-      methodName = "filter" or
-      methodName = "controller" or
-      methodName = "animation"
-    ) and
+    methodName = ["directive", "filter", "controller", "animation"] and
     result = 1
     or
-    (methodName = "config" or methodName = "run") and
+    methodName = ["config", "run"] and
     result = 0
   }
 
@@ -199,64 +194,17 @@ class ModuleApiCallDependencyInjection extends DependencyInjection {
  * (cf. https://docs.angularjs.org/api/ng/directive/).
  */
 private predicate builtinDirective(string name) {
-  name = "ngApp" or
-  name = "ngBind" or
-  name = "ngBindHtml" or
-  name = "ngBindTemplate" or
-  name = "ngBlur" or
-  name = "ngChange" or
-  name = "ngChecked" or
-  name = "ngClass" or
-  name = "ngClassEven" or
-  name = "ngClassOdd" or
-  name = "ngClick" or
-  name = "ngCloak" or
-  name = "ngController" or
-  name = "ngCopy" or
-  name = "ngCsp" or
-  name = "ngCut" or
-  name = "ngDblclick" or
-  name = "ngDisabled" or
-  name = "ngFocus" or
-  name = "ngForm" or
-  name = "ngHide" or
-  name = "ngHref" or
-  name = "ngIf" or
-  name = "ngInclude" or
-  name = "ngInit" or
-  name = "ngJq" or
-  name = "ngKeydown" or
-  name = "ngKeypress" or
-  name = "ngKeyup" or
-  name = "ngList" or
-  name = "ngMaxlength" or
-  name = "ngMinlength" or
-  name = "ngModel" or
-  name = "ngModelOptions" or
-  name = "ngMousedown" or
-  name = "ngMouseenter" or
-  name = "ngMouseleave" or
-  name = "ngMousemove" or
-  name = "ngMouseover" or
-  name = "ngMouseup" or
-  name = "ngNonBindable" or
-  name = "ngOpen" or
-  name = "ngOptions" or
-  name = "ngPaste" or
-  name = "ngPattern" or
-  name = "ngPluralize" or
-  name = "ngReadonly" or
-  name = "ngRepeat" or
-  name = "ngRequired" or
-  name = "ngSelected" or
-  name = "ngShow" or
-  name = "ngSrc" or
-  name = "ngSrcset" or
-  name = "ngStyle" or
-  name = "ngSubmit" or
-  name = "ngSwitch" or
-  name = "ngTransclude" or
-  name = "ngValue"
+  name =
+    [
+      "ngApp", "ngBind", "ngBindHtml", "ngBindTemplate", "ngBlur", "ngChange", "ngChecked",
+      "ngClass", "ngClassEven", "ngClassOdd", "ngClick", "ngCloak", "ngController", "ngCopy",
+      "ngCsp", "ngCut", "ngDblclick", "ngDisabled", "ngFocus", "ngForm", "ngHide", "ngHref", "ngIf",
+      "ngInclude", "ngInit", "ngJq", "ngKeydown", "ngKeypress", "ngKeyup", "ngList", "ngMaxlength",
+      "ngMinlength", "ngModel", "ngModelOptions", "ngMousedown", "ngMouseenter", "ngMouseleave",
+      "ngMousemove", "ngMouseover", "ngMouseup", "ngNonBindable", "ngOpen", "ngOptions", "ngPaste",
+      "ngPattern", "ngPluralize", "ngReadonly", "ngRepeat", "ngRequired", "ngSelected", "ngShow",
+      "ngSrc", "ngSrcset", "ngStyle", "ngSubmit", "ngSwitch", "ngTransclude", "ngValue"
+    ]
 }
 
 private newtype TDirectiveInstance =
@@ -676,10 +624,7 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
       )
     )
     or
-    exists(ServiceReference element |
-      element.getName() = "$rootElement" or
-      element.getName() = "$document"
-    |
+    exists(ServiceReference element | element.getName() = ["$rootElement", "$document"] |
       this = element.getAReference()
     )
   }
@@ -780,23 +725,17 @@ private class BuiltinServiceCall extends AngularJSCall {
 
   override predicate interpretsArgumentAsCode(Expr e) {
     exists(ScopeServiceReference scope, string methodName |
-      methodName = "$apply" or
-      methodName = "$applyAsync" or
-      methodName = "$eval" or
-      methodName = "$evalAsync" or
-      methodName = "$watch" or
-      methodName = "$watchCollection" or
-      methodName = "$watchGroup"
+      methodName =
+        [
+          "$apply", "$applyAsync", "$eval", "$evalAsync", "$watch", "$watchCollection",
+          "$watchGroup"
+        ]
     |
       call = scope.getAMethodCall(methodName) and
       e = call.getArgument(0)
     )
     or
-    exists(ServiceReference service |
-      service.getName() = "$compile" or
-      service.getName() = "$parse" or
-      service.getName() = "$interpolate"
-    |
+    exists(ServiceReference service | service.getName() = ["$compile", "$parse", "$interpolate"] |
       call = service.getACall() and
       e = call.getArgument(0)
     )
@@ -952,7 +891,7 @@ class ElementScope extends AngularScope, MkElementScope {
 DataFlow::SourceNode routeProviderRef() {
   result = builtinServiceRef("$routeProvider")
   or
-  exists(string m | m = "when" or m = "otherwise" | result = routeProviderRef().getAMethodCall(m))
+  exists(string m | m = ["when", "otherwise"] | result = routeProviderRef().getAMethodCall(m))
 }
 
 /**

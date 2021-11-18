@@ -139,13 +139,13 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
   override Instruction getChildTrueSuccessor(ConditionBase child) {
-    child = getAnOperand() and
+    child = this.getAnOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
 
   override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getLeftOperand() and
-    result = getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction()
     or
     child = this.getRightOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)

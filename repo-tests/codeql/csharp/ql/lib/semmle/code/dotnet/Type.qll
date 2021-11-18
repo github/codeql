@@ -24,11 +24,11 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
   Namespace getDeclaringNamespace() { none() }
 
   private string getPrefixWithTypes() {
-    result = getDeclaringType().getLabel() + "."
+    result = this.getDeclaringType().getLabel() + "."
     or
-    if getDeclaringNamespace().isGlobalNamespace()
+    if this.getDeclaringNamespace().isGlobalNamespace()
     then result = ""
-    else result = getDeclaringNamespace().getQualifiedName() + "."
+    else result = this.getDeclaringNamespace().getQualifiedName() + "."
   }
 
   pragma[noinline]
@@ -64,9 +64,9 @@ class TypeParameter extends Type, @dotnet_type_parameter {
   /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   int getIndex() { none() }
 
-  final override string getLabel() { result = "!" + getIndex() }
+  final override string getLabel() { result = "!" + this.getIndex() }
 
-  override string getUndecoratedName() { result = "!" + getIndex() }
+  override string getUndecoratedName() { result = "!" + this.getIndex() }
 }
 
 /** A pointer type. */
@@ -76,9 +76,9 @@ class PointerType extends Type, @dotnet_pointer_type {
 
   override string getName() { result = this.getReferentType().getName() + "*" }
 
-  final override string getLabel() { result = getReferentType().getLabel() + "*" }
+  final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
 
-  override string toStringWithTypes() { result = getReferentType().toStringWithTypes() + "*" }
+  override string toStringWithTypes() { result = this.getReferentType().toStringWithTypes() + "*" }
 }
 
 /** An array type. */
@@ -86,7 +86,7 @@ class ArrayType extends ValueOrRefType, @dotnet_array_type {
   /** Gets the type of the array element. */
   Type getElementType() { none() }
 
-  final override string getLabel() { result = getElementType().getLabel() + "[]" }
+  final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
 
-  override string toStringWithTypes() { result = getElementType().toStringWithTypes() + "[]" }
+  override string toStringWithTypes() { result = this.getElementType().toStringWithTypes() + "[]" }
 }

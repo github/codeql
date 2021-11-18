@@ -82,7 +82,7 @@ module FunctionCompositionCall {
   /** A call whose arguments are functions `f,g,h` which are composed into `f(g(h(...))` */
   private class RightToLeft extends WithArrayOverloading {
     RightToLeft() {
-      this = DataFlow::moduleImport(["compose-function"]).getACall()
+      this = DataFlow::moduleImport("compose-function").getACall()
       or
       this =
         DataFlow::moduleMember(["redux", "ramda", "@reduxjs/toolkit", "recompose"], "compose")

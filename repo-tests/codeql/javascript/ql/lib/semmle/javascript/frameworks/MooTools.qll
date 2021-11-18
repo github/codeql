@@ -35,7 +35,7 @@ module MooTools {
   predicate interpretsNodeAsHtml(DataFlow::Node node) {
     exists(Element e |
       node = e.getAnElementPropertyValue("html") or
-      node = e.getAMethodCall(["appendHtml"]).getArgument(0)
+      node = e.getAMethodCall("appendHtml").getArgument(0)
     )
   }
 }

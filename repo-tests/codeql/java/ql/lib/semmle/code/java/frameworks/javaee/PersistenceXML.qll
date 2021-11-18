@@ -100,7 +100,7 @@ class PersistencePropertyElement extends XMLElement {
    * disables the EclipseLink shared cache.
    */
   predicate disablesEclipseLinkSharedCache() {
-    getAttribute("name").getValue() = "eclipselink.cache.shared.default" and
-    getAttribute("value").getValue() = "false"
+    this.getAttribute("name").getValue() = "eclipselink.cache.shared.default" and
+    this.getAttribute("value").getValue() = "false"
   }
 }

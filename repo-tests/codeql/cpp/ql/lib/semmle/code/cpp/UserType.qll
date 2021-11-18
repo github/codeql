@@ -30,19 +30,19 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    * Gets the simple name of this type, without any template parameters.  For example
    * if the name of the type is `"myType<int>"`, the simple name is just `"myType"`.
    */
-  string getSimpleName() { result = getName().regexpReplaceAll("<.*", "") }
+  string getSimpleName() { result = this.getName().regexpReplaceAll("<.*", "") }
 
   override predicate hasName(string name) { usertypes(underlyingElement(this), name, _) }
 
   /** Holds if this type is anonymous. */
-  predicate isAnonymous() { getName().matches("(unnamed%") }
+  predicate isAnonymous() { this.getName().matches("(unnamed%") }
 
   override predicate hasSpecifier(string s) { Type.super.hasSpecifier(s) }
 
   override Specifier getASpecifier() { result = Type.super.getASpecifier() }
 
   override Location getLocation() {
-    if hasDefinition()
+    if this.hasDefinition()
     then result = this.getDefinitionLocation()
     else result = this.getADeclarationLocation()
   }
@@ -53,16 +53,16 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
     else exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
   }
 
-  override Location getADeclarationLocation() { result = getADeclarationEntry().getLocation() }
+  override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
   override TypeDeclarationEntry getDefinition() {
-    result = getADeclarationEntry() and
+    result = this.getADeclarationEntry() and
     result.isDefinition()
   }
 
   override Location getDefinitionLocation() {
-    if exists(getDefinition())
-    then result = getDefinition().getLocation()
+    if exists(this.getDefinition())
+    then result = this.getDefinition().getLocation()
     else
       exists(Class t |
         this.(Class).isConstructedFrom(t) and result = t.getDefinition().getLocation()
@@ -80,7 +80,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    * Holds if this is a local type (that is, a type that has a directly-enclosing
    * function).
    */
-  predicate isLocal() { exists(getEnclosingFunction()) }
+  predicate isLocal() { exists(this.getEnclosingFunction()) }
 
   /*
    * Dummy implementations of inherited methods. This class must not be
@@ -107,9 +107,9 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
  * ```
  */
 class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
-  override UserType getDeclaration() { result = getType() }
+  override UserType getDeclaration() { result = this.getType() }
 
-  override string getName() { result = getType().getName() }
+  override string getName() { result = this.getType().getName() }
 
   override string getAPrimaryQlClass() { result = "TypeDeclarationEntry" }
 

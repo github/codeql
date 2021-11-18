@@ -318,7 +318,7 @@ private module Tornado {
               ]
           }
 
-          override string getMethodName() { result in ["full_url"] }
+          override string getMethodName() { result = "full_url" }
 
           override string getAsyncMethodName() { none() }
         }

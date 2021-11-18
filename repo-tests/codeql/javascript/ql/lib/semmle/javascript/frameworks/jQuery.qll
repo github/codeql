@@ -139,7 +139,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @call_e
   JQueryDomElementDefinition() {
     this = call and
     call = jquery().getACall().asExpr() and
-    exists(string s | s = call.getArgument(0).(Expr).getStringValue() |
+    exists(string s | s = call.getArgument(0).getStringValue() |
       // match an opening angle bracket followed by a tag name, followed by arbitrary
       // text and a closing angle bracket, potentially with whitespace in between
       tagName = s.regexpCapture("\\s*<\\s*(\\w+)\\b[^>]*>\\s*", 1).toLowerCase()
@@ -441,19 +441,11 @@ module JQuery {
    * arguments as HTML.
    */
   predicate isMethodArgumentInterpretedAsHtml(string name) {
-    name = "after" or
-    name = "append" or
-    name = "appendTo" or
-    name = "before" or
-    name = "html" or
-    name = "insertAfter" or
-    name = "insertBefore" or
-    name = "prepend" or
-    name = "prependTo" or
-    name = "replaceWith" or
-    name = "wrap" or
-    name = "wrapAll" or
-    name = "wrapInner"
+    name =
+      [
+        "after", "append", "wrap", "wrapAll", "wrapInner", "appendTo", "before", "html",
+        "insertAfter", "insertBefore", "prepend", "prependTo", "replaceWith"
+      ]
   }
 
   /**
@@ -461,13 +453,7 @@ module JQuery {
    * arguments as a selector.
    */
   predicate isMethodArgumentInterpretedAsSelector(string name) {
-    name = "appendTo" or
-    name = "insertAfter" or
-    name = "insertBefore" or
-    name = "prependTo" or
-    name = "wrap" or
-    name = "wrapAll" or
-    name = "wrapInner"
+    name = ["appendTo", "insertAfter", "insertBefore", "prependTo", "wrap", "wrapAll", "wrapInner"]
   }
 
   module DollarSource {

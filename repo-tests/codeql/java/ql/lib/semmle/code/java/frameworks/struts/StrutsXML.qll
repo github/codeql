@@ -31,18 +31,18 @@ abstract class StrutsXMLFile extends XMLFile {
   /**
    * Gets a transitively included file.
    */
-  StrutsXMLFile getAnIncludedFile() { result = getADirectlyIncludedFile*() }
+  StrutsXMLFile getAnIncludedFile() { result = this.getADirectlyIncludedFile*() }
 
   /**
    * Gets a `<constant>` defined in this file, or an included file.
    */
-  StrutsXMLConstant getAConstant() { result.getFile() = getAnIncludedFile() }
+  StrutsXMLConstant getAConstant() { result.getFile() = this.getAnIncludedFile() }
 
   /**
    * Gets the value of the constant with the given `name`.
    */
   string getConstantValue(string name) {
-    exists(StrutsXMLConstant constant | constant = getAConstant() |
+    exists(StrutsXMLConstant constant | constant = this.getAConstant() |
       constant.getConstantName() = name and
       result = constant.getConstantValue()
     )
@@ -56,8 +56,8 @@ abstract class StrutsXMLFile extends XMLFile {
  */
 class StrutsRootXMLFile extends StrutsXMLFile {
   StrutsRootXMLFile() {
-    getBaseName() = "struts.xml" or
-    getBaseName() = "struts-plugin.xml"
+    this.getBaseName() = "struts.xml" or
+    this.getBaseName() = "struts-plugin.xml"
   }
 }
 
@@ -73,7 +73,7 @@ class StrutsIncludedXMLFile extends StrutsXMLFile {
  */
 class StrutsFolder extends Folder {
   StrutsFolder() {
-    exists(Container c | c = getAChildContainer() |
+    exists(Container c | c = this.getAChildContainer() |
       c instanceof StrutsFolder or
       c instanceof StrutsXMLFile
     )
@@ -82,14 +82,14 @@ class StrutsFolder extends Folder {
   /**
    * Holds if this folder has a unique Struts root configuration file.
    */
-  predicate isUnique() { count(getAStrutsRootFile()) = 1 }
+  predicate isUnique() { count(this.getAStrutsRootFile()) = 1 }
 
   /**
    * Gets a struts root configuration that applies to this folder.
    */
   StrutsRootXMLFile getAStrutsRootFile() {
-    result = getAChildContainer() or
-    result = getAChildContainer().(StrutsFolder).getAStrutsRootFile()
+    result = this.getAChildContainer() or
+    result = this.getAChildContainer().(StrutsFolder).getAStrutsRootFile()
   }
 }
 
@@ -102,7 +102,7 @@ class StrutsXMLElement extends XMLElement {
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() { result = allCharactersString().trim() }
+  string getValue() { result = this.allCharactersString().trim() }
 }
 
 /**
@@ -121,7 +121,7 @@ class StrutsXMLInclude extends StrutsXMLElement {
    * potentially be included.
    */
   XMLFile getIncludedFile() {
-    exists(string file | file = getAttribute("file").getValue() |
+    exists(string file | file = this.getAttribute("file").getValue() |
       result.getAbsolutePath().matches("%" + escapeForMatch(file))
     )
   }
@@ -157,10 +157,10 @@ class StrutsXMLAction extends StrutsXMLElement {
    * Gets the `Class` that is referenced by this Struts action.
    */
   Class getActionClass() {
-    strutsWildcardMatching(result.getQualifiedName(), getAttribute("class").getValue())
+    strutsWildcardMatching(result.getQualifiedName(), this.getAttribute("class").getValue())
   }
 
-  string getMethodName() { result = getAttribute("method").getValue() }
+  string getMethodName() { result = this.getAttribute("method").getValue() }
 
   /**
    * Gets the `Method` which is referenced by this action.
@@ -168,9 +168,9 @@ class StrutsXMLAction extends StrutsXMLElement {
    * If no method is specified in the attributes of this element, a method named `execute` is chosen.
    */
   Method getActionMethod() {
-    getActionClass().inherits(result) and
-    if exists(getMethodName())
-    then strutsWildcardMatching(result.getName(), getMethodName())
+    this.getActionClass().inherits(result) and
+    if exists(this.getMethodName())
+    then strutsWildcardMatching(result.getName(), this.getMethodName())
     else result.hasName("execute")
   }
 }
@@ -179,9 +179,9 @@ class StrutsXMLAction extends StrutsXMLElement {
  * A `<constant>` property, representing a configuration parameter to struts.
  */
 class StrutsXMLConstant extends StrutsXMLElement {
-  StrutsXMLConstant() { getName() = "constant" }
+  StrutsXMLConstant() { this.getName() = "constant" }
 
-  string getConstantName() { result = getAttribute("name").getValue() }
+  string getConstantName() { result = this.getAttribute("name").getValue() }
 
-  string getConstantValue() { result = getAttribute("value").getValue() }
+  string getConstantValue() { result = this.getAttribute("value").getValue() }
 }

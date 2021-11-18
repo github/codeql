@@ -86,7 +86,7 @@ class Struts2ActionClass extends Class {
    * Holds if this action class extends the preparable interface.
    */
   predicate isPreparable() {
-    getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Preparable")
+    this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Preparable")
   }
 
   /**
@@ -96,10 +96,10 @@ class Struts2ActionClass extends Class {
    * methods only exist if the class `isPreparable()`.
    */
   Method getPrepareMethod() {
-    isPreparable() and
+    this.isPreparable() and
     exists(Struts2ActionMethod actionMethod |
-      actionMethod = getActionMethod() and
-      inherits(result) and
+      actionMethod = this.getActionMethod() and
+      this.inherits(result) and
       result
           .hasName("prepare" + actionMethod.getName().charAt(0).toUpperCase() +
               actionMethod.getName().suffix(1))

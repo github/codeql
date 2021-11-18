@@ -17,10 +17,10 @@ class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variabl
   VariableAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets a read access to this variable, if any. */
-  ReadAccess getARead() { result = getAnAccess() }
+  ReadAccess getARead() { result = this.getAnAccess() }
 
   /** Gets a write access to this variable, if any. */
-  WriteAccess getAWrite() { result = getAnAccess() }
+  WriteAccess getAWrite() { result = this.getAnAccess() }
 
   override string toString() { result = Declaration.super.toString() }
 
@@ -40,20 +40,21 @@ class StackVariable extends Variable, @cil_stack_variable {
 class LocalVariable extends StackVariable, @cil_local_variable {
   override string toString() {
     result =
-      "Local variable " + getIndex() + " of method " + getImplementation().getMethod().getName()
+      "Local variable " + this.getIndex() + " of method " +
+        this.getImplementation().getMethod().getName()
   }
 
   /** Gets the method implementation defining this local variable. */
   MethodImplementation getImplementation() { this = result.getALocalVariable() }
 
   /** Gets the index number of this local variable. This is not usually significant. */
-  int getIndex() { this = getImplementation().getLocalVariable(result) }
+  int getIndex() { this = this.getImplementation().getLocalVariable(result) }
 
   override Type getType() { cil_local_variable(this, _, _, result) }
 
-  override Location getLocation() { result = getImplementation().getLocation() }
+  override Location getLocation() { result = this.getImplementation().getLocation() }
 
-  override Method getMethod() { result = getImplementation().getMethod() }
+  override Method getMethod() { result = this.getImplementation().getMethod() }
 }
 
 /** A parameter of a `Method` or `FunctionPointerType`. */
@@ -64,7 +65,7 @@ class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_paramete
   int getIndex() { cil_parameter(this, _, result, _) }
 
   override string toString() {
-    result = "Parameter " + getIndex() + " of " + getDeclaringElement().getName()
+    result = "Parameter " + this.getIndex() + " of " + this.getDeclaringElement().getName()
   }
 
   override Type getType() { cil_parameter(this, _, _, result) }
@@ -82,23 +83,25 @@ class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_paramete
   predicate hasInFlag() { cil_parameter_in(this) }
 
   /** Holds if this parameter has C# `out` semantics. */
-  override predicate isOut() { hasOutFlag() and not hasInFlag() }
+  override predicate isOut() { this.hasOutFlag() and not this.hasInFlag() }
 
   /** Holds if this parameter has C# `ref` semantics. */
-  override predicate isRef() { hasOutFlag() and hasInFlag() }
+  override predicate isRef() { this.hasOutFlag() and this.hasInFlag() }
 
-  override string toStringWithTypes() { result = getPrefix() + getType().toStringWithTypes() }
+  override string toStringWithTypes() {
+    result = this.getPrefix() + this.getType().toStringWithTypes()
+  }
 
   private string getPrefix() {
-    if isOut()
+    if this.isOut()
     then result = "out "
     else
-      if isRef()
+      if this.isRef()
       then result = "ref "
       else result = ""
   }
 
-  override Location getLocation() { result = getDeclaringElement().getLocation() }
+  override Location getLocation() { result = this.getDeclaringElement().getLocation() }
 }
 
 /** A method parameter. */
@@ -110,11 +113,11 @@ class MethodParameter extends Parameter, StackVariable {
 
   /** Gets a parameter in an overridden method. */
   MethodParameter getOverriddenParameter() {
-    result = getMethod().getOverriddenMethod().getRawParameter(getRawPosition())
+    result = this.getMethod().getOverriddenMethod().getRawParameter(this.getRawPosition())
   }
 
   override MethodParameter getUnboundDeclaration() {
-    result = getMethod().getUnboundDeclaration().getRawParameter(getRawPosition())
+    result = this.getMethod().getUnboundDeclaration().getRawParameter(this.getRawPosition())
   }
 
   override string toString() { result = Parameter.super.toString() }
@@ -136,10 +139,10 @@ class ThisParameter extends MethodParameter {
 
 /** A field. */
 class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @cil_field {
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   override string toStringWithTypes() {
-    result = getDeclaringType().toStringWithTypes() + "." + getName()
+    result = this.getDeclaringType().toStringWithTypes() + "." + this.getName()
   }
 
   override string getName() { cil_field(this, _, result, _) }
@@ -148,5 +151,5 @@ class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @ci
 
   override ValueOrRefType getDeclaringType() { cil_field(this, result, _, _) }
 
-  override Location getLocation() { result = getDeclaringType().getLocation() }
+  override Location getLocation() { result = this.getDeclaringType().getLocation() }
 }

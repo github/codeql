@@ -31,7 +31,7 @@ private class MemberSwap extends TaintFunction, MemberFunction, AliasFunction {
     this.hasName("swap") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(ReferenceType).getBaseType().getUnspecifiedType() =
-      getDeclaringType()
+      this.getDeclaringType()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

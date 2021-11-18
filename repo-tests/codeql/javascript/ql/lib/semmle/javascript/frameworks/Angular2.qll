@@ -152,7 +152,7 @@ module Angular2 {
   /** A value that is about to be promoted to a trusted script value. */
   private class AngularCodeInjectionSink extends CodeInjection::Sink {
     AngularCodeInjectionSink() {
-      this = domSanitizer().getAMethodCall(["bypassSecurityTrustScript"]).getArgument(0)
+      this = domSanitizer().getAMethodCall("bypassSecurityTrustScript").getArgument(0)
     }
   }
 

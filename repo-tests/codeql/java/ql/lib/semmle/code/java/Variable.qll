@@ -47,12 +47,12 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
   override Callable getCallable() { result = this.getParent().getEnclosingCallable() }
 
   /** Gets the callable in which this declaration occurs. */
-  Callable getEnclosingCallable() { result = getCallable() }
+  Callable getEnclosingCallable() { result = this.getCallable() }
 
   override string toString() { result = this.getType().getName() + " " + this.getName() }
 
   /** Gets the initializer expression of this local variable declaration. */
-  override Expr getInitializer() { result = getDeclExpr().getInit() }
+  override Expr getInitializer() { result = this.getDeclExpr().getInit() }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDecl" }
 }
@@ -63,7 +63,7 @@ class Parameter extends Element, @param, LocalScopeVariable {
   override Type getType() { params(this, result, _, _, _) }
 
   /** Holds if the parameter is never assigned a value in the body of the callable. */
-  predicate isEffectivelyFinal() { not exists(getAnAssignedValue()) }
+  predicate isEffectivelyFinal() { not exists(this.getAnAssignedValue()) }
 
   /** Gets the (zero-based) index of this formal parameter. */
   int getPosition() { params(this, _, result, _, _) }
@@ -87,8 +87,8 @@ class Parameter extends Element, @param, LocalScopeVariable {
    * Varargs parameters will have no results for this method.
    */
   Expr getAnArgument() {
-    not isVarargs() and
-    result = getACallArgument(getPosition())
+    not this.isVarargs() and
+    result = this.getACallArgument(this.getPosition())
   }
 
   pragma[noinline]

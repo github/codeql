@@ -74,13 +74,10 @@ class ExceptionInfoSequence extends SequenceKind {
 class CallToTracebackFunction extends ErrorInfoSource {
   CallToTracebackFunction() {
     exists(string name |
-      name = "extract_tb" or
-      name = "extract_stack" or
-      name = "format_list" or
-      name = "format_exception_only" or
-      name = "format_exception" or
-      name = "format_tb" or
-      name = "format_stack"
+      name in [
+          "extract_tb", "extract_stack", "format_list", "format_exception_only", "format_exception",
+          "format_tb", "format_stack"
+        ]
     |
       this = traceback_function(name).getACall()
     )

@@ -9,7 +9,7 @@ class NumericNarrowingCastExpr extends CastExpr {
     exists(NumericType sourceType, NumericType targetType |
       sourceType = getExpr().getType() and targetType = getType()
     |
-      not targetType.(NumType).widerThanOrEqualTo(sourceType.(NumType))
+      not targetType.(NumType).widerThanOrEqualTo(sourceType)
     )
   }
 }

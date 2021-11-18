@@ -10,6 +10,7 @@
 private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
+import DataFlowImplCommonPublic
 
 /**
  * A configuration of interprocedural data flow analysis. This defines
@@ -95,6 +96,22 @@ abstract class Configuration extends string {
   int fieldFlowBranchLimit() { result = 2 }
 
   /**
+   * Gets a data flow configuration feature to add restrictions to the set of
+   * valid flow paths.
+   *
+   * - `FeatureHasSourceCallContext`:
+   *    Assume that sources have some existing call context to disallow
+   *    conflicting return-flow directly following the source.
+   * - `FeatureHasSinkCallContext`:
+   *    Assume that sinks have some existing call context to disallow
+   *    conflicting argument-to-parameter flow directly preceding the sink.
+   * - `FeatureEqualSourceSinkCallContext`:
+   *    Implies both of the above and additionally ensures that the entire flow
+   *    path preserves the call context.
+   */
+  FlowFeature getAFeature() { none() }
+
+  /**
    * Holds if data may flow from `source` to `sink` for this configuration.
    */
   predicate hasFlow(Node source, Node sink) { flowsTo(source, sink, this) }
@@ -110,12 +127,12 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowTo(Node sink) { hasFlow(_, sink) }
+  predicate hasFlowTo(Node sink) { this.hasFlow(_, sink) }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowToExpr(DataFlowExpr sink) { hasFlowTo(exprNode(sink)) }
+  predicate hasFlowToExpr(DataFlowExpr sink) { this.hasFlowTo(exprNode(sink)) }
 
   /**
    * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
@@ -244,6 +261,8 @@ private class ParamNodeEx extends NodeEx {
   }
 
   int getPosition() { this.isParameterOf(_, result) }
+
+  predicate allowParameterReturnInSelf() { allowParameterReturnInSelfCached(this.asNode()) }
 }
 
 private class RetNodeEx extends NodeEx {
@@ -347,7 +366,8 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
     not outBarrier(node1, config) and
     not inBarrier(node2, config) and
     not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    not fullBarrier(node2, config) and
+    not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
@@ -363,7 +383,8 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
     not outBarrier(node1, config) and
     not inBarrier(node2, config) and
     not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    not fullBarrier(node2, config) and
+    not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
@@ -399,6 +420,20 @@ private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx a
  */
 private predicate useFieldFlow(Configuration config) { config.fieldFlowBranchLimit() >= 1 }
 
+private predicate hasSourceCallCtx(Configuration config) {
+  exists(FlowFeature feature | feature = config.getAFeature() |
+    feature instanceof FeatureHasSourceCallContext or
+    feature instanceof FeatureEqualSourceSinkCallContext
+  )
+}
+
+private predicate hasSinkCallCtx(Configuration config) {
+  exists(FlowFeature feature | feature = config.getAFeature() |
+    feature instanceof FeatureHasSinkCallContext or
+    feature instanceof FeatureEqualSourceSinkCallContext
+  )
+}
+
 private module Stage1 {
   class ApApprox = Unit;
 
@@ -419,7 +454,7 @@ private module Stage1 {
     not fullBarrier(node, config) and
     (
       sourceNode(node, config) and
-      cc = false
+      if hasSourceCallCtx(config) then cc = true else cc = false
       or
       exists(NodeEx mid |
         fwdFlow(mid, cc, config) and
@@ -549,7 +584,7 @@ private module Stage1 {
   private predicate revFlow0(NodeEx node, boolean toReturn, Configuration config) {
     fwdFlow(node, config) and
     sinkNode(node, config) and
-    toReturn = false
+    if hasSinkCallCtx(config) then toReturn = true else toReturn = false
     or
     exists(NodeEx mid |
       localFlowStep(node, mid, config) and
@@ -744,8 +779,12 @@ private module Stage1 {
       returnFlowCallableNodeCand(c, kind, config) and
       p.getEnclosingCallable() = c and
       exists(ap) and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -931,6 +970,8 @@ private module Stage2 {
 
   Cc ccNone() { result instanceof CallContextAny }
 
+  CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+
   private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
@@ -998,7 +1039,7 @@ private module Stage2 {
   predicate fwdFlow(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -1209,7 +1250,7 @@ private module Stage2 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -1394,8 +1435,12 @@ private module Stage2 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -1606,6 +1651,8 @@ private module Stage3 {
 
   Cc ccNone() { result = false }
 
+  CcCall ccSomeCall() { result = true }
+
   private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
@@ -1687,7 +1734,7 @@ private module Stage3 {
   private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -1898,7 +1945,7 @@ private module Stage3 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -2083,8 +2130,12 @@ private module Stage3 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -2352,6 +2403,8 @@ private module Stage4 {
 
   Cc ccNone() { result instanceof CallContextAny }
 
+  CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+
   private class LocalCc = LocalCallContext;
 
   bindingset[call, c, outercc]
@@ -2447,7 +2500,7 @@ private module Stage4 {
   private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
-    cc = ccNone() and
+    (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -2658,7 +2711,7 @@ private module Stage4 {
   ) {
     fwdFlow(node, _, _, ap, config) and
     sinkNode(node, config) and
-    toReturn = false and
+    (if hasSinkCallCtx(config) then toReturn = true else toReturn = false) and
     returnAp = apNone() and
     ap instanceof ApNil
     or
@@ -2843,8 +2896,12 @@ private module Stage4 {
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
-      // we don't expect a parameter to return stored in itself
-      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      // we don't expect a parameter to return stored in itself, unless explicitly allowed
+      (
+        not kind.(ParamUpdateReturnKind).getPosition() = pos
+        or
+        p.allowParameterReturnInSelf()
+      )
     )
   }
 
@@ -2916,6 +2973,8 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
   int getParameterPos() { p.isParameterOf(_, result) }
+
+  ParamNodeEx getParamNode() { result = p }
 
   override string toString() { result = p + ": " + ap }
 
@@ -3044,7 +3103,11 @@ private newtype TPathNode =
     // A PathNode is introduced by a source ...
     Stage4::revFlow(node, config) and
     sourceNode(node, config) and
-    cc instanceof CallContextAny and
+    (
+      if hasSourceCallCtx(config)
+      then cc instanceof CallContextSomeCall
+      else cc instanceof CallContextAny
+    ) and
     sc instanceof SummaryCtxNone and
     ap = TAccessPathNil(node.getDataFlowType())
     or
@@ -3056,17 +3119,10 @@ private newtype TPathNode =
     )
   } or
   TPathNodeSink(NodeEx node, Configuration config) {
-    sinkNode(node, pragma[only_bind_into](config)) and
-    Stage4::revFlow(node, pragma[only_bind_into](config)) and
-    (
-      // A sink that is also a source ...
-      sourceNode(node, config)
-      or
-      // ... or a sink that can be reached from a source
-      exists(PathNodeMid mid |
-        pathStep(mid, node, _, _, TAccessPathNil(_)) and
-        pragma[only_bind_into](config) = mid.getConfiguration()
-      )
+    exists(PathNodeMid sink |
+      sink.isAtSink() and
+      node = sink.getNodeEx() and
+      config = sink.getConfiguration()
     )
   }
 
@@ -3170,7 +3226,7 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
   }
 
   override string toString() {
-    result = "[" + this.toStringImpl(true) + length().toString() + ")]"
+    result = "[" + this.toStringImpl(true) + this.length().toString() + ")]"
     or
     result = "[" + this.toStringImpl(false)
   }
@@ -3309,9 +3365,11 @@ abstract private class PathNodeImpl extends PathNode {
     result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
   }
 
-  override string toString() { result = this.getNodeEx().toString() + ppAp() }
+  override string toString() { result = this.getNodeEx().toString() + this.ppAp() }
 
-  override string toStringWithContext() { result = this.getNodeEx().toString() + ppAp() + ppCtx() }
+  override string toStringWithContext() {
+    result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx()
+  }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -3379,23 +3437,47 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
 
   override PathNodeImpl getASuccessorImpl() {
     // an intermediate step to another intermediate node
-    result = getSuccMid()
+    result = this.getSuccMid()
     or
-    // a final step to a sink via zero steps means we merge the last two steps to prevent trivial-looking edges
-    exists(PathNodeMid mid, PathNodeSink sink |
-      mid = getSuccMid() and
-      mid.getNodeEx() = sink.getNodeEx() and
-      mid.getAp() instanceof AccessPathNil and
-      sink.getConfiguration() = unbindConf(mid.getConfiguration()) and
-      result = sink
-    )
+    // a final step to a sink
+    result = this.getSuccMid().projectToSink()
   }
 
   override predicate isSource() {
     sourceNode(node, config) and
-    cc instanceof CallContextAny and
+    (
+      if hasSourceCallCtx(config)
+      then cc instanceof CallContextSomeCall
+      else cc instanceof CallContextAny
+    ) and
     sc instanceof SummaryCtxNone and
     ap instanceof AccessPathNil
+  }
+
+  predicate isAtSink() {
+    sinkNode(node, config) and
+    ap instanceof AccessPathNil and
+    if hasSinkCallCtx(config)
+    then
+      // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
+      // is exactly what we need to check. This also implies
+      // `sc instanceof SummaryCtxNone`.
+      // For `FeatureEqualSourceSinkCallContext` the initial call context was
+      // set to `CallContextSomeCall` and jumps are disallowed, so
+      // `cc instanceof CallContextNoCall` never holds. On the other hand,
+      // in this case there's never any need to enter a call except to identify
+      // a summary, so the condition in `pathIntoCallable` enforces this, which
+      // means that `sc instanceof SummaryCtxNone` holds if and only if we are
+      // in the call context of the source.
+      sc instanceof SummaryCtxNone or
+      cc instanceof CallContextNoCall
+    else any()
+  }
+
+  PathNodeSink projectToSink() {
+    this.isAtSink() and
+    result.getNodeEx() = node and
+    result.getConfiguration() = unbindConf(config)
   }
 }
 
@@ -3460,7 +3542,7 @@ private predicate pathStep(
   exists(TypedContent tc | pathReadStep(mid, node, ap.push(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
   or
-  pathIntoCallable(mid, node, _, cc, sc, _) and ap = mid.getAp()
+  pathIntoCallable(mid, node, _, cc, sc, _, _) and ap = mid.getAp()
   or
   pathOutOfCallable(mid, node, cc) and ap = mid.getAp() and sc instanceof SummaryCtxNone
   or
@@ -3537,18 +3619,20 @@ private predicate pathOutOfCallable(PathNodeMid mid, NodeEx out, CallContext cc)
  */
 pragma[noinline]
 private predicate pathIntoArg(
-  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa
+  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa,
+  Configuration config
 ) {
   exists(ArgNode arg |
     arg = mid.getNodeEx().asNode() and
     cc = mid.getCallContext() and
     arg.argumentOf(call, i) and
     ap = mid.getAp() and
-    apa = ap.getApprox()
+    apa = ap.getApprox() and
+    config = mid.getConfiguration()
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate parameterCand(
   DataFlowCallable callable, int i, AccessPathApprox apa, Configuration config
 ) {
@@ -3561,12 +3645,14 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPath ap
+  AccessPath ap, Configuration config
 ) {
   exists(AccessPathApprox apa |
-    pathIntoArg(mid, i, outercc, call, ap, apa) and
+    pathIntoArg(mid, pragma[only_bind_into](i), outercc, call, ap, pragma[only_bind_into](apa),
+      pragma[only_bind_into](config)) and
     callable = resolveCall(call, outercc) and
-    parameterCand(callable, any(int j | j <= i and j >= i), apa, mid.getConfiguration())
+    parameterCand(callable, pragma[only_bind_into](i), pragma[only_bind_into](apa),
+      pragma[only_bind_into](config))
   )
 }
 
@@ -3575,18 +3661,23 @@ private predicate pathIntoCallable0(
  * before and after entering the callable are `outercc` and `innercc`,
  * respectively.
  */
+pragma[nomagic]
 private predicate pathIntoCallable(
   PathNodeMid mid, ParamNodeEx p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
-  DataFlowCall call
+  DataFlowCall call, Configuration config
 ) {
   exists(int i, DataFlowCallable callable, AccessPath ap |
-    pathIntoCallable0(mid, callable, i, outercc, call, ap) and
+    pathIntoCallable0(mid, callable, i, outercc, call, ap, config) and
     p.isParameterOf(callable, i) and
     (
       sc = TSummaryCtxSome(p, ap)
       or
       not exists(TSummaryCtxSome(p, ap)) and
-      sc = TSummaryCtxNone()
+      sc = TSummaryCtxNone() and
+      // When the call contexts of source and sink needs to match then there's
+      // never any reason to enter a callable except to find a summary. See also
+      // the comment in `PathNodeMid::isAtSink`.
+      not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
     )
   |
     if recordDataFlowCallSite(call, callable)
@@ -3610,18 +3701,23 @@ private predicate paramFlowsThrough(
     ap = mid.getAp() and
     apa = ap.getApprox() and
     pos = sc.getParameterPos() and
-    not kind.(ParamUpdateReturnKind).getPosition() = pos
+    // we don't expect a parameter to return stored in itself, unless explicitly allowed
+    (
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+      or
+      sc.getParamNode().allowParameterReturnInSelf()
+    )
   )
 }
 
 pragma[nomagic]
 private predicate pathThroughCallable0(
   DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, CallContext cc, AccessPath ap,
-  AccessPathApprox apa
+  AccessPathApprox apa, Configuration config
 ) {
   exists(CallContext innercc, SummaryCtx sc |
-    pathIntoCallable(mid, _, cc, innercc, sc, call) and
-    paramFlowsThrough(kind, innercc, sc, ap, apa, unbindConf(mid.getConfiguration()))
+    pathIntoCallable(mid, _, cc, innercc, sc, call, config) and
+    paramFlowsThrough(kind, innercc, sc, ap, apa, config)
   )
 }
 
@@ -3631,9 +3727,9 @@ private predicate pathThroughCallable0(
  */
 pragma[noinline]
 private predicate pathThroughCallable(PathNodeMid mid, NodeEx out, CallContext cc, AccessPath ap) {
-  exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa |
-    pathThroughCallable0(call, mid, kind, cc, ap, apa) and
-    out = getAnOutNodeFlow(kind, call, apa, unbindConf(mid.getConfiguration()))
+  exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa, Configuration config |
+    pathThroughCallable0(call, mid, kind, cc, ap, apa, config) and
+    out = getAnOutNodeFlow(kind, call, apa, config)
   )
 }
 
@@ -3644,13 +3740,15 @@ private module Subpaths {
    */
   pragma[nomagic]
   private predicate subpaths01(
-    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, AccessPath apout
   ) {
-    pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
-    pathIntoCallable(arg, par, _, innercc, sc, _) and
-    paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _,
-      unbindConf(arg.getConfiguration()))
+    exists(Configuration config |
+      pathThroughCallable(arg, out, _, pragma[only_bind_into](apout)) and
+      pathIntoCallable(arg, par, _, innercc, sc, _, config) and
+      paramFlowsThrough(kind, innercc, sc, pragma[only_bind_into](apout), _, unbindConf(config)) and
+      not arg.isHidden()
+    )
   }
 
   /**
@@ -3683,8 +3781,17 @@ private module Subpaths {
       innercc = ret.getCallContext() and
       sc = ret.getSummaryCtx() and
       ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
-      apout = ret.getAp() and
-      not ret.isHidden()
+      apout = ret.getAp()
+    )
+  }
+
+  private PathNodeImpl localStepToHidden(PathNodeImpl n) {
+    n.getASuccessorImpl() = result and
+    result.isHidden() and
+    exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
+      localFlowBigStep(n1, n2, _, _, _, _) or
+      store(n1, _, n2, _, _) or
+      read(n1, _, n2, _)
     )
   }
 
@@ -3693,11 +3800,12 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeMid ret, PathNodeMid out) {
+  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNodeMid out) {
     exists(ParamNodeEx p, NodeEx o, AccessPath apout |
       pragma[only_bind_into](arg).getASuccessor() = par and
       pragma[only_bind_into](arg).getASuccessor() = out and
-      subpaths03(arg, p, ret, o, apout) and
+      subpaths03(arg, p, localStepToHidden*(ret), o, apout) and
+      not ret.isHidden() and
       par.getNodeEx() = p and
       out.getNodeEx() = o and
       out.getAp() = apout

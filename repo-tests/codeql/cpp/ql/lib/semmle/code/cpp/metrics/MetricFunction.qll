@@ -41,7 +41,7 @@ class MetricFunction extends Function {
    * `&&`, and `||`) plus one.
    */
   int getCyclomaticComplexity() {
-    result = 1 + cyclomaticComplexityBranches(getBlock()) and
+    result = 1 + cyclomaticComplexityBranches(this.getBlock()) and
     not this.isMultiplyDefined()
   }
 
@@ -295,7 +295,7 @@ class MetricFunction extends Function {
   int getNestingDepth() {
     result =
       max(Stmt s, int aDepth | s.getEnclosingFunction() = this and nestingDepth(s, aDepth) | aDepth) and
-    not isMultiplyDefined()
+    not this.isMultiplyDefined()
   }
 }
 

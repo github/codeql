@@ -387,7 +387,7 @@ private predicate concrete_class(PythonClassObjectInternal cls) {
       not exists(Raise r, Name ex |
         r.getScope() = f and
         (r.getException() = ex or r.getException().(Call).getFunc() = ex) and
-        (ex.getId() = "NotImplementedError" or ex.getId() = "NotImplemented")
+        ex.getId() = ["NotImplementedError", "NotImplemented"]
       )
     )
   )
@@ -437,11 +437,7 @@ predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name)
  * Helper for missing modules to determine if name `x.y` is a module `x.y` or
  * an attribute `y` of module `x`. This list should be added to as required.
  */
-predicate common_module_name(string name) {
-  name = "zope.interface"
-  or
-  name = "six.moves"
-}
+predicate common_module_name(string name) { name = ["zope.interface", "six.moves"] }
 
 /**
  * A declaration of a class, either a built-in class or a source definition
@@ -482,16 +478,11 @@ library class ClassDecl extends @py_object {
    */
   predicate isSpecial() {
     exists(string name | this = Builtin::special(name) |
-      name = "type" or
-      name = "super" or
-      name = "bool" or
-      name = "NoneType" or
-      name = "tuple" or
-      name = "property" or
-      name = "ClassMethod" or
-      name = "StaticMethod" or
-      name = "MethodType" or
-      name = "ModuleType"
+      name =
+        [
+          "type", "super", "bool", "NoneType", "tuple", "property", "ClassMethod", "StaticMethod",
+          "MethodType", "ModuleType"
+        ]
     )
   }
 
@@ -514,11 +505,7 @@ library class ClassDecl extends @py_object {
 
   /** Holds if this class is the abstract base class */
   predicate isAbstractBaseClass(string name) {
-    exists(Module m |
-      m.getName() = "_abcoll"
-      or
-      m.getName() = "_collections_abc"
-    |
+    exists(Module m | m.getName() = ["_abcoll", "_collections_abc"] |
       this.getClass().getScope() = m and
       this.getName() = name
     )
