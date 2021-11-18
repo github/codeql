@@ -85,7 +85,7 @@ private string getACredentialRegExp() {
 bindingset[name]
 private predicate maybeCredentialName(string name) {
   name.regexpMatch(getACredentialRegExp()) and
-  not name.suffix(name.length() - 4) = "file"
+  not name.matches("%file")
 }
 
 // Positional parameter
