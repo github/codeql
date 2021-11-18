@@ -98,17 +98,18 @@ module IO {
 
   /**
    * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
-   * the `IO.read call in:
+   * the `read` and `readline` calls in:
    *
    * ```rb
+   * # invokes the `date` shell command as a subprocess, returning its output as a string
    * IO.read("|date")
+   *
+   * # reads from the file `foo.txt`, returning its first line as a string
+   * IO.new(IO.sysopen("foo.txt")).readline
    * ```
    *
-   * returns the output of the `date` shell command, invoked as a subprocess.
-   *
-   * This class includes reads both from shell commands and reads from the
-   * filesystem. For working with filesystem accesses specifically, see
-   * `FileReader` or the `FileSystemReadAccess` concept.
+   * This class includes only reads that use the `IO` class directly, not those
+   * that use a subclass of `IO` such as `File`.
    */
   class IOReader extends DataFlow::CallNode {
     private string receiverKind;
@@ -135,13 +136,15 @@ module IO {
 
   /**
    * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
-   * or `File` classes. For example, the `IO.read` call in:
+   * or `File` classes. For example, the `IO.read` and `File#readline` calls in:
    *
    * ```rb
+   * # reads the file `foo.txt` and returns its contents as a string.
    * IO.read("foo.txt")
-   * ```
    *
-   * reads the file `foo.txt` and returns its contents as a string.
+   * # reads from the file `foo.txt`, returning its first line as a string
+   * File.new("foo.txt").readline
+   * ```
    */
   class FileReader extends DataFlow::CallNode, FileSystemReadAccess::Range {
     private string receiverKind;
