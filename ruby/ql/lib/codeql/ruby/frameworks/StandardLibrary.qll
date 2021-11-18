@@ -234,7 +234,7 @@ class KernelOpenCall extends SystemCommandExecution::Range, KernelMethodCall {
   override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
 
   // Kernel.open invokes a subshell if the argument starts with "|".
-  // We we can't reliably determine this, so assume it always invokes a subshell.
+  // We can't reliably determine this, so assume it always invokes a subshell.
   override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
 
