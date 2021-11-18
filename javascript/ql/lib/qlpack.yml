@@ -3,5 +3,4 @@ version: 0.0.3
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 library: true
-dependencies:
-    codeql/javascript-upgrades: 0.0.3
+upgrades: upgrades
