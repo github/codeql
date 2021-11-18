@@ -33,10 +33,10 @@ where
   or
   AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
   or
-  //or // has 1 result, but the CodeQL compiler also can't figure out that one. I suppoed the file is never imported.
-  //TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
-  //or // has 1 result, but the CodeQL compiler also can't figure out that one. Same file as above.
-  //ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
+  TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
+  or
+  ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
+  or
   ModConsistency::noResolveModuleExpr(node) and msg = "ModConsistency::noResolveModuleExpr"
   or
   VarConsistency::noFieldDef(node) and msg = "VarConsistency::noFieldDef"
