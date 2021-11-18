@@ -227,7 +227,7 @@ module DataFlow {
     )
     or
     exists(ComparisonFormula eq |
-      eq.getSymbol() = "=" and
+      eq.getOperator() = "=" and
       eq.getAnOperand() = e1 and
       eq.getAnOperand() = e2 and
       e1 != e2

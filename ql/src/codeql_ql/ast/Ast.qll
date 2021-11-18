@@ -1154,23 +1154,6 @@ class Disjunction extends TDisjunction, AstNode, Formula {
 }
 
 /**
- * A comparison operator, such as `<` or `=`.
- */
-class ComparisonOp extends TComparisonOp, AstNode {
-  QL::Compop op;
-
-  ComparisonOp() { this = TComparisonOp(op) }
-
-  /**
-   * Gets a string representing the operator.
-   * E.g. "<" or "=".
-   */
-  ComparisonSymbol getSymbol() { result = op.getValue() }
-
-  override string getAPrimaryQlClass() { result = "ComparisonOp" }
-}
-
-/**
  * A literal expression, such as `6` or `true` or `"foo"`.
  */
 class Literal extends TLiteral, Expr {
@@ -1266,10 +1249,7 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   Expr getAnOperand() { result in [this.getLeftOperand(), this.getRightOperand()] }
 
   /** Gets the operator of this comparison. */
-  ComparisonOp getOperator() { toQL(result) = comp.getChild() }
-
-  /** Gets the symbol of this comparison (as a string). */
-  ComparisonSymbol getSymbol() { result = this.getOperator().getSymbol() }
+  ComparisonSymbol getOperator() { result = comp.getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 
@@ -1279,8 +1259,6 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     pred = directMember("getLeftOperand") and result = this.getLeftOperand()
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
-    or
-    pred = directMember("getOperator") and result = this.getOperator()
   }
 }
 

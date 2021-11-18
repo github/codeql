@@ -78,7 +78,7 @@ predicate transitivePred(Predicate p, AstNode tc) {
     or
     exists(ComparisonFormula eq, Call c |
       body = eq and
-      eq.getSymbol() = "=" and
+      eq.getOperator() = "=" and
       transitiveCall(c, tc) and
       getArg(c, _) instanceof Identifier and
       eq.getAnOperand() = c and
@@ -141,7 +141,7 @@ predicate valueStep(Expr e1, Expr e2) {
   )
   or
   exists(ComparisonFormula eq |
-    eq.getSymbol() = "=" and
+    eq.getOperator() = "=" and
     eq.getAnOperand() = e1 and
     eq.getAnOperand() = e2 and
     e1 != e2
