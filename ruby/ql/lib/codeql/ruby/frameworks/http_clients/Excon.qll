@@ -49,7 +49,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   override DataFlow::Node getURL() {
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
-    // the `path` keyword argument of the request method call.
+    // and the `path` keyword argument of the request method call.
     result = requestUse.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
     or
     result = requestUse.getKeywordArgument("path")
