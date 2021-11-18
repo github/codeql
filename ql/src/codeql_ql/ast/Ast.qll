@@ -1125,8 +1125,14 @@ class Conjunction extends TConjunction, AstNode, Formula {
 
   override string getAPrimaryQlClass() { result = "Conjunction" }
 
-  /** Gets an operand to this formula. */
+  /** Gets an operand to this conjunction. */
   Formula getAnOperand() { toQL(result) in [conj.getLeft(), conj.getRight()] }
+
+  /** Gets the left operand to this conjunction. */
+  Formula getLeft() { toQL(result) = conj.getLeft() }
+
+  /** Gets the right operand to this conjunction. */
+  Formula getRight() { toQL(result) = conj.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1143,8 +1149,14 @@ class Disjunction extends TDisjunction, AstNode, Formula {
 
   override string getAPrimaryQlClass() { result = "Disjunction" }
 
-  /** Gets an operand to this formula. */
+  /** Gets an operand to this disjunction. */
   Formula getAnOperand() { toQL(result) in [disj.getLeft(), disj.getRight()] }
+
+  /** Gets the left operand to this disjunction */
+  Formula getLeft() { toQL(result) = disj.getLeft() }
+
+  /** Gets the right operand to this disjunction */
+  Formula getRight() { toQL(result) = disj.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
