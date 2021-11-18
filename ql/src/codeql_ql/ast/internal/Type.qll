@@ -134,7 +134,7 @@ predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
 }
 
 private VarDecl declaredField(ClassType ty, string name) {
-  result = ty.getDeclaration().getAField() and
+  result = ty.getDeclaration().getAField().getVarDecl() and
   result.getName() = name
 }
 

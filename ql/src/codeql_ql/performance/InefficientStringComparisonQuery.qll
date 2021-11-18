@@ -1,13 +1,3 @@
-/**
- * @name Prefix or suffix predicate calls when comparing with literal
- * @description Using 'myString.prefix(n) = "..."' instead of 'myString.matches("...%")'
- * @kind problem
- * @problem.severity error
- * @id ql/prefix-or-suffix-equality-check
- * @tags performance
- * @precision high
- */
-
 import ql
 import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Builtins
@@ -29,7 +19,7 @@ class SuffixPredicateCall extends Call {
 }
 
 class EqFormula extends ComparisonFormula {
-  EqFormula() { this.getSymbol() = "=" }
+  EqFormula() { this.getOperator() = "=" }
 }
 
 bindingset[s]
@@ -48,6 +38,17 @@ class FixPredicateCall extends Call {
   FixPredicateCall() { this instanceof PrefixPredicateCall or this instanceof SuffixPredicateCall }
 }
 
-from EqFormula eq, FixPredicateCall call, String literal
-where eq.getAnOperand() = call and eq.getAnOperand() = literal
-select eq, "Use " + getMessage(call, literal) + " instead."
+class RegexpMatchPredicate extends BuiltinPredicate {
+  RegexpMatchPredicate() { this = any(StringClass sc).getClassPredicate("regexpMatch", 1) }
+}
+
+predicate canUseMatchInsteadOfRegexpMatch(Call c, string matchesStr) {
+  c.getTarget() instanceof RegexpMatchPredicate and
+  exists(string raw | raw = c.getArgument(0).(String).getValue() |
+    matchesStr = "%" + raw.regexpCapture("^\\.\\*(\\w+)$", _)
+    or
+    matchesStr = raw.regexpCapture("^(\\w+)\\.\\*$", _) + "%"
+    or
+    matchesStr = "%" + raw.regexpCapture("^\\.\\*(\\w+)\\.\\*$", _) + "%"
+  )
+}
