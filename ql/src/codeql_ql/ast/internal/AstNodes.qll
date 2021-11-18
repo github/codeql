@@ -8,6 +8,7 @@ newtype TAstNode =
   TQLDoc(QL::Qldoc qldoc) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
+  TFieldDecl(QL::Field field) or
   TClass(QL::Dataclass dc) or
   TCharPred(QL::Charpred pred) or
   TClassPredicate(QL::MemberPredicate pred) or
@@ -149,6 +150,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TClasslessPredicate(result)
   or
   n = TVarDecl(result)
+  or
+  n = TFieldDecl(result)
   or
   n = TClass(result)
   or
