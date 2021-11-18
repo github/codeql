@@ -5,4 +5,4 @@ library: true
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 dependencies:
-    codeql/javascript-upgrades: "*"
+    codeql/javascript-upgrades: 0.0.4

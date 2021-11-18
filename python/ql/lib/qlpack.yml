@@ -5,4 +5,4 @@ library: true
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 dependencies:
-    codeql/python-upgrades: "*"
+    codeql/python-upgrades: 0.0.3

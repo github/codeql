@@ -5,4 +5,4 @@ library: true
 dbscheme: config/semmlecode.dbscheme
 extractor: java
 dependencies:
-    codeql/java-upgrades: "*"
+    codeql/java-upgrades: 0.0.3
