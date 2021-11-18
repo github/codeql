@@ -135,7 +135,7 @@ module IO {
 
   /**
    * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
-   * or `File` classes. For example, the `IO.read call in:
+   * or `File` classes. For example, the `IO.read` call in:
    *
    * ```rb
    * IO.read("foo.txt")
