@@ -323,8 +323,8 @@ open class KotlinUsesExtractor(
         return id
     }
 
-    data class UseClassInstanceResult(val classLabel: Label<out DbClassorinterface>, val javaClass: IrClass)
-    data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String)
+    data class UseClassInstanceResult(val classLabel: Label<out DbClassorinterface>, val javaClass: IrClass, val shortName: String)
+    data class TypeResult<LabelType>(val id: Label<LabelType>, val signature: String, val shortName: String)
     data class TypeResults(val javaResult: TypeResult<out DbType>, val kotlinResult: TypeResult<out DbKt_type>)
 
     fun useType(t: IrType, canReturnPrimitiveTypes: Boolean = true) =
@@ -332,7 +332,7 @@ open class KotlinUsesExtractor(
             is IrSimpleType -> useSimpleType(t, canReturnPrimitiveTypes)
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrType: " + t.javaClass)
-                TypeResults(TypeResult(fakeLabel(), "unknown"), TypeResult(fakeLabel(), "unknown"))
+                TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
             }
         }
 
@@ -369,7 +369,7 @@ open class KotlinUsesExtractor(
         val extractClass = substituteClass ?: c
 
         val classId = getClassLabel(extractClass, typeArgs)
-        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId, {
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId.classLabel, {
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
@@ -382,7 +382,7 @@ open class KotlinUsesExtractor(
             substituteClass?.let { extractClassLaterIfExternal(it) }
         })
 
-        return UseClassInstanceResult(classLabel, extractClass)
+        return UseClassInstanceResult(classLabel, extractClass, classId.shortName)
     }
 
     fun isExternalDeclaration(d: IrDeclaration): Boolean {
@@ -412,87 +412,36 @@ open class KotlinUsesExtractor(
         externalClassExtractor.extractLater(c)
     }
 
-    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> =
-        tw.getLabelFor(getClassLabel(c, typeArgs))
-
-    fun shortName(type: IrType, canReturnPrimitiveTypes: Boolean = true): String =
-        when(type) {
-            is IrSimpleType -> {
-                val primitiveInfo = primitiveTypeMapping[type.classifier.signature]
-                when {
-                    primitiveInfo?.primitiveName != null ->
-                        if (type.hasQuestionMark || !canReturnPrimitiveTypes)
-                            primitiveInfo.javaClassName
-                        else
-                            primitiveInfo.primitiveName
-
-                    isArray(type) -> {
-                        val elementType = type.getArrayElementType(pluginContext.irBuiltIns)
-                        val javaElementType = if (type.isPrimitiveArray()) elementType else elementType.makeNullable()
-                        shortName(javaElementType) + "[]"
-                    }
-
-                    type.classifier.owner is IrClass -> {
-                        val c = type.classifier.owner as IrClass
-                        classShortName(getJavaEquivalentClass(c) ?: c, type.arguments)
-                    }
-
-                    type.classifier.owner is IrTypeParameter -> (type.classifier.owner as IrTypeParameter).name.asString()
-
-                    else -> "???"
-                }
-            }
-            else -> "???"
-        }
-
-    // Pretty-print typeArg the same way the Java extractor would:
-    fun typeArgShortName(typeArg: IrTypeArgument): String =
-        when(typeArg) {
-            is IrStarProjection -> "?"
-            is IrTypeProjection -> {
-                val prefix = when(typeArg.variance) {
-                    Variance.INVARIANT -> ""
-                    Variance.OUT_VARIANCE -> "? extends "
-                    Variance.IN_VARIANCE -> "? super "
-                }
-                "$prefix${shortName(typeArg.type, false)}"
-            }
-            else -> {
-                logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
-                "???"
-            }
-        }
-
-    fun typeArgsShortName(typeArgs: List<IrTypeArgument>): String {
-        if(typeArgs.isEmpty())
-            return ""
-        return typeArgs.joinToString(prefix = "<", postfix = ">", separator = ",") { typeArgShortName(it) }
+    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): TypeResult<out DbClassorinterface> {
+        val classLabelResult = getClassLabel(c, typeArgs)
+        return TypeResult(
+            tw.getLabelFor(classLabelResult.classLabel),
+            "TODO",
+            classLabelResult.shortName)
     }
-
-    fun classShortName(c: IrClass, typeArgs: List<IrTypeArgument>) =
-        "${c.name}${typeArgsShortName(typeArgs)}"
 
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
         val classInstanceResult = useClassInstance(c, args)
         val javaClassId = classInstanceResult.classLabel
-        val kotlinQualClassName = getUnquotedClassLabel(c, args)
+        val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
         val javaQualClassName = classInstanceResult.javaClass.fqNameForIrSerialization.asString()
         val javaSignature = javaQualClassName // TODO: Is this right?
-        val javaResult = TypeResult(javaClassId, javaSignature)
+        // TODO: args ought to be substituted, so e.g. MutableList<MutableList<String>> gets the Java type List<List<String>>
+        val javaResult = TypeResult(javaClassId, javaSignature, classInstanceResult.shortName)
         val kotlinResult = if (hasQuestionMark) {
                 val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
                 val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
                 val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
                     tw.writeKt_nullable_types(it, javaClassId)
                 })
-                TypeResult(kotlinId, kotlinSignature)
+                TypeResult(kotlinId, kotlinSignature, "TODO")
             } else {
                 val kotlinSignature = kotlinQualClassName // TODO: Is this right?
                 val kotlinLabel = "@\"kt_type;notnull;$kotlinQualClassName\""
                 val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
                     tw.writeKt_notnull_types(it, javaClassId)
                 })
-                TypeResult(kotlinId, kotlinSignature)
+                TypeResult(kotlinId, kotlinSignature, "TODO")
             }
         return TypeResults(javaResult, kotlinResult)
     }
@@ -533,16 +482,18 @@ open class KotlinUsesExtractor(
 
         // TODO: Figure out what signatures should be returned
 
-        val componentTypeLabel = useType(nullableIfNotPrimitive(componentType)).javaResult.id
+        val componentTypeResults = useType(nullableIfNotPrimitive(componentType))
         val elementTypeLabel = useType(nullableIfNotPrimitive(elementType)).javaResult.id
+
+        val javaShortName = componentTypeResults.javaResult.shortName + "[]"
 
         val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
             tw.writeArrays(
                 it,
-                shortName(arrayType),
+                javaShortName,
                 elementTypeLabel,
                 dimensions,
-                componentTypeLabel)
+                componentTypeResults.javaResult.id)
 
             extractClassSupertypes(arrayType.classifier.owner as IrClass, it)
 
@@ -565,8 +516,10 @@ open class KotlinUsesExtractor(
             // tw.writeHasModifier(clone, getModifierKey("public"))
         }
 
-        val javaSignature = "an array" // TODO: Wrong
-        val javaResult = TypeResult(id, javaSignature)
+        val javaResult = TypeResult(
+            id,
+            componentTypeResults.javaResult.signature + "[]",
+            javaShortName)
 
         val arrayClassResult = useSimpleTypeClass(arrayType.classifier.owner as IrClass, arrayType.arguments, arrayType.hasQuestionMark)
         return TypeResults(javaResult, arrayClassResult.kotlinResult)
@@ -594,11 +547,11 @@ open class KotlinUsesExtractor(
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
-                    TypeResult(label, primitiveName)
+                    TypeResult(label, primitiveName, primitiveName)
                 } else {
                     val label = makeClass(javaPackageName, javaClassName)
                     val signature = "$javaPackageName.$javaClassName" // TODO: Is this right?
-                    TypeResult(label, signature)
+                    TypeResult(label, signature, javaClassName)
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).classLabel
             val kotlinResult = if (s.hasQuestionMark) {
@@ -607,14 +560,14 @@ open class KotlinUsesExtractor(
                     val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
                         tw.writeKt_nullable_types(it, kotlinClassId)
                     })
-                    TypeResult(kotlinId, kotlinSignature)
+                    TypeResult(kotlinId, kotlinSignature, "TODO")
                 } else {
                     val kotlinSignature = "$kotlinPackageName.$kotlinClassName" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;notnull;$kotlinPackageName.$kotlinClassName\""
                     val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
                         tw.writeKt_notnull_types(it, kotlinClassId)
                     })
-                    TypeResult(kotlinId, kotlinSignature)
+                    TypeResult(kotlinId, kotlinSignature, "TODO")
                 }
             return TypeResults(javaResult, kotlinResult)
         }
@@ -686,30 +639,28 @@ class X {
                 return useSimpleTypeClass(cls, s.arguments, s.hasQuestionMark)
             }
             s.classifier.owner is IrTypeParameter -> {
-                val javaId = useTypeParameter(s.classifier.owner as IrTypeParameter)
-                val javaSignature = "TODO"
-                val javaResult = TypeResult(javaId, javaSignature)
+                val javaResult = useTypeParameter(s.classifier.owner as IrTypeParameter)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (s.hasQuestionMark) {
-                        val kotlinSignature = "$javaSignature?" // TODO: Wrong
+                        val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
                             tw.writeKt_nullable_types(it, aClassId)
                         })
-                        TypeResult(kotlinId, kotlinSignature)
+                        TypeResult(kotlinId, kotlinSignature, "TODO")
                     } else {
-                        val kotlinSignature = "$javaSignature" // TODO: Wrong
+                        val kotlinSignature = javaResult.signature // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;notnull;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_notnull_type> = tw.getLabelFor(kotlinLabel, {
                             tw.writeKt_notnull_types(it, aClassId)
                         })
-                        TypeResult(kotlinId, kotlinSignature)
+                        TypeResult(kotlinId, kotlinSignature, "TODO")
                     }
                 return TypeResults(javaResult, kotlinResult)
             }
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
-                return TypeResults(TypeResult(fakeLabel(), "unknown"), TypeResult(fakeLabel(), "unknown"))
+                return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
             }
         }
     }
@@ -752,11 +703,11 @@ class X {
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
-    ): Label<out DbReftype> {
+    ): TypeResult<out DbReftype> {
 
-        fun extractBoundedWildcard(wildcardKind: Int, wildcardLabelStr: String, boundLabel: Label<out DbReftype>): Label<DbWildcard> =
+        fun extractBoundedWildcard(wildcardKind: Int, wildcardLabelStr: String, wildcardShortName: String, boundLabel: Label<out DbReftype>): Label<DbWildcard> =
             tw.getLabelFor(wildcardLabelStr) { wildcardLabel ->
-                tw.writeWildcards(wildcardLabel, typeArgShortName(arg), wildcardKind)
+                tw.writeWildcards(wildcardLabel, wildcardShortName, wildcardKind)
                 tw.writeHasLocation(wildcardLabel, tw.unknownLocation)
                 tw.getLabelFor<DbTypebound>("@\"bound;0;{$wildcardLabel}\"") {
                     tw.writeTypeBounds(it, boundLabel, 0, wildcardLabel)
@@ -767,36 +718,45 @@ class X {
             is IrStarProjection -> {
                 @Suppress("UNCHECKED_CAST")
                 val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id as Label<out DbReftype>
-                extractBoundedWildcard(1, "@\"wildcard;\"", anyTypeLabel)
+                TypeResult(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), "?", "?")
             }
             is IrTypeProjection -> {
+                val boundResults = useType(arg.type, false)
                 @Suppress("UNCHECKED_CAST")
-                val boundLabel = useType(arg.type, false).javaResult.id as Label<out DbReftype>
+                val boundLabel = boundResults.javaResult.id as Label<out DbReftype>
 
                 return if(arg.variance == Variance.INVARIANT)
-                    boundLabel
+                    @Suppress("UNCHECKED_CAST")
+                    boundResults.javaResult as TypeResult<out DbReftype>
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
                     val wildcardKind = if (arg.variance == Variance.IN_VARIANCE) 2 else 1
-                    extractBoundedWildcard(wildcardKind, "@\"wildcard;$keyPrefix{$boundLabel}\"", boundLabel)
+                    val wildcardShortName = "? $keyPrefix ${boundResults.javaResult.shortName}"
+                    TypeResult(
+                        extractBoundedWildcard(wildcardKind, "@\"wildcard;$keyPrefix{$boundLabel}\"", wildcardShortName, boundLabel),
+                        "TODO",
+                        wildcardShortName)
                 }
             }
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unexpected type argument.")
-                return fakeLabel()
+                return TypeResult(fakeLabel(), "unknown", "unknown")
             }
         }
     }
 
+    data class ClassLabelResults(
+        val classLabel: String, val shortName: String
+    )
+
     /*
     This returns the `X` in c's label `@"class;X"`.
     */
-    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): String {
+    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
-        var label: String
         val parent = c.parent
-        label = if (parent is IrClass) {
+        val label = if (parent is IrClass) {
             // todo: fix this. Ugly string concat to handle nested class IDs.
             // todo: Can the containing class have type arguments?
             "${getUnquotedClassLabel(parent, listOf())}\$$cls"
@@ -804,22 +764,30 @@ class X {
             if (pkg.isEmpty()) cls else "$pkg.$cls"
         }
 
-        for (arg in typeArgs) {
-            val argId = getTypeArgumentLabel(arg)
-            label += ";{$argId}"
-        }
+        val typeArgLabels = typeArgs.map { getTypeArgumentLabel(it) }
+        val typeArgsShortName = 
+            if(typeArgs.isEmpty())
+                ""
+            else
+                typeArgLabels.joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
 
-        return label
+        return ClassLabelResults(
+            label + typeArgLabels.joinToString(separator = "") { ";{${it.id}}" },
+            cls + typeArgsShortName
+        )
     }
 
-    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>) =
-        "@\"class;${getUnquotedClassLabel(c, typeArgs)}\""
+    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
+        val unquotedLabel = getUnquotedClassLabel(c, typeArgs)
+        return ClassLabelResults(
+            "@\"class;${unquotedLabel.classLabel}\"",
+            unquotedLabel.shortName)
+    }
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         // For source classes, the label doesn't include and type arguments
-        val args = listOf<IrTypeArgument>()
-        val classId = getClassLabel(c, args)
-        return tw.getLabelFor(classId)
+        val classId = getClassLabel(c, listOf())
+        return tw.getLabelFor(classId.classLabel)
     }
 
     fun getTypeParameterLabel(param: IrTypeParameter): String {
@@ -827,16 +795,16 @@ class X {
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
-    fun useTypeParameter(param: IrTypeParameter): Label<out DbTypevariable> {
-        val l = getTypeParameterLabel(param)
-        val label = tw.getExistingLabelFor<DbTypevariable>(l)
-        if (label != null) {
-            return label
-        }
-
-        logger.warn(Severity.ErrorSevere, "Missing type parameter label")
-        return tw.getLabelFor(l)
-    }
+    fun useTypeParameter(param: IrTypeParameter) =
+        TypeResult(
+            tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)) {
+                // Any type parameter that is in scope should have been extracted already
+                // in extractClassSource or extractFunction
+                logger.warn(Severity.ErrorSevere, "Missing type parameter label")
+            },
+            param.name.asString(),
+            param.name.asString()
+        )
 
     fun extractModifier(m: String): Label<DbModifier> {
         val modifierLabel = "@\"modifier;$m\""
@@ -986,7 +954,7 @@ open class KotlinFileExtractor(
     fun getLabel(element: IrElement) : String? {
         when (element) {
             is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
-            is IrClass -> return getClassLabel(element, listOf())
+            is IrClass -> return getClassLabel(element, listOf()).classLabel
             is IrTypeParameter -> return getTypeParameterLabel(element)
             is IrFunction -> return getFunctionLabel(element)
             is IrValueParameter -> return getValueParameterLabel(element)
@@ -1031,9 +999,10 @@ open class KotlinFileExtractor(
             logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
 
-        val id = addClassLabel(c, typeArgs)
+        val results = addClassLabel(c, typeArgs)
+        val id = results.id
         val pkg = c.packageFqName?.asString() ?: ""
-        val cls = classShortName(c, typeArgs)
+        val cls = results.shortName
         val pkgId = extractPackage(pkg)
         if(c.kind == ClassKind.INTERFACE) {
             @Suppress("UNCHECKED_CAST")
@@ -1054,7 +1023,7 @@ open class KotlinFileExtractor(
         }
 
         for ((idx, arg) in typeArgs.withIndex()) {
-            val argId = getTypeArgumentLabel(arg)
+            val argId = getTypeArgumentLabel(arg).id
             tw.writeTypeArgs(argId, idx, id)
         }
         tw.writeIsParameterized(id)
