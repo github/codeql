@@ -31,10 +31,9 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
   )
   or
-
-  // A feature containing natural language tokens from the neighborhood around the endpoint 
-  // (limited to within the function that encloses the endpoint), in the order they appear 
-  // in the source code. 
+  // A feature containing natural language tokens from the neighborhood around the endpoint
+  // (limited to within the function that encloses the endpoint), in the order they appear
+  // in the source code.
   exists(Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped |
     featureName = "neighborhoodBody" and
     rootNode = NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode())) and
@@ -171,13 +170,18 @@ module FunctionBodies {
   }
 }
 
-/** This module provides functionality for getting the local neighborhood around an AST node within its enclosing function body, providing a locally-scoped version of the `enclosingFunctionBody` feature. */
+/**
+ * This module provides functionality for getting the local neighborhood around an AST node within
+ * its enclosing function body, providing a locally-scoped version of the `enclosingFunctionBody` feature.
+ */
 module NeighborhoodBodies {
   /**
-   * Return the ancestor of the input AST node that has the largest number of descendants (i.e. the node nearest the
-   * root) but has no more than 128 descendants.
-   * TODO: Maybe instead of a threshold on number of descendants, we should instead have a threshold on the number of
-   * leaves in the subtree, which is a closer approximation to the number of tokens in the subtree.
+   * Return the ancestor of the input AST node that has the largest number of descendants (i.e. the
+   * node nearest the root) but has no more than `maxNumDescendants` descendants.
+   *
+   * TODO: Maybe instead of a threshold on number of descendants, we should instead have a threshold
+   * on the number of leaves in the subtree, which is a closer approximation to the number of tokens
+   * in the subtree.
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
     if getNumDescendents(node.getParentNode()) > maxNumDescendants()
@@ -189,7 +193,8 @@ module NeighborhoodBodies {
   int getNumDescendents(Raw::AstNode node) { result = count(node.getAChildNode*()) }
 
   /**
-   * Holds if `childNode` is an AST node under `rootNode` and `token` is a node attribute associated with `childNode`. Note that only AST leaves have node attributes.
+   * Holds if `childNode` is an AST node under `rootNode` and `token` is a node attribute associated
+   * with `childNode`. Note that only AST leaves have node attributes.
    *
    * TODO we may need to restrict `rootNode` to be a neighborhood root to avoid a potentially big result set.
    */
@@ -279,7 +284,10 @@ private module AccessPaths {
     Boolean() { this = true or this = false }
   }
 
-  /** Get the access path for the node. This includes structural information like `member`, `param`, and `functionalarg` if `includeStructuralInfo` is true. */
+  /**
+  * Get the access path for the node. This includes structural information like `member`, `param`,
+  * and `functionalarg` if `includeStructuralInfo` is true.
+  */
   predicate accessPaths(
     API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
   ) {
