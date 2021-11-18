@@ -33,7 +33,7 @@ class WsgiEnvironment extends TaintKind {
       (
         text = "QUERY_STRING" or
         text = "PATH_INFO" or
-        text.prefix(5) = "HTTP_"
+        text.matches("HTTP\\_%")
       )
     )
   }

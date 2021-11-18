@@ -69,7 +69,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the callable being called. */
-  string getCallableDescription() { result = getCallable().getQualifiedName() }
+  string getCallableDescription() { result = this.getCallable().getQualifiedName() }
 }
 
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
@@ -108,7 +108,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */

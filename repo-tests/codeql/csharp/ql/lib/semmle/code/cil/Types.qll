@@ -12,7 +12,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
   /** Gets the generic type/method declaring this type parameter. */
   TypeContainer getGeneric() { cil_type_parameter(result, _, this) }
 
-  override Location getLocation() { result = getParent().getLocation() }
+  override Location getLocation() { result = this.getParent().getLocation() }
 
   /** Holds if this type parameter has the `new` constraint. */
   predicate isDefaultConstructible() { cil_typeparam_new(this) }
@@ -34,11 +34,11 @@ class TypeParameter extends DotNet::TypeParameter, Type, @cil_typeparameter {
 
 /** A value or reference type. */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
-  override ValueOrRefType getDeclaringType() { result = getParent() }
+  override ValueOrRefType getDeclaringType() { result = this.getParent() }
 
   override string getUndecoratedName() { cil_type(this, result, _, _, _) }
 
-  override Namespace getDeclaringNamespace() { result = getNamespace() }
+  override Namespace getDeclaringNamespace() { result = this.getNamespace() }
 
   override ValueOrRefType getABaseType() { result = Type.super.getABaseType() }
 }
@@ -79,7 +79,7 @@ class ArrayType extends DotNet::ArrayType, Type, @cil_array_type {
 
   override string toStringWithTypes() { result = DotNet::ArrayType.super.toStringWithTypes() }
 
-  override Location getLocation() { result = getElementType().getLocation() }
+  override Location getLocation() { result = this.getElementType().getLocation() }
 
   override ValueOrRefType getABaseType() { result = Type.super.getABaseType() }
 }
@@ -92,7 +92,7 @@ class PointerType extends DotNet::PointerType, PrimitiveType, @cil_pointer_type 
 
   override string getName() { result = DotNet::PointerType.super.getName() }
 
-  override Location getLocation() { result = getReferentType().getLocation() }
+  override Location getLocation() { result = this.getReferentType().getLocation() }
 
   override string toString() { result = DotNet::PointerType.super.toString() }
 
@@ -312,13 +312,13 @@ class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
   override string toString() { result = Type.super.toString() }
 
   /** Holds if the return type is `void`. */
-  predicate returnsVoid() { getReturnType() instanceof VoidType }
+  predicate returnsVoid() { this.getReturnType() instanceof VoidType }
 
   /** Gets the number of stack items pushed in a call to this method. */
-  int getCallPushCount() { if returnsVoid() then result = 0 else result = 1 }
+  int getCallPushCount() { if this.returnsVoid() then result = 0 else result = 1 }
 
   /** Gets the number of stack items popped in a call to this method. */
-  int getCallPopCount() { result = count(getRawParameter(_)) }
+  int getCallPopCount() { result = count(this.getRawParameter(_)) }
 
-  override string getLabel() { result = getName() }
+  override string getLabel() { result = this.getName() }
 }

@@ -552,11 +552,16 @@ private predicate defaultDynamicConversion(Type fromType, Type toType) {
   fromType instanceof RefType and toType instanceof DynamicType
 }
 
+pragma[noinline]
+private predicate systemDelegateBaseType(RefType t) {
+  t = any(SystemDelegateClass c).getABaseType*()
+}
+
 // This is a deliberate, small cartesian product, so we have manually lifted it to force the
 // evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
 private predicate defaultDelegateConversion(RefType fromType, RefType toType) {
-  fromType instanceof DelegateType and toType = any(SystemDelegateClass c).getABaseType*()
+  fromType instanceof DelegateType and systemDelegateBaseType(toType)
 }
 
 private predicate convRefTypeRefType(RefType fromType, RefType toType) {

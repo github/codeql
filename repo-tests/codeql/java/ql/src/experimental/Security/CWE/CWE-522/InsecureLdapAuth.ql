@@ -23,7 +23,7 @@ import DataFlow::PathGraph
 class InsecureLdapUrlLiteral extends StringLiteral {
   InsecureLdapUrlLiteral() {
     // Match connection strings with the LDAP protocol and without private IP addresses to reduce false positives.
-    exists(string s | this.getRepresentedString() = s |
+    exists(string s | this.getValue() = s |
       s.regexpMatch("(?i)ldap://[\\[a-zA-Z0-9].*") and
       not s.substring(7, s.length()) instanceof PrivateHostName
     )

@@ -103,25 +103,12 @@ module AsyncPackage {
 
     IterationCall() {
       this = memberVariant(name).getACall() and
-      (
-        name = "concat" or
-        name = "detect" or
-        name = "each" or
-        name = "eachOf" or
-        name = "forEach" or
-        name = "forEachOf" or
-        name = "every" or
-        name = "filter" or
-        name = "groupBy" or
-        name = "map" or
-        name = "mapValues" or
-        name = "reduce" or
-        name = "reduceRight" or
-        name = "reject" or
-        name = "some" or
-        name = "sortBy" or
-        name = "transform"
-      )
+      name =
+        [
+          "concat", "detect", "each", "eachOf", "forEach", "forEachOf", "every", "filter",
+          "groupBy", "map", "mapValues", "reduce", "reduceRight", "reject", "some", "sortBy",
+          "transform"
+        ]
     }
 
     /**
@@ -176,10 +163,7 @@ module AsyncPackage {
         pred = getLastParameter(iteratee).getACall().getArgument(i) and
         succ = final.getParameter(i) and
         exists(string name | name = call.getName() |
-          name = "concat" or
-          name = "map" or
-          name = "reduce" or
-          name = "reduceRight"
+          name = ["concat", "map", "reduce", "reduceRight"]
         )
       )
     }

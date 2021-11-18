@@ -115,7 +115,7 @@ class MemberAccess extends Access, QualifiableExpr, @member_access_expr {
     not exists(MemberInitializer mi | mi.getLValue() = this)
   }
 
-  override Member getQualifiedDeclaration() { result = getTarget() }
+  override Member getQualifiedDeclaration() { result = this.getTarget() }
 
   override Member getTarget() { none() }
 }
@@ -147,8 +147,8 @@ class AssignableAccess extends Access, @assignable_access_expr {
    * or a `ref` argument in a method call.
    */
   predicate isOutOrRefArgument() {
-    isOutArgument() or
-    isRefArgument()
+    this.isOutArgument() or
+    this.isRefArgument()
   }
 
   /**
@@ -507,7 +507,7 @@ class ElementAccess extends AssignableAccess, QualifiableExpr, @element_access_e
    * Gets an index expression of this element access, for example
    * `1` in `x[0, 1]`.
    */
-  Expr getAnIndex() { result = getIndex(_) }
+  Expr getAnIndex() { result = this.getIndex(_) }
 
   /**
    * Gets the `i`th index expression of this element access, for example the
@@ -515,7 +515,7 @@ class ElementAccess extends AssignableAccess, QualifiableExpr, @element_access_e
    */
   Expr getIndex(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Assignable getQualifiedDeclaration() { result = getTarget() }
+  override Assignable getQualifiedDeclaration() { result = this.getTarget() }
 }
 
 /**
@@ -615,7 +615,7 @@ class IndexerWrite extends IndexerAccess, ElementWrite { }
  * ```
  */
 class VirtualIndexerAccess extends IndexerAccess {
-  VirtualIndexerAccess() { targetIsOverridableOrImplementable() }
+  VirtualIndexerAccess() { this.targetIsOverridableOrImplementable() }
 }
 
 /**
@@ -647,7 +647,7 @@ library class EventAccessExpr extends Expr, @event_access_expr {
  * ```
  */
 class EventAccess extends AssignableMemberAccess, EventAccessExpr {
-  override Event getTarget() { result = getEvent() }
+  override Event getTarget() { result = this.getEvent() }
 
   override string getAPrimaryQlClass() { result = "EventAccess" }
 }
@@ -707,7 +707,7 @@ class EventWrite extends EventAccess, AssignableWrite { }
  * ```
  */
 class VirtualEventAccess extends EventAccess {
-  VirtualEventAccess() { targetIsOverridableOrImplementable() }
+  VirtualEventAccess() { this.targetIsOverridableOrImplementable() }
 }
 
 /**
@@ -787,7 +787,7 @@ class LocalFunctionAccess extends CallableAccess {
  * ```
  */
 class VirtualMethodAccess extends MethodAccess {
-  VirtualMethodAccess() { targetIsOverridableOrImplementable() }
+  VirtualMethodAccess() { this.targetIsOverridableOrImplementable() }
 }
 
 /**

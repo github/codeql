@@ -148,7 +148,7 @@ class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @post
 
   override int getPrecedence() { result = 17 }
 
-  override string toString() { result = "... " + getOperator() }
+  override string toString() { result = "... " + this.getOperator() }
 }
 
 /**
@@ -166,7 +166,7 @@ class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @post
 
   override int getPrecedence() { result = 17 }
 
-  override string toString() { result = "... " + getOperator() }
+  override string toString() { result = "... " + this.getOperator() }
 }
 
 /**

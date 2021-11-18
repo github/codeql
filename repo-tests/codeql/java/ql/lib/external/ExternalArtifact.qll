@@ -3,24 +3,25 @@ import java
 class ExternalData extends @externalDataElement {
   string getDataPath() { externalData(this, result, _, _) }
 
-  string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
+  string getQueryPath() { result = this.getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
 
   int getNumFields() { result = 1 + max(int i | externalData(this, _, i, _) | i) }
 
   string getField(int index) { externalData(this, _, index, result) }
 
-  int getFieldAsInt(int index) { result = getField(index).toInt() }
+  int getFieldAsInt(int index) { result = this.getField(index).toInt() }
 
-  float getFieldAsFloat(int index) { result = getField(index).toFloat() }
+  float getFieldAsFloat(int index) { result = this.getField(index).toFloat() }
 
-  date getFieldAsDate(int index) { result = getField(index).toDate() }
+  date getFieldAsDate(int index) { result = this.getField(index).toDate() }
 
-  string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
+  string toString() { result = this.getQueryPath() + ": " + this.buildTupleString(0) }
 
   private string buildTupleString(int start) {
-    start = getNumFields() - 1 and result = getField(start)
+    start = this.getNumFields() - 1 and result = this.getField(start)
     or
-    start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1)
+    start < this.getNumFields() - 1 and
+    result = this.getField(start) + "," + this.buildTupleString(start + 1)
   }
 }
 
@@ -33,7 +34,7 @@ class DefectExternalData extends ExternalData {
     this.getNumFields() = 2
   }
 
-  string getURL() { result = getField(0) }
+  string getURL() { result = this.getField(0) }
 
-  string getMessage() { result = getField(1) }
+  string getMessage() { result = this.getField(1) }
 }

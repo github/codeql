@@ -291,13 +291,7 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
 
   override predicate isNumbery() {
     exists(string name | name = getName() |
-      name = "number" or
-      name = "Number" or
-      name = "double" or
-      name = "Double" or
-      name = "int" or
-      name = "integer" or
-      name = "Integer"
+      name = ["number", "Number", "double", "Double", "int", "integer", "Integer"]
     )
   }
 

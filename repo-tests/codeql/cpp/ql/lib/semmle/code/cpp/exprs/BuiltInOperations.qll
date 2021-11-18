@@ -35,12 +35,12 @@ class BuiltInVarArgsStart extends VarArgsExpr, @vastartexpr {
   /**
    * Gets the `va_list` argument.
    */
-  final Expr getVAList() { result = getChild(0) }
+  final Expr getVAList() { result = this.getChild(0) }
 
   /**
    * Gets the argument that specifies the last named parameter before the ellipsis.
    */
-  final VariableAccess getLastNamedParameter() { result = getChild(1) }
+  final VariableAccess getLastNamedParameter() { result = this.getChild(1) }
 }
 
 /**
@@ -60,7 +60,7 @@ class BuiltInVarArgsEnd extends VarArgsExpr, @vaendexpr {
   /**
    * Gets the `va_list` argument.
    */
-  final Expr getVAList() { result = getChild(0) }
+  final Expr getVAList() { result = this.getChild(0) }
 }
 
 /**
@@ -78,7 +78,7 @@ class BuiltInVarArg extends VarArgsExpr, @vaargexpr {
   /**
    * Gets the `va_list` argument.
    */
-  final Expr getVAList() { result = getChild(0) }
+  final Expr getVAList() { result = this.getChild(0) }
 }
 
 /**
@@ -98,12 +98,12 @@ class BuiltInVarArgCopy extends VarArgsExpr, @vacopyexpr {
   /**
    * Gets the destination `va_list` argument.
    */
-  final Expr getDestinationVAList() { result = getChild(0) }
+  final Expr getDestinationVAList() { result = this.getChild(0) }
 
   /**
    * Gets the the source `va_list` argument.
    */
-  final Expr getSourceVAList() { result = getChild(1) }
+  final Expr getSourceVAList() { result = this.getChild(1) }
 }
 
 /**

@@ -68,7 +68,7 @@ class Member extends DotNet::Member, Declaration, @cil_member {
   /** Holds if this member has a security attribute. */
   predicate hasSecurity() { cil_security(this) }
 
-  override Location getLocation() { result = getDeclaringType().getLocation() }
+  override Location getLocation() { result = this.getDeclaringType().getLocation() }
 }
 
 /** A property. */
@@ -87,24 +87,25 @@ class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_pr
   override Setter getSetter() { this = result.getProperty() }
 
   /** Gets an accessor of this property. */
-  Accessor getAnAccessor() { result = getGetter() or result = getSetter() }
+  Accessor getAnAccessor() { result = this.getGetter() or result = this.getSetter() }
 
-  override string toString() { result = "property " + getName() }
+  override string toString() { result = "property " + this.getName() }
 
   override string toStringWithTypes() {
     result =
-      getType().toStringWithTypes() + " " + getDeclaringType().toStringWithTypes() + "." + getName()
+      this.getType().toStringWithTypes() + " " + this.getDeclaringType().toStringWithTypes() + "." +
+        this.getName()
   }
 }
 
 /** A property that is trivial (wraps a field). */
 class TrivialProperty extends Property {
   TrivialProperty() {
-    getGetter().(TrivialGetter).getField() = getSetter().(TrivialSetter).getField()
+    this.getGetter().(TrivialGetter).getField() = this.getSetter().(TrivialSetter).getField()
   }
 
   /** Gets the underlying field of this property. */
-  Field getField() { result = getGetter().(TrivialGetter).getField() }
+  Field getField() { result = this.getGetter().(TrivialGetter).getField() }
 }
 
 /** An event. */
@@ -125,9 +126,9 @@ class Event extends DotNet::Event, Member, @cil_event {
   /** Gets the raiser. */
   Method getRaiser() { cil_raiser(this, result) }
 
-  override string toString() { result = "event " + getName() }
+  override string toString() { result = "event " + this.getName() }
 
   override string toStringWithTypes() {
-    result = getDeclaringType().toStringWithTypes() + "." + getName()
+    result = this.getDeclaringType().toStringWithTypes() + "." + this.getName()
   }
 }

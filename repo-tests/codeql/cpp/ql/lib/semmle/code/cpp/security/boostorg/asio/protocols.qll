@@ -113,7 +113,7 @@ module BoostorgAsio {
         result.getName() = "tls_server"
       )
       or
-      result = getASslv23ProtocolConstant()
+      result = this.getASslv23ProtocolConstant()
     }
 
     /**

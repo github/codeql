@@ -67,10 +67,10 @@ private class SafeKryo extends DataFlow2::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    stepKryoPoolBuilderFactoryArgToConstructor(node1, node2) or
-    stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(node1, node2) or
-    stepKryoPoolBuilderChainMethod(node1, node2) or
-    stepKryoPoolBorrowMethod(node1, node2)
+    this.stepKryoPoolBuilderFactoryArgToConstructor(node1, node2) or
+    this.stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(node1, node2) or
+    this.stepKryoPoolBuilderChainMethod(node1, node2) or
+    this.stepKryoPoolBorrowMethod(node1, node2)
   }
 
   /**

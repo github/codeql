@@ -38,8 +38,8 @@ class Namespace extends NameQualifyingElement, @namespace {
    * unless the namespace has exactly one declaration entry.
    */
   override Location getLocation() {
-    if strictcount(getADeclarationEntry()) = 1
-    then result = getADeclarationEntry().getLocation()
+    if strictcount(this.getADeclarationEntry()) = 1
+    then result = this.getADeclarationEntry().getLocation()
     else result instanceof UnknownDefaultLocation
   }
 
@@ -50,7 +50,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   predicate hasName(string name) { name = this.getName() }
 
   /** Holds if this namespace is anonymous. */
-  predicate isAnonymous() { hasName("(unnamed namespace)") }
+  predicate isAnonymous() { this.hasName("(unnamed namespace)") }
 
   /** Gets the name of the parent namespace, if it exists. */
   private string getParentName() {
@@ -60,9 +60,9 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets the qualified name of this namespace. For example: `a::b`. */
   string getQualifiedName() {
-    if exists(getParentName())
-    then result = getParentNamespace().getQualifiedName() + "::" + getName()
-    else result = getName()
+    if exists(this.getParentName())
+    then result = this.getParentNamespace().getQualifiedName() + "::" + this.getName()
+    else result = this.getName()
   }
 
   /** Gets the parent namespace, if any. */
@@ -99,7 +99,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   /** Gets a version of the `QualifiedName` that is more suitable for display purposes. */
   string getFriendlyName() { result = this.getQualifiedName() }
 
-  final override string toString() { result = getFriendlyName() }
+  final override string toString() { result = this.getFriendlyName() }
 
   /** Gets a declaration of (part of) this namespace. */
   NamespaceDeclarationEntry getADeclarationEntry() { result.getNamespace() = this }

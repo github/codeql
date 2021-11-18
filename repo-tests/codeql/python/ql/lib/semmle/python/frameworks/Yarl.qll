@@ -68,7 +68,7 @@ module Yarl {
           ]
       }
 
-      override string getMethodName() { result in ["human_repr"] }
+      override string getMethodName() { result = "human_repr" }
 
       override string getAsyncMethodName() { none() }
     }

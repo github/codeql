@@ -62,7 +62,7 @@ abstract class InstructionViolation extends CfgViolation, CfgCheck {
   override string toString() {
     result =
       instruction.getImplementation().getMethod().toStringWithTypes() + ": " +
-        instruction.toString() + ", " + getInstructionsUpTo()
+        instruction.toString() + ", " + this.getInstructionsUpTo()
   }
 }
 
@@ -126,7 +126,7 @@ class MissingOperand extends InstructionViolation {
   }
 
   override string getMessage() {
-    result = "This instruction is missing operand " + getMissingOperand()
+    result = "This instruction is missing operand " + this.getMissingOperand()
   }
 }
 
@@ -364,7 +364,7 @@ class TypeViolation extends ConsistencyViolation, TypeCheck {
   /** Gets the type containing the violation. */
   Type getType() { this = TypeCheck(result) }
 
-  override string toString() { result = getType().toString() }
+  override string toString() { result = this.getType().toString() }
 
   abstract override string getMessage();
 }
@@ -374,7 +374,7 @@ class TypeViolation extends ConsistencyViolation, TypeCheck {
  */
 class TypeIsBothConstructedAndUnbound extends TypeViolation {
   TypeIsBothConstructedAndUnbound() {
-    getType() instanceof ConstructedGeneric and getType() instanceof UnboundGeneric
+    this.getType() instanceof ConstructedGeneric and this.getType() instanceof UnboundGeneric
   }
 
   override string getMessage() { result = "Type is both constructed and unbound" }
@@ -397,16 +397,16 @@ class InconsistentTypeLocation extends TypeViolation {
  */
 class TypeParameterMismatch extends TypeViolation {
   TypeParameterMismatch() {
-    getType().(ConstructedGeneric).getNumberOfTypeArguments() !=
-      getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters()
+    this.getType().(ConstructedGeneric).getNumberOfTypeArguments() !=
+      this.getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
     result =
-      "Constructed type (" + getType().toStringWithTypes() + ") has " +
-        getType().(ConstructedGeneric).getNumberOfTypeArguments() +
-        " type arguments and unbound type (" + getType().getUnboundType().toStringWithTypes() +
-        ") has " + getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters() +
+      "Constructed type (" + this.getType().toStringWithTypes() + ") has " +
+        this.getType().(ConstructedGeneric).getNumberOfTypeArguments() +
+        " type arguments and unbound type (" + this.getType().getUnboundType().toStringWithTypes() +
+        ") has " + this.getType().getUnboundType().(UnboundGeneric).getNumberOfTypeParameters() +
         " type parameters"
   }
 }
@@ -418,7 +418,7 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
   /** Gets the method containing the violation. */
   Method getMethod() { this = DeclarationCheck(result) }
 
-  override string toString() { result = getMethod().toString() }
+  override string toString() { result = this.getMethod().toString() }
 
   override string getMessage() { none() }
 }
@@ -440,14 +440,15 @@ class InconsistentMethodLocation extends MethodViolation {
  */
 class ConstructedMethodTypeParams extends MethodViolation {
   ConstructedMethodTypeParams() {
-    getMethod().(ConstructedGeneric).getNumberOfTypeArguments() !=
-      getMethod().getUnboundDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
+    this.getMethod().(ConstructedGeneric).getNumberOfTypeArguments() !=
+      this.getMethod().getUnboundDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
     result =
-      "The constructed method " + getMethod().toStringWithTypes() +
-        " does not match unbound method " + getMethod().getUnboundDeclaration().toStringWithTypes()
+      "The constructed method " + this.getMethod().toStringWithTypes() +
+        " does not match unbound method " +
+        this.getMethod().getUnboundDeclaration().toStringWithTypes()
   }
 }
 
@@ -477,8 +478,8 @@ class InvalidOverride extends MethodViolation {
   private Method base;
 
   InvalidOverride() {
-    base = getMethod().getOverriddenMethod() and
-    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
+    base = this.getMethod().getOverriddenMethod() and
+    not this.getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
     base.getDeclaringType().isUnboundDeclaration() // Bases classes of constructed types aren't extracted properly.
   }
 
@@ -493,7 +494,9 @@ class InvalidOverride extends MethodViolation {
  * A pointer type that does not have a pointee type.
  */
 class InvalidPointerType extends TypeViolation {
-  InvalidPointerType() { exists(PointerType p | p = getType() | count(p.getReferentType()) != 1) }
+  InvalidPointerType() {
+    exists(PointerType p | p = this.getType() | count(p.getReferentType()) != 1)
+  }
 
   override string getMessage() { result = "Invalid Pointertype.getPointeeType()" }
 }
@@ -502,7 +505,9 @@ class InvalidPointerType extends TypeViolation {
  * An array with an invalid `getElementType`.
  */
 class ArrayTypeMissingElement extends TypeViolation {
-  ArrayTypeMissingElement() { exists(ArrayType t | t = getType() | count(t.getElementType()) != 1) }
+  ArrayTypeMissingElement() {
+    exists(ArrayType t | t = this.getType() | count(t.getElementType()) != 1)
+  }
 
   override string getMessage() { result = "Invalid ArrayType.getElementType()" }
 }
@@ -511,7 +516,7 @@ class ArrayTypeMissingElement extends TypeViolation {
  * An array with an invalid `getRank`.
  */
 class ArrayTypeInvalidRank extends TypeViolation {
-  ArrayTypeInvalidRank() { exists(ArrayType t | t = getType() | not t.getRank() > 0) }
+  ArrayTypeInvalidRank() { exists(ArrayType t | t = this.getType() | not t.getRank() > 0) }
 
   override string getMessage() { result = "Invalid ArrayType.getRank()" }
 }
@@ -564,7 +569,7 @@ abstract class DeclarationViolation extends ConsistencyViolation, DeclarationChe
   /** Gets the member containing the potential violation. */
   Declaration getDeclaration() { this = DeclarationCheck(result) }
 
-  override string toString() { result = getDeclaration().toString() }
+  override string toString() { result = this.getDeclaration().toString() }
 }
 
 /**
@@ -572,7 +577,7 @@ abstract class DeclarationViolation extends ConsistencyViolation, DeclarationChe
  */
 class PropertyWithNoAccessors extends DeclarationViolation {
   PropertyWithNoAccessors() {
-    exists(Property p | p = getDeclaration() | not exists(p.getAnAccessor()))
+    exists(Property p | p = this.getDeclaration() | not exists(p.getAnAccessor()))
   }
 
   override string getMessage() { result = "Property has no accessors" }
@@ -646,7 +651,7 @@ class TypeMultiplyDefined extends TypeViolation, DisabledCheck {
 
   override string getMessage() {
     result =
-      "This type (" + getType().toStringWithTypes() + ") has " +
+      "This type (" + this.getType().toStringWithTypes() + ") has " +
         count(Type t |
           not t instanceof ConstructedGeneric and
           t.toStringWithTypes() = this.getType().toStringWithTypes()
@@ -669,11 +674,11 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
 
   override string getMessage() {
     result =
-      "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
-        getDeclaration().getPrimaryQlClasses()
+      "Cannot locate CIL for " + this.getDeclaration().toStringWithTypes() + " of class " +
+        this.getDeclaration().getPrimaryQlClasses()
   }
 
-  override string toString() { result = getDeclaration().toStringWithTypes() }
+  override string toString() { result = this.getDeclaration().toStringWithTypes() }
 }
 
 /**
@@ -717,21 +722,23 @@ private predicate expectedCilDeclaration(CS::Declaration decl) {
 /** A member with an invalid name. */
 class MemberWithInvalidName extends DeclarationViolation {
   MemberWithInvalidName() {
-    exists(string name | name = getDeclaration().(Member).getName() |
+    exists(string name | name = this.getDeclaration().(Member).getName() |
       exists(name.indexOf(".")) and
       not name = ".ctor" and
       not name = ".cctor"
     )
   }
 
-  override string getMessage() { result = "Invalid name " + getDeclaration().(Member).getName() }
+  override string getMessage() {
+    result = "Invalid name " + this.getDeclaration().(Member).getName()
+  }
 }
 
 class ConstructedSourceDeclarationMethod extends MethodViolation {
   Method method;
 
   ConstructedSourceDeclarationMethod() {
-    method = getMethod() and
+    method = this.getMethod() and
     method = method.getUnboundDeclaration() and
     (
       method instanceof ConstructedGeneric or
@@ -751,7 +758,7 @@ class DeclarationWithMultipleLabels extends DeclarationViolation {
   }
 
   override string getMessage() {
-    result = "Multiple labels " + concat(getDeclaration().getLabel(), ", ")
+    result = "Multiple labels " + concat(this.getDeclaration().getLabel(), ", ")
   }
 }
 

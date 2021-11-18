@@ -26,10 +26,10 @@ class SpringProfileExpr extends string {
    */
   predicate isActive() {
     (
-      getProfile() instanceof AlwaysEnabledSpringProfile or
-      getProfile() instanceof SometimesEnabledSpringProfile
+      this.getProfile() instanceof AlwaysEnabledSpringProfile or
+      this.getProfile() instanceof SometimesEnabledSpringProfile
     ) and
-    not getProfile() instanceof NeverEnabledSpringProfile
+    not this.getProfile() instanceof NeverEnabledSpringProfile
   }
 }
 
@@ -37,7 +37,7 @@ class SpringProfileExpr extends string {
  * A Spring profile expression that begins with "!", indicating a negated expression.
  */
 class NotSpringProfileExpr extends SpringProfileExpr {
-  NotSpringProfileExpr() { this.prefix(1) = "!" }
+  NotSpringProfileExpr() { this.matches("!%") }
 
   /**
    * Gets the profile described in this profile expression.
@@ -48,7 +48,7 @@ class NotSpringProfileExpr extends SpringProfileExpr {
    * This profile expression is active if it can ever be evaluated to true, according to our
    * knowledge of which profiles are sometimes/never/always enabled.
    */
-  override predicate isActive() { not getProfile() instanceof AlwaysEnabledSpringProfile }
+  override predicate isActive() { not this.getProfile() instanceof AlwaysEnabledSpringProfile }
 }
 
 /**

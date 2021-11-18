@@ -72,13 +72,14 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   ControlFlowElement getAReachableElement() {
     // Reachable in same basic block
     exists(BasicBlock bb, int i, int j |
-      bb.getNode(i) = getAControlFlowNode() and
+      bb.getNode(i) = this.getAControlFlowNode() and
       bb.getNode(j) = result.getAControlFlowNode() and
       i < j
     )
     or
     // Reachable in different basic blocks
-    getAControlFlowNode().getBasicBlock().getASuccessor+().getANode() = result.getAControlFlowNode()
+    this.getAControlFlowNode().getBasicBlock().getASuccessor+().getANode() =
+      result.getAControlFlowNode()
   }
 
   pragma[noinline]

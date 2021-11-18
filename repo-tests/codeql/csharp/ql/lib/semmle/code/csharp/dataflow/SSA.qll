@@ -76,9 +76,9 @@ module Ssa {
 
       override Callable getEnclosingCallable() { this = SsaImpl::TLocalVar(result, _) }
 
-      override string toString() { result = getAssignable().getName() }
+      override string toString() { result = this.getAssignable().getName() }
 
-      override Location getLocation() { result = getAssignable().getLocation() }
+      override Location getLocation() { result = this.getAssignable().getLocation() }
     }
 
     /** A fully qualified field or property. */
@@ -105,7 +105,7 @@ module Ssa {
           )
       }
 
-      override Location getLocation() { result = getFirstAccess().getLocation() }
+      override Location getLocation() { result = this.getFirstAccess().getLocation() }
     }
 
     /** A plain field or property. */
@@ -115,8 +115,8 @@ module Ssa {
 
       override string toString() {
         exists(Assignable f, string prefix |
-          f = getAssignable() and
-          result = prefix + "." + getAssignable()
+          f = this.getAssignable() and
+          result = prefix + "." + this.getAssignable()
         |
           if f.(Modifiable).isStatic()
           then prefix = f.getDeclaringType().getQualifiedName()
@@ -134,7 +134,7 @@ module Ssa {
 
       override SourceVariable getQualifier() { this = SsaImpl::TQualifiedFieldOrProp(_, result, _) }
 
-      override string toString() { result = getQualifier() + "." + getAssignable() }
+      override string toString() { result = this.getQualifier() + "." + this.getAssignable() }
     }
   }
 
@@ -611,20 +611,20 @@ module Ssa {
      * and which targets the same assignable as this SSA definition.
      */
     final AssignableDefinition getAPossibleDefinition() {
-      exists(Callable setter | SsaImpl::updatesNamedFieldOrProp(_, _, getCall(), _, setter) |
+      exists(Callable setter | SsaImpl::updatesNamedFieldOrProp(_, _, this.getCall(), _, setter) |
         result.getEnclosingCallable() = setter and
         result.getTarget() = this.getSourceVariable().getAssignable()
       )
       or
-      SsaImpl::updatesCapturedVariable(_, _, getCall(), _, result, _) and
+      SsaImpl::updatesCapturedVariable(_, _, this.getCall(), _, result, _) and
       result.getTarget() = this.getSourceVariable().getAssignable()
     }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA call def(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA call def(" + this.getSourceVariable() + ")"
     }
 
-    override Location getLocation() { result = getCall().getLocation() }
+    override Location getLocation() { result = this.getCall().getLocation() }
   }
 
   /**
@@ -649,10 +649,10 @@ module Ssa {
     final Definition getQualifierDefinition() { result = q }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA qualifier def(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA qualifier def(" + this.getSourceVariable() + ")"
     }
 
-    override Location getLocation() { result = getQualifierDefinition().getLocation() }
+    override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
 
   /**
@@ -699,7 +699,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = getToStringPrefix(this) + "SSA phi(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA phi(" + this.getSourceVariable() + ")"
     }
 
     /*

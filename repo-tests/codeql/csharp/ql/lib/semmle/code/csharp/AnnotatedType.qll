@@ -67,7 +67,7 @@ private module Annotations {
 
     Nullability() { this = TNullability(nullability) }
 
-    override string toString() { result = getMemberString() + getSelfNullability() }
+    override string toString() { result = this.getMemberString() + this.getSelfNullability() }
 
     language[monotonicAggregates]
     private string getMemberString() {
@@ -125,7 +125,9 @@ private module Annotations {
     }
 
     /** Gets a textual representation of this type annotation. */
-    string toString() { result = getTypePrefix() + getNullability() + getTypeSuffix() }
+    string toString() {
+      result = this.getTypePrefix() + this.getNullability() + this.getTypeSuffix()
+    }
 
     private int getFlags() { this = TAnnotationFlags(result, _) }
 
@@ -136,7 +138,7 @@ private module Annotations {
 
     /** Gets an annotation in this set of annotations. */
     TypeAnnotation getAnAnnotation() {
-      isSet(result.getBit())
+      this.isSet(result.getBit())
       or
       result = this.getNullability()
     }
@@ -298,7 +300,7 @@ class AnnotatedType extends TAnnotatedType {
   /** Gets a textual representation of this annotated type. */
   string toString() {
     result =
-      annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() +
+      annotations.getTypePrefix() + this.getUnderlyingType().toStringWithTypes() +
         annotations.getTypeSuffix()
   }
 
@@ -327,7 +329,7 @@ class AnnotatedType extends TAnnotatedType {
 
   /** Gets a type annotation of this annotated type. */
   private Annotations::TypeAnnotation getAnAnnotation() {
-    result = getAnnotations().getAnAnnotation()
+    result = this.getAnnotations().getAnAnnotation()
   }
 
   /** Holds if the type is a non-nullable reference, for example, `string` in a nullable-enabled context. */
@@ -376,7 +378,7 @@ class AnnotatedArrayType extends AnnotatedType {
 
   private string getDimensionString(AnnotatedType elementType) {
     exists(AnnotatedType et, string res |
-      et = getElementType() and
+      et = this.getElementType() and
       res = type.getArraySuffix() and
       if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
       then result = res + et.(AnnotatedArrayType).getDimensionString(elementType)

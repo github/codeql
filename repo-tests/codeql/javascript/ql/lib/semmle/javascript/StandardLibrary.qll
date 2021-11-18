@@ -55,13 +55,7 @@ private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInv
     getNumArgument() = 2 and
     // Filter out library methods named 'forEach' etc
     not DataFlow::moduleImport(_).flowsTo(getReceiver()) and
-    exists(string name | name = getMethodName() |
-      name = "filter" or
-      name = "forEach" or
-      name = "map" or
-      name = "some" or
-      name = "every"
-    )
+    getMethodName() = ["filter", "forEach", "map", "some", "every"]
   }
 
   override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {

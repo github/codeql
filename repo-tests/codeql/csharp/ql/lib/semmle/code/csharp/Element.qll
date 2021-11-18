@@ -31,7 +31,7 @@ class Element extends DotNet::Element, @element {
   Element getParent() { result.getAChild() = this }
 
   /** Gets a child of this element, if any. */
-  Element getAChild() { result = getChild(_) }
+  Element getAChild() { result = this.getChild(_) }
 
   /** Gets the `i`th child of this element (zero-based). */
   Element getChild(int i) { none() }

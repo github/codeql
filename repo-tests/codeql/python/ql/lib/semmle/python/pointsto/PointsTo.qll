@@ -300,7 +300,7 @@ module PointsToInternal {
     ssa_definition_points_to(var.getDefinition(), context, value, origin)
     or
     exists(EssaVariable prev |
-      ssaShortCut+(prev, var) and
+      ssaShortCut(prev, var) and
       variablePointsTo(prev, context, value, origin)
     )
   }
@@ -1195,14 +1195,20 @@ module InterProceduralPointsTo {
     ControlFlowNode argument, PointsToContext caller, ParameterDefinition param,
     PointsToContext callee
   ) {
+    PointsToInternal::pointsTo(argument, caller, _, _) and
     exists(CallNode call, Function func, int offset |
       callsite_calls_function(call, caller, func, callee, offset)
     |
       exists(string name |
         argument = call.getArgByName(name) and
-        param.getParameter() = func.getArgByName(name)
+        function_parameter_name(func, param, name)
       )
     )
+  }
+
+  pragma[nomagic]
+  private predicate function_parameter_name(Function func, ParameterDefinition param, string name) {
+    param.getParameter() = func.getArgByName(name)
   }
 
   /**

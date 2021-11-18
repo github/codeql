@@ -157,8 +157,8 @@ module XmlReader {
 
     override predicate isUnsafe(string reason) {
       exists(string dtdReason, string resolverReason |
-        dtdEnabled(dtdReason, _) and
-        insecureResolver(resolverReason, _) and
+        this.dtdEnabled(dtdReason, _) and
+        this.insecureResolver(resolverReason, _) and
         reason = dtdReason + ", " + resolverReason
       )
     }
@@ -209,9 +209,7 @@ module XmlReader {
 /** Provides predicates related to `System.Xml.XmlTextReader`. */
 module XmlTextReader {
   private class InsecureXmlTextReader extends InsecureXmlProcessing, ObjectCreation {
-    InsecureXmlTextReader() {
-      this.getObjectType().(ValueOrRefType).hasQualifiedName("System.Xml.XmlTextReader")
-    }
+    InsecureXmlTextReader() { this.getObjectType().hasQualifiedName("System.Xml.XmlTextReader") }
 
     override predicate isUnsafe(string reason) {
       not exists(Expr xmlResolverVal |

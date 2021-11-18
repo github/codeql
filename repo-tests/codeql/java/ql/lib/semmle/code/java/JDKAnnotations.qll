@@ -25,7 +25,7 @@ class SuppressWarningsAnnotation extends Annotation {
   }
 
   /** Gets the name of a warning suppressed by this annotation. */
-  string getASuppressedWarning() { result = getASuppressedWarningLiteral().getRepresentedString() }
+  string getASuppressedWarning() { result = this.getASuppressedWarningLiteral().getValue() }
 }
 
 /** A `@Target` annotation. */

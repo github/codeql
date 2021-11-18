@@ -35,79 +35,79 @@ class TypeUnboundIdLDAPConnection extends Class {
 /** A method with the name `setBaseDN` declared in `com.unboundid.ldap.sdk.SearchRequest`. */
 class MethodUnboundIdSearchRequestSetBaseDN extends Method {
   MethodUnboundIdSearchRequestSetBaseDN() {
-    getDeclaringType() instanceof TypeUnboundIdSearchRequest and
-    hasName("setBaseDN")
+    this.getDeclaringType() instanceof TypeUnboundIdSearchRequest and
+    this.hasName("setBaseDN")
   }
 }
 
 /** A method with the name `setFilter` declared in `com.unboundid.ldap.sdk.SearchRequest`. */
 class MethodUnboundIdSearchRequestSetFilter extends Method {
   MethodUnboundIdSearchRequestSetFilter() {
-    getDeclaringType() instanceof TypeUnboundIdSearchRequest and
-    hasName("setFilter")
+    this.getDeclaringType() instanceof TypeUnboundIdSearchRequest and
+    this.hasName("setFilter")
   }
 }
 
 /** A method with the name `create` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreate extends Method {
   MethodUnboundIdFilterCreate() {
-    getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    hasName("create")
+    this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    this.hasName("create")
   }
 }
 
 /** A method with the name `createANDFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateANDFilter extends Method {
   MethodUnboundIdFilterCreateANDFilter() {
-    getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    hasName("createANDFilter")
+    this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    this.hasName("createANDFilter")
   }
 }
 
 /** A method with the name `createORFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateORFilter extends Method {
   MethodUnboundIdFilterCreateORFilter() {
-    getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    hasName("createORFilter")
+    this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    this.hasName("createORFilter")
   }
 }
 
 /** A method with the name `createNOTFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateNOTFilter extends Method {
   MethodUnboundIdFilterCreateNOTFilter() {
-    getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    hasName("createNOTFilter")
+    this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    this.hasName("createNOTFilter")
   }
 }
 
 /** A method with the name `simplifyFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterSimplifyFilter extends Method {
   MethodUnboundIdFilterSimplifyFilter() {
-    getDeclaringType() instanceof TypeUnboundIdLdapFilter and
-    hasName("simplifyFilter")
+    this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
+    this.hasName("simplifyFilter")
   }
 }
 
 /** A method with the name `search` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
 class MethodUnboundIdLDAPConnectionSearch extends Method {
   MethodUnboundIdLDAPConnectionSearch() {
-    getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
-    hasName("search")
+    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+    this.hasName("search")
   }
 }
 
 /** A method with the name `asyncSearch` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
 class MethodUnboundIdLDAPConnectionAsyncSearch extends Method {
   MethodUnboundIdLDAPConnectionAsyncSearch() {
-    getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
-    hasName("asyncSearch")
+    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+    this.hasName("asyncSearch")
   }
 }
 
 /** A method with the name `searchForEntry` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
 class MethodUnboundIdLDAPConnectionSearchForEntry extends Method {
   MethodUnboundIdLDAPConnectionSearchForEntry() {
-    getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
-    hasName("searchForEntry")
+    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+    this.hasName("searchForEntry")
   }
 }

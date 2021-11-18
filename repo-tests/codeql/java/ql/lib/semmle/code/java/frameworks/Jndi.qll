@@ -41,39 +41,39 @@ class TypeLdapName extends Class {
 /** A method with the name `addAll` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameAddAll extends Method {
   MethodLdapNameAddAll() {
-    getDeclaringType() instanceof TypeLdapName and
-    hasName("addAll")
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("addAll")
   }
 }
 
 /** A method with the name `clone` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameClone extends Method {
   MethodLdapNameClone() {
-    getDeclaringType() instanceof TypeLdapName and
-    hasName("clone")
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("clone")
   }
 }
 
 /** A method with the name `getAll` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameGetAll extends Method {
   MethodLdapNameGetAll() {
-    getDeclaringType() instanceof TypeLdapName and
-    hasName("getAll")
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("getAll")
   }
 }
 
 /** A method with the name `getRdns` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameGetRdns extends Method {
   MethodLdapNameGetRdns() {
-    getDeclaringType() instanceof TypeLdapName and
-    hasName("getRdns")
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("getRdns")
   }
 }
 
 /** A method with the name `toString` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameToString extends Method {
   MethodLdapNameToString() {
-    getDeclaringType() instanceof TypeLdapName and
-    hasName("toString")
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("toString")
   }
 }
