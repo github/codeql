@@ -37,7 +37,7 @@ class VariableScope extends TScope, AstNode {
   predicate containsField(VarDef decl, string name) {
     name = decl.getName() and
     (
-      decl = this.(Class).getAField()
+      decl = this.(Class).getAField().getVarDecl()
       or
       this.getOuterScope().containsField(decl, name) and
       not exists(this.getADefinition(name))

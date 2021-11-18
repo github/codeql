@@ -563,8 +563,10 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
     )
   }
 
-  /** If this is a field, returns the class type that declares it. */
-  ClassType getDeclaringType() { result.getDeclaration().getAField() = this }
+  /** If this is declared in a field, returns the class type that declares it. */
+  ClassType getDeclaringType() {
+    exists(FieldDecl f | f.getVarDecl() = this and result = f.getParent().(Class).getType())
+  }
 
   /**
    * Holds if this is a class field that overrides the field `other`.
@@ -578,6 +580,32 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
   }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ * A field declaration;
+ */
+class FieldDecl extends TFieldDecl, AstNode {
+  QL::Field f;
+
+  FieldDecl() { this = TFieldDecl(f) }
+
+  VarDecl getVarDecl() { toQL(result) = f.getChild() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = directMember("getVarDecl") and result = this.getVarDecl()
+  }
+
+  override string getAPrimaryQlClass() { result = "FieldDecl" }
+
+  /** Holds if this field is annotated as overriding another field. */
+  predicate isOverride() { this.hasAnnotation("override") }
+
+  string getName() { result = getVarDecl().getName() }
+
+  override QLDoc getQLDoc() { result = any(Class c).getQLDocFor(this) }
 }
 
 /**
@@ -716,10 +744,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    */
   CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
-  AstNode getMember(int i) {
-    toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) or
-    toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_).(QL::Field).getChild()
-  }
+  AstNode getMember(int i) { toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -743,9 +768,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a field in this class.
    */
-  VarDecl getAField() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_).(QL::Field).getChild()
-  }
+  FieldDecl getAField() { result = getMember(_) }
 
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
