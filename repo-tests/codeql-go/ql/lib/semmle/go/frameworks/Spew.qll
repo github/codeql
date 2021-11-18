@@ -31,7 +31,7 @@ module Spew {
 
   /** The `Sprint` function or one of its variants. */
   class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() { hasQualifiedName(packagePath(), ["Sdump", "Sprint", "Sprintln", "Sprintf"]) }
+    Sprinter() { this.hasQualifiedName(packagePath(), ["Sdump", "Sprint", "Sprintln", "Sprintf"]) }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()

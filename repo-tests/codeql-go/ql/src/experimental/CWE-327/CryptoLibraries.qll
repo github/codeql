@@ -113,7 +113,7 @@ private newtype TCryptographicAlgorithm =
  */
 abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   /** Gets a textual representation of this element. */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   /**
    * Gets the name of this algorithm.
@@ -126,7 +126,7 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
    */
   bindingset[name]
   predicate matchesName(string name) {
-    exists(name.regexpReplaceAll("[-_]", "").regexpFind("(?i)\\Q" + getName() + "\\E", _, _))
+    exists(name.regexpReplaceAll("[-_]", "").regexpFind("(?i)\\Q" + this.getName() + "\\E", _, _))
   }
 
   /**

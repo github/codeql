@@ -55,7 +55,7 @@ class Property extends TProperty {
    * subexpression of `test`.
    */
   predicate checkOn(DataFlow::Node test, Boolean outcome, DataFlow::Node nd) {
-    checkOnExpr(test.asExpr(), outcome, nd)
+    this.checkOnExpr(test.asExpr(), outcome, nd)
   }
 
   /** Holds if this is the property of having the Boolean value `b`. */
