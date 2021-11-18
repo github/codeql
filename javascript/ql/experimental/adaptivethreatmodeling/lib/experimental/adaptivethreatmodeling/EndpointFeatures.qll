@@ -8,6 +8,12 @@ import javascript
 import CodeToFeatures
 import EndpointScoring
 
+/** Maximum number of descendants of an AST node to be considered to be in the "neighborhood" of that node */
+private int maxNumDescendants() { result = 128 }
+
+/** Maximum number of subtokens in a function body */
+private int maxNumBodySubtokens() { result = 256 }
+
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
  *
@@ -135,13 +141,17 @@ module FunctionBodies {
   /**
    * Gets the body token feature for the specified entity.
    *
-   * This is a string containing natural language tokens in the order that they appear in the source code for the entity.
+   * This is a string containing natural language tokens in the order that they appear in the source
+   * code for the entity.
+   *
+   * If a function has more than `maxNumBodySubtokens` body subtokens, then featurize it as absent.
+   * This approximates the behavior of the classifer on non-generic body features where large body
+   * features are replaced by the absent token.
    */
   string getBodyTokenFeatureForEntity(DatabaseFeatures::Entity entity) {
-    // If a function has more than 256 body subtokens, then featurize it as absent. This
-    // approximates the behavior of the classifer on non-generic body features where large body
-    // features are replaced by the absent token.
-    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) > 256
+    if
+      count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) >
+        maxNumBodySubtokens()
     then result = ""
     else
       result =
@@ -170,7 +180,7 @@ module NeighborhoodBodies {
    * leaves in the subtree, which is a closer approximation to the number of tokens in the subtree.
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
-    if getNumDescendents(node.getParentNode()) > 128
+    if getNumDescendents(node.getParentNode()) > maxNumDescendants()
     then result = node
     else result = getNeighborhoodAstNode(node.getParentNode())
   }
@@ -193,14 +203,19 @@ module NeighborhoodBodies {
   /**
    * Gets the body token feature limited to the part of the function body that lies under `rootNode` in the AST.
    *
-   * This is a string of space-separated natural language tokens (AST leaves) in the order that they appear in the source code for the AST subtree rooted at `rootNode`. This is equivalent to the portion of the code that falls under
- * the AST subtree rooted at the given node, except that non-leaf nodes (such as operators) are excluded.
+   * This is a string of space-separated natural language tokens (AST leaves) in the order that they
+   * appear in the source code for the AST subtree rooted at `rootNode`. This is equivalent to the
+   * portion of the code that falls under the AST subtree rooted at the given node, except that
+   * non-leaf nodes (such as operators) are excluded.
+   *
+   * If a function has more than `maxNumBodySubtokens` body subtokens, then featurize it as absent.
+   * This approximates the behavior of the classifer on non-generic body features where large body
+   * features are replaced by the absent token.
    */
   string getBodyTokenFeatureForNeighborhoodNode(DatabaseFeatures::AstNode rootNode) {
-    // If a function has more than 256 body subtokens, then featurize it as absent. This
-    // approximates the behavior of the classifer on non-generic body features where large body
-    // features are replaced by the absent token.
-    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(rootNode, node, token)) > 256
+    if
+      count(DatabaseFeatures::AstNode node, string token | bodyTokens(rootNode, node, token)) >
+        maxNumBodySubtokens()
     then result = ""
     else
       result =
