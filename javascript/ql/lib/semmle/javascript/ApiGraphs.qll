@@ -317,7 +317,6 @@ module API {
       or
       exists(Node pred, ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        not lbl instanceof Label::LabelAlias and
         predpath = pred.getAPath(length - 1) and
         exists(string space | if length = 1 then space = "" else space = " " |
           result = "(" + lbl + space + predpath + ")" and
@@ -1033,7 +1032,6 @@ module API {
       MkLabelReturn() or
       MkLabelPromised() or
       MkLabelPromisedError() or
-      MkLabelAlias() or
       MkLabelEntryPoint(API::EntryPoint e)
 
     class LabelEntryPoint extends ApiLabel {
@@ -1044,12 +1042,6 @@ module API {
       API::EntryPoint getEntryPoint() { result = e }
 
       override string toString() { result = e }
-    }
-
-    class LabelAlias extends ApiLabel {
-      LabelAlias() { this = MkLabelAlias() }
-
-      override string toString() { result = "" }
     }
 
     class LabelPromised extends ApiLabel {
@@ -1173,9 +1165,6 @@ module API {
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
-
-    /** Gets the `alias` (empty) edge label. */
-    LabelAlias alias() { any() }
 
     /** Gets the `promised` edge label connecting a promise to its contained value. */
     MkLabelPromised promised() { any() }
