@@ -313,6 +313,9 @@ module ActionDispatch {
     override Location getLocation() { result = call.getLocation() }
   }
 
+  /**
+   * A route configuration. See `Route` for more info
+   */
   newtype TRoute =
     /**
      * See `ExplicitRoute`
@@ -344,31 +347,6 @@ module ActionDispatch {
     TMatchRoute(RouteBlock b, MethodCall m) { b.getAStmt() = m and m.getMethodName() = "match" }
 
   /**
-   * Several routing methods support the keyword arguments `only:` and `except:`.
-   * - `only:` restricts the set of actions to just those in the argument.
-   * - `except:` removes the given actions from the set.
-   */
-  bindingset[action]
-  predicate applyActionFilters(MethodCall m, string action) {
-    // Respect the `only` keyword argument, which restricts the set of actions.
-    (
-      not exists(m.getKeywordArgument("only"))
-      or
-      exists(Expr only | only = m.getKeywordArgument("only") |
-        [only.(ArrayLiteral).getElement(_), only.(StringlikeLiteral)].getValueText() = action
-      )
-    ) and
-    // Respect the `except` keyword argument, which removes actions from the default set.
-    (
-      not exists(m.getKeywordArgument("except"))
-      or
-      exists(Expr except | except = m.getKeywordArgument("except") |
-        [except.(ArrayLiteral).getElement(_), except.(StringlikeLiteral)].getValueText() != action
-      )
-    )
-  }
-
-  /**
    * A route configuration. This defines a combination of HTTP method and URL
    * path which should be routed to a particular controller-action pair.
    * This can arise from an explicit call to a routing method, for example:
@@ -381,12 +359,19 @@ module ActionDispatch {
    * ```
    */
   abstract class Route extends TRoute {
+    /**
+     * Gets the name of a primary CodeQL class to which this route belongs.
+     */
     string getAPrimaryQlClass() { result = "Route" }
 
     MethodCall method;
 
+    /** Gets a string representation of this route. */
     string toString() { result = method.toString() }
 
+    /**
+     * Gets the location of the method call that defines this route.
+     */
     Location getLocation() { result = method.getLocation() }
 
     /**
@@ -711,6 +696,31 @@ module ActionDispatch {
       result = method.getKeywordArgument("action").getValueText() or
       result = extractAction(method.getArgument(0).(Pair).getValue().getValueText())
     }
+  }
+
+  /**
+   * Several routing methods support the keyword arguments `only:` and `except:`.
+   * - `only:` restricts the set of actions to just those in the argument.
+   * - `except:` removes the given actions from the set.
+   */
+  bindingset[action]
+  predicate applyActionFilters(MethodCall m, string action) {
+    // Respect the `only` keyword argument, which restricts the set of actions.
+    (
+      not exists(m.getKeywordArgument("only"))
+      or
+      exists(Expr only | only = m.getKeywordArgument("only") |
+        [only.(ArrayLiteral).getElement(_), only.(StringlikeLiteral)].getValueText() = action
+      )
+    ) and
+    // Respect the `except` keyword argument, which removes actions from the default set.
+    (
+      not exists(m.getKeywordArgument("except"))
+      or
+      exists(Expr except | except = m.getKeywordArgument("except") |
+        [except.(ArrayLiteral).getElement(_), except.(StringlikeLiteral)].getValueText() != action
+      )
+    )
   }
 
   /**
