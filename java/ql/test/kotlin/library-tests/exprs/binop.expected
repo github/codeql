@@ -10,7 +10,9 @@
 | exprs.kt:25:15:25:20 | ... >= ... | exprs.kt:25:15:25:15 | x | exprs.kt:25:20:25:20 | y |
 | exprs.kt:26:15:26:21 | ... == ... | exprs.kt:26:15:26:15 | x | exprs.kt:26:21:26:21 | y |
 | exprs.kt:27:15:27:21 | ... != ... | exprs.kt:27:15:27:15 | x | exprs.kt:27:21:27:21 | y |
-| exprs.kt:52:16:52:26 | ... + ... | exprs.kt:52:16:52:19 | str1 | exprs.kt:52:23:52:26 | str2 |
-| exprs.kt:55:12:55:23 | ... > ... | exprs.kt:55:12:55:19 | variable | exprs.kt:55:23:55:23 | 0 |
-| exprs.kt:59:12:59:20 | ... + ... | exprs.kt:59:12:59:14 | 123 | exprs.kt:59:18:59:20 | 456 |
-| exprs.kt:85:8:85:16 | ... != ... | exprs.kt:85:8:85:8 | r | exprs.kt:85:13:85:16 | null |
+| exprs.kt:34:14:34:21 | ... == ... | exprs.kt:34:14:34:15 | dx | exprs.kt:34:20:34:21 | dy |
+| exprs.kt:35:14:35:21 | ... != ... | exprs.kt:35:14:35:15 | dx | exprs.kt:35:20:35:21 | dy |
+| exprs.kt:56:16:56:26 | ... + ... | exprs.kt:56:16:56:19 | str1 | exprs.kt:56:23:56:26 | str2 |
+| exprs.kt:59:12:59:23 | ... > ... | exprs.kt:59:12:59:19 | variable | exprs.kt:59:23:59:23 | 0 |
+| exprs.kt:63:12:63:20 | ... + ... | exprs.kt:63:12:63:14 | 123 | exprs.kt:63:18:63:20 | 456 |
+| exprs.kt:89:8:89:16 | ... != ... | exprs.kt:89:8:89:8 | r | exprs.kt:89:13:89:16 | null |

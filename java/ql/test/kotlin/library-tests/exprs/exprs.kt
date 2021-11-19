@@ -1,7 +1,7 @@
 import java.awt.Polygon
 import java.awt.Rectangle
 
-fun topLevelMethod(x: Int, y: Int): Int {
+fun topLevelMethod(x: Int, y: Int, dx: Double, dy: Double): Int {
     val i1 = 1
     val i2 = x + y
     val i3 = x - y
@@ -30,6 +30,10 @@ TODO
     val i20 = x in x .. y
     val i21 = x !in x .. y
 */
+
+    val d1 = dx == dy
+    val d2 = dx != dy
+
     val b1 = true
     val b2 = false
 /*

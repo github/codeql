@@ -1557,6 +1557,13 @@ open class KotlinFileExtractor(
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id, dr, callable)
             }
+            c.origin == EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "ieee754equals") -> {
+                val id = tw.getFreshIdLabel<DbNeexpr>()
+                val type = useType(c.type)
+                // TODO: Is this consistent with Java?
+                tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, dr, callable)
+            }
             // We need to handle all the builtin operators defines in BuiltInOperatorNames in
             //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
             // as they can't be extracted as external dependencies.
@@ -1614,6 +1621,34 @@ open class KotlinFileExtractor(
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id, c, callable)
+            }
+            isBuiltinCall(c, "ieee754equals") -> {
+                if(c.origin != EQEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for ieee754equals: ${c.origin}", c)
+                }
+                // TODO: Is this consistent with Java?
+                val id = tw.getFreshIdLabel<DbEqexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, c, callable)
+            }
+            isBuiltinCall(c, "THROW_CCE") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCall(c, "THROW_ISE") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCall(c, "noWhenBranchMatchedException") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCall(c, "illegalArgumentException") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCall(c, "ANDAND") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCall(c, "OROR") -> {
+                logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
