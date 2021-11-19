@@ -234,6 +234,43 @@ module Stages {
   }
 
   /**
+   * The `APIStage` stage.
+   */
+  cached
+  module APIStage {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the APIStage stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(
+        API::moduleImport("foo")
+            .getMember("bar")
+            .getUnknownMember()
+            .getAMember()
+            .getAParameter()
+            .getPromised()
+            .getReturn()
+            .getParameter(2)
+            .getUnknownMember()
+            .getInstance()
+            .getReceiver()
+            .getPromisedError()
+      )
+    }
+  }
+
+  /**
    * The `taint` stage.
    */
   cached
