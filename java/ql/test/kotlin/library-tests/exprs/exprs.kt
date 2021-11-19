@@ -7,8 +7,6 @@ fun topLevelMethod(x: Int, y: Int, dx: Double, dy: Double): Int {
     val i3 = x - y
     val i4 = x / y
     val i5 = x % y
-/*
-TODO
     val i6 = x shl y
     val i7 = x shr y
     val i8 = x ushr y
@@ -16,7 +14,6 @@ TODO
     val i10 = x or y
     val i11 = x xor y
     val i12 = x.inv()
-*/
     val i13 = x == y
     val i14 = x != y
     val i15 = x < y
@@ -36,12 +33,10 @@ TODO
 
     val b1 = true
     val b2 = false
-/*
-TODO
     val b3 = b1 && b2
     val b4 = b1 || b2
     val b5 = !b1
-*/
+
     val c = 'x'
     val str = "string lit"
     val strWithQuote = "string \" lit"

@@ -1633,21 +1633,27 @@ open class KotlinFileExtractor(
                 binop(id, c, callable)
             }
             isBuiltinCall(c, "THROW_CCE") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             isBuiltinCall(c, "THROW_ISE") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             isBuiltinCall(c, "noWhenBranchMatchedException") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             isBuiltinCall(c, "illegalArgumentException") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             isBuiltinCall(c, "ANDAND") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             isBuiltinCall(c, "OROR") -> {
+                // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
             else -> {
