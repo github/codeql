@@ -69,6 +69,14 @@ module Stages {
       exists(any(Expr e).getStringValue())
       or
       any(ASTNode node).isAmbient()
+      or
+      exists(any(Identifier e).getName())
+      or
+      exists(any(ExprOrType e).getUnderlyingValue())
+      or
+      exists(ConstantExpr e)
+      or
+      exists(SyntacticConstants::NullConstant n)
     }
   }
 
@@ -299,6 +307,20 @@ module Stages {
       exists(Exports::getALibraryInputParameter())
       or
       any(RegExpTerm t).isUsedAsRegExp()
+      or
+      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
+    }
+
+    cached
+    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
+      cached
+      DummySanitizer() { none() }
+
+      cached
+      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
+
+      cached
+      override predicate sanitizes(boolean outcome, Expr e) { none() }
     }
   }
 }

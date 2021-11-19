@@ -89,7 +89,8 @@ class ExprOrType extends @expr_or_type, Documentable {
    *
    * Also see `getUnderlyingReference` and `stripParens`.
    */
-  Expr getUnderlyingValue() { result = this }
+  cached
+  Expr getUnderlyingValue() { Stages::Ast::ref() and result = this }
 }
 
 /**
@@ -274,7 +275,11 @@ private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
  */
 class Identifier extends @identifier, ExprOrType {
   /** Gets the name of this identifier. */
-  string getName() { literals(result, _, this) }
+  cached
+  string getName() {
+    Stages::Ast::ref() and
+    literals(result, _, this)
+  }
 
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
