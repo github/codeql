@@ -39,5 +39,6 @@ where
     fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("CException")
   ) and
   fc instanceof ExprInVoidContext and
+  not fc.isInMacroExpansion() and
   msg = "This object does not generate an exception."
 select fc, msg
