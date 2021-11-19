@@ -3,6 +3,13 @@ cloneMethods
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Integer[][] | file://:0:0:0:0 | Kotlin nullable Array<Integer[]> |
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[] | file://:0:0:0:0 | int[] | file://:0:0:0:0 | Kotlin nullable IntArray |
 | file://:0:0:0:0 | clone | clone() | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | int[][] | file://:0:0:0:0 | Kotlin nullable Array<int[]> |
+sourceSignatures
+| primitiveArrays.kt:3:1:7:1 | <obinit> | <obinit>() |
+| primitiveArrays.kt:3:1:7:1 | Test | Test() |
+| primitiveArrays.kt:3:1:7:1 | equals | equals(java.lang.Object) |
+| primitiveArrays.kt:3:1:7:1 | hashCode | hashCode() |
+| primitiveArrays.kt:3:1:7:1 | toString | toString() |
+| primitiveArrays.kt:5:3:5:123 | test | test(java.lang.Integer[],java.lang.Integer[],int[],java.lang.Integer[][],java.lang.Integer[][],int[][]) |
 #select
 | primitiveArrays.kt:5:12:5:24 | a | file://:0:0:0:0 | Integer[] | Integer | Integer | file://:0:0:0:0 | Kotlin not-null Array<Integer> |
 | primitiveArrays.kt:5:27:5:40 | b | file://:0:0:0:0 | Integer[] | Integer | Integer | file://:0:0:0:0 | Kotlin not-null Array<Integer> |

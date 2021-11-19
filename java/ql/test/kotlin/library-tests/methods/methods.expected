@@ -1,27 +1,38 @@
 methods
-| methods2.kt:4:1:5:1 | fooBarTopLevelMethod |
-| methods2.kt:7:1:10:1 | <obinit> |
-| methods2.kt:7:1:10:1 | equals |
-| methods2.kt:7:1:10:1 | hashCode |
-| methods2.kt:7:1:10:1 | toString |
-| methods2.kt:8:5:9:5 | fooBarClassMethod |
-| methods3.kt:3:1:3:39 | fooBarTopLevelMethod |
-| methods3.kt:5:1:7:1 | <obinit> |
-| methods3.kt:5:1:7:1 | equals |
-| methods3.kt:5:1:7:1 | hashCode |
-| methods3.kt:5:1:7:1 | toString |
-| methods3.kt:6:5:6:43 | fooBarTopLevelMethod |
-| methods.kt:2:1:3:1 | topLevelMethod |
-| methods.kt:5:1:13:1 | <obinit> |
-| methods.kt:5:1:13:1 | equals |
-| methods.kt:5:1:13:1 | hashCode |
-| methods.kt:5:1:13:1 | toString |
-| methods.kt:6:5:7:5 | classMethod |
-| methods.kt:9:5:12:5 | anotherClassMethod |
+| methods2.kt:4:1:5:1 | fooBarTopLevelMethod | fooBarTopLevelMethod(int,int) |
+| methods2.kt:7:1:10:1 | <obinit> | <obinit>() |
+| methods2.kt:7:1:10:1 | equals | equals(java.lang.Object) |
+| methods2.kt:7:1:10:1 | hashCode | hashCode() |
+| methods2.kt:7:1:10:1 | toString | toString() |
+| methods2.kt:8:5:9:5 | fooBarClassMethod | fooBarClassMethod(int,int) |
+| methods3.kt:3:1:3:39 | fooBarTopLevelMethod | fooBarTopLevelMethod(int) |
+| methods3.kt:5:1:7:1 | <obinit> | <obinit>() |
+| methods3.kt:5:1:7:1 | equals | equals(java.lang.Object) |
+| methods3.kt:5:1:7:1 | hashCode | hashCode() |
+| methods3.kt:5:1:7:1 | toString | toString() |
+| methods3.kt:6:5:6:43 | fooBarTopLevelMethod | fooBarTopLevelMethod(int) |
+| methods4.kt:3:1:11:1 | <obinit> | <obinit>() |
+| methods4.kt:3:1:11:1 | equals | equals(java.lang.Object) |
+| methods4.kt:3:1:11:1 | hashCode | hashCode() |
+| methods4.kt:3:1:11:1 | toString | toString() |
+| methods4.kt:5:3:9:3 | <obinit> | <obinit>() |
+| methods4.kt:5:3:9:3 | equals | equals(java.lang.Object) |
+| methods4.kt:5:3:9:3 | hashCode | hashCode() |
+| methods4.kt:5:3:9:3 | toString | toString() |
+| methods4.kt:7:5:7:34 | m | m(foo.bar.NestedTest.InsideNestedTest) |
+| methods.kt:2:1:3:1 | topLevelMethod | topLevelMethod(int,int) |
+| methods.kt:5:1:13:1 | <obinit> | <obinit>() |
+| methods.kt:5:1:13:1 | equals | equals(java.lang.Object) |
+| methods.kt:5:1:13:1 | hashCode | hashCode() |
+| methods.kt:5:1:13:1 | toString | toString() |
+| methods.kt:6:5:7:5 | classMethod | classMethod(int,int) |
+| methods.kt:9:5:12:5 | anotherClassMethod | anotherClassMethod(int,int) |
 constructors
-| methods2.kt:7:1:10:1 | Class2 |
-| methods3.kt:5:1:7:1 | Class3 |
-| methods.kt:5:1:13:1 | Class |
+| methods2.kt:7:1:10:1 | Class2 | Class2() |
+| methods3.kt:5:1:7:1 | Class3 | Class3() |
+| methods4.kt:3:1:11:1 | NestedTest | NestedTest() |
+| methods4.kt:5:3:9:3 | InsideNestedTest | InsideNestedTest() |
+| methods.kt:5:1:13:1 | Class | Class() |
 extensions
 | methods3.kt:3:1:3:39 | fooBarTopLevelMethod | file://:0:0:0:0 | int |
 | methods3.kt:6:5:6:43 | fooBarTopLevelMethod | file://:0:0:0:0 | int |

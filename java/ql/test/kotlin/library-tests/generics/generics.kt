@@ -32,3 +32,9 @@ fun m() {
     c3.f4(5)
     val c4: C0<*> = C0<Int>()
 }
+
+class BoundedTest<T : CharSequence, S : T> {
+
+    fun m(s: S, t: T) { }
+
+}

@@ -10,6 +10,11 @@ query predicate parameterizedType(ParameterizedType t, GenericType gt, int i, st
   t.getFile().getExtension() = "kt"
 }
 
+query predicate function(Callable c, string signature) {
+  signature = c.getSignature() and
+  c.getFile().getExtension() = "kt"
+}
+
 query predicate genericFunction(GenericCallable c, TypeVariable tv, int i) {
   c.getTypeParameter(i) = tv and
   c.getFile().getExtension() = "kt"

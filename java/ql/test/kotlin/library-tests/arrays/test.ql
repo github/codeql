@@ -17,3 +17,7 @@ query predicate cloneMethods(Method m, string signature, Array declType, Type re
   returnType = m.getReturnType() and
   ktReturnType = m.getReturnKotlinType()
 }
+
+query predicate sourceSignatures(Callable c, string signature) {
+  c.getSignature() = signature and c.fromSource()
+}
