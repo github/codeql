@@ -18,7 +18,7 @@ TODO
     val i12 = x.inv()
 */
     val i13 = x == y
-    // TODO val i14 = x != y
+    val i14 = x != y
     val i15 = x < y
     val i16 = x <= y
     val i17 = x > y
@@ -80,11 +80,11 @@ fun typeTests(x: Root, y: Subclass1) {
 
 fun foo(p: Polygon) {
     val r = p.getBounds()
-// TODO     if(r != null) {
-// TODO         val r2: Rectangle = r
-// TODO         val height = r2.height
-// TODO         r2.height = 3
-// TODO     }
+    if(r != null) {
+        val r2: Rectangle = r
+        val height = r2.height
+        r2.height = 3
+    }
 }
 
 enum class Direction {

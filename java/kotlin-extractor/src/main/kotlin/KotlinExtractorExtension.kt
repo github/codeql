@@ -1397,7 +1397,32 @@ open class KotlinFileExtractor(
     }
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
-        fun isFunction(pkgName: String, className: String?, fName: String): Boolean {
+        fun isBuiltin(fName: String): Boolean {
+            val verbose = false
+            fun verboseln(s: String) { if(verbose) println(s) }
+            verboseln("Attempting builtin match for $fName")
+            val target = c.symbol.owner
+            if (target.name.asString() != fName) {
+                verboseln("No match as function name is ${target.name.asString()} not $fName")
+                return false
+            }
+            val extensionReceiverParameter = target.extensionReceiverParameter
+            // TODO: Are both branches of this `if` possible?:
+            val targetPkg = if (extensionReceiverParameter == null) target.parent
+                            else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
+            if (targetPkg !is IrPackageFragment) {
+                verboseln("No match as didn't find target package")
+                return false
+            }
+            if (targetPkg.fqName.asString() != "kotlin.internal.ir") {
+                verboseln("No match as package name is ${targetPkg.fqName.asString()}")
+                return false
+            }
+            verboseln("Match")
+            return true
+        }
+
+        fun isFunction(pkgName: String, className: String, fName: String): Boolean {
             val verbose = false
             fun verboseln(s: String) { if(verbose) println(s) }
             verboseln("Attempting match for $pkgName $className $fName")
@@ -1409,20 +1434,15 @@ open class KotlinFileExtractor(
             val extensionReceiverParameter = target.extensionReceiverParameter
             val targetClass = if (extensionReceiverParameter == null) target.parent
                               else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
-            val targetPkg =
-                if (className != null) {
-                    if (targetClass !is IrClass) {
-                        verboseln("No match as didn't find target class")
-                        return false
-                    }
-                    if (targetClass.name.asString() != className) {
-                        verboseln("No match as class name is ${targetClass.name.asString()} not $className")
-                        return false
-                    }
-                    targetClass.parent
-                } else {
-                    targetClass
-                }
+            if (targetClass !is IrClass) {
+                verboseln("No match as didn't find target class")
+                return false
+            }
+            if (targetClass.name.asString() != className) {
+                verboseln("No match as class name is ${targetClass.name.asString()} not $className")
+                return false
+            }
+            val targetPkg = targetClass.parent
             if (targetPkg !is IrPackageFragment) {
                 verboseln("No match as didn't find target package")
                 return false
@@ -1521,7 +1541,11 @@ open class KotlinFileExtractor(
                 tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
             }
-            c.origin == EQEQ && isFunction("kotlin.internal.ir", null, "EQEQ") -> {
+            // compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
+            isBuiltin("EQEQ") -> {
+                if(c.origin != EQEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
+                }
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
@@ -1538,25 +1562,37 @@ TODO
                 tw.writeCallableEnclosingExpr(id, callable)
             }
 */
-            c.origin == LT && isFunction("kotlin.internal.ir", null, "less") -> {
+            isBuiltin("less") -> {
+                if(c.origin != LT) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LT: ${c.origin}", c)
+                }
                 val id = tw.getFreshIdLabel<DbLtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
             }
-            c.origin == LTEQ && isFunction("kotlin.internal.ir", null, "lessOrEqual") -> {
+            isBuiltin("lessOrEqual") -> {
+                if(c.origin != LTEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LTEQ: ${c.origin}", c)
+                }
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
             }
-            c.origin == GT && isFunction("kotlin.internal.ir", null, "greater") -> {
+            isBuiltin("greater") -> {
+                if(c.origin != GT) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GT: ${c.origin}", c)
+                }
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id)
             }
-            c.origin == GTEQ && isFunction("kotlin.internal.ir", null, "greaterOrEqual") -> {
+            isBuiltin("greaterOrEqual") -> {
+                if(c.origin != GTEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GTEQ: ${c.origin}", c)
+                }
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
