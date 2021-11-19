@@ -45,10 +45,10 @@ class RegexpMatchPredicate extends BuiltinPredicate {
 predicate canUseMatchInsteadOfRegexpMatch(Call c, string matchesStr) {
   c.getTarget() instanceof RegexpMatchPredicate and
   exists(string raw | raw = c.getArgument(0).(String).getValue() |
-    matchesStr = "%" + raw.regexpCapture("^\\.\\*(\\w+)$", _)
+    matchesStr = "%" + raw.regexpCapture("^\\.\\*([a-zA-Z\\d\\s-]+)$", _)
     or
-    matchesStr = raw.regexpCapture("^(\\w+)\\.\\*$", _) + "%"
+    matchesStr = raw.regexpCapture("^([a-zA-Z\\d\\s-]+)\\.\\*$", _) + "%"
     or
-    matchesStr = "%" + raw.regexpCapture("^\\.\\*(\\w+)\\.\\*$", _) + "%"
+    matchesStr = "%" + raw.regexpCapture("^\\.\\*([a-zA-Z\\d\\s-]+)\\.\\*$", _) + "%"
   )
 }
