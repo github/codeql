@@ -11,7 +11,10 @@ module Logrus {
 
   bindingset[result]
   private string getALogResultName() {
-    result.matches(["Debug%", "Error%", "Fatal%", "Info%", "Log%", "Panic%", "Print%", "Trace%", "Warn%"])
+    result
+        .matches([
+            "Debug%", "Error%", "Fatal%", "Info%", "Log%", "Panic%", "Print%", "Trace%", "Warn%"
+          ])
   }
 
   bindingset[result]
