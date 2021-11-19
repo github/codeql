@@ -85,6 +85,8 @@ module UrlRedirect {
   }
 
   /**
+   * A string interpolation, seen as a sanitizer for "URL redirection" vulnerabilities.
+   *
    * String interpolation is considered safe, provided the string is prefixed by a non-tainted value.
    * In most cases this will prevent the tainted value from controlling e.g. the host of the URL.
    *

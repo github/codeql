@@ -542,7 +542,7 @@ private State before(RegExpTerm t) { result = Match(t, 0) }
 /**
  * Gets a state the NFA may be in after matching `t`.
  */
-private State after(RegExpTerm t) {
+State after(RegExpTerm t) {
   exists(RegExpAlt alt | t = alt.getAChild() | result = after(alt))
   or
   exists(RegExpSequence seq, int i | t = seq.getChild(i) |
@@ -671,7 +671,7 @@ RegExpRoot getRoot(RegExpTerm term) {
 /**
  * A state in the NFA.
  */
-private newtype TState =
+newtype TState =
   /**
    * A state representing that the NFA is about to match a term.
    * `i` is used to index into multi-char literals.
@@ -802,28 +802,25 @@ InputSymbol getAnInputSymbolMatching(string char) {
 }
 
 /**
+ * Holds if `state` is a start state.
+ */
+predicate isStartState(State state) {
+  state = mkMatch(any(RegExpRoot r))
+  or
+  exists(RegExpCaret car | state = after(car))
+}
+
+/**
  * Predicates for constructing a prefix string that leads to a given state.
  */
 private module PrefixConstruction {
-  /**
-   * Holds if `state` starts the string matched by the regular expression.
-   */
-  private predicate isStartState(State state) {
-    state instanceof StateInPumpableRegexp and
-    (
-      state = Match(any(RegExpRoot r), _)
-      or
-      exists(RegExpCaret car | state = after(car))
-    )
-  }
-
   /**
    * Holds if `state` is the textually last start state for the regular expression.
    */
   private predicate lastStartState(State state) {
     exists(RegExpRoot root |
       state =
-        max(State s, Location l |
+        max(StateInPumpableRegexp s, Location l |
           isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
         |
           s
