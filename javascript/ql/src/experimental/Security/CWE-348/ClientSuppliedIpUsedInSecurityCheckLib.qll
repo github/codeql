@@ -1,5 +1,3 @@
-private import javascript
-private import DataFlow::PathGraph
 private import semmle.javascript.dataflow.DataFlow
 
 /**
