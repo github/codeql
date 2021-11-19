@@ -1,10 +1,10 @@
 /**
- * @name Uncontrolled thread resource consumption
+ * @name Uncontrolled thread resource consumption from local input source
  * @description Use user input directly to control thread sleep time could lead to performance problems
  *              or even resource exhaustion.
  * @kind path-problem
  * @id java/thread-resource-abuse
- * @problem.severity warning
+ * @problem.severity recommendation
  * @tags security
  *       external/cwe/cwe-400
  */
@@ -13,6 +13,32 @@ import java
 import ThreadPauseSink
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
+
+/** The `getInitParameter` method of servlet or JSF. */
+class GetInitParameter extends Method {
+  GetInitParameter() {
+    (
+      this.getDeclaringType()
+          .getASupertype*()
+          .hasQualifiedName(["javax.servlet", "jakarta.servlet"],
+            ["FilterConfig", "Registration", "ServletConfig", "ServletContext"]) or
+      this.getDeclaringType()
+          .getASupertype*()
+          .hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "ExternalContext")
+    ) and
+    this.getName() = "getInitParameter"
+  }
+}
+
+/** An access to the `getInitParameter` method. */
+class GetInitParameterAccess extends MethodAccess {
+  GetInitParameterAccess() { this.getMethod() instanceof GetInitParameter }
+}
+
+/* Init parameter input of a Java EE web application. */
+class InitParameterInput extends LocalUserInput {
+  InitParameterInput() { this.asExpr() instanceof GetInitParameterAccess }
+}
 
 private class LessThanSanitizer extends DataFlow::BarrierGuard {
   LessThanSanitizer() { this instanceof ComparisonExpr }
@@ -26,11 +52,11 @@ private class LessThanSanitizer extends DataFlow::BarrierGuard {
   }
 }
 
-/** Taint configuration of uncontrolled thread resource consumption. */
+/** Taint configuration of uncontrolled thread resource consumption from local user input. */
 class ThreadResourceAbuse extends TaintTracking::Configuration {
   ThreadResourceAbuse() { this = "ThreadResourceAbuse" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
@@ -82,4 +108,4 @@ from DataFlow::PathNode source, DataFlow::PathNode sink, ThreadResourceAbuse con
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "Vulnerability of uncontrolled resource consumption due to $@.", source.getNode(),
-  "user-provided value"
+  "local user-provided value"
