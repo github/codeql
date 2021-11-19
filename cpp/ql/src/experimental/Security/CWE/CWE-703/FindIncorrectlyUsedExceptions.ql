@@ -46,5 +46,6 @@ where
   not fc instanceof ConstructorDelegationInit and
   not fc.getParent() instanceof Initializer and
   not fc.getParent() instanceof AllocationExpr and
+  not fc.getEnclosingStmt() instanceof ReturnStmt and
   msg = "This object does not generate an exception."
 select fc, msg
