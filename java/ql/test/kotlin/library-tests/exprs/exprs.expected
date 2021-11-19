@@ -20,6 +20,10 @@
 | exprs.kt:20:15:20:15 | x | exprs.kt:4:1:58:1 | topLevelMethod | VarAccess |
 | exprs.kt:20:15:20:20 | ... == ... | exprs.kt:4:1:58:1 | topLevelMethod | EQExpr |
 | exprs.kt:20:20:20:20 | y | exprs.kt:4:1:58:1 | topLevelMethod | VarAccess |
+| exprs.kt:21:5:21:20 | i14 | exprs.kt:4:1:58:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:21:15:21:15 | x | exprs.kt:4:1:58:1 | topLevelMethod | VarAccess |
+| exprs.kt:21:15:21:20 | ... != ... | exprs.kt:4:1:58:1 | topLevelMethod | NEExpr |
+| exprs.kt:21:20:21:20 | y | exprs.kt:4:1:58:1 | topLevelMethod | VarAccess |
 | exprs.kt:22:5:22:19 | i15 | exprs.kt:4:1:58:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:22:15:22:15 | x | exprs.kt:4:1:58:1 | topLevelMethod | VarAccess |
 | exprs.kt:22:15:22:19 | ... < ... | exprs.kt:4:1:58:1 | topLevelMethod | LTExpr |
@@ -137,6 +141,18 @@
 | exprs.kt:82:5:82:25 | r | exprs.kt:81:1:88:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:82:13:82:13 | p | exprs.kt:81:1:88:1 | foo | VarAccess |
 | exprs.kt:82:15:82:25 | getBounds(...) | exprs.kt:81:1:88:1 | foo | MethodAccess |
+| exprs.kt:83:5:87:5 | when ... | exprs.kt:81:1:88:1 | foo | WhenExpr |
+| exprs.kt:83:8:83:8 | r | exprs.kt:81:1:88:1 | foo | VarAccess |
+| exprs.kt:83:8:83:16 | ... != ... | exprs.kt:81:1:88:1 | foo | NEExpr |
+| exprs.kt:83:13:83:16 | null | exprs.kt:81:1:88:1 | foo | NullLiteral |
+| exprs.kt:84:9:84:29 | r2 | exprs.kt:81:1:88:1 | foo | LocalVariableDeclExpr |
+| exprs.kt:84:29:84:29 | (...)... | exprs.kt:81:1:88:1 | foo | CastExpr |
+| exprs.kt:84:29:84:29 | Rectangle | exprs.kt:81:1:88:1 | foo | TypeAccess |
+| exprs.kt:84:29:84:29 | r | exprs.kt:81:1:88:1 | foo | VarAccess |
+| exprs.kt:85:9:85:30 | height | exprs.kt:81:1:88:1 | foo | LocalVariableDeclExpr |
+| exprs.kt:85:25:85:30 | height | exprs.kt:81:1:88:1 | foo | VarAccess |
+| exprs.kt:86:9:86:17 | ...=... | exprs.kt:81:1:88:1 | foo | AssignExpr |
+| exprs.kt:86:21:86:21 | 3 | exprs.kt:81:1:88:1 | foo | IntegerLiteral |
 | exprs.kt:90:1:92:1 | <obinit>(...) | exprs.kt:90:6:92:1 | Direction | MethodAccess |
 | exprs.kt:90:1:92:1 | new Enum(...) | exprs.kt:90:6:92:1 | Direction | ClassInstanceExpr |
 | exprs.kt:94:1:98:1 | <obinit>(...) | exprs.kt:94:6:98:1 | Color | MethodAccess |
@@ -151,6 +167,7 @@
 | exprs.kt:102:23:102:27 | GREEN | exprs.kt:100:1:103:1 | enums | VarAccess |
 | file://:0:0:0:0 | Color | exprs.kt:94:6:98:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:90:6:92:1 | Direction | TypeAccess |
+| file://:0:0:0:0 | height | exprs.kt:81:1:88:1 | foo | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:72:1:79:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:72:1:79:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | tmp0 | exprs.kt:4:1:58:1 | topLevelMethod | LocalVariableDeclExpr |

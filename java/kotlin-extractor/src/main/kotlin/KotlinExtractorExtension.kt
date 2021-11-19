@@ -1396,32 +1396,66 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
-        fun isBuiltin(fName: String): Boolean {
-            val verbose = false
-            fun verboseln(s: String) { if(verbose) println(s) }
-            verboseln("Attempting builtin match for $fName")
-            val target = c.symbol.owner
-            if (target.name.asString() != fName) {
-                verboseln("No match as function name is ${target.name.asString()} not $fName")
-                return false
-            }
-            val extensionReceiverParameter = target.extensionReceiverParameter
-            // TODO: Are both branches of this `if` possible?:
-            val targetPkg = if (extensionReceiverParameter == null) target.parent
-                            else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
-            if (targetPkg !is IrPackageFragment) {
-                verboseln("No match as didn't find target package")
-                return false
-            }
-            if (targetPkg.fqName.asString() != "kotlin.internal.ir") {
-                verboseln("No match as package name is ${targetPkg.fqName.asString()}")
-                return false
-            }
-            verboseln("Match")
-            return true
+    fun isBuiltinCall(c: IrCall, fName: String): Boolean {
+        val verbose = false
+        fun verboseln(s: String) { if(verbose) println(s) }
+        verboseln("Attempting builtin match for $fName")
+        val target = c.symbol.owner
+        if (target.name.asString() != fName) {
+            verboseln("No match as function name is ${target.name.asString()} not $fName")
+            return false
         }
+        val extensionReceiverParameter = target.extensionReceiverParameter
+        // TODO: Are both branches of this `if` possible?:
+        val targetPkg = if (extensionReceiverParameter == null) target.parent
+                        else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
+        if (targetPkg !is IrPackageFragment) {
+            verboseln("No match as didn't find target package")
+            return false
+        }
+        if (targetPkg.fqName.asString() != "kotlin.internal.ir") {
+            verboseln("No match as package name is ${targetPkg.fqName.asString()}")
+            return false
+        }
+        verboseln("Match")
+        return true
+    }
 
+    fun binop(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>) {
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, callable)
+
+        val dr = c.dispatchReceiver
+        if(dr != null) {
+            logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
+        }
+        if(c.valueArgumentsCount < 1) {
+            logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+        } else {
+            val lhs = c.getValueArgument(0)
+            if(lhs == null) {
+                logger.warnElement(Severity.ErrorSevere, "LHS null", c)
+            } else {
+                extractExpressionExpr(lhs, callable, id, 0)
+            }
+            if(c.valueArgumentsCount < 2) {
+                logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+            } else {
+                val rhs = c.getValueArgument(1)
+                if(rhs == null) {
+                    logger.warnElement(Severity.ErrorSevere, "RHS null", c)
+                } else {
+                    extractExpressionExpr(rhs, callable, id, 1)
+                }
+            }
+            if(c.valueArgumentsCount > 2) {
+                logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+            }
+        }
+    }
+
+    fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int) {
         fun isFunction(pkgName: String, className: String, fName: String): Boolean {
             val verbose = false
             fun verboseln(s: String) { if(verbose) println(s) }
@@ -1432,6 +1466,7 @@ open class KotlinFileExtractor(
                 return false
             }
             val extensionReceiverParameter = target.extensionReceiverParameter
+            // TODO: Are both branches of this `if` possible?:
             val targetClass = if (extensionReceiverParameter == null) target.parent
                               else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
             if (targetClass !is IrClass) {
@@ -1481,40 +1516,7 @@ open class KotlinFileExtractor(
             }
         }
 
-        fun binop(id: Label<out DbExpr>) {
-            val locId = tw.getLocation(c)
-            tw.writeHasLocation(id, locId)
-            tw.writeCallableEnclosingExpr(id, callable)
-
-            val dr = c.dispatchReceiver
-            if(dr != null) {
-                logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
-            }
-            if(c.valueArgumentsCount < 1) {
-                logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
-            } else {
-                val lhs = c.getValueArgument(0)
-                if(lhs == null) {
-                    logger.warnElement(Severity.ErrorSevere, "LHS null", c)
-                } else {
-                    extractExpressionExpr(lhs, callable, id, 0)
-                }
-                if(c.valueArgumentsCount < 2) {
-                    logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
-                } else {
-                    val rhs = c.getValueArgument(1)
-                    if(rhs == null) {
-                        logger.warnElement(Severity.ErrorSevere, "RHS null", c)
-                    } else {
-                        extractExpressionExpr(rhs, callable, id, 1)
-                    }
-                }
-                if(c.valueArgumentsCount > 2) {
-                    logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
-                }
-            }
-        }
-
+        val dr = c.dispatchReceiver
         when {
             c.origin == PLUS &&
             (isFunction("kotlin", "Int", "plus") || isFunction("kotlin", "String", "plus")) -> {
@@ -1541,62 +1543,58 @@ open class KotlinFileExtractor(
                 tw.writeExprs_remexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
             }
+            // != gets desugared into not and ==. Here we resugar it.
+            c.origin == EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQ") -> {
+                val id = tw.getFreshIdLabel<DbNeexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, dr, callable)
+            }
             // compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
-            isBuiltin("EQEQ") -> {
+            isBuiltinCall(c, "EQEQ") -> {
                 if(c.origin != EQEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
                 }
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id)
+                binop(id, c, callable)
             }
-/*
-TODO
-            c.origin == EXCLEQ -> {
-                val id = tw.getFreshIdLabel<DbNeexpr>()
-                val type = useType(c.type)
-                val locId = tw.getLocation(c)
-                tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-            }
-*/
-            isBuiltin("less") -> {
+            isBuiltinCall(c, "less") -> {
                 if(c.origin != LT) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LT: ${c.origin}", c)
                 }
                 val id = tw.getFreshIdLabel<DbLtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id)
+                binop(id, c, callable)
             }
-            isBuiltin("lessOrEqual") -> {
+            isBuiltinCall(c, "lessOrEqual") -> {
                 if(c.origin != LTEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LTEQ: ${c.origin}", c)
                 }
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id)
+                binop(id, c, callable)
             }
-            isBuiltin("greater") -> {
+            isBuiltinCall(c, "greater") -> {
                 if(c.origin != GT) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GT: ${c.origin}", c)
                 }
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id)
+                binop(id, c, callable)
             }
-            isBuiltin("greaterOrEqual") -> {
+            isBuiltinCall(c, "greaterOrEqual") -> {
                 if(c.origin != GTEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GTEQ: ${c.origin}", c)
                 }
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id)
+                binop(id, c, callable)
             }
             else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
@@ -1611,7 +1609,6 @@ TODO
                 // type arguments at index -2, -3, ...
                 extractTypeArguments(c, id, callable, -2, true)
 
-                val dr = c.dispatchReceiver
                 if(dr != null) {
                     extractExpressionExpr(dr, callable, id, -1)
                 }
