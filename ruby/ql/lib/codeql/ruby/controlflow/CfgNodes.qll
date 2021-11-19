@@ -440,8 +440,14 @@ module ExprNodes {
 
     final override Pair getExpr() { result = ExprCfgNode.super.getExpr() }
 
+    /**
+     * Gets the key expression of this pair.
+     */
     final ExprCfgNode getKey() { e.hasCfgChild(e.getKey(), this, result) }
 
+    /**
+     * Gets the value expression of this pair.
+     */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
   }
 
