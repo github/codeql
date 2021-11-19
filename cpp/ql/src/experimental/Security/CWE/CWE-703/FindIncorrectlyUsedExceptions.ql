@@ -38,14 +38,6 @@ where
     fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("exception") or
     fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("CException")
   ) and
-  not fc.isInMacroExpansion() and
-  not exists(ThrowExpr texp | fc.getEnclosingStmt() = texp.getEnclosingStmt()) and
-  not exists(FunctionCall fctmp | fctmp.getAnArgument() = fc) and
-  not fc instanceof ConstructorDirectInit and
-  not fc.getEnclosingStmt() instanceof DeclStmt and
-  not fc instanceof ConstructorDelegationInit and
-  not fc.getParent() instanceof Initializer and
-  not fc.getParent() instanceof AllocationExpr and
-  not fc.getEnclosingStmt() instanceof ReturnStmt and
+  fc instanceof ExprInVoidContext and
   msg = "This object does not generate an exception."
 select fc, msg
