@@ -14,7 +14,7 @@ module Glog {
     GlogCall() {
       exists(string pkg, Function f, string fn |
         pkg = package(["github.com/golang/glog", "gopkg.in/glog", "k8s.io/klog"], "") and
-        fn.regexpMatch("(Error|Exit|Fatal|Info|Warning)(|f|ln)") and
+        fn.regexpMatch("(Error|Exit|Fatal|Info|Warning)(|f|ln|Depth)") and
         this = f.getACall()
       |
         f.hasQualifiedName(pkg, fn)
