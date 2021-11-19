@@ -38,3 +38,13 @@ actionDispatchControllerMethods
 | app/config/routes.rb:28:3:28:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:29:3:29:69 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:49:5:49:94 | call to post | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+underscore
+| Foo | foo |
+| Foo::Bar | foo/bar |
+| Foo::Bar::Baz | foo/bar/baz |
+| Foo::Bar::BazQuux | foo/bar/baz_quux |
+| FooBar | foo_bar |
+| FooBar::Baz | foo_bar/baz |
+| HTTPServerRequest | h_tT_p_server_request |
+| LotsOfCapitalLetters | lots_of_capital_letters |
+| invalid | invalid |

@@ -16,3 +16,11 @@ query predicate actionDispatchControllerMethods(
 ) {
   m.getARoute() = r
 }
+
+query predicate underscore(string input, string output) {
+  output = ActionDispatch::underscore(input) and
+  input in [
+      "Foo", "FooBar", "Foo::Bar", "FooBar::Baz", "Foo::Bar::Baz", "Foo::Bar::BazQuux", "invalid",
+      "HTTPServerRequest", "LotsOfCapitalLetters"
+    ]
+}
