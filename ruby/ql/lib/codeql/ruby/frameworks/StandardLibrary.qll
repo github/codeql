@@ -99,7 +99,7 @@ class ObjectInstanceMethodCall extends UnknownMethodCall {
 }
 
 /**
- * A Method call which has no known target.
+ * A `Method` call that has no known target.
  * These will typically be calls to methods inherited from a superclass.
  */
 class UnknownMethodCall extends MethodCall {
