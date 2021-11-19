@@ -1544,22 +1544,22 @@ open class KotlinFileExtractor(
                 binopDisp(id)
             }
             // != gets desugared into not and ==. Here we resugar it.
+            // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
             c.origin == EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQ") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id, dr, callable)
             }
-            // compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
-            isBuiltinCall(c, "EQEQ") -> {
-                if(c.origin != EQEQ) {
-                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
-                }
-                val id = tw.getFreshIdLabel<DbEqexpr>()
+            c.origin == EXCLEQEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQEQ") -> {
+                val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
-                tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, dr, callable)
             }
+            // We need to handle all the builtin operators defines in BuiltInOperatorNames in
+            //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
+            // as they can't be extracted as external dependencies.
             isBuiltinCall(c, "less") -> {
                 if(c.origin != LT) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LT: ${c.origin}", c)
@@ -1594,6 +1594,25 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, c, callable)
+            }
+            isBuiltinCall(c, "EQEQ") -> {
+                if(c.origin != EQEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
+                }
+                // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
+                val id = tw.getFreshIdLabel<DbEqexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                binop(id, c, callable)
+            }
+            isBuiltinCall(c, "EQEQEQ") -> {
+                if(c.origin != EQEQEQ) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQEQ: ${c.origin}", c)
+                }
+                val id = tw.getFreshIdLabel<DbEqexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binop(id, c, callable)
             }
             else -> {

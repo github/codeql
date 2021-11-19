@@ -23,6 +23,8 @@ TODO
     val i16 = x <= y
     val i17 = x > y
     val i18 = x >= y
+    val i19 = x === y
+    val i20 = x !== y
 /*
 TODO
     val i20 = x in x .. y
