@@ -54,7 +54,7 @@ where
       fctmp.getTarget().hasGlobalOrStdName("open")
     ) and
     fctmp.getNumberOfArguments() = 2 and
-    fctmp.getArgument(0).getValue() != "/dev/null"
+    not fctmp.getArgument(0).getValue() = "/dev/null"
   ) and
   not exists(FunctionCall fctmp |
     fctmp.getTarget().hasGlobalOrStdName("chmod") or
