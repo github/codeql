@@ -648,8 +648,8 @@ module ExceptionXss {
    * Such an error can contain property names from the input if the
    * underlying schema uses `additionalProperties` or `propertyPatterns`.
    *
-   * For example, an input of form `{"<img src=x onerror=alert(1)>": 45}` might produce the error
-   * `data/<img src=x onerror=alert(1)> should be string`.
+   * See [RAD SecFlow-1v SF_0290_2.3.01.26 - Persistent Cross-Site Scripting](https://www.exploit-db.com/exploits/48807)
+   * for a proof of concept form that this exploit might take.
    */
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
