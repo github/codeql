@@ -887,13 +887,6 @@ module ActionDispatch {
   }
 
   /**
-   * Convert the first character of the string to uppercase.
-   * TODO: remove?
-   */
-  bindingset[input]
-  string capitalize(string input) { result = input.charAt(0).toUpperCase() + input.suffix(1) }
-
-  /**
    * Convert the first character of the string to lowercase.
    */
   bindingset[input]
