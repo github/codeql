@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends FragmentActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstance) {
+    public void onCreate(Bundle savedInstance) {
         try {
             super.onCreate(savedInstance);
             final String fname = getIntent().getStringExtra("fname");

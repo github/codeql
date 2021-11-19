@@ -65,13 +65,4 @@ public class Fragment {
     return null;
   }
 
-  @Override
-  public void onConfigurationChanged(Configuration p0) {}
-
-  @Override
-  public void onLowMemory() {}
-
-  @Override
-  public void onTrimMemory(int p0) {}
-
 }
