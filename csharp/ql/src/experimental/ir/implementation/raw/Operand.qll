@@ -46,7 +46,7 @@ class Operand extends TStageOperand {
   /**
    * Gets the location of the source code for this operand.
    */
-  final Language::Location getLocation() { result = this.getUse().getLocation() }
+  final Language::Location getLocation() { result = this.getAnyDef().getLocation() }
 
   /**
    * Gets the function that contains this operand.
