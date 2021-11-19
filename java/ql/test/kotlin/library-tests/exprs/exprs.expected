@@ -231,8 +231,8 @@
 | exprs.kt:111:9:111:18 | a2 | exprs.kt:110:13:115:5 | getObject | LocalVariableDeclExpr |
 | exprs.kt:111:18:111:18 | 2 | exprs.kt:110:13:115:5 | getObject | IntegerLiteral |
 | exprs.kt:112:16:114:9 | <Stmt> | exprs.kt:110:13:115:5 | getObject | StmtExpr |
-| exprs.kt:112:16:114:9 | <obinit>(...) | exprs.kt:112:16:114:9 | <no name provided> | MethodAccess |
-| exprs.kt:112:16:114:9 | new <no name provided>(...) | exprs.kt:110:13:115:5 | getObject | ClassInstanceExpr |
+| exprs.kt:112:16:114:9 | <obinit>(...) | exprs.kt:112:16:114:9 |  | MethodAccess |
+| exprs.kt:112:16:114:9 | new (...) | exprs.kt:110:13:115:5 | getObject | ClassInstanceExpr |
 | exprs.kt:113:13:113:49 | ...=... | exprs.kt:112:16:114:9 | <obinit> | AssignExpr |
 | exprs.kt:113:13:113:49 | a3 | exprs.kt:112:16:114:9 | <obinit> | VarAccess |
 | exprs.kt:113:13:113:49 | a3 | exprs.kt:113:13:113:49 | <get-a3> | VarAccess |

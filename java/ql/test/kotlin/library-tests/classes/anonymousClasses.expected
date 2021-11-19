@@ -1,7 +1,7 @@
-| classes.kt:66:20:66:54 | new Object(...) { ... } | classes.kt:66:20:66:54 | new <no name provided>(...) | file://:0:0:0:0 | Object |
-| classes.kt:68:20:68:74 | new Object(...) { ... } | classes.kt:68:20:68:74 | new <no name provided>(...) | file://:0:0:0:0 | Object |
-| classes.kt:72:16:77:10 | new Object(...) { ... } | classes.kt:72:16:77:10 | new <no name provided>(...) | file://:0:0:0:0 | Object |
-| classes.kt:75:24:75:33 | new Object(...) { ... } | classes.kt:75:24:75:33 | new <no name provided>(...) | file://:0:0:0:0 | Object |
-| classes.kt:81:16:81:38 | new Interface1(...) { ... } | classes.kt:81:16:81:38 | new <no name provided>(...) | file://:0:0:0:0 | Interface1 |
-| classes.kt:85:16:85:25 | new Object(...) { ... } | classes.kt:85:16:85:25 | new <no name provided>(...) | file://:0:0:0:0 | Object |
-| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:89:16:89:44 | new <no name provided>(...) | file://:0:0:0:0 | Interface3<Integer> |
+| classes.kt:66:20:66:54 | new Object(...) { ... } | classes.kt:66:20:66:54 | new (...) |  | file://:0:0:0:0 | Object |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | classes.kt:68:20:68:74 | new (...) |  | file://:0:0:0:0 | Object |
+| classes.kt:72:16:77:10 | new Object(...) { ... } | classes.kt:72:16:77:10 | new (...) |  | file://:0:0:0:0 | Object |
+| classes.kt:75:24:75:33 | new Object(...) { ... } | classes.kt:75:24:75:33 | new (...) |  | file://:0:0:0:0 | Object |
+| classes.kt:81:16:81:38 | new Interface1(...) { ... } | classes.kt:81:16:81:38 | new (...) |  | file://:0:0:0:0 | Interface1 |
+| classes.kt:85:16:85:25 | new Object(...) { ... } | classes.kt:85:16:85:25 | new (...) |  | file://:0:0:0:0 | Object |
+| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:89:16:89:44 | new (...) |  | file://:0:0:0:0 | Interface3<Integer> |

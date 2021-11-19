@@ -1104,7 +1104,7 @@ open class KotlinFileExtractor(
             useClassSource(c)
         }
         val pkg = c.packageFqName?.asString() ?: ""
-        val cls = c.name.asString()
+        val cls = if (c.isAnonymousObject) "" else c.name.asString()
         val pkgId = extractPackage(pkg)
         if(c.kind == ClassKind.INTERFACE) {
             @Suppress("UNCHECKED_CAST")
@@ -1300,7 +1300,7 @@ open class KotlinFileExtractor(
 
         if (f.symbol is IrConstructorSymbol) {
             val returnType = useType(erase(f.returnType))
-            val shortName = f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
+            val shortName = if (f.returnType.isAnonymous) "" else f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
             @Suppress("UNCHECKED_CAST")
             tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
         } else {
@@ -1775,7 +1775,7 @@ open class KotlinFileExtractor(
     ) {
         val id = tw.getFreshIdLabel<DbNewexpr>()
         val type: TypeResults
-        val isAnonymous = ((e.type as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
+        val isAnonymous = e.type.isAnonymous
         if (isAnonymous) {
             if (e.typeArgumentsCount > 0) {
                 logger.warn("Unexpected type arguments for anonymous class constructor call")
@@ -2405,4 +2405,7 @@ open class KotlinFileExtractor(
 
         tw.writeKtBreakContinueTargets(id, loopId)
     }
+
+    private val IrType.isAnonymous: Boolean
+        get() = ((this as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
 }
