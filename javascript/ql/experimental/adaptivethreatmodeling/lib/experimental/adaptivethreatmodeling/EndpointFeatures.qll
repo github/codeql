@@ -9,7 +9,17 @@ import CodeToFeatures
 import EndpointScoring
 
 /** Maximum number of descendants of an AST node to be considered to be in the "neighborhood" of that node */
-private int maxNumDescendants() { result = 128 }
+class DescendantsThreshold extends int {
+  DescendantsThreshold() { this = [1 .. 10000] }
+
+  predicate isLarge() { this = 1024 }
+
+  predicate isMedium() { this = 256 }
+
+  predicate isSmall() { this = 64 }
+
+  int getMaxNumDescendants() { result = this }
+}
 
 /** Maximum number of subtokens in a function body */
 private int maxNumBodySubtokens() { result = 256 }
@@ -34,9 +44,22 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // A feature containing natural language tokens from the neighborhood around the endpoint
   // (limited to within the function that encloses the endpoint), in the order they appear
   // in the source code.
-  exists(Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped |
-    featureName = "neighborhoodBody" and
-    rootNode = NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode())) and
+  exists(
+    Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped, DescendantsThreshold thresh
+  |
+    (
+      featureName = "enclosingFunctionBodyEndpointNeighborhoodLarge" and
+      // thresh instanceof DescendantsThresholdLarge
+      thresh.isLarge()
+      or
+      featureName = "enclosingFunctionBodyEndpointNeighborhoodMedium" and
+      thresh.isMedium()
+      or
+      featureName = "enclosingFunctionBodyEndpointNeighborhoodSmall" and
+      thresh.isSmall()
+    ) and
+    rootNode =
+      NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode()), thresh) and
     rootNodeWrapped = DatabaseFeatures::astNode(Wrapped::astNode(endpoint.getContainer(), rootNode)) and
     result =
       unique(string x |
@@ -183,12 +206,12 @@ module NeighborhoodBodies {
    * on the number of leaves in the subtree, which is a closer approximation to the number of tokens
    * in the subtree.
    */
-  Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
+  Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node, DescendantsThreshold maxNumDescendants) {
     if
       node = getOutermostEnclosingFunction(node) or
-      getNumDescendents(node.getParentNode()) > maxNumDescendants()
+      getNumDescendents(node.getParentNode()) > maxNumDescendants.getMaxNumDescendants()
     then result = node
-    else result = getNeighborhoodAstNode(node.getParentNode())
+    else result = getNeighborhoodAstNode(node.getParentNode(), maxNumDescendants)
   }
 
   /** Count number of descendants of an AST node */
@@ -377,7 +400,9 @@ private string getASupportedFeatureName() {
     [
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
       "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody",
-      "neighborhoodBody"
+      "enclosingFunctionBodyEndpointNeighborhoodLarge",
+      "enclosingFunctionBodyEndpointNeighborhoodMedium",
+      "enclosingFunctionBodyEndpointNeighborhoodSmall"
     ]
 }
 
