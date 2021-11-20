@@ -185,8 +185,7 @@ module NeighborhoodBodies {
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node) {
     if
-      // `node` will always have a parent as we start at and endpoint
-      node.getParentNode() = getOutermostEnclosingFunction(node) or
+      node = getOutermostEnclosingFunction(node) or
       getNumDescendents(node.getParentNode()) > maxNumDescendants()
     then result = node
     else result = getNeighborhoodAstNode(node.getParentNode())
