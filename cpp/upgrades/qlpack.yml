@@ -1,5 +1,5 @@
 name: codeql/cpp-upgrades
-version: 0.0.3
+version: 0.0.4
 groups: cpp
 upgrades: .
 library: true
