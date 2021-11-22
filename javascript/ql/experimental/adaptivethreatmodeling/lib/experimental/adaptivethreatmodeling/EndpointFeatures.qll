@@ -60,7 +60,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     ) and
     rootNode =
       NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode()), thresh) and
-    rootNodeWrapped = DatabaseFeatures::astNode(Wrapped::astNode(endpoint.getContainer(), rootNode)) and
+    rootNodeWrapped = DatabaseFeatures::astNode(Wrapped::astNode(rootNode.getContainer(), rootNode)) and
     result =
       unique(string x |
         x = NeighborhoodBodies::getBodyTokenFeatureForNeighborhoodNode(rootNodeWrapped)
