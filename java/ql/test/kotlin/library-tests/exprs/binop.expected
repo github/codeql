@@ -22,6 +22,10 @@
 | exprs.kt:47:16:47:25 | ... >= ... | exprs.kt:47:16:47:18 | byx | exprs.kt:47:23:47:25 | byy |
 | exprs.kt:48:16:48:26 | ... == ... | exprs.kt:48:16:48:18 | byx | exprs.kt:48:24:48:26 | byy |
 | exprs.kt:49:16:49:26 | ... != ... | exprs.kt:49:16:49:18 | byx | exprs.kt:49:24:49:26 | byy |
+| exprs.kt:52:14:52:20 | ... + ... | exprs.kt:52:14:52:15 | sx | exprs.kt:52:19:52:20 | sy |
+| exprs.kt:53:14:53:20 | ... - ... | exprs.kt:53:14:53:15 | sx | exprs.kt:53:19:53:20 | sy |
+| exprs.kt:54:14:54:20 | ... / ... | exprs.kt:54:14:54:15 | sx | exprs.kt:54:19:54:20 | sy |
+| exprs.kt:55:14:55:20 | ... % ... | exprs.kt:55:14:55:15 | sx | exprs.kt:55:19:55:20 | sy |
 | exprs.kt:56:14:56:21 | ... == ... | exprs.kt:56:14:56:15 | toInt(...) | exprs.kt:56:20:56:21 | toInt(...) |
 | exprs.kt:57:14:57:21 | ... != ... | exprs.kt:57:14:57:15 | toInt(...) | exprs.kt:57:20:57:21 | toInt(...) |
 | exprs.kt:58:14:58:20 | ... < ... | exprs.kt:58:14:58:15 | toInt(...) | exprs.kt:58:19:58:20 | toInt(...) |
@@ -30,6 +34,10 @@
 | exprs.kt:61:15:61:22 | ... >= ... | exprs.kt:61:15:61:16 | toInt(...) | exprs.kt:61:21:61:22 | toInt(...) |
 | exprs.kt:62:15:62:23 | ... == ... | exprs.kt:62:15:62:16 | sx | exprs.kt:62:22:62:23 | sy |
 | exprs.kt:63:15:63:23 | ... != ... | exprs.kt:63:15:63:16 | sx | exprs.kt:63:22:63:23 | sy |
+| exprs.kt:66:14:66:20 | ... + ... | exprs.kt:66:14:66:15 | lx | exprs.kt:66:19:66:20 | ly |
+| exprs.kt:67:14:67:20 | ... - ... | exprs.kt:67:14:67:15 | lx | exprs.kt:67:19:67:20 | ly |
+| exprs.kt:68:14:68:20 | ... / ... | exprs.kt:68:14:68:15 | lx | exprs.kt:68:19:68:20 | ly |
+| exprs.kt:69:14:69:20 | ... % ... | exprs.kt:69:14:69:15 | lx | exprs.kt:69:19:69:20 | ly |
 | exprs.kt:77:15:77:22 | ... == ... | exprs.kt:77:15:77:16 | lx | exprs.kt:77:21:77:22 | ly |
 | exprs.kt:78:15:78:22 | ... != ... | exprs.kt:78:15:78:16 | lx | exprs.kt:78:21:78:22 | ly |
 | exprs.kt:79:15:79:21 | ... < ... | exprs.kt:79:15:79:16 | lx | exprs.kt:79:20:79:21 | ly |
@@ -50,6 +58,10 @@
 | exprs.kt:96:15:96:22 | ... >= ... | exprs.kt:96:15:96:16 | dx | exprs.kt:96:21:96:22 | dy |
 | exprs.kt:97:15:97:23 | ... == ... | exprs.kt:97:15:97:16 | dx | exprs.kt:97:22:97:23 | dy |
 | exprs.kt:98:15:98:23 | ... != ... | exprs.kt:98:15:98:16 | dx | exprs.kt:98:22:98:23 | dy |
+| exprs.kt:101:14:101:20 | ... + ... | exprs.kt:101:14:101:15 | fx | exprs.kt:101:19:101:20 | fy |
+| exprs.kt:102:14:102:20 | ... - ... | exprs.kt:102:14:102:15 | fx | exprs.kt:102:19:102:20 | fy |
+| exprs.kt:103:14:103:20 | ... / ... | exprs.kt:103:14:103:15 | fx | exprs.kt:103:19:103:20 | fy |
+| exprs.kt:104:14:104:20 | ... % ... | exprs.kt:104:14:104:15 | fx | exprs.kt:104:19:104:20 | fy |
 | exprs.kt:105:14:105:21 | ... == ... | exprs.kt:105:14:105:15 | fx | exprs.kt:105:20:105:21 | fy |
 | exprs.kt:106:14:106:21 | ... != ... | exprs.kt:106:14:106:15 | fx | exprs.kt:106:20:106:21 | fy |
 | exprs.kt:107:14:107:20 | ... < ... | exprs.kt:107:14:107:15 | fx | exprs.kt:107:19:107:20 | fy |
