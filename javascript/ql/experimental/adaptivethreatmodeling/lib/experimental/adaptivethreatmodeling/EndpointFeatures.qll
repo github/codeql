@@ -208,7 +208,7 @@ module NeighborhoodBodies {
    */
   Raw::AstNode getNeighborhoodAstNode(Raw::AstNode node, DescendantsThreshold maxNumDescendants) {
     if
-      node = getOutermostEnclosingFunction(node) or
+      node.getParentNode() = getOutermostEnclosingFunction(node) or
       getNumDescendents(node.getParentNode()) > maxNumDescendants.getMaxNumDescendants()
     then result = node
     else result = getNeighborhoodAstNode(node.getParentNode(), maxNumDescendants)
