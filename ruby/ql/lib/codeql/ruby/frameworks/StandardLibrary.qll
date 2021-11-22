@@ -335,12 +335,12 @@ class ModuleEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNo
   override DataFlow::Node getCode() { result = this.getArgument(0) }
 }
 
-/** Flow summary for `Regexp.escape`. */
+/** Flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
 class RegexpEscapeSummary extends SummarizedCallable {
   RegexpEscapeSummary() { this = "Regexp.escape" }
 
   override MethodCall getACall() {
-    result = API::getTopLevelMember("Regexp").getAMethodCall("escape").asExpr().getExpr()
+    result = API::getTopLevelMember("Regexp").getAMethodCall(["escape", "quote"]).asExpr().getExpr()
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {

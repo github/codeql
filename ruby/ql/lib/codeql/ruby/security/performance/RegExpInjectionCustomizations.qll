@@ -70,9 +70,12 @@ module RegExpInjection {
     StringConstArrayInclusionCall { }
 
   /**
-   * A call to `Regexp.escape`, considered as a sanitizer.
+   * A call to `Regexp.escape` (or its alias, `Regexp.quote`), considered as a
+   * sanitizer.
    */
   class RegexpEscapeSanitization extends Sanitizer {
-    RegexpEscapeSanitization() { this = API::getTopLevelMember("Regexp").getAMethodCall("escape") }
+    RegexpEscapeSanitization() {
+      this = API::getTopLevelMember("Regexp").getAMethodCall(["escape", "quote"])
+    }
   }
 }
