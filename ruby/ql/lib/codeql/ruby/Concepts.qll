@@ -417,6 +417,12 @@ module HTTP {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
+      /**
+       * Gets a node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getURL() { result = super.getURL() }
+
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
 
@@ -441,6 +447,12 @@ module HTTP {
       abstract class Range extends MethodCall {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
+
+        /**
+         * Gets a node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getURL();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
