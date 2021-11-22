@@ -65,6 +65,14 @@ module LocalFlow {
   }
 
   /**
+   * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
+   * involving SSA definition `def`.
+   */
+  predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    def.hasAdjacentReads(nodeFrom.asExpr(), nodeTo.asExpr())
+  }
+
+  /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def`.
    */
@@ -78,17 +86,7 @@ module LocalFlow {
     nodeTo.asExpr() = def.getAFirstRead()
     or
     // Flow from read to next read
-    exists(
-      CfgNodes::ExprNodes::VariableReadAccessCfgNode read1,
-      CfgNodes::ExprNodes::VariableReadAccessCfgNode read2
-    |
-      def.hasAdjacentReads(read1, read2) and
-      nodeTo.asExpr() = read2
-    |
-      nodeFrom.asExpr() = read1
-      or
-      read1 = nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()
-    )
+    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi node
     exists(Ssa::PhiNode phi |
@@ -210,6 +208,9 @@ private module Cached {
     or
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
+    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _)
+    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
@@ -221,6 +222,8 @@ private module Cached {
     defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
     or
     nodeTo = LocalFlow::getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -236,6 +239,8 @@ private module Cached {
       defaultValueFlow(p, nodeFrom) and
       nodeTo = LocalFlow::getParameterDefNode(p)
     )
+    or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
   }
 
   cached
