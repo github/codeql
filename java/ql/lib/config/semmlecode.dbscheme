@@ -1137,3 +1137,10 @@ ktAnonymousClassDeclarationStmts(
   unique int id: @anonymousclassdeclstmt ref,
   int classId: @class ref
 )
+
+ktSyntheticBody(
+  unique int id: @callable ref,
+  int kind: int ref
+  // 1: ENUM_VALUES
+  // 2: ENUM_VALUEOF
+)

@@ -459,18 +459,28 @@ open class KotlinFileExtractor(
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         when(b) {
-            is IrBlockBody -> extractBlockBody(b, callable, callable, 0)
-            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
+            is IrBlockBody -> extractBlockBody(b, callable)
+            is IrSyntheticBody -> extractSyntheticBody(b, callable)
+            else -> {
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
+            }
         }
     }
 
-    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
         val id = tw.getFreshIdLabel<DbBlock>()
         val locId = tw.getLocation(b)
-        tw.writeStmts_block(id, parent, idx, callable)
+        tw.writeStmts_block(id, callable, 0, callable)
         tw.writeHasLocation(id, locId)
         for((sIdx, stmt) in b.statements.withIndex()) {
             extractStatement(stmt, callable, id, sIdx)
+        }
+    }
+
+    fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
+        when (b.kind) {
+            IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
+            IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
         }
     }
 
