@@ -48,12 +48,16 @@ module RegExpInjection {
   }
 
   /**
-   * The first argument of a call to `Regexp.new`, considered as a flow sink.
+   * The first argument of a call to `Regexp.new` or `Regexp.compile`,
+   * considered as a flow sink.
    */
   class ConstructedRegExpAsSink extends Sink {
     ConstructedRegExpAsSink() {
-      this =
-        API::getTopLevelMember("Regexp").getAnInstantiation().(DataFlow::CallNode).getArgument(0)
+      exists(API::Node regexp, DataFlow::CallNode callNode |
+        regexp = API::getTopLevelMember("Regexp") and
+        (callNode = regexp.getAnInstantiation() or callNode = regexp.getAMethodCall("compile")) and
+        this = callNode.getArgument(0)
+      )
     }
   }
 
