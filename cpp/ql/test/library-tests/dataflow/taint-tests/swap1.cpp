@@ -100,7 +100,7 @@ void test_move_assignment_operator()
     y = std::move(x);
 
     sink(y.data1); // $ ir ast=95:15 SPURIOUS: ast=93:23
-    sink(x.data1); // $ ast MISSING: ir
+    sink(x.data1); // $ ast,ir
 }
 
 void test_move_constructor()
@@ -142,7 +142,7 @@ void test_move_assignment_method()
     y.move_assign(std::move(x));
 
     sink(y.data1); // $ ir ast=137:15 SPURIOUS: ast=135:23
-    sink(x.data1); // $ ast MISSING: ir
+    sink(x.data1); // $ ast,ir
 }
 
 }

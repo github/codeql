@@ -126,15 +126,15 @@ void pointer_test() {
 
 	*p2 = source();
 
-	sink(*p1); // $ ast MISSING: ir
+	sink(*p1); // $ ast,ir
 	sink(*p2); // $ ast,ir
 	sink(*p3);
 
 	p3 = &t1;
-	sink(*p3); // $ ast MISSING: ir
+	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
@@ -233,7 +233,7 @@ void test_lambdas()
 	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ast MISSING: ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
@@ -241,19 +241,19 @@ void test_lambdas()
 	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // $ ast MISSING: ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 	};
 	c();
 
 	auto d = [](int a, int b) {
-		sink(a); // $ ast MISSING: ir
+		sink(a); // $ ast,ir
 		sink(b); // clean
 	};
 	d(t, u);
 
 	auto e = [](int &a, int &b, int &c) {
-		sink(a); // $ ast MISSING: ir
+		sink(a); // $ ast,ir
 		sink(b); // clean
 		c = source();
 	};

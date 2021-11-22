@@ -119,20 +119,20 @@ void test_string_constructors_assignments()
 void test_range_based_for_loop_string() {
 	std::string s(source());
 	for(char c : s) {
-		sink(c); // $ ast MISSING: ir
+		sink(c); // $ ast,ir
 	}
 
 	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
-		sink(*it); // $ ast MISSING: ir
+		sink(*it); // $ ast,ir
 	}
 
 	for(char& c : s) {
-		sink(c); // $ ast MISSING: ir
+		sink(c); // $ ast,ir
 	}
 
 	const std::string const_s(source());
 	for(const char& c : const_s) {
-		sink(c); // $ ast MISSING: ir
+		sink(c); // $ ast,ir
 	}
 }
 

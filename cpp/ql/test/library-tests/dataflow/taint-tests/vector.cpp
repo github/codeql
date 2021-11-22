@@ -17,20 +17,20 @@ void test_range_based_for_loop_vector(int source1) {
 	std::vector<int> v(100, source1);
 
 	for(int x : v) {
-		sink(x); // $ ast MISSING: ir
+		sink(x); // $ ast,ir
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // $ ast MISSING: ir
+		sink(*it); // $ ast,ir
 	}
 
 	for(int& x : v) {
-		sink(x); // $ ast MISSING: ir
+		sink(x); // $ ast,ir
 	}
 
 	const std::vector<int> const_v(100, source1);
 	for(const int& x : const_v) {
-		sink(x); // $ ast MISSING: ir
+		sink(x); // $ ast,ir
 	}
 }
 
