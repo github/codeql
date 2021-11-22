@@ -43,6 +43,8 @@ predicate lateFirstChild(Element e, int i) {
   and not e instanceof LocalVariableDeclStmt
   // TODO: Tighten this up:
   and not e instanceof ForStmt
+  // TODO: This happens for anonymous class instantiations at the moment:
+  and not (e instanceof BlockStmt and i = 1 and e.getFile().getExtension() = "kt")
 }
 
 from Element e, int i, string problem
