@@ -40,6 +40,29 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
 /** A call to `private`. */
 private class Private extends MethodCall {
   Private() { this.getMethodName() = "private" }
+
+  /** Gets the method that this `private` call applies to, if any */
+  Expr getMethod() { result = this.getArgument(0) }
+
+  /**
+   * Holds if this `private` call happens inside `c`, and refers to a
+   * method named `name`.
+   */
+  pragma[noinline]
+  predicate isRef(ClassDeclaration c, string name) {
+    this = c.getAStmt() and
+    name = this.getMethod().(SymbolLiteral).getValueText()
+  }
+
+  /**
+   * Holds if this `private` call happens at position `i` inside `c`,
+   * and the call has no arguments.
+   */
+  pragma[noinline]
+  predicate hasNoArg(ClassDeclaration c, int i) {
+    this = c.getStmt(i) and
+    not exists(this.getMethod())
+  }
 }
 
 /** A normal method. */
@@ -66,6 +89,12 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   final predicate isSetter() { g.getName() instanceof Ruby::Setter }
+
+  pragma[noinline]
+  private predicate isDeclaredIn(ClassDeclaration c, string name) {
+    this = c.getAStmt() and
+    name = this.getName()
+  }
 
   /**
    * Holds if this method is private. All methods with the name prefix
@@ -94,17 +123,15 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   predicate isPrivate() {
-    this = any(Private p).getArgument(0)
+    this = any(Private p).getMethod()
     or
-    exists(ClassDeclaration c, Private p, SymbolLiteral s |
-      p.getArgument(0) = s and
-      p = c.getAStmt() and
-      this.getName() = s.getValueText() and
-      this = c.getAStmt()
+    exists(ClassDeclaration c, Private p, string name |
+      this.isDeclaredIn(c, name) and
+      p.isRef(c, name)
     )
     or
-    exists(ClassDeclaration c, int i, int j |
-      c.getStmt(i).(Private).getNumberOfArguments() = 0 and
+    exists(ClassDeclaration c, Private p, int i, int j |
+      p.hasNoArg(c, i) and
       this = c.getStmt(j) and
       j > i
     )
