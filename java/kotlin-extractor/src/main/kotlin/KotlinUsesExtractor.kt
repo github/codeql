@@ -66,14 +66,14 @@ open class KotlinUsesExtractor(
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
      */
-    fun withSourceFileOfClass(cls: IrClass, populateFileTables: Boolean): KotlinFileExtractor {
+    fun withSourceFileOfClass(cls: IrClass): KotlinFileExtractor {
         val clsFile = cls.fileOrNull
 
         val newTrapWriter =
             if (isExternalDeclaration(cls) || clsFile == null)
-                tw.withTargetFile(getIrClassBinaryPath(cls), null, populateFileTables)
+                tw.makeFileTrapWriter(getIrClassBinaryPath(cls))
             else
-                tw.withTargetFile(clsFile.path, clsFile.fileEntry)
+                tw.makeSourceFileTrapWriter(clsFile, false)
 
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
 
@@ -98,7 +98,7 @@ open class KotlinUsesExtractor(
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
             if (typeArgs.isNotEmpty()) {
-                this.withSourceFileOfClass(extractClass, false).extractClassInstance(extractClass, typeArgs)
+                this.withSourceFileOfClass(extractClass).extractClassInstance(extractClass, typeArgs)
             }
 
             // Extract both the Kotlin and equivalent Java classes, so that we have database entries
