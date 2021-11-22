@@ -13,17 +13,17 @@ edges
 | test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r |
 | test.cpp:6:5:6:12 | ReturnValue | test.cpp:24:11:24:18 | call to get_rand |
 | test.cpp:8:9:8:12 | call to rand | test.cpp:6:5:6:12 | ReturnValue |
-| test.cpp:13:2:13:6 | * ... [post update] | test.cpp:30:3:30:11 | & ... [post update] |
-| test.cpp:13:3:13:6 | dest [post update] | test.cpp:30:3:30:11 | & ... [post update] |
+| test.cpp:13:2:13:6 | * ... [post update] | test.cpp:30:13:30:14 | & ... [post update] |
+| test.cpp:13:3:13:6 | dest [post update] | test.cpp:30:13:30:14 | & ... [post update] |
 | test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:6 | * ... [post update] |
 | test.cpp:13:10:13:13 | call to rand | test.cpp:13:3:13:6 | dest [post update] |
-| test.cpp:18:2:18:5 | (reference dereference) [post update] | test.cpp:36:3:36:11 | r [post update] |
-| test.cpp:18:2:18:5 | dest [post update] | test.cpp:36:3:36:11 | r [post update] |
+| test.cpp:18:2:18:5 | (reference dereference) [post update] | test.cpp:36:13:36:13 | r [post update] |
+| test.cpp:18:2:18:5 | dest [post update] | test.cpp:36:13:36:13 | r [post update] |
 | test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:5 | (reference dereference) [post update] |
 | test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:5 | dest [post update] |
 | test.cpp:24:11:24:18 | call to get_rand | test.cpp:25:7:25:7 | r |
-| test.cpp:30:3:30:11 | & ... [post update] | test.cpp:31:7:31:7 | r |
-| test.cpp:36:3:36:11 | r [post update] | test.cpp:37:7:37:7 | r |
+| test.cpp:30:13:30:14 | & ... [post update] | test.cpp:31:7:31:7 | r |
+| test.cpp:36:13:36:13 | r [post update] | test.cpp:37:7:37:7 | r |
 | test.cpp:86:10:86:13 | call to rand | test.cpp:90:10:90:10 | x |
 | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x |
 | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y |
@@ -71,9 +71,9 @@ nodes
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
 | test.cpp:24:11:24:18 | call to get_rand | semmle.label | call to get_rand |
 | test.cpp:25:7:25:7 | r | semmle.label | r |
-| test.cpp:30:3:30:11 | & ... [post update] | semmle.label | & ... [post update] |
+| test.cpp:30:13:30:14 | & ... [post update] | semmle.label | & ... [post update] |
 | test.cpp:31:7:31:7 | r | semmle.label | r |
-| test.cpp:36:3:36:11 | r [post update] | semmle.label | r [post update] |
+| test.cpp:36:13:36:13 | r [post update] | semmle.label | r [post update] |
 | test.cpp:37:7:37:7 | r | semmle.label | r |
 | test.cpp:86:10:86:13 | call to rand | semmle.label | call to rand |
 | test.cpp:90:10:90:10 | x | semmle.label | x |
