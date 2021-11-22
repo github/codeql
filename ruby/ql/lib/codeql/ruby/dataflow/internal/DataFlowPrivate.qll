@@ -76,23 +76,25 @@ module LocalFlow {
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def`.
    */
-  predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
-    // Flow from assignment into SSA definition
-    def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
-    nodeTo.(SsaDefinitionNode).getDefinition() = def
-    or
-    // Flow from SSA definition to first read
-    def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-    nodeTo.asExpr() = def.getAFirstRead()
-    or
-    // Flow from read to next read
-    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-    or
-    // Flow into phi node
-    exists(Ssa::PhiNode phi |
-      localFlowSsaInput(nodeFrom, def, phi) and
-      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = phi.getAnInput()
+  private predicate localSsaFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      // Flow from assignment into SSA definition
+      def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
+      nodeTo.(SsaDefinitionNode).getDefinition() = def
+      or
+      // Flow from SSA definition to first read
+      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
+      nodeTo.asExpr() = def.getAFirstRead()
+      or
+      // Flow from read to next read
+      localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+      or
+      // Flow into phi node
+      exists(Ssa::PhiNode phi |
+        localFlowSsaInput(nodeFrom, def, phi) and
+        phi = nodeTo.(SsaDefinitionNode).getDefinition() and
+        def = phi.getAnInput()
+      )
     )
     // TODO
     // or
@@ -102,6 +104,42 @@ module LocalFlow {
     //   uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
     //   def = uncertain.getPriorDefinition()
     // )
+  }
+
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    localSsaFlowStep(nodeFrom, nodeTo)
+    or
+    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingCallable() and
+    nodeTo.asExpr().getExpr() instanceof Self
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
+    or
+    exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
+      nodeFrom = n and
+      exprTo = nodeTo.asExpr() and
+      n.getReturningNode().getNode() instanceof BreakStmt and
+      exprTo.getNode() instanceof Loop and
+      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
+    )
+    or
+    nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
+    or
+    nodeTo.asExpr() =
+      any(CfgNodes::ExprNodes::ForExprCfgNode for |
+        exists(SuccessorType s |
+          not s instanceof SuccessorTypes::BreakSuccessor and
+          exists(for.getAPredecessor(s))
+        ) and
+        nodeFrom.asExpr() = for.getValue()
+      )
   }
 }
 
@@ -158,49 +196,13 @@ private module Cached {
     p.(KeywordParameter).getDefaultValue() = e.getExprNode().getExpr()
   }
 
-  private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    LocalFlow::localSsaFlowStep(_, nodeFrom, nodeTo)
-    or
-    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingCallable() and
-    nodeTo.asExpr().getExpr() instanceof Self
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
-    or
-    exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
-      nodeFrom = n and
-      exprTo = nodeTo.asExpr() and
-      n.getReturningNode().getNode() instanceof BreakStmt and
-      exprTo.getNode() instanceof Loop and
-      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
-    )
-    or
-    nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
-    or
-    nodeTo.asExpr() =
-      any(CfgNodes::ExprNodes::ForExprCfgNode for |
-        exists(SuccessorType s |
-          not s instanceof SuccessorTypes::BreakSuccessor and
-          exists(for.getAPredecessor(s))
-        ) and
-        nodeFrom.asExpr() = for.getValue()
-      )
-  }
-
   /**
    * This is the local flow predicate that is used as a building block in global
    * data flow.
    */
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    localFlowStepCommon(nodeFrom, nodeTo)
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
     or
@@ -217,7 +219,7 @@ private module Cached {
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
-    localFlowStepCommon(nodeFrom, nodeTo)
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
     or
@@ -233,7 +235,7 @@ private module Cached {
   /** This is the local flow predicate that is used in type tracking. */
   cached
   predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
-    localFlowStepCommon(nodeFrom, nodeTo)
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     exists(NamedParameter p |
       defaultValueFlow(p, nodeFrom) and
