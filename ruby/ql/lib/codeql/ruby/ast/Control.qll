@@ -348,6 +348,9 @@ class CaseExpr extends ControlExpr, TCaseExpr {
    */
   final Expr getABranch() { result = this.getBranch(_) }
 
+  /** Gets the `n`th `when` branch of this case expression. */
+  final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
+
   /** Gets a `when` branch of this case expression. */
   final WhenExpr getAWhenBranch() { result = this.getABranch() }
 
@@ -367,6 +370,10 @@ class CaseExpr extends ControlExpr, TCaseExpr {
     pred = "getValue" and result = this.getValue()
     or
     pred = "getBranch" and result = this.getBranch(_)
+    or
+    pred = "getWhenBranch" and result = this.getWhenBranch(_)
+    or
+    pred = "getElseBranch" and result = this.getElseBranch()
   }
 }
 
@@ -420,6 +427,204 @@ class WhenExpr extends Expr, TWhenExpr {
     or
     pred = "getPattern" and result = this.getPattern(_)
   }
+}
+
+/**
+ * A `case` statement used for pattern matching. For example:
+ * ```rb
+ * config = {db: {user: 'admin', password: 'abc123'}}
+ * case config
+ *   in db: {user:} # matches subhash and puts matched value in variable user
+ *     puts "Connect with user '#{user}'"
+ *   in connection: {username: } unless username == 'admin'
+ *     puts "Connect with user '#{username}'"
+ *   else
+ *     puts "Unrecognized structure of config"
+ * end
+ * ```
+ */
+class CaseMatch extends ControlExpr, TCaseMatch {
+  private Ruby::CaseMatch g;
+
+  CaseMatch() { this = TCaseMatch(g) }
+
+  final override string getAPrimaryQlClass() { result = "CaseMatch" }
+
+  /**
+   * Gets the expression being matched. For example, `foo` in the following example.
+   * ```rb
+   * case foo
+   * in 0
+   *   puts 'zero'
+   * in 1
+   *   puts 'one'
+   * end
+   * ```
+   */
+  final Expr getValue() { toGenerated(result) = g.getValue() }
+
+  /**
+   * Gets the `n`th branch of this case expression, either an `InClause` or a
+   * `StmtSequence`.
+   */
+  final Expr getBranch(int n) {
+    toGenerated(result) = g.getClauses(n)
+    or
+    n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()
+  }
+
+  /**
+   * Gets a branch of this case expression, either an `InClause` or an
+   * `StmtSequence`.
+   */
+  final Expr getABranch() { result = this.getBranch(_) }
+
+  /** Gets the `n`th `in` clause of this case expression. */
+  final InClause getInClause(int n) { result = this.getBranch(n) }
+
+  /** Gets an `in` clause of this case expression. */
+  final InClause getAnInClause() { result = this.getABranch() }
+
+  /** Gets the `else` branch of this case expression, if any. */
+  final StmtSequence getElseBranch() { result = this.getABranch() }
+
+  /**
+   * Gets the number of branches of this case expression.
+   */
+  final int getNumberOfBranches() { result = count(this.getBranch(_)) }
+
+  final override string toString() { result = "case ... in" }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getValue" and result = this.getValue()
+    or
+    pred = "getBranch" and result = this.getBranch(_)
+    or
+    pred = "getInClause" and result = this.getInClause(_)
+    or
+    pred = "getElseBranch" and result = this.getElseBranch()
+  }
+}
+
+/**
+ * An `in` clause of a `case` expression.
+ * ```rb
+ * case foo
+ * in [ a ] then a
+ * end
+ * ```
+ */
+class InClause extends Expr, TInClause {
+  private Ruby::InClause g;
+
+  InClause() { this = TInClause(g) }
+
+  final override string getAPrimaryQlClass() { result = "InClause" }
+
+  /** Gets the body of this case-in expression. */
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  /**
+   * Gets the pattern in this case-in expression. In the
+   * following example, the pattern is `Point{ x:, y: }`.
+   * ```rb
+   * case foo
+   * in Point{ x:, y: }
+   *   x + y
+   * end
+   * ```
+   */
+  final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
+
+  /**
+   * Gets the pattern guard in this case-in expression. In the
+   * following example, the pattern guard is `x > 10`.
+   * ```rb
+   * case foo
+   * in [ x ] if x > 10 then ...
+   * end
+   * ```
+   */
+  final PatternGuard getPatternGuard() { toGenerated(result) = g.getGuard() }
+
+  final override string toString() { result = "in ... then ..." }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
+    or
+    pred = "getPattern" and result = this.getPattern()
+    or
+    pred = "getGuard" and result = this.getPatternGuard()
+  }
+}
+
+/**
+ * A guard used in pattern matching. For example:
+ * ```rb
+ *  in pattern if guard
+ *  in pattern unless guard
+ * ```
+ */
+class PatternGuard extends AstNode, TPatternGuard {
+  /**
+   * Gets the condition expression. For example, the result is `foo` in the
+   * following:
+   * ```rb
+   * if foo
+   * unless foo
+   * ```
+   */
+  Expr getCondition() { none() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getCondition" and result = this.getCondition()
+  }
+}
+
+/**
+ * An `if` pattern guard. For example:
+ * ```rb
+ * case foo
+ *   in [ bar] if bar > 10
+ * end
+ * ```
+ */
+class IfGuard extends PatternGuard, TIfGuard {
+  private Ruby::IfGuard g;
+
+  IfGuard() { this = TIfGuard(g) }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override string getAPrimaryQlClass() { result = "IfGuard" }
+
+  final override string toString() { result = "if ..." }
+}
+
+/**
+ * An `unless` pattern guard. For example:
+ * ```rb
+ * case foo
+ *   in [ bar] unless bar > 10
+ * end
+ * ```
+ */
+class UnlessGuard extends PatternGuard, TUnlessGuard {
+  private Ruby::UnlessGuard g;
+
+  UnlessGuard() { this = TUnlessGuard(g) }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override string getAPrimaryQlClass() { result = "UnlessGuard" }
+
+  final override string toString() { result = "unless ..." }
 }
 
 /**

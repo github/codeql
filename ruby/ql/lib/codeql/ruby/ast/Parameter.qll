@@ -132,6 +132,23 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
 }
 
 /**
+ * A `nil` hash splat (`**nil`) indicating that there are no keyword parameters or keyword patterns.
+ * For example:
+ * ```rb
+ * def foo(bar, **nil)
+ *   case bar
+ *   in { x:, **nil } then puts x
+ *   end
+ * end
+ * ```
+ */
+class HashSplatNilParameter extends Parameter, THashSplatNilParameter {
+  final override string getAPrimaryQlClass() { result = "HashSplatNilParameter" }
+
+  final override string toString() { result = "**nil" }
+}
+
+/**
  * A keyword parameter, including a default value if the parameter is optional.
  * For example, in the following example, `foo` is a keyword parameter with a
  * default value of `0`, and `bar` is a mandatory keyword parameter with no
