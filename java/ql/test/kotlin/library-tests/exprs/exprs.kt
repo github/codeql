@@ -28,8 +28,19 @@ TODO
     val i21 = x !in x .. y
 */
 
-    val d1 = dx == dy
-    val d2 = dx != dy
+    val d1 = 1.0
+    val d2 = dx + dy
+    val d3 = dx - dy
+    val d4 = dx / dy
+    val d5 = dx % dy
+    val d6 = dx == dy
+    val d7 = dx != dy
+    val d8 = dx < dy
+    val d9 = dx <= dy
+    val d10 = dx > dy
+    val d11 = dx >= dy
+    val d12 = dx === dy
+    val d13 = dx !== dy
 
     val b1 = true
     val b2 = false
