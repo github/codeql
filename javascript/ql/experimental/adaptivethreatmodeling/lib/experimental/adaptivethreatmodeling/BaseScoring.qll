@@ -7,7 +7,7 @@
 private import javascript
 private import ATMConfig
 
-external predicate adaptiveThreatModelingModels(
+external predicate availableMlModels(
   string modelChecksum, string modelLanguage, string modelName, string modelType
 );
 
