@@ -46,7 +46,7 @@ class Operand extends TStageOperand {
   /**
    * Gets the location of the source code for this operand.
    * By default this is where the operand is used, but some subclasses may override this
-   * using getAnyDef() if it makes more sense.
+   * using `getAnyDef()` if it makes more sense.
    */
   Language::Location getLocation() { result = this.getUse().getLocation() }
 
@@ -271,8 +271,7 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
   final override string toString() { result = tag.toString() }
 
-  // most RegisterOperands have a more meaningful location at the definition
-  // the only exception is ThisArgumentOperand
+  // most `RegisterOperands` have a more meaningful location at the definition. The only exception is `ThisArgumentOperand`.
   override Language::Location getLocation() { result = this.getAnyDef().getLocation() }
 
   final override Instruction getAnyDef() { result = defInstr }
