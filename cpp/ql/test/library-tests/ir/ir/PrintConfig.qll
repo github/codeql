@@ -14,6 +14,4 @@ predicate shouldDump(Location loc) {
  *
  * This predicate excludes functions defined in standard headers.
  */
-predicate shouldDumpFunction(Function func) {
-  shouldDump(func.getLocation())
-}
+predicate shouldDumpFunction(Function func) { shouldDump(func.getLocation()) }
