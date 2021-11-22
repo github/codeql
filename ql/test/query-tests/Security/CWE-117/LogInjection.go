@@ -1,6 +1,6 @@
 package main
 
-//go:generate depstubber -vendor k8s.io/klog Verbose Info,Infof,Infoln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Exit,Exitf,Exitln
+//go:generate depstubber -vendor k8s.io/klog Verbose Info,Infof,Infoln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Exit,Exitf,Exitln,V
 //go:generate depstubber -vendor github.com/astaxie/beego "" Alert,Critical,Debug,Emergency,Error,Info,Informational,Notice,Trace,Warn,Warning
 //go:generate depstubber -vendor github.com/astaxie/beego/logs "" NewLogger,Alert,Critical,Debug,Emergency,Error,Info,Informational,Notice,Trace,Warn,Warning
 //go:generate depstubber -vendor github.com/astaxie/beego/utils "" Display
@@ -77,25 +77,21 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 	// k8s.io/klog
 	{
 		verbose := klog.V(0)
-		verbose.Info(username)       // $ hasTaintFlow="username"
-		verbose.Infof(username)      // $ hasTaintFlow="username"
-		verbose.Infoln(username)     // $ hasTaintFlow="username"
-		klog.Info(username)          // $ hasTaintFlow="username"
-		klog.InfoDepth(0, username)  // $ hasTaintFlow="username"
-		klog.Infof(username)         // $ hasTaintFlow="username"
-		klog.Infoln(username)        // $ hasTaintFlow="username"
-		klog.Error(username)         // $ hasTaintFlow="username"
-		klog.ErrorDepth(0, username) // $ hasTaintFlow="username"
-		klog.Errorf(username)        // $ hasTaintFlow="username"
-		klog.Errorln(username)       // $ hasTaintFlow="username"
-		klog.Fatal(username)         // $ hasTaintFlow="username"
-		klog.FatalDepth(0, username) // $ hasTaintFlow="username"
-		klog.Fatalf(username)        // $ hasTaintFlow="username"
-		klog.Fatalln(username)       // $ hasTaintFlow="username"
-		klog.Exit(username)          // $ hasTaintFlow="username"
-		klog.ExitDepth(0, username)  // $ hasTaintFlow="username"
-		klog.Exitf(username)         // $ hasTaintFlow="username"
-		klog.Exitln(username)        // $ hasTaintFlow="username"
+		verbose.Info(username)   // $ hasTaintFlow="username"
+		verbose.Infof(username)  // $ hasTaintFlow="username"
+		verbose.Infoln(username) // $ hasTaintFlow="username"
+		klog.Info(username)      // $ hasTaintFlow="username"
+		klog.Infof(username)     // $ hasTaintFlow="username"
+		klog.Infoln(username)    // $ hasTaintFlow="username"
+		klog.Error(username)     // $ hasTaintFlow="username"
+		klog.Errorf(username)    // $ hasTaintFlow="username"
+		klog.Errorln(username)   // $ hasTaintFlow="username"
+		klog.Fatal(username)     // $ hasTaintFlow="username"
+		klog.Fatalf(username)    // $ hasTaintFlow="username"
+		klog.Fatalln(username)   // $ hasTaintFlow="username"
+		klog.Exit(username)      // $ hasTaintFlow="username"
+		klog.Exitf(username)     // $ hasTaintFlow="username"
+		klog.Exitln(username)    // $ hasTaintFlow="username"
 	}
 	// astaxie/beego
 	{
