@@ -4,8 +4,8 @@
 <qhelp>
 <overview>
 <p>
-If the <code>checkServerTrusted</code> method of a <code>TrustManager</code> never throws a <code>CertificateException</code> it trusts every certificate.
-This allows an attacker to perform a machine-in-the-middle attack against the application therefore breaking any security Transport Layer Security (TLS) gives.
+If the <code>checkServerTrusted</code> method of a <code>TrustManager</code> never throws a <code>CertificateException</code>, it trusts every certificate.
+This allows an attacker to perform a machine-in-the-middle attack against the application, therefore breaking any security Transport Layer Security (TLS) gives.
 </p>
 
 <p>
@@ -42,6 +42,6 @@ is loaded into a <code>KeyStore</code>. This explicitly defines the certificate 
 </example>
 
 <references>
-<li>Android Develoers:<a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
+<li>Android Developers: <a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
 </references>
 </qhelp>
