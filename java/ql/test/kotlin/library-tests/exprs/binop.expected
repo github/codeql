@@ -10,6 +10,10 @@
 | exprs.kt:22:15:22:20 | ... >= ... | exprs.kt:22:15:22:15 | x | exprs.kt:22:20:22:20 | y |
 | exprs.kt:23:15:23:21 | ... == ... | exprs.kt:23:15:23:15 | x | exprs.kt:23:21:23:21 | y |
 | exprs.kt:24:15:24:21 | ... != ... | exprs.kt:24:15:24:15 | x | exprs.kt:24:21:24:21 | y |
+| exprs.kt:32:14:32:20 | ... + ... | exprs.kt:32:14:32:15 | dx | exprs.kt:32:19:32:20 | dy |
+| exprs.kt:33:14:33:20 | ... - ... | exprs.kt:33:14:33:15 | dx | exprs.kt:33:19:33:20 | dy |
+| exprs.kt:34:14:34:20 | ... / ... | exprs.kt:34:14:34:15 | dx | exprs.kt:34:19:34:20 | dy |
+| exprs.kt:35:14:35:20 | ... % ... | exprs.kt:35:14:35:15 | dx | exprs.kt:35:19:35:20 | dy |
 | exprs.kt:36:14:36:21 | ... == ... | exprs.kt:36:14:36:15 | dx | exprs.kt:36:20:36:21 | dy |
 | exprs.kt:37:14:37:21 | ... != ... | exprs.kt:37:14:37:15 | dx | exprs.kt:37:20:37:21 | dy |
 | exprs.kt:38:14:38:20 | ... < ... | exprs.kt:38:14:38:15 | dx | exprs.kt:38:19:38:20 | dy |
