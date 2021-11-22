@@ -42,3 +42,38 @@ func main() {
 
 	use(arg, arg1, t, taint, src, src1)
 }
+
+func simpleflow() {
+	var a test.A
+	var b test.B
+	var t *test.T
+
+	src := a.Src1()
+
+	taint := t.StepArgRes(src)
+
+	b.Sink1(taint)
+}
+
+func simpleflow1() {
+	var a test.A
+	var b test.B
+
+	src := a.Src1()
+
+	taint := test.StepArgResContent(src)
+
+	b.Sink1(taint[0])
+}
+
+func contentflow() {
+	var a test.A
+	var b test.B
+
+	src := a.Src1()
+
+	slice := make([]interface{}, 0)
+	slice = append(slice, src)
+
+	b.Sink1(slice[0])
+}
