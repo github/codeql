@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.codeql.Label;
+import com.github.codeql.DbFile;
 import com.github.codeql.TrapWriter;
 import com.github.codeql.KotlinExtractorDbSchemeKt;
 import com.semmle.util.exception.CatastrophicError;
@@ -75,7 +76,7 @@ public class PopulateFile {
         return getFileLabel(absoluteFile, true);
     }
 
-    public Label getFileLabel(File absoluteFile, boolean populateTables) {
+    public Label<DbFile> getFileLabel(File absoluteFile, boolean populateTables) {
         String databasePath = transformer.fileAsDatabaseString(absoluteFile);
         Label result = tw.getLabelFor("@\"" + escapeKey(databasePath) + ";sourcefile" + "\"");
         // Ensure the rewritten path is used from now on.
@@ -113,7 +114,7 @@ public class PopulateFile {
         return getFileInJarLabel(jarFile, pathWithinJar, true);
     }
 
-	public Label getFileInJarLabel(File jarFile, String pathWithinJar, boolean populateTables) {
+	public Label<DbFile> getFileInJarLabel(File jarFile, String pathWithinJar, boolean populateTables) {
 		if (pathWithinJar.contains("\\"))
 			throw new CatastrophicError("Invalid jar path: '" + pathWithinJar + "' should not contain '\\'.");
 

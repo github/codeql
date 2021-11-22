@@ -163,13 +163,11 @@ open class FileTrapWriter (
 ): TrapWriter (lm, bw) {
     val populateFile = PopulateFile(this)
     val splitFilePath = filePath.split("!/")
-    @Suppress("UNCHECKED_CAST")
     val fileId =
-        (if(splitFilePath.size == 1)
+        if(splitFilePath.size == 1)
             populateFile.getFileLabel(File(filePath), populateFileTables)
          else
             populateFile.getFileInJarLabel(File(splitFilePath.get(0)), splitFilePath.get(1), populateFileTables)
-        ) as Label<DbFile>
 
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(e.startOffset, e.endOffset)
