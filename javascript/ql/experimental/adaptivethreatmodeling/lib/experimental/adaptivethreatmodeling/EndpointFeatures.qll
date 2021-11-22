@@ -12,11 +12,17 @@ import EndpointScoring
 class DescendantsThreshold extends int {
   DescendantsThreshold() { this = [1 .. 10000] }
 
-  predicate isLarge() { this = 1024 }
+  predicate is1024() { this = 1024 }
 
-  predicate isMedium() { this = 256 }
+  predicate is512() { this = 512 }
 
-  predicate isSmall() { this = 64 }
+  predicate is256() { this = 256 }
+
+  predicate is128() { this = 128 }
+
+  predicate is64() { this = 64 }
+
+  predicate is32() { this = 32 }
 
   int getMaxNumDescendants() { result = this }
 }
@@ -48,15 +54,23 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     Raw::AstNode rootNode, DatabaseFeatures::AstNode rootNodeWrapped, DescendantsThreshold thresh
   |
     (
-      featureName = "enclosingFunctionBodyEndpointNeighborhoodLarge" and
-      // thresh instanceof DescendantsThresholdLarge
-      thresh.isLarge()
+      featureName = "enclosingFunctionBodyEndpointNeighborhood1024" and
+      thresh.is1024()
       or
-      featureName = "enclosingFunctionBodyEndpointNeighborhoodMedium" and
-      thresh.isMedium()
+      featureName = "enclosingFunctionBodyEndpointNeighborhood512" and
+      thresh.is512()
       or
-      featureName = "enclosingFunctionBodyEndpointNeighborhoodSmall" and
-      thresh.isSmall()
+      featureName = "enclosingFunctionBodyEndpointNeighborhood256" and
+      thresh.is256()
+      or
+      featureName = "enclosingFunctionBodyEndpointNeighborhood128" and
+      thresh.is128()
+      or
+      featureName = "enclosingFunctionBodyEndpointNeighborhood64" and
+      thresh.is64()
+      or
+      featureName = "enclosingFunctionBodyEndpointNeighborhood32" and
+      thresh.is32()
     ) and
     rootNode =
       NeighborhoodBodies::getNeighborhoodAstNode(Raw::astNode(endpoint.getAstNode()), thresh) and
@@ -399,9 +413,11 @@ private string getASupportedFeatureName() {
     [
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
       "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody",
-      "enclosingFunctionBodyEndpointNeighborhoodLarge",
-      "enclosingFunctionBodyEndpointNeighborhoodMedium",
-      "enclosingFunctionBodyEndpointNeighborhoodSmall"
+      "enclosingFunctionBodyEndpointNeighborhood1024",
+      "enclosingFunctionBodyEndpointNeighborhood512",
+      "enclosingFunctionBodyEndpointNeighborhood256",
+      "enclosingFunctionBodyEndpointNeighborhood128", "enclosingFunctionBodyEndpointNeighborhood64",
+      "enclosingFunctionBodyEndpointNeighborhood32"
     ]
 }
 
