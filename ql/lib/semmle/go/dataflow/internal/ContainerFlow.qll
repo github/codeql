@@ -4,6 +4,16 @@ import go
 private import DataFlowNodes
 private import DataFlowPrivate
 private import DataFlowUtil
+private import semmle.go.dataflow.ExternalFlow
+
+private class BuiltinModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = [
+      ";;false;append;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
+      ";;false;append;;;Argument[1];ArrayElement of ReturnValue;value"
+    ]
+  }
+}
 
 /**
  * Holds if the step from `node1` to `node2` stores a value in a slice or array.
