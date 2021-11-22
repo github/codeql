@@ -494,6 +494,64 @@ private module Cached {
       explicitWrite(false, storeNode.getStoreInstruction(), def)
     )
     or
+    // The destination of a store operation has undergone lvalue-to-rvalue conversion and is now a
+    // right-hand-side of a store operation.
+    // Find the next use of the variable in that store operation, and recursively find the load of that
+    // pointer. For example, consider this case:
+    //
+    // ```cpp
+    // int x = source();
+    // int* p = &x;
+    // sink(*p);
+    // ```
+    //
+    // if we want to find the load of the address of `x`, we see that the pointer is stored into `p`,
+    // and we then need to recursively look for the load of `p`.
+    exists(
+      Def def, StoreInstruction store, IRBlock block1, int rnk1, Use use, IRBlock block2, int rnk2
+    |
+      store = def.getInstruction() and
+      store.getSourceValueOperand() = operand and
+      def.hasRankInBlock(block1, rnk1) and
+      use.hasRankInBlock(block2, rnk2) and
+      adjacentDefRead(_, block1, rnk1, block2, rnk2)
+    |
+      // The shared SSA library has determined that `use` is the next use of the operand
+      // so we find the next load of that use (but only if there is no `PostUpdateNode`) we
+      // need to flow into first.
+      not StoreNodeFlow::flowInto(store, _) and
+      flowOutOfAddressStep(use.getOperand(), nodeTo)
+      or
+      // It may also be the case that `store` gives rise to another store step. So let's make sure that
+      // we also take those into account.
+      StoreNodeFlow::flowInto(store, nodeTo)
+    )
+    or
+    // As we find the next load of an address, we might come across another use of the same variable.
+    // In that case, we recursively find the next use of _that_ operand, and continue searching for
+    // the next load of that operand. For example, consider this case:
+    //
+    // ```cpp
+    // int x = source();
+    // use(&x);
+    // int* p = &x;
+    // sink(*p);
+    // ```
+    //
+    // The next use of `x` after its definition is `use(&x)`, but there is a later load of the address
+    // of `x` that we want to flow to. So we use the shared SSA library to find the next load.
+    not operand = getSourceAddressOperand(_) and
+    exists(Use use1, Use use2, IRBlock block1, int rnk1, IRBlock block2, int rnk2 |
+      use1.getOperand() = operand and
+      use1.hasRankInBlock(block1, rnk1) and
+      // Don't flow to the next use if this use is part of a store operation that totally
+      // overrides a variable.
+      not explicitWrite(true, _, use1.getOperand().getDef()) and
+      adjacentDefRead(_, block1, rnk1, block2, rnk2) and
+      use2.hasRankInBlock(block2, rnk2) and
+      flowOutOfAddressStep(use2.getOperand(), nodeTo)
+    )
+    or
     operand = getSourceAddressOperand(nodeTo.asInstruction())
     or
     exists(ReturnIndirectionInstruction ret |
