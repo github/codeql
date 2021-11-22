@@ -62,19 +62,49 @@ private DataFlow::TypeTrackingNode poorMansFunctionTracker(DataFlow::TypeTracker
   exists(DataFlow::TypeTracker t2 | result = poorMansFunctionTracker(t2, func).track(t2, t))
 }
 
+/** Helper predicate to avoid bad join order. */
+pragma[noinline]
+private predicate getSimpleMethodReferenceWithinClass_helper(
+  Function func, Class cls, DataFlow::AttrRead read
+) {
+  DataFlow::parameterNode(func.getArg(0)).flowsTo(read.getObject()) and
+  cls.getAMethod() = func
+}
+
+/**
+ * Helper predicate to avoid bad join order, which looked like:
+ *
+ * (8s) Tuple counts for PoorMansFunctionResolution::getSimpleMethodReferenceWithinClass#ff/2@cbddf257 after 8.6s:
+ * 387565   ~0%     {3} r1 = JOIN Attributes::AttrRead#class#f WITH Attributes::AttrRef::accesses_dispred#bff ON FIRST 1 OUTPUT Rhs.2, Lhs.0 'result', Rhs.1
+ * 6548632  ~0%     {3} r2 = JOIN r1 WITH Function::Function::getName_dispred#ff_10#join_rhs ON FIRST 1 OUTPUT Rhs.1 'func', Lhs.1 'result', Lhs.2
+ * 5640480  ~0%     {4} r3 = JOIN r2 WITH Class::Class::getAMethod_dispred#ff_10#join_rhs ON FIRST 1 OUTPUT Rhs.1, Lhs.1 'result', Lhs.2, Lhs.0 'func'
+ * 55660458 ~0%     {5} r4 = JOIN r3 WITH Class::Class::getAMethod_dispred#ff ON FIRST 1 OUTPUT Rhs.1, 0, Lhs.1 'result', Lhs.2, Lhs.3 'func'
+ * 55621412 ~0%     {4} r5 = JOIN r4 WITH AstGenerated::Function_::getArg_dispred#fff ON FIRST 2 OUTPUT Rhs.2, Lhs.2 'result', Lhs.3, Lhs.4 'func'
+ * 54467144 ~0%     {4} r6 = JOIN r5 WITH DataFlowPublic::ParameterNode::getParameter_dispred#fb_10#join_rhs ON FIRST 1 OUTPUT Lhs.2, Rhs.1, Lhs.1 'result', Lhs.3 'func'
+ * 20928    ~0%     {2} r7 = JOIN r6 WITH LocalSources::Cached::hasLocalSource#ff ON FIRST 2 OUTPUT Lhs.3 'func', Lhs.2 'result'
+ *                                        return r7
+ */
+pragma[noinline]
+private predicate getSimpleMethodReferenceWithinClass_helper2(
+  Function func, Class cls, DataFlow::AttrRead read, Function readFunction
+) {
+  getSimpleMethodReferenceWithinClass_helper(pragma[only_bind_into](func),
+    pragma[only_bind_into](cls), pragma[only_bind_into](read)) and
+  read.getAttributeName() = readFunction.getName()
+}
+
 /**
  * Gets a reference to `func`. `func` must be defined inside a class, and the reference
  * will be inside a different method of the same class.
  */
 private DataFlow::Node getSimpleMethodReferenceWithinClass(Function func) {
   // TODO: Should take MRO into account
-  exists(Class cls, Function otherFunc, DataFlow::Node selfRefOtherFunc |
+  exists(Class cls, Function otherFunc |
     cls.getAMethod() = func and
     cls.getAMethod() = otherFunc
   |
-    selfRefOtherFunc.getALocalSource().(DataFlow::ParameterNode).getParameter() =
-      otherFunc.getArg(0) and
-    result.(DataFlow::AttrRead).accesses(selfRefOtherFunc, func.getName())
+    getSimpleMethodReferenceWithinClass_helper2(pragma[only_bind_into](otherFunc),
+      pragma[only_bind_into](cls), pragma[only_bind_into](result), pragma[only_bind_into](func))
   )
 }
 
