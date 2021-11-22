@@ -1,8 +1,7 @@
 /**
  * @name Intent URI permission manipulation
- * @description When an externally provided Intent is returned to an Activity via setResult,
- *              a malicious application could use this to grant itself permissions to access
- *              arbitrary Content Providers that are accessible by the vulnerable application.
+ * @description Returning an externally provided Intent via setResult may allow a malicious
+ *              application to access arbitrary Content Providers of the vulnerable application.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
