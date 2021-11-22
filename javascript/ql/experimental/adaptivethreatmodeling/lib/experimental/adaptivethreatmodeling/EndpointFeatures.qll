@@ -217,13 +217,12 @@ module NeighborhoodBodies {
   /** Count number of descendants of an AST node */
   int getNumDescendents(Raw::AstNode node) { result = count(node.getAChildNode*()) }
 
-  private ASTNode getContainer(ASTNode node) {
-    result = node.getContainer()
-  }
+  private ASTNode getContainer(ASTNode node) { result = node.getContainer() }
 
   /** Return the AST node that is outermost enclosing function (as an AST Node) */
   Raw::AstNode getOutermostEnclosingFunction(Raw::AstNode node) {
-    result = Raw::astNode(getContainer*(node.getNode())) and result.getContainer() instanceof TopLevel
+    result = Raw::astNode(getContainer*(node.getNode())) and
+    result.getContainer() instanceof TopLevel
   }
 
   /**
@@ -319,9 +318,9 @@ private module AccessPaths {
   }
 
   /**
-  * Get the access path for the node. This includes structural information like `member`, `param`,
-  * and `functionalarg` if `includeStructuralInfo` is true.
-  */
+   * Get the access path for the node. This includes structural information like `member`, `param`,
+   * and `functionalarg` if `includeStructuralInfo` is true.
+   */
   predicate accessPaths(
     API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
   ) {
