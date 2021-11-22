@@ -127,6 +127,23 @@ private class Desugared extends AstNode {
 int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared.getADescendant()) }
 
 /**
+ * Holds if `n` appears in a context that is desugared. That is, a
+ * transitive, reflexive parent of `n` is a desugared node.
+ */
+predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+
+/**
+ * Holds if `n` is a node that only exists as a result of desugaring some
+ * other node.
+ */
+predicate isDesugarNode(AstNode n) {
+  n = any(AstNode sugar).getDesugared()
+  or
+  isInDesugeredContext(n) and
+  forall(AstNode parent | parent = n.getParent() | parent.isSynthesized())
+}
+
+/**
  * Use this predicate in `Synthesis::child` to generate an assignment of `value` to
  * synthesized variable `v`, where the assignment is a child of `assignParent` at
  * index `assignIndex`.
