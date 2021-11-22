@@ -167,7 +167,7 @@ private module Cached {
     TLTExpr(Ruby::Binary g) { g instanceof @ruby_binary_langle } or
     TLambda(Ruby::Lambda g) or
     TLeftAssignmentList(Ruby::LeftAssignmentList g) or
-    TLocalVariableAccessReal(Ruby::Identifier g, AST::LocalVariable v) {
+    TLocalVariableAccessReal(Ruby::Identifier g, TLocalVariableReal v) {
       LocalVariableAccess::range(g, v)
     } or
     TLocalVariableAccessSynth(AST::AstNode parent, int i, AST::LocalVariable v) {
@@ -284,13 +284,55 @@ private module Cached {
     TWhileModifierExpr(Ruby::WhileModifier g) or
     TYieldCall(Ruby::Yield g)
 
+  class TAstNodeReal =
+    TAddExprReal or TAliasStmt or TArgumentList or TAssignAddExpr or TAssignBitwiseAndExpr or
+        TAssignBitwiseOrExpr or TAssignBitwiseXorExpr or TAssignDivExpr or TAssignExponentExpr or
+        TAssignExprReal or TAssignLShiftExpr or TAssignLogicalAndExpr or TAssignLogicalOrExpr or
+        TAssignModuloExpr or TAssignMulExpr or TAssignRShiftExpr or TAssignSubExpr or
+        TBareStringLiteral or TBareSymbolLiteral or TBeginBlock or TBeginExpr or
+        TBitwiseAndExprReal or TBitwiseOrExprReal or TBitwiseXorExprReal or TBlockArgument or
+        TBlockParameter or TBraceBlock or TBreakStmt or TCaseEqExpr or TCaseExpr or
+        TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
+        TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
+        TDivExprReal or TDo or TDoBlock or TElementReference or TElse or TElsif or TEmptyStmt or
+        TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or TFloatLiteral or
+        TForExpr or TForIn or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
+        TGlobalVariableAccessReal or THashKeySymbolLiteral or THashLiteral or THashSplatExpr or
+        THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or TIfModifierExpr or
+        TInstanceVariableAccessReal or TIntegerLiteralReal or TKeywordParameter or TLEExpr or
+        TLShiftExprReal or TLTExpr or TLambda or TLeftAssignmentList or TLocalVariableAccessReal or
+        TLogicalAndExprReal or TLogicalOrExprReal or TMethod or TModuleDeclaration or
+        TModuloExprReal or TMulExprReal or TNEExpr or TNextStmt or TNilLiteral or
+        TNoRegExpMatchExpr or TNotExpr or TOptionalParameter or TPair or TParenthesizedExpr or
+        TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
+        TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
+        TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
+        TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
+        TSimpleParameter or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
+        TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
+        TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
+        TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
+        TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
+        TToplevel or TTrueLiteral or TTuplePatternParameter or TUnaryMinusExpr or TUnaryPlusExpr or
+        TUndefStmt or TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
+        TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
+
+  class TAstNodeSynth =
+    TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
+        TBitwiseXorExprSynth or TClassVariableAccessSynth or TConstantReadAccessSynth or
+        TDivExprSynth or TExponentExprSynth or TGlobalVariableAccessSynth or
+        TInstanceVariableAccessSynth or TIntegerLiteralSynth or TLShiftExprSynth or
+        TLocalVariableAccessSynth or TLogicalAndExprSynth or TLogicalOrExprSynth or
+        TMethodCallSynth or TModuloExprSynth or TMulExprSynth or TRShiftExprSynth or
+        TRangeLiteralSynth or TSelfSynth or TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
+
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
    * include synthesized AST nodes, because they are not the primary AST node
    * for any given generated node.
    */
   cached
-  Ruby::AstNode toGenerated(AST::AstNode n) {
+  Ruby::AstNode toGenerated(TAstNodeReal n) {
     n = TAddExprReal(result) or
     n = TAliasStmt(result) or
     n = TArgumentList(result) or
@@ -495,7 +537,9 @@ private module Cached {
   predicate synthChild(AST::AstNode parent, int i, AST::AstNode child) {
     child = getSynthChild(parent, i)
     or
-    any(Synthesis s).child(parent, i, RealChild(child))
+    any(Synthesis s).child(parent, i, RealChildRef(child))
+    or
+    any(Synthesis s).child(parent, i, SynthChildRef(child))
   }
 
   /**
@@ -527,7 +571,7 @@ private module Cached {
 
 import Cached
 
-TAstNode fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
+TAstNodeReal fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
 
 class TCall = TMethodCall or TYieldCall;
 

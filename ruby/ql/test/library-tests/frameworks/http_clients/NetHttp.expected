@@ -1,8 +1,0 @@
-| NetHttp.rb:4:1:4:18 | call to get | NetHttp.rb:4:1:4:18 | call to get |
-| NetHttp.rb:6:8:6:50 | call to post | NetHttp.rb:7:1:7:9 | call to body |
-| NetHttp.rb:6:8:6:50 | call to post | NetHttp.rb:8:1:8:14 | call to read_body |
-| NetHttp.rb:6:8:6:50 | call to post | NetHttp.rb:9:1:9:11 | call to entity |
-| NetHttp.rb:13:6:13:17 | call to get | NetHttp.rb:18:1:18:7 | call to body |
-| NetHttp.rb:14:6:14:18 | call to post | NetHttp.rb:19:1:19:12 | call to read_body |
-| NetHttp.rb:15:6:15:17 | call to put | NetHttp.rb:20:1:20:9 | call to entity |
-| NetHttp.rb:24:3:24:33 | call to get | NetHttp.rb:27:1:27:28 | call to body |

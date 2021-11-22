@@ -27,8 +27,6 @@ class KernelMethodCall extends DataFlow::CallNode {
     )
   }
 
-  string getMethodName() { result = methodCall.getMethodName() }
-
   int getNumberOfArguments() { result = methodCall.getNumberOfArguments() }
 }
 
@@ -74,7 +72,7 @@ string basicObjectInstanceMethodName() {
 }
 
 /**
- * Instance methods on `BasicObject`, which are available to all classes.
+ * An instance method on `BasicObject`, which is available to all classes.
  */
 class BasicObjectInstanceMethodCall extends UnknownMethodCall {
   BasicObjectInstanceMethodCall() { this.getMethodName() = basicObjectInstanceMethodName() }
@@ -95,14 +93,14 @@ string objectInstanceMethodName() {
 }
 
 /**
- * Instance methods on `Object`, which are available to all classes except `BasicObject`.
+ * An instance method on `Object`, which is available to all classes except `BasicObject`.
  */
 class ObjectInstanceMethodCall extends UnknownMethodCall {
   ObjectInstanceMethodCall() { this.getMethodName() = objectInstanceMethodName() }
 }
 
 /**
- * Method calls which have no known target.
+ * A `Method` call that has no known target.
  * These will typically be calls to methods inherited from a superclass.
  */
 class UnknownMethodCall extends MethodCall {

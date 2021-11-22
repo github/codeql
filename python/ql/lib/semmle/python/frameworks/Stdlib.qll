@@ -852,7 +852,7 @@ private module StdlibPrivate {
     Base64EncodeCall() {
       name in [
           "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-          "encodestring", "a85encode", "b85encode", "encodebytes"
+          "encodestring", "a85encode", "b85encode", "encodebytes", "b32hexencode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -867,7 +867,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32encode" and result = "Base32"
+      name in ["b32encode", "b32hexencode"] and result = "Base32"
       or
       name = "b16encode" and result = "Base16"
       or
@@ -884,7 +884,7 @@ private module StdlibPrivate {
     Base64DecodeCall() {
       name in [
           "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-          "decodestring", "a85decode", "b85decode", "decodebytes"
+          "decodestring", "a85decode", "b85decode", "decodebytes", "b32hexdecode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -901,7 +901,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32decode" and result = "Base32"
+      name in ["b32decode", "b32hexdecode"] and result = "Base32"
       or
       name = "b16decode" and result = "Base16"
       or
@@ -1452,7 +1452,7 @@ private module StdlibPrivate {
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
           "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
-          "unlink", "link_to", "write_bytes", "write_text"
+          "unlink", "link_to", "write_bytes", "write_text", "hardlink_to"
         ] and
       pathlibPath().flowsTo(fileAccess.getObject()) and
       fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
@@ -1534,15 +1534,36 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::TypeTrackingNode hashlibNewCallNameBacktracker(
+    DataFlow::TypeBackTracker t, DataFlow::Node arg
+  ) {
+    t.start() and
+    hashlibNewCallImpl(_, arg) and
+    result = arg.getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = hashlibNewCallNameBacktracker(t2, arg).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::LocalSourceNode hashlibNewCallNameBacktracker(DataFlow::Node arg) {
+    result = hashlibNewCallNameBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  /** Holds when `call` is a call to `hashlib.new` with `nameArg` as the first argument. */
+  private predicate hashlibNewCallImpl(DataFlow::CallCfgNode call, DataFlow::Node nameArg) {
+    call = API::moduleImport("hashlib").getMember("new").getACall() and
+    nameArg in [call.getArg(0), call.getArgByName("name")]
+  }
+
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-    exists(DataFlow::Node nameArg |
-      result = API::moduleImport("hashlib").getMember("new").getACall() and
-      nameArg in [result.getArg(0), result.getArgByName("name")] and
-      exists(StrConst str |
-        nameArg.getALocalSource() = DataFlow::exprNode(str) and
-        algorithmName = str.getText()
-      )
+    exists(DataFlow::Node origin, DataFlow::Node nameArg |
+      origin = hashlibNewCallNameBacktracker(nameArg) and
+      algorithmName = origin.asExpr().(StrConst).getText() and
+      hashlibNewCallImpl(result, nameArg)
     )
   }
 

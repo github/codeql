@@ -54,7 +54,7 @@ DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpo
     // Use the largest entity smaller than the AST node limit, resolving ties using the entity that
     // appears first in the source archive.
     result =
-      rank[1](DatabaseFeatures::Entity entity, int numAstNodes, Location l |
+      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
         entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
         numAstNodes = getNumAstNodesInEntity(entity) and
         numAstNodes <= getMaxNumAstNodes() and
@@ -68,7 +68,7 @@ DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpo
     // Use the smallest entity, resolving ties using the entity that
     // appears first in the source archive.
     result =
-      rank[1](DatabaseFeatures::Entity entity, int numAstNodes, Location l |
+      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
         entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
         numAstNodes = getNumAstNodesInEntity(entity) and
         l = entity.getLocation()

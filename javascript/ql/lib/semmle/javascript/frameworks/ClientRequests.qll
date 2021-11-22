@@ -406,12 +406,9 @@ module ClientRequest {
    */
   class GotUrlRequest extends ClientRequest::Range {
     GotUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "got" and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, "stream")
-        )
+      exists(API::Node callee, API::Node got | this = callee.getACall() |
+        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
+        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
       )
     }
 
@@ -790,7 +787,7 @@ module ClientRequest {
         cmd.getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
-            .regexpMatch("curl .*")
+            .matches("curl %")
       )
     }
 

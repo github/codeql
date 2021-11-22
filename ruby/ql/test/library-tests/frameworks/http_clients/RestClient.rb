@@ -24,3 +24,6 @@ resp7.body
 resource8 = RestClient::Resource.new "http://example.com"
 resp8 = resource8.get
 resp8.body
+
+resp9 = RestClient::Request.execute(method: :get, url: 'http://example.com/resource')
+resp9.body

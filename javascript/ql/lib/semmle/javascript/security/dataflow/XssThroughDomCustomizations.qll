@@ -22,8 +22,8 @@ module XssThroughDom {
    */
   bindingset[result]
   string unsafeAttributeName() {
-    result.regexpMatch("data-.*") or
-    result.regexpMatch("aria-.*") or
+    result.matches("data-%") or
+    result.matches("aria-%") or
     result = ["name", "value", "title", "alt"]
   }
 

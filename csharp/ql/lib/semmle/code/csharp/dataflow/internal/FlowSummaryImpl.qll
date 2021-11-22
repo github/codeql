@@ -85,6 +85,9 @@ module Public {
     /** Holds if this stack contains summary component `c`. */
     predicate contains(SummaryComponent c) { c = this.drop(_).head() }
 
+    /** Gets the bottom element of this stack. */
+    SummaryComponent bottom() { result = this.drop(this.length() - 1).head() }
+
     /** Gets a textual representation of this stack. */
     string toString() {
       exists(SummaryComponent head, SummaryComponentStack tail |
@@ -197,6 +200,8 @@ module Private {
       or
       tail.(RequiredSummaryComponentStack).required(TParameterSummaryComponent(_)) and
       head = thisParam()
+      or
+      derivedFluentFlowPush(_, _, _, head, tail, _)
     }
 
   pragma[nomagic]
@@ -210,7 +215,7 @@ module Private {
     c.propagatesFlow(output, input, preservesValue) and
     preservesValue = true and
     isCallbackParameter(input) and
-    isContentOfArgument(output)
+    isContentOfArgument(output, _)
     or
     // flow from the receiver of a callback into the instance-parameter
     exists(SummaryComponentStack s, SummaryComponentStack callbackRef |
@@ -222,16 +227,81 @@ module Private {
       output = TConsSummaryComponentStack(thisParam(), input) and
       preservesValue = true
     )
+    or
+    exists(SummaryComponentStack arg, SummaryComponentStack return |
+      derivedFluentFlow(c, input, arg, return, preservesValue)
+    |
+      arg.length() = 1 and
+      output = return
+      or
+      exists(SummaryComponent head, SummaryComponentStack tail |
+        derivedFluentFlowPush(c, input, arg, head, tail, 0) and
+        output = SummaryComponentStack::push(head, tail)
+      )
+    )
+    or
+    // Chain together summaries where values get passed into callbacks along the way
+    exists(SummaryComponentStack mid, boolean preservesValue1, boolean preservesValue2 |
+      c.propagatesFlow(input, mid, preservesValue1) and
+      c.propagatesFlow(mid, output, preservesValue2) and
+      mid.drop(mid.length() - 2) =
+        SummaryComponentStack::push(TParameterSummaryComponent(_),
+          SummaryComponentStack::singleton(TArgumentSummaryComponent(_))) and
+      preservesValue = preservesValue1.booleanAnd(preservesValue2)
+    )
+  }
+
+  /**
+   * Holds if `c` has a flow summary from `input` to `arg`, where `arg`
+   * writes to (contents of) the `i`th argument, and `c` has a
+   * value-preserving flow summary from the `i`th argument to a return value
+   * (`return`).
+   *
+   * In such a case, we derive flow from `input` to (contents of) the return
+   * value.
+   *
+   * As an example, this simplifies modeling of fluent methods:
+   * for `StringBuilder.append(x)` with a specified value flow from qualifier to
+   * return value and taint flow from argument 0 to the qualifier, then this
+   * allows us to infer taint flow from argument 0 to the return value.
+   */
+  pragma[nomagic]
+  private predicate derivedFluentFlow(
+    SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
+    SummaryComponentStack return, boolean preservesValue
+  ) {
+    exists(int i |
+      summary(c, input, arg, preservesValue) and
+      isContentOfArgument(arg, i) and
+      summary(c, SummaryComponentStack::singleton(TArgumentSummaryComponent(i)), return, true) and
+      return.bottom() = TReturnSummaryComponent(_)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate derivedFluentFlowPush(
+    SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
+    SummaryComponent head, SummaryComponentStack tail, int i
+  ) {
+    derivedFluentFlow(c, input, arg, tail, _) and
+    head = arg.drop(i).head() and
+    i = arg.length() - 2
+    or
+    exists(SummaryComponent head0, SummaryComponentStack tail0 |
+      derivedFluentFlowPush(c, input, arg, head0, tail0, i + 1) and
+      head = arg.drop(i).head() and
+      tail = SummaryComponentStack::push(head0, tail0)
+    )
   }
 
   private predicate isCallbackParameter(SummaryComponentStack s) {
     s.head() = TParameterSummaryComponent(_) and exists(s.tail())
   }
 
-  private predicate isContentOfArgument(SummaryComponentStack s) {
-    s.head() = TContentSummaryComponent(_) and isContentOfArgument(s.tail())
+  private predicate isContentOfArgument(SummaryComponentStack s, int i) {
+    s.head() = TContentSummaryComponent(_) and isContentOfArgument(s.tail(), i)
     or
-    s = TSingletonSummaryComponentStack(TArgumentSummaryComponent(_))
+    s = TSingletonSummaryComponentStack(TArgumentSummaryComponent(i))
   }
 
   private predicate outputState(SummarizedCallable c, SummaryComponentStack s) {
@@ -508,9 +578,14 @@ module Private {
    * node, and back out to `p`.
    */
   predicate summaryAllowParameterReturnInSelf(ParamNode p) {
-    exists(SummarizedCallable c, int i |
-      c.clearsContent(i, _) and
-      p.isParameterOf(c, i)
+    exists(SummarizedCallable c, int i | p.isParameterOf(c, i) |
+      c.clearsContent(i, _)
+      or
+      exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
+        summary(c, inputContents, outputContents, _) and
+        inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(i)) and
+        outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(i))
+      )
     )
   }
 
@@ -533,22 +608,6 @@ module Private {
         or
         preservesValue = false and not summary(c, inputContents, outputContents, true)
       )
-      or
-      // If flow through a method updates a parameter from some input A, and that
-      // parameter also is returned through B, then we'd like a combined flow from A
-      // to B as well. As an example, this simplifies modeling of fluent methods:
-      // for `StringBuilder.append(x)` with a specified value flow from qualifier to
-      // return value and taint flow from argument 0 to the qualifier, then this
-      // allows us to infer taint flow from argument 0 to the return value.
-      succ instanceof ParamNode and
-      summaryPostUpdateNode(pred, succ) and
-      preservesValue = true
-      or
-      // Similarly we would like to chain together summaries where values get passed
-      // into callbacks along the way.
-      pred instanceof ArgNode and
-      summaryPostUpdateNode(succ, pred) and
-      preservesValue = true
       or
       exists(SummarizedCallable c, int i |
         pred.(ParamNode).isParameterOf(c, i) and

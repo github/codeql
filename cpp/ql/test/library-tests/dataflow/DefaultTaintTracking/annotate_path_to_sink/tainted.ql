@@ -7,9 +7,10 @@ import cpp
 import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 import IRDefaultTaintTracking::TaintedWithPath as TaintedWithPath
+import TaintedWithPath::Private
 import TestUtilities.InlineExpectationsTest
 
-predicate isSink(Element sink) {
+predicate isSinkArgument(Element sink) {
   exists(FunctionCall call |
     call.getTarget().getName() = "sink" and
     sink = call.getAnArgument()
@@ -19,31 +20,34 @@ predicate isSink(Element sink) {
 predicate astTaint(Expr source, Element sink) { ASTTaintTracking::tainted(source, sink) }
 
 class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
-  override predicate isSink(Element e) { any() }
+  override predicate isSink(Element e) { isSinkArgument(e) }
 }
 
-predicate irTaint(Expr source, Element sink) {
-  TaintedWithPath::taintedWithPath(source, sink, _, _)
+predicate irTaint(Element source, Element sink, string tag) {
+  exists(TaintedWithPath::PathNode sinkNode, TaintedWithPath::PathNode predNode |
+    TaintedWithPath::taintedWithPath(source, _, _, sinkNode) and
+    predNode = getAPredecessor*(sinkNode) and
+    sink = getElementFromPathNode(predNode) and
+    // Make sure the path is actually reachable from this predecessor.
+    // Otherwise, we could pick `predNode` to be b when `source` is
+    // `source1` in this dataflow graph:
+    // source1 ---> a ---> c ---> sinkNode
+    //                   ^
+    // source2 ---> b --/
+    source = getElementFromPathNode(getAPredecessor*(predNode)) and
+    if sinkNode = predNode then tag = "ir-sink" else tag = "ir-path"
+  )
 }
 
 class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   IRDefaultTaintTrackingTest() { this = "IRDefaultTaintTrackingTest" }
 
-  override string getARelevantTag() { result = "ir" }
+  override string getARelevantTag() { result = ["ir-path", "ir-sink"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Expr source, Element tainted, int n |
-      tag = "ir" and
-      irTaint(source, tainted) and
-      (
-        isSink(tainted)
-        or
-        exists(Element sink |
-          isSink(sink) and
-          irTaint(tainted, sink)
-        )
-      ) and
-      n = strictcount(Expr otherSource | irTaint(otherSource, tainted)) and
+    exists(Element source, Element tainted, int n |
+      irTaint(source, tainted, tag) and
+      n = strictcount(Element otherSource | irTaint(otherSource, tainted, _)) and
       (
         n = 1 and value = ""
         or
@@ -70,10 +74,10 @@ class ASTTaintTrackingTest extends InlineExpectationsTest {
       tag = "ast" and
       astTaint(source, tainted) and
       (
-        isSink(tainted)
+        isSinkArgument(tainted)
         or
         exists(Element sink |
-          isSink(sink) and
+          isSinkArgument(sink) and
           astTaint(tainted, sink)
         )
       ) and

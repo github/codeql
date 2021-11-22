@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
+private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
@@ -32,12 +33,18 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 /**
  * Holds if data can flow from `node1` to `node2` through a static field.
  */
-private predicate staticFieldStep(ExprNode node1, ExprNode node2) {
+private predicate staticFieldStep(Node node1, Node node2) {
+  exists(Field f |
+    f.isStatic() and
+    f.getAnAssignedValue() = node1.asExpr() and
+    node2.(FieldValueNode).getField() = f
+  )
+  or
   exists(Field f, FieldRead fr |
     f.isStatic() and
-    f.getAnAssignedValue() = node1.getExpr() and
+    node1.(FieldValueNode).getField() = f and
     fr.getField() = f and
-    fr = node2.getExpr() and
+    fr = node2.asExpr() and
     hasNonlocalValue(fr)
   )
 }
@@ -67,9 +74,14 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2) or
-  variableCaptureStep(node1, node2) or
+  staticFieldStep(node1, node2)
+  or
+  variableCaptureStep(node1, node2)
+  or
   variableCaptureStep(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+  or
+  any(AdditionalValueStep a).step(node1, node2) and
+  node1.getEnclosingCallable() != node2.getEnclosingCallable()
 }
 
 /**
@@ -138,8 +150,11 @@ predicate readStep(Node node1, Content f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  c instanceof FieldContent and
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  exists(FieldAccess fa |
+    instanceFieldAssign(_, fa) and
+    n = getFieldQualifier(fa) and
+    c.(FieldContent).getField() = fa.getField()
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
@@ -205,7 +220,30 @@ class CastNode extends ExprNode {
   CastNode() { this.getExpr() instanceof CastExpr }
 }
 
-class DataFlowCallable = Callable;
+private newtype TDataFlowCallable =
+  TCallable(Callable c) or
+  TFieldScope(Field f)
+
+class DataFlowCallable extends TDataFlowCallable {
+  Callable asCallable() { this = TCallable(result) }
+
+  Field asFieldScope() { this = TFieldScope(result) }
+
+  RefType getDeclaringType() {
+    result = asCallable().getDeclaringType() or
+    result = asFieldScope().getDeclaringType()
+  }
+
+  string toString() {
+    result = asCallable().toString() or
+    result = "Field scope: " + asFieldScope().toString()
+  }
+
+  Location getLocation() {
+    result = asCallable().getLocation() or
+    result = asFieldScope().getLocation()
+  }
+}
 
 class DataFlowExpr = Expr;
 
@@ -251,7 +289,9 @@ class SrcCall extends DataFlowCall, TCall {
 
   SrcCall() { this = TCall(call) }
 
-  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = call.getEnclosingCallable()
+  }
 
   override string toString() { result = call.toString() }
 
@@ -337,7 +377,11 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n.(ParameterNode).isParameterOf(any(SummarizedCallable c).asCallable(), _)
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
@@ -345,10 +389,10 @@ class LambdaCallKind = Method; // the "apply" method in the functional interface
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
     creation.asExpr() = func and
-    func.getAnonymousClass().getAMethod() = c and
+    func.getAnonymousClass().getAMethod() = c.asCallable() and
     func.getConstructedType().extendsOrImplements+(t) and
     t.getSourceDeclaration() = interface and
-    c.(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
+    c.asCallable().(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
     pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
   )
 }

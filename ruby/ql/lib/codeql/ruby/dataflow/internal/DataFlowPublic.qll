@@ -25,8 +25,6 @@ class Node extends TNode {
   // TODO: cache
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
-  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.(NodeImpl).getCfgScope()) }
-
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -60,6 +58,9 @@ class CallNode extends LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getKeywordArgument(string name) { result.asExpr() = node.getKeywordArgument(name) }
+
+  /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
+  string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
 }
 
 /**
@@ -85,12 +86,6 @@ class ExprNode extends Node, TExprNode {
 class ParameterNode extends Node, TParameterNode {
   /** Gets the parameter corresponding to this node, if any. */
   Parameter getParameter() { none() }
-
-  /**
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
 /**
@@ -110,6 +105,14 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 predicate hasLocalSource(Node sink, Node source) {

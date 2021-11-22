@@ -924,7 +924,8 @@ module Consistency {
     succSplits(pred, predSplits, succ, succSplits, c) and
     split.hasEntry(pred, succ, c) and
     not split.getKind() = predSplits.getASplit().getKind() and
-    not split = succSplits.getASplit()
+    not split = succSplits.getASplit() and
+    split.getKind().isEnabled(succ)
   }
 
   query predicate breakInvariant5(
@@ -941,5 +942,10 @@ module Consistency {
     not node instanceof TEntryNode and
     strictcount(getASuccessor(node, t)) > 1 and
     successor = getASuccessor(node, t)
+  }
+
+  query predicate deadEnd(Node node) {
+    not node instanceof TExitNode and
+    not exists(getASuccessor(node, _))
   }
 }

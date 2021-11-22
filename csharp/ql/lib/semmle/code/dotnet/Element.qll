@@ -14,6 +14,7 @@ class Element extends @dotnet_element {
   string toString() { none() }
 
   /** Gets the location of this element. */
+  pragma[nomagic]
   Location getLocation() { none() }
 
   /**
