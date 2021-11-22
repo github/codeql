@@ -1,12 +1,10 @@
 private import cpp
 
 /**
- * Holds if an AST or IR with the specified location should be printed in the test output.
- *
- * This predicate excludes locations in standard headers.
+ * Holds if the specified location is in standard headers.
  */
-predicate shouldDumpLocation(Location loc) {
-  not loc.getFile().getAbsolutePath().regexpMatch(".*/include/[^/]+")
+predicate locationIsInStandardHeaders(Location loc) {
+  loc.getFile().getAbsolutePath().regexpMatch(".*/include/[^/]+")
 }
 
 /**
@@ -14,4 +12,4 @@ predicate shouldDumpLocation(Location loc) {
  *
  * This predicate excludes functions defined in standard headers.
  */
-predicate shouldDumpFunction(Function func) { shouldDumpLocation(func.getLocation()) }
+predicate shouldDumpFunction(Function func) { not locationIsInStandardHeaders(func.getLocation()) }

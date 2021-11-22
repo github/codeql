@@ -3,5 +3,5 @@ private import semmle.code.cpp.ir.IR
 private import PrintConfig
 
 from Operand a
-where shouldDumpLocation(a.getLocation())
+where not locationIsInStandardHeaders(a.getLocation())
 select a, a.getDumpString()
