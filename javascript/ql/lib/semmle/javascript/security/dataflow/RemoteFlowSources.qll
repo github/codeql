@@ -117,17 +117,14 @@ private class RemoteFlowSourceAccessPath extends JSONString {
   string getSourceType() { result = sourceType }
 
   /** Gets the `i`th component of the access path specifying this remote flow source. */
-  API::ApiLabel getComponent(int i) {
+  API::Label::ApiLabel getComponent(int i) {
     exists(string raw | raw = this.getValue().splitAt(".", i + 1) |
       i = 0 and
-      result
-          .(API::EdgeLabel::LabelEntryPoint)
-          .getEntryPoint()
-          .(ExternalRemoteFlowSourceSpecEntryPoint)
-          .getName() = raw
+      result =
+        API::Label::entryPoint(any(ExternalRemoteFlowSourceSpecEntryPoint e | e.getName() = raw))
       or
       i > 0 and
-      result = API::EdgeLabel::member(raw)
+      result = API::Label::member(raw)
     )
   }
 

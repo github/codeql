@@ -63,7 +63,8 @@ class Assertion extends Comment {
     result = API::root()
     or
     result =
-      lookup(i + 1).getASuccessor(any(API::ApiLabel label | label.toString() = getEdgeLabel(i)))
+      lookup(i + 1)
+          .getASuccessor(any(API::Label::ApiLabel label | label.toString() = getEdgeLabel(i)))
   }
 
   predicate isNegative() { polarity = "!" }
@@ -81,7 +82,7 @@ class Assertion extends Comment {
         suffix =
           "it does have outgoing edges labelled " +
             concat(string lbl |
-              exists(nd.getASuccessor(any(API::ApiLabel label | label.toString() = lbl)))
+              exists(nd.getASuccessor(any(API::Label::ApiLabel label | label.toString() = lbl)))
             |
               lbl, ", "
             ) + "."

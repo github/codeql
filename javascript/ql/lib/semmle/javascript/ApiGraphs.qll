@@ -243,13 +243,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(ApiLabel lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(ApiLabel lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -315,7 +315,7 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, ApiLabel lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         predpath = pred.getAPath(length - 1) and
         exists(string space | if length = 1 then space = "" else space = " " |
@@ -383,9 +383,7 @@ module API {
     abstract DataFlow::Node getARhs();
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() {
-      result = root().getASuccessor(any(Label::LabelEntryPoint l | l.getEntryPoint() = this))
-    }
+    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
   /**
@@ -474,11 +472,14 @@ module API {
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate rhs(TApiNode base, ApiLabel lbl, DataFlow::Node rhs) {
+    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
-        rhs = lbl.(Label::LabelEntryPoint).getEntryPoint().getARhs()
+        exists(EntryPoint e |
+          lbl = Label::entryPoint(e) and
+          rhs = e.getARhs()
+        )
         or
         exists(string m, string prop |
           base = MkModuleExport(m) and
@@ -590,7 +591,7 @@ module API {
      */
     pragma[noinline]
     private predicate propertyRead(
-      DataFlow::SourceNode pred, string propDesc, ApiLabel lbl, DataFlow::Node ref
+      DataFlow::SourceNode pred, string propDesc, Label::ApiLabel lbl, DataFlow::Node ref
     ) {
       ref = pred.getAPropertyRead() and
       lbl = Label::memberFromRef(ref) and
@@ -614,11 +615,14 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, ApiLabel lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
       hasSemantics(ref) and
       (
         base = MkRoot() and
-        ref = lbl.(Label::LabelEntryPoint).getEntryPoint().getAUse()
+        exists(EntryPoint e |
+          lbl = Label::entryPoint(e) and
+          ref = e.getAUse()
+        )
         or
         // property reads
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
@@ -863,7 +867,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, ApiLabel lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
       Stages::APIStage::ref() and
       exists(string m |
         pred = MkRoot() and
@@ -941,8 +945,6 @@ module API {
     }
   }
 
-  import Label as EdgeLabel
-
   /**
    * An `InvokeNode` that is connected to the API graph.
    *
@@ -999,109 +1001,12 @@ module API {
   /** A `new` call connected to the API graph. */
   class NewNode extends InvokeNode, DataFlow::NewNode { }
 
-  /** A label in the API-graph */
-  abstract class ApiLabel extends Label::TLabel {
-    string toString() { result = "???" }
-  }
-
-  private module Label {
-    newtype TLabel =
-      MkLabelMod(string mod) {
-        exists(Impl::MkModuleExport(mod)) or
-        exists(Impl::MkModuleImport(mod))
-      } or
-      MkLabelInstance() or
-      MkLabelMember(string prop) {
-        exports(_, prop, _) or
-        exists(any(DataFlow::ClassNode c).getInstanceMethod(prop)) or
-        prop = "exports" or
-        prop = any(CanonicalName c).getName() or
-        prop = any(DataFlow::PropRef p).getPropertyName() or
-        exists(Impl::MkTypeUse(_, prop)) or
-        exists(any(Module m).getAnExportedValue(prop))
-      } or
-      MkLabelUnknownMember() or
-      MkLabelParameter(int i) {
-        i =
-          [-1 .. max(int args |
-              args = any(InvokeExpr invk).getNumArgument() or
-              args = any(Function f).getNumParameter()
-            )] or
-        i = [0 .. 10]
-      } or
-      MkLabelReturn() or
-      MkLabelPromised() or
-      MkLabelPromisedError() or
-      MkLabelEntryPoint(API::EntryPoint e)
-
-    class LabelEntryPoint extends ApiLabel {
-      API::EntryPoint e;
-
-      LabelEntryPoint() { this = MkLabelEntryPoint(e) }
-
-      API::EntryPoint getEntryPoint() { result = e }
-
-      override string toString() { result = e }
-    }
-
-    class LabelPromised extends ApiLabel {
-      LabelPromised() { this = MkLabelPromised() }
-
-      override string toString() { result = "promised" }
-    }
-
-    class LabelPromisedError extends ApiLabel {
-      LabelPromisedError() { this = MkLabelPromisedError() }
-
-      override string toString() { result = "promised" }
-    }
-
-    class LabelReturn extends ApiLabel {
-      LabelReturn() { this = MkLabelReturn() }
-
-      override string toString() { result = "return" }
-    }
-
-    class LabelMod extends ApiLabel {
-      string mod;
-
-      LabelMod() { this = MkLabelMod(mod) }
-
-      string getMod() { result = mod }
-
-      override string toString() { result = "module " + mod }
-    }
-
-    class LabelInstance extends ApiLabel {
-      LabelInstance() { this = MkLabelInstance() }
-
-      override string toString() { result = "instance" }
-    }
-
-    class LabelMember extends ApiLabel {
-      string prop;
-
-      LabelMember() { this = MkLabelMember(prop) }
-
-      string getProperty() { result = prop }
-
-      override string toString() { result = "member " + prop }
-    }
-
-    class LabelUnknownMember extends ApiLabel {
-      LabelUnknownMember() { this = MkLabelUnknownMember() }
-
-      override string toString() { result = "member *" }
-    }
-
-    class LabelParameter extends ApiLabel {
-      int i;
-
-      LabelParameter() { this = MkLabelParameter(i) }
-
-      override string toString() { result = "parameter " + i }
-
-      int getIndex() { result = i }
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    abstract class ApiLabel extends TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
     }
 
     /** Gets the edge label for the module `m`. */
@@ -1167,10 +1072,129 @@ module API {
     LabelReturn return() { any() }
 
     /** Gets the `promised` edge label connecting a promise to its contained value. */
-    MkLabelPromised promised() { any() }
+    LabelPromised promised() { any() }
 
     /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
-    MkLabelPromisedError promisedError() { any() }
+    LabelPromisedError promisedError() { any() }
+
+    /** Gets an entry-point label for the entry-point `e`. */
+    LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
+
+    private import LabelImpl
+
+    private module LabelImpl {
+      newtype TLabel =
+        MkLabelMod(string mod) {
+          exists(Impl::MkModuleExport(mod)) or
+          exists(Impl::MkModuleImport(mod))
+        } or
+        MkLabelInstance() or
+        MkLabelMember(string prop) {
+          exports(_, prop, _) or
+          exists(any(DataFlow::ClassNode c).getInstanceMethod(prop)) or
+          prop = "exports" or
+          prop = any(CanonicalName c).getName() or
+          prop = any(DataFlow::PropRef p).getPropertyName() or
+          exists(Impl::MkTypeUse(_, prop)) or
+          exists(any(Module m).getAnExportedValue(prop))
+        } or
+        MkLabelUnknownMember() or
+        MkLabelParameter(int i) {
+          i =
+            [-1 .. max(int args |
+                args = any(InvokeExpr invk).getNumArgument() or
+                args = any(Function f).getNumParameter()
+              )] or
+          i = [0 .. 10]
+        } or
+        MkLabelReturn() or
+        MkLabelPromised() or
+        MkLabelPromisedError() or
+        MkLabelEntryPoint(API::EntryPoint e)
+
+      /** A label for an entry-point. */
+      class LabelEntryPoint extends ApiLabel {
+        API::EntryPoint e;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(e) }
+
+        /** Gets the EntryPoint associated with this label. */
+        API::EntryPoint getEntryPoint() { result = e }
+
+        override string toString() { result = e }
+      }
+
+      /** A label that gets a promised value. */
+      class LabelPromised extends ApiLabel {
+        LabelPromised() { this = MkLabelPromised() }
+
+        override string toString() { result = "promised" }
+      }
+
+      /** A label that gets a rejected promise. */
+      class LabelPromisedError extends ApiLabel {
+        LabelPromisedError() { this = MkLabelPromisedError() }
+
+        override string toString() { result = "promisedError" }
+      }
+
+      /** A label that gets the return value of a function. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "return" }
+      }
+
+      /** A label for a module. */
+      class LabelMod extends ApiLabel {
+        string mod;
+
+        LabelMod() { this = MkLabelMod(mod) }
+
+        /** Gets the module associated with this label. */
+        string getMod() { result = mod }
+
+        override string toString() { result = "module " + mod }
+      }
+
+      /** A label that gets an instance from a `new` call. */
+      class LabelInstance extends ApiLabel {
+        LabelInstance() { this = MkLabelInstance() }
+
+        override string toString() { result = "instance" }
+      }
+
+      /** A label for the member named `prop`. */
+      class LabelMember extends ApiLabel {
+        string prop;
+
+        LabelMember() { this = MkLabelMember(prop) }
+
+        /** Gets the property associated with this label. */
+        string getProperty() { result = prop }
+
+        override string toString() { result = "member " + prop }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "member *" }
+      }
+
+      /** A label for parameter `i`. */
+      class LabelParameter extends ApiLabel {
+        int i;
+
+        LabelParameter() { this = MkLabelParameter(i) }
+
+        override string toString() { result = "parameter " + i }
+
+        /** Gets the index of the parameter for this label. */
+        int getIndex() { result = i }
+      }
+    }
   }
 }
 
