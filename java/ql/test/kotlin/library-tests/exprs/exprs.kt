@@ -67,14 +67,21 @@ TODO
     val l3 = lx - ly
     val l4 = lx / ly
     val l5 = lx % ly
-    val l6 = lx == ly
-    val l7 = lx != ly
-    val l8 = lx < ly
-    val l9 = lx <= ly
-    val l10 = lx > ly
-    val l11 = lx >= ly
-    val l12 = lx === ly
-    val l13 = lx !== ly
+    val l6 = lx shl y
+    val l7 = lx shr y
+    val l8 = lx ushr y
+    val l9 = lx and ly
+    val l10 = lx or ly
+    val l11 = lx xor ly
+    val l12 = lx.inv()
+    val l13 = lx == ly
+    val l14 = lx != ly
+    val l15 = lx < ly
+    val l16 = lx <= ly
+    val l17 = lx > ly
+    val l18 = lx >= ly
+    val l19 = lx === ly
+    val l20 = lx !== ly
 
     val d1 = 1.0
     val d2 = dx + dy
