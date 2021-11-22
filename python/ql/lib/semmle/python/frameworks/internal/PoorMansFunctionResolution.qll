@@ -63,6 +63,22 @@ private DataFlow::TypeTrackingNode poorMansFunctionTracker(DataFlow::TypeTracker
 }
 
 /**
+ * Gets a reference to `func`. `func` must be defined inside a class, and the reference
+ * will be inside a different method of the same class.
+ */
+private DataFlow::Node getSimpleMethodReferenceWithinClass(Function func) {
+  // TODO: Should take MRO into account
+  exists(Class cls, Function otherFunc, DataFlow::Node selfRefOtherFunc |
+    cls.getAMethod() = func and
+    cls.getAMethod() = otherFunc
+  |
+    selfRefOtherFunc.getALocalSource().(DataFlow::ParameterNode).getParameter() =
+      otherFunc.getArg(0) and
+    result.(DataFlow::AttrRead).accesses(selfRefOtherFunc, func.getName())
+  )
+}
+
+/**
  * INTERNAL: Do not use.
  *
  * Gets a reference to the Function `func`.
@@ -95,13 +111,5 @@ private DataFlow::TypeTrackingNode poorMansFunctionTracker(DataFlow::TypeTracker
 DataFlow::Node poorMansFunctionTracker(Function func) {
   poorMansFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
   or
-  // simple method calls within a class
-  // TODO: Should take MRO into account
-  exists(Class cls, Function otherFunc, DataFlow::Node selfRef |
-    cls.getAMethod() = func and
-    cls.getAMethod() = otherFunc
-  |
-    selfRef.getALocalSource().(DataFlow::ParameterNode).getParameter() = otherFunc.getArg(0) and
-    result.(DataFlow::AttrRead).accesses(selfRef, func.getName())
-  )
+  result = getSimpleMethodReferenceWithinClass(func)
 }
