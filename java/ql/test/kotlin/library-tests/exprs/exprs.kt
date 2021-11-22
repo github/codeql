@@ -2,7 +2,7 @@ import java.awt.Polygon
 import java.awt.Rectangle
 
 fun topLevelMethod(x: Int, y: Int,
-                   byx: Double, byy: Double,
+                   byx: Byte, byy: Byte,
                    sx: Short, sy: Short,
                    lx: Long, ly: Long,
                    dx: Double, dy: Double,

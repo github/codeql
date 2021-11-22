@@ -605,6 +605,7 @@ open class KotlinFileExtractor(
 
         fun isNumericFunction(fName: String): Boolean {
             return isFunction("kotlin", "Int", fName) ||
+                   isFunction("kotlin", "Byte", fName) ||
                    isFunction("kotlin", "Short", fName) ||
                    isFunction("kotlin", "Long", fName) ||
                    isFunction("kotlin", "Float", fName) ||
