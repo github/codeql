@@ -911,3 +911,16 @@ class KtBreakStmt extends BreakStmt, KtBreakContinueStmt { }
 
 /** A Kotlin `continue` statement. */
 class KtContinueStmt extends ContinueStmt, KtBreakContinueStmt { }
+
+class KtAnonymousClassDeclarationStmt extends Stmt, @anonymousclassdeclstmt {
+  Class c;
+
+  KtAnonymousClassDeclarationStmt() { ktAnonymousClassDeclarationStmts(this, c) }
+
+  /** Gets the class declaration belonging to this declaration statement. */
+  AnonymousClass getDeclaration() { result = c }
+
+  override string getAPrimaryQlClass() { result = "KtAnonymousClassDeclarationStmt" }
+
+  override string toString() { result = "{ ... }" }
+}

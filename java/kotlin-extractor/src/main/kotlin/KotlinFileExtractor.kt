@@ -141,6 +141,16 @@ open class KotlinFileExtractor(
         return res
     }
 
+    private fun extractAnonymousClassStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        @Suppress("UNCHECKED_CAST")
+        val id = extractClassSource(c) as Label<out DbClass>
+        val stmtId = tw.getFreshIdLabel<DbAnonymousclassdeclstmt>()
+        tw.writeStmts_anonymousclassdeclstmt(stmtId, parent, idx, callable)
+        tw.writeKtAnonymousClassDeclarationStmts(stmtId, id)
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(stmtId, locId)
+    }
+
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
         val id = if (c.isAnonymousObject) {
             @Suppress("UNCHECKED_CAST")
@@ -498,7 +508,7 @@ open class KotlinFileExtractor(
             }
             is IrClass -> {
                 if (s.isAnonymousObject) {
-                    logger.info("Skipping extracting anonymous object class. It will be extracted later where it's instantiated.")
+                    extractAnonymousClassStmt(s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
                 }
@@ -836,11 +846,11 @@ open class KotlinFileExtractor(
             }
 
             val c = (e.type as IrSimpleType).classifier.owner as IrClass
-            @Suppress("UNCHECKED_CAST")
-            val classId = extractClassSource(c) as Label<out DbClass>
-            tw.writeIsAnonymClass(classId, id)
 
             type = useAnonymousClass(c)
+
+            @Suppress("UNCHECKED_CAST")
+            tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
         } else {
             type = useType(e.type)
         }
