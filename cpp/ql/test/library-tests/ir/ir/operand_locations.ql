@@ -3,5 +3,5 @@ private import semmle.code.cpp.ir.IR
 private import PrintConfig
 
 from Operand a
-where shouldDump(a.getLocation())
+where shouldDumpLocation(a.getLocation())
 select a, a.getDumpString()

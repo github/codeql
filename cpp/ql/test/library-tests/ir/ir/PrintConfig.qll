@@ -5,7 +5,7 @@ private import cpp
  *
  * This predicate excludes locations in standard headers.
  */
-predicate shouldDump(Location loc) {
+predicate shouldDumpLocation(Location loc) {
   not loc.getFile().getAbsolutePath().regexpMatch(".*/include/[^/]+")
 }
 
@@ -14,4 +14,4 @@ predicate shouldDump(Location loc) {
  *
  * This predicate excludes functions defined in standard headers.
  */
-predicate shouldDumpFunction(Function func) { shouldDump(func.getLocation()) }
+predicate shouldDumpFunction(Function func) { shouldDumpLocation(func.getLocation()) }
