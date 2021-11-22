@@ -255,7 +255,7 @@ module CsvValidation {
       or
       summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
     |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\./]+") and
+      not namespace.regexpMatch("[a-zA-Z0-9_\\./]*") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
