@@ -52,6 +52,14 @@ abstract class ParserConfig extends MethodAccess {
       this.getArgument(1).(FieldAccess).getField().hasQualifiedName("java.lang", "Boolean", "TRUE")
     )
   }
+
+  /**
+   * Holds if this method sets `property` to `value`.
+   */
+  predicate sets(Expr property, string value) {
+    this.getArgument(0) = property and
+    this.getArgument(1).(CompileTimeConstantExpr).getStringValue() = value
+  }
 }
 
 /*
@@ -344,17 +352,37 @@ Expr configOptionSupportDTD() {
 }
 
 /**
+ * Returns a safe protocol for external entity retrieval.
+ *
+ * Currently only the empty string (indicating no external entities can be accessed)
+ * is called safe, but we could expand this to include the `file` protocol for example.
+ */
+private string getASafeExternalAccessScheme() { result = "" }
+
+/**
  * A safely configured `XmlInputFactory`.
  */
 class SafeXmlInputFactory extends VarAccess {
   SafeXmlInputFactory() {
     exists(Variable v |
       v = this.getVariable() and
-      exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configOptionIsSupportingExternalEntities())
-      ) and
-      exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configOptionSupportDTD())
+      (
+        exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+          config.disables(configOptionIsSupportingExternalEntities())
+        ) and
+        exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+          config.disables(configOptionSupportDTD())
+        )
+        or
+        exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+          config.sets(configAccessExternalDTD(), getASafeExternalAccessScheme())
+        ) and
+        exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+          config.sets(configAccessExternalStyleSheet(), getASafeExternalAccessScheme())
+        ) and
+        exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+          config.sets(configAccessExternalSchema(), getASafeExternalAccessScheme())
+        )
       )
     )
   }

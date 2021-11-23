@@ -235,18 +235,18 @@ nodes
 | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | semmle.label | new InputSource(...) |
 | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | semmle.label | getInputStream(...) |
-| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:10:35:10:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:11:34:11:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:25:35:25:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:26:34:26:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:32:35:32:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:33:34:33:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:40:35:40:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:41:34:41:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:48:35:48:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:49:34:49:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:56:35:56:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:57:34:57:54 | getInputStream(...) | semmle.label | getInputStream(...) |
 subpaths
 #select
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user input |
@@ -333,15 +333,15 @@ subpaths
 | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:94:34:94:54 | getInputStream(...) | user input |
 | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:100:34:100:54 | getInputStream(...) | user input |
 | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | Unsafe parsing of XML file from $@. | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | user input |
-| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:10:35:10:55 | getInputStream(...) | XmlInputFactoryTests.java:10:35:10:55 | getInputStream(...) | XmlInputFactoryTests.java:10:35:10:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:10:35:10:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:11:34:11:54 | getInputStream(...) | XmlInputFactoryTests.java:11:34:11:54 | getInputStream(...) | XmlInputFactoryTests.java:11:34:11:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:11:34:11:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:25:35:25:55 | getInputStream(...) | XmlInputFactoryTests.java:25:35:25:55 | getInputStream(...) | XmlInputFactoryTests.java:25:35:25:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:25:35:25:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:26:34:26:54 | getInputStream(...) | XmlInputFactoryTests.java:26:34:26:54 | getInputStream(...) | XmlInputFactoryTests.java:26:34:26:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:26:34:26:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:32:35:32:55 | getInputStream(...) | XmlInputFactoryTests.java:32:35:32:55 | getInputStream(...) | XmlInputFactoryTests.java:32:35:32:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:32:35:32:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:33:34:33:54 | getInputStream(...) | XmlInputFactoryTests.java:33:34:33:54 | getInputStream(...) | XmlInputFactoryTests.java:33:34:33:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:33:34:33:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:40:35:40:55 | getInputStream(...) | XmlInputFactoryTests.java:40:35:40:55 | getInputStream(...) | XmlInputFactoryTests.java:40:35:40:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:40:35:40:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:41:34:41:54 | getInputStream(...) | XmlInputFactoryTests.java:41:34:41:54 | getInputStream(...) | XmlInputFactoryTests.java:41:34:41:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:41:34:41:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:48:35:48:55 | getInputStream(...) | XmlInputFactoryTests.java:48:35:48:55 | getInputStream(...) | XmlInputFactoryTests.java:48:35:48:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:48:35:48:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:49:34:49:54 | getInputStream(...) | XmlInputFactoryTests.java:49:34:49:54 | getInputStream(...) | XmlInputFactoryTests.java:49:34:49:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:49:34:49:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:56:35:56:55 | getInputStream(...) | XmlInputFactoryTests.java:56:35:56:55 | getInputStream(...) | XmlInputFactoryTests.java:56:35:56:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:56:35:56:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:57:34:57:54 | getInputStream(...) | XmlInputFactoryTests.java:57:34:57:54 | getInputStream(...) | XmlInputFactoryTests.java:57:34:57:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:57:34:57:54 | getInputStream(...) | user input |
