@@ -1,12 +1,12 @@
 callsWithNoArguments
+| break_ensure.rb:8:6:8:13 | [ensure: raise] call to elements |
+| break_ensure.rb:8:6:8:13 | call to elements |
+| break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? |
 | break_ensure.rb:8:6:8:18 | call to nil? |
-| break_ensure.rb:20:10:20:22 | [ensure: break] call to nil? |
-| break_ensure.rb:20:10:20:22 | [ensure: raise] call to nil? |
-| break_ensure.rb:20:10:20:22 | call to nil? |
-| break_ensure.rb:29:8:29:20 | call to nil? |
-| break_ensure.rb:35:12:35:12 | [ensure: raise] call to x |
-| break_ensure.rb:35:12:35:12 | [ensure: return] call to x |
-| break_ensure.rb:35:12:35:12 | call to x |
+| break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? |
+| break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? |
+| break_ensure.rb:20:10:20:15 | call to nil? |
+| break_ensure.rb:29:8:29:13 | call to nil? |
 | case.rb:2:8:2:9 | call to x1 |
 | case.rb:3:21:3:22 | call to x2 |
 | cfg.html.erb:12:24:12:24 | call to a |
@@ -23,6 +23,7 @@ callsWithNoArguments
 | cfg.rb:60:17:60:17 | call to b |
 | cfg.rb:62:7:62:12 | * ... |
 | cfg.rb:62:17:62:27 | * ... |
+| cfg.rb:90:1:93:3 | call to each |
 | cfg.rb:98:10:98:15 | ** ... |
 | cfg.rb:98:30:98:35 | ** ... |
 | cfg.rb:138:17:138:23 | * ... |
@@ -56,20 +57,27 @@ callsWithNoArguments
 | raise.rb:155:37:155:48 | call to nil? |
 | raise.rb:159:3:163:5 | call to foo |
 positionalArguments
-| break_ensure.rb:3:8:3:18 | ... > ... | break_ensure.rb:3:18:3:18 | 0 |
+| break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:2:13:2:13 | 0 |
+| break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:3:12:3:12 | 0 |
+| break_ensure.rb:9:5:9:23 | [ensure: raise] call to puts | break_ensure.rb:9:10:9:23 | [ensure: raise] "elements nil" |
 | break_ensure.rb:9:5:9:23 | call to puts | break_ensure.rb:9:10:9:23 | "elements nil" |
-| break_ensure.rb:16:10:16:20 | ... > ... | break_ensure.rb:16:20:16:20 | 0 |
-| break_ensure.rb:21:9:21:27 | [ensure: break] call to puts | break_ensure.rb:21:14:21:27 | [ensure: break] "elements nil" |
-| break_ensure.rb:21:9:21:27 | [ensure: raise] call to puts | break_ensure.rb:21:14:21:27 | [ensure: raise] "elements nil" |
-| break_ensure.rb:21:9:21:27 | call to puts | break_ensure.rb:21:14:21:27 | "elements nil" |
+| break_ensure.rb:14:9:14:13 | ... < ... | break_ensure.rb:14:13:14:13 | 0 |
+| break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:16:14:16:14 | 0 |
+| break_ensure.rb:21:9:21:20 | [ensure: break] call to puts | break_ensure.rb:21:14:21:20 | [ensure: break] "y nil" |
+| break_ensure.rb:21:9:21:20 | [ensure: raise] call to puts | break_ensure.rb:21:14:21:20 | [ensure: raise] "y nil" |
+| break_ensure.rb:21:9:21:20 | call to puts | break_ensure.rb:21:14:21:20 | "y nil" |
+| break_ensure.rb:33:11:33:15 | ... < ... | break_ensure.rb:33:15:33:15 | 0 |
+| break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... | break_ensure.rb:33:15:33:15 | [ensure: raise] 0 |
+| break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... | break_ensure.rb:33:15:33:15 | [ensure: return] 0 |
 | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:35:16:35:16 | 0 |
 | break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:35:16:35:16 | [ensure: raise] 0 |
 | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:35:16:35:16 | [ensure: return] 0 |
 | break_ensure.rb:41:3:41:13 | call to puts | break_ensure.rb:41:8:41:13 | "Done" |
-| break_ensure.rb:47:10:47:20 | ... > ... | break_ensure.rb:47:20:47:20 | 1 |
+| break_ensure.rb:45:9:45:13 | ... < ... | break_ensure.rb:45:13:45:13 | 0 |
+| break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:47:14:47:14 | 1 |
 | break_ensure.rb:48:9:48:16 | call to raise | break_ensure.rb:48:15:48:16 | "" |
-| break_ensure.rb:51:10:51:20 | ... > ... | break_ensure.rb:51:20:51:20 | 0 |
-| break_ensure.rb:51:10:51:20 | [ensure: raise] ... > ... | break_ensure.rb:51:20:51:20 | [ensure: raise] 0 |
+| break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:51:14:51:14 | 0 |
+| break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:51:14:51:14 | [ensure: raise] 0 |
 | case.rb:3:29:3:37 | call to puts | case.rb:3:34:3:37 | "x2" |
 | case.rb:4:17:4:24 | call to puts | case.rb:4:22:4:24 | "2" |
 | cfg.html.erb:6:9:6:58 | call to stylesheet_link_tag | cfg.html.erb:6:29:6:41 | "application" |
@@ -91,7 +99,6 @@ positionalArguments
 | cfg.rb:9:1:9:21 | call to [] | cfg.rb:9:14:9:20 | "another" |
 | cfg.rb:12:3:12:8 | call to puts | cfg.rb:12:8:12:8 | 4 |
 | cfg.rb:16:3:16:14 | call to puts | cfg.rb:16:8:16:14 | "hello" |
-| cfg.rb:20:3:20:14 | call to puts | cfg.rb:20:8:20:14 | "world" |
 | cfg.rb:23:1:23:6 | ... + ... | cfg.rb:23:6:23:6 | 1 |
 | cfg.rb:25:15:25:20 | call to puts | cfg.rb:25:20:25:20 | x |
 | cfg.rb:27:1:27:11 | call to puts | cfg.rb:27:6:27:11 | &... |
