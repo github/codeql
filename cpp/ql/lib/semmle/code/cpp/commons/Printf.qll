@@ -6,6 +6,8 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
+private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 class PrintfFormatAttribute extends FormatAttribute {
   PrintfFormatAttribute() { this.getArchetype() = ["printf", "__printf__"] }
@@ -266,6 +268,18 @@ class FormattingFunctionCall extends Expr {
                 .(FormattingFunction)
                 .getOutputParameterIndex(isStream))
   }
+}
+
+/**
+ * Gets the number of digits required to represent the integer represented by `f`.
+ *
+ * `f` is assumed to be nonnegative.
+ */
+bindingset[f]
+private int lengthInBase10(float f) {
+  f = 0 and result = 1
+  or
+  result = f.log10().floor() + 1
 }
 
 /**
@@ -1046,39 +1060,63 @@ class FormatLiteral extends Literal {
         or
         this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = this.getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isSigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = 1 + ((sizeBits - 1) / 10.0.log2()).ceil()
-          // this calculation is as %u (below) only we take out the sign bit (- 1) and allow a whole
-          // character for it to be expressed as '-'.
-        )
+        len =
+          min(float cand |
+            // The first case handles length sub-specifiers
+            // Subtract one in the exponent because one bit is for the sign.
+            // Add 1 to account for the possible sign in the output.
+            cand = 1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1))
+            or
+            // The second case uses range analysis to deduce a length that's shorter than the length
+            // of the number -2^31.
+            exists(Expr arg, float lower, float upper |
+              arg = this.getUse().getConversionArgument(n) and
+              lower = lowerBound(arg.getFullyConverted()) and
+              upper = upperBound(arg.getFullyConverted())
+            |
+              cand =
+                max(int cand0 |
+                  // Include the sign bit in the length if it can be negative
+                  (
+                    if lower < 0
+                    then cand0 = 1 + lengthInBase10(lower.abs())
+                    else cand0 = lengthInBase10(lower)
+                  )
+                  or
+                  (
+                    if upper < 0
+                    then cand0 = 1 + lengthInBase10(upper.abs())
+                    else cand0 = lengthInBase10(upper)
+                  )
+                )
+            )
+          )
         or
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = this.getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isUnsigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = (sizeBits / 10.0.log2()).ceil()
-          // convert the size from bits to decimal characters, and round up as you can't have
-          // fractional characters (10.0.log2() is the number of bits expressed per decimal character)
-        )
+        len =
+          min(float cand |
+            // The first case handles length sub-specifiers
+            cand = 2.pow(this.getIntegralDisplayType(n).getSize() * 8)
+            or
+            // The second case uses range analysis to deduce a length that's shorter than
+            // the length of the number 2^31 - 1.
+            exists(Expr arg, float lower |
+              arg = this.getUse().getConversionArgument(n) and
+              lower = lowerBound(arg.getFullyConverted())
+            |
+              cand =
+                max(float cand0 |
+                  // If lower can be negative we use `(unsigned)-1` as the candidate value.
+                  lower < 0 and
+                  cand0 = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  or
+                  cand0 = upperBound(arg.getFullyConverted())
+                )
+            )
+          |
+            lengthInBase10(cand)
+          )
         or
         this.getConversionChar(n).toLowerCase() = "x" and
         // e.g. "12345678"

@@ -41,8 +41,8 @@ break_ensure.rb:
 #-----|  -> do ...
 
 #    3| ... > ...
-#-----| raise -> for ... in ...
 #-----| true -> break
+#-----| raise -> for ... in ...
 #-----| false -> if ...
 
 #    3| element
@@ -580,11 +580,11 @@ cfg.html.erb:
 #   12| self
 #-----|  -> call to a
 
-#   12| Pair
-#-----|  -> call to link_to
-
 #   12| :id
 #-----|  -> "a"
+
+#   12| Pair
+#-----|  -> call to link_to
 
 #   12| "a"
 #-----|  -> Pair
@@ -813,11 +813,11 @@ cfg.rb:
 #   23| 1
 #-----|  -> ... + ...
 
-#   25| 2
-#-----|  -> { ... }
-
 #   25| call to times
 #-----|  -> self
+
+#   25| 2
+#-----|  -> { ... }
 
 #   25| enter { ... }
 #-----|  -> x
@@ -1493,11 +1493,11 @@ cfg.rb:
 #   97| "d"
 #-----|  -> Pair
 
-#   97| Pair
-#-----|  -> {...}
-
 #   97| :e
 #-----|  -> "f"
+
+#   97| Pair
+#-----|  -> {...}
 
 #   97| "f"
 #-----|  -> Pair
@@ -1619,11 +1619,11 @@ cfg.rb:
 #  110| type
 #-----|  -> #{...}
 
-#  113| ... if ...
-#-----|  -> C
-
 #  113| call to puts
 #-----|  -> ... if ...
+
+#  113| ... if ...
+#-----|  -> C
 
 #  113| self
 #-----|  -> "hi"
@@ -1826,15 +1826,15 @@ cfg.rb:
 #  134| EmptyModule
 #-----|  -> ... rescue ...
 
-#  136| ... rescue ...
-#-----|  -> 1
-
 #  136| ... / ...
 #-----| raise -> self
 #-----|  -> __synth__0
 
 #  136| 1
 #-----|  -> 0
+
+#  136| ... rescue ...
+#-----|  -> 1
 
 #  136| 0
 #-----|  -> ... / ...
@@ -2398,7 +2398,7 @@ cfg.rb:
 #-----|  -> yield ...
 
 #  194| call to run_block
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> forward_param
 
 #  194| self
 #-----|  -> { ... }
@@ -2425,6 +2425,35 @@ cfg.rb:
 
 #  194| x
 #-----|  -> call to puts
+
+#  196| enter forward_param
+#-----|  -> a
+
+#  196| forward_param
+#-----|  -> exit cfg.rb (normal)
+
+#  196| exit forward_param
+
+#  196| exit forward_param (normal)
+#-----|  -> exit forward_param
+
+#  196| a
+#-----|  -> b
+
+#  196| b
+#-----|  -> ...
+
+#  196| ...
+#-----|  -> self
+
+#  197| call to bar
+#-----|  -> exit forward_param (normal)
+
+#  197| self
+#-----|  -> b
+
+#  197| b
+#-----|  -> call to bar
 
 desugar.rb:
 #    1| enter m1
@@ -2679,11 +2708,11 @@ desugar.rb:
 #   18| __synth__2
 #-----|  -> __synth__3
 
-#   18| ... + ...
-#-----|  -> ... = ...
-
 #   18| call to baz
 #-----|  -> 3
+
+#   18| ... + ...
+#-----|  -> ... = ...
 
 #   18| x
 #-----|  -> call to baz
@@ -5047,11 +5076,11 @@ raise.rb:
 #  155| elem
 #-----|  -> element
 
-#  155| ... if ...
-#-----|  -> exit { ... } (normal)
-
 #  155| call to raise
 #-----| raise -> exit { ... } (abnormal)
+
+#  155| ... if ...
+#-----|  -> exit { ... } (normal)
 
 #  155| self
 #-----|  -> ""

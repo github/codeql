@@ -1,22 +1,10 @@
-import ruby
 import codeql.ruby.dataflow.SSA
-import codeql.ruby.controlflow.ControlFlowGraph
+import codeql.ruby.dataflow.internal.SsaImplCommon::Consistency
 
-query predicate nonUniqueDef(CfgNode read, Ssa::Definition def) {
-  read = def.getARead() and
-  exists(Ssa::Definition other | read = other.getARead() and other != def)
-}
-
-query predicate readWithoutDef(LocalVariableReadAccess read) {
-  exists(CfgNode node |
-    node = read.getAControlFlowNode() and
-    not node = any(Ssa::Definition def).getARead()
-  )
-}
-
-query predicate deadDef(Ssa::Definition def, LocalVariable v) {
-  v = def.getSourceVariable() and
-  not v.isCaptured() and
-  not exists(def.getARead()) and
-  not def = any(Ssa::PhiNode phi).getAnInput()
+class MyRelevantDefinition extends RelevantDefinition, Ssa::Definition {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }

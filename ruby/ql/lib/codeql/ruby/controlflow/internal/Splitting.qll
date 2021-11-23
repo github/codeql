@@ -242,8 +242,8 @@ module EnsureSplitting {
      * `inherited` indicates whether `c` is an inherited completion from the
      * body.
      */
-    private predicate exit(Trees::BodyStmtTree block, AstNode pred, Completion c, boolean inherited) {
-      exists(EnsureSplitType type |
+    private predicate exit(AstNode pred, Completion c, boolean inherited) {
+      exists(Trees::BodyStmtTree block, EnsureSplitType type |
         this.exit0(pred, block, this.getNestLevel(), c) and
         type = this.getType()
       |
@@ -294,7 +294,7 @@ module EnsureSplitting {
       this.appliesToPredecessor(pred) and
       exists(EnsureSplitImpl outer |
         outer.getNestLevel() = this.getNestLevel() - 1 and
-        outer.exit(_, pred, c, inherited) and
+        outer.exit(pred, c, inherited) and
         this.getType() instanceof NormalSuccessor and
         inherited = true
       )
@@ -303,18 +303,18 @@ module EnsureSplitting {
     override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
       succ(pred, succ, c) and
       (
-        this.exit(_, pred, c, _)
+        this.exit(pred, c, _)
         or
-        this.exit(_, pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       succExit(scope, last, c) and
       (
-        this.exit(_, last, c, _)
+        this.exit(last, c, _)
         or
-        this.exit(_, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 

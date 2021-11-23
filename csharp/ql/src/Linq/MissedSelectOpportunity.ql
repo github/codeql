@@ -11,7 +11,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 predicate oversized(LocalVariableDeclStmt s) {
   exists(Location loc |

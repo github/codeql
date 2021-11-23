@@ -158,6 +158,10 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
+  or
+  any(AdditionalValueStep a).step(node1, node2) and
+  pragma[only_bind_out](node1.getEnclosingCallable()) =
+    pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
 private newtype TContent =
