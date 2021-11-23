@@ -416,9 +416,15 @@ class ThisArgumentOperand extends ArgumentOperand {
   // in most cases the def location makes more sense, but in some corner cases it
   // does not have a location: in those cases we fall back to the use location
   override Language::Location getLocation() {
-    if not this.getAnyDef().getLocation() instanceof Language::UnknownLocation
-    then result = this.getAnyDef().getLocation()
-    else result = this.getUse().getLocation()
+    result = selectLocation(this.getAnyDef().getLocation(), this.getUse().getLocation())
+  }
+
+  private Language::Location selectLocation(
+    Language::Location preferred, Language::Location fallback
+  ) {
+    if not exists(preferred) or preferred instanceof Language::UnknownLocation
+    then result = fallback
+    else result = preferred
   }
 }
 
