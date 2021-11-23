@@ -3,3 +3,7 @@ export class Foo {
 }
 
 export class Bar {}
+
+export interface Inter {
+  bar(): Bar;
+}

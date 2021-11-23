@@ -1806,6 +1806,9 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getImported(), lbl, 0, IdContext.LABEL);
       visit(nd.getLocal(), lbl, 1, c.idcontext);
+      if (nd.hasTypeKeyword()) {
+        trapwriter.addTuple("has_type_keyword", lbl);
+      } 
       return lbl;
     }
 
