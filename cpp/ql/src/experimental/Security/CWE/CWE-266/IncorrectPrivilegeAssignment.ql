@@ -40,7 +40,7 @@ predicate numberArgumentModFunctions(Function f, int apos) {
   f.hasGlobalOrStdName("chmod") and apos = 1
 }
 
-from FunctionCall fc, string msg
+from FunctionCall fc, string msg, FunctionCall fcsnd
 where
   fc.getTarget().hasGlobalOrStdName("umask") and
   fc.getArgument(0).getValue() = "0" and
@@ -54,13 +54,14 @@ where
       fctmp.getTarget().hasGlobalOrStdName("open")
     ) and
     fctmp.getNumberOfArguments() = 2 and
-    not fctmp.getArgument(0).getValue() = "/dev/null"
+    not fctmp.getArgument(0).getValue() = "/dev/null" and
+    fcsnd = fctmp
   ) and
   not exists(FunctionCall fctmp |
     fctmp.getTarget().hasGlobalOrStdName("chmod") or
     fctmp.getTarget().hasGlobalOrStdName("fchmod")
   ) and
-  msg = "Using umask (0) may not be safe."
+  msg = "Using umask(0) may not be safe with call $@."
   or
   fc.getTarget().hasGlobalOrStdName("umask") and
   exists(FunctionCall fctmp |
@@ -72,12 +73,14 @@ where
       globalValueNumber(fc.getArgument(0)) = globalValueNumber(fctmp.getArgument(1)) and
       fc.getArgument(0).getValue() != "0"
     ) and
-    msg = "not use equal argument in umask and " + fctmp.getTarget().getName() + " functions"
+    msg = "Not use equal argument in umask and $@ functions." and
+    fcsnd = fctmp
   )
   or
   exists(ContainsArithmetic exptmp, int i |
     numberArgumentModFunctions(fc.getTarget(), i) and
     globalValueNumber(exptmp) = globalValueNumber(fc.getArgument(i)) and
-    msg = "Using arithmetic to compute the mask may not be safe."
+    msg = "Using arithmetic to compute the mask in $@ may not be safe." and
+    fcsnd = fc
   )
-select fc, msg
+select fc, msg, fcsnd, fcsnd.getTarget().getName()
