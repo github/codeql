@@ -1019,12 +1019,14 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -1171,8 +1173,7 @@ private module Stage2 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1712,12 +1713,14 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -1871,8 +1874,7 @@ private module Stage3 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2483,12 +2485,14 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -2642,8 +2646,7 @@ private module Stage4 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
