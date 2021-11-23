@@ -371,5 +371,5 @@ bad87 = /^X(\u0061|a)*Y$/
 # GOOD
 good43 = /^X(\u0061|b)+Y$/
 
-# NOT GODD
+# NOT GOOD
 bad88 = /X([[:digit:]]|\d)+Y/
