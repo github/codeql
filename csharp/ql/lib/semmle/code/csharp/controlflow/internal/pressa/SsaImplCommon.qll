@@ -645,17 +645,18 @@ module Consistency {
 
   query predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
     ssaDefReachesRead(v, def, bb, i) and
-    not exists(unique(Definition def0 | ssaDefReachesRead(_, def0, bb, i)))
+    not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
   }
 
   query predicate readWithoutDef(SourceVariable v, BasicBlock bb, int i) {
     variableRead(bb, i, v, _) and
-    not ssaDefReachesRead(_, _, bb, i)
+    not ssaDefReachesRead(v, _, bb, i)
   }
 
   query predicate deadDef(RelevantDefinition def, SourceVariable v) {
     v = def.getSourceVariable() and
     not ssaDefReachesRead(_, def, _, _) and
-    not phiHasInputFromBlock(_, def, _)
+    not phiHasInputFromBlock(_, def, _) and
+    not uncertainWriteDefinitionInput(_, def)
   }
 }

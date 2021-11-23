@@ -139,6 +139,18 @@ module EnsureSplitting {
 
     /** Holds if this node is the entry node in the `ensure` block it belongs to. */
     predicate isEntryNode() { first(block.getEnsure(), this) }
+
+    BodyStmt getBlock() { result = block }
+
+    pragma[noinline]
+    predicate isEntered(AstNode pred, int nestLevel, Completion c) {
+      this.isEntryNode() and
+      nestLevel = this.getNestLevel() and
+      succ(pred, this, c) and
+      // the entry node may be reachable via a backwards loop edge; in this case
+      // the split has already been entered
+      not pred = block.getAnEnsureDescendant()
+    }
   }
 
   /**
@@ -205,18 +217,11 @@ module EnsureSplitting {
     override string toString() { result = "ensure (" + nestLevel + ")" }
   }
 
-  pragma[noinline]
-  private predicate hasEntry0(AstNode pred, EnsureNode succ, int nestLevel, Completion c) {
-    succ.isEntryNode() and
-    nestLevel = succ.getNestLevel() and
-    succ(pred, succ, c)
-  }
-
   private class EnsureSplitImpl extends SplitImpl, EnsureSplit {
     override EnsureSplitKind getKind() { result.getNestLevel() = this.getNestLevel() }
 
     override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      hasEntry0(pred, succ, this.getNestLevel(), c) and
+      succ.(EnsureNode).isEntered(pred, this.getNestLevel(), c) and
       this.getType().isSplitForEntryCompletion(c)
     }
 
@@ -323,7 +328,7 @@ module EnsureSplitting {
       succ(pred, succ, c) and
       succ =
         any(EnsureNode en |
-          if en.isEntryNode()
+          if en.isEntryNode() and en.getBlock() != pred.(EnsureNode).getBlock()
           then
             // entering a nested `ensure` block
             en.getNestLevel() > this.getNestLevel()
