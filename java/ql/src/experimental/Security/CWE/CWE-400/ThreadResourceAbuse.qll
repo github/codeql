@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.FlowSteps
 
 /** `java.lang.Math` data model for value comparison in the new CSV format. */
 private class MathCompDataModel extends SummaryModelCsv {
@@ -42,49 +43,36 @@ class LessThanSanitizer extends DataFlow::BarrierGuard instanceof ComparisonExpr
   }
 }
 
-/**
- * A unit class for adding additional taint steps that are specific to thread resource abuse.
- */
-class ThreadResourceAbuseAdditionalTaintStep extends Unit {
-  /**
-   * Holds if the step from `pred` to `succ` should be considered a taint
-   * step for thread resource abuse.
-   */
-  abstract predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ);
-}
-
-private class RunnableAdditionalTaintStep extends ThreadResourceAbuseAdditionalTaintStep {
-  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(
-      Method rm, ClassInstanceExpr ce, Argument arg, Parameter p, FieldAccess fa, int i // thread.start() invokes the run() method of thread implementation
+/** Value step from the constructor call of a `Runnable` to the instance parameter (this) of `run`. */
+private class RunnableStartToRunStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ConstructorCall cc, Method m |
+      m.getDeclaringType() = cc.getConstructedType().getSourceDeclaration() and
+      cc.getConstructedType().getASupertype*().hasQualifiedName("java.lang", "Runnable") and
+      m.hasName("run")
     |
-      rm.hasName("run") and
-      ce.getConstructedType().getSourceDeclaration() = rm.getSourceDeclaration().getDeclaringType() and
-      ce.getConstructedType().getASupertype*().hasQualifiedName("java.lang", "Runnable") and
-      ce.getArgument(i) = arg and
-      ce.getConstructor().getParameter(i) = p and
-      fa.getEnclosingCallable() = rm and
-      DataFlow::localExprFlow(p.getAnAccess(), fa.getField().getAnAssignedValue()) and
-      pred.asExpr() = arg and
-      succ.asExpr() = fa
+      pred.asExpr() = cc and
+      succ.(DataFlow::InstanceParameterNode).getEnclosingCallable() = m
     )
   }
 }
 
-private class ApacheFileUploadAdditionalTaintStep extends ThreadResourceAbuseAdditionalTaintStep {
-  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Method um, VarAccess va, FieldAccess fa, Constructor ce, AssignExpr ar |
-      um.getDeclaringType()
+/**
+ * Value step from the constructor call of a `ProgressListener` of Apache File Upload to the
+ * instance parameter (this) of `update`.
+ */
+private class ApacheFileUploadProgressUpdateStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ConstructorCall cc, Method m |
+      m.getDeclaringType() = cc.getConstructedType().getSourceDeclaration() and
+      cc.getConstructedType()
           .getASupertype*()
-          .hasQualifiedName("org.apache.commons.fileupload", "ProgressListener") and
-      um.hasName("update") and
-      fa.getEnclosingCallable() = um and
-      ce.getDeclaringType() = um.getDeclaringType() and
-      va = ce.getAParameter().getAnAccess() and
-      pred.asExpr() = va and
-      succ.asExpr() = fa and
-      ar.getSource() = va and
-      ar.getDest() = fa.getField().getAnAccess()
+          .hasQualifiedName(["org.apache.commons.fileupload", "org.apache.commons.fileupload2"],
+            "ProgressListener") and
+      m.hasName("update")
+    |
+      pred.asExpr() = cc and
+      succ.(DataFlow::InstanceParameterNode).getEnclosingCallable() = m
     )
   }
 }

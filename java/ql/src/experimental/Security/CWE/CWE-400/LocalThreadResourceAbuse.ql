@@ -49,7 +49,7 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(ThreadResourceAbuseAdditionalTaintStep r).propagatesTaint(pred, succ)
+    any(AdditionalValueStep r).step(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

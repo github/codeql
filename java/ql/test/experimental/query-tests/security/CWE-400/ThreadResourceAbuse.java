@@ -192,4 +192,23 @@ public class ThreadResourceAbuse extends HttpServlet {
 			// ignore
 		}
 	}
+
+	private long getContentLength(HttpServletRequest request) {
+		long size = -1;
+		try {
+		  size = Long.parseLong(request.getHeader("Content-length"));
+		} catch (NumberFormatException e) {
+		}
+		return size;
+	}
+
+	protected void doHead4(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get thread pause time from request header
+		try {
+			String uploadDelayStr = request.getParameter("delay");
+			int uploadDelay = Integer.parseInt(uploadDelayStr);
+
+			UploadListener listener = new UploadListener(uploadDelay, getContentLength(request));
+		} catch (Exception e) { }
+	}
 }
