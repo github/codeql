@@ -1230,6 +1230,11 @@ private module Stage2 {
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
+  }
+
   /**
    * Holds if `node` with access path `ap` is part of a path from a source to a
    * sink in the configuration `config`.
@@ -1306,7 +1311,7 @@ private module Stage2 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -1925,6 +1930,11 @@ private module Stage3 {
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
+  }
+
   /**
    * Holds if `node` with access path `ap` is part of a path from a source to a
    * sink in the configuration `config`.
@@ -2001,7 +2011,7 @@ private module Stage3 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -2691,6 +2701,11 @@ private module Stage4 {
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
+  }
+
   /**
    * Holds if `node` with access path `ap` is part of a path from a source to a
    * sink in the configuration `config`.
@@ -2767,7 +2782,7 @@ private module Stage4 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
