@@ -90,6 +90,20 @@ callsWithArguments
 | calls.rb:332:3:332:12 | call to super | super | 0 | calls.rb:332:9:332:11 | ... |
 | calls.rb:336:3:336:13 | call to bar | bar | 0 | calls.rb:336:7:336:7 | b |
 | calls.rb:336:3:336:13 | call to bar | bar | 1 | calls.rb:336:10:336:12 | ... |
+| calls.rb:340:5:340:5 | call to [] | [] | 0 | calls.rb:340:5:340:5 | 0 |
+| calls.rb:340:8:340:8 | call to [] | [] | 0 | calls.rb:340:8:340:8 | 1 |
+| calls.rb:340:11:340:11 | call to [] | [] | 0 | calls.rb:340:11:340:11 | 2 |
+| calls.rb:340:16:340:33 | call to [] | [] | 0 | calls.rb:340:17:340:23 | [...] |
+| calls.rb:340:16:340:33 | call to [] | [] | 1 | calls.rb:340:26:340:32 | [...] |
+| calls.rb:340:17:340:23 | call to [] | [] | 0 | calls.rb:340:18:340:18 | 1 |
+| calls.rb:340:17:340:23 | call to [] | [] | 1 | calls.rb:340:20:340:20 | 2 |
+| calls.rb:340:17:340:23 | call to [] | [] | 2 | calls.rb:340:22:340:22 | 3 |
+| calls.rb:340:26:340:32 | call to [] | [] | 0 | calls.rb:340:27:340:27 | 4 |
+| calls.rb:340:26:340:32 | call to [] | [] | 1 | calls.rb:340:29:340:29 | 5 |
+| calls.rb:340:26:340:32 | call to [] | [] | 2 | calls.rb:340:31:340:31 | 6 |
+| calls.rb:341:3:341:13 | call to foo | foo | 0 | calls.rb:341:7:341:7 | x |
+| calls.rb:341:3:341:13 | call to foo | foo | 1 | calls.rb:341:10:341:10 | y |
+| calls.rb:341:3:341:13 | call to foo | foo | 2 | calls.rb:341:13:341:13 | z |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -214,8 +228,10 @@ callsWithReceiver
 | calls.rb:222:11:222:13 | call to foo | calls.rb:222:11:222:13 | self |
 | calls.rb:223:1:223:6 | call to bar | calls.rb:223:1:223:1 | X |
 | calls.rb:223:14:223:19 | call to foo | calls.rb:223:14:223:14 | X |
+| calls.rb:226:1:228:3 | call to each | calls.rb:226:10:226:12 | call to bar |
 | calls.rb:226:10:226:12 | call to bar | calls.rb:226:10:226:12 | self |
 | calls.rb:227:3:227:5 | call to baz | calls.rb:227:3:227:5 | self |
+| calls.rb:229:1:231:3 | call to each | calls.rb:229:10:229:15 | call to bar |
 | calls.rb:229:10:229:15 | call to bar | calls.rb:229:10:229:10 | X |
 | calls.rb:230:3:230:8 | call to baz | calls.rb:230:3:230:3 | X |
 | calls.rb:234:1:234:3 | call to foo | calls.rb:234:1:234:3 | self |
@@ -328,16 +344,28 @@ callsWithReceiver
 | calls.rb:328:13:328:15 | call to bar | calls.rb:328:13:328:15 | self |
 | calls.rb:328:25:328:37 | call to print | calls.rb:328:25:328:37 | self |
 | calls.rb:336:3:336:13 | call to bar | calls.rb:336:3:336:13 | self |
+| calls.rb:340:1:342:3 | * ... | calls.rb:340:1:342:3 | __synth__0__1 |
+| calls.rb:340:1:342:3 | call to each | calls.rb:340:16:340:33 | [...] |
+| calls.rb:340:5:340:5 | call to [] | calls.rb:340:5:340:5 | __synth__0__1 |
+| calls.rb:340:8:340:8 | call to [] | calls.rb:340:8:340:8 | __synth__0__1 |
+| calls.rb:340:11:340:11 | call to [] | calls.rb:340:11:340:11 | __synth__0__1 |
+| calls.rb:340:16:340:33 | call to [] | calls.rb:340:16:340:33 | Array |
+| calls.rb:340:17:340:23 | call to [] | calls.rb:340:17:340:23 | Array |
+| calls.rb:340:26:340:32 | call to [] | calls.rb:340:26:340:32 | Array |
+| calls.rb:341:3:341:13 | call to foo | calls.rb:341:3:341:13 | self |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
 | calls.rb:25:1:27:3 | call to bar | calls.rb:25:16:27:3 | do ... end |
 | calls.rb:92:1:92:21 | call to foo | calls.rb:92:7:92:21 | { ... } |
 | calls.rb:95:1:98:3 | call to foo | calls.rb:95:7:98:3 | do ... end |
+| calls.rb:226:1:228:3 | call to each | calls.rb:226:1:228:3 | { ... } |
+| calls.rb:229:1:231:3 | call to each | calls.rb:229:1:231:3 | { ... } |
 | calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
 | calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
 | calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
+| calls.rb:340:1:342:3 | call to each | calls.rb:340:1:342:3 | { ... } |
 yieldCalls
 | calls.rb:31:3:31:7 | yield ... |
 | calls.rb:36:3:36:16 | yield ... |
