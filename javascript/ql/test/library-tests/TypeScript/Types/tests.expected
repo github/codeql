@@ -295,6 +295,12 @@ getExprType
 | tst.ts:232:13:232:38 | this.#n ... r.#name | boolean |
 | tst.ts:232:28:232:32 | other | Person |
 | tst.ts:232:28:232:38 | other.#name | string |
+| tst.ts:237:13:237:16 | Foo3 | { foo: string; } |
+| tst.ts:237:23:237:40 | "./something.json" | any |
+| tst.ts:238:5:238:7 | foo | string |
+| tst.ts:238:11:238:14 | Foo3 | { foo: string; } |
+| tst.ts:238:11:238:18 | Foo3.foo | string |
+| tst.ts:238:16:238:18 | foo | string |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
