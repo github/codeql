@@ -191,3 +191,14 @@ module TS44 {
     
   }
 }
+
+module TS45 {
+  // A = string
+  type A = Awaited<Promise<string>>;
+
+  // B = number
+  type B = Awaited<Promise<Promise<number>>>;
+
+  // C = boolean | number
+  type C = Awaited<boolean | Promise<number>>;
+}

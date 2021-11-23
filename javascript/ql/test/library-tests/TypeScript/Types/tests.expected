@@ -260,6 +260,7 @@ getExprType
 | tst.ts:189:11:189:15 | count | number |
 | tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
 | tst.ts:189:19:189:28 | Foo.#count | number |
+| tst.ts:195:8:195:11 | TS45 | any |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -323,6 +324,9 @@ getTypeDefinitionType
 | tst.ts:165:5:167:5 | interfa ... ;\\n    } | Foo |
 | tst.ts:171:5:173:5 | interfa ... ;\\n    } | Data |
 | tst.ts:179:3:192:3 | class F ...    \\n  } | Foo |
+| tst.ts:197:3:197:36 | type A  ... ring>>; | string |
+| tst.ts:200:3:200:45 | type B  ... ber>>>; | number |
+| tst.ts:203:3:203:46 | type C  ... mber>>; | C |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -489,6 +493,28 @@ getTypeExprType
 | tst.ts:172:26:172:31 | symbol | symbol |
 | tst.ts:172:35:172:41 | boolean | boolean |
 | tst.ts:175:17:175:20 | Data | Data |
+| tst.ts:197:8:197:8 | A | string |
+| tst.ts:197:12:197:18 | Awaited | Awaited<T> |
+| tst.ts:197:12:197:35 | Awaited ... tring>> | string |
+| tst.ts:197:20:197:26 | Promise | Promise<T> |
+| tst.ts:197:20:197:34 | Promise<string> | Promise<string> |
+| tst.ts:197:28:197:33 | string | string |
+| tst.ts:200:8:200:8 | B | number |
+| tst.ts:200:12:200:18 | Awaited | Awaited<T> |
+| tst.ts:200:12:200:44 | Awaited ... mber>>> | number |
+| tst.ts:200:20:200:26 | Promise | Promise<T> |
+| tst.ts:200:20:200:43 | Promise ... umber>> | Promise<Promise<number>> |
+| tst.ts:200:28:200:34 | Promise | Promise<T> |
+| tst.ts:200:28:200:42 | Promise<number> | Promise<number> |
+| tst.ts:200:36:200:41 | number | number |
+| tst.ts:203:8:203:8 | C | C |
+| tst.ts:203:12:203:18 | Awaited | Awaited<T> |
+| tst.ts:203:12:203:45 | Awaited ... umber>> | number \| boolean |
+| tst.ts:203:20:203:26 | boolean | boolean |
+| tst.ts:203:20:203:44 | boolean ... number> | boolean \| Promise<number> |
+| tst.ts:203:30:203:36 | Promise | Promise<T> |
+| tst.ts:203:30:203:44 | Promise<number> | Promise<number> |
+| tst.ts:203:38:203:43 | number | number |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -552,6 +578,7 @@ missingToString
 referenceDefinition
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
+| C | tst.ts:203:3:203:46 | type C  ... mber>>; |
 | C | type_definition_objects.ts:3:8:3:17 | class C {} |
 | C<T> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
 | C<number> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
@@ -634,15 +661,25 @@ unionIndex
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | Json[] | 5 | string \| number \| boolean \| { [property: string... |
+| Promise<number> | 2 | boolean \| Promise<number> |
+| PromiseLike<TResult1> | 1 | TResult1 \| PromiseLike<TResult1> |
+| PromiseLike<TResult2> | 1 | TResult2 \| PromiseLike<TResult2> |
 | T | 0 | T \| ValueOrArray<T>[] |
+| TResult1 | 0 | TResult1 \| PromiseLike<TResult1> |
+| TResult1 | 0 | TResult1 \| TResult2 |
+| TResult2 | 0 | TResult2 \| PromiseLike<TResult2> |
+| TResult2 | 1 | TResult1 \| TResult2 |
 | ValueOrArray<T>[] | 1 | T \| ValueOrArray<T>[] |
 | ValueOrArray<number>[] | 1 | number \| ValueOrArray<number>[] |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | VirtualNode \| { [key: string]: any; } |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | string \| [string, { [key: string]: any; }, ...V... |
 | false | 0 | boolean |
+| false | 0 | boolean \| Promise<number> |
+| false | 1 | number \| boolean |
 | false | 2 | string \| number \| boolean |
 | false | 2 | string \| number \| boolean \| { [property: string... |
 | number | 0 | number \| ValueOrArray<number>[] |
+| number | 0 | number \| boolean |
 | number | 1 | string \| number |
 | number | 1 | string \| number \| boolean |
 | number | 1 | string \| number \| boolean \| { [property: string... |
@@ -657,6 +694,8 @@ unionIndex
 | string | 0 | string \| { [key: string]: any; } |
 | symbol | 1 | string \| symbol |
 | true | 1 | boolean |
+| true | 1 | boolean \| Promise<number> |
+| true | 2 | number \| boolean |
 | true | 2 | string \| number \| true |
 | true | 3 | string \| number \| boolean |
 | true | 3 | string \| number \| boolean \| { [property: string... |
