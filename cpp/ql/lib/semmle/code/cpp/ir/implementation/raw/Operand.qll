@@ -414,7 +414,7 @@ class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
 
   // in most cases the def location makes more sense, but in some corner cases it
-  // returns no location: in those cases we fall back to the use location
+  // does not have a location: in those cases we fall back to the use location
   override Language::Location getLocation() {
     if exists(Language::Location loc | loc = this.getAnyDef().getLocation())
     then result = this.getAnyDef().getLocation()
