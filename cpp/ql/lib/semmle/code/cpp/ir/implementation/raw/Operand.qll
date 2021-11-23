@@ -21,6 +21,14 @@ private class TStageOperand =
   TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
+ * A known location. Testing `loc instanceof KnownLocation` will account for non existing locations, as
+ * opposed to testing `not loc isntanceof UnknownLocation`
+ */
+private class KnownLocation extends Language::Location {
+  KnownLocation() { not this instanceof Language::UnknownLocation }
+}
+
+/**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
  * (the defining instruction) in another instruction (the use instruction)
  */
@@ -414,17 +422,11 @@ class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
 
   // in most cases the def location makes more sense, but in some corner cases it
-  // does not have a location: in those cases we fall back to the use location
+  // has an unknown location: in those cases we fall back to the use location
   override Language::Location getLocation() {
-    result = selectLocation(this.getAnyDef().getLocation(), this.getUse().getLocation())
-  }
-
-  private Language::Location selectLocation(
-    Language::Location preferred, Language::Location fallback
-  ) {
-    if not exists(preferred) or preferred instanceof Language::UnknownLocation
-    then result = fallback
-    else result = preferred
+    if this.getAnyDef().getLocation() instanceof KnownLocation
+    then result = this.getAnyDef().getLocation()
+    else result = this.getUse().getLocation()
   }
 }
 
