@@ -127,6 +127,38 @@ module Public {
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
   }
 
+  private predicate noComponentSpecificCsv(SummaryComponent sc) {
+    not exists(getComponentSpecificCsv(sc))
+  }
+
+  /** Gets a textual representation of this component used for flow summaries */
+  private string getComponentCsv(SummaryComponent sc) {
+    result = getComponentSpecificCsv(sc)
+    or
+    noComponentSpecificCsv(sc) and
+    (
+      exists(int i | sc = TParameterSummaryComponent(i) and result = "Parameter[" + i + "]")
+      or
+      exists(int i | sc = TArgumentSummaryComponent(i) and result = "Argument[" + i + "]")
+      or
+      sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
+    )
+  }
+
+  /** Gets a textual representation of this stack used for flow summaries. */
+  string getComponentStackCsv(SummaryComponentStack stack) {
+    exists(SummaryComponent head, SummaryComponentStack tail |
+      head = stack.head() and
+      tail = stack.tail() and
+      result = getComponentCsv(head) + " of " + getComponentStackCsv(tail)
+    )
+    or
+    exists(SummaryComponent c |
+      stack = TSingletonSummaryComponentStack(c) and
+      result = getComponentCsv(c)
+    )
+  }
+
   /**
    * A class that exists for QL technical reasons only (the IPA type used
    * to represent component stacks needs to be bounded).
@@ -970,18 +1002,31 @@ module Private {
   module TestOutput {
     /** A flow summary to include in the `summary/3` query predicate. */
     abstract class RelevantSummarizedCallable extends SummarizedCallable {
-      /** Gets the string representation of this callable used by `summary/3`. */
-      string getFullString() { result = this.toString() }
+      /** Gets the string representation of this callable used by `summary/1`. */
+      abstract string getCallableCsv();
     }
 
-    /** A query predicate for outputting flow summaries in QL tests. */
-    query predicate summary(string callable, string flow, boolean preservesValue) {
+    /** Render the kind in the format used in flow summaries. */
+    private string renderKind(boolean preservesValue) {
+      preservesValue = true and result = "value"
+      or
+      preservesValue = false and result = "taint"
+    }
+
+    /**
+     * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
+     * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+     * ext is hardcoded to empty
+     */
+    query predicate summary(string csv) {
       exists(
-        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output
+        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
+        boolean preservesValue
       |
-        callable = c.getFullString() and
         c.propagatesFlow(input, output, preservesValue) and
-        flow = input + " -> " + output
+        csv =
+          c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
+            getComponentStackCsv(output) + ";" + renderKind(preservesValue)
       )
     }
   }

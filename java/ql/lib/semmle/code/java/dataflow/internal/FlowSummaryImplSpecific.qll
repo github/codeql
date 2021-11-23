@@ -72,6 +72,30 @@ SummaryComponent interpretComponentSpecific(string c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
+/** Gets the summary component for specification component `c`, if any. */
+private string getContentSpecificCsv(Content c) {
+  exists(Field f, string package, string className, string fieldName |
+    c = TFieldContent(f) and
+    f.hasQualifiedName(package, className, fieldName) and
+    result = "Field[" + package + "." + className + "." + fieldName + "]"
+  )
+  or
+  exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
+  or
+  c instanceof ArrayContent and result = "ArrayElement"
+  or
+  c instanceof CollectionContent and result = "Element"
+  or
+  c instanceof MapKeyContent and result = "MapKey"
+  or
+  c instanceof MapValueContent and result = "MapValue"
+}
+
+/** Gets the textual representation of the content in the format used for flow summaries */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+}
+
 class SourceOrSinkElement = Top;
 
 /**

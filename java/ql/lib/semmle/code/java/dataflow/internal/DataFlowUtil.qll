@@ -164,7 +164,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
-private newtype TContent =
+newtype TContent =
   TFieldContent(InstanceField f) or
   TArrayContent() or
   TCollectionContent() or
