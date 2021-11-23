@@ -28,6 +28,7 @@ parameterVariable
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
 | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
 | ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b |
 | ssa.rb:49:9:49:9 | x | ssa.rb:49:9:49:9 | x |

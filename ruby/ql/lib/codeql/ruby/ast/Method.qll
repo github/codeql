@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.AST
 private import internal.TreeSitter
+private import internal.Method
 
 /** A callable. */
 class Callable extends StmtSequence, Expr, Scope, TCallable {
@@ -212,16 +213,6 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
  * ```
  */
 class BraceBlock extends Block, TBraceBlock {
-  private Ruby::Block g;
-
-  BraceBlock() { this = TBraceBlock(g) }
-
-  final override Parameter getParameter(int n) {
-    toGenerated(result) = g.getParameters().getChild(n)
-  }
-
-  final override Stmt getStmt(int i) { toGenerated(result) = g.getChild(i) }
-
   final override string toString() { result = "{ ... }" }
 
   final override string getAPrimaryQlClass() { result = "BraceBlock" }

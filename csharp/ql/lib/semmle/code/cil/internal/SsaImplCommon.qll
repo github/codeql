@@ -634,3 +634,29 @@ class UncertainWriteDefinition extends WriteDefinition {
     )
   }
 }
+
+/** Provides a set of consistency queries. */
+module Consistency {
+  abstract class RelevantDefinition extends Definition {
+    abstract predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    );
+  }
+
+  query predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    ssaDefReachesRead(v, def, bb, i) and
+    not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
+  }
+
+  query predicate readWithoutDef(SourceVariable v, BasicBlock bb, int i) {
+    variableRead(bb, i, v, _) and
+    not ssaDefReachesRead(v, _, bb, i)
+  }
+
+  query predicate deadDef(RelevantDefinition def, SourceVariable v) {
+    v = def.getSourceVariable() and
+    not ssaDefReachesRead(_, def, _, _) and
+    not phiHasInputFromBlock(_, def, _) and
+    not uncertainWriteDefinitionInput(_, def)
+  }
+}

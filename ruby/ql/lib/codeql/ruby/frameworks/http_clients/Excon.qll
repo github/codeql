@@ -18,12 +18,14 @@ private import codeql.ruby.ApiGraphs
  * https://github.com/excon/excon/blob/master/README.md
  */
 class ExconHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
   API::Node requestNode;
   API::Node connectionNode;
+  DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
     requestUse = requestNode.getAnImmediateUse() and
+    connectionUse = connectionNode.getAnImmediateUse() and
     connectionNode =
       [
         // one-off requests
@@ -43,6 +45,17 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+
+  override DataFlow::Node getURL() {
+    // For one-off requests, the URL is in the first argument of the request method call.
+    // For connection re-use, the URL is split between the first argument of the `new` call
+    // and the `path` keyword argument of the request method call.
+    result = requestUse.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
+    or
+    result = requestUse.getKeywordArgument("path")
+    or
+    result = connectionUse.(DataFlow::CallNode).getArgument(0)
+  }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // Check for `ssl_verify_peer: false` in the options hash.

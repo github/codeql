@@ -4,8 +4,8 @@ using SinkFunction = void (*)(int);
 
 void notSink(int notSinkParam);
 
-void callsSink(int sinkParam) { // $ ir-path=31:28 ir-path=32:31 ir-path=34:22
-  sink(sinkParam); // $ ir-sink=31:28 ir-sink=32:31 ir-sink=34:22 ast=31:28 ast=32:31 ast=34:22 MISSING: ast,ir=28
+void callsSink(int sinkParam) { // $ ir-path=31:23 ir-path=32:26 ir-path=34:17
+  sink(sinkParam); // $ ast=31:28 ast=32:31 ast=34:22 ir-sink
 }
 
 struct {
@@ -25,7 +25,7 @@ void assignGlobals() {
 };
 
 void testStruct() {
-  globalStruct.sinkPtr(atoi(getenv("TAINTED"))); // $ ir MISSING: ast
+  globalStruct.sinkPtr(atoi(getenv("TAINTED"))); // $ MISSING: ir-path,ast
   globalStruct.notSinkPtr(atoi(getenv("TAINTED"))); // clean
 
   globalUnion.sinkPtr(atoi(getenv("TAINTED"))); // $ ast ir-path
@@ -48,8 +48,8 @@ class D2 : public D1 {
 
 class D3 : public D2 {
     public:
-    void f(const char* p) override { // $ ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 ir-path=73:30
-        sink(p); // $ ir-sink=58:10 ir-sink=60:17 ir-sink=61:28 ir-sink=62:29 ir-sink=63:33 ast=58:10 ast=60:17 ast=61:28 ast=62:29 ast=63:33 SPURIOUS: ast=73:30 ir-sink=73:30
+    void f(const char* p) override { // $ ir-path=58:10 ir-path=60:17 ir-path=61:28 ir-path=62:29 ir-path=63:33 SPURIOUS: ir-path=73:30
+        sink(p); // $ ast=58:10 ast=60:17 ast=61:28 ast=62:29 ast=63:33 ir-sink SPURIOUS: ast=73:30
     }
 };
 

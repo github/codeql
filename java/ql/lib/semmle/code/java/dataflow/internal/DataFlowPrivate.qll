@@ -150,8 +150,11 @@ predicate readStep(Node node1, Content f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  c instanceof FieldContent and
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  exists(FieldAccess fa |
+    instanceFieldAssign(_, fa) and
+    n = getFieldQualifier(fa) and
+    c.(FieldContent).getField() = fa.getField()
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
