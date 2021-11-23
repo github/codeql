@@ -40,5 +40,5 @@ where
   ) and
   fc instanceof ExprInVoidContext and
   not fc.isInMacroExpansion() and
-  msg = "This object does not generate an exception."
+  msg = "Object creation of exception type on stack. Did you forget the throw keyword?"
 select fc, msg
