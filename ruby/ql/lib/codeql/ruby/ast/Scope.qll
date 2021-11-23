@@ -3,22 +3,20 @@ private import internal.AST
 private import internal.Scope
 private import internal.TreeSitter
 
-class Scope extends AstNode, TScopeType {
-  private Scope::Range range;
+/**
+ * A variable scope. This is either a top-level (file), a module, a class,
+ * or a callable.
+ */
+class Scope extends AstNode, TScopeType instanceof ScopeImpl {
+  /** Gets the outer scope, if any. */
+  Scope getOuterScope() { result = super.getOuterScopeImpl() }
 
-  Scope() { range = toGenerated(this) }
+  /** Gets a variable declared in this scope. */
+  Variable getAVariable() { result = super.getAVariableImpl() }
 
-  /** Gets the scope in which this scope is nested, if any. */
-  Scope getOuterScope() { toGenerated(result) = range.getOuterScope() }
-
-  /** Gets a variable that is declared in this scope. */
-  final Variable getAVariable() { result.getDeclaringScope() = this }
-
-  /** Gets the variable declared in this scope with the given name, if any. */
-  final Variable getVariable(string name) {
-    result = this.getAVariable() and
-    result.getName() = name
-  }
+  /** Gets the variable named `name` declared in this scope. */
+  Variable getVariable(string name) { result = super.getVariableImpl(name) }
 }
 
+/** A scope in which a `self` variable exists. */
 class SelfScope extends Scope, TSelfScopeType { }

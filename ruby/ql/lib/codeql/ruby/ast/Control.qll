@@ -583,7 +583,7 @@ class ForExpr extends Loop, TForExpr {
   final override string getAPrimaryQlClass() { result = "ForExpr" }
 
   /** Gets the body of this `for` loop. */
-  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+  final override StmtSequence getBody() { toGenerated(result) = g.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
   final Pattern getPattern() { toGenerated(result) = g.getPattern() }

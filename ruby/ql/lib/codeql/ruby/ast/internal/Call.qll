@@ -50,7 +50,7 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 
-  final override Block getBlockImpl() { none() }
+  final override Block getBlockImpl() { synthChild(this, -2, result) }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
