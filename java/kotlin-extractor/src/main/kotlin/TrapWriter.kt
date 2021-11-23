@@ -39,7 +39,7 @@ class TrapLabelManager {
  * instances will have different additional state, but they must all
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
-open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
+open class TrapWriter (protected val lm: TrapLabelManager, private val bw: BufferedWriter) {
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use
@@ -163,12 +163,19 @@ open class TrapWriter (val lm: TrapLabelManager, val bw: BufferedWriter) {
         SourceFileTrapWriter(lm, bw, file, populateFileTables)
 }
 
+/**
+ * A `FileTrapWriter` is used when we know which file we are extracting
+ * entities from, so we can at least give the right file as a location.
+ */
 open class FileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val filePath: String,
     populateFileTables: Boolean
 ): TrapWriter (lm, bw) {
+    // The `filePath` may actually be a file-in-a-jar file path, encoded
+    // as `<jar file>!/<path within jar>`. We need to split it as
+    // appropriate, to make the right file ID.
     val populateFile = PopulateFile(this)
     val splitFilePath = filePath.split("!/")
     val fileId =
@@ -177,21 +184,37 @@ open class FileTrapWriter (
          else
             populateFile.getFileInJarLabel(File(splitFilePath.get(0)), splitFilePath.get(1), populateFileTables)
 
+    /**
+     * Gets a label for the location of `e`.
+     */
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(e.startOffset, e.endOffset)
     }
+    /**
+     * Gets a label for the location representing the whole of this file.
+     */
     fun getWholeFileLocation(): Label<DbLocation> {
         return getLocation(fileId, 0, 0, 0, 0)
     }
+    /**
+     * Gets a label for the location corresponding to `startOffset` and
+     * `endOffset` within this file.
+     */
     open fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         // We don't have a FileEntry to look up the offsets in, so all
         // we can do is return a whole-file location.
         return getWholeFileLocation()
     }
+    /**
+     * Gets the location of `e` as a human-readable string. Only Used by
+     * the logger, in messages it produces.
+     */
     open fun getLocationString(e: IrElement): String {
         // We don't have a FileEntry to look up the offsets in, so all
-        // we can do is return a whole-file location.
-        return "file://filePath"
+        // we can do is return a whole-file location. These are only
+        // for human consumption, so we omit the :0:0:0:0 so that the
+        // user knows where it came from.
+        return "file://$filePath"
     }
     fun <T> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
@@ -200,6 +223,12 @@ open class FileTrapWriter (
     }
 }
 
+/**
+ * A `FileTrapWriter` is used when not only do we know which file we
+ * are extracting entities from, but we also have an `IrFileEntry`
+ * (from an `IrFile`) which allows us to map byte offsets to line
+ * and column numbers.
+ */
 class SourceFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
