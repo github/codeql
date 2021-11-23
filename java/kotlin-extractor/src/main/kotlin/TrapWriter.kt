@@ -173,9 +173,9 @@ open class FileTrapWriter (
     val filePath: String,
     populateFileTables: Boolean
 ): TrapWriter (lm, bw) {
-    // The `filePath` may actually be a file-in-a-jar file path, encoded
-    // as `<jar file>!/<path within jar>`. We need to split it as
-    // appropriate, to make the right file ID.
+    // If a file is in a jar, then the Kotlin compiler gives
+    // `<jar file>!/<path within jar>` as its path. We need to split
+    // it as appropriate, to make the right file ID.
     val populateFile = PopulateFile(this)
     val splitFilePath = filePath.split("!/")
     val fileId =
