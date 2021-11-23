@@ -44,6 +44,7 @@ func test(db *sql.DB, ctx context.Context) {
 
 func squirrelTest(querypart string) {
 	squirrel.Select("*").From("users").Where(squirrel.Expr(querypart)) // $ querystring=querypart
+	squirrel.Select("*").From("users").Where(querypart)                // $ querystring=querypart
 	squirrel.Select("*").From("users").Suffix(querypart)               // $ querystring=querypart
 }
 
