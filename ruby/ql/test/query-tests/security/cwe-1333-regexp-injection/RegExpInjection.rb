@@ -42,4 +42,16 @@ class FooController < ActionController::Base
     name = params[:name]
     regex = Regexp.new(Regexp.escape(name))
   end
+
+  # GOOD - string is explicitly escaped
+  def route7
+    name = params[:name]
+    regex = Regexp.new(Regexp.quote(name))
+  end
+
+  # BAD
+  def route8
+    name = params[:name]
+    regex = Regexp.compile("@" + name)
+  end
 end
