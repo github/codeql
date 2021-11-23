@@ -1144,9 +1144,8 @@ private module Stage2 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1161,9 +1160,8 @@ private module Stage2 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1173,9 +1171,8 @@ private module Stage2 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1845,9 +1842,8 @@ private module Stage3 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1862,9 +1858,8 @@ private module Stage3 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1874,9 +1869,8 @@ private module Stage3 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2617,9 +2611,8 @@ private module Stage4 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2634,9 +2627,8 @@ private module Stage4 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2646,9 +2638,8 @@ private module Stage4 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
