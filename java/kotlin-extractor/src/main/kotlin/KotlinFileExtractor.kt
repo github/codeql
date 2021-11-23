@@ -1047,17 +1047,17 @@ open class KotlinFileExtractor(
                 val locId = tw.getLocation(e)
                 tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
                 tw.writeHasLocation(id, locId)
-                extractExpressionExpr(e.tryResult, callable, id, -1)
+                extractExpressionStmt(e.tryResult, callable, id, -1)
                 val finallyStmt = e.finallyExpression
                 if(finallyStmt != null) {
-                    extractExpressionExpr(finallyStmt, callable, id, -2)
+                    extractExpressionStmt(finallyStmt, callable, id, -2)
                 }
                 for((catchIdx, catchClause) in e.catches.withIndex()) {
                     val catchId = tw.getFreshIdLabel<DbCatchclause>()
                     tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
-                    // TODO: Index -1: unannotatedtypeaccess
+                    extractTypeAccess(catchClause.catchParameter.type, callable, catchId, -1, catchClause.catchParameter)
                     extractVariableExpr(catchClause.catchParameter, callable, catchId, 0)
-                    extractExpressionExpr(catchClause.result, callable, catchId, 1)
+                    extractExpressionStmt(catchClause.result, callable, catchId, 1)
                 }
             }
             is IrContainerExpression -> {
