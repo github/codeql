@@ -544,37 +544,63 @@ open class KotlinFileExtractor(
         return true
     }
 
-    fun binop(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>) {
+    private fun unaryOp(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>) {
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
         tw.writeCallableEnclosingExpr(id, callable)
 
         val dr = c.dispatchReceiver
-        if(dr != null) {
+        if (dr != null) {
             logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
         }
-        if(c.valueArgumentsCount < 1) {
+
+        if (c.valueArgumentsCount < 1) {
             logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+            return
+        }
+
+        extractArgument(id, c, callable, 0, "Operand null")
+
+        if (c.valueArgumentsCount > 1) {
+            logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+        }
+    }
+
+    private fun binOp(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>) {
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, callable)
+
+        val dr = c.dispatchReceiver
+        if (dr != null) {
+            logger.warnElement(Severity.ErrorSevere, "Unexpected dispatch receiver found", c)
+        }
+
+        if (c.valueArgumentsCount < 1) {
+            logger.warnElement(Severity.ErrorSevere, "No arguments found", c)
+            return
+        }
+
+        extractArgument(id, c, callable, 0, "LHS null")
+
+        if (c.valueArgumentsCount < 2) {
+            logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
+            return
+        }
+
+        extractArgument(id, c, callable, 1, "RHS null")
+
+        if (c.valueArgumentsCount > 2) {
+            logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
+        }
+    }
+
+    private fun extractArgument(id: Label<out DbExpr>, c: IrCall, callable: Label<out DbCallable>, idx: Int, msg: String) {
+        val op = c.getValueArgument(idx)
+        if (op == null) {
+            logger.warnElement(Severity.ErrorSevere, msg, c)
         } else {
-            val lhs = c.getValueArgument(0)
-            if(lhs == null) {
-                logger.warnElement(Severity.ErrorSevere, "LHS null", c)
-            } else {
-                extractExpressionExpr(lhs, callable, id, 0)
-            }
-            if(c.valueArgumentsCount < 2) {
-                logger.warnElement(Severity.ErrorSevere, "No RHS found", c)
-            } else {
-                val rhs = c.getValueArgument(1)
-                if(rhs == null) {
-                    logger.warnElement(Severity.ErrorSevere, "RHS null", c)
-                } else {
-                    extractExpressionExpr(rhs, callable, id, 1)
-                }
-            }
-            if(c.valueArgumentsCount > 2) {
-                logger.warnElement(Severity.ErrorSevere, "Extra arguments found", c)
-            }
+            extractExpressionExpr(op, callable, id, idx)
         }
     }
 
@@ -681,20 +707,20 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, dr, callable)
+                binOp(id, dr, callable)
             }
             c.origin == IrStatementOrigin.EXCLEQEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQEQ") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, dr, callable)
+                binOp(id, dr, callable)
             }
             c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "ieee754equals") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 // TODO: Is this consistent with Java?
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, dr, callable)
+                binOp(id, dr, callable)
             }
             // We need to handle all the builtin operators defines in BuiltInOperatorNames in
             //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
@@ -706,7 +732,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbLtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "lessOrEqual") -> {
                 if(c.origin != IrStatementOrigin.LTEQ) {
@@ -715,7 +741,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbLeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "greater") -> {
                 if(c.origin != IrStatementOrigin.GT) {
@@ -724,7 +750,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbGtexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "greaterOrEqual") -> {
                 if(c.origin != IrStatementOrigin.GTEQ) {
@@ -733,7 +759,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbGeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "EQEQ") -> {
                 if(c.origin != IrStatementOrigin.EQEQ) {
@@ -743,7 +769,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "EQEQEQ") -> {
                 if(c.origin != IrStatementOrigin.EQEQEQ) {
@@ -752,7 +778,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
             }
             isBuiltinCall(c, "ieee754equals") -> {
                 if(c.origin != IrStatementOrigin.EQEQ) {
@@ -762,7 +788,17 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbEqexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                binop(id, c, callable)
+                binOp(id, c, callable)
+            }
+            isBuiltinCall(c, "CHECK_NOT_NULL") -> {
+                if(c.origin != IrStatementOrigin.EXCLEXCL) {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
+                }
+
+                val id = tw.getFreshIdLabel<DbNotnullexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_notnullexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                unaryOp(id, c, callable)
             }
             isBuiltinCall(c, "THROW_CCE") -> {
                 // TODO

@@ -534,6 +534,9 @@
 | exprs.kt:193:31:193:37 | ... + ... | exprs.kt:192:16:194:9 | <obinit> | AddExpr |
 | exprs.kt:193:36:193:37 | a2 | exprs.kt:192:16:194:9 | <obinit> | VarAccess |
 | exprs.kt:193:40:193:49 | toString(...) | exprs.kt:192:16:194:9 | <obinit> | MethodAccess |
+| exprs.kt:199:5:199:20 | y | exprs.kt:198:1:200:1 | notNullAssertion | LocalVariableDeclExpr |
+| exprs.kt:199:18:199:18 | x | exprs.kt:198:1:200:1 | notNullAssertion | VarAccess |
+| exprs.kt:199:19:199:20 | ...!! | exprs.kt:198:1:200:1 | notNullAssertion | NotNullExpr |
 | file://:0:0:0:0 | C | exprs.kt:146:5:146:33 | foo | TypeAccess |
 | file://:0:0:0:0 | Color | exprs.kt:175:6:179:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:171:6:173:1 | Direction | TypeAccess |

@@ -194,3 +194,7 @@ class Class1 {
         }
     }
 }
+
+fun notNullAssertion(x: Any?) {
+    val y: Any = x!!
+}

@@ -1463,9 +1463,7 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
 /** An `instanceof` expression. */
 class NotInstanceOfExpr extends Expr, @notinstanceofexpr {
   /** Gets the expression on the left-hand side of the `!is` operator. */
-  Expr getExpr() {
-    result.isNthChildOf(this, 0)
-  }
+  Expr getExpr() { result.isNthChildOf(this, 0) }
 
   /** Gets the access to the type on the right-hand side of the `!is` operator. */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
@@ -2195,19 +2193,13 @@ class WhenBranch extends Top, @whenbranch {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /** Gets the result of this branch. */
-  Stmt getRhs() {
-    result.isNthChildOf(this, 1)
-  }
+  Stmt getRhs() { result.isNthChildOf(this, 1) }
 
   /** Gets a result expression of this `when` branch. */
-  Expr getAResult() {
-    result = getAResult(this.getRhs())
-  }
+  Expr getAResult() { result = getAResult(this.getRhs()) }
 
   /** Holds if this is an `else` branch. */
-  predicate isElseBranch() {
-    when_branch_else(this)
-  }
+  predicate isElseBranch() { when_branch_else(this) }
 
   override string toString() { result = "... -> ..." }
 
@@ -2289,4 +2281,11 @@ class VarArgExpr extends Expr, @varargexpr {
   override string getHalsteadID() { result = "VarArgExpr" }
 
   override string getAPrimaryQlClass() { result = "VarArgExpr" }
+}
+
+/** A Kotlin not-null expression. For example, `expr!!`. */
+class NotNullExpr extends UnaryExpr, @notnullexpr {
+  override string toString() { result = "...!!" }
+
+  override string getAPrimaryQlClass() { result = "NotNullExpr" }
 }
