@@ -6,7 +6,7 @@
 <p>When an Android component expects a result from an Activity, <code>startActivityForResult</code> can be used.
 The started Activity can then use <code>setResult</code> to return the appropriate data to the calling component.</p>
 <p>If an Activity obtains the incoming, user-provided Intent and directly returns it via <code>setResult</code>
-without any checks, the application may be unintentionally giving arbitrary access to its Content Providers, even
+without any checks, the application may be unintentionally giving arbitrary access to its content providers, even
 if they are not exported, as long as they are configured with the attribute <code>android:grantUriPermissions="true"</code>. 
 This happens because the attacker adds the appropriate URI permission flags to the provided Intent, which take effect
 once the Intent is reflected back.</p>

@@ -1,7 +1,7 @@
 /**
  * @name Intent URI permission manipulation
- * @description Returning an externally provided Intent via setResult may allow a malicious
- *              application to access arbitrary Content Providers of the vulnerable application.
+ * @description Returning an externally provided Intent via 'setResult' may allow a malicious
+ *              application to access arbitrary content providers of the vulnerable application.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
@@ -21,4 +21,4 @@ from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(IntentUriPermissionManipulationConf c).hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "This Intent can be set with arbitrary flags from $@, " +
-    "and used to give access to internal Content Providers.", source.getNode(), "this user input"
+    "and used to give access to internal content providers.", source.getNode(), "this user input"
