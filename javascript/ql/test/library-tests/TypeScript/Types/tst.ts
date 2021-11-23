@@ -201,4 +201,21 @@ module TS45 {
 
   // C = boolean | number
   type C = Awaited<boolean | Promise<number>>;
+
+  export interface Success {
+    type: `${string}Success`;
+    body: string;
+  }
+
+  export interface Error {
+      type: `${string}Error`;
+      message: string;
+  }
+
+  export function handler(r: Success | Error) {
+      if (r.type === "HttpSuccess") {
+          // 'r' has type 'Success'
+          let token = r.body;
+      }
+  }
 }
