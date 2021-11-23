@@ -16,23 +16,23 @@ edges
 | A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make [c] |
 | A.cpp:49:10:49:10 | b [read] [c] | A.cpp:49:13:49:13 | FieldAddress [read] |
 | A.cpp:49:13:49:13 | FieldAddress [read] | A.cpp:49:10:49:13 | (void *)... |
-| A.cpp:55:8:55:10 | b [post update] [c] | A.cpp:56:13:56:15 | b [c] |
+| A.cpp:55:5:55:5 | b [post update] [c] | A.cpp:56:10:56:10 | b [c] |
 | A.cpp:55:12:55:19 | (C *)... | A.cpp:55:12:55:19 | new |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c |
-| A.cpp:55:12:55:19 | new | A.cpp:55:8:55:10 | b [post update] [c] |
+| A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | b [post update] [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:55:12:55:19 | new |
-| A.cpp:56:13:56:15 | b [c] | A.cpp:28:8:28:10 | this [c] |
-| A.cpp:56:13:56:15 | b [c] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:56:13:56:15 | b [c] | A.cpp:56:13:56:15 | call to get |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:28:8:28:10 | this [c] |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:56:13:56:15 | call to get |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:56:13:56:15 | call to get |
 | A.cpp:56:13:56:15 | call to get | A.cpp:56:10:56:17 | (void *)... |
-| A.cpp:57:11:57:24 | new [post update] [c] | A.cpp:57:28:57:30 | new [c] |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:28:8:28:10 | this [c] |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:57:28:57:30 | call to get |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:57:28:57:30 | call to get |
+| A.cpp:57:11:57:24 | new [post update] [c] | A.cpp:57:11:57:24 | new [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | new [post update] [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
 | A.cpp:57:28:57:30 | call to get | A.cpp:57:10:57:32 | (void *)... |
-| A.cpp:57:28:57:30 | new [c] | A.cpp:28:8:28:10 | this [c] |
-| A.cpp:57:28:57:30 | new [c] | A.cpp:57:28:57:30 | call to get |
-| A.cpp:57:28:57:30 | new [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:64:10:64:15 | call to setOnB [c] | A.cpp:66:10:66:11 | b2 [read] [c] |
 | A.cpp:64:21:64:28 | (C *)... | A.cpp:64:21:64:28 | new |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB [c] |
@@ -52,9 +52,9 @@ edges
 | A.cpp:81:21:81:21 | c | A.cpp:81:10:81:15 | call to setOnB [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c |
 | A.cpp:85:26:85:26 | c | A.cpp:90:15:90:15 | c |
-| A.cpp:90:11:90:13 | b2 [post update] [c] | A.cpp:85:9:85:14 | ReturnValue [c] |
+| A.cpp:90:7:90:8 | b2 [post update] [c] | A.cpp:85:9:85:14 | ReturnValue [c] |
 | A.cpp:90:15:90:15 | c | A.cpp:27:17:27:17 | c |
-| A.cpp:90:15:90:15 | c | A.cpp:90:11:90:13 | b2 [post update] [c] |
+| A.cpp:90:15:90:15 | c | A.cpp:90:7:90:8 | b2 [post update] [c] |
 | A.cpp:98:12:98:18 | new | A.cpp:100:9:100:9 | a [post update] |
 | A.cpp:100:5:100:6 | c1 [post update] [a] | A.cpp:101:8:101:9 | c1 [a] |
 | A.cpp:100:9:100:9 | a [post update] | A.cpp:100:5:100:6 | c1 [post update] [a] |
@@ -65,11 +65,11 @@ edges
 | A.cpp:107:16:107:16 | FieldAddress [read] | A.cpp:107:12:107:16 | (void *)... |
 | A.cpp:120:12:120:13 | c1 [read] [a] | A.cpp:120:16:120:16 | FieldAddress [read] |
 | A.cpp:120:16:120:16 | FieldAddress [read] | A.cpp:120:12:120:16 | (void *)... |
+| A.cpp:126:5:126:5 | b [post update] [c] | A.cpp:126:5:126:5 | b [post update] [c] |
 | A.cpp:126:5:126:5 | b [post update] [c] | A.cpp:131:8:131:8 | b [post update] [c] |
-| A.cpp:126:8:126:10 | b [post update] [c] | A.cpp:126:5:126:5 | b [post update] [c] |
-| A.cpp:126:8:126:10 | b [post update] [c] | A.cpp:131:8:131:8 | b [post update] [c] |
+| A.cpp:126:5:126:5 | b [post update] [c] | A.cpp:131:8:131:8 | b [post update] [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c |
-| A.cpp:126:12:126:18 | new | A.cpp:126:8:126:10 | b [post update] [c] |
+| A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | b [post update] [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:126:12:126:18 | new |
 | A.cpp:131:8:131:8 | b [post update] [c] | A.cpp:132:10:132:10 | b [read] [c] |
 | A.cpp:132:10:132:10 | b [read] [c] | A.cpp:132:13:132:13 | FieldAddress [read] |
@@ -158,8 +158,8 @@ edges
 | B.cpp:44:16:44:17 | b1 [elem2] | B.cpp:46:13:46:16 | box1 [post update] [elem2] |
 | B.cpp:46:13:46:16 | box1 [post update] [elem1] | B.cpp:46:7:46:10 | this [post update] [box1, elem1] |
 | B.cpp:46:13:46:16 | box1 [post update] [elem2] | B.cpp:46:7:46:10 | this [post update] [box1, elem2] |
-| C.cpp:18:12:18:18 | new [post update] [s1] | C.cpp:19:8:19:11 | c [s1] |
-| C.cpp:19:8:19:11 | c [s1] | C.cpp:27:8:27:11 | this [s1] |
+| C.cpp:18:12:18:18 | new [post update] [s1] | C.cpp:19:5:19:5 | c [s1] |
+| C.cpp:19:5:19:5 | c [s1] | C.cpp:27:8:27:11 | this [s1] |
 | C.cpp:22:3:22:3 | this [post update] [s1] | C.cpp:18:12:18:18 | new [post update] [s1] |
 | C.cpp:22:9:22:22 | FieldAddress [post update] | C.cpp:22:3:22:3 | this [post update] [s1] |
 | C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | FieldAddress [post update] |
@@ -174,13 +174,13 @@ edges
 | D.cpp:17:11:17:17 | this [box, elem] | D.cpp:17:30:17:32 | this [read] [box, elem] |
 | D.cpp:17:30:17:32 | FieldAddress [read] [elem] | D.cpp:17:11:17:17 | ReturnValue [elem] |
 | D.cpp:17:30:17:32 | this [read] [box, elem] | D.cpp:17:30:17:32 | FieldAddress [read] [elem] |
-| D.cpp:21:30:21:31 | b2 [box, elem] | D.cpp:22:14:22:20 | b2 [box, elem] |
-| D.cpp:22:14:22:20 | b2 [box, elem] | D.cpp:17:11:17:17 | this [box, elem] |
-| D.cpp:22:14:22:20 | b2 [box, elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
-| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getBox1 [elem] |
-| D.cpp:22:25:22:31 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] |
-| D.cpp:22:25:22:31 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
-| D.cpp:22:25:22:31 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
+| D.cpp:21:30:21:31 | b2 [box, elem] | D.cpp:22:10:22:11 | b2 [box, elem] |
+| D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:17:11:17:17 | this [box, elem] |
+| D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:22:25:22:31 | call to getElem |
 | D.cpp:22:25:22:31 | call to getElem | D.cpp:22:10:22:33 | (void *)... |
 | D.cpp:28:15:28:24 | new | D.cpp:30:13:30:16 | elem [post update] |
 | D.cpp:30:5:30:5 | b [post update] [box, elem] | D.cpp:31:14:31:14 | b [box, elem] |
@@ -191,21 +191,21 @@ edges
 | D.cpp:35:15:35:24 | new | D.cpp:37:21:37:21 | e |
 | D.cpp:37:5:37:5 | b [post update] [box, elem] | D.cpp:38:14:38:14 | b [box, elem] |
 | D.cpp:37:8:37:10 | FieldAddress [post update] [elem] | D.cpp:37:5:37:5 | b [post update] [box, elem] |
-| D.cpp:37:13:37:19 | box [post update] [elem] | D.cpp:37:8:37:10 | FieldAddress [post update] [elem] |
+| D.cpp:37:8:37:10 | box [post update] [elem] | D.cpp:37:8:37:10 | FieldAddress [post update] [elem] |
 | D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e |
-| D.cpp:37:21:37:21 | e | D.cpp:37:13:37:19 | box [post update] [elem] |
+| D.cpp:37:21:37:21 | e | D.cpp:37:8:37:10 | box [post update] [elem] |
 | D.cpp:38:14:38:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
 | D.cpp:42:15:42:24 | new | D.cpp:44:19:44:22 | elem [post update] |
-| D.cpp:44:8:44:14 | b [post update] [box, elem] | D.cpp:45:14:45:14 | b [box, elem] |
-| D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] | D.cpp:44:8:44:14 | b [post update] [box, elem] |
+| D.cpp:44:5:44:5 | b [post update] [box, elem] | D.cpp:45:14:45:14 | b [box, elem] |
+| D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] | D.cpp:44:5:44:5 | b [post update] [box, elem] |
 | D.cpp:44:19:44:22 | elem [post update] | D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] |
 | D.cpp:45:14:45:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
 | D.cpp:49:15:49:24 | new | D.cpp:51:27:51:27 | e |
-| D.cpp:51:8:51:14 | b [post update] [box, elem] | D.cpp:52:14:52:14 | b [box, elem] |
-| D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | D.cpp:51:8:51:14 | b [post update] [box, elem] |
-| D.cpp:51:19:51:25 | call to getBox1 [post update] [elem] | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
+| D.cpp:51:5:51:5 | b [post update] [box, elem] | D.cpp:52:14:52:14 | b [box, elem] |
+| D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | D.cpp:51:5:51:5 | b [post update] [box, elem] |
+| D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
 | D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e |
-| D.cpp:51:27:51:27 | e | D.cpp:51:19:51:25 | call to getBox1 [post update] [elem] |
+| D.cpp:51:27:51:27 | e | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
 | D.cpp:52:14:52:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
 | D.cpp:56:15:56:24 | new | D.cpp:58:20:58:23 | elem [post update] |
 | D.cpp:58:5:58:12 | FieldAddress [post update] [box, elem] | D.cpp:58:5:58:12 | this [post update] [boxfield, box, elem] |
@@ -381,9 +381,9 @@ edges
 | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:11:16:11 | a [post update] |
 | by_reference.cpp:16:11:16:11 | a [post update] | by_reference.cpp:16:5:16:8 | this [post update] [a] |
 | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:23:20:27 | value |
-| by_reference.cpp:20:11:20:21 | this [post update] [a] | by_reference.cpp:20:5:20:8 | this [post update] [a] |
+| by_reference.cpp:20:5:20:8 | this [post update] [a] | by_reference.cpp:20:5:20:8 | this [post update] [a] |
 | by_reference.cpp:20:23:20:27 | value | by_reference.cpp:15:26:15:30 | value |
-| by_reference.cpp:20:23:20:27 | value | by_reference.cpp:20:11:20:21 | this [post update] [a] |
+| by_reference.cpp:20:23:20:27 | value | by_reference.cpp:20:5:20:8 | this [post update] [a] |
 | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:25:24:29 | value |
 | by_reference.cpp:24:19:24:22 | this [post update] [a] | by_reference.cpp:24:19:24:22 | this [post update] [a] |
 | by_reference.cpp:24:25:24:29 | value | by_reference.cpp:11:48:11:52 | value |
@@ -402,21 +402,21 @@ edges
 | by_reference.cpp:44:12:44:24 | call to nonMemberGetA | by_reference.cpp:43:9:43:27 | ReturnValue |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | *s [a] |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
-| by_reference.cpp:50:5:50:15 | s [post update] [a] | by_reference.cpp:51:8:51:8 | s indirection [a] |
+| by_reference.cpp:50:3:50:3 | s [post update] [a] | by_reference.cpp:51:8:51:8 | s indirection [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:15:26:15:30 | value |
-| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:5:50:15 | s [post update] [a] |
+| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | s [post update] [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:17:50:26 | call to user_input |
 | by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] |
 | by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
-| by_reference.cpp:56:5:56:17 | s [post update] [a] | by_reference.cpp:57:8:57:8 | s indirection [a] |
+| by_reference.cpp:56:3:56:3 | s [post update] [a] | by_reference.cpp:57:8:57:8 | s indirection [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value |
-| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:5:56:17 | s [post update] [a] |
+| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | s [post update] [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:19:56:28 | call to user_input |
 | by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:39:9:39:21 | *#this [a] |
 | by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
-| by_reference.cpp:62:5:62:23 | s [post update] [a] | by_reference.cpp:63:8:63:8 | s indirection [a] |
+| by_reference.cpp:62:3:62:3 | s [post update] [a] | by_reference.cpp:63:8:63:8 | s indirection [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value |
-| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:5:62:23 | s [post update] [a] |
+| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | s [post update] [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:25:62:34 | call to user_input |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | *#this [a] |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
@@ -541,41 +541,41 @@ edges
 | complex.cpp:40:17:40:17 | *b [inner, f, b_] | complex.cpp:43:8:43:8 | (reference dereference) [read] [inner, f, b_] |
 | complex.cpp:42:8:42:8 | (reference dereference) [read] [inner, f, a_] | complex.cpp:42:10:42:14 | inner [read] [f, a_] |
 | complex.cpp:42:10:42:14 | inner [read] [f, a_] | complex.cpp:42:16:42:16 | f [read] [a_] |
-| complex.cpp:42:16:42:16 | f [read] [a_] | complex.cpp:42:18:42:18 | f [a_] |
-| complex.cpp:42:18:42:18 | f [a_] | complex.cpp:9:7:9:7 | this [a_] |
-| complex.cpp:42:18:42:18 | f [a_] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:42:16:42:16 | f [a_] | complex.cpp:9:7:9:7 | this [a_] |
+| complex.cpp:42:16:42:16 | f [a_] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:42:16:42:16 | f [read] [a_] | complex.cpp:42:16:42:16 | f [a_] |
 | complex.cpp:43:8:43:8 | (reference dereference) [read] [inner, f, b_] | complex.cpp:43:10:43:14 | inner [read] [f, b_] |
 | complex.cpp:43:10:43:14 | inner [read] [f, b_] | complex.cpp:43:16:43:16 | f [read] [b_] |
-| complex.cpp:43:16:43:16 | f [read] [b_] | complex.cpp:43:18:43:18 | f [b_] |
-| complex.cpp:43:18:43:18 | f [b_] | complex.cpp:10:7:10:7 | this [b_] |
-| complex.cpp:43:18:43:18 | f [b_] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:43:16:43:16 | f [b_] | complex.cpp:10:7:10:7 | this [b_] |
+| complex.cpp:43:16:43:16 | f [b_] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:43:16:43:16 | f [read] [b_] | complex.cpp:43:16:43:16 | f [b_] |
 | complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] | complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] |
 | complex.cpp:53:6:53:10 | inner [post update] [f, a_] | complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] |
 | complex.cpp:53:12:53:12 | f [post update] [a_] | complex.cpp:53:6:53:10 | inner [post update] [f, a_] |
-| complex.cpp:53:14:53:17 | f [post update] [a_] | complex.cpp:53:12:53:12 | f [post update] [a_] |
+| complex.cpp:53:12:53:12 | f [post update] [a_] | complex.cpp:53:12:53:12 | f [post update] [a_] |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a |
-| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:14:53:17 | f [post update] [a_] |
+| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:12:53:12 | f [post update] [a_] |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:19:53:28 | call to user_input |
 | complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] | complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] |
 | complex.cpp:54:6:54:10 | inner [post update] [f, b_] | complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] |
 | complex.cpp:54:12:54:12 | f [post update] [b_] | complex.cpp:54:6:54:10 | inner [post update] [f, b_] |
-| complex.cpp:54:14:54:17 | f [post update] [b_] | complex.cpp:54:12:54:12 | f [post update] [b_] |
+| complex.cpp:54:12:54:12 | f [post update] [b_] | complex.cpp:54:12:54:12 | f [post update] [b_] |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b |
-| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:14:54:17 | f [post update] [b_] |
+| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:12:54:12 | f [post update] [b_] |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:19:54:28 | call to user_input |
 | complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, a_] |
 | complex.cpp:55:6:55:10 | inner [post update] [f, a_] | complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] |
 | complex.cpp:55:12:55:12 | f [post update] [a_] | complex.cpp:55:6:55:10 | inner [post update] [f, a_] |
-| complex.cpp:55:14:55:17 | f [post update] [a_] | complex.cpp:55:12:55:12 | f [post update] [a_] |
+| complex.cpp:55:12:55:12 | f [post update] [a_] | complex.cpp:55:12:55:12 | f [post update] [a_] |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a |
-| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:14:55:17 | f [post update] [a_] |
+| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:12:55:12 | f [post update] [a_] |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:19:55:28 | call to user_input |
 | complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, b_] |
 | complex.cpp:56:6:56:10 | inner [post update] [f, b_] | complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] |
 | complex.cpp:56:12:56:12 | f [post update] [b_] | complex.cpp:56:6:56:10 | inner [post update] [f, b_] |
-| complex.cpp:56:14:56:17 | f [post update] [b_] | complex.cpp:56:12:56:12 | f [post update] [b_] |
+| complex.cpp:56:12:56:12 | f [post update] [b_] | complex.cpp:56:12:56:12 | f [post update] [b_] |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b |
-| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:14:56:17 | f [post update] [b_] |
+| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:12:56:12 | f [post update] [b_] |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:19:56:28 | call to user_input |
 | complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] | complex.cpp:40:17:40:17 | *b [inner, f, a_] |
 | complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] | complex.cpp:40:17:40:17 | *b [inner, f, b_] |
@@ -629,29 +629,29 @@ edges
 | constructors.cpp:23:32:23:36 | FieldAddress [post update] | constructors.cpp:23:5:23:7 | this [post update] [b_] |
 | constructors.cpp:26:15:26:15 | *f [a_] | constructors.cpp:28:10:28:10 | f indirection [a_] |
 | constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:28:10:28:10 | f indirection [b_] |
-| constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:29:12:29:12 | f [b_] |
-| constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | f [b_] |
+| constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:29:10:29:10 | f [b_] |
+| constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:10:29:10 | f [b_] |
 | constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | *#this [a_] |
 | constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:28:12:28:12 | call to a |
 | constructors.cpp:28:10:28:10 | f indirection [b_] | constructors.cpp:18:9:18:9 | *#this [b_] |
 | constructors.cpp:28:10:28:10 | f indirection [b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
-| constructors.cpp:29:12:29:12 | f [b_] | constructors.cpp:19:9:19:9 | this [b_] |
-| constructors.cpp:29:12:29:12 | f [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:29:10:29:10 | f [b_] | constructors.cpp:19:9:19:9 | this [b_] |
+| constructors.cpp:29:10:29:10 | f [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:9:34:9 | Argument this [post update] [a_] | constructors.cpp:40:9:40:9 | f indirection [a_] |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a |
+| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:9:34:9 | Argument this [post update] [a_] |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:20 | call to user_input |
-| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | Argument this [post update] [a_] |
-| constructors.cpp:34:11:34:26 | Argument this [post update] [a_] | constructors.cpp:40:9:40:9 | f indirection [a_] |
-| constructors.cpp:35:11:35:26 | Argument this [post update] [b_] | constructors.cpp:43:9:43:9 | g indirection [b_] |
+| constructors.cpp:35:9:35:9 | Argument this [post update] [b_] | constructors.cpp:43:9:43:9 | g indirection [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b |
-| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:11:35:26 | Argument this [post update] [b_] |
+| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:9:35:9 | Argument this [post update] [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:14:35:23 | call to user_input |
+| constructors.cpp:36:9:36:9 | Argument this [post update] [a_] | constructors.cpp:46:9:46:9 | h indirection [a_] |
+| constructors.cpp:36:9:36:9 | Argument this [post update] [b_] | constructors.cpp:46:9:46:9 | h indirection [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a |
+| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:9:36:9 | Argument this [post update] [a_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:20 | call to user_input |
-| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:37 | Argument this [post update] [a_] |
-| constructors.cpp:36:11:36:37 | Argument this [post update] [a_] | constructors.cpp:46:9:46:9 | h indirection [a_] |
-| constructors.cpp:36:11:36:37 | Argument this [post update] [b_] | constructors.cpp:46:9:46:9 | h indirection [b_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b |
-| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:11:36:37 | Argument this [post update] [b_] |
+| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:9:36:9 | Argument this [post update] [b_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:25:36:34 | call to user_input |
 | constructors.cpp:40:9:40:9 | f indirection [a_] | constructors.cpp:26:15:26:15 | *f [a_] |
 | constructors.cpp:43:9:43:9 | g indirection [b_] | constructors.cpp:26:15:26:15 | *f [b_] |
@@ -664,27 +664,27 @@ edges
 | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | a [post update] |
 | qualifiers.cpp:13:51:13:55 | (reference dereference) [post update] [a] | qualifiers.cpp:13:51:13:55 | inner [post update] [a] |
 | qualifiers.cpp:13:57:13:57 | a [post update] | qualifiers.cpp:13:51:13:55 | (reference dereference) [post update] [a] |
-| qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] | qualifiers.cpp:22:11:22:18 | outer [post update] [inner, a] |
-| qualifiers.cpp:22:11:22:18 | outer [post update] [inner, a] | qualifiers.cpp:23:10:23:14 | outer [read] [inner, a] |
+| qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] | qualifiers.cpp:23:10:23:14 | outer [read] [inner, a] |
+| qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] | qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] |
 | qualifiers.cpp:22:23:22:23 | a [post update] | qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] |
 | qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:23:22:23 | a [post update] |
 | qualifiers.cpp:23:10:23:14 | outer [read] [inner, a] | qualifiers.cpp:23:16:23:20 | FieldAddress [read] [a] |
 | qualifiers.cpp:23:16:23:20 | FieldAddress [read] [a] | qualifiers.cpp:23:16:23:20 | inner [read] [a] |
 | qualifiers.cpp:23:16:23:20 | inner [read] [a] | qualifiers.cpp:23:23:23:23 | FieldAddress [read] |
 | qualifiers.cpp:23:23:23:23 | FieldAddress [read] | qualifiers.cpp:23:23:23:23 | a |
-| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | qualifiers.cpp:27:11:27:18 | outer [post update] [inner, a] |
-| qualifiers.cpp:27:11:27:18 | outer [post update] [inner, a] | qualifiers.cpp:28:10:28:14 | outer [read] [inner, a] |
-| qualifiers.cpp:27:23:27:26 | call to getInner [post update] [a] | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] |
+| qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] | qualifiers.cpp:28:10:28:14 | outer [read] [inner, a] |
+| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] |
+| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value |
-| qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:23:27:26 | call to getInner [post update] [a] |
+| qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:28:27:37 | call to user_input |
 | qualifiers.cpp:28:10:28:14 | outer [read] [inner, a] | qualifiers.cpp:28:16:28:20 | FieldAddress [read] [a] |
 | qualifiers.cpp:28:16:28:20 | FieldAddress [read] [a] | qualifiers.cpp:28:16:28:20 | inner [read] [a] |
 | qualifiers.cpp:28:16:28:20 | inner [read] [a] | qualifiers.cpp:28:23:28:23 | FieldAddress [read] |
 | qualifiers.cpp:28:23:28:23 | FieldAddress [read] | qualifiers.cpp:28:23:28:23 | a |
+| qualifiers.cpp:32:17:32:21 | outer [post update] [inner, a] | qualifiers.cpp:33:10:33:14 | outer [read] [inner, a] |
+| qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] | qualifiers.cpp:32:17:32:21 | outer [post update] [inner, a] |
 | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] |
-| qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] | qualifiers.cpp:32:23:32:30 | outer [post update] [inner, a] |
-| qualifiers.cpp:32:23:32:30 | outer [post update] [inner, a] | qualifiers.cpp:33:10:33:14 | outer [read] [inner, a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:32:35:32:44 | call to user_input |
@@ -693,8 +693,8 @@ edges
 | qualifiers.cpp:33:16:33:20 | inner [read] [a] | qualifiers.cpp:33:23:33:23 | FieldAddress [read] |
 | qualifiers.cpp:33:23:33:23 | FieldAddress [read] | qualifiers.cpp:33:23:33:23 | a |
 | qualifiers.cpp:37:19:37:35 | * ... [post update] [a] | qualifiers.cpp:37:26:37:33 | call to getInner [post update] [a] |
-| qualifiers.cpp:37:26:37:33 | call to getInner [post update] [a] | qualifiers.cpp:37:26:37:33 | outer [post update] [inner, a] |
-| qualifiers.cpp:37:26:37:33 | outer [post update] [inner, a] | qualifiers.cpp:38:10:38:14 | outer [read] [inner, a] |
+| qualifiers.cpp:37:20:37:24 | outer [post update] [inner, a] | qualifiers.cpp:38:10:38:14 | outer [read] [inner, a] |
+| qualifiers.cpp:37:26:37:33 | call to getInner [post update] [a] | qualifiers.cpp:37:20:37:24 | outer [post update] [inner, a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:37:19:37:35 | * ... [post update] [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:37:38:37:47 | call to user_input |
@@ -703,16 +703,16 @@ edges
 | qualifiers.cpp:38:16:38:20 | inner [read] [a] | qualifiers.cpp:38:23:38:23 | FieldAddress [read] |
 | qualifiers.cpp:38:23:38:23 | FieldAddress [read] | qualifiers.cpp:38:23:38:23 | a |
 | qualifiers.cpp:42:6:42:22 | * ... [post update] [a] | qualifiers.cpp:42:13:42:20 | call to getInner [post update] [a] |
-| qualifiers.cpp:42:13:42:20 | call to getInner [post update] [a] | qualifiers.cpp:42:13:42:20 | outer [post update] [inner, a] |
-| qualifiers.cpp:42:13:42:20 | outer [post update] [inner, a] | qualifiers.cpp:43:10:43:14 | outer [read] [inner, a] |
+| qualifiers.cpp:42:7:42:11 | outer [post update] [inner, a] | qualifiers.cpp:43:10:43:14 | outer [read] [inner, a] |
+| qualifiers.cpp:42:13:42:20 | call to getInner [post update] [a] | qualifiers.cpp:42:7:42:11 | outer [post update] [inner, a] |
 | qualifiers.cpp:42:25:42:25 | a [post update] | qualifiers.cpp:42:6:42:22 | * ... [post update] [a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:25:42:25 | a [post update] |
 | qualifiers.cpp:43:10:43:14 | outer [read] [inner, a] | qualifiers.cpp:43:16:43:20 | FieldAddress [read] [a] |
 | qualifiers.cpp:43:16:43:20 | FieldAddress [read] [a] | qualifiers.cpp:43:16:43:20 | inner [read] [a] |
 | qualifiers.cpp:43:16:43:20 | inner [read] [a] | qualifiers.cpp:43:23:43:23 | FieldAddress [read] |
 | qualifiers.cpp:43:23:43:23 | FieldAddress [read] | qualifiers.cpp:43:23:43:23 | a |
-| qualifiers.cpp:47:15:47:22 | & ... [post update] [inner, a] | qualifiers.cpp:48:10:48:14 | outer [read] [inner, a] |
-| qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] | qualifiers.cpp:47:15:47:22 | & ... [post update] [inner, a] |
+| qualifiers.cpp:47:6:47:11 | & ... [post update] [inner, a] | qualifiers.cpp:48:10:48:14 | outer [read] [inner, a] |
+| qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] | qualifiers.cpp:47:6:47:11 | & ... [post update] [inner, a] |
 | qualifiers.cpp:47:27:47:27 | a [post update] | qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:27:47:27 | a [post update] |
 | qualifiers.cpp:48:10:48:14 | outer [read] [inner, a] | qualifiers.cpp:48:16:48:20 | FieldAddress [read] [a] |
@@ -749,33 +749,33 @@ edges
 | simple.cpp:21:24:21:25 | b_ [post update] | simple.cpp:21:24:21:25 | this [post update] [b_] |
 | simple.cpp:26:15:26:15 | *f [a_] | simple.cpp:28:10:28:10 | f indirection [a_] |
 | simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:28:10:28:10 | f indirection [b_] |
-| simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:29:12:29:12 | f [b_] |
-| simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | f [b_] |
+| simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:29:10:29:10 | f [b_] |
+| simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:10:29:10 | f [b_] |
 | simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:18:9:18:9 | *#this [a_] |
 | simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:28:10:28:10 | f indirection [b_] | simple.cpp:18:9:18:9 | *#this [b_] |
 | simple.cpp:28:10:28:10 | f indirection [b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
-| simple.cpp:29:12:29:12 | f [b_] | simple.cpp:19:9:19:9 | this [b_] |
-| simple.cpp:29:12:29:12 | f [b_] | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:39:7:39:10 | f [post update] [a_] | simple.cpp:45:9:45:9 | f indirection [a_] |
+| simple.cpp:29:10:29:10 | f [b_] | simple.cpp:19:9:19:9 | this [b_] |
+| simple.cpp:29:10:29:10 | f [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | f [post update] [a_] | simple.cpp:45:9:45:9 | f indirection [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a |
-| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:7:39:10 | f [post update] [a_] |
+| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | f [post update] [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:12:39:21 | call to user_input |
-| simple.cpp:40:7:40:10 | g [post update] [b_] | simple.cpp:48:9:48:9 | g indirection [b_] |
+| simple.cpp:40:5:40:5 | g [post update] [b_] | simple.cpp:48:9:48:9 | g indirection [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:21:19:21:19 | b |
-| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:7:40:10 | g [post update] [b_] |
+| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | g [post update] [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:12:40:21 | call to user_input |
-| simple.cpp:41:7:41:10 | h [post update] [a_] | simple.cpp:42:5:42:5 | h indirection [a_] |
-| simple.cpp:41:7:41:10 | h [post update] [a_] | simple.cpp:51:9:51:9 | h indirection [a_] |
+| simple.cpp:41:5:41:5 | h [post update] [a_] | simple.cpp:42:5:42:5 | h indirection [a_] |
+| simple.cpp:41:5:41:5 | h [post update] [a_] | simple.cpp:51:9:51:9 | h indirection [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:20:19:20:19 | a |
-| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:7:41:10 | h [post update] [a_] |
+| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | h [post update] [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:12:41:21 | call to user_input |
+| simple.cpp:42:5:42:5 | h [post update] [b_] | simple.cpp:51:9:51:9 | h indirection [b_] |
 | simple.cpp:42:5:42:5 | h indirection [a_] | simple.cpp:21:10:21:13 | *#this [a_] |
 | simple.cpp:42:5:42:5 | h indirection [a_] | simple.cpp:42:5:42:5 | setB output argument [a_] |
 | simple.cpp:42:5:42:5 | setB output argument [a_] | simple.cpp:51:9:51:9 | h indirection [a_] |
-| simple.cpp:42:7:42:10 | h [post update] [b_] | simple.cpp:51:9:51:9 | h indirection [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b |
-| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:7:42:10 | h [post update] [b_] |
+| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | h [post update] [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:12:42:21 | call to user_input |
 | simple.cpp:45:9:45:9 | f indirection [a_] | simple.cpp:26:15:26:15 | *f [a_] |
 | simple.cpp:48:9:48:9 | g indirection [b_] | simple.cpp:26:15:26:15 | *f [b_] |
@@ -864,21 +864,21 @@ nodes
 | A.cpp:49:10:49:10 | b [read] [c] | semmle.label | b [read] [c] |
 | A.cpp:49:10:49:13 | (void *)... | semmle.label | (void *)... |
 | A.cpp:49:13:49:13 | FieldAddress [read] | semmle.label | FieldAddress [read] |
-| A.cpp:55:8:55:10 | b [post update] [c] | semmle.label | b [post update] [c] |
+| A.cpp:55:5:55:5 | b [post update] [c] | semmle.label | b [post update] [c] |
 | A.cpp:55:12:55:19 | (C *)... | semmle.label | (C *)... |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
+| A.cpp:56:10:56:10 | b [c] | semmle.label | b [c] |
 | A.cpp:56:10:56:17 | (void *)... | semmle.label | (void *)... |
-| A.cpp:56:13:56:15 | b [c] | semmle.label | b [c] |
 | A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
 | A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
 | A.cpp:57:10:57:32 | (void *)... | semmle.label | (void *)... |
+| A.cpp:57:11:57:24 | new [c] | semmle.label | new [c] |
 | A.cpp:57:11:57:24 | new [post update] [c] | semmle.label | new [post update] [c] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
 | A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
-| A.cpp:57:28:57:30 | new [c] | semmle.label | new [c] |
 | A.cpp:64:10:64:15 | call to setOnB [c] | semmle.label | call to setOnB [c] |
 | A.cpp:64:21:64:28 | (C *)... | semmle.label | (C *)... |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
@@ -899,7 +899,7 @@ nodes
 | A.cpp:81:21:81:21 | c | semmle.label | c |
 | A.cpp:85:9:85:14 | ReturnValue [c] | semmle.label | ReturnValue [c] |
 | A.cpp:85:26:85:26 | c | semmle.label | c |
-| A.cpp:90:11:90:13 | b2 [post update] [c] | semmle.label | b2 [post update] [c] |
+| A.cpp:90:7:90:8 | b2 [post update] [c] | semmle.label | b2 [post update] [c] |
 | A.cpp:90:15:90:15 | c | semmle.label | c |
 | A.cpp:98:12:98:18 | new | semmle.label | new |
 | A.cpp:100:5:100:6 | c1 [post update] [a] | semmle.label | c1 [post update] [a] |
@@ -913,7 +913,7 @@ nodes
 | A.cpp:120:12:120:16 | (void *)... | semmle.label | (void *)... |
 | A.cpp:120:16:120:16 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | A.cpp:126:5:126:5 | b [post update] [c] | semmle.label | b [post update] [c] |
-| A.cpp:126:8:126:10 | b [post update] [c] | semmle.label | b [post update] [c] |
+| A.cpp:126:5:126:5 | b [post update] [c] | semmle.label | b [post update] [c] |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:131:8:131:8 | b [post update] [c] | semmle.label | b [post update] [c] |
@@ -1010,7 +1010,7 @@ nodes
 | B.cpp:46:13:46:16 | box1 [post update] [elem1] | semmle.label | box1 [post update] [elem1] |
 | B.cpp:46:13:46:16 | box1 [post update] [elem2] | semmle.label | box1 [post update] [elem2] |
 | C.cpp:18:12:18:18 | new [post update] [s1] | semmle.label | new [post update] [s1] |
-| C.cpp:19:8:19:11 | c [s1] | semmle.label | c [s1] |
+| C.cpp:19:5:19:5 | c [s1] | semmle.label | c [s1] |
 | C.cpp:22:3:22:3 | this [post update] [s1] | semmle.label | this [post update] [s1] |
 | C.cpp:22:9:22:22 | FieldAddress [post update] | semmle.label | FieldAddress [post update] |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
@@ -1030,10 +1030,10 @@ nodes
 | D.cpp:17:30:17:32 | FieldAddress [read] [elem] | semmle.label | FieldAddress [read] [elem] |
 | D.cpp:17:30:17:32 | this [read] [box, elem] | semmle.label | this [read] [box, elem] |
 | D.cpp:21:30:21:31 | b2 [box, elem] | semmle.label | b2 [box, elem] |
+| D.cpp:22:10:22:11 | b2 [box, elem] | semmle.label | b2 [box, elem] |
 | D.cpp:22:10:22:33 | (void *)... | semmle.label | (void *)... |
-| D.cpp:22:14:22:20 | b2 [box, elem] | semmle.label | b2 [box, elem] |
 | D.cpp:22:14:22:20 | call to getBox1 [elem] | semmle.label | call to getBox1 [elem] |
-| D.cpp:22:25:22:31 | call to getBox1 [elem] | semmle.label | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | semmle.label | call to getBox1 [elem] |
 | D.cpp:22:25:22:31 | call to getElem | semmle.label | call to getElem |
 | D.cpp:22:25:22:31 | call to getElem | semmle.label | call to getElem |
 | D.cpp:28:15:28:24 | new | semmle.label | new |
@@ -1045,18 +1045,18 @@ nodes
 | D.cpp:35:15:35:24 | new | semmle.label | new |
 | D.cpp:37:5:37:5 | b [post update] [box, elem] | semmle.label | b [post update] [box, elem] |
 | D.cpp:37:8:37:10 | FieldAddress [post update] [elem] | semmle.label | FieldAddress [post update] [elem] |
-| D.cpp:37:13:37:19 | box [post update] [elem] | semmle.label | box [post update] [elem] |
+| D.cpp:37:8:37:10 | box [post update] [elem] | semmle.label | box [post update] [elem] |
 | D.cpp:37:21:37:21 | e | semmle.label | e |
 | D.cpp:38:14:38:14 | b [box, elem] | semmle.label | b [box, elem] |
 | D.cpp:42:15:42:24 | new | semmle.label | new |
-| D.cpp:44:8:44:14 | b [post update] [box, elem] | semmle.label | b [post update] [box, elem] |
+| D.cpp:44:5:44:5 | b [post update] [box, elem] | semmle.label | b [post update] [box, elem] |
 | D.cpp:44:8:44:14 | call to getBox1 [post update] [elem] | semmle.label | call to getBox1 [post update] [elem] |
 | D.cpp:44:19:44:22 | elem [post update] | semmle.label | elem [post update] |
 | D.cpp:45:14:45:14 | b [box, elem] | semmle.label | b [box, elem] |
 | D.cpp:49:15:49:24 | new | semmle.label | new |
-| D.cpp:51:8:51:14 | b [post update] [box, elem] | semmle.label | b [post update] [box, elem] |
+| D.cpp:51:5:51:5 | b [post update] [box, elem] | semmle.label | b [post update] [box, elem] |
 | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | semmle.label | call to getBox1 [post update] [elem] |
-| D.cpp:51:19:51:25 | call to getBox1 [post update] [elem] | semmle.label | call to getBox1 [post update] [elem] |
+| D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] | semmle.label | call to getBox1 [post update] [elem] |
 | D.cpp:51:27:51:27 | e | semmle.label | e |
 | D.cpp:52:14:52:14 | b [box, elem] | semmle.label | b [box, elem] |
 | D.cpp:56:15:56:24 | new | semmle.label | new |
@@ -1243,7 +1243,7 @@ nodes
 | by_reference.cpp:16:11:16:11 | a [post update] | semmle.label | a [post update] |
 | by_reference.cpp:19:28:19:32 | value | semmle.label | value |
 | by_reference.cpp:20:5:20:8 | this [post update] [a] | semmle.label | this [post update] [a] |
-| by_reference.cpp:20:11:20:21 | this [post update] [a] | semmle.label | this [post update] [a] |
+| by_reference.cpp:20:5:20:8 | this [post update] [a] | semmle.label | this [post update] [a] |
 | by_reference.cpp:20:23:20:27 | value | semmle.label | value |
 | by_reference.cpp:23:34:23:38 | value | semmle.label | value |
 | by_reference.cpp:24:19:24:22 | this [post update] [a] | semmle.label | this [post update] [a] |
@@ -1265,17 +1265,17 @@ nodes
 | by_reference.cpp:43:9:43:27 | ReturnValue | semmle.label | ReturnValue |
 | by_reference.cpp:44:12:44:24 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | semmle.label | this indirection [a] |
-| by_reference.cpp:50:5:50:15 | s [post update] [a] | semmle.label | s [post update] [a] |
+| by_reference.cpp:50:3:50:3 | s [post update] [a] | semmle.label | s [post update] [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:51:8:51:8 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | semmle.label | call to getDirectly |
-| by_reference.cpp:56:5:56:17 | s [post update] [a] | semmle.label | s [post update] [a] |
+| by_reference.cpp:56:3:56:3 | s [post update] [a] | semmle.label | s [post update] [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:57:8:57:8 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | semmle.label | call to getIndirectly |
-| by_reference.cpp:62:5:62:23 | s [post update] [a] | semmle.label | s [post update] [a] |
+| by_reference.cpp:62:3:62:3 | s [post update] [a] | semmle.label | s [post update] [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:62:25:62:34 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | semmle.label | s indirection [a] |
@@ -1400,36 +1400,36 @@ nodes
 | complex.cpp:40:17:40:17 | *b [inner, f, b_] | semmle.label | *b [inner, f, b_] |
 | complex.cpp:42:8:42:8 | (reference dereference) [read] [inner, f, a_] | semmle.label | (reference dereference) [read] [inner, f, a_] |
 | complex.cpp:42:10:42:14 | inner [read] [f, a_] | semmle.label | inner [read] [f, a_] |
+| complex.cpp:42:16:42:16 | f [a_] | semmle.label | f [a_] |
 | complex.cpp:42:16:42:16 | f [read] [a_] | semmle.label | f [read] [a_] |
 | complex.cpp:42:18:42:18 | call to a | semmle.label | call to a |
-| complex.cpp:42:18:42:18 | f [a_] | semmle.label | f [a_] |
 | complex.cpp:43:8:43:8 | (reference dereference) [read] [inner, f, b_] | semmle.label | (reference dereference) [read] [inner, f, b_] |
 | complex.cpp:43:10:43:14 | inner [read] [f, b_] | semmle.label | inner [read] [f, b_] |
+| complex.cpp:43:16:43:16 | f [b_] | semmle.label | f [b_] |
 | complex.cpp:43:16:43:16 | f [read] [b_] | semmle.label | f [read] [b_] |
 | complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
-| complex.cpp:43:18:43:18 | f [b_] | semmle.label | f [b_] |
 | complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] | semmle.label | b1 [post update] [inner, f, a_] |
 | complex.cpp:53:6:53:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
 | complex.cpp:53:12:53:12 | f [post update] [a_] | semmle.label | f [post update] [a_] |
-| complex.cpp:53:14:53:17 | f [post update] [a_] | semmle.label | f [post update] [a_] |
+| complex.cpp:53:12:53:12 | f [post update] [a_] | semmle.label | f [post update] [a_] |
 | complex.cpp:53:19:53:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:53:19:53:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] | semmle.label | b2 [post update] [inner, f, b_] |
 | complex.cpp:54:6:54:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
 | complex.cpp:54:12:54:12 | f [post update] [b_] | semmle.label | f [post update] [b_] |
-| complex.cpp:54:14:54:17 | f [post update] [b_] | semmle.label | f [post update] [b_] |
+| complex.cpp:54:12:54:12 | f [post update] [b_] | semmle.label | f [post update] [b_] |
 | complex.cpp:54:19:54:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:54:19:54:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] | semmle.label | b3 [post update] [inner, f, a_] |
 | complex.cpp:55:6:55:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
 | complex.cpp:55:12:55:12 | f [post update] [a_] | semmle.label | f [post update] [a_] |
-| complex.cpp:55:14:55:17 | f [post update] [a_] | semmle.label | f [post update] [a_] |
+| complex.cpp:55:12:55:12 | f [post update] [a_] | semmle.label | f [post update] [a_] |
 | complex.cpp:55:19:55:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:55:19:55:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] | semmle.label | b3 [post update] [inner, f, b_] |
 | complex.cpp:56:6:56:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
 | complex.cpp:56:12:56:12 | f [post update] [b_] | semmle.label | f [post update] [b_] |
-| complex.cpp:56:14:56:17 | f [post update] [b_] | semmle.label | f [post update] [b_] |
+| complex.cpp:56:12:56:12 | f [post update] [b_] | semmle.label | f [post update] [b_] |
 | complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] | semmle.label | b1 indirection [inner, f, a_] |
@@ -1499,18 +1499,18 @@ nodes
 | constructors.cpp:28:10:28:10 | f indirection [a_] | semmle.label | f indirection [a_] |
 | constructors.cpp:28:10:28:10 | f indirection [b_] | semmle.label | f indirection [b_] |
 | constructors.cpp:28:12:28:12 | call to a | semmle.label | call to a |
+| constructors.cpp:29:10:29:10 | f [b_] | semmle.label | f [b_] |
 | constructors.cpp:29:12:29:12 | call to b | semmle.label | call to b |
-| constructors.cpp:29:12:29:12 | f [b_] | semmle.label | f [b_] |
+| constructors.cpp:34:9:34:9 | Argument this [post update] [a_] | semmle.label | Argument this [post update] [a_] |
 | constructors.cpp:34:11:34:20 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:34:11:34:20 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:34:11:34:26 | Argument this [post update] [a_] | semmle.label | Argument this [post update] [a_] |
-| constructors.cpp:35:11:35:26 | Argument this [post update] [b_] | semmle.label | Argument this [post update] [b_] |
+| constructors.cpp:35:9:35:9 | Argument this [post update] [b_] | semmle.label | Argument this [post update] [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:35:14:35:23 | call to user_input | semmle.label | call to user_input |
+| constructors.cpp:36:9:36:9 | Argument this [post update] [a_] | semmle.label | Argument this [post update] [a_] |
+| constructors.cpp:36:9:36:9 | Argument this [post update] [b_] | semmle.label | Argument this [post update] [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:36:11:36:37 | Argument this [post update] [a_] | semmle.label | Argument this [post update] [a_] |
-| constructors.cpp:36:11:36:37 | Argument this [post update] [b_] | semmle.label | Argument this [post update] [b_] |
 | constructors.cpp:36:25:36:34 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:36:25:36:34 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:40:9:40:9 | f indirection [a_] | semmle.label | f indirection [a_] |
@@ -1527,8 +1527,8 @@ nodes
 | qualifiers.cpp:13:51:13:55 | (reference dereference) [post update] [a] | semmle.label | (reference dereference) [post update] [a] |
 | qualifiers.cpp:13:51:13:55 | inner [post update] [a] | semmle.label | inner [post update] [a] |
 | qualifiers.cpp:13:57:13:57 | a [post update] | semmle.label | a [post update] |
+| qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
-| qualifiers.cpp:22:11:22:18 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:22:23:22:23 | a [post update] | semmle.label | a [post update] |
 | qualifiers.cpp:22:27:22:36 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:23:10:23:14 | outer [read] [inner, a] | semmle.label | outer [read] [inner, a] |
@@ -1536,9 +1536,9 @@ nodes
 | qualifiers.cpp:23:16:23:20 | inner [read] [a] | semmle.label | inner [read] [a] |
 | qualifiers.cpp:23:23:23:23 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | qualifiers.cpp:23:23:23:23 | a | semmle.label | a |
+| qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
-| qualifiers.cpp:27:11:27:18 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
-| qualifiers.cpp:27:23:27:26 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
+| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:27:28:27:37 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:28:10:28:14 | outer [read] [inner, a] | semmle.label | outer [read] [inner, a] |
@@ -1546,9 +1546,9 @@ nodes
 | qualifiers.cpp:28:16:28:20 | inner [read] [a] | semmle.label | inner [read] [a] |
 | qualifiers.cpp:28:23:28:23 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | qualifiers.cpp:28:23:28:23 | a | semmle.label | a |
+| qualifiers.cpp:32:17:32:21 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
 | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
-| qualifiers.cpp:32:23:32:30 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:32:35:32:44 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:33:10:33:14 | outer [read] [inner, a] | semmle.label | outer [read] [inner, a] |
@@ -1557,8 +1557,8 @@ nodes
 | qualifiers.cpp:33:23:33:23 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | qualifiers.cpp:33:23:33:23 | a | semmle.label | a |
 | qualifiers.cpp:37:19:37:35 | * ... [post update] [a] | semmle.label | * ... [post update] [a] |
+| qualifiers.cpp:37:20:37:24 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:37:26:37:33 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
-| qualifiers.cpp:37:26:37:33 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:37:38:37:47 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:38:10:38:14 | outer [read] [inner, a] | semmle.label | outer [read] [inner, a] |
@@ -1567,8 +1567,8 @@ nodes
 | qualifiers.cpp:38:23:38:23 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | qualifiers.cpp:38:23:38:23 | a | semmle.label | a |
 | qualifiers.cpp:42:6:42:22 | * ... [post update] [a] | semmle.label | * ... [post update] [a] |
+| qualifiers.cpp:42:7:42:11 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:42:13:42:20 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
-| qualifiers.cpp:42:13:42:20 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
 | qualifiers.cpp:42:25:42:25 | a [post update] | semmle.label | a [post update] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:43:10:43:14 | outer [read] [inner, a] | semmle.label | outer [read] [inner, a] |
@@ -1576,7 +1576,7 @@ nodes
 | qualifiers.cpp:43:16:43:20 | inner [read] [a] | semmle.label | inner [read] [a] |
 | qualifiers.cpp:43:23:43:23 | FieldAddress [read] | semmle.label | FieldAddress [read] |
 | qualifiers.cpp:43:23:43:23 | a | semmle.label | a |
-| qualifiers.cpp:47:15:47:22 | & ... [post update] [inner, a] | semmle.label | & ... [post update] [inner, a] |
+| qualifiers.cpp:47:6:47:11 | & ... [post update] [inner, a] | semmle.label | & ... [post update] [inner, a] |
 | qualifiers.cpp:47:15:47:22 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
 | qualifiers.cpp:47:27:47:27 | a [post update] | semmle.label | a [post update] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | semmle.label | call to user_input |
@@ -1626,20 +1626,20 @@ nodes
 | simple.cpp:28:10:28:10 | f indirection [a_] | semmle.label | f indirection [a_] |
 | simple.cpp:28:10:28:10 | f indirection [b_] | semmle.label | f indirection [b_] |
 | simple.cpp:28:12:28:12 | call to a | semmle.label | call to a |
+| simple.cpp:29:10:29:10 | f [b_] | semmle.label | f [b_] |
 | simple.cpp:29:12:29:12 | call to b | semmle.label | call to b |
-| simple.cpp:29:12:29:12 | f [b_] | semmle.label | f [b_] |
-| simple.cpp:39:7:39:10 | f [post update] [a_] | semmle.label | f [post update] [a_] |
+| simple.cpp:39:5:39:5 | f [post update] [a_] | semmle.label | f [post update] [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:39:12:39:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:40:7:40:10 | g [post update] [b_] | semmle.label | g [post update] [b_] |
+| simple.cpp:40:5:40:5 | g [post update] [b_] | semmle.label | g [post update] [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:40:12:40:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:41:7:41:10 | h [post update] [a_] | semmle.label | h [post update] [a_] |
+| simple.cpp:41:5:41:5 | h [post update] [a_] | semmle.label | h [post update] [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:41:12:41:21 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:42:5:42:5 | h [post update] [b_] | semmle.label | h [post update] [b_] |
 | simple.cpp:42:5:42:5 | h indirection [a_] | semmle.label | h indirection [a_] |
 | simple.cpp:42:5:42:5 | setB output argument [a_] | semmle.label | setB output argument [a_] |
-| simple.cpp:42:7:42:10 | h [post update] [b_] | semmle.label | h [post update] [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:42:12:42:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:45:9:45:9 | f indirection [a_] | semmle.label | f indirection [a_] |
@@ -1714,15 +1714,15 @@ nodes
 subpaths
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | A.cpp:25:7:25:10 | this [post update] [c] | A.cpp:31:14:31:21 | new [post update] [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | ReturnValue [c] | A.cpp:48:12:48:18 | call to make [c] |
-| A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:55:8:55:10 | b [post update] [c] |
-| A.cpp:56:13:56:15 | b [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:56:13:56:15 | call to get |
+| A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:55:5:55:5 | b [post update] [c] |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:56:13:56:15 | call to get |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c | A.cpp:25:7:25:10 | this [post update] [c] | A.cpp:57:11:57:24 | new [post update] [c] |
-| A.cpp:57:28:57:30 | new [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:57:28:57:30 | call to get |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | ReturnValue [c] | A.cpp:64:10:64:15 | call to setOnB [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c | A.cpp:78:6:78:15 | ReturnValue [c] | A.cpp:73:10:73:19 | call to setOnBWrap [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | ReturnValue [c] | A.cpp:81:10:81:15 | call to setOnB [c] |
-| A.cpp:90:15:90:15 | c | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:90:11:90:13 | b2 [post update] [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:126:8:126:10 | b [post update] [c] |
+| A.cpp:90:15:90:15 | c | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:90:7:90:8 | b2 [post update] [c] |
+| A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c | A.cpp:27:22:27:25 | this [post update] [c] | A.cpp:126:5:126:5 | b [post update] [c] |
 | A.cpp:151:18:151:18 | b | A.cpp:140:13:140:13 | b | A.cpp:143:7:143:10 | this [post update] [b] | A.cpp:151:12:151:24 | new [post update] [b] |
 | A.cpp:160:29:160:29 | b | A.cpp:181:15:181:21 | newHead | A.cpp:183:7:183:10 | this [post update] [head] | A.cpp:160:18:160:60 | new [post update] [head] |
 | A.cpp:161:38:161:39 | l1 [head] | A.cpp:181:32:181:35 | next [head] | A.cpp:184:7:184:10 | this [post update] [next, head] | A.cpp:161:18:161:40 | new [post update] [next, head] |
@@ -1731,49 +1731,49 @@ subpaths
 | B.cpp:8:25:8:26 | b1 [elem1] | B.cpp:44:16:44:17 | b1 [elem1] | B.cpp:46:7:46:10 | this [post update] [box1, elem1] | B.cpp:8:16:8:27 | new [post update] [box1, elem1] |
 | B.cpp:16:37:16:37 | e | B.cpp:33:26:33:27 | e2 | B.cpp:36:7:36:10 | this [post update] [elem2] | B.cpp:16:16:16:38 | new [post update] [elem2] |
 | B.cpp:17:25:17:26 | b1 [elem2] | B.cpp:44:16:44:17 | b1 [elem2] | B.cpp:46:7:46:10 | this [post update] [box1, elem2] | B.cpp:17:16:17:27 | new [post update] [box1, elem2] |
-| D.cpp:22:14:22:20 | b2 [box, elem] | D.cpp:17:11:17:17 | this [box, elem] | D.cpp:17:11:17:17 | ReturnValue [elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
-| D.cpp:22:25:22:31 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] | D.cpp:10:11:10:17 | ReturnValue | D.cpp:22:25:22:31 | call to getElem |
-| D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this [post update] [elem] | D.cpp:37:13:37:19 | box [post update] [elem] |
-| D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this [post update] [elem] | D.cpp:51:19:51:25 | call to getBox1 [post update] [elem] |
-| by_reference.cpp:20:23:20:27 | value | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:20:11:20:21 | this [post update] [a] |
+| D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:17:11:17:17 | this [box, elem] | D.cpp:17:11:17:17 | ReturnValue [elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] | D.cpp:10:11:10:17 | ReturnValue | D.cpp:22:25:22:31 | call to getElem |
+| D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this [post update] [elem] | D.cpp:37:8:37:10 | box [post update] [elem] |
+| D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this [post update] [elem] | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
+| by_reference.cpp:20:23:20:27 | value | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:20:5:20:8 | this [post update] [a] |
 | by_reference.cpp:24:25:24:29 | value | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:5:12:5 | s [post update] [a] | by_reference.cpp:24:19:24:22 | this [post update] [a] |
 | by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] | by_reference.cpp:35:9:35:19 | ReturnValue | by_reference.cpp:40:18:40:28 | call to getDirectly |
 | by_reference.cpp:44:26:44:29 | this indirection [a] | by_reference.cpp:31:46:31:46 | *s [a] | by_reference.cpp:31:16:31:28 | ReturnValue | by_reference.cpp:44:12:44:24 | call to nonMemberGetA |
-| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:50:5:50:15 | s [post update] [a] |
+| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:5:16:8 | this [post update] [a] | by_reference.cpp:50:3:50:3 | s [post update] [a] |
 | by_reference.cpp:51:8:51:8 | s indirection [a] | by_reference.cpp:35:9:35:19 | *#this [a] | by_reference.cpp:35:9:35:19 | ReturnValue | by_reference.cpp:51:10:51:20 | call to getDirectly |
-| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:5:20:8 | this [post update] [a] | by_reference.cpp:56:5:56:17 | s [post update] [a] |
-| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:11:20:21 | this [post update] [a] | by_reference.cpp:56:5:56:17 | s [post update] [a] |
+| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:5:20:8 | this [post update] [a] | by_reference.cpp:56:3:56:3 | s [post update] [a] |
+| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:19:28:19:32 | value | by_reference.cpp:20:5:20:8 | this [post update] [a] | by_reference.cpp:56:3:56:3 | s [post update] [a] |
 | by_reference.cpp:57:8:57:8 | s indirection [a] | by_reference.cpp:39:9:39:21 | *#this [a] | by_reference.cpp:39:9:39:21 | ReturnValue | by_reference.cpp:57:10:57:22 | call to getIndirectly |
-| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | this [post update] [a] | by_reference.cpp:62:5:62:23 | s [post update] [a] |
-| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | this [post update] [a] | by_reference.cpp:62:5:62:23 | s [post update] [a] |
+| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | this [post update] [a] | by_reference.cpp:62:3:62:3 | s [post update] [a] |
+| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | this [post update] [a] | by_reference.cpp:62:3:62:3 | s [post update] [a] |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | *#this [a] | by_reference.cpp:43:9:43:27 | ReturnValue | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:5:12:5 | s [post update] [a] | by_reference.cpp:68:17:68:18 | & ... [post update] [a] |
 | by_reference.cpp:69:22:69:23 | & ... indirection [a] | by_reference.cpp:31:46:31:46 | *s [a] | by_reference.cpp:31:16:31:28 | ReturnValue | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
-| complex.cpp:42:18:42:18 | f [a_] | complex.cpp:9:7:9:7 | this [a_] | complex.cpp:9:7:9:7 | ReturnValue | complex.cpp:42:18:42:18 | call to a |
-| complex.cpp:43:18:43:18 | f [b_] | complex.cpp:10:7:10:7 | this [b_] | complex.cpp:10:7:10:7 | ReturnValue | complex.cpp:43:18:43:18 | call to b |
-| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this [post update] [a_] | complex.cpp:53:14:53:17 | f [post update] [a_] |
-| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this [post update] [b_] | complex.cpp:54:14:54:17 | f [post update] [b_] |
-| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this [post update] [a_] | complex.cpp:55:14:55:17 | f [post update] [a_] |
-| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this [post update] [b_] | complex.cpp:56:14:56:17 | f [post update] [b_] |
+| complex.cpp:42:16:42:16 | f [a_] | complex.cpp:9:7:9:7 | this [a_] | complex.cpp:9:7:9:7 | ReturnValue | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:43:16:43:16 | f [b_] | complex.cpp:10:7:10:7 | this [b_] | complex.cpp:10:7:10:7 | ReturnValue | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this [post update] [a_] | complex.cpp:53:12:53:12 | f [post update] [a_] |
+| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this [post update] [b_] | complex.cpp:54:12:54:12 | f [post update] [b_] |
+| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this [post update] [a_] | complex.cpp:55:12:55:12 | f [post update] [a_] |
+| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this [post update] [b_] | complex.cpp:56:12:56:12 | f [post update] [b_] |
 | constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | *#this [a_] | constructors.cpp:18:9:18:9 | ReturnValue | constructors.cpp:28:12:28:12 | call to a |
 | constructors.cpp:28:10:28:10 | f indirection [b_] | constructors.cpp:18:9:18:9 | *#this [b_] | constructors.cpp:18:9:18:9 | ReturnIndirection [b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
-| constructors.cpp:29:12:29:12 | f [b_] | constructors.cpp:19:9:19:9 | this [b_] | constructors.cpp:19:9:19:9 | ReturnValue | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:5:23:7 | this [post update] [a_] | constructors.cpp:34:11:34:26 | Argument this [post update] [a_] |
-| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | this [post update] [b_] | constructors.cpp:35:11:35:26 | Argument this [post update] [b_] |
-| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:5:23:7 | this [post update] [a_] | constructors.cpp:36:11:36:37 | Argument this [post update] [a_] |
-| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | this [post update] [b_] | constructors.cpp:36:11:36:37 | Argument this [post update] [b_] |
-| qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:30:9:33 | this [post update] [a] | qualifiers.cpp:27:23:27:26 | call to getInner [post update] [a] |
+| constructors.cpp:29:10:29:10 | f [b_] | constructors.cpp:19:9:19:9 | this [b_] | constructors.cpp:19:9:19:9 | ReturnValue | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:5:23:7 | this [post update] [a_] | constructors.cpp:34:9:34:9 | Argument this [post update] [a_] |
+| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | this [post update] [b_] | constructors.cpp:35:9:35:9 | Argument this [post update] [b_] |
+| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:5:23:7 | this [post update] [a_] | constructors.cpp:36:9:36:9 | Argument this [post update] [a_] |
+| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | this [post update] [b_] | constructors.cpp:36:9:36:9 | Argument this [post update] [b_] |
+| qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:30:9:33 | this [post update] [a] | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:49:12:53 | inner [post update] [a] | qualifiers.cpp:32:23:32:30 | call to getInner [post update] [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:55 | (reference dereference) [post update] [a] | qualifiers.cpp:37:19:37:35 | * ... [post update] [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:55 | inner [post update] [a] | qualifiers.cpp:37:19:37:35 | * ... [post update] [a] |
 | simple.cpp:28:10:28:10 | f indirection [a_] | simple.cpp:18:9:18:9 | *#this [a_] | simple.cpp:18:9:18:9 | ReturnValue | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:28:10:28:10 | f indirection [b_] | simple.cpp:18:9:18:9 | *#this [b_] | simple.cpp:18:9:18:9 | ReturnIndirection [b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
-| simple.cpp:29:12:29:12 | f [b_] | simple.cpp:19:9:19:9 | this [b_] | simple.cpp:19:9:19:9 | ReturnValue | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this [post update] [a_] | simple.cpp:39:7:39:10 | f [post update] [a_] |
-| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this [post update] [b_] | simple.cpp:40:7:40:10 | g [post update] [b_] |
-| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this [post update] [a_] | simple.cpp:41:7:41:10 | h [post update] [a_] |
+| simple.cpp:29:10:29:10 | f [b_] | simple.cpp:19:9:19:9 | this [b_] | simple.cpp:19:9:19:9 | ReturnValue | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this [post update] [a_] | simple.cpp:39:5:39:5 | f [post update] [a_] |
+| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this [post update] [b_] | simple.cpp:40:5:40:5 | g [post update] [b_] |
+| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:25 | this [post update] [a_] | simple.cpp:41:5:41:5 | h [post update] [a_] |
 | simple.cpp:42:5:42:5 | h indirection [a_] | simple.cpp:21:10:21:13 | *#this [a_] | simple.cpp:21:10:21:13 | ReturnIndirection [a_] | simple.cpp:42:5:42:5 | setB output argument [a_] |
-| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this [post update] [b_] | simple.cpp:42:7:42:10 | h [post update] [b_] |
+| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this [post update] [b_] | simple.cpp:42:5:42:5 | h [post update] [b_] |
 | simple.cpp:84:14:84:20 | this [f2, f1] | simple.cpp:78:9:78:15 | this [f2, f1] | simple.cpp:78:9:78:15 | ReturnValue | simple.cpp:84:14:84:20 | call to getf2f1 |
 | struct_init.c:24:10:24:12 | & ... indirection [a] | struct_init.c:14:24:14:25 | *ab [a] | struct_init.c:14:24:14:25 | ReturnIndirection [a] | struct_init.c:24:10:24:12 | absink output argument [a] |
 #select

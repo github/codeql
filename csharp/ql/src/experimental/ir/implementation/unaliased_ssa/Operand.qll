@@ -46,7 +46,7 @@ class Operand extends TStageOperand {
   /**
    * Gets the location of the source code for this operand.
    * By default this is where the operand is used, but some subclasses may override this
-   * using getAnyDef() if it makes more sense.
+   * using `getAnyDef()` if it makes more sense.
    */
   Language::Location getLocation() { result = this.getUse().getLocation() }
 
@@ -271,8 +271,8 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
   final override string toString() { result = tag.toString() }
 
-  // most RegisterOperands have a more meaningful location at the definition
-  // the only exception is ThisArgumentOperand
+  // most `RegisterOperands` have a more meaningful location at the definition
+  // the only exception are specific cases of `ThisArgumentOperand`
   override Language::Location getLocation() { result = this.getAnyDef().getLocation() }
 
   final override Instruction getAnyDef() { result = defInstr }
@@ -407,16 +407,19 @@ class ArgumentOperand extends RegisterOperand {
 }
 
 /**
- * An operand representing the implicit 'this' argument to a member function
+ * An operand representing the implicit `this` argument to a member function
  * call.
  */
 class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
 
-  // in some cases the def location seems to make more sense, but most of the
-  // time it does not really make a difference, and on some occations the def
-  // has no location at all, so that in general it is better use the use location
-  override Language::Location getLocation() { result = this.getUse().getLocation() }
+  // in most cases the def location makes more sense, but in some corner cases it
+  // does not have a location: in those cases we fall back to the use location
+  override Language::Location getLocation() {
+    if exists(Language::Location loc | loc = this.getAnyDef().getLocation())
+    then result = this.getAnyDef().getLocation()
+    else result = this.getUse().getLocation()
+  }
 }
 
 /**
