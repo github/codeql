@@ -7,7 +7,7 @@ import semmle.go.dataflow.DataFlow
 import semmle.go.dataflow.ExternalFlow
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
-import DataFlow::PathGraph
+import TestUtilities.InlineFlowTest
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
@@ -48,6 +48,10 @@ class Config extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node src) { sinkNode(src, "qltest") }
 }
 
-from Config cfg, DataFlow::PathNode src, DataFlow::PathNode sink
-where cfg.hasFlowPath(src, sink)
-select src, src, sink, "path"
+class ExternalFlowTest extends InlineFlowTest {
+  override DataFlow::Configuration getValueFlowConfig() { none() }
+
+  override DataFlow::Configuration getTaintFlowConfig() {
+    result = any(Config config)
+  }
+}

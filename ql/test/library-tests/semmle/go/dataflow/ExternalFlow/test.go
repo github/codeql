@@ -52,7 +52,7 @@ func simpleflow() {
 
 	taint := t.StepArgRes(src)
 
-	b.Sink1(taint)
+	b.Sink1(taint) // $ hasTaintFlow="taint"
 }
 
 func simpleflow1() {
@@ -63,7 +63,7 @@ func simpleflow1() {
 
 	taint := test.StepArgResContent(src)
 
-	b.Sink1(taint[0])
+	b.Sink1(taint[0]) // $ hasTaintFlow="index expression"
 }
 
 func contentflow() {
@@ -75,5 +75,5 @@ func contentflow() {
 	slice := make([]interface{}, 0)
 	slice = append(slice, src)
 
-	b.Sink1(slice[0])
+	b.Sink1(slice[0]) // $ hasTaintFlow="index expression"
 }
