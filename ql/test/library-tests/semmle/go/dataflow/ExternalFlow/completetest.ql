@@ -51,7 +51,5 @@ class Config extends TaintTracking::Configuration {
 class ExternalFlowTest extends InlineFlowTest {
   override DataFlow::Configuration getValueFlowConfig() { none() }
 
-  override DataFlow::Configuration getTaintFlowConfig() {
-    result = any(Config config)
-  }
+  override DataFlow::Configuration getTaintFlowConfig() { result = any(Config config) }
 }

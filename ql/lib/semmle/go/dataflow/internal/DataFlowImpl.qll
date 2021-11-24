@@ -3307,7 +3307,9 @@ abstract private class PathNodeImpl extends PathNode {
 
   override string toString() { result = this.getNodeEx().toString() + this.ppAp() }
 
-  override string toStringWithContext() { result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx() }
+  override string toStringWithContext() {
+    result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx()
+  }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

@@ -8,10 +8,11 @@ private import semmle.go.dataflow.ExternalFlow
 
 private class BuiltinModel extends SummaryModelCsv {
   override predicate row(string row) {
-    row = [
-      ";;false;append;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
-      ";;false;append;;;Argument[1];ArrayElement of ReturnValue;value"
-    ]
+    row =
+      [
+        ";;false;append;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
+        ";;false;append;;;Argument[1];ArrayElement of ReturnValue;value"
+      ]
   }
 }
 
