@@ -14,7 +14,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	static final int MAX_RETRY_AFTER = 10*1000;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request parameter
+		// BAD: Get thread pause time from request parameter without validation
 		String delayTimeStr = request.getParameter("DelayTime");
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
@@ -24,7 +24,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doGet2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request parameter
+		// BAD: Get thread pause time from request parameter without validation
 		try {
 			int delayTime = request.getParameter("nodelay") != null ? 0 : Integer.valueOf(request.getParameter("DelayTime"));
 			new UncheckedSyncAction(delayTime).start();
@@ -33,7 +33,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from init container parameter (not detected because LocalUserInput tends to add a lot of FP)
+		// BAD: Get thread pause time from context init parameter without validation
 		String delayTimeStr = getServletContext().getInitParameter("DelayTime");
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
@@ -43,7 +43,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request cookie
+		// GOOD: Get thread pause time from request cookie with validation
 		Cookie[] cookies = request.getCookies();
 
 		for ( int i=0; i<cookies.length; i++) {
@@ -68,8 +68,8 @@ public class ThreadResourceAbuse extends HttpServlet {
 		}
 
 		@Override
-		// BAD: no boundary check on wait time
 		public void run() {
+			// BAD: no boundary check on wait time
 			try {
 				Thread.sleep(waitTime);
 				// Do other updates
@@ -85,9 +85,9 @@ public class ThreadResourceAbuse extends HttpServlet {
 			this.waitTime = waitTime;
 		}
 
-		// GOOD: enforce an upper limit on wait time
 		@Override
 		public void run() {
+			// GOOD: enforce an upper limit on wait time
 			try {
 				if (waitTime > 0 && waitTime < 5000) {
 					Thread.sleep(waitTime);
@@ -105,9 +105,9 @@ public class ThreadResourceAbuse extends HttpServlet {
 			this.waitTime = waitTime;
 		}
 
-		// GOOD: enforce an upper limit on wait time
 		@Override
 		public void run() {
+			// GOOD: enforce an upper limit on wait time
 			try {
 				if (waitTime >= 5000) {
 					// No action
@@ -121,7 +121,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doPost2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from init container parameter
+		// GOOD: Get thread pause time from init container parameter with validation
 		String delayTimeStr = getServletContext().getInitParameter("DelayTime");
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
@@ -131,7 +131,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request cookie
+		// BAD: Get thread pause time from request cookie without validation
 		Cookie[] cookies = request.getCookies();
 
 		for ( int i=0; i<cookies.length; i++) {
@@ -168,12 +168,11 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doHead2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request header
+		// BAD: Get thread pause time from request header without validation
 		String header = request.getHeader("Retry-After");
 		int retryAfter = Integer.parseInt(header);
 
 		try {
-			// BAD: wait for retry-after without input validation
 			Thread.sleep(retryAfter);
 		} catch (InterruptedException ignore) {
 			// ignore
@@ -181,12 +180,11 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doHead3(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request header
+		// GOOD: Get thread pause time from request header with validation
 		String header = request.getHeader("Retry-After");
 		int retryAfter = parseRetryAfter(header);
 
 		try {
-			// GOOD: wait for retry-after with input validation
 			Thread.sleep(retryAfter);
 		} catch (InterruptedException ignore) {
 			// ignore
@@ -203,7 +201,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	}
 
 	protected void doHead4(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get thread pause time from request header
+		// BAD: Get thread pause time from request header without validation
 		try {
 			String uploadDelayStr = request.getParameter("delay");
 			int uploadDelay = Integer.parseInt(uploadDelayStr);
