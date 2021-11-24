@@ -252,9 +252,7 @@ private module ArrayDataFlow {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
         obj = array and
-        if array = any(PromiseAllCreation c).getArrayNode()
-        then prop = arrayElement(i)
-        else prop = arrayElement()
+        prop = arrayElement(i)
       )
     }
   }

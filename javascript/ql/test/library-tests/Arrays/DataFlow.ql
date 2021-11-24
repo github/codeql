@@ -10,6 +10,6 @@ class ArrayFlowConfig extends DataFlow::Configuration {
   }
 }
 
-from ArrayFlowConfig config, DataFlow::Node src, DataFlow::Node snk
-where config.hasFlow(src, snk)
-select src, snk
+from ArrayFlowConfig config, DataFlow::Node src, DataFlow::Node snk, string snk_file
+where config.hasFlow(src, snk) and snk_file = snk.getAstNode().getFile().getBaseName()
+select snk_file, snk, src

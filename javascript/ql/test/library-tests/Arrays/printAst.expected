@@ -1,7 +1,404 @@
 nodes
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | semmle.order | 1 |
+| arrays-init.js:1:10:1:13 | [VarDecl] sink | semmle.label | [VarDecl] sink |
+| arrays-init.js:1:15:1:17 | [SimpleParameter] arg | semmle.label | [SimpleParameter] arg |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | semmle.label | [BlockStmt] { if ... } } |
+| arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | semmle.label | [IfStmt] if (arg ... return; |
+| arrays-init.js:2:7:2:9 | [VarRef] arg | semmle.label | [VarRef] arg |
+| arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | semmle.label | [BinaryExpr] arg !== "source" |
+| arrays-init.js:2:15:2:22 | [Literal] "source" | semmle.label | [Literal] "source" |
+| arrays-init.js:3:5:3:11 | [ReturnStmt] return; | semmle.label | [ReturnStmt] return; |
+| arrays-init.js:5:3:5:45 | [DeclStmt] const STACK_LINE_REGEX = ... | semmle.label | [DeclStmt] const STACK_LINE_REGEX = ... |
+| arrays-init.js:5:9:5:24 | [VarDecl] STACK_LINE_REGEX | semmle.label | [VarDecl] STACK_LINE_REGEX |
+| arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | semmle.label | [VariableDeclarator] STACK_L ... +)\\)?$/ |
+| arrays-init.js:5:28:5:44 | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ | semmle.label | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ |
+| arrays-init.js:5:29:5:33 | [RegExpGroup] (\\d+) | semmle.label | [RegExpGroup] (\\d+) |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | semmle.label | [RegExpSequence] (\\d+):(\\d+)\\)?$ |
+| arrays-init.js:5:30:5:31 | [RegExpCharacterClassEscape] \\d | semmle.label | [RegExpCharacterClassEscape] \\d |
+| arrays-init.js:5:30:5:32 | [RegExpPlus] \\d+ | semmle.label | [RegExpPlus] \\d+ |
+| arrays-init.js:5:34:5:34 | [RegExpNormalConstant] : | semmle.label | [RegExpNormalConstant] : |
+| arrays-init.js:5:35:5:39 | [RegExpGroup] (\\d+) | semmle.label | [RegExpGroup] (\\d+) |
+| arrays-init.js:5:36:5:37 | [RegExpCharacterClassEscape] \\d | semmle.label | [RegExpCharacterClassEscape] \\d |
+| arrays-init.js:5:36:5:38 | [RegExpPlus] \\d+ | semmle.label | [RegExpPlus] \\d+ |
+| arrays-init.js:5:40:5:41 | [RegExpIdentityEscape] \\) | semmle.label | [RegExpIdentityEscape] \\) |
+| arrays-init.js:5:40:5:42 | [RegExpOpt] \\)? | semmle.label | [RegExpOpt] \\)? |
+| arrays-init.js:5:43:5:43 | [RegExpDollar] $ | semmle.label | [RegExpDollar] $ |
+| arrays-init.js:6:3:6:10 | [DeclStmt] let err = ... | semmle.label | [DeclStmt] let err = ... |
+| arrays-init.js:6:7:6:9 | [VarDecl] err | semmle.label | [VarDecl] err |
+| arrays-init.js:6:7:6:9 | [VariableDeclarator] err | semmle.label | [VariableDeclarator] err |
+| arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | semmle.label | [TryStmt] try { ... or; } |
+| arrays-init.js:8:7:10:3 | [BlockStmt] { t ... (); } | semmle.label | [BlockStmt] { t ... (); } |
+| arrays-init.js:9:5:9:22 | [ThrowStmt] throw new Error(); | semmle.label | [ThrowStmt] throw new Error(); |
+| arrays-init.js:9:11:9:21 | [NewExpr] new Error() | semmle.label | [NewExpr] new Error() |
+| arrays-init.js:9:15:9:19 | [VarRef] Error | semmle.label | [VarRef] Error |
+| arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | semmle.label | [CatchClause] catch ( ... or; } |
+| arrays-init.js:10:12:10:16 | [SimpleParameter] error | semmle.label | [SimpleParameter] error |
+| arrays-init.js:10:19:12:3 | [BlockStmt] { e ... or; } | semmle.label | [BlockStmt] { e ... or; } |
+| arrays-init.js:11:5:11:7 | [VarRef] err | semmle.label | [VarRef] err |
+| arrays-init.js:11:5:11:15 | [AssignExpr] err = error | semmle.label | [AssignExpr] err = error |
+| arrays-init.js:11:5:11:16 | [ExprStmt] err = error; | semmle.label | [ExprStmt] err = error; |
+| arrays-init.js:11:11:11:15 | [VarRef] error | semmle.label | [VarRef] error |
+| arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | semmle.label | [TryStmt] try { ... g); } |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | semmle.label | [BlockStmt] { c ... g); } |
+| arrays-init.js:15:5:15:41 | [DeclStmt] const stacks = ... | semmle.label | [DeclStmt] const stacks = ... |
+| arrays-init.js:15:11:15:16 | [VarDecl] stacks | semmle.label | [VarDecl] stacks |
+| arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | semmle.label | [VariableDeclarator] stacks ... t(' ') |
+| arrays-init.js:15:20:15:22 | [VarRef] err | semmle.label | [VarRef] err |
+| arrays-init.js:15:20:15:28 | [DotExpr] err.stack | semmle.label | [DotExpr] err.stack |
+| arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | semmle.label | [DotExpr] err.stack.split |
+| arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | semmle.label | [MethodCallExpr] err.sta ... t(' ') |
+| arrays-init.js:15:24:15:28 | [Label] stack | semmle.label | [Label] stack |
+| arrays-init.js:15:30:15:34 | [Label] split | semmle.label | [Label] split |
+| arrays-init.js:15:36:15:39 | [Literal] '\\n' | semmle.label | [Literal] '\\n' |
+| arrays-init.js:16:5:16:54 | [DeclStmt] const [ ... ks[2]); | semmle.label | [DeclStmt] const [ ... ks[2]); |
+| arrays-init.js:16:11:16:18 | [ArrayPattern] [, line] | semmle.label | [ArrayPattern] [, line] |
+| arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | semmle.label | [VariableDeclarator] [, line ... cks[2]) |
+| arrays-init.js:16:14:16:17 | [VarDecl] line | semmle.label | [VarDecl] line |
+| arrays-init.js:16:22:16:37 | [VarRef] STACK_LINE_REGEX | semmle.label | [VarRef] STACK_LINE_REGEX |
+| arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | semmle.label | [DotExpr] STACK_L ... EX.exec |
+| arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | semmle.label | [MethodCallExpr] STACK_L ... cks[2]) |
+| arrays-init.js:16:39:16:42 | [Label] exec | semmle.label | [Label] exec |
+| arrays-init.js:16:44:16:49 | [VarRef] stacks | semmle.label | [VarRef] stacks |
+| arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | semmle.label | [IndexExpr] stacks[2] |
+| arrays-init.js:16:51:16:51 | [Literal] 2 | semmle.label | [Literal] 2 |
+| arrays-init.js:18:5:18:41 | [ReturnStmt] return ... , arg); | semmle.label | [ReturnStmt] return ... , arg); |
+| arrays-init.js:18:12:18:18 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:18:12:18:22 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | semmle.label | [MethodCallExpr] console ... `, arg) |
+| arrays-init.js:18:20:18:22 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | semmle.label | [TemplateLiteral] `[${line}]` |
+| arrays-init.js:18:25:18:25 | [TemplateElement] [ | semmle.label | [TemplateElement] [ |
+| arrays-init.js:18:28:18:31 | [VarRef] line | semmle.label | [VarRef] line |
+| arrays-init.js:18:33:18:33 | [TemplateElement] ] | semmle.label | [TemplateElement] ] |
+| arrays-init.js:18:37:18:39 | [VarRef] arg | semmle.label | [VarRef] arg |
+| arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | semmle.label | [CatchClause] catch ( ... g); } |
+| arrays-init.js:19:12:19:14 | [SimpleParameter] err | semmle.label | [SimpleParameter] err |
+| arrays-init.js:19:17:21:3 | [BlockStmt] { r ... g); } | semmle.label | [BlockStmt] { r ... g); } |
+| arrays-init.js:20:5:20:28 | [ReturnStmt] return ... g(arg); | semmle.label | [ReturnStmt] return ... g(arg); |
+| arrays-init.js:20:12:20:18 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:20:12:20:22 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | semmle.label | [MethodCallExpr] console.log(arg) |
+| arrays-init.js:20:20:20:22 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:20:24:20:26 | [VarRef] arg | semmle.label | [VarRef] arg |
+| arrays-init.js:22:2:22:2 | [EmptyStmt] ; | semmle.label | [EmptyStmt] ; |
+| arrays-init.js:22:2:22:2 | [EmptyStmt] ; | semmle.order | 2 |
+| arrays-init.js:24:1:86:4 | [ParExpr] (functi ... } }()) | semmle.label | [ParExpr] (functi ... } }()) |
+| arrays-init.js:24:1:86:5 | [ExprStmt] (functi ... } }()); | semmle.label | [ExprStmt] (functi ... } }()); |
+| arrays-init.js:24:1:86:5 | [ExprStmt] (functi ... } }()); | semmle.order | 3 |
+| arrays-init.js:24:2:86:1 | [FunctionExpr] functio ... } } | semmle.label | [FunctionExpr] functio ... } } |
+| arrays-init.js:24:2:86:3 | [CallExpr] functio ... } }() | semmle.label | [CallExpr] functio ... } }() |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | semmle.label | [BlockStmt] { let ... } } |
+| arrays-init.js:25:3:25:24 | [DeclStmt] let source = ... | semmle.label | [DeclStmt] let source = ... |
+| arrays-init.js:25:7:25:12 | [VarDecl] source | semmle.label | [VarDecl] source |
+| arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | semmle.label | [VariableDeclarator] source = "source" |
+| arrays-init.js:25:16:25:23 | [Literal] "source" | semmle.label | [Literal] "source" |
+| arrays-init.js:27:3:27:20 | [DeclStmt] var str = ... | semmle.label | [DeclStmt] var str = ... |
+| arrays-init.js:27:7:27:9 | [VarDecl] str | semmle.label | [VarDecl] str |
+| arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | semmle.label | [VariableDeclarator] str = "FALSE" |
+| arrays-init.js:27:13:27:19 | [Literal] "FALSE" | semmle.label | [Literal] "FALSE" |
+| arrays-init.js:29:3:29:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:29:3:29:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:29:3:29:56 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:29:11:29:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:29:15:29:54 | [Literal] "=== access by index (init by ctor) ===" | semmle.label | [Literal] "=== access by index (init by ctor) ===" |
+| arrays-init.js:30:3:30:25 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:30:7:30:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | semmle.label | [VariableDeclarator] arr = new Array(2) |
+| arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | semmle.label | [NewExpr] new Array(2) |
+| arrays-init.js:30:17:30:21 | [VarRef] Array | semmle.label | [VarRef] Array |
+| arrays-init.js:30:23:30:23 | [Literal] 2 | semmle.label | [Literal] 2 |
+| arrays-init.js:31:3:31:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | semmle.label | [IndexExpr] arr[0] |
+| arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | semmle.label | [AssignExpr] arr[0] = str |
+| arrays-init.js:31:3:31:15 | [ExprStmt] arr[0] = str; | semmle.label | [ExprStmt] arr[0] = str; |
+| arrays-init.js:31:7:31:7 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:31:12:31:14 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:32:3:32:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | semmle.label | [IndexExpr] arr[1] |
+| arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | semmle.label | [AssignExpr] arr[1] = source |
+| arrays-init.js:32:3:32:18 | [ExprStmt] arr[1] = source; | semmle.label | [ExprStmt] arr[1] = source; |
+| arrays-init.js:32:7:32:7 | [Literal] 1 | semmle.label | [Literal] 1 |
+| arrays-init.js:32:12:32:17 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:33:3:33:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | semmle.label | [IndexExpr] arr[2] |
+| arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | semmle.label | [AssignExpr] arr[2] = 'b' |
+| arrays-init.js:33:3:33:15 | [ExprStmt] arr[2] = 'b'; | semmle.label | [ExprStmt] arr[2] = 'b'; |
+| arrays-init.js:33:7:33:7 | [Literal] 2 | semmle.label | [Literal] 2 |
+| arrays-init.js:33:12:33:14 | [Literal] 'b' | semmle.label | [Literal] 'b' |
+| arrays-init.js:34:3:34:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | semmle.label | [IndexExpr] arr[3] |
+| arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | semmle.label | [AssignExpr] arr[3] = 'c' |
+| arrays-init.js:34:3:34:15 | [ExprStmt] arr[3] = 'c'; | semmle.label | [ExprStmt] arr[3] = 'c'; |
+| arrays-init.js:34:7:34:7 | [Literal] 3 | semmle.label | [Literal] 3 |
+| arrays-init.js:34:12:34:14 | [Literal] 'c' | semmle.label | [Literal] 'c' |
+| arrays-init.js:35:3:35:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | semmle.label | [IndexExpr] arr[4] |
+| arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | semmle.label | [AssignExpr] arr[4] = 'd' |
+| arrays-init.js:35:3:35:15 | [ExprStmt] arr[4] = 'd'; | semmle.label | [ExprStmt] arr[4] = 'd'; |
+| arrays-init.js:35:7:35:7 | [Literal] 4 | semmle.label | [Literal] 4 |
+| arrays-init.js:35:12:35:14 | [Literal] 'd' | semmle.label | [Literal] 'd' |
+| arrays-init.js:36:3:36:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | semmle.label | [IndexExpr] arr[5] |
+| arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | semmle.label | [AssignExpr] arr[5] = 'e' |
+| arrays-init.js:36:3:36:15 | [ExprStmt] arr[5] = 'e'; | semmle.label | [ExprStmt] arr[5] = 'e'; |
+| arrays-init.js:36:7:36:7 | [Literal] 5 | semmle.label | [Literal] 5 |
+| arrays-init.js:36:12:36:14 | [Literal] 'e' | semmle.label | [Literal] 'e' |
+| arrays-init.js:37:3:37:5 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | semmle.label | [IndexExpr] arr[6] |
+| arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | semmle.label | [AssignExpr] arr[6] = source |
+| arrays-init.js:37:3:37:18 | [ExprStmt] arr[6] = source; | semmle.label | [ExprStmt] arr[6] = source; |
+| arrays-init.js:37:7:37:7 | [Literal] 6 | semmle.label | [Literal] 6 |
+| arrays-init.js:37:12:37:17 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:39:3:39:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | semmle.label | [CallExpr] sink(arr[0]) |
+| arrays-init.js:39:3:39:15 | [ExprStmt] sink(arr[0]); | semmle.label | [ExprStmt] sink(arr[0]); |
+| arrays-init.js:39:8:39:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | semmle.label | [IndexExpr] arr[0] |
+| arrays-init.js:39:12:39:12 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:40:3:40:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | semmle.label | [CallExpr] sink(arr[1]) |
+| arrays-init.js:40:3:40:15 | [ExprStmt] sink(arr[1]); | semmle.label | [ExprStmt] sink(arr[1]); |
+| arrays-init.js:40:8:40:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | semmle.label | [IndexExpr] arr[1] |
+| arrays-init.js:40:12:40:12 | [Literal] 1 | semmle.label | [Literal] 1 |
+| arrays-init.js:41:3:41:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | semmle.label | [CallExpr] sink(arr[2]) |
+| arrays-init.js:41:3:41:15 | [ExprStmt] sink(arr[2]); | semmle.label | [ExprStmt] sink(arr[2]); |
+| arrays-init.js:41:8:41:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | semmle.label | [IndexExpr] arr[2] |
+| arrays-init.js:41:12:41:12 | [Literal] 2 | semmle.label | [Literal] 2 |
+| arrays-init.js:42:3:42:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | semmle.label | [CallExpr] sink(arr[3]) |
+| arrays-init.js:42:3:42:15 | [ExprStmt] sink(arr[3]); | semmle.label | [ExprStmt] sink(arr[3]); |
+| arrays-init.js:42:8:42:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | semmle.label | [IndexExpr] arr[3] |
+| arrays-init.js:42:12:42:12 | [Literal] 3 | semmle.label | [Literal] 3 |
+| arrays-init.js:43:3:43:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | semmle.label | [CallExpr] sink(arr[4]) |
+| arrays-init.js:43:3:43:15 | [ExprStmt] sink(arr[4]); | semmle.label | [ExprStmt] sink(arr[4]); |
+| arrays-init.js:43:8:43:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | semmle.label | [IndexExpr] arr[4] |
+| arrays-init.js:43:12:43:12 | [Literal] 4 | semmle.label | [Literal] 4 |
+| arrays-init.js:44:3:44:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | semmle.label | [CallExpr] sink(arr[5]) |
+| arrays-init.js:44:3:44:15 | [ExprStmt] sink(arr[5]); | semmle.label | [ExprStmt] sink(arr[5]); |
+| arrays-init.js:44:8:44:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | semmle.label | [IndexExpr] arr[5] |
+| arrays-init.js:44:12:44:12 | [Literal] 5 | semmle.label | [Literal] 5 |
+| arrays-init.js:45:3:45:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | semmle.label | [CallExpr] sink(arr[6]) |
+| arrays-init.js:45:3:45:15 | [ExprStmt] sink(arr[6]); | semmle.label | [ExprStmt] sink(arr[6]); |
+| arrays-init.js:45:8:45:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | semmle.label | [IndexExpr] arr[6] |
+| arrays-init.js:45:12:45:12 | [Literal] 6 | semmle.label | [Literal] 6 |
+| arrays-init.js:46:3:46:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | semmle.label | [CallExpr] sink(str) |
+| arrays-init.js:46:3:46:12 | [ExprStmt] sink(str); | semmle.label | [ExprStmt] sink(str); |
+| arrays-init.js:46:8:46:10 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:48:3:48:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:48:3:48:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:48:3:48:57 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:48:11:48:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:48:15:48:55 | [Literal] "=== access by index (init by [...]) ===" | semmle.label | [Literal] "=== access by index (init by [...]) ===" |
+| arrays-init.js:49:3:49:26 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:49:7:49:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | semmle.label | [VariableDeclarator] arr = [str, source] |
+| arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | semmle.label | [ArrayExpr] [str, source] |
+| arrays-init.js:49:14:49:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:49:19:49:24 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:50:3:50:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | semmle.label | [CallExpr] sink(arr[0]) |
+| arrays-init.js:50:3:50:15 | [ExprStmt] sink(arr[0]); | semmle.label | [ExprStmt] sink(arr[0]); |
+| arrays-init.js:50:8:50:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | semmle.label | [IndexExpr] arr[0] |
+| arrays-init.js:50:12:50:12 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:51:3:51:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | semmle.label | [CallExpr] sink(arr[1]) |
+| arrays-init.js:51:3:51:15 | [ExprStmt] sink(arr[1]); | semmle.label | [ExprStmt] sink(arr[1]); |
+| arrays-init.js:51:8:51:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | semmle.label | [IndexExpr] arr[1] |
+| arrays-init.js:51:12:51:12 | [Literal] 1 | semmle.label | [Literal] 1 |
+| arrays-init.js:52:3:52:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | semmle.label | [CallExpr] sink(str) |
+| arrays-init.js:52:3:52:12 | [ExprStmt] sink(str); | semmle.label | [ExprStmt] sink(str); |
+| arrays-init.js:52:8:52:10 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:54:3:54:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:54:3:54:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:54:3:54:75 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:54:11:54:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:54:15:54:73 | [Literal] "=== access by index (init by [...], array.lenght > 5) ===" | semmle.label | [Literal] "=== access by index (init by [...], array.lenght > 5) ===" |
+| arrays-init.js:55:3:55:49 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:55:7:55:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | semmle.label | [VariableDeclarator] arr = [ ... source] |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | semmle.label | [ArrayExpr] [str, s ... source] |
+| arrays-init.js:55:14:55:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:55:19:55:24 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:55:27:55:29 | [Literal] 'b' | semmle.label | [Literal] 'b' |
+| arrays-init.js:55:32:55:34 | [Literal] 'c' | semmle.label | [Literal] 'c' |
+| arrays-init.js:55:37:55:39 | [Literal] 'd' | semmle.label | [Literal] 'd' |
+| arrays-init.js:55:42:55:47 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:56:3:56:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | semmle.label | [CallExpr] sink(arr[0]) |
+| arrays-init.js:56:3:56:15 | [ExprStmt] sink(arr[0]); | semmle.label | [ExprStmt] sink(arr[0]); |
+| arrays-init.js:56:8:56:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | semmle.label | [IndexExpr] arr[0] |
+| arrays-init.js:56:12:56:12 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:57:3:57:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | semmle.label | [CallExpr] sink(arr[1]) |
+| arrays-init.js:57:3:57:15 | [ExprStmt] sink(arr[1]); | semmle.label | [ExprStmt] sink(arr[1]); |
+| arrays-init.js:57:8:57:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | semmle.label | [IndexExpr] arr[1] |
+| arrays-init.js:57:12:57:12 | [Literal] 1 | semmle.label | [Literal] 1 |
+| arrays-init.js:58:3:58:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | semmle.label | [CallExpr] sink(arr[2]) |
+| arrays-init.js:58:3:58:15 | [ExprStmt] sink(arr[2]); | semmle.label | [ExprStmt] sink(arr[2]); |
+| arrays-init.js:58:8:58:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | semmle.label | [IndexExpr] arr[2] |
+| arrays-init.js:58:12:58:12 | [Literal] 2 | semmle.label | [Literal] 2 |
+| arrays-init.js:59:3:59:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | semmle.label | [CallExpr] sink(arr[3]) |
+| arrays-init.js:59:3:59:15 | [ExprStmt] sink(arr[3]); | semmle.label | [ExprStmt] sink(arr[3]); |
+| arrays-init.js:59:8:59:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | semmle.label | [IndexExpr] arr[3] |
+| arrays-init.js:59:12:59:12 | [Literal] 3 | semmle.label | [Literal] 3 |
+| arrays-init.js:60:3:60:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | semmle.label | [CallExpr] sink(arr[4]) |
+| arrays-init.js:60:3:60:15 | [ExprStmt] sink(arr[4]); | semmle.label | [ExprStmt] sink(arr[4]); |
+| arrays-init.js:60:8:60:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | semmle.label | [IndexExpr] arr[4] |
+| arrays-init.js:60:12:60:12 | [Literal] 4 | semmle.label | [Literal] 4 |
+| arrays-init.js:61:3:61:6 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | semmle.label | [CallExpr] sink(arr[5]) |
+| arrays-init.js:61:3:61:15 | [ExprStmt] sink(arr[5]); | semmle.label | [ExprStmt] sink(arr[5]); |
+| arrays-init.js:61:8:61:10 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | semmle.label | [IndexExpr] arr[5] |
+| arrays-init.js:61:12:61:12 | [Literal] 5 | semmle.label | [Literal] 5 |
+| arrays-init.js:63:3:63:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:63:3:63:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:63:3:63:55 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:63:11:63:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:63:15:63:53 | [Literal] "=== access in for (init by [...]) ===" | semmle.label | [Literal] "=== access in for (init by [...]) ===" |
+| arrays-init.js:64:3:64:26 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:64:7:64:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | semmle.label | [VariableDeclarator] arr = [str, source] |
+| arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | semmle.label | [ArrayExpr] [str, source] |
+| arrays-init.js:64:14:64:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:64:19:64:24 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | semmle.label | [ForStmt] for (le ... RUE } |
+| arrays-init.js:65:8:65:16 | [DeclStmt] let i = ... | semmle.label | [DeclStmt] let i = ... |
+| arrays-init.js:65:12:65:12 | [VarDecl] i | semmle.label | [VarDecl] i |
+| arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | semmle.label | [VariableDeclarator] i = 0 |
+| arrays-init.js:65:16:65:16 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:65:19:65:19 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | semmle.label | [BinaryExpr] i < arr.length |
+| arrays-init.js:65:23:65:25 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:65:23:65:32 | [DotExpr] arr.length | semmle.label | [DotExpr] arr.length |
+| arrays-init.js:65:27:65:32 | [Label] length | semmle.label | [Label] length |
+| arrays-init.js:65:35:65:35 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:65:35:65:37 | [UpdateExpr] i++ | semmle.label | [UpdateExpr] i++ |
+| arrays-init.js:65:40:67:3 | [BlockStmt] { s ... RUE } | semmle.label | [BlockStmt] { s ... RUE } |
+| arrays-init.js:66:5:66:8 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | semmle.label | [CallExpr] sink(arr[i]) |
+| arrays-init.js:66:5:66:17 | [ExprStmt] sink(arr[i]); | semmle.label | [ExprStmt] sink(arr[i]); |
+| arrays-init.js:66:10:66:12 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | semmle.label | [IndexExpr] arr[i] |
+| arrays-init.js:66:14:66:14 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:69:3:69:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:69:3:69:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | semmle.label | [MethodCallExpr] console ... e ===") |
+| arrays-init.js:69:3:69:66 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:69:11:69:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:69:15:69:64 | [Literal] "=== access in for (init by [...]) w/o source ===" | semmle.label | [Literal] "=== access in for (init by [...]) w/o source ===" |
+| arrays-init.js:70:3:70:23 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:70:7:70:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | semmle.label | [VariableDeclarator] arr = [str, 'a'] |
+| arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | semmle.label | [ArrayExpr] [str, 'a'] |
+| arrays-init.js:70:14:70:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:70:19:70:21 | [Literal] 'a' | semmle.label | [Literal] 'a' |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | semmle.label | [ForStmt] for (le ... LSE } |
+| arrays-init.js:71:8:71:16 | [DeclStmt] let i = ... | semmle.label | [DeclStmt] let i = ... |
+| arrays-init.js:71:12:71:12 | [VarDecl] i | semmle.label | [VarDecl] i |
+| arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | semmle.label | [VariableDeclarator] i = 0 |
+| arrays-init.js:71:16:71:16 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:71:19:71:19 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | semmle.label | [BinaryExpr] i < arr.length |
+| arrays-init.js:71:23:71:25 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:71:23:71:32 | [DotExpr] arr.length | semmle.label | [DotExpr] arr.length |
+| arrays-init.js:71:27:71:32 | [Label] length | semmle.label | [Label] length |
+| arrays-init.js:71:35:71:35 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:71:35:71:37 | [UpdateExpr] i++ | semmle.label | [UpdateExpr] i++ |
+| arrays-init.js:71:40:73:3 | [BlockStmt] { s ... LSE } | semmle.label | [BlockStmt] { s ... LSE } |
+| arrays-init.js:72:5:72:8 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | semmle.label | [CallExpr] sink(arr[i]) |
+| arrays-init.js:72:5:72:17 | [ExprStmt] sink(arr[i]); | semmle.label | [ExprStmt] sink(arr[i]); |
+| arrays-init.js:72:10:72:12 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | semmle.label | [IndexExpr] arr[i] |
+| arrays-init.js:72:14:72:14 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:75:3:75:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:75:3:75:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:75:3:75:73 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:75:11:75:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:75:15:75:71 | [Literal] "=== access in for (init by [...], array.lenght > 5) ===" | semmle.label | [Literal] "=== access in for (init by [...], array.lenght > 5) ===" |
+| arrays-init.js:76:3:76:46 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:76:7:76:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | semmle.label | [VariableDeclarator] arr = [ ... source] |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | semmle.label | [ArrayExpr] [str, ' ... source] |
+| arrays-init.js:76:14:76:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:76:19:76:21 | [Literal] 'a' | semmle.label | [Literal] 'a' |
+| arrays-init.js:76:24:76:26 | [Literal] 'b' | semmle.label | [Literal] 'b' |
+| arrays-init.js:76:29:76:31 | [Literal] 'c' | semmle.label | [Literal] 'c' |
+| arrays-init.js:76:34:76:36 | [Literal] 'd' | semmle.label | [Literal] 'd' |
+| arrays-init.js:76:39:76:44 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | semmle.label | [ForStmt] for (le ... RUE } |
+| arrays-init.js:77:8:77:16 | [DeclStmt] let i = ... | semmle.label | [DeclStmt] let i = ... |
+| arrays-init.js:77:12:77:12 | [VarDecl] i | semmle.label | [VarDecl] i |
+| arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | semmle.label | [VariableDeclarator] i = 0 |
+| arrays-init.js:77:16:77:16 | [Literal] 0 | semmle.label | [Literal] 0 |
+| arrays-init.js:77:19:77:19 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | semmle.label | [BinaryExpr] i < arr.length |
+| arrays-init.js:77:23:77:25 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:77:23:77:32 | [DotExpr] arr.length | semmle.label | [DotExpr] arr.length |
+| arrays-init.js:77:27:77:32 | [Label] length | semmle.label | [Label] length |
+| arrays-init.js:77:35:77:35 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:77:35:77:37 | [UpdateExpr] i++ | semmle.label | [UpdateExpr] i++ |
+| arrays-init.js:77:40:79:3 | [BlockStmt] { s ... RUE } | semmle.label | [BlockStmt] { s ... RUE } |
+| arrays-init.js:78:5:78:8 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | semmle.label | [CallExpr] sink(arr[i]) |
+| arrays-init.js:78:5:78:17 | [ExprStmt] sink(arr[i]); | semmle.label | [ExprStmt] sink(arr[i]); |
+| arrays-init.js:78:10:78:12 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | semmle.label | [IndexExpr] arr[i] |
+| arrays-init.js:78:14:78:14 | [VarRef] i | semmle.label | [VarRef] i |
+| arrays-init.js:81:3:81:9 | [VarRef] console | semmle.label | [VarRef] console |
+| arrays-init.js:81:3:81:13 | [DotExpr] console.log | semmle.label | [DotExpr] console.log |
+| arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | semmle.label | [MethodCallExpr] console ... ) ===") |
+| arrays-init.js:81:3:81:57 | [ExprStmt] console ... ==="); | semmle.label | [ExprStmt] console ... ==="); |
+| arrays-init.js:81:11:81:13 | [Label] log | semmle.label | [Label] log |
+| arrays-init.js:81:15:81:55 | [Literal] "=== access in forof (init by [...]) ===" | semmle.label | [Literal] "=== access in forof (init by [...]) ===" |
+| arrays-init.js:82:3:82:26 | [DeclStmt] var arr = ... | semmle.label | [DeclStmt] var arr = ... |
+| arrays-init.js:82:7:82:9 | [VarDecl] arr | semmle.label | [VarDecl] arr |
+| arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | semmle.label | [VariableDeclarator] arr = [str, source] |
+| arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | semmle.label | [ArrayExpr] [str, source] |
+| arrays-init.js:82:14:82:16 | [VarRef] str | semmle.label | [VarRef] str |
+| arrays-init.js:82:19:82:24 | [VarRef] source | semmle.label | [VarRef] source |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | semmle.label | [ForOfStmt] for (co ... } |
+| arrays-init.js:83:8:83:17 | [DeclStmt] const item = ... | semmle.label | [DeclStmt] const item = ... |
+| arrays-init.js:83:14:83:17 | [VarDecl] item | semmle.label | [VarDecl] item |
+| arrays-init.js:83:14:83:17 | [VariableDeclarator] item | semmle.label | [VariableDeclarator] item |
+| arrays-init.js:83:22:83:24 | [VarRef] arr | semmle.label | [VarRef] arr |
+| arrays-init.js:83:27:85:3 | [BlockStmt] { s ... } | semmle.label | [BlockStmt] { s ... } |
+| arrays-init.js:84:5:84:8 | [VarRef] sink | semmle.label | [VarRef] sink |
+| arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | semmle.label | [CallExpr] sink(item) |
+| arrays-init.js:84:5:84:15 | [ExprStmt] sink(item); | semmle.label | [ExprStmt] sink(item); |
+| arrays-init.js:84:10:84:13 | [VarRef] item | semmle.label | [VarRef] item |
 | arrays.js:1:1:83:2 | [ParExpr] (functi ... } }) | semmle.label | [ParExpr] (functi ... } }) |
 | arrays.js:1:1:83:3 | [ExprStmt] (functi ... } }); | semmle.label | [ExprStmt] (functi ... } }); |
-| arrays.js:1:1:83:3 | [ExprStmt] (functi ... } }); | semmle.order | 1 |
+| arrays.js:1:1:83:3 | [ExprStmt] (functi ... } }); | semmle.order | 4 |
 | arrays.js:1:2:83:1 | [FunctionExpr] functio ... K } } | semmle.label | [FunctionExpr] functio ... K } } |
 | arrays.js:1:14:83:1 | [BlockStmt] { let ... K } } | semmle.label | [BlockStmt] { let ... K } } |
 | arrays.js:2:3:2:24 | [DeclStmt] let source = ... | semmle.label | [DeclStmt] let source = ... |
@@ -380,12 +777,826 @@ nodes
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 edges
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | arrays-init.js:1:10:1:13 | [VarDecl] sink | semmle.label | 0 |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | arrays-init.js:1:10:1:13 | [VarDecl] sink | semmle.order | 0 |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | semmle.label | 5 |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | semmle.order | 5 |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| arrays-init.js:1:1:22:1 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | semmle.label | 1 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | semmle.order | 1 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:5:3:5:45 | [DeclStmt] const STACK_LINE_REGEX = ... | semmle.label | 2 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:5:3:5:45 | [DeclStmt] const STACK_LINE_REGEX = ... | semmle.order | 2 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:6:3:6:10 | [DeclStmt] let err = ... | semmle.label | 3 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:6:3:6:10 | [DeclStmt] let err = ... | semmle.order | 3 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | semmle.label | 4 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | semmle.order | 4 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | semmle.label | 5 |
+| arrays-init.js:1:20:22:1 | [BlockStmt] { if ... } } | arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | semmle.order | 5 |
+| arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | semmle.label | 1 |
+| arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | semmle.order | 1 |
+| arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | arrays-init.js:3:5:3:11 | [ReturnStmt] return; | semmle.label | 2 |
+| arrays-init.js:2:3:3:11 | [IfStmt] if (arg ... return; | arrays-init.js:3:5:3:11 | [ReturnStmt] return; | semmle.order | 2 |
+| arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | arrays-init.js:2:7:2:9 | [VarRef] arg | semmle.label | 1 |
+| arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | arrays-init.js:2:7:2:9 | [VarRef] arg | semmle.order | 1 |
+| arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | arrays-init.js:2:15:2:22 | [Literal] "source" | semmle.label | 2 |
+| arrays-init.js:2:7:2:22 | [BinaryExpr] arg !== "source" | arrays-init.js:2:15:2:22 | [Literal] "source" | semmle.order | 2 |
+| arrays-init.js:5:3:5:45 | [DeclStmt] const STACK_LINE_REGEX = ... | arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | semmle.label | 1 |
+| arrays-init.js:5:3:5:45 | [DeclStmt] const STACK_LINE_REGEX = ... | arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | semmle.order | 1 |
+| arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | arrays-init.js:5:9:5:24 | [VarDecl] STACK_LINE_REGEX | semmle.label | 1 |
+| arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | arrays-init.js:5:9:5:24 | [VarDecl] STACK_LINE_REGEX | semmle.order | 1 |
+| arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | arrays-init.js:5:28:5:44 | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ | semmle.label | 2 |
+| arrays-init.js:5:9:5:44 | [VariableDeclarator] STACK_L ... +)\\)?$/ | arrays-init.js:5:28:5:44 | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ | semmle.order | 2 |
+| arrays-init.js:5:28:5:44 | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ | arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | semmle.label | 0 |
+| arrays-init.js:5:28:5:44 | [RegExpLiteral] /(\\d+):(\\d+)\\)?$/ | arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | semmle.order | 0 |
+| arrays-init.js:5:29:5:33 | [RegExpGroup] (\\d+) | arrays-init.js:5:30:5:32 | [RegExpPlus] \\d+ | semmle.label | 0 |
+| arrays-init.js:5:29:5:33 | [RegExpGroup] (\\d+) | arrays-init.js:5:30:5:32 | [RegExpPlus] \\d+ | semmle.order | 0 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:29:5:33 | [RegExpGroup] (\\d+) | semmle.label | 0 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:29:5:33 | [RegExpGroup] (\\d+) | semmle.order | 0 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:34:5:34 | [RegExpNormalConstant] : | semmle.label | 1 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:34:5:34 | [RegExpNormalConstant] : | semmle.order | 1 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:35:5:39 | [RegExpGroup] (\\d+) | semmle.label | 2 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:35:5:39 | [RegExpGroup] (\\d+) | semmle.order | 2 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:40:5:42 | [RegExpOpt] \\)? | semmle.label | 3 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:40:5:42 | [RegExpOpt] \\)? | semmle.order | 3 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:43:5:43 | [RegExpDollar] $ | semmle.label | 4 |
+| arrays-init.js:5:29:5:43 | [RegExpSequence] (\\d+):(\\d+)\\)?$ | arrays-init.js:5:43:5:43 | [RegExpDollar] $ | semmle.order | 4 |
+| arrays-init.js:5:30:5:32 | [RegExpPlus] \\d+ | arrays-init.js:5:30:5:31 | [RegExpCharacterClassEscape] \\d | semmle.label | 0 |
+| arrays-init.js:5:30:5:32 | [RegExpPlus] \\d+ | arrays-init.js:5:30:5:31 | [RegExpCharacterClassEscape] \\d | semmle.order | 0 |
+| arrays-init.js:5:35:5:39 | [RegExpGroup] (\\d+) | arrays-init.js:5:36:5:38 | [RegExpPlus] \\d+ | semmle.label | 0 |
+| arrays-init.js:5:35:5:39 | [RegExpGroup] (\\d+) | arrays-init.js:5:36:5:38 | [RegExpPlus] \\d+ | semmle.order | 0 |
+| arrays-init.js:5:36:5:38 | [RegExpPlus] \\d+ | arrays-init.js:5:36:5:37 | [RegExpCharacterClassEscape] \\d | semmle.label | 0 |
+| arrays-init.js:5:36:5:38 | [RegExpPlus] \\d+ | arrays-init.js:5:36:5:37 | [RegExpCharacterClassEscape] \\d | semmle.order | 0 |
+| arrays-init.js:5:40:5:42 | [RegExpOpt] \\)? | arrays-init.js:5:40:5:41 | [RegExpIdentityEscape] \\) | semmle.label | 0 |
+| arrays-init.js:5:40:5:42 | [RegExpOpt] \\)? | arrays-init.js:5:40:5:41 | [RegExpIdentityEscape] \\) | semmle.order | 0 |
+| arrays-init.js:6:3:6:10 | [DeclStmt] let err = ... | arrays-init.js:6:7:6:9 | [VariableDeclarator] err | semmle.label | 1 |
+| arrays-init.js:6:3:6:10 | [DeclStmt] let err = ... | arrays-init.js:6:7:6:9 | [VariableDeclarator] err | semmle.order | 1 |
+| arrays-init.js:6:7:6:9 | [VariableDeclarator] err | arrays-init.js:6:7:6:9 | [VarDecl] err | semmle.label | 1 |
+| arrays-init.js:6:7:6:9 | [VariableDeclarator] err | arrays-init.js:6:7:6:9 | [VarDecl] err | semmle.order | 1 |
+| arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | arrays-init.js:8:7:10:3 | [BlockStmt] { t ... (); } | semmle.label | 1 |
+| arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | arrays-init.js:8:7:10:3 | [BlockStmt] { t ... (); } | semmle.order | 1 |
+| arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | semmle.label | 2 |
+| arrays-init.js:8:3:12:3 | [TryStmt] try { ... or; } | arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | semmle.order | 2 |
+| arrays-init.js:8:7:10:3 | [BlockStmt] { t ... (); } | arrays-init.js:9:5:9:22 | [ThrowStmt] throw new Error(); | semmle.label | 1 |
+| arrays-init.js:8:7:10:3 | [BlockStmt] { t ... (); } | arrays-init.js:9:5:9:22 | [ThrowStmt] throw new Error(); | semmle.order | 1 |
+| arrays-init.js:9:5:9:22 | [ThrowStmt] throw new Error(); | arrays-init.js:9:11:9:21 | [NewExpr] new Error() | semmle.label | 1 |
+| arrays-init.js:9:5:9:22 | [ThrowStmt] throw new Error(); | arrays-init.js:9:11:9:21 | [NewExpr] new Error() | semmle.order | 1 |
+| arrays-init.js:9:11:9:21 | [NewExpr] new Error() | arrays-init.js:9:15:9:19 | [VarRef] Error | semmle.label | 0 |
+| arrays-init.js:9:11:9:21 | [NewExpr] new Error() | arrays-init.js:9:15:9:19 | [VarRef] Error | semmle.order | 0 |
+| arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | arrays-init.js:10:12:10:16 | [SimpleParameter] error | semmle.label | 1 |
+| arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | arrays-init.js:10:12:10:16 | [SimpleParameter] error | semmle.order | 1 |
+| arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | arrays-init.js:10:19:12:3 | [BlockStmt] { e ... or; } | semmle.label | 2 |
+| arrays-init.js:10:5:12:3 | [CatchClause] catch ( ... or; } | arrays-init.js:10:19:12:3 | [BlockStmt] { e ... or; } | semmle.order | 2 |
+| arrays-init.js:10:19:12:3 | [BlockStmt] { e ... or; } | arrays-init.js:11:5:11:16 | [ExprStmt] err = error; | semmle.label | 1 |
+| arrays-init.js:10:19:12:3 | [BlockStmt] { e ... or; } | arrays-init.js:11:5:11:16 | [ExprStmt] err = error; | semmle.order | 1 |
+| arrays-init.js:11:5:11:15 | [AssignExpr] err = error | arrays-init.js:11:5:11:7 | [VarRef] err | semmle.label | 1 |
+| arrays-init.js:11:5:11:15 | [AssignExpr] err = error | arrays-init.js:11:5:11:7 | [VarRef] err | semmle.order | 1 |
+| arrays-init.js:11:5:11:15 | [AssignExpr] err = error | arrays-init.js:11:11:11:15 | [VarRef] error | semmle.label | 2 |
+| arrays-init.js:11:5:11:15 | [AssignExpr] err = error | arrays-init.js:11:11:11:15 | [VarRef] error | semmle.order | 2 |
+| arrays-init.js:11:5:11:16 | [ExprStmt] err = error; | arrays-init.js:11:5:11:15 | [AssignExpr] err = error | semmle.label | 1 |
+| arrays-init.js:11:5:11:16 | [ExprStmt] err = error; | arrays-init.js:11:5:11:15 | [AssignExpr] err = error | semmle.order | 1 |
+| arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | semmle.label | 1 |
+| arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | semmle.order | 1 |
+| arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | semmle.label | 2 |
+| arrays-init.js:14:3:21:3 | [TryStmt] try { ... g); } | arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | semmle.order | 2 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:15:5:15:41 | [DeclStmt] const stacks = ... | semmle.label | 1 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:15:5:15:41 | [DeclStmt] const stacks = ... | semmle.order | 1 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:16:5:16:54 | [DeclStmt] const [ ... ks[2]); | semmle.label | 2 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:16:5:16:54 | [DeclStmt] const [ ... ks[2]); | semmle.order | 2 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:18:5:18:41 | [ReturnStmt] return ... , arg); | semmle.label | 3 |
+| arrays-init.js:14:7:19:3 | [BlockStmt] { c ... g); } | arrays-init.js:18:5:18:41 | [ReturnStmt] return ... , arg); | semmle.order | 3 |
+| arrays-init.js:15:5:15:41 | [DeclStmt] const stacks = ... | arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | semmle.label | 1 |
+| arrays-init.js:15:5:15:41 | [DeclStmt] const stacks = ... | arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | semmle.order | 1 |
+| arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | arrays-init.js:15:11:15:16 | [VarDecl] stacks | semmle.label | 1 |
+| arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | arrays-init.js:15:11:15:16 | [VarDecl] stacks | semmle.order | 1 |
+| arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | semmle.label | 2 |
+| arrays-init.js:15:11:15:40 | [VariableDeclarator] stacks ... t(' ') | arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | semmle.order | 2 |
+| arrays-init.js:15:20:15:28 | [DotExpr] err.stack | arrays-init.js:15:20:15:22 | [VarRef] err | semmle.label | 1 |
+| arrays-init.js:15:20:15:28 | [DotExpr] err.stack | arrays-init.js:15:20:15:22 | [VarRef] err | semmle.order | 1 |
+| arrays-init.js:15:20:15:28 | [DotExpr] err.stack | arrays-init.js:15:24:15:28 | [Label] stack | semmle.label | 2 |
+| arrays-init.js:15:20:15:28 | [DotExpr] err.stack | arrays-init.js:15:24:15:28 | [Label] stack | semmle.order | 2 |
+| arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | arrays-init.js:15:20:15:28 | [DotExpr] err.stack | semmle.label | 1 |
+| arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | arrays-init.js:15:20:15:28 | [DotExpr] err.stack | semmle.order | 1 |
+| arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | arrays-init.js:15:30:15:34 | [Label] split | semmle.label | 2 |
+| arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | arrays-init.js:15:30:15:34 | [Label] split | semmle.order | 2 |
+| arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | semmle.label | 0 |
+| arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | arrays-init.js:15:20:15:34 | [DotExpr] err.stack.split | semmle.order | 0 |
+| arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:15:20:15:40 | [MethodCallExpr] err.sta ... t(' ') | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:16:5:16:54 | [DeclStmt] const [ ... ks[2]); | arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | semmle.label | 1 |
+| arrays-init.js:16:5:16:54 | [DeclStmt] const [ ... ks[2]); | arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | semmle.order | 1 |
+| arrays-init.js:16:11:16:18 | [ArrayPattern] [, line] | arrays-init.js:16:14:16:17 | [VarDecl] line | semmle.label | 1 |
+| arrays-init.js:16:11:16:18 | [ArrayPattern] [, line] | arrays-init.js:16:14:16:17 | [VarDecl] line | semmle.order | 1 |
+| arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | arrays-init.js:16:11:16:18 | [ArrayPattern] [, line] | semmle.label | 1 |
+| arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | arrays-init.js:16:11:16:18 | [ArrayPattern] [, line] | semmle.order | 1 |
+| arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | semmle.label | 2 |
+| arrays-init.js:16:11:16:53 | [VariableDeclarator] [, line ... cks[2]) | arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | semmle.order | 2 |
+| arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | arrays-init.js:16:22:16:37 | [VarRef] STACK_LINE_REGEX | semmle.label | 1 |
+| arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | arrays-init.js:16:22:16:37 | [VarRef] STACK_LINE_REGEX | semmle.order | 1 |
+| arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | arrays-init.js:16:39:16:42 | [Label] exec | semmle.label | 2 |
+| arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | arrays-init.js:16:39:16:42 | [Label] exec | semmle.order | 2 |
+| arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | semmle.label | 0 |
+| arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | arrays-init.js:16:22:16:42 | [DotExpr] STACK_L ... EX.exec | semmle.order | 0 |
+| arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:16:22:16:53 | [MethodCallExpr] STACK_L ... cks[2]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | arrays-init.js:16:44:16:49 | [VarRef] stacks | semmle.label | 1 |
+| arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | arrays-init.js:16:44:16:49 | [VarRef] stacks | semmle.order | 1 |
+| arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | arrays-init.js:16:51:16:51 | [Literal] 2 | semmle.label | 2 |
+| arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | arrays-init.js:16:51:16:51 | [Literal] 2 | semmle.order | 2 |
+| arrays-init.js:18:5:18:41 | [ReturnStmt] return ... , arg); | arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | semmle.label | 1 |
+| arrays-init.js:18:5:18:41 | [ReturnStmt] return ... , arg); | arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | semmle.order | 1 |
+| arrays-init.js:18:12:18:22 | [DotExpr] console.log | arrays-init.js:18:12:18:18 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:18:12:18:22 | [DotExpr] console.log | arrays-init.js:18:12:18:18 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:18:12:18:22 | [DotExpr] console.log | arrays-init.js:18:20:18:22 | [Label] log | semmle.label | 2 |
+| arrays-init.js:18:12:18:22 | [DotExpr] console.log | arrays-init.js:18:20:18:22 | [Label] log | semmle.order | 2 |
+| arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | arrays-init.js:18:12:18:22 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | arrays-init.js:18:12:18:22 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:18:12:18:40 | [MethodCallExpr] console ... `, arg) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:25:18:25 | [TemplateElement] [ | semmle.label | 1 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:25:18:25 | [TemplateElement] [ | semmle.order | 1 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:28:18:31 | [VarRef] line | semmle.label | 2 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:28:18:31 | [VarRef] line | semmle.order | 2 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:33:18:33 | [TemplateElement] ] | semmle.label | 3 |
+| arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | arrays-init.js:18:33:18:33 | [TemplateElement] ] | semmle.order | 3 |
+| arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | arrays-init.js:19:12:19:14 | [SimpleParameter] err | semmle.label | 1 |
+| arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | arrays-init.js:19:12:19:14 | [SimpleParameter] err | semmle.order | 1 |
+| arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | arrays-init.js:19:17:21:3 | [BlockStmt] { r ... g); } | semmle.label | 2 |
+| arrays-init.js:19:5:21:3 | [CatchClause] catch ( ... g); } | arrays-init.js:19:17:21:3 | [BlockStmt] { r ... g); } | semmle.order | 2 |
+| arrays-init.js:19:17:21:3 | [BlockStmt] { r ... g); } | arrays-init.js:20:5:20:28 | [ReturnStmt] return ... g(arg); | semmle.label | 1 |
+| arrays-init.js:19:17:21:3 | [BlockStmt] { r ... g); } | arrays-init.js:20:5:20:28 | [ReturnStmt] return ... g(arg); | semmle.order | 1 |
+| arrays-init.js:20:5:20:28 | [ReturnStmt] return ... g(arg); | arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | semmle.label | 1 |
+| arrays-init.js:20:5:20:28 | [ReturnStmt] return ... g(arg); | arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | semmle.order | 1 |
+| arrays-init.js:20:12:20:22 | [DotExpr] console.log | arrays-init.js:20:12:20:18 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:20:12:20:22 | [DotExpr] console.log | arrays-init.js:20:12:20:18 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:20:12:20:22 | [DotExpr] console.log | arrays-init.js:20:20:20:22 | [Label] log | semmle.label | 2 |
+| arrays-init.js:20:12:20:22 | [DotExpr] console.log | arrays-init.js:20:20:20:22 | [Label] log | semmle.order | 2 |
+| arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | arrays-init.js:20:12:20:22 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | arrays-init.js:20:12:20:22 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:20:12:20:27 | [MethodCallExpr] console.log(arg) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:24:1:86:4 | [ParExpr] (functi ... } }()) | arrays-init.js:24:2:86:3 | [CallExpr] functio ... } }() | semmle.label | 1 |
+| arrays-init.js:24:1:86:4 | [ParExpr] (functi ... } }()) | arrays-init.js:24:2:86:3 | [CallExpr] functio ... } }() | semmle.order | 1 |
+| arrays-init.js:24:1:86:5 | [ExprStmt] (functi ... } }()); | arrays-init.js:24:1:86:4 | [ParExpr] (functi ... } }()) | semmle.label | 1 |
+| arrays-init.js:24:1:86:5 | [ExprStmt] (functi ... } }()); | arrays-init.js:24:1:86:4 | [ParExpr] (functi ... } }()) | semmle.order | 1 |
+| arrays-init.js:24:2:86:1 | [FunctionExpr] functio ... } } | arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | semmle.label | 5 |
+| arrays-init.js:24:2:86:1 | [FunctionExpr] functio ... } } | arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | semmle.order | 5 |
+| arrays-init.js:24:2:86:3 | [CallExpr] functio ... } }() | arrays-init.js:24:2:86:1 | [FunctionExpr] functio ... } } | semmle.label | 0 |
+| arrays-init.js:24:2:86:3 | [CallExpr] functio ... } }() | arrays-init.js:24:2:86:1 | [FunctionExpr] functio ... } } | semmle.order | 0 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:25:3:25:24 | [DeclStmt] let source = ... | semmle.label | 1 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:25:3:25:24 | [DeclStmt] let source = ... | semmle.order | 1 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:27:3:27:20 | [DeclStmt] var str = ... | semmle.label | 2 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:27:3:27:20 | [DeclStmt] var str = ... | semmle.order | 2 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:29:3:29:56 | [ExprStmt] console ... ==="); | semmle.label | 3 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:29:3:29:56 | [ExprStmt] console ... ==="); | semmle.order | 3 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:30:3:30:25 | [DeclStmt] var arr = ... | semmle.label | 4 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:30:3:30:25 | [DeclStmt] var arr = ... | semmle.order | 4 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:31:3:31:15 | [ExprStmt] arr[0] = str; | semmle.label | 5 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:31:3:31:15 | [ExprStmt] arr[0] = str; | semmle.order | 5 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:32:3:32:18 | [ExprStmt] arr[1] = source; | semmle.label | 6 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:32:3:32:18 | [ExprStmt] arr[1] = source; | semmle.order | 6 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:33:3:33:15 | [ExprStmt] arr[2] = 'b'; | semmle.label | 7 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:33:3:33:15 | [ExprStmt] arr[2] = 'b'; | semmle.order | 7 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:34:3:34:15 | [ExprStmt] arr[3] = 'c'; | semmle.label | 8 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:34:3:34:15 | [ExprStmt] arr[3] = 'c'; | semmle.order | 8 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:35:3:35:15 | [ExprStmt] arr[4] = 'd'; | semmle.label | 9 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:35:3:35:15 | [ExprStmt] arr[4] = 'd'; | semmle.order | 9 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:36:3:36:15 | [ExprStmt] arr[5] = 'e'; | semmle.label | 10 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:36:3:36:15 | [ExprStmt] arr[5] = 'e'; | semmle.order | 10 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:37:3:37:18 | [ExprStmt] arr[6] = source; | semmle.label | 11 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:37:3:37:18 | [ExprStmt] arr[6] = source; | semmle.order | 11 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:39:3:39:15 | [ExprStmt] sink(arr[0]); | semmle.label | 12 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:39:3:39:15 | [ExprStmt] sink(arr[0]); | semmle.order | 12 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:40:3:40:15 | [ExprStmt] sink(arr[1]); | semmle.label | 13 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:40:3:40:15 | [ExprStmt] sink(arr[1]); | semmle.order | 13 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:41:3:41:15 | [ExprStmt] sink(arr[2]); | semmle.label | 14 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:41:3:41:15 | [ExprStmt] sink(arr[2]); | semmle.order | 14 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:42:3:42:15 | [ExprStmt] sink(arr[3]); | semmle.label | 15 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:42:3:42:15 | [ExprStmt] sink(arr[3]); | semmle.order | 15 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:43:3:43:15 | [ExprStmt] sink(arr[4]); | semmle.label | 16 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:43:3:43:15 | [ExprStmt] sink(arr[4]); | semmle.order | 16 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:44:3:44:15 | [ExprStmt] sink(arr[5]); | semmle.label | 17 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:44:3:44:15 | [ExprStmt] sink(arr[5]); | semmle.order | 17 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:45:3:45:15 | [ExprStmt] sink(arr[6]); | semmle.label | 18 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:45:3:45:15 | [ExprStmt] sink(arr[6]); | semmle.order | 18 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:46:3:46:12 | [ExprStmt] sink(str); | semmle.label | 19 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:46:3:46:12 | [ExprStmt] sink(str); | semmle.order | 19 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:48:3:48:57 | [ExprStmt] console ... ==="); | semmle.label | 20 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:48:3:48:57 | [ExprStmt] console ... ==="); | semmle.order | 20 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:49:3:49:26 | [DeclStmt] var arr = ... | semmle.label | 21 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:49:3:49:26 | [DeclStmt] var arr = ... | semmle.order | 21 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:50:3:50:15 | [ExprStmt] sink(arr[0]); | semmle.label | 22 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:50:3:50:15 | [ExprStmt] sink(arr[0]); | semmle.order | 22 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:51:3:51:15 | [ExprStmt] sink(arr[1]); | semmle.label | 23 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:51:3:51:15 | [ExprStmt] sink(arr[1]); | semmle.order | 23 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:52:3:52:12 | [ExprStmt] sink(str); | semmle.label | 24 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:52:3:52:12 | [ExprStmt] sink(str); | semmle.order | 24 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:54:3:54:75 | [ExprStmt] console ... ==="); | semmle.label | 25 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:54:3:54:75 | [ExprStmt] console ... ==="); | semmle.order | 25 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:55:3:55:49 | [DeclStmt] var arr = ... | semmle.label | 26 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:55:3:55:49 | [DeclStmt] var arr = ... | semmle.order | 26 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:56:3:56:15 | [ExprStmt] sink(arr[0]); | semmle.label | 27 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:56:3:56:15 | [ExprStmt] sink(arr[0]); | semmle.order | 27 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:57:3:57:15 | [ExprStmt] sink(arr[1]); | semmle.label | 28 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:57:3:57:15 | [ExprStmt] sink(arr[1]); | semmle.order | 28 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:58:3:58:15 | [ExprStmt] sink(arr[2]); | semmle.label | 29 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:58:3:58:15 | [ExprStmt] sink(arr[2]); | semmle.order | 29 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:59:3:59:15 | [ExprStmt] sink(arr[3]); | semmle.label | 30 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:59:3:59:15 | [ExprStmt] sink(arr[3]); | semmle.order | 30 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:60:3:60:15 | [ExprStmt] sink(arr[4]); | semmle.label | 31 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:60:3:60:15 | [ExprStmt] sink(arr[4]); | semmle.order | 31 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:61:3:61:15 | [ExprStmt] sink(arr[5]); | semmle.label | 32 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:61:3:61:15 | [ExprStmt] sink(arr[5]); | semmle.order | 32 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:63:3:63:55 | [ExprStmt] console ... ==="); | semmle.label | 33 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:63:3:63:55 | [ExprStmt] console ... ==="); | semmle.order | 33 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:64:3:64:26 | [DeclStmt] var arr = ... | semmle.label | 34 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:64:3:64:26 | [DeclStmt] var arr = ... | semmle.order | 34 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | semmle.label | 35 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | semmle.order | 35 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:69:3:69:66 | [ExprStmt] console ... ==="); | semmle.label | 36 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:69:3:69:66 | [ExprStmt] console ... ==="); | semmle.order | 36 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:70:3:70:23 | [DeclStmt] var arr = ... | semmle.label | 37 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:70:3:70:23 | [DeclStmt] var arr = ... | semmle.order | 37 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | semmle.label | 38 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | semmle.order | 38 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:75:3:75:73 | [ExprStmt] console ... ==="); | semmle.label | 39 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:75:3:75:73 | [ExprStmt] console ... ==="); | semmle.order | 39 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:76:3:76:46 | [DeclStmt] var arr = ... | semmle.label | 40 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:76:3:76:46 | [DeclStmt] var arr = ... | semmle.order | 40 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | semmle.label | 41 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | semmle.order | 41 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:81:3:81:57 | [ExprStmt] console ... ==="); | semmle.label | 42 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:81:3:81:57 | [ExprStmt] console ... ==="); | semmle.order | 42 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:82:3:82:26 | [DeclStmt] var arr = ... | semmle.label | 43 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:82:3:82:26 | [DeclStmt] var arr = ... | semmle.order | 43 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | semmle.label | 44 |
+| arrays-init.js:24:14:86:1 | [BlockStmt] { let ... } } | arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | semmle.order | 44 |
+| arrays-init.js:25:3:25:24 | [DeclStmt] let source = ... | arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | semmle.label | 1 |
+| arrays-init.js:25:3:25:24 | [DeclStmt] let source = ... | arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | semmle.order | 1 |
+| arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | arrays-init.js:25:7:25:12 | [VarDecl] source | semmle.label | 1 |
+| arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | arrays-init.js:25:7:25:12 | [VarDecl] source | semmle.order | 1 |
+| arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | arrays-init.js:25:16:25:23 | [Literal] "source" | semmle.label | 2 |
+| arrays-init.js:25:7:25:23 | [VariableDeclarator] source = "source" | arrays-init.js:25:16:25:23 | [Literal] "source" | semmle.order | 2 |
+| arrays-init.js:27:3:27:20 | [DeclStmt] var str = ... | arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | semmle.label | 1 |
+| arrays-init.js:27:3:27:20 | [DeclStmt] var str = ... | arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | semmle.order | 1 |
+| arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | arrays-init.js:27:7:27:9 | [VarDecl] str | semmle.label | 1 |
+| arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | arrays-init.js:27:7:27:9 | [VarDecl] str | semmle.order | 1 |
+| arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | arrays-init.js:27:13:27:19 | [Literal] "FALSE" | semmle.label | 2 |
+| arrays-init.js:27:7:27:19 | [VariableDeclarator] str = "FALSE" | arrays-init.js:27:13:27:19 | [Literal] "FALSE" | semmle.order | 2 |
+| arrays-init.js:29:3:29:13 | [DotExpr] console.log | arrays-init.js:29:3:29:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:29:3:29:13 | [DotExpr] console.log | arrays-init.js:29:3:29:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:29:3:29:13 | [DotExpr] console.log | arrays-init.js:29:11:29:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:29:3:29:13 | [DotExpr] console.log | arrays-init.js:29:11:29:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | arrays-init.js:29:3:29:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | arrays-init.js:29:3:29:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:29:3:29:56 | [ExprStmt] console ... ==="); | arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:29:3:29:56 | [ExprStmt] console ... ==="); | arrays-init.js:29:3:29:55 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:30:3:30:25 | [DeclStmt] var arr = ... | arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | semmle.label | 1 |
+| arrays-init.js:30:3:30:25 | [DeclStmt] var arr = ... | arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | semmle.order | 1 |
+| arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | arrays-init.js:30:7:30:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | arrays-init.js:30:7:30:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | semmle.label | 2 |
+| arrays-init.js:30:7:30:24 | [VariableDeclarator] arr = new Array(2) | arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | semmle.order | 2 |
+| arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | arrays-init.js:30:17:30:21 | [VarRef] Array | semmle.label | 0 |
+| arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | arrays-init.js:30:17:30:21 | [VarRef] Array | semmle.order | 0 |
+| arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:30:13:30:24 | [NewExpr] new Array(2) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | arrays-init.js:31:3:31:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | arrays-init.js:31:3:31:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | arrays-init.js:31:7:31:7 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | arrays-init.js:31:7:31:7 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | semmle.label | 1 |
+| arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | arrays-init.js:31:3:31:8 | [IndexExpr] arr[0] | semmle.order | 1 |
+| arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | arrays-init.js:31:12:31:14 | [VarRef] str | semmle.label | 2 |
+| arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | arrays-init.js:31:12:31:14 | [VarRef] str | semmle.order | 2 |
+| arrays-init.js:31:3:31:15 | [ExprStmt] arr[0] = str; | arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | semmle.label | 1 |
+| arrays-init.js:31:3:31:15 | [ExprStmt] arr[0] = str; | arrays-init.js:31:3:31:14 | [AssignExpr] arr[0] = str | semmle.order | 1 |
+| arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | arrays-init.js:32:3:32:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | arrays-init.js:32:3:32:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | arrays-init.js:32:7:32:7 | [Literal] 1 | semmle.label | 2 |
+| arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | arrays-init.js:32:7:32:7 | [Literal] 1 | semmle.order | 2 |
+| arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | semmle.label | 1 |
+| arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | arrays-init.js:32:3:32:8 | [IndexExpr] arr[1] | semmle.order | 1 |
+| arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | arrays-init.js:32:12:32:17 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | arrays-init.js:32:12:32:17 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:32:3:32:18 | [ExprStmt] arr[1] = source; | arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | semmle.label | 1 |
+| arrays-init.js:32:3:32:18 | [ExprStmt] arr[1] = source; | arrays-init.js:32:3:32:17 | [AssignExpr] arr[1] = source | semmle.order | 1 |
+| arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | arrays-init.js:33:3:33:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | arrays-init.js:33:3:33:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | arrays-init.js:33:7:33:7 | [Literal] 2 | semmle.label | 2 |
+| arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | arrays-init.js:33:7:33:7 | [Literal] 2 | semmle.order | 2 |
+| arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | semmle.label | 1 |
+| arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | arrays-init.js:33:3:33:8 | [IndexExpr] arr[2] | semmle.order | 1 |
+| arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | arrays-init.js:33:12:33:14 | [Literal] 'b' | semmle.label | 2 |
+| arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | arrays-init.js:33:12:33:14 | [Literal] 'b' | semmle.order | 2 |
+| arrays-init.js:33:3:33:15 | [ExprStmt] arr[2] = 'b'; | arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | semmle.label | 1 |
+| arrays-init.js:33:3:33:15 | [ExprStmt] arr[2] = 'b'; | arrays-init.js:33:3:33:14 | [AssignExpr] arr[2] = 'b' | semmle.order | 1 |
+| arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | arrays-init.js:34:3:34:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | arrays-init.js:34:3:34:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | arrays-init.js:34:7:34:7 | [Literal] 3 | semmle.label | 2 |
+| arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | arrays-init.js:34:7:34:7 | [Literal] 3 | semmle.order | 2 |
+| arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | semmle.label | 1 |
+| arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | arrays-init.js:34:3:34:8 | [IndexExpr] arr[3] | semmle.order | 1 |
+| arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | arrays-init.js:34:12:34:14 | [Literal] 'c' | semmle.label | 2 |
+| arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | arrays-init.js:34:12:34:14 | [Literal] 'c' | semmle.order | 2 |
+| arrays-init.js:34:3:34:15 | [ExprStmt] arr[3] = 'c'; | arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | semmle.label | 1 |
+| arrays-init.js:34:3:34:15 | [ExprStmt] arr[3] = 'c'; | arrays-init.js:34:3:34:14 | [AssignExpr] arr[3] = 'c' | semmle.order | 1 |
+| arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | arrays-init.js:35:3:35:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | arrays-init.js:35:3:35:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | arrays-init.js:35:7:35:7 | [Literal] 4 | semmle.label | 2 |
+| arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | arrays-init.js:35:7:35:7 | [Literal] 4 | semmle.order | 2 |
+| arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | semmle.label | 1 |
+| arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | arrays-init.js:35:3:35:8 | [IndexExpr] arr[4] | semmle.order | 1 |
+| arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | arrays-init.js:35:12:35:14 | [Literal] 'd' | semmle.label | 2 |
+| arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | arrays-init.js:35:12:35:14 | [Literal] 'd' | semmle.order | 2 |
+| arrays-init.js:35:3:35:15 | [ExprStmt] arr[4] = 'd'; | arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | semmle.label | 1 |
+| arrays-init.js:35:3:35:15 | [ExprStmt] arr[4] = 'd'; | arrays-init.js:35:3:35:14 | [AssignExpr] arr[4] = 'd' | semmle.order | 1 |
+| arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | arrays-init.js:36:3:36:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | arrays-init.js:36:3:36:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | arrays-init.js:36:7:36:7 | [Literal] 5 | semmle.label | 2 |
+| arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | arrays-init.js:36:7:36:7 | [Literal] 5 | semmle.order | 2 |
+| arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | semmle.label | 1 |
+| arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | arrays-init.js:36:3:36:8 | [IndexExpr] arr[5] | semmle.order | 1 |
+| arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | arrays-init.js:36:12:36:14 | [Literal] 'e' | semmle.label | 2 |
+| arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | arrays-init.js:36:12:36:14 | [Literal] 'e' | semmle.order | 2 |
+| arrays-init.js:36:3:36:15 | [ExprStmt] arr[5] = 'e'; | arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | semmle.label | 1 |
+| arrays-init.js:36:3:36:15 | [ExprStmt] arr[5] = 'e'; | arrays-init.js:36:3:36:14 | [AssignExpr] arr[5] = 'e' | semmle.order | 1 |
+| arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | arrays-init.js:37:3:37:5 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | arrays-init.js:37:3:37:5 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | arrays-init.js:37:7:37:7 | [Literal] 6 | semmle.label | 2 |
+| arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | arrays-init.js:37:7:37:7 | [Literal] 6 | semmle.order | 2 |
+| arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | semmle.label | 1 |
+| arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | arrays-init.js:37:3:37:8 | [IndexExpr] arr[6] | semmle.order | 1 |
+| arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | arrays-init.js:37:12:37:17 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | arrays-init.js:37:12:37:17 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:37:3:37:18 | [ExprStmt] arr[6] = source; | arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | semmle.label | 1 |
+| arrays-init.js:37:3:37:18 | [ExprStmt] arr[6] = source; | arrays-init.js:37:3:37:17 | [AssignExpr] arr[6] = source | semmle.order | 1 |
+| arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | arrays-init.js:39:3:39:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | arrays-init.js:39:3:39:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:39:3:39:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | semmle.label | 1 |
+| arrays-init.js:39:3:39:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:39:3:39:14 | [CallExpr] sink(arr[0]) | semmle.order | 1 |
+| arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | arrays-init.js:39:8:39:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | arrays-init.js:39:8:39:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | arrays-init.js:39:12:39:12 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | arrays-init.js:39:12:39:12 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | arrays-init.js:40:3:40:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | arrays-init.js:40:3:40:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:40:3:40:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | semmle.label | 1 |
+| arrays-init.js:40:3:40:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:40:3:40:14 | [CallExpr] sink(arr[1]) | semmle.order | 1 |
+| arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | arrays-init.js:40:8:40:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | arrays-init.js:40:8:40:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | arrays-init.js:40:12:40:12 | [Literal] 1 | semmle.label | 2 |
+| arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | arrays-init.js:40:12:40:12 | [Literal] 1 | semmle.order | 2 |
+| arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | arrays-init.js:41:3:41:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | arrays-init.js:41:3:41:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:41:3:41:15 | [ExprStmt] sink(arr[2]); | arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | semmle.label | 1 |
+| arrays-init.js:41:3:41:15 | [ExprStmt] sink(arr[2]); | arrays-init.js:41:3:41:14 | [CallExpr] sink(arr[2]) | semmle.order | 1 |
+| arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | arrays-init.js:41:8:41:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | arrays-init.js:41:8:41:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | arrays-init.js:41:12:41:12 | [Literal] 2 | semmle.label | 2 |
+| arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | arrays-init.js:41:12:41:12 | [Literal] 2 | semmle.order | 2 |
+| arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | arrays-init.js:42:3:42:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | arrays-init.js:42:3:42:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:42:3:42:15 | [ExprStmt] sink(arr[3]); | arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | semmle.label | 1 |
+| arrays-init.js:42:3:42:15 | [ExprStmt] sink(arr[3]); | arrays-init.js:42:3:42:14 | [CallExpr] sink(arr[3]) | semmle.order | 1 |
+| arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | arrays-init.js:42:8:42:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | arrays-init.js:42:8:42:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | arrays-init.js:42:12:42:12 | [Literal] 3 | semmle.label | 2 |
+| arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | arrays-init.js:42:12:42:12 | [Literal] 3 | semmle.order | 2 |
+| arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | arrays-init.js:43:3:43:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | arrays-init.js:43:3:43:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:43:3:43:15 | [ExprStmt] sink(arr[4]); | arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | semmle.label | 1 |
+| arrays-init.js:43:3:43:15 | [ExprStmt] sink(arr[4]); | arrays-init.js:43:3:43:14 | [CallExpr] sink(arr[4]) | semmle.order | 1 |
+| arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | arrays-init.js:43:8:43:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | arrays-init.js:43:8:43:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | arrays-init.js:43:12:43:12 | [Literal] 4 | semmle.label | 2 |
+| arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | arrays-init.js:43:12:43:12 | [Literal] 4 | semmle.order | 2 |
+| arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | arrays-init.js:44:3:44:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | arrays-init.js:44:3:44:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:44:3:44:15 | [ExprStmt] sink(arr[5]); | arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | semmle.label | 1 |
+| arrays-init.js:44:3:44:15 | [ExprStmt] sink(arr[5]); | arrays-init.js:44:3:44:14 | [CallExpr] sink(arr[5]) | semmle.order | 1 |
+| arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | arrays-init.js:44:8:44:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | arrays-init.js:44:8:44:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | arrays-init.js:44:12:44:12 | [Literal] 5 | semmle.label | 2 |
+| arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | arrays-init.js:44:12:44:12 | [Literal] 5 | semmle.order | 2 |
+| arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | arrays-init.js:45:3:45:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | arrays-init.js:45:3:45:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:45:3:45:15 | [ExprStmt] sink(arr[6]); | arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | semmle.label | 1 |
+| arrays-init.js:45:3:45:15 | [ExprStmt] sink(arr[6]); | arrays-init.js:45:3:45:14 | [CallExpr] sink(arr[6]) | semmle.order | 1 |
+| arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | arrays-init.js:45:8:45:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | arrays-init.js:45:8:45:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | arrays-init.js:45:12:45:12 | [Literal] 6 | semmle.label | 2 |
+| arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | arrays-init.js:45:12:45:12 | [Literal] 6 | semmle.order | 2 |
+| arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | arrays-init.js:46:3:46:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | arrays-init.js:46:3:46:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:46:3:46:12 | [ExprStmt] sink(str); | arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | semmle.label | 1 |
+| arrays-init.js:46:3:46:12 | [ExprStmt] sink(str); | arrays-init.js:46:3:46:11 | [CallExpr] sink(str) | semmle.order | 1 |
+| arrays-init.js:48:3:48:13 | [DotExpr] console.log | arrays-init.js:48:3:48:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:48:3:48:13 | [DotExpr] console.log | arrays-init.js:48:3:48:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:48:3:48:13 | [DotExpr] console.log | arrays-init.js:48:11:48:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:48:3:48:13 | [DotExpr] console.log | arrays-init.js:48:11:48:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | arrays-init.js:48:3:48:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | arrays-init.js:48:3:48:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:48:3:48:57 | [ExprStmt] console ... ==="); | arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:48:3:48:57 | [ExprStmt] console ... ==="); | arrays-init.js:48:3:48:56 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:49:3:49:26 | [DeclStmt] var arr = ... | arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | semmle.label | 1 |
+| arrays-init.js:49:3:49:26 | [DeclStmt] var arr = ... | arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | semmle.order | 1 |
+| arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:49:7:49:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:49:7:49:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | semmle.label | 2 |
+| arrays-init.js:49:7:49:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | semmle.order | 2 |
+| arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | arrays-init.js:49:14:49:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | arrays-init.js:49:14:49:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | arrays-init.js:49:19:49:24 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:49:13:49:25 | [ArrayExpr] [str, source] | arrays-init.js:49:19:49:24 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | arrays-init.js:50:3:50:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | arrays-init.js:50:3:50:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:50:3:50:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | semmle.label | 1 |
+| arrays-init.js:50:3:50:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:50:3:50:14 | [CallExpr] sink(arr[0]) | semmle.order | 1 |
+| arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | arrays-init.js:50:8:50:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | arrays-init.js:50:8:50:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | arrays-init.js:50:12:50:12 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | arrays-init.js:50:12:50:12 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | arrays-init.js:51:3:51:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | arrays-init.js:51:3:51:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:51:3:51:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | semmle.label | 1 |
+| arrays-init.js:51:3:51:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:51:3:51:14 | [CallExpr] sink(arr[1]) | semmle.order | 1 |
+| arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | arrays-init.js:51:8:51:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | arrays-init.js:51:8:51:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | arrays-init.js:51:12:51:12 | [Literal] 1 | semmle.label | 2 |
+| arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | arrays-init.js:51:12:51:12 | [Literal] 1 | semmle.order | 2 |
+| arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | arrays-init.js:52:3:52:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | arrays-init.js:52:3:52:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:52:3:52:12 | [ExprStmt] sink(str); | arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | semmle.label | 1 |
+| arrays-init.js:52:3:52:12 | [ExprStmt] sink(str); | arrays-init.js:52:3:52:11 | [CallExpr] sink(str) | semmle.order | 1 |
+| arrays-init.js:54:3:54:13 | [DotExpr] console.log | arrays-init.js:54:3:54:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:54:3:54:13 | [DotExpr] console.log | arrays-init.js:54:3:54:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:54:3:54:13 | [DotExpr] console.log | arrays-init.js:54:11:54:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:54:3:54:13 | [DotExpr] console.log | arrays-init.js:54:11:54:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | arrays-init.js:54:3:54:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | arrays-init.js:54:3:54:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:54:3:54:75 | [ExprStmt] console ... ==="); | arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:54:3:54:75 | [ExprStmt] console ... ==="); | arrays-init.js:54:3:54:74 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:55:3:55:49 | [DeclStmt] var arr = ... | arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | semmle.label | 1 |
+| arrays-init.js:55:3:55:49 | [DeclStmt] var arr = ... | arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | semmle.order | 1 |
+| arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:55:7:55:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:55:7:55:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | semmle.label | 2 |
+| arrays-init.js:55:7:55:48 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | semmle.order | 2 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:14:55:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:14:55:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:19:55:24 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:19:55:24 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:27:55:29 | [Literal] 'b' | semmle.label | 3 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:27:55:29 | [Literal] 'b' | semmle.order | 3 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:32:55:34 | [Literal] 'c' | semmle.label | 4 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:32:55:34 | [Literal] 'c' | semmle.order | 4 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:37:55:39 | [Literal] 'd' | semmle.label | 5 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:37:55:39 | [Literal] 'd' | semmle.order | 5 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:42:55:47 | [VarRef] source | semmle.label | 6 |
+| arrays-init.js:55:13:55:48 | [ArrayExpr] [str, s ... source] | arrays-init.js:55:42:55:47 | [VarRef] source | semmle.order | 6 |
+| arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | arrays-init.js:56:3:56:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | arrays-init.js:56:3:56:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:56:3:56:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | semmle.label | 1 |
+| arrays-init.js:56:3:56:15 | [ExprStmt] sink(arr[0]); | arrays-init.js:56:3:56:14 | [CallExpr] sink(arr[0]) | semmle.order | 1 |
+| arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | arrays-init.js:56:8:56:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | arrays-init.js:56:8:56:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | arrays-init.js:56:12:56:12 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | arrays-init.js:56:12:56:12 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | arrays-init.js:57:3:57:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | arrays-init.js:57:3:57:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:57:3:57:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | semmle.label | 1 |
+| arrays-init.js:57:3:57:15 | [ExprStmt] sink(arr[1]); | arrays-init.js:57:3:57:14 | [CallExpr] sink(arr[1]) | semmle.order | 1 |
+| arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | arrays-init.js:57:8:57:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | arrays-init.js:57:8:57:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | arrays-init.js:57:12:57:12 | [Literal] 1 | semmle.label | 2 |
+| arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | arrays-init.js:57:12:57:12 | [Literal] 1 | semmle.order | 2 |
+| arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | arrays-init.js:58:3:58:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | arrays-init.js:58:3:58:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:58:3:58:15 | [ExprStmt] sink(arr[2]); | arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | semmle.label | 1 |
+| arrays-init.js:58:3:58:15 | [ExprStmt] sink(arr[2]); | arrays-init.js:58:3:58:14 | [CallExpr] sink(arr[2]) | semmle.order | 1 |
+| arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | arrays-init.js:58:8:58:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | arrays-init.js:58:8:58:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | arrays-init.js:58:12:58:12 | [Literal] 2 | semmle.label | 2 |
+| arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | arrays-init.js:58:12:58:12 | [Literal] 2 | semmle.order | 2 |
+| arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | arrays-init.js:59:3:59:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | arrays-init.js:59:3:59:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:59:3:59:15 | [ExprStmt] sink(arr[3]); | arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | semmle.label | 1 |
+| arrays-init.js:59:3:59:15 | [ExprStmt] sink(arr[3]); | arrays-init.js:59:3:59:14 | [CallExpr] sink(arr[3]) | semmle.order | 1 |
+| arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | arrays-init.js:59:8:59:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | arrays-init.js:59:8:59:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | arrays-init.js:59:12:59:12 | [Literal] 3 | semmle.label | 2 |
+| arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | arrays-init.js:59:12:59:12 | [Literal] 3 | semmle.order | 2 |
+| arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | arrays-init.js:60:3:60:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | arrays-init.js:60:3:60:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:60:3:60:15 | [ExprStmt] sink(arr[4]); | arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | semmle.label | 1 |
+| arrays-init.js:60:3:60:15 | [ExprStmt] sink(arr[4]); | arrays-init.js:60:3:60:14 | [CallExpr] sink(arr[4]) | semmle.order | 1 |
+| arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | arrays-init.js:60:8:60:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | arrays-init.js:60:8:60:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | arrays-init.js:60:12:60:12 | [Literal] 4 | semmle.label | 2 |
+| arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | arrays-init.js:60:12:60:12 | [Literal] 4 | semmle.order | 2 |
+| arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | arrays-init.js:61:3:61:6 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | arrays-init.js:61:3:61:6 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:61:3:61:15 | [ExprStmt] sink(arr[5]); | arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | semmle.label | 1 |
+| arrays-init.js:61:3:61:15 | [ExprStmt] sink(arr[5]); | arrays-init.js:61:3:61:14 | [CallExpr] sink(arr[5]) | semmle.order | 1 |
+| arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | arrays-init.js:61:8:61:10 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | arrays-init.js:61:8:61:10 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | arrays-init.js:61:12:61:12 | [Literal] 5 | semmle.label | 2 |
+| arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | arrays-init.js:61:12:61:12 | [Literal] 5 | semmle.order | 2 |
+| arrays-init.js:63:3:63:13 | [DotExpr] console.log | arrays-init.js:63:3:63:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:63:3:63:13 | [DotExpr] console.log | arrays-init.js:63:3:63:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:63:3:63:13 | [DotExpr] console.log | arrays-init.js:63:11:63:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:63:3:63:13 | [DotExpr] console.log | arrays-init.js:63:11:63:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | arrays-init.js:63:3:63:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | arrays-init.js:63:3:63:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:63:3:63:55 | [ExprStmt] console ... ==="); | arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:63:3:63:55 | [ExprStmt] console ... ==="); | arrays-init.js:63:3:63:54 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:64:3:64:26 | [DeclStmt] var arr = ... | arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | semmle.label | 1 |
+| arrays-init.js:64:3:64:26 | [DeclStmt] var arr = ... | arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | semmle.order | 1 |
+| arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:64:7:64:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:64:7:64:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | semmle.label | 2 |
+| arrays-init.js:64:7:64:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | semmle.order | 2 |
+| arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | arrays-init.js:64:14:64:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | arrays-init.js:64:14:64:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | arrays-init.js:64:19:64:24 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:64:13:64:25 | [ArrayExpr] [str, source] | arrays-init.js:64:19:64:24 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:8:65:16 | [DeclStmt] let i = ... | semmle.label | 1 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:8:65:16 | [DeclStmt] let i = ... | semmle.order | 1 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | semmle.label | 2 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | semmle.order | 2 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:35:65:37 | [UpdateExpr] i++ | semmle.label | 3 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:35:65:37 | [UpdateExpr] i++ | semmle.order | 3 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:40:67:3 | [BlockStmt] { s ... RUE } | semmle.label | 4 |
+| arrays-init.js:65:3:67:3 | [ForStmt] for (le ... RUE } | arrays-init.js:65:40:67:3 | [BlockStmt] { s ... RUE } | semmle.order | 4 |
+| arrays-init.js:65:8:65:16 | [DeclStmt] let i = ... | arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | semmle.label | 1 |
+| arrays-init.js:65:8:65:16 | [DeclStmt] let i = ... | arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | semmle.order | 1 |
+| arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | arrays-init.js:65:12:65:12 | [VarDecl] i | semmle.label | 1 |
+| arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | arrays-init.js:65:12:65:12 | [VarDecl] i | semmle.order | 1 |
+| arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | arrays-init.js:65:16:65:16 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:65:12:65:16 | [VariableDeclarator] i = 0 | arrays-init.js:65:16:65:16 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | arrays-init.js:65:19:65:19 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | arrays-init.js:65:19:65:19 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | arrays-init.js:65:23:65:32 | [DotExpr] arr.length | semmle.label | 2 |
+| arrays-init.js:65:19:65:32 | [BinaryExpr] i < arr.length | arrays-init.js:65:23:65:32 | [DotExpr] arr.length | semmle.order | 2 |
+| arrays-init.js:65:23:65:32 | [DotExpr] arr.length | arrays-init.js:65:23:65:25 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:65:23:65:32 | [DotExpr] arr.length | arrays-init.js:65:23:65:25 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:65:23:65:32 | [DotExpr] arr.length | arrays-init.js:65:27:65:32 | [Label] length | semmle.label | 2 |
+| arrays-init.js:65:23:65:32 | [DotExpr] arr.length | arrays-init.js:65:27:65:32 | [Label] length | semmle.order | 2 |
+| arrays-init.js:65:35:65:37 | [UpdateExpr] i++ | arrays-init.js:65:35:65:35 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:65:35:65:37 | [UpdateExpr] i++ | arrays-init.js:65:35:65:35 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:65:40:67:3 | [BlockStmt] { s ... RUE } | arrays-init.js:66:5:66:17 | [ExprStmt] sink(arr[i]); | semmle.label | 1 |
+| arrays-init.js:65:40:67:3 | [BlockStmt] { s ... RUE } | arrays-init.js:66:5:66:17 | [ExprStmt] sink(arr[i]); | semmle.order | 1 |
+| arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | arrays-init.js:66:5:66:8 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | arrays-init.js:66:5:66:8 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:66:5:66:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | semmle.label | 1 |
+| arrays-init.js:66:5:66:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:66:5:66:16 | [CallExpr] sink(arr[i]) | semmle.order | 1 |
+| arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | arrays-init.js:66:10:66:12 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | arrays-init.js:66:10:66:12 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | arrays-init.js:66:14:66:14 | [VarRef] i | semmle.label | 2 |
+| arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | arrays-init.js:66:14:66:14 | [VarRef] i | semmle.order | 2 |
+| arrays-init.js:69:3:69:13 | [DotExpr] console.log | arrays-init.js:69:3:69:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:69:3:69:13 | [DotExpr] console.log | arrays-init.js:69:3:69:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:69:3:69:13 | [DotExpr] console.log | arrays-init.js:69:11:69:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:69:3:69:13 | [DotExpr] console.log | arrays-init.js:69:11:69:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | arrays-init.js:69:3:69:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | arrays-init.js:69:3:69:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:69:3:69:66 | [ExprStmt] console ... ==="); | arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | semmle.label | 1 |
+| arrays-init.js:69:3:69:66 | [ExprStmt] console ... ==="); | arrays-init.js:69:3:69:65 | [MethodCallExpr] console ... e ===") | semmle.order | 1 |
+| arrays-init.js:70:3:70:23 | [DeclStmt] var arr = ... | arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | semmle.label | 1 |
+| arrays-init.js:70:3:70:23 | [DeclStmt] var arr = ... | arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | semmle.order | 1 |
+| arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | arrays-init.js:70:7:70:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | arrays-init.js:70:7:70:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | semmle.label | 2 |
+| arrays-init.js:70:7:70:22 | [VariableDeclarator] arr = [str, 'a'] | arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | semmle.order | 2 |
+| arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | arrays-init.js:70:14:70:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | arrays-init.js:70:14:70:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | arrays-init.js:70:19:70:21 | [Literal] 'a' | semmle.label | 2 |
+| arrays-init.js:70:13:70:22 | [ArrayExpr] [str, 'a'] | arrays-init.js:70:19:70:21 | [Literal] 'a' | semmle.order | 2 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:8:71:16 | [DeclStmt] let i = ... | semmle.label | 1 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:8:71:16 | [DeclStmt] let i = ... | semmle.order | 1 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | semmle.label | 2 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | semmle.order | 2 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:35:71:37 | [UpdateExpr] i++ | semmle.label | 3 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:35:71:37 | [UpdateExpr] i++ | semmle.order | 3 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:40:73:3 | [BlockStmt] { s ... LSE } | semmle.label | 4 |
+| arrays-init.js:71:3:73:3 | [ForStmt] for (le ... LSE } | arrays-init.js:71:40:73:3 | [BlockStmt] { s ... LSE } | semmle.order | 4 |
+| arrays-init.js:71:8:71:16 | [DeclStmt] let i = ... | arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | semmle.label | 1 |
+| arrays-init.js:71:8:71:16 | [DeclStmt] let i = ... | arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | semmle.order | 1 |
+| arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | arrays-init.js:71:12:71:12 | [VarDecl] i | semmle.label | 1 |
+| arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | arrays-init.js:71:12:71:12 | [VarDecl] i | semmle.order | 1 |
+| arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | arrays-init.js:71:16:71:16 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:71:12:71:16 | [VariableDeclarator] i = 0 | arrays-init.js:71:16:71:16 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | arrays-init.js:71:19:71:19 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | arrays-init.js:71:19:71:19 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | arrays-init.js:71:23:71:32 | [DotExpr] arr.length | semmle.label | 2 |
+| arrays-init.js:71:19:71:32 | [BinaryExpr] i < arr.length | arrays-init.js:71:23:71:32 | [DotExpr] arr.length | semmle.order | 2 |
+| arrays-init.js:71:23:71:32 | [DotExpr] arr.length | arrays-init.js:71:23:71:25 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:71:23:71:32 | [DotExpr] arr.length | arrays-init.js:71:23:71:25 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:71:23:71:32 | [DotExpr] arr.length | arrays-init.js:71:27:71:32 | [Label] length | semmle.label | 2 |
+| arrays-init.js:71:23:71:32 | [DotExpr] arr.length | arrays-init.js:71:27:71:32 | [Label] length | semmle.order | 2 |
+| arrays-init.js:71:35:71:37 | [UpdateExpr] i++ | arrays-init.js:71:35:71:35 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:71:35:71:37 | [UpdateExpr] i++ | arrays-init.js:71:35:71:35 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:71:40:73:3 | [BlockStmt] { s ... LSE } | arrays-init.js:72:5:72:17 | [ExprStmt] sink(arr[i]); | semmle.label | 1 |
+| arrays-init.js:71:40:73:3 | [BlockStmt] { s ... LSE } | arrays-init.js:72:5:72:17 | [ExprStmt] sink(arr[i]); | semmle.order | 1 |
+| arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | arrays-init.js:72:5:72:8 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | arrays-init.js:72:5:72:8 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:72:5:72:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | semmle.label | 1 |
+| arrays-init.js:72:5:72:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:72:5:72:16 | [CallExpr] sink(arr[i]) | semmle.order | 1 |
+| arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | arrays-init.js:72:10:72:12 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | arrays-init.js:72:10:72:12 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | arrays-init.js:72:14:72:14 | [VarRef] i | semmle.label | 2 |
+| arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | arrays-init.js:72:14:72:14 | [VarRef] i | semmle.order | 2 |
+| arrays-init.js:75:3:75:13 | [DotExpr] console.log | arrays-init.js:75:3:75:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:75:3:75:13 | [DotExpr] console.log | arrays-init.js:75:3:75:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:75:3:75:13 | [DotExpr] console.log | arrays-init.js:75:11:75:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:75:3:75:13 | [DotExpr] console.log | arrays-init.js:75:11:75:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | arrays-init.js:75:3:75:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | arrays-init.js:75:3:75:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:75:3:75:73 | [ExprStmt] console ... ==="); | arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:75:3:75:73 | [ExprStmt] console ... ==="); | arrays-init.js:75:3:75:72 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:76:3:76:46 | [DeclStmt] var arr = ... | arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | semmle.label | 1 |
+| arrays-init.js:76:3:76:46 | [DeclStmt] var arr = ... | arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | semmle.order | 1 |
+| arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:76:7:76:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:76:7:76:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | semmle.label | 2 |
+| arrays-init.js:76:7:76:45 | [VariableDeclarator] arr = [ ... source] | arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | semmle.order | 2 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:14:76:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:14:76:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:19:76:21 | [Literal] 'a' | semmle.label | 2 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:19:76:21 | [Literal] 'a' | semmle.order | 2 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:24:76:26 | [Literal] 'b' | semmle.label | 3 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:24:76:26 | [Literal] 'b' | semmle.order | 3 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:29:76:31 | [Literal] 'c' | semmle.label | 4 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:29:76:31 | [Literal] 'c' | semmle.order | 4 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:34:76:36 | [Literal] 'd' | semmle.label | 5 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:34:76:36 | [Literal] 'd' | semmle.order | 5 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:39:76:44 | [VarRef] source | semmle.label | 6 |
+| arrays-init.js:76:13:76:45 | [ArrayExpr] [str, ' ... source] | arrays-init.js:76:39:76:44 | [VarRef] source | semmle.order | 6 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:8:77:16 | [DeclStmt] let i = ... | semmle.label | 1 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:8:77:16 | [DeclStmt] let i = ... | semmle.order | 1 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | semmle.label | 2 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | semmle.order | 2 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:35:77:37 | [UpdateExpr] i++ | semmle.label | 3 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:35:77:37 | [UpdateExpr] i++ | semmle.order | 3 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:40:79:3 | [BlockStmt] { s ... RUE } | semmle.label | 4 |
+| arrays-init.js:77:3:79:3 | [ForStmt] for (le ... RUE } | arrays-init.js:77:40:79:3 | [BlockStmt] { s ... RUE } | semmle.order | 4 |
+| arrays-init.js:77:8:77:16 | [DeclStmt] let i = ... | arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | semmle.label | 1 |
+| arrays-init.js:77:8:77:16 | [DeclStmt] let i = ... | arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | semmle.order | 1 |
+| arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | arrays-init.js:77:12:77:12 | [VarDecl] i | semmle.label | 1 |
+| arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | arrays-init.js:77:12:77:12 | [VarDecl] i | semmle.order | 1 |
+| arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | arrays-init.js:77:16:77:16 | [Literal] 0 | semmle.label | 2 |
+| arrays-init.js:77:12:77:16 | [VariableDeclarator] i = 0 | arrays-init.js:77:16:77:16 | [Literal] 0 | semmle.order | 2 |
+| arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | arrays-init.js:77:19:77:19 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | arrays-init.js:77:19:77:19 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | arrays-init.js:77:23:77:32 | [DotExpr] arr.length | semmle.label | 2 |
+| arrays-init.js:77:19:77:32 | [BinaryExpr] i < arr.length | arrays-init.js:77:23:77:32 | [DotExpr] arr.length | semmle.order | 2 |
+| arrays-init.js:77:23:77:32 | [DotExpr] arr.length | arrays-init.js:77:23:77:25 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:77:23:77:32 | [DotExpr] arr.length | arrays-init.js:77:23:77:25 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:77:23:77:32 | [DotExpr] arr.length | arrays-init.js:77:27:77:32 | [Label] length | semmle.label | 2 |
+| arrays-init.js:77:23:77:32 | [DotExpr] arr.length | arrays-init.js:77:27:77:32 | [Label] length | semmle.order | 2 |
+| arrays-init.js:77:35:77:37 | [UpdateExpr] i++ | arrays-init.js:77:35:77:35 | [VarRef] i | semmle.label | 1 |
+| arrays-init.js:77:35:77:37 | [UpdateExpr] i++ | arrays-init.js:77:35:77:35 | [VarRef] i | semmle.order | 1 |
+| arrays-init.js:77:40:79:3 | [BlockStmt] { s ... RUE } | arrays-init.js:78:5:78:17 | [ExprStmt] sink(arr[i]); | semmle.label | 1 |
+| arrays-init.js:77:40:79:3 | [BlockStmt] { s ... RUE } | arrays-init.js:78:5:78:17 | [ExprStmt] sink(arr[i]); | semmle.order | 1 |
+| arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | arrays-init.js:78:5:78:8 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | arrays-init.js:78:5:78:8 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:78:5:78:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | semmle.label | 1 |
+| arrays-init.js:78:5:78:17 | [ExprStmt] sink(arr[i]); | arrays-init.js:78:5:78:16 | [CallExpr] sink(arr[i]) | semmle.order | 1 |
+| arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | arrays-init.js:78:10:78:12 | [VarRef] arr | semmle.label | 1 |
+| arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | arrays-init.js:78:10:78:12 | [VarRef] arr | semmle.order | 1 |
+| arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | arrays-init.js:78:14:78:14 | [VarRef] i | semmle.label | 2 |
+| arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | arrays-init.js:78:14:78:14 | [VarRef] i | semmle.order | 2 |
+| arrays-init.js:81:3:81:13 | [DotExpr] console.log | arrays-init.js:81:3:81:9 | [VarRef] console | semmle.label | 1 |
+| arrays-init.js:81:3:81:13 | [DotExpr] console.log | arrays-init.js:81:3:81:9 | [VarRef] console | semmle.order | 1 |
+| arrays-init.js:81:3:81:13 | [DotExpr] console.log | arrays-init.js:81:11:81:13 | [Label] log | semmle.label | 2 |
+| arrays-init.js:81:3:81:13 | [DotExpr] console.log | arrays-init.js:81:11:81:13 | [Label] log | semmle.order | 2 |
+| arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | arrays-init.js:81:3:81:13 | [DotExpr] console.log | semmle.label | 0 |
+| arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | arrays-init.js:81:3:81:13 | [DotExpr] console.log | semmle.order | 0 |
+| arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:81:3:81:57 | [ExprStmt] console ... ==="); | arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | semmle.label | 1 |
+| arrays-init.js:81:3:81:57 | [ExprStmt] console ... ==="); | arrays-init.js:81:3:81:56 | [MethodCallExpr] console ... ) ===") | semmle.order | 1 |
+| arrays-init.js:82:3:82:26 | [DeclStmt] var arr = ... | arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | semmle.label | 1 |
+| arrays-init.js:82:3:82:26 | [DeclStmt] var arr = ... | arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | semmle.order | 1 |
+| arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:82:7:82:9 | [VarDecl] arr | semmle.label | 1 |
+| arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:82:7:82:9 | [VarDecl] arr | semmle.order | 1 |
+| arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | semmle.label | 2 |
+| arrays-init.js:82:7:82:25 | [VariableDeclarator] arr = [str, source] | arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | semmle.order | 2 |
+| arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | arrays-init.js:82:14:82:16 | [VarRef] str | semmle.label | 1 |
+| arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | arrays-init.js:82:14:82:16 | [VarRef] str | semmle.order | 1 |
+| arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | arrays-init.js:82:19:82:24 | [VarRef] source | semmle.label | 2 |
+| arrays-init.js:82:13:82:25 | [ArrayExpr] [str, source] | arrays-init.js:82:19:82:24 | [VarRef] source | semmle.order | 2 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:8:83:17 | [DeclStmt] const item = ... | semmle.label | 1 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:8:83:17 | [DeclStmt] const item = ... | semmle.order | 1 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:22:83:24 | [VarRef] arr | semmle.label | 2 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:22:83:24 | [VarRef] arr | semmle.order | 2 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:27:85:3 | [BlockStmt] { s ... } | semmle.label | 3 |
+| arrays-init.js:83:3:85:3 | [ForOfStmt] for (co ... } | arrays-init.js:83:27:85:3 | [BlockStmt] { s ... } | semmle.order | 3 |
+| arrays-init.js:83:8:83:17 | [DeclStmt] const item = ... | arrays-init.js:83:14:83:17 | [VariableDeclarator] item | semmle.label | 1 |
+| arrays-init.js:83:8:83:17 | [DeclStmt] const item = ... | arrays-init.js:83:14:83:17 | [VariableDeclarator] item | semmle.order | 1 |
+| arrays-init.js:83:14:83:17 | [VariableDeclarator] item | arrays-init.js:83:14:83:17 | [VarDecl] item | semmle.label | 1 |
+| arrays-init.js:83:14:83:17 | [VariableDeclarator] item | arrays-init.js:83:14:83:17 | [VarDecl] item | semmle.order | 1 |
+| arrays-init.js:83:27:85:3 | [BlockStmt] { s ... } | arrays-init.js:84:5:84:15 | [ExprStmt] sink(item); | semmle.label | 1 |
+| arrays-init.js:83:27:85:3 | [BlockStmt] { s ... } | arrays-init.js:84:5:84:15 | [ExprStmt] sink(item); | semmle.order | 1 |
+| arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | arrays-init.js:84:5:84:8 | [VarRef] sink | semmle.label | 0 |
+| arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | arrays-init.js:84:5:84:8 | [VarRef] sink | semmle.order | 0 |
+| arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| arrays-init.js:84:5:84:15 | [ExprStmt] sink(item); | arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | semmle.label | 1 |
+| arrays-init.js:84:5:84:15 | [ExprStmt] sink(item); | arrays-init.js:84:5:84:14 | [CallExpr] sink(item) | semmle.order | 1 |
 | arrays.js:1:1:83:2 | [ParExpr] (functi ... } }) | arrays.js:1:2:83:1 | [FunctionExpr] functio ... K } } | semmle.label | 1 |
 | arrays.js:1:1:83:2 | [ParExpr] (functi ... } }) | arrays.js:1:2:83:1 | [FunctionExpr] functio ... K } } | semmle.order | 1 |
 | arrays.js:1:1:83:3 | [ExprStmt] (functi ... } }); | arrays.js:1:1:83:2 | [ParExpr] (functi ... } }) | semmle.label | 1 |
@@ -1052,6 +2263,74 @@ edges
 | arrays.js:81:5:81:11 | [CallExpr] sink(x) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
 | arrays.js:81:5:81:12 | [ExprStmt] sink(x); | arrays.js:81:5:81:11 | [CallExpr] sink(x) | semmle.label | 1 |
 | arrays.js:81:5:81:12 | [ExprStmt] sink(x); | arrays.js:81:5:81:11 | [CallExpr] sink(x) | semmle.order | 1 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:15:36:15:39 | [Literal] '\\n' | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:15:36:15:39 | [Literal] '\\n' | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:16:44:16:52 | [IndexExpr] stacks[2] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:18:24:18:34 | [TemplateLiteral] `[${line}]` | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:18:37:18:39 | [VarRef] arg | semmle.label | 1 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:18:37:18:39 | [VarRef] arg | semmle.order | 1 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:20:24:20:26 | [VarRef] arg | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:20:24:20:26 | [VarRef] arg | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:29:15:29:54 | [Literal] "=== access by index (init by ctor) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:29:15:29:54 | [Literal] "=== access by index (init by ctor) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:30:23:30:23 | [Literal] 2 | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:30:23:30:23 | [Literal] 2 | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:39:8:39:13 | [IndexExpr] arr[0] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:40:8:40:13 | [IndexExpr] arr[1] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:41:8:41:13 | [IndexExpr] arr[2] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:42:8:42:13 | [IndexExpr] arr[3] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:43:8:43:13 | [IndexExpr] arr[4] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:44:8:44:13 | [IndexExpr] arr[5] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:45:8:45:13 | [IndexExpr] arr[6] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:46:8:46:10 | [VarRef] str | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:46:8:46:10 | [VarRef] str | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:48:15:48:55 | [Literal] "=== access by index (init by [...]) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:48:15:48:55 | [Literal] "=== access by index (init by [...]) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:50:8:50:13 | [IndexExpr] arr[0] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:51:8:51:13 | [IndexExpr] arr[1] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:52:8:52:10 | [VarRef] str | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:52:8:52:10 | [VarRef] str | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:54:15:54:73 | [Literal] "=== access by index (init by [...], array.lenght > 5) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:54:15:54:73 | [Literal] "=== access by index (init by [...], array.lenght > 5) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:56:8:56:13 | [IndexExpr] arr[0] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:57:8:57:13 | [IndexExpr] arr[1] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:58:8:58:13 | [IndexExpr] arr[2] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:59:8:59:13 | [IndexExpr] arr[3] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:60:8:60:13 | [IndexExpr] arr[4] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:61:8:61:13 | [IndexExpr] arr[5] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:63:15:63:53 | [Literal] "=== access in for (init by [...]) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:63:15:63:53 | [Literal] "=== access in for (init by [...]) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:66:10:66:15 | [IndexExpr] arr[i] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:69:15:69:64 | [Literal] "=== access in for (init by [...]) w/o source ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:69:15:69:64 | [Literal] "=== access in for (init by [...]) w/o source ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:72:10:72:15 | [IndexExpr] arr[i] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:75:15:75:71 | [Literal] "=== access in for (init by [...], array.lenght > 5) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:75:15:75:71 | [Literal] "=== access in for (init by [...], array.lenght > 5) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:78:10:78:15 | [IndexExpr] arr[i] | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:81:15:81:55 | [Literal] "=== access in forof (init by [...]) ===" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:81:15:81:55 | [Literal] "=== access in forof (init by [...]) ===" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:84:10:84:13 | [VarRef] item | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | arrays-init.js:84:10:84:13 | [VarRef] item | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:5:8:5:14 | [DotExpr] obj.foo | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:5:8:5:14 | [DotExpr] obj.foo | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:8:12:8:17 | [VarRef] source | semmle.label | 0 |
@@ -1140,6 +2419,8 @@ edges
 | file://:0:0:0:0 | (Arguments) | arrays.js:80:24:80:26 | [VarRef] arr | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:81:10:81:10 | [VarRef] x | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | arrays.js:81:10:81:10 | [VarRef] x | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | arrays-init.js:1:15:1:17 | [SimpleParameter] arg | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | arrays-init.js:1:15:1:17 | [SimpleParameter] arg | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | arrays.js:15:16:15:16 | [SimpleParameter] e | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | arrays.js:15:16:15:16 | [SimpleParameter] e | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | arrays.js:16:12:16:12 | [SimpleParameter] e | semmle.label | 0 |
