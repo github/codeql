@@ -1,12 +1,13 @@
 /**
- * @name TODO
- * @description TODO
+ * @name Certificate not checked
+ * @description Always check the result of certificate verification after fetching an SSL certificate.
  * @kind problem
- * @problem.severity TODO
+ * @problem.severity error
  * @security-severity TODO
  * @precision TODO
- * @id TODO
- * @tags TODO
+ * @id cpp/certificate-not-checked
+ * @tags security
+ *       external/cwe/cwe-295
  */
 
 
