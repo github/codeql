@@ -8,13 +8,7 @@ import go
 module Log {
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
     LogCall() {
-      exists(string fn |
-        fn.matches("Fatal%")
-        or
-        fn.matches("Panic%")
-        or
-        fn.matches("Print%")
-      |
+      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
         this.getTarget().hasQualifiedName("log", fn)
         or
         this.getTarget().(Method).hasQualifiedName("log", "Logger", fn)
