@@ -91,7 +91,7 @@ private string getContentSpecificCsv(Content c) {
   c instanceof MapValueContent and result = "MapValue"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries */
+/** Gets the textual representation of the content in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
 }

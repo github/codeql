@@ -131,7 +131,7 @@ module Public {
     not exists(getComponentSpecificCsv(sc))
   }
 
-  /** Gets a textual representation of this component used for flow summaries */
+  /** Gets a textual representation of this component used for flow summaries. */
   private string getComponentCsv(SummaryComponent sc) {
     result = getComponentSpecificCsv(sc)
     or
@@ -1016,7 +1016,7 @@ module Private {
     /**
      * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
      * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-     * ext is hardcoded to empty
+     * ext is hardcoded to empty.
      */
     query predicate summary(string csv) {
       exists(

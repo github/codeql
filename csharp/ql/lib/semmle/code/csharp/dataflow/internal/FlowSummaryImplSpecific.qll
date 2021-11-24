@@ -138,7 +138,7 @@ SummaryComponent interpretComponentSpecific(string c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries */
+/** Gets the textual representation of the content in the format used for flow summaries. */
 private string getContentSpecificCsv(Content c) {
   c = TElementContent() and result = "Element"
   or
@@ -147,14 +147,14 @@ private string getContentSpecificCsv(Content c) {
   exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries */
+/** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
   or
-  exists(ReturnKind jrk |
-    sc = TReturnSummaryComponent(jrk) and
-    result = "ReturnValue[" + jrk + "]" and
-    not jrk instanceof NormalReturnKind
+  exists(ReturnKind rk |
+    sc = TReturnSummaryComponent(rk) and
+    result = "ReturnValue[" + rk + "]" and
+    not rk instanceof NormalReturnKind
   )
 }
 
