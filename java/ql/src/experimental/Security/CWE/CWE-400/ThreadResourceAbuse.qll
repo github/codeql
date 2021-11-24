@@ -35,10 +35,10 @@ class PauseThreadSink extends DataFlow::Node {
 /** A sanitizer for lessThan check. */
 class LessThanSanitizer extends DataFlow::BarrierGuard instanceof ComparisonExpr {
   override predicate checks(Expr e, boolean branch) {
-    e = this.(ComparisonExpr).getLesserOperand() and
+    e = super.getLesserOperand() and
     branch = true
     or
-    e = this.(ComparisonExpr).getGreaterOperand() and
+    e = super.getGreaterOperand() and
     branch = false
   }
 }
