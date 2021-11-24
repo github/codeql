@@ -840,7 +840,10 @@ private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private module ReadNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module ReadNodeFlow {
   /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
   predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
     nodeTo.isInitial() and

@@ -299,7 +299,17 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and not n instanceof ArgumentNode
+  or
+  StoreNodeFlow::flowThrough(n, _) and
+  not StoreNodeFlow::flowOutOf(n, _) and
+  not StoreNodeFlow::flowInto(_, n)
+  or
+  ReadNodeFlow::flowThrough(n, _) and
+  not ReadNodeFlow::flowOutOf(n, _) and
+  not ReadNodeFlow::flowInto(_, n)
+}
 
 class LambdaCallKind = Unit;
 
