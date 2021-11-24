@@ -289,6 +289,7 @@ private predicate outBarrier(NodeEx node, Configuration config) {
   )
 }
 
+pragma[nomagic]
 private predicate fullBarrier(NodeEx node, Configuration config) {
   exists(Node n | node.asNode() = n |
     config.isBarrier(n)
@@ -307,10 +308,22 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
 }
 
 pragma[nomagic]
-private predicate sourceNode(NodeEx node, Configuration config) { config.isSource(node.asNode()) }
+private predicate sourceNode(NodeEx node, Configuration config) {
+  config.isSource(node.asNode()) and
+  not fullBarrier(node, config)
+}
 
 pragma[nomagic]
 private predicate sinkNode(NodeEx node, Configuration config) { config.isSink(node.asNode()) }
+
+/** Provides the relevant barriers for a step from `node1` to `node2`. */
+pragma[inline]
+private predicate stepFilter(NodeEx node1, NodeEx node2, Configuration config) {
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
+}
 
 /**
  * Holds if data can flow in one local step from `node1` to `node2`.
@@ -320,16 +333,14 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
     node1.asNode() = n1 and
     node2.asNode() = n2 and
     simpleLocalFlowStepExt(n1, n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    stepFilter(node1, node2, config)
   )
   or
   exists(Node n |
     config.allowImplicitRead(n, _) and
     node1.asNode() = n and
-    node2.isImplicitReadNode(n, false)
+    node2.isImplicitReadNode(n, false) and
+    not fullBarrier(node1, config)
   )
 }
 
@@ -342,16 +353,14 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
     node2.asNode() = n2 and
     config.isAdditionalFlowStep(n1, n2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    stepFilter(node1, node2, config)
   )
   or
   exists(Node n |
     config.allowImplicitRead(n, _) and
     node1.isImplicitReadNode(n, true) and
-    node2.asNode() = n
+    node2.asNode() = n and
+    not fullBarrier(node2, config)
   )
 }
 
@@ -363,10 +372,7 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
     node1.asNode() = n1 and
     node2.asNode() = n2 and
     jumpStepCached(n1, n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config) and
+    stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
@@ -380,16 +386,14 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
     node2.asNode() = n2 and
     config.isAdditionalFlowStep(n1, n2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config) and
+    stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
-  read(node1.asNode(), c, node2.asNode())
+  read(node1.asNode(), c, node2.asNode()) and
+  stepFilter(node1, node2, config)
   or
   exists(Node n |
     node2.isImplicitReadNode(n, true) and
@@ -402,7 +406,8 @@ private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
   store(node1.asNode(), tc, node2.asNode(), contentType) and
-  read(_, tc.getContent(), _, config)
+  read(_, tc.getContent(), _, config) and
+  stepFilter(node1, node2, config)
 }
 
 pragma[nomagic]
@@ -451,63 +456,59 @@ private module Stage1 {
    * argument in a call.
    */
   predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
-    not fullBarrier(node, config) and
-    (
-      sourceNode(node, config) and
-      if hasSourceCallCtx(config) then cc = true else cc = false
+    sourceNode(node, config) and
+    if hasSourceCallCtx(config) then cc = true else cc = false
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, cc, config) and
+      localFlowStep(mid, node, config)
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, cc, config) and
+      additionalLocalFlowStep(mid, node, config)
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, _, config) and
+      jumpStep(mid, node, config) and
+      cc = false
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, _, config) and
+      additionalJumpStep(mid, node, config) and
+      cc = false
+    )
+    or
+    // store
+    exists(NodeEx mid |
+      useFieldFlow(config) and
+      fwdFlow(mid, cc, config) and
+      store(mid, _, node, _, config)
+    )
+    or
+    // read
+    exists(Content c |
+      fwdFlowRead(c, node, cc, config) and
+      fwdFlowConsCand(c, config)
+    )
+    or
+    // flow into a callable
+    exists(NodeEx arg |
+      fwdFlow(arg, _, config) and
+      viableParamArgEx(_, node, arg) and
+      cc = true and
+      not fullBarrier(node, config)
+    )
+    or
+    // flow out of a callable
+    exists(DataFlowCall call |
+      fwdFlowOut(call, node, false, config) and
+      cc = false
       or
-      exists(NodeEx mid |
-        fwdFlow(mid, cc, config) and
-        localFlowStep(mid, node, config)
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, cc, config) and
-        additionalLocalFlowStep(mid, node, config)
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, _, config) and
-        jumpStep(mid, node, config) and
-        cc = false
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, _, config) and
-        additionalJumpStep(mid, node, config) and
-        cc = false
-      )
-      or
-      // store
-      exists(NodeEx mid |
-        useFieldFlow(config) and
-        fwdFlow(mid, cc, config) and
-        store(mid, _, node, _, config) and
-        not outBarrier(mid, config)
-      )
-      or
-      // read
-      exists(Content c |
-        fwdFlowRead(c, node, cc, config) and
-        fwdFlowConsCand(c, config) and
-        not inBarrier(node, config)
-      )
-      or
-      // flow into a callable
-      exists(NodeEx arg |
-        fwdFlow(arg, _, config) and
-        viableParamArgEx(_, node, arg) and
-        cc = true
-      )
-      or
-      // flow out of a callable
-      exists(DataFlowCall call |
-        fwdFlowOut(call, node, false, config) and
-        cc = false
-        or
-        fwdFlowOutFromArg(call, node, config) and
-        fwdFlowIsEntered(call, cc, config)
-      )
+      fwdFlowOutFromArg(call, node, config) and
+      fwdFlowIsEntered(call, cc, config)
     )
   }
 
@@ -547,7 +548,8 @@ private module Stage1 {
   private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
     exists(ReturnPosition pos |
       fwdFlowReturnPosition(pos, cc, config) and
-      viableReturnPosOutEx(call, pos, out)
+      viableReturnPosOutEx(call, pos, out) and
+      not fullBarrier(out, config)
     )
   }
 
@@ -773,6 +775,7 @@ private module Stage1 {
    * Holds if flow may enter through `p` and reach a return node making `p` a
    * candidate for the origin of a summary.
    */
+  pragma[nomagic]
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(ReturnKindExt kind |
       throughFlowNodeCand(p, config) and
