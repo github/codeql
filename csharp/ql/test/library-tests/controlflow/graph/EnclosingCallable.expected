@@ -4882,17 +4882,11 @@ nodeEnclosing
 | cflow.cs:306:60:310:5 | exit get__getter | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:306:60:310:5 | exit get__getter (normal) | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:307:5:310:5 | {...} | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:307:5:310:5 | {...} | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:308:9:308:21 | ... ...; | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:308:9:308:21 | ... ...; | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:308:16:308:20 | Object x = ... | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:308:16:308:20 | Object x = ... | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:308:20:308:20 | access to parameter o | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:308:20:308:20 | access to parameter o | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:309:9:309:17 | return ...; | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:309:9:309:17 | return ...; | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:309:16:309:16 | access to local variable x | cflow.cs:306:60:310:5 | (...) => ... |
-| cflow.cs:309:16:309:16 | access to local variable x | cflow.cs:306:60:310:5 | get__getter |
 blockEnclosing
 | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:23:5:25 | get_Item |
 | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | set_Item |
