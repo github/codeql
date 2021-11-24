@@ -164,10 +164,12 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   djangorestframework, Web framework
    FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
+   Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
    dill, Serialization
    PyYAML, Serialization
@@ -183,6 +185,8 @@ Python built-in support
    pydantic, Utility library
    yarl, Utility library
    aioch, Database
+   aiomysql, Database
+   aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database

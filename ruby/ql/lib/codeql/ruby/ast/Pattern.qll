@@ -4,6 +4,7 @@ private import internal.AST
 private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable
+private import internal.Parameter
 
 /** A pattern. */
 class Pattern extends AstNode {
@@ -15,6 +16,8 @@ class Pattern extends AstNode {
     implicitParameterAssignmentNode(toGenerated(this), _)
     or
     this = getSynthChild(any(AssignExpr ae), 0)
+    or
+    this instanceof SimpleParameterImpl
   }
 
   /** Gets a variable used in (or introduced by) this pattern. */

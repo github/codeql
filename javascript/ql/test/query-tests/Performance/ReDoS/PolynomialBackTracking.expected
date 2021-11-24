@@ -28,6 +28,7 @@
 | jsonschema.js:15:23:15:29 | (a?a?)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a?a?)*b |
 | jsonschema.js:20:18:20:24 | (a?a?)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a?a?)*b |
 | lib/closure.js:4:6:4:7 | u* | Strings with many repetitions of 'u' can start matching anywhere after the start of the preceeding u*o |
+| lib/indirect.js:2:6:2:7 | k* | Strings with many repetitions of 'k' can start matching anywhere after the start of the preceeding k*h |
 | lib/lib.js:1:15:1:16 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/lib.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/moduleLib/moduleLib.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
@@ -512,3 +513,8 @@
 | tst.js:384:15:384:26 | ([AB]\|[ab])* | Strings with many repetitions of 'A' can start matching anywhere after the start of the preceeding ([AB]\|[ab])*C |
 | tst.js:385:14:385:25 | ([DE]\|[de])* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ([DE]\|[de])*F |
 | tst.js:388:14:388:20 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*$ |
+| tst.js:391:6:394:5 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*b$ |
+| tst.js:398:6:398:12 | (c\|cc)* | Strings with many repetitions of 'c' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:399:6:399:12 | (d\|dd)* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:400:6:401:1 | (e\|ee)* | Strings with many repetitions of 'e' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:404:6:405:7 | (g\|gg)* | Strings with many repetitions of 'g' can start matching anywhere after the start of the preceeding (g\|gg)*h$ |

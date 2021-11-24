@@ -23,11 +23,10 @@ class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
   override predicate isSink(Element e) { isSinkArgument(e) }
 }
 
-predicate irTaint(Element source, Element sink, string tag) {
-  exists(TaintedWithPath::PathNode sinkNode, TaintedWithPath::PathNode predNode |
+predicate irTaint(Element source, TaintedWithPath::PathNode predNode, string tag) {
+  exists(TaintedWithPath::PathNode sinkNode |
     TaintedWithPath::taintedWithPath(source, _, _, sinkNode) and
     predNode = getAPredecessor*(sinkNode) and
-    sink = getElementFromPathNode(predNode) and
     // Make sure the path is actually reachable from this predecessor.
     // Otherwise, we could pick `predNode` to be b when `source` is
     // `source1` in this dataflow graph:
@@ -35,7 +34,7 @@ predicate irTaint(Element source, Element sink, string tag) {
     //                   ^
     // source2 ---> b --/
     source = getElementFromPathNode(getAPredecessor*(predNode)) and
-    if sinkNode = predNode then tag = "ir-sink" else tag = "ir-path"
+    if predNode = sinkNode then tag = "ir-sink" else tag = "ir-path"
   )
 }
 
@@ -45,21 +44,25 @@ class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = ["ir-path", "ir-sink"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Element source, Element tainted, int n |
-      irTaint(source, tainted, tag) and
-      n = strictcount(Element otherSource | irTaint(otherSource, tainted, _)) and
-      (
-        n = 1 and value = ""
-        or
-        // If there is more than one source for this sink
-        // we specify the source location explicitly.
-        n > 1 and
+    exists(Element source, Element elem, TaintedWithPath::PathNode node, int n |
+      irTaint(source, node, tag) and
+      elem = getElementFromPathNode(node) and
+      n = count(int startline | getAPredecessor(node).hasLocationInfo(_, startline, _, _, _)) and
+      location = elem.getLocation() and
+      element = elem.toString()
+    |
+      // Zero predecessors means it's a source, and 1 predecessor means it has a unique predecessor.
+      // In either of these cases we leave out the location.
+      n = [0, 1] and value = ""
+      or
+      // If there is more than one predecessor for this node
+      // we specify the source location explicitly.
+      n > 1 and
+      exists(TaintedWithPath::PathNode pred | pred = getAPredecessor(node) |
         value =
-          source.getLocation().getStartLine().toString() + ":" +
-            source.getLocation().getStartColumn()
-      ) and
-      location = tainted.getLocation() and
-      element = tainted.toString()
+          getElementFromPathNode(pred).getLocation().getStartLine().toString() + ":" +
+            getElementFromPathNode(pred).getLocation().getStartColumn()
+      )
     )
   }
 }

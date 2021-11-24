@@ -3,6 +3,7 @@
 private import AST
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
+private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
@@ -15,6 +16,7 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BraceBlockKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
   ExponentExprKind() or
@@ -33,6 +35,7 @@ newtype SynthKind =
   MulExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
+  SimpleParameterKind() or
   SplatExprKind() or
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
@@ -46,7 +49,25 @@ newtype SynthKind =
  */
 newtype Child =
   SynthChild(SynthKind k) or
-  RealChild(AstNode n)
+  RealChildRef(TAstNodeReal n) or
+  SynthChildRef(TAstNodeSynth n)
+
+/**
+ * The purpose of this inlined predicate is to split up child references into
+ * those that are from real AST nodes (for which there will be no recursion
+ * through `RealChildRef`), and those that are synthesized recursively
+ * (for which there will be recursion through `SynthChildRef`).
+ *
+ * This performs much better than having a combined `ChildRef` that includes
+ * both real and synthesized AST nodes, since the recursion happening in
+ * `Synthesis::child/3` is non-linear.
+ */
+pragma[inline]
+private Child childRef(TAstNode n) {
+  result = RealChildRef(n)
+  or
+  result = SynthChildRef(n)
+}
 
 private newtype TSynthesis = MkSynthesis()
 
@@ -125,7 +146,7 @@ private predicate assign(
     child = SynthChild(LocalVariableAccessSynthKind(v))
     or
     i = 1 and
-    child = RealChild(value)
+    child = childRef(value)
   )
 }
 
@@ -218,10 +239,10 @@ private module SetterDesugar {
         exists(AstNode call | call = TMethodCallSynth(seq, 0, _, _, _) |
           parent = call and
           i = 0 and
-          child = RealChild(sae.getReceiver())
+          child = childRef(sae.getReceiver())
           or
           parent = call and
-          child = RealChild(sae.getArgument(i - 1))
+          child = childRef(sae.getArgument(i - 1))
           or
           exists(int valueIndex | valueIndex = sae.getNumberOfArguments() + 1 |
             parent = call and
@@ -234,7 +255,7 @@ private module SetterDesugar {
               child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sae, 0)))
               or
               i = 1 and
-              child = RealChild(sae.getRightOperand())
+              child = childRef(sae.getRightOperand())
             )
           )
         )
@@ -357,7 +378,7 @@ private module AssignOperationDesugar {
       exists(AstNode assign | assign = TAssignExprSynth(vao, -1) |
         parent = assign and
         i = 0 and
-        child = RealChild(vao.getLeftOperand())
+        child = childRef(vao.getLeftOperand())
         or
         parent = assign and
         i = 1 and
@@ -369,7 +390,7 @@ private module AssignOperationDesugar {
           child = SynthChild(vao.getVariableAccessKind())
           or
           i = 1 and
-          child = RealChild(vao.getRightOperand())
+          child = childRef(vao.getRightOperand())
         )
       )
     )
@@ -477,7 +498,7 @@ private module AssignOperationDesugar {
               or
               parent = op and
               i = 1 and
-              child = RealChild(sao.getRightOperand())
+              child = childRef(sao.getRightOperand())
             )
           )
           or
@@ -648,7 +669,7 @@ private module CompoundAssignDesugar {
           or
           parent = TSplatExprSynth(assign, 1) and
           i = 0 and
-          child = RealChild(tae.getRightOperand())
+          child = childRef(tae.getRightOperand())
         )
         or
         exists(Pattern p, int j, int restIndex |
@@ -662,7 +683,7 @@ private module CompoundAssignDesugar {
           exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1) |
             parent = assign and
             i = 0 and
-            child = RealChild(p)
+            child = childRef(p)
             or
             parent = assign and
             i = 1 and
@@ -767,7 +788,7 @@ private module ArrayLiteralDesugar {
         child = SynthChild(ConstantReadAccessKind("::Array"))
         or
         parent = mc and
-        child = RealChild(al.getElement(i - 1))
+        child = childRef(al.getElement(i - 1))
       )
     )
   }
@@ -794,5 +815,96 @@ private module ArrayLiteralDesugar {
     }
 
     final override predicate constantReadAccess(string name) { name = "::Array" }
+  }
+}
+
+/**
+ * ```rb
+ * for x in xs
+ *   <loop_body>
+ * end
+ * ```
+ * desugars to, roughly,
+ * ```rb
+ * xs.each { |__synth__0| x = __synth__0; <loop_body> }
+ * ```
+ *
+ * Note that for-loops, unlike blocks, do not create a new variable scope, so
+ * variables within this block inherit the enclosing scope. The exception to
+ * this is the synthesized variable declared by the block parameter, which is
+ * scoped to the synthesized block.
+ */
+private module ForLoopDesugar {
+  pragma[nomagic]
+  private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
+    exists(ForExpr for |
+      // each call
+      parent = for and
+      i = -1 and
+      child = SynthChild(MethodCallKind("each", false, 0))
+      or
+      exists(MethodCall eachCall | eachCall = TMethodCallSynth(for, -1, "each", false, 0) |
+        // receiver
+        parent = eachCall and
+        i = 0 and
+        child = childRef(for.getValue()) // value is the Enumerable
+        or
+        parent = eachCall and
+        i = -2 and
+        child = SynthChild(BraceBlockKind())
+        or
+        exists(Block block | block = TBraceBlockSynth(eachCall, -2) |
+          // block params
+          parent = block and
+          i = 0 and
+          child = SynthChild(SimpleParameterKind())
+          or
+          exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+            parent = param and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            or
+            // assignment to pattern from for loop to synth parameter
+            parent = block and
+            i = 1 and
+            child = SynthChild(AssignExprKind())
+            or
+            parent = TAssignExprSynth(block, 1) and
+            (
+              i = 0 and
+              child = childRef(for.getPattern())
+              or
+              i = 1 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            )
+          )
+          or
+          // rest of block body
+          parent = block and
+          child = childRef(for.getBody().(Do).getStmt(i - 2))
+        )
+      )
+    )
+  }
+
+  private class ForLoopSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      forLoopSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "each" and
+      setter = false and
+      arity = 0
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof TSimpleParameterSynth and
+      i = 0
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(ForExpr for).getBody()
+    }
   }
 }

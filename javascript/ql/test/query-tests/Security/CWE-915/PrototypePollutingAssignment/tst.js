@@ -72,6 +72,22 @@ class Box {
     }
 }
 
+
+app.get('/', (req, res) => {
+    let taint = String(req.query.data);
+
+    let object = {};
+    object[taint][taint] = taint; // NOT OK
+
+    object["" + taint]["" + taint] = taint; // NOT OK
+
+    if (!taint.includes("__proto__")) {
+        object[taint][taint] = taint; // OK
+    } else {
+        object[taint][taint] = taint; // NOT OK
+    }
+});
+
 app.get('/foo', (req, res) => {
     let obj = {};
     obj[req.query.x.replace('_', '-')].x = 'foo'; // OK

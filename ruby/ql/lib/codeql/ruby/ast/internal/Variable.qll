@@ -327,7 +327,7 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    toGenerated(access.getVariable().getDeclaringScope()) != scopeOf(toGenerated(access))
+    access.getVariable().getDeclaringScope() != access.getCfgScope()
   }
 
   cached
@@ -495,7 +495,7 @@ abstract class VariableAccessImpl extends Expr, TVariableAccess {
 }
 
 module LocalVariableAccess {
-  predicate range(Ruby::Identifier id, LocalVariable v) {
+  predicate range(Ruby::Identifier id, TLocalVariableReal v) {
     access(id, v) and
     (
       explicitWriteAccess(id, _)
@@ -524,7 +524,7 @@ private class LocalVariableAccessReal extends LocalVariableAccessImpl, TLocalVar
   final override string toString() { result = g.getValue() }
 }
 
-private class LocalVariableAccessSynth extends LocalVariableAccessImpl, TLocalVariableAccessSynth {
+class LocalVariableAccessSynth extends LocalVariableAccessImpl, TLocalVariableAccessSynth {
   private LocalVariable v;
 
   LocalVariableAccessSynth() { this = TLocalVariableAccessSynth(_, _, v) }

@@ -257,3 +257,21 @@ predicate controllerTemplateFile(ActionControllerControllerClass cls, ErbFile te
     )
   )
 }
+
+/**
+ * A call to either `skip_forgery_protection` or
+ * `skip_before_action :verify_authenticity_token` to disable CSRF authenticity
+ * token protection.
+ */
+class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::Range {
+  ActionControllerSkipForgeryProtectionCall() {
+    exists(MethodCall call | call = this.asExpr().getExpr() |
+      call.getMethodName() = "skip_forgery_protection"
+      or
+      call.getMethodName() = "skip_before_action" and
+      call.getAnArgument().(SymbolLiteral).getValueText() = "verify_authenticity_token"
+    )
+  }
+
+  override boolean getVerificationSetting() { result = false }
+}

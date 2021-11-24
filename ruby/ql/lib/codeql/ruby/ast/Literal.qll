@@ -1,5 +1,5 @@
 private import codeql.ruby.AST
-private import codeql.ruby.regexp.RegExpTreeView as RETV
+private import codeql.ruby.security.performance.RegExpTreeView as RETV
 private import internal.AST
 private import internal.Scope
 private import internal.TreeSitter

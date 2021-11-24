@@ -151,15 +151,7 @@ public class A {
 
     forEach(new Object[] {source(16)}, x -> sink(x)); // $ flow=16
 
-    // Spurious flow from 17 is reasonable as it would likely
-    // also occur if the lambda body was inlined in a for loop.
-    // It occurs from the combination of being able to observe
-    // the side-effect of the callback on the other argument and
-    // being able to chain summaries that update/read arguments,
-    // e.g. fluent apis.
-    // Spurious flow from 18 is due to not matching call targets
-    // in a return-from-call-to-enter-call flow sequence.
-    forEach(new Object[2][], xs -> { sink(xs[0]); xs[0] = source(17); }); // $ SPURIOUS: flow=17 flow=18
+    forEach(new Object[2][], xs -> { sink(xs[0]); xs[0] = source(17); });
 
     Object[][] xss = new Object[][] { { null } };
     forEach(xss, x -> {x[0] = source(18);});
@@ -182,7 +174,7 @@ public class A {
     a1.field1 = source(20);
     A a2 = new A();
     applyConsumer1Field1Field2(a1, a2, p -> {
-      sink(p); // MISSING FLOW
+      sink(p); // $ flow=20
     });
     wrapSinkToAvoidFieldSsa(a1);
     sink(a2.field2);

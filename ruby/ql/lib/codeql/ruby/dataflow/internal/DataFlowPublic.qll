@@ -58,6 +58,9 @@ class CallNode extends LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getKeywordArgument(string name) { result.asExpr() = node.getKeywordArgument(name) }
+
+  /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
+  string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
 }
 
 /**
@@ -102,6 +105,14 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 predicate hasLocalSource(Node sink, Node source) {

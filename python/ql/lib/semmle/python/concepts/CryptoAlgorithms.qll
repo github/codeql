@@ -46,7 +46,7 @@ private module AlgorithmNames {
     name = ["ARGON2", "PBKDF2", "BCRYPT", "SCRYPT"]
   }
 
-  predicate isWeakPasswordHashingAlgorithm(string name) { none() }
+  predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
 }
 
 private import AlgorithmNames
@@ -85,11 +85,13 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
 
   /**
    * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes, and underscores.
+   * white space, dashes, underscores, and anything after a dash in the name
+   * (to ignore modes of operation, such as CBC or ECB).
    */
   bindingset[name]
   predicate matchesName(string name) {
-    name.toUpperCase().regexpReplaceAll("[-_ ]", "") = getName()
+    [name.toUpperCase(), name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1)]
+        .regexpReplaceAll("[-_ ]", "") = getName()
   }
 
   /**

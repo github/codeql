@@ -467,9 +467,10 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    // TODO: Find a way to include a formfeed character
-    // this.getUnescaped() = "f" and result = ""
-    // or
+    this.getUnescaped() = "f" and result = 12.toUnicode()
+    or
+    this.getUnescaped() = "v" and result = 11.toUnicode()
+    or
     this.isUnicode() and
     result = this.getUnicode()
   }
@@ -480,7 +481,7 @@ class RegExpEscape extends RegExpNormalChar {
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
   /** Gets the part of the term following the escape character. That is e.g. "w" if the term is "\w". */
-  private string getUnescaped() { result = this.getText().suffix(1) }
+  string getUnescaped() { result = this.getText().suffix(1) }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
@@ -533,6 +534,13 @@ private int toHex(string hex) {
   result = 14 and hex = ["e", "E"]
   or
   result = 15 and hex = ["f", "F"]
+}
+
+/**
+ * A word boundary, that is, a regular expression term of the form `\b`.
+ */
+class RegExpWordBoundary extends RegExpEscape {
+  RegExpWordBoundary() { this.getUnescaped() = "b" }
 }
 
 /**

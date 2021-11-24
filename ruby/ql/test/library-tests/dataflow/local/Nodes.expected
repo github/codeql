@@ -1,5 +1,9 @@
 ret
 | local_dataflow.rb:6:3:6:14 | ... = ... |
+| local_dataflow.rb:12:3:12:5 | call to p |
+| local_dataflow.rb:16:3:16:10 | break |
+| local_dataflow.rb:20:3:20:25 | if ... |
+| local_dataflow.rb:20:17:20:21 | break |
 | local_dataflow.rb:32:14:32:21 | "method" |
 | local_dataflow.rb:36:6:36:13 | return |
 | local_dataflow.rb:38:3:38:13 | "reachable" |
@@ -17,9 +21,15 @@ arg
 | local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | 0 |
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | 2 |
+| local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | -2 |
+| local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | -1 |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | -1 |
 | local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | -1 |
 | local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | 0 |
+| local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | -2 |
+| local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | -1 |
+| local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | -2 |
+| local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | call to each | -1 |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | -1 |
 | local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... | 0 |
 | local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... | -1 |
