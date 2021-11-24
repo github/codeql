@@ -89,6 +89,7 @@ select sink, "SQL Injection"
 ## Additional Taint Step 
 
 -By inspecting `String CheckName = username.getText().toString()` we can observe that the `toString()` is a method call on the return value of `getText()` which is an `Editable` type. Our current taint tracking analysis does not capture flow from the `Editable` object returned by `username.getText()` to `toString()`
+- https://developer.android.com/reference/android/widget/EditText
 - `.getQualifier` is saying the thing before the `toString()` dot
 - why don't we use `hasQualifierName` on the `toString()`. The reason is that `toString()` returns an `Object` type so the Qualifier name is `Object.toString()`
 - If we filter by qualifier name we will be adding flow for all `Object.toString()` and the result will be imprecise
