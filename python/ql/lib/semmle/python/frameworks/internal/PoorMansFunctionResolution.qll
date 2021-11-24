@@ -127,8 +127,8 @@ private DataFlow::Node getSimpleMethodReferenceWithinClass(Function func) {
  * print(inst.my_method)
  * ```
  *
- * But is able to handle simple method calls within a class, but does not take MRO into
- * account.
+ * But it is able to handle simple method calls within a class (but does not take MRO into
+ * account).
  * ```py
  * class MyClass:
  *     def method1(self);

@@ -21,7 +21,7 @@ def func(environ, start_response): # $ requestHandler
     write(b"hello") # $ HttpResponse responseBody=b"hello"
     write(data=b" ") # $ HttpResponse responseBody=b" "
 
-    # function return value should be an iterable that will also be written to to the
+    # function return value should be an iterable that will also be written to the
     # response.
     return [b"world", b"!"] # $ HttpResponse responseBody=List
 
