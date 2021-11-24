@@ -23,6 +23,7 @@ nodes
 | LDAPInjection.go:76:3:76:33 | slice literal | semmle.label | slice literal |
 | LDAPInjection.go:80:22:80:30 | untrusted | semmle.label | untrusted |
 | LDAPInjection.go:81:25:81:33 | untrusted | semmle.label | untrusted |
+subpaths
 #select
 | LDAPInjection.go:59:3:59:11 | untrusted | LDAPInjection.go:57:15:57:29 | call to UserAgent : string | LDAPInjection.go:59:3:59:11 | untrusted | LDAP query parameter is derived from $@. | LDAPInjection.go:57:15:57:29 | call to UserAgent | a user-provided value |
 | LDAPInjection.go:61:3:61:51 | ...+... | LDAPInjection.go:57:15:57:29 | call to UserAgent : string | LDAPInjection.go:61:3:61:51 | ...+... | LDAP query parameter is derived from $@. | LDAPInjection.go:57:15:57:29 | call to UserAgent | a user-provided value |
