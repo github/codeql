@@ -1347,9 +1347,8 @@ private module Stage2 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1359,9 +1358,8 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1371,9 +1369,8 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2045,9 +2042,8 @@ private module Stage3 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2057,9 +2053,8 @@ private module Stage3 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2069,9 +2064,8 @@ private module Stage3 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2814,9 +2808,8 @@ private module Stage4 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2826,9 +2819,8 @@ private module Stage4 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2838,9 +2830,8 @@ private module Stage4 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
