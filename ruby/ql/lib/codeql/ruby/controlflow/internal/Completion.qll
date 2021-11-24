@@ -6,6 +6,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
+private import codeql.ruby.ast.internal.Control
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl
 private import NonReturning
@@ -100,7 +101,11 @@ abstract class Completion extends TCompletion {
     or
     n = any(RescueModifierExpr parent).getBody() and this = TRaiseCompletion()
     or
-    mayRaise(n) and
+    (
+      mayRaise(n)
+      or
+      n instanceof CaseMatch and not exists(n.(CaseExpr).getElseBranch())
+    ) and
     this = TRaiseCompletion()
     or
     not n instanceof NonReturningCall and
@@ -172,6 +177,8 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(ConditionalLoop parent).getCondition()
   or
+  n = any(InClause parent).getCondition()
+  or
   exists(LogicalAndExpr parent |
     n = parent.getLeftOperand()
     or
@@ -217,6 +224,14 @@ private predicate inMatchingContext(AstNode n) {
     c.getABranch() = w and
     w.getPattern(_) = n
   )
+  or
+  n instanceof CasePattern
+  or
+  n = any(ArrayPattern p).getClass()
+  or
+  n = any(FindPattern p).getClass()
+  or
+  n = any(HashPattern p).getClass()
   or
   n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }

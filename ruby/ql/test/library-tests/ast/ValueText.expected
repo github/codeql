@@ -176,6 +176,7 @@
 | control/cases.rb:76:13:76:13 | :b | b |
 | control/cases.rb:84:7:84:8 | 42 | 42 |
 | control/cases.rb:87:6:87:6 | 5 | 5 |
+| control/cases.rb:88:7:88:9 | foo | 42 |
 | control/cases.rb:90:6:90:13 | "string" | string |
 | control/cases.rb:91:9:91:11 | "foo" | foo |
 | control/cases.rb:91:13:91:15 | "bar" | bar |
