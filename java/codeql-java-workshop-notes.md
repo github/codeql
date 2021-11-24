@@ -17,6 +17,9 @@
 - We're going to use `hasQualifiedName` because it allows us to specify not just the name of the method but also the type and package.
 - This is useful as `getText` is not very specific. There may be many methods in the program called getText() so we want to be specific
 
+## VS Starter Workspace Notes
+- CodeQL scans siblings of the installation directory (and their subdirectories) for qlpack.yml files. The metadata in the file tells CodeQL how to compile queries, what libraries the pack depends on, and where to find query suite definitions.
+
 ```ql
 import java
 
