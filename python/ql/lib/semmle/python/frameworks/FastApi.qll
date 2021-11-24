@@ -33,7 +33,7 @@ private module FastApi {
   module APIRouter {
     /** Gets a reference to an instance of `fastapi.APIRouter`. */
     API::Node instance() {
-      result = API::moduleImport("fastapi").getMember("APIRouter").getReturn()
+      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*().getReturn()
     }
   }
 
