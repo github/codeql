@@ -847,8 +847,15 @@ public class ASTExtractor {
     @Override
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLeft(), key, 0, true);
+      if (nd.getOperator().equals("in") && nd.getLeft() instanceof Identifier && ((Identifier)nd.getLeft()).getName().startsWith("#")) {
+        // this happens with Ergonomic brand checks for Private Fields (see https://github.com/tc39/proposal-private-fields-in-in). 
+        // it's the only case where private field identifiers are used not as a field.
+        visit(nd.getLeft(), key, 0, IdContext.LABEL, true);
+      } else {
+        visit(nd.getLeft(), key, 0, true);
+      }
       visit(nd.getRight(), key, 1, true);
+      
       extractRegxpFromBinop(nd, c);
       return key;
     }
