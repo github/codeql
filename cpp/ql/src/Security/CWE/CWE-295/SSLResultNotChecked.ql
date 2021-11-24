@@ -13,7 +13,6 @@
 
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-//import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.controlflow.IRGuards
 
 /**
@@ -24,7 +23,7 @@ class SSLGetPeerCertificateCall extends FunctionCall {
 		getTarget().getName() = "SSL_get_peer_certificate" // SSL_get_peer_certificate(ssl)
 	}
 
-	// TODO: getSSLArg?
+	Expr getSSLArgument() { result = getArgument(0) }
 }
 
 /**
@@ -34,6 +33,8 @@ class SSLGetVerifyResultCall extends FunctionCall {
 	SSLGetVerifyResultCall() {
 		getTarget().getName() = "SSL_get_verify_result" // SSL_get_peer_certificate(ssl)
 	}
+
+	Expr getSSLArgument() { result = getArgument(0) }
 }
 
 /**
@@ -42,8 +43,8 @@ class SSLGetVerifyResultCall extends FunctionCall {
  */
 predicate resultIsChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode node) {
 	exists(Expr ssl, SSLGetVerifyResultCall check |
-		ssl = globalValueNumber(getCertCall.getArgument(0)).getAnExpr() and
-		ssl = check.getArgument(0) and
+		ssl = globalValueNumber(getCertCall.getSSLArgument()).getAnExpr() and
+		ssl = check.getSSLArgument() and
 		node = check
 	)
 }
@@ -61,20 +62,24 @@ predicate certIsZero(SSLGetPeerCertificateCall getCertCall, ControlFlowNode node
 				node1 = guard and
 				(
 					(
-						guard.comparesEq(cert, zero, 0, true, true) and // if (cert == zero) {
+						// if (cert == zero) {
+						guard.comparesEq(cert, zero, 0, true, true) and
 						node2 = guard.getATrueSuccessor()
 					) or (
-						guard.comparesEq(cert, zero, 0, false, true) and // if (cert != zero) { }
+						// if (cert != zero) { }
+						guard.comparesEq(cert, zero, 0, false, true) and 
 						node2 = guard.getAFalseSuccessor()
 					)
 				)
 			) or (
-				guard = cert and // if (cert) { }
+				// if (cert) { }
+				guard = cert and
 				node1 = guard and
 				node2 = guard.getAFalseSuccessor()
 			) or (
+				// if (!cert) {
 				node1 = guard.getParent() and
-				node2 = guard.getParent().(NotExpr).getATrueSuccessor() // if (!cert) {
+				node2 = guard.getParent().(NotExpr).getATrueSuccessor()
 			)
 		)
 	)
