@@ -13,6 +13,12 @@ class TestArrayCreation {
     val a8 = byteArrayOf(1, 2, 3, 4)
     val a9 = booleanArrayOf(true, false, true, true)
 
+    // TODO: These don't match the corresponding Java hierarchy
+    val n0 = arrayOf(intArrayOf(1, 2, 3, 4), intArrayOf(1, 2, 3, 4))    // int[][]
+    val n1 = arrayOf(intArrayOf(1, 2, 3, 4), arrayOf(1, 2, 3, 4))       // Object[]
+    val n2 = arrayOf(arrayOf(1, 2, 3, 4), arrayOf(1, 2, 3, 4))          // Integer[][]
+
+    // TODO: these are constructor calls:
     val a10 = Array<Int>(1) { 1 }
     val a11 = Array(5) { 1 }
     val a12 = IntArray(5)

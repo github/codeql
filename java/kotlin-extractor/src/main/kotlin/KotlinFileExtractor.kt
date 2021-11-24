@@ -9,10 +9,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
-import org.jetbrains.kotlin.ir.types.IrSimpleType
-import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.IrTypeArgument
-import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 
 open class KotlinFileExtractor(
@@ -532,7 +529,10 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun isBuiltinCall(c: IrCall, fName: String): Boolean {
+    private fun isBuiltinCallInternal(c: IrCall, fName: String) = isBuiltinCall(c, fName, "kotlin.internal.ir")
+    private fun isBuiltinCallKotlin(c: IrCall, fName: String) = isBuiltinCall(c, fName, "kotlin")
+
+    private fun isBuiltinCall(c: IrCall, fName: String, pName: String): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
         verboseln("Attempting builtin match for $fName")
@@ -549,7 +549,7 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != "kotlin.internal.ir") {
+        if (targetPkg.fqName.asString() != pName) {
             verboseln("No match as package name is ${targetPkg.fqName.asString()}")
             return false
         }
@@ -719,19 +719,19 @@ open class KotlinFileExtractor(
             }
             // != gets desugared into not and ==. Here we resugar it.
             // TODO: This is wrong. Kotlin `a == b` is `a?.equals(b) ?: (b === null)`
-            c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQ") -> {
+            c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, dr, callable, enclosingStmt)
             }
-            c.origin == IrStatementOrigin.EXCLEQEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "EQEQEQ") -> {
+            c.origin == IrStatementOrigin.EXCLEQEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQEQ") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_neexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, dr, callable, enclosingStmt)
             }
-            c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCall(dr, "ieee754equals") -> {
+            c.origin == IrStatementOrigin.EXCLEQ && isFunction("kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "ieee754equals") -> {
                 val id = tw.getFreshIdLabel<DbNeexpr>()
                 val type = useType(c.type)
                 // TODO: Is this consistent with Java?
@@ -741,7 +741,7 @@ open class KotlinFileExtractor(
             // We need to handle all the builtin operators defines in BuiltInOperatorNames in
             //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
             // as they can't be extracted as external dependencies.
-            isBuiltinCall(c, "less") -> {
+            isBuiltinCallInternal(c, "less") -> {
                 if(c.origin != IrStatementOrigin.LT) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LT: ${c.origin}", c)
                 }
@@ -750,7 +750,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_ltexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "lessOrEqual") -> {
+            isBuiltinCallInternal(c, "lessOrEqual") -> {
                 if(c.origin != IrStatementOrigin.LTEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for LTEQ: ${c.origin}", c)
                 }
@@ -759,7 +759,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_leexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "greater") -> {
+            isBuiltinCallInternal(c, "greater") -> {
                 if(c.origin != IrStatementOrigin.GT) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GT: ${c.origin}", c)
                 }
@@ -768,7 +768,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_gtexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "greaterOrEqual") -> {
+            isBuiltinCallInternal(c, "greaterOrEqual") -> {
                 if(c.origin != IrStatementOrigin.GTEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for GTEQ: ${c.origin}", c)
                 }
@@ -777,7 +777,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_geexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "EQEQ") -> {
+            isBuiltinCallInternal(c, "EQEQ") -> {
                 if(c.origin != IrStatementOrigin.EQEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQ: ${c.origin}", c)
                 }
@@ -787,7 +787,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "EQEQEQ") -> {
+            isBuiltinCallInternal(c, "EQEQEQ") -> {
                 if(c.origin != IrStatementOrigin.EQEQEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for EQEQEQ: ${c.origin}", c)
                 }
@@ -796,7 +796,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "ieee754equals") -> {
+            isBuiltinCallInternal(c, "ieee754equals") -> {
                 if(c.origin != IrStatementOrigin.EQEQ) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for ieee754equals: ${c.origin}", c)
                 }
@@ -806,7 +806,7 @@ open class KotlinFileExtractor(
                 tw.writeExprs_eqexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "CHECK_NOT_NULL") -> {
+            isBuiltinCallInternal(c, "CHECK_NOT_NULL") -> {
                 if(c.origin != IrStatementOrigin.EXCLEXCL) {
                     logger.warnElement(Severity.ErrorSevere, "Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
                 }
@@ -816,29 +816,107 @@ open class KotlinFileExtractor(
                 tw.writeExprs_notnullexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 unaryOp(id, c, callable, enclosingStmt)
             }
-            isBuiltinCall(c, "THROW_CCE") -> {
+            isBuiltinCallInternal(c, "THROW_CCE") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
-            isBuiltinCall(c, "THROW_ISE") -> {
+            isBuiltinCallInternal(c, "THROW_ISE") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
-            isBuiltinCall(c, "noWhenBranchMatchedException") -> {
+            isBuiltinCallInternal(c, "noWhenBranchMatchedException") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
-            isBuiltinCall(c, "illegalArgumentException") -> {
+            isBuiltinCallInternal(c, "illegalArgumentException") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
-            isBuiltinCall(c, "ANDAND") -> {
+            isBuiltinCallInternal(c, "ANDAND") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
-            isBuiltinCall(c, "OROR") -> {
+            isBuiltinCallInternal(c, "OROR") -> {
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
+            }
+            isBuiltinCallKotlin(c, "arrayOfNulls") -> {
+                val id = tw.getFreshIdLabel<DbArraycreationexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_arraycreationexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                val locId = tw.getLocation(c)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+
+                if (c.typeArgumentsCount == 1) {
+                    extractTypeArguments(c, id, callable, -1)
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Expected to find exactly one type argument in an arrayOfNulls call", c)
+                }
+
+                if (c.valueArgumentsCount == 1) {
+                    val dim = c.getValueArgument(0)
+                    if (dim != null) {
+                        extractExpressionExpr(dim, callable, id, 0)
+                    } else {
+                        logger.warnElement(Severity.ErrorSevere, "Expected to find non-null argument in an arrayOfNulls call", c)
+                    }
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Expected to find only one argument in an arrayOfNulls call", c)
+                }
+            }
+            isBuiltinCallKotlin(c, "arrayOf")
+                    || isBuiltinCallKotlin(c, "doubleArrayOf")
+                    || isBuiltinCallKotlin(c, "floatArrayOf")
+                    || isBuiltinCallKotlin(c, "longArrayOf")
+                    || isBuiltinCallKotlin(c, "intArrayOf")
+                    || isBuiltinCallKotlin(c, "charArrayOf")
+                    || isBuiltinCallKotlin(c, "shortArrayOf")
+                    || isBuiltinCallKotlin(c, "byteArrayOf")
+                    || isBuiltinCallKotlin(c, "booleanArrayOf") -> {
+                val id = tw.getFreshIdLabel<DbArraycreationexpr>()
+                val type = useType(c.type)
+                tw.writeExprs_arraycreationexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                val locId = tw.getLocation(c)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+
+                if (isBuiltinCallKotlin(c, "arrayOf")) {
+                    if (c.typeArgumentsCount == 1) {
+                        extractTypeArguments(c, id, callable, -1)
+                    } else {
+                        logger.warnElement( Severity.ErrorSevere, "Expected to find one type argument in arrayOf call", c )
+                    }
+                } else {
+                    val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+                    val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
+                    val elementTypeResult = useType(elementType)
+                    tw.writeExprs_unannotatedtypeaccess(argId, elementTypeResult.javaResult.id, elementTypeResult.kotlinResult.id, id, -1)
+                    tw.writeCallableEnclosingExpr(argId, callable)
+                }
+
+                if (c.valueArgumentsCount == 1) {
+                    val vararg = c.getValueArgument(0)
+                    if (vararg is IrVararg) {
+                        val initId = tw.getFreshIdLabel<DbArrayinit>()
+                        tw.writeExprs_arrayinit(initId, type.javaResult.id, type.kotlinResult.id, id, -2)
+                        tw.writeHasLocation(initId, locId)
+                        tw.writeCallableEnclosingExpr(initId, callable)
+                        vararg.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i) }
+
+                        val dim = vararg.elements.size
+                        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
+                        val dimType = useType(pluginContext.irBuiltIns.intType)
+                        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, dimType.kotlinResult.id, id, 0)
+                        tw.writeHasLocation(dimId, locId)
+                        tw.writeCallableEnclosingExpr(dimId, callable)
+                        tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
+                    } else {
+                        logger.warnElement(Severity.ErrorSevere, "Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
+                    }
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
+                }
             }
             else -> {
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
