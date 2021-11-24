@@ -77,7 +77,7 @@ private module MySql {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -174,7 +174,7 @@ private module Postgres {
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [client(), pool()].getMember("query").getACall() }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -263,9 +263,9 @@ private module Postgres {
 
     /** Gets an argument interpreted as a SQL string, not including raw interpolation variables. */
     private DataFlow::Node getADirectQueryArgument() {
-      result = getArgument(0)
+      result = this.getArgument(0)
       or
-      result = getOptionArgument(0, "text")
+      result = this.getOptionArgument(0, "text")
     }
 
     /**
@@ -276,7 +276,7 @@ private module Postgres {
     private string getARawParameterName() {
       exists(string sqlString, string placeholderRegexp, string regexp |
         placeholderRegexp = "\\$(\\d+|[{(\\[/]\\w+[})\\]/])" and // For example: $1 or ${prop}
-        sqlString = getADirectQueryArgument().getStringValue()
+        sqlString = this.getADirectQueryArgument().getStringValue()
       |
         // Match $1:raw or ${prop}:raw
         regexp = placeholderRegexp + "(:raw|\\^)" and
@@ -299,28 +299,29 @@ private module Postgres {
 
     /** Gets the argument holding the values to plug into placeholders. */
     private DataFlow::Node getValues() {
-      result = getArgument(1)
+      result = this.getArgument(1)
       or
-      result = getOptionArgument(0, "values")
+      result = this.getOptionArgument(0, "values")
     }
 
     /** Gets a value that is plugged into a raw placeholder variable, making it a sink for SQL injection. */
     private DataFlow::Node getARawValue() {
-      result = getValues() and getARawParameterName() = "1" // Special case: if the argument is not an array or object, it's just plugged into $1
+      result = this.getValues() and this.getARawParameterName() = "1" // Special case: if the argument is not an array or object, it's just plugged into $1
       or
-      exists(DataFlow::SourceNode values | values = getValues().getALocalSource() |
-        result = values.getAPropertyWrite(getARawParameterName()).getRhs()
+      exists(DataFlow::SourceNode values | values = this.getValues().getALocalSource() |
+        result = values.getAPropertyWrite(this.getARawParameterName()).getRhs()
         or
         // Array literals do not have PropWrites with property names so handle them separately,
         // and also translate to 0-based indexing.
-        result = values.(DataFlow::ArrayCreationNode).getElement(getARawParameterName().toInt() - 1)
+        result =
+          values.(DataFlow::ArrayCreationNode).getElement(this.getARawParameterName().toInt() - 1)
       )
     }
 
     override DataFlow::Node getAQueryArgument() {
-      result = getADirectQueryArgument()
+      result = this.getADirectQueryArgument()
       or
-      result = getARawValue()
+      result = this.getARawValue()
     }
   }
 
@@ -365,7 +366,7 @@ private module Sqlite {
       this = database().getMember("prepare").getACall()
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -424,7 +425,7 @@ private module MsSql {
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [mssql(), request()].getMember(["query", "batch"]).getACall() }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
 
   /** An expression that is passed to a method that interprets it as SQL. */
@@ -488,9 +489,9 @@ private module Sequelize {
     QueryCall() { this = instance().getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
+      result = this.getArgument(0)
       or
-      result = getOptionArgument(0, "query")
+      result = this.getOptionArgument(0, "query")
     }
   }
 
@@ -606,9 +607,9 @@ private module Spanner {
     }
 
     override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
+      result = this.getArgument(0)
       or
-      result = getOptionArgument(0, "sql")
+      result = this.getOptionArgument(0, "sql")
     }
   }
 
@@ -621,9 +622,9 @@ private module Spanner {
     override DataFlow::Node getAQueryArgument() {
       // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
       // are tainted
-      result = getArgument(0)
+      result = this.getArgument(0)
       or
-      result = getParameter(0).getUnknownMember().getMember("sql").getARhs()
+      result = this.getParameter(0).getUnknownMember().getMember("sql").getARhs()
     }
   }
 
@@ -636,7 +637,7 @@ private module Spanner {
       this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getOptionArgument(0, "sql") }
+    override DataFlow::Node getAQueryArgument() { result = this.getOptionArgument(0, "sql") }
   }
 
   /**

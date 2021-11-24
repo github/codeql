@@ -91,7 +91,7 @@ module ClientWebSocket {
      */
     LibraryName getLibrary() { result = socketClass.getLibrary() }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
@@ -285,7 +285,7 @@ module ServerWebSocket {
 
     override DataFlow::Node getSentItem(int i) {
       i = 0 and
-      result = getArgument(0)
+      result = this.getArgument(0)
     }
 
     override ClientWebSocket::ReceiveNode getAReceiver() {

@@ -25,7 +25,7 @@ module JsonSchema {
      * Gets a value that indicates whether the validation was successful.
      */
     DataFlow::Node getAValidationResultAccess(boolean polarity) {
-      result = this and polarity = getPolarity()
+      result = this and polarity = this.getPolarity()
     }
   }
 
@@ -35,7 +35,7 @@ module JsonSchema {
   /** An object literal with a `$schema` property indicating it is the root of a JSON schema. */
   private class SchemaNodeByTag extends SchemaRoot, DataFlow::ObjectLiteralNode {
     SchemaNodeByTag() {
-      getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
+      this.getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
     }
   }
 
@@ -67,13 +67,13 @@ module JsonSchema {
       Instance() { this = API::moduleImport("ajv").getAnInstantiation() }
 
       /** Gets the data flow node holding the options passed to this `Ajv` instance. */
-      DataFlow::Node getOptionsArg() { result = getArgument(0) }
+      DataFlow::Node getOptionsArg() { result = this.getArgument(0) }
 
       /** Gets an API node that refers to this object. */
       API::Node ref() {
-        result = getReturn()
+        result = this.getReturn()
         or
-        result = ref().getMember(chainedMethod()).getReturn()
+        result = this.ref().getMember(chainedMethod()).getReturn()
       }
 
       /**
@@ -83,16 +83,16 @@ module JsonSchema {
        * signature is different.
        */
       API::Node getAValidationFunction() {
-        result = ref().getMember(["compile", "getSchema"]).getReturn()
+        result = this.ref().getMember(["compile", "getSchema"]).getReturn()
         or
-        result = ref().getMember("compileAsync").getPromised()
+        result = this.ref().getMember("compileAsync").getPromised()
       }
 
       /**
        * Gets an API node that refers to an error produced by this Ajv instance.
        */
       API::Node getAValidationError() {
-        exists(API::Node base | base = [ref(), getAValidationFunction()] |
+        exists(API::Node base | base = [this.ref(), this.getAValidationFunction()] |
           result = base.getMember("errors")
           or
           result = base.getMember("errorsText").getReturn()
@@ -111,14 +111,14 @@ module JsonSchema {
         this = instance.getAValidationFunction().getACall() and argIndex = 0
       }
 
-      override DataFlow::Node getInput() { result = getArgument(argIndex) }
+      override DataFlow::Node getInput() { result = this.getArgument(argIndex) }
 
       /** Gets the argument holding additional options to the call. */
-      DataFlow::Node getOwnOptionsArg() { result = getArgument(argIndex + 1) }
+      DataFlow::Node getOwnOptionsArg() { result = this.getArgument(argIndex + 1) }
 
       /** Gets a data flow passed as the extra options to this validation call or to the underlying `Ajv` instance. */
       DataFlow::Node getAnOptionsArg() {
-        result = getOwnOptionsArg()
+        result = this.getOwnOptionsArg()
         or
         result = instance.getOptionsArg()
       }

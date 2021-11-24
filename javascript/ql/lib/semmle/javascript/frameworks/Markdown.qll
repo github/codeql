@@ -106,13 +106,13 @@ module Markdown {
       /**
        * Gets the input that is processed.
        */
-      DataFlow::Node getInput() { result = getArgument(0) }
+      DataFlow::Node getInput() { result = this.getArgument(0) }
 
       /**
        * Gets the processed output.
        */
       DataFlow::Node getOutput() {
-        this.getCalleeName() = "process" and result = getABoundCallbackParameter(1, 1)
+        this.getCalleeName() = "process" and result = this.getABoundCallbackParameter(1, 1)
         or
         this.getCalleeName() = "processSync" and result = this
       }

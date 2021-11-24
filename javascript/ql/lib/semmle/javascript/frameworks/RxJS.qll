@@ -81,7 +81,7 @@ private class RxJSPipe extends DataFlow::MethodCallNode {
    */
   DataFlow::Node getOutput(int i) {
     isIdentityPipe(this.getArgument(i).getALocalSource()) and
-    result = getOutput(i - 1)
+    result = this.getOutput(i - 1)
     or
     not isIdentityPipe(this.getArgument(i).getALocalSource()) and
     result = pipeOutput(this.getArgument(i).getALocalSource())
