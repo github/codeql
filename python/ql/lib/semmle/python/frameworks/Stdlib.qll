@@ -254,12 +254,45 @@ private module StdlibPrivate {
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    API::Node path() { result = os().getMember("path") }
+    API::Node path() {
+      result = os().getMember("path")
+      or
+      // although the following modules should not be used directly, they certainly can.
+      // Each one doesn't expose the full `os.path` API, so this is an overapproximation
+      // that made implementation easy. See
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/posixpath.py#L31-L38
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/ntpath.py#L26-L32
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/genericpath.py#L9-L11
+      result = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+    }
 
     /** Provides models for the `os.path` module */
     module path {
       /** Gets a reference to the `os.path.join` function. */
       API::Node join() { result = path().getMember("join") }
+    }
+  }
+
+  /**
+   * The `os` module has multiple methods for getting the status of a file, like
+   * a stat() system call.
+   *
+   * Note: `os.fstat` and `os.fstatvfs` operate on file-descriptors.
+   *
+   * See:
+   * - https://docs.python.org/3.10/library/os.html#os.stat
+   * - https://docs.python.org/3.10/library/os.html#os.lstat
+   * - https://docs.python.org/3.10/library/os.html#os.statvfs
+   * - https://docs.python.org/3.10/library/os.html#os.fstat
+   * - https://docs.python.org/3.10/library/os.html#os.fstatvfs
+   */
+  private class OsProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsProbingCall() {
+      this = os().getMember(["stat", "lstat", "statvfs", "fstat", "fstatvfs"]).getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
     }
   }
 
