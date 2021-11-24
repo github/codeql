@@ -163,7 +163,8 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an exception type that may be thrown during execution of `n`,
    * either because `n` is a `throw` statement, or because it is a call
    * that may throw an exception, or because it is a cast and a
-   * `ClassCastException` is expected.
+   * `ClassCastException` is expected, or because it is a Kotlin not-null check
+   * and a `NullPointerException` is expected.
    */
   private predicate mayThrow(ControlFlowNode n, ThrowableType t) {
     t = n.(ThrowStmt).getThrownExceptionType()
@@ -177,6 +178,11 @@ private module ControlFlowGraphImpl {
     or
     exists(CastExpr c | c = n |
       t instanceof TypeClassCastException and
+      uncheckedExceptionFromCatch(n, t)
+    )
+    or
+    exists(NotNullExpr nn | nn = n |
+      t instanceof TypeNullPointerException and
       uncheckedExceptionFromCatch(n, t)
     )
   }
@@ -304,12 +310,12 @@ private module ControlFlowGraphImpl {
     or
     exists(ConditionalStmt condstmt | condstmt.getCondition() = b)
     or
-    exists(WhenBranch whenbranch |
-      whenbranch.getCondition() = b)
+    exists(WhenBranch whenbranch | whenbranch.getCondition() = b)
     or
     exists(WhenExpr whenexpr |
       inBooleanContext(whenexpr) and
-      whenexpr.getBranch(_).getAResult() = b)
+      whenexpr.getBranch(_).getAResult() = b
+    )
   }
 
   /**
@@ -419,7 +425,9 @@ private module ControlFlowGraphImpl {
     exists(WhenExpr whenexpr | whenexpr = result |
       whenexpr.getBranch(_).isElseBranch() and
       forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
-        whenbranch.getRhs() = nonReturningStmt()))
+        whenbranch.getRhs() = nonReturningStmt()
+      )
+    )
   }
 
   /**
@@ -947,9 +955,10 @@ private module ControlFlowGraphImpl {
       or
       // If our last branch condition is false then we are done
       exists(int i |
-             last(whenexpr.getBranch(i), last, BooleanCompletion(false, _)) and
-             completion = NormalCompletion() and
-             not exists(whenexpr.getBranch(i + 1)))
+        last(whenexpr.getBranch(i), last, BooleanCompletion(false, _)) and
+        completion = NormalCompletion() and
+        not exists(whenexpr.getBranch(i + 1))
+      )
       or
       // Any branch getting an abnormal completion is propogated
       last(whenexpr.getBranch(_), last, completion) and
@@ -1249,13 +1258,15 @@ private module ControlFlowGraphImpl {
     or
     // When expressions:
     exists(WhenExpr whenexpr | n = whenexpr |
-      n = whenexpr and result = first(whenexpr.getBranch(0)) and
+      n = whenexpr and
+      result = first(whenexpr.getBranch(0)) and
       completion = NormalCompletion()
       or
       exists(int i |
         last(whenexpr.getBranch(i), n, completion) and
         completion = BooleanCompletion(false, _) and
-        result = first(whenexpr.getBranch(i + 1)))
+        result = first(whenexpr.getBranch(i + 1))
+      )
     )
     or
     // When branches:

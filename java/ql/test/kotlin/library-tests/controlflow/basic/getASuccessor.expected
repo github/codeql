@@ -130,3 +130,42 @@
 | Test.kt:77:7:77:8 | 40 | IntegerLiteral | Test.kt:77:3:77:3 | ...=... | AssignExpr |
 | Test.kt:78:3:78:8 | INSTANCE | VarAccess | Test.kt:78:3:78:8 | return ... | ReturnStmt |
 | Test.kt:78:3:78:8 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |
+| Test.kt:82:1:89:1 | t1 | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:82:8:82:13 | o | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:82:21:89:1 | { ... } | BlockStmt | Test.kt:83:2:88:2 | try ... | TryStmt |
+| Test.kt:83:2:88:2 | try ... | TryStmt | Test.kt:83:6:86:2 | { ... } | BlockStmt |
+| Test.kt:83:6:86:2 | { ... } | BlockStmt | Test.kt:84:3:84:18 | var ...; | LocalVariableDeclStmt |
+| Test.kt:84:3:84:18 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:84:3:84:18 | var ...; | LocalVariableDeclStmt | Test.kt:84:11:84:11 | o | VarAccess |
+| Test.kt:84:3:84:18 | x | LocalVariableDeclExpr | Test.kt:85:10:85:10 | 1 | IntegerLiteral |
+| Test.kt:84:11:84:11 | o | VarAccess | Test.kt:84:11:84:18 | (...)... | CastExpr |
+| Test.kt:84:11:84:18 | (...)... | CastExpr | Test.kt:84:3:84:18 | x | LocalVariableDeclExpr |
+| Test.kt:84:11:84:18 | (...)... | CastExpr | file://:0:0:0:0 | catch (...) | CatchClause |
+| Test.kt:84:11:84:18 | int | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:85:3:85:10 | return ... | ReturnStmt | Test.kt:82:1:89:1 | t1 | Method |
+| Test.kt:85:10:85:10 | 1 | IntegerLiteral | Test.kt:85:3:85:10 | return ... | ReturnStmt |
+| Test.kt:86:11:86:31 | ClassCastException | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:86:11:86:31 | ClassCastException e | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:86:11:86:31 | e | LocalVariableDeclExpr | Test.kt:86:34:88:2 | { ... } | BlockStmt |
+| Test.kt:86:34:88:2 | { ... } | BlockStmt | Test.kt:87:10:87:10 | 2 | IntegerLiteral |
+| Test.kt:87:3:87:10 | return ... | ReturnStmt | Test.kt:82:1:89:1 | t1 | Method |
+| Test.kt:87:10:87:10 | 2 | IntegerLiteral | Test.kt:87:3:87:10 | return ... | ReturnStmt |
+| Test.kt:91:1:98:1 | t2 | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:91:8:91:14 | o | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:91:22:98:1 | { ... } | BlockStmt | Test.kt:92:2:97:2 | try ... | TryStmt |
+| Test.kt:92:2:97:2 | try ... | TryStmt | Test.kt:92:6:95:2 | { ... } | BlockStmt |
+| Test.kt:92:6:95:2 | { ... } | BlockStmt | Test.kt:93:3:93:13 | var ...; | LocalVariableDeclStmt |
+| Test.kt:93:3:93:13 | Object x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:93:3:93:13 | var ...; | LocalVariableDeclStmt | Test.kt:93:11:93:11 | o | VarAccess |
+| Test.kt:93:3:93:13 | x | LocalVariableDeclExpr | Test.kt:94:10:94:10 | 1 | IntegerLiteral |
+| Test.kt:93:11:93:11 | o | VarAccess | Test.kt:93:12:93:13 | ...!! | NotNullExpr |
+| Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:93:3:93:13 | x | LocalVariableDeclExpr |
+| Test.kt:93:12:93:13 | ...!! | NotNullExpr | file://:0:0:0:0 | catch (...) | CatchClause |
+| Test.kt:94:3:94:10 | return ... | ReturnStmt | Test.kt:91:1:98:1 | t2 | Method |
+| Test.kt:94:10:94:10 | 1 | IntegerLiteral | Test.kt:94:3:94:10 | return ... | ReturnStmt |
+| Test.kt:95:11:95:33 | NullPointerException | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:95:11:95:33 | NullPointerException e | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:95:11:95:33 | e | LocalVariableDeclExpr | Test.kt:95:36:97:2 | { ... } | BlockStmt |
+| Test.kt:95:36:97:2 | { ... } | BlockStmt | Test.kt:96:10:96:10 | 2 | IntegerLiteral |
+| Test.kt:96:3:96:10 | return ... | ReturnStmt | Test.kt:91:1:98:1 | t2 | Method |
+| Test.kt:96:10:96:10 | 2 | IntegerLiteral | Test.kt:96:3:96:10 | return ... | ReturnStmt |

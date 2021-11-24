@@ -78,3 +78,21 @@ TODO
 		return
 	}
 }
+
+fun t1(o: Any): Int {
+	try {
+		val x = o as Int
+		return 1
+	} catch (e: ClassCastException) {
+		return 2
+	}
+}
+
+fun t2(o: Any?): Int {
+	try {
+		val x = o!!
+		return 1
+	} catch (e: NullPointerException) {
+		return 2
+	}
+}
