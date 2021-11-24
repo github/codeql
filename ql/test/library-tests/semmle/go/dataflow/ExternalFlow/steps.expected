@@ -7,3 +7,4 @@ invalidModelRow
 | test.go:20:10:20:10 | t | test.go:20:10:20:24 | call to StepQualRes |
 | test.go:21:2:21:2 | t | test.go:11:6:11:8 | definition of arg |
 | test.go:22:32:22:34 | arg | test.go:22:10:22:35 | call to StepArgResNoQual |
+| test.go:53:24:53:26 | src | test.go:53:11:53:27 | call to StepArgRes |

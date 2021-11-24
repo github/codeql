@@ -1,3 +1,6 @@
 invalidModelRow
 #select
 | test.go:40:10:40:12 | arg | qltest |
+| test.go:55:10:55:14 | taint | qltest |
+| test.go:66:10:66:17 | index expression | qltest |
+| test.go:78:10:78:17 | index expression | qltest |

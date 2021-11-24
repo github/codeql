@@ -1,0 +1,39 @@
+invalidModelRow
+edges
+| file://:0:0:0:0 | [summary] to write: array of return (return[0]) in StepArgResContent : interface type | file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgResContent [array] : interface type |
+| file://:0:0:0:0 | parameter 0 of StepArgRes : interface type | file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgRes : interface type |
+| file://:0:0:0:0 | parameter 0 of StepArgResContent : interface type | file://:0:0:0:0 | [summary] to write: array of return (return[0]) in StepArgResContent : interface type |
+| test.go:51:9:51:16 | call to Src1 : interface type | test.go:53:24:53:26 | src : interface type |
+| test.go:53:11:53:27 | call to StepArgRes : interface type | test.go:55:10:55:14 | taint |
+| test.go:53:24:53:26 | src : interface type | file://:0:0:0:0 | parameter 0 of StepArgRes : interface type |
+| test.go:53:24:53:26 | src : interface type | test.go:53:11:53:27 | call to StepArgRes : interface type |
+| test.go:62:9:62:16 | call to Src1 : interface type | test.go:64:34:64:36 | src : interface type |
+| test.go:64:11:64:37 | call to StepArgResContent [array] : interface type | test.go:66:10:66:14 | taint [array] : interface type |
+| test.go:64:34:64:36 | src : interface type | file://:0:0:0:0 | parameter 0 of StepArgResContent : interface type |
+| test.go:64:34:64:36 | src : interface type | test.go:64:11:64:37 | call to StepArgResContent [array] : interface type |
+| test.go:66:10:66:14 | taint [array] : interface type | test.go:66:10:66:17 | index expression |
+| test.go:73:9:73:16 | call to Src1 : interface type | test.go:78:10:78:17 | index expression |
+nodes
+| file://:0:0:0:0 | [summary] to write: array of return (return[0]) in StepArgResContent : interface type | semmle.label | [summary] to write: array of return (return[0]) in StepArgResContent : interface type |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgRes : interface type | semmle.label | [summary] to write: return (return[0]) in StepArgRes : interface type |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgResContent [array] : interface type | semmle.label | [summary] to write: return (return[0]) in StepArgResContent [array] : interface type |
+| file://:0:0:0:0 | parameter 0 of StepArgRes : interface type | semmle.label | parameter 0 of StepArgRes : interface type |
+| file://:0:0:0:0 | parameter 0 of StepArgResContent : interface type | semmle.label | parameter 0 of StepArgResContent : interface type |
+| test.go:51:9:51:16 | call to Src1 : interface type | semmle.label | call to Src1 : interface type |
+| test.go:53:11:53:27 | call to StepArgRes : interface type | semmle.label | call to StepArgRes : interface type |
+| test.go:53:24:53:26 | src : interface type | semmle.label | src : interface type |
+| test.go:55:10:55:14 | taint | semmle.label | taint |
+| test.go:62:9:62:16 | call to Src1 : interface type | semmle.label | call to Src1 : interface type |
+| test.go:64:11:64:37 | call to StepArgResContent [array] : interface type | semmle.label | call to StepArgResContent [array] : interface type |
+| test.go:64:34:64:36 | src : interface type | semmle.label | src : interface type |
+| test.go:66:10:66:14 | taint [array] : interface type | semmle.label | taint [array] : interface type |
+| test.go:66:10:66:17 | index expression | semmle.label | index expression |
+| test.go:73:9:73:16 | call to Src1 : interface type | semmle.label | call to Src1 : interface type |
+| test.go:78:10:78:17 | index expression | semmle.label | index expression |
+subpaths
+| test.go:53:24:53:26 | src : interface type | file://:0:0:0:0 | parameter 0 of StepArgRes : interface type | file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgRes : interface type | test.go:53:11:53:27 | call to StepArgRes : interface type |
+| test.go:64:34:64:36 | src : interface type | file://:0:0:0:0 | parameter 0 of StepArgResContent : interface type | file://:0:0:0:0 | [summary] to write: return (return[0]) in StepArgResContent [array] : interface type | test.go:64:11:64:37 | call to StepArgResContent [array] : interface type |
+#select
+| test.go:51:9:51:16 | call to Src1 : interface type | test.go:51:9:51:16 | call to Src1 : interface type | test.go:55:10:55:14 | taint | path |
+| test.go:62:9:62:16 | call to Src1 : interface type | test.go:62:9:62:16 | call to Src1 : interface type | test.go:66:10:66:17 | index expression | path |
+| test.go:73:9:73:16 | call to Src1 : interface type | test.go:73:9:73:16 | call to Src1 : interface type | test.go:78:10:78:17 | index expression | path |

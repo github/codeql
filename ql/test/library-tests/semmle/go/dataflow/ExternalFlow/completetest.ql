@@ -7,13 +7,13 @@ import semmle.go.dataflow.DataFlow
 import semmle.go.dataflow.ExternalFlow
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
-
-import DataFlow::PartialPathGraph
+import DataFlow::PathGraph
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "github.com/nonexistent/test;;false;StepArgResContent;;;Argument[0];ArrayElement of ReturnValue;taint",
         "github.com/nonexistent/test;T;false;StepArgRes;;;Argument[0];ReturnValue;taint"
       ]
@@ -46,14 +46,8 @@ class Config extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node src) { sourceNode(src, "qltest") }
 
   override predicate isSink(DataFlow::Node src) { sinkNode(src, "qltest") }
-
-  override int explorationLimit() { result = 10}
 }
 
-/* from Config cfg, DataFlow::PathNode src, DataFlow::PathNode sink
+from Config cfg, DataFlow::PathNode src, DataFlow::PathNode sink
 where cfg.hasFlowPath(src, sink)
-select src, src, sink, "path" */
-
-from Config cfg, DataFlow::PartialPathNode src, DataFlow::PartialPathNode sink
-where cfg.hasPartialFlow(src, sink, _) and not edges(sink, _)
-select src, src, sink, "path", sink.toString(), sink.getAQlClass()
+select src, src, sink, "path"

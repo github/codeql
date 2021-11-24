@@ -9,3 +9,6 @@ invalidModelRow
 | test.go:34:2:34:21 | ... = ...[0] | qltest |
 | test.go:34:2:34:21 | ... = ...[1] | qltest-w-subtypes |
 | test.go:35:2:35:22 | ... = ...[1] | qltest-w-subtypes |
+| test.go:51:9:51:16 | call to Src1 | qltest |
+| test.go:62:9:62:16 | call to Src1 | qltest |
+| test.go:73:9:73:16 | call to Src1 | qltest |
