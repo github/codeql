@@ -1126,9 +1126,9 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
     )
   }
 
-  override string getPattern() { result = getStringValue() }
+  override string getPattern() { result = this.getStringValue() }
 
-  override RegExpTerm getRegExpTerm() { result = asExpr().(AddExpr).asRegExp() }
+  override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
 }
 
 module RegExp {
