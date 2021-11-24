@@ -19,7 +19,7 @@ listed below or <code>java/ql/src/Likely Bugs/Concurrency</code> queries of Code
 
 <example>
 <p>The following example shows a bad situation and a good situation respectively. In the bad situation,
-a thread is spawned with a sleep time coming directly from user input. In the good situation, an upper 
+a thread sleep time comes directly from user input. In the good situation, an upper 
 range check on the maximum sleep time allowed is enforced.</p>
 <sample src="ThreadResourceAbuse.java" />
 </example>
