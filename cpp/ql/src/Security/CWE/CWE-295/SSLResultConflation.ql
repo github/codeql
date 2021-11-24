@@ -1,12 +1,13 @@
 /**
- * @name TODO
- * @description TODO
+ * @name Certificate result conflation
+ * @description Only accept SSL certificates that pass certificate verification.
  * @kind problem
- * @problem.severity TODO
+ * @problem.severity error
  * @security-severity TODO
  * @precision TODO
- * @id TODO
- * @tags TODO
+ * @id cpp/certificate-result-conflation
+ * @tags security
+ *       external/cwe/cwe-295
  */
 
 
