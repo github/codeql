@@ -2201,6 +2201,11 @@ class WhenBranch extends Top, @whenbranch {
   /** Holds if this is an `else` branch. */
   predicate isElseBranch() { when_branch_else(this) }
 
+  /** Gets the `when` expression this is a branch of. */
+  WhenExpr getWhenExpr() {
+    this = result.getBranch(_)
+  }
+
   override string toString() { result = "... -> ..." }
 
   override string getAPrimaryQlClass() { result = "WhenBranch" }
