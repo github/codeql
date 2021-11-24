@@ -9,7 +9,6 @@
  * @id py/clear-text-logging-sensitive-data
  * @tags security
  *       external/cwe/cwe-312
- *       external/cwe/cwe-315
  *       external/cwe/cwe-359
  */
 
