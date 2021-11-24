@@ -316,6 +316,7 @@ explicitWrite
 | ssa.rb:10:5:10:5 | i | ssa.rb:10:5:10:9 | ... = ... |
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... -= ... |
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... = ... |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:3:28:5 | ... = ... |
 | ssa.rb:40:3:40:4 | m3 | ssa.rb:40:3:40:9 | ... = ... |
 | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:7 | ... = ... |
 | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |
@@ -358,6 +359,7 @@ implicitWrite
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:33:20:33:20 | x |
 | ssa.rb:44:8:44:8 | b |
@@ -502,6 +504,7 @@ readAccess
 | ssa.rb:20:5:20:10 | self |
 | ssa.rb:20:10:20:10 | x |
 | ssa.rb:21:5:21:5 | x |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:27:5:27:13 | self |
 | ssa.rb:27:10:27:13 | elem |

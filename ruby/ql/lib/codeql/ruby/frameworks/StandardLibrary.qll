@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * The `Kernel` module is included by the `Object` class, so its methods are available
@@ -25,8 +26,6 @@ class KernelMethodCall extends DataFlow::CallNode {
       )
     )
   }
-
-  string getMethodName() { result = methodCall.getMethodName() }
 
   int getNumberOfArguments() { result = methodCall.getNumberOfArguments() }
 }
@@ -73,7 +72,7 @@ string basicObjectInstanceMethodName() {
 }
 
 /**
- * Instance methods on `BasicObject`, which are available to all classes.
+ * An instance method on `BasicObject`, which is available to all classes.
  */
 class BasicObjectInstanceMethodCall extends UnknownMethodCall {
   BasicObjectInstanceMethodCall() { this.getMethodName() = basicObjectInstanceMethodName() }
@@ -94,14 +93,14 @@ string objectInstanceMethodName() {
 }
 
 /**
- * Instance methods on `Object`, which are available to all classes except `BasicObject`.
+ * An instance method on `Object`, which is available to all classes except `BasicObject`.
  */
 class ObjectInstanceMethodCall extends UnknownMethodCall {
   ObjectInstanceMethodCall() { this.getMethodName() = objectInstanceMethodName() }
 }
 
 /**
- * Method calls which have no known target.
+ * A `Method` call that has no known target.
  * These will typically be calls to methods inherited from a superclass.
  */
 class UnknownMethodCall extends MethodCall {
@@ -334,4 +333,19 @@ class ModuleEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNo
   }
 
   override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
+/** Flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
+class RegexpEscapeSummary extends SummarizedCallable {
+  RegexpEscapeSummary() { this = "Regexp.escape" }
+
+  override MethodCall getACall() {
+    result = API::getTopLevelMember("Regexp").getAMethodCall(["escape", "quote"]).asExpr().getExpr()
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
 }

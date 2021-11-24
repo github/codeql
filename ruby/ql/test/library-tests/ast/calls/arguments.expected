@@ -6,6 +6,7 @@ splatExpr
 | calls.rb:271:5:271:11 | * ... | calls.rb:271:6:271:11 | call to bar |
 | calls.rb:316:31:316:42 | * ... | calls.rb:316:31:316:42 | [...] |
 | calls.rb:317:14:317:22 | * ... | calls.rb:317:14:317:22 | [...] |
+| calls.rb:340:1:342:3 | * ... | calls.rb:340:1:342:3 | __synth__0__1 |
 hashSplatExpr
 | calls.rb:274:5:274:9 | ** ... | calls.rb:274:7:274:9 | call to bar |
 | calls.rb:275:5:275:12 | ** ... | calls.rb:275:7:275:12 | call to bar |

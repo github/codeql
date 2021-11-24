@@ -572,7 +572,7 @@ class RemoteInterface extends Interface {
    * abstract methods or overriding within an interface hierarchy.
    */
   Method getARemoteMethodImplementationChecked() {
-    result.overrides(this.getARemoteMethod()) and
+    result.overrides+(this.getARemoteMethod()) and
     exists(result.getBody())
   }
 

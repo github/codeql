@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
+private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
@@ -73,9 +74,14 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2) or
-  variableCaptureStep(node1, node2) or
+  staticFieldStep(node1, node2)
+  or
+  variableCaptureStep(node1, node2)
+  or
   variableCaptureStep(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+  or
+  any(AdditionalValueStep a).step(node1, node2) and
+  node1.getEnclosingCallable() != node2.getEnclosingCallable()
 }
 
 /**
@@ -144,8 +150,11 @@ predicate readStep(Node node1, Content f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  c instanceof FieldContent and
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  exists(FieldAccess fa |
+    instanceFieldAssign(_, fa) and
+    n = getFieldQualifier(fa) and
+    c.(FieldContent).getField() = fa.getField()
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
@@ -368,7 +377,11 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n.(ParameterNode).isParameterOf(any(SummarizedCallable c).asCallable(), _)
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 

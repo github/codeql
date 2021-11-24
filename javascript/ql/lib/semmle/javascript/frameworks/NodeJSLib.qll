@@ -556,7 +556,7 @@ module NodeJSLib {
     }
 
     override DataFlow::Node getADataNode() {
-      if methodName.regexpMatch(".*Sync")
+      if methodName.matches("%Sync")
       then result = this
       else
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
@@ -724,9 +724,9 @@ module NodeJSLib {
       not result = this.getParameter(0).getARhs() and
       // fork/spawn and all sync methos always has options as the last argument
       if
-        methodName.regexpMatch("fork.*") or
-        methodName.regexpMatch("spawn.*") or
-        methodName.regexpMatch(".*Sync")
+        methodName.matches("fork%") or
+        methodName.matches("spawn%") or
+        methodName.matches("%Sync")
       then result = this.getLastArgument()
       else
         // the rest (exec/execFile) has the options argument as their second last.

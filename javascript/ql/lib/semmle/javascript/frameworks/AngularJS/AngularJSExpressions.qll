@@ -837,7 +837,7 @@ class NgDataFlowNode extends TNode {
 private predicate fileIsImplicitlyAngularJS(HTML::HtmlFile file) {
   // The file contains ng-* attributes.
   exists(HTML::Attribute attrib |
-    attrib.getName().regexpMatch("ng-.*") and
+    attrib.getName().matches("ng-%") and
     attrib.getFile() = file
   ) and
   // But does not contain the ng-app root element, implying that file is

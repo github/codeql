@@ -391,7 +391,7 @@ module API {
       or
       // Python 3 only
       result in [
-          "ascii", "breakpoint", "bytes", "exec",
+          "ascii", "breakpoint", "bytes", "exec", "aiter", "anext",
           // Exceptions
           "BlockingIOError", "BrokenPipeError", "ChildProcessError", "ConnectionAbortedError",
           "ConnectionError", "ConnectionRefusedError", "ConnectionResetError", "FileExistsError",

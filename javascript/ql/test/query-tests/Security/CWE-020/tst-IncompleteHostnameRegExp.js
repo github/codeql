@@ -50,7 +50,7 @@
 	var primary = 'example.com$';
 	new RegExp('test.' + primary); // NOT OK, but not detected
 
-	new RegExp('test.' + 'example.com$'); // NOT OK, but not detected
+	new RegExp('test.' + 'example.com$'); // NOT OK
 
 	new RegExp('^http://test\.example.com'); // NOT OK, but flagged by js/useless-regexp-character-escape
 

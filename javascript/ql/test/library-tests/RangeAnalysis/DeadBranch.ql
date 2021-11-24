@@ -4,9 +4,9 @@ class AssertionComment extends LineComment {
   boolean isOK;
 
   AssertionComment() {
-    isOK = true and this.getText().trim().regexpMatch("OK.*")
+    isOK = true and this.getText().trim().matches("OK%")
     or
-    isOK = false and this.getText().trim().regexpMatch("NOT OK.*")
+    isOK = false and this.getText().trim().matches("NOT OK%")
   }
 
   ConditionGuardNode getAGuardNode() {

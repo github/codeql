@@ -17,6 +17,7 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;D;false;StepArgQual;(System.Object);;Argument[0];Argument[-1];taint",
         "My.Qltest;D;false;StepFieldGetter;();;Field[My.Qltest.D.Field] of Argument[-1];ReturnValue;value",
         "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[0];Field[My.Qltest.D.Field] of Argument[-1];value",
+        "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[-1];Field[My.Qltest.D.Field2] of ReturnValue;value",
         "My.Qltest;D;false;StepPropertyGetter;();;Property[My.Qltest.D.Property] of Argument[-1];ReturnValue;value",
         "My.Qltest;D;false;StepPropertySetter;(System.Object);;Argument[0];Property[My.Qltest.D.Property] of Argument[-1];value",
         "My.Qltest;D;false;StepElementGetter;();;Element of Argument[-1];ReturnValue;value",

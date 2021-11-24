@@ -141,6 +141,19 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = unique( | | call.getCalleeNode().getAFunctionValue()).getAReturn()
   )
   or
+  // the exported value is a function that returns another import.
+  // ```JavaScript
+  // module.exports = function foo() {
+  //   return require("./other-module.js");
+  // }
+  // ```
+  exists(DataFlow::FunctionNode func, Module mod |
+    func = getAValueExportedByPackage().getABoundFunctionValue(_)
+  |
+    mod = func.getAReturn().getALocalSource().getEnclosingExpr().(Import).getImportedModule() and
+    result = getAnExportFromModule(mod)
+  )
+  or
   // *****
   // Common styles of transforming exported objects.
   // *****

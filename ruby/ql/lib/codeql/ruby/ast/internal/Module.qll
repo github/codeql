@@ -106,6 +106,15 @@ private module Cached {
     exists(string qname | qname = resolveConstant(r) and result = TResolved(qname))
   }
 
+  pragma[nomagic]
+  private string constantDefinition1(ConstantReadAccess r) {
+    exists(ConstantWriteAccess w | result = constantDefinition0(w) |
+      r = w.getScopeExpr()
+      or
+      r = w.(ClassDeclaration).getSuperclassExpr()
+    )
+  }
+
   /**
    * Resolve constant access (class, module or otherwise) to a qualified module name.
    * `resolveScopeExpr/1` picks the best (lowest priority number) result of
@@ -121,11 +130,7 @@ private module Cached {
           isDefinedConstant(qn) and
           qn = resolveScopeExpr(r, p) and
           // prevent classes/modules that contain/extend themselves
-          not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
-            r = w.getScopeExpr()
-            or
-            r = w.(ClassDeclaration).getSuperclassExpr()
-          )
+          not qn = constantDefinition1(r)
         |
           qn order by p
         )

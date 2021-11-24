@@ -45,7 +45,7 @@ where
   // which is an access to the object being initialized, ...
   ma = unqualifiedCallToNonAbstractMethod(c, m) and
   // ... there exists an overriding method in a subtype,
-  n.overrides(m) and
+  n.overrides+(m) and
   n.getDeclaringType().getASupertype+() = c.getDeclaringType() and
   // ... the method is in a supertype of c,
   m.getDeclaringType() = c.getDeclaringType().getASupertype*() and
