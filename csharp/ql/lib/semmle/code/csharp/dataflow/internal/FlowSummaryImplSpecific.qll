@@ -150,6 +150,12 @@ private string getContentSpecificCsv(Content c) {
 /** Gets the textual representation of a summary component in the format used for flow summaries */
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  or
+  exists(ReturnKind jrk |
+    sc = TReturnSummaryComponent(jrk) and
+    result = "ReturnValue[" + jrk + "]" and
+    not jrk instanceof NormalReturnKind
+  )
 }
 
 class SourceOrSinkElement = Element;
