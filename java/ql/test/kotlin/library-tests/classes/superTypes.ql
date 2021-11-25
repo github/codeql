@@ -12,7 +12,7 @@ class ClassLocation extends Class {
 }
 
 from Class c, Type superType
-where c.fromSource() and
+where c.getSourceDeclaration().fromSource() and
       superType = c.getASupertype()
 select c, superType
 
