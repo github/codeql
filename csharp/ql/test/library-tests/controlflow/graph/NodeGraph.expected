@@ -14455,3 +14455,40 @@ cflow.cs:
 
 #  300| ""
 #-----|  -> object creation of type NegationInConstructor
+
+#  306| enter get__getter
+#-----|  -> (...) => ...
+
+#  306| enter (...) => ...
+#-----|  -> {...}
+
+#  306| (...) => ...
+#-----|  -> exit get__getter (normal)
+
+#  306| exit get__getter
+
+#  306| exit (...) => ...
+
+#  306| exit get__getter (normal)
+#-----|  -> exit get__getter
+
+#  306| exit (...) => ... (normal)
+#-----|  -> exit (...) => ...
+
+#  307| {...}
+#-----|  -> ... ...;
+
+#  308| ... ...;
+#-----|  -> access to parameter o
+
+#  308| Object x = ...
+#-----|  -> access to local variable x
+
+#  308| access to parameter o
+#-----|  -> Object x = ...
+
+#  309| return ...;
+#-----| return -> exit (...) => ... (normal)
+
+#  309| access to local variable x
+#-----|  -> return ...;
