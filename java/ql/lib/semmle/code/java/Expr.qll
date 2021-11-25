@@ -713,6 +713,18 @@ class DoubleLiteral extends Literal, @doubleliteral {
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 
+// Implementation taken from @p0 at https://github.com/github/codeql/issues/4145
+bindingset[s]
+private int fromHex(string s) {
+  exists(string digits | s.toUpperCase() = digits |
+    result =
+      sum(int i |
+        |
+        "0123456789ABCDEF".indexOf(digits.charAt(i)).bitShiftLeft((digits.length() - i - 1) * 4)
+      )
+  )
+}
+
 /** A character literal. For example, `'\n'`. */
 class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
@@ -731,7 +743,11 @@ class CharacterLiteral extends Literal, @characterliteral {
    * this literal. The result is the same as if the Java code had cast
    * the character to an `int`.
    */
-  int getCodePointValue() { result.toUnicode() = this.getValue() }
+  int getCodePointValue() {
+    if this.getLiteral().matches("'\\u%'")
+    then result = fromHex(this.getLiteral().substring(3, 7))
+    else result.toUnicode() = this.getValue()
+  }
 }
 
 /**
