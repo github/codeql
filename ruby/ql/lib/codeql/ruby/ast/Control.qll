@@ -539,15 +539,36 @@ class InClause extends Expr, TInClause {
   final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
 
   /**
-   * Gets the pattern guard in this case-in expression. In the
-   * following example, the pattern guard is `x > 10`.
+   * Gets the pattern guard condition in this case-in expression. In the
+   * following example, the pattern guard condition is `x > 10`.
+   * ```rb
+   * case foo
+   * in [ x ] if x > 10 then ...
+   * in [ x ] unless x < 10 then ...
+   * end
+   * ```
+   */
+  final Expr getCondition() { toGenerated(result) = g.getGuard().getAFieldOrChild() }
+
+  /**
+   * Holds if the pattern guard in this case-in expression is an `if` condition. For example:
    * ```rb
    * case foo
    * in [ x ] if x > 10 then ...
    * end
    * ```
    */
-  final PatternGuard getPatternGuard() { toGenerated(result) = g.getGuard() }
+  predicate hasIfCondition() { g.getGuard() instanceof Ruby::IfGuard }
+
+  /**
+   * Holds if the pattern guard in this case-in expression is an `unless` condition. For example:
+   * ```rb
+   * case foo
+   * in [ x ] unless x < 10 then ...
+   * end
+   * ```
+   */
+  predicate hasUnlessCondition() { g.getGuard() instanceof Ruby::UnlessGuard }
 
   final override string toString() { result = "in ... then ..." }
 
@@ -558,73 +579,8 @@ class InClause extends Expr, TInClause {
     or
     pred = "getPattern" and result = this.getPattern()
     or
-    pred = "getGuard" and result = this.getPatternGuard()
-  }
-}
-
-/**
- * A guard used in pattern matching. For example:
- * ```rb
- *  in pattern if guard
- *  in pattern unless guard
- * ```
- */
-class PatternGuard extends AstNode, TPatternGuard {
-  /**
-   * Gets the condition expression. For example, the result is `foo` in the
-   * following:
-   * ```rb
-   * if foo
-   * unless foo
-   * ```
-   */
-  Expr getCondition() { none() }
-
-  override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
     pred = "getCondition" and result = this.getCondition()
   }
-}
-
-/**
- * An `if` pattern guard. For example:
- * ```rb
- * case foo
- *   in [ bar] if bar > 10
- * end
- * ```
- */
-class IfGuard extends PatternGuard, TIfGuard {
-  private Ruby::IfGuard g;
-
-  IfGuard() { this = TIfGuard(g) }
-
-  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
-
-  final override string getAPrimaryQlClass() { result = "IfGuard" }
-
-  final override string toString() { result = "if ..." }
-}
-
-/**
- * An `unless` pattern guard. For example:
- * ```rb
- * case foo
- *   in [ bar] unless bar > 10
- * end
- * ```
- */
-class UnlessGuard extends PatternGuard, TUnlessGuard {
-  private Ruby::UnlessGuard g;
-
-  UnlessGuard() { this = TUnlessGuard(g) }
-
-  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
-
-  final override string getAPrimaryQlClass() { result = "UnlessGuard" }
-
-  final override string toString() { result = "unless ..." }
 }
 
 /**

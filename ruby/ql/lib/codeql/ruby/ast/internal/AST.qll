@@ -161,7 +161,6 @@ private module Cached {
     THereDoc(Ruby::HeredocBeginning g) or
     TIdentifierMethodCall(Ruby::Identifier g) { isIdentifierMethodCall(g) } or
     TIf(Ruby::If g) or
-    TIfGuard(Ruby::IfGuard g) or
     TIfModifierExpr(Ruby::IfModifier g) or
     TInClause(Ruby::InClause g) or
     TInstanceVariableAccessReal(Ruby::InstanceVariable g, AST::InstanceVariable v) {
@@ -305,7 +304,6 @@ private module Cached {
     TUnaryPlusExpr(Ruby::Unary g) { g instanceof @ruby_unary_plus } or
     TUndefStmt(Ruby::Undef g) or
     TUnlessExpr(Ruby::Unless g) or
-    TUnlessGuard(Ruby::UnlessGuard g) or
     TUnlessModifierExpr(Ruby::UnlessModifier g) or
     TUntilExpr(Ruby::Until g) or
     TUntilModifierExpr(Ruby::UntilModifier g) or
@@ -332,15 +330,15 @@ private module Cached {
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or
-        TIfGuard or TIfModifierExpr or TInClause or TInstanceVariableAccessReal or
-        TIntegerLiteralReal or TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or
-        TLambda or TLeftAssignmentList or TLine or TLocalVariableAccessReal or
-        TLogicalAndExprReal or TLogicalOrExprReal or TMethod or TModuleDeclaration or
-        TModuloExprReal or TMulExprReal or TNEExpr or TNextStmt or TNilLiteral or
-        TNoRegExpMatchExpr or TNotExpr or TOptionalParameter or TPair or TParenthesizedExpr or
-        TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
-        TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
-        TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
+        TIfModifierExpr or TInClause or TInstanceVariableAccessReal or TIntegerLiteralReal or
+        TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or TLambda or
+        TLeftAssignmentList or TLine or TLocalVariableAccessReal or TLogicalAndExprReal or
+        TLogicalOrExprReal or TMethod or TModuleDeclaration or TModuloExprReal or TMulExprReal or
+        TNEExpr or TNextStmt or TNilLiteral or TNoRegExpMatchExpr or TNotExpr or
+        TOptionalParameter or TPair or TParenthesizedExpr or TRShiftExprReal or TRangeLiteralReal or
+        TRationalLiteral or TRedoStmt or TRegExpLiteral or TRegExpMatchExpr or
+        TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or TRegularSuperCall or
+        TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
         TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
         TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
         TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
@@ -348,9 +346,8 @@ private module Cached {
         TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
         TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
         TToplevel or TTrueLiteral or TTuplePatternParameter or TUnaryMinusExpr or TUnaryPlusExpr or
-        TUndefStmt or TUnlessExpr or TUnlessGuard or TUnlessModifierExpr or TUntilExpr or
-        TUntilModifierExpr or TVariableReferencePattern or TWhenExpr or TWhileExpr or
-        TWhileModifierExpr or TYieldCall;
+        TUndefStmt or TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
+        TVariableReferencePattern or TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
@@ -441,7 +438,6 @@ private module Cached {
     n = THashSplatParameter(result) or
     n = THereDoc(result) or
     n = TIdentifierMethodCall(result) or
-    n = TIfGuard(result) or
     n = TIfModifierExpr(result) or
     n = TIf(result) or
     n = TInClause(result) or
@@ -513,7 +509,6 @@ private module Cached {
     n = TUnaryPlusExpr(result) or
     n = TUndefStmt(result) or
     n = TUnlessExpr(result) or
-    n = TUnlessGuard(result) or
     n = TUnlessModifierExpr(result) or
     n = TUntilExpr(result) or
     n = TUntilModifierExpr(result) or
@@ -641,8 +636,6 @@ class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatch or TLoop;
 
 class TConditionalExpr =
   TIfExpr or TUnlessExpr or TIfModifierExpr or TUnlessModifierExpr or TTernaryIfExpr;
-
-class TPatternGuard = TIfGuard or TUnlessGuard;
 
 class TIfExpr = TIf or TElsif;
 
