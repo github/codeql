@@ -713,7 +713,6 @@ class DoubleLiteral extends Literal, @doubleliteral {
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 
-// Implementation taken from @p0 at https://github.com/github/codeql/issues/4145
 bindingset[s]
 private int fromHex(string s) {
   exists(string digits | s.toUpperCase() = digits |
@@ -744,7 +743,7 @@ class CharacterLiteral extends Literal, @characterliteral {
    * the character to an `int`.
    */
   int getCodePointValue() {
-    if this.getLiteral().matches("'\\u%'")
+    if this.getLiteral().matches("'\\u____'")
     then result = fromHex(this.getLiteral().substring(3, 7))
     else result.toUnicode() = this.getValue()
   }
