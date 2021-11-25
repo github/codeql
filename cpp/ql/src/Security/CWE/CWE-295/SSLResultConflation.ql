@@ -3,8 +3,8 @@
  * @description Only accept SSL certificates that pass certificate verification.
  * @kind problem
  * @problem.severity error
- * @security-severity TODO
- * @precision TODO
+ * @security-severity 7.5
+ * @precision medium
  * @id cpp/certificate-result-conflation
  * @tags security
  *       external/cwe/cwe-295
