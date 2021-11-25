@@ -14,10 +14,17 @@ import cpp
 import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * A call to `SSL_get_verify_result`.
+ */
 class SSLGetVerifyResultCall extends FunctionCall {
   SSLGetVerifyResultCall() { getTarget().getName() = "SSL_get_verify_result" }
 }
 
+/**
+ * Data flow from a call to `SSL_get_verify_result` to a guard condition
+ * that references the result.
+ */
 class VerifyResultConfig extends DataFlow::Configuration {
   VerifyResultConfig() { this = "VerifyResultConfig" }
 
