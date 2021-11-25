@@ -1,6 +1,36 @@
 import java
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.MyBatis
+import semmle.code.java.frameworks.Properties
+
+private predicate propertiesKey(DataFlow::Node prop, string key) {
+  exists(MethodAccess m |
+    m.getMethod() instanceof PropertiesSetPropertyMethod and
+    key = m.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
+    prop.asExpr() = m.getQualifier()
+  )
+}
+
+private class PropertiesFlowConfig extends DataFlow2::Configuration {
+  PropertiesFlowConfig() { this = "PropertiesFlowConfig" }
+
+  override predicate isSource(DataFlow::Node src) {
+    exists(MethodAccess ma | ma.getMethod() instanceof IbatisConfigurationGetVariablesMethod |
+      src.asExpr() = ma
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { propertiesKey(sink, _) }
+}
+
+/** Get the key value of Mybatis Configuration Variable. */
+private string getAnMybatisConfigurationVariableKey() {
+  exists(PropertiesFlowConfig conf, DataFlow::Node n |
+    propertiesKey(n, result) and
+    conf.hasFlow(_, n)
+  )
+}
 
 /** The interface `org.apache.ibatis.annotations.Param`. */
 private class TypeParam extends Interface {
@@ -25,6 +55,11 @@ class MyBatisMapperMethodCallAnArgument extends DataFlow::Node {
   }
 }
 
+/** Get the #{...} or ${...} parameters in the Mybatis mapper xml file */
+private string getAnMybatiXmlSetValue(XMLElement xmle) {
+  result = xmle.getTextValue().trim().regexpFind("(#|\\$)(\\{([^\\}]*\\}))", _, _)
+}
+
 predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
   // MyBatis Mapper method parameter name sql injection vulnerabilities.
   // e.g. MyBatis Mapper method: `void test(String name);` and MyBatis Mapper XML file:`select id,name from test where name like '%${name}%'`
@@ -38,7 +73,7 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
       mbms.getAChild*() = xmle
     ) and
     not mc.getMethod().getParameter(i).hasAnnotation() and
-    xmle.getTextValue().trim().matches("%${" + mc.getMethod().getParameter(i).getName() + "%") and
+    getAnMybatiXmlSetValue(xmle).matches("${" + mc.getMethod().getParameter(i).getName() + "%}") and
     mc.getArgument(i) = node.asExpr()
   )
   or
@@ -59,10 +94,9 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
     mc.getMethod().getParameter(i).hasAnnotation() and
     mc.getMethod().getParameter(i).getAnAnnotation() = annotation and
     annotation.getType() instanceof TypeParam and
-    xmle.getTextValue()
-        .trim()
+    getAnMybatiXmlSetValue(xmle)
         .matches("%${" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
-            "%") and
+            "%}") and
     mc.getArgument(i) = node.asExpr()
   )
   or
@@ -79,13 +113,15 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
     ) and
     not mc.getMethod().getParameter(i).hasAnnotation() and
     mc.getMethod().getParameterType(i).getName() = c.getName() and
-    xmle.getTextValue().trim().matches("%${" + c.getAField().getName() + "%") and
+    getAnMybatiXmlSetValue(xmle).matches("%${" + c.getAField().getName() + "%}") and
     mc.getArgument(i) = node.asExpr()
   )
   or
   // The parameter type of MyBatis Mapper method is Map or List or Array, which may cause SQL injection vulnerability.
   // e.g. MyBatis Mapper method: `void test(Map<String, String> params);` and MyBatis Mapper XML file:`select id,name from test where name like '%${name}%'`
-  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i |
+  exists(
+    MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, int i, string res
+  |
     mbmxe.getMapperMethod() = mc.getMethod()
   |
     (
@@ -100,13 +136,15 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
       mc.getMethod().getParameterType(i) instanceof ListType or
       mc.getMethod().getParameterType(i) instanceof Array
     ) and
-    xmle.getTextValue().trim().matches("%${%") and
+    res = getAnMybatiXmlSetValue(xmle) and
+    res.matches("%${%}") and
+    not res.matches("${" + getAnMybatisConfigurationVariableKey() + "}") and
     mc.getArgument(i) = node.asExpr()
   )
   or
   // MyBatis Mapper method string type sql injection vulnerabilities.
   // e.g. MyBatis Mapper method: `void test(String name);` and MyBatis Mapper XML file:`select id,name from test where name like '%${value}%'`
-  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc |
+  exists(MyBatisMapperSqlOperation mbmxe, MyBatisMapperSql mbms, MethodAccess mc, string res |
     mbmxe.getMapperMethod() = mc.getMethod()
   |
     (
@@ -115,10 +153,12 @@ predicate isSqlInjection(DataFlow::Node node, XMLElement xmle) {
       mbmxe.getInclude().getRefid() = mbms.getId() and
       mbms.getAChild*() = xmle
     ) and
+    res = getAnMybatiXmlSetValue(xmle) and
     mc.getMethod().getAParamType() instanceof TypeString and
     mc.getMethod().getNumberOfParameters() = 1 and
     not mc.getMethod().getAParameter().hasAnnotation() and
-    xmle.getTextValue().trim().matches("%${%") and
+    res.matches("%${%}") and
+    not res.matches("${" + getAnMybatisConfigurationVariableKey() + "}") and
     mc.getAnArgument() = node.asExpr()
   )
 }

@@ -24,3 +24,19 @@ private class SqlSinkCsv extends SinkModelCsv {
       ]
   }
 }
+
+/** The class `org.apache.ibatis.session.Configuration`. */
+class IbatisConfiguration extends RefType {
+  IbatisConfiguration() { this.hasQualifiedName("org.apache.ibatis.session", "Configuration") }
+}
+
+/**
+ * The method `getVariables()` declared in `org.apache.ibatis.session.Configuration`.
+ */
+class IbatisConfigurationGetVariablesMethod extends Method {
+  IbatisConfigurationGetVariablesMethod() {
+    getDeclaringType() instanceof IbatisConfiguration and
+    hasName("getVariables") and
+    getNumberOfParameters() = 0
+  }
+}
