@@ -3,8 +3,8 @@
  * @description Always check the result of certificate verification after fetching an SSL certificate.
  * @kind problem
  * @problem.severity error
- * @security-severity TODO
- * @precision TODO
+ * @security-severity 7.5
+ * @precision medium
  * @id cpp/certificate-not-checked
  * @tags security
  *       external/cwe/cwe-295
