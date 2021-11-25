@@ -32,7 +32,7 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); //safe -- secure-processing by itself is insufficient
+    builder.parse(sock.getInputStream()); //unsafe -- secure-processing by itself is insufficient
   }
 
   public void enableDTD(Socket sock) throws Exception {
