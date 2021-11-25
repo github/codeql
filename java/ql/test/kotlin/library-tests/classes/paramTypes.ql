@@ -1,0 +1,17 @@
+import java
+
+// Stop external filepaths from appearing in the results
+class ClassLocation extends Class {
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    exists(string fullPath |
+           super.hasLocationInfo(fullPath, sl, sc, el, ec) |
+           if exists(this.getFile().getRelativePath())
+           then path = fullPath
+           else path = fullPath.regexpReplaceAll(".*/", "<external>/"))
+  }
+}
+
+from ParameterizedClass c, int i
+where c.getSourceDeclaration().fromSource()
+select c, i, c.getTypeArgument(i)
+
