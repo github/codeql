@@ -424,7 +424,7 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
-private class SummaryNode extends NodeImpl, TSummaryNode {
+class SummaryNode extends NodeImpl, TSummaryNode {
   private FlowSummaryImpl::Public::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
@@ -763,15 +763,6 @@ class Unit extends TUnit {
   /** Gets a textual representation of this element. */
   string toString() { result = "unit" }
 }
-
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) { n instanceof BlockArgumentNode }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

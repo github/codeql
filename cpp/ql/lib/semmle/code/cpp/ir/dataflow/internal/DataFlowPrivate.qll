@@ -2,6 +2,7 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
+private import DataFlowImplConsistency
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -285,19 +286,6 @@ class Unit extends TUnit {
   string toString() { result = "unit" }
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  // The rules for whether an IR argument gets a post-update node are too
-  // complex to model here.
-  any()
-}
-
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   n instanceof OperandNode and not n instanceof ArgumentNode
@@ -330,3 +318,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    // The rules for whether an IR argument gets a post-update node are too
+    // complex to model here.
+    any()
+  }
+}
