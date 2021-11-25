@@ -620,7 +620,7 @@ open class KotlinFileExtractor(
     }
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
-        fun isFunction(pkgName: String, className: String, fName: String): Boolean {
+        fun isFunction(pkgName: String, className: String, fName: String, hasQuestionMark: Boolean = false): Boolean {
             val verbose = false
             fun verboseln(s: String) { if(verbose) println(s) }
             verboseln("Attempting match for $pkgName $className $fName")
@@ -632,7 +632,14 @@ open class KotlinFileExtractor(
             val extensionReceiverParameter = target.extensionReceiverParameter
             // TODO: Are both branches of this `if` possible?:
             val targetClass = if (extensionReceiverParameter == null) target.parent
-                              else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
+                              else {
+                                    val st = extensionReceiverParameter.type as? IrSimpleType
+                                    if (st?.hasQuestionMark != hasQuestionMark) {
+                                        verboseln("Nullablility of type didn't match")
+                                        return false
+                                    }
+                                    st?.classifier?.owner
+                              }
             if (targetClass !is IrClass) {
                 verboseln("No match as didn't find target class")
                 return false
@@ -661,6 +668,49 @@ open class KotlinFileExtractor(
                    isFunction("kotlin", "Long", fName) ||
                    isFunction("kotlin", "Float", fName) ||
                    isFunction("kotlin", "Double", fName)
+        }
+
+        fun extractMethodAccess(callTarget: IrFunction, extractTypeArguments: Boolean = true){
+            val id = tw.getFreshIdLabel<DbMethodaccess>()
+            val type = useType(c.type)
+            val locId = tw.getLocation(c)
+            val methodId = useFunction<DbMethod>(callTarget)
+            tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, callable)
+            tw.writeCallableBinding(id, methodId)
+            tw.writeStatementEnclosingExpr(id, enclosingStmt)
+
+            if (extractTypeArguments) {
+                // type arguments at index -2, -3, ...
+                extractTypeArguments(c, id, callable, enclosingStmt, -2, true)
+            }
+
+            val dr = c.dispatchReceiver
+            if(dr != null) {
+                extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+            }
+            for(i in 0 until c.valueArgumentsCount) {
+                val arg = c.getValueArgument(i)
+                if(arg != null) {
+                    extractExpressionExpr(arg, callable, id, i, enclosingStmt)
+                }
+            }
+        }
+
+        fun extractSpecialEnumFunction(fnName: String){
+            if (c.typeArgumentsCount != 1) {
+                logger.warnElement(Severity.ErrorSevere, "Expected to find exactly one type argument", c)
+                return
+            }
+
+            val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.find { it is IrFunction && it.name.asString() == fnName }
+            if (func == null) {
+                logger.warnElement(Severity.ErrorSevere, "Couldn't find function $fnName on enum type", c)
+                return
+            }
+
+            extractMethodAccess(func as IrFunction, false)
         }
 
         fun binopDisp(id: Label<out DbExpr>) {
@@ -693,11 +743,23 @@ open class KotlinFileExtractor(
         val dr = c.dispatchReceiver
         when {
             c.origin == IrStatementOrigin.PLUS &&
-            (isNumericFunction("plus") || isFunction("kotlin", "String", "plus")) -> {
+            (isNumericFunction("plus")
+                    || isFunction("kotlin", "String", "plus")
+                    || isFunction("kotlin", "String", "plus", true) // TODO: this is not correct. `a + b` becomes `(a?:"\"null\"") + (b?:"\"null\"")`.
+                    ) -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 binopDisp(id)
+            }
+            isFunction("kotlin", "String", "plus", true) -> {
+                // TODO: this is not correct. `a + b` becomes `(a?:"\"null\"") + (b?:"\"null\"")`.
+                val func = pluginContext.irBuiltIns.stringType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "plus" }
+                if (func == null) {
+                    logger.warnElement(Severity.ErrorSevere, "Couldn't find plus function on string type", c)
+                    return
+                }
+                extractMethodAccess(func as IrFunction)
             }
             c.origin == IrStatementOrigin.MINUS && isNumericFunction("minus") -> {
                 val id = tw.getFreshIdLabel<DbSubexpr>()
@@ -840,6 +902,21 @@ open class KotlinFileExtractor(
                 // TODO
                 logger.warnElement(Severity.ErrorSevere, "Unhandled builtin", c)
             }
+            isFunction("kotlin", "Any", "toString", true) -> {
+                // TODO: this is not correct. `a.toString()` becomes `(a?:"\"null\"").toString()`
+                val func = pluginContext.irBuiltIns.anyType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "toString" }
+                if (func == null) {
+                    logger.warnElement(Severity.ErrorSevere, "Couldn't find toString function", c)
+                    return
+                }
+                extractMethodAccess(func as IrFunction)
+            }
+            isBuiltinCallKotlin(c, "enumValues") -> {
+                extractSpecialEnumFunction("values")
+            }
+            isBuiltinCallKotlin(c, "enumValueOf") -> {
+                extractSpecialEnumFunction("valueOf")
+            }
             isBuiltinCallKotlin(c, "arrayOfNulls") -> {
                 val id = tw.getFreshIdLabel<DbArraycreationexpr>()
                 val type = useType(c.type)
@@ -922,28 +999,7 @@ open class KotlinFileExtractor(
                 }
             }
             else -> {
-                val id = tw.getFreshIdLabel<DbMethodaccess>()
-                val type = useType(c.type)
-                val locId = tw.getLocation(c)
-                val methodId = useFunction<DbMethod>(c.symbol.owner)
-                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeCallableBinding(id, methodId)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-
-                // type arguments at index -2, -3, ...
-                extractTypeArguments(c, id, callable, enclosingStmt, -2, true)
-
-                if(dr != null) {
-                    extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
-                }
-                for(i in 0 until c.valueArgumentsCount) {
-                    val arg = c.getValueArgument(i)
-                    if(arg != null) {
-                        extractExpressionExpr(arg, callable, id, i, enclosingStmt)
-                    }
-                }
+                extractMethodAccess(c.symbol.owner)
             }
         }
     }

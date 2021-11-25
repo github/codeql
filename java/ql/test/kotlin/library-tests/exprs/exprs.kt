@@ -198,3 +198,18 @@ class Class1 {
 fun notNullAssertion(x: Any?) {
     val y: Any = x!!
 }
+
+class Class2 {
+    fun x(aa: Any?, s: String?) {
+
+        val a = aa.toString()
+        val b0  = s.plus(5)
+        val b1  = s + 5
+        val b2  = s!!.plus(5)
+        val b3  = s!! + 5
+        val c0 = enumValues<Color>()
+        val c1 = Color.values()
+        val d0 = enumValueOf<Color>("GREEN")
+        val d1 = Color.valueOf("GREEN")
+    }
+}

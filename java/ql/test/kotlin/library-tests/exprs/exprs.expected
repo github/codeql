@@ -537,6 +537,35 @@
 | exprs.kt:199:5:199:20 | y | exprs.kt:198:1:200:1 | notNullAssertion | LocalVariableDeclExpr |
 | exprs.kt:199:18:199:18 | x | exprs.kt:198:1:200:1 | notNullAssertion | VarAccess |
 | exprs.kt:199:19:199:20 | ...!! | exprs.kt:198:1:200:1 | notNullAssertion | NotNullExpr |
+| exprs.kt:202:1:215:1 | <obinit>(...) | exprs.kt:202:1:215:1 | Class2 | MethodAccess |
+| exprs.kt:205:9:205:29 | a | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:205:20:205:29 | toString(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:206:9:206:27 | b0 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:206:21:206:27 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:206:26:206:26 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
+| exprs.kt:207:9:207:23 | b1 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:207:19:207:23 | ... + ... | exprs.kt:203:5:214:5 | x | AddExpr |
+| exprs.kt:207:23:207:23 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
+| exprs.kt:208:9:208:29 | b2 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:208:19:208:19 | s | exprs.kt:203:5:214:5 | x | VarAccess |
+| exprs.kt:208:20:208:21 | ...!! | exprs.kt:203:5:214:5 | x | NotNullExpr |
+| exprs.kt:208:23:208:29 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:208:28:208:28 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
+| exprs.kt:209:9:209:25 | b3 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:209:19:209:19 | s | exprs.kt:203:5:214:5 | x | VarAccess |
+| exprs.kt:209:19:209:25 | ... + ... | exprs.kt:203:5:214:5 | x | AddExpr |
+| exprs.kt:209:20:209:21 | ...!! | exprs.kt:203:5:214:5 | x | NotNullExpr |
+| exprs.kt:209:25:209:25 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
+| exprs.kt:210:9:210:36 | c0 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:210:18:210:36 | values(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:211:9:211:31 | c1 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:211:24:211:31 | values(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:212:9:212:44 | d0 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:212:18:212:44 | valueOf(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:212:38:212:42 | GREEN | exprs.kt:203:5:214:5 | x | StringLiteral |
+| exprs.kt:213:9:213:39 | d1 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:213:24:213:39 | valueOf(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
+| exprs.kt:213:33:213:37 | GREEN | exprs.kt:203:5:214:5 | x | StringLiteral |
 | file://:0:0:0:0 | C | exprs.kt:146:5:146:33 | foo | TypeAccess |
 | file://:0:0:0:0 | Color | exprs.kt:175:6:179:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:171:6:173:1 | Direction | TypeAccess |
