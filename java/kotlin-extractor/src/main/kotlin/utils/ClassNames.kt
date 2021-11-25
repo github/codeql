@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
@@ -45,9 +46,15 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
     return null
 }
 
-fun getRawIrClassBinaryPath(irClass: IrClass): String? {
-  return getIrClassVirtualFile(irClass)?.getPath()
-}
+fun getRawIrClassBinaryPath(irClass: IrClass) =
+    getIrClassVirtualFile(irClass)?.let {
+        val path = it.path
+        if(it.fileSystem.protocol == StandardFileSystems.JRT_PROTOCOL)
+            // For JRT files, which we assume to be the JDK, hide the containing JAR path to match the Java extractor's behaviour.
+            "/${path.split("!/", limit = 2)[1]}"
+        else
+            path
+    }
 
 fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
