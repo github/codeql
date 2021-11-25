@@ -1,8 +1,18 @@
 import java
 
-from Class c, Type superType, Location stLocation
+// Stop external filepaths from appearing in the results
+class ClassLocation extends Class {
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    exists(string fullPath |
+           super.hasLocationInfo(fullPath, sl, sc, el, ec) |
+           if this.fromSource()
+           then path = fullPath
+           else path = fullPath.regexpReplaceAll(".*/", "<external>/"))
+  }
+}
+
+from Class c, Type superType
 where c.fromSource() and
-superType = c.getASupertype() and
-stLocation = superType.getLocation()
-select c, superType.toString(), stLocation.getFile().getBaseName(), stLocation.getStartLine(), stLocation.getStartColumn(), stLocation.getEndLine(), stLocation.getEndColumn()
+      superType = c.getASupertype()
+select c, superType
 

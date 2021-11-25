@@ -1,23 +1,23 @@
-| classes.kt:2:1:2:18 | ClassOne | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:4:1:6:1 | ClassTwo | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:8:1:10:1 | ClassThree | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:12:1:15:1 | ClassFour | ClassThree | classes.kt | 8 | 1 | 10 | 1 |
-| classes.kt:17:1:18:1 | ClassFive | ClassFour | classes.kt | 12 | 1 | 15 | 1 |
-| classes.kt:28:1:30:1 | ClassSix | ClassFour | classes.kt | 12 | 1 | 15 | 1 |
-| classes.kt:28:1:30:1 | ClassSix | IF1 | classes.kt | 20 | 1 | 22 | 1 |
-| classes.kt:28:1:30:1 | ClassSix | IF2 | classes.kt | 24 | 1 | 26 | 1 |
-| classes.kt:34:1:47:1 | ClassSeven | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:49:1:51:1 | Direction | Enum<Direction> | Enum.class | 0 | 0 | 0 | 0 |
-| classes.kt:53:1:57:1 | Color | Enum<Color> | Enum.class | 0 | 0 | 0 | 0 |
-| classes.kt:63:1:91:1 | Class1 | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:66:20:66:54 | new Object(...) { ... } | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
-| classes.kt:66:20:66:54 | new Object(...) { ... } | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
-| classes.kt:68:20:68:74 | new Object(...) { ... } | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
-| classes.kt:68:20:68:74 | new Object(...) { ... } | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
-| classes.kt:68:20:68:74 | new Object(...) { ... } | Interface3<String> | classes.kt | 61 | 1 | 61 | 26 |
-| classes.kt:72:16:77:10 | new Object(...) { ... } | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
-| classes.kt:72:16:77:10 | new Object(...) { ... } | Interface2 | classes.kt | 60 | 1 | 60 | 23 |
-| classes.kt:75:24:75:33 | new Object(...) { ... } | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:81:16:81:38 | new Interface1(...) { ... } | Interface1 | classes.kt | 59 | 1 | 59 | 23 |
-| classes.kt:85:16:85:25 | new Object(...) { ... } | Object | Object.class | 0 | 0 | 0 | 0 |
-| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | Interface3<Integer> | classes.kt | 61 | 1 | 61 | 26 |
+| classes.kt:2:1:2:18 | ClassOne | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:4:1:6:1 | ClassTwo | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:8:1:10:1 | ClassThree | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:12:1:15:1 | ClassFour | classes.kt:8:1:10:1 | ClassThree |
+| classes.kt:17:1:18:1 | ClassFive | classes.kt:12:1:15:1 | ClassFour |
+| classes.kt:28:1:30:1 | ClassSix | classes.kt:12:1:15:1 | ClassFour |
+| classes.kt:28:1:30:1 | ClassSix | classes.kt:20:1:22:1 | IF1 |
+| classes.kt:28:1:30:1 | ClassSix | classes.kt:24:1:26:1 | IF2 |
+| classes.kt:34:1:47:1 | ClassSeven | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:49:1:51:1 | Direction | file://<external>/Enum.class:0:0:0:0 | Enum<Direction> |
+| classes.kt:53:1:57:1 | Color | file://<external>/Enum.class:0:0:0:0 | Enum<Color> |
+| classes.kt:63:1:91:1 | Class1 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:66:20:66:54 | new Object(...) { ... } | classes.kt:59:1:59:23 | Interface1 |
+| classes.kt:66:20:66:54 | new Object(...) { ... } | classes.kt:60:1:60:23 | Interface2 |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | classes.kt:59:1:59:23 | Interface1 |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | classes.kt:60:1:60:23 | Interface2 |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | classes.kt:61:1:61:26 | Interface3<String> |
+| classes.kt:72:16:77:10 | new Object(...) { ... } | classes.kt:59:1:59:23 | Interface1 |
+| classes.kt:72:16:77:10 | new Object(...) { ... } | classes.kt:60:1:60:23 | Interface2 |
+| classes.kt:75:24:75:33 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:81:16:81:38 | new Interface1(...) { ... } | classes.kt:59:1:59:23 | Interface1 |
+| classes.kt:85:16:85:25 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:61:1:61:26 | Interface3<Integer> |
