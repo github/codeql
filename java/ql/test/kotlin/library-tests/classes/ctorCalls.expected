@@ -16,3 +16,6 @@ superCall
 | classes.kt:81:16:81:38 | super(...) |
 | classes.kt:85:16:85:25 | super(...) |
 | classes.kt:89:16:89:44 | super(...) |
+| superChain.kt:1:1:1:33 | super(...) |
+| superChain.kt:2:33:2:57 | super(...) |
+| superChain.kt:3:33:3:57 | super(...) |
