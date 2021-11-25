@@ -1,6 +1,13 @@
 invalidModelRow
 #select
-| test.go:40:10:40:12 | arg | qltest |
-| test.go:55:10:55:14 | taint | qltest |
-| test.go:66:10:66:17 | index expression | qltest |
-| test.go:78:10:78:17 | index expression | qltest |
+| test.go:43:10:43:12 | arg | qltest |
+| test.go:57:10:57:15 | taint1 | qltest |
+| test.go:60:10:60:15 | taint2 | qltest |
+| test.go:64:10:64:15 | taint3 | qltest |
+| test.go:68:10:68:15 | taint4 | qltest |
+| test.go:71:10:71:15 | taint5 | qltest |
+| test.go:75:10:75:15 | taint6 | qltest |
+| test.go:78:10:78:15 | taint7 | qltest |
+| test.go:81:10:81:18 | index expression | qltest |
+| test.go:85:10:85:15 | taint9 | qltest |
+| test.go:89:10:89:17 | index expression | qltest |

@@ -18,7 +18,7 @@ func StepArgResNoQual(arg interface{}) interface{} { return nil }
 
 func StepArgResContent(arg interface{}) []interface{} { return nil }
 
-func StepArgContentRes(arg interface{}) interface{} { return nil }
+func StepArgContentRes(arg []interface{}) interface{} { return nil }
 
 type A interface {
 	Src1() interface{}

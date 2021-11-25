@@ -1,10 +1,16 @@
 invalidModelRow
 #select
-| test.go:16:23:16:25 | arg | test.go:16:10:16:26 | call to StepArgRes |
-| test.go:17:27:17:29 | arg | test.go:17:2:17:30 | ... = ...[1] |
-| test.go:18:15:18:17 | arg | test.go:12:6:12:9 | definition of arg1 |
-| test.go:19:16:19:18 | arg | test.go:13:6:13:6 | definition of t |
-| test.go:20:10:20:10 | t | test.go:20:10:20:24 | call to StepQualRes |
-| test.go:21:2:21:2 | t | test.go:11:6:11:8 | definition of arg |
-| test.go:22:32:22:34 | arg | test.go:22:10:22:35 | call to StepArgResNoQual |
-| test.go:53:24:53:26 | src | test.go:53:11:53:27 | call to StepArgRes |
+| test.go:19:23:19:25 | arg | test.go:19:10:19:26 | call to StepArgRes |
+| test.go:20:27:20:29 | arg | test.go:20:2:20:30 | ... = ...[1] |
+| test.go:21:15:21:17 | arg | test.go:13:6:13:9 | definition of arg1 |
+| test.go:22:16:22:18 | arg | test.go:15:6:15:6 | definition of t |
+| test.go:23:10:23:10 | t | test.go:23:10:23:24 | call to StepQualRes |
+| test.go:24:2:24:2 | t | test.go:12:6:12:8 | definition of arg |
+| test.go:25:32:25:34 | arg | test.go:25:10:25:35 | call to StepArgResNoQual |
+| test.go:56:25:56:27 | src | test.go:56:12:56:28 | call to StepArgRes |
+| test.go:59:29:59:31 | src | test.go:59:2:59:32 | ... := ...[1] |
+| test.go:63:15:63:17 | src | test.go:62:6:62:11 | definition of taint3 |
+| test.go:67:21:67:23 | src | test.go:66:6:66:11 | definition of taint4 |
+| test.go:70:13:70:25 | type assertion | test.go:70:12:70:40 | call to StepQualRes |
+| test.go:74:3:74:15 | type assertion | test.go:73:6:73:11 | definition of taint6 |
+| test.go:77:34:77:36 | src | test.go:77:12:77:37 | call to StepArgResNoQual |

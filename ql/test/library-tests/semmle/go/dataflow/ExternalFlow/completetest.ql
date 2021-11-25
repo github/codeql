@@ -14,8 +14,15 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //`namespace; type; subtypes; name; signature; ext; input; output; kind`
+        "github.com/nonexistent/test;T;false;StepArgRes;;;Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;T;false;StepArgRes1;;;Argument[0];ReturnValue[1];taint",
+        "github.com/nonexistent/test;T;false;StepArgArg;;;Argument[0];Argument[1];taint",
+        "github.com/nonexistent/test;T;false;StepArgQual;;;Argument[0];Argument[-1];taint",
+        "github.com/nonexistent/test;T;false;StepQualRes;;;Argument[-1];ReturnValue;taint",
+        "github.com/nonexistent/test;T;false;StepQualArg;;;Argument[-1];Argument[0];taint",
+        "github.com/nonexistent/test;;false;StepArgResNoQual;;;Argument[0];ReturnValue;taint",
         "github.com/nonexistent/test;;false;StepArgResContent;;;Argument[0];ArrayElement of ReturnValue;taint",
-        "github.com/nonexistent/test;T;false;StepArgRes;;;Argument[0];ReturnValue;taint"
+        "github.com/nonexistent/test;;false;StepArgContentRes;;;ArrayElement of Argument[0];ReturnValue;taint",
       ]
   }
 }
