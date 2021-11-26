@@ -687,9 +687,17 @@ open class KotlinFileExtractor(
             }
 
             val dr = c.dispatchReceiver
-            if(dr != null) {
+            val er = c.extensionReceiver
+            if (dr != null) {
                 extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+
+                if (er != null && er != dr) {
+                    logger.warnElement(Severity.ErrorSevere, "Expected to only find extension receiver or dispatch receiver. Found both. Extracting dispatch receiver only", c)
+                }
+            } else if (er != null) {
+                extractExpressionExpr(er, callable, id, -1, enclosingStmt)
             }
+
             for(i in 0 until c.valueArgumentsCount) {
                 val arg = c.getValueArgument(i)
                 if(arg != null) {

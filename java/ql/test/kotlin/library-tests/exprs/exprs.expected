@@ -539,11 +539,14 @@
 | exprs.kt:199:19:199:20 | ...!! | exprs.kt:198:1:200:1 | notNullAssertion | NotNullExpr |
 | exprs.kt:202:1:215:1 | <obinit>(...) | exprs.kt:202:1:215:1 | Class2 | MethodAccess |
 | exprs.kt:205:9:205:29 | a | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:205:17:205:18 | aa | exprs.kt:203:5:214:5 | x | VarAccess |
 | exprs.kt:205:20:205:29 | toString(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
 | exprs.kt:206:9:206:27 | b0 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:206:19:206:19 | s | exprs.kt:203:5:214:5 | x | VarAccess |
 | exprs.kt:206:21:206:27 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
 | exprs.kt:206:26:206:26 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
 | exprs.kt:207:9:207:23 | b1 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
+| exprs.kt:207:19:207:19 | s | exprs.kt:203:5:214:5 | x | VarAccess |
 | exprs.kt:207:19:207:23 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
 | exprs.kt:207:23:207:23 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
 | exprs.kt:208:9:208:29 | b2 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
