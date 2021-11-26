@@ -37,7 +37,7 @@ os.path.isfile("path")  # $ getAPathArgument="path"
 os.path.isfile(path="path")  # $ getAPathArgument="path"
 
 os.path.isdir("s")  # $ getAPathArgument="s"
-os.path.isdir(s="s")  # $ MISSING: getAPathArgument="s"
+os.path.isdir(s="s")  # $ getAPathArgument="s"
 
 os.path.islink("path")  # $ getAPathArgument="path"
 os.path.islink(path="path")  # $ getAPathArgument="path"

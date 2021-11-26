@@ -318,20 +318,26 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/os.path.html#os.path.realpath
    */
   private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    string name;
+
     OsPathProbingCall() {
-      this =
-        os::path()
-            .getMember([
-                // these check if the file exists
-                "exists", "lexists", "isfile", "isdir", "islink", "ismount",
-                // these raise errors if the file does not exist
-                "getatime", "getmtime", "getctime", "getsize"
-              ])
-            .getACall()
+      name in [
+          // these check if the file exists
+          "exists", "lexists", "isfile", "isdir", "islink", "ismount",
+          // these raise errors if the file does not exist
+          "getatime", "getmtime", "getctime", "getsize"
+        ] and
+      this = os::path().getMember(name).getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
+      not name = "isdir" and
       result in [this.getArg(0), this.getArgByName("path")]
+      or
+      // although the Python docs say the parameter is called `path`, the implementation
+      // actually uses `s`.
+      name = "isdir" and
+      result in [this.getArg(0), this.getArgByName("s")]
     }
   }
 
