@@ -2,21 +2,21 @@ import builtins
 import io
 import os
 
-open("filepath")  # $ getAPathArgument="filepath"
-open(file="filepath")  # $ getAPathArgument="filepath"
+open("file")  # $ getAPathArgument="file"
+open(file="file")  # $ getAPathArgument="file"
 
 o = open
 
-o("filepath")  # $ getAPathArgument="filepath"
-o(file="filepath")  # $ getAPathArgument="filepath"
+o("file")  # $ getAPathArgument="file"
+o(file="file")  # $ getAPathArgument="file"
 
 
-builtins.open("filepath")  # $ getAPathArgument="filepath"
-builtins.open(file="filepath")  # $ getAPathArgument="filepath"
+builtins.open("file")  # $ getAPathArgument="file"
+builtins.open(file="file")  # $ getAPathArgument="file"
 
 
-io.open("filepath")  # $ getAPathArgument="filepath"
-io.open(file="filepath")  # $ getAPathArgument="filepath"
+io.open("file")  # $ getAPathArgument="file"
+io.open(file="file")  # $ getAPathArgument="file"
 
 f = open("path") # $ getAPathArgument="path"
 f.write("foo") # $ getAPathArgument="path" fileWriteData="foo"
@@ -30,21 +30,35 @@ def through_function(open_file):
 through_function(f)
 
 # os.path
-os.path.exists("filepath")  # $ getAPathArgument="filepath"
-os.path.isfile("filepath")  # $ getAPathArgument="filepath"
-os.path.isdir("filepath")  # $ getAPathArgument="filepath"
-os.path.islink("filepath")  # $ getAPathArgument="filepath"
-os.path.ismount("filepath")  # $ getAPathArgument="filepath"
+os.path.exists("path")  # $ getAPathArgument="path"
+os.path.exists(path="path")  # $ getAPathArgument="path"
+
+os.path.isfile("path")  # $ getAPathArgument="path"
+os.path.isfile(path="path")  # $ getAPathArgument="path"
+
+os.path.isdir("s")  # $ getAPathArgument="s"
+os.path.isdir(s="s")  # $ MISSING: getAPathArgument="s"
+
+os.path.islink("path")  # $ getAPathArgument="path"
+os.path.islink(path="path")  # $ getAPathArgument="path"
+
+os.path.ismount("path")  # $ getAPathArgument="path"
+os.path.ismount(path="path")  # $ getAPathArgument="path"
 
 # actual os.path implementations
 import posixpath
 import ntpath
 import genericpath
 
-posixpath.exists("filepath") # $ getAPathArgument="filepath"
-ntpath.exists("filepath") # $ getAPathArgument="filepath"
-genericpath.exists("filepath") # $ getAPathArgument="filepath"
+posixpath.exists("path") # $ getAPathArgument="path"
+posixpath.exists(path="path") # $ getAPathArgument="path"
+
+ntpath.exists("path") # $ getAPathArgument="path"
+ntpath.exists(path="path") # $ getAPathArgument="path"
+
+genericpath.exists("path") # $ getAPathArgument="path"
+genericpath.exists(path="path") # $ getAPathArgument="path"
 
 # os
-os.stat("filepath") # $ getAPathArgument="filepath"
-os.stat(path="filepath") # $ getAPathArgument="filepath"
+os.stat("path") # $ getAPathArgument="path"
+os.stat(path="path") # $ getAPathArgument="path"
