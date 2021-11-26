@@ -609,6 +609,8 @@ private module ControlFlowGraphImpl {
     or
     result = n and n instanceof WhenBranch
     or
+    result = n and n instanceof StmtExpr
+    or
     result = n and n.(PostOrderNode).isLeafNode()
     or
     result = first(n.(PostOrderNode).firstChild())
