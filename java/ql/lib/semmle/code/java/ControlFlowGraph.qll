@@ -461,6 +461,8 @@ private module ControlFlowGraphImpl {
       or
       this instanceof StringTemplateExpr
       or
+      this instanceof ClassExpr
+      or
       this instanceof RValue
       or
       this instanceof Call // includes both expressions and statements
@@ -553,6 +555,8 @@ private module ControlFlowGraphImpl {
       exists(StringTemplateExpr e | e = this |
         result = e.getComponent(index)
       )
+      or
+      index = 0 and result = this.(ClassExpr).getExpr()
       or
       index = 0 and result = this.(ReturnStmt).getResult()
       or
