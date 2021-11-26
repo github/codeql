@@ -352,6 +352,9 @@ func extractUniverseScope() {
 	lbl := tw.Labeler.ScopeID(types.Universe, nil)
 	dbscheme.ScopesTable.Emit(tw, lbl, dbscheme.UniverseScopeType.Index())
 	extractObjects(tw, types.Universe, lbl)
+
+	// Always extract an empty interface type
+	extractType(tw, types.NewInterfaceType([]*types.Func{}, []types.Type{}))
 }
 
 // extractObjects extracts all objects declared in the given scope
