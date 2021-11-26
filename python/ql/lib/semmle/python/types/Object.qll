@@ -130,7 +130,7 @@ class Object extends @py_object {
    * class S, both attributes having the same name, and S is a super class of C.
    */
   predicate overrides(Object o) {
-    exists(string name | declaringClass(name).getASuperType() = o.declaringClass(name))
+    exists(string name | this.declaringClass(name).getASuperType() = o.declaringClass(name))
   }
 
   private boolean booleanFromValue() {
@@ -148,8 +148,8 @@ class Object extends @py_object {
   }
 
   final predicate maybe() {
-    booleanFromValue() = true and
-    booleanFromValue() = false
+    this.booleanFromValue() = true and
+    this.booleanFromValue() = false
   }
 
   predicate notClass() { any() }

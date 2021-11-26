@@ -40,7 +40,7 @@ private module PyJWT {
 
     override string getAlgorithmString() {
       exists(StrConst str |
-        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(getAlgorithm()) and
+        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getAlgorithm()) and
         result = str.getText()
       )
     }
@@ -76,7 +76,7 @@ private module PyJWT {
 
     override string getAlgorithmString() {
       exists(StrConst str |
-        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(getAlgorithm()) and
+        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getAlgorithm()) and
         result = str.getText()
       )
     }

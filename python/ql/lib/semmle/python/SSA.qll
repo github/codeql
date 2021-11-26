@@ -86,7 +86,7 @@ class SsaVariable extends @py_ssa_var {
 
   /** Gets the incoming edges for a Phi node. */
   private BasicBlock getAPredecessorBlockForPhi() {
-    exists(getAPhiInput()) and
+    exists(this.getAPhiInput()) and
     result.getASuccessor() = this.getDefinition().getBasicBlock()
   }
 

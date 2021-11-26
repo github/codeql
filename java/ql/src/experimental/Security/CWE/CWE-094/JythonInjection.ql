@@ -25,7 +25,7 @@ class PythonInterpreter extends RefType {
 class InterpretExprMethod extends Method {
   InterpretExprMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof PythonInterpreter and
-    getName().matches(["exec%", "run%", "eval", "compile"])
+    this.getName().matches(["exec%", "run%", "eval", "compile"])
   }
 }
 
@@ -46,7 +46,7 @@ predicate runsCode(MethodAccess ma, Expr sink) {
 class LoadClassMethod extends Method {
   LoadClassMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof BytecodeLoader and
-    hasName(["makeClass", "makeCode"])
+    this.hasName(["makeClass", "makeCode"])
   }
 }
 
@@ -71,7 +71,7 @@ class Py extends RefType {
 class PyCompileMethod extends Method {
   PyCompileMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof Py and
-    getName().matches("compile%")
+    this.getName().matches("compile%")
   }
 }
 

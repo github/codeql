@@ -375,7 +375,7 @@ abstract class RegexString extends Expr {
       // 32-bit hex value \Uhhhhhhhh
       this.getChar(start + 1) = "U" and end = start + 10
       or
-      escapedName(start, end)
+      this.escapedName(start, end)
       or
       // escape not handled above, update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "U", "N"] and

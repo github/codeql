@@ -138,8 +138,8 @@ class Value extends TObject {
    * The result can be `none()`, but never both `true` and `false`.
    */
   boolean getDefiniteBooleanValue() {
-    result = getABooleanValue() and
-    not (getABooleanValue() = true and getABooleanValue() = false)
+    result = this.getABooleanValue() and
+    not (this.getABooleanValue() = true and this.getABooleanValue() = false)
   }
 }
 
@@ -197,7 +197,7 @@ class ModuleValue extends Value instanceof ModuleObjectInternal {
 
   /** When used (exclusively) as a script (will not include normal modules that can also be run as a script) */
   predicate isUsedAsScript() {
-    not isUsedAsModule() and
+    not this.isUsedAsModule() and
     (
       not this.getPath().getExtension() = "py"
       or

@@ -452,7 +452,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
   final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
-    hasInputAtRankInBlock(block, rnk, _)
+    this.hasInputAtRankInBlock(block, rnk, _)
   }
 
   /**

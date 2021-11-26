@@ -1275,7 +1275,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    */
   RefType getReceiverType() {
     exists(Stmt stmt, Expr resultExpr |
-      stmt = asMethod().getBody().(SingletonBlock).getStmt() and
+      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
       (
         resultExpr = stmt.(ReturnStmt).getResult()
         or

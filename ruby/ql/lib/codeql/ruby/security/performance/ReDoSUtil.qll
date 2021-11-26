@@ -140,9 +140,9 @@ class RegExpRoot extends RegExpTerm {
     // there is at least one repetition
     getRoot(any(InfiniteRepetitionQuantifier q)) = this and
     // is actually used as a RegExp
-    isUsedAsRegExp() and
+    this.isUsedAsRegExp() and
     // not excluded for library specific reasons
-    not isExcluded(getRootTerm().getParent())
+    not isExcluded(this.getRootTerm().getParent())
   }
 }
 
@@ -302,7 +302,7 @@ abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character matched by this character class.
    */
-  string choose() { result = getARelevantChar() and matches(result) }
+  string choose() { result = this.getARelevantChar() and this.matches(result) }
 }
 
 /**
