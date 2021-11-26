@@ -75,12 +75,14 @@ SummaryComponent interpretComponentSpecific(string c) {
 /** Gets the summary component for specification component `c`, if any. */
 private string getContentSpecificCsv(Content c) {
   exists(Field f, string package, string className, string fieldName |
-    c = TFieldContent(f) and
+    f = c.(FieldContent).getField() and
     f.hasQualifiedName(package, className, fieldName) and
     result = "Field[" + package + "." + className + "." + fieldName + "]"
   )
   or
-  exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
+  exists(SyntheticField f |
+    f = c.(SyntheticFieldContent).getField() and result = "SyntheticField[" + f + "]"
+  )
   or
   c instanceof ArrayContent and result = "ArrayElement"
   or
