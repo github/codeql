@@ -849,7 +849,7 @@ open class KotlinFileExtractor(
                 tw.writeCallableEnclosingExpr(id, callable)
 
                 if (c.typeArgumentsCount == 1) {
-                    extractTypeArguments(c, id, callable, -1)
+                    extractTypeArguments(c, id, callable, enclosingStmt, -1)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find exactly one type argument in an arrayOfNulls call", c)
                 }
@@ -857,7 +857,7 @@ open class KotlinFileExtractor(
                 if (c.valueArgumentsCount == 1) {
                     val dim = c.getValueArgument(0)
                     if (dim != null) {
-                        extractExpressionExpr(dim, callable, id, 0)
+                        extractExpressionExpr(dim, callable, id, 0, enclosingStmt)
                     } else {
                         logger.warnElement(Severity.ErrorSevere, "Expected to find non-null argument in an arrayOfNulls call", c)
                     }
@@ -883,7 +883,7 @@ open class KotlinFileExtractor(
 
                 if (isBuiltinCallKotlin(c, "arrayOf")) {
                     if (c.typeArgumentsCount == 1) {
-                        extractTypeArguments(c, id, callable, -1)
+                        extractTypeArguments(c, id, callable, enclosingStmt,-1)
                     } else {
                         logger.warnElement( Severity.ErrorSevere, "Expected to find one type argument in arrayOf call", c )
                     }
@@ -893,6 +893,7 @@ open class KotlinFileExtractor(
                     val elementTypeResult = useType(elementType)
                     tw.writeExprs_unannotatedtypeaccess(argId, elementTypeResult.javaResult.id, elementTypeResult.kotlinResult.id, id, -1)
                     tw.writeCallableEnclosingExpr(argId, callable)
+                    tw.writeStatementEnclosingExpr(argId, enclosingStmt)
                 }
 
                 if (c.valueArgumentsCount == 1) {
@@ -902,7 +903,8 @@ open class KotlinFileExtractor(
                         tw.writeExprs_arrayinit(initId, type.javaResult.id, type.kotlinResult.id, id, -2)
                         tw.writeHasLocation(initId, locId)
                         tw.writeCallableEnclosingExpr(initId, callable)
-                        vararg.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i) }
+                        tw.writeStatementEnclosingExpr(initId, enclosingStmt)
+                        vararg.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
 
                         val dim = vararg.elements.size
                         val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
@@ -910,6 +912,7 @@ open class KotlinFileExtractor(
                         tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, dimType.kotlinResult.id, id, 0)
                         tw.writeHasLocation(dimId, locId)
                         tw.writeCallableEnclosingExpr(dimId, callable)
+                        tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                         tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
                     } else {
                         logger.warnElement(Severity.ErrorSevere, "Expected to find vararg argument in ${c.symbol.owner.name.asString()} call", c)
