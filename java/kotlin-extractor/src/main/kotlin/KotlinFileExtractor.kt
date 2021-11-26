@@ -744,9 +744,7 @@ open class KotlinFileExtractor(
         when {
             c.origin == IrStatementOrigin.PLUS &&
             (isNumericFunction("plus")
-                    || isFunction("kotlin", "String", "plus")
-                    || isFunction("kotlin", "String", "plus", true) // TODO: this is not correct. `a + b` becomes `(a?:"\"null\"") + (b?:"\"null\"")`.
-                    ) -> {
+                    || isFunction("kotlin", "String", "plus")) -> {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val type = useType(c.type)
                 tw.writeExprs_addexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)

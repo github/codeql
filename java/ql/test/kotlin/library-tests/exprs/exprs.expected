@@ -544,7 +544,7 @@
 | exprs.kt:206:21:206:27 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
 | exprs.kt:206:26:206:26 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
 | exprs.kt:207:9:207:23 | b1 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
-| exprs.kt:207:19:207:23 | ... + ... | exprs.kt:203:5:214:5 | x | AddExpr |
+| exprs.kt:207:19:207:23 | plus(...) | exprs.kt:203:5:214:5 | x | MethodAccess |
 | exprs.kt:207:23:207:23 | 5 | exprs.kt:203:5:214:5 | x | IntegerLiteral |
 | exprs.kt:208:9:208:29 | b2 | exprs.kt:203:5:214:5 | x | LocalVariableDeclExpr |
 | exprs.kt:208:19:208:19 | s | exprs.kt:203:5:214:5 | x | VarAccess |
