@@ -8,6 +8,7 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
+private import DataFlowImplConsistency
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -365,17 +366,6 @@ predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
-}
-
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
@@ -419,4 +409,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
+  }
 }
