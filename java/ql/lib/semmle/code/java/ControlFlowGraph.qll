@@ -459,6 +459,8 @@ private module ControlFlowGraphImpl {
       this instanceof LocalVariableDeclExpr and
       not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
       or
+      this instanceof StringTemplateExpr
+      or
       this instanceof RValue
       or
       this instanceof Call // includes both expressions and statements
@@ -546,6 +548,10 @@ private module ControlFlowGraphImpl {
         index = -1 and result = e.getQualifier() and not result instanceof TypeAccess
         or
         result = e.getArgument(index)
+      )
+      or
+      exists(StringTemplateExpr e | e = this |
+        result = e.getComponent(index)
       )
       or
       index = 0 and result = this.(ReturnStmt).getResult()
