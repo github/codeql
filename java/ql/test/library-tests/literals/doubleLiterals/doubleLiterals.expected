@@ -12,7 +12,7 @@
 | DoubleLiterals.java:17:3:17:10 | 4.9e-324 | 4.9E-324 | 4.9E-324 |
 | DoubleLiterals.java:18:3:18:28 | 0x0.0_0000_0000_0001P-1022 | 4.9E-324 | 4.9E-324 |
 | DoubleLiterals.java:19:3:19:13 | 0x1.0P-1074 | 4.9E-324 | 4.9E-324 |
-| DoubleLiterals.java:21:8:21:20 | 0\\u002E\\u0030 | 0.0 | 0.0 |
+| DoubleLiterals.java:21:3:21:20 | \\u0030\\u002E\\u0030 | 0.0 | 0.0 |
 | DoubleLiterals.java:26:4:26:6 | 0.0 | 0.0 | 0.0 |
 | DoubleLiterals.java:27:4:27:6 | 0.0 | 0.0 | 0.0 |
 | DoubleLiterals.java:28:4:28:6 | 1.0 | 1.0 | 1.0 |
