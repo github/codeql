@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ImproperCodeSanitization::ImproperCodeSanitization
+import semmle.javascript.security.dataflow.ImproperCodeSanitizationQuery
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations

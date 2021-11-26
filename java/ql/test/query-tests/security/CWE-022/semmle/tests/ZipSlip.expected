@@ -14,6 +14,7 @@ nodes
 | ZipTest.java:9:48:9:51 | file | semmle.label | file |
 | ZipTest.java:10:49:10:52 | file | semmle.label | file |
 | ZipTest.java:11:36:11:39 | file | semmle.label | file |
+subpaths
 #select
 | ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:9:48:9:51 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:9:48:9:51 | file | file system operation |
 | ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:10:49:10:52 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:10:49:10:52 | file | file system operation |

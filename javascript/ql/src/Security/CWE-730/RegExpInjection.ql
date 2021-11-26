@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RegExpInjection::RegExpInjection
+import semmle.javascript.security.dataflow.RegExpInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

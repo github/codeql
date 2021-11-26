@@ -170,14 +170,14 @@ returnTypes
 | NullableRefTypes.cs:47:23:47:25 | Invoke | MyClass? |
 | NullableRefTypes.cs:48:16:48:16 | add_P | Void! |
 | NullableRefTypes.cs:48:16:48:16 | remove_P | Void! |
-| NullableRefTypes.cs:51:12:51:15 | Q | object |
-| NullableRefTypes.cs:51:12:51:15 | Q | object! |
-| NullableRefTypes.cs:51:12:51:15 | Q | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q<> | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object! |
 | NullableRefTypes.cs:54:11:54:33 | Generic | Void! |
 | NullableRefTypes.cs:58:11:58:26 | Generic2 | Void! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<> | Void! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:71:14:71:18 | CallF | MyStruct! |
 | NullableRefTypes.cs:80:7:80:22 | NullableRefTypes | Void! |
 | NullableRefTypes.cs:82:10:82:40 | TestSuppressNullableWarningExpr | Void! |
@@ -207,11 +207,11 @@ returnTypes
 | NullableRefTypes.cs:215:10:215:20 | ElementTest | Void! |
 | NullableRefTypes.cs:223:48:223:54 | GetSelf | TestNullableFlowStates? |
 methodTypeArguments
-| NameResolutionSuppressNullable.cs:10:21:10:40 | EnsureInitialized | 0 | WaitCallback |
-| NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass! |
-| NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass? |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass? |
+| NameResolutionSuppressNullable.cs:10:21:10:40 | EnsureInitialized<WaitCallback> | 0 | WaitCallback |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | 0 | MyClass! |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | 0 | MyClass? |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | 0 | MyClass! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | 0 | MyClass? |
 constructedTypes
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 0 | MyClass | _ |
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 1 | MyClass | _ |
@@ -268,10 +268,10 @@ expressionTypes
 | NullableRefTypes.cs:73:18:73:18 | access to local variable x | MyClass! |
 | NullableRefTypes.cs:73:18:73:25 | MyClass x = ... | MyClass! |
 | NullableRefTypes.cs:73:22:73:25 | null | null |
-| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn | Void! |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:74:9:74:20 | this access | MyClass |
 | NullableRefTypes.cs:74:19:74:19 | access to local variable x | MyClass? |
-| NullableRefTypes.cs:75:9:75:12 | call to method Q | object! |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q<MyClass> | object! |
 | NullableRefTypes.cs:75:9:75:12 | this access | MyClass |
 | NullableRefTypes.cs:75:11:75:11 | access to local variable x | MyClass? |
 | NullableRefTypes.cs:76:16:76:32 | default(...) | MyStruct! |
@@ -407,9 +407,9 @@ exprFlowState
 | NullableRefTypes.cs:40:30:40:30 | access to local variable b | Maybe null |
 | NullableRefTypes.cs:51:44:51:47 | null | Maybe null |
 | NullableRefTypes.cs:73:22:73:25 | null | Maybe null |
-| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn | Not null |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn<MyClass> | Not null |
 | NullableRefTypes.cs:74:19:74:19 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:75:9:75:12 | call to method Q | Not null |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q<MyClass> | Not null |
 | NullableRefTypes.cs:75:11:75:11 | access to local variable x | Maybe null |
 | NullableRefTypes.cs:76:16:76:32 | default(...) | Not null |
 | NullableRefTypes.cs:84:21:84:28 | "source" | Not null |

@@ -11,14 +11,10 @@
 
 import java
 
-class ObjectCloneMethod extends Method {
-  ObjectCloneMethod() {
-    this.getDeclaringType() instanceof TypeObject and
-    this.getName() = "clone" and
-    this.hasNoParameters()
-  }
-}
-
-from MethodAccess ma, ObjectCloneMethod clone
-where ma.getMethod().overrides(clone)
+from MethodAccess ma, Method m
+where
+  m = ma.getMethod() and
+  m instanceof CloneMethod and
+  // But ignore direct calls to Object.clone
+  not m.getDeclaringType() instanceof TypeObject
 select ma, "Invoking a method that overrides clone() should be avoided."

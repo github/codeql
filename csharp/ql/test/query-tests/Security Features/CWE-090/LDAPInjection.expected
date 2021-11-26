@@ -1,22 +1,23 @@
 edges
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:16:54:16:78 | ... + ... |
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:18:21:18:45 | ... + ... |
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:25:21:25:45 | ... + ... |
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:26:53:26:77 | ... + ... |
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:29:48:29:70 | ... + ... |
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:31:20:31:42 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:14:54:14:78 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:16:21:16:45 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:23:21:23:45 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:24:53:24:77 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:27:48:27:70 | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:29:20:29:42 | ... + ... |
 nodes
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| LDAPInjection.cs:16:54:16:78 | ... + ... | semmle.label | ... + ... |
-| LDAPInjection.cs:18:21:18:45 | ... + ... | semmle.label | ... + ... |
-| LDAPInjection.cs:25:21:25:45 | ... + ... | semmle.label | ... + ... |
-| LDAPInjection.cs:26:53:26:77 | ... + ... | semmle.label | ... + ... |
-| LDAPInjection.cs:29:48:29:70 | ... + ... | semmle.label | ... + ... |
-| LDAPInjection.cs:31:20:31:42 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LDAPInjection.cs:14:54:14:78 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:16:21:16:45 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:23:21:23:45 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:24:53:24:77 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:27:48:27:70 | ... + ... | semmle.label | ... + ... |
+| LDAPInjection.cs:29:20:29:42 | ... + ... | semmle.label | ... + ... |
+subpaths
 #select
-| LDAPInjection.cs:16:54:16:78 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:16:54:16:78 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| LDAPInjection.cs:18:21:18:45 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:18:21:18:45 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| LDAPInjection.cs:25:21:25:45 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:25:21:25:45 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| LDAPInjection.cs:26:53:26:77 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:26:53:26:77 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| LDAPInjection.cs:29:48:29:70 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:29:48:29:70 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| LDAPInjection.cs:31:20:31:42 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:31:20:31:42 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:14:54:14:78 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:14:54:14:78 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:16:21:16:45 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:16:21:16:45 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:23:21:23:45 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:23:21:23:45 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:24:53:24:77 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:24:53:24:77 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:27:48:27:70 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:27:48:27:70 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |
+| LDAPInjection.cs:29:20:29:42 | ... + ... | LDAPInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | LDAPInjection.cs:29:20:29:42 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:11:27:11:49 | access to property QueryString | User-provided value |

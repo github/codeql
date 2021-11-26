@@ -1,4 +1,3 @@
-// semmle-extractor-options: /r:System.Data.dll /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll ${testdir}/../../../../resources/stubs/EntityFramework.cs ${testdir}/../../../../resources/stubs/System.Data.cs /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll
 using System;
 using System.Data;
 using System.Data.Common;

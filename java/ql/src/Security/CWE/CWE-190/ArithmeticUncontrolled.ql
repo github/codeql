@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomQuery
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
 import DataFlow::PathGraph

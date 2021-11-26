@@ -13,7 +13,7 @@
  */
 
 import java
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomQuery
 
 from RandomDataSource ma
 where ma.getQualifier() instanceof ClassInstanceExpr

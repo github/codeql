@@ -10,6 +10,8 @@ edges
 | argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] | argumentPassing.py:120:5:120:70 | KwUnpacked b |
 | argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] |
 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b | argumentPassing.py:125:11:125:11 | ControlFlowNode for b |
+| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | argumentPassing.py:125:11:125:11 | ControlFlowNode for b |
+| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b |
 | argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b |
 | argumentPassing.py:138:29:138:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | argumentPassing.py:140:20:140:25 | ControlFlowNode for kwargs [Dictionary element at key bar] |
 | argumentPassing.py:140:5:140:26 | KwUnpacked bar | argumentPassing.py:145:18:145:20 | ControlFlowNode for bar |
@@ -64,6 +66,8 @@ nodes
 | argumentPassing.py:120:29:120:39 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
 | argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
 | argumentPassing.py:123:36:123:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:123:36:123:36 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
 | argumentPassing.py:125:11:125:11 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 | argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
 | argumentPassing.py:138:29:138:34 | ControlFlowNode for kwargs [Dictionary element at key bar] | semmle.label | ControlFlowNode for kwargs [Dictionary element at key bar] |
@@ -121,12 +125,14 @@ nodes
 | classes.py:858:22:858:26 | ControlFlowNode for other | semmle.label | ControlFlowNode for other |
 | classes.py:859:15:859:19 | ControlFlowNode for other | semmle.label | ControlFlowNode for other |
 | classes.py:868:15:868:18 | ControlFlowNode for arg2 | semmle.label | ControlFlowNode for arg2 |
+subpaths
 #select
 | argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:94:28:94:31 | ControlFlowNode for arg2 | argumentPassing.py:76:11:76:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:104:25:104:28 | ControlFlowNode for arg2 | argumentPassing.py:99:11:99:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | argumentPassing.py:105:27:105:30 | ControlFlowNode for arg2 | argumentPassing.py:99:11:99:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | argumentPassing.py:117:29:117:32 | ControlFlowNode for arg2 | argumentPassing.py:111:11:111:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:120:35:120:38 | ControlFlowNode for arg2 | argumentPassing.py:111:11:111:11 | ControlFlowNode for b | Flow found |
+| argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:123:38:123:41 | ControlFlowNode for arg2 | argumentPassing.py:125:11:125:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:133:30:133:33 | ControlFlowNode for arg2 | argumentPassing.py:125:11:125:11 | ControlFlowNode for b | Flow found |
 | argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | argumentPassing.py:160:36:160:39 | ControlFlowNode for arg2 | argumentPassing.py:146:11:146:13 | ControlFlowNode for bar | Flow found |
 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | classes.py:565:18:565:21 | ControlFlowNode for arg2 | classes.py:556:15:556:17 | ControlFlowNode for key | Flow found |

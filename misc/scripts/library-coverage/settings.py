@@ -20,3 +20,5 @@ output_rst_file_name = "coverage.rst"
 output_csv_file_name = "coverage.csv"
 repo_output_rst = documentation_folder + output_rst_file_name
 repo_output_csv = documentation_folder + output_csv_file_name
+
+languages = ['java', 'csharp']

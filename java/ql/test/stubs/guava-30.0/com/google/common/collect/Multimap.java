@@ -1,65 +1,34 @@
-/*
- * Copyright (C) 2007 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from com.google.common.collect.Multimap for testing purposes
 
 package com.google.common.collect;
 
-
+import com.google.common.collect.Multiset;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-public interface Multimap<K, V> {
-  int size();
-
-  boolean isEmpty();
-
-  boolean containsKey(Object key);
-
-  boolean containsValue(Object value);
-
-  boolean containsEntry(Object key, Object value);
-
-  boolean put(K key, V value);
-
-  boolean remove(Object key, Object value);
-
-  boolean putAll(K key, Iterable<? extends V> values);
-
-  boolean putAll(Multimap<? extends K, ? extends V> multimap);
-
-  Collection<V> replaceValues(K key, Iterable<? extends V> values);
-
-  Collection<V> removeAll(Object key);
-
-  void clear();
-
-  Collection<V> get(K key);
-
-  Set<K> keySet();
-
-  Multiset<K> keys();
-
-  Collection<V> values();
-
-  Collection<Entry<K, V>> entries();
-
-  default void forEach(BiConsumer<? super K, ? super V> action) {
-  }
-
-  Map<K, Collection<V>> asMap();
+public interface Multimap<K, V>
+{
+    Collection<Map.Entry<K, V>> entries();
+    Collection<V> get(K p0);
+    Collection<V> removeAll(Object p0);
+    Collection<V> replaceValues(K p0, Iterable<? extends V> p1);
+    Collection<V> values();
+    Map<K, Collection<V>> asMap();
+    Multiset<K> keys();
+    Set<K> keySet();
+    boolean containsEntry(Object p0, Object p1);
+    boolean containsKey(Object p0);
+    boolean containsValue(Object p0);
+    boolean equals(Object p0);
+    boolean isEmpty();
+    boolean put(K p0, V p1);
+    boolean putAll(K p0, Iterable<? extends V> p1);
+    boolean putAll(Multimap<? extends K, ? extends V> p0);
+    boolean remove(Object p0, Object p1);
+    default void forEach(BiConsumer<? super K, ? super V> p0){}
+    int hashCode();
+    int size();
+    void clear();
 }

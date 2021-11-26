@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Directly writing an uncontrolled stored value (for example, a database
+      field) to a webpage, without properly sanitizing the value first, allows
+      for a cross-site scripting vulnerability.
+    </p>
+    <p>
+      This kind of vulnerability is also called <i>stored</i> cross-site
+      scripting, to distinguish it from other types of cross-site scripting.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      To guard against stored cross-site scripting, consider escaping before
+      using uncontrolled stored values to create HTML content. Some frameworks,
+      such as Rails, perform this escaping implicitly and by default.
+    </p>
+
+    <p>
+      Take care when using methods such as <code>html_safe</code> or
+      <code>raw</code>. They can be used to emit a string without escaping
+      it, and should only be used when the string has already been manually
+      escaped (for example, with the Rails <code>html_escape</code> method),
+      or when the content is otherwise guaranteed to be safe (such as a
+      hard-coded string).
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example is safe because the
+      <code>user.name</code> content within the output tags will be
+      HTML-escaped automatically before being emitted.
+    </p>
+    <sample src="examples/stored_xss_rails_safe.html.erb" />
+
+    <p>
+      However, the following example may be unsafe because
+      <code>user.name</code> is emitted without escaping, since it is marked as
+      <code>html_safe</code>. If the <code>name</code> is not sanitized before
+      being written to the database, then an attacker could use this to insert
+      arbitrary content into the HTML output, including scripts.
+    </p>
+    <sample src="examples/stored_xss_rails_unsafe.html.erb" />
+
+    <p>
+      In the next example, content from a file on disk is inserted literally
+      into HTML content. This approach is sometimes used to load script
+      content, such as extensions for a web application, from files on disk.
+      Care should taken in these cases to ensure both that the loaded files are
+      trusted, and that the file cannot be modified by untrusted users.
+    </p>
+    <sample src="examples/stored_xss_file_unsafe.html.erb" />
+  </example>
+
+  <references>
+    <li>
+      OWASP:
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#cross-site-scripting-xss">XSS
+        Ruby on Rails Cheatsheet</a>.
+    </li>
+    <li>
+      Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+    </li>
+  </references>
+</qhelp>

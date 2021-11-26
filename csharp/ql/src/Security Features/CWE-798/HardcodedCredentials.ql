@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import semmle.code.csharp.security.dataflow.HardcodedCredentialsQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from

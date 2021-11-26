@@ -34,6 +34,7 @@ nodes
 | SensitiveGetQuery.java:14:29:14:36 | password : String | semmle.label | password : String |
 | SensitiveGetQuery.java:17:40:17:54 | password : String | semmle.label | password : String |
 | SensitiveGetQuery.java:18:61:18:68 | password | semmle.label | password |
+subpaths
 #select
 | SensitiveGetQuery2.java:15:29:15:36 | password | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:15:29:15:36 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) | This request |
 | SensitiveGetQuery2.java:19:61:19:68 | password | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:19:61:19:68 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) | This request |

@@ -1,0 +1,8 @@
+name: codeql/ruby-tests
+version: 0.0.2
+dependencies:
+  codeql/ruby-queries: ^0.0.2
+  codeql/ruby-examples: ^0.0.2
+  codeql/ruby-all: ^0.0.2
+extractor: ruby
+tests: .

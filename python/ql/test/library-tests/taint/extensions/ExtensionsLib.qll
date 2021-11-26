@@ -28,7 +28,7 @@ class SimpleSource extends TaintSource {
 
 predicate visit_call(CallNode call, FunctionObject func) {
   exists(AttrNode attr, ClassObject cls, string name |
-    name.prefix(6) = "visit_" and
+    name.matches("visit\\_%") and
     func = cls.lookupAttribute(name) and
     attr.getObject("visit").refersTo(_, cls, _) and
     attr = call.getFunction()

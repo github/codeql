@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 
-
 class FalsePositiveCases
 {
 	// regular FVN

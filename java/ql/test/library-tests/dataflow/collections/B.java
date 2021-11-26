@@ -115,12 +115,12 @@ public class B {
     }
     {
       // "java.util;Map;true;computeIfAbsent;;;ReturnValue of Argument[1];ReturnValue;value",
-      Object out = ((Map)null).computeIfAbsent(null,k -> source()); sink(out);
+      Object out = ((Map)null).computeIfAbsent(null,k -> source()); sink(out); // $ hasValueFlow
     }
     {
       // "java.util;Map;true;computeIfAbsent;;;ReturnValue of Argument[1];MapValue of Argument[-1];value",
       Map out = null;
-      out.computeIfAbsent(null,k -> source()); sink(readMapValue(out));
+      out.computeIfAbsent(null,k -> source()); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
       // "java.util;Map;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value",

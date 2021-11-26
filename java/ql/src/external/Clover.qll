@@ -152,7 +152,7 @@ class CloverClass extends CloverMetricsContainer {
   /** Gets the Java type for this Clover class. */
   RefType getRealClass() {
     result
-        .hasQualifiedName(getPackage().getAttribute("name").getValue(),
+        .hasQualifiedName(this.getPackage().getAttribute("name").getValue(),
           getAttribute("name").getValue())
   }
 }

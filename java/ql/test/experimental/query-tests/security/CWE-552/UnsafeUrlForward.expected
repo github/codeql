@@ -1,0 +1,31 @@
+edges
+| UnsafeUrlForward.java:13:27:13:36 | url : String | UnsafeUrlForward.java:14:27:14:29 | url |
+| UnsafeUrlForward.java:18:27:18:36 | url : String | UnsafeUrlForward.java:20:28:20:30 | url |
+| UnsafeUrlForward.java:25:21:25:30 | url : String | UnsafeUrlForward.java:26:23:26:25 | url |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:48:31:63 | ... + ... |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:61:31:63 | url |
+| UnsafeUrlForward.java:36:19:36:28 | url : String | UnsafeUrlForward.java:38:33:38:35 | url |
+| UnsafeUrlForward.java:47:19:47:28 | url : String | UnsafeUrlForward.java:49:33:49:62 | ... + ... |
+nodes
+| UnsafeUrlForward.java:13:27:13:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:14:27:14:29 | url | semmle.label | url |
+| UnsafeUrlForward.java:18:27:18:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:20:28:20:30 | url | semmle.label | url |
+| UnsafeUrlForward.java:25:21:25:30 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:26:23:26:25 | url | semmle.label | url |
+| UnsafeUrlForward.java:30:27:30:36 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:31:48:31:63 | ... + ... | semmle.label | ... + ... |
+| UnsafeUrlForward.java:31:61:31:63 | url | semmle.label | url |
+| UnsafeUrlForward.java:36:19:36:28 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:38:33:38:35 | url | semmle.label | url |
+| UnsafeUrlForward.java:47:19:47:28 | url : String | semmle.label | url : String |
+| UnsafeUrlForward.java:49:33:49:62 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| UnsafeUrlForward.java:14:27:14:29 | url | UnsafeUrlForward.java:13:27:13:36 | url : String | UnsafeUrlForward.java:14:27:14:29 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:13:27:13:36 | url | user-provided value |
+| UnsafeUrlForward.java:20:28:20:30 | url | UnsafeUrlForward.java:18:27:18:36 | url : String | UnsafeUrlForward.java:20:28:20:30 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:18:27:18:36 | url | user-provided value |
+| UnsafeUrlForward.java:26:23:26:25 | url | UnsafeUrlForward.java:25:21:25:30 | url : String | UnsafeUrlForward.java:26:23:26:25 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:25:21:25:30 | url | user-provided value |
+| UnsafeUrlForward.java:31:48:31:63 | ... + ... | UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:48:31:63 | ... + ... | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:30:27:30:36 | url | user-provided value |
+| UnsafeUrlForward.java:31:61:31:63 | url | UnsafeUrlForward.java:30:27:30:36 | url : String | UnsafeUrlForward.java:31:61:31:63 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:30:27:30:36 | url | user-provided value |
+| UnsafeUrlForward.java:38:33:38:35 | url | UnsafeUrlForward.java:36:19:36:28 | url : String | UnsafeUrlForward.java:38:33:38:35 | url | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:36:19:36:28 | url | user-provided value |
+| UnsafeUrlForward.java:49:33:49:62 | ... + ... | UnsafeUrlForward.java:47:19:47:28 | url : String | UnsafeUrlForward.java:49:33:49:62 | ... + ... | Potentially untrusted URL forward due to $@. | UnsafeUrlForward.java:47:19:47:28 | url | user-provided value |

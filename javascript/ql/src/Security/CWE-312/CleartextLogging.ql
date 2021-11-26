@@ -11,10 +11,11 @@
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315
  *       external/cwe/cwe-359
+ *       external/cwe/cwe-532
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CleartextLogging::CleartextLogging
+import semmle.javascript.security.dataflow.CleartextLoggingQuery
 import DataFlow::PathGraph
 
 /**

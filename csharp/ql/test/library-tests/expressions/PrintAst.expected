@@ -385,18 +385,18 @@ Qualifiers.cs:
 #    5|   5: [Property] S
 #    5|     -1: [TypeMention] short
 #    5|     3: [Getter] get_S
-#    5|       4: [MethodCall] call to method Static
+#    5|       4: [MethodCall] call to method Static<Int16>
 #    5|         0: [NullLiteral] null
 #    7|   6: [Property] I
 #    7|     -1: [TypeMention] int
 #    7|     3: [Getter] get_I
-#    7|       4: [MethodCall] call to method Instance
+#    7|       4: [MethodCall] call to method Instance<Int32>
 #    9|   7: [Property] B
 #    9|     -1: [TypeMention] bool
 #    9|     3: [Getter] get_B
-#    9|       4: [MethodCall] call to method Instance
+#    9|       4: [MethodCall] call to method Instance<Boolean>
 #    9|         -1: [ThisAccess] this access
-#   11|   8: [Method] Static
+#   11|   8: [Method] Static<>
 #   11|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #   11|       0: [TypeParameter] T
@@ -406,7 +406,7 @@ Qualifiers.cs:
 #   11|     4: [DefaultValueExpr] default(...)
 #   11|       0: [TypeAccess] access to type T
 #   11|         0: [TypeMention] T
-#   13|   10: [Method] Instance
+#   13|   10: [Method] Instance<>
 #   13|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #   13|       0: [TypeParameter] T
@@ -819,7 +819,7 @@ expressions.cs:
 #  120|                         1: [TypeMention] T
 #  121|                   8: [TypeofExpr] typeof(...)
 #  121|                     0: [TypeAccess] access to type X<X<>>
-#  121|                       0: [TypeMention] X<X<>>
+#  121|                       0: [TypeMention] X<X<T>>
 #  121|                         1: [TypeMention] X<T>
 #  121|                           1: [TypeMention] T
 #  122|                   9: [TypeofExpr] typeof(...)
@@ -1058,18 +1058,18 @@ expressions.cs:
 #  187|               1: [LocalVariableAccess] access to local variable x
 #  189|         13: [LocalVariableDeclStmt] ... ...;
 #  189|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
-#  189|             -1: [TypeMention] Predicate<Int32>
+#  189|             -1: [TypeMention] Predicate<int>
 #  189|               1: [TypeMention] int
 #  189|             0: [LocalVariableAccess] access to local variable pi
 #  189|             1: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
-#  189|               -1: [TypeMention] Predicate<Int32>
+#  189|               -1: [TypeMention] Predicate<int>
 #  189|                 1: [TypeMention] int
 #  189|               0: [MethodAccess] access to method F
 #  189|                 -1: [TypeAccess] access to type X
 #  189|                   0: [TypeMention] X
 #  190|         14: [LocalVariableDeclStmt] ... ...;
 #  190|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-#  190|             -1: [TypeMention] Predicate<String>
+#  190|             -1: [TypeMention] Predicate<string>
 #  190|               1: [TypeMention] string
 #  190|             0: [LocalVariableAccess] access to local variable ps
 #  190|             1: [ImplicitDelegateCreation] delegate creation of type Predicate<String>
@@ -1504,12 +1504,12 @@ expressions.cs:
 #  374|     5: [Field] name
 #  374|       -1: [TypeMention] string
 #  375|     6: [Field] phoneNumbers
-#  375|       -1: [TypeMention] List<String>
+#  375|       -1: [TypeMention] List<string>
 #  375|         1: [TypeMention] string
 #  375|       1: [AssignExpr] ... = ...
 #  375|         0: [FieldAccess] access to field phoneNumbers
 #  375|         1: [ObjectCreation] object creation of type List<String>
-#  375|           0: [TypeMention] List<String>
+#  375|           0: [TypeMention] List<string>
 #  375|             1: [TypeMention] string
 #  377|     7: [Property] Name
 #  377|       -1: [TypeMention] string
@@ -1526,7 +1526,7 @@ expressions.cs:
 #  377|               0: [FieldAccess] access to field name
 #  377|               1: [ParameterAccess] access to parameter value
 #  378|     8: [Property] PhoneNumbers
-#  378|       -1: [TypeMention] List<String>
+#  378|       -1: [TypeMention] List<string>
 #  378|         1: [TypeMention] string
 #  378|       3: [Getter] get_PhoneNumbers
 #  378|         4: [BlockStmt] {...}
@@ -1605,11 +1605,11 @@ expressions.cs:
 #  396|                       1: [IntLiteral] 3
 #  398|         3: [LocalVariableDeclStmt] ... ...;
 #  398|           0: [LocalVariableDeclAndInitExpr] List<Int32> digits = ...
-#  398|             -1: [TypeMention] List<Int32>
+#  398|             -1: [TypeMention] List<int>
 #  398|               1: [TypeMention] int
 #  398|             0: [LocalVariableAccess] access to local variable digits
 #  398|             1: [ObjectCreation] object creation of type List<Int32>
-#  398|               -2: [TypeMention] List<Int32>
+#  398|               -2: [TypeMention] List<int>
 #  398|                 1: [TypeMention] int
 #  398|               -1: [CollectionInitializer] { ..., ... }
 #  398|                 0: [ElementInitializer] call to method Add
@@ -1789,10 +1789,10 @@ expressions.cs:
 #  426|             1: [IntLiteral] 1
 #  427|         14: [LocalVariableDeclStmt] ... ...;
 #  427|           0: [LocalVariableDeclAndInitExpr] List<Int32> list1 = ...
-#  427|             -1: [TypeMention] List<Int32>
+#  427|             -1: [TypeMention] List<int>
 #  427|             0: [LocalVariableAccess] access to local variable list1
 #  427|             1: [ObjectCreation] object creation of type List<Int32>
-#  427|               -2: [TypeMention] List<Int32>
+#  427|               -2: [TypeMention] List<int>
 #  427|                 1: [TypeMention] int
 #  427|               -1: [CollectionInitializer] { ..., ... }
 #  427|                 0: [ElementInitializer] call to method Add
@@ -1801,10 +1801,10 @@ expressions.cs:
 #  427|                     1: [IntLiteral] 2
 #  428|         15: [LocalVariableDeclStmt] ... ...;
 #  428|           0: [LocalVariableDeclAndInitExpr] List<Object> list2 = ...
-#  428|             -1: [TypeMention] List<Object>
+#  428|             -1: [TypeMention] List<object>
 #  428|             0: [LocalVariableAccess] access to local variable list2
 #  428|             1: [ObjectCreation] object creation of type List<Object>
-#  428|               -2: [TypeMention] List<Object>
+#  428|               -2: [TypeMention] List<object>
 #  428|                 1: [TypeMention] object
 #  428|               -1: [CollectionInitializer] { ..., ... }
 #  428|                 0: [ElementInitializer] call to method Add
@@ -1815,10 +1815,10 @@ expressions.cs:
 #  428|                         1: [IntLiteral] 2
 #  429|         16: [LocalVariableDeclStmt] ... ...;
 #  429|           0: [LocalVariableDeclAndInitExpr] List<Boolean> list3 = ...
-#  429|             -1: [TypeMention] List<Boolean>
+#  429|             -1: [TypeMention] List<bool>
 #  429|             0: [LocalVariableAccess] access to local variable list3
 #  429|             1: [ObjectCreation] object creation of type List<Boolean>
-#  429|               -2: [TypeMention] List<Boolean>
+#  429|               -2: [TypeMention] List<bool>
 #  429|                 1: [TypeMention] bool
 #  429|               -1: [CollectionInitializer] { ..., ... }
 #  429|                 0: [ElementInitializer] call to method Add
@@ -1997,7 +1997,7 @@ expressions.cs:
 #  448|       4: [BlockStmt] {...}
 #  449|         0: [LocalVariableDeclStmt] ... ...;
 #  449|           0: [LocalVariableDeclAndInitExpr] Func<Int16,Byte> f1 = ...
-#  449|             -1: [TypeMention] Func<Int16, Byte>
+#  449|             -1: [TypeMention] Func<short, byte>
 #  449|               1: [TypeMention] short
 #  449|               2: [TypeMention] byte
 #  449|             0: [LocalVariableAccess] access to local variable f1
@@ -2013,7 +2013,7 @@ expressions.cs:
 #  449|                   1: [IntLiteral] 1
 #  450|         1: [LocalVariableDeclStmt] ... ...;
 #  450|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Double> f2 = ...
-#  450|             -1: [TypeMention] Func<Int32, Double>
+#  450|             -1: [TypeMention] Func<int, double>
 #  450|               1: [TypeMention] int
 #  450|               2: [TypeMention] double
 #  450|             0: [LocalVariableAccess] access to local variable f2
@@ -2028,7 +2028,7 @@ expressions.cs:
 #  450|                       1: [IntLiteral] 1
 #  451|         2: [LocalVariableDeclStmt] ... ...;
 #  451|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f3 = ...
-#  451|             -1: [TypeMention] Func<Int32, Int32>
+#  451|             -1: [TypeMention] Func<int, int>
 #  451|               1: [TypeMention] int
 #  451|               2: [TypeMention] int
 #  451|             0: [LocalVariableAccess] access to local variable f3
@@ -2041,7 +2041,7 @@ expressions.cs:
 #  451|                 1: [IntLiteral] 1
 #  452|         3: [LocalVariableDeclStmt] ... ...;
 #  452|           0: [LocalVariableDeclAndInitExpr] Func<Int32,String> f4 = ...
-#  452|             -1: [TypeMention] Func<Int32, String>
+#  452|             -1: [TypeMention] Func<int, string>
 #  452|               1: [TypeMention] int
 #  452|               2: [TypeMention] string
 #  452|             0: [LocalVariableAccess] access to local variable f4
@@ -2076,7 +2076,7 @@ expressions.cs:
 #  454|                   0: [TypeMention] Console
 #  455|         6: [LocalVariableDeclStmt] ... ...;
 #  455|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f7 = ...
-#  455|             -1: [TypeMention] Func<Int32, Int32>
+#  455|             -1: [TypeMention] Func<int, int>
 #  455|               1: [TypeMention] int
 #  455|               2: [TypeMention] int
 #  455|             0: [LocalVariableAccess] access to local variable f7
@@ -2096,7 +2096,7 @@ expressions.cs:
 #  456|             1: [IntLiteral] 0
 #  457|         8: [LocalVariableDeclStmt] ... ...;
 #  457|           0: [LocalVariableDeclAndInitExpr] Func<Int32> f8 = ...
-#  457|             -1: [TypeMention] Func<Int32>
+#  457|             -1: [TypeMention] Func<int>
 #  457|               1: [TypeMention] int
 #  457|             0: [LocalVariableAccess] access to local variable f8
 #  457|             1: [AnonymousMethodExpr] delegate(...) { ... }

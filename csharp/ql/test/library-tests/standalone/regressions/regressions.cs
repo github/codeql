@@ -1,5 +1,3 @@
-// semmle-extractor-options: --standalone
-
 class C1
 {
     void QualifierAccess()

@@ -5,8 +5,8 @@
 <overview>
 <p>Relying on <code>HttpRequest</code> to provide access to a particular client variable is not 
 safe. The <code>HttpRequest</code> class implements an indexer to provide a simplified, combined 
-access to its <code>QueryString</code>, <code>Form</code>, <code>Cookies</code>, or <code> 
-ServerVariables</code> collections, in that particular order. When searching for a variable, the 
+access to its <code>QueryString</code>, <code>Form</code>, <code>Cookies</code>, or 
+<code>ServerVariables</code> collections, in that particular order. When searching for a variable, the 
 first match is returned: <code>QueryString</code> parameters hence supersede values from forms, 
 cookies and server variables, and so on. This is a serious attack vector since an attacker could 
 inject a value in the query string that you do not expect, and which supersedes the value of a more 

@@ -6,7 +6,7 @@
  * @precision low
  * @id java/hash-without-salt
  * @tags security
- *       external/cwe-759
+ *       external/cwe/cwe-759
  */
 
 import java

@@ -1691,7 +1691,7 @@ conditionBlock
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | false |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 (normal) | true |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ | false |
-| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray | false |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray<String> | false |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 (normal) | true |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | false |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 (normal) | true |
@@ -2839,8 +2839,8 @@ conditionFlow
 | LoopUnrolling.cs:62:17:62:17 | [b (line 55): true] access to parameter b | LoopUnrolling.cs:63:17:63:37 | [b (line 55): true] ...; | true |
 | LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:71:9:71:21 | ...; | false |
 | LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:70:13:70:19 | return ...; | true |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [false] !... | true |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [true] !... | false |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:13:69:23 | [false] !... | true |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:13:69:23 | [true] !... | false |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | false |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:25:5:34 | [true] ... ?? ... | true |
 | NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | NullCoalescing.cs:5:43:5:43 | 1 | false |

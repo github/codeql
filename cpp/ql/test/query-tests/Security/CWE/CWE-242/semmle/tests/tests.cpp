@@ -308,3 +308,41 @@ namespace custom_sprintf_impl {
 		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow
 	}
 }
+
+void test6(unsigned unsigned_value, int value) {
+	char buffer[2];
+	
+	sprintf(buffer, "%u", unsigned_value); // BAD: buffer overflow
+	sprintf(buffer, "%d", unsigned_value); // BAD: buffer overflow
+	if (unsigned_value < 10) {
+		sprintf(buffer, "%u", unsigned_value); // GOOD
+	}
+
+	sprintf(buffer, "%u", -10); // BAD: buffer overflow
+
+	if(unsigned_value == (unsigned)-10) {
+		sprintf(buffer, "%u", unsigned_value); // BAD: buffer overflow
+	}
+
+	sprintf(buffer, "%d", value); // BAD: buffer overflow
+	if (value < 10) {
+		sprintf(buffer, "%d", value); // BAD: buffer overflow
+
+		if(value > 0) {
+			sprintf(buffer, "%d", value); // GOOD
+		}
+	}
+
+	sprintf(buffer, "%u", 0); // GOOD
+	sprintf(buffer, "%d", 0); // GOOD
+	sprintf(buffer, "%u", 5); // GOOD
+	sprintf(buffer, "%d", 5); // GOOD
+
+	sprintf(buffer, "%d", -1); // BAD
+	sprintf(buffer, "%d", 9); // GOOD
+	sprintf(buffer, "%d", 10); // BAD
+
+	sprintf(buffer, "%u", -1); // BAD
+	sprintf(buffer, "%u", 9); // GOOD
+	sprintf(buffer, "%u", 10); // BAD
+}

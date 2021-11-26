@@ -8,7 +8,7 @@
  * @precision medium
  * @id java/unsafe-cert-trust
  * @tags security
- *       external/cwe-273
+ *       external/cwe/cwe-273
  */
 
 import java

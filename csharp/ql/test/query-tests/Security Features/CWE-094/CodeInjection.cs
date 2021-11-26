@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/Microsoft.CSharp.cs /r:System.ComponentModel.Primitives.dll ${testdir}/../../../resources/stubs/System.Windows.cs
-
 using Microsoft.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using System;

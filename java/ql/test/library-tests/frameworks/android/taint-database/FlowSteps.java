@@ -1,5 +1,7 @@
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -26,156 +28,166 @@ public class FlowSteps {
 		// Dummy class to test for sub classes
 	}
 
-	public static String[] appendSelectionArgs() {
-		String[] originalValues = taint();
-		String[] newValues = taint();
-		return DatabaseUtils.appendSelectionArgs(originalValues, newValues);
+	public static String appendSelectionArgs() {
+		String[] originalValues = {taint()}; // $taintReachesReturn
+		String[] newValues = {taint()}; // $taintReachesReturn
+		return DatabaseUtils.appendSelectionArgs(originalValues, newValues)[0];
 	}
 
 	public static String concatenateWhere() {
-		String a = taint();
-		String b = taint();
+		String a = taint(); // $taintReachesReturn
+		String b = taint(); // $taintReachesReturn
 		return DatabaseUtils.concatenateWhere(a, b);
 	}
 
 	public static String buildQueryString(MySQLiteQueryBuilder target) {
 		target = taint();
-		boolean distinct = taint();
-		String tables = taint();
-		String[] columns = taint();
-		String where = taint();
-		String groupBy = taint();
-		String having = taint();
-		String orderBy = taint();
-		String limit = taint();
+		boolean distinct = taint(); 
+		String tables = taint(); // $taintReachesReturn
+		String[] columns = {taint()}; // $taintReachesReturn
+		String where = taint(); // $taintReachesReturn
+		String groupBy = taint(); // $taintReachesReturn
+		String having = taint(); // $taintReachesReturn
+		String orderBy = taint(); // $taintReachesReturn
+		String limit = taint(); // $taintReachesReturn
 		return SQLiteQueryBuilder.buildQueryString(distinct, tables, columns, where, groupBy, having, orderBy, limit);
 	}
 
 	public static String buildQuery(MySQLiteQueryBuilder target) {
-		target = taint();
-		String[] projectionIn = taint();
-		String selection = taint();
-		String groupBy = taint();
-		String having = taint();
-		String sortOrder = taint();
-		String limit = taint();
+		target = taint(); // $taintReachesReturn
+		String[] projectionIn = {taint()}; // $taintReachesReturn
+		String selection = taint(); // $taintReachesReturn
+		String groupBy = taint(); // $taintReachesReturn
+		String having = taint(); // $taintReachesReturn
+		String sortOrder = taint(); // $taintReachesReturn
+		String limit = taint(); // $taintReachesReturn
 		return target.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
 	}
 
 	public static String buildQuery2(MySQLiteQueryBuilder target) {
-		target = taint();
-		String[] projectionIn = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
-		String groupBy = taint();
-		String having = taint();
-		String sortOrder = taint();
-		String limit = taint();
+		target = taint(); // $taintReachesReturn
+		String[] projectionIn = {taint()}; // $taintReachesReturn
+		String selection = taint(); // $taintReachesReturn
+		String[] selectionArgs = {taint()}; 
+		String groupBy = taint(); // $taintReachesReturn
+		String having = taint(); // $taintReachesReturn
+		String sortOrder = taint(); // $taintReachesReturn
+		String limit = taint(); // $taintReachesReturn
 		return target.buildQuery(projectionIn, selection, selectionArgs, groupBy, having, sortOrder, limit);
 	}
 
 	public static String buildUnionQuery(MySQLiteQueryBuilder target) {
-		target = taint();
-		String[] subQueries = taint();
-		String sortOrder = taint();
-		String limit = taint();
+		target = taint(); // $taintReachesReturn
+		String[] subQueries = {taint()}; // $taintReachesReturn
+		String sortOrder = taint(); // $taintReachesReturn
+		String limit = taint(); // $taintReachesReturn
 		return target.buildUnionQuery(subQueries, sortOrder, limit);
 	}
 
 	public static String buildUnionSubQuery2(MySQLiteQueryBuilder target) {
-		target = taint();
-		String typeDiscriminatorColumn = taint();
-		String[] unionColumns = taint();
-		Set<String> columnsPresentInTable = taint();
+		target = taint(); // $taintReachesReturn
+		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $taintReachesReturn
+		Set<String> columnsPresentInTable = new HashSet();
+		columnsPresentInTable.add(taint()); // $taintReachesReturn
 		int computedColumnsOffset = taint();
-		String typeDiscriminatorValue = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
-		String groupBy = taint();
-		String having = taint();
+		String typeDiscriminatorValue = taint(); // $taintReachesReturn
+		String selection = taint(); // $taintReachesReturn
+		String[] selectionArgs = {taint()};
+		String groupBy = taint(); // $taintReachesReturn
+		String having = taint(); // $taintReachesReturn
 		return target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable,
 				computedColumnsOffset, typeDiscriminatorValue, selection, selectionArgs, groupBy, having);
 	}
 
-	public static void buildUnionSubQuery3(MySQLiteQueryBuilder target) {
-		target = taint();
-		String typeDiscriminatorColumn = taint();
-		String[] unionColumns = taint();
-		Set<String> columnsPresentInTable = taint();
+	public static String buildUnionSubQuery3(MySQLiteQueryBuilder target) {
+		target = taint(); // $taintReachesReturn 
+		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $taintReachesReturn
+		Set<String> columnsPresentInTable = new HashSet();
+		columnsPresentInTable.add(taint()); // $taintReachesReturn
 		int computedColumnsOffset = taint();
-		String typeDiscriminatorValue = taint();
-		String selection = taint();
-		String groupBy = taint();
-		String having = taint();
-		target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable, computedColumnsOffset,
+		String typeDiscriminatorValue = taint(); // $taintReachesReturn
+		String selection = taint(); // $taintReachesReturn
+		String groupBy = taint(); // $taintReachesReturn
+		String having = taint(); // $taintReachesReturn
+		return target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable, computedColumnsOffset,
 				typeDiscriminatorValue, selection, groupBy, having);
 	}
 
 	public static Cursor query(MyContentResolver target) {
-		Uri uri = taint();
-		String[] projection = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
+		Uri uri = taint(); // $taintReachesReturn
+		String[] projection = {taint()};
+		String selection = taint(); // $taintReachesSink
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
 	}
 
 	public static Cursor query(MyContentProvider target) {
-		Uri uri = taint();
-		String[] projection = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
+		Uri uri = taint(); // $taintReachesReturn
+		String[] projection = {taint()};
+		String selection = taint(); // $taintReachesSink
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
 	}
 
 	public static Cursor query2(MyContentResolver target) {
-		Uri uri = taint();
-		String[] projection = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
+		Uri uri = taint(); // $taintReachesReturn
+		String[] projection = {taint()};
+		String selection = taint(); // $taintReachesSink
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
 	public static Cursor query2(MyContentProvider target) {
-		Uri uri = taint();
-		String[] projection = taint();
-		String selection = taint();
-		String[] selectionArgs = taint();
+		Uri uri = taint(); // $taintReachesReturn
+		String[] projection = {taint()};
+		String selection = taint(); // $taintReachesSink
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
-	public static void appendColumns() {
-		StringBuilder s = taint();
-		String[] columns = taint();
+	public static StringBuilder appendColumns() {
+		StringBuilder s = taint(); // $taintReachesReturn
+		String[] columns = {taint()}; // $taintReachesReturn
 		SQLiteQueryBuilder.appendColumns(s, columns);
+		return s;
 	}
 
-	public static void setProjectionMap(MySQLiteQueryBuilder target) {
-		target = taint();
-		Map<String, String> columnMap = taint();
+	public static SQLiteQueryBuilder setProjectionMap(MySQLiteQueryBuilder target) {
+		target = taint(); // $taintReachesReturn
+		Map<String, String> columnMap = new HashMap(); 
+		String k = taint(); // $taintReachesReturn
+		String v = taint(); // $taintReachesReturn
+		columnMap.put(k, v);
 		target.setProjectionMap(columnMap);
+		return target;
 	}
 
-	public static void setTables(MySQLiteQueryBuilder target) {
-		target = taint();
-		String inTables = taint();
+	public static SQLiteQueryBuilder setTables(MySQLiteQueryBuilder target) {
+		target = taint(); // $taintReachesReturn
+		String inTables = taint(); // $taintReachesReturn
 		target.setTables(inTables);
+		return target;
 	}
 
-	public static void appendWhere(MySQLiteQueryBuilder target) {
-		target = taint();
-		CharSequence inWhere = taint();
+	public static SQLiteQueryBuilder appendWhere(MySQLiteQueryBuilder target) {
+		target = taint(); // $taintReachesReturn
+		CharSequence inWhere = taint(); // $taintReachesReturn
 		target.appendWhere(inWhere);
+		return target;
 	}
 
-	public static void appendWhereStandalone(MySQLiteQueryBuilder target) {
-		target = taint();
-		CharSequence inWhere = taint();
+	public static SQLiteQueryBuilder appendWhereStandalone(MySQLiteQueryBuilder target) {
+		target = taint(); // $taintReachesReturn
+		CharSequence inWhere = taint(); // $taintReachesReturn
 		target.appendWhereStandalone(inWhere);
+		return target;
 	}
 }

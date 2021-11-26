@@ -142,7 +142,7 @@ class Resource extends MemberVariable {
 
   predicate acquisitionWithRequiredKind(Assignment acquireAssign, string kind) {
     // acquireAssign is an assignment to this resource
-    acquireAssign.(Assignment).getLValue() = this.getAnAccess() and
+    acquireAssign.getLValue() = this.getAnAccess() and
     // Should be in this class, but *any* member method will do
     this.inSameClass(acquireAssign) and
     // Check that it is an acquisition function and return the corresponding kind
@@ -230,13 +230,13 @@ predicate leakedInSameMethod(Resource r, Expr acquire) {
         )
       )
     )
-    or
-    exists(FunctionAccess fa, string kind |
-      // the address of a function that releases `r` is taken (and likely
-      // used to release `r` at some point).
-      r.acquisitionWithRequiredKind(acquire, kind) and
-      fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
-    )
+  )
+  or
+  exists(FunctionAccess fa, string kind |
+    // the address of a function that releases `r` is taken (and likely
+    // used to release `r` at some point).
+    r.acquisitionWithRequiredKind(acquire, kind) and
+    fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
   )
 }
 

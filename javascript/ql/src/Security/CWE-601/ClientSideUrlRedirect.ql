@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ClientSideUrlRedirect::ClientSideUrlRedirect
+import semmle.javascript.security.dataflow.ClientSideUrlRedirectQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

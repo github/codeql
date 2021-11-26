@@ -5,3 +5,7 @@
 | fields/FieldTest.java:5:35:5:38 | obj2 | 5 | 35 | 5 | 38 |
 | fields/FieldTest.java:6:54:6:54 | l | 6 | 54 | 6 | 54 |
 | fields/FieldTest.java:6:57:6:57 | m | 6 | 57 | 6 | 57 |
+| fields/FieldTest.java:7:13:7:13 | x | 7 | 13 | 7 | 13 |
+| fields/FieldTest.java:8:13:8:13 | y | 8 | 13 | 8 | 13 |
+| fields/FieldTest.java:12:20:12:20 | z | 12 | 20 | 12 | 20 |
+| fields/FieldTest.java:13:20:13:20 | w | 13 | 20 | 13 | 20 |

@@ -14,7 +14,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
-import ExecCommon
+import semmle.code.java.security.CommandLineQuery
 import JSchOSInjection
 import DataFlow::PathGraph
 

@@ -103,12 +103,22 @@ public class ScopeManager {
   private final ECMAVersion ecmaVersion;
   private final Set<String> implicitGlobals = new LinkedHashSet<String>();
   private Scope implicitVariableScope;
+  private final boolean isInTemplateScope;
 
-  public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
+  public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion, boolean isInTemplateScope) {
     this.trapWriter = trapWriter;
     this.toplevelScope = enterScope(ScopeKind.GLOBAL, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
     this.implicitVariableScope = toplevelScope; 
+    this.isInTemplateScope = isInTemplateScope;
+  }
+
+  /**
+   * Returns true the current scope is potentially in a template file, and may contain
+   * relevant template tags.
+   */
+  public boolean isInTemplateFile() {
+    return isInTemplateScope;
   }
 
   /**
@@ -117,6 +127,14 @@ public class ScopeManager {
    */
   public void setImplicitVariableScope(Scope implicitVariableScope) {
     this.implicitVariableScope = implicitVariableScope;
+  }
+
+  /**
+   * Reset the scope in which to declare variables that are referenced without
+   * being declared back to the global scope.
+   */
+  public void resetImplicitVariableScope() {
+    this.implicitVariableScope = toplevelScope;
   }
 
   /**

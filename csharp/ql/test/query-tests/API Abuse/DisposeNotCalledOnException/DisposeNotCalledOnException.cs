@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:${testdir}/../../../resources/assemblies/System.Data.dll /r:System.Data.Common.dll
-
 using System;
 using System.Data.SqlClient;
 
@@ -87,5 +85,3 @@ class Test
         return sc == null ? throw new Exception() : sc;
     }
 }
-
-// semmle-extractor-options: /langversion:8.0

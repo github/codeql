@@ -7,7 +7,8 @@
  * @precision very-high
  * @id js/disabling-certificate-validation
  * @tags security
- *       external/cwe-295
+ *       external/cwe/cwe-295
+ *       external/cwe/cwe-297
  */
 
 import javascript

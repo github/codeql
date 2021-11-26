@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.LDAPInjection::LDAPInjection
+import semmle.code.csharp.security.dataflow.LDAPInjectionQuery
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

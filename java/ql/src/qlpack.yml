@@ -1,5 +1,8 @@
-name: codeql-java
-version: 0.0.0
-dbscheme: config/semmlecode.dbscheme
+name: codeql/java-queries
+version: 0.0.2
 suites: codeql-suites
 extractor: java
+defaultSuiteFile: codeql-suites/java-code-scanning.qls
+dependencies:
+    codeql/java-all: "*"
+    codeql/suite-helpers: "*"

@@ -82,7 +82,7 @@ types.cs:
 #   37|         1: [TypeMention] byte?
 #   37|           1: [TypeMention] byte
 #   38|     36: [Method] Map
-#   38|       -1: [TypeMention] Map<String, Class>
+#   38|       -1: [TypeMention] Map<string, Class>
 #   38|         1: [TypeMention] string
 #   38|         2: [TypeMention] Class
 #   39|     37: [Method] Null

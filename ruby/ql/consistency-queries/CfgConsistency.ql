@@ -1,0 +1,1 @@
+import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared::Consistency

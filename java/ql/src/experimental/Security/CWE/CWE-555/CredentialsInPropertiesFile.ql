@@ -2,6 +2,8 @@
  * @name Cleartext Credentials in Properties File
  * @description Finds cleartext credentials in Java properties files.
  * @kind problem
+ * @problem.severity warning
+ * @precision high
  * @id java/credentials-in-properties
  * @tags security
  *       external/cwe/cwe-555

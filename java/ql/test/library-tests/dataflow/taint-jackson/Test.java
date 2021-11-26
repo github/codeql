@@ -29,7 +29,7 @@ class Test {
 
 	public static void sink(Object any) {}
 
-	public static void jacksonObjectMapper() throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException {
+	public static void jacksonObjectMapper() throws Exception {
 		String s = taint();
 		ObjectMapper om = new ObjectMapper();
 		File file = new File("testFile");
@@ -52,7 +52,7 @@ class Test {
 		sink(reconstructed); //$hasTaintFlow
 	}
 
-	public static void jacksonObjectWriter() throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException {
+	public static void jacksonObjectWriter() throws Exception {
 		String s = taint();
 		ObjectWriter ow = new ObjectWriter();
 		File file = new File("testFile");
@@ -89,7 +89,7 @@ class Test {
 		ObjectMapper om = new ObjectMapper();
 		ObjectReader reader = om.readerFor(Potato.class);
 		sink(reader.readValues(s));  //$hasTaintFlow
-		Iterator<Potato> pIterator = reader.readValues(s, Potato.class);
+		Iterator<Potato> pIterator = reader.readValues(s);
 		while(pIterator.hasNext()) {
 			Potato p = pIterator.next();
 			sink(p); //$hasTaintFlow

@@ -9,6 +9,13 @@ If a database query (such as a SQL or NoSQL query) is built from
 user-provided data without sufficient sanitization, a user
 may be able to run malicious database queries.
 </p>
+
+<p>
+This also includes using the <code>TextClause</code> class in the
+<code><a href="https://pypi.org/project/SQLAlchemy/">SQLAlchemy</a></code> PyPI package,
+which is used to represent a literal SQL fragment and is inserted directly into the
+final SQL when used in a query built using the ORM.
+</p>
 </overview>
 
 <recommendation>
@@ -52,5 +59,6 @@ vulnerable to SQL injection attacks. In this example, if <code>username</code> w
 <references>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention Cheat Sheet</a>.</li>
+<li><a href="https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text.params.text">SQLAlchemy documentation for TextClause</a>.</li>
 </references>
 </qhelp>

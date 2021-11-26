@@ -6,14 +6,14 @@ newtype TTargetAccessOption =
 
 class TargetAccessOption extends TTargetAccessOption {
   string toString() {
-    result = som().toString()
+    result = this.som().toString()
     or
-    exists(non()) and result = "<none>"
+    exists(this.non()) and result = "<none>"
   }
 
   Location getLocation() {
-    result = som().getLocation() or
-    result = non().getLocation()
+    result = this.som().getLocation() or
+    result = this.non().getLocation()
   }
 
   private AssignableAccess som() { this = TTargetAccessSome(result) }
@@ -31,14 +31,14 @@ newtype TSourceOption =
 
 class SourceOption extends TSourceOption {
   string toString() {
-    result = som().toString()
+    result = this.som().toString()
     or
-    exists(non()) and result = "<none>"
+    exists(this.non()) and result = "<none>"
   }
 
   Location getLocation() {
-    result = som().getLocation() or
-    result = non().getLocation()
+    result = this.som().getLocation() or
+    result = this.non().getLocation()
   }
 
   private Expr som() { this = TSourceSome(result) }

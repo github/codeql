@@ -1,0 +1,48 @@
+| StringLiterals.java:7:3:7:4 | "" |  |  |
+| StringLiterals.java:8:3:8:17 | "hello,\\tworld" | hello,\tworld |  |
+| StringLiterals.java:9:3:9:21 | "hello,\\u0009world" | hello,\tworld |  |
+| StringLiterals.java:10:3:10:10 | "\\u0061" | a |  |
+| StringLiterals.java:11:3:11:6 | "\\0" | \u0000 |  |
+| StringLiterals.java:12:3:12:10 | "\\uFFFF" | \uffff |  |
+| StringLiterals.java:13:3:13:10 | "\\ufFfF" | \uffff |  |
+| StringLiterals.java:14:3:14:6 | "\\"" | " |  |
+| StringLiterals.java:15:3:15:6 | "\\'" | ' |  |
+| StringLiterals.java:16:3:16:6 | "\\n" | \n |  |
+| StringLiterals.java:17:3:17:6 | "\\\\" | \\ |  |
+| StringLiterals.java:18:3:18:13 | "test \\123" | test S |  |
+| StringLiterals.java:19:3:19:9 | "\\1234" | S4 |  |
+| StringLiterals.java:20:3:20:9 | "\\0000" | \u00000 |  |
+| StringLiterals.java:21:3:21:13 | "\\u0061567" | a567 |  |
+| StringLiterals.java:22:3:22:13 | "\\u1234567" | \u1234567 |  |
+| StringLiterals.java:23:3:23:18 | "\\uaBcDeF\\u0aB1" | \uabcdeF\u0ab1 |  |
+| StringLiterals.java:24:3:24:16 | "\\uD800\\uDC00" | \ud800\udc00 |  |
+| StringLiterals.java:25:3:25:16 | "\\uDBFF\\uDFFF" | \udbff\udfff |  |
+| StringLiterals.java:28:3:28:10 | "\\uD800" | \ufffd |  |
+| StringLiterals.java:29:3:29:10 | "\\uDC00" | \ufffd |  |
+| StringLiterals.java:30:3:30:31 | "hello\\uD800hello\\uDC00world" | hello\ufffdhello\ufffdworld |  |
+| StringLiterals.java:32:3:32:16 | "\\u005C\\u0022" | " |  |
+| StringLiterals.java:33:8:33:20 | 2\\u0061\\u0022 | a |  |
+| StringLiterals.java:38:3:40:5 | """      \t  \n\t\ttest "text" and escaped \\u0022\n\t\t""" | test "text" and escaped "\n | text-block |
+| StringLiterals.java:42:3:44:5 | """\n\t\t\tindented\n\t\t""" | \tindented\n | text-block |
+| StringLiterals.java:45:3:47:5 | """\n\tno indentation last line\n\t\t""" | no indentation last line\n | text-block |
+| StringLiterals.java:48:3:50:7 | """\n\tindentation last line\n\t\t\\s""" | indentation last line\n\t  | text-block |
+| StringLiterals.java:51:3:53:6 | """\n\t\t\tnot-indented\n\t\t\t""" | not-indented\n | text-block |
+| StringLiterals.java:54:3:56:4 | """\n\t\tindented\n\t""" | \tindented\n | text-block |
+| StringLiterals.java:57:4:59:5 | """\n\t\tnot-indented\n\t\t""" | not-indented\n | text-block |
+| StringLiterals.java:60:3:63:6 | """\n\t\t    spaces (only single space is trimmed)\n\t\t\ttab\n\t\t\t""" |    spaces (only single space is trimmed)\ntab\n | text-block |
+| StringLiterals.java:64:3:65:22 | """\n\t\t\tend on same line""" | end on same line | text-block |
+| StringLiterals.java:66:3:69:5 | """\n\t\ttrailing spaces ignored:  \t \n\t\tnot ignored: \t \\s\n\t\t""" | trailing spaces ignored:\nnot ignored: \t  \n | text-block |
+| StringLiterals.java:70:3:71:18 | """\n\t\t3 quotes:""\\"""" | 3 quotes:""" | text-block |
+| StringLiterals.java:72:3:75:5 | """\n\t\tline \\\n\t\tcontinuation \\\n\t\t""" | line continuation  | text-block |
+| StringLiterals.java:76:3:80:5 | """\n\t\tExplicit line breaks:\\n\n\t\t\\r\\n\n\t\t\\r\n\t\t""" | Explicit line breaks:\n\n\r\n\n\r\n | text-block |
+| StringLiterals.java:83:10:85:16 | 2"\\u0022\n\t\ttest\n\t\t\\u0022\\uu0022" | test\n |  |
+| StringLiterals.java:91:3:91:19 | "hello" + "world" | helloworld |  |
+| StringLiterals.java:92:3:93:20 | """\n\t\thello""" + "world" | helloworld | text-block |
+| StringLiterals.java:94:10:94:12 | "a" | a |  |
+| StringLiterals.java:95:3:95:5 | "a" | a |  |
+| StringLiterals.java:96:3:96:5 | "a" | a |  |
+| StringLiterals.java:97:7:97:9 | "a" | a |  |
+| StringLiterals.java:98:3:98:5 | "a" | a |  |
+| StringLiterals.java:99:10:99:12 | "a" | a |  |
+| StringLiterals.java:100:3:100:5 | "a" | a |  |
+| StringLiterals.java:101:9:101:11 | "a" | a |  |

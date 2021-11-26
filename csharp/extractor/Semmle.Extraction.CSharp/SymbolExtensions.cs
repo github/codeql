@@ -482,22 +482,6 @@ namespace Semmle.Extraction.CSharp
             {
                 trapFile.Write(TrapExtensions.EncodeString(namedType.Name));
             }
-
-            if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
-            {
-                trapFile.Write('<');
-                trapFile.BuildList(
-                    ",",
-                    namedType.TypeArguments,
-                    p =>
-                    {
-                        if (IsReallyBound(namedType))
-                        {
-                            p.BuildDisplayName(cx, trapFile);
-                        }
-                    });
-                trapFile.Write('>');
-            }
         }
 
         public static bool IsReallyUnbound(this INamedTypeSymbol type) =>

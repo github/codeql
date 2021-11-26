@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Threading.Thread.dll /r:System.Diagnostics.Debug.dll /langversion:preview
-
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -50,8 +48,8 @@ class ConstantNullness
         j = (int?)i ?? 1; // BAD
         s = ""?.CommaJoinWith(s); // BAD
         s = s ?? ""; // GOOD
-        s = (i==0 ? s : null) ?? s; // GOOD
-        var k = (i==0 ? s : null)?.Length; // GOOD
+        s = (i == 0 ? s : null) ?? s; // GOOD
+        var k = (i == 0 ? s : null)?.Length; // GOOD
     }
 }
 
@@ -61,12 +59,12 @@ class ConstantMatching
     {
         switch (1 + 2)
         {
-            case 2 : // BAD
-              break;
-            case 3 : // BAD
-              break;
-            case int _ : // GOOD
-              break;
+            case 2: // BAD
+                break;
+            case 3: // BAD
+                break;
+            case int _: // GOOD
+                break;
         }
     }
 
@@ -74,10 +72,10 @@ class ConstantMatching
     {
         switch ((object)s)
         {
-            case int _ : // BAD
-              break;
-            case "" : // GOOD
-              break;
+            case int _: // BAD
+                break;
+            case "": // GOOD
+                break;
         }
     }
 
@@ -85,8 +83,8 @@ class ConstantMatching
     {
         switch (o)
         {
-            case IList _ : // GOOD
-              break;
+            case IList _: // GOOD
+                break;
         }
     }
 
@@ -107,13 +105,24 @@ class ConstantMatching
         };
     }
 
-    void M6(bool b1, bool b2) {
+    void M6(bool b1, bool b2)
+    {
         if (!b1)
             return;
         if (!b2)
             return;
         if (b1 && b2) // BAD
             return;
+    }
+
+    string M7(object o)
+    {
+        return o switch
+        {
+            (string s, _) => s, // GOOD
+            (_, string s) => s, // GOOD
+            _ => "" // GOOD
+        };
     }
 }
 

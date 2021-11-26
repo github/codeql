@@ -25,16 +25,13 @@ def get_comment_text(output_file, repo, run_id):
 
     comment = comment_first_line + \
         f"The generated reports are available in the [artifacts of this workflow run](https://github.com/{repo}/actions/runs/{run_id}). " + \
-        "The differences will be picked up by the nightly job after the PR gets merged. "
+        "The differences will be picked up by the nightly job after the PR gets merged.\n\n"
 
-    if size < 2000:
-        print("There's a small change in the CSV framework coverage reports")
-        comment += "The following differences were found: \n\n"
-        with open(output_file, 'r') as file:
-            comment += file.read()
-    else:
-        print("There's a large change in the CSV framework coverage reports")
-        comment += f"The differences can be found in the {comparison_artifact_name} artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
+    comment += "<details><summary>Click to show differences in coverage</summary>\n\n"
+    with open(output_file, 'r') as file:
+        comment += file.read()
+
+    comment += "</details>\n"
 
     return comment
 
@@ -121,10 +118,14 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_workflow_name + "\"", "--jq",
-                                        f"[.workflow_runs.[] | select(.head_branch==\"{pr_branch}\" and .head_repository.full_name==\"{pr_repo}\") | {{ created_at: .created_at, run_id: .id}}] | sort_by(.created_at) | reverse | [.[].run_id]"])
+    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch='{pr_branch}'", "--paginate",
+                                            "--jq", f'[.workflow_runs.[] | select(.head_repository.full_name=="{pr_repo}" and .name=="{artifacts_workflow_name}")] | sort_by(.id) | reverse | [.[].id]'])
 
-    ids = json.loads(ids)
+    ids = []
+    for l in [json.loads(l) for l in output.splitlines()]:
+        for id in l:
+            ids.append(id)
+
     if ids[0] != int(run_id):
         raise Exception(
             f"Expected to find {run_id} in the list of matching runs.")

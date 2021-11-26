@@ -24,11 +24,9 @@ def compare_folders(folder1, folder2, output_file):
     Compares the contents of two folders and writes the differences to the output file.
     """
 
-    languages = ['java']
-
     return_md = ""
 
-    for lang in languages:
+    for lang in settings.languages:
         expected_files = ""
 
         generated_output_rst = settings.generated_output_rst.format(

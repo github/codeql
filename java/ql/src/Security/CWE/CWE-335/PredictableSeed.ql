@@ -11,7 +11,7 @@
  */
 
 import java
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomQuery
 
 from GetRandomData da, RValue use, PredictableSeedExpr source
 where

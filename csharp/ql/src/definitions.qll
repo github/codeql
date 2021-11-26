@@ -13,7 +13,7 @@ abstract class Use extends @type_mention_parent {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -158,11 +158,10 @@ private class TypeMentionUse extends Use, TypeMention {
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
     endcolumn =
       startcolumn +
-          this.getType().(ConstructedType).getUnboundGeneric().getNameWithoutBrackets().length() - 1
+          this.getType().(ConstructedType).getUnboundGeneric().getUndecoratedName().length() - 1
     or
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
-    endcolumn =
-      startcolumn + this.getType().(UnboundGenericType).getNameWithoutBrackets().length() - 1
+    endcolumn = startcolumn + this.getType().(UnboundGenericType).getUndecoratedName().length() - 1
     or
     not this.getType() instanceof ConstructedType and
     not this.getType() instanceof UnboundGenericType and

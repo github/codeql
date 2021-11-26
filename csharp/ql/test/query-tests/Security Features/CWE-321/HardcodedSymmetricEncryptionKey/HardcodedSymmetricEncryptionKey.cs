@@ -1,4 +1,3 @@
-// semmle-extractor-options: /r:System.IO.FileSystem.dll /r:System.Security.Cryptography.Primitives.dll /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll
 using System;
 using System.IO;
 using System.Text;

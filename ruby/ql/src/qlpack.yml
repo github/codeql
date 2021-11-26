@@ -1,0 +1,7 @@
+name: codeql/ruby-queries
+version: 0.0.2
+suites: codeql-suites
+defaultSuiteFile: codeql-suites/ruby-code-scanning.qls
+dependencies:
+  codeql/ruby-all: "*"
+  codeql/suite-helpers: "*"

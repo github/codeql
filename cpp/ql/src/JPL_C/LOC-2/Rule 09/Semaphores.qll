@@ -50,7 +50,7 @@ class SemaphoreTake extends LockOperation {
     result.(SemaphoreGive).getLocked() = this.getLocked()
   }
 
-  override string say() { result = "semaphore take of " + getLocked().getName() }
+  override string say() { result = "semaphore take of " + this.getLocked().getName() }
 }
 
 class SemaphoreGive extends UnlockOperation {
@@ -76,13 +76,13 @@ class LockingPrimitive extends FunctionCall, LockOperation {
       this.getTarget().getName().replaceAll("Lock", "Unlock")
   }
 
-  override string say() { result = "call to " + getLocked().getName() }
+  override string say() { result = "call to " + this.getLocked().getName() }
 }
 
 class UnlockingPrimitive extends FunctionCall, UnlockOperation {
   UnlockingPrimitive() { this.getTarget().getName() = ["taskUnlock", "intUnlock", "taskRtpUnlock"] }
 
-  Function getLocked() { result = getMatchingLock().getLocked() }
+  Function getLocked() { result = this.getMatchingLock().getLocked() }
 
   override LockOperation getMatchingLock() { this = result.getMatchingUnlock() }
 }

@@ -54,7 +54,5 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => node.GetLocation();
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

@@ -36,7 +36,9 @@ class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking
     this = "StackTraceExposure::ServletWriterSourceToPrintStackTraceMethodFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof XssVulnerableWriterSource
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |

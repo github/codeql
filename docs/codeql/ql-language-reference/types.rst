@@ -78,7 +78,7 @@ To define a class, you write:
 #. The keyword ``class``. 
 #. The name of the class. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_ 
    starting with an uppercase letter.
-#. The types to extend. 
+#. The supertypes that the class is derived from via `extends` and/or `instanceof`
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
 
 For example:
@@ -106,12 +106,14 @@ This defines a class ``OneTwoThree``, which contains the values ``1``, ``2``, an
 .. index:: extends
 
 ``OneTwoThree`` extends ``int``, that is, it is a subtype of ``int``. A class in QL must always
-extend at least one existing type. Those types are called the **base types** of the class. The 
-values of a class are contained within the intersection of the base types (that is, they are in
-the :ref:`class domain type <domain-types>`). A class inherits all member predicates from its
-base types. 
+have at least one supertype. Supertypes that are referenced with the `extends` keyword are called
+the **base types** of the class. The values of a class are contained within the intersection of
+the supertypes (that is, they are in the :ref:`class domain type <domain-types>`).
+A class inherits all member predicates from its base types.
 
 A class can extend multiple types. For more information, see ":ref:`multiple-inheritance`."
+Classes can also specialise other types without extending the class interface via `instanceof`,
+see ":ref:`instanceof-extensions`.".
 
 To be valid, a class:
   - Must not extend itself.
@@ -228,7 +230,7 @@ Concrete classes
 
 The classes in the above examples are all **concrete** classes. They are defined by 
 restricting the values in a larger type. The values in a concrete class are precisely those
-values in the intersection of the base types that also satisfy the 
+values in the intersection of the supertypes that also satisfy the
 :ref:`characteristic predicate <characteristic-predicates>` of the class.
 
 .. _abstract-classes:
@@ -379,6 +381,59 @@ from ``OneTwoThree`` and ``int``.
    If a subclass inherits multiple definitions for the same predicate name, then it
    must :ref:`override <overriding-member-predicates>` those definitions to avoid ambiguity.
    :ref:`Super expressions <super>` are often useful in this situation.
+
+.. _instanceof-extensions:
+
+Non-extending subtypes
+======================
+
+Besides extending base types, classes can also declare `instanceof` relationships with other types.
+Declaring a class as `instanceof Foo` is roughly equivalent to saying `this instanceof Foo` in the characteristic predicate.
+The main differences are that you can call methods on Bar via `super` and you can get better optimisation.
+
+.. code-block:: ql
+
+    class Foo extends int {
+      Foo() { this in [1 .. 10] }
+
+      string foo_method() { result = "foo" }
+    }
+
+    class Bar instanceof Foo {
+      string toString() { result = super.foo_method() }
+    }
+
+In this example, the characteristic predicate from `Foo` also applies to `Bar`.
+However, `foo_method` is not exposed in `Bar`, so the query `select any(Bar b).foo_method()`
+results in a compile time error. Note from the example that it is still possible to access
+methods from instanceof supertypes from within the specialising class with the `super` keyword.
+
+Crucially, the instanceof **supertypes** are not **base types**.
+This means that these supertypes do not participate in overriding, and any fields of such
+supertypes are not part of the new class.
+This has implications on method resolution when complex class hierarchies are involved.
+The following example demonstrates this.
+
+.. code-block:: ql
+
+    class Interface extends int {
+      Interface() { this in [1 .. 10] }
+      string foo() { result = "" }
+   }
+
+    class Foo extends int {
+      Foo() { this in [1 .. 5] }
+      string foo() { result = "foo" }
+    }
+
+    class Bar extends Interface instanceof Foo {
+      override string foo() { result = "bar" }
+    }
+
+Here, the method `Bar::foo` does not override `Foo::foo`.
+Instead, it overrides only `Interface::foo`.
+This means that `select any(Foo f).foo()` yields only `foo`.
+Had `Bar` been defined as `extends Foo`, then `select any(Foo b)` would yield `bar`.
 
 .. _character-types:
 .. _domain-types:

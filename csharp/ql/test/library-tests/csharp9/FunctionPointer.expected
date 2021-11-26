@@ -28,10 +28,10 @@ parameter
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 1 | file://:0:0:0:0 | `1 | out object? |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 2 | file://:0:0:0:0 | `2 | T |
 invocation
-| FunctionPointer.cs:19:21:19:43 | function pointer call |
-| FunctionPointer.cs:25:13:25:44 | function pointer call |
-| FunctionPointer.cs:31:29:31:57 | function pointer call |
-| FunctionPointer.cs:36:21:36:30 | function pointer call |
+| FunctionPointer.cs:17:21:17:43 | function pointer call |
+| FunctionPointer.cs:23:13:23:44 | function pointer call |
+| FunctionPointer.cs:29:29:29:57 | function pointer call |
+| FunctionPointer.cs:34:21:34:30 | function pointer call |
 casts
-| FunctionPointer.cs:41:16:41:17 | (...) ... | file://:0:0:0:0 | delegate* default<A,B> | file://:0:0:0:0 | delegate* default<B,A> |
-| FunctionPointer.cs:46:16:46:17 | (...) ... | file://:0:0:0:0 | delegate* default<Void*,Int32*> | file://:0:0:0:0 | delegate* default<Int32*,Void*> |
+| FunctionPointer.cs:39:16:39:17 | (...) ... | file://:0:0:0:0 | delegate* default<A,B> | file://:0:0:0:0 | delegate* default<B,A> |
+| FunctionPointer.cs:44:16:44:17 | (...) ... | file://:0:0:0:0 | delegate* default<Void*,Int32*> | file://:0:0:0:0 | delegate* default<Int32*,Void*> |

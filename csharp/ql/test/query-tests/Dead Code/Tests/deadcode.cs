@@ -92,5 +92,3 @@ public class VisualStudioTests
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitialize]
     public void Setup() { } // not dead
 }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

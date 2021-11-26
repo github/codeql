@@ -19,7 +19,7 @@ public class TestMessageBodyReader implements MessageBodyReader<Object> {
   public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
           MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
       try {
-          return new ObjectInputStream(entityStream).readObject();
+          return new ObjectInputStream(entityStream).readObject(); // $unsafeDeserialization
       } catch (ClassNotFoundException e) {
           e.printStackTrace();
       }

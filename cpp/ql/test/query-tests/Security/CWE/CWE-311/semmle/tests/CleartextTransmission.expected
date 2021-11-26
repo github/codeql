@@ -1,0 +1,49 @@
+edges
+| test3.cpp:68:21:68:29 | password1 | test3.cpp:70:15:70:17 | ptr |
+| test3.cpp:75:15:75:22 | password | test3.cpp:77:15:77:17 | ptr |
+| test3.cpp:106:20:106:25 | buffer | test3.cpp:108:14:108:19 | buffer |
+| test3.cpp:111:28:111:33 | buffer | test3.cpp:113:9:113:14 | buffer |
+| test3.cpp:120:9:120:23 | global_password | test3.cpp:138:16:138:29 | call to get_global_str |
+| test3.cpp:128:11:128:18 | password | test3.cpp:106:20:106:25 | buffer |
+| test3.cpp:132:21:132:22 | call to id | test3.cpp:134:15:134:17 | ptr |
+| test3.cpp:132:24:132:32 | password1 | test3.cpp:111:28:111:33 | buffer |
+| test3.cpp:132:24:132:32 | password1 | test3.cpp:132:21:132:22 | call to id |
+| test3.cpp:138:16:138:29 | call to get_global_str | test3.cpp:140:15:140:18 | data |
+| test3.cpp:151:19:151:26 | password | test3.cpp:153:15:153:20 | buffer |
+nodes
+| test3.cpp:20:15:20:23 | password1 | semmle.label | password1 |
+| test3.cpp:24:15:24:23 | password2 | semmle.label | password2 |
+| test3.cpp:41:15:41:22 | password | semmle.label | password |
+| test3.cpp:49:15:49:22 | password | semmle.label | password |
+| test3.cpp:68:21:68:29 | password1 | semmle.label | password1 |
+| test3.cpp:70:15:70:17 | ptr | semmle.label | ptr |
+| test3.cpp:75:15:75:22 | password | semmle.label | password |
+| test3.cpp:77:15:77:17 | ptr | semmle.label | ptr |
+| test3.cpp:95:12:95:19 | password | semmle.label | password |
+| test3.cpp:106:20:106:25 | buffer | semmle.label | buffer |
+| test3.cpp:108:14:108:19 | buffer | semmle.label | buffer |
+| test3.cpp:111:28:111:33 | buffer | semmle.label | buffer |
+| test3.cpp:113:9:113:14 | buffer | semmle.label | buffer |
+| test3.cpp:120:9:120:23 | global_password | semmle.label | global_password |
+| test3.cpp:128:11:128:18 | password | semmle.label | password |
+| test3.cpp:132:21:132:22 | call to id | semmle.label | call to id |
+| test3.cpp:132:24:132:32 | password1 | semmle.label | password1 |
+| test3.cpp:134:15:134:17 | ptr | semmle.label | ptr |
+| test3.cpp:138:16:138:29 | call to get_global_str | semmle.label | call to get_global_str |
+| test3.cpp:140:15:140:18 | data | semmle.label | data |
+| test3.cpp:151:19:151:26 | password | semmle.label | password |
+| test3.cpp:153:15:153:20 | buffer | semmle.label | buffer |
+subpaths
+| test3.cpp:132:24:132:32 | password1 | test3.cpp:111:28:111:33 | buffer | test3.cpp:113:9:113:14 | buffer | test3.cpp:132:21:132:22 | call to id |
+#select
+| test3.cpp:20:3:20:6 | call to send | test3.cpp:20:15:20:23 | password1 | test3.cpp:20:15:20:23 | password1 | This operation transmits 'password1', which may contain unencrypted sensitive data from $@ | test3.cpp:20:15:20:23 | password1 | password1 |
+| test3.cpp:24:3:24:6 | call to send | test3.cpp:24:15:24:23 | password2 | test3.cpp:24:15:24:23 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@ | test3.cpp:24:15:24:23 | password2 | password2 |
+| test3.cpp:41:3:41:6 | call to recv | test3.cpp:41:15:41:22 | password | test3.cpp:41:15:41:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:41:15:41:22 | password | password |
+| test3.cpp:49:3:49:6 | call to recv | test3.cpp:49:15:49:22 | password | test3.cpp:49:15:49:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:49:15:49:22 | password | password |
+| test3.cpp:70:3:70:6 | call to send | test3.cpp:68:21:68:29 | password1 | test3.cpp:70:15:70:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:68:21:68:29 | password1 | password1 |
+| test3.cpp:77:3:77:6 | call to recv | test3.cpp:75:15:75:22 | password | test3.cpp:77:15:77:17 | ptr | This operation receives into 'ptr', which may put unencrypted sensitive data into $@ | test3.cpp:75:15:75:22 | password | password |
+| test3.cpp:95:3:95:6 | call to read | test3.cpp:95:12:95:19 | password | test3.cpp:95:12:95:19 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:95:12:95:19 | password | password |
+| test3.cpp:108:2:108:5 | call to recv | test3.cpp:128:11:128:18 | password | test3.cpp:108:14:108:19 | buffer | This operation receives into 'buffer', which may put unencrypted sensitive data into $@ | test3.cpp:128:11:128:18 | password | password |
+| test3.cpp:134:3:134:6 | call to send | test3.cpp:132:24:132:32 | password1 | test3.cpp:134:15:134:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:132:24:132:32 | password1 | password1 |
+| test3.cpp:140:3:140:6 | call to send | test3.cpp:120:9:120:23 | global_password | test3.cpp:140:15:140:18 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:120:9:120:23 | global_password | global_password |
+| test3.cpp:153:3:153:6 | call to send | test3.cpp:151:19:151:26 | password | test3.cpp:153:15:153:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:151:19:151:26 | password | password |

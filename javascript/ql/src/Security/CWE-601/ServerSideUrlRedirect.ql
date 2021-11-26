@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ServerSideUrlRedirect::ServerSideUrlRedirect
+import semmle.javascript.security.dataflow.ServerSideUrlRedirectQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

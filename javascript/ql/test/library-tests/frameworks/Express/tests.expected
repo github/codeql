@@ -1902,6 +1902,7 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/controllers/handler-in-bulk-require.js:1:26:1:32 | "bulky" |
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined |
 | src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined |
 | src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:25 | handlers.handlerA |

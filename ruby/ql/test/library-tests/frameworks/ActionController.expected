@@ -1,0 +1,60 @@
+actionControllerControllerClasses
+| ActiveRecordInjection.rb:27:1:58:3 | FooController |
+| ActiveRecordInjection.rb:60:1:90:3 | BarController |
+| ActiveRecordInjection.rb:92:1:96:3 | BazController |
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController |
+actionControllerActionMethods
+| ActiveRecordInjection.rb:32:3:57:5 | some_request_handler |
+| ActiveRecordInjection.rb:61:3:69:5 | some_other_request_handler |
+| ActiveRecordInjection.rb:71:3:89:5 | safe_paths |
+| ActiveRecordInjection.rb:93:3:95:5 | yet_another_handler |
+| app/controllers/foo/bars_controller.rb:3:3:5:5 | index |
+| app/controllers/foo/bars_controller.rb:7:3:13:5 | show_debug |
+| app/controllers/foo/bars_controller.rb:15:3:19:5 | show |
+paramsCalls
+| ActiveRecordInjection.rb:35:30:35:35 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
+| ActiveRecordInjection.rb:48:21:48:26 | call to params |
+| ActiveRecordInjection.rb:54:34:54:39 | call to params |
+| ActiveRecordInjection.rb:56:23:56:28 | call to params |
+| ActiveRecordInjection.rb:56:38:56:43 | call to params |
+| ActiveRecordInjection.rb:62:10:62:15 | call to params |
+| ActiveRecordInjection.rb:72:11:72:16 | call to params |
+| ActiveRecordInjection.rb:77:12:77:17 | call to params |
+| ActiveRecordInjection.rb:83:12:83:17 | call to params |
+| ActiveRecordInjection.rb:88:15:88:20 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
+| app/controllers/foo/bars_controller.rb:8:21:8:26 | call to params |
+| app/controllers/foo/bars_controller.rb:9:10:9:15 | call to params |
+| app/controllers/foo/bars_controller.rb:16:21:16:26 | call to params |
+| app/controllers/foo/bars_controller.rb:17:10:17:15 | call to params |
+| app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
+paramsSources
+| ActiveRecordInjection.rb:35:30:35:35 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
+| ActiveRecordInjection.rb:48:21:48:26 | call to params |
+| ActiveRecordInjection.rb:54:34:54:39 | call to params |
+| ActiveRecordInjection.rb:56:23:56:28 | call to params |
+| ActiveRecordInjection.rb:56:38:56:43 | call to params |
+| ActiveRecordInjection.rb:62:10:62:15 | call to params |
+| ActiveRecordInjection.rb:72:11:72:16 | call to params |
+| ActiveRecordInjection.rb:77:12:77:17 | call to params |
+| ActiveRecordInjection.rb:83:12:83:17 | call to params |
+| ActiveRecordInjection.rb:88:15:88:20 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
+| app/controllers/foo/bars_controller.rb:8:21:8:26 | call to params |
+| app/controllers/foo/bars_controller.rb:9:10:9:15 | call to params |
+| app/controllers/foo/bars_controller.rb:16:21:16:26 | call to params |
+| app/controllers/foo/bars_controller.rb:17:10:17:15 | call to params |
+| app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
+redirectToCalls
+| app/controllers/foo/bars_controller.rb:12:5:12:30 | call to redirect_to |
+actionControllerHelperMethods
+getAssociatedControllerClasses
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+controllerTemplateFiles
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:1:1:20:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |

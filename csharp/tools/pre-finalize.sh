@@ -10,6 +10,7 @@ set -eu
     --size-limit 10m \
     --language xml \
     -- \
-    "$CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE"
+    "$CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE" \
+    > /dev/null 2>&1
 
 "$CODEQL_JAVA_HOME/bin/java" -jar "$CODEQL_EXTRACTOR_CSHARP_ROOT/tools/extractor-asp.jar" .

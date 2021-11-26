@@ -308,5 +308,3 @@ public class ContainerTest
         Out(out var strings); // BAD: but allow for now (only C# 7 allows discards)
     }
 }
-
-// semmle-extractor-options: /r:System.Collections.dll /r:System.Runtime.Extensions.dll /r:System.Linq.Expressions.dll /r:System.Collections.NonGeneric.dll

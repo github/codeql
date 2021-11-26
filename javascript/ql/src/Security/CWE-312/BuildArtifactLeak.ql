@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.BuildArtifactLeak::BuildArtifactLeak
+import semmle.javascript.security.dataflow.BuildArtifactLeakQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

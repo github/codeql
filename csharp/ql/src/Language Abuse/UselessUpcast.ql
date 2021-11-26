@@ -34,21 +34,21 @@ class StaticCall extends Call {
 pragma[nomagic]
 predicate hasInstanceCallable(ValueOrRefType t, InstanceCallable c, string name) {
   t.hasMember(c) and
-  name = c.getName()
+  name = c.getUndecoratedName()
 }
 
 /** Holds if extension method `m` is a method on `t` with name `name`. */
 pragma[nomagic]
 predicate hasExtensionMethod(ValueOrRefType t, ExtensionMethod m, string name) {
   t.isImplicitlyConvertibleTo(m.getExtendedType()) and
-  name = m.getName()
+  name = m.getUndecoratedName()
 }
 
 /** Holds `t` has static callable `c` as a member, with name `name`. */
 pragma[noinline]
 predicate hasStaticCallable(ValueOrRefType t, StaticCallable c, string name) {
   t.hasMember(c) and
-  name = c.getName()
+  name = c.getUndecoratedName()
 }
 
 /** Gets the minimum number of arguments required to call `c`. */
@@ -106,7 +106,7 @@ class ExplicitUpcast extends ExplicitCast {
   private predicate isDisambiguatingInstanceCall(InstanceCallable other, int args) {
     exists(Call c, InstanceCallable target, ValueOrRefType t | this.isArgument(c, target) |
       t = c.(QualifiableExpr).getQualifier().getType() and
-      hasInstanceCallable(t, other, target.getName()) and
+      hasInstanceCallable(t, other, target.getUndecoratedName()) and
       args = c.getNumberOfArguments() and
       other != target
     )
@@ -120,7 +120,7 @@ class ExplicitUpcast extends ExplicitCast {
     |
       not c.isOrdinaryStaticCall() and
       t = target.getParameter(0).getType() and
-      hasExtensionMethod(t, other, target.getName()) and
+      hasExtensionMethod(t, other, target.getUndecoratedName()) and
       args = c.getNumberOfArguments() and
       other != target
     )
@@ -131,7 +131,7 @@ class ExplicitUpcast extends ExplicitCast {
     StaticCall c, StaticCallable target, string name, ValueOrRefType t
   ) {
     this.isArgument(c, target) and
-    name = target.getName() and
+    name = target.getUndecoratedName() and
     (
       t = c.(QualifiableExpr).getQualifier().getType()
       or

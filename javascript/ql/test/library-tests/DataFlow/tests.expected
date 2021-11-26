@@ -1439,6 +1439,7 @@ sources
 | eval.js:1:1:5:1 | return of function k |
 | eval.js:3:3:3:6 | eval |
 | eval.js:3:3:3:16 | eval("x = 23") |
+| eval.js:3:8:3:15 | "x = 23" |
 | file://:0:0:0:0 | global access path |
 | sources.js:1:1:1:0 | this |
 | sources.js:1:1:1:12 | new (x => x) |
@@ -1475,6 +1476,8 @@ sources
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
+| tst.js:1:20:1:23 | 'fs' |
+| tst.js:4:9:4:12 | "hi" |
 | tst.js:16:1:20:9 | (functi ... ("arg") |
 | tst.js:16:2:16:1 | this |
 | tst.js:16:2:20:1 | functio ... n "";\\n} |
@@ -1483,6 +1486,8 @@ sources
 | tst.js:17:7:17:10 | Math |
 | tst.js:17:7:17:17 | Math.random |
 | tst.js:17:7:17:19 | Math.random() |
+| tst.js:19:10:19:11 | "" |
+| tst.js:20:4:20:8 | "arg" |
 | tst.js:22:7:22:18 | readFileSync |
 | tst.js:28:1:30:3 | (() =>\\n ... les\\n)() |
 | tst.js:28:2:29:3 | () =>\\n  x |
@@ -1500,6 +1505,7 @@ sources
 | tst.js:44:1:44:3 | o.m |
 | tst.js:44:1:44:5 | o.m() |
 | tst.js:46:1:46:6 | global |
+| tst.js:46:10:46:11 | "" |
 | tst.js:47:1:47:6 | global |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} |
 | tst.js:49:17:49:17 | B |
@@ -1527,6 +1533,7 @@ sources
 | tst.js:72:9:72:9 | p |
 | tst.js:72:9:72:11 | p() |
 | tst.js:75:9:75:21 | import('foo') |
+| tst.js:75:16:75:20 | 'foo' |
 | tst.js:80:10:80:10 | v |
 | tst.js:83:11:83:28 | [ for (v of o) v ] |
 | tst.js:85:11:85:28 | ( for (v of o) v ) |

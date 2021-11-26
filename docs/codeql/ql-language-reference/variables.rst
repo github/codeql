@@ -57,7 +57,7 @@ As an aside, note that the following query leads to a compile-time error:
     select i
 
 In theory, it would have infinitely many results, as the variable ``i`` is not constrained to a
-finite number of possible values. For more informaion, see ":ref:`binding`."
+finite number of possible values. For more information, see ":ref:`binding`."
 
 .. index:: variable; free, variable; bound
 .. _free-variables:

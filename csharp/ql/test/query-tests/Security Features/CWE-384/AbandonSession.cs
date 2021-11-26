@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll
-
 using System.Web;
 using System.Web.Security;
 
@@ -57,4 +55,3 @@ public class Handler3 : IHttpHandler
 
     public bool IsReusable => true;
 }
-

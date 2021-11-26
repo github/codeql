@@ -10,6 +10,7 @@
  *       external/cwe/cwe-256
  *       external/cwe/cwe-260
  *       external/cwe/cwe-313
+ *       external/cwe/cwe-522
  */
 
 import javascript

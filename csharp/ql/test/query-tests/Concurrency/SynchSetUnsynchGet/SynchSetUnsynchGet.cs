@@ -34,7 +34,6 @@ class C1
         }
     }
 
-
     // GOOD: getter is locked
     int GoodProperty1
     {

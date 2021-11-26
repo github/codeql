@@ -118,6 +118,18 @@ nodes
 | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:49:7:52 | evil |
+| live-server.js:4:11:4:27 | tainted |
+| live-server.js:4:21:4:27 | req.url |
+| live-server.js:4:21:4:27 | req.url |
+| live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:28:6:34 | tainted |
+| live-server.js:10:11:10:27 | tainted |
+| live-server.js:10:21:10:27 | req.url |
+| live-server.js:10:21:10:27 | req.url |
+| live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:28:12:34 | tainted |
 | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:8:13:8:19 | req.url |
@@ -190,6 +202,30 @@ nodes
 | tst2.js:49:36:49:36 | p |
 | tst2.js:51:12:51:17 | unsafe |
 | tst2.js:51:12:51:17 | unsafe |
+| tst2.js:57:7:57:24 | p |
+| tst2.js:57:9:57:9 | p |
+| tst2.js:57:9:57:9 | p |
+| tst2.js:60:11:60:11 | p |
+| tst2.js:63:12:63:12 | p |
+| tst2.js:63:12:63:12 | p |
+| tst2.js:64:12:64:18 | other.p |
+| tst2.js:64:12:64:18 | other.p |
+| tst2.js:69:7:69:24 | p |
+| tst2.js:69:9:69:9 | p |
+| tst2.js:69:9:69:9 | p |
+| tst2.js:72:11:72:11 | p |
+| tst2.js:75:12:75:12 | p |
+| tst2.js:75:12:75:12 | p |
+| tst2.js:76:12:76:18 | other.p |
+| tst2.js:76:12:76:18 | other.p |
+| tst2.js:82:7:82:24 | p |
+| tst2.js:82:9:82:9 | p |
+| tst2.js:82:9:82:9 | p |
+| tst2.js:85:11:85:11 | p |
+| tst2.js:88:12:88:12 | p |
+| tst2.js:88:12:88:12 | p |
+| tst2.js:89:12:89:18 | other.p |
+| tst2.js:89:12:89:18 | other.p |
 | tst3.js:5:7:5:24 | p |
 | tst3.js:5:9:5:9 | p |
 | tst3.js:5:9:5:9 | p |
@@ -301,6 +337,16 @@ edges
 | formatting.js:6:43:6:46 | evil | formatting.js:6:14:6:47 | util.fo ... , evil) |
 | formatting.js:7:49:7:52 | evil | formatting.js:7:14:7:53 | require ... , evil) |
 | formatting.js:7:49:7:52 | evil | formatting.js:7:14:7:53 | require ... , evil) |
+| live-server.js:4:11:4:27 | tainted | live-server.js:6:28:6:34 | tainted |
+| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:27 | tainted |
+| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:27 | tainted |
+| live-server.js:6:28:6:34 | tainted | live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:6:28:6:34 | tainted | live-server.js:6:13:6:50 | `<html> ... /html>` |
+| live-server.js:10:11:10:27 | tainted | live-server.js:12:28:12:34 | tainted |
+| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:27 | tainted |
+| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:27 | tainted |
+| live-server.js:12:28:12:34 | tainted | live-server.js:12:13:12:50 | `<html> ... /html>` |
+| live-server.js:12:28:12:34 | tainted | live-server.js:12:13:12:50 | `<html> ... /html>` |
 | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url |
 | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url |
 | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url |
@@ -359,6 +405,27 @@ edges
 | tst2.js:49:7:49:53 | unsafe | tst2.js:51:12:51:17 | unsafe |
 | tst2.js:49:16:49:53 | seriali ...  true}) | tst2.js:49:7:49:53 | unsafe |
 | tst2.js:49:36:49:36 | p | tst2.js:49:16:49:53 | seriali ...  true}) |
+| tst2.js:57:7:57:24 | p | tst2.js:60:11:60:11 | p |
+| tst2.js:57:7:57:24 | p | tst2.js:63:12:63:12 | p |
+| tst2.js:57:7:57:24 | p | tst2.js:63:12:63:12 | p |
+| tst2.js:57:9:57:9 | p | tst2.js:57:7:57:24 | p |
+| tst2.js:57:9:57:9 | p | tst2.js:57:7:57:24 | p |
+| tst2.js:60:11:60:11 | p | tst2.js:64:12:64:18 | other.p |
+| tst2.js:60:11:60:11 | p | tst2.js:64:12:64:18 | other.p |
+| tst2.js:69:7:69:24 | p | tst2.js:72:11:72:11 | p |
+| tst2.js:69:7:69:24 | p | tst2.js:75:12:75:12 | p |
+| tst2.js:69:7:69:24 | p | tst2.js:75:12:75:12 | p |
+| tst2.js:69:9:69:9 | p | tst2.js:69:7:69:24 | p |
+| tst2.js:69:9:69:9 | p | tst2.js:69:7:69:24 | p |
+| tst2.js:72:11:72:11 | p | tst2.js:76:12:76:18 | other.p |
+| tst2.js:72:11:72:11 | p | tst2.js:76:12:76:18 | other.p |
+| tst2.js:82:7:82:24 | p | tst2.js:85:11:85:11 | p |
+| tst2.js:82:7:82:24 | p | tst2.js:88:12:88:12 | p |
+| tst2.js:82:7:82:24 | p | tst2.js:88:12:88:12 | p |
+| tst2.js:82:9:82:9 | p | tst2.js:82:7:82:24 | p |
+| tst2.js:82:9:82:9 | p | tst2.js:82:7:82:24 | p |
+| tst2.js:85:11:85:11 | p | tst2.js:89:12:89:18 | other.p |
+| tst2.js:85:11:85:11 | p | tst2.js:89:12:89:18 | other.p |
 | tst3.js:5:7:5:24 | p | tst3.js:6:12:6:12 | p |
 | tst3.js:5:7:5:24 | p | tst3.js:6:12:6:12 | p |
 | tst3.js:5:9:5:9 | p | tst3.js:5:7:5:24 | p |
@@ -397,6 +464,8 @@ edges
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| live-server.js:6:13:6:50 | `<html> ... /html>` | live-server.js:4:21:4:27 | req.url | live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
+| live-server.js:12:13:12:50 | `<html> ... /html>` | live-server.js:10:21:10:27 | req.url | live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
 | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
 | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
 | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |
@@ -412,5 +481,11 @@ edges
 | tst2.js:36:12:36:12 | p | tst2.js:30:9:30:9 | p | tst2.js:36:12:36:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
 | tst2.js:37:12:37:18 | other.p | tst2.js:30:9:30:9 | p | tst2.js:37:12:37:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
 | tst2.js:51:12:51:17 | unsafe | tst2.js:43:9:43:9 | p | tst2.js:51:12:51:17 | unsafe | Cross-site scripting vulnerability due to $@. | tst2.js:43:9:43:9 | p | user-provided value |
+| tst2.js:63:12:63:12 | p | tst2.js:57:9:57:9 | p | tst2.js:63:12:63:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:64:12:64:18 | other.p | tst2.js:57:9:57:9 | p | tst2.js:64:12:64:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:75:12:75:12 | p | tst2.js:69:9:69:9 | p | tst2.js:75:12:75:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:76:12:76:18 | other.p | tst2.js:69:9:69:9 | p | tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:88:12:88:12 | p | tst2.js:82:9:82:9 | p | tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst2.js:89:12:89:18 | other.p | tst2.js:82:9:82:9 | p | tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
 | tst3.js:6:12:6:12 | p | tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to $@. | tst3.js:5:9:5:9 | p | user-provided value |
 | tst3.js:12:12:12:15 | code | tst3.js:11:32:11:39 | reg.body | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |

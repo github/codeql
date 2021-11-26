@@ -37,5 +37,3 @@ namespace ConsoleApplication2
         }
     }
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Linq.dll

@@ -48,6 +48,7 @@ nodes
 | XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | XQueryInjection.java:158:70:158:71 | is : ServletInputStream | semmle.label | is : ServletInputStream |
 | XQueryInjection.java:159:29:159:30 | br | semmle.label | br |
+subpaths
 #select
 | XQueryInjection.java:51:35:51:38 | xqpe | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:51:35:51:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:45:23:45:50 | getParameter(...) | this user input |
 | XQueryInjection.java:65:53:65:57 | query | XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query | XQuery query might include code from $@. | XQueryInjection.java:59:23:59:50 | getParameter(...) | this user input |

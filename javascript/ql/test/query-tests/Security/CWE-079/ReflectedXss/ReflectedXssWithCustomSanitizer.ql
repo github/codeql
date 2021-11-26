@@ -2,7 +2,7 @@
 // Modern version of ReflectedXssWithCustomSanitizer_old.ql
 //
 import javascript
-import semmle.javascript.security.dataflow.ReflectedXss::ReflectedXss
+import semmle.javascript.security.dataflow.ReflectedXssQuery
 
 class IsVarNameSanitizer extends TaintTracking::AdditionalSanitizerGuardNode, DataFlow::CallNode {
   IsVarNameSanitizer() { getCalleeName() = "isVarName" }

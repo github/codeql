@@ -73,6 +73,24 @@ public class InsecureRandomness
         }
         return result;
     }
+
+    public static string BiasPasswordGeneration()
+    {
+        // BAD: Membership.GeneratePassword generates a password with a bias
+        string password =  System.Web.Security.Membership.GeneratePassword(12, 3);
+        return password;
+    }
+
 }
 
-// semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll
+namespace System.Web.Security
+{
+    public static class Membership
+    {
+        public static string GeneratePassword(int length, int numberOfNonAlphanumericCharacters)
+        {
+            return "stub";
+        }
+
+    }
+}

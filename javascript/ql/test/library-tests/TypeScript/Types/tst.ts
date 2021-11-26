@@ -128,3 +128,66 @@ module TS43 {
     }
   } 
 }
+
+module TS44 {
+  function foo(arg: unknown) {
+    const argIsString = typeof arg === "string";
+    if (argIsString) {
+        const upper = arg.toUpperCase();
+    }
+  }
+
+  type Shape =
+      | { kind: "circle", radius: number }
+      | { kind: "square", sideLength: number };
+
+  function side(shape: Shape): number {
+      const { kind } = shape;
+
+      if (kind === "circle") { return shape.radius;}
+      else { return shape.sideLength; }
+  }
+
+  function symbolIndex() {
+    interface Colors {
+      [sym: symbol]: number;
+      [key: string]: string;
+      [num: number]: boolean;
+    }
+    
+    let colors: Colors = {};
+    const red = colors[Symbol("red")];
+    const green = colors["green"];
+    const blue = colors[2];
+  }
+
+  function stringPatternIndex() {
+    interface Foo {
+      [key: `foo-${number}`]: number;
+    }
+    var bla : Foo = {};
+    const bar = bla[`foo-1`];
+
+    interface Data {
+      [optName: string | symbol]: boolean;
+    }
+
+    const data: Data = {};
+    const baz = data["foo"];
+  }
+
+  class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+    static {
+      Foo.#count += 3;
+    }
+    static {
+      var count = Foo.#count;
+    }
+    
+  }
+}

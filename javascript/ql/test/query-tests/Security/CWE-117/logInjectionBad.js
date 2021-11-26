@@ -57,3 +57,63 @@ const server2 = http.createServer((req, res) => {
     console.log(chalk.underline.bgBlue(username)); // NOT OK
     console.log(stripAnsi(chalk.underline.bgBlue(username))); // NOT OK
 });
+
+var prettyjson = require('prettyjson');
+const server3 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    console.log(prettyjson.render(username)); // NOT OK
+
+});
+
+const pino = require('pino')()
+const server4 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    pino.info(username); // NOT OK
+
+    function fastify() {
+        const fastify = require('fastify')({
+            logger: true
+        });
+        fastify.get('/', async (request, reply) => {
+            request.log.info(username); // NOT OK
+            return { hello: 'world' }
+        });
+    }
+
+    function express() {
+        const express = require('express');
+        const app = express();
+        app.get('/', (req, res) => {
+            req.log.info(username); // NOT OK
+            res.send({ hello: 'world' });
+        });
+    }
+
+    function http() {
+        const http = require('http');
+        const server = http.createServer((req, res) => {
+            req.log.info(username); // NOT OK
+            res.end('Hello World\n');
+        });
+        server.listen(3000);
+    }
+
+    function hapi() {
+        const Hapi = require('hapi');
+        const server = new Hapi.Server();
+        server.connection({ port: 3000 });
+        server.route({
+            method: 'GET',
+            path: '/',
+            handler: (request, reply) => {
+                request.logger.info(username); // NOT OK
+                reply({ hello: 'world' });
+            }
+        });
+        server.start();
+    }
+});

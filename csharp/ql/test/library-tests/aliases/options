@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:asm1=${testdir}/Assembly1.dll /r:asm2=${testdir}/Assembly2.dll
