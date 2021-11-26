@@ -2,7 +2,7 @@ import java
 import semmle.code.java.ControlFlowGraph
 
 predicate shouldBeDeadEnd(ControlFlowNode n) {
-  n.getFile().getExtension() = "kt" or // Kotlin currently has bugs
+  n instanceof BreakStmt and n.getFile().getExtension() = "kt" or // TODO
   n instanceof Interface or // TODO
   n instanceof Class or // TODO
   n instanceof Parameter or // TODO
