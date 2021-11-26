@@ -1656,6 +1656,18 @@ open class KotlinFileExtractor(
                 extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
                 extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
             }
+            IrTypeOperator.SAFE_CAST -> {
+                // TODO: Distinguish this (e as? T) from CAST
+                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+                tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+            }
             IrTypeOperator.INSTANCEOF -> {
                 val id = tw.getFreshIdLabel<DbInstanceofexpr>()
                 val locId = tw.getLocation(e)
@@ -1679,7 +1691,7 @@ open class KotlinFileExtractor(
                 extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
             }
             else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall: " + e.render(), e)
+                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
             }
         }
     }
