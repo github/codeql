@@ -1,5 +1,6 @@
 import builtins
 import io
+import os
 
 open("filepath")  # $ getAPathArgument="filepath"
 open(file="filepath")  # $ getAPathArgument="filepath"
@@ -28,13 +29,14 @@ def through_function(open_file):
 
 through_function(f)
 
-from os import path
-path.exists("filepath")  # $ getAPathArgument="filepath"
-path.isfile("filepath")  # $ getAPathArgument="filepath"
-path.isdir("filepath")  # $ getAPathArgument="filepath"
-path.islink("filepath")  # $ getAPathArgument="filepath"
-path.ismount("filepath")  # $ getAPathArgument="filepath"
+# os.path
+os.path.exists("filepath")  # $ getAPathArgument="filepath"
+os.path.isfile("filepath")  # $ getAPathArgument="filepath"
+os.path.isdir("filepath")  # $ getAPathArgument="filepath"
+os.path.islink("filepath")  # $ getAPathArgument="filepath"
+os.path.ismount("filepath")  # $ getAPathArgument="filepath"
 
+# actual os.path implementations
 import posixpath
 import ntpath
 import genericpath
@@ -43,7 +45,6 @@ posixpath.exists("filepath") # $ getAPathArgument="filepath"
 ntpath.exists("filepath") # $ getAPathArgument="filepath"
 genericpath.exists("filepath") # $ getAPathArgument="filepath"
 
-import os
-
+# os
 os.stat("filepath") # $ getAPathArgument="filepath"
 os.stat(path="filepath") # $ getAPathArgument="filepath"
