@@ -39,7 +39,6 @@ abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
    */
   MyBatisMapperInclude getInclude() { result = getAChild*() }
 
-
   Method getMapperMethod() {
     result.getName() = this.getId() and
     result.getDeclaringType() = this.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
@@ -116,4 +115,11 @@ class MyBatisMapperInclude extends MyBatisMapperXMLElement {
    * Gets the value of the `refid` attribute of this `<include>`.
    */
   string getRefid() { result = getAttribute("refid").getValue() }
+}
+
+/**
+ * A `<foreach>` element in a `MyBatisMapperXMLElement`.
+ */
+class MyBatisMapperForeach extends MyBatisMapperXMLElement {
+  MyBatisMapperForeach() { getName() = "foreach" }
 }

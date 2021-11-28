@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,12 @@ public class MybatisSqlInjectionService {
 
 	public void bad8(String[] params) {
 		sqlInjectionMapper.bad8(params);
+	}
+
+	public void bad9(String name) {
+		HashMap hashMap = new HashMap();
+		hashMap.put("name", name);
+		sqlInjectionMapper.bad9(hashMap);
 	}
 
 	public List<Test> good1(Integer id) {

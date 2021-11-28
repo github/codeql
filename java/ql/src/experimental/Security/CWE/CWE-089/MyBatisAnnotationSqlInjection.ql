@@ -1,5 +1,5 @@
 /**
- * @name MyBatis Mapper xml sql injection
+ * @name MyBatis annotation sql injection
  * @description Constructing a dynamic SQL statement with input that comes from an
  *              untrusted source could allow an attacker to modify the statement's
  *              meaning or to execute arbitrary SQL commands.
@@ -13,18 +13,17 @@
 
 import java
 import DataFlow::PathGraph
-import MyBatisMapperXmlSqlInjectionLib
-import semmle.code.xml.MyBatisMapperXML
+import MyBatisAnnotationSqlInjectionLib
 import semmle.code.java.security.SanitizerGuard
 import semmle.code.java.dataflow.FlowSources
 
-private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::Configuration {
-  MyBatisMapperXmlSqlInjectionConfiguration() { this = "MyBatis mapper xml sql injection" }
+private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::Configuration {
+  MyBatisAnnotationSqlInjectionConfiguration() { this = "MyBatis annotation sql injection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink instanceof MyBatisMapperMethodCallAnArgument
+    sink instanceof MyBatisAnnotationMethodCallAnArgument
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -55,11 +54,11 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
 }
 
 from
-  MyBatisMapperXmlSqlInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-  XMLElement xmle
+  MyBatisAnnotationSqlInjectionConfiguration cfg, DataFlow::PathNode source,
+  DataFlow::PathNode sink, IbatisSqlOperationAnnotation isoa
 where
   cfg.hasFlowPath(source, sink) and
-  isMapperXmlSqlInjection(sink.getNode(), xmle)
+  isMybatisAnnotationSqlInjection(sink.getNode(), isoa)
 select sink.getNode(), source, sink,
-  "MyBatis Mapper XML sql injection might include code from $@ to $@.", source.getNode(),
-  "this user input", xmle, "this sql operation"
+  "MyBatis annotation sql injection might include code from $@ to $@.", source.getNode(),
+  "this user input", isoa, "this sql operation"

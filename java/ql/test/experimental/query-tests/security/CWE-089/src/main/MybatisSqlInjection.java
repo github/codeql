@@ -58,6 +58,11 @@ public class MybatisSqlInjection {
 		mybatisSqlInjectionService.bad8(params);
 	}
 
+	@GetMapping(value = "msi9")
+	public void bad9(@RequestParam String name) {
+		mybatisSqlInjectionService.bad9(name);
+	}
+
 	@GetMapping(value = "good1")
 	public List<Test> good1(Integer id) {
 		List<Test> result = mybatisSqlInjectionService.good1(id);

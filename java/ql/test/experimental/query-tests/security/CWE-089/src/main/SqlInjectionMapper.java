@@ -1,8 +1,10 @@
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 @Repository
@@ -23,6 +25,9 @@ public interface SqlInjectionMapper {
 	void bad7(List<String> params);
 
 	void bad8(String[] params);
+
+	@Select({"select * from test", "where id = ${name}"})
+	public Test bad9(HashMap<String, Object> map);
 
 	List<Test> good1(Integer id);
 

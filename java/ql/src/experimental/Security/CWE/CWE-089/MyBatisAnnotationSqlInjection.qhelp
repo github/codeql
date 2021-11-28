@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>MyBatis operates the database by using @Select, @Insert, etc. annotations in the method, and can use the $ character 
+to construct dynamic SQL statements. Attackers can modify the meaning of statements or execute arbitrary SQL commands.</p>
+</overview>
+
+<<recommendation>
+<p>
+When writing MyBatis mapping statements, try to use the format "#{xxx}". If you have to use parameters 
+such as "${xxx}", you must manually filter to prevent SQL injection attacks.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show the bad situation and the good situation respectively. The <code>bad1</code> method uses <code>$(name)</code> 
+in the <code>@Select</code> annotation to dynamically splice SQL statements, and there is a SQL injection vulnerability. 
+The good1 method uses the <code>#{name}</code> method in the <code>@Select</code> annotation to splice SQL statements, 
+and the MyBatis framework will handle the dangerous characters entered by the user, And did not cause SQL injection vulnerabilities.
+</p>
+<sample src="MyBatisAnnotationSqlInjection.java" />
+</example>
+
+<references>
+<li>
+Fortify:
+<a href="https://vulncat.fortify.com/en/detail?id=desc.config.java.sql_injection_mybatis_mapper">SQL Injection: MyBatis Mapper</a>.
+</li>
+</references>
+</qhelp>
