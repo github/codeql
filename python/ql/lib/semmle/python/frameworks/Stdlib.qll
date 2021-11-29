@@ -276,19 +276,589 @@ private module StdlibPrivate {
   }
 
   /**
-   * The `os` module has multiple methods for getting the status of a file, like
-   * a stat() system call.
-   *
-   * See:
-   * - https://docs.python.org/3.10/library/os.html#os.stat
-   * - https://docs.python.org/3.10/library/os.html#os.lstat
-   * - https://docs.python.org/3.10/library/os.html#os.statvfs
+   * Modeling of path related functions in the `os` module.
+   * Wrapped in QL module to make it easy to fold/unfold.
    */
-  private class OsProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    OsProbingCall() { this = os().getMember(["stat", "lstat", "statvfs"]).getACall() }
+  private module OsFileSystemAccessModeling {
+    /**
+     * A call to the `os.fsencode` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fsencode
+     */
+    private class OsFsencodeCall extends Encoding::Range, DataFlow::CallCfgNode {
+      OsFsencodeCall() { this = os().getMember("fsencode").getACall() }
 
-    override DataFlow::Node getAPathArgument() {
-      result in [this.getArg(0), this.getArgByName("path")]
+      override DataFlow::Node getAnInput() {
+        result in [this.getArg(0), this.getArgByName("filename")]
+      }
+
+      override DataFlow::Node getOutput() { result = this }
+
+      override string getFormat() { result = "filesystem" }
+    }
+
+    /**
+     * A call to the `os.fsdecode` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fsdecode
+     */
+    private class OsFsdecodeCall extends Decoding::Range, DataFlow::CallCfgNode {
+      OsFsdecodeCall() { this = os().getMember("fsdecode").getACall() }
+
+      override DataFlow::Node getAnInput() {
+        result in [this.getArg(0), this.getArgByName("filename")]
+      }
+
+      override DataFlow::Node getOutput() { result = this }
+
+      override string getFormat() { result = "filesystem" }
+
+      override predicate mayExecuteInput() { none() }
+    }
+
+    /**
+     * Additional taint step from a call to the `os.fspath` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fspath
+     */
+    private class OsFspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        exists(DataFlow::CallCfgNode call |
+          call = os().getMember("fspath").getACall() and
+          nodeFrom in [call.getArg(0), call.getArgByName("path")] and
+          nodeTo = call
+        )
+      }
+    }
+
+    /**
+     * A call to the `os.open` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.open
+     */
+    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsOpenCall() { this = os().getMember("open").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.access` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.access
+     */
+    private class OsAccessCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsAccessCall() { this = os().getMember("access").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chdir
+     */
+    private class OsChdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChdirCall() { this = os().getMember("chdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chflags` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chflags
+     */
+    private class OsChflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChflagsCall() { this = os().getMember("chflags").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chmod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chmod
+     */
+    private class OsChmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChmodCall() { this = os().getMember("chmod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chown` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chown
+     */
+    private class OsChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChownCall() { this = os().getMember("chown").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chroot` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chroot
+     */
+    private class OsChrootCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChrootCall() { this = os().getMember("chroot").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchflags` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchflags
+     */
+    private class OsLchflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchflagsCall() { this = os().getMember("lchflags").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchmod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchmod
+     */
+    private class OsLchmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchmodCall() { this = os().getMember("lchmod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchown` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchown
+     */
+    private class OsLchownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchownCall() { this = os().getMember("lchown").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.link` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.link
+     */
+    private class OsLinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLinkCall() { this = os().getMember("link").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.listdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.listdir
+     */
+    private class OsListdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsListdirCall() { this = os().getMember("listdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lstat` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lstat
+     */
+    private class OsLstatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLstatCall() { this = os().getMember("lstat").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.mkdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mkdir
+     */
+    private class OsMkdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMkdirCall() { this = os().getMember("mkdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.makedirs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.makedirs
+     */
+    private class OsMakedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMakedirsCall() { this = os().getMember("makedirs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("name")]
+      }
+    }
+
+    /**
+     * A call to the `os.mkfifo` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mkfifo
+     */
+    private class OsMkfifoCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMkfifoCall() { this = os().getMember("mkfifo").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.mknod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mknod
+     */
+    private class OsMknodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMknodCall() { this = os().getMember("mknod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.pathconf` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.pathconf
+     */
+    private class OsPathconfCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsPathconfCall() { this = os().getMember("pathconf").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.readlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.readlink
+     */
+    private class OsReadlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsReadlinkCall() { this = os().getMember("readlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.remove` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.remove
+     */
+    private class OsRemoveCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemoveCall() { this = os().getMember("remove").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.removedirs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.removedirs
+     */
+    private class OsRemovedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemovedirsCall() { this = os().getMember("removedirs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("name")]
+      }
+    }
+
+    /**
+     * A call to the `os.rename` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.rename
+     */
+    private class OsRenameCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRenameCall() { this = os().getMember("rename").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.renames` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.renames
+     */
+    private class OsRenamesCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRenamesCall() { this = os().getMember("renames").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("old"), this.getArg(1), this.getArgByName("new")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.replace` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.replace
+     */
+    private class OsReplaceCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsReplaceCall() { this = os().getMember("replace").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.rmdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.rmdir
+     */
+    private class OsRmdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRmdirCall() { this = os().getMember("rmdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.scandir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.scandir
+     */
+    private class OsScandirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsScandirCall() { this = os().getMember("scandir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.stat` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.stat
+     */
+    private class OsStatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStatCall() { this = os().getMember("stat").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.statvfs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.statvfs
+     */
+    private class OsStatvfsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStatvfsCall() { this = os().getMember("statvfs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.symlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.symlink
+     */
+    private class OsSymlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsSymlinkCall() { this = os().getMember("symlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.truncate` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.truncate
+     */
+    private class OsTruncateCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsTruncateCall() { this = os().getMember("truncate").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.unlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.unlink
+     */
+    private class OsUnlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsUnlinkCall() { this = os().getMember("unlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.utime` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.utime
+     */
+    private class OsUtimeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsUtimeCall() { this = os().getMember("utime").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.walk` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.walk
+     */
+    private class OsWalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsWalkCall() { this = os().getMember("walk").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("top")]
+      }
+    }
+
+    /**
+     * A call to the `os.fwalk` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fwalk
+     */
+    private class OsFwalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsFwalkCall() { this = os().getMember("fwalk").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("top")]
+      }
+    }
+
+    /**
+     * A call to the `os.getxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.getxattr
+     */
+    private class OsGetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsGetxattrCall() { this = os().getMember("getxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.listxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.listxattr
+     */
+    private class OsListxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsListxattrCall() { this = os().getMember("listxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.removexattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.removexattr
+     */
+    private class OsRemovexattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemovexattrCall() { this = os().getMember("removexattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.setxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.setxattr
+     */
+    private class OsSetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsSetxattrCall() { this = os().getMember("setxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.add_dll_directory` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.add_dll_directory
+     */
+    private class OsAdd_dll_directoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsAdd_dll_directoryCall() { this = os().getMember("add_dll_directory").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.startfile` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.startfile
+     */
+    private class OsStartfileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStartfileCall() { this = os().getMember("startfile").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
     }
   }
 
