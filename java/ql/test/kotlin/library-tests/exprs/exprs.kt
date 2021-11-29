@@ -28,11 +28,11 @@ fun topLevelMethod(x: Int, y: Int,
     val i18 = x >= y
     val i19 = x === y
     val i20 = x !== y
-/*
-TODO
-    val i20 = x in x .. y
-    val i21 = x !in x .. y
-*/
+
+
+    val i21 = x in x .. y
+    val i22 = x !in x .. y
+
 
     val by1 = 1.0
     val by2 = byx + byy
