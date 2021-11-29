@@ -467,7 +467,8 @@ private module StdlibPrivate {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsExecCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
@@ -476,13 +477,16 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getCommand() { result = this.getArg(0) }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /**
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsSpawnCall() {
       exists(string name |
         name in [
@@ -499,16 +503,21 @@ private module StdlibPrivate {
       // over-approximation is not hurting anyone, and is easy to implement.
       result = this.getArgByName("file")
     }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /**
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
     override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /** An additional taint step for calls to `os.path.join` */
