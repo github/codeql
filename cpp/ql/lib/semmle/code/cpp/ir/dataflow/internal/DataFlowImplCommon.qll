@@ -71,25 +71,31 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {
-  private predicate viableParamNonLambda(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallable(call), i)
+  private predicate viableParamNonLambda(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
+    exists(ParameterPosition ppos |
+      p.isParameterOf(viableCallable(call), ppos) and
+      parameterMatch(ppos, apos)
+    )
   }
 
-  private predicate viableParamLambda(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallableLambda(call, _), i)
+  private predicate viableParamLambda(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
+    exists(ParameterPosition ppos |
+      p.isParameterOf(viableCallableLambda(call, _), ppos) and
+      parameterMatch(ppos, apos)
+    )
   }
 
   private predicate viableParamArgNonLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParamNonLambda(call, i, p) and
-      arg.argumentOf(call, i)
+    exists(ArgumentPosition pos |
+      viableParamNonLambda(call, pos, p) and
+      arg.argumentOf(call, pos)
     )
   }
 
   private predicate viableParamArgLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParamLambda(call, i, p) and
-      arg.argumentOf(call, i)
+    exists(ArgumentPosition pos |
+      viableParamLambda(call, pos, p) and
+      arg.argumentOf(call, pos)
     )
   }
 
@@ -322,7 +328,7 @@ private module Cached {
     or
     exists(ArgNode arg |
       result.(PostUpdateNode).getPreUpdateNode() = arg and
-      arg.argumentOf(call, k.(ParamUpdateReturnKind).getPosition())
+      arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
     )
   }
 
@@ -330,7 +336,7 @@ private module Cached {
   predicate returnNodeExt(Node n, ReturnKindExt k) {
     k = TValueReturn(n.(ReturnNode).getKind())
     or
-    exists(ParamNode p, int pos |
+    exists(ParamNode p, ParameterPosition pos |
       parameterValueFlowsToPreUpdate(p, n) and
       p.isParameterOf(_, pos) and
       k = TParamUpdate(pos)
@@ -352,11 +358,13 @@ private module Cached {
   }
 
   cached
-  predicate parameterNode(Node p, DataFlowCallable c, int pos) { isParameterNode(p, c, pos) }
+  predicate parameterNode(Node p, DataFlowCallable c, ParameterPosition pos) {
+    isParameterNode(p, c, pos)
+  }
 
   cached
-  predicate argumentNode(Node n, DataFlowCall call, int pos) {
-    n.(ArgumentNode).argumentOf(call, pos)
+  predicate argumentNode(Node n, DataFlowCall call, ArgumentPosition pos) {
+    isArgumentNode(n, call, pos)
   }
 
   /**
@@ -374,12 +382,15 @@ private module Cached {
   }
 
   /**
-   * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
-   * The instance parameter is considered to have index `-1`.
+   * Holds if `p` is the parameter of a viable dispatch target of `call`,
+   * and `p` matches arguments at position `apos`.
    */
   pragma[nomagic]
-  private predicate viableParam(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallableExt(call), i)
+  private predicate viableParam(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
+    exists(ParameterPosition ppos |
+      p.isParameterOf(viableCallableExt(call), ppos) and
+      parameterMatch(ppos, apos)
+    )
   }
 
   /**
@@ -388,9 +399,9 @@ private module Cached {
    */
   cached
   predicate viableParamArg(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParam(call, i, p) and
-      arg.argumentOf(call, i) and
+    exists(ArgumentPosition pos |
+      viableParam(call, pos, p) and
+      arg.argumentOf(call, pos) and
       compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
     )
   }
@@ -862,7 +873,7 @@ private module Cached {
   cached
   newtype TReturnKindExt =
     TValueReturn(ReturnKind kind) or
-    TParamUpdate(int pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
+    TParamUpdate(ParameterPosition pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
 
   cached
   newtype TBooleanOption =
@@ -1054,9 +1065,9 @@ class ParamNode extends Node {
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
+   * position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { parameterNode(this, c, i) }
+  predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { parameterNode(this, c, pos) }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -1064,7 +1075,9 @@ class ArgNode extends Node {
   ArgNode() { argumentNode(this, _, _) }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  final predicate argumentOf(DataFlowCall call, int pos) { argumentNode(this, call, pos) }
+  final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    argumentNode(this, call, pos)
+  }
 }
 
 /**
@@ -1110,11 +1123,14 @@ class ValueReturnKind extends ReturnKindExt, TValueReturn {
 }
 
 class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
-  private int pos;
+  private ParameterPosition pos;
 
   ParamUpdateReturnKind() { this = TParamUpdate(pos) }
 
-  int getPosition() { result = pos }
+  ParameterPosition getPosition() { result = pos }
+
+  pragma[nomagic]
+  ArgumentPosition getAMatchingArgumentPosition() { parameterMatch(pos, result) }
 
   override string toString() { result = "param update " + pos }
 }
