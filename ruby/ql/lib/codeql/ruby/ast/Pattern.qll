@@ -175,7 +175,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
    * [ 1, 2, 3, *middle, 4 , 5]
    * ```
    */
-  LocalVariableWriteAccess getRestVariable() {
+  LocalVariableWriteAccess getRestVariableAccess() {
     toGenerated(result) = g.getChild(restIndex()).(Ruby::SplatParameter).getName()
   }
 
@@ -183,7 +183,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
    * Holds if this pattern permits any unmatched remaining elements, i.e. the pattern does not have a trailing `,`
    * and does not contain a rest token (`*` or `*name`) either.
    */
-  predicate allowUnmatchedElements() { not exists(this.restIndex()) }
+  predicate allowsUnmatchedElements() { not exists(this.restIndex()) }
 
   private int restIndex() { g.getChild(result) instanceof Ruby::SplatParameter }
 
@@ -200,7 +200,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
     or
     pred = "getSuffixElement" and result = this.getSuffixElement(_)
     or
-    pred = "getRestVariable" and result = this.getRestVariable()
+    pred = "getRestVariableAccess" and result = this.getRestVariableAccess()
   }
 }
 
@@ -232,7 +232,7 @@ class FindPattern extends CasePattern, TFindPattern {
    * in List[*init, "a", Integer => x, *tail]
    * ```
    */
-  LocalVariableWriteAccess getPrefix() {
+  LocalVariableWriteAccess getPrefixVariableAccess() {
     toGenerated(result) = g.getChild(0).(Ruby::SplatParameter).getName()
   }
 
@@ -242,7 +242,7 @@ class FindPattern extends CasePattern, TFindPattern {
    * in List[*init, "a", Integer => x, *tail]
    * ```
    */
-  LocalVariableWriteAccess getSuffix() {
+  LocalVariableWriteAccess getSuffixVariableAccess() {
     toGenerated(result) = max(int i | | g.getChild(i) order by i).(Ruby::SplatParameter).getName()
   }
 
@@ -257,9 +257,9 @@ class FindPattern extends CasePattern, TFindPattern {
     or
     pred = "getElement" and result = this.getElement(_)
     or
-    pred = "getPrefix" and result = this.getPrefix()
+    pred = "getPrefixVariableAccess" and result = this.getPrefixVariableAccess()
     or
-    pred = "getSuffix" and result = this.getSuffix()
+    pred = "getSuffixVariableAccess" and result = this.getSuffixVariableAccess()
   }
 }
 
@@ -300,7 +300,7 @@ class HashPattern extends CasePattern, THashPattern {
    * in { a: 1, **rest }
    * ```
    */
-  LocalVariableWriteAccess getRestVariable() {
+  LocalVariableWriteAccess getRestVariableAccess() {
     toGenerated(result) =
       max(int i | | g.getChild(i) order by i).(Ruby::HashSplatParameter).getName()
   }
@@ -309,7 +309,7 @@ class HashPattern extends CasePattern, THashPattern {
    * Holds if this pattern is terminated by `**nil` indicating that the pattern does not permit
    * any unmatched remaining pairs.
    */
-  predicate allowUnmatchedElements() { g.getChild(_) instanceof Ruby::HashSplatNil }
+  predicate allowsUnmatchedElements() { g.getChild(_) instanceof Ruby::HashSplatNil }
 
   final override string getAPrimaryQlClass() { result = "HashPattern" }
 
@@ -324,7 +324,7 @@ class HashPattern extends CasePattern, THashPattern {
     or
     pred = "getValue" and result = this.getValue(_)
     or
-    pred = "getRestVariable" and result = this.getRestVariable()
+    pred = "getRestVariableAccess" and result = this.getRestVariableAccess()
   }
 }
 
@@ -371,7 +371,7 @@ class AsPattern extends CasePattern, TAsPattern {
   AsPattern() { this = TAsPattern(g) }
 
   /** Gets the underlying pattern. */
-  CasePattern getValue() { toGenerated(result) = g.getValue() }
+  CasePattern getPattern() { toGenerated(result) = g.getValue() }
 
   /** Gets the variable access for this pattern. */
   LocalVariableWriteAccess getVariableAccess() { toGenerated(result) = g.getName() }
@@ -383,7 +383,7 @@ class AsPattern extends CasePattern, TAsPattern {
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
-    pred = "getValue" and result = this.getValue()
+    pred = "getPattern" and result = this.getPattern()
     or
     pred = "getVariableAccess" and result = this.getVariableAccess()
   }
@@ -403,7 +403,7 @@ class VariableReferencePattern extends CasePattern, TVariableReferencePattern {
 
   VariableReferencePattern() { this = TVariableReferencePattern(g) }
 
-  /** Gets the variable access correspinging to this variable reference pattern. */
+  /** Gets the variable access corresponding to this variable reference pattern. */
   LocalVariableReadAccess getVariableAccess() { toGenerated(result) = g.getName() }
 
   final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }

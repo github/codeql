@@ -540,11 +540,11 @@ class InClause extends Expr, TInClause {
 
   /**
    * Gets the pattern guard condition in this case-in expression. In the
-   * following example, the pattern guard condition is `x > 10`.
+   * following example, there are two pattern guard conditions `x > 10` and `x < 0`.
    * ```rb
    * case foo
    * in [ x ] if x > 10 then ...
-   * in [ x ] unless x < 10 then ...
+   * in [ x ] unless x < 0 then ...
    * end
    * ```
    */

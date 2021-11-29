@@ -781,7 +781,7 @@ control/cases.rb:
 #   47|     getBranch/getInClause: [InClause] in ... then ...
 #   47|       getPattern: [ArrayPattern] [ ..., * ]
 #   47|         getPrefixElement/getSuffixElement: [IntegerLiteral] 1
-#   47|         getRestVariable: [LocalVariableAccess] x
+#   47|         getRestVariableAccess: [LocalVariableAccess] x
 #   47|         getSuffixElement: [IntegerLiteral] 3
 #   48|     getBranch/getInClause: [InClause] in ... then ...
 #   48|       getPattern: [ArrayPattern] [ ..., * ]
@@ -794,9 +794,9 @@ control/cases.rb:
 #   50|         getElement: [IntegerLiteral] 3
 #   51|     getBranch/getInClause: [InClause] in ... then ...
 #   51|       getPattern: [FindPattern] [ *,...,* ]
-#   51|         getPrefix: [LocalVariableAccess] a
+#   51|         getPrefixVariableAccess: [LocalVariableAccess] a
 #   51|         getElement: [IntegerLiteral] 3
-#   51|         getSuffix: [LocalVariableAccess] b
+#   51|         getSuffixVariableAccess: [LocalVariableAccess] b
 #   52|     getBranch/getInClause: [InClause] in ... then ...
 #   52|       getPattern: [HashPattern] { ..., ** }
 #   52|         getKey: [SymbolLiteral] :a
@@ -818,7 +818,7 @@ control/cases.rb:
 #   56|         getKey: [SymbolLiteral] :a
 #   56|         getValue: [IntegerLiteral] 5
 #   56|         getKey: [SymbolLiteral] :b
-#   56|         getRestVariable: [LocalVariableAccess] map
+#   56|         getRestVariableAccess: [LocalVariableAccess] map
 #   57|     getBranch/getInClause: [InClause] in ... then ...
 #   57|       getPattern: [HashPattern] { ..., ** }
 #   57|         getKey: [SymbolLiteral] :a
@@ -858,7 +858,7 @@ control/cases.rb:
 #   66|     getBranch/getInClause: [InClause] in ... then ...
 #   66|       getPattern: [ArrayPattern] [ ..., * ]
 #   66|         getPrefixElement/getSuffixElement: [IntegerLiteral] 1
-#   66|         getRestVariable: [LocalVariableAccess] x
+#   66|         getRestVariableAccess: [LocalVariableAccess] x
 #   66|         getSuffixElement: [IntegerLiteral] 3
 #   67|     getBranch/getInClause: [InClause] in ... then ...
 #   67|       getPattern: [ArrayPattern] [ ..., * ]
@@ -871,9 +871,9 @@ control/cases.rb:
 #   69|         getElement: [IntegerLiteral] 3
 #   70|     getBranch/getInClause: [InClause] in ... then ...
 #   70|       getPattern: [FindPattern] [ *,...,* ]
-#   70|         getPrefix: [LocalVariableAccess] a
+#   70|         getPrefixVariableAccess: [LocalVariableAccess] a
 #   70|         getElement: [IntegerLiteral] 3
-#   70|         getSuffix: [LocalVariableAccess] b
+#   70|         getSuffixVariableAccess: [LocalVariableAccess] b
 #   71|     getBranch/getInClause: [InClause] in ... then ...
 #   71|       getPattern: [HashPattern] { ..., ** }
 #   71|         getKey: [SymbolLiteral] :a
@@ -895,7 +895,7 @@ control/cases.rb:
 #   75|         getKey: [SymbolLiteral] :a
 #   75|         getValue: [IntegerLiteral] 5
 #   75|         getKey: [SymbolLiteral] :b
-#   75|         getRestVariable: [LocalVariableAccess] map
+#   75|         getRestVariableAccess: [LocalVariableAccess] map
 #   76|     getBranch/getInClause: [InClause] in ... then ...
 #   76|       getPattern: [HashPattern] { ..., ** }
 #   76|         getKey: [SymbolLiteral] :a
@@ -960,7 +960,7 @@ control/cases.rb:
 #   96|         getBegin: [IntegerLiteral] 5
 #   97|     getBranch/getInClause: [InClause] in ... then ...
 #   97|       getPattern: [AsPattern] ... => ...
-#   97|         getValue: [IntegerLiteral] 5
+#   97|         getPattern: [IntegerLiteral] 5
 #   97|         getVariableAccess: [LocalVariableAccess] x
 #   98|     getBranch/getInClause: [InClause] in ... then ...
 #   98|       getPattern: [AlternativePattern] ... | ...
@@ -1031,7 +1031,7 @@ control/cases.rb:
 #  118|         getClass: [ConstantReadAccess] Bar
 #  118|         getPrefixElement/getSuffixElement: [LocalVariableAccess] a
 #  118|         getPrefixElement/getSuffixElement: [LocalVariableAccess] b
-#  118|         getRestVariable: [LocalVariableAccess] c
+#  118|         getRestVariableAccess: [LocalVariableAccess] c
 #  118|         getSuffixElement: [LocalVariableAccess] d
 #  118|         getSuffixElement: [LocalVariableAccess] e
 #  123|   getStmt: [CaseMatch] case ... in
@@ -1042,10 +1042,10 @@ control/cases.rb:
 #  124|         getElement: [LocalVariableAccess] x
 #  125|     getBranch/getInClause: [InClause] in ... then ...
 #  125|       getPattern: [FindPattern] [ *,...,* ]
-#  125|         getPrefix: [LocalVariableAccess] x
+#  125|         getPrefixVariableAccess: [LocalVariableAccess] x
 #  125|         getElement: [IntegerLiteral] 1
 #  125|         getElement: [IntegerLiteral] 2
-#  125|         getSuffix: [LocalVariableAccess] y
+#  125|         getSuffixVariableAccess: [LocalVariableAccess] y
 #  126|     getBranch/getInClause: [InClause] in ... then ...
 #  126|       getPattern: [FindPattern] [ *,...,* ]
 #  126|         getClass: [ConstantReadAccess] Bar
@@ -1076,7 +1076,7 @@ control/cases.rb:
 #  136|         getKey: [SymbolLiteral] :x
 #  136|         getValue: [IntegerLiteral] 1
 #  136|         getKey: [SymbolLiteral] :a
-#  136|         getRestVariable: [LocalVariableAccess] rest
+#  136|         getRestVariableAccess: [LocalVariableAccess] rest
 #  137|     getBranch/getInClause: [InClause] in ... then ...
 #  137|       getPattern: [HashPattern] { ..., ** }
 #  137|         getClass: [ConstantReadAccess] Foo
