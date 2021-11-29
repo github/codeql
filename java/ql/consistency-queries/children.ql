@@ -29,6 +29,8 @@ predicate gapInChildren(Element e, int i) {
   and not e instanceof TryStmt
   // TODO: Tighten this up:
   and not e instanceof ForStmt
+  // TODO: Tighten this up:
+  and not e instanceof MethodAccess // extension receiver is now a gap for Java
   // Kotlin bug?
   and not (e instanceof MethodAccess and e.getFile().getExtension() = "kt")
 }
