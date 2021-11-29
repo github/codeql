@@ -46,7 +46,7 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /**
@@ -113,7 +113,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     exists(AuthCodeURL m | call = m.getACall() | sink = call.getReceiver())
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /**
@@ -142,7 +142,7 @@ class FlowToPrint extends DataFlow::Configuration {
     source = any(AuthCodeURL m).getACall().getResult()
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */

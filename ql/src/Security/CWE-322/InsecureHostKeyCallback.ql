@@ -22,7 +22,7 @@ class InsecureIgnoreHostKey extends Function {
 class HostKeyCallbackFunc extends DataFlow::Node {
   HostKeyCallbackFunc() {
     exists(NamedType nt | nt.hasQualifiedName(CryptoSsh::packagePath(), "HostKeyCallback") |
-      getType().getUnderlyingType() = nt.getUnderlyingType()
+      this.getType().getUnderlyingType() = nt.getUnderlyingType()
     ) and
     // Restrict possible sources to either function definitions or
     // the result of some external function call (e.g. InsecureIgnoreHostKey())
@@ -71,7 +71,7 @@ class HostKeyCallbackAssignmentConfig extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /**
