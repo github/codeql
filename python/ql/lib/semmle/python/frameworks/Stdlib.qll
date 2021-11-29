@@ -492,7 +492,13 @@ private module StdlibPrivate {
       )
     }
 
-    override DataFlow::Node getCommand() { result = this.getArg(1) }
+    override DataFlow::Node getCommand() {
+      result = this.getArg(1)
+      or
+      // `file` keyword argument only valid for the `v` variants, but this
+      // over-approximation is not hurting anyone, and is easy to implement.
+      result = this.getArgByName("file")
+    }
   }
 
   /**
@@ -502,7 +508,7 @@ private module StdlibPrivate {
   private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
+    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /** An additional taint step for calls to `os.path.join` */

@@ -69,17 +69,17 @@ os.spawnvpe(os.P_WAIT, "file", ["<progname>", "arg0"], env)  # $ getCommand="fil
 # unlike os.exec*, some os.spawn* functions is usable with keyword arguments. However,
 # despite the docs using both `file` and `path` as the parameter name, you actually need
 # to use `file` in all cases.
-os.spawnv(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"])  # $ MISSING: getCommand="path" getAPathArgument="path"
-os.spawnve(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"], env=env)  # $ MISSING: getCommand="path" getAPathArgument="path"
-os.spawnvp(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"])  # $ MISSING: getCommand="file" getAPathArgument="file"
-os.spawnvpe(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"], env=env)  # $ MISSING: getCommand="file" getAPathArgument="file"
+os.spawnv(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"])  # $ getCommand="path" MISSING: getAPathArgument="path"
+os.spawnve(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"], env=env)  # $ getCommand="path" MISSING: getAPathArgument="path"
+os.spawnvp(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"])  # $ getCommand="file" MISSING: getAPathArgument="file"
+os.spawnvpe(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"], env=env)  # $ getCommand="file" MISSING: getAPathArgument="file"
 
 # `posix_spawn` Added in Python 3.8
 os.posix_spawn("path", ["<progname>", "arg0"], env)  # $ getCommand="path" MISSING: getAPathArgument="path"
-os.posix_spawn(path="path", argv=["<progname>", "arg0"], env=env)  # $ MISSING: getCommand="path" getAPathArgument="path"
+os.posix_spawn(path="path", argv=["<progname>", "arg0"], env=env)  # $ getCommand="path" MISSING: getAPathArgument="path"
 
 os.posix_spawnp("path", ["<progname>", "arg0"], env)  # $ getCommand="path" MISSING: getAPathArgument="path"
-os.posix_spawnp(path="path", argv=["<progname>", "arg0"], env=env)  # $ MISSING: getCommand="path" getAPathArgument="path"
+os.posix_spawnp(path="path", argv=["<progname>", "arg0"], env=env)  # $ getCommand="path" MISSING: getAPathArgument="path"
 
 ########################################
 
