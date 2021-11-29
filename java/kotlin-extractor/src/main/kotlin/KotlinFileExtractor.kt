@@ -1018,7 +1018,7 @@ open class KotlinFileExtractor(
     ) {
         for (argIdx in 0 until c.typeArgumentsCount) {
             val arg = c.getTypeArgument(argIdx)!!
-            val argType = useType(arg, false)
+            val argType = useType(arg, TypeContext.GENERIC_ARGUMENT)
             val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
             val mul = if (reverse) -1 else 1
             tw.writeExprs_unannotatedtypeaccess(argId, argType.javaResult.id, argType.kotlinResult.id, id, argIdx * mul + startIndex)
