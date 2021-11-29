@@ -1,7 +1,7 @@
 name: codeql/go-tests
-version: 0.0.2
+groups: [go,test]
 dependencies:
-    codeql/go-queries: ^0.0.2
-    codeql/go-all: ^0.0.2
-    codeql/go-examples: ^0.0.2
+    codeql/go-queries: "*"
+    codeql/go-all: "*"
+    codeql/go-examples: "*"
 extractor: go

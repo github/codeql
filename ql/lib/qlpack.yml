@@ -1,7 +1,8 @@
 name: codeql/go-all
-version: 0.0.2
+version: 0.0.3
+groups: go
 dbscheme: go.dbscheme
 extractor: go
 library: true
 dependencies:
-    codeql/go-upgrades: ^0.0.2
+    codeql/go-upgrades: ^0.0.3
