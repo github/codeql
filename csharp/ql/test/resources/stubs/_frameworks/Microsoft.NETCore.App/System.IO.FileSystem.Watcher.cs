@@ -37,9 +37,9 @@ namespace System
             public bool EnableRaisingEvents { get => throw null; set => throw null; }
             public void EndInit() => throw null;
             public event System.IO.ErrorEventHandler Error;
-            public FileSystemWatcher(string path, string filter) => throw null;
-            public FileSystemWatcher(string path) => throw null;
             public FileSystemWatcher() => throw null;
+            public FileSystemWatcher(string path) => throw null;
+            public FileSystemWatcher(string path, string filter) => throw null;
             public string Filter { get => throw null; set => throw null; }
             public System.Collections.ObjectModel.Collection<string> Filters { get => throw null; }
             public bool IncludeSubdirectories { get => throw null; set => throw null; }
@@ -54,17 +54,17 @@ namespace System
             public event System.IO.RenamedEventHandler Renamed;
             public override System.ComponentModel.ISite Site { get => throw null; set => throw null; }
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set => throw null; }
-            public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType, int timeout) => throw null;
             public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType) => throw null;
+            public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType, int timeout) => throw null;
         }
 
         // Generated from `System.IO.InternalBufferOverflowException` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InternalBufferOverflowException : System.SystemException
         {
-            public InternalBufferOverflowException(string message, System.Exception inner) => throw null;
-            public InternalBufferOverflowException(string message) => throw null;
             public InternalBufferOverflowException() => throw null;
             protected InternalBufferOverflowException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public InternalBufferOverflowException(string message) => throw null;
+            public InternalBufferOverflowException(string message, System.Exception inner) => throw null;
         }
 
         // Generated from `System.IO.NotifyFilters` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
