@@ -2,6 +2,7 @@ import builtins
 import io
 import os
 import stat
+import tempfile
 
 open("file")  # $ getAPathArgument="file"
 open(file="file")  # $ getAPathArgument="file"
@@ -212,3 +213,28 @@ os.add_dll_directory(path="path") # $ getAPathArgument="path"
 # Windows only
 os.startfile("path") # $ getAPathArgument="path"
 os.startfile(path="path") # $ getAPathArgument="path"
+
+# ------------------------------------------------------------------------------
+# tempfile
+# ------------------------------------------------------------------------------
+
+# _mkstemp_inner does `_os.path.join(dir, pre + name + suf)`
+
+tempfile.mkstemp("suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.mkstemp(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+tempfile.NamedTemporaryFile('w+b', -1, None, None, "suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.NamedTemporaryFile(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+tempfile.TemporaryFile('w+b', -1, None, None, "suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.TemporaryFile(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+tempfile.SpooledTemporaryFile(0, 'w+b', -1, None, None, "suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.SpooledTemporaryFile(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+# mkdtemp does `_os.path.join(dir, prefix + name + suffix)`
+tempfile.mkdtemp("suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.mkdtemp(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+
+tempfile.TemporaryDirectory("suffix", "prefix", "dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
+tempfile.TemporaryDirectory(suffix="suffix", prefix="prefix", dir="dir") # $ MISSING: getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
