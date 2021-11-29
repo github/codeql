@@ -55,32 +55,30 @@ predicate resultIsChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode
 predicate certIsZero(
   SSLGetPeerCertificateCall getCertCall, ControlFlowNode node1, ControlFlowNode node2
 ) {
-  exists(GuardCondition guard, Expr cert |
-    cert = globalValueNumber(getCertCall).getAnExpr() and
-    (
-      exists(Expr zero |
-        zero.getValue().toInt() = 0 and
-        node1 = guard and
-        (
-          // if (cert == zero) {
-          guard.comparesEq(cert, zero, 0, true, true) and
-          node2 = guard.getATrueSuccessor()
-          or
-          // if (cert != zero) { }
-          guard.comparesEq(cert, zero, 0, false, true) and
-          node2 = guard.getAFalseSuccessor()
-        )
-      )
-      or
-      // if (cert) { }
-      guard = cert and
+  exists(Expr cert | cert = globalValueNumber(getCertCall).getAnExpr() |
+    exists(GuardCondition guard, Expr zero |
+      zero.getValue().toInt() = 0 and
       node1 = guard and
-      node2 = guard.getAFalseSuccessor()
+      (
+        // if (cert == zero) {
+        guard.comparesEq(cert, zero, 0, true, true) and
+        node2 = guard.getATrueSuccessor()
+        or
+        // if (cert != zero) { }
+        guard.comparesEq(cert, zero, 0, false, true) and
+        node2 = guard.getAFalseSuccessor()
+      )
+    )
+    or
+    (
+      // if (cert) { }
+      node1 = cert
       or
       // if (!cert) {
-      node1 = guard.getParent() and
-      node2 = guard.getParent().(NotExpr).getATrueSuccessor()
-    )
+      node1.(NotExpr).getAChild() = cert
+    ) and
+    node2 = node1.getASuccessor() and
+    not cert.(GuardCondition).controls(node2, true) // cert may be false
   )
 }
 
