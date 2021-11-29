@@ -42,7 +42,7 @@ query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, Conten
   FlowSummaryImpl::Private::Steps::summarySetterStep(arg, c, out)
 }
 
-query predicate clearsContent(SummarizedCallable c, DataFlow::Content k, int i) {
-  c.clearsContent(i, k) and
+query predicate clearsContent(SummarizedCallable c, DataFlow::Content k, ParameterPosition pos) {
+  c.clearsContent(pos, k) and
   c.fromSource()
 }

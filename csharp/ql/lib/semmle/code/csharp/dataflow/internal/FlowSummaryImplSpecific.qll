@@ -13,11 +13,8 @@ private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
 
-/** Holds is `i` is a valid parameter position. */
-predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
-
 /** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
@@ -61,13 +58,14 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
 }
 
 /**
- * Gets the type of the `i`th parameter in a synthesized call that targets a
- * callback of type `t`.
+ * Gets the type of the parameter matching arguments at position `pos` in a
+ * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, int i) {
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
   exists(SystemLinqExpressions::DelegateExtType dt |
     t = Gvn::getGlobalValueNumber(dt) and
-    result = Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(i).getType())
+    result =
+      Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(pos.getPosition()).getType())
   )
 }
 
@@ -223,3 +221,19 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
     a.getUnboundDeclaration() = mid.asElement()
   )
 }
+
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
+bindingset[s]
+ArgumentPosition parseParamBody(string s) {
+  result.getPosition() = s.regexpCapture("([-0-9]+)", 1).toInt()
+  or
+  exists(int n1, int n2 |
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+    result.getPosition() in [n1 .. n2]
+  )
+}
+
+/** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
+bindingset[s]
+ParameterPosition parseArgBody(string s) { result.getPosition() = parseParamBody(s).getPosition() }

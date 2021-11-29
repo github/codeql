@@ -465,10 +465,10 @@ private module FrameworkDataFlowAdaptor {
       )
     }
 
-    override predicate clearsContent(int i, Content content) {
+    override predicate clearsContent(ParameterPosition pos, Content content) {
       exists(SummaryComponentStack input |
         ltdf.clearsContent(toCallableFlowSource(input), content, this) and
-        input = SummaryComponentStack::singleton(SummaryComponent::argument(i))
+        input = SummaryComponentStack::argument(pos.getPosition())
       )
     }
   }

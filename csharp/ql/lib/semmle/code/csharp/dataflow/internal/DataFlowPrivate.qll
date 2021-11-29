@@ -6,7 +6,7 @@ private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.Conversion
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
@@ -22,7 +22,14 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  exists(int i | pos = MkParameterPosition(i) and p.isParameterOf(c, i))
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  exists(int i | pos = MkArgumentPosition(i) and arg.argumentOf(c, i))
+}
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
@@ -494,9 +501,12 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       f.isFieldLike() and
       f instanceof InstanceFieldOrProperty
       or
-      exists(SummarizedCallable callable, FlowSummaryImpl::Public::SummaryComponentStack input |
+      exists(
+        FlowSummary::SummarizedCallable callable,
+        FlowSummaryImpl::Public::SummaryComponentStack input
+      |
         callable.propagatesFlow(input, _, _) and
-        input.contains(SummaryComponent::content(f.getContent()))
+        input.contains(FlowSummary::SummaryComponent::content(f.getContent()))
       )
     )
   |
@@ -718,7 +728,7 @@ private module Cached {
         cfn.getElement() = fla.getQualifier()
       )
     } or
-    TSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
@@ -794,11 +804,13 @@ predicate nodeIsHidden(Node n) {
   exists(Parameter p | p = n.(ParameterNode).getParameter() |
     not p.fromSource()
     or
-    p.getCallable() instanceof SummarizedCallable
+    p.getCallable() instanceof FlowSummary::SummarizedCallable
   )
   or
   n =
-    TInstanceParameterNode(any(Callable c | not c.fromSource() or c instanceof SummarizedCallable))
+    TInstanceParameterNode(any(Callable c |
+        not c.fromSource() or c instanceof FlowSummary::SummarizedCallable
+      ))
   or
   n instanceof YieldReturnNode
   or
@@ -1131,7 +1143,10 @@ private module ArgumentNodes {
     SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+      exists(ArgumentPosition apos |
+        FlowSummaryImpl::Private::summaryArgumentNode(call, this, apos) and
+        apos.getPosition() = pos
+      )
     }
   }
 }
@@ -1421,7 +1436,7 @@ import OutNodes
 
 /** A data-flow node used to model flow summaries. */
 private class SummaryNode extends NodeImpl, TSummaryNode {
-  private SummarizedCallable c;
+  private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
   SummaryNode() { this = TSummaryNode(c, state) }
