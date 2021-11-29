@@ -279,19 +279,13 @@ private module StdlibPrivate {
    * The `os` module has multiple methods for getting the status of a file, like
    * a stat() system call.
    *
-   * Note: `os.fstat` and `os.fstatvfs` operate on file-descriptors.
-   *
    * See:
    * - https://docs.python.org/3.10/library/os.html#os.stat
    * - https://docs.python.org/3.10/library/os.html#os.lstat
    * - https://docs.python.org/3.10/library/os.html#os.statvfs
-   * - https://docs.python.org/3.10/library/os.html#os.fstat
-   * - https://docs.python.org/3.10/library/os.html#os.fstatvfs
    */
   private class OsProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    OsProbingCall() {
-      this = os().getMember(["stat", "lstat", "statvfs", "fstat", "fstatvfs"]).getACall()
-    }
+    OsProbingCall() { this = os().getMember(["stat", "lstat", "statvfs"]).getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("path")]
