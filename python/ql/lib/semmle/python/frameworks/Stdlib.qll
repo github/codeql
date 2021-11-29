@@ -2637,6 +2637,116 @@ private module StdlibPrivate {
       nodeTo.(UrllibParseUrlsplitCall).getUrl() = nodeFrom
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // tempfile
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `tempfile.mkstemp`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp
+   */
+  private class TempfileMkstempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileMkstempCall() { this = API::moduleImport("tempfile").getMember("mkstemp").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.NamedTemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+   */
+  private class TempfileNamedTemporaryFileCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileNamedTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("NamedTemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(4), this.getArgByName("suffix"), this.getArg(5), this.getArgByName("prefix"),
+          this.getArg(6), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.TemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryFile
+   */
+  private class TempfileTemporaryFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("TemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(4), this.getArgByName("suffix"), this.getArg(5), this.getArgByName("prefix"),
+          this.getArg(6), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.SpooledTemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile
+   */
+  private class TempfileSpooledTemporaryFileCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileSpooledTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("SpooledTemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(5), this.getArgByName("suffix"), this.getArg(6), this.getArgByName("prefix"),
+          this.getArg(7), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.mkdtemp`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp
+   */
+  private class TempfileMkdtempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileMkdtempCall() { this = API::moduleImport("tempfile").getMember("mkdtemp").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.TemporaryDirectory`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryDirectory
+   */
+  private class TempfileTemporaryDirectoryCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileTemporaryDirectoryCall() {
+      this = API::moduleImport("tempfile").getMember("TemporaryDirectory").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
