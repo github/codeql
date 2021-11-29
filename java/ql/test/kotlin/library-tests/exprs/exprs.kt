@@ -213,3 +213,7 @@ class Class2 {
         val d1 = Color.valueOf("GREEN")
     }
 }
+
+fun todo() {
+    // TODO: TODO()
+}
