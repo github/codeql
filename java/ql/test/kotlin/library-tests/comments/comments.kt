@@ -29,3 +29,11 @@ class Group(val name: String) {
     A block comment
     */
 }
+
+enum class Severity(val sev: Int) {
+    Low(1),
+    /** Medium is in the middle */
+    Medium(2),
+    /** This is high */
+    High(3)
+}
