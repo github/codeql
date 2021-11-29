@@ -308,11 +308,36 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
   }
 }
 
-class CaseExpr extends ControlExpr, TCaseExpr {
-  private Ruby::Case g;
-
-  CaseExpr() { this = TCaseExpr(g) }
-
+/**
+ * A `case` statement. There are three forms of `case` statements:
+ * ```rb
+ * # a value-less case expression acting like an if-elsif expression:
+ * case
+ *   when x == 0 then puts "zero"
+ *   when x > 0 then puts "positive"
+ *   else puts "negative"
+ * end
+ *
+ * # a case expression that matches a value using `when` clauses:
+ * case value
+ *   when 1, 2 then puts "a is one or two"
+ *   when 3    then puts "a is three"
+ *   else           puts "I don't know what a is"
+ * end
+ *
+ * # a case expression that matches a value against patterns using `in` clauses:
+ * config = {db: {user: 'admin', password: 'abc123'}}
+ * case config
+ *   in db: {user:} # matches subhash and puts matched value in variable user
+ *     puts "Connect with user '#{user}'"
+ *   in connection: {username: } unless username == 'admin'
+ *     puts "Connect with user '#{username}'"
+ *   else
+ *     puts "Unrecognized structure of config"
+ * end
+ * ```
+ */
+class CaseExpr extends ControlExpr, TCase {
   final override string getAPrimaryQlClass() { result = "CaseExpr" }
 
   /**
@@ -334,25 +359,25 @@ class CaseExpr extends ControlExpr, TCaseExpr {
    * end
    * ```
    */
-  final Expr getValue() { toGenerated(result) = g.getValue() }
+  Expr getValue() { none() }
 
   /**
-   * Gets the `n`th branch of this case expression, either a `WhenExpr` or a
-   * `StmtSequence`.
+   * Gets the `n`th branch of this case expression, either a `WhenExpr`, or a
+   * `InClause` or a `StmtSequence`.
    */
-  final Expr getBranch(int n) { toGenerated(result) = g.getChild(n) }
+  Expr getBranch(int n) { none() }
 
   /**
-   * Gets a branch of this case expression, either a `WhenExpr` or an
-   * `ElseExpr`.
+   * Gets a branch of this case expression, either a `WhenExpr`, or a
+   * `InClause` or a `StmtSequence`.
    */
   final Expr getABranch() { result = this.getBranch(_) }
 
   /** Gets the `n`th `when` branch of this case expression. */
-  final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
+  deprecated final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
 
   /** Gets a `when` branch of this case expression. */
-  final WhenExpr getAWhenBranch() { result = this.getABranch() }
+  deprecated final WhenExpr getAWhenBranch() { result = this.getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
   final StmtSequence getElseBranch() { result = this.getABranch() }
@@ -371,9 +396,34 @@ class CaseExpr extends ControlExpr, TCaseExpr {
     or
     pred = "getBranch" and result = this.getBranch(_)
     or
-    pred = "getWhenBranch" and result = this.getWhenBranch(_)
-    or
     pred = "getElseBranch" and result = this.getElseBranch()
+  }
+}
+
+private class CaseWhenExpr extends CaseExpr, TCaseExpr {
+  private Ruby::Case g;
+
+  CaseWhenExpr() { this = TCaseExpr(g) }
+
+  final override Expr getValue() { toGenerated(result) = g.getValue() }
+
+  final override Expr getBranch(int n) {
+    toGenerated(result) = g.getChild(n) or
+    toGenerated(result) = g.getChild(n)
+  }
+}
+
+private class CaseMatch extends CaseExpr, TCaseMatch {
+  private Ruby::CaseMatch g;
+
+  CaseMatch() { this = TCaseMatch(g) }
+
+  final override Expr getValue() { toGenerated(result) = g.getValue() }
+
+  final override Expr getBranch(int n) {
+    toGenerated(result) = g.getClauses(n)
+    or
+    n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()
   }
 }
 
@@ -426,85 +476,6 @@ class WhenExpr extends Expr, TWhenExpr {
     pred = "getBody" and result = this.getBody()
     or
     pred = "getPattern" and result = this.getPattern(_)
-  }
-}
-
-/**
- * A `case` statement used for pattern matching. For example:
- * ```rb
- * config = {db: {user: 'admin', password: 'abc123'}}
- * case config
- *   in db: {user:} # matches subhash and puts matched value in variable user
- *     puts "Connect with user '#{user}'"
- *   in connection: {username: } unless username == 'admin'
- *     puts "Connect with user '#{username}'"
- *   else
- *     puts "Unrecognized structure of config"
- * end
- * ```
- */
-class CaseMatch extends ControlExpr, TCaseMatch {
-  private Ruby::CaseMatch g;
-
-  CaseMatch() { this = TCaseMatch(g) }
-
-  final override string getAPrimaryQlClass() { result = "CaseMatch" }
-
-  /**
-   * Gets the expression being matched. For example, `foo` in the following example.
-   * ```rb
-   * case foo
-   * in 0
-   *   puts 'zero'
-   * in 1
-   *   puts 'one'
-   * end
-   * ```
-   */
-  final Expr getValue() { toGenerated(result) = g.getValue() }
-
-  /**
-   * Gets the `n`th branch of this case expression, either an `InClause` or a
-   * `StmtSequence`.
-   */
-  final Expr getBranch(int n) {
-    toGenerated(result) = g.getClauses(n)
-    or
-    n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()
-  }
-
-  /**
-   * Gets a branch of this case expression, either an `InClause` or an
-   * `StmtSequence`.
-   */
-  final Expr getABranch() { result = this.getBranch(_) }
-
-  /** Gets the `n`th `in` clause of this case expression. */
-  final InClause getInClause(int n) { result = this.getBranch(n) }
-
-  /** Gets an `in` clause of this case expression. */
-  final InClause getAnInClause() { result = this.getABranch() }
-
-  /** Gets the `else` branch of this case expression, if any. */
-  final StmtSequence getElseBranch() { result = this.getABranch() }
-
-  /**
-   * Gets the number of branches of this case expression.
-   */
-  final int getNumberOfBranches() { result = count(this.getBranch(_)) }
-
-  final override string toString() { result = "case ... in" }
-
-  override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getValue" and result = this.getValue()
-    or
-    pred = "getBranch" and result = this.getBranch(_)
-    or
-    pred = "getInClause" and result = this.getInClause(_)
-    or
-    pred = "getElseBranch" and result = this.getElseBranch()
   }
 }
 

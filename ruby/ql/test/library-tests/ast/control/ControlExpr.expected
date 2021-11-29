@@ -1,12 +1,12 @@
 | cases.rb:8:1:15:3 | case ... | CaseExpr |
 | cases.rb:18:1:22:3 | case ... | CaseExpr |
-| cases.rb:26:1:29:3 | case ... in | CaseMatch |
-| cases.rb:31:1:37:3 | case ... in | CaseMatch |
-| cases.rb:39:1:80:3 | case ... in | CaseMatch |
-| cases.rb:86:1:107:3 | case ... in | CaseMatch |
-| cases.rb:111:1:119:3 | case ... in | CaseMatch |
-| cases.rb:123:1:128:3 | case ... in | CaseMatch |
-| cases.rb:132:1:140:3 | case ... in | CaseMatch |
+| cases.rb:26:1:29:3 | case ... | CaseExpr |
+| cases.rb:31:1:37:3 | case ... | CaseExpr |
+| cases.rb:39:1:80:3 | case ... | CaseExpr |
+| cases.rb:86:1:107:3 | case ... | CaseExpr |
+| cases.rb:111:1:119:3 | case ... | CaseExpr |
+| cases.rb:123:1:128:3 | case ... | CaseExpr |
+| cases.rb:132:1:140:3 | case ... | CaseExpr |
 | conditionals.rb:10:1:12:3 | if ... | IfExpr |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr |
 | conditionals.rb:22:1:30:3 | if ... | IfExpr |

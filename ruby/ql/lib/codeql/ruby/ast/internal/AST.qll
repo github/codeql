@@ -623,6 +623,8 @@ TAstNodeReal fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
 
 class TCall = TMethodCall or TYieldCall;
 
+class TCase = TCaseExpr or TCaseMatch;
+
 class TMethodCall =
   TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
       TElementReference or TSuperCall or TUnaryOperation or TBinaryOperation;
