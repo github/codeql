@@ -354,12 +354,12 @@ open class KotlinFileExtractor(
         val paramsSignature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
         if (f.symbol is IrConstructorSymbol) {
-            val returnType = useType(erase(f.returnType))
+            val returnType = useType(erase(f.returnType), TypeContext.RETURN)
             val shortName = if (f.returnType.isAnonymous) "" else f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
             @Suppress("UNCHECKED_CAST")
             tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
         } else {
-            val returnType = useType(f.returnType)
+            val returnType = useType(f.returnType, TypeContext.RETURN)
             val shortName = f.name.asString()
             @Suppress("UNCHECKED_CAST")
             tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
