@@ -2,6 +2,10 @@ import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 
 abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
+  IncludeSummarizedCallable() {
+    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic()
+  }
+
   /** Gets the qualified parameter types of this callable as a comma-separated string. */
   private string parameterQualifiedTypeNamesToString() {
     result =
