@@ -1,6 +1,7 @@
 import builtins
 import io
 import os
+import stat
 
 open("file")  # $ getAPathArgument="file"
 open(file="file")  # $ getAPathArgument="file"
@@ -60,5 +61,160 @@ genericpath.exists("path") # $ getAPathArgument="path"
 genericpath.exists(path="path") # $ getAPathArgument="path"
 
 # os
+
+def test_fsencode_fsdecode():
+    # notice that this does not make a file system access, but performs encoding/decoding.
+    os.fsencode("filename") # $ MISSING: encodeInput="filename" encodeOutput=os.fsencode(..) encodeFormat=filesystem
+    os.fsencode(filename="filename") # $ MISSING: encodeInput="filename" encodeOutput=os.fsencode(..) encodeFormat=filesystem
+
+    os.fsdecode("filename") # $ MISSING: decodeInput="filename" decodeOutput=os.fsdecode(..) decodeFormat=filesystem
+    os.fsdecode(filename="filename") # $ MISSING: decodeInput="filename" decodeOutput=os.fsdecode(..) decodeFormat=filesystem
+
+def test_fspath():
+    # notice that this does not make a file system access, but returns the path
+    # representation of a path-like object.
+
+    ensure_tainted(
+        TAINTED_STRING, # $ tainted
+        os.fspath(TAINTED_STRING), # $ MISSING: tainted
+        os.fspath(path=TAINTED_STRING), # $ MISSING: tainted
+    )
+
+os.open("path", os.O_RDONLY) # $ MISSING: getAPathArgument="path"
+os.open(path="path", flags=os.O_RDONLY) # $ MISSING: getAPathArgument="path"
+
+os.access("path", os.R_OK) # $ MISSING: getAPathArgument="path"
+os.access(path="path", mode=os.R_OK) # $ MISSING: getAPathArgument="path"
+
+os.chdir("path") # $ MISSING: getAPathArgument="path"
+os.chdir(path="path") # $ MISSING: getAPathArgument="path"
+
+os.chflags("path", stat.UF_NODUMP) # $ MISSING: getAPathArgument="path"
+os.chflags(path="path", flags=stat.UF_NODUMP) # $ MISSING: getAPathArgument="path"
+
+os.chmod("path", 0o700) # $ MISSING: getAPathArgument="path"
+os.chmod(path="path", mode=0o700) # $ MISSING: getAPathArgument="path"
+
+os.chown("path", -1, -1) # $ MISSING: getAPathArgument="path"
+os.chown(path="path", uid=-1, gid=-1) # $ MISSING: getAPathArgument="path"
+
+# unix only
+os.chroot("path") # $ MISSING: getAPathArgument="path"
+os.chroot(path="path") # $ MISSING: getAPathArgument="path"
+
+# unix only
+os.lchflags("path", stat.UF_NODUMP) # $ MISSING: getAPathArgument="path"
+os.lchflags(path="path", flags=stat.UF_NODUMP) # $ MISSING: getAPathArgument="path"
+
+# unix only
+os.lchmod("path", 0o700) # $ MISSING: getAPathArgument="path"
+os.lchmod(path="path", mode=0o700) # $ MISSING: getAPathArgument="path"
+
+# unix only
+os.lchown("path", -1, -1) # $ MISSING: getAPathArgument="path"
+os.lchown(path="path", uid=-1, gid=-1) # $ MISSING: getAPathArgument="path"
+
+os.link("src", "dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+os.link(src="src", dst="dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+
+os.listdir("path") # $ MISSING: getAPathArgument="path"
+os.listdir(path="path") # $ MISSING: getAPathArgument="path"
+
+os.lstat("path") # $ getAPathArgument="path"
+os.lstat(path="path") # $ getAPathArgument="path"
+
+os.mkdir("path") # $ MISSING: getAPathArgument="path"
+os.mkdir(path="path") # $ MISSING: getAPathArgument="path"
+
+os.makedirs("name") # $ MISSING: getAPathArgument="name"
+os.makedirs(name="name") # $ MISSING: getAPathArgument="name"
+
+os.mkfifo("path") # $ MISSING: getAPathArgument="path"
+os.mkfifo(path="path") # $ MISSING: getAPathArgument="path"
+
+os.mknod("path") # $ MISSING: getAPathArgument="path"
+os.mknod(path="path") # $ MISSING: getAPathArgument="path"
+
+os.pathconf("path", "name") # $ MISSING: getAPathArgument="path"
+os.pathconf(path="path", name="name") # $ MISSING: getAPathArgument="path"
+
+os.readlink("path") # $ MISSING: getAPathArgument="path"
+os.readlink(path="path") # $ MISSING: getAPathArgument="path"
+
+os.remove("path") # $ MISSING: getAPathArgument="path"
+os.remove(path="path") # $ MISSING: getAPathArgument="path"
+
+os.removedirs("name") # $ MISSING: getAPathArgument="name"
+os.removedirs(name="name") # $ MISSING: getAPathArgument="name"
+
+os.rename("src", "dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+os.rename(src="src", dst="dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+
+os.renames("old", "new") # $ MISSING: getAPathArgument="old" getAPathArgument="new"
+os.renames(old="old", new="new") # $ MISSING: getAPathArgument="old" getAPathArgument="new"
+
+os.replace("src", "dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+os.replace(src="src", dst="dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+
+os.rmdir("path") # $ MISSING: getAPathArgument="path"
+os.rmdir(path="path") # $ MISSING: getAPathArgument="path"
+
+os.scandir("path") # $ MISSING: getAPathArgument="path"
+os.scandir(path="path") # $ MISSING: getAPathArgument="path"
+
 os.stat("path") # $ getAPathArgument="path"
 os.stat(path="path") # $ getAPathArgument="path"
+
+os.statvfs("path") # $ getAPathArgument="path"
+os.statvfs(path="path") # $ getAPathArgument="path"
+
+os.symlink("src", "dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+os.symlink(src="src", dst="dst") # $ MISSING: getAPathArgument="src" getAPathArgument="dst"
+
+os.truncate("path", 42) # $ MISSING: getAPathArgument="path"
+os.truncate(path="path", length=42) # $ MISSING: getAPathArgument="path"
+
+os.unlink("path") # $ MISSING: getAPathArgument="path"
+os.unlink(path="path") # $ MISSING: getAPathArgument="path"
+
+os.utime("path") # $ MISSING: getAPathArgument="path"
+os.utime(path="path") # $ MISSING: getAPathArgument="path"
+
+os.walk("top") # $ MISSING: getAPathArgument="top"
+os.walk(top="top") # $ MISSING: getAPathArgument="top"
+
+os.fwalk("top") # $ MISSING: getAPathArgument="top"
+os.fwalk(top="top") # $ MISSING: getAPathArgument="top"
+
+# Linux only
+os.getxattr("path", "attribute") # $ MISSING: getAPathArgument="path"
+os.getxattr(path="path", attribute="attribute") # $ MISSING: getAPathArgument="path"
+
+# Linux only
+os.listxattr("path") # $ MISSING: getAPathArgument="path"
+os.listxattr(path="path") # $ MISSING: getAPathArgument="path"
+
+# Linux only
+os.removexattr("path", "attribute") # $ MISSING: getAPathArgument="path"
+os.removexattr(path="path", attribute="attribute") # $ MISSING: getAPathArgument="path"
+
+# Linux only
+os.setxattr("path", "attribute", "value") # $ MISSING: getAPathArgument="path"
+os.setxattr(path="path", attribute="attribute", value="value") # $ MISSING: getAPathArgument="path"
+
+# Windows only
+os.add_dll_directory("path") # $ MISSING: getAPathArgument="path"
+os.add_dll_directory(path="path") # $ MISSING: getAPathArgument="path"
+
+# TODO: os.exec* calls all take a path as first argument
+# TODO: os.spawn* calls all take a path as second argument
+# TODO: os.posix_spawn calls
+
+# TODO: Maybe these should not be considered a command injection sink?
+# since `os.execlp("bash -c 'echo hello'", "bash")`
+# raises exception: `FileNotFoundError: [Errno 2] No such file or directory`
+# and you're not able to execute arbitrary commands, but change what file is being run.
+
+# Windows only
+os.startfile("path") # $ MISSING: getAPathArgument="path"
+os.startfile(path="path") # $ MISSING: getAPathArgument="path"
