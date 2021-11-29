@@ -6,6 +6,7 @@ varAcc
 | variables.kt:16:11:16:18 | o |
 | variables.kt:16:11:16:18 | o |
 instAcc
+| variables.kt:21:9:21:9 | this |
 | variables.kt:21:11:21:15 | this |
 | variables.kt:24:9:24:9 | this |
 | variables.kt:25:9:25:9 | this |
