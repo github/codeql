@@ -13,7 +13,7 @@
 </recommendation>
 <example>
 
-<p>In this example, the <code>SSL_get_peer_certificate</code> function is used to get the certificate of a peer. However it is unsafe to use that information wihtout checking the certificate is valid.</p>
+<p>In this example, the <code>SSL_get_peer_certificate</code> function is used to get the certificate of a peer. However it is unsafe to use that information without checking if the certificate is valid.</p>
 
 <sample src="SSLResultNotCheckedBad.cpp" />
 
