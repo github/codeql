@@ -426,6 +426,17 @@
 | exprs.kt:129:34:129:38 |  bar  | exprs.kt:4:1:139:1 | topLevelMethod | StringLiteral |
 | exprs.kt:129:40:129:43 | str2 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
 | exprs.kt:129:44:129:47 |  baz | exprs.kt:4:1:139:1 | topLevelMethod | StringLiteral |
+| exprs.kt:130:5:130:66 | str5 | exprs.kt:4:1:139:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:130:24:130:66 | "..." | exprs.kt:4:1:139:1 | topLevelMethod | StringTemplateExpr |
+| exprs.kt:130:25:130:28 | foo  | exprs.kt:4:1:139:1 | topLevelMethod | StringLiteral |
+| exprs.kt:130:31:130:34 | str1 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
+| exprs.kt:130:31:130:41 | ... + ... | exprs.kt:4:1:139:1 | topLevelMethod | AddExpr |
+| exprs.kt:130:38:130:41 | str2 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
+| exprs.kt:130:43:130:47 |  bar  | exprs.kt:4:1:139:1 | topLevelMethod | StringLiteral |
+| exprs.kt:130:50:130:53 | str2 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
+| exprs.kt:130:50:130:60 | plus(...) | exprs.kt:4:1:139:1 | topLevelMethod | MethodAccess |
+| exprs.kt:130:57:130:60 | str1 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
+| exprs.kt:130:62:130:65 |  baz | exprs.kt:4:1:139:1 | topLevelMethod | StringLiteral |
 | exprs.kt:131:5:131:26 | str6 | exprs.kt:4:1:139:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:131:16:131:19 | str1 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
 | exprs.kt:131:16:131:26 | ... + ... | exprs.kt:4:1:139:1 | topLevelMethod | AddExpr |

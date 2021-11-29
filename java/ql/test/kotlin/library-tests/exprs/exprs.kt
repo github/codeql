@@ -127,7 +127,7 @@ TODO
     val str2: String? = "string lit"
     val str3: String? = null
     val str4: String = "foo $str1 bar $str2 baz"
-    // TODO val str5: String = "foo ${str1 + str2} bar ${str2 + str1} baz"
+    val str5: String = "foo ${str1 + str2} bar ${str2 + str1} baz"
     val str6 = str1 + str2
 
     var variable = 10
