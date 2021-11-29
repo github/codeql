@@ -206,14 +206,8 @@ os.setxattr(path="path", attribute="attribute", value="value") # $ MISSING: getA
 os.add_dll_directory("path") # $ MISSING: getAPathArgument="path"
 os.add_dll_directory(path="path") # $ MISSING: getAPathArgument="path"
 
-# TODO: os.exec* calls all take a path as first argument
-# TODO: os.spawn* calls all take a path as second argument
-# TODO: os.posix_spawn calls
-
-# TODO: Maybe these should not be considered a command injection sink?
-# since `os.execlp("bash -c 'echo hello'", "bash")`
-# raises exception: `FileNotFoundError: [Errno 2] No such file or directory`
-# and you're not able to execute arbitrary commands, but change what file is being run.
+# for `os.exec*`, `os.spawn*`, and `os.posix_spawn*` functions, see the
+# `SystemCommandExecution.py` file.
 
 # Windows only
 os.startfile("path") # $ MISSING: getAPathArgument="path"
