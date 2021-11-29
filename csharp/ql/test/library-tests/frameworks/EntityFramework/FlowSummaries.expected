@@ -64,8 +64,6 @@
 | Microsoft.EntityFrameworkCore;DbSet<>;false;AttachRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value |
 | Microsoft.EntityFrameworkCore;DbSet<>;false;Update;(T);;Argument[0];Element of Argument[-1];value |
 | Microsoft.EntityFrameworkCore;DbSet<>;false;UpdateRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value |
-| Microsoft.EntityFrameworkCore;RawSqlString;false;RawSqlString;(System.String);;Argument[0];ReturnValue;taint |
-| Microsoft.EntityFrameworkCore;RawSqlString;false;implicit conversion;(System.String);;Argument[0];ReturnValue;taint |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Property[EFTests.Address.Id] of Element of Property[EFTests.MyContext.Addresses] of Argument[-1];Property[EFTests.Address.Id] of Element of Property[EFTests.Person.Addresses] of Element of ReturnValue[jump to get_Persons];value |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Property[EFTests.Address.Id] of Element of Property[EFTests.MyContext.Addresses] of Argument[-1];Property[EFTests.Address.Id] of Element of ReturnValue[jump to get_Addresses];value |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Property[EFTests.Address.Id] of Element of Property[EFTests.MyContext.Addresses] of Argument[-1];Property[EFTests.Address.Id] of Property[EFTests.PersonAddressMap.Address] of Element of ReturnValue[jump to get_PersonAddresses];value |
