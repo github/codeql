@@ -1,6 +1,6 @@
 // ...
 
-int cert = SSL_get_peer_certificate(ssl); // GOOD
+X509 *cert = SSL_get_peer_certificate(ssl); // GOOD
 if (cert)
 {
 	result = SSL_get_verify_result(ssl);
