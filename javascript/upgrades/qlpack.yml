@@ -1,4 +1,5 @@
 name: codeql/javascript-upgrades
+groups: javascript
 upgrades: .
 library: true
 version: 0.0.3
