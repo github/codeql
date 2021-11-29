@@ -72,10 +72,10 @@ private module MongoDB {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 
@@ -595,10 +595,10 @@ private module Minimongo {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 
@@ -631,10 +631,10 @@ private module MarsDB {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
+      result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
   }
 

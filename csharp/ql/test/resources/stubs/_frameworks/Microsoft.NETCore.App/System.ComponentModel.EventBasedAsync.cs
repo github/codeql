@@ -48,10 +48,10 @@ namespace System
             protected virtual void OnProgressChanged(System.ComponentModel.ProgressChangedEventArgs e) => throw null;
             protected virtual void OnRunWorkerCompleted(System.ComponentModel.RunWorkerCompletedEventArgs e) => throw null;
             public event System.ComponentModel.ProgressChangedEventHandler ProgressChanged;
-            public void ReportProgress(int percentProgress, object userState) => throw null;
             public void ReportProgress(int percentProgress) => throw null;
-            public void RunWorkerAsync(object argument) => throw null;
+            public void ReportProgress(int percentProgress, object userState) => throw null;
             public void RunWorkerAsync() => throw null;
+            public void RunWorkerAsync(object argument) => throw null;
             public event System.ComponentModel.RunWorkerCompletedEventHandler RunWorkerCompleted;
             public bool WorkerReportsProgress { get => throw null; set => throw null; }
             public bool WorkerSupportsCancellation { get => throw null; set => throw null; }

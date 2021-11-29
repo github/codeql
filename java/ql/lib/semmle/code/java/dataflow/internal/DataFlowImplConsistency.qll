@@ -9,6 +9,19 @@ private import tainttracking1.TaintTrackingParameter::Private
 private import tainttracking1.TaintTrackingParameter::Public
 
 module Consistency {
+  private newtype TConsistencyConfiguration = MkConsistencyConfiguration()
+
+  /** A class for configuring the consistency queries. */
+  class ConsistencyConfiguration extends TConsistencyConfiguration {
+    string toString() { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
+    predicate postWithInFlowExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `argHasPostUpdate`. */
+    predicate argHasPostUpdateExclude(ArgumentNode n) { none() }
+  }
+
   private class RelevantNode extends Node {
     RelevantNode() {
       this instanceof ArgumentNode or
@@ -164,7 +177,7 @@ module Consistency {
 
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
-    not isImmutableOrUnobservable(n) and
+    not any(ConsistencyConfiguration c).argHasPostUpdateExclude(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
   }
 
@@ -177,6 +190,7 @@ module Consistency {
     isPostUpdateNode(n) and
     not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
+    not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
 }

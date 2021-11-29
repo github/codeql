@@ -57,14 +57,14 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a call to the function represented by this API component,
      * or a promisified version of the function.
      */
     CallNode getMaybePromisifiedCall() {
-      result = getACall()
+      result = this.getACall()
       or
       result = Impl::getAPromisifiedInvocation(this, _, _)
     }
@@ -72,12 +72,12 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+    NewNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
      */
-    InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
+    InvokeNode getAnInvocation() { result = this.getACall() or result = this.getAnInstantiation() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
@@ -99,7 +99,7 @@ module API {
      * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
      * of the API component represented by this node.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(getARhs()) }
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -110,7 +110,7 @@ module API {
     cached
     Node getMember(string m) {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::member(m))
+      result = this.getASuccessor(Label::member(m))
     }
 
     /**
@@ -120,7 +120,7 @@ module API {
     cached
     Node getUnknownMember() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::unknownMember())
+      result = this.getASuccessor(Label::unknownMember())
     }
 
     /**
@@ -130,9 +130,9 @@ module API {
     cached
     Node getAMember() {
       Stages::APIStage::ref() and
-      result = getMember(_)
+      result = this.getMember(_)
       or
-      result = getUnknownMember()
+      result = this.getUnknownMember()
     }
 
     /**
@@ -149,7 +149,7 @@ module API {
     cached
     Node getInstance() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::instance())
+      result = this.getASuccessor(Label::instance())
     }
 
     /**
@@ -161,13 +161,13 @@ module API {
     cached
     Node getParameter(int i) {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::parameter(i))
+      result = this.getASuccessor(Label::parameter(i))
     }
 
     /**
      * Gets the number of parameters of the function represented by this node.
      */
-    int getNumParameter() { result = max(int s | exists(getParameter(s))) + 1 }
+    int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
 
     /**
      * Gets a node representing the last parameter of the function represented by this node.
@@ -175,7 +175,7 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
-    Node getLastParameter() { result = getParameter(getNumParameter() - 1) }
+    Node getLastParameter() { result = this.getParameter(this.getNumParameter() - 1) }
 
     /**
      * Gets a node representing the receiver of the function represented by this node.
@@ -183,7 +183,7 @@ module API {
     cached
     Node getReceiver() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::receiver())
+      result = this.getASuccessor(Label::receiver())
     }
 
     /**
@@ -197,9 +197,9 @@ module API {
     cached
     Node getAParameter() {
       Stages::APIStage::ref() and
-      result = getParameter(_)
+      result = this.getParameter(_)
       or
-      result = getReceiver()
+      result = this.getReceiver()
     }
 
     /**
@@ -211,7 +211,7 @@ module API {
     cached
     Node getReturn() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::return())
+      result = this.getASuccessor(Label::return())
     }
 
     /**
@@ -221,7 +221,7 @@ module API {
     cached
     Node getPromised() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::promised())
+      result = this.getASuccessor(Label::promised())
     }
 
     /**
@@ -230,14 +230,16 @@ module API {
     cached
     Node getPromisedError() {
       Stages::APIStage::ref() and
-      result = getASuccessor(Label::promisedError())
+      result = this.getASuccessor(Label::promisedError())
     }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
+    string getPath() {
+      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
+    }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -255,13 +257,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one.
      */
-    Node getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /**
      * Holds if this node may take its value from `that` node.
@@ -290,9 +292,9 @@ module API {
      * parameters are zero.
      */
     predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+      this.getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(getInducingNode()) and
+      not exists(this.getInducingNode()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
@@ -338,12 +340,12 @@ module API {
 
   /** A node corresponding to a definition of an API component. */
   class Definition extends Node, Impl::TDef {
-    override string toString() { result = "def " + getPath() }
+    override string toString() { result = "def " + this.getPath() }
   }
 
   /** A node corresponding to the use of an API component. */
   class Use extends Node, Impl::TUse {
-    override string toString() { result = "use " + getPath() }
+    override string toString() { result = "use " + this.getPath() }
   }
 
   /** Gets the root node. */
@@ -967,7 +969,7 @@ module API {
     pragma[nomagic]
     Node getParameter(int i) {
       result = callee.getParameter(i) and
-      result = getAParameterCandidate(i)
+      result = this.getAParameterCandidate(i)
     }
 
     /**
@@ -977,10 +979,10 @@ module API {
     private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
-    Node getAParameter() { result = getParameter(_) }
+    Node getAParameter() { result = this.getParameter(_) }
 
     /** Gets the API node for the last parameter of this invocation. */
-    Node getLastParameter() { result = getParameter(getNumArgument() - 1) }
+    Node getLastParameter() { result = this.getParameter(this.getNumArgument() - 1) }
 
     /** Gets the API node for the return value of this call. */
     Node getReturn() {

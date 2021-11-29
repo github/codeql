@@ -93,7 +93,8 @@ private module Cached {
     } or
     TBlockArgument(Ruby::BlockArgument g) or
     TBlockParameter(Ruby::BlockParameter g) or
-    TBraceBlock(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
+    TBraceBlockSynth(AST::AstNode parent, int i) { mkSynthChild(BraceBlockKind(), parent, i) } or
+    TBraceBlockReal(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
     TBreakStmt(Ruby::Break g) or
     TCaseEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequalequal } or
     TCaseExpr(Ruby::Case g) or
@@ -131,7 +132,6 @@ private module Cached {
     TFalseLiteral(Ruby::False g) or
     TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
     TForExpr(Ruby::For g) or
-    TForIn(Ruby::In g) or // TODO REMOVE
     TForwardParameter(Ruby::ForwardParameter g) or
     TForwardArgument(Ruby::ForwardArgument g) or
     TGEExpr(Ruby::Binary g) { g instanceof @ruby_binary_rangleequal } or
@@ -238,7 +238,10 @@ private module Cached {
     TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
       mkSynthChild(SelfKind(v), parent, i)
     } or
-    TSimpleParameter(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterReal(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterSynth(AST::AstNode parent, int i) {
+      mkSynthChild(SimpleParameterKind(), parent, i)
+    } or
     TSimpleSymbolLiteral(Ruby::SimpleSymbol g) or
     TSingletonClass(Ruby::SingletonClass g) or
     TSingletonMethod(Ruby::SingletonMethod g) or
@@ -291,12 +294,12 @@ private module Cached {
         TAssignModuloExpr or TAssignMulExpr or TAssignRShiftExpr or TAssignSubExpr or
         TBareStringLiteral or TBareSymbolLiteral or TBeginBlock or TBeginExpr or
         TBitwiseAndExprReal or TBitwiseOrExprReal or TBitwiseXorExprReal or TBlockArgument or
-        TBlockParameter or TBraceBlock or TBreakStmt or TCaseEqExpr or TCaseExpr or
+        TBlockParameter or TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
         TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
         TDivExprReal or TDo or TDoBlock or TElementReference or TElse or TElsif or TEmptyStmt or
         TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or TFloatLiteral or
-        TForExpr or TForIn or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
+        TForExpr or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
         TGlobalVariableAccessReal or THashKeySymbolLiteral or THashLiteral or THashSplatExpr or
         THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or TIfModifierExpr or
         TInstanceVariableAccessReal or TIntegerLiteralReal or TKeywordParameter or TLEExpr or
@@ -308,7 +311,7 @@ private module Cached {
         TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
         TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
         TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
-        TSimpleParameter or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
+        TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
         TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
         TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
         TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
@@ -319,12 +322,13 @@ private module Cached {
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
-        TBitwiseXorExprSynth or TClassVariableAccessSynth or TConstantReadAccessSynth or
-        TDivExprSynth or TExponentExprSynth or TGlobalVariableAccessSynth or
-        TInstanceVariableAccessSynth or TIntegerLiteralSynth or TLShiftExprSynth or
-        TLocalVariableAccessSynth or TLogicalAndExprSynth or TLogicalOrExprSynth or
-        TMethodCallSynth or TModuloExprSynth or TMulExprSynth or TRShiftExprSynth or
-        TRangeLiteralSynth or TSelfSynth or TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
+        TBitwiseXorExprSynth or TBraceBlockSynth or TClassVariableAccessSynth or
+        TConstantReadAccessSynth or TDivExprSynth or TExponentExprSynth or
+        TGlobalVariableAccessSynth or TInstanceVariableAccessSynth or TIntegerLiteralSynth or
+        TLShiftExprSynth or TLocalVariableAccessSynth or TLogicalAndExprSynth or
+        TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or TMulExprSynth or
+        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
+        TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -359,7 +363,7 @@ private module Cached {
     n = TBitwiseXorExprReal(result) or
     n = TBlockArgument(result) or
     n = TBlockParameter(result) or
-    n = TBraceBlock(result) or
+    n = TBraceBlockReal(result) or
     n = TBreakStmt(result) or
     n = TCaseEqExpr(result) or
     n = TCaseExpr(result) or
@@ -385,7 +389,6 @@ private module Cached {
     n = TFalseLiteral(result) or
     n = TFloatLiteral(result) or
     n = TForExpr(result) or
-    n = TForIn(result) or // TODO REMOVE
     n = TForwardArgument(result) or
     n = TForwardParameter(result) or
     n = TGEExpr(result) or
@@ -439,7 +442,7 @@ private module Cached {
     n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
     n = TSelfReal(result) or
-    n = TSimpleParameter(result) or
+    n = TSimpleParameterReal(result) or
     n = TSimpleSymbolLiteral(result) or
     n = TSingletonClass(result) or
     n = TSingletonMethod(result) or
@@ -488,6 +491,8 @@ private module Cached {
     or
     result = TBitwiseXorExprSynth(parent, i)
     or
+    result = TBraceBlockSynth(parent, i)
+    or
     result = TClassVariableAccessSynth(parent, i, _)
     or
     result = TConstantReadAccessSynth(parent, i, _)
@@ -521,6 +526,8 @@ private module Cached {
     result = TRShiftExprSynth(parent, i)
     or
     result = TSelfSynth(parent, i, _)
+    or
+    result = TSimpleParameterSynth(parent, i)
     or
     result = TSplatExprSynth(parent, i)
     or
@@ -639,6 +646,8 @@ class TCallable = TMethodBase or TLambda or TBlock;
 
 class TMethodBase = TMethod or TSingletonMethod;
 
+class TBraceBlock = TBraceBlockReal or TBraceBlockSynth;
+
 class TBlock = TDoBlock or TBraceBlock;
 
 class TModuleBase = TToplevel or TNamespace or TSingletonClass;
@@ -729,6 +738,8 @@ class TReturningStmt = TReturnStmt or TBreakStmt or TNextStmt;
 class TParameter =
   TPatternParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
       TOptionalParameter or TSplatParameter or TForwardParameter;
+
+class TSimpleParameter = TSimpleParameterReal or TSimpleParameterSynth;
 
 class TPatternParameter = TSimpleParameter or TTuplePatternParameter;
 

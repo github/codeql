@@ -108,9 +108,44 @@ edges
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 indirection |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 indirection |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | (const char *)... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | (const char *)... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | (const char *)... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | (const char *)... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... indirection |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:17:136:18 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:17:136:18 | i4 |
 | argvLocal.c:117:15:117:16 | i3 indirection | argvLocal.c:9:25:9:31 | *correct |
 | argvLocal.c:117:15:117:16 | i3 indirection | argvLocal.c:117:15:117:16 | printWrapper output argument |
 | argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | (const char *)... |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | i4 |
 | argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | i4 |
 | argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | i4 indirection |
 | argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:122:15:122:16 | i4 |
@@ -316,6 +351,8 @@ nodes
 | argvLocal.c:117:15:117:16 | printWrapper output argument | semmle.label | printWrapper output argument |
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
+| argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
+| argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
 | argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
 | argvLocal.c:121:9:121:10 | i4 indirection | semmle.label | i4 indirection |
 | argvLocal.c:121:9:121:10 | i4 indirection | semmle.label | i4 indirection |

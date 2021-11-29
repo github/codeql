@@ -806,7 +806,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
   // Flow into, through, and out of store nodes
-  StoreNodeFlow::flowInto(nodeFrom, nodeTo)
+  StoreNodeFlow::flowInto(nodeFrom.asInstruction(), nodeTo)
   or
   StoreNodeFlow::flowThrough(nodeFrom, nodeTo)
   or
@@ -831,23 +831,19 @@ private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
     //Def-use flow
     Ssa::ssaFlow(nodeFrom, nodeTo)
     or
-    exists(Instruction loadAddress | loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) |
-      // Use-use flow through reads
-      exists(Node address |
-        Ssa::addressFlowTC(address.asInstruction(), loadAddress) and
-        Ssa::ssaFlow(address, nodeTo)
-      )
-      or
-      // Use-use flow through stores.
-      exists(Node store |
-        Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
-        Ssa::ssaFlow(store, nodeTo)
-      )
+    // Use-use flow through stores.
+    exists(Instruction loadAddress, Node store |
+      loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) and
+      Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
+      Ssa::ssaFlow(store, nodeTo)
     )
   )
 }
 
-private module ReadNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module ReadNodeFlow {
   /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
   predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
     nodeTo.isInitial() and
@@ -867,7 +863,12 @@ private module ReadNodeFlow {
     )
   }
 
-  /** Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`. */
+  /**
+   * Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`.
+   *
+   * This happens when `readFrom` is _not_ the source of a `readStep`, and `nodeTo` is
+   * the `ReadNode` that represents an address that directly depends on `nodeFrom`.
+   */
   predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
     not readStep(nodeFrom, _, _) and
     nodeFrom.getOuter() = nodeTo
@@ -906,17 +907,25 @@ private module ReadNodeFlow {
   }
 }
 
-private module StoreNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module StoreNodeFlow {
   /** Holds if the store node `nodeTo` should receive flow from `nodeFrom`. */
-  predicate flowInto(Node nodeFrom, StoreNode nodeTo) {
-    nodeTo.flowInto(Ssa::getDestinationAddress(nodeFrom.asInstruction()))
+  predicate flowInto(Instruction instrFrom, StoreNode nodeTo) {
+    nodeTo.flowInto(Ssa::getDestinationAddress(instrFrom))
   }
 
-  /** Holds if the store node `nodeTo` should receive flow from `nodeFom`. */
-  predicate flowThrough(StoreNode nFrom, StoreNode nodeTo) {
+  /**
+   * Holds if the store node `nodeTo` should receive flow from `nodeFom`.
+   *
+   * This happens when `nodeFrom` is _not_ the source of a `storeStep`, and `nodeFrom` is
+   * the `Storenode` that represents an address that directly depends on `nodeTo`.
+   */
+  predicate flowThrough(StoreNode nodeFrom, StoreNode nodeTo) {
     // Flow through a post update node that doesn't need a store step.
-    not storeStep(nFrom, _, _) and
-    nodeTo.getOuter() = nFrom
+    not storeStep(nodeFrom, _, _) and
+    nodeTo.getOuter() = nodeFrom
   }
 
   /**

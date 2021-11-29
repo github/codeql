@@ -1,6 +1,0 @@
-openUriRequests
-| OpenURI.rb:9:9:9:38 | call to open | OpenURI.rb:10:1:10:10 | call to read |
-| OpenURI.rb:12:9:12:45 | call to open | OpenURI.rb:13:1:13:10 | call to read |
-openUriKernelOpenRequests
-| OpenURI.rb:3:9:3:41 | call to open | OpenURI.rb:4:1:4:10 | call to read |
-| OpenURI.rb:6:9:6:34 | call to open | OpenURI.rb:7:1:7:15 | call to readlines |

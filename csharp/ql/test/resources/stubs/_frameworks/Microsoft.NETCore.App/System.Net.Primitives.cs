@@ -22,10 +22,10 @@ namespace System
         {
             public string Comment { get => throw null; set => throw null; }
             public System.Uri CommentUri { get => throw null; set => throw null; }
-            public Cookie(string name, string value, string path, string domain) => throw null;
-            public Cookie(string name, string value, string path) => throw null;
-            public Cookie(string name, string value) => throw null;
             public Cookie() => throw null;
+            public Cookie(string name, string value) => throw null;
+            public Cookie(string name, string value, string path) => throw null;
+            public Cookie(string name, string value, string path, string domain) => throw null;
             public bool Discard { get => throw null; set => throw null; }
             public string Domain { get => throw null; set => throw null; }
             public override bool Equals(object comparand) => throw null;
@@ -44,22 +44,22 @@ namespace System
         }
 
         // Generated from `System.Net.CookieCollection` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class CookieCollection : System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<System.Net.Cookie>, System.Collections.Generic.IEnumerable<System.Net.Cookie>, System.Collections.Generic.ICollection<System.Net.Cookie>
+        public class CookieCollection : System.Collections.Generic.ICollection<System.Net.Cookie>, System.Collections.Generic.IEnumerable<System.Net.Cookie>, System.Collections.Generic.IReadOnlyCollection<System.Net.Cookie>, System.Collections.ICollection, System.Collections.IEnumerable
         {
-            public void Add(System.Net.CookieCollection cookies) => throw null;
             public void Add(System.Net.Cookie cookie) => throw null;
+            public void Add(System.Net.CookieCollection cookies) => throw null;
             public void Clear() => throw null;
             public bool Contains(System.Net.Cookie cookie) => throw null;
             public CookieCollection() => throw null;
-            public void CopyTo(System.Net.Cookie[] array, int index) => throw null;
             public void CopyTo(System.Array array, int index) => throw null;
+            public void CopyTo(System.Net.Cookie[] array, int index) => throw null;
             public int Count { get => throw null; }
             public System.Collections.IEnumerator GetEnumerator() => throw null;
             System.Collections.Generic.IEnumerator<System.Net.Cookie> System.Collections.Generic.IEnumerable<System.Net.Cookie>.GetEnumerator() => throw null;
             public bool IsReadOnly { get => throw null; }
             public bool IsSynchronized { get => throw null; }
-            public System.Net.Cookie this[string name] { get => throw null; }
             public System.Net.Cookie this[int index] { get => throw null; }
+            public System.Net.Cookie this[string name] { get => throw null; }
             public bool Remove(System.Net.Cookie cookie) => throw null;
             public object SyncRoot { get => throw null; }
         }
@@ -67,14 +67,14 @@ namespace System
         // Generated from `System.Net.CookieContainer` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CookieContainer
         {
-            public void Add(System.Uri uri, System.Net.CookieCollection cookies) => throw null;
-            public void Add(System.Uri uri, System.Net.Cookie cookie) => throw null;
-            public void Add(System.Net.CookieCollection cookies) => throw null;
             public void Add(System.Net.Cookie cookie) => throw null;
+            public void Add(System.Net.CookieCollection cookies) => throw null;
+            public void Add(System.Uri uri, System.Net.Cookie cookie) => throw null;
+            public void Add(System.Uri uri, System.Net.CookieCollection cookies) => throw null;
             public int Capacity { get => throw null; set => throw null; }
-            public CookieContainer(int capacity, int perDomainCapacity, int maxCookieSize) => throw null;
-            public CookieContainer(int capacity) => throw null;
             public CookieContainer() => throw null;
+            public CookieContainer(int capacity) => throw null;
+            public CookieContainer(int capacity, int perDomainCapacity, int maxCookieSize) => throw null;
             public int Count { get => throw null; }
             public const int DefaultCookieLengthLimit = default;
             public const int DefaultCookieLimit = default;
@@ -91,23 +91,23 @@ namespace System
         {
             public CookieException() => throw null;
             protected CookieException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
 
         // Generated from `System.Net.CredentialCache` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class CredentialCache : System.Net.ICredentialsByHost, System.Net.ICredentials, System.Collections.IEnumerable
+        public class CredentialCache : System.Collections.IEnumerable, System.Net.ICredentials, System.Net.ICredentialsByHost
         {
-            public void Add(string host, int port, string authenticationType, System.Net.NetworkCredential credential) => throw null;
             public void Add(System.Uri uriPrefix, string authType, System.Net.NetworkCredential cred) => throw null;
+            public void Add(string host, int port, string authenticationType, System.Net.NetworkCredential credential) => throw null;
             public CredentialCache() => throw null;
             public static System.Net.ICredentials DefaultCredentials { get => throw null; }
             public static System.Net.NetworkCredential DefaultNetworkCredentials { get => throw null; }
-            public System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType) => throw null;
             public System.Net.NetworkCredential GetCredential(System.Uri uriPrefix, string authType) => throw null;
+            public System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType) => throw null;
             public System.Collections.IEnumerator GetEnumerator() => throw null;
-            public void Remove(string host, int port, string authenticationType) => throw null;
             public void Remove(System.Uri uriPrefix, string authType) => throw null;
+            public void Remove(string host, int port, string authenticationType) => throw null;
         }
 
         // Generated from `System.Net.DecompressionMethods` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -125,8 +125,8 @@ namespace System
         public class DnsEndPoint : System.Net.EndPoint
         {
             public override System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
-            public DnsEndPoint(string host, int port, System.Net.Sockets.AddressFamily addressFamily) => throw null;
             public DnsEndPoint(string host, int port) => throw null;
+            public DnsEndPoint(string host, int port, System.Net.Sockets.AddressFamily addressFamily) => throw null;
             public override bool Equals(object comparand) => throw null;
             public override int GetHashCode() => throw null;
             public string Host { get => throw null; }
@@ -248,11 +248,11 @@ namespace System
             public static int HostToNetworkOrder(int host) => throw null;
             public static System.Int64 HostToNetworkOrder(System.Int64 host) => throw null;
             public static System.Int16 HostToNetworkOrder(System.Int16 host) => throw null;
-            public IPAddress(System.ReadOnlySpan<System.Byte> address, System.Int64 scopeid) => throw null;
-            public IPAddress(System.ReadOnlySpan<System.Byte> address) => throw null;
-            public IPAddress(System.Int64 newAddress) => throw null;
-            public IPAddress(System.Byte[] address, System.Int64 scopeid) => throw null;
             public IPAddress(System.Byte[] address) => throw null;
+            public IPAddress(System.Byte[] address, System.Int64 scopeid) => throw null;
+            public IPAddress(System.ReadOnlySpan<System.Byte> address) => throw null;
+            public IPAddress(System.ReadOnlySpan<System.Byte> address, System.Int64 scopeid) => throw null;
+            public IPAddress(System.Int64 newAddress) => throw null;
             public static System.Net.IPAddress IPv6Any;
             public static System.Net.IPAddress IPv6Loopback;
             public static System.Net.IPAddress IPv6None;
@@ -269,13 +269,13 @@ namespace System
             public static System.Int64 NetworkToHostOrder(System.Int64 network) => throw null;
             public static System.Int16 NetworkToHostOrder(System.Int16 network) => throw null;
             public static System.Net.IPAddress None;
-            public static System.Net.IPAddress Parse(string ipString) => throw null;
             public static System.Net.IPAddress Parse(System.ReadOnlySpan<System.Char> ipSpan) => throw null;
+            public static System.Net.IPAddress Parse(string ipString) => throw null;
             public System.Int64 ScopeId { get => throw null; set => throw null; }
             public override string ToString() => throw null;
             public bool TryFormat(System.Span<System.Char> destination, out int charsWritten) => throw null;
-            public static bool TryParse(string ipString, out System.Net.IPAddress address) => throw null;
             public static bool TryParse(System.ReadOnlySpan<System.Char> ipSpan, out System.Net.IPAddress address) => throw null;
+            public static bool TryParse(string ipString, out System.Net.IPAddress address) => throw null;
             public bool TryWriteBytes(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
         }
 
@@ -291,13 +291,13 @@ namespace System
             public IPEndPoint(System.Int64 address, int port) => throw null;
             public const int MaxPort = default;
             public const int MinPort = default;
-            public static System.Net.IPEndPoint Parse(string s) => throw null;
             public static System.Net.IPEndPoint Parse(System.ReadOnlySpan<System.Char> s) => throw null;
+            public static System.Net.IPEndPoint Parse(string s) => throw null;
             public int Port { get => throw null; set => throw null; }
             public override System.Net.SocketAddress Serialize() => throw null;
             public override string ToString() => throw null;
-            public static bool TryParse(string s, out System.Net.IPEndPoint result) => throw null;
             public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Net.IPEndPoint result) => throw null;
+            public static bool TryParse(string s, out System.Net.IPEndPoint result) => throw null;
         }
 
         // Generated from `System.Net.IWebProxy` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -309,16 +309,16 @@ namespace System
         }
 
         // Generated from `System.Net.NetworkCredential` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class NetworkCredential : System.Net.ICredentialsByHost, System.Net.ICredentials
+        public class NetworkCredential : System.Net.ICredentials, System.Net.ICredentialsByHost
         {
             public string Domain { get => throw null; set => throw null; }
-            public System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType) => throw null;
             public System.Net.NetworkCredential GetCredential(System.Uri uri, string authenticationType) => throw null;
-            public NetworkCredential(string userName, string password, string domain) => throw null;
-            public NetworkCredential(string userName, string password) => throw null;
-            public NetworkCredential(string userName, System.Security.SecureString password, string domain) => throw null;
-            public NetworkCredential(string userName, System.Security.SecureString password) => throw null;
+            public System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType) => throw null;
             public NetworkCredential() => throw null;
+            public NetworkCredential(string userName, System.Security.SecureString password) => throw null;
+            public NetworkCredential(string userName, System.Security.SecureString password, string domain) => throw null;
+            public NetworkCredential(string userName, string password) => throw null;
+            public NetworkCredential(string userName, string password, string domain) => throw null;
             public string Password { get => throw null; set => throw null; }
             public System.Security.SecureString SecurePassword { get => throw null; set => throw null; }
             public string UserName { get => throw null; set => throw null; }
@@ -332,8 +332,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public System.Byte this[int offset] { get => throw null; set => throw null; }
             public int Size { get => throw null; }
-            public SocketAddress(System.Net.Sockets.AddressFamily family, int size) => throw null;
             public SocketAddress(System.Net.Sockets.AddressFamily family) => throw null;
+            public SocketAddress(System.Net.Sockets.AddressFamily family, int size) => throw null;
             public override string ToString() => throw null;
         }
 
@@ -362,8 +362,8 @@ namespace System
             public class RequestCachePolicy
             {
                 public System.Net.Cache.RequestCacheLevel Level { get => throw null; }
-                public RequestCachePolicy(System.Net.Cache.RequestCacheLevel level) => throw null;
                 public RequestCachePolicy() => throw null;
+                public RequestCachePolicy(System.Net.Cache.RequestCacheLevel level) => throw null;
                 public override string ToString() => throw null;
             }
 
@@ -371,7 +371,7 @@ namespace System
         namespace NetworkInformation
         {
             // Generated from `System.Net.NetworkInformation.IPAddressCollection` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class IPAddressCollection : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Net.IPAddress>, System.Collections.Generic.ICollection<System.Net.IPAddress>
+            public class IPAddressCollection : System.Collections.Generic.ICollection<System.Net.IPAddress>, System.Collections.Generic.IEnumerable<System.Net.IPAddress>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.IPAddress address) => throw null;
                 public virtual void Clear() => throw null;
@@ -506,9 +506,9 @@ namespace System
                 public override int ErrorCode { get => throw null; }
                 public override string Message { get => throw null; }
                 public System.Net.Sockets.SocketError SocketErrorCode { get => throw null; }
-                public SocketException(int errorCode) => throw null;
                 public SocketException() => throw null;
                 protected SocketException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+                public SocketException(int errorCode) => throw null;
             }
 
         }
@@ -571,8 +571,8 @@ namespace System
                 // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBinding` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class ChannelBinding : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
                 {
-                    protected ChannelBinding(bool ownsHandle) : base(default(bool)) => throw null;
                     protected ChannelBinding() : base(default(bool)) => throw null;
+                    protected ChannelBinding(bool ownsHandle) : base(default(bool)) => throw null;
                     public abstract int Size { get; }
                 }
 

@@ -11,9 +11,9 @@ namespace System
             System.Threading.WaitHandle System.IAsyncResult.AsyncWaitHandle { get => throw null; }
             public System.IAsyncResult BeginCommit(System.AsyncCallback asyncCallback, object asyncState) => throw null;
             public void Commit() => throw null;
-            public CommittableTransaction(System.Transactions.TransactionOptions options) => throw null;
-            public CommittableTransaction(System.TimeSpan timeout) => throw null;
             public CommittableTransaction() => throw null;
+            public CommittableTransaction(System.TimeSpan timeout) => throw null;
+            public CommittableTransaction(System.Transactions.TransactionOptions options) => throw null;
             bool System.IAsyncResult.CompletedSynchronously { get => throw null; }
             public void EndCommit(System.IAsyncResult asyncResult) => throw null;
             bool System.IAsyncResult.IsCompleted { get => throw null; }
@@ -116,8 +116,8 @@ namespace System
         // Generated from `System.Transactions.PreparingEnlistment` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class PreparingEnlistment : System.Transactions.Enlistment
         {
-            public void ForceRollback(System.Exception e) => throw null;
             public void ForceRollback() => throw null;
+            public void ForceRollback(System.Exception e) => throw null;
             public void Prepared() => throw null;
             public System.Byte[] RecoveryInformation() => throw null;
         }
@@ -125,11 +125,11 @@ namespace System
         // Generated from `System.Transactions.SinglePhaseEnlistment` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class SinglePhaseEnlistment : System.Transactions.Enlistment
         {
-            public void Aborted(System.Exception e) => throw null;
             public void Aborted() => throw null;
+            public void Aborted(System.Exception e) => throw null;
             public void Committed() => throw null;
-            public void InDoubt(System.Exception e) => throw null;
             public void InDoubt() => throw null;
+            public void InDoubt(System.Exception e) => throw null;
         }
 
         // Generated from `System.Transactions.SubordinateTransaction` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -139,7 +139,7 @@ namespace System
         }
 
         // Generated from `System.Transactions.Transaction` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public class Transaction : System.Runtime.Serialization.ISerializable, System.IDisposable
+        public class Transaction : System.IDisposable, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.Transactions.Transaction x, System.Transactions.Transaction y) => throw null;
             public static bool operator ==(System.Transactions.Transaction x, System.Transactions.Transaction y) => throw null;
@@ -147,12 +147,12 @@ namespace System
             public static System.Transactions.Transaction Current { get => throw null; set => throw null; }
             public System.Transactions.DependentTransaction DependentClone(System.Transactions.DependentCloneOption cloneOption) => throw null;
             public void Dispose() => throw null;
-            public System.Transactions.Enlistment EnlistDurable(System.Guid resourceManagerIdentifier, System.Transactions.ISinglePhaseNotification singlePhaseNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
             public System.Transactions.Enlistment EnlistDurable(System.Guid resourceManagerIdentifier, System.Transactions.IEnlistmentNotification enlistmentNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
-            public bool EnlistPromotableSinglePhase(System.Transactions.IPromotableSinglePhaseNotification promotableSinglePhaseNotification, System.Guid promoterType) => throw null;
+            public System.Transactions.Enlistment EnlistDurable(System.Guid resourceManagerIdentifier, System.Transactions.ISinglePhaseNotification singlePhaseNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
             public bool EnlistPromotableSinglePhase(System.Transactions.IPromotableSinglePhaseNotification promotableSinglePhaseNotification) => throw null;
-            public System.Transactions.Enlistment EnlistVolatile(System.Transactions.ISinglePhaseNotification singlePhaseNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
+            public bool EnlistPromotableSinglePhase(System.Transactions.IPromotableSinglePhaseNotification promotableSinglePhaseNotification, System.Guid promoterType) => throw null;
             public System.Transactions.Enlistment EnlistVolatile(System.Transactions.IEnlistmentNotification enlistmentNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
+            public System.Transactions.Enlistment EnlistVolatile(System.Transactions.ISinglePhaseNotification singlePhaseNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -160,8 +160,8 @@ namespace System
             public System.Transactions.IsolationLevel IsolationLevel { get => throw null; }
             public System.Transactions.Enlistment PromoteAndEnlistDurable(System.Guid resourceManagerIdentifier, System.Transactions.IPromotableSinglePhaseNotification promotableNotification, System.Transactions.ISinglePhaseNotification enlistmentNotification, System.Transactions.EnlistmentOptions enlistmentOptions) => throw null;
             public System.Guid PromoterType { get => throw null; }
-            public void Rollback(System.Exception e) => throw null;
             public void Rollback() => throw null;
+            public void Rollback(System.Exception e) => throw null;
             public void SetDistributedTransactionIdentifier(System.Transactions.IPromotableSinglePhaseNotification promotableNotification, System.Guid distributedTransactionIdentifier) => throw null;
             internal Transaction() => throw null;
             public event System.Transactions.TransactionCompletedEventHandler TransactionCompleted;
@@ -171,10 +171,10 @@ namespace System
         // Generated from `System.Transactions.TransactionAbortedException` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class TransactionAbortedException : System.Transactions.TransactionException
         {
-            public TransactionAbortedException(string message, System.Exception innerException) => throw null;
-            public TransactionAbortedException(string message) => throw null;
             public TransactionAbortedException() => throw null;
             protected TransactionAbortedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TransactionAbortedException(string message) => throw null;
+            public TransactionAbortedException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionCompletedEventHandler` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -190,19 +190,19 @@ namespace System
         // Generated from `System.Transactions.TransactionException` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class TransactionException : System.SystemException
         {
-            public TransactionException(string message, System.Exception innerException) => throw null;
-            public TransactionException(string message) => throw null;
             public TransactionException() => throw null;
             protected TransactionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TransactionException(string message) => throw null;
+            public TransactionException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionInDoubtException` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class TransactionInDoubtException : System.Transactions.TransactionException
         {
-            public TransactionInDoubtException(string message, System.Exception innerException) => throw null;
-            public TransactionInDoubtException(string message) => throw null;
             public TransactionInDoubtException() => throw null;
             protected TransactionInDoubtException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TransactionInDoubtException(string message) => throw null;
+            public TransactionInDoubtException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionInformation` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -241,10 +241,10 @@ namespace System
         // Generated from `System.Transactions.TransactionManagerCommunicationException` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class TransactionManagerCommunicationException : System.Transactions.TransactionException
         {
-            public TransactionManagerCommunicationException(string message, System.Exception innerException) => throw null;
-            public TransactionManagerCommunicationException(string message) => throw null;
             public TransactionManagerCommunicationException() => throw null;
             protected TransactionManagerCommunicationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TransactionManagerCommunicationException(string message) => throw null;
+            public TransactionManagerCommunicationException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionOptions` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -262,10 +262,10 @@ namespace System
         // Generated from `System.Transactions.TransactionPromotionException` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class TransactionPromotionException : System.Transactions.TransactionException
         {
-            public TransactionPromotionException(string message, System.Exception innerException) => throw null;
-            public TransactionPromotionException(string message) => throw null;
             public TransactionPromotionException() => throw null;
             protected TransactionPromotionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public TransactionPromotionException(string message) => throw null;
+            public TransactionPromotionException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionScope` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -273,20 +273,20 @@ namespace System
         {
             public void Complete() => throw null;
             public void Dispose() => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.EnterpriseServicesInteropOption interopOption) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.TimeSpan scopeTimeout) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption) => throw null;
-            public TransactionScope(System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.Transaction transactionToUse, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
-            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout, System.Transactions.EnterpriseServicesInteropOption interopOption) => throw null;
-            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout) => throw null;
-            public TransactionScope(System.Transactions.Transaction transactionToUse) => throw null;
             public TransactionScope() => throw null;
+            public TransactionScope(System.Transactions.Transaction transactionToUse) => throw null;
+            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout) => throw null;
+            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout, System.Transactions.EnterpriseServicesInteropOption interopOption) => throw null;
+            public TransactionScope(System.Transactions.Transaction transactionToUse, System.TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
+            public TransactionScope(System.Transactions.Transaction transactionToUse, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.TimeSpan scopeTimeout) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.EnterpriseServicesInteropOption interopOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
+            public TransactionScope(System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) => throw null;
         }
 
         // Generated from `System.Transactions.TransactionScopeAsyncFlowOption` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

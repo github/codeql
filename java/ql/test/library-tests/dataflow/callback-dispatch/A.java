@@ -174,7 +174,7 @@ public class A {
     a1.field1 = source(20);
     A a2 = new A();
     applyConsumer1Field1Field2(a1, a2, p -> {
-      sink(p); // MISSING FLOW
+      sink(p); // $ flow=20
     });
     wrapSinkToAvoidFieldSsa(a1);
     sink(a2.field2);

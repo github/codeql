@@ -11,10 +11,10 @@ namespace System
             {
                 public AesCryptoServiceProvider() => throw null;
                 public override int BlockSize { get => throw null; set => throw null; }
-                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateDecryptor() => throw null;
-                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override int FeedbackSize { get => throw null; set => throw null; }
                 public override void GenerateIV() => throw null;
@@ -49,10 +49,10 @@ namespace System
             // Generated from `System.Security.Cryptography.CspParameters` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CspParameters
             {
-                public CspParameters(int dwTypeIn, string strProviderNameIn, string strContainerNameIn) => throw null;
-                public CspParameters(int dwTypeIn, string strProviderNameIn) => throw null;
-                public CspParameters(int dwTypeIn) => throw null;
                 public CspParameters() => throw null;
+                public CspParameters(int dwTypeIn) => throw null;
+                public CspParameters(int dwTypeIn, string strProviderNameIn) => throw null;
+                public CspParameters(int dwTypeIn, string strProviderNameIn, string strContainerNameIn) => throw null;
                 public System.Security.Cryptography.CspProviderFlags Flags { get => throw null; set => throw null; }
                 public string KeyContainerName;
                 public int KeyNumber;
@@ -80,10 +80,10 @@ namespace System
             // Generated from `System.Security.Cryptography.DESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DESCryptoServiceProvider : System.Security.Cryptography.DES
             {
-                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateDecryptor() => throw null;
-                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public DESCryptoServiceProvider() => throw null;
                 public override void GenerateIV() => throw null;
                 public override void GenerateKey() => throw null;
@@ -94,15 +94,15 @@ namespace System
             {
                 public override System.Byte[] CreateSignature(System.Byte[] rgbHash) => throw null;
                 public System.Security.Cryptography.CspKeyContainerInfo CspKeyContainerInfo { get => throw null; }
-                public DSACryptoServiceProvider(int dwKeySize, System.Security.Cryptography.CspParameters parameters) => throw null;
-                public DSACryptoServiceProvider(int dwKeySize) => throw null;
-                public DSACryptoServiceProvider(System.Security.Cryptography.CspParameters parameters) => throw null;
                 public DSACryptoServiceProvider() => throw null;
+                public DSACryptoServiceProvider(System.Security.Cryptography.CspParameters parameters) => throw null;
+                public DSACryptoServiceProvider(int dwKeySize) => throw null;
+                public DSACryptoServiceProvider(int dwKeySize, System.Security.Cryptography.CspParameters parameters) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public System.Byte[] ExportCspBlob(bool includePrivateParameters) => throw null;
                 public override System.Security.Cryptography.DSAParameters ExportParameters(bool includePrivateParameters) => throw null;
-                protected override System.Byte[] HashData(System.IO.Stream data, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                 protected override System.Byte[] HashData(System.Byte[] data, int offset, int count, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                protected override System.Byte[] HashData(System.IO.Stream data, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                 public void ImportCspBlob(System.Byte[] keyBlob) => throw null;
                 public override void ImportParameters(System.Security.Cryptography.DSAParameters parameters) => throw null;
                 public override string KeyExchangeAlgorithm { get => throw null; }
@@ -110,9 +110,9 @@ namespace System
                 public override System.Security.Cryptography.KeySizes[] LegalKeySizes { get => throw null; }
                 public bool PersistKeyInCsp { get => throw null; set => throw null; }
                 public bool PublicOnly { get => throw null; }
-                public System.Byte[] SignData(System.IO.Stream inputStream) => throw null;
-                public System.Byte[] SignData(System.Byte[] buffer, int offset, int count) => throw null;
                 public System.Byte[] SignData(System.Byte[] buffer) => throw null;
+                public System.Byte[] SignData(System.Byte[] buffer, int offset, int count) => throw null;
+                public System.Byte[] SignData(System.IO.Stream inputStream) => throw null;
                 public System.Byte[] SignHash(System.Byte[] rgbHash, string str) => throw null;
                 public override string SignatureAlgorithm { get => throw null; }
                 public static bool UseMachineKeyStore { get => throw null; set => throw null; }
@@ -140,8 +140,8 @@ namespace System
             public class MD5CryptoServiceProvider : System.Security.Cryptography.MD5
             {
                 protected override void Dispose(bool disposing) => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] array, int ibStart, int cbSize) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public MD5CryptoServiceProvider() => throw null;
@@ -156,14 +156,14 @@ namespace System
                 public override System.Byte[] GetBytes(int cb) => throw null;
                 public string HashName { get => throw null; set => throw null; }
                 public int IterationCount { get => throw null; set => throw null; }
-                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, string strHashName, int iterations, System.Security.Cryptography.CspParameters cspParams) => throw null;
-                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, string strHashName, int iterations) => throw null;
-                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, System.Security.Cryptography.CspParameters cspParams) => throw null;
-                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt) => throw null;
-                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, string hashName, int iterations, System.Security.Cryptography.CspParameters cspParams) => throw null;
-                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, string hashName, int iterations) => throw null;
-                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, System.Security.Cryptography.CspParameters cspParams) => throw null;
                 public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt) => throw null;
+                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, System.Security.Cryptography.CspParameters cspParams) => throw null;
+                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, string hashName, int iterations) => throw null;
+                public PasswordDeriveBytes(System.Byte[] password, System.Byte[] salt, string hashName, int iterations, System.Security.Cryptography.CspParameters cspParams) => throw null;
+                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt) => throw null;
+                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, System.Security.Cryptography.CspParameters cspParams) => throw null;
+                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, string strHashName, int iterations) => throw null;
+                public PasswordDeriveBytes(string strPassword, System.Byte[] rgbSalt, string strHashName, int iterations, System.Security.Cryptography.CspParameters cspParams) => throw null;
                 public override void Reset() => throw null;
                 public System.Byte[] Salt { get => throw null; set => throw null; }
             }
@@ -184,15 +184,15 @@ namespace System
             public class RNGCryptoServiceProvider : System.Security.Cryptography.RandomNumberGenerator
             {
                 protected override void Dispose(bool disposing) => throw null;
-                public override void GetBytes(System.Span<System.Byte> data) => throw null;
-                public override void GetBytes(System.Byte[] data, int offset, int count) => throw null;
                 public override void GetBytes(System.Byte[] data) => throw null;
-                public override void GetNonZeroBytes(System.Span<System.Byte> data) => throw null;
+                public override void GetBytes(System.Byte[] data, int offset, int count) => throw null;
+                public override void GetBytes(System.Span<System.Byte> data) => throw null;
                 public override void GetNonZeroBytes(System.Byte[] data) => throw null;
-                public RNGCryptoServiceProvider(string str) => throw null;
-                public RNGCryptoServiceProvider(System.Security.Cryptography.CspParameters cspParams) => throw null;
-                public RNGCryptoServiceProvider(System.Byte[] rgb) => throw null;
+                public override void GetNonZeroBytes(System.Span<System.Byte> data) => throw null;
                 public RNGCryptoServiceProvider() => throw null;
+                public RNGCryptoServiceProvider(System.Byte[] rgb) => throw null;
+                public RNGCryptoServiceProvider(System.Security.Cryptography.CspParameters cspParams) => throw null;
+                public RNGCryptoServiceProvider(string str) => throw null;
             }
 
             // Generated from `System.Security.Cryptography.RSACryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -208,8 +208,8 @@ namespace System
                 public override System.Byte[] EncryptValue(System.Byte[] rgb) => throw null;
                 public System.Byte[] ExportCspBlob(bool includePrivateParameters) => throw null;
                 public override System.Security.Cryptography.RSAParameters ExportParameters(bool includePrivateParameters) => throw null;
-                protected override System.Byte[] HashData(System.IO.Stream data, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                 protected override System.Byte[] HashData(System.Byte[] data, int offset, int count, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                protected override System.Byte[] HashData(System.IO.Stream data, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                 public void ImportCspBlob(System.Byte[] keyBlob) => throw null;
                 public override void ImportParameters(System.Security.Cryptography.RSAParameters parameters) => throw null;
                 public override string KeyExchangeAlgorithm { get => throw null; }
@@ -217,13 +217,13 @@ namespace System
                 public override System.Security.Cryptography.KeySizes[] LegalKeySizes { get => throw null; }
                 public bool PersistKeyInCsp { get => throw null; set => throw null; }
                 public bool PublicOnly { get => throw null; }
-                public RSACryptoServiceProvider(int dwKeySize, System.Security.Cryptography.CspParameters parameters) => throw null;
-                public RSACryptoServiceProvider(int dwKeySize) => throw null;
-                public RSACryptoServiceProvider(System.Security.Cryptography.CspParameters parameters) => throw null;
                 public RSACryptoServiceProvider() => throw null;
-                public System.Byte[] SignData(System.IO.Stream inputStream, object halg) => throw null;
-                public System.Byte[] SignData(System.Byte[] buffer, object halg) => throw null;
+                public RSACryptoServiceProvider(System.Security.Cryptography.CspParameters parameters) => throw null;
+                public RSACryptoServiceProvider(int dwKeySize) => throw null;
+                public RSACryptoServiceProvider(int dwKeySize, System.Security.Cryptography.CspParameters parameters) => throw null;
                 public System.Byte[] SignData(System.Byte[] buffer, int offset, int count, object halg) => throw null;
+                public System.Byte[] SignData(System.Byte[] buffer, object halg) => throw null;
+                public System.Byte[] SignData(System.IO.Stream inputStream, object halg) => throw null;
                 public override System.Byte[] SignHash(System.Byte[] hash, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
                 public System.Byte[] SignHash(System.Byte[] rgbHash, string str) => throw null;
                 public override string SignatureAlgorithm { get => throw null; }
@@ -237,8 +237,8 @@ namespace System
             public class SHA1CryptoServiceProvider : System.Security.Cryptography.SHA1
             {
                 protected override void Dispose(bool disposing) => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] array, int ibStart, int cbSize) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public SHA1CryptoServiceProvider() => throw null;
@@ -249,8 +249,8 @@ namespace System
             public class SHA256CryptoServiceProvider : System.Security.Cryptography.SHA256
             {
                 protected override void Dispose(bool disposing) => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] array, int ibStart, int cbSize) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public SHA256CryptoServiceProvider() => throw null;
@@ -261,8 +261,8 @@ namespace System
             public class SHA384CryptoServiceProvider : System.Security.Cryptography.SHA384
             {
                 protected override void Dispose(bool disposing) => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] array, int ibStart, int cbSize) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public SHA384CryptoServiceProvider() => throw null;
@@ -273,8 +273,8 @@ namespace System
             public class SHA512CryptoServiceProvider : System.Security.Cryptography.SHA512
             {
                 protected override void Dispose(bool disposing) => throw null;
-                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override void HashCore(System.Byte[] array, int ibStart, int cbSize) => throw null;
+                protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public SHA512CryptoServiceProvider() => throw null;
@@ -285,10 +285,10 @@ namespace System
             public class TripleDESCryptoServiceProvider : System.Security.Cryptography.TripleDES
             {
                 public override int BlockSize { get => throw null; set => throw null; }
-                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateDecryptor() => throw null;
-                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
+                public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override int FeedbackSize { get => throw null; set => throw null; }
                 public override void GenerateIV() => throw null;

@@ -132,7 +132,7 @@ private class RemoteFlowSourceAccessPath extends JSONString {
   string getRootPath() { result = this.getValue().splitAt(".", 1) }
 
   /** Gets the index of the last component of this access path. */
-  int getMaxComponentIndex() { result = max(int i | exists(getComponent(i))) }
+  int getMaxComponentIndex() { result = max(int i | exists(this.getComponent(i))) }
 
   /**
    * Gets the API node to which the prefix of the access path up to and including `i` resolves.
@@ -143,11 +143,11 @@ private class RemoteFlowSourceAccessPath extends JSONString {
     i = -1 and
     result = API::root()
     or
-    result = resolveUpTo(i - 1).getASuccessor(getComponent(i))
+    result = this.resolveUpTo(i - 1).getASuccessor(this.getComponent(i))
   }
 
   /** Gets the API node to which this access path resolves. */
-  API::Use resolve() { result = resolveUpTo(getMaxComponentIndex()) }
+  API::Use resolve() { result = this.resolveUpTo(this.getMaxComponentIndex()) }
 }
 
 /**
