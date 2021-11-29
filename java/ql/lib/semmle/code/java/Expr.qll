@@ -1741,6 +1741,9 @@ class MethodAccess extends Expr, Call, @methodaccess {
   /** Holds if this method access has a qualifier. */
   predicate hasQualifier() { exists(this.getQualifier()) }
 
+  /** Gets the extension receiver expression of this method access, if any. */
+  Expr getExtensionReceiver() { result.isNthChildOf(this, -2) }
+
   /** Gets an argument supplied to the method that is invoked using this method access. */
   override Expr getAnArgument() { result.getIndex() >= 0 and result.getParent() = this }
 
@@ -1748,12 +1751,12 @@ class MethodAccess extends Expr, Call, @methodaccess {
   override Expr getArgument(int index) { exprs(result, _, _, _, this, index) and index >= 0 }
 
   /** Gets a type argument supplied as part of this method access, if any. */
-  Expr getATypeArgument() { result.getIndex() <= -2 and result.getParent() = this }
+  Expr getATypeArgument() { result.getIndex() <= -3 and result.getParent() = this }
 
   /** Gets the type argument at the specified (zero-based) position in this method access, if any. */
   Expr getTypeArgument(int index) {
     result = this.getATypeArgument() and
-    (-2 - result.getIndex()) = index
+    (-3 - result.getIndex()) = index
   }
 
   /** Gets the method accessed by this method access. */

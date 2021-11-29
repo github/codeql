@@ -683,20 +683,17 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(id, enclosingStmt)
 
             if (extractTypeArguments) {
-                // type arguments at index -2, -3, ...
-                extractTypeArguments(c, id, callable, enclosingStmt, -2, true)
+                // type arguments at index -3, -4, ...
+                extractTypeArguments(c, id, callable, enclosingStmt, -3, true)
             }
 
             val dr = c.dispatchReceiver
             val er = c.extensionReceiver
             if (dr != null) {
                 extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
-
-                if (er != null && er != dr) {
-                    logger.warnElement(Severity.ErrorSevere, "Expected to only find extension receiver or dispatch receiver. Found both. Extracting dispatch receiver only", c)
-                }
-            } else if (er != null) {
-                extractExpressionExpr(er, callable, id, -1, enclosingStmt)
+            }
+            if (er != null) {
+                extractExpressionExpr(er, callable, id, -2, enclosingStmt)
             }
 
             for(i in 0 until c.valueArgumentsCount) {
@@ -967,7 +964,7 @@ open class KotlinFileExtractor(
 
                 if (isBuiltinCallKotlin(c, "arrayOf")) {
                     if (c.typeArgumentsCount == 1) {
-                        extractTypeArguments(c, id, callable, enclosingStmt,-1)
+                        extractTypeArguments(c, id, callable, enclosingStmt, -1)
                     } else {
                         logger.warnElement( Severity.ErrorSevere, "Expected to find one type argument in arrayOf call", c )
                     }
