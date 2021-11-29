@@ -97,7 +97,7 @@ bool test2_8(SSL *ssl)
 {
 	int cert;
 
-	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert) [FALSE POSITIVE]
+	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert)
 	if (!cert) return false;
 	if (!SSL_get_verify_result(ssl)) return false;
 
@@ -108,7 +108,7 @@ bool test2_9(SSL *ssl)
 {
 	int cert;
 
-	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert) [FALSE POSITIVE]
+	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert)
 	if ((!cert) || (SSL_get_verify_result(ssl) != 0)) {
 		return false;
 	}
@@ -137,7 +137,7 @@ bool test2_11(SSL *ssl)
 {
 	int cert;
 
-	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert) [FALSE POSITIVE]
+	cert = SSL_get_peer_certificate(ssl); // GOOD (SSL_get_verify_result is called when there is a cert)
 
 	if ((cert) && (SSL_get_verify_result(ssl) == 0)) {
 		return true;
