@@ -116,7 +116,7 @@ open class KotlinFileExtractor(
         val unbound = useClassSource(c)
         tw.writeErasure(id, unbound)
         extractClassModifiers(c, id)
-        extractClassSupertypes(c, id)
+        extractClassSupertypes(c, id, typeArgs)
 
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)

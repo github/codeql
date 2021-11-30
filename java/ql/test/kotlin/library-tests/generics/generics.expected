@@ -9,6 +9,8 @@ parameterizedType
 | generics.kt:11:1:11:19 | C0<?> | generics.kt:11:1:11:19 | C0 | 0 | ? |
 | generics.kt:11:1:11:19 | C0<Integer> | generics.kt:11:1:11:19 | C0 | 0 | Integer |
 | generics.kt:11:1:11:19 | C0<S> | generics.kt:11:1:11:19 | C0 | 0 | S |
+| generics.kt:11:1:11:19 | C0<String> | generics.kt:11:1:11:19 | C0 | 0 | String |
+| generics.kt:11:1:11:19 | C0<U> | generics.kt:11:1:11:19 | C0 | 0 | U |
 | generics.kt:11:1:11:19 | C0<W> | generics.kt:11:1:11:19 | C0 | 0 | W |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 0 | T |
 | generics.kt:13:1:18:1 | C1 | generics.kt:13:1:18:1 | C1 | 1 | W |

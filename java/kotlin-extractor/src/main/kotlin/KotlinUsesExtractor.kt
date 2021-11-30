@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.substituteTypeArguments
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
@@ -235,7 +236,7 @@ open class KotlinUsesExtractor(
                 dimensions,
                 componentTypeResults.javaResult.id)
 
-            extractClassSupertypes(arrayType.classifier.owner as IrClass, it)
+            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, arrayType.arguments)
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
@@ -577,8 +578,15 @@ class X {
         }
     }
 
-    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>) {
-        for(t in c.superTypes) {
+    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, typeArgsQ: List<IrTypeArgument>? = null) {
+        // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
+        val subbedSupertypes = typeArgsQ?.let { typeArgs ->
+            c.superTypes.map {
+                it.substituteTypeArguments(c.typeParameters, typeArgs)
+            }
+        } ?: c.superTypes
+
+        for(t in subbedSupertypes) {
             when(t) {
                 is IrSimpleType -> {
                     when (t.classifier.owner) {
