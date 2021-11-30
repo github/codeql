@@ -22,7 +22,9 @@ Clone of the original Struts repository with the vulnerability:
 - External: <https://lgtm.com/projects/g/mmosemmle/struts_9805>
 - Internal: <https://github.com/github/codeql-demo-struts-CVE-2017-9805>
 
-codeql cli reference: <https://help.semmle.com/codeql/codeql-cli/procedures/create-codeql-database.html>
+LGTM query console: <https://lgtm.com/query/project:1510734246425/lang:javascript/>
+
+codeql cli reference: <https://codeql.github.com/docs/codeql-cli/creating-codeql-databases>
 
 codeql setup for VS code: <https://gist.github.com/adityasharad/a0b1d0a73e959249d78bd1efd4daf4ef#setup-instructions>
 
