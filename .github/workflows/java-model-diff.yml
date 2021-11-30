@@ -50,3 +50,27 @@ jobs:
           unzip -q -d $SHORTNAME-db $SHORTNAME.zip
           mkdir lib-dbs/$SHORTNAME/
           mv $SHORTNAME-db/`ls -1 $SHORTNAME-db`/* lib-dbs/$SHORTNAME/
+      - name: Generate Models (Baseline and HEAD)
+        run: |
+          set -x
+          mkdir tmp-models
+          MODELS=`pwd`/tmp-models
+          MODE="baseline"
+          DATABASES=`pwd`/lib-dbs
+
+          analyzeDatabaseWithCheckout() {
+            QL_VARIANT=$1
+            DATABASE=$2
+            cd codeql-$QL_VARIANT
+            SHORTNAME=`basename $DATABASE`
+            python java/ql/src/utils/model-generator/GenerateFlowModel.py $DATABASE $MODELS/${SHORTNAME}.qll
+            mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}_${QL_VARIANT}.qll
+            cd ..
+          }
+
+          for d in $DATABASES/*/ ; do
+            ls -1 "$d"
+
+            analyzeDatabaseWithCheckout "baseline" $d
+            analyzeDatabaseWithCheckout "head" $d
+          done
