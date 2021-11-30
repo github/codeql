@@ -578,8 +578,17 @@ class X {
         }
     }
 
+    /**
+     * Extracts the supertypes of class `c` with arguments `typeArgsQ`, or if `typeArgsQ` is null, the non-paramterised
+     * version of `c`. `id` is the label of this class or class instantiation.
+     *
+     * For example, for type `List` if `typeArgsQ` is non-null list `[String]` then we will extract the supertypes
+     * of `List<String>`, i.e. `Appendable<String>` etc, or if `typeArgsQ` is null we will extract `Appendable<E>`
+     * where `E` is the type variable declared as `List<E>`.
+     */
     fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, typeArgsQ: List<IrTypeArgument>? = null) {
         // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
+        // (For example, we can't have `class A<E> : E`, but can have `class A<E> : Comparable<E>`)
         val subbedSupertypes = typeArgsQ?.let { typeArgs ->
             c.superTypes.map {
                 it.substituteTypeArguments(c.typeParameters, typeArgs)
