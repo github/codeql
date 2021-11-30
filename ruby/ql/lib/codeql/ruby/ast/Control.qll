@@ -1,5 +1,6 @@
 private import codeql.ruby.AST
 private import internal.AST
+private import internal.Control
 private import internal.TreeSitter
 
 /**
@@ -337,9 +338,7 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
  * end
  * ```
  */
-class CaseExpr extends ControlExpr, TCase {
-  final override string getAPrimaryQlClass() { result = "CaseExpr" }
-
+class CaseExpr extends ControlExpr instanceof CaseExprImpl {
   /**
    * Gets the expression being compared, if any. For example, `foo` in the following example.
    * ```rb
@@ -359,17 +358,17 @@ class CaseExpr extends ControlExpr, TCase {
    * end
    * ```
    */
-  Expr getValue() { none() }
+  final Expr getValue() { result = super.getValue() }
 
   /**
-   * Gets the `n`th branch of this case expression, either a `WhenExpr`, or a
-   * `InClause` or a `StmtSequence`.
+   * Gets the `n`th branch of this case expression, either a `WhenExpr`, an
+   * `InClause`, or a `StmtSequence`.
    */
-  Expr getBranch(int n) { none() }
+  final Expr getBranch(int n) { result = super.getBranch(n) }
 
   /**
-   * Gets a branch of this case expression, either a `WhenExpr`, or a
-   * `InClause` or a `StmtSequence`.
+   * Gets a branch of this case expression, either a `WhenExpr`, an
+   * `InClause`, or a `StmtSequence`.
    */
   final Expr getABranch() { result = this.getBranch(_) }
 
@@ -387,43 +386,18 @@ class CaseExpr extends ControlExpr, TCase {
    */
   final int getNumberOfBranches() { result = count(this.getBranch(_)) }
 
+  final override string getAPrimaryQlClass() { result = "CaseExpr" }
+
   final override string toString() { result = "case ..." }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = ControlExpr.super.getAChild(pred)
     or
     pred = "getValue" and result = this.getValue()
     or
     pred = "getBranch" and result = this.getBranch(_)
     or
     pred = "getElseBranch" and result = this.getElseBranch()
-  }
-}
-
-private class CaseWhenExpr extends CaseExpr, TCaseExpr {
-  private Ruby::Case g;
-
-  CaseWhenExpr() { this = TCaseExpr(g) }
-
-  final override Expr getValue() { toGenerated(result) = g.getValue() }
-
-  final override Expr getBranch(int n) {
-    toGenerated(result) = g.getChild(n) or
-    toGenerated(result) = g.getChild(n)
-  }
-}
-
-private class CaseMatch extends CaseExpr, TCaseMatch {
-  private Ruby::CaseMatch g;
-
-  CaseMatch() { this = TCaseMatch(g) }
-
-  final override Expr getValue() { toGenerated(result) = g.getValue() }
-
-  final override Expr getBranch(int n) {
-    toGenerated(result) = g.getClauses(n)
-    or
-    n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()
   }
 }
 
