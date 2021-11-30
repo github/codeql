@@ -212,5 +212,5 @@ class Class2 {
 }
 
 fun todo() {
-    // TODO: TODO()
+    TODO()
 }
