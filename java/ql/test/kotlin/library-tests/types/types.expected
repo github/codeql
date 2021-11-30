@@ -129,20 +129,31 @@
 | A[] | Array |
 | AbstractChronology | Class |
 | AbstractCollection | Class, GenericType, ParameterizedType |
+| AbstractCollection<?> | Class, ParameterizedType |
 | AbstractCollection<E> | Class, ParameterizedType |
+| AbstractCollection<Future<T>> | Class, ParameterizedType |
+| AbstractCollection<Option> | Class, ParameterizedType |
 | AbstractExecutorService | Class |
 | AbstractInterruptibleChannel | Class |
 | AbstractList | Class, GenericType, ParameterizedType |
 | AbstractList<?> | Class, ParameterizedType |
 | AbstractList<E> | Class, ParameterizedType |
+| AbstractList<Future<T>> | Class, ParameterizedType |
 | AbstractMap | Class, GenericType, ParameterizedType |
+| AbstractMap<?,?> | Class, ParameterizedType |
+| AbstractMap<Identity,Entry<?>> | Class, ParameterizedType |
 | AbstractMap<K,V> | Class, ParameterizedType |
+| AbstractMap<Object,Object> | Class, ParameterizedType |
+| AbstractMap<String,Chronology> | Class, ParameterizedType |
+| AbstractMap<String,Object> | Class, ParameterizedType |
 | AbstractOwnableSynchronizer | Class |
 | AbstractQueuedSynchronizer | Class |
 | AbstractRepository | Class, GenericType, ParameterizedType |
+| AbstractRepository<MethodTypeSignature> | Class, ParameterizedType |
 | AbstractRepository<S> | Class, ParameterizedType |
 | AbstractSet | Class, GenericType, ParameterizedType |
 | AbstractSet<E> | Class, ParameterizedType |
+| AbstractSet<Option> | Class, ParameterizedType |
 | AbstractStringBuilder | Class |
 | AccessControlContext | Class |
 | AccessDescriptor | Class |
@@ -387,10 +398,31 @@
 | BaseIterator<K,V> | Class, ParameterizedType |
 | BaseLocale | Class |
 | BaseStream | GenericType, Interface, ParameterizedType |
+| BaseStream<? extends R,Stream<? extends R>> | Interface, ParameterizedType |
+| BaseStream<? extends T,Stream<? extends T>> | Interface, ParameterizedType |
+| BaseStream<Configuration,Stream<Configuration>> | Interface, ParameterizedType |
 | BaseStream<Double,DoubleStream> | Interface, ParameterizedType |
+| BaseStream<Double,Stream<Double>> | Interface, ParameterizedType |
+| BaseStream<E,Stream<E>> | Interface, ParameterizedType |
+| BaseStream<Entry<K,V>,Stream<Entry<K,V>>> | Interface, ParameterizedType |
+| BaseStream<InetAddress,Stream<InetAddress>> | Interface, ParameterizedType |
 | BaseStream<Integer,IntStream> | Interface, ParameterizedType |
+| BaseStream<Integer,Stream<Integer>> | Interface, ParameterizedType |
+| BaseStream<K,Stream<K>> | Interface, ParameterizedType |
+| BaseStream<LocalDate,Stream<LocalDate>> | Interface, ParameterizedType |
 | BaseStream<Long,LongStream> | Interface, ParameterizedType |
+| BaseStream<Long,Stream<Long>> | Interface, ParameterizedType |
+| BaseStream<ModuleLayer,Stream<ModuleLayer>> | Interface, ParameterizedType |
+| BaseStream<NetworkInterface,Stream<NetworkInterface>> | Interface, ParameterizedType |
+| BaseStream<Package,Stream<Package>> | Interface, ParameterizedType |
+| BaseStream<Permission,Stream<Permission>> | Interface, ParameterizedType |
+| BaseStream<R,Stream<R>> | Interface, ParameterizedType |
+| BaseStream<StackFrame,Stream<StackFrame>> | Interface, ParameterizedType |
+| BaseStream<String,Stream<String>> | Interface, ParameterizedType |
 | BaseStream<T,Stream<T>> | Interface, ParameterizedType |
+| BaseStream<U,Stream<U>> | Interface, ParameterizedType |
+| BaseStream<URL,Stream<URL>> | Interface, ParameterizedType |
+| BaseStream<V,Stream<V>> | Interface, ParameterizedType |
 | BaseType | Interface |
 | BasicFileAttributes | Interface |
 | BasicPermission | Class |
@@ -416,12 +448,16 @@
 | BiFunction<? super Object,? super Object,?> | Interface, ParameterizedType |
 | BiFunction<? super U,? super U,? extends U> | Interface, ParameterizedType |
 | BiFunction<? super V,? super V,? extends V> | Interface, ParameterizedType |
+| BiFunction<A,A,A> | Interface, ParameterizedType |
 | BiFunction<Entry<K,V>,Entry<K,V>,? extends Entry<K,V>> | Interface, ParameterizedType |
+| BiFunction<R,R,R> | Interface, ParameterizedType |
 | BiFunction<String,List<Integer>,ArrayIndexOutOfBoundsException> | Interface, ParameterizedType |
 | BiFunction<T,T,T> | Interface, ParameterizedType |
 | BiFunction<T,T,V> | Interface, ParameterizedType |
 | BiFunction<T,U,V> | Interface, ParameterizedType |
 | BiFunction<U,? super T,U> | Interface, ParameterizedType |
+| BiFunction<U,U,U> | Interface, ParameterizedType |
+| BiFunction<V,V,V> | Interface, ParameterizedType |
 | BigInteger | Class |
 | BigInteger[] | Array |
 | BinaryOperator | GenericType, Interface, ParameterizedType |
@@ -616,21 +652,73 @@
 | CoderResult | Class |
 | CodingErrorAction | Class |
 | Collection | GenericType, Interface, ParameterizedType |
+| Collection<? extends Attribute> | Interface, ParameterizedType |
 | Collection<? extends Callable<T>> | Interface, ParameterizedType |
+| Collection<? extends Certificate> | Interface, ParameterizedType |
 | Collection<? extends E> | Interface, ParameterizedType |
+| Collection<? extends OpenOption> | Interface, ParameterizedType |
+| Collection<? extends Principal> | Interface, ParameterizedType |
 | Collection<? super ForkJoinTask<?>> | Interface, ParameterizedType |
 | Collection<?> | Interface, ParameterizedType |
+| Collection<Attribute> | Interface, ParameterizedType |
+| Collection<CaseInsensitiveString> | Interface, ParameterizedType |
+| Collection<Character> | Interface, ParameterizedType |
+| Collection<Characteristics> | Interface, ParameterizedType |
+| Collection<Chronology> | Interface, ParameterizedType |
+| Collection<Class<?>> | Interface, ParameterizedType |
+| Collection<Configuration> | Interface, ParameterizedType |
+| Collection<DateTimePrinterParser> | Interface, ParameterizedType |
 | Collection<E> | Interface, ParameterizedType |
 | Collection<Entry<?>> | Interface, ParameterizedType |
+| Collection<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Collection<Entry<K,V>> | Interface, ParameterizedType |
+| Collection<Entry<Object,Object>> | Interface, ParameterizedType |
+| Collection<Era> | Interface, ParameterizedType |
+| Collection<Exports> | Interface, ParameterizedType |
+| Collection<FileSystemProvider> | Interface, ParameterizedType |
+| Collection<Future<T>> | Interface, ParameterizedType |
+| Collection<Identity> | Interface, ParameterizedType |
+| Collection<Integer> | Interface, ParameterizedType |
+| Collection<InterfaceAddress> | Interface, ParameterizedType |
 | Collection<K> | Interface, ParameterizedType |
+| Collection<LanguageRange> | Interface, ParameterizedType |
 | Collection<Locale> | Interface, ParameterizedType |
+| Collection<MemberName> | Interface, ParameterizedType |
+| Collection<Method> | Interface, ParameterizedType |
+| Collection<MethodHandle> | Interface, ParameterizedType |
+| Collection<MethodType> | Interface, ParameterizedType |
+| Collection<Modifier> | Interface, ParameterizedType |
+| Collection<Module> | Interface, ParameterizedType |
+| Collection<ModuleDescriptor> | Interface, ParameterizedType |
+| Collection<ModuleLayer> | Interface, ParameterizedType |
+| Collection<ModuleReference> | Interface, ParameterizedType |
+| Collection<NamedFunction> | Interface, ParameterizedType |
+| Collection<NativeLibrary> | Interface, ParameterizedType |
 | Collection<Object> | Interface, ParameterizedType |
+| Collection<Opens> | Interface, ParameterizedType |
+| Collection<Option> | Interface, ParameterizedType |
+| Collection<Principal> | Interface, ParameterizedType |
+| Collection<Provides> | Interface, ParameterizedType |
+| Collection<Requires> | Interface, ParameterizedType |
+| Collection<ResolvedModule> | Interface, ParameterizedType |
+| Collection<Runnable> | Interface, ParameterizedType |
+| Collection<Service> | Interface, ParameterizedType |
+| Collection<ServiceProvider> | Interface, ParameterizedType |
+| Collection<SimpleClassTypeSignature> | Interface, ParameterizedType |
 | Collection<String> | Interface, ParameterizedType |
 | Collection<T> | Interface, ParameterizedType |
+| Collection<TemporalField> | Interface, ParameterizedType |
+| Collection<TemporalUnit> | Interface, ParameterizedType |
 | Collection<Thread> | Interface, ParameterizedType |
 | Collection<V> | Interface, ParameterizedType |
+| Collection<WatchEvent<?>> | Interface, ParameterizedType |
+| Collection<X> | Interface, ParameterizedType |
+| Collection<ZoneId> | Interface, ParameterizedType |
+| Collection<ZoneOffset> | Interface, ParameterizedType |
+| Collection<ZoneOffsetTransition> | Interface, ParameterizedType |
+| Collection<ZoneOffsetTransitionRule> | Interface, ParameterizedType |
 | CollectionView | Class, GenericType, ParameterizedType |
+| CollectionView<K,Boolean,K> | Class, ParameterizedType |
 | CollectionView<K,V,Entry<K,V>> | Class, ParameterizedType |
 | CollectionView<K,V,K> | Class, ParameterizedType |
 | CollectionView<K,V,V> | Class, ParameterizedType |
@@ -640,48 +728,83 @@
 | Collector<T,R,R> | Interface, ParameterizedType |
 | Companion | Class |
 | Comparable | GenericType, Interface, ParameterizedType |
+| Comparable<?> | Interface, ParameterizedType |
+| Comparable<AccessMode> | Interface, ParameterizedType |
+| Comparable<AccessType> | Interface, ParameterizedType |
+| Comparable<ArrayAccess> | Interface, ParameterizedType |
+| Comparable<BasicType> | Interface, ParameterizedType |
 | Comparable<BigInteger> | Interface, ParameterizedType |
 | Comparable<Boolean> | Interface, ParameterizedType |
 | Comparable<Byte> | Interface, ParameterizedType |
 | Comparable<ByteBuffer> | Interface, ParameterizedType |
+| Comparable<Category> | Interface, ParameterizedType |
 | Comparable<CharBuffer> | Interface, ParameterizedType |
 | Comparable<Character> | Interface, ParameterizedType |
+| Comparable<Characteristics> | Interface, ParameterizedType |
 | Comparable<Charset> | Interface, ParameterizedType |
+| Comparable<ChronoField> | Interface, ParameterizedType |
 | Comparable<ChronoLocalDate> | Interface, ParameterizedType |
 | Comparable<ChronoLocalDateTime<?>> | Interface, ParameterizedType |
+| Comparable<ChronoUnit> | Interface, ParameterizedType |
 | Comparable<ChronoZonedDateTime<?>> | Interface, ParameterizedType |
 | Comparable<Chronology> | Interface, ParameterizedType |
 | Comparable<Date> | Interface, ParameterizedType |
+| Comparable<DayOfWeek> | Interface, ParameterizedType |
 | Comparable<Double> | Interface, ParameterizedType |
 | Comparable<DoubleBuffer> | Interface, ParameterizedType |
 | Comparable<Duration> | Interface, ParameterizedType |
 | Comparable<E> | Interface, ParameterizedType |
 | Comparable<Exports> | Interface, ParameterizedType |
+| Comparable<ExtendedOption> | Interface, ParameterizedType |
 | Comparable<File> | Interface, ParameterizedType |
 | Comparable<FileTime> | Interface, ParameterizedType |
+| Comparable<FilteringMode> | Interface, ParameterizedType |
 | Comparable<Float> | Interface, ParameterizedType |
 | Comparable<FloatBuffer> | Interface, ParameterizedType |
+| Comparable<FormatStyle> | Interface, ParameterizedType |
 | Comparable<Instant> | Interface, ParameterizedType |
 | Comparable<IntBuffer> | Interface, ParameterizedType |
 | Comparable<Integer> | Interface, ParameterizedType |
+| Comparable<Intrinsic> | Interface, ParameterizedType |
+| Comparable<IsoCountryCode> | Interface, ParameterizedType |
+| Comparable<IsoEra> | Interface, ParameterizedType |
+| Comparable<Kind> | Interface, ParameterizedType |
+| Comparable<Level> | Interface, ParameterizedType |
+| Comparable<LinkOption> | Interface, ParameterizedType |
 | Comparable<LocalTime> | Interface, ParameterizedType |
 | Comparable<Long> | Interface, ParameterizedType |
 | Comparable<LongBuffer> | Interface, ParameterizedType |
+| Comparable<Modifier> | Interface, ParameterizedType |
 | Comparable<ModuleDescriptor> | Interface, ParameterizedType |
+| Comparable<Month> | Interface, ParameterizedType |
 | Comparable<Object> | Interface, ParameterizedType |
 | Comparable<OffsetDateTime> | Interface, ParameterizedType |
 | Comparable<OffsetTime> | Interface, ParameterizedType |
 | Comparable<Opens> | Interface, ParameterizedType |
+| Comparable<Option> | Interface, ParameterizedType |
 | Comparable<Path> | Interface, ParameterizedType |
 | Comparable<Provides> | Interface, ParameterizedType |
 | Comparable<Requires> | Interface, ParameterizedType |
+| Comparable<ResolverStyle> | Interface, ParameterizedType |
+| Comparable<RetentionPolicy> | Interface, ParameterizedType |
+| Comparable<SettingsParser> | Interface, ParameterizedType |
 | Comparable<Short> | Interface, ParameterizedType |
 | Comparable<ShortBuffer> | Interface, ParameterizedType |
+| Comparable<SignStyle> | Interface, ParameterizedType |
+| Comparable<State> | Interface, ParameterizedType |
+| Comparable<Status> | Interface, ParameterizedType |
 | Comparable<String> | Interface, ParameterizedType |
 | Comparable<StringBuffer> | Interface, ParameterizedType |
 | Comparable<StringBuilder> | Interface, ParameterizedType |
+| Comparable<Tag> | Interface, ParameterizedType |
+| Comparable<TextStyle> | Interface, ParameterizedType |
+| Comparable<TimeDefinition> | Interface, ParameterizedType |
+| Comparable<TimeUnit> | Interface, ParameterizedType |
+| Comparable<Type> | Interface, ParameterizedType |
 | Comparable<URI> | Interface, ParameterizedType |
+| Comparable<UnicodeScript> | Interface, ParameterizedType |
 | Comparable<Version> | Interface, ParameterizedType |
+| Comparable<Wrapper> | Interface, ParameterizedType |
 | Comparable<ZoneOffset> | Interface, ParameterizedType |
 | Comparable<ZoneOffsetTransition> | Interface, ParameterizedType |
 | Comparator | GenericType, Interface, ParameterizedType |
@@ -714,7 +837,11 @@
 | ConcurrentHashMap<String,Object> | Class, ParameterizedType |
 | ConcurrentMap | GenericType, Interface, ParameterizedType |
 | ConcurrentMap<? extends WeakReference<Class<?>>,?> | Interface, ParameterizedType |
+| ConcurrentMap<?,?> | Interface, ParameterizedType |
 | ConcurrentMap<K,V> | Interface, ParameterizedType |
+| ConcurrentMap<Object,Object> | Interface, ParameterizedType |
+| ConcurrentMap<String,Chronology> | Interface, ParameterizedType |
+| ConcurrentMap<String,Object> | Interface, ParameterizedType |
 | ConcurrentWeakInternSet | Class, GenericType, ParameterizedType |
 | ConcurrentWeakInternSet<MethodType> | Class, ParameterizedType |
 | Condition | Interface |
@@ -759,7 +886,15 @@
 | CopyOption[] | Array |
 | CountedCompleter | Class, GenericType, ParameterizedType |
 | CountedCompleter<?> | Class, ParameterizedType |
+| CountedCompleter<Double> | Class, ParameterizedType |
+| CountedCompleter<Entry<K,V>> | Class, ParameterizedType |
+| CountedCompleter<Integer> | Class, ParameterizedType |
+| CountedCompleter<K> | Class, ParameterizedType |
+| CountedCompleter<Long> | Class, ParameterizedType |
 | CountedCompleter<R> | Class, ParameterizedType |
+| CountedCompleter<U> | Class, ParameterizedType |
+| CountedCompleter<V> | Class, ParameterizedType |
+| CountedCompleter<Void> | Class, ParameterizedType |
 | CounterCell | Class |
 | CountingWrapper | Class |
 | D | TypeVariable |
@@ -782,7 +917,10 @@
 | Deque | GenericType, Interface, ParameterizedType |
 | Deque<NativeLibrary> | Interface, ParameterizedType |
 | Dictionary | Class, GenericType, ParameterizedType |
+| Dictionary<?,?> | Class, ParameterizedType |
 | Dictionary<K,V> | Class, ParameterizedType |
+| Dictionary<Object,Object> | Class, ParameterizedType |
+| Dictionary<String,URLStreamHandler> | Class, ParameterizedType |
 | DirectoryStream | GenericType, Interface, ParameterizedType |
 | DirectoryStream<Path> | Interface, ParameterizedType |
 | DomainCombiner | Interface |
@@ -815,6 +953,7 @@
 | Entry<? extends K,? extends V> | Interface, ParameterizedType |
 | Entry<? extends K,? extends V>[] | Array |
 | Entry<?,?> | Class, ParameterizedType |
+| Entry<?,?> | Interface, ParameterizedType |
 | Entry<?,?>[] | Array |
 | Entry<?> | Class, ParameterizedType |
 | Entry<?>[] | Array |
@@ -1007,21 +1146,39 @@
 | Function<? super V,? extends T> | Interface, ParameterizedType |
 | Function<? super V,? extends U> | Interface, ParameterizedType |
 | Function<A,R> | Interface, ParameterizedType |
+| Function<Boolean> | Interface, ParameterizedType |
+| Function<Byte> | Interface, ParameterizedType |
+| Function<Character> | Interface, ParameterizedType |
 | Function<Cleaner,CleanerImpl> | Interface, ParameterizedType |
+| Function<Double> | Interface, ParameterizedType |
+| Function<E,E> | Interface, ParameterizedType |
 | Function<Entry<K,V>,? extends U> | Interface, ParameterizedType |
+| Function<Float> | Interface, ParameterizedType |
+| Function<Integer> | Interface, ParameterizedType |
+| Function<Long> | Interface, ParameterizedType |
 | Function<Object,Object> | Interface, ParameterizedType |
 | Function<R> | Interface, ParameterizedType |
+| Function<Short> | Interface, ParameterizedType |
 | Function<String,ClassLoader> | Interface, ParameterizedType |
 | Function<T,T> | Interface, ParameterizedType |
 | Function<T,V> | Interface, ParameterizedType |
+| Function<T> | Interface, ParameterizedType |
 | Function<V,R> | Interface, ParameterizedType |
 | Function<V,T> | Interface, ParameterizedType |
+| Function<V,V> | Interface, ParameterizedType |
 | Future | GenericType, Interface, ParameterizedType |
 | Future<?> | Interface, ParameterizedType |
+| Future<Double> | Interface, ParameterizedType |
+| Future<Entry<K,V>> | Interface, ParameterizedType |
 | Future<FileLock> | Interface, ParameterizedType |
 | Future<Integer> | Interface, ParameterizedType |
+| Future<K> | Interface, ParameterizedType |
+| Future<Long> | Interface, ParameterizedType |
+| Future<R> | Interface, ParameterizedType |
 | Future<T> | Interface, ParameterizedType |
+| Future<U> | Interface, ParameterizedType |
 | Future<V> | Interface, ParameterizedType |
+| Future<Void> | Interface, ParameterizedType |
 | GatheringByteChannel | Interface |
 | GenericDeclRepository | Class, GenericType, ParameterizedType |
 | GenericDeclRepository<MethodTypeSignature> | Class, ParameterizedType |
@@ -1092,15 +1249,75 @@
 | Item | Class |
 | Item[] | Array |
 | Iterable | GenericType, Interface, ParameterizedType |
+| Iterable<? extends Attribute> | Interface, ParameterizedType |
+| Iterable<? extends Callable<T>> | Interface, ParameterizedType |
+| Iterable<? extends Certificate> | Interface, ParameterizedType |
+| Iterable<? extends E> | Interface, ParameterizedType |
+| Iterable<? extends OpenOption> | Interface, ParameterizedType |
+| Iterable<? extends Principal> | Interface, ParameterizedType |
+| Iterable<? super ForkJoinTask<?>> | Interface, ParameterizedType |
 | Iterable<?> | Interface, ParameterizedType |
+| Iterable<Attribute> | Interface, ParameterizedType |
+| Iterable<CaseInsensitiveString> | Interface, ParameterizedType |
 | Iterable<CharSequence> | Interface, ParameterizedType |
 | Iterable<Character> | Interface, ParameterizedType |
+| Iterable<Characteristics> | Interface, ParameterizedType |
+| Iterable<Chronology> | Interface, ParameterizedType |
+| Iterable<Class<?>> | Interface, ParameterizedType |
+| Iterable<Configuration> | Interface, ParameterizedType |
+| Iterable<DateTimePrinterParser> | Interface, ParameterizedType |
 | Iterable<E> | Interface, ParameterizedType |
+| Iterable<Entry<?>> | Interface, ParameterizedType |
+| Iterable<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
+| Iterable<Entry<K,V>> | Interface, ParameterizedType |
+| Iterable<Entry<Object,Object>> | Interface, ParameterizedType |
+| Iterable<Era> | Interface, ParameterizedType |
+| Iterable<Exports> | Interface, ParameterizedType |
 | Iterable<FileStore> | Interface, ParameterizedType |
+| Iterable<FileSystemProvider> | Interface, ParameterizedType |
+| Iterable<Future<T>> | Interface, ParameterizedType |
+| Iterable<Identity> | Interface, ParameterizedType |
 | Iterable<Integer> | Interface, ParameterizedType |
+| Iterable<InterfaceAddress> | Interface, ParameterizedType |
+| Iterable<K> | Interface, ParameterizedType |
+| Iterable<LanguageRange> | Interface, ParameterizedType |
+| Iterable<Locale> | Interface, ParameterizedType |
 | Iterable<Long> | Interface, ParameterizedType |
+| Iterable<MemberName> | Interface, ParameterizedType |
+| Iterable<Method> | Interface, ParameterizedType |
+| Iterable<MethodHandle> | Interface, ParameterizedType |
+| Iterable<MethodType> | Interface, ParameterizedType |
+| Iterable<Modifier> | Interface, ParameterizedType |
+| Iterable<Module> | Interface, ParameterizedType |
+| Iterable<ModuleDescriptor> | Interface, ParameterizedType |
+| Iterable<ModuleLayer> | Interface, ParameterizedType |
+| Iterable<ModuleReference> | Interface, ParameterizedType |
+| Iterable<NamedFunction> | Interface, ParameterizedType |
+| Iterable<NativeLibrary> | Interface, ParameterizedType |
+| Iterable<Object> | Interface, ParameterizedType |
+| Iterable<Opens> | Interface, ParameterizedType |
+| Iterable<Option> | Interface, ParameterizedType |
 | Iterable<Path> | Interface, ParameterizedType |
+| Iterable<Principal> | Interface, ParameterizedType |
+| Iterable<Provides> | Interface, ParameterizedType |
+| Iterable<Requires> | Interface, ParameterizedType |
+| Iterable<ResolvedModule> | Interface, ParameterizedType |
+| Iterable<Runnable> | Interface, ParameterizedType |
+| Iterable<Service> | Interface, ParameterizedType |
+| Iterable<ServiceProvider> | Interface, ParameterizedType |
+| Iterable<SimpleClassTypeSignature> | Interface, ParameterizedType |
+| Iterable<String> | Interface, ParameterizedType |
 | Iterable<T> | Interface, ParameterizedType |
+| Iterable<TemporalField> | Interface, ParameterizedType |
+| Iterable<TemporalUnit> | Interface, ParameterizedType |
+| Iterable<Thread> | Interface, ParameterizedType |
+| Iterable<V> | Interface, ParameterizedType |
+| Iterable<WatchEvent<?>> | Interface, ParameterizedType |
+| Iterable<X> | Interface, ParameterizedType |
+| Iterable<ZoneId> | Interface, ParameterizedType |
+| Iterable<ZoneOffset> | Interface, ParameterizedType |
+| Iterable<ZoneOffsetTransition> | Interface, ParameterizedType |
+| Iterable<ZoneOffsetTransitionRule> | Interface, ParameterizedType |
 | Iterator | GenericType, Interface, ParameterizedType |
 | Iterator<?> | Interface, ParameterizedType |
 | Iterator<Boolean> | Interface, ParameterizedType |
@@ -1217,17 +1434,22 @@
 | Map<? extends Identity,Entry<?>> | Interface, ParameterizedType |
 | Map<? extends K,? extends V> | Interface, ParameterizedType |
 | Map<? extends K,V> | Interface, ParameterizedType |
+| Map<? extends WeakReference<Class<?>>,?> | Interface, ParameterizedType |
 | Map<?,?> | Interface, ParameterizedType |
 | Map<Attribute,Object> | Interface, ParameterizedType |
 | Map<CaseInsensitiveChar,String> | Interface, ParameterizedType |
 | Map<CaseInsensitiveString,String> | Interface, ParameterizedType |
 | Map<Class<? extends Annotation>,Annotation> | Interface, ParameterizedType |
+| Map<Identity,Entry<?>> | Interface, ParameterizedType |
 | Map<K,V> | Interface, ParameterizedType |
 | Map<Long,String> | Interface, ParameterizedType |
+| Map<Object,Object> | Interface, ParameterizedType |
 | Map<String,?> | Interface, ParameterizedType |
 | Map<String,AccessMode> | Interface, ParameterizedType |
 | Map<String,Attribute> | Interface, ParameterizedType |
 | Map<String,Boolean> | Interface, ParameterizedType |
+| Map<String,Charset> | Interface, ParameterizedType |
+| Map<String,Chronology> | Interface, ParameterizedType |
 | Map<String,Class<?>> | Interface, ParameterizedType |
 | Map<String,Exports> | Interface, ParameterizedType |
 | Map<String,List<String>> | Interface, ParameterizedType |
@@ -1240,6 +1462,7 @@
 | Map<String,Set<String>> | Interface, ParameterizedType |
 | Map<String,String> | Interface, ParameterizedType |
 | Map<String,T> | Interface, ParameterizedType |
+| Map<String,URLStreamHandler> | Interface, ParameterizedType |
 | Map<TemporalField,Long> | Interface, ParameterizedType |
 | Map<TextStyle,Map<Long,String>> | Interface, ParameterizedType |
 | Map<Thread,StackTraceElement[]> | Interface, ParameterizedType |
@@ -1411,6 +1634,10 @@
 | PhantomCleanable<Object> | Class, ParameterizedType |
 | PhantomCleanableRef | Class |
 | PhantomReference | Class, GenericType, ParameterizedType |
+| PhantomReference<?> | Class, ParameterizedType |
+| PhantomReference<Cleaner> | Class, ParameterizedType |
+| PhantomReference<FileDescriptor> | Class, ParameterizedType |
+| PhantomReference<Object> | Class, ParameterizedType |
 | PhantomReference<T> | Class, ParameterizedType |
 | PolymorphicSignature | Class |
 | Predicate | GenericType, Interface, ParameterizedType |
@@ -1445,6 +1672,7 @@
 | PutField | Class |
 | Queue | GenericType, Interface, ParameterizedType |
 | Queue<E> | Interface, ParameterizedType |
+| Queue<NativeLibrary> | Interface, ParameterizedType |
 | R | TypeVariable |
 | Random | Class |
 | RandomAccess | Interface |
@@ -1465,12 +1693,17 @@
 | ReentrantLock | Class |
 | Reference | Class, GenericType, ParameterizedType |
 | Reference<? extends T> | Class, ParameterizedType |
+| Reference<?> | Class, ParameterizedType |
 | Reference<Class<?>> | Class, ParameterizedType |
 | Reference<Cleaner> | Class, ParameterizedType |
+| Reference<FileDescriptor> | Class, ParameterizedType |
 | Reference<ForkJoinTask<?>> | Class, ParameterizedType |
+| Reference<LambdaForm> | Class, ParameterizedType |
+| Reference<MethodHandle> | Class, ParameterizedType |
 | Reference<Object> | Class, ParameterizedType |
 | Reference<T> | Class, ParameterizedType |
 | Reference<ThreadLocal<?>> | Class, ParameterizedType |
+| Reference<Version<?>> | Class, ParameterizedType |
 | Reference<Version<T>> | Class, ParameterizedType |
 | ReferenceQueue | Class, GenericType, ParameterizedType |
 | ReferenceQueue<? super Class<?>> | Class, ParameterizedType |
@@ -1570,10 +1803,12 @@
 | SoftCleanable<Object> | Class, ParameterizedType |
 | SoftCleanableRef | Class |
 | SoftReference | Class, GenericType, ParameterizedType |
+| SoftReference<?> | Class, ParameterizedType |
 | SoftReference<LambdaForm> | Class, ParameterizedType |
 | SoftReference<LambdaForm>[] | Array |
 | SoftReference<MethodHandle> | Class, ParameterizedType |
 | SoftReference<MethodHandle>[] | Array |
+| SoftReference<Object> | Class, ParameterizedType |
 | SoftReference<T> | Class, ParameterizedType |
 | SortedMap | GenericType, Interface, ParameterizedType |
 | SortedMap<K,V> | Interface, ParameterizedType |
@@ -1584,6 +1819,7 @@
 | SpeciesData<T,K,S> | Class, ParameterizedType |
 | Spliterator | GenericType, Interface, ParameterizedType |
 | Spliterator<Character> | Interface, ParameterizedType |
+| Spliterator<Double> | Interface, ParameterizedType |
 | Spliterator<E> | Interface, ParameterizedType |
 | Spliterator<Entry<K,V>> | Interface, ParameterizedType |
 | Spliterator<Integer> | Interface, ParameterizedType |
@@ -1774,6 +2010,7 @@
 | VarHandle | Class |
 | Version | Class |
 | Version | Class, GenericType, ParameterizedType |
+| Version<?> | Class, ParameterizedType |
 | Version<T> | Class, ParameterizedType |
 | VersionInfo | Class |
 | VirtualMachineError | Class |
@@ -1797,11 +2034,13 @@
 | WeakHashMapSpliterator | Class, GenericType, ParameterizedType |
 | WeakHashMapSpliterator<K,V> | Class, ParameterizedType |
 | WeakReference | Class, GenericType, ParameterizedType |
+| WeakReference<?> | Class, ParameterizedType |
 | WeakReference<Class<?>> | Class, ParameterizedType |
 | WeakReference<ForkJoinTask<?>> | Class, ParameterizedType |
 | WeakReference<Object> | Class, ParameterizedType |
 | WeakReference<T> | Class, ParameterizedType |
 | WeakReference<ThreadLocal<?>> | Class, ParameterizedType |
+| WeakReference<Version<?>> | Class, ParameterizedType |
 | WeakReference<Version<T>> | Class, ParameterizedType |
 | WeekBasedFieldPrinterParser | Class |
 | Wildcard | Class |
