@@ -17,7 +17,7 @@ def write_csproj_prefix(ioWrapper):
 
 
 print('Script to generate stub file from a nuget package')
-print(' Usage: python ' + sys.argv[0] +
+print(' Usage: python3 ' + sys.argv[0] +
       ' NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
 print(' The script uses the dotnet cli, codeql cli, and dotnet format global tool')
 
@@ -57,7 +57,7 @@ jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 version = helpers.get_argv(2, "latest")
 
 print("\n* Creating new input project")
-helpers.run_cmd(['dotnet', 'new', 'classlib', "--language", "C#", '--name',
+helpers.run_cmd(['dotnet', 'new', 'classlib', "-f", "net5.0", "--language", "C#", '--name',
                  projectNameIn, '--output', projectDirIn])
 helpers.remove_files(projectDirIn, '.cs')
 
@@ -68,9 +68,13 @@ if (version != "latest"):
     cmd.append(version)
 helpers.run_cmd(cmd)
 
+sdk_version = '5.0.402'
+print("\n* Creating new global.json file and setting SDK to " + sdk_version)
+helpers.run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version])
+
 print("\n* Creating DB")
 helpers.run_cmd(['codeql', 'database', 'create', dbDir, '--language=csharp',
-                 '--command', 'dotnet build /t:rebuild ' + projectDirIn])
+                 '--command', 'dotnet build /t:rebuild /p:UseSharedCompilation=false ' + projectDirIn])
 
 if not os.path.isdir(dbDir):
     print("Expected database directory " + dbDir + " not found.")
