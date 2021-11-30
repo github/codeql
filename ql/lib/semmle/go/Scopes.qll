@@ -380,7 +380,7 @@ class Function extends ValueEntity, @functionobject {
   predicate isVariadic() {
     this.(BuiltinFunction).getName() = ["append", "make", "print", "println"]
     or
-    this.(DeclaredFunction).getFuncDecl().isVariadic()
+    this.(DeclaredFunction).getType().(SignatureType).isVariadic()
   }
 
   /** Holds if this function has no observable side effects. */
