@@ -98,8 +98,6 @@ predicate matchesEpsilon(RegExpTerm t) {
   matchesEpsilon(t.(RegExpBackRef).getGroup())
   or
   forex(RegExpTerm child | child = t.(RegExpSequence).getAChild() | matchesEpsilon(child))
-  or
-  t.(RegExpRange).getLowerBound() = 0
 }
 
 /**
