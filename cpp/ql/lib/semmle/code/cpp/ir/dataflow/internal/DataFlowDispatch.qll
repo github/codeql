@@ -2,6 +2,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
@@ -266,3 +267,17 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
     result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
 }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { any(ParameterNode p).isParameterOf(_, this) }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { any(ArgumentNode a).argumentOf(_, this) }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
