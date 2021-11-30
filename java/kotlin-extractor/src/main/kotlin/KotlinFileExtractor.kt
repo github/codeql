@@ -348,8 +348,12 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(f)
 
         val id = useFunction<DbCallable>(f)
+
+        val extReceiver = f.extensionReceiverParameter
+        val isExtension = extReceiver != null
+        val idxOffset = if (isExtension) 1 else 0
         val paramTypes = f.valueParameters.mapIndexed { i, vp ->
-            extractValueParameter(vp, id, i)
+            extractValueParameter(vp, id, i + idxOffset)
         }
         val paramsSignature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
@@ -363,11 +367,11 @@ open class KotlinFileExtractor(
             val shortName = f.name.asString()
             @Suppress("UNCHECKED_CAST")
             tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
-
-            val extReceiver = f.extensionReceiverParameter
+            
             if (extReceiver != null) {
                 val extendedType = useType(extReceiver.type)
                 tw.writeKtExtensionFunctions(id, extendedType.javaResult.id, extendedType.kotlinResult.id)
+                extractValueParameter(extReceiver, id, 0)
             }
         }
 
@@ -688,21 +692,23 @@ open class KotlinFileExtractor(
             }
 
             val dr = c.dispatchReceiver
-            val er = c.extensionReceiver
             if (dr != null) {
                 extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+            }
 
-                if (er != null && er != dr) {
-                    logger.warnElement(Severity.ErrorSevere, "Expected to only find extension receiver or dispatch receiver. Found both. Extracting dispatch receiver only", c)
-                }
-            } else if (er != null) {
-                extractExpressionExpr(er, callable, id, -1, enclosingStmt)
+            val er = c.extensionReceiver
+            val idxOffset: Int
+            if (er != null) {
+                extractExpressionExpr(er, callable, id, 0, enclosingStmt)
+                idxOffset = 1
+            } else {
+                idxOffset = 0
             }
 
             for(i in 0 until c.valueArgumentsCount) {
                 val arg = c.getValueArgument(i)
                 if(arg != null) {
-                    extractExpressionExpr(arg, callable, id, i, enclosingStmt)
+                    extractExpressionExpr(arg, callable, id, i + idxOffset, enclosingStmt)
                 }
             }
         }

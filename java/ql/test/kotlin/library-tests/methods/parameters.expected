@@ -3,9 +3,11 @@
 | methods2.kt:7:1:10:1 | equals | methods2.kt:7:1:10:1 | other | 0 |
 | methods2.kt:8:5:9:5 | fooBarClassMethod | methods2.kt:8:27:8:32 | x | 0 |
 | methods2.kt:8:5:9:5 | fooBarClassMethod | methods2.kt:8:35:8:40 | y | 1 |
-| methods3.kt:3:1:3:39 | fooBarTopLevelMethod | methods3.kt:3:30:3:35 | x | 0 |
+| methods3.kt:3:1:3:39 | fooBarTopLevelMethod | methods3.kt:3:5:3:7 | <this> | 0 |
+| methods3.kt:3:1:3:39 | fooBarTopLevelMethod | methods3.kt:3:30:3:35 | x | 1 |
 | methods3.kt:5:1:7:1 | equals | methods3.kt:5:1:7:1 | other | 0 |
-| methods3.kt:6:5:6:43 | fooBarTopLevelMethod | methods3.kt:6:34:6:39 | x | 0 |
+| methods3.kt:6:5:6:43 | fooBarTopLevelMethod | methods3.kt:6:9:6:11 | <this> | 0 |
+| methods3.kt:6:5:6:43 | fooBarTopLevelMethod | methods3.kt:6:34:6:39 | x | 1 |
 | methods4.kt:3:1:11:1 | equals | methods4.kt:3:1:11:1 | other | 0 |
 | methods4.kt:5:3:9:3 | equals | methods4.kt:5:3:9:3 | other | 0 |
 | methods4.kt:7:5:7:34 | m | methods4.kt:7:11:7:29 | x | 0 |
