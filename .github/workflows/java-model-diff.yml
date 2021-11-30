@@ -32,3 +32,21 @@ jobs:
         with:
           path: codeql-baseline
           ref: ${{ github.base_ref }}
+      - name: Clone self (github/codeql) with new generator
+        uses: actions/checkout@v2
+        with:
+          path: codeql-head
+          ref: ${{ github.ref }}
+      - uses: ./codeql-baseline/.github/actions/fetch-codeql
+      - name: Download database
+        env:
+          SLUG: ${{ matrix.slugs }}
+        run: |
+          set -x
+          mkdir lib-dbs
+          SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
+          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/$SLUG | jq .id`
+          curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o $SHORTNAME.zip
+          unzip -q -d $SHORTNAME-db $SHORTNAME.zip
+          mkdir lib-dbs/$SHORTNAME/
+          mv $SHORTNAME-db/`ls -1 $SHORTNAME-db`/* lib-dbs/$SHORTNAME/
