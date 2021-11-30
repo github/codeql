@@ -109,7 +109,7 @@ with open(jsonFile) as json_data:
 print("\n --> Generated stub files: " + rawSrcOutputDir)
 
 print("\n* Formatting files")
-run_cmd(['dotnet', 'format', rawSrcOutputDir], workDir)
+run_cmd(['dotnet', 'format', rawSrcOutputDir])
 
 print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
 
