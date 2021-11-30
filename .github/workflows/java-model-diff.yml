@@ -74,3 +74,25 @@ jobs:
             analyzeDatabaseWithCheckout "baseline" $d
             analyzeDatabaseWithCheckout "head" $d
           done
+      - name: Generate Model Diff
+        run: |
+          set -x
+          npm install -g diff2html-cli
+          MODELS=`pwd`/tmp-models
+          ls -1 tmp-models/
+          for m in $MODELS/*_baseline.qll ; do
+            t="${m/baseline/"head"}"
+            basename=`basename $m`
+            name="diff_${basename/_baseline.qll/""}"
+            (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
+          done
+      - uses: actions/upload-artifact@v2
+        with:
+          name: models
+          path: tmp-models/*.qll
+          retention-days: 20
+      - uses: actions/upload-artifact@v2
+        with:
+          name: diffs
+          path: tmp-models/*.html
+          retention-days: 20
