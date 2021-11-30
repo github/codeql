@@ -3,6 +3,7 @@
  */
 
 private import java
+private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowUtil
 private import FlowSummaryImpl::Private
@@ -12,9 +13,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private module FlowSummaries {
   private import semmle.code.java.dataflow.FlowSummary as F
 }
-
-/** Holds is `i` is a valid parameter position. */
-predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
 
 /** Gets the parameter position of the instance parameter. */
 int instanceParameterPosition() { result = -1 }
@@ -189,3 +187,19 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
     n.asNode().asExpr() = fw.getRHS()
   )
 }
+
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
+bindingset[s]
+ArgumentPosition parseParamBody(string s) {
+  result = s.regexpCapture("([-0-9]+)", 1).toInt()
+  or
+  exists(int n1, int n2 |
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+    result in [n1 .. n2]
+  )
+}
+
+/** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
+bindingset[s]
+ParameterPosition parseArgBody(string s) { result = parseParamBody(s) }

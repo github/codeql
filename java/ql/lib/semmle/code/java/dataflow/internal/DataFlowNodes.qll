@@ -310,6 +310,8 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
 }
 
 module Private {
+  private import DataFlowDispatch
+
   /** Gets the callable in which this node occurs. */
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.asExpr().getEnclosingCallable() or
@@ -324,8 +326,13 @@ module Private {
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-  predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
     p.isParameterOf(c.asCallable(), pos)
+  }
+
+  /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+  predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+    arg.argumentOf(c, pos)
   }
 
   /**
