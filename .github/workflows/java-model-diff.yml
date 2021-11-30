@@ -1,0 +1,27 @@
+name: Diff generated Models as Data
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      projects:
+        description: "The projects to generate models for"
+        required: true
+        default: '["netty/netty"]'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "java/ql/src/utils/model-generator/**/*.*"
+
+jobs:
+  model-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone self (github/codeql) for baseline
+        uses: actions/checkout@v2
+        with:
+          path: codeql-baseline
+          ref: ${{ github.base_ref }}
