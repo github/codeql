@@ -10,8 +10,13 @@ private import FlowSummaryImpl as FlowSummaryImpl
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, int pos) {
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
   p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
 }
 
 abstract class NodeImpl extends Node {

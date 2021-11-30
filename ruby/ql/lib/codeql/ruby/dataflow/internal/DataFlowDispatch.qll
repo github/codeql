@@ -457,3 +457,19 @@ predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
     )
   )
 }
+
+private int parameterPosition() { result in [-2 .. max([any(Parameter p).getPosition(), 10])] }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { this = parameterPosition() }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { this = parameterPosition() }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
