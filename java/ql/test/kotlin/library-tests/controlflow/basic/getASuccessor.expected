@@ -40,16 +40,20 @@
 | Test.kt:11:14:14:3 | { ... } | BlockStmt | Test.kt:12:4:12:4 | <Expr>; | ExprStmt |
 | Test.kt:12:4:12:4 | ...=... | AssignExpr | Test.kt:13:4:13:4 | <Expr>; | ExprStmt |
 | Test.kt:12:4:12:4 | <Expr>; | ExprStmt | Test.kt:12:8:12:9 | 20 | LongLiteral |
+| Test.kt:12:4:12:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:12:8:12:9 | 20 | LongLiteral | Test.kt:12:4:12:4 | ...=... | AssignExpr |
 | Test.kt:13:4:13:4 | ...=... | AssignExpr | Test.kt:18:3:18:3 | <Expr>; | ExprStmt |
 | Test.kt:13:4:13:4 | <Expr>; | ExprStmt | Test.kt:13:8:13:9 | 10 | IntegerLiteral |
+| Test.kt:13:4:13:4 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:13:8:13:9 | 10 | IntegerLiteral | Test.kt:13:4:13:4 | ...=... | AssignExpr |
 | Test.kt:14:10:16:3 | { ... } | BlockStmt | Test.kt:15:4:15:4 | <Expr>; | ExprStmt |
 | Test.kt:15:4:15:4 | ...=... | AssignExpr | Test.kt:18:3:18:3 | <Expr>; | ExprStmt |
 | Test.kt:15:4:15:4 | <Expr>; | ExprStmt | Test.kt:15:8:15:9 | 30 | LongLiteral |
+| Test.kt:15:4:15:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:15:8:15:9 | 30 | LongLiteral | Test.kt:15:4:15:4 | ...=... | AssignExpr |
 | Test.kt:18:3:18:3 | ...=... | AssignExpr | Test.kt:21:3:24:9 | <Expr>; | ExprStmt |
 | Test.kt:18:3:18:3 | <Expr>; | ExprStmt | Test.kt:18:7:18:7 | 0 | IntegerLiteral |
+| Test.kt:18:3:18:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:18:7:18:7 | 0 | IntegerLiteral | Test.kt:18:3:18:3 | ...=... | AssignExpr |
 | Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:3:24:9 | true | BooleanLiteral |
 | Test.kt:21:3:24:9 | ... -> ... | WhenBranch | Test.kt:21:6:21:6 | x | VarAccess |
@@ -61,11 +65,13 @@
 | Test.kt:21:10:21:10 | 0 | IntegerLiteral | Test.kt:21:6:21:10 | ... < ... | LTExpr |
 | Test.kt:22:4:22:4 | ...=... | AssignExpr | Test.kt:27:3:27:3 | <Expr>; | ExprStmt |
 | Test.kt:22:4:22:4 | <Expr>; | ExprStmt | Test.kt:22:8:22:9 | 40 | LongLiteral |
+| Test.kt:22:4:22:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:22:8:22:9 | 40 | LongLiteral | Test.kt:22:4:22:4 | ...=... | AssignExpr |
 | Test.kt:24:4:24:9 | INSTANCE | VarAccess | Test.kt:24:4:24:9 | return ... | ReturnStmt |
 | Test.kt:24:4:24:9 | return ... | ReturnStmt | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:27:3:27:3 | ...=... | AssignExpr | Test.kt:30:3:33:3 | <Expr>; | ExprStmt |
 | Test.kt:27:3:27:3 | <Expr>; | ExprStmt | Test.kt:27:7:27:8 | 10 | IntegerLiteral |
+| Test.kt:27:3:27:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:27:7:27:8 | 10 | IntegerLiteral | Test.kt:27:3:27:3 | ...=... | AssignExpr |
 | Test.kt:30:3:33:3 | ... -> ... | WhenBranch | Test.kt:30:7:30:7 | x | VarAccess |
 | Test.kt:30:3:33:3 | <Expr>; | ExprStmt | Test.kt:30:3:33:3 | when ... | WhenExpr |
@@ -77,12 +83,15 @@
 | Test.kt:30:15:33:3 | { ... } | BlockStmt | Test.kt:31:4:31:4 | <Expr>; | ExprStmt |
 | Test.kt:31:4:31:4 | ...=... | AssignExpr | Test.kt:32:4:32:4 | <Expr>; | ExprStmt |
 | Test.kt:31:4:31:4 | <Expr>; | ExprStmt | Test.kt:31:8:31:9 | 60 | LongLiteral |
+| Test.kt:31:4:31:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:31:8:31:9 | 60 | LongLiteral | Test.kt:31:4:31:4 | ...=... | AssignExpr |
 | Test.kt:32:4:32:4 | ...=... | AssignExpr | Test.kt:35:3:35:3 | <Expr>; | ExprStmt |
 | Test.kt:32:4:32:4 | <Expr>; | ExprStmt | Test.kt:32:8:32:9 | 10 | IntegerLiteral |
+| Test.kt:32:4:32:4 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:32:8:32:9 | 10 | IntegerLiteral | Test.kt:32:4:32:4 | ...=... | AssignExpr |
 | Test.kt:35:3:35:3 | ...=... | AssignExpr | Test.kt:38:3:41:3 | while (...) | WhileStmt |
 | Test.kt:35:3:35:3 | <Expr>; | ExprStmt | Test.kt:35:7:35:8 | 20 | IntegerLiteral |
+| Test.kt:35:3:35:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:35:7:35:8 | 20 | IntegerLiteral | Test.kt:35:3:35:3 | ...=... | AssignExpr |
 | Test.kt:38:3:41:3 | while (...) | WhileStmt | Test.kt:38:9:38:9 | x | VarAccess |
 | Test.kt:38:9:38:9 | x | VarAccess | Test.kt:38:13:38:13 | 0 | IntegerLiteral |
@@ -92,9 +101,11 @@
 | Test.kt:38:16:41:3 | { ... } | BlockStmt | Test.kt:39:4:39:4 | <Expr>; | ExprStmt |
 | Test.kt:39:4:39:4 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
 | Test.kt:39:4:39:4 | <Expr>; | ExprStmt | Test.kt:39:8:39:9 | 10 | LongLiteral |
+| Test.kt:39:4:39:4 | y | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:39:8:39:9 | 10 | LongLiteral | Test.kt:39:4:39:4 | ...=... | AssignExpr |
 | Test.kt:40:4:40:4 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
 | Test.kt:40:4:40:4 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | tmp0 | VarAccess |
+| Test.kt:40:4:40:4 | x | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:40:4:40:4 | x | VarAccess | file://:0:0:0:0 | tmp0 | LocalVariableDeclExpr |
 | Test.kt:40:4:40:6 | (...)... | CastExpr | Test.kt:38:9:38:9 | x | VarAccess |
 | Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | <Stmt> | StmtExpr |
@@ -107,12 +118,15 @@
 | Test.kt:40:4:40:6 | { ... } | BlockStmt | file://:0:0:0:0 | var ...; | LocalVariableDeclStmt |
 | Test.kt:43:3:43:3 | ...=... | AssignExpr | Test.kt:73:3:73:3 | <Expr>; | ExprStmt |
 | Test.kt:43:3:43:3 | <Expr>; | ExprStmt | Test.kt:43:7:43:8 | 30 | IntegerLiteral |
+| Test.kt:43:3:43:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:43:7:43:8 | 30 | IntegerLiteral | Test.kt:43:3:43:3 | ...=... | AssignExpr |
 | Test.kt:73:3:73:3 | ...=... | AssignExpr | Test.kt:77:3:77:3 | <Expr>; | ExprStmt |
 | Test.kt:73:3:73:3 | <Expr>; | ExprStmt | Test.kt:73:7:73:8 | 50 | IntegerLiteral |
+| Test.kt:73:3:73:3 | z | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:73:7:73:8 | 50 | IntegerLiteral | Test.kt:73:3:73:3 | ...=... | AssignExpr |
 | Test.kt:77:3:77:3 | ...=... | AssignExpr | Test.kt:78:3:78:8 | INSTANCE | VarAccess |
 | Test.kt:77:3:77:3 | <Expr>; | ExprStmt | Test.kt:77:7:77:8 | 40 | IntegerLiteral |
+| Test.kt:77:3:77:3 | w | VarAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:77:7:77:8 | 40 | IntegerLiteral | Test.kt:77:3:77:3 | ...=... | AssignExpr |
 | Test.kt:78:3:78:8 | INSTANCE | VarAccess | Test.kt:78:3:78:8 | return ... | ReturnStmt |
 | Test.kt:78:3:78:8 | return ... | ReturnStmt | Test.kt:4:2:79:2 | test | Method |

@@ -1,8 +1,4 @@
 | file://:0:0:0:0 | Exception | TypeAccess |
-| file://:0:0:0:0 | z | VarAccess |
-| file://:0:0:0:0 | z | VarAccess |
-| file://:0:0:0:0 | z | VarAccess |
-| file://:0:0:0:0 | z | VarAccess |
 | stmts.kt:3:5:6:5 | when ... | WhenExpr |
 | stmts.kt:3:8:3:8 | x | VarAccess |
 | stmts.kt:3:8:3:12 | ... > ... | GTExpr |
@@ -30,16 +26,20 @@
 | stmts.kt:17:26:17:58 | when ... | WhenExpr |
 | stmts.kt:17:29:17:32 | true | BooleanLiteral |
 | stmts.kt:17:37:17:37 | ...=... | AssignExpr |
+| stmts.kt:17:37:17:37 | z | VarAccess |
 | stmts.kt:17:41:17:41 | 4 | IntegerLiteral |
 | stmts.kt:17:52:17:52 | ...=... | AssignExpr |
+| stmts.kt:17:52:17:52 | z | VarAccess |
 | stmts.kt:17:56:17:56 | 5 | IntegerLiteral |
 | stmts.kt:18:5:18:56 | q3 | LocalVariableDeclExpr |
 | stmts.kt:18:26:18:56 | true | BooleanLiteral |
 | stmts.kt:18:26:18:56 | when ... | WhenExpr |
 | stmts.kt:18:29:18:32 | true | BooleanLiteral |
 | stmts.kt:18:37:18:37 | ...=... | AssignExpr |
+| stmts.kt:18:37:18:37 | z | VarAccess |
 | stmts.kt:18:41:18:41 | 4 | IntegerLiteral |
 | stmts.kt:18:52:18:52 | ...=... | AssignExpr |
+| stmts.kt:18:52:18:52 | z | VarAccess |
 | stmts.kt:18:56:18:56 | 5 | IntegerLiteral |
 | stmts.kt:19:12:19:12 | x | VarAccess |
 | stmts.kt:19:12:19:16 | ... + ... | AddExpr |

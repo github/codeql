@@ -1478,7 +1478,7 @@ open class KotlinFileExtractor(
                 tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
                 val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                tw.writeHasLocation(id, locId)
+                tw.writeHasLocation(lhsId, locId)
                 tw.writeCallableEnclosingExpr(lhsId, callable)
 
                 when (e) {

@@ -461,6 +461,7 @@
 | exprs.kt:131:23:131:23 | 0 | exprs.kt:4:1:136:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:132:9:132:16 | ...=... | exprs.kt:4:1:136:1 | topLevelMethod | AssignExpr |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
+| exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:18 | (...)... | exprs.kt:4:1:136:1 | topLevelMethod | CastExpr |
 | exprs.kt:132:9:132:18 | <Stmt> | exprs.kt:4:1:136:1 | topLevelMethod | StmtExpr |
 | exprs.kt:132:9:132:18 | Unit | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
@@ -510,8 +511,10 @@
 | exprs.kt:156:9:156:22 | ...instanceof... | exprs.kt:150:1:157:1 | typeTests | InstanceOfExpr |
 | exprs.kt:156:9:156:22 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
 | exprs.kt:156:27:156:27 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
+| exprs.kt:156:27:156:27 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:156:31:156:31 | 2 | exprs.kt:150:1:157:1 | typeTests | IntegerLiteral |
 | exprs.kt:156:42:156:42 | ...=... | exprs.kt:150:1:157:1 | typeTests | AssignExpr |
+| exprs.kt:156:42:156:42 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:156:46:156:46 | 3 | exprs.kt:150:1:157:1 | typeTests | IntegerLiteral |
 | exprs.kt:160:5:160:25 | r | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:160:13:160:13 | p | exprs.kt:159:1:166:1 | foo | VarAccess |
@@ -527,6 +530,7 @@
 | exprs.kt:163:9:163:30 | height | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:163:25:163:30 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:9:164:17 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
+| exprs.kt:164:9:164:17 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | <obinit>(...) | exprs.kt:168:6:170:1 | Direction | MethodAccess |
 | exprs.kt:168:1:170:1 | new Enum(...) | exprs.kt:168:6:170:1 | Direction | ClassInstanceExpr |
@@ -600,8 +604,4 @@
 | file://:0:0:0:0 | Interface1 | exprs.kt:187:13:192:5 | getObject | TypeAccess |
 | file://:0:0:0:0 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
 | file://:0:0:0:0 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
-| file://:0:0:0:0 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
-| file://:0:0:0:0 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
-| file://:0:0:0:0 | q | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
-| file://:0:0:0:0 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
