@@ -1,4 +1,4 @@
-name: Diff generated Models as Data
+name: Models as Data
 
 on:
   push:
