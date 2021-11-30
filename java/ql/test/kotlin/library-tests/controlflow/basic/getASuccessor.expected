@@ -100,10 +100,10 @@
 | Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | <Stmt> | StmtExpr |
 | Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | tmp0 | VarAccess |
 | Test.kt:40:4:40:6 | <Stmt> | StmtExpr | Test.kt:40:4:40:6 | { ... } | BlockStmt |
+| Test.kt:40:4:40:6 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:40:4:40:6 | dec(...) | MethodAccess | Test.kt:40:4:40:4 | ...=... | AssignExpr |
 | Test.kt:40:4:40:6 | tmp0 | VarAccess | Test.kt:40:4:40:6 | (...)... | CastExpr |
 | Test.kt:40:4:40:6 | tmp0 | VarAccess | Test.kt:40:4:40:6 | dec(...) | MethodAccess |
-| Test.kt:40:4:40:6 | void | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:40:4:40:6 | { ... } | BlockStmt | file://:0:0:0:0 | var ...; | LocalVariableDeclStmt |
 | Test.kt:43:3:43:3 | ...=... | AssignExpr | Test.kt:73:3:73:3 | <Expr>; | ExprStmt |
 | Test.kt:43:3:43:3 | <Expr>; | ExprStmt | Test.kt:43:7:43:8 | 30 | IntegerLiteral |

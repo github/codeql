@@ -439,10 +439,10 @@
 | exprs.kt:135:9:135:16 | variable | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
 | exprs.kt:135:9:135:18 | (...)... | exprs.kt:4:1:139:1 | topLevelMethod | CastExpr |
 | exprs.kt:135:9:135:18 | <Stmt> | exprs.kt:4:1:139:1 | topLevelMethod | StmtExpr |
+| exprs.kt:135:9:135:18 | Unit | exprs.kt:4:1:139:1 | topLevelMethod | TypeAccess |
 | exprs.kt:135:9:135:18 | dec(...) | exprs.kt:4:1:139:1 | topLevelMethod | MethodAccess |
 | exprs.kt:135:9:135:18 | tmp0 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
 | exprs.kt:135:9:135:18 | tmp0 | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
-| exprs.kt:135:9:135:18 | void | exprs.kt:4:1:139:1 | topLevelMethod | TypeAccess |
 | exprs.kt:138:12:138:14 | 123 | exprs.kt:4:1:139:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:138:12:138:20 | ... + ... | exprs.kt:4:1:139:1 | topLevelMethod | AddExpr |
 | exprs.kt:138:18:138:20 | 456 | exprs.kt:4:1:139:1 | topLevelMethod | IntegerLiteral |
@@ -573,10 +573,10 @@
 | file://:0:0:0:0 | Color | exprs.kt:175:6:179:1 | Color | TypeAccess |
 | file://:0:0:0:0 | Direction | exprs.kt:171:6:173:1 | Direction | TypeAccess |
 | file://:0:0:0:0 | Interface1 | exprs.kt:190:13:195:5 | getObject | TypeAccess |
+| file://:0:0:0:0 | Unit | exprs.kt:171:6:173:1 | Direction | TypeAccess |
+| file://:0:0:0:0 | Unit | exprs.kt:175:6:179:1 | Color | TypeAccess |
 | file://:0:0:0:0 | height | exprs.kt:162:1:169:1 | foo | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:153:1:160:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | q | exprs.kt:153:1:160:1 | typeTests | VarAccess |
 | file://:0:0:0:0 | tmp0 | exprs.kt:4:1:139:1 | topLevelMethod | LocalVariableDeclExpr |
 | file://:0:0:0:0 | variable | exprs.kt:4:1:139:1 | topLevelMethod | VarAccess |
-| file://:0:0:0:0 | void | exprs.kt:171:6:173:1 | Direction | TypeAccess |
-| file://:0:0:0:0 | void | exprs.kt:175:6:179:1 | Color | TypeAccess |

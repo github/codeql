@@ -1331,6 +1331,7 @@
 | Node<K,V>[] | Array |
 | Node[] | Array |
 | NonfairSync | Class |
+| Nothing | Class |
 | Number | Class |
 | NumberPrinterParser | Class |
 | ObjDoubleConsumer | GenericType, Interface, ParameterizedType |
