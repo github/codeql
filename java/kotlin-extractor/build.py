@@ -173,4 +173,4 @@ if args.many:
         compile_standalone(version)
         compile_embeddable(version)
 else:
-    compile_standalone(kotlin_plugin_versions.single_version)
+    compile_standalone(kotlin_plugin_versions.get_single_version())
