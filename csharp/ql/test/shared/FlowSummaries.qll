@@ -16,13 +16,14 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
       )
   }
 
-  /* Gets a string representing, whether the declaring type is an interface. */
+  predicate isAbstractOrInterface() {
+    this.getDeclaringType() instanceof Interface or
+    this.(Modifiable).isAbstract()
+  }
+
+  /** Gets a string representing, whether the declaring type is an interface. */
   private string getCallableOverride() {
-    if
-      this.getDeclaringType() instanceof Interface or
-      this.(Modifiable).isAbstract()
-    then result = "true"
-    else result = "false"
+    if this.isAbstractOrInterface() then result = "true" else result = "false"
   }
 
   /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
