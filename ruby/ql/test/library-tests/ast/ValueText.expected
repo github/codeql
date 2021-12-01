@@ -156,8 +156,8 @@
 | control/cases.rb:65:13:65:13 | 3 | 3 |
 | control/cases.rb:66:7:66:7 | 1 | 1 |
 | control/cases.rb:66:14:66:14 | 3 | 3 |
-| control/cases.rb:68:10:68:10 | 3 | 3 |
-| control/cases.rb:68:13:68:13 | 4 | 4 |
+| control/cases.rb:68:11:68:11 | 3 | 3 |
+| control/cases.rb:68:14:68:14 | 4 | 4 |
 | control/cases.rb:69:10:69:10 | 3 | 3 |
 | control/cases.rb:70:11:70:11 | 3 | 3 |
 | control/cases.rb:71:7:71:7 | :a | a |
