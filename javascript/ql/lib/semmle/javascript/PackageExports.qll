@@ -11,7 +11,7 @@ private import semmle.javascript.internal.CachedStages
  * Gets a parameter that is a library input to a top-level package.
  */
 cached
-DataFlow::SourceNode getALibraryInputParameter() {
+DataFlow::Node getALibraryInputParameter() {
   Stages::Taint::ref() and
   exists(int bound, DataFlow::FunctionNode func |
     func = getAValueExportedByPackage().getABoundFunctionValue(bound)
@@ -19,6 +19,8 @@ DataFlow::SourceNode getALibraryInputParameter() {
     result = func.getParameter(any(int arg | arg >= bound))
     or
     result = getAnArgumentsRead(func.getFunction())
+    or
+    result = func.getFunction().getArgumentsVariable().getAnAccess().flow()
   )
 }
 
