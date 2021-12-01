@@ -5,7 +5,7 @@
 <qhelp>
 <overview>
 <p>MyBatis allows operating the database by annotating a method with the annotations <code>@Select</code>, <code>@Insert</code>, etc. to construct dynamic SQL statements.
-If the syntax `${param}` is used in those statements, and `param` is a parameter of the annotated method, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
+If the syntax <code>${param}</code> is used in those statements, and <code>param</code> is a parameter of the annotated method, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
 </overview>
 
 <<recommendation>
