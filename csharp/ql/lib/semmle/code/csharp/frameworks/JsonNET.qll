@@ -153,14 +153,14 @@ module JsonNET {
       // Serialize
       c = this.getSerializeMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 1) and
+      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 0)
       or
       // Deserialize
       c = this.getDeserializeMethod() and
       preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
+      sink instanceof CallableFlowSinkReturn
     }
   }
 
