@@ -167,16 +167,3 @@ public struct StringValues : System.IEquatable<string[]>, System.IEquatable<stri
 }
 }
 }
-namespace System
-{
-// Generated from `System.Uri` in `System.Private.Uri, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-public class Uri : System.Runtime.Serialization.ISerializable
-{
-    public Uri(string uriString) => throw null;
-    public override bool Equals(object comparand) => throw null;
-    public override int GetHashCode() => throw null;
-    public override string ToString() => throw null;
-    void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-}
-
-}
