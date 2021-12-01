@@ -255,7 +255,9 @@ module DomBasedXss {
   /**
    * A write to a URL which may execute JavaScript code.
    */
-  class WriteURLSink extends Sink instanceof ClientSideUrlRedirect::Sink { }
+  class WriteURLSink extends Sink instanceof ClientSideUrlRedirect::Sink {
+    WriteURLSink() { super.isXSSSink() }
+  }
 
   /**
    * An expression whose value is interpreted as HTML or CSS

@@ -485,4 +485,6 @@ function urlStuff() {
   } else {
     $("<img>", {src: url}).appendTo("body"); // NOT OK
   }
+
+  window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context
 }
