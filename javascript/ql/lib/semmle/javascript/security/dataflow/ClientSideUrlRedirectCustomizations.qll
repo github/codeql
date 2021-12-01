@@ -8,8 +8,6 @@ import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module ClientSideUrlRedirect {
-  private import Xss::DomBasedXss as DomBasedXss
-
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
@@ -186,20 +184,6 @@ module ClientSideUrlRedirect {
         DataFlow::moduleImport("next/link").flowsToExpr(attr.getElement().getNameExpr())
       |
         this = attr.getValue().flow()
-      )
-    }
-  }
-
-  /**
-   * A write to a HTML attribute which may execute JavaScript code.
-   */
-  class DOMAttributeWriteUrlSink extends Sink {
-    DOMAttributeWriteUrlSink() {
-      exists(DOM::AttributeDefinition attr |
-        not attr instanceof JSXAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`
-        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
-      |
-        this = attr.getValueNode()
       )
     }
   }
