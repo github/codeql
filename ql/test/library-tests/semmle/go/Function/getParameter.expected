@@ -9,4 +9,5 @@
 | main.go:13:6:13:7 | f4 | 1 | main.go:13:16:13:16 | y |
 | main.go:15:6:15:7 | f5 | 0 | main.go:15:9:15:9 | x |
 | main.go:17:6:17:7 | f6 | 0 | main.go:17:9:17:9 | x |
-| variadicFunctions.go:9:6:9:29 | variadicDeclaredFunction | 0 | variadicFunctions.go:9:31:9:31 | x |
+| variadicFunctions.go:10:6:10:29 | variadicDeclaredFunction | 0 | variadicFunctions.go:10:31:10:31 | x |
+| variadicFunctions.go:20:6:20:32 | nonvariadicDeclaredFunction | 0 | variadicFunctions.go:20:34:20:34 | x |
