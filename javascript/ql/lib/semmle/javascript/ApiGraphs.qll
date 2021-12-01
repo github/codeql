@@ -873,7 +873,7 @@ module API {
       Stages::APIStage::ref() and
       exists(string m |
         pred = MkRoot() and
-        lbl = Label::mod(m)
+        lbl = Label::moduleLabel(m)
       |
         succ = MkModuleDef(m)
         or
@@ -1012,7 +1012,7 @@ module API {
     }
 
     /** Gets the edge label for the module `m`. */
-    LabelMod mod(string m) { result.getMod() = m }
+    LabelModule moduleLabel(string m) { result.getMod() = m }
 
     /** Gets the `member` edge label for member `m`. */
     bindingset[m]
@@ -1086,7 +1086,7 @@ module API {
 
     private module LabelImpl {
       newtype TLabel =
-        MkLabelMod(string mod) {
+        MkLabelModule(string mod) {
           exists(Impl::MkModuleExport(mod)) or
           exists(Impl::MkModuleImport(mod))
         } or
@@ -1148,10 +1148,10 @@ module API {
       }
 
       /** A label for a module. */
-      class LabelMod extends ApiLabel {
+      class LabelModule extends ApiLabel {
         string mod;
 
-        LabelMod() { this = MkLabelMod(mod) }
+        LabelModule() { this = MkLabelModule(mod) }
 
         /** Gets the module associated with this label. */
         string getMod() { result = mod }
