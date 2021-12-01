@@ -227,12 +227,6 @@ private predicate inMatchingContext(AstNode n) {
   or
   n instanceof CasePattern
   or
-  n = any(ArrayPattern p).getClass()
-  or
-  n = any(FindPattern p).getClass()
-  or
-  n = any(HashPattern p).getClass()
-  or
   n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
 
