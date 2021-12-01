@@ -95,23 +95,14 @@ open class KotlinUsesExtractor(
 
         val extractClass = substituteClass ?: c
 
-        val classId = getClassLabel(extractClass, typeArgs)
-        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classId.classLabel, {
-            // If this is a generic type instantiation then it has no
-            // source entity, so we need to extract it here
-            if (typeArgs.isNotEmpty()) {
-                this.withSourceFileOfClass(extractClass).extractClassInstance(extractClass, typeArgs)
-            }
-
-            substituteClass?.let { extractClassLaterIfExternal(it) }
-        })
+        val classTypeResult = addClassLabel(extractClass, typeArgs)
         // Extract both the Kotlin and equivalent Java classes, so that we have database entries
         // for both even if all internal references to the Kotlin type are substituted.
-        // TODO: Should we do this inside the label initialisation? That would require all
-        //       initialisers of the label to do it.
-        extractClassLaterIfExternal(c)
+        if(c != extractClass) {
+            extractClassLaterIfExternal(c)
+        }
 
-        return UseClassInstanceResult(TypeResult(classLabel, extractClass.fqNameWhenAvailable?.asString(), classId.shortName), extractClass)
+        return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
     fun isExternalDeclaration(d: IrDeclaration): Boolean {
@@ -143,8 +134,17 @@ open class KotlinUsesExtractor(
 
     fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): TypeResult<DbClassorinterface> {
         val classLabelResult = getClassLabel(c, typeArgs)
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel, {
+            // If this is a generic type instantiation then it has no
+            // source entity, so we need to extract it here
+            if (typeArgs.isNotEmpty()) {
+                this.withSourceFileOfClass(c).extractClassInstance(c, typeArgs)
+            }
+
+            extractClassLaterIfExternal(c)
+        })
         return TypeResult(
-            tw.getLabelFor(classLabelResult.classLabel),
+            classLabel,
             c.fqNameWhenAvailable?.asString(),
             classLabelResult.shortName)
     }
@@ -293,7 +293,6 @@ open class KotlinUsesExtractor(
                     })
                     TypeResult(label, primitiveName, primitiveName)
                 } else {
-                    extractClassLaterIfExternal(javaClass)
                     addClassLabel(javaClass, listOf())
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
@@ -522,7 +521,6 @@ class X {
         )
     }
 
-
     fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Label generation should not be requested for an anonymous class")
@@ -541,8 +539,8 @@ class X {
         }
 
         // For source classes, the label doesn't include and type arguments
-        val classId = getClassLabel(c, listOf())
-        return tw.getLabelFor(classId.classLabel)
+        val classTypeResult = addClassLabel(c, listOf())
+        return classTypeResult.id
     }
 
     fun getTypeParameterLabel(param: IrTypeParameter): String {
