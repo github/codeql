@@ -261,14 +261,12 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends DataFlow::SharedFlowStep {
+  private class ArrayCreationStep extends PreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
         obj = array and
-        if array = any(PromiseAllCreation c).getArrayNode()
-        then prop = arrayElement(i)
-        else prop = arrayElement()
+        prop = arrayElement(i)
       )
     }
   }
