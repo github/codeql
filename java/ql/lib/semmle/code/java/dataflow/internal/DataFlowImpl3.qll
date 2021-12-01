@@ -1012,12 +1012,22 @@ private module Stage2 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand1/5;
 
+  bindingset[node, ap]
+  private predicate filter(NodeEx node, Ap ap) { any() }
+
   bindingset[ap, contentType]
   private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 
   /* Begin: Stage 2 logic. */
   private predicate flowCand(NodeEx node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
+  }
+
+  bindingset[result, apa]
+  private ApApprox unbindApa(ApApprox apa) {
+    exists(ApApprox apa0 |
+      apa = pragma[only_bind_into](apa0) and result = pragma[only_bind_into](apa0)
+    )
   }
 
   pragma[nomagic]
@@ -1042,6 +1052,13 @@ private module Stage2 {
    */
   pragma[nomagic]
   predicate fwdFlow(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    fwdFlow0(node, cc, argAp, ap, config) and
+    flowCand(node, unbindApa(getApprox(ap)), config) and
+    filter(node, ap)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
     (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
@@ -1112,7 +1129,7 @@ private module Stage2 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, config) and
       typecheckStore(ap1, contentType)
     )
   }
@@ -1189,7 +1206,7 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
+      PrevStage::parameterMayFlowThrough(p, _, unbindApa(getApprox(ap)), config)
     )
   }
 
