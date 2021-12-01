@@ -52,27 +52,13 @@ case @diagnostic.severity of
 
 @ruby_underscore_arg = @ruby_assignment | @ruby_binary | @ruby_conditional | @ruby_operator_assignment | @ruby_range | @ruby_unary | @ruby_underscore_primary
 
-@ruby_underscore_expression = @ruby_assignment | @ruby_binary | @ruby_break | @ruby_call | @ruby_next | @ruby_operator_assignment | @ruby_return | @ruby_unary | @ruby_underscore_arg | @ruby_yield
-
 @ruby_underscore_lhs = @ruby_call | @ruby_element_reference | @ruby_scope_resolution | @ruby_token_false | @ruby_token_nil | @ruby_token_true | @ruby_underscore_variable
 
 @ruby_underscore_method_name = @ruby_delimited_symbol | @ruby_setter | @ruby_token_class_variable | @ruby_token_constant | @ruby_token_global_variable | @ruby_token_identifier | @ruby_token_instance_variable | @ruby_token_operator | @ruby_token_simple_symbol
 
-@ruby_underscore_pattern_constant = @ruby_scope_resolution | @ruby_token_constant
+@ruby_underscore_primary = @ruby_array | @ruby_begin | @ruby_break | @ruby_case__ | @ruby_chained_string | @ruby_class | @ruby_delimited_symbol | @ruby_for | @ruby_hash | @ruby_if | @ruby_lambda | @ruby_method | @ruby_module | @ruby_next | @ruby_parenthesized_statements | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_retry | @ruby_return | @ruby_singleton_class | @ruby_singleton_method | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_symbol_array | @ruby_token_character | @ruby_token_complex | @ruby_token_float | @ruby_token_heredoc_beginning | @ruby_token_integer | @ruby_token_simple_symbol | @ruby_unary | @ruby_underscore_lhs | @ruby_unless | @ruby_until | @ruby_while | @ruby_yield
 
-@ruby_underscore_pattern_expr = @ruby_alternative_pattern | @ruby_as_pattern | @ruby_underscore_pattern_expr_basic
-
-@ruby_underscore_pattern_expr_basic = @ruby_array_pattern | @ruby_find_pattern | @ruby_hash_pattern | @ruby_range | @ruby_token_identifier | @ruby_underscore_pattern_constant | @ruby_underscore_pattern_primitive | @ruby_variable_reference_pattern
-
-@ruby_underscore_pattern_primitive = @ruby_delimited_symbol | @ruby_lambda | @ruby_regex | @ruby_string__ | @ruby_string_array | @ruby_symbol_array | @ruby_token_encoding | @ruby_token_false | @ruby_token_file | @ruby_token_line | @ruby_token_nil | @ruby_token_self | @ruby_token_simple_symbol | @ruby_token_true | @ruby_unary | @ruby_underscore_simple_numeric
-
-@ruby_underscore_pattern_top_expr_body = @ruby_array_pattern | @ruby_find_pattern | @ruby_hash_pattern | @ruby_underscore_pattern_expr
-
-@ruby_underscore_primary = @ruby_array | @ruby_begin | @ruby_break | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_delimited_symbol | @ruby_for | @ruby_hash | @ruby_if | @ruby_lambda | @ruby_method | @ruby_module | @ruby_next | @ruby_parenthesized_statements | @ruby_redo | @ruby_regex | @ruby_retry | @ruby_return | @ruby_singleton_class | @ruby_singleton_method | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_symbol_array | @ruby_token_character | @ruby_token_heredoc_beginning | @ruby_token_simple_symbol | @ruby_unary | @ruby_underscore_lhs | @ruby_underscore_simple_numeric | @ruby_unless | @ruby_until | @ruby_while | @ruby_yield
-
-@ruby_underscore_simple_numeric = @ruby_rational | @ruby_token_complex | @ruby_token_float | @ruby_token_integer
-
-@ruby_underscore_statement = @ruby_alias | @ruby_begin_block | @ruby_end_block | @ruby_if_modifier | @ruby_rescue_modifier | @ruby_undef | @ruby_underscore_expression | @ruby_unless_modifier | @ruby_until_modifier | @ruby_while_modifier
+@ruby_underscore_statement = @ruby_alias | @ruby_assignment | @ruby_begin_block | @ruby_binary | @ruby_break | @ruby_call | @ruby_end_block | @ruby_if_modifier | @ruby_next | @ruby_operator_assignment | @ruby_rescue_modifier | @ruby_return | @ruby_unary | @ruby_undef | @ruby_underscore_arg | @ruby_unless_modifier | @ruby_until_modifier | @ruby_while_modifier | @ruby_yield
 
 @ruby_underscore_variable = @ruby_token_class_variable | @ruby_token_constant | @ruby_token_global_variable | @ruby_token_identifier | @ruby_token_instance_variable | @ruby_token_self | @ruby_token_super
 
@@ -83,19 +69,7 @@ ruby_alias_def(
   int loc: @location ref
 );
 
-#keyset[ruby_alternative_pattern, index]
-ruby_alternative_pattern_alternatives(
-  int ruby_alternative_pattern: @ruby_alternative_pattern ref,
-  int index: int ref,
-  unique int alternatives: @ruby_underscore_pattern_expr_basic ref
-);
-
-ruby_alternative_pattern_def(
-  unique int id: @ruby_alternative_pattern,
-  int loc: @location ref
-);
-
-@ruby_argument_list_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+@ruby_argument_list_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_argument_list, index]
 ruby_argument_list_child(
@@ -109,7 +83,7 @@ ruby_argument_list_def(
   int loc: @location ref
 );
 
-@ruby_array_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+@ruby_array_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_array, index]
 ruby_array_child(
@@ -123,35 +97,9 @@ ruby_array_def(
   int loc: @location ref
 );
 
-ruby_array_pattern_class(
-  unique int ruby_array_pattern: @ruby_array_pattern ref,
-  unique int class: @ruby_underscore_pattern_constant ref
-);
-
-@ruby_array_pattern_child_type = @ruby_splat_parameter | @ruby_underscore_pattern_expr
-
-#keyset[ruby_array_pattern, index]
-ruby_array_pattern_child(
-  int ruby_array_pattern: @ruby_array_pattern ref,
-  int index: int ref,
-  unique int child: @ruby_array_pattern_child_type ref
-);
-
-ruby_array_pattern_def(
-  unique int id: @ruby_array_pattern,
-  int loc: @location ref
-);
-
-ruby_as_pattern_def(
-  unique int id: @ruby_as_pattern,
-  int name: @ruby_token_identifier ref,
-  int value: @ruby_underscore_pattern_expr ref,
-  int loc: @location ref
-);
-
 @ruby_assignment_left_type = @ruby_left_assignment_list | @ruby_underscore_lhs
 
-@ruby_assignment_right_type = @ruby_right_assignment_list | @ruby_splat_argument | @ruby_underscore_expression
+@ruby_assignment_right_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_right_assignment_list | @ruby_splat_argument | @ruby_underscore_arg | @ruby_yield
 
 ruby_assignment_def(
   unique int id: @ruby_assignment,
@@ -216,6 +164,8 @@ ruby_begin_block_def(
   int loc: @location ref
 );
 
+@ruby_binary_left_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 case @ruby_binary.operator of
   0 = @ruby_binary_bangequal
 | 1 = @ruby_binary_bangtilde
@@ -245,11 +195,13 @@ case @ruby_binary.operator of
 ;
 
 
+@ruby_binary_right_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 ruby_binary_def(
   unique int id: @ruby_binary,
-  int left: @ruby_underscore_expression ref,
+  int left: @ruby_binary_left_type ref,
   int operator: int ref,
-  int right: @ruby_underscore_expression ref,
+  int right: @ruby_binary_right_type ref,
   int loc: @location ref
 );
 
@@ -284,7 +236,7 @@ ruby_block_parameter_def(
   int loc: @location ref
 );
 
-@ruby_block_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+@ruby_block_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_block_parameters, index]
 ruby_block_parameters_child(
@@ -351,24 +303,6 @@ ruby_case_child(
 
 ruby_case_def(
   unique int id: @ruby_case__,
-  int loc: @location ref
-);
-
-#keyset[ruby_case_match, index]
-ruby_case_match_clauses(
-  int ruby_case_match: @ruby_case_match ref,
-  int index: int ref,
-  unique int clauses: @ruby_in_clause ref
-);
-
-ruby_case_match_else(
-  unique int ruby_case_match: @ruby_case_match ref,
-  unique int else: @ruby_else ref
-);
-
-ruby_case_match_def(
-  unique int id: @ruby_case_match,
-  int value: @ruby_underscore_statement ref,
   int loc: @location ref
 );
 
@@ -442,7 +376,7 @@ ruby_destructured_left_assignment_def(
   int loc: @location ref
 );
 
-@ruby_destructured_parameter_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+@ruby_destructured_parameter_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_destructured_parameter, index]
 ruby_destructured_parameter_child(
@@ -489,7 +423,7 @@ ruby_do_block_def(
   int loc: @location ref
 );
 
-@ruby_element_reference_child_type = @ruby_block_argument | @ruby_hash_splat_argument | @ruby_pair | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_expression
+@ruby_element_reference_child_type = @ruby_block_argument | @ruby_break | @ruby_call | @ruby_hash_splat_argument | @ruby_next | @ruby_pair | @ruby_return | @ruby_splat_argument | @ruby_token_forward_argument | @ruby_underscore_arg | @ruby_yield
 
 #keyset[ruby_element_reference, index]
 ruby_element_reference_child(
@@ -584,25 +518,6 @@ ruby_exceptions_def(
   int loc: @location ref
 );
 
-ruby_find_pattern_class(
-  unique int ruby_find_pattern: @ruby_find_pattern ref,
-  unique int class: @ruby_underscore_pattern_constant ref
-);
-
-@ruby_find_pattern_child_type = @ruby_splat_parameter | @ruby_underscore_pattern_expr
-
-#keyset[ruby_find_pattern, index]
-ruby_find_pattern_child(
-  int ruby_find_pattern: @ruby_find_pattern ref,
-  int index: int ref,
-  unique int child: @ruby_find_pattern_child_type ref
-);
-
-ruby_find_pattern_def(
-  unique int id: @ruby_find_pattern,
-  int loc: @location ref
-);
-
 @ruby_for_pattern_type = @ruby_left_assignment_list | @ruby_underscore_lhs
 
 ruby_for_def(
@@ -624,25 +539,6 @@ ruby_hash_child(
 
 ruby_hash_def(
   unique int id: @ruby_hash,
-  int loc: @location ref
-);
-
-ruby_hash_pattern_class(
-  unique int ruby_hash_pattern: @ruby_hash_pattern ref,
-  unique int class: @ruby_underscore_pattern_constant ref
-);
-
-@ruby_hash_pattern_child_type = @ruby_hash_splat_parameter | @ruby_keyword_pattern | @ruby_token_hash_splat_nil
-
-#keyset[ruby_hash_pattern, index]
-ruby_hash_pattern_child(
-  int ruby_hash_pattern: @ruby_hash_pattern ref,
-  int index: int ref,
-  unique int child: @ruby_hash_pattern_child_type ref
-);
-
-ruby_hash_pattern_def(
-  unique int id: @ruby_hash_pattern,
   int loc: @location ref
 );
 
@@ -694,40 +590,18 @@ ruby_if_def(
   int loc: @location ref
 );
 
-ruby_if_guard_def(
-  unique int id: @ruby_if_guard,
-  int condition: @ruby_underscore_expression ref,
-  int loc: @location ref
-);
+@ruby_if_modifier_condition_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
 
 ruby_if_modifier_def(
   unique int id: @ruby_if_modifier,
   int body: @ruby_underscore_statement ref,
-  int condition: @ruby_underscore_expression ref,
+  int condition: @ruby_if_modifier_condition_type ref,
   int loc: @location ref
 );
 
 ruby_in_def(
   unique int id: @ruby_in,
   int child: @ruby_underscore_arg ref,
-  int loc: @location ref
-);
-
-ruby_in_clause_body(
-  unique int ruby_in_clause: @ruby_in_clause ref,
-  unique int body: @ruby_then ref
-);
-
-@ruby_in_clause_guard_type = @ruby_if_guard | @ruby_unless_guard
-
-ruby_in_clause_guard(
-  unique int ruby_in_clause: @ruby_in_clause ref,
-  unique int guard: @ruby_in_clause_guard_type ref
-);
-
-ruby_in_clause_def(
-  unique int id: @ruby_in_clause,
-  int pattern: @ruby_underscore_pattern_top_expr_body ref,
   int loc: @location ref
 );
 
@@ -756,19 +630,6 @@ ruby_keyword_parameter_def(
   int loc: @location ref
 );
 
-@ruby_keyword_pattern_key_type = @ruby_string__ | @ruby_token_hash_key_symbol
-
-ruby_keyword_pattern_value(
-  unique int ruby_keyword_pattern: @ruby_keyword_pattern ref,
-  unique int value: @ruby_underscore_pattern_expr ref
-);
-
-ruby_keyword_pattern_def(
-  unique int id: @ruby_keyword_pattern,
-  int key__: @ruby_keyword_pattern_key_type ref,
-  int loc: @location ref
-);
-
 @ruby_lambda_body_type = @ruby_block | @ruby_do_block
 
 ruby_lambda_parameters(
@@ -782,7 +643,7 @@ ruby_lambda_def(
   int loc: @location ref
 );
 
-@ruby_lambda_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+@ruby_lambda_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_lambda_parameters, index]
 ruby_lambda_parameters_child(
@@ -815,7 +676,7 @@ ruby_method_parameters(
   unique int parameters: @ruby_method_parameters ref
 );
 
-@ruby_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
+@ruby_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
 
 #keyset[ruby_method, index]
 ruby_method_child(
@@ -830,7 +691,7 @@ ruby_method_def(
   int loc: @location ref
 );
 
-@ruby_method_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_hash_splat_nil | @ruby_token_identifier
+@ruby_method_parameters_child_type = @ruby_block_parameter | @ruby_destructured_parameter | @ruby_hash_splat_parameter | @ruby_keyword_parameter | @ruby_optional_parameter | @ruby_splat_parameter | @ruby_token_forward_parameter | @ruby_token_identifier
 
 #keyset[ruby_method_parameters, index]
 ruby_method_parameters_child(
@@ -888,11 +749,13 @@ case @ruby_operator_assignment.operator of
 ;
 
 
+@ruby_operator_assignment_right_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 ruby_operator_assignment_def(
   unique int id: @ruby_operator_assignment,
   int left: @ruby_underscore_lhs ref,
   int operator: int ref,
-  int right: @ruby_underscore_expression ref,
+  int right: @ruby_operator_assignment_right_type ref,
   int loc: @location ref
 );
 
@@ -948,18 +811,14 @@ ruby_program_def(
   int loc: @location ref
 );
 
-@ruby_range_begin_type = @ruby_underscore_arg | @ruby_underscore_pattern_primitive
-
 ruby_range_begin(
   unique int ruby_range: @ruby_range ref,
-  unique int begin: @ruby_range_begin_type ref
+  unique int begin: @ruby_underscore_arg ref
 );
-
-@ruby_range_end_type = @ruby_underscore_arg | @ruby_underscore_pattern_primitive
 
 ruby_range_end(
   unique int ruby_range: @ruby_range ref,
-  unique int end: @ruby_range_end_type ref
+  unique int end: @ruby_underscore_arg ref
 );
 
 case @ruby_range.operator of
@@ -1026,12 +885,12 @@ ruby_rescue_def(
   int loc: @location ref
 );
 
-@ruby_rescue_modifier_body_type = @ruby_underscore_arg | @ruby_underscore_statement
+@ruby_rescue_modifier_handler_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
 
 ruby_rescue_modifier_def(
   unique int id: @ruby_rescue_modifier,
-  int body: @ruby_rescue_modifier_body_type ref,
-  int handler: @ruby_underscore_expression ref,
+  int body: @ruby_underscore_statement ref,
+  int handler: @ruby_rescue_modifier_handler_type ref,
   int loc: @location ref
 );
 
@@ -1081,11 +940,9 @@ ruby_right_assignment_list_def(
 
 @ruby_scope_resolution_name_type = @ruby_token_constant | @ruby_token_identifier
 
-@ruby_scope_resolution_scope_type = @ruby_underscore_pattern_constant | @ruby_underscore_primary
-
 ruby_scope_resolution_scope(
   unique int ruby_scope_resolution: @ruby_scope_resolution ref,
-  unique int scope: @ruby_scope_resolution_scope_type ref
+  unique int scope: @ruby_underscore_primary ref
 );
 
 ruby_scope_resolution_def(
@@ -1122,7 +979,7 @@ ruby_singleton_method_parameters(
   unique int parameters: @ruby_method_parameters ref
 );
 
-@ruby_singleton_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
+@ruby_singleton_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
 
 #keyset[ruby_singleton_method, index]
 ruby_singleton_method_child(
@@ -1194,9 +1051,11 @@ ruby_subshell_def(
   int loc: @location ref
 );
 
+@ruby_superclass_child_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 ruby_superclass_def(
   unique int id: @ruby_superclass,
-  int child: @ruby_underscore_expression ref,
+  int child: @ruby_superclass_child_type ref,
   int loc: @location ref
 );
 
@@ -1226,7 +1085,7 @@ ruby_then_def(
   int loc: @location ref
 );
 
-@ruby_unary_operand_type = @ruby_parenthesized_statements | @ruby_underscore_expression | @ruby_underscore_simple_numeric
+@ruby_unary_operand_type = @ruby_break | @ruby_call | @ruby_next | @ruby_parenthesized_statements | @ruby_return | @ruby_token_float | @ruby_token_integer | @ruby_underscore_arg | @ruby_yield
 
 case @ruby_unary.operator of
   0 = @ruby_unary_bang
@@ -1275,16 +1134,12 @@ ruby_unless_def(
   int loc: @location ref
 );
 
-ruby_unless_guard_def(
-  unique int id: @ruby_unless_guard,
-  int condition: @ruby_underscore_expression ref,
-  int loc: @location ref
-);
+@ruby_unless_modifier_condition_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
 
 ruby_unless_modifier_def(
   unique int id: @ruby_unless_modifier,
   int body: @ruby_underscore_statement ref,
-  int condition: @ruby_underscore_expression ref,
+  int condition: @ruby_unless_modifier_condition_type ref,
   int loc: @location ref
 );
 
@@ -1295,16 +1150,12 @@ ruby_until_def(
   int loc: @location ref
 );
 
+@ruby_until_modifier_condition_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 ruby_until_modifier_def(
   unique int id: @ruby_until_modifier,
   int body: @ruby_underscore_statement ref,
-  int condition: @ruby_underscore_expression ref,
-  int loc: @location ref
-);
-
-ruby_variable_reference_pattern_def(
-  unique int id: @ruby_variable_reference_pattern,
-  int name: @ruby_token_identifier ref,
+  int condition: @ruby_until_modifier_condition_type ref,
   int loc: @location ref
 );
 
@@ -1332,10 +1183,12 @@ ruby_while_def(
   int loc: @location ref
 );
 
+@ruby_while_modifier_condition_type = @ruby_break | @ruby_call | @ruby_next | @ruby_return | @ruby_underscore_arg | @ruby_yield
+
 ruby_while_modifier_def(
   unique int id: @ruby_while_modifier,
   int body: @ruby_underscore_statement ref,
-  int condition: @ruby_underscore_expression ref,
+  int condition: @ruby_while_modifier_condition_type ref,
   int loc: @location ref
 );
 
@@ -1364,35 +1217,31 @@ case @ruby_token.kind of
 | 4 = @ruby_token_complex
 | 5 = @ruby_token_constant
 | 6 = @ruby_token_empty_statement
-| 7 = @ruby_token_encoding
-| 8 = @ruby_token_escape_sequence
-| 9 = @ruby_token_false
-| 10 = @ruby_token_file
-| 11 = @ruby_token_float
-| 12 = @ruby_token_forward_argument
-| 13 = @ruby_token_forward_parameter
-| 14 = @ruby_token_global_variable
-| 15 = @ruby_token_hash_key_symbol
-| 16 = @ruby_token_hash_splat_nil
-| 17 = @ruby_token_heredoc_beginning
-| 18 = @ruby_token_heredoc_content
-| 19 = @ruby_token_heredoc_end
-| 20 = @ruby_token_identifier
-| 21 = @ruby_token_instance_variable
-| 22 = @ruby_token_integer
-| 23 = @ruby_token_line
-| 24 = @ruby_token_nil
-| 25 = @ruby_token_operator
-| 26 = @ruby_token_self
-| 27 = @ruby_token_simple_symbol
-| 28 = @ruby_token_string_content
-| 29 = @ruby_token_super
-| 30 = @ruby_token_true
-| 31 = @ruby_token_uninterpreted
+| 7 = @ruby_token_escape_sequence
+| 8 = @ruby_token_false
+| 9 = @ruby_token_float
+| 10 = @ruby_token_forward_argument
+| 11 = @ruby_token_forward_parameter
+| 12 = @ruby_token_global_variable
+| 13 = @ruby_token_hash_key_symbol
+| 14 = @ruby_token_heredoc_beginning
+| 15 = @ruby_token_heredoc_content
+| 16 = @ruby_token_heredoc_end
+| 17 = @ruby_token_identifier
+| 18 = @ruby_token_instance_variable
+| 19 = @ruby_token_integer
+| 20 = @ruby_token_nil
+| 21 = @ruby_token_operator
+| 22 = @ruby_token_self
+| 23 = @ruby_token_simple_symbol
+| 24 = @ruby_token_string_content
+| 25 = @ruby_token_super
+| 26 = @ruby_token_true
+| 27 = @ruby_token_uninterpreted
 ;
 
 
-@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_parameter | @ruby_block_parameters | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
+@ruby_ast_node = @ruby_alias | @ruby_argument_list | @ruby_array | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_parameter | @ruby_block_parameters | @ruby_break | @ruby_call | @ruby_case__ | @ruby_chained_string | @ruby_class | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_for | @ruby_hash | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_modifier | @ruby_in | @ruby_interpolation | @ruby_keyword_parameter | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
 
 @ruby_ast_node_parent = @file | @ruby_ast_node
 

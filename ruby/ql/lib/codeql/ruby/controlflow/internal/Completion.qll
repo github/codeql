@@ -192,7 +192,7 @@ private predicate inBooleanContext(AstNode n) {
   or
   exists(CaseExpr c, WhenExpr w |
     not exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
 }
@@ -214,7 +214,7 @@ private predicate inMatchingContext(AstNode n) {
   or
   exists(CaseExpr c, WhenExpr w |
     exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
   or

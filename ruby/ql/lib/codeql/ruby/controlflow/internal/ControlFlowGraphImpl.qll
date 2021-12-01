@@ -378,7 +378,7 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PreOrderTree, CaseExpr {
+  private class CaseTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -386,7 +386,7 @@ module Trees {
     final override predicate last(AstNode last, Completion c) {
       last(this.getValue(), last, c) and not exists(this.getABranch())
       or
-      last(this.getAWhenBranch().getBody(), last, c)
+      last(this.getABranch().(WhenExpr).getBody(), last, c)
       or
       exists(int i, ControlFlowTree lastBranch |
         lastBranch = this.getBranch(i) and
@@ -602,6 +602,8 @@ module Trees {
   private class HashLiteralTree extends StandardPostOrderTree, HashLiteral {
     final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
+
+  private class HashSplatNilParameterTree extends LeafTree, HashSplatNilParameter { }
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
