@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func testing() {
-	variadicDeclaredFunction()           // $ isVariadic
-	nonvariadicDeclaredFunction([]int{}) // $ SPURIOUS: isVariadic
+	variadicDeclaredFunction() // $ isVariadic
+	nonvariadicDeclaredFunction([]int{})
 }
 
 func variadicDeclaredFunction(x ...int) int {

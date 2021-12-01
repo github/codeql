@@ -17,6 +17,6 @@ func variadicDeclaredFunction(x ...int) int { // $ isVariadic
 	return variadicFunctionLiteral(y...)
 }
 
-func nonvariadicDeclaredFunction(x []int) int { // $ SPURIOUS: isVariadic
+func nonvariadicDeclaredFunction(x []int) int {
 	return 0
 }
