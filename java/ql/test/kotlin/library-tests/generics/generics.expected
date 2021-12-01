@@ -25,8 +25,8 @@ parameterizedType
 | generics.kt:36:1:40:1 | BoundedTest | generics.kt:36:1:40:1 | BoundedTest | 0 | T |
 | generics.kt:36:1:40:1 | BoundedTest | generics.kt:36:1:40:1 | BoundedTest | 1 | S |
 function
-| generics.kt:3:1:5:1 | f0 | f0(java.lang.Object) |
-| generics.kt:7:1:9:1 | f1 | f1(java.lang.Object) |
+| generics.kt:3:1:5:1 | f0 | f0(int,java.lang.Object) |
+| generics.kt:7:1:9:1 | f1 | f1(int,java.lang.Object) |
 | generics.kt:11:1:11:19 | <obinit> | <obinit>() |
 | generics.kt:11:6:11:19 | C0 | C0() |
 | generics.kt:11:6:11:19 | equals | equals(java.lang.Object) |

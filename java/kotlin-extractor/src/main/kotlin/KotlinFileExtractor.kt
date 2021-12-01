@@ -35,8 +35,6 @@ open class KotlinFileExtractor(
         }
     }
 
-
-
     fun getLabel(element: IrElement) : String? {
         when (element) {
             is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
@@ -125,35 +123,10 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private val anonymousTypeMap: MutableMap<IrClass, TypeResults> = mutableMapOf()
-
-    override fun useAnonymousClass(c: IrClass): TypeResults {
-        var res = anonymousTypeMap[c]
-        if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-            res = TypeResults(javaResult, kotlinResult)
-            anonymousTypeMap[c] = res
-        }
-
-        return res
-    }
-
-    private fun extractAnonymousClassStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        @Suppress("UNCHECKED_CAST")
-        val id = extractClassSource(c) as Label<out DbClass>
-        val stmtId = tw.getFreshIdLabel<DbAnonymousclassdeclstmt>()
-        tw.writeStmts_anonymousclassdeclstmt(stmtId, parent, idx, callable)
-        tw.writeKtAnonymousClassDeclarationStmts(stmtId, id)
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(stmtId, locId)
-    }
-
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
         val id = if (c.isAnonymousObject) {
             @Suppress("UNCHECKED_CAST")
-            useAnonymousClass(c).javaResult.id as Label<out DbClass>
+            withSourceFile(c.fileOrNull!!).useAnonymousClass(c).javaResult.id as Label<out DbClass>
         } else {
             useClassSource(c)
         }
@@ -183,7 +156,7 @@ open class KotlinFileExtractor(
                 val parentId =
                     if (parent.isAnonymousObject) {
                         @Suppress("UNCHECKED_CAST")
-                        useAnonymousClass(c).javaResult.id as Label<out DbClass>
+                        withSourceFile(c.fileOrNull!!).useAnonymousClass(c).javaResult.id as Label<out DbClass>
                     } else {
                         useClassInstance(parent, listOf()).typeResult.id
                     }
@@ -280,7 +253,7 @@ open class KotlinFileExtractor(
         }
 
         // add method:
-        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType)
+        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val returnType = useType(pluginContext.irBuiltIns.unitType)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
@@ -341,22 +314,34 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, label: Label<DbMethod>? = null): Label<out DbCallable> {
         currentFunction = f
 
         f.typeParameters.map { extractTypeParameter(it) }
 
         val locId = tw.getLocation(f)
 
-        val id = useFunction<DbCallable>(f)
+        val id = label ?: useFunction<DbCallable>(f)
 
         val extReceiver = f.extensionReceiverParameter
-        val isExtension = extReceiver != null
-        val idxOffset = if (isExtension) 1 else 0
+        val idxOffset = if (extReceiver != null) 1 else 0
         val paramTypes = f.valueParameters.mapIndexed { i, vp ->
             extractValueParameter(vp, id, i + idxOffset)
         }
-        val paramsSignature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+        val allParamTypes = if (extReceiver != null) {
+            val extendedType = useType(extReceiver.type)
+            @Suppress("UNCHECKED_CAST")
+            tw.writeKtExtensionFunctions(id as Label<DbMethod>, extendedType.javaResult.id, extendedType.kotlinResult.id)
+
+            val t = extractValueParameter(extReceiver, id, 0)
+            val l = mutableListOf(t)
+            l.addAll(paramTypes)
+            l
+        } else {
+            paramTypes
+        }
+
+        val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
         if (f.symbol is IrConstructorSymbol) {
             val returnType = useType(erase(f.returnType), TypeContext.RETURN)
@@ -368,12 +353,6 @@ open class KotlinFileExtractor(
             val shortName = f.name.asString()
             @Suppress("UNCHECKED_CAST")
             tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
-            
-            if (extReceiver != null) {
-                val extendedType = useType(extReceiver.type)
-                tw.writeKtExtensionFunctions(id, extendedType.javaResult.id, extendedType.kotlinResult.id)
-                extractValueParameter(extReceiver, id, 0)
-            }
         }
 
         tw.writeHasLocation(id, locId)
@@ -524,9 +503,18 @@ open class KotlinFileExtractor(
             }
             is IrClass -> {
                 if (s.isAnonymousObject) {
-                    extractAnonymousClassStmt(s, callable, parent, idx)
+                    withSourceFile(s.fileOrNull!!).extractAnonymousClassStmt(s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
+                }
+            }
+            is IrFunction -> {
+                if (s.isLocalFunction()) {
+                    val extractor = withSourceFile(s.fileOrNull!!)
+                    val classId =  extractor.extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
+                    extractor.extractAnonymousClassStmt(classId, s, callable, parent, idx)
+                } else {
+                    logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }
             }
             else -> {
@@ -680,11 +668,10 @@ open class KotlinFileExtractor(
             val id = tw.getFreshIdLabel<DbMethodaccess>()
             val type = useType(c.type)
             val locId = tw.getLocation(c)
-            val methodId = useFunction<DbMethod>(callTarget)
+
             tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
             tw.writeHasLocation(id, locId)
             tw.writeCallableEnclosingExpr(id, callable)
-            tw.writeCallableBinding(id, methodId)
             tw.writeStatementEnclosingExpr(id, enclosingStmt)
 
             if (extractTypeArguments) {
@@ -692,9 +679,27 @@ open class KotlinFileExtractor(
                 extractTypeArguments(c, id, callable, enclosingStmt, -2, true)
             }
 
-            val dr = c.dispatchReceiver
-            if (dr != null) {
-                extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+            if (callTarget.isLocalFunction()) {
+                val ids = withSourceFile(callTarget.fileOrNull!!).useGeneratedLocalFunctionClass(callTarget)
+
+                val methodId = ids.function
+                tw.writeCallableBinding(id, methodId)
+
+                val idNewexpr = tw.getFreshIdLabel<DbNewexpr>()
+                tw.writeExprs_newexpr(idNewexpr, ids.type.javaResult.id, ids.type.kotlinResult.id, id, -1)
+                tw.writeHasLocation(idNewexpr, locId)
+                tw.writeCallableEnclosingExpr(idNewexpr, callable)
+                tw.writeStatementEnclosingExpr(idNewexpr, enclosingStmt)
+                tw.writeCallableBinding(idNewexpr, ids.constructor)
+
+            } else {
+                val methodId = useFunction<DbMethod>(callTarget)
+                tw.writeCallableBinding(id, methodId)
+
+                val dr = c.dispatchReceiver
+                if (dr != null) {
+                    extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+                }
             }
 
             val er = c.extensionReceiver
@@ -1054,7 +1059,7 @@ open class KotlinFileExtractor(
 
             val c = (e.type as IrSimpleType).classifier.owner as IrClass
 
-            type = useAnonymousClass(c)
+            type = withSourceFile(c.fileOrNull!!).useAnonymousClass(c)
 
             @Suppress("UNCHECKED_CAST")
             tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
@@ -1290,7 +1295,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val type = useType(e.type)
                 val locId = tw.getLocation(e)
-                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type)
+                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type, null)
                 val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                 tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)

@@ -1,7 +1,35 @@
+| file://:0:0:0:0 | C1<Integer> | TypeAccess |
+| file://:0:0:0:0 | Integer | TypeAccess |
+| file://:0:0:0:0 | Integer | TypeAccess |
+| file://:0:0:0:0 | String | TypeAccess |
 | methods2.kt:7:1:10:1 | <obinit>(...) | MethodAccess |
 | methods3.kt:5:1:7:1 | <obinit>(...) | MethodAccess |
 | methods4.kt:3:1:11:1 | <obinit>(...) | MethodAccess |
 | methods4.kt:5:3:9:3 | <obinit>(...) | MethodAccess |
+| methods5.kt:4:3:4:11 | x | LocalVariableDeclExpr |
+| methods5.kt:4:11:4:11 | 5 | IntegerLiteral |
+| methods5.kt:5:23:5:23 | i | VarAccess |
+| methods5.kt:5:23:5:27 | ... + ... | AddExpr |
+| methods5.kt:5:27:5:27 | x | VarAccess |
+| methods5.kt:6:3:6:3 | ...=... | AssignExpr |
+| methods5.kt:6:3:6:3 | x | VarAccess |
+| methods5.kt:6:7:6:7 | 6 | IntegerLiteral |
+| methods5.kt:7:3:7:15 | (...)... | CastExpr |
+| methods5.kt:7:3:7:15 | Unit | TypeAccess |
+| methods5.kt:7:3:7:15 | a(...) | MethodAccess |
+| methods5.kt:7:3:7:15 | new (...) | ClassInstanceExpr |
+| methods5.kt:7:13:7:14 | 42 | IntegerLiteral |
+| methods5.kt:8:3:8:3 | ...=... | AssignExpr |
+| methods5.kt:8:3:8:3 | x | VarAccess |
+| methods5.kt:8:7:8:7 | 7 | IntegerLiteral |
+| methods5.kt:9:32:9:32 | 5 | IntegerLiteral |
+| methods5.kt:10:3:10:11 | new C1(...) | ClassInstanceExpr |
+| methods5.kt:10:13:10:18 | (...)... | CastExpr |
+| methods5.kt:10:13:10:18 | Unit | TypeAccess |
+| methods5.kt:10:13:10:18 | f1(...) | MethodAccess |
+| methods5.kt:10:13:10:18 | new (...) | ClassInstanceExpr |
+| methods5.kt:10:16:10:17 | 42 | IntegerLiteral |
+| methods5.kt:13:1:13:14 | <obinit>(...) | MethodAccess |
 | methods.kt:5:1:13:1 | <obinit>(...) | MethodAccess |
 | methods.kt:10:9:10:25 | classMethod(...) | MethodAccess |
 | methods.kt:10:9:10:25 | this | ThisAccess |
