@@ -3,12 +3,13 @@ package com.github.codeql
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.util.IdSignature
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.zip.GZIPOutputStream
 
-class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String, val pluginContext: IrPluginContext) {
+class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String, val primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>, val pluginContext: IrPluginContext) {
 
     val externalClassesDone = HashSet<IrClass>()
     val externalClassWorkList = ArrayList<IrClass>()
@@ -34,7 +35,7 @@ class ExternalClassExtractor(val logger: FileLogger, val sourceFilePath: String,
                             GZIPOutputStream(manager.getFile().outputStream()).bufferedWriter().use { trapFileBW ->
                                 val tw =
                                     FileTrapWriter(TrapLabelManager(), trapFileBW, getIrClassBinaryPath(irClass), true)
-                                val fileExtractor = KotlinFileExtractor(logger, tw, manager, this, pluginContext)
+                                val fileExtractor = KotlinFileExtractor(logger, tw, manager, this, primitiveTypeMapping, pluginContext)
                                 fileExtractor.extractClassSource(irClass)
                             }
                         }

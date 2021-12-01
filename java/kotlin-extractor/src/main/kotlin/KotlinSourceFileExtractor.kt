@@ -8,15 +8,17 @@ import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.util.packageFqName
+import org.jetbrains.kotlin.ir.util.IdSignature
 
 class KotlinSourceFileExtractor(
     logger: FileLogger,
     tw: FileTrapWriter,
     val file: IrFile,
     externalClassExtractor: ExternalClassExtractor,
+    primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
     pluginContext: IrPluginContext
 ) :
-  KotlinFileExtractor(logger, tw, null, externalClassExtractor, pluginContext) {
+  KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext) {
 
     val fileClass by lazy {
         extractFileClass(file)

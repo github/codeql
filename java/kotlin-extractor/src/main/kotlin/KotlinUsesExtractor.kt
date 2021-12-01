@@ -19,6 +19,7 @@ open class KotlinUsesExtractor(
     open val tw: TrapWriter,
     val dependencyCollector: OdasaOutput.TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
+    val primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
     val pluginContext: IrPluginContext
 ) {
     fun usePackage(pkg: String): Label<out DbPackage> {
@@ -78,7 +79,7 @@ open class KotlinUsesExtractor(
 
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
 
-        return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, pluginContext)
+        return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext)
     }
 
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
@@ -284,7 +285,7 @@ open class KotlinUsesExtractor(
         }
         fun primitiveType(kotlinClass: IrClass, primitiveName: String?,
                           otherIsPrimitive: Boolean,
-                          javaPackageName: String, javaClassName: String,
+                          javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
             val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.hasQuestionMark && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
@@ -292,9 +293,8 @@ open class KotlinUsesExtractor(
                     })
                     TypeResult(label, primitiveName, primitiveName)
                 } else {
-                    val label = makeClass(javaPackageName, javaClassName)
-                    val signature = "$javaPackageName.$javaClassName"
-                    TypeResult(label, signature, javaClassName)
+                    extractClassLaterIfExternal(javaClass)
+                    addClassLabel(javaClass, listOf())
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
             val kotlinResult = if (s.hasQuestionMark) {
@@ -332,7 +332,7 @@ XXX delete?
             primitiveInfo != null -> return primitiveType(
                 s.classifier.owner as IrClass,
                 primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
-                primitiveInfo.javaPackageName, primitiveInfo.javaClassName,
+                primitiveInfo.javaClass,
                 primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
             )
 /*
