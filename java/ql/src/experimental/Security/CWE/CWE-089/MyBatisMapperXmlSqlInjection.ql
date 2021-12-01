@@ -1,12 +1,12 @@
 /**
- * @name MyBatis Mapper xml sql injection
+ * @name SQL injection in MyBatis Mapper XML
  * @description Constructing a dynamic SQL statement with input that comes from an
  *              untrusted source could allow an attacker to modify the statement's
  *              meaning or to execute arbitrary SQL commands.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/sql-injection
+ * @id java/mybatis-xml-sql-injection
  * @tags security
  *       external/cwe/cwe-089
  */
@@ -15,7 +15,6 @@ import java
 import DataFlow::PathGraph
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.xml.MyBatisMapperXML
-import semmle.code.java.security.SanitizerGuard
 import semmle.code.java.dataflow.FlowSources
 
 private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::Configuration {
@@ -31,10 +30,6 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
     node.getType() instanceof NumberType
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof ContainsSanitizer or guard instanceof EqualsSanitizer
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -61,5 +56,5 @@ where
   cfg.hasFlowPath(source, sink) and
   isMapperXmlSqlInjection(sink.getNode(), xmle)
 select sink.getNode(), source, sink,
-  "MyBatis Mapper XML sql injection might include code from $@ to $@.", source.getNode(),
-  "this user input", xmle, "this sql operation"
+  "MyBatis Mapper XML SQL injection might include code from $@ to $@.", source.getNode(),
+  "this user input", xmle, "this SQL operation"

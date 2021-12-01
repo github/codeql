@@ -1,3 +1,7 @@
+/**
+ * Provides public classes for MyBatis SQL injection detection.
+ */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.MyBatis
@@ -28,13 +32,8 @@ private class PropertiesFlowConfig extends DataFlow2::Configuration {
 string getAnMybatisConfigurationVariableKey() {
   exists(PropertiesFlowConfig conf, DataFlow::Node n |
     propertiesKey(n, result) and
-    conf.hasFlow(_, n)
+    conf.hasFlowTo(n)
   )
-}
-
-/** The interface `org.apache.ibatis.annotations.Param`. */
-class TypeParam extends Interface {
-  TypeParam() { this.hasQualifiedName("org.apache.ibatis.annotations", "Param") }
 }
 
 /** A reference type that extends a parameterization of `java.util.List`. */

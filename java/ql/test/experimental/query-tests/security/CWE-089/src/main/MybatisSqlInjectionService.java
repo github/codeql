@@ -55,9 +55,4 @@ public class MybatisSqlInjectionService {
 		List<Test> result = sqlInjectionMapper.good1(id);
 		return result;
 	}
-
-	public List<Test> good2(String name) {
-		List<Test> result = sqlInjectionMapper.good2(name);
-		return result;
-	}
 }

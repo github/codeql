@@ -1,3 +1,7 @@
+/**
+ * Provides classes for SQL injection detection in MyBatis annotation.
+ */
+
 import java
 import MyBatisCommonLib
 import semmle.code.xml.MyBatisMapperXML
@@ -7,7 +11,7 @@ import semmle.code.java.frameworks.Properties
 /** A sink for MyBatis annotation method call an argument. */
 class MyBatisAnnotationMethodCallAnArgument extends DataFlow::Node {
   MyBatisAnnotationMethodCallAnArgument() {
-    exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma | ma.getMethod() = msoam |
+    exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma | ma.getMethod() = msoam |
       ma.getAnArgument() = this.asExpr()
     )
   }
@@ -15,7 +19,7 @@ class MyBatisAnnotationMethodCallAnArgument extends DataFlow::Node {
 
 /** Get the #{...} or ${...} parameters in the Mybatis annotation value. */
 private string getAnMybatiAnnotationSetValue(IbatisSqlOperationAnnotation isoa) {
-  result = isoa.getSqlValue().trim().regexpFind("(#|\\$)(\\{([^\\}]*\\}))", _, _)
+  result = isoa.getSqlValue().trim().regexpFind("(#|\\$)\\{[^\\}]*\\}", _, _)
 }
 
 predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperationAnnotation isoa) {
@@ -27,15 +31,15 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
   //    @Select(select id,name from test where name like '%${value}%')
   //    Test test(String name);
   // ```
-  exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma, string res |
+  exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma, string res |
     msoam = ma.getMethod()
   |
     msoam.getAnAnnotation() = isoa and
     res = getAnMybatiAnnotationSetValue(isoa) and
     msoam.getNumberOfParameters() = 1 and
-    not ma.getMethod().getAParameter().hasAnnotation() and
+    not ma.getMethod().getAParameter().getAnAnnotation().getType() instanceof TypeParam and
     res.matches("%${%}") and
-    not res.matches("${" + getAnMybatisConfigurationVariableKey() + "}") and
+    not res = "${" + getAnMybatisConfigurationVariableKey() + "}" and
     ma.getAnArgument() = node.asExpr()
   )
   or
@@ -47,11 +51,11 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
   //    @Select(select id,name from test where name like '%${value}%')
   //    Test test(Map map);
   // ```
-  exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, string res |
+  exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, string res |
     msoam = ma.getMethod()
   |
     msoam.getAnAnnotation() = isoa and
-    not ma.getMethod().getParameter(i).hasAnnotation() and
+    not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
     (
       ma.getMethod().getParameterType(i) instanceof MapType or
       ma.getMethod().getParameterType(i) instanceof ListType or
@@ -59,7 +63,7 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
     ) and
     res = getAnMybatiAnnotationSetValue(isoa) and
     res.matches("%${%}") and
-    not res.matches("${" + getAnMybatisConfigurationVariableKey() + "}") and
+    not res = "${" + getAnMybatisConfigurationVariableKey() + "}" and
     ma.getArgument(i) = node.asExpr()
   )
   or
@@ -71,13 +75,13 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
   //    @Select(select id,name from test order by ${name,jdbcType=VARCHAR})
   //    void test(Test test);
   // ```
-  exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, Class c |
+  exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, RefType t |
     msoam = ma.getMethod()
   |
     msoam.getAnAnnotation() = isoa and
-    not ma.getMethod().getParameter(i).hasAnnotation() and
-    ma.getMethod().getParameterType(i).getName() = c.getName() and
-    getAnMybatiAnnotationSetValue(isoa).matches("%${" + c.getAField().getName() + "%}") and
+    not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
+    ma.getMethod().getParameterType(i).getName() = t.getName() and
+    getAnMybatiAnnotationSetValue(isoa).matches("%${" + t.getAField().getName() + "%}") and
     ma.getArgument(i) = node.asExpr()
   )
   or
@@ -89,12 +93,10 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
   //    @Select(select id,name from test order by ${orderby,jdbcType=VARCHAR})
   //    void test(@Param("orderby") String name);
   // ```
-  exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, Annotation annotation |
-    msoam = ma.getMethod()
+  exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, Annotation annotation |
+    msoam = ma.getMethod() and ma.getMethod().getParameter(i).getAnAnnotation() = annotation
   |
     msoam.getAnAnnotation() = isoa and
-    ma.getMethod().getParameter(i).hasAnnotation() and
-    ma.getMethod().getParameter(i).getAnAnnotation() = annotation and
     annotation.getType() instanceof TypeParam and
     getAnMybatiAnnotationSetValue(isoa)
         .matches("%${" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
@@ -109,18 +111,18 @@ predicate isMybatisAnnotationSqlInjection(DataFlow::Node node, IbatisSqlOperatio
   //    @Select(select id,name from test order by ${arg0,jdbcType=VARCHAR})
   //    void test(String name);
   // ```
-  exists(MybatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, string res |
+  exists(MyBatisSqlOperationAnnotationMethod msoam, MethodAccess ma, int i, string res |
     msoam = ma.getMethod()
   |
     msoam.getAnAnnotation() = isoa and
-    not ma.getMethod().getParameter(i).hasAnnotation() and
+    not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
     res = getAnMybatiAnnotationSetValue(isoa) and
     (
       res.matches("%${param" + (i + 1) + "%}")
       or
       res.matches("%${arg" + i + "%}")
     ) and
-    not res.matches("${" + getAnMybatisConfigurationVariableKey() + "}") and
+    not res = "${" + getAnMybatisConfigurationVariableKey() + "}" and
     ma.getArgument(i) = node.asExpr()
   )
 }

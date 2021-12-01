@@ -68,10 +68,4 @@ public class MybatisSqlInjection {
 		List<Test> result = mybatisSqlInjectionService.good1(id);
 		return result;
 	}
-
-	@GetMapping(value = "good2")
-	public List<Test> good2(String name) {
-		List<Test> result = mybatisSqlInjectionService.good2(name);
-		return result;
-	}
 }

@@ -4,23 +4,21 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>MyBatis operates the database by using @Select, @Insert, etc. annotations in the method, and can use the $ character 
-to construct dynamic SQL statements. Attackers can modify the meaning of statements or execute arbitrary SQL commands.</p>
+<p>MyBatis allows operating the database by annotating a method with the annotations <code>@Select</code>, <code>@Insert</code>, etc. to construct dynamic SQL statements.
+If the syntax `${param}` is used in those statements, and `param` is a parameter of the annotated method, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
 </overview>
 
 <<recommendation>
 <p>
-When writing MyBatis mapping statements, try to use the format "#{xxx}". If you have to use parameters 
-such as "${xxx}", you must manually filter to prevent SQL injection attacks.
+When writing MyBatis mapping statements, try to use the syntax <code>#{xxx}</code>. If the syntax <code>${xxx}</code> must be used, any parameters included in it should be sanitized to prevent SQL injection attacks.
 </p>
 </recommendation>
 
 <example>
 <p>
-The following examples show the bad situation and the good situation respectively. The <code>bad1</code> method uses <code>$(name)</code> 
-in the <code>@Select</code> annotation to dynamically splice SQL statements, and there is a SQL injection vulnerability. 
-The good1 method uses the <code>#{name}</code> method in the <code>@Select</code> annotation to splice SQL statements, 
-and the MyBatis framework will handle the dangerous characters entered by the user, And did not cause SQL injection vulnerabilities.
+The following sample shows a bad and a good example of MyBatis annotations usage. The <code>bad1</code> method uses <code>$(name)</code> 
+in the <code>@Select</code> annotation to dynamically build a SQL statement, which causes a SQL injection vulnerability. 
+The <code>good1</code> method uses <code>#{name}</code> in the <code>@Select</code> annotation to to dynamically include the parameter in a SQL statement, which allows the MyBatis framework to handle the sanitization, preventing the vulnerability.
 </p>
 <sample src="MyBatisAnnotationSqlInjection.java" />
 </example>

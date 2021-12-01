@@ -30,6 +30,4 @@ public interface SqlInjectionMapper {
 	public Test bad9(HashMap<String, Object> map);
 
 	List<Test> good1(Integer id);
-
-	List<Test> good2(String name);
 }

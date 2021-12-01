@@ -9,8 +9,7 @@
 
 <<recommendation>
 <p>
-When writing MyBatis mapping statements, try to use the format "#{xxx}". If you have to use parameters 
-such as "${xxx}", you must manually filter to prevent SQL injection attacks.
+When writing MyBatis mapping statements, try to use the syntax <code>#{xxx}</code>. If the syntax <code>${xxx}</code> must be used, any parameters included in it should be sanitized to prevent SQL injection attacks.
 </p>
 </recommendation>
 
@@ -18,7 +17,7 @@ such as "${xxx}", you must manually filter to prevent SQL injection attacks.
 <p>
 The following examples show the bad situation and the good situation respectively. In <code>bad1</code> 
 and <code>bad2</code> and <code>bad3</code> and <code>bad4</code> and <code >bad5</code>, the program 
-${ xxx} are dynamic SQL statements, these five examples of SQL injection vulnerabilities. In <code>good1</code>, 
+${xxx} are dynamic SQL statements, these five examples of SQL injection vulnerabilities. In <code>good1</code>, 
 the program uses the ${xxx} dynamic feature SQL statement, but there are subtle restrictions on the data, 
 and there is no SQL injection vulnerability.
 </p>

@@ -1,3 +1,7 @@
+/**
+ * Provides classes for working with MyBatis mapper xml files and their content.
+ */
+
 import java
 
 /**
@@ -20,12 +24,14 @@ class MyBatisMapperXMLElement extends XMLElement {
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() { result = allCharactersString().trim() }
+  string getValue() { result = this.allCharactersString().trim() }
 
   /**
    * Gets the reference type bound to MyBatis Mapper XML File.
    */
-  RefType getNamespaceRefType() { result.getQualifiedName() = getAttribute("namespace").getValue() }
+  RefType getNamespaceRefType() {
+    result.getQualifiedName() = this.getAttribute("namespace").getValue()
+  }
 }
 
 /**
@@ -37,8 +43,11 @@ abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
   /**
    * Gets the `<include>` element in a `MyBatisMapperSqlOperation`.
    */
-  MyBatisMapperInclude getInclude() { result = getAChild*() }
+  MyBatisMapperInclude getInclude() { result = this.getAChild*() }
 
+  /**
+   * Gets the method bound to MyBatis Mapper XML File.
+   */
   Method getMapperMethod() {
     result.getName() = this.getId() and
     result.getDeclaringType() = this.getParent().(MyBatisMapperXMLElement).getNamespaceRefType()
@@ -49,72 +58,72 @@ abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
  * A `<insert>` element in a `MyBatisMapperSqlOperation`.
  */
 class MyBatisMapperInsert extends MyBatisMapperSqlOperation {
-  MyBatisMapperInsert() { getName() = "insert" }
+  MyBatisMapperInsert() { this.getName() = "insert" }
 
   /**
    * Gets the value of the `id` attribute of this `<insert>`.
    */
-  override string getId() { result = getAttribute("id").getValue() }
+  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
  * A `<update>` element in a `MyBatisMapperSqlOperation`.
  */
 class MyBatisMapperUpdate extends MyBatisMapperSqlOperation {
-  MyBatisMapperUpdate() { getName() = "update" }
+  MyBatisMapperUpdate() { this.getName() = "update" }
 
   /**
    * Gets the value of the `id` attribute of this `<update>`.
    */
-  override string getId() { result = getAttribute("id").getValue() }
+  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
  * A `<delete>` element in a `MyBatisMapperSqlOperation`.
  */
 class MyBatisMapperDelete extends MyBatisMapperSqlOperation {
-  MyBatisMapperDelete() { getName() = "delete" }
+  MyBatisMapperDelete() { this.getName() = "delete" }
 
   /**
    * Gets the value of the `id` attribute of this `<delete>`.
    */
-  override string getId() { result = getAttribute("id").getValue() }
+  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
  * A `<select>` element in a `MyBatisMapperSqlOperation`.
  */
 class MyBatisMapperSelect extends MyBatisMapperSqlOperation {
-  MyBatisMapperSelect() { getName() = "select" }
+  MyBatisMapperSelect() { this.getName() = "select" }
 
   /**
    * Gets the value of the `id` attribute of this `<select>`.
    */
-  override string getId() { result = getAttribute("id").getValue() }
+  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
  * A `<select>` element in a `MyBatisMapperXMLElement`.
  */
 class MyBatisMapperSql extends MyBatisMapperXMLElement {
-  MyBatisMapperSql() { getName() = "sql" }
+  MyBatisMapperSql() { this.getName() = "sql" }
 
   /**
    * Gets the value of the `id` attribute of this `<sql>`.
    */
-  string getId() { result = getAttribute("id").getValue() }
+  string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
  * A `<include>` element in a `MyBatisMapperXMLElement`.
  */
 class MyBatisMapperInclude extends MyBatisMapperXMLElement {
-  MyBatisMapperInclude() { getName() = "include" }
+  MyBatisMapperInclude() { this.getName() = "include" }
 
   /**
    * Gets the value of the `refid` attribute of this `<include>`.
    */
-  string getRefid() { result = getAttribute("refid").getValue() }
+  string getRefid() { result = this.getAttribute("refid").getValue() }
 }
 
 /**
