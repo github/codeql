@@ -137,6 +137,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
    */
   DataFlow::CallNode getACall() { result.getACallee() = this }
 
+  /** Holds if this function is variadic. */
   predicate isVariadic() { this.getType().isVariadic() }
 
   override string getAPrimaryQlClass() { result = "FuncDef" }
