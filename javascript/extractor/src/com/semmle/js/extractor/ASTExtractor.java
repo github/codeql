@@ -1812,7 +1812,7 @@ public class ASTExtractor {
     public Label visit(ImportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getImported(), lbl, 0, IdContext.LABEL);
-      visit(nd.getLocal(), lbl, 1, c.idcontext);
+      visit(nd.getLocal(), lbl, 1, nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_IMPORT : c.idcontext);
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
       } 
