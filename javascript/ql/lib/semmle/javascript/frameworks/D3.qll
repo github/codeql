@@ -23,7 +23,7 @@ module D3 {
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
     or
-    result = API::root().getASuccessor(any(D3GlobalEntry i))
+    result = any(D3GlobalEntry i).getNode()
   }
 
   /**

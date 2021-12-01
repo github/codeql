@@ -117,15 +117,19 @@ private class RemoteFlowSourceAccessPath extends JSONString {
   string getSourceType() { result = sourceType }
 
   /** Gets the `i`th component of the access path specifying this remote flow source. */
-  string getComponent(int i) {
+  API::Label::ApiLabel getComponent(int i) {
     exists(string raw | raw = this.getValue().splitAt(".", i + 1) |
       i = 0 and
-      result = "ExternalRemoteFlowSourceSpec " + raw
+      result =
+        API::Label::entryPoint(any(ExternalRemoteFlowSourceSpecEntryPoint e | e.getName() = raw))
       or
       i > 0 and
-      result = API::EdgeLabel::member(raw)
+      result = API::Label::member(raw)
     )
   }
+
+  /** Gets the first part of this access path. E.g. for "window.user.name" the result is "window". */
+  string getRootPath() { result = this.getValue().splitAt(".", 1) }
 
   /** Gets the index of the last component of this access path. */
   int getMaxComponentIndex() { result = max(int i | exists(this.getComponent(i))) }
@@ -154,9 +158,11 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
   string name;
 
   ExternalRemoteFlowSourceSpecEntryPoint() {
-    this = any(RemoteFlowSourceAccessPath s).getComponent(0) and
+    name = any(RemoteFlowSourceAccessPath s).getRootPath() and
     this = "ExternalRemoteFlowSourceSpec " + name
   }
+
+  string getName() { result = name }
 
   override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(name) }
 
