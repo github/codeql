@@ -250,6 +250,13 @@ module DomBasedXss {
     }
   }
 
+  import ClientSideUrlRedirectCustomizations::ClientSideUrlRedirect as ClientSideUrlRedirect
+
+  /**
+   * A write to a URL which may execute JavaScript code.
+   */
+  class WriteURLSink extends Sink instanceof ClientSideUrlRedirect::Sink { }
+
   /**
    * An expression whose value is interpreted as HTML or CSS
    * and may be inserted into the DOM.
