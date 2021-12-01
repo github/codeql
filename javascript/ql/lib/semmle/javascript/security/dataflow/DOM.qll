@@ -84,6 +84,9 @@ class DomMethodCallExpr extends MethodCallExpr {
     )
   }
 
+  /**
+   * Holds if `arg` is an argument that is used as an URL.
+   */
   predicate interpretsArgumentsAsURL(Expr arg) {
     exists(int argPos, string name |
       arg = this.getArgument(argPos) and

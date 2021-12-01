@@ -8,13 +8,19 @@ nodes
 | exception-xss.js:2:6:2:28 | foo |
 | exception-xss.js:2:12:2:28 | document.location |
 | exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:4:17:4:17 | x |
+| exception-xss.js:4:17:4:17 | x |
+| exception-xss.js:5:11:5:11 | x |
 | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:10:11:10:11 | e |
 | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
 | exception-xss.js:15:9:15:11 | foo |
 | exception-xss.js:16:11:16:11 | e |
+| exception-xss.js:16:11:16:11 | e |
+| exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:21:11:21:13 | foo |
@@ -27,15 +33,28 @@ nodes
 | exception-xss.js:34:11:34:11 | e |
 | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:39:3:39:10 | exceptional return of deep2(x) |
+| exception-xss.js:42:3:42:10 | exceptional return of inner(x) |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
 | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
 | exception-xss.js:46:8:46:18 | "bar" + foo |
 | exception-xss.js:46:16:46:18 | foo |
 | exception-xss.js:47:11:47:11 | e |
+| exception-xss.js:47:11:47:11 | e |
 | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:74:28:74:28 | x |
+| exception-xss.js:74:28:74:28 | x |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
+| exception-xss.js:75:10:75:10 | x |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
 | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
 | exception-xss.js:81:16:81:18 | foo |
 | exception-xss.js:82:11:82:11 | e |
+| exception-xss.js:82:11:82:11 | e |
+| exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:89:11:89:13 | foo |
@@ -104,11 +123,19 @@ edges
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:102:12:102:14 | foo |
 | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
 | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:4:17:4:17 | x | exception-xss.js:5:11:5:11 | x |
+| exception-xss.js:4:17:4:17 | x | exception-xss.js:5:11:5:11 | x |
+| exception-xss.js:5:11:5:11 | x | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:5:11:5:11 | x | exception-xss.js:42:3:42:10 | exceptional return of inner(x) |
+| exception-xss.js:5:11:5:11 | x | exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
 | exception-xss.js:9:11:9:13 | foo | exception-xss.js:10:11:10:11 | e |
 | exception-xss.js:10:11:10:11 | e | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:10:11:10:11 | e | exception-xss.js:11:18:11:18 | e |
 | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) | exception-xss.js:16:11:16:11 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) | exception-xss.js:16:11:16:11 | e |
 | exception-xss.js:15:9:15:11 | foo | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
+| exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
 | exception-xss.js:21:11:21:13 | foo | exception-xss.js:21:11:21:21 | foo + "bar" |
@@ -119,13 +146,26 @@ edges
 | exception-xss.js:33:19:33:21 | foo | exception-xss.js:33:11:33:22 | ["bar", foo] |
 | exception-xss.js:34:11:34:11 | e | exception-xss.js:35:18:35:18 | e |
 | exception-xss.js:34:11:34:11 | e | exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:39:3:39:10 | exceptional return of deep2(x) | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
+| exception-xss.js:42:3:42:10 | exceptional return of inner(x) | exception-xss.js:39:3:39:10 | exceptional return of deep2(x) |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:11:47:11 | e |
 | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:11:47:11 | e |
 | exception-xss.js:46:8:46:18 | "bar" + foo | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
 | exception-xss.js:46:16:46:18 | foo | exception-xss.js:46:8:46:18 | "bar" + foo |
 | exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
 | exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:74:28:74:28 | x | exception-xss.js:75:10:75:10 | x |
+| exception-xss.js:74:28:74:28 | x | exception-xss.js:75:10:75:10 | x |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:75:4:75:11 | exceptional return of inner(x) | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:75:10:75:10 | x | exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) | exception-xss.js:82:11:82:11 | e |
 | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) | exception-xss.js:82:11:82:11 | e |
 | exception-xss.js:81:16:81:18 | foo | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
+| exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
 | exception-xss.js:89:11:89:13 | foo | exception-xss.js:89:11:89:26 | foo.match(/foo/) |
@@ -177,10 +217,14 @@ edges
 | ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | $@ is reinterpreted as HTML without escaping meta-characters. | ajv.js:24:18:24:26 | val.error | JSON schema validation error |
 | exception-xss.js:11:18:11:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:11:18:11:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:17:18:17:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:17:18:17:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:17:18:17:18 | e | exception-xss.js:4:17:4:17 | x | exception-xss.js:17:18:17:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:4:17:4:17 | x | Exception text |
 | exception-xss.js:23:18:23:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:23:18:23:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:35:18:35:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:35:18:35:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:48:18:48:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:48:18:48:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:48:18:48:18 | e | exception-xss.js:4:17:4:17 | x | exception-xss.js:48:18:48:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:4:17:4:17 | x | Exception text |
 | exception-xss.js:83:18:83:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:83:18:83:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:83:18:83:18 | e | exception-xss.js:4:17:4:17 | x | exception-xss.js:83:18:83:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:4:17:4:17 | x | Exception text |
+| exception-xss.js:83:18:83:18 | e | exception-xss.js:74:28:74:28 | x | exception-xss.js:83:18:83:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:74:28:74:28 | x | Exception text |
 | exception-xss.js:91:18:91:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:91:18:91:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:97:18:97:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:97:18:97:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:107:18:107:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:107:18:107:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
