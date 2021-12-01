@@ -23,23 +23,16 @@
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue", "ReturnValue[n]",
- *    "ReturnValue[n1..n2]":
+ *    "Argument[n]", or "Argument[n1..n2]":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `-1` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
  *      in the given range. The range is inclusive at both ends.
- *    - "ReturnValue": Selects the first value being returned by the selected
- *      element. This requires that the selected element is a method with a
- *      body.
- *    - "ReturnValue[n]": Similar to "ReturnValue" but selects the specified
- *      return value. The return values are zero-indexed
- *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
- *      return value in the given range. The range is inclusive at both ends.
  *
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
- *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
+ *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
+ *    "ReturnValue[n1..n2]":
  *    - "": Selects a read of a selected field, or a selected parameter.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
@@ -53,7 +46,13 @@
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
- *    - "ReturnValue": Selects the return value of a call to the selected element.
+ *    - "ReturnValue": Selects the first value being returned by the selected
+ *      element. This requires that the selected element is a method with a
+ *      body.
+ *    - "ReturnValue[n]": Similar to "ReturnValue" but selects the specified
+ *      return value. The return values are zero-indexed
+ *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
+ *      return value in the given range. The range is inclusive at both ends.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
@@ -190,22 +189,36 @@ predicate summaryModel(
   row.splitAt(";", 8) = kind
 }
 
+/** Holds if `package` have CSV framework coverage. */
 private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _) or
   sinkModel(package, _, _, _, _, _, _, _) or
   summaryModel(package, _, _, _, _, _, _, _, _)
 }
 
+/**
+ * Holds if `shortpkg` and `longpkg` have CSV framework coverage and `shortpkg`
+ * is a subpackage of `longpkg`.
+ */
 private predicate packageLink(string shortpkg, string longpkg) {
   relevantPackage(shortpkg) and
   relevantPackage(longpkg) and
   longpkg.prefix(longpkg.indexOf(".")) = shortpkg
 }
 
+/**
+ * Holds if `package` has CSV framework coverage and it is not a subpackage of
+ * any other package with CSV framework coverage.
+ */
 private predicate canonicalPackage(string package) {
   relevantPackage(package) and not packageLink(_, package)
 }
 
+/**
+ * Holds if `package` and `subpkg` have CSV framework coverage, `subpkg` is a
+ * subpackage of `package` (or they are the same), and `package` is not a
+ * subpackage of any other package with CSV framework coverage.
+ */
 private predicate canonicalPkgLink(string package, string subpkg) {
   canonicalPackage(package) and
   (subpkg = package or packageLink(package, subpkg))
@@ -213,7 +226,8 @@ private predicate canonicalPkgLink(string package, string subpkg) {
 
 /**
  * Holds if CSV framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
+ * which have CSV framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
   pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
@@ -389,7 +403,7 @@ class SyntheticField extends string {
   SyntheticField() { parseSynthField(_, this) }
 
   /**
-   * Gets the type of this field. The default type is `Object`, but this can be
+   * Gets the type of this field. The default type is `interface{}`, but this can be
    * overridden.
    */
   Type getType() { result instanceof EmptyInterfaceType }

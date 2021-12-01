@@ -17,15 +17,15 @@ private class BuiltinModel extends SummaryModelCsv {
 }
 
 /**
- * Holds if the step from `node1` to `node2` stores a value in a slice or array.
- * Thus, `node2` references an object with a content `c` that contains the value
- * of `node1`. This covers array assignments and initializers as well as
- * implicit array creations for varargs.
+ * Holds if the step from `node1` to `node2` stores a value in an array, a
+ * slice, a collection or a map. Thus, `node2` references an object with a
+ * content `c` that contains the value of `node1`. This covers array
+ * assignments and initializers as well as implicit array creations for
+ * varargs.
  */
 predicate containerStoreStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
   (
-    // currently there is no database information about variadic functions
     (
       node2.getType() instanceof ArrayType or
       node2.getType() instanceof SliceType
@@ -46,10 +46,10 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
 }
 
 /**
- * Holds if the step from `node1` to `node2` reads a value from a slice or array.
- * Thus, `node1` references an object with a content `c` whose value ends up in
- * `node2`. This covers ordinary array reads as well as array iteration through
- * enhanced `for` statements.
+ * Holds if the step from `node1` to `node2` reads a value from an array, a
+ * slice, a collection or a map. Thus, `node1` references an object with a
+ * content `c` whose value ends up in `node2`. This covers ordinary array reads
+ * as well as array iteration through enhanced `for` statements.
  */
 predicate containerReadStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
