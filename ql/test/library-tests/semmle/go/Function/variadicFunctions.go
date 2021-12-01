@@ -4,6 +4,7 @@ import "fmt"
 
 func testing() {
 	variadicDeclaredFunction() // $ isVariadic
+	nonvariadicDeclaredFunction([]int{})
 }
 
 func variadicDeclaredFunction(x ...int) int {
@@ -14,4 +15,8 @@ func variadicDeclaredFunction(x ...int) int {
 	fmt.Fprint(nil, nil, nil) // $ isVariadic
 	variadicFunctionLiteral := func(z ...int) int { return z[1] }
 	return variadicFunctionLiteral(y...)
+}
+
+func nonvariadicDeclaredFunction(x []int) int {
+	return 0
 }

@@ -1555,6 +1555,9 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 					fmt.Fprintf(&b, "{%s}", resultLbl)
 				}
 			}
+			if tp.Variadic() {
+				b.WriteString(";variadic")
+			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;signaturetype", b.String()))
 		case *types.Map:
 			key := extractType(tw, tp.Key())
