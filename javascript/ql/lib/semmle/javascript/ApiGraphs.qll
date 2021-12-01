@@ -1006,7 +1006,7 @@ module API {
   /** Provides classes modeling the various edges (labels) in the API graph. */
   module Label {
     /** A label in the API-graph */
-    abstract class ApiLabel extends TLabel {
+    class ApiLabel extends TLabel {
       /** Gets a string representation of this label. */
       string toString() { result = "???" }
     }
