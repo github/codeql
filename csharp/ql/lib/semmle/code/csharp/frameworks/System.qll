@@ -92,6 +92,18 @@ class SystemBooleanStruct extends BoolType {
   }
 }
 
+/** Data flow for `System.Boolean` */
+private class SystemBoolean32FlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];Argument[1];taint",
+        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Convert` class. */
 class SystemConvertClass extends SystemClass {
   SystemConvertClass() { this.hasName("Convert") }

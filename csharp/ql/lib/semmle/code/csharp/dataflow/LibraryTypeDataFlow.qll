@@ -499,37 +499,6 @@ private module FrameworkDataFlowAdaptor {
   }
 }
 
-/** Data flow for `System.Boolean`. */
-class SystemBooleanFlow extends LibraryTypeDataFlow, SystemBooleanStruct {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    this.methodFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = this.getParseMethod() and
-    (
-      source = TCallableFlowSourceArg(0) and
-      sink = TCallableFlowSinkReturn()
-    )
-    or
-    m = this.getTryParseMethod() and
-    (
-      source = TCallableFlowSourceArg(0) and
-      (
-        sink = TCallableFlowSinkReturn()
-        or
-        sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
-      )
-    )
-  }
-}
-
 /** Data flow for `System.Uri`. */
 class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
   override predicate callableFlow(
