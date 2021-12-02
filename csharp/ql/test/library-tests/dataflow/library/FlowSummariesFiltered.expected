@@ -2004,6 +2004,8 @@
 | System;Array;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System;Array;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint |
+| System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];Argument[1];taint |
+| System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];ReturnValue;taint |
 | System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];Argument[1];taint |
 | System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ChangeType;(System.Object,System.Type);;Argument[0];ReturnValue;taint |

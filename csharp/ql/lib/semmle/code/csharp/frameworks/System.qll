@@ -99,7 +99,9 @@ private class SystemBoolean32FlowModelCsv extends SummaryModelCsv {
       [
         "System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
         "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];Argument[1];taint",
-        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];ReturnValue;taint"
+        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];Argument[1];taint",
+        "System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];ReturnValue;taint",
       ]
   }
 }
