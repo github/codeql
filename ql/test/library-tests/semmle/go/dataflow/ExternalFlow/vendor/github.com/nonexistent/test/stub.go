@@ -16,9 +16,27 @@ func (t *T) StepQualArg(arg interface{}) {}
 
 func StepArgResNoQual(arg interface{}) interface{} { return nil }
 
-func StepArgResContent(arg interface{}) []interface{} { return nil }
+func StepArgResArrayContent(arg interface{}) []interface{} { return nil }
 
-func StepArgContentRes(arg []interface{}) interface{} { return nil }
+func StepArgArrayContentRes(arg []interface{}) interface{} { return nil }
+
+func StepArgResCollectionContent(arg interface{}) interface{} { return nil }
+
+func StepArgCollectionContentRes(arg interface{}) interface{} { return nil }
+
+func StepArgResMapKeyContent(arg interface{}) interface{} { return nil }
+
+func StepArgMapKeyContentRes(arg interface{}) interface{} { return nil }
+
+func StepArgResMapValueContent(arg interface{}) interface{} { return nil }
+
+func StepArgMapValueContentRes(arg interface{}) interface{} { return nil }
+
+func GetElement(x interface{}) interface{} { return nil }
+
+func SetElement(x interface{}) interface{} { return nil }
+
+func GetMapKey(x interface{}) interface{} { return nil }
 
 type A interface {
 	Src1() interface{}

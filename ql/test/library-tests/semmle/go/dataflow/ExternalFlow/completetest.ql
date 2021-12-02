@@ -21,8 +21,17 @@ class SummaryModelTest extends SummaryModelCsv {
         "github.com/nonexistent/test;T;false;StepQualRes;;;Argument[-1];ReturnValue;taint",
         "github.com/nonexistent/test;T;false;StepQualArg;;;Argument[-1];Argument[0];taint",
         "github.com/nonexistent/test;;false;StepArgResNoQual;;;Argument[0];ReturnValue;taint",
-        "github.com/nonexistent/test;;false;StepArgResContent;;;Argument[0];ArrayElement of ReturnValue;taint",
-        "github.com/nonexistent/test;;false;StepArgContentRes;;;ArrayElement of Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgResArrayContent;;;Argument[0];ArrayElement of ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgArrayContentRes;;;ArrayElement of Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgResCollectionContent;;;Argument[0];Element of ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgCollectionContentRes;;;Element of Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgResMapKeyContent;;;Argument[0];MapKey of ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgMapKeyContentRes;;;MapKey of Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgResMapValueContent;;;Argument[0];MapValue of ReturnValue;taint",
+        "github.com/nonexistent/test;;false;StepArgMapValueContentRes;;;MapValue of Argument[0];ReturnValue;taint",
+        "github.com/nonexistent/test;;false;GetElement;;;Element of Argument[0];ReturnValue;value",
+        "github.com/nonexistent/test;;false;GetMapKey;;;MapKey of Argument[0];ReturnValue;value",
+        "github.com/nonexistent/test;;false;SetElement;;;Argument[0];Element of ReturnValue;value",
       ]
   }
 }

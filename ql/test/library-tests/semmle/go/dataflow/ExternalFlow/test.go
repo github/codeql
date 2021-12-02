@@ -23,8 +23,14 @@ func main() {
 	taint = t.StepQualRes()
 	t.StepQualArg(arg)
 	taint = test.StepArgResNoQual(arg)
-	taintSlice = test.StepArgResContent(arg)
-	taint = test.StepArgContentRes(array)
+	taintSlice = test.StepArgResArrayContent(arg)
+	taint = test.StepArgArrayContentRes(array)
+	taint = test.StepArgResCollectionContent(arg)
+	taint = test.StepArgCollectionContentRes(array)
+	taint = test.StepArgResMapKeyContent(arg)
+	taint = test.StepArgMapKeyContentRes(array)
+	taint = test.StepArgResMapValueContent(arg)
+	taint = test.StepArgMapValueContentRes(array)
 
 	var src interface{}
 	var src1 interface{}
@@ -77,14 +83,47 @@ func simpleflow() {
 	taint7 := test.StepArgResNoQual(src)
 	b.Sink1(taint7) // $ hasTaintFlow="taint7"
 
-	taint8 := test.StepArgResContent(src)
+	taint8 := test.StepArgResArrayContent(src)
 	b.Sink1(taint8[0]) // $ hasTaintFlow="index expression"
 
 	srcArray := []interface{}{nil, src}
-	taint9 := test.StepArgContentRes(srcArray)
+	taint9 := test.StepArgArrayContentRes(srcArray)
 	b.Sink1(taint9) // $ hasTaintFlow="taint9"
+
+	taint10 := test.StepArgResCollectionContent(a.Src1()).(chan interface{})
+	b.Sink1(test.GetElement(taint10)) // $ hasTaintFlow="call to GetElement"
+	b.Sink1(<-taint10)                // $ MISSING: hasTaintFlow="<-..."
+
+	srcCollection := test.SetElement(a.Src1())
+	taint11 := test.StepArgCollectionContentRes(srcCollection)
+	b.Sink1(taint11) // $ hasTaintFlow="taint11"
+
+	taint12 := test.StepArgResMapKeyContent(a.Src1()).(map[string]string)
+	b.Sink1(test.GetMapKey(taint12)) // $ hasTaintFlow="call to GetMapKey"
+	for k, _ := range taint12 {
+		b.Sink1(k) // $ hasTaintFlow="k"
+	}
+	for k := range taint12 {
+		b.Sink1(k) // $ hasTaintFlow="k"
+	}
+
+	srcMap13 := map[string]string{src.(string): ""}
+	taint13 := test.StepArgMapKeyContentRes(srcMap13)
+	b.Sink1(taint13) // $ MISSING: hasTaintFlow="taint13"
+
+	taint14 := test.StepArgResMapValueContent(src).(map[string]string)
+	b.Sink1(taint14[""]) // $ hasTaintFlow="index expression"
+
+	srcMap15 := map[string]string{"": src.(string)}
+	taint15 := test.StepArgMapValueContentRes(srcMap15)
+	b.Sink1(taint15) // $ MISSING: hasTaintFlow="taint15"
 
 	slice := make([]interface{}, 0)
 	slice = append(slice, src)
 	b.Sink1(slice[0]) // $ hasTaintFlow="index expression"
+
+	ch := make(chan string)
+	ch <- a.Src1()
+	taint16 := test.StepArgCollectionContentRes(ch)
+	b.Sink1(taint16) // $ MISSING: hasTaintFlow="taint16" // currently fails due to lack of post-update nodes after send statements
 }

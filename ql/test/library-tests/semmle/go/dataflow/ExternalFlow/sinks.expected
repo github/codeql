@@ -1,13 +1,22 @@
 invalidModelRow
 #select
-| test.go:43:10:43:12 | arg | qltest |
-| test.go:57:10:57:15 | taint1 | qltest |
-| test.go:60:10:60:15 | taint2 | qltest |
-| test.go:64:10:64:15 | taint3 | qltest |
-| test.go:68:10:68:15 | taint4 | qltest |
-| test.go:71:10:71:15 | taint5 | qltest |
-| test.go:75:10:75:15 | taint6 | qltest |
-| test.go:78:10:78:15 | taint7 | qltest |
-| test.go:81:10:81:18 | index expression | qltest |
-| test.go:85:10:85:15 | taint9 | qltest |
-| test.go:89:10:89:17 | index expression | qltest |
+| test.go:49:10:49:12 | arg | qltest |
+| test.go:63:10:63:15 | taint1 | qltest |
+| test.go:66:10:66:15 | taint2 | qltest |
+| test.go:70:10:70:15 | taint3 | qltest |
+| test.go:74:10:74:15 | taint4 | qltest |
+| test.go:77:10:77:15 | taint5 | qltest |
+| test.go:81:10:81:15 | taint6 | qltest |
+| test.go:84:10:84:15 | taint7 | qltest |
+| test.go:87:10:87:18 | index expression | qltest |
+| test.go:91:10:91:15 | taint9 | qltest |
+| test.go:94:10:94:33 | call to GetElement | qltest |
+| test.go:95:10:95:18 | <-... | qltest |
+| test.go:99:10:99:16 | taint11 | qltest |
+| test.go:102:10:102:32 | call to GetMapKey | qltest |
+| test.go:104:11:104:11 | k | qltest |
+| test.go:109:10:109:16 | taint13 | qltest |
+| test.go:112:10:112:20 | index expression | qltest |
+| test.go:116:10:116:16 | taint15 | qltest |
+| test.go:120:10:120:17 | index expression | qltest |
+| test.go:125:10:125:16 | taint16 | qltest |
