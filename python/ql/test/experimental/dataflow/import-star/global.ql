@@ -1,12 +1,19 @@
-import python
 import semmle.python.dataflow.new.DataFlow
 
-query DataFlow::Node moduleVariables() { result instanceof DataFlow::ModuleVariableNode }
+/**
+ * A configuration to find all flows.
+ * To be used on tiny programs.
+ */
+class AllFlowsConfig extends DataFlow::Configuration {
+  AllFlowsConfig() { this = "AllFlowsConfig" }
 
-query predicate reads(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  fromNode.(DataFlow::ModuleVariableNode).getARead() = toNode
+  override predicate isSource(DataFlow::Node node) { any() }
+
+  override predicate isSink(DataFlow::Node node) { any() }
 }
 
-query predicate writes(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  fromNode = toNode.(DataFlow::ModuleVariableNode).getAWrite()
-}
+from DataFlow::CfgNode source, DataFlow::CfgNode sink
+where
+  source != sink and
+  exists(AllFlowsConfig cfg | cfg.hasFlow(source, sink))
+select source, sink
