@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private NamedType(Context cx, INamedTypeSymbol init, bool constructUnderlyingTupleType)
             : base(cx, init)
         {
-            typeArgumentsLazy = new Lazy<Type[]>(() => Symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
+            typeArgumentsLazy = new Lazy<Type[]>(() => Symbol.IsReallyBound() || Symbol.IsBoundNullable() ? Symbol.TypeArguments.Select(t => Create(cx, t)).ToArray() : Array.Empty<Type>());
             this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (Symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    trapFile.nullable_underlying_type(this, Create(Context, Symbol.TypeArguments[0]).TypeRef);
+                    trapFile.nullable_underlying_type(this, TypeArguments[0].TypeRef);
                 }
                 else if (Symbol.IsReallyUnbound())
                 {
