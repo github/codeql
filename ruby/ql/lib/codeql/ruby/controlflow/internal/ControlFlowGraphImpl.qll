@@ -455,7 +455,8 @@ module Trees {
     }
   }
 
-  private class PatternVariableAccessTree extends LocalVariableAccessTree, CasePattern {
+  private class PatternVariableAccessTree extends LocalVariableAccessTree, LocalVariableWriteAccess,
+    CasePattern {
     final override predicate last(AstNode last, Completion c) {
       super.last(last, c) and
       c.(MatchingCompletion).getValue() = true
