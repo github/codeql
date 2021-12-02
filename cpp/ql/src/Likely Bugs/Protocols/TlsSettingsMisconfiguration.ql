@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id cpp/boost/tls-settings-misconfiguration
  * @tags security
+ *       external/cwe/cwe-326
  */
 
 import cpp
