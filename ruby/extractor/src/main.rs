@@ -81,7 +81,7 @@ fn main() -> std::io::Result<()> {
         .with_level(true)
         .with_env_filter(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or(tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
+                .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
         )
         .init();
     tracing::warn!("Support for Ruby is currently in Beta: https://git.io/codeql-language-support");
