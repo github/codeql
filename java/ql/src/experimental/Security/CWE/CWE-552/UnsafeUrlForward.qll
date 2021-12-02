@@ -32,11 +32,11 @@ private class FollowsSanitizingPrefix extends UnsafeUrlForwardSanitizer {
 
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
 
-/** An argument to `ServletRequest.getRequestDispatcher`. */
+/** An argument to `getRequestDispatcher`. */
 private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   RequestDispatcherSink() {
     exists(MethodAccess ma |
-      ma.getMethod() instanceof ServletRequestGetRequestDispatcherMethod and
+      ma.getMethod() instanceof GetRequestDispatcherMethod and
       ma.getArgument(0) = this.asExpr()
     )
   }
@@ -68,5 +68,30 @@ private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
   SpringUrlForwardSink() {
     any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable()) and
     this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
+  }
+}
+
+/** Source model of remote flow source from `getServletPath`. */
+private class ServletGetPathSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote",
+        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote"
+      ]
+  }
+}
+
+/** Taint model related to `java.nio.file.Path`. */
+private class FilePathFlowStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "java.nio.file;Paths;true;get;;;Argument[-1];ReturnValue;taint",
+        "java.nio.file;Path;true;resolve;;;Argument[0];ReturnValue;taint",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint",
+        "java.nio.file;Path;true;startsWith;;;Argument[-1];ReturnValue;taint",
+        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint"
+      ]
   }
 }
