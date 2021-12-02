@@ -696,11 +696,24 @@ module Trees {
     }
   }
 
-  private class AsPatternTree extends StandardPreOrderTree, AsPattern {
-    override ControlFlowTree getChildElement(int i) {
-      result = this.getPattern() and i = 0
+  private class AsPatternTree extends PreOrderTree, AsPattern {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getPattern() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getPattern(), last, c) and
+      c.(MatchingCompletion).getValue() = false
       or
-      result = this.getVariableAccess() and i = 1
+      last(this.getVariableAccess(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(), succ) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getPattern(), pred, c) and
+      first(this.getVariableAccess(), succ) and
+      c.(MatchingCompletion).getValue() = true
     }
   }
 
