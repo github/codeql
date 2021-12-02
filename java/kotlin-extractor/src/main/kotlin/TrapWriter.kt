@@ -68,6 +68,13 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
             return maybeLabel
         }
     }
+
+    fun <T> getFreshIdLabel(): Label<T> {
+        val label: Label<T> = lm.getFreshLabel()
+        writeTrap("$label = *\n")
+        return label
+    }
+
     /**
      * It is not easy to assign keys to local variables, so they get
      * given `*` IDs. However, the same variable may be referred to
@@ -215,11 +222,6 @@ open class FileTrapWriter (
         // for human consumption, so we omit the :0:0:0:0 so that the
         // user knows where it came from.
         return "file://$filePath"
-    }
-    fun <T> getFreshIdLabel(): Label<T> {
-        val label: Label<T> = lm.getFreshLabel()
-        writeTrap("$label = *\n")
-        return label
     }
 }
 

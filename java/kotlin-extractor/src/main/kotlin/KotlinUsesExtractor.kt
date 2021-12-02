@@ -66,16 +66,6 @@ open class KotlinUsesExtractor(
             ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
             ?.owner
 
-    private fun withSourceFile(clsFile: IrFile): KotlinFileExtractor {
-        if (this is KotlinSourceFileExtractor && this.file == clsFile) {
-            return this
-        }
-
-        val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
-        val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-        return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
-    }
-
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
      */
@@ -86,9 +76,15 @@ open class KotlinUsesExtractor(
             val newTrapWriter = tw.makeFileTrapWriter(getIrClassBinaryPath(cls))
             val newLogger = FileLogger(logger.logCounter, newTrapWriter)
             return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext)
-        } else {
-            return withSourceFile(clsFile)
         }
+
+        if (this is KotlinSourceFileExtractor && this.file == clsFile) {
+            return this
+        }
+
+        val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
+        val newLogger = FileLogger(logger.logCounter, newTrapWriter)
+        return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
     }
 
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
@@ -158,6 +154,21 @@ open class KotlinUsesExtractor(
             classLabelResult.shortName)
     }
 
+    private val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
+
+    fun useAnonymousClass(c: IrClass): TypeResults {
+        var res = anonymousTypeMapping[c]
+        if (res == null) {
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            res = TypeResults(javaResult, kotlinResult)
+            anonymousTypeMapping[c] = res
+        }
+
+        return res
+    }
+
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             if (args.isNotEmpty()) {
@@ -167,7 +178,7 @@ open class KotlinUsesExtractor(
                 logger.warn(Severity.ErrorHigh, "Unexpected nullable anonymous class")
             }
 
-            return withSourceFile(c.fileOrNull!!).useAnonymousClass(c)
+            return useAnonymousClass(c)
         }
 
         val classInstanceResult = useClassInstance(c, args)
@@ -453,9 +464,33 @@ class X {
                 this.origin != IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
     }
 
+    private val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf()
+
+    data class LocalFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>)
+
+    fun getLocalFunctionLabels(f: IrFunction): LocalFunctionLabels {
+        if (!f.isLocalFunction()){
+            logger.warn(Severity.ErrorSevere, "Extracting a non-local function as a local one")
+        }
+
+        var res = generatedLocalFunctionTypeMapping[f]
+        if (res == null) {
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            res = LocalFunctionLabels(
+                TypeResults(javaResult, kotlinResult),
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel())
+            generatedLocalFunctionTypeMapping[f] = res
+        }
+
+        return res
+    }
+
     fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
         if (f.isLocalFunction()) {
-            val ids = withSourceFile(f.fileOrNull!!).getLocalFunctionLabels(f)
+            val ids = getLocalFunctionLabels(f)
             @Suppress("UNCHECKED_CAST")
             return ids.function as Label<out T>
         }
@@ -559,7 +594,7 @@ class X {
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         if (c.isAnonymousObject) {
             @Suppress("UNCHECKED_CAST")
-            return withSourceFile(c.fileOrNull!!).useAnonymousClass(c).javaResult.id as Label<DbClass>
+            return useAnonymousClass(c).javaResult.id as Label<DbClass>
         }
 
         // For source classes, the label doesn't include and type arguments

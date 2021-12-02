@@ -125,21 +125,6 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
-
-    fun useAnonymousClass(c: IrClass): TypeResults {
-        var res = anonymousTypeMapping[c]
-        if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-            res = TypeResults(javaResult, kotlinResult)
-            anonymousTypeMapping[c] = res
-        }
-
-        return res
-    }
-
     private fun extractAnonymousClassStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         @Suppress("UNCHECKED_CAST")
         val id = extractClassSource(c) as Label<out DbClass>
@@ -1767,31 +1752,6 @@ open class KotlinFileExtractor(
 
     private val IrType.isAnonymous: Boolean
         get() = ((this as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
-
-
-    private val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf()
-
-    data class LocalFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>)
-
-    fun getLocalFunctionLabels(f: IrFunction): LocalFunctionLabels {
-        if (!f.isLocalFunction()){
-            logger.warnElement(Severity.ErrorSevere, "Extracting a non-local function as a local one", f)
-        }
-
-        var res = generatedLocalFunctionTypeMapping[f]
-        if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-            res = LocalFunctionLabels(
-                TypeResults(javaResult, kotlinResult),
-                tw.getFreshIdLabel(),
-                tw.getFreshIdLabel())
-            generatedLocalFunctionTypeMapping[f] = res
-        }
-
-        return res
-    }
 
     fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
         val ids = getLocalFunctionLabels(localFunction)
