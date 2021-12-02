@@ -371,7 +371,7 @@ class Function extends ValueEntity, @functionobject {
   DataFlow::CallNode getACall() {
     this = result.getTarget()
     or
-    this = result.getACallee().asFunction()
+    this.(DeclaredFunction).getFuncDecl() = result.getACallee()
   }
 
   /** Gets the declaration of this function, if any. */

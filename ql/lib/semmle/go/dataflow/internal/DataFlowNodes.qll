@@ -449,16 +449,16 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
-    DataFlowCallable getACallee() {
-      result.asFunction() = this.getTarget()
+    FuncDef getACallee() {
+      result = this.getTarget().(DeclaredFunction).getFuncDecl()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result.asFuncLit() = calleeSource.asExpr()
+        result = calleeSource.asExpr()
         or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
-          result.asFunction() = actual
+          result = actual.(DeclaredFunction).getFuncDecl()
         )
       )
     }
@@ -537,6 +537,8 @@ module Public {
     MethodCallNode() { expr.getTarget() instanceof Method }
 
     override Method getTarget() { result = expr.getTarget() }
+
+    override MethodDecl getACallee() { result = super.getACallee() }
   }
 
   /** A representation of a parameter initialization. */
