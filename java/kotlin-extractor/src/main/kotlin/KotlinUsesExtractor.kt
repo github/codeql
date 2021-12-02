@@ -79,6 +79,7 @@ open class KotlinUsesExtractor(
 
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
 
+        // TODO: Conditionally KotlinSourceFileExtractor?
         return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext)
     }
 

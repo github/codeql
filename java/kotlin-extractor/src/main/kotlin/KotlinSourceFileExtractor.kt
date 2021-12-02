@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.IdSignature
 
+// TODO: Is a separate class for this, vs KotlinFileExtractor, useful?
 class KotlinSourceFileExtractor(
     logger: FileLogger,
     tw: FileTrapWriter,
@@ -30,6 +31,8 @@ class KotlinSourceFileExtractor(
         val pkgId = extractPackage(pkg)
         tw.writeHasLocation(id, locId)
         tw.writeCupackage(id, pkgId)
+        // TODO: Use of fileClass looks like it will defeat laziness since 3502e5c5720e981c913bdafdccf7f5e9237be070
+        // TODO: Consistency query for unused file classes
         file.declarations.map { extractDeclaration(it, fileClass) }
         CommentExtractor(this).extract()
     }
