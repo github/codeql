@@ -12,7 +12,6 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classOrNull
-import org.jetbrains.kotlin.ir.util.fileOrNull
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.IdSignature
 
@@ -108,7 +107,7 @@ class KotlinSourceFileExtractor(
 
     data class LocalFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>)
 
-    fun useGeneratedLocalFunctionClass(f: IrFunction): LocalFunctionLabels {
+    fun getLocalFunctionLabels(f: IrFunction): LocalFunctionLabels {
         if (!f.isLocalFunction()){
             logger.warnElement(Severity.ErrorSevere, "Extracting a non-local function as a local one", f)
         }
@@ -129,7 +128,7 @@ class KotlinSourceFileExtractor(
     }
 
     fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
-        val ids = withSourceFile(localFunction.fileOrNull!!).useGeneratedLocalFunctionClass(localFunction)
+        val ids = getLocalFunctionLabels(localFunction)
 
         // Write class
         @Suppress("UNCHECKED_CAST")
@@ -140,7 +139,7 @@ class KotlinSourceFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // Extract local function as a member
-        extractFunction(localFunction, id, ids.function)
+        extractFunction(localFunction, id)
 
         // Extract constructor
         tw.writeConstrs(ids.constructor, "", "", ids.type.javaResult.id, ids.type.kotlinResult.id, id, ids.constructor)

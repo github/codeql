@@ -314,14 +314,18 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, label: Label<DbMethod>? = null): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>): Label<out DbCallable> {
         currentFunction = f
 
         f.typeParameters.map { extractTypeParameter(it) }
 
         val locId = tw.getLocation(f)
 
-        val id = label ?: useFunction<DbCallable>(f)
+        val id =
+            if (f.isLocalFunction())
+                withSourceFile(f.fileOrNull!!).getLocalFunctionLabels(f).function
+            else
+                useFunction<DbCallable>(f)
 
         val extReceiver = f.extensionReceiverParameter
         val idxOffset = if (extReceiver != null) 1 else 0
@@ -680,7 +684,7 @@ open class KotlinFileExtractor(
             }
 
             if (callTarget.isLocalFunction()) {
-                val ids = withSourceFile(callTarget.fileOrNull!!).useGeneratedLocalFunctionClass(callTarget)
+                val ids = withSourceFile(callTarget.fileOrNull!!).getLocalFunctionLabels(callTarget)
 
                 val methodId = ids.function
                 tw.writeCallableBinding(id, methodId)

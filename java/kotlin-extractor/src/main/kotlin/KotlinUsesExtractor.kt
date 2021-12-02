@@ -445,12 +445,13 @@ class X {
     }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL
+        return this.visibility == DescriptorVisibilities.LOCAL &&
+                this.origin != IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
     }
 
     fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
         if (f.isLocalFunction()) {
-            val ids = withSourceFile(f.fileOrNull!!).useGeneratedLocalFunctionClass(f)
+            val ids = withSourceFile(f.fileOrNull!!).getLocalFunctionLabels(f)
             @Suppress("UNCHECKED_CAST")
             return ids.function as Label<out T>
         }
