@@ -66,6 +66,7 @@ class KotlinSourceFileExtractor(
       val locId = tw.getWholeFileLocation()
       val pkgId = extractPackage(pkg)
       tw.writeClasses(id, jvmName, pkgId, id)
+      tw.writeFile_class(id)
       tw.writeHasLocation(id, locId)
       return id
   }

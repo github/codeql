@@ -315,6 +315,10 @@ classes(
   int sourceid: @class ref
 );
 
+file_class(
+  int id: @class ref
+);
+
 class_object(
   unique int id: @class ref,
   unique int instance: @field ref
