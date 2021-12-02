@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Accessing files using paths constructed by user-controlled data may allow attackers 
+to access unexpected resources, leading to the disclosure of sensitive information or file deletion
+</p>
+</overview>
+
+<recommendation>
+<p>
+After the user completes the file path construction, the file path needs to be strictly verified before 
+reading the file content or deleting the file.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the eight examples of <code>fileRead1...8</code>, the accessed file name or directory name comes from the user's input without 
+any verification and is directly returned to the user, causing sensitive information to be leaked. For example: 
+Linux system, the file name can enter <code>"../../../etc/passwd"</code> to obtain the system user password file.
+</p>
+
+<p>
+In the three examples of <code>fileDelete1...3</code>, the deleted file name and directory name come from the user's input without
+any verification, resulting in arbitrary file deletion.
+</p>
+
+<p>
+In the <code>good1</code> example, the program uses <code>werkzeug.utils.secure_filename</code> to filter the file name and does
+not cause any file deletion vulnerability.
+</p>
+
+<sample src="ArbitraryFileReadAndDelete.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
+</references>
+</qhelp>

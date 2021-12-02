@@ -167,6 +167,17 @@ private module Tornado {
         /** Gets a reference to the `write` method. */
         DataFlow::Node writeMethod() { writeMethod(DataFlow::TypeTracker::end()).flowsTo(result) }
 
+        /** Gets a reference to the `render` or `render_string` method. */
+        private DataFlow::TypeTrackingNode renderMethod(DataFlow::TypeTracker t) {
+          t.startInAttr(["render", "render_string"]) and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = renderMethod(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `render` or `render_string` method. */
+        DataFlow::Node renderMethod() { renderMethod(DataFlow::TypeTracker::end()).flowsTo(result) }
+
         /**
          * Taint propagation for `tornado.web.RequestHandler`.
          */
@@ -488,6 +499,23 @@ private module Tornado {
     }
 
     override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("chunk")] }
+
+    override string getMimetypeDefault() { result = "text/html" }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  /**
+   * A call to the `tornado.web.RequestHandler.render` or `tornado.web.RequestHandler.render_string` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.render
+   */
+  private class TornadoRenderCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
+    TornadoRenderCall() { this.getFunction() = tornado::web::RequestHandler::renderMethod() }
+
+    override DataFlow::Node getBody() {
+      result = this.getArgByName(any(string s | s != "template_name"))
+    }
 
     override string getMimetypeDefault() { result = "text/html" }
 

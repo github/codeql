@@ -1320,6 +1320,26 @@ private module StdlibPrivate {
       }
     }
 
+    // ---------------------------------------------------------------------------
+    // Implicit response from returns of http request handlers
+    // ---------------------------------------------------------------------------
+    private class HTTPRequestHandlerResponse extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CallCfgNode {
+      HTTPRequestHandlerResponse() {
+        exists(DataFlow::AttrRead read |
+          this.getFunction().(DataFlow::AttrRead).getObject() = read and
+          read.getObject() = instance() and
+          read.getAttributeName() = "wfile"
+        )
+      }
+
+      override DataFlow::Node getBody() { result = this.getArg(_) }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { result = "application/json" }
+    }
+
     /** An `HTTPMessage` instance that originates from a `BaseHTTPRequestHandler` instance. */
     private class BaseHTTPRequestHandlerHeadersInstances extends Stdlib::HTTPMessage::InstanceSource {
       BaseHTTPRequestHandlerHeadersInstances() {

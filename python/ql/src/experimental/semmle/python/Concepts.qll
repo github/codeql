@@ -14,6 +14,76 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/**
+ * A data flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
+ */
+class FileOpen extends DataFlow::Node {
+  FileOpen::Range range;
+
+  FileOpen() { this = range }
+
+  /** Gets an argument to this file system access that is interpreted as a path. */
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+
+  DataFlow::CallCfgNode getCall() { result = range.getCall() }
+}
+
+/** Provides a class for modeling new file system access APIs. */
+module FileOpen {
+  /**
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+
+    abstract DataFlow::CallCfgNode getCall();
+  }
+}
+
+/**
+ * A data flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
+ */
+class FileRemove extends DataFlow::Node {
+  FileRemove::Range range;
+
+  FileRemove() { this = range }
+
+  /** Gets an argument to this file system access that is interpreted as a path. */
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+
+  DataFlow::CallCfgNode getCall() { result = range.getCall() }
+}
+
+/** Provides a class for modeling new file system access APIs. */
+module FileRemove {
+  /**
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+
+    abstract DataFlow::CallCfgNode getCall();
+  }
+}
+
 /** Provides classes for modeling log related APIs. */
 module LogOutput {
   /**

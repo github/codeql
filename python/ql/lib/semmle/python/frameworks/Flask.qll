@@ -180,6 +180,62 @@ module Flask {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
+  /**
+   * A call to the `flask.jsonify` or `flask.json.jsonify` function.
+   *
+   * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.json.jsonify
+   */
+  private class FlaskJsonifyCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
+    FlaskJsonifyCall() {
+      this = API::moduleImport("flask").getMember("jsonify").getACall() or
+      this = API::moduleImport("flask").getMember("json").getMember("jsonify").getACall()
+    }
+
+    override DataFlow::Node getBody() { result = this.getArg(_) }
+
+    override string getMimetypeDefault() { result = "application/json" }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  /**
+   * A call to the `flask.render_template` function.
+   *
+   * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.render_template
+   */
+  private class FlaskRenderTemplateCall extends HTTP::Server::HttpResponse::Range,
+    DataFlow::CallCfgNode {
+    FlaskRenderTemplateCall() {
+      this = API::moduleImport("flask").getMember("render_template").getACall()
+    }
+
+    override DataFlow::Node getBody() {
+      result = this.getArgByName(any(string s | s != "template_name_or_list"))
+    }
+
+    override string getMimetypeDefault() { result = "text/html" }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  /**
+   * A call to the `flask.render_template_string` function.
+   *
+   * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.render_template_string
+   */
+  private class FlaskRenderTemplateStringCall extends HTTP::Server::HttpResponse::Range,
+    DataFlow::CallCfgNode {
+    FlaskRenderTemplateStringCall() {
+      this = API::moduleImport("flask").getMember("render_template_string").getACall()
+    }
+
+    override DataFlow::Node getBody() { result = this.getArgByName(_) }
+
+    override string getMimetypeDefault() { result = "text/html" }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------

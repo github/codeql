@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.Starlette
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `fastapi` PyPI package.
@@ -55,6 +56,14 @@ private module FastApi {
         this = App::instance().getMember(routeAddingMethod).getACall()
         or
         this = APIRouter::instance().getMember(routeAddingMethod).getACall()
+        or
+        exists(DataFlow::AttrRead read, CallNode callNode, ClassValue cv |
+          cv.getASuperType() = Value::named("fastapi.APIRouter") and
+          callNode.getFunction().pointsTo(cv) and
+          read.(DataFlow::AttrRead).getObject().asCfgNode().refersTo(callNode) and
+          read.(DataFlow::AttrRead).getAttributeName() = routeAddingMethod and
+          this.getFunction() = read
+        )
       )
     }
 
@@ -348,5 +357,66 @@ private module FastApi {
 
       override DataFlow::Node getValueArg() { none() }
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // request modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `fastapi.Request` class.
+   *
+   * See https://fastapi.tiangolo.com/advanced/using-request-directly
+   */
+  module Request {
+    /**
+     * A source of instances of `fastapi.Request`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use `Request::instance()` predicate to get
+     * references to instances of `fastapi.Request`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `twisted.web.server.Request`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `fastapi.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `fastapi.Request`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "fastapi.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["query_params", "headers", "cookies"] }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
+  /**
+   * A parameter that will receive a `fastapi.Request` instance,
+   * when a twisted request handler is called.
+   */
+  class FastAPIRequestHandlerRequestParam extends RemoteFlowSource::Range, Request::InstanceSource,
+    DataFlow::ParameterNode {
+    FastAPIRequestHandlerRequestParam() {
+      this.getParameter() = any(FastApiRouteSetup handler).getARoutedParameter()
+    }
+
+    override string getSourceType() { result = "fastapi.Request" }
   }
 }

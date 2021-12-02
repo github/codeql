@@ -1791,6 +1791,49 @@ module PrivateDjango {
        * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
        */
       API::Node redirect() { result = shortcuts().getMember("redirect") }
+
+      /**
+       * A call to the `django.shortcuts.render` function.
+       *
+       * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#render
+       */
+      class ShortcutsRenderCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
+        ShortcutsRenderCall() {
+          this = API::moduleImport("django").getMember("shortcuts").getMember("render").getACall()
+        }
+
+        override DataFlow::Node getBody() {
+          result in [this.getArg(2), this.getArgByName("context")]
+        }
+
+        override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+        override string getMimetypeDefault() { result = "text/html" }
+      }
+
+      /**
+       * A call to the `django.shortcuts.render_to_response` function.
+       *
+       * See https://docs.djangoproject.com/en/2.2/topics/http/shortcuts/#render_to_response
+       */
+      class ShortcutsRenderToResponseCall extends HTTP::Server::HttpResponse::Range,
+        DataFlow::CallCfgNode {
+        ShortcutsRenderToResponseCall() {
+          this =
+            API::moduleImport("django")
+                .getMember("shortcuts")
+                .getMember("render_to_response")
+                .getACall()
+        }
+
+        override DataFlow::Node getBody() {
+          result in [this.getArg(1), this.getArgByName("context")]
+        }
+
+        override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+        override string getMimetypeDefault() { result = "text/html" }
+      }
     }
   }
 
