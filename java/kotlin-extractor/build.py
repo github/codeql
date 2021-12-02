@@ -29,8 +29,11 @@ def run_process(cmd):
         # print("Running command: " + shlex.join(cmd))
         return subprocess.run(cmd, check=True, capture_output=True)
     except subprocess.CalledProcessError as e:
+        print("In: " + os.getcwd(), file=sys.stderr)
         print("Command failed: " + shlex.join(cmd), file=sys.stderr)
-        print("Output: " + e.stderr.decode(encoding='UTF-8',
+        print("stdout output:\n" + e.stdout.decode(encoding='UTF-8',
+              errors='strict'), file=sys.stderr)
+        print("stderr output:\n" + e.stderr.decode(encoding='UTF-8',
               errors='strict'), file=sys.stderr)
         raise e
 
@@ -56,19 +59,16 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
 def compile_to_jar(srcs, classpath, java_classpath, output):
     builddir = 'build/classes'
 
-    try:
-        if os.path.exists(builddir):
-            shutil.rmtree(builddir)
-        os.makedirs(builddir)
+    if os.path.exists(builddir):
+        shutil.rmtree(builddir)
+    os.makedirs(builddir)
 
-        compile_to_dir(srcs, classpath, java_classpath, builddir)
+    compile_to_dir(srcs, classpath, java_classpath, builddir)
 
-        run_process(['jar', '-c', '-f', output,
-                     '-C', builddir, '.',
-                     '-C', 'src/main/resources', 'META-INF'])
-    finally:
-        if os.path.exists(builddir):
-            shutil.rmtree(builddir)
+    run_process(['jar', '-c', '-f', output,
+                 '-C', builddir, '.',
+                 '-C', 'src/main/resources', 'META-INF'])
+    shutil.rmtree(builddir)
 
 
 def find_sources(path):
@@ -129,24 +129,22 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
     classpath = patterns_to_classpath(dependency_folder, jars)
     java_classpath = patterns_to_classpath(dependency_folder, java_jars)
 
-    try:
-        if os.path.exists(tmp_dir):
-            shutil.rmtree(tmp_dir)
-        shutil.copytree('src', tmp_dir)
+    if os.path.exists(tmp_dir):
+        shutil.rmtree(tmp_dir)
+    shutil.copytree('src', tmp_dir)
 
-        if version.startswith('1.4'):
-            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
-        else:
-            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
+    if version.startswith('1.4'):
+        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
+    else:
+        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
 
-        srcs = find_sources(tmp_dir)
+    srcs = find_sources(tmp_dir)
 
-        transform_to_embeddable(srcs)
+    transform_to_embeddable(srcs)
 
-        compile_to_jar(srcs, classpath, java_classpath, output)
-    finally:
-        if os.path.exists(tmp_dir):
-            shutil.rmtree(tmp_dir)
+    compile_to_jar(srcs, classpath, java_classpath, output)
+
+    shutil.rmtree(tmp_dir)
 
 
 def compile_embeddable(version):
