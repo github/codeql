@@ -499,51 +499,6 @@ private module FrameworkDataFlowAdaptor {
   }
 }
 
-/** Data flow for `System.Uri`. */
-class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      this.constructorFlow(source, sink, c)
-      or
-      this.methodFlow(source, sink, c)
-      or
-      exists(Property p |
-        this.propertyFlow(p) and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn() and
-        c = p.getGetter()
-      )
-    ) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = this.getAMethod("ToString") and
-    source = TCallableFlowSourceQualifier() and
-    sink = TCallableFlowSinkReturn()
-  }
-
-  private predicate propertyFlow(Property p) {
-    p = this.getPathAndQueryProperty()
-    or
-    p = this.getQueryProperty()
-    or
-    p = this.getOriginalStringProperty()
-  }
-}
-
 /** Data flow for `System.IO.StringReader`. */
 class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReaderClass {
   override predicate callableFlow(

@@ -92,7 +92,7 @@ class SystemBooleanStruct extends BoolType {
   }
 }
 
-/** Data flow for `System.Boolean` */
+/** Data flow for `System.Boolean`. */
 private class SystemBoolean32FlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -550,6 +550,22 @@ class SystemUriClass extends SystemClass {
     result.getDeclaringType() = this and
     result.hasName("OriginalString") and
     result.getType() instanceof StringType
+  }
+}
+
+/** Data flow for `System.Uri`. */
+private class SystemUriFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Uri;false;ToString;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String,System.UriKind);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;get_OriginalString;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;get_PathAndQuery;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;get_Query;();;Argument[-1];ReturnValue;taint",
+      ]
   }
 }
 
