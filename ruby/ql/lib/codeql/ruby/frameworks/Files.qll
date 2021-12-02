@@ -254,7 +254,7 @@ module File {
   }
 
   /**
-   * Flow summary for several methods on the `File` class that propagate taint
+   * A flow summary for several methods on the `File` class that propagate taint
    * from their first argument to the return value.
    */
   class FilePathConversionSummary extends SummarizedCallable {
@@ -277,7 +277,7 @@ module File {
   }
 
   /**
-   * Flow summary for `File.join`, which propagates taint from every argument to
+   * A flow summary for `File.join`, which propagates taint from every argument to
    * its return value.
    */
   class FileJoinSummary extends SummarizedCallable {

@@ -97,7 +97,7 @@ module Fastify {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
@@ -121,7 +121,7 @@ module Fastify {
                   "onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
                   "onSend", "onResponse", "handler"
                 ])
-      else result = getLastArgument().flow()
+      else result = this.getLastArgument().flow()
     }
   }
 
@@ -275,7 +275,7 @@ module Fastify {
 
     override predicate definesExplicitly(string headerName, Expr headerValue) {
       exists(string header |
-        getAHeaderSource().hasPropertyWrite(header, headerValue.flow()) and
+        this.getAHeaderSource().hasPropertyWrite(header, headerValue.flow()) and
         headerName = header.toLowerCase()
       )
     }
@@ -283,7 +283,7 @@ module Fastify {
     override RouteHandler getRouteHandler() { result = rh }
 
     override Expr getNameExpr() {
-      exists(DataFlow::PropWrite write | getAHeaderSource().getAPropertyWrite() = write |
+      exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
         result = write.getPropertyNameExpr()
       )
     }
@@ -297,10 +297,10 @@ module Fastify {
   private class ViewCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
     ViewCall() { this = any(ReplySource rep).ref().getAMethodCall("view") }
 
-    override DataFlow::SourceNode getOutput() { result = getCallback(2).getParameter(1) }
+    override DataFlow::SourceNode getOutput() { result = this.getCallback(2).getParameter(1) }
 
-    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
   }
 }

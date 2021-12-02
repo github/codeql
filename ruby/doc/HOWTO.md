@@ -39,7 +39,7 @@ codeql database create <database-path> -l ruby -s <project-source-path> --search
 Run
 
 ```bash
-codeql test run <test-path> --search-path <repository-root-path>
+codeql test run <test-path> --search-path <extractor-pack-path>
 ```
 
 ## Writing database upgrade scripts

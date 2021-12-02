@@ -9,7 +9,7 @@ private import codeql.ruby.ApiGraphs
  * ```
  */
 class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
   API::Node requestNode;
 
   TyphoeusHttpRequest() {
@@ -19,6 +19,8 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
     this = requestUse.asExpr().getExpr()
   }
+
+  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 

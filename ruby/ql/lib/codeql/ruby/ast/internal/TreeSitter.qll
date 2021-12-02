@@ -53,11 +53,25 @@ module Ruby {
 
   class UnderscoreArg extends @ruby_underscore_arg, AstNode { }
 
+  class UnderscoreExpression extends @ruby_underscore_expression, AstNode { }
+
   class UnderscoreLhs extends @ruby_underscore_lhs, AstNode { }
 
   class UnderscoreMethodName extends @ruby_underscore_method_name, AstNode { }
 
+  class UnderscorePatternConstant extends @ruby_underscore_pattern_constant, AstNode { }
+
+  class UnderscorePatternExpr extends @ruby_underscore_pattern_expr, AstNode { }
+
+  class UnderscorePatternExprBasic extends @ruby_underscore_pattern_expr_basic, AstNode { }
+
+  class UnderscorePatternPrimitive extends @ruby_underscore_pattern_primitive, AstNode { }
+
+  class UnderscorePatternTopExprBody extends @ruby_underscore_pattern_top_expr_body, AstNode { }
+
   class UnderscorePrimary extends @ruby_underscore_primary, AstNode { }
+
+  class UnderscoreSimpleNumeric extends @ruby_underscore_simple_numeric, AstNode { }
 
   class UnderscoreStatement extends @ruby_underscore_statement, AstNode { }
 
@@ -81,6 +95,23 @@ module Ruby {
     override AstNode getAFieldOrChild() {
       ruby_alias_def(this, result, _, _) or ruby_alias_def(this, _, result, _)
     }
+  }
+
+  /** A class representing `alternative_pattern` nodes. */
+  class AlternativePattern extends @ruby_alternative_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "AlternativePattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_alternative_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `alternatives`. */
+    UnderscorePatternExprBasic getAlternatives(int i) {
+      ruby_alternative_pattern_alternatives(this, i, result)
+    }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_alternative_pattern_alternatives(this, _, result) }
   }
 
   /** A class representing `argument_list` nodes. */
@@ -111,6 +142,46 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_array_child(this, _, result) }
+  }
+
+  /** A class representing `array_pattern` nodes. */
+  class ArrayPattern extends @ruby_array_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "ArrayPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_array_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `class`. */
+    UnderscorePatternConstant getClass() { ruby_array_pattern_class(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    AstNode getChild(int i) { ruby_array_pattern_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_array_pattern_class(this, result) or ruby_array_pattern_child(this, _, result)
+    }
+  }
+
+  /** A class representing `as_pattern` nodes. */
+  class AsPattern extends @ruby_as_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "AsPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_as_pattern_def(this, _, _, result) }
+
+    /** Gets the node corresponding to the field `name`. */
+    Identifier getName() { ruby_as_pattern_def(this, result, _, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    UnderscorePatternExpr getValue() { ruby_as_pattern_def(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_as_pattern_def(this, result, _, _) or ruby_as_pattern_def(this, _, result, _)
+    }
   }
 
   /** A class representing `assignment` nodes. */
@@ -202,7 +273,7 @@ module Ruby {
     override L::Location getLocation() { ruby_binary_def(this, _, _, _, result) }
 
     /** Gets the node corresponding to the field `left`. */
-    AstNode getLeft() { ruby_binary_def(this, result, _, _, _) }
+    UnderscoreExpression getLeft() { ruby_binary_def(this, result, _, _, _) }
 
     /** Gets the node corresponding to the field `operator`. */
     string getOperator() {
@@ -260,7 +331,7 @@ module Ruby {
     }
 
     /** Gets the node corresponding to the field `right`. */
-    AstNode getRight() { ruby_binary_def(this, _, _, result, _) }
+    UnderscoreExpression getRight() { ruby_binary_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -394,6 +465,31 @@ module Ruby {
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
       ruby_case_value(this, result) or ruby_case_child(this, _, result)
+    }
+  }
+
+  /** A class representing `case_match` nodes. */
+  class CaseMatch extends @ruby_case_match, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "CaseMatch" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_case_match_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `clauses`. */
+    InClause getClauses(int i) { ruby_case_match_clauses(this, i, result) }
+
+    /** Gets the node corresponding to the field `else`. */
+    Else getElse() { ruby_case_match_else(this, result) }
+
+    /** Gets the node corresponding to the field `value`. */
+    UnderscoreStatement getValue() { ruby_case_match_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_case_match_clauses(this, _, result) or
+      ruby_case_match_else(this, result) or
+      ruby_case_match_def(this, result, _)
     }
   }
 
@@ -638,6 +734,12 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "EmptyStatement" }
   }
 
+  /** A class representing `encoding` tokens. */
+  class Encoding extends @ruby_token_encoding, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Encoding" }
+  }
+
   /** A class representing `end_block` nodes. */
   class EndBlock extends @ruby_end_block, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -710,6 +812,32 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "False" }
   }
 
+  /** A class representing `file` tokens. */
+  class File extends @ruby_token_file, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "File" }
+  }
+
+  /** A class representing `find_pattern` nodes. */
+  class FindPattern extends @ruby_find_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "FindPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_find_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `class`. */
+    UnderscorePatternConstant getClass() { ruby_find_pattern_class(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    AstNode getChild(int i) { ruby_find_pattern_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_find_pattern_class(this, result) or ruby_find_pattern_child(this, _, result)
+    }
+  }
+
   /** A class representing `float` tokens. */
   class Float extends @ruby_token_float, Token {
     /** Gets the name of the primary QL class for this element. */
@@ -780,6 +908,26 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "HashKeySymbol" }
   }
 
+  /** A class representing `hash_pattern` nodes. */
+  class HashPattern extends @ruby_hash_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "HashPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_hash_pattern_def(this, result) }
+
+    /** Gets the node corresponding to the field `class`. */
+    UnderscorePatternConstant getClass() { ruby_hash_pattern_class(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    AstNode getChild(int i) { ruby_hash_pattern_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_hash_pattern_class(this, result) or ruby_hash_pattern_child(this, _, result)
+    }
+  }
+
   /** A class representing `hash_splat_argument` nodes. */
   class HashSplatArgument extends @ruby_hash_splat_argument, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -793,6 +941,12 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_hash_splat_argument_def(this, result, _) }
+  }
+
+  /** A class representing `hash_splat_nil` tokens. */
+  class HashSplatNil extends @ruby_token_hash_splat_nil, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "HashSplatNil" }
   }
 
   /** A class representing `hash_splat_parameter` nodes. */
@@ -874,6 +1028,21 @@ module Ruby {
     }
   }
 
+  /** A class representing `if_guard` nodes. */
+  class IfGuard extends @ruby_if_guard, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "IfGuard" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_if_guard_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `condition`. */
+    UnderscoreExpression getCondition() { ruby_if_guard_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_if_guard_def(this, result, _) }
+  }
+
   /** A class representing `if_modifier` nodes. */
   class IfModifier extends @ruby_if_modifier, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -886,7 +1055,7 @@ module Ruby {
     UnderscoreStatement getBody() { ruby_if_modifier_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    AstNode getCondition() { ruby_if_modifier_def(this, _, result, _) }
+    UnderscoreExpression getCondition() { ruby_if_modifier_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -907,6 +1076,31 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_in_def(this, result, _) }
+  }
+
+  /** A class representing `in_clause` nodes. */
+  class InClause extends @ruby_in_clause, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "InClause" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_in_clause_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `body`. */
+    Then getBody() { ruby_in_clause_body(this, result) }
+
+    /** Gets the node corresponding to the field `guard`. */
+    AstNode getGuard() { ruby_in_clause_guard(this, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    UnderscorePatternTopExprBody getPattern() { ruby_in_clause_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_in_clause_body(this, result) or
+      ruby_in_clause_guard(this, result) or
+      ruby_in_clause_def(this, result, _)
+    }
   }
 
   /** A class representing `instance_variable` tokens. */
@@ -953,6 +1147,26 @@ module Ruby {
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
       ruby_keyword_parameter_def(this, result, _) or ruby_keyword_parameter_value(this, result)
+    }
+  }
+
+  /** A class representing `keyword_pattern` nodes. */
+  class KeywordPattern extends @ruby_keyword_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "KeywordPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_keyword_pattern_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `key`. */
+    AstNode getKey() { ruby_keyword_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    UnderscorePatternExpr getValue() { ruby_keyword_pattern_value(this, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      ruby_keyword_pattern_def(this, result, _) or ruby_keyword_pattern_value(this, result)
     }
   }
 
@@ -1004,6 +1218,12 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_left_assignment_list_child(this, _, result) }
+  }
+
+  /** A class representing `line` tokens. */
+  class Line extends @ruby_token_line, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Line" }
   }
 
   /** A class representing `method` nodes. */
@@ -1136,7 +1356,7 @@ module Ruby {
     }
 
     /** Gets the node corresponding to the field `right`. */
-    AstNode getRight() { ruby_operator_assignment_def(this, _, _, result, _) }
+    UnderscoreExpression getRight() { ruby_operator_assignment_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -1240,10 +1460,10 @@ module Ruby {
     override L::Location getLocation() { ruby_range_def(this, _, result) }
 
     /** Gets the node corresponding to the field `begin`. */
-    UnderscoreArg getBegin() { ruby_range_begin(this, result) }
+    AstNode getBegin() { ruby_range_begin(this, result) }
 
     /** Gets the node corresponding to the field `end`. */
-    UnderscoreArg getEnd() { ruby_range_end(this, result) }
+    AstNode getEnd() { ruby_range_end(this, result) }
 
     /** Gets the node corresponding to the field `operator`. */
     string getOperator() {
@@ -1339,10 +1559,10 @@ module Ruby {
     override L::Location getLocation() { ruby_rescue_modifier_def(this, _, _, result) }
 
     /** Gets the node corresponding to the field `body`. */
-    UnderscoreStatement getBody() { ruby_rescue_modifier_def(this, result, _, _) }
+    AstNode getBody() { ruby_rescue_modifier_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `handler`. */
-    AstNode getHandler() { ruby_rescue_modifier_def(this, _, result, _) }
+    UnderscoreExpression getHandler() { ruby_rescue_modifier_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -1422,7 +1642,7 @@ module Ruby {
     AstNode getName() { ruby_scope_resolution_def(this, result, _) }
 
     /** Gets the node corresponding to the field `scope`. */
-    UnderscorePrimary getScope() { ruby_scope_resolution_scope(this, result) }
+    AstNode getScope() { ruby_scope_resolution_scope(this, result) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -1602,7 +1822,7 @@ module Ruby {
     override L::Location getLocation() { ruby_superclass_def(this, _, result) }
 
     /** Gets the child of this node. */
-    AstNode getChild() { ruby_superclass_def(this, result, _) }
+    UnderscoreExpression getChild() { ruby_superclass_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ruby_superclass_def(this, result, _) }
@@ -1722,6 +1942,21 @@ module Ruby {
     }
   }
 
+  /** A class representing `unless_guard` nodes. */
+  class UnlessGuard extends @ruby_unless_guard, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "UnlessGuard" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_unless_guard_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `condition`. */
+    UnderscoreExpression getCondition() { ruby_unless_guard_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_unless_guard_def(this, result, _) }
+  }
+
   /** A class representing `unless_modifier` nodes. */
   class UnlessModifier extends @ruby_unless_modifier, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1734,7 +1969,7 @@ module Ruby {
     UnderscoreStatement getBody() { ruby_unless_modifier_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    AstNode getCondition() { ruby_unless_modifier_def(this, _, result, _) }
+    UnderscoreExpression getCondition() { ruby_unless_modifier_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
@@ -1774,12 +2009,27 @@ module Ruby {
     UnderscoreStatement getBody() { ruby_until_modifier_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    AstNode getCondition() { ruby_until_modifier_def(this, _, result, _) }
+    UnderscoreExpression getCondition() { ruby_until_modifier_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {
       ruby_until_modifier_def(this, result, _, _) or ruby_until_modifier_def(this, _, result, _)
     }
+  }
+
+  /** A class representing `variable_reference_pattern` nodes. */
+  class VariableReferencePattern extends @ruby_variable_reference_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_variable_reference_pattern_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `name`. */
+    Identifier getName() { ruby_variable_reference_pattern_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_variable_reference_pattern_def(this, result, _) }
   }
 
   /** A class representing `when` nodes. */
@@ -1834,7 +2084,7 @@ module Ruby {
     UnderscoreStatement getBody() { ruby_while_modifier_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    AstNode getCondition() { ruby_while_modifier_def(this, _, result, _) }
+    UnderscoreExpression getCondition() { ruby_while_modifier_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() {

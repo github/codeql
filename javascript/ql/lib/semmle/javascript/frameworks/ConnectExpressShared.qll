@@ -29,10 +29,10 @@ module ConnectExpressShared {
 
     /** Gets the number of parameters taken by this signature. */
     pragma[noinline]
-    int getArity() { result = count(getParameterIndex(_)) }
+    int getArity() { result = count(this.getParameterIndex(_)) }
 
     /** Holds if this signature takes a parameter of the given kind. */
-    predicate has(string kind) { exists(getParameterIndex(kind)) }
+    predicate has(string kind) { exists(this.getParameterIndex(kind)) }
   }
 
   private module RouteHandlerSignature {

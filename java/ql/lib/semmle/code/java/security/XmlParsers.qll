@@ -159,15 +159,6 @@ private class ConstantStringExpr extends Expr {
 Expr singleSafeConfig() {
   result.(ConstantStringExpr).getStringValue() =
     "http://apache.org/xml/features/disallow-doctype-decl"
-  or
-  result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/feature/secure-processing"
-  or
-  exists(Field f |
-    result = f.getAnAccess() and
-    f.hasName("FEATURE_SECURE_PROCESSING") and
-    f.getDeclaringType().hasQualifiedName("javax.xml", "XMLConstants")
-  )
 }
 
 /**

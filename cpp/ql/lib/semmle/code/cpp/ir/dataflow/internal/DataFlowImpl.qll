@@ -289,6 +289,7 @@ private predicate outBarrier(NodeEx node, Configuration config) {
   )
 }
 
+pragma[nomagic]
 private predicate fullBarrier(NodeEx node, Configuration config) {
   exists(Node n | node.asNode() = n |
     config.isBarrier(n)
@@ -307,10 +308,22 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
 }
 
 pragma[nomagic]
-private predicate sourceNode(NodeEx node, Configuration config) { config.isSource(node.asNode()) }
+private predicate sourceNode(NodeEx node, Configuration config) {
+  config.isSource(node.asNode()) and
+  not fullBarrier(node, config)
+}
 
 pragma[nomagic]
 private predicate sinkNode(NodeEx node, Configuration config) { config.isSink(node.asNode()) }
+
+/** Provides the relevant barriers for a step from `node1` to `node2`. */
+pragma[inline]
+private predicate stepFilter(NodeEx node1, NodeEx node2, Configuration config) {
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
+}
 
 /**
  * Holds if data can flow in one local step from `node1` to `node2`.
@@ -320,16 +333,14 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
     node1.asNode() = n1 and
     node2.asNode() = n2 and
     simpleLocalFlowStepExt(n1, n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    stepFilter(node1, node2, config)
   )
   or
   exists(Node n |
     config.allowImplicitRead(n, _) and
     node1.asNode() = n and
-    node2.isImplicitReadNode(n, false)
+    node2.isImplicitReadNode(n, false) and
+    not fullBarrier(node1, config)
   )
 }
 
@@ -342,16 +353,14 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
     node2.asNode() = n2 and
     config.isAdditionalFlowStep(n1, n2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config)
+    stepFilter(node1, node2, config)
   )
   or
   exists(Node n |
     config.allowImplicitRead(n, _) and
     node1.isImplicitReadNode(n, true) and
-    node2.asNode() = n
+    node2.asNode() = n and
+    not fullBarrier(node2, config)
   )
 }
 
@@ -363,10 +372,7 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
     node1.asNode() = n1 and
     node2.asNode() = n2 and
     jumpStepCached(n1, n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config) and
+    stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
@@ -380,16 +386,14 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
     node2.asNode() = n2 and
     config.isAdditionalFlowStep(n1, n2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
-    not outBarrier(node1, config) and
-    not inBarrier(node2, config) and
-    not fullBarrier(node1, config) and
-    not fullBarrier(node2, config) and
+    stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
 }
 
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
-  read(node1.asNode(), c, node2.asNode())
+  read(node1.asNode(), c, node2.asNode()) and
+  stepFilter(node1, node2, config)
   or
   exists(Node n |
     node2.isImplicitReadNode(n, true) and
@@ -402,7 +406,8 @@ private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
   store(node1.asNode(), tc, node2.asNode(), contentType) and
-  read(_, tc.getContent(), _, config)
+  read(_, tc.getContent(), _, config) and
+  stepFilter(node1, node2, config)
 }
 
 pragma[nomagic]
@@ -451,63 +456,59 @@ private module Stage1 {
    * argument in a call.
    */
   predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
-    not fullBarrier(node, config) and
-    (
-      sourceNode(node, config) and
-      if hasSourceCallCtx(config) then cc = true else cc = false
+    sourceNode(node, config) and
+    if hasSourceCallCtx(config) then cc = true else cc = false
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, cc, config) and
+      localFlowStep(mid, node, config)
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, cc, config) and
+      additionalLocalFlowStep(mid, node, config)
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, _, config) and
+      jumpStep(mid, node, config) and
+      cc = false
+    )
+    or
+    exists(NodeEx mid |
+      fwdFlow(mid, _, config) and
+      additionalJumpStep(mid, node, config) and
+      cc = false
+    )
+    or
+    // store
+    exists(NodeEx mid |
+      useFieldFlow(config) and
+      fwdFlow(mid, cc, config) and
+      store(mid, _, node, _, config)
+    )
+    or
+    // read
+    exists(Content c |
+      fwdFlowRead(c, node, cc, config) and
+      fwdFlowConsCand(c, config)
+    )
+    or
+    // flow into a callable
+    exists(NodeEx arg |
+      fwdFlow(arg, _, config) and
+      viableParamArgEx(_, node, arg) and
+      cc = true and
+      not fullBarrier(node, config)
+    )
+    or
+    // flow out of a callable
+    exists(DataFlowCall call |
+      fwdFlowOut(call, node, false, config) and
+      cc = false
       or
-      exists(NodeEx mid |
-        fwdFlow(mid, cc, config) and
-        localFlowStep(mid, node, config)
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, cc, config) and
-        additionalLocalFlowStep(mid, node, config)
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, _, config) and
-        jumpStep(mid, node, config) and
-        cc = false
-      )
-      or
-      exists(NodeEx mid |
-        fwdFlow(mid, _, config) and
-        additionalJumpStep(mid, node, config) and
-        cc = false
-      )
-      or
-      // store
-      exists(NodeEx mid |
-        useFieldFlow(config) and
-        fwdFlow(mid, cc, config) and
-        store(mid, _, node, _, config) and
-        not outBarrier(mid, config)
-      )
-      or
-      // read
-      exists(Content c |
-        fwdFlowRead(c, node, cc, config) and
-        fwdFlowConsCand(c, config) and
-        not inBarrier(node, config)
-      )
-      or
-      // flow into a callable
-      exists(NodeEx arg |
-        fwdFlow(arg, _, config) and
-        viableParamArgEx(_, node, arg) and
-        cc = true
-      )
-      or
-      // flow out of a callable
-      exists(DataFlowCall call |
-        fwdFlowOut(call, node, false, config) and
-        cc = false
-        or
-        fwdFlowOutFromArg(call, node, config) and
-        fwdFlowIsEntered(call, cc, config)
-      )
+      fwdFlowOutFromArg(call, node, config) and
+      fwdFlowIsEntered(call, cc, config)
     )
   }
 
@@ -547,7 +548,8 @@ private module Stage1 {
   private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
     exists(ReturnPosition pos |
       fwdFlowReturnPosition(pos, cc, config) and
-      viableReturnPosOutEx(call, pos, out)
+      viableReturnPosOutEx(call, pos, out) and
+      not fullBarrier(out, config)
     )
   }
 
@@ -773,6 +775,7 @@ private module Stage1 {
    * Holds if flow may enter through `p` and reach a return node making `p` a
    * candidate for the origin of a summary.
    */
+  pragma[nomagic]
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(ReturnKindExt kind |
       throughFlowNodeCand(p, config) and
@@ -1009,6 +1012,9 @@ private module Stage2 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand1/5;
 
+  bindingset[node, ap]
+  private predicate filter(NodeEx node, Ap ap) { any() }
+
   bindingset[ap, contentType]
   private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 
@@ -1017,14 +1023,23 @@ private module Stage2 {
     PrevStage::revFlow(node, _, _, apa, config)
   }
 
+  bindingset[result, apa]
+  private ApApprox unbindApa(ApApprox apa) {
+    exists(ApApprox apa0 |
+      apa = pragma[only_bind_into](apa0) and result = pragma[only_bind_into](apa0)
+    )
+  }
+
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -1037,6 +1052,13 @@ private module Stage2 {
    */
   pragma[nomagic]
   predicate fwdFlow(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    fwdFlow0(node, cc, argAp, ap, config) and
+    flowCand(node, unbindApa(getApprox(ap)), config) and
+    filter(node, ap)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlow0(NodeEx node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     sourceNode(node, config) and
     (if hasSourceCallCtx(config) then cc = ccSomeCall() else cc = ccNone()) and
@@ -1107,7 +1129,7 @@ private module Stage2 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, config) and
       typecheckStore(ap1, contentType)
     )
   }
@@ -1142,9 +1164,8 @@ private module Stage2 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1159,9 +1180,8 @@ private module Stage2 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1171,10 +1191,8 @@ private module Stage2 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1188,7 +1206,7 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
+      PrevStage::parameterMayFlowThrough(p, _, unbindApa(getApprox(ap)), config)
     )
   }
 
@@ -1228,6 +1246,11 @@ private module Stage2 {
     fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
+  }
+
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
   }
 
   /**
@@ -1306,7 +1329,7 @@ private module Stage2 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -1341,9 +1364,8 @@ private module Stage2 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1353,9 +1375,8 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1365,9 +1386,8 @@ private module Stage2 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1707,12 +1727,14 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -1837,9 +1859,8 @@ private module Stage3 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1854,9 +1875,8 @@ private module Stage3 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1866,10 +1886,8 @@ private module Stage3 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -1923,6 +1941,11 @@ private module Stage3 {
     fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
+  }
+
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
   }
 
   /**
@@ -2001,7 +2024,7 @@ private module Stage3 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -2036,9 +2059,8 @@ private module Stage3 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2048,9 +2070,8 @@ private module Stage3 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2060,9 +2081,8 @@ private module Stage3 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2473,12 +2493,14 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+    Configuration config
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
-      pragma[only_bind_into](config))
+      pragma[only_bind_into](config)) and
+    ccc.matchesCall(call)
   }
 
   /**
@@ -2603,9 +2625,8 @@ private module Stage4 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2620,9 +2641,8 @@ private module Stage4 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      ccOut = getCallContextReturn(inner, call, innercc)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      ccOut = getCallContextReturn(inner, call, innercc) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2632,10 +2652,8 @@ private module Stage4 {
   ) {
     exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
       fwdFlow(ret, ccc, apSome(argAp), ap, config) and
-      flowThroughOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      ccc.matchesCall(call)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2689,6 +2707,11 @@ private module Stage4 {
     fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
     PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
+  }
+
+  pragma[nomagic]
+  private predicate returnNodeMayFlowThrough(RetNodeEx ret, Ap ap, Configuration config) {
+    fwdFlow(ret, any(CcCall ccc), apSome(_), ap, config)
   }
 
   /**
@@ -2767,7 +2790,7 @@ private module Stage4 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    if returnNodeMayFlowThrough(node, ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -2802,9 +2825,8 @@ private module Stage4 {
   ) {
     exists(NodeEx out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2814,9 +2836,8 @@ private module Stage4 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, false, returnAp, ap, config) and
-      flowIntoCall(_, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowIntoCall(_, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 
@@ -2826,9 +2847,8 @@ private module Stage4 {
   ) {
     exists(ParamNodeEx p, boolean allowsFieldFlow |
       revFlow(p, true, apSome(returnAp), ap, config) and
-      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config)
-    |
-      ap instanceof ApNil or allowsFieldFlow = true
+      flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
+      if allowsFieldFlow = false then ap instanceof ApNil else any()
     )
   }
 

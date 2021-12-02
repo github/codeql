@@ -25,7 +25,7 @@ module ControlFlow {
    * Only nodes that can be reached from the callable entry point are included in
    * the CFG.
    */
-  class Node extends TNode {
+  class Node extends TCfgNode {
     /** Gets a textual representation of this control flow node. */
     string toString() { none() }
 

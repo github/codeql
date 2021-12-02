@@ -169,14 +169,6 @@ namespace System.Web
         public HttpServerUtility Server => null;
     }
 
-    public class HttpUtility
-    {
-        public static string HtmlEncode(object value) => null;
-        public static string HtmlEncode(string value) => null;
-        public static string UrlEncode(string value) => null;
-        public static string HtmlAttributeEncode(string value) => null;
-    }
-
     public class HttpCookie
     {
         public HttpCookie(string name)

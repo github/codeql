@@ -45,7 +45,7 @@ module DefensiveExpressionTest {
       )
     }
 
-    override boolean getTheTestResult() { result = analyze().getTheBooleanValue() }
+    override boolean getTheTestResult() { result = this.analyze().getTheBooleanValue() }
   }
 
   /**
@@ -153,7 +153,7 @@ module DefensiveExpressionTest {
     InferredType op2type;
 
     NullUndefinedComparison() {
-      exists(Expr op2 | hasOperands(operand, op2) |
+      exists(Expr op2 | this.hasOperands(operand, op2) |
         op2type = TTNull() and SyntacticConstants::isNull(op2)
         or
         op2type = TTUndefined() and SyntacticConstants::isUndefined(op2)
@@ -161,7 +161,7 @@ module DefensiveExpressionTest {
     }
 
     override boolean getTheTestResult() {
-      result = getPolarity() and
+      result = this.getPolarity() and
       (
         if this instanceof StrictEqualityTest
         then
@@ -172,7 +172,7 @@ module DefensiveExpressionTest {
           not isNotNullOrUndefined(operand.analyze().getAType())
       )
       or
-      result = getPolarity().booleanNot() and
+      result = this.getPolarity().booleanNot() and
       (
         if this instanceof StrictEqualityTest
         then
@@ -336,7 +336,7 @@ module DefensiveExpressionTest {
         or
         testResult = false and not operand.analyze().getAType().getTypeofTag() = tag
       |
-        if getPolarity() = true then result = testResult else result = testResult.booleanNot()
+        if this.getPolarity() = true then result = testResult else result = testResult.booleanNot()
       )
     }
 

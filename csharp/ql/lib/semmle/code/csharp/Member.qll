@@ -383,7 +383,7 @@ class Parameterizable extends DotNet::Parameterizable, Declaration, @parameteriz
   override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
 
   /**
-   * Gets the name of this parameter followed by its type, possibly prefixed
+   * Gets the type of the parameter, possibly prefixed
    * with `out`, `ref`, or `params`, where appropriate.
    */
   private string parameterTypeToString(int i) {

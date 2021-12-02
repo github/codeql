@@ -1,6 +1,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import internal.AST
+private import internal.Expr
 private import internal.TreeSitter
 
 /**
@@ -91,90 +92,19 @@ class StmtSequence extends Expr, TStmtSequence {
   }
 }
 
-private class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
-  final override Stmt getStmt(int n) { synthChild(this, n, result) }
-
-  final override string toString() { result = "..." }
-}
-
-private class Then extends StmtSequence, TThen {
-  private Ruby::Then g;
-
-  Then() { this = TThen(g) }
-
-  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  final override string toString() { result = "then ..." }
-}
-
-private class Else extends StmtSequence, TElse {
-  private Ruby::Else g;
-
-  Else() { this = TElse(g) }
-
-  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  final override string toString() { result = "else ..." }
-}
-
-private class Do extends StmtSequence, TDo {
-  private Ruby::Do g;
-
-  Do() { this = TDo(g) }
-
-  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  final override string toString() { result = "do ..." }
-}
-
-private class Ensure extends StmtSequence, TEnsure {
-  private Ruby::Ensure g;
-
-  Ensure() { this = TEnsure(g) }
-
-  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  final override string toString() { result = "ensure ..." }
-}
-
 /**
  * A sequence of statements representing the body of a method, class, module,
  * or do-block. That is, any body that may also include rescue/ensure/else
  * statements.
  */
 class BodyStmt extends StmtSequence, TBodyStmt {
-  // Not defined by dispatch, as it should not be exposed
-  private Ruby::AstNode getChild(int i) {
-    result = any(Ruby::Method g | this = TMethod(g)).getChild(i)
-    or
-    result = any(Ruby::SingletonMethod g | this = TSingletonMethod(g)).getChild(i)
-    or
-    exists(Ruby::Lambda g | this = TLambda(g) |
-      result = g.getBody().(Ruby::DoBlock).getChild(i) or
-      result = g.getBody().(Ruby::Block).getChild(i)
-    )
-    or
-    result = any(Ruby::DoBlock g | this = TDoBlock(g)).getChild(i)
-    or
-    result = any(Ruby::Program g | this = TToplevel(g)).getChild(i) and
-    not result instanceof Ruby::BeginBlock
-    or
-    result = any(Ruby::Class g | this = TClassDeclaration(g)).getChild(i)
-    or
-    result = any(Ruby::SingletonClass g | this = TSingletonClass(g)).getChild(i)
-    or
-    result = any(Ruby::Module g | this = TModuleDeclaration(g)).getChild(i)
-    or
-    result = any(Ruby::Begin g | this = TBeginExpr(g)).getChild(i)
-  }
-
   final override Stmt getStmt(int n) {
-    result =
-      rank[n + 1](AstNode node, int i |
-        toGenerated(node) = this.getChild(i) and
-        not node instanceof Else and
-        not node instanceof RescueClause and
-        not node instanceof Ensure
+    toGenerated(result) =
+      rank[n + 1](Ruby::AstNode node, int i |
+        node = getBodyStmtChild(this, i) and
+        not node instanceof Ruby::Else and
+        not node instanceof Ruby::Rescue and
+        not node instanceof Ruby::Ensure
       |
         node order by i
       )
@@ -183,17 +113,25 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   /** Gets the `n`th rescue clause in this block. */
   final RescueClause getRescue(int n) {
     result =
-      rank[n + 1](RescueClause node, int i | toGenerated(node) = this.getChild(i) | node order by i)
+      rank[n + 1](RescueClause node, int i |
+        toGenerated(node) = getBodyStmtChild(this, i)
+      |
+        node order by i
+      )
   }
 
   /** Gets a rescue clause in this block. */
   final RescueClause getARescue() { result = this.getRescue(_) }
 
   /** Gets the `else` clause in this block, if any. */
-  final StmtSequence getElse() { result = unique(Else s | toGenerated(s) = getChild(_)) }
+  final StmtSequence getElse() {
+    result = unique(Else s | toGenerated(s) = getBodyStmtChild(this, _))
+  }
 
   /** Gets the `ensure` clause in this block, if any. */
-  final StmtSequence getEnsure() { result = unique(Ensure s | toGenerated(s) = getChild(_)) }
+  final StmtSequence getEnsure() {
+    result = unique(Ensure s | toGenerated(s) = getBodyStmtChild(this, _))
+  }
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
 

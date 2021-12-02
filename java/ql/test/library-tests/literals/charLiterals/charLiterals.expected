@@ -9,8 +9,8 @@
 | CharLiterals.java:13:3:13:6 | '\\\\' | \\ | 92 |
 | CharLiterals.java:14:3:14:6 | '\\'' | ' | 39 |
 | CharLiterals.java:15:3:15:8 | '\\123' | S | 83 |
-| CharLiterals.java:17:3:17:10 | '\\uD800' | \ufffd | 65533 |
-| CharLiterals.java:18:3:18:10 | '\\uDC00' | \ufffd | 65533 |
+| CharLiterals.java:17:3:17:10 | '\\uD800' | \ufffd | 55296 |
+| CharLiterals.java:18:3:18:10 | '\\uDC00' | \ufffd | 56320 |
 | CharLiterals.java:20:3:20:16 | '\\u005C\\u005C' | \\ | 92 |
 | CharLiterals.java:21:3:21:16 | '\\u005C\\u0027' | ' | 39 |
 | CharLiterals.java:22:8:22:15 | 7a\\u0027 | a | 97 |

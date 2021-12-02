@@ -5,14 +5,14 @@ abstract class Violation extends ASTNode {
 }
 
 class MissingContainer extends Violation, TypeExpr {
-  MissingContainer() { not exists(getContainer()) }
+  MissingContainer() { not exists(this.getContainer()) }
 
   override string reason() { result = "Has no container" }
 }
 
 class MissingEnclosingStmt extends Violation, TypeExpr {
   MissingEnclosingStmt() {
-    not exists(getEnclosingStmt()) and
+    not exists(this.getEnclosingStmt()) and
     // type parameters, parameter types, return types, and this parameter types have no enclosing statements
     not exists(Function f, TypeExpr type |
       (
@@ -29,13 +29,15 @@ class MissingEnclosingStmt extends Violation, TypeExpr {
 }
 
 class DifferentContainer extends Violation, VarDecl {
-  DifferentContainer() { getContainer() != getTypeAnnotation().getContainer() }
+  DifferentContainer() { this.getContainer() != this.getTypeAnnotation().getContainer() }
 
   override string reason() { result = "Type annotation has different container" }
 }
 
 class DifferentEnclosingStmt extends Violation, VarDecl {
-  DifferentEnclosingStmt() { getEnclosingStmt() != getTypeAnnotation().getEnclosingStmt() }
+  DifferentEnclosingStmt() {
+    this.getEnclosingStmt() != this.getTypeAnnotation().getEnclosingStmt()
+  }
 
   override string reason() { result = "Type annotation has different enclosing statement" }
 }

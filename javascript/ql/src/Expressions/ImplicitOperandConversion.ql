@@ -49,9 +49,9 @@ abstract class ImplicitConversionWithWhitelist extends ImplicitConversion {
   abstract string getConversionTarget();
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
-    not v.getType() = getAWhitelistedType() and
-    result = getConversionTarget()
+    v = this.getAValue() and
+    not v.getType() = this.getAWhitelistedType() and
+    result = this.getConversionTarget()
   }
 }
 
@@ -136,7 +136,7 @@ class NumericConversion extends ImplicitConversion {
   }
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
+    v = this.getAValue() and
     not v.isCoercibleToNumber() and
     result = "number"
   }
@@ -149,9 +149,9 @@ abstract class NullOrUndefinedConversion extends ImplicitConversion {
   abstract string getConversionTarget();
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
+    v = this.getAValue() and
     (v instanceof AbstractNull or v instanceof AbstractUndefined) and
-    result = getConversionTarget()
+    result = this.getConversionTarget()
   }
 }
 
@@ -163,9 +163,9 @@ class PlusConversion extends NullOrUndefinedConversion {
   PlusConversion() { parent instanceof AddExpr or parent instanceof AssignAddExpr }
 
   override string getConversionTarget() {
-    result = getDefiniteSiblingType()
+    result = this.getDefiniteSiblingType()
     or
-    not exists(getDefiniteSiblingType()) and
+    not exists(this.getDefiniteSiblingType()) and
     result = "number or string"
   }
 
@@ -179,7 +179,8 @@ class PlusConversion extends NullOrUndefinedConversion {
    * Gets the unique type of the sibling expression, if that type is `string` or `number`.
    */
   private string getDefiniteSiblingType() {
-    result = unique(InferredType t | t = getSibling().flow().analyze().getAType()).getTypeofTag() and
+    result =
+      unique(InferredType t | t = this.getSibling().flow().analyze().getAType()).getTypeofTag() and
     result = ["string", "number"]
   }
 }

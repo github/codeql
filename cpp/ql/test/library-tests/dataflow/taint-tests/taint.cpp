@@ -126,15 +126,15 @@ void pointer_test() {
 
 	*p2 = source();
 
-	sink(*p1); // $ ast MISSING: ir
+	sink(*p1); // $ ast,ir
 	sink(*p2); // $ ast,ir
 	sink(*p3);
 
 	p3 = &t1;
-	sink(*p3); // $ ast MISSING: ir
+	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
