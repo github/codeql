@@ -1004,6 +1004,13 @@ module Private {
     abstract class RelevantSummarizedCallable extends SummarizedCallable {
       /** Gets the string representation of this callable used by `summary/1`. */
       abstract string getCallableCsv();
+
+      /** Holds if flow is progated between `input` and `output` */
+      predicate relevantSummary(
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      ) {
+        this.propagatesFlow(input, output, preservesValue)
+      }
     }
 
     /** Render the kind in the format used in flow summaries. */
@@ -1023,7 +1030,7 @@ module Private {
         RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
         boolean preservesValue
       |
-        c.propagatesFlow(input, output, preservesValue) and
+        c.relevantSummary(input, output, preservesValue) and
         csv =
           c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
             getComponentStackCsv(output) + ";" + renderKind(preservesValue)
