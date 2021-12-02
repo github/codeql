@@ -86,7 +86,7 @@ module UnsafeUnzipSymlink {
    * Gets a `CallNode` that may call `node`'s enclosing function.
    */
   private DataFlow::CallNode getACaller(DataFlow::CallNode node) {
-    result.getACallee().getFuncDef() = node.getRoot()
+    result.getACallee() = node.getRoot()
   }
 
   /**

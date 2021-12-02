@@ -31,7 +31,7 @@ class HostKeyCallbackFunc extends DataFlow::Node {
     (
       this instanceof DataFlow::FunctionNode
       or
-      exists(DataFlow::CallNode call | not exists(call.getACallee().getFuncDef().getBody()) |
+      exists(DataFlow::CallNode call | not exists(call.getACallee().getBody()) |
         this = call.getAResult()
       )
     )

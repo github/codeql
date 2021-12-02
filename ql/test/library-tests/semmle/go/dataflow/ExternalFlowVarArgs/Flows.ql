@@ -12,7 +12,7 @@ class SummaryModelTest extends SummaryModelCsv {
         "github.com/nonexistent/test;;false;FunctionWithSliceParameter;;;ArrayElement of Argument[0];ReturnValue;value",
         "github.com/nonexistent/test;;false;FunctionWithVarArgsParameter;;;ArrayElement of Argument[0];ReturnValue;value",
         "github.com/nonexistent/test;;false;FunctionWithSliceOfStructsParameter;;;Field[github.com/nonexistent/test.A.Field] of ArrayElement of Argument[0];ReturnValue;value",
-        "github.com/nonexistent/test;;false;FunctionWithVarArgsOfStructsParameter;;;Field[github.com/nonexistent/test.A.Field] of ArrayElement of Argument[0];ReturnValue;value",
+        "github.com/nonexistent/test;;false;FunctionWithVarArgsOfStructsParameter;;;Field[github.com/nonexistent/test.A.Field] of ArrayElement of Argument[0];ReturnValue;value"
       ]
   }
 }

@@ -54,9 +54,7 @@ predicate isCleaned(DataFlow::Node nd) {
   isCleaned(nd.getAPredecessor())
   or
   exists(FuncDef f, FunctionInput inp | nd = inp.getExitNode(f) |
-    forex(DataFlow::CallNode call | call.getACallee().getFuncDef() = f |
-      isCleaned(inp.getEntryNode(call))
-    )
+    forex(DataFlow::CallNode call | call.getACallee() = f | isCleaned(inp.getEntryNode(call)))
   )
 }
 
@@ -89,9 +87,7 @@ predicate urlPath(DataFlow::Node nd) {
   urlPath(nd.getAPredecessor())
   or
   exists(FuncDef f, FunctionInput inp | nd = inp.getExitNode(f) |
-    forex(DataFlow::CallNode call | call.getACallee().getFuncDef() = f |
-      urlPath(inp.getEntryNode(call))
-    )
+    forex(DataFlow::CallNode call | call.getACallee() = f | urlPath(inp.getEntryNode(call)))
   )
 }
 

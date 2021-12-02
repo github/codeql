@@ -449,19 +449,25 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
-    FuncDef getACallee() {
-      result = this.getTarget().(DeclaredFunction).getFuncDecl()
+    DataFlowCallable getACalleeIncludingExternals() {
+      result.asFunction() = this.getTarget()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result = calleeSource.asExpr()
+        result.asFuncLit() = calleeSource.asExpr()
         or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
-          result = actual.(DeclaredFunction).getFuncDecl()
+          result.asFunction() = actual
         )
       )
     }
+
+    /**
+     * As `getACalleeIncludingExternals`, except excluding external functions (those for which
+     * we lack a definition, such as standard library functions).
+     */
+    FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /** Gets the name of the function or method being called, if it can be determined. */
     string getCalleeName() { result = expr.getTarget().getName() or result = expr.getCalleeName() }

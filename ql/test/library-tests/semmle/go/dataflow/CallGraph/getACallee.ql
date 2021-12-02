@@ -16,10 +16,10 @@ string metadata(Locatable l, string key) {
 
 query predicate missingCallee(DataFlow::CallNode call, FuncDef callee) {
   metadata(call.asExpr(), "callee") = metadata(callee, "name") and
-  not call.getACallee().getFuncDef() = callee
+  not call.getACallee() = callee
 }
 
 query predicate spuriousCallee(DataFlow::CallNode call, FuncDef callee) {
-  call.getACallee().getFuncDef() = callee and
+  call.getACallee() = callee and
   not metadata(call.asExpr(), "callee") = metadata(callee, "name")
 }

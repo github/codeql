@@ -26,9 +26,9 @@ predicate isNil(DataFlow::Node node) { node = Builtin::nil().getARead() }
  * `nil` for the pointer return value at some return site.
  */
 predicate calleeMayReturnNilWithError(DataFlow::CallNode call) {
-  not exists(call.getACallee().getFuncDef())
+  not exists(call.getACallee())
   or
-  exists(FuncDef callee | callee = call.getACallee().getFuncDef() |
+  exists(FuncDef callee | callee = call.getACallee() |
     not exists(callee.getBody())
     or
     exists(IR::ReturnInstruction ret, DataFlow::Node ptrReturn, DataFlow::Node errReturn |
