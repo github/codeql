@@ -17,7 +17,7 @@ open class KotlinFileExtractor(
     override val tw: FileTrapWriter,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalClassExtractor,
-    primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
+    primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext) {
 

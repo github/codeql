@@ -36,7 +36,7 @@ class KotlinExtractorExtension(
             val logger = Logger(logCounter, tw)
             logger.info("Extraction started")
             logger.flush()
-            val primitiveTypeMapping = makePrimitiveTypeMapping(logger, pluginContext)
+            val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
             // FIXME: FileUtil expects a static global logger
             // which should be provided by SLF4J's factory facility. For now we set it here.
             FileUtil.logger = logger
@@ -91,7 +91,7 @@ fun doFile(invocationTrapFile: String,
            trapDir: File,
            srcDir: File,
            file: IrFile,
-           primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
+           primitiveTypeMapping: PrimitiveTypeMapping,
            pluginContext: IrPluginContext) {
     val filePath = file.path
     val logger = FileLogger(logCounter, fileTrapWriter)

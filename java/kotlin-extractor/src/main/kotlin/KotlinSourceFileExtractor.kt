@@ -15,7 +15,7 @@ class KotlinSourceFileExtractor(
     tw: FileTrapWriter,
     val file: IrFile,
     externalClassExtractor: ExternalClassExtractor,
-    primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
+    primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext
 ) :
   KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext) {

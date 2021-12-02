@@ -19,7 +19,7 @@ open class KotlinUsesExtractor(
     open val tw: TrapWriter,
     val dependencyCollector: OdasaOutput.TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
-    val primitiveTypeMapping: Map<IdSignature.PublicSignature, PrimitiveTypeInfo>,
+    val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext
 ) {
     fun usePackage(pkg: String): Label<out DbPackage> {
@@ -314,7 +314,7 @@ open class KotlinUsesExtractor(
             return TypeResults(javaResult, kotlinResult)
         }
 
-        val primitiveInfo = primitiveTypeMapping[s.classifier.signature]
+        val primitiveInfo = primitiveTypeMapping.getPrimitiveInfo(s)
 
         when {
 /*
