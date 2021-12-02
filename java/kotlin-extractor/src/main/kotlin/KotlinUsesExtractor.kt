@@ -720,8 +720,8 @@ class X {
     fun useTypeAlias(ta: IrTypeAlias): Label<out DbKt_type_alias> =
         tw.getLabelFor(getTypeAliasLabel(ta))
 
-    fun useVariable(v: IrVariable): Label<out DbLocalvar> {
-        return tw.getVariableLabelFor<DbLocalvar>(v)
+    fun useVariable(v: IrVariable): Label<DbLocalvar> {
+        return withSourceFile(v.fileOrNull!!).getVariableLabelFor<DbLocalvar>(v)
     }
 
     fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()

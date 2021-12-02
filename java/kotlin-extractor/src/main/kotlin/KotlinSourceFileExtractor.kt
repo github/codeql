@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
@@ -32,8 +33,16 @@ class KotlinSourceFileExtractor(
         }
     }
 
-    data class SourceFileExtractionState(val anonymousTypeMap: MutableMap<IrClass, TypeResults> = mutableMapOf(),
-                                         val generatedLocalFunctionTypeMap: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf())
+    data class SourceFileExtractionState(val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf(),
+                                         val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf(),
+                                         /**
+                                          * It is not easy to assign keys to local variables, so they get
+                                          * given `*` IDs. However, the same variable may be referred to
+                                          * from distant places in the IR, so we need a way to find out
+                                          * which label is used for a given local variable. This information
+                                          * is stored in this mapping.
+                                          */
+                                         val variableLabelMapping: MutableMap<IrVariable, Label<DbLocalvar>> = mutableMapOf())
 
     companion object {
         private val stateCache: MutableMap<IrFile, SourceFileExtractionState> = mutableMapOf()
@@ -92,14 +101,29 @@ class KotlinSourceFileExtractor(
       return id
   }
 
+    /**
+     * This returns the label used for a local variable, creating one
+     * if none currently exists.
+     */
+    fun <T> getVariableLabelFor(v: IrVariable): Label<DbLocalvar> {
+        val maybeLabel = fileExtractionState.variableLabelMapping[v]
+        if (maybeLabel == null) {
+            val label = tw.getFreshIdLabel<DbLocalvar>()
+            fileExtractionState.variableLabelMapping[v] = label
+            return label
+        } else {
+            return maybeLabel
+        }
+    }
+
     fun useAnonymousClass(c: IrClass): TypeResults {
-        var res = fileExtractionState.anonymousTypeMap[c]
+        var res = fileExtractionState.anonymousTypeMapping[c]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             res = TypeResults(javaResult, kotlinResult)
-            fileExtractionState.anonymousTypeMap[c] = res
+            fileExtractionState.anonymousTypeMapping[c] = res
         }
 
         return res
@@ -112,7 +136,7 @@ class KotlinSourceFileExtractor(
             logger.warnElement(Severity.ErrorSevere, "Extracting a non-local function as a local one", f)
         }
 
-        var res = fileExtractionState.generatedLocalFunctionTypeMap[f]
+        var res = fileExtractionState.generatedLocalFunctionTypeMapping[f]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
@@ -121,7 +145,7 @@ class KotlinSourceFileExtractor(
                 TypeResults(javaResult, kotlinResult),
                 tw.getFreshIdLabel(),
                 tw.getFreshIdLabel())
-            fileExtractionState.generatedLocalFunctionTypeMap[f] = res
+            fileExtractionState.generatedLocalFunctionTypeMapping[f] = res
         }
 
         return res
