@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,18 +29,17 @@ namespace Semmle.Extraction.CSharp.Entities
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
 
-        public override bool NeedsPopulation => base.NeedsPopulation || Symbol.TypeKind == TypeKind.Error;
+        public override bool NeedsPopulation => base.NeedsPopulation || UsesTypeRef;
 
         public override void Populate(TextWriter trapFile)
         {
+            PopulateType(trapFile, constructUnderlyingTupleType);
+
             if (Symbol.TypeKind == TypeKind.Error)
             {
                 Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
-
-            if (UsesTypeRef)
-                trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (Symbol.IsGenericType)
             {
@@ -67,14 +65,13 @@ namespace Semmle.Extraction.CSharp.Entities
                         : Type.Create(Context, Symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
-                    for (var i = 0; i < Symbol.TypeArguments.Length; ++i)
+                    for (var i = 0; i < TypeArguments.Length; ++i)
                     {
                         trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }
                 }
             }
 
-            PopulateType(trapFile, constructUnderlyingTupleType);
 
             if (Symbol.EnumUnderlyingType is not null)
             {
@@ -169,28 +166,30 @@ namespace Semmle.Extraction.CSharp.Entities
         // the assembly that was being extracted at the time.
         private bool UsesTypeRef => Symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
 
-        public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, Symbol) : this;
+        public override Type TypeRef => UsesTypeRef ? NamedTypeRef.Create(Context, Symbol, this) : this;
     }
 
     internal class NamedTypeRef : Type<INamedTypeSymbol>
     {
         private readonly Type referencedType;
+        private readonly NamedType referencedNamedType;
 
-        public NamedTypeRef(Context cx, INamedTypeSymbol symbol) : base(cx, symbol)
+        public NamedTypeRef(Context cx, INamedTypeSymbol symbol, NamedType referencedNamedType) : base(cx, symbol)
         {
             referencedType = Type.Create(cx, symbol);
+            this.referencedNamedType = referencedNamedType;
         }
 
-        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
+        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type, NamedType referencedNamedType) =>
             // We need to use a different cache key than `type` to avoid mixing up
             // `NamedType`s and `NamedTypeRef`s
-            NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), type);
+            NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), (type, referencedNamedType));
 
-        private class NamedTypeRefFactory : CachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
+        private class NamedTypeRefFactory : CachedEntityFactory<(INamedTypeSymbol, NamedType), NamedTypeRef>
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
-            public override NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
+            public override NamedTypeRef Create(Context cx, (INamedTypeSymbol, NamedType) init) => new NamedTypeRef(cx, init.Item1, init.Item2);
         }
 
         public override bool NeedsPopulation => true;
@@ -204,6 +203,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.typerefs(this, Symbol.Name);
+            trapFile.typeref_type(this, referencedNamedType);
         }
     }
 }

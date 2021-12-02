@@ -1,0 +1,22 @@
+[TYPES_NOT_DISJOINT] Base types @class_type and @unknown_type are not disjoint. A common value is 2683
+	Relevant element: id=2683
+		Full ID for 2683: @"(633).Dictionary`2;type". The ID may expand to @"{@"{@"{@"(13).System;namespace"}.Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"
+[TYPES_NOT_DISJOINT] Base types @class_type and @unknown_type are not disjoint. A common value is 4315
+	Relevant element: id=4315
+		Full ID for 4315: @"(2683)<(46),(46)>;type". The ID may expand to @"{@"{@"{@"(16).Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"}<{@"{@"{@";namespace"}.System;namespace"}.String;type"},{@"{@"{@";namespace"}.System;namespace"}.String;type"}>;type"
+[INVALID_KEY] predicate types(@type id, int kind, string name): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 329: (2683,17,"Dictionary")
+Tuple 2 in row 330: (2683,31,"Dictionary")
+	Relevant element: Tuple 1: id=2683
+		Full ID for 2683: @"(633).Dictionary`2;type". The ID may expand to @"{@"{@"{@"(13).System;namespace"}.Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"
+	Relevant element: Tuple 2: id=2683
+		Full ID for 2683: @"(633).Dictionary`2;type". The ID may expand to @"{@"{@"{@"(13).System;namespace"}.Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"
+[INVALID_KEY] predicate types(@type id, int kind, string name): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 424: (4315,17,"Dictionary")
+Tuple 2 in row 425: (4315,31,"Dictionary")
+	Relevant element: Tuple 1: id=4315
+		Full ID for 4315: @"(2683)<(46),(46)>;type". The ID may expand to @"{@"{@"{@"(16).Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"}<{@"{@"{@";namespace"}.System;namespace"}.String;type"},{@"{@"{@";namespace"}.System;namespace"}.String;type"}>;type"
+	Relevant element: Tuple 2: id=4315
+		Full ID for 4315: @"(2683)<(46),(46)>;type". The ID may expand to @"{@"{@"{@"(16).Collections;namespace"}.Generic;namespace"}.Dictionary`2;type"}<{@"{@"{@";namespace"}.System;namespace"}.String;type"},{@"{@"{@";namespace"}.System;namespace"}.String;type"}>;type"
