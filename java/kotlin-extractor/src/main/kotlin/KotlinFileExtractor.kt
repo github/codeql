@@ -123,10 +123,39 @@ open class KotlinFileExtractor(
         return id
     }
 
+    private val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
+
+    fun useAnonymousClass(c: IrClass): TypeResults {
+        var res = anonymousTypeMapping[c]
+        if (res == null) {
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            res = TypeResults(javaResult, kotlinResult)
+            anonymousTypeMapping[c] = res
+        }
+
+        return res
+    }
+
+    private fun extractAnonymousClassStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        @Suppress("UNCHECKED_CAST")
+        val id = extractClassSource(c) as Label<out DbClass>
+        extractAnonymousClassStmt(id, c, callable, parent, idx)
+    }
+
+    private fun extractAnonymousClassStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val stmtId = tw.getFreshIdLabel<DbAnonymousclassdeclstmt>()
+        tw.writeStmts_anonymousclassdeclstmt(stmtId, parent, idx, callable)
+        tw.writeKtAnonymousClassDeclarationStmts(stmtId, id)
+        val locId = tw.getLocation(locElement)
+        tw.writeHasLocation(stmtId, locId)
+    }
+
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
         val id = if (c.isAnonymousObject) {
             @Suppress("UNCHECKED_CAST")
-            withSourceFile(c.fileOrNull!!).useAnonymousClass(c).javaResult.id as Label<out DbClass>
+            useAnonymousClass(c).javaResult.id as Label<out DbClass>
         } else {
             useClassSource(c)
         }
@@ -156,7 +185,7 @@ open class KotlinFileExtractor(
                 val parentId =
                     if (parent.isAnonymousObject) {
                         @Suppress("UNCHECKED_CAST")
-                        withSourceFile(c.fileOrNull!!).useAnonymousClass(c).javaResult.id as Label<out DbClass>
+                        useAnonymousClass(c).javaResult.id as Label<out DbClass>
                     } else {
                         useClassInstance(parent, listOf()).typeResult.id
                     }
@@ -323,7 +352,7 @@ open class KotlinFileExtractor(
 
         val id =
             if (f.isLocalFunction())
-                withSourceFile(f.fileOrNull!!).getLocalFunctionLabels(f).function
+                getLocalFunctionLabels(f).function
             else
                 useFunction<DbCallable>(f)
 
@@ -507,16 +536,15 @@ open class KotlinFileExtractor(
             }
             is IrClass -> {
                 if (s.isAnonymousObject) {
-                    withSourceFile(s.fileOrNull!!).extractAnonymousClassStmt(s, callable, parent, idx)
+                    extractAnonymousClassStmt(s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
                 }
             }
             is IrFunction -> {
                 if (s.isLocalFunction()) {
-                    val extractor = withSourceFile(s.fileOrNull!!)
-                    val classId =  extractor.extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
-                    extractor.extractAnonymousClassStmt(classId, s, callable, parent, idx)
+                    val classId =  extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
+                    extractAnonymousClassStmt(classId, s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }
@@ -684,7 +712,7 @@ open class KotlinFileExtractor(
             }
 
             if (callTarget.isLocalFunction()) {
-                val ids = withSourceFile(callTarget.fileOrNull!!).getLocalFunctionLabels(callTarget)
+                val ids = getLocalFunctionLabels(callTarget)
 
                 val methodId = ids.function
                 tw.writeCallableBinding(id, methodId)
@@ -1063,7 +1091,7 @@ open class KotlinFileExtractor(
 
             val c = (e.type as IrSimpleType).classifier.owner as IrClass
 
-            type = withSourceFile(c.fileOrNull!!).useAnonymousClass(c)
+            type = useAnonymousClass(c)
 
             @Suppress("UNCHECKED_CAST")
             tw.writeIsAnonymClass(type.javaResult.id as Label<DbClass>, id)
@@ -1737,4 +1765,71 @@ open class KotlinFileExtractor(
 
     private val IrType.isAnonymous: Boolean
         get() = ((this as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
+
+
+    private val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf()
+
+    data class LocalFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>)
+
+    fun getLocalFunctionLabels(f: IrFunction): LocalFunctionLabels {
+        if (!f.isLocalFunction()){
+            logger.warnElement(Severity.ErrorSevere, "Extracting a non-local function as a local one", f)
+        }
+
+        var res = generatedLocalFunctionTypeMapping[f]
+        if (res == null) {
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            res = LocalFunctionLabels(
+                TypeResults(javaResult, kotlinResult),
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel())
+            generatedLocalFunctionTypeMapping[f] = res
+        }
+
+        return res
+    }
+
+    fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
+        val ids = getLocalFunctionLabels(localFunction)
+
+        // Write class
+        @Suppress("UNCHECKED_CAST")
+        val id = ids.type.javaResult.id as Label<out DbClass>
+        val pkgId = extractPackage("")
+        tw.writeClasses(id, "", pkgId, id)
+        val locId = tw.getLocation(localFunction)
+        tw.writeHasLocation(id, locId)
+
+        // Extract local function as a member
+        extractFunction(localFunction, id)
+
+        // Extract constructor
+        tw.writeConstrs(ids.constructor, "", "", ids.type.javaResult.id, ids.type.kotlinResult.id, id, ids.constructor)
+        tw.writeHasLocation(ids.constructor, locId)
+
+        // Constructor body
+        val constructorBlockId = tw.getFreshIdLabel<DbBlock>()
+        tw.writeStmts_block(constructorBlockId, ids.constructor, 0, ids.constructor)
+        tw.writeHasLocation(constructorBlockId, locId)
+
+        // Super call
+        val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
+        tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.function)
+
+        val baseConstructor = superTypes.first().classOrNull!!.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
+        val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
+
+        tw.writeHasLocation(superCallId, locId)
+        @Suppress("UNCHECKED_CAST")
+        tw.writeCallableBinding(superCallId as Label<DbCaller>, baseConstructorId)
+
+        // TODO: We might need to add an `<obinit>` function, and a call to it to match other classes
+
+        addModifiers(id, "public", "static", "final")
+        extractClassSupertypes(superTypes, listOf(), id)
+
+        return id
+    }
 }

@@ -66,7 +66,7 @@ open class KotlinUsesExtractor(
             ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
             ?.owner
 
-    fun withSourceFile(clsFile: IrFile): KotlinSourceFileExtractor {
+    private fun withSourceFile(clsFile: IrFile): KotlinFileExtractor {
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
@@ -75,7 +75,7 @@ open class KotlinUsesExtractor(
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
      */
-    fun withSourceFileOfClass(cls: IrClass): KotlinFileExtractor {
+    private fun withSourceFileOfClass(cls: IrClass): KotlinFileExtractor {
         val clsFile = cls.fileOrNull
 
         if (isExternalDeclaration(cls) || clsFile == null) {
@@ -720,8 +720,8 @@ class X {
     fun useTypeAlias(ta: IrTypeAlias): Label<out DbKt_type_alias> =
         tw.getLabelFor(getTypeAliasLabel(ta))
 
-    fun useVariable(v: IrVariable): Label<DbLocalvar> {
-        return withSourceFile(v.fileOrNull!!).getVariableLabelFor<DbLocalvar>(v)
+    fun useVariable(v: IrVariable): Label<out DbLocalvar> {
+        return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 
     fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()

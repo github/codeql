@@ -39,9 +39,7 @@ class TrapLabelManager {
  * instances will have different additional state, but they must all
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
-open class TrapWriter (
-    protected val lm: TrapLabelManager,
-    private val bw: BufferedWriter) {
+open class TrapWriter (protected val lm: TrapLabelManager, private val bw: BufferedWriter) {
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use
@@ -65,6 +63,30 @@ open class TrapWriter (
             lm.labelMapping.put(key, label)
             writeTrap("$label = $key\n")
             initialise(label)
+            return label
+        } else {
+            return maybeLabel
+        }
+    }
+
+    /**
+     * It is not easy to assign keys to local variables, so they get
+     * given `*` IDs. However, the same variable may be referred to
+     * from distant places in the IR, so we need a way to find out
+     * which label is used for a given local variable. This information
+     * is stored in this mapping.
+     */
+    private val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> = mutableMapOf<IrVariable, Label<out DbLocalvar>>()
+    /**
+     * This returns the label used for a local variable, creating one
+     * if none currently exists.
+     */
+    fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
+        val maybeLabel = variableLabelMapping.get(v)
+        if(maybeLabel == null) {
+            val label = lm.getFreshLabel<DbLocalvar>()
+            variableLabelMapping.put(v, label)
+            writeTrap("$label = *\n")
             return label
         } else {
             return maybeLabel
