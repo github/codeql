@@ -1,6 +1,6 @@
 /**
- * @name Diagnostics for framework coverage
- * @description Expose diagnostics for the number of API endpoints covered by CSV models.
+ * @name Metrics for framework coverage
+ * @description Expose metrics for the number of API endpoints covered by CSV models.
  * @id java/diagnostics/framework-coverage
  * @kind metric
  * @tags summary
