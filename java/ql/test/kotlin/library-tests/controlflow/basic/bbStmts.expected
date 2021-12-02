@@ -115,6 +115,11 @@
 | Test.kt:84:3:84:18 | x | 0 | Test.kt:84:3:84:18 | x |
 | Test.kt:84:3:84:18 | x | 1 | Test.kt:85:10:85:10 | 1 |
 | Test.kt:84:3:84:18 | x | 2 | Test.kt:85:3:85:10 | return ... |
+| Test.kt:86:4:88:2 | catch (...) | 0 | Test.kt:86:4:88:2 | catch (...) |
+| Test.kt:86:4:88:2 | catch (...) | 1 | Test.kt:86:11:86:31 | e |
+| Test.kt:86:4:88:2 | catch (...) | 2 | Test.kt:86:34:88:2 | { ... } |
+| Test.kt:86:4:88:2 | catch (...) | 3 | Test.kt:87:10:87:10 | 2 |
+| Test.kt:86:4:88:2 | catch (...) | 4 | Test.kt:87:3:87:10 | return ... |
 | Test.kt:91:1:98:1 | t2 | 0 | Test.kt:91:1:98:1 | t2 |
 | Test.kt:91:22:98:1 | { ... } | 0 | Test.kt:91:22:98:1 | { ... } |
 | Test.kt:91:22:98:1 | { ... } | 1 | Test.kt:92:2:97:2 | try ... |
@@ -125,3 +130,8 @@
 | Test.kt:93:3:93:13 | x | 0 | Test.kt:93:3:93:13 | x |
 | Test.kt:93:3:93:13 | x | 1 | Test.kt:94:10:94:10 | 1 |
 | Test.kt:93:3:93:13 | x | 2 | Test.kt:94:3:94:10 | return ... |
+| Test.kt:95:4:97:2 | catch (...) | 0 | Test.kt:95:4:97:2 | catch (...) |
+| Test.kt:95:4:97:2 | catch (...) | 1 | Test.kt:95:11:95:33 | e |
+| Test.kt:95:4:97:2 | catch (...) | 2 | Test.kt:95:36:97:2 | { ... } |
+| Test.kt:95:4:97:2 | catch (...) | 3 | Test.kt:96:10:96:10 | 2 |
+| Test.kt:95:4:97:2 | catch (...) | 4 | Test.kt:96:3:96:10 | return ... |

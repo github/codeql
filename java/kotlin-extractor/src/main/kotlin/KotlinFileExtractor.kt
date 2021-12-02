@@ -1229,6 +1229,8 @@ open class KotlinFileExtractor(
                 for((catchIdx, catchClause) in e.catches.withIndex()) {
                     val catchId = tw.getFreshIdLabel<DbCatchclause>()
                     tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
+                    val catchLocId = tw.getLocation(catchClause)
+                    tw.writeHasLocation(catchId, catchLocId)
                     extractTypeAccess(catchClause.catchParameter.type, callable, catchId, -1, catchClause.catchParameter, catchId)
                     extractVariableExpr(catchClause.catchParameter, callable, catchId, 0, catchId)
                     extractExpressionStmt(catchClause.result, callable, catchId, 1)
