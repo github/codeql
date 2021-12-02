@@ -3,7 +3,7 @@
  * @description A list of 3rd party APIs detected as sources. Excludes test and generated code.
  * @id java/telemetry/supported-external-api-sources
  * @kind metric
- * @metricType callable
+ * @tags summary
  */
 
 import java

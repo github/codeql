@@ -3,7 +3,7 @@
  * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
  * @id java/telemetry/supported-external-api-sinks
  * @kind metric
- * @metricType callable
+ * @tags summary
  */
 
 import java
