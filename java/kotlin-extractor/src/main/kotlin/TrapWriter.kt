@@ -68,7 +68,6 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
             return maybeLabel
         }
     }
-
     /**
      * It is not easy to assign keys to local variables, so they get
      * given `*` IDs. However, the same variable may be referred to

@@ -612,7 +612,6 @@ class X {
         extractClassSupertypes(c.superTypes, c.typeParameters, id, typeArgsQ)
     }
 
-
     fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, typeArgsQ: List<IrTypeArgument>? = null) {
         // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
         // (For example, we can't have `class A<E> : E`, but can have `class A<E> : Comparable<E>`)

@@ -35,6 +35,8 @@ open class KotlinFileExtractor(
         }
     }
 
+
+
     fun getLabel(element: IrElement) : String? {
         when (element) {
             is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
