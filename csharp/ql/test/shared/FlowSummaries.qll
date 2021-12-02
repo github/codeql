@@ -12,7 +12,7 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
       concat(Parameter p, int i |
         p = this.getParameter(i)
       |
-        p.getType().getQualifiedName(), ", " order by i
+        p.getType().getQualifiedName(), "," order by i
       )
   }
 
