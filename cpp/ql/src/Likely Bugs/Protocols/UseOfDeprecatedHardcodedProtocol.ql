@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id cpp/boost/use-of-deprecated-hardcoded-security-protocol
  * @tags security
+ *       external/cwe/cwe-327
  */
 
 import cpp
