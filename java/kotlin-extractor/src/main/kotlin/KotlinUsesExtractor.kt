@@ -67,6 +67,10 @@ open class KotlinUsesExtractor(
             ?.owner
 
     private fun withSourceFile(clsFile: IrFile): KotlinFileExtractor {
+        if (this is KotlinSourceFileExtractor && this.file == clsFile) {
+            return this
+        }
+
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
