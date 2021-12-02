@@ -1067,7 +1067,9 @@ class ArglistType extends Type, @arglist_type {
  * A type that could not be resolved. This could happen if an indirect reference
  * is not available at compilation time.
  */
-class UnknownType extends Type, @unknown_type { }
+class UnknownType extends Type, @unknown_type {
+  override string getName() { result = "<unknown type>" }
+}
 
 /**
  * A type representing a tuple. For example, `(int, bool, string)`.
