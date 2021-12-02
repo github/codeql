@@ -1005,7 +1005,7 @@ module Private {
       /** Gets the string representation of this callable used by `summary/1`. */
       abstract string getCallableCsv();
 
-      /** Holds if flow is progated between `input` and `output` */
+      /** Holds if flow is propagated between `input` and `output`. */
       predicate relevantSummary(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
