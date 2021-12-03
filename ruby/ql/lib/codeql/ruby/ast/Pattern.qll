@@ -394,6 +394,7 @@ class AsPattern extends CasePattern, TAsPattern {
  * ```rb
  * in (1 ..)
  * in (0 | "" | [] | {})
+ * ```
  */
 class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
   private Ruby::ParenthesizedPattern g;
