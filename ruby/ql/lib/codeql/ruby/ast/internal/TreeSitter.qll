@@ -1406,6 +1406,21 @@ module Ruby {
     }
   }
 
+  /** A class representing `parenthesized_pattern` nodes. */
+  class ParenthesizedPattern extends @ruby_parenthesized_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
+
+    /** Gets the location of this element. */
+    override L::Location getLocation() { ruby_parenthesized_pattern_def(this, _, result) }
+
+    /** Gets the child of this node. */
+    UnderscorePatternExpr getChild() { ruby_parenthesized_pattern_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { ruby_parenthesized_pattern_def(this, result, _) }
+  }
+
   /** A class representing `parenthesized_statements` nodes. */
   class ParenthesizedStatements extends @ruby_parenthesized_statements, AstNode {
     /** Gets the name of the primary QL class for this element. */

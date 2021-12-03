@@ -200,18 +200,21 @@
 | control/cases.rb:105:6:105:15 | :"foo bar" | foo bar |
 | control/cases.rb:106:7:106:7 | 5 | 5 |
 | control/cases.rb:106:12:106:13 | 10 | 10 |
-| control/cases.rb:125:11:125:11 | 1 | 1 |
-| control/cases.rb:125:14:125:14 | 2 | 2 |
-| control/cases.rb:126:18:126:18 | 1 | 1 |
-| control/cases.rb:134:7:134:7 | :x | x |
-| control/cases.rb:135:16:135:16 | :x | x |
-| control/cases.rb:135:18:135:18 | 1 | 1 |
-| control/cases.rb:136:16:136:16 | :x | x |
-| control/cases.rb:136:18:136:18 | 1 | 1 |
-| control/cases.rb:136:21:136:21 | :a | a |
-| control/cases.rb:137:11:137:11 | :y | y |
-| control/cases.rb:139:11:139:11 | :a | a |
-| control/cases.rb:139:14:139:14 | 1 | 1 |
+| control/cases.rb:107:7:107:7 | 1 | 1 |
+| control/cases.rb:108:7:108:7 | 0 | 0 |
+| control/cases.rb:108:11:108:12 | "" |  |
+| control/cases.rb:127:11:127:11 | 1 | 1 |
+| control/cases.rb:127:14:127:14 | 2 | 2 |
+| control/cases.rb:128:18:128:18 | 1 | 1 |
+| control/cases.rb:136:7:136:7 | :x | x |
+| control/cases.rb:137:16:137:16 | :x | x |
+| control/cases.rb:137:18:137:18 | 1 | 1 |
+| control/cases.rb:138:16:138:16 | :x | x |
+| control/cases.rb:138:18:138:18 | 1 | 1 |
+| control/cases.rb:138:21:138:21 | :a | a |
+| control/cases.rb:139:11:139:11 | :y | y |
+| control/cases.rb:141:11:141:11 | :a | a |
+| control/cases.rb:141:14:141:14 | 1 | 1 |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 |

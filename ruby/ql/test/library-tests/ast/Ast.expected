@@ -1005,90 +1005,101 @@ control/cases.rb:
 #  106|           getAnOperand/getOperand/getReceiver: [IntegerLiteral] 5
 #  106|         getAlternative: [UnaryPlusExpr] + ...
 #  106|           getAnOperand/getOperand/getReceiver: [IntegerLiteral] 10
-#  111|   getStmt: [CaseExpr] case ...
-#  111|     getValue: [MethodCall] call to expr
-#  111|       getReceiver: [Self, SelfVariableAccess] self
-#  112|     getBranch: [InClause] in ... then ...
-#  112|       getPattern: [ArrayPattern] [ ..., * ]
-#  113|     getBranch: [InClause] in ... then ...
-#  113|       getPattern: [ArrayPattern] [ ..., * ]
-#  113|         getPrefixElement: [LocalVariableAccess] x
+#  107|     getBranch: [InClause] in ... then ...
+#  107|       getPattern: [ParenthesizedPattern] ( ... )
+#  107|         getPattern: [RangeLiteral] _ .. _
+#  107|           getBegin: [IntegerLiteral] 1
+#  108|     getBranch: [InClause] in ... then ...
+#  108|       getPattern: [ParenthesizedPattern] ( ... )
+#  108|         getPattern: [AlternativePattern] ... | ...
+#  108|           getAlternative: [IntegerLiteral] 0
+#  108|           getAlternative: [StringLiteral] ""
+#  108|           getAlternative: [ArrayPattern] [ ..., * ]
+#  108|           getAlternative: [HashPattern] { ..., ** }
+#  113|   getStmt: [CaseExpr] case ...
+#  113|     getValue: [MethodCall] call to expr
+#  113|       getReceiver: [Self, SelfVariableAccess] self
 #  114|     getBranch: [InClause] in ... then ...
 #  114|       getPattern: [ArrayPattern] [ ..., * ]
-#  114|         getPrefixElement/getSuffixElement: [LocalVariableAccess] x
 #  115|     getBranch: [InClause] in ... then ...
 #  115|       getPattern: [ArrayPattern] [ ..., * ]
-#  115|         getClass: [ConstantReadAccess] Bar
-#  115|           getScopeExpr: [ConstantReadAccess] Foo
+#  115|         getPrefixElement: [LocalVariableAccess] x
 #  116|     getBranch: [InClause] in ... then ...
 #  116|       getPattern: [ArrayPattern] [ ..., * ]
-#  116|         getClass: [ConstantReadAccess] Foo
+#  116|         getPrefixElement/getSuffixElement: [LocalVariableAccess] x
 #  117|     getBranch: [InClause] in ... then ...
 #  117|       getPattern: [ArrayPattern] [ ..., * ]
 #  117|         getClass: [ConstantReadAccess] Bar
+#  117|           getScopeExpr: [ConstantReadAccess] Foo
 #  118|     getBranch: [InClause] in ... then ...
 #  118|       getPattern: [ArrayPattern] [ ..., * ]
-#  118|         getClass: [ConstantReadAccess] Bar
-#  118|         getPrefixElement/getSuffixElement: [LocalVariableAccess] a
-#  118|         getPrefixElement/getSuffixElement: [LocalVariableAccess] b
-#  118|         getRestVariableAccess: [LocalVariableAccess] c
-#  118|         getSuffixElement: [LocalVariableAccess] d
-#  118|         getSuffixElement: [LocalVariableAccess] e
-#  123|   getStmt: [CaseExpr] case ...
-#  123|     getValue: [MethodCall] call to expr
-#  123|       getReceiver: [Self, SelfVariableAccess] self
-#  124|     getBranch: [InClause] in ... then ...
-#  124|       getPattern: [FindPattern] [ *,...,* ]
-#  124|         getElement: [LocalVariableAccess] x
-#  125|     getBranch: [InClause] in ... then ...
-#  125|       getPattern: [FindPattern] [ *,...,* ]
-#  125|         getPrefixVariableAccess: [LocalVariableAccess] x
-#  125|         getElement: [IntegerLiteral] 1
-#  125|         getElement: [IntegerLiteral] 2
-#  125|         getSuffixVariableAccess: [LocalVariableAccess] y
+#  118|         getClass: [ConstantReadAccess] Foo
+#  119|     getBranch: [InClause] in ... then ...
+#  119|       getPattern: [ArrayPattern] [ ..., * ]
+#  119|         getClass: [ConstantReadAccess] Bar
+#  120|     getBranch: [InClause] in ... then ...
+#  120|       getPattern: [ArrayPattern] [ ..., * ]
+#  120|         getClass: [ConstantReadAccess] Bar
+#  120|         getPrefixElement/getSuffixElement: [LocalVariableAccess] a
+#  120|         getPrefixElement/getSuffixElement: [LocalVariableAccess] b
+#  120|         getRestVariableAccess: [LocalVariableAccess] c
+#  120|         getSuffixElement: [LocalVariableAccess] d
+#  120|         getSuffixElement: [LocalVariableAccess] e
+#  125|   getStmt: [CaseExpr] case ...
+#  125|     getValue: [MethodCall] call to expr
+#  125|       getReceiver: [Self, SelfVariableAccess] self
 #  126|     getBranch: [InClause] in ... then ...
 #  126|       getPattern: [FindPattern] [ *,...,* ]
-#  126|         getClass: [ConstantReadAccess] Bar
-#  126|           getScopeExpr: [ConstantReadAccess] Foo
-#  126|         getElement: [IntegerLiteral] 1
+#  126|         getElement: [LocalVariableAccess] x
 #  127|     getBranch: [InClause] in ... then ...
 #  127|       getPattern: [FindPattern] [ *,...,* ]
-#  127|         getClass: [ConstantReadAccess] Foo
-#  127|         getElement: [ConstantReadAccess] Bar
-#  132|   getStmt: [CaseExpr] case ...
-#  132|     getValue: [MethodCall] call to expr
-#  132|       getReceiver: [Self, SelfVariableAccess] self
-#  133|     getBranch: [InClause] in ... then ...
-#  133|       getPattern: [HashPattern] { ..., ** }
-#  134|     getBranch: [InClause] in ... then ...
-#  134|       getPattern: [HashPattern] { ..., ** }
-#  134|         getKey: [SymbolLiteral] :x
+#  127|         getPrefixVariableAccess: [LocalVariableAccess] x
+#  127|         getElement: [IntegerLiteral] 1
+#  127|         getElement: [IntegerLiteral] 2
+#  127|         getSuffixVariableAccess: [LocalVariableAccess] y
+#  128|     getBranch: [InClause] in ... then ...
+#  128|       getPattern: [FindPattern] [ *,...,* ]
+#  128|         getClass: [ConstantReadAccess] Bar
+#  128|           getScopeExpr: [ConstantReadAccess] Foo
+#  128|         getElement: [IntegerLiteral] 1
+#  129|     getBranch: [InClause] in ... then ...
+#  129|       getPattern: [FindPattern] [ *,...,* ]
+#  129|         getClass: [ConstantReadAccess] Foo
+#  129|         getElement: [ConstantReadAccess] Bar
+#  134|   getStmt: [CaseExpr] case ...
+#  134|     getValue: [MethodCall] call to expr
+#  134|       getReceiver: [Self, SelfVariableAccess] self
 #  135|     getBranch: [InClause] in ... then ...
 #  135|       getPattern: [HashPattern] { ..., ** }
-#  135|         getClass: [ConstantReadAccess] Bar
-#  135|           getScopeExpr: [ConstantReadAccess] Foo
-#  135|         getKey: [SymbolLiteral] :x
-#  135|         getValue: [IntegerLiteral] 1
 #  136|     getBranch: [InClause] in ... then ...
 #  136|       getPattern: [HashPattern] { ..., ** }
-#  136|         getClass: [ConstantReadAccess] Bar
-#  136|           getScopeExpr: [ConstantReadAccess] Foo
 #  136|         getKey: [SymbolLiteral] :x
-#  136|         getValue: [IntegerLiteral] 1
-#  136|         getKey: [SymbolLiteral] :a
-#  136|         getRestVariableAccess: [LocalVariableAccess] rest
 #  137|     getBranch: [InClause] in ... then ...
 #  137|       getPattern: [HashPattern] { ..., ** }
-#  137|         getClass: [ConstantReadAccess] Foo
-#  137|         getKey: [SymbolLiteral] :y
+#  137|         getClass: [ConstantReadAccess] Bar
+#  137|           getScopeExpr: [ConstantReadAccess] Foo
+#  137|         getKey: [SymbolLiteral] :x
+#  137|         getValue: [IntegerLiteral] 1
 #  138|     getBranch: [InClause] in ... then ...
 #  138|       getPattern: [HashPattern] { ..., ** }
 #  138|         getClass: [ConstantReadAccess] Bar
+#  138|           getScopeExpr: [ConstantReadAccess] Foo
+#  138|         getKey: [SymbolLiteral] :x
+#  138|         getValue: [IntegerLiteral] 1
+#  138|         getKey: [SymbolLiteral] :a
+#  138|         getRestVariableAccess: [LocalVariableAccess] rest
 #  139|     getBranch: [InClause] in ... then ...
 #  139|       getPattern: [HashPattern] { ..., ** }
-#  139|         getClass: [ConstantReadAccess] Bar
-#  139|         getKey: [SymbolLiteral] :a
-#  139|         getValue: [IntegerLiteral] 1
+#  139|         getClass: [ConstantReadAccess] Foo
+#  139|         getKey: [SymbolLiteral] :y
+#  140|     getBranch: [InClause] in ... then ...
+#  140|       getPattern: [HashPattern] { ..., ** }
+#  140|         getClass: [ConstantReadAccess] Bar
+#  141|     getBranch: [InClause] in ... then ...
+#  141|       getPattern: [HashPattern] { ..., ** }
+#  141|         getClass: [ConstantReadAccess] Bar
+#  141|         getKey: [SymbolLiteral] :a
+#  141|         getValue: [IntegerLiteral] 1
 modules/classes.rb:
 #    2| [Toplevel] classes.rb
 #    3|   getStmt: [ClassDeclaration] Foo
