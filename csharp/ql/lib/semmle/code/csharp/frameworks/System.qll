@@ -257,6 +257,19 @@ class SystemLazyClass extends SystemUnboundGenericClass {
   }
 }
 
+/** Data flow for `System.Lazy<>`. */
+private class SystemLazyFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Lazy<>;false;Lazy;(System.Func<T>);;ReturnValue of Argument[0];Property[System.Lazy<>.Value] of ReturnValue;value",
+        "System;Lazy<>;false;Lazy;(System.Func<T>,System.Boolean);;ReturnValue of Argument[0];Property[System.Lazy<>.Value] of ReturnValue;value",
+        "System;Lazy<>;false;Lazy;(System.Func<T>,System.Threading.LazyThreadSafetyMode);;ReturnValue of Argument[0];Property[System.Lazy<>.Value] of ReturnValue;value",
+        "System;Lazy<>;false;get_Value;();;Argument[-1];ReturnValue;taint",
+      ]
+  }
+}
+
 /** The `System.Nullable<T>` struct. */
 class SystemNullableStruct extends SystemUnboundGenericStruct {
   SystemNullableStruct() {

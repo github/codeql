@@ -546,31 +546,6 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
   }
 }
 
-/** Data flow for `System.Lazy<>`. */
-class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
-      c.(Constructor).getDeclaringType() = this and
-      c.getParameter(i).getType().getUnboundDeclaration() = t and
-      source = getDelegateFlowSourceArg(c, i) and
-      sourceAp = AccessPath::empty() and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::property(this.getValueProperty())
-    )
-    or
-    preservesValue = false and
-    c = this.getValueProperty().getGetter() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp = AccessPath::empty() and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-  }
-}
-
 /** Data flow for `System.Nullable<>`. */
 class SystemNullableFlow extends LibraryTypeDataFlow, SystemNullableStruct {
   override predicate callableFlow(
