@@ -3661,7 +3661,7 @@ ifs.rb:
 #-----|  -> b
 
 #   46| empty_else
-#-----|  -> exit ifs.rb (normal)
+#-----|  -> disjunct
 
 #   46| exit empty_else
 
@@ -3696,6 +3696,58 @@ ifs.rb:
 #-----|  -> "done"
 
 #   51| "done"
+#-----|  -> call to puts
+
+#   54| enter disjunct
+#-----|  -> b1
+
+#   54| disjunct
+#-----|  -> exit ifs.rb (normal)
+
+#   54| exit disjunct
+
+#   54| exit disjunct (normal)
+#-----|  -> exit disjunct
+
+#   54| b1
+#-----|  -> b2
+
+#   54| b2
+#-----|  -> b1
+
+#   55| if ...
+#-----|  -> exit disjunct (normal)
+
+#   55| [false] ( ... )
+#-----| false -> if ...
+
+#   55| [true] ( ... )
+#-----| true -> self
+
+#   55| [false] ... || ...
+#-----| false -> [false] ( ... )
+
+#   55| [true] ... || ...
+#-----| true -> [true] ( ... )
+
+#   55| b1
+#-----| true -> [true] ... || ...
+#-----| false -> b2
+
+#   55| b2
+#-----| false -> [false] ... || ...
+#-----| true -> [true] ... || ...
+
+#   55| then ...
+#-----|  -> if ...
+
+#   56| call to puts
+#-----|  -> then ...
+
+#   56| self
+#-----|  -> "b1 or b2"
+
+#   56| "b1 or b2"
 #-----|  -> call to puts
 
 loops.rb:
