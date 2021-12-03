@@ -1,7 +1,6 @@
 invalidModelRow
 #select
 | test.go:12:6:12:8 | definition of arg | qltest-arg |
-| test.go:37:6:37:6 | definition of a | qltest-arg |
 | test.go:40:8:40:15 | call to Src1 | qltest |
 | test.go:41:8:41:15 | call to Src2 | qltest |
 | test.go:41:8:41:15 | call to Src2 | qltest-w-subtypes |

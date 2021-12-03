@@ -293,7 +293,6 @@ module CsvValidation {
       (
         invalidSpecComponent(input, part) and
         not part = "" and
-        not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
         specSplit(input, part, _) and
@@ -309,7 +308,7 @@ module CsvValidation {
     |
       invalidSpecComponent(output, part) and
       not part = "" and
-      not (part = ["Argument", "Parameter"] and pred = "source") and
+      not (part = "Parameter" and pred = "source") and
       msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
     or
