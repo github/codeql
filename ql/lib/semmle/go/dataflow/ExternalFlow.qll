@@ -74,6 +74,16 @@ private module Frameworks {
   private import semmle.go.frameworks.Stdlib
 }
 
+private class BuiltinModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";;false;append;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
+        ";;false;append;;;Argument[1];ArrayElement of ReturnValue;value"
+      ]
+  }
+}
+
 private predicate sourceModelCsv(string row) { none() }
 
 private predicate sinkModelCsv(string row) { none() }
