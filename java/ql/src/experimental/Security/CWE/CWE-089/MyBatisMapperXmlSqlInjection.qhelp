@@ -3,8 +3,8 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The MyBatis Mapper XML file allows the use of the $ character to construct dynamic SQL statements.
- Attackers can modify the meaning of statements or execute arbitrary SQL commands.</p>
+<p>MyBatis allows operating the database by creating XML files to construct dynamic SQL statements.
+If the syntax <code>${param}</code> is used in those statements, and <code>param</code> is under the user's control, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
 </overview>
 
 <<recommendation>
@@ -15,11 +15,11 @@ When writing MyBatis mapping statements, try to use the syntax <code>#{xxx}</cod
 
 <example>
 <p>
-The following examples show the bad situation and the good situation respectively. In <code>bad1</code> 
-and <code>bad2</code> and <code>bad3</code> and <code>bad4</code> and <code >bad5</code>, the program 
-${xxx} are dynamic SQL statements, these five examples of SQL injection vulnerabilities. In <code>good1</code>, 
-the program uses the ${xxx} dynamic feature SQL statement, but there are subtle restrictions on the data, 
-and there is no SQL injection vulnerability.
+The following sample shows several bad and good examples of MyBatis XML files usage. In <code>bad1</code>,
+<code>bad2</code>, <code>bad3</code>, <code>bad4</code>, and <code >bad5</code> the syntax
+<code>${xxx}</code> is used to build dynamic SQL statements, which causes a SQL injection vulnerability. In <code>good1</code>, 
+the program uses the <code>${xxx}</code> syntax, but there are subtle restrictions on the data,
+while in <code>good2</code> the syntax <code>#{xxx}</code> is used. In both cases the SQL injection vulnerability is prevented.
 </p>
 <sample src="MyBatisMapperXmlSqlInjection.xml" />
 </example>

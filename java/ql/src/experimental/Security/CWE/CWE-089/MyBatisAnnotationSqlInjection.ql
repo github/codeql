@@ -13,6 +13,7 @@
 
 import java
 import DataFlow::PathGraph
+import MyBatisCommonLib
 import MyBatisAnnotationSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
 
@@ -33,13 +34,6 @@ private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType() instanceof MapType and
-      ma.getMethod().getName() = "get" and
-      ma.getQualifier() = node1.asExpr() and
-      ma = node2.asExpr()
-    )
-    or
-    exists(MethodAccess ma |
       ma.getMethod().getDeclaringType() instanceof TypeObject and
       ma.getMethod().getName() = "toString" and
       ma.getQualifier() = node1.asExpr() and
@@ -53,7 +47,7 @@ from
   DataFlow::PathNode sink, IbatisSqlOperationAnnotation isoa
 where
   cfg.hasFlowPath(source, sink) and
-  isMybatisAnnotationSqlInjection(sink.getNode(), isoa)
+  isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), _, isoa)
 select sink.getNode(), source, sink,
   "MyBatis annotation SQL injection might include code from $@ to $@.", source.getNode(),
   "this user input", isoa, "this SQL operation"

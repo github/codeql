@@ -13,6 +13,7 @@
 
 import java
 import DataFlow::PathGraph
+import MyBatisCommonLib
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
@@ -34,13 +35,6 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType() instanceof MapType and
-      ma.getMethod().getName() = "get" and
-      ma.getQualifier() = node1.asExpr() and
-      ma = node2.asExpr()
-    )
-    or
-    exists(MethodAccess ma |
       ma.getMethod().getDeclaringType() instanceof TypeObject and
       ma.getMethod().getName() = "toString" and
       ma.getQualifier() = node1.asExpr() and
@@ -54,7 +48,7 @@ from
   XMLElement xmle
 where
   cfg.hasFlowPath(source, sink) and
-  isMapperXmlSqlInjection(sink.getNode(), xmle)
+  isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), xmle, _)
 select sink.getNode(), source, sink,
   "MyBatis Mapper XML SQL injection might include code from $@ to $@.", source.getNode(),
   "this user input", xmle, "this SQL operation"
