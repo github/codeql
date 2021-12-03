@@ -1,0 +1,63 @@
+test_FileSystemAccess
+| tst.js:3:1:3:17 | shelljs.cat(file) |
+| tst.js:4:1:4:25 | shelljs ...  file2) |
+| tst.js:5:1:5:16 | shelljs.cd(file) |
+| tst.js:6:1:6:25 | shelljs ... , file) |
+| tst.js:7:1:7:31 | shelljs ... , file) |
+| tst.js:8:1:8:24 | shelljs ...  file2) |
+| tst.js:9:1:9:30 | shelljs ...  file2) |
+| tst.js:10:1:10:37 | shelljs ...  file3) |
+| tst.js:11:1:11:19 | shelljs.pushd(file) |
+| tst.js:12:1:12:25 | shelljs ... , file) |
+| tst.js:15:1:15:26 | shelljs ...  file2) |
+| tst.js:16:1:16:25 | shelljs ... , file) |
+| tst.js:17:1:17:31 | shelljs ... , file) |
+| tst.js:18:1:18:39 | shelljs ...  file2) |
+| tst.js:19:1:19:18 | shelljs.head(file) |
+| tst.js:20:1:20:24 | shelljs ... , file) |
+| tst.js:21:1:21:32 | shelljs ...  file2) |
+| tst.js:22:1:22:24 | shelljs ...  file2) |
+| tst.js:23:1:23:30 | shelljs ...  file2) |
+| tst.js:24:1:24:16 | shelljs.ls(file) |
+| tst.js:25:1:25:22 | shelljs ... , file) |
+| tst.js:26:1:26:30 | shelljs ...  file2) |
+| tst.js:27:1:27:24 | shelljs ...  file2) |
+| tst.js:28:1:28:19 | shelljs.mkdir(file) |
+| tst.js:29:1:29:25 | shelljs ... , file) |
+| tst.js:30:1:30:33 | shelljs ...  file2) |
+| tst.js:31:1:31:24 | shelljs ...  file2) |
+| tst.js:32:1:32:30 | shelljs ...  file2) |
+| tst.js:33:1:33:17 | shelljs.rm(file1) |
+| tst.js:34:1:34:24 | shelljs ...  file2) |
+| tst.js:35:1:35:30 | shelljs ...  file2) |
+| tst.js:36:1:36:37 | shelljs ... , file) |
+| tst.js:37:1:37:45 | shelljs ...  file2) |
+| tst.js:38:1:38:43 | shelljs ... , file) |
+| tst.js:39:1:39:51 | shelljs ...  file2) |
+| tst.js:40:1:40:18 | shelljs.sort(file) |
+| tst.js:41:1:41:24 | shelljs ... , file) |
+| tst.js:42:1:42:32 | shelljs ...  file2) |
+| tst.js:43:1:43:18 | shelljs.tail(file) |
+| tst.js:44:1:44:24 | shelljs ... , file) |
+| tst.js:45:1:45:32 | shelljs ...  file2) |
+| tst.js:46:1:46:26 | shelljs ...  file2) |
+| tst.js:48:1:48:18 | shelljs.cat(file1) |
+| tst.js:48:1:48:28 | shelljs ... (file2) |
+| tst.js:49:1:49:18 | shelljs.cat(file1) |
+| tst.js:49:1:49:31 | shelljs ... (file2) |
+| tst.js:51:1:51:19 | shelljs.touch(file) |
+| tst.js:52:1:52:25 | shelljs ... , file) |
+| tst.js:53:1:53:33 | shelljs ...  file2) |
+| tst.js:54:1:54:27 | shelljs ...  file2) |
+| tst.js:56:1:56:18 | shelljs.uniq(file) |
+| tst.js:57:1:57:26 | shelljs ...  file2) |
+| tst.js:58:1:58:32 | shelljs ...  file2) |
+test_MissingFileSystemAccess
+test_SystemCommandExecution
+| tst.js:14:1:14:27 | shelljs ... ts, cb) |
+test_FileNameSource
+| tst.js:15:1:15:26 | shelljs ...  file2) |
+| tst.js:24:1:24:16 | shelljs.ls(file) |
+| tst.js:25:1:25:22 | shelljs ... , file) |
+| tst.js:26:1:26:30 | shelljs ...  file2) |
+| tst.js:27:1:27:24 | shelljs ...  file2) |

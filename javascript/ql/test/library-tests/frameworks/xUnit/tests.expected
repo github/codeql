@@ -1,0 +1,39 @@
+xUnitAnnotationfrom
+| tst.js:3:1:3:9 | [Fixture] | tst.js:4:1:14:2 | Test.Ex ...    }\\n}; |
+| tst.js:5:5:5:13 | [Fixture] | tst.js:6:5:13:5 | functio ... }\\n    } |
+| tst.js:7:9:7:14 | [Fact] | tst.js:8:9:12:9 | functio ...       } |
+| tst.js:16:1:16:43 | [Import ... t.js")] | tst.js:18:1:22:2 | Test.xU ... ..]\\n\\n}; |
+| tst.js:17:1:17:9 | Fixture | tst.js:18:1:22:2 | Test.xU ... ..]\\n\\n}; |
+| tst.js:24:1:24:9 | [Fixture] | tst.js:25:1:34:2 | Test.Ex ...    }\\n}; |
+| tst.js:27:5:29:7 | [Import ...     })] | tst.js:31:5:33:5 | functio ... ]\\n    } |
+| tst.js:30:5:30:10 | Fact | tst.js:31:5:33:5 | functio ... ]\\n    } |
+xUnitAttribute
+| tst.js:3:2:3:8 | Fixture | Fixture | 0 |
+| tst.js:5:6:5:12 | Fixture | Fixture | 0 |
+| tst.js:7:10:7:13 | Fact | Fact | 0 |
+| tst.js:16:2:16:42 | Import( ... rt.js") | Import | 1 |
+| tst.js:17:2:17:8 | Fixture | Fixture | 0 |
+| tst.js:24:2:24:8 | Fixture | Fixture | 0 |
+| tst.js:27:6:29:6 | ImportJ ... \\n    }) | ImportJson | 2 |
+| tst.js:30:6:30:9 | Fact | Fact | 0 |
+xUnitAttributeParameters
+| tst.js:16:2:16:42 | Import( ... rt.js") | 0 | tst.js:16:9:16:41 | "../../ ... ert.js" |
+| tst.js:27:6:29:6 | ImportJ ... \\n    }) | 0 | tst.js:27:17:27:49 | "../../ ... ert.js" |
+| tst.js:27:6:29:6 | ImportJ ... \\n    }) | 1 | tst.js:27:51:29:5 | functio ... ;\\n    } |
+xUnitFixture
+| tst.js:4:20:14:1 | functio ...     }\\n} | tst.js:3:1:3:9 | [Fixture] |
+| tst.js:6:5:13:5 | functio ... }\\n    } | tst.js:5:5:5:13 | [Fixture] |
+| tst.js:18:24:22:1 | functio ... ...]\\n\\n} | tst.js:16:1:16:43 | [Import ... t.js")] |
+| tst.js:18:24:22:1 | functio ... ...]\\n\\n} | tst.js:17:1:17:9 | Fixture |
+| tst.js:25:21:34:1 | functio ...     }\\n} | tst.js:24:1:24:9 | [Fixture] |
+xUnitTarget
+| tst.js:4:1:14:2 | Test.Ex ...    }\\n}; |
+| tst.js:6:5:13:5 | functio ... }\\n    } |
+| tst.js:8:9:12:9 | functio ...       } |
+| tst.js:9:13:9:36 | var exp ... ected"; |
+| tst.js:10:13:10:32 | var actual=expected; |
+| tst.js:18:1:22:2 | Test.xU ... ..]\\n\\n}; |
+| tst.js:25:1:34:2 | Test.Ex ...    }\\n}; |
+| tst.js:26:5:26:24 | var response = null; |
+| tst.js:28:9:28:24 | response=result; |
+| tst.js:31:5:33:5 | functio ... ]\\n    } |

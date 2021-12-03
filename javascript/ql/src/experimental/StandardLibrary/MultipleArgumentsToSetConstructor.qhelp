@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>Set</code> constructor accepts an arbitrary number of arguments, but only the first one
+is used to construct the set. The remaining arguments are ignored.
+Code that invokes the <code>Set</code> constructor with multiple arguments is therefore likely to
+be incorrect.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Only pass a single argument to the <code>Set</code> constructor, which should be an iterable object
+(such as an array).
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example creates a set containing the vowels in the English language, and defines
+a function that returns a boolean indicating whether a given character is a vowel:
+</p>
+<sample src="examples/MultipleArgumentsToSetConstructorBad.js"/>
+
+<p>
+However, this code does not work as intended: the <code>Set</code> constructor ignores all but
+the first argument, so the <code>vowels</code> set only contains the letter <code>a</code>.
+</p>
+
+<p>
+Instead, the list of vowels should be wrapped into an array:
+</p>
+<sample src="examples/MultipleArgumentsToSetConstructorGood.js"/>
+</example>
+
+<references>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set">MDN Web Docs: Set() constructor</a></li>
+</references>
+</qhelp>

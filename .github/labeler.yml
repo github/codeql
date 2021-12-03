@@ -1,0 +1,28 @@
+"C++":
+  - cpp/**/*
+  - change-notes/**/*cpp*
+
+"C#":
+  - csharp/**/*
+  - change-notes/**/*csharp*
+
+Java:
+  - java/**/*
+  - change-notes/**/*java.*
+
+JS:
+  - javascript/**/*
+  - change-notes/**/*javascript*
+
+Python:
+  - python/**/*
+  - change-notes/**/*python*
+
+Ruby:
+  - ruby/**/*
+  - change-notes/**/*ruby*
+
+documentation:
+  - "**/*.qhelp"
+  - "**/*.md"
+  - docs/**/*

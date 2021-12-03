@@ -1,0 +1,30 @@
+htmlAttribute
+| tst.html:5:17:5:33 | src=external.js | tst.html:5:9:5:43 | <script>...</> | src | external.js |
+| tst.html:10:11:10:16 | ng-app= | tst.html:10:5:12:11 | <body>...</> | ng-app |  |
+| tst.html:11:12:11:49 | href=javascript:void(alert('Nope!')) | tst.html:11:9:11:64 | <a>...</> | href | javascript:void(alert('Nope!')) |
+htmlElement_getAttribute
+| tst.html:5:9:5:43 | <script>...</> | 0 | tst.html:5:17:5:33 | src=external.js |
+| tst.html:10:5:12:11 | <body>...</> | 0 | tst.html:10:11:10:16 | ng-app= |
+| tst.html:11:9:11:64 | <a>...</> | 0 | tst.html:11:12:11:49 | href=javascript:void(alert('Nope!')) |
+htmlElement_getChild
+| tst.html:2:1:13:7 | <html>...</> | 1 | tst.html:3:5:9:11 | <head>...</> |
+| tst.html:2:1:13:7 | <html>...</> | 3 | tst.html:10:5:12:11 | <body>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 1 | tst.html:4:9:4:32 | <title>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 3 | tst.html:5:9:5:43 | <script>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 5 | tst.html:6:9:8:17 | <script>...</> |
+| tst.html:10:5:12:11 | <body>...</> | 1 | tst.html:11:9:11:64 | <a>...</> |
+htmlElement_getName
+| tst.html:2:1:13:7 | <html>...</> | html |
+| tst.html:3:5:9:11 | <head>...</> | head |
+| tst.html:4:9:4:32 | <title>...</> | title |
+| tst.html:5:9:5:43 | <script>...</> | script |
+| tst.html:6:9:8:17 | <script>...</> | script |
+| tst.html:10:5:12:11 | <body>...</> | body |
+| tst.html:11:9:11:64 | <a>...</> | a |
+htmlElement_getParent
+| tst.html:3:5:9:11 | <head>...</> | tst.html:2:1:13:7 | <html>...</> |
+| tst.html:4:9:4:32 | <title>...</> | tst.html:3:5:9:11 | <head>...</> |
+| tst.html:5:9:5:43 | <script>...</> | tst.html:3:5:9:11 | <head>...</> |
+| tst.html:6:9:8:17 | <script>...</> | tst.html:3:5:9:11 | <head>...</> |
+| tst.html:10:5:12:11 | <body>...</> | tst.html:2:1:13:7 | <html>...</> |
+| tst.html:11:9:11:64 | <a>...</> | tst.html:10:5:12:11 | <body>...</> |

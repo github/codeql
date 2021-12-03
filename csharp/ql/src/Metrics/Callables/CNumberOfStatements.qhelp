@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of statements per method. If methods have too many statements 
+they may be difficult to understand and hence a source of defects. It is also an indication that 
+methods may be trying to do too much.</p>
+
+</overview>
+<recommendation>
+<p>Extract logical parts of long methods into auxiliary methods.</p>
+
+</recommendation>
+<references>
+
+  <li>Martin Fowler. <em>Refactoring</em>. Addison-Wesley. 1999.</li>
+
+</references>
+</qhelp>

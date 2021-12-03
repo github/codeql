@@ -1,0 +1,37 @@
+namespaces.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    8|   1: [Class] A
+#    9|   2: [Class] B
+#   13| [NamespaceDeclaration] namespace ... { ... }
+#   16|   1: [NamespaceDeclaration] namespace ... { ... }
+#   19|     1: [Class] A
+#   20|     2: [Class] B
+#   26| [NamespaceDeclaration] namespace ... { ... }
+#   29|   1: [Class] A
+#   33| [NamespaceDeclaration] namespace ... { ... }
+#   36|   1: [Class] B
+#   38|   2: [Struct] S
+#   40|   3: [Interface] I
+#   44| [NamespaceDeclaration] namespace ... { ... }
+#   49| [NamespaceDeclaration] namespace ... { ... }
+#   52|   1: [Class] A
+#   56| [NamespaceDeclaration] namespace ... { ... }
+#   63|   1: [Class] B
+#-----|     3: (Base types)
+#   63|       0: [TypeMention] A
+#   65|   2: [Class] C
+#-----|     3: (Base types)
+#   65|       0: [TypeMention] A
+#   69| [NamespaceDeclaration] namespace ... { ... }
+#   72|   1: [Class] A<>
+#-----|     1: (Type parameters)
+#   72|       0: [TypeParameter] T
+#   75|     5: [Class] B
+#   79|   2: [Class] A
+#   83| [NamespaceDeclaration] namespace ... { ... }
+#   90| [NamespaceDeclaration] namespace ... { ... }
+#   93|   1: [Class] A
+#   96| [NamespaceDeclaration] namespace ... { ... }
+#  101|   1: [Class] B
+#-----|     3: (Base types)
+#  101|       0: [TypeMention] A

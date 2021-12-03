@@ -1,0 +1,263 @@
+dataFlow
+| a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
+| a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
+| async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
+| async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
+| async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:36:17:36:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:41:17:41:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:54:17:54:36 | unpack(pack(source)) |
+| async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
+| async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
+| async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
+| callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
+| callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
+| callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
+| destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
+| destructuring.js:20:15:20:28 | "also tainted" | destructuring.js:15:15:15:15 | r |
+| destructuring.js:21:15:21:29 | "still tainted" | destructuring.js:16:15:16:15 | s |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:8:13:8:21 | es.source |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
+| esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
+| global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
+| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
+| global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
+| global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
+| global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:9:15:9:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:34:15:34:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:41:15:41:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:47:15:47:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:53:15:53:15 | x |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:10:15:10:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:16:15:16:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:22:15:22:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:28:15:28:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:35:15:35:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:42:15:42:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:48:15:48:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:54:15:54:15 | y |
+| promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
+| promises.js:2:16:2:24 | "tainted" | promises.js:38:32:38:32 | v |
+| promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:21:20:21:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
+| promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
+| properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
+| properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
+| properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
+| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
+| tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
+| tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
+| tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
+| tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
+| tst.js:2:17:2:22 | "src1" | tst.js:39:17:39:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:41:19:41:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:45:17:45:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:47:19:47:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:59:16:59:18 | o.p |
+| tst.js:2:17:2:22 | "src1" | tst.js:61:16:61:18 | o.r |
+| tst.js:2:17:2:22 | "src1" | tst.js:68:16:68:22 | inner() |
+| tst.js:2:17:2:22 | "src1" | tst.js:80:16:80:22 | outer() |
+flowLabels
+| tst5.mjs:13:12:13:20 | source(0) | tst5.mjs:18:6:18:9 | flow |
+| tst5.mjs:15:8:15:19 | source(flow) | tst5.mjs:16:13:16:16 | flow |
+taintTracking
+| a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
+| a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
+| async.js:2:16:2:23 | "source" | async.js:7:14:7:20 | async() |
+| async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
+| async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
+| async.js:2:16:2:23 | "source" | async.js:14:15:14:26 | await sync() |
+| async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:36:17:36:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:41:17:41:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:54:17:54:36 | unpack(pack(source)) |
+| async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
+| async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
+| async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
+| callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
+| callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
+| callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:5:14:5:20 | tainted |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
+| destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
+| destructuring.js:20:15:20:28 | "also tainted" | destructuring.js:15:15:15:15 | r |
+| destructuring.js:21:15:21:29 | "still tainted" | destructuring.js:16:15:16:15 | s |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:8:13:8:21 | es.source |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
+| esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
+| global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
+| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
+| global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
+| global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
+| global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
+| nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
+| nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
+| nodeJsLib.js:1:15:1:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:9:15:9:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:34:15:34:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:41:15:41:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:47:15:47:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:53:15:53:15 | x |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:10:15:10:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:16:15:16:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:22:15:22:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:28:15:28:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:35:15:35:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:42:15:42:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:48:15:48:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:54:15:54:15 | y |
+| promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
+| promises.js:2:16:2:24 | "tainted" | promises.js:38:32:38:32 | v |
+| promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:21:20:21:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
+| promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
+| properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
+| properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
+| properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
+| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
+| tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
+| tst4.js:2:16:2:24 | "tainted" | tst4.js:15:15:15:31 | id(still_tainted) |
+| tst4.js:2:16:2:24 | "tainted" | tst4.js:16:15:16:28 | p.also_tainted |
+| tst4.js:2:16:2:24 | "tainted" | tst4.js:17:15:17:28 | substr(source) |
+| tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
+| tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
+| tst.js:2:17:2:22 | "src1" | tst.js:3:15:3:29 | String(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:4:15:4:29 | RegExp(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:5:15:5:33 | new String(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:6:15:6:33 | new String(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:11:17:11:20 | m[0] |
+| tst.js:2:17:2:22 | "src1" | tst.js:14:15:14:32 | decodeURI(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:15:15:15:41 | decodeU ... ource1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:16:15:16:32 | encodeURI(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:17:15:17:41 | encodeU ... ource1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:19:16:19:34 | JSON.parse(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:20:16:20:37 | JSON.st ... sink10) |
+| tst.js:2:17:2:22 | "src1" | tst.js:24:16:24:18 | foo |
+| tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
+| tst.js:2:17:2:22 | "src1" | tst.js:30:20:30:22 | ary |
+| tst.js:2:17:2:22 | "src1" | tst.js:36:16:36:24 | dict[key] |
+| tst.js:2:17:2:22 | "src1" | tst.js:39:17:39:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:41:19:41:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:45:17:45:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:47:19:47:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:59:16:59:18 | o.p |
+| tst.js:2:17:2:22 | "src1" | tst.js:61:16:61:18 | o.r |
+| tst.js:2:17:2:22 | "src1" | tst.js:68:16:68:22 | inner() |
+| tst.js:2:17:2:22 | "src1" | tst.js:80:16:80:22 | outer() |
+| tst.js:2:17:2:22 | "src1" | tst.js:87:16:87:43 | source1 ... /g, "") |
+| tst.js:2:17:2:22 | "src1" | tst.js:88:16:88:46 | "foo".r ... ource1) |
+| underscore.js:2:17:2:22 | "src1" | underscore.js:3:15:3:28 | _.max(source1) |
+| underscore.js:5:17:5:22 | "src2" | underscore.js:6:15:6:34 | _.union([], source2) |
+| underscore.js:5:17:5:22 | "src2" | underscore.js:7:15:7:32 | _.zip(source2, []) |
+| underscore.js:9:17:9:22 | "src3" | underscore.js:11:17:11:17 | x |
+| underscore.js:14:17:14:22 | "src4" | underscore.js:16:17:16:17 | e |
+| underscore.js:19:17:19:22 | "src5" | underscore.js:20:15:20:44 | _.map([ ... ource5) |
+germanFlow
+| a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
+| a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
+| async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
+| async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
+| async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:36:17:36:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:41:17:41:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:54:17:54:36 | unpack(pack(source)) |
+| async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
+| async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
+| async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
+| callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
+| callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
+| callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
+| custom.js:1:14:1:26 | "verschmutzt" | custom.js:2:15:2:20 | quelle |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
+| destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
+| destructuring.js:20:15:20:28 | "also tainted" | destructuring.js:15:15:15:15 | r |
+| destructuring.js:21:15:21:29 | "still tainted" | destructuring.js:16:15:16:15 | s |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:8:13:8:21 | es.source |
+| esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
+| esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
+| global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
+| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
+| global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
+| global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
+| global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
+| nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:9:15:9:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:34:15:34:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:41:15:41:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:47:15:47:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:53:15:53:15 | x |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:10:15:10:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:16:15:16:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:22:15:22:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:28:15:28:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:35:15:35:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:42:15:42:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:48:15:48:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:54:15:54:15 | y |
+| promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
+| promises.js:2:16:2:24 | "tainted" | promises.js:38:32:38:32 | v |
+| promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:21:20:21:20 | v |
+| promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
+| promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
+| properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
+| properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
+| properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
+| properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
+| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
+| tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
+| tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
+| tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
+| tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
+| tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
+| tst.js:2:17:2:22 | "src1" | tst.js:39:17:39:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:41:19:41:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:45:17:45:17 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:47:19:47:19 | x |
+| tst.js:2:17:2:22 | "src1" | tst.js:59:16:59:18 | o.p |
+| tst.js:2:17:2:22 | "src1" | tst.js:61:16:61:18 | o.r |
+| tst.js:2:17:2:22 | "src1" | tst.js:68:16:68:22 | inner() |
+| tst.js:2:17:2:22 | "src1" | tst.js:80:16:80:22 | outer() |

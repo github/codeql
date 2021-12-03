@@ -1,0 +1,10 @@
+| test.py:1:19:1:19 | ControlFlowNode for x | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:1:19:1:19 | ControlFlowNode for x | test.py:7:1:7:1 | GSSA Variable b |
+| test.py:1:19:1:19 | SSA variable x | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:1:19:1:19 | SSA variable x | test.py:7:1:7:1 | GSSA Variable b |
+| test.py:2:3:2:3 | SSA variable y | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:2:3:2:3 | SSA variable y | test.py:7:1:7:1 | GSSA Variable b |
+| test.py:3:3:3:3 | SSA variable z | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:3:3:3:3 | SSA variable z | test.py:7:1:7:1 | GSSA Variable b |
+| test.py:6:1:6:1 | GSSA Variable a | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:6:1:6:1 | GSSA Variable a | test.py:7:1:7:1 | GSSA Variable b |

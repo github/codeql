@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This query highlights functions that are non-public, non-virtual, and are never called. 
+Dead functions are often deprecated pieces of code, and should be removed. 
+If left in the code base they increase object code size, decrease code comprehensibility, and create the possibility of misuse.</p>
+
+<p>
+<code>public</code> and <code>protected</code> functions are ignored by this query. 
+This type of function may be part of the program's API and could be used by external programs.
+</p>
+
+<include src="callGraphWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>Verify that the function is genuinely unused and consider removing it.</p>
+</recommendation>
+
+
+<example>
+<p>The example below includes a function <code>f</code> that is no longer used and should be deleted.</p>
+<sample src="DeadCodeFunction.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">MSC12-C. Detect and remove code that has no effect or is never executed</a>.</li>
+</references>
+
+</qhelp>

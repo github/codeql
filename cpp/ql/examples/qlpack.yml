@@ -1,0 +1,4 @@
+name: codeql/cpp-examples
+version: 0.0.2
+dependencies:
+  codeql/cpp-all: "*"

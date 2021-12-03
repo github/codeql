@@ -1,0 +1,91 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+
+			Defensive code can prevent unforeseen circumstances from
+			causing fatal program behaviors.
+
+			A common defensive code pattern is to guard
+			against dereferencing the values <code>null</code> or
+			<code>undefined</code>.
+
+			However, if the situation that some defensive code guards
+			against never can occur, then the defensive code serves no purpose and
+			can safely be removed.
+
+		</p>
+
+	</overview>
+	<recommendation>
+
+		<p>
+
+			Examine the surrounding code to determine if the defensive
+			code is worth keeping despite providing no practical use. If it is no
+			longer needed, remove it.
+
+		</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+
+			The following example shows a <code>cleanupLater</code>
+			function that asynchronously will perform a cleanup task after some
+			delay.  When the cleanup task completes, the function invokes the
+			provided callback parameter <code>cb</code>.
+
+			To prevent a crash by invoking <code>cb</code> when it
+			has the value <code>undefined</code>, defensive code guards
+			the invocation by checking if <code>cb</code> is truthy.
+
+		</p>
+
+		<sample src="examples/UnneededDefensiveProgramming1_bad.js" />
+
+		<p>
+
+			However, the <code>cleanupLater</code> function is always
+			invoked with a callback argument, so the defensive code condition
+			always holds, and it is therefore not
+			required. The function can therefore be simplified to:
+
+		</p>
+
+		<sample src="examples/UnneededDefensiveProgramming1_good.js" />
+
+		<p>
+
+			Guarding against the same situation multiple times is
+			another example of defensive code that provides no practical use. The
+			example below shows a function that assigns a value to a property of
+			an object, where defensive code ensures that the assigned value is not
+			<code>undefined</code> or <code>null</code>.
+
+		</p>
+
+		<sample src="examples/UnneededDefensiveProgramming2_bad.js" />
+
+		<p>
+
+			However, due to coercion rules, <code>v ==
+			undefined</code> holds for both the situation where <code>v</code>
+			is<code>undefined</code> and the situation where <code>v</code>
+			is<code>null</code>, so the <code>v == null</code>
+			guard serves no purpose, and can be removed:
+
+		</p>
+
+		<sample src="examples/UnneededDefensiveProgramming2_good.js" />
+
+	</example>
+	<references>
+
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Defensive_programming">Defensive programming</a>.</li>
+
+	</references>
+</qhelp>

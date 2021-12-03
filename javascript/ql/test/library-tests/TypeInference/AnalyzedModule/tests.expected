@@ -1,0 +1,50 @@
+analyzedModule_getAnExportedValue
+| amd2.js:1:1:6:0 | <toplevel> | default | amd2.js:1:1:6:0 | exports object of module amd2 | amd2 |
+| amd2.js:1:1:6:0 | <toplevel> | default | amd2.js:2:17:4:5 | object literal | amd2 |
+| amd2.js:1:1:6:0 | <toplevel> | foo | file://:0:0:0:0 | non-zero value | amd2 |
+| amd3.js:1:1:4:0 | <toplevel> | default | amd3.js:1:1:4:0 | exports object of module amd3 | amd3 |
+| amd3.js:1:1:4:0 | <toplevel> | foo | file://:0:0:0:0 | non-zero value | amd3 |
+| amd.js:1:1:6:0 | <toplevel> | default | amd.js:1:1:6:0 | exports object of module amd | amd |
+| amd.js:1:1:6:0 | <toplevel> | default | amd.js:2:12:4:5 | object literal | amd |
+| amd.js:1:1:6:0 | <toplevel> | foo | file://:0:0:0:0 | non-zero value | amd |
+| commonjs2.js:1:1:4:0 | <toplevel> | default | commonjs2.js:1:1:4:0 | exports object of module commonjs2 | commonjs2 |
+| commonjs2.js:1:1:4:0 | <toplevel> | default | commonjs2.js:1:18:3:1 | object literal | commonjs2 |
+| commonjs2.js:1:1:4:0 | <toplevel> | id | commonjs2.js:2:9:2:16 | method id | commonjs2 |
+| commonjs.js:1:1:3:0 | <toplevel> | default | commonjs.js:1:1:3:0 | exports object of module commonjs | commonjs |
+| commonjs.js:1:1:3:0 | <toplevel> | foo | commonjs.js:1:15:1:27 | anonymous function | commonjs |
+| commonjs.js:1:1:3:0 | <toplevel> | x | file://:0:0:0:0 | non-empty, non-numeric string | commonjs |
+| es6.js:1:1:7:0 | <toplevel> | default | file://:0:0:0:0 | true | es6 |
+| es6.js:1:1:7:0 | <toplevel> | default | m.js:1:16:3:1 | object literal | es6 |
+| es6.js:1:1:7:0 | <toplevel> | foo | es6.js:3:8:3:24 | function foo | es6 |
+| es6.js:1:1:7:0 | <toplevel> | x | file://:0:0:0:0 | non-empty, non-numeric string | es6 |
+| es6.js:1:1:7:0 | <toplevel> | z | file://:0:0:0:0 | non-zero value | es6 |
+| m.js:1:1:4:0 | <toplevel> | default | m.js:1:16:3:1 | object literal | m |
+| m.js:1:1:4:0 | <toplevel> | id | m.js:2:9:2:16 | method id | m |
+analyzedModule_getAnExportsValue
+| amd2.js:1:1:6:0 | <toplevel> | amd2 | amd2.js:1:1:6:0 | exports object of module amd2 |
+| amd2.js:1:1:6:0 | <toplevel> | amd2 | amd2.js:2:17:4:5 | object literal |
+| amd3.js:1:1:4:0 | <toplevel> | amd3 | amd3.js:1:1:4:0 | exports object of module amd3 |
+| amd.js:1:1:6:0 | <toplevel> | amd | amd.js:1:1:6:0 | exports object of module amd |
+| amd.js:1:1:6:0 | <toplevel> | amd | amd.js:2:12:4:5 | object literal |
+| commonjs2.js:1:1:4:0 | <toplevel> | commonjs2 | commonjs2.js:1:1:4:0 | exports object of module commonjs2 |
+| commonjs2.js:1:1:4:0 | <toplevel> | commonjs2 | commonjs2.js:1:18:3:1 | object literal |
+| commonjs.js:1:1:3:0 | <toplevel> | commonjs | commonjs.js:1:1:3:0 | exports object of module commonjs |
+| es6.js:1:1:7:0 | <toplevel> | es6 | es6.js:1:1:7:0 | exports object of module es6 |
+| m.js:1:1:4:0 | <toplevel> | m | m.js:1:1:4:0 | exports object of module m |
+| m.js:1:1:4:0 | <toplevel> | m | m.js:1:16:3:1 | object literal |
+analyzedModule_getExportsProperty
+| amd2.js:1:1:6:0 | <toplevel> | amd2 | property exports of module object of module amd2 |
+| amd3.js:1:1:4:0 | <toplevel> | amd3 | property exports of module object of module amd3 |
+| amd.js:1:1:6:0 | <toplevel> | amd | property exports of module object of module amd |
+| commonjs2.js:1:1:4:0 | <toplevel> | commonjs2 | property exports of module object of module commonjs2 |
+| commonjs.js:1:1:3:0 | <toplevel> | commonjs | property exports of module object of module commonjs |
+| es6.js:1:1:7:0 | <toplevel> | es6 | property exports of module object of module es6 |
+| m.js:1:1:4:0 | <toplevel> | m | property exports of module object of module m |
+analyzedModule_getModuleObject
+| amd2.js:1:1:6:0 | <toplevel> | amd2 | amd2.js:1:1:6:0 | module object of module amd2 |
+| amd3.js:1:1:4:0 | <toplevel> | amd3 | amd3.js:1:1:4:0 | module object of module amd3 |
+| amd.js:1:1:6:0 | <toplevel> | amd | amd.js:1:1:6:0 | module object of module amd |
+| commonjs2.js:1:1:4:0 | <toplevel> | commonjs2 | commonjs2.js:1:1:4:0 | module object of module commonjs2 |
+| commonjs.js:1:1:3:0 | <toplevel> | commonjs | commonjs.js:1:1:3:0 | module object of module commonjs |
+| es6.js:1:1:7:0 | <toplevel> | es6 | es6.js:1:1:7:0 | module object of module es6 |
+| m.js:1:1:4:0 | <toplevel> | m | m.js:1:1:4:0 | module object of module m |

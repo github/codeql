@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Libraries like <code>express</code> provide easy methods for serving entire 
+    directories of static files from a web server.
+    However, using these can sometimes lead to accidental information exposure. 
+    If for example the <code>node_modules</code> folder is served, then an attacker
+    can access the <code>_where</code> field from a <code>package.json</code> file, 
+    which gives access to the absolute path of the file. 
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Limit which folders of static files are served from a web server.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    In the example below, all the files from the <code>node_modules</code> are served. 
+    This allows clients to easily access all the files inside that folder,
+    which includes potentially private information inside <code>package.json</code> files.
+  </p>
+  <sample src="examples/PrivateFileExposure.js"/>
+  <p>
+    The issue has been fixed below by only serving specific folders within the
+    <code>node_modules</code> folder.
+  </p>
+  <sample src="examples/PrivateFileExposureFixed.js"/>
+</example>
+
+<references>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">Sensitive Data Exposure</a>.</li>
+</references>
+</qhelp>

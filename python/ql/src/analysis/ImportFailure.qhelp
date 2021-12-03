@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Tracing which module is imported by an import statement is very important in ensuring that the whole program is available
+for analysis.  Failure to determine which module is imported by an import reduces the extent and accuracy of Semmle's analysis.
+</p>
+
+<p>
+Missing imports will degrade the effectiveness of code analysis and may result in errors going undetected.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that all required modules and packages can be found when running the extractor.
+</p>
+
+
+</recommendation>
+<references>
+
+<li>Semmle Tutorial: <a href="https://help.semmle.com/codeql/codeql-cli/procedures/create-codeql-database.html">Creating a CodeQL database</a>.</li>
+
+
+</references>
+</qhelp>

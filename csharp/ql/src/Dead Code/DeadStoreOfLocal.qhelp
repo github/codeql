@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A value is assigned to a local variable, but either that variable is never read
+later on, or its value is always overwritten before being read. This means
+that the original assignment has no effect, and could indicate a logic error or
+incomplete code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that you check the program logic carefully. If a value is really
+not needed, consider omitting the assignment. Be careful, though: if the right-hand
+side has a side effect (like performing a method call), it is important to keep this
+to preserve the overall behavior.
+</p>
+
+</recommendation>
+<example>
+<p>
+The following example shows six different types of assignments to local variables
+whose value is not read:
+</p>
+<ul>
+<li>
+In <code>ParseInt</code>, the result of the call to <code>int.TryParse</code> is
+assigned directly to the unread local variable <code>success</code>.
+</li>
+<li>
+In <code>IsDouble</code>, the <code>out</code> argument of the call to
+<code>int.TryParse</code> is assigned to the unread local variable <code>i</code>.
+</li>
+<li>
+In <code>ParseDouble</code>, the exception thrown by the call to <code>double.Parse</code>
+in case of parse failure is assigned to the unread local variable <code>e</code>.
+</li>
+<li>
+In <code>Count</code>, the elements of <code>ss</code> are assigned to the unread local
+<code>foreach</code> variable <code>s</code>.
+</li>
+<li>
+In <code>IsInt</code>, <code>o</code> is assigned (in case <code>o</code> is an integer)
+to the unread local type test variable <code>i</code>.
+</li>
+<li>
+In <code>IsString</code>, <code>o</code> is assigned (in case <code>o</code> is a string)
+to the unread local type case variable <code>s</code>.
+</li>
+</ul>
+
+<sample src="DeadStoreOfLocalBad.cs" />
+
+<p>
+The revised example eliminates the unread assignments.</p>
+
+<sample src="DeadStoreOfLocalGood.cs" />
+
+</example>
+<references>
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+<li>MSDN, Code Analysis for Managed Code, <a href="http://msdn.microsoft.com/en-us/library/ms182278.aspx">CA1804: Remove unused locals</a>.</li>
+<li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7#discards">What's new in C# 7 - Discards</a>.</li>
+
+</references>
+</qhelp>

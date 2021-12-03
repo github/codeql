@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a condition always evaluates to true or always evaluates to false, this often indicates
+incomplete code or a latent bug, and it should be examined carefully.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the surrounding code to determine why the condition is redundant. If it is no
+longer needed, remove it.
+</p>
+
+<p>
+If the check is needed to guard against <code>NaN</code> values, insert a comment explaning the possibility of <code>NaN</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example finds the index of an element in a given slice of the array:
+</p>
+
+<sample src="examples/UselessComparisonTest.js" />
+
+<p>
+The condition <code>i &lt; end</code> at the end is always false, however. The code can be clarified if the
+redundant condition is removed:
+</p>
+
+<sample src="examples/UselessComparisonTestGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">Truthy</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">Falsy</a>.</li>
+
+</references>
+</qhelp>

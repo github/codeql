@@ -1,0 +1,38 @@
+| connect.js:6:5:6:11 | req.url | url |
+| connect.js:7:5:7:21 | req.cookies.get() | cookie |
+| express.js:12:5:12:19 | req.param("p1") | parameter |
+| express.js:13:5:13:17 | req.params.p2 | parameter |
+| express.js:14:5:14:16 | req.query.p3 | parameter |
+| express.js:15:5:15:12 | req.body | body |
+| express.js:16:5:16:11 | req.url | url |
+| express.js:17:5:17:19 | req.originalUrl | url |
+| express.js:18:5:18:13 | req.get() | header |
+| express.js:19:5:19:16 | req.header() | header |
+| express.js:20:5:20:15 | req.cookies | cookie |
+| hapi.js:5:9:5:26 | request.rawPayload | body |
+| hapi.js:6:9:6:26 | request.payload.p1 | body |
+| hapi.js:7:9:7:24 | request.query.p2 | parameter |
+| hapi.js:8:9:8:24 | request.url.path | url |
+| hapi.js:9:9:9:26 | request.headers.p3 | header |
+| hapi.js:10:9:10:24 | request.state.p4 | cookie |
+| koa.js:6:5:6:24 | ctx.request.query.p1 | parameter |
+| koa.js:7:5:7:20 | ctx.request.body | body |
+| koa.js:8:5:8:19 | ctx.request.url | url |
+| koa.js:9:5:9:27 | ctx.req ... inalUrl | url |
+| koa.js:10:5:10:20 | ctx.request.href | url |
+| koa.js:11:5:11:25 | ctx.req ... ader.p2 | header |
+| koa.js:12:5:12:26 | ctx.req ... ders.p3 | header |
+| koa.js:13:5:13:21 | ctx.request.get() | header |
+| koa.js:14:5:14:21 | ctx.cookies.get() | cookie |
+| node.js:2:5:2:18 | req.headers.p1 | header |
+| node.js:3:5:3:11 | req.url | url |
+| node.js:4:5:4:22 | req.headers.cookie | cookie |
+| restify.js:4:5:4:21 | req.getQuery().p1 | parameter |
+| restify.js:5:5:5:14 | req.href() | url |
+| restify.js:6:5:6:17 | req.getPath() | url |
+| restify.js:7:5:7:24 | req.getContentType() | header |
+| restify.js:8:5:8:19 | req.userAgent() | header |
+| restify.js:9:5:9:17 | req.trailer() | header |
+| restify.js:10:5:10:16 | req.header() | header |
+| restify.js:11:5:11:11 | req.url | url |
+| restify.js:12:5:12:15 | req.cookies | cookie |

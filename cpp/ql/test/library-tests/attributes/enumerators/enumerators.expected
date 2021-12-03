@@ -1,0 +1,3 @@
+| enumerators.c:5:3:5:14 | OM_Terrified | enumerators.c:7:18:7:27 | deprecated |
+| enumerators.c:10:3:10:17 | OM_AbortOnError | enumerators.c:12:18:12:27 | deprecated |
+| enumerators.c:22:5:22:43 | NSUserNotificationActivationTypeReplied | enumerators.c:22:60:22:71 | availability |

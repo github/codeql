@@ -1,0 +1,2 @@
+// OK
+const s = "there";

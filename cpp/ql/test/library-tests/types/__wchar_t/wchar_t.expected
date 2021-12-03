@@ -1,0 +1,3 @@
+| file://:0:0:0:0 | __wchar_t * | IteratorByPointer, PointerType | Wchar_t, WideCharType |
+| file://:0:0:0:0 | const __wchar_t | SpecifiedType | Wchar_t, WideCharType |
+| file://:0:0:0:0 | wchar_t | Wchar_t, WideCharType |  |

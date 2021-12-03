@@ -1,0 +1,7 @@
+| (NgCallExpr: (NgVarExpr: VAR18a) (NgConsCallArgument: (NgVarExpr: VAR18b))) | 0 | (NgVarExpr: VAR18b) |
+| (NgCallExpr: (NgVarExpr: VAR19a) (NgConsCallArgument: (NgVarExpr: VAR19b) (NgConsCallArgument: (NgVarExpr: VAR19c)))) | 0 | (NgVarExpr: VAR19b) |
+| (NgCallExpr: (NgVarExpr: VAR19a) (NgConsCallArgument: (NgVarExpr: VAR19b) (NgConsCallArgument: (NgVarExpr: VAR19c)))) | 1 | (NgVarExpr: VAR19c) |
+| (NgCallExpr: (NgVarExpr: VAR20) (NgConsCallArgument: 20)) | 0 | 20 |
+| (NgCallExpr: (NgVarExpr: VAR21) (NgConsCallArgument: 'string21')) | 0 | 'string21' |
+| (NgCallExpr: (NgVarExpr: VAR22a) (NgConsCallArgument: (NgVarExpr: VAR22b) (NgConsCallArgument: 'string22'))) | 0 | (NgVarExpr: VAR22b) |
+| (NgCallExpr: (NgVarExpr: VAR22a) (NgConsCallArgument: (NgVarExpr: VAR22b) (NgConsCallArgument: 'string22'))) | 1 | 'string22' |

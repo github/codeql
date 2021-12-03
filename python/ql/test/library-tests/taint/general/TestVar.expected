@@ -1,0 +1,216 @@
+| assignment.py:5 | a_0 | assignment.py:5 | Taint simple.test |
+| assignment.py:6 | a_1 | assignment.py:6 | Taint simple.test |
+| assignment.py:7 | b_1 | assignment.py:7 | Taint simple.test |
+| assignment.py:13 | t1_0 | assignment.py:13 | Taint simple.test |
+| assignment.py:13 | t2_0 | assignment.py:13 | Taint simple.test |
+| assignment.py:14 | t1_1 | assignment.py:14 | Taint simple.test |
+| carrier.py:4 | arg_0 | carrier.py:4 | Taint explicit.carrier |
+| carrier.py:4 | arg_0 | carrier.py:4 | Taint simple.test |
+| carrier.py:5 | self_1 | carrier.py:5 | Taint .attr = explicit.carrier |
+| carrier.py:5 | self_1 | carrier.py:5 | Taint .attr = simple.test |
+| carrier.py:10 | self_0 | carrier.py:10 | Taint .attr = simple.test |
+| carrier.py:13 | arg_0 | carrier.py:13 | Taint .attr = simple.test |
+| carrier.py:13 | arg_0 | carrier.py:13 | Taint explicit.carrier |
+| carrier.py:17 | c_0 | carrier.py:17 | Taint .attr = simple.test |
+| carrier.py:21 | c_0 | carrier.py:21 | Taint explicit.carrier |
+| carrier.py:22 | c_1 | carrier.py:22 | Taint explicit.carrier |
+| carrier.py:25 | c_0 | carrier.py:25 | Taint .attr = simple.test |
+| carrier.py:26 | c_1 | carrier.py:26 | Taint .attr = simple.test |
+| carrier.py:29 | c_0 | carrier.py:29 | Taint explicit.carrier |
+| carrier.py:30 | c_1 | carrier.py:30 | Taint explicit.carrier |
+| carrier.py:33 | c_0 | carrier.py:33 | Taint .attr = explicit.carrier |
+| carrier.py:34 | x_0 | carrier.py:34 | Taint explicit.carrier |
+| carrier.py:35 | x_1 | carrier.py:35 | Taint explicit.carrier |
+| deep.py:2 | arg_0 | deep.py:2 | Taint simple.test |
+| deep.py:5 | arg_0 | deep.py:5 | Taint simple.test |
+| deep.py:6 | arg_1 | deep.py:6 | Taint simple.test |
+| deep.py:8 | arg_0 | deep.py:8 | Taint simple.test |
+| deep.py:9 | arg_1 | deep.py:9 | Taint simple.test |
+| deep.py:11 | arg_0 | deep.py:11 | Taint simple.test |
+| deep.py:12 | arg_1 | deep.py:12 | Taint simple.test |
+| deep.py:14 | arg_0 | deep.py:14 | Taint simple.test |
+| deep.py:15 | arg_1 | deep.py:15 | Taint simple.test |
+| deep.py:17 | arg_0 | deep.py:17 | Taint simple.test |
+| deep.py:18 | arg_1 | deep.py:18 | Taint simple.test |
+| deep.py:20 | x_1 | deep.py:20 | Taint simple.test |
+| module.py:3 | dangerous_0 | module.py:3 | Taint simple.test |
+| rockpaperscissors.py:3 | arg_0 | rockpaperscissors.py:3 | Taint scissors |
+| rockpaperscissors.py:6 | arg_0 | rockpaperscissors.py:6 | Taint paper |
+| rockpaperscissors.py:6 | arg_0 | rockpaperscissors.py:6 | Taint rock |
+| rockpaperscissors.py:6 | arg_0 | rockpaperscissors.py:6 | Taint scissors |
+| rockpaperscissors.py:9 | arg_0 | rockpaperscissors.py:9 | Taint paper |
+| rockpaperscissors.py:9 | arg_0 | rockpaperscissors.py:9 | Taint scissors |
+| rockpaperscissors.py:19 | x_0 | rockpaperscissors.py:19 | Taint rock |
+| rockpaperscissors.py:20 | x_1 | rockpaperscissors.py:20 | Taint rock |
+| rockpaperscissors.py:20 | y_0 | rockpaperscissors.py:20 | Taint scissors |
+| rockpaperscissors.py:21 | y_1 | rockpaperscissors.py:21 | Taint scissors |
+| rockpaperscissors.py:24 | x_0 | rockpaperscissors.py:24 | Taint rock |
+| rockpaperscissors.py:25 | x_1 | rockpaperscissors.py:25 | Taint rock |
+| rockpaperscissors.py:25 | y_0 | rockpaperscissors.py:25 | Taint paper |
+| rockpaperscissors.py:26 | y_1 | rockpaperscissors.py:26 | Taint paper |
+| rockpaperscissors.py:29 | x_0 | rockpaperscissors.py:29 | Taint scissors |
+| rockpaperscissors.py:30 | x_1 | rockpaperscissors.py:30 | Taint scissors |
+| rockpaperscissors.py:30 | y_0 | rockpaperscissors.py:30 | Taint paper |
+| rockpaperscissors.py:31 | x_2 | rockpaperscissors.py:31 | Taint scissors |
+| rockpaperscissors.py:32 | y_1 | rockpaperscissors.py:32 | Taint paper |
+| sanitizer.py:3 | arg_0 | sanitizer.py:3 | Taint Command injection |
+| sanitizer.py:3 | arg_0 | sanitizer.py:3 | Taint SQL injection |
+| sanitizer.py:5 | arg_0 | sanitizer.py:5 | Taint Command injection |
+| sanitizer.py:5 | arg_0 | sanitizer.py:5 | Taint SQL injection |
+| sanitizer.py:8 | x_5 | sanitizer.py:8 | Taint Command injection |
+| sanitizer.py:8 | x_5 | sanitizer.py:8 | Taint SQL injection |
+| sanitizer.py:9 | x_0 | sanitizer.py:9 | Taint Command injection |
+| sanitizer.py:9 | x_0 | sanitizer.py:9 | Taint SQL injection |
+| sanitizer.py:11 | x_1 | sanitizer.py:11 | Taint Command injection |
+| sanitizer.py:11 | x_2 | sanitizer.py:11 | Taint Command injection |
+| sanitizer.py:13 | x_3 | sanitizer.py:13 | Taint Command injection |
+| sanitizer.py:13 | x_3 | sanitizer.py:13 | Taint SQL injection |
+| sanitizer.py:13 | x_4 | sanitizer.py:13 | Taint Command injection |
+| sanitizer.py:13 | x_4 | sanitizer.py:13 | Taint SQL injection |
+| sanitizer.py:15 | x_5 | sanitizer.py:15 | Taint Command injection |
+| sanitizer.py:15 | x_5 | sanitizer.py:15 | Taint SQL injection |
+| sanitizer.py:16 | x_0 | sanitizer.py:16 | Taint Command injection |
+| sanitizer.py:16 | x_0 | sanitizer.py:16 | Taint SQL injection |
+| sanitizer.py:18 | x_1 | sanitizer.py:18 | Taint SQL injection |
+| sanitizer.py:18 | x_2 | sanitizer.py:18 | Taint SQL injection |
+| sanitizer.py:20 | x_3 | sanitizer.py:20 | Taint Command injection |
+| sanitizer.py:20 | x_3 | sanitizer.py:20 | Taint SQL injection |
+| sanitizer.py:20 | x_4 | sanitizer.py:20 | Taint Command injection |
+| sanitizer.py:20 | x_4 | sanitizer.py:20 | Taint SQL injection |
+| sanitizer.py:23 | x_5 | sanitizer.py:23 | Taint Command injection |
+| sanitizer.py:23 | x_5 | sanitizer.py:23 | Taint SQL injection |
+| sanitizer.py:24 | x_0 | sanitizer.py:24 | Taint Command injection |
+| sanitizer.py:24 | x_0 | sanitizer.py:24 | Taint SQL injection |
+| sanitizer.py:26 | x_1 | sanitizer.py:26 | Taint Command injection |
+| sanitizer.py:26 | x_1 | sanitizer.py:26 | Taint SQL injection |
+| sanitizer.py:26 | x_2 | sanitizer.py:26 | Taint Command injection |
+| sanitizer.py:26 | x_2 | sanitizer.py:26 | Taint SQL injection |
+| sanitizer.py:28 | x_3 | sanitizer.py:28 | Taint Command injection |
+| sanitizer.py:28 | x_3 | sanitizer.py:28 | Taint SQL injection |
+| sanitizer.py:28 | x_4 | sanitizer.py:28 | Taint Command injection |
+| sanitizer.py:28 | x_4 | sanitizer.py:28 | Taint SQL injection |
+| sanitizer.py:30 | x_5 | sanitizer.py:30 | Taint Command injection |
+| sanitizer.py:30 | x_5 | sanitizer.py:30 | Taint SQL injection |
+| sanitizer.py:31 | x_0 | sanitizer.py:31 | Taint Command injection |
+| sanitizer.py:31 | x_0 | sanitizer.py:31 | Taint SQL injection |
+| sanitizer.py:33 | x_1 | sanitizer.py:33 | Taint Command injection |
+| sanitizer.py:33 | x_1 | sanitizer.py:33 | Taint SQL injection |
+| sanitizer.py:33 | x_2 | sanitizer.py:33 | Taint Command injection |
+| sanitizer.py:33 | x_2 | sanitizer.py:33 | Taint SQL injection |
+| sanitizer.py:35 | x_3 | sanitizer.py:35 | Taint Command injection |
+| sanitizer.py:35 | x_3 | sanitizer.py:35 | Taint SQL injection |
+| sanitizer.py:35 | x_4 | sanitizer.py:35 | Taint Command injection |
+| sanitizer.py:35 | x_4 | sanitizer.py:35 | Taint SQL injection |
+| test.py:6 | s_0 | test.py:6 | Taint simple.test |
+| test.py:7 | s_1 | test.py:7 | Taint simple.test |
+| test.py:12 | arg_0 | test.py:12 | Taint simple.test |
+| test.py:13 | arg_1 | test.py:13 | Taint simple.test |
+| test.py:16 | t_0 | test.py:16 | Taint simple.test |
+| test.py:17 | t_1 | test.py:17 | Taint simple.test |
+| test.py:20 | t_0 | test.py:20 | Taint simple.test |
+| test.py:21 | t_1 | test.py:21 | Taint simple.test |
+| test.py:24 | t_0 | test.py:24 | Taint simple.test |
+| test.py:25 | t_1 | test.py:25 | Taint simple.test |
+| test.py:31 | t_2 | test.py:31 | Taint simple.test |
+| test.py:37 | t_0 | test.py:37 | Taint simple.test |
+| test.py:41 | t_1 | test.py:41 | Taint simple.test |
+| test.py:46 | arg_0 | test.py:46 | Taint simple.test |
+| test.py:47 | arg_1 | test.py:47 | Taint simple.test |
+| test.py:49 | arg_0 | test.py:49 | Taint simple.test |
+| test.py:49 | arg_2 | test.py:49 | Taint simple.test |
+| test.py:51 | arg_1 | test.py:51 | Taint simple.test |
+| test.py:54 | t_0 | test.py:54 | Taint simple.test |
+| test.py:55 | t_1 | test.py:55 | Taint simple.test |
+| test.py:62 | t_1 | test.py:62 | Taint simple.test |
+| test.py:63 | t_2 | test.py:63 | Taint simple.test |
+| test.py:67 | t_0 | test.py:67 | Taint simple.test |
+| test.py:70 | t_2 | test.py:70 | Taint simple.test |
+| test.py:72 | arg_0 | test.py:72 | Taint .x = simple.test |
+| test.py:72 | arg_0 | test.py:72 | Taint basic.custom |
+| test.py:72 | arg_0 | test.py:72 | Taint simple.test |
+| test.py:76 | t_0 | test.py:76 | Taint simple.test |
+| test.py:77 | t_1 | test.py:77 | Taint simple.test |
+| test.py:78 | t_2 | test.py:78 | Taint simple.test |
+| test.py:85 | module_0 | test.py:85 | Taint .dangerous = simple.test |
+| test.py:87 | module_1 | test.py:87 | Taint .dangerous = simple.test |
+| test.py:88 | t_0 | test.py:88 | Taint simple.test |
+| test.py:89 | t_1 | test.py:89 | Taint simple.test |
+| test.py:91 | module_2 | test.py:91 | Taint .dangerous = simple.test |
+| test.py:95 | module_3 | test.py:95 | Taint .dangerous = simple.test |
+| test.py:99 | module_4 | test.py:99 | Taint .dangerous = simple.test |
+| test.py:100 | t_0 | test.py:100 | Taint simple.test |
+| test.py:101 | t_1 | test.py:101 | Taint simple.test |
+| test.py:105 | arg_0 | test.py:105 | Taint .x = simple.test |
+| test.py:108 | module_5 | test.py:108 | Taint .dangerous = simple.test |
+| test.py:110 | t_1 | test.py:110 | Taint .x = simple.test |
+| test.py:113 | module_6 | test.py:113 | Taint .dangerous = simple.test |
+| test.py:115 | t_1 | test.py:115 | Taint .x = simple.test |
+| test.py:116 | t_2 | test.py:116 | Taint .x = simple.test |
+| test.py:117 | t_3 | test.py:117 | Taint .x = simple.test |
+| test.py:120 | t_0 | test.py:120 | Taint basic.custom |
+| test.py:121 | t_1 | test.py:121 | Taint basic.custom |
+| test.py:122 | t_2 | test.py:122 | Taint basic.custom |
+| test.py:126 | t_0 | test.py:126 | Taint basic.custom |
+| test.py:128 | t_2 | test.py:128 | Taint simple.test |
+| test.py:130 | t_1 | test.py:130 | Taint basic.custom |
+| test.py:132 | t_3 | test.py:132 | Taint simple.test |
+| test.py:136 | t_0 | test.py:136 | Taint basic.custom |
+| test.py:138 | t_2 | test.py:138 | Taint simple.test |
+| test.py:140 | t_3 | test.py:140 | Taint simple.test |
+| test.py:142 | t_1 | test.py:142 | Taint basic.custom |
+| test.py:146 | t_0 | test.py:146 | Taint basic.custom |
+| test.py:148 | t_3 | test.py:148 | Taint simple.test |
+| test.py:149 | t_1 | test.py:149 | Taint basic.custom |
+| test.py:151 | t_2 | test.py:151 | Taint basic.custom |
+| test.py:155 | unsafe_0 | test.py:155 | Taint simple.test |
+| test.py:156 | unsafe_1 | test.py:156 | Taint simple.test |
+| test.py:159 | t_0 | test.py:159 | Taint simple.test |
+| test.py:160 | t_1 | test.py:160 | Taint simple.test |
+| test.py:163 | s_0 | test.py:163 | Taint simple.test |
+| test.py:168 | l_0 | test.py:168 | Taint sequence of simple.test |
+| test.py:169 | d_0 | test.py:169 | Taint dict of simple.test |
+| test.py:170 | l_1 | test.py:170 | Taint sequence of simple.test |
+| test.py:170 | x_1 | test.py:170 | Taint sequence of simple.test |
+| test.py:171 | d_1 | test.py:171 | Taint dict of simple.test |
+| test.py:171 | y_1 | test.py:171 | Taint dict of simple.test |
+| test.py:174 | l2_0 | test.py:174 | Taint sequence of simple.test |
+| test.py:174 | l_2 | test.py:174 | Taint sequence of simple.test |
+| test.py:175 | d2_0 | test.py:175 | Taint dict of simple.test |
+| test.py:175 | d_2 | test.py:175 | Taint dict of simple.test |
+| test.py:178 | t_0 | test.py:178 | Taint simple.test |
+| test.py:180 | t_1 | test.py:180 | Taint simple.test |
+| test.py:180 | t_2 | test.py:180 | Taint simple.test |
+| test.py:183 | t_3 | test.py:183 | Taint simple.test |
+| test.py:186 | t_4 | test.py:186 | Taint simple.test |
+| test.py:189 | t_0 | test.py:189 | Taint falsey |
+| test.py:191 | t_1 | test.py:191 | Taint falsey |
+| test.py:194 | t_5 | test.py:194 | Taint simple.test |
+| test.py:195 | t_0 | test.py:195 | Taint simple.test |
+| test.py:197 | t_1 | test.py:197 | Taint simple.test |
+| test.py:197 | t_2 | test.py:197 | Taint simple.test |
+| test.py:199 | t_3 | test.py:199 | Taint simple.test |
+| test.py:199 | t_4 | test.py:199 | Taint simple.test |
+| test.py:202 | t_0 | test.py:202 | Taint iterable.simple |
+| test.py:203 | i_1 | test.py:203 | Taint simple.test |
+| test.py:203 | i_2 | test.py:203 | Taint simple.test |
+| test.py:208 | seq_0 | test.py:208 | Taint sequence of simple.test |
+| test.py:209 | i_1 | test.py:209 | Taint simple.test |
+| test.py:209 | i_2 | test.py:209 | Taint simple.test |
+| test.py:213 | x_0 | test.py:213 | Taint simple.test |
+| test.py:213 | x_1 | test.py:213 | Taint simple.test |
+| test.py:214 | x_2 | test.py:214 | Taint simple.test |
+| test.py:217 | tainted_0 | test.py:217 | Taint simple.test |
+| test.py:220 | tainted_3 | test.py:220 | Taint simple.test |
+| test.py:220 | tainted_4 | test.py:220 | Taint simple.test |
+| test.py:220 | tainted_5 | test.py:220 | Taint simple.test |
+| test.py:223 | tainted_0 | test.py:223 | Taint simple.test |
+| test.py:225 | tainted_1 | test.py:225 | Taint simple.test |
+| test.py:228 | tainted_7 | test.py:228 | Taint simple.test |
+| test.py:228 | tainted_8 | test.py:228 | Taint simple.test |
+| test.py:229 | tainted_0 | test.py:229 | Taint simple.test |
+| test.py:231 | tainted_1 | test.py:231 | Taint simple.test |
+| test.py:231 | tainted_2 | test.py:231 | Taint simple.test |
+| test.py:232 | tainted_3 | test.py:232 | Taint simple.test |
+| test.py:232 | tainted_4 | test.py:232 | Taint simple.test |
+| test.py:233 | tainted_5 | test.py:233 | Taint simple.test |
+| test.py:233 | tainted_6 | test.py:233 | Taint simple.test |

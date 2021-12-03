@@ -1,0 +1,11 @@
+| Test.java:18:33:18:53 | ... * ... | Expression always evaluates to the same value. |
+| Test.java:19:34:19:54 | ... * ... | Expression always evaluates to the same value. |
+| Test.java:20:29:20:58 | ... * ... | Expression always evaluates to the same value. |
+| Test.java:21:32:21:69 | ... * ... | Expression always evaluates to the same value. |
+| Test.java:27:28:27:44 | ... % ... | Expression always evaluates to the same value. |
+| Test.java:29:29:29:48 | ... % ... | Expression always evaluates to the same value. |
+| Test.java:30:32:30:50 | ... % ... | Expression always evaluates to the same value. |
+| Test.java:37:30:37:46 | ... & ... | Expression always evaluates to the same value. |
+| Test.java:38:31:38:47 | ... & ... | Expression always evaluates to the same value. |
+| Test.java:53:32:53:58 | ... \|\| ... | Expression always evaluates to the same value. |
+| Test.java:54:33:54:59 | ... \|\| ... | Expression always evaluates to the same value. |

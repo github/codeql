@@ -1,0 +1,107 @@
+test_getAReferenceTo
+| other_ns.js:2:11:2:12 | ns | NS |
+| other_ns.js:2:11:2:12 | ns | NS |
+| other_ns.js:3:3:3:4 | ns | NS |
+| other_ns.js:3:3:3:8 | ns.foo | NS.foo |
+| other_ns.js:3:3:3:12 | ns.foo.bar | NS.foo.bar |
+| other_ns.js:4:4:4:5 | NS | NS |
+| other_ns.js:4:4:4:16 | NS = NS \|\| {} | NS |
+| other_ns.js:4:9:4:10 | NS | NS |
+| other_ns.js:4:9:4:16 | NS \|\| {} | NS |
+| other_ns.js:6:1:6:8 | Conflict | Conflict |
+| test.js:2:7:2:17 | v | foo.bar |
+| test.js:2:11:2:13 | foo | foo |
+| test.js:2:11:2:17 | foo.bar | foo.bar |
+| test.js:3:3:3:3 | v | foo.bar |
+| test.js:3:3:3:7 | v.baz | foo.bar.baz |
+| test.js:4:7:4:24 | { baz, a, b: {c} } | foo.bar |
+| test.js:4:7:4:28 | c | foo.bar.b.c |
+| test.js:4:9:4:11 | baz | foo.bar.baz |
+| test.js:4:14:4:14 | a | foo.bar.a |
+| test.js:4:17:4:22 | b: {c} | foo.bar.b |
+| test.js:4:20:4:22 | {c} | foo.bar.b |
+| test.js:4:21:4:21 | c | foo.bar.b.c |
+| test.js:4:28:4:28 | v | foo.bar |
+| test.js:5:11:5:11 | c | foo.bar.b.c |
+| test.js:5:11:5:13 | c.d | foo.bar.b.c.d |
+| test.js:7:7:7:16 | w | window |
+| test.js:7:11:7:16 | window | window |
+| test.js:8:13:8:18 | window | window |
+| test.js:8:13:8:20 | window.x | x |
+| test.js:8:13:8:22 | window.x.y | x.y |
+| test.js:9:13:9:18 | global | global |
+| test.js:9:13:9:20 | global.x | x |
+| test.js:9:13:9:22 | global.x.y | x.y |
+| test.js:10:13:10:13 | w | window |
+| test.js:10:13:10:15 | w.x | x |
+| test.js:10:13:10:17 | w.x.y | x.y |
+| test.js:12:7:12:25 | notUnique | foo.bar |
+| test.js:12:19:12:21 | foo | foo |
+| test.js:12:19:12:25 | foo.bar | foo.bar |
+| test.js:13:7:13:15 | something | something |
+| test.js:14:5:14:23 | notUnique | bar.baz |
+| test.js:14:5:14:23 | notUnique = bar.baz | bar.baz |
+| test.js:14:17:14:19 | bar | bar |
+| test.js:14:17:14:23 | bar.baz | bar.baz |
+| test.js:22:11:22:12 | ns | NS |
+| test.js:22:11:22:12 | ns | NS |
+| test.js:23:3:23:4 | ns | NS |
+| test.js:23:3:23:8 | ns.foo | NS.foo |
+| test.js:23:3:23:12 | ns.foo.bar | NS.foo.bar |
+| test.js:24:4:24:5 | NS | NS |
+| test.js:24:4:24:16 | NS = NS \|\| {} | NS |
+| test.js:24:9:24:10 | NS | NS |
+| test.js:24:9:24:16 | NS \|\| {} | NS |
+| test.js:26:1:26:8 | Conflict | Conflict |
+| test.js:33:7:33:18 | { bar = {} } | foo |
+| test.js:33:9:33:16 | bar = {} | foo.bar |
+| test.js:33:22:33:24 | foo | foo |
+| test.js:39:3:39:20 | lazyInit | foo.bar |
+| test.js:39:3:39:20 | lazyInit = foo.bar | foo.bar |
+| test.js:39:14:39:16 | foo | foo |
+| test.js:39:14:39:20 | foo.bar | foo.bar |
+| test.js:40:3:40:10 | lazyInit | foo.bar |
+| test.js:44:13:44:18 | Object | Object |
+| test.js:44:13:44:25 | Object.create | Object.create |
+| test.js:50:7:50:12 | random | random |
+| test.js:56:7:56:12 | random | random |
+| test.js:67:11:67:16 | Object | Object |
+| test.js:67:11:67:23 | Object.freeze | Object.freeze |
+| test.js:67:11:67:32 | Object. ... oo.bar) | foo.bar |
+| test.js:67:11:67:36 | Object. ... ar).baz | foo.bar.baz |
+| test.js:67:25:67:27 | foo | foo |
+| test.js:67:25:67:31 | foo.bar | foo.bar |
+| test.js:68:11:68:16 | Object | Object |
+| test.js:68:11:68:21 | Object.seal | Object.seal |
+| test.js:68:11:68:30 | Object.seal(foo.bar) | foo.bar |
+| test.js:68:11:68:34 | Object. ... ar).baz | foo.bar.baz |
+| test.js:68:23:68:25 | foo | foo |
+| test.js:68:23:68:29 | foo.bar | foo.bar |
+| test.js:69:6:69:15 | O | Object |
+| test.js:69:10:69:15 | Object | Object |
+| test.js:70:11:70:11 | O | Object |
+| test.js:70:11:70:16 | O.seal | Object.seal |
+| test.js:70:18:70:20 | foo | foo |
+| test.js:70:18:70:24 | foo.bar | foo.bar |
+test_getAnAssignmentTo
+| other_ns.js:4:9:4:16 | NS \|\| {} | NS |
+| other_ns.js:6:12:6:13 | {} | Conflict |
+| test.js:1:1:20:1 | functio ... ss {}\\n} | f |
+| test.js:24:9:24:16 | NS \|\| {} | NS |
+| test.js:26:12:26:13 | {} | Conflict |
+| test.js:28:1:28:20 | class GlobalClass {} | GlobalClass |
+| test.js:30:1:30:28 | functio ... on() {} | globalFunction |
+| test.js:32:1:35:1 | functio ... .baz'\\n} | destruct |
+| test.js:37:1:41:1 | functio ... Init;\\n} | lazy |
+| test.js:43:1:64:1 | functio ... // no\\n} | dominatingWrite |
+test_assignedUnique
+| GlobalClass |
+| destruct |
+| dominatingWrite |
+| f |
+| globalFunction |
+| lazy |
+hasDominatingWrite
+| test.js:48:3:48:11 | obj.prop1 |
+| test.js:57:5:57:13 | obj.prop3 |
+| test.js:62:29:62:37 | obj.prop5 |

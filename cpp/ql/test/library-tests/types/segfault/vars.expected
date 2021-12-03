@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * |
+| segfault.c:2:16:2:16 | e | file://:0:0:0:0 | E * |

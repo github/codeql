@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Shift operations in JavaScript operate on 32-bit values only, so it is not possible
+to shift by more than 31 positions. If the right operand of a shift operator is
+greater than 31, the left operand is actually only shifted by that value modulo 32.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use standard library functions such as <code>Math.pow</code> to perform the required
+shifting. Alternatively, you can use the
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>
+type if it is available on your platform.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet attempts to assign <code>x</code> the value 2<sup>40</sup>
+(1099511627776). In fact, however, the left operand <code>1</code> is only shifted by
+<code>8</code> (that is, 40 modulo 32), so <code>x</code> ends up being assigned
+the value 2<sup>8</sup> (256).
+</p>
+
+<sample src="examples/ShiftOutOfRange.js" />
+
+<p>
+A better solution would be to use <code>Math.pow</code> as follows:
+</p>
+
+<sample src="examples/ShiftOutOfRangeGood.js" />
+
+<p>
+Note, however, that JavaScript internally represents large numbers as floating point
+numbers, so numbers with a magnitude larger than 2<sup>53</sup> will be represented imprecisely.
+</p>
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">Bitwise operators</a>.</li>
+
+
+</references>
+</qhelp>

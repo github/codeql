@@ -1,0 +1,32 @@
+| 1 constructor | C::C() |
+| 1 constructor | C::C(C && c_templated, double * p) |
+| 1 constructor | C::C(C * c) |
+| 1 constructor | C::C(C c, int i) |
+| 1 constructor | C::C(const C & c1, const C & c2) |
+| 1 constructor | C::C(const C & c_templated) |
+| 1 constructor | C::C(const C * c) |
+| 1 constructor | C::C(int i, const C & c) |
+| 2 copy constructor | C::C(C & c) |
+| 2 copy constructor | C::C(Cinside_lref c, double x) |
+| 2 copy constructor | C::C(const Ctop & c, int i, int j) |
+| 2 copy constructor | C::C(lref c, int ** p) |
+| 2 copy constructor | C::C(rref c, int * p) |
+| 2 copy constructor | C::C(volatile C & c) |
+| 3 move constructor | C::C(C && c, int i) |
+| 3 move constructor | C::C(Ctop_rref c) |
+| 3 move constructor | C::C(const volatile C && c) |
+| 3 move constructor | C::C(rref c, int * p) |
+| 3 move constructor | C::C(volatile Cinside && c) |
+| 4 copy assignment | C::operator=(Cinside nonref) |
+| 4 copy assignment | C::operator=(Cinside_lref c) |
+| 4 copy assignment | C::operator=(const volatile C & c) |
+| 4 copy assignment | C::operator=(rref c_copy) |
+| 4 copy assignment | __va_list_tag::operator=(const __va_list_tag & (unnamed parameter 0)) |
+| 5 move assignment | C::operator=(Ctop_rref c) |
+| 5 move assignment | C::operator=(const volatile C && c) |
+| 5 move assignment | C::operator=(rref c_move) |
+| 5 move assignment | __va_list_tag::operator=(__va_list_tag && (unnamed parameter 0)) |
+| 6 none of the above | C::operator=(int i) |
+| 6 none of the above | C::operator=(volatile C & c_templated) |
+| 6 none of the above | C::operator=(volatile C && c_templated) |
+| 6 none of the above | C::operator==(const C & c) |

@@ -1,0 +1,5 @@
+| InsecureLdapEndpoint.java:19:9:19:92 | setProperty(...) | LDAPS configuration allows insecure endpoint identification |
+| InsecureLdapEndpoint.java:50:9:50:40 | setProperties(...) | LDAPS configuration allows insecure endpoint identification |
+| InsecureLdapEndpoint.java:68:9:68:40 | setProperties(...) | LDAPS configuration allows insecure endpoint identification |
+| InsecureLdapEndpoint.java:84:9:84:94 | setProperty(...) | LDAPS configuration allows insecure endpoint identification |
+| InsecureLdapEndpoint.java:102:9:102:40 | setProperties(...) | LDAPS configuration allows insecure endpoint identification |

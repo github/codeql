@@ -1,0 +1,23 @@
+| statements.cs:16:17:19:17 | {...} | statements.cs:17:21:18:21 | {...} |
+| statements.cs:57:9:66:9 | {...} | statements.cs:58:13:65:13 | if (...) ... |
+| statements.cs:59:13:61:13 | {...} | statements.cs:60:17:60:50 | ...; |
+| statements.cs:63:13:65:13 | {...} | statements.cs:64:17:64:59 | ...; |
+| statements.cs:131:9:136:9 | {...} | statements.cs:132:13:135:13 | for (...;...;...) ... |
+| statements.cs:133:13:135:13 | {...} | statements.cs:134:17:134:43 | ...; |
+| statements.cs:139:9:144:9 | {...} | statements.cs:140:13:143:13 | foreach (... ... in ...) ... |
+| statements.cs:141:13:143:13 | {...} | statements.cs:142:17:142:37 | ...; |
+| statements.cs:147:9:154:9 | {...} | statements.cs:148:13:153:13 | while (...) ... |
+| statements.cs:157:9:163:9 | {...} | statements.cs:158:13:162:13 | for (...;...;...) ... |
+| statements.cs:174:9:176:9 | {...} | statements.cs:175:13:175:25 | return ...; |
+| statements.cs:186:13:188:13 | {...} | statements.cs:187:17:187:31 | yield return ...; |
+| statements.cs:192:9:197:9 | {...} | statements.cs:193:13:196:13 | foreach (... ... in ...) ... |
+| statements.cs:194:13:196:13 | {...} | statements.cs:195:17:195:37 | ...; |
+| statements.cs:205:9:228:9 | {...} | statements.cs:206:13:227:13 | try {...} ... |
+| statements.cs:209:17:211:17 | {...} | statements.cs:210:21:210:64 | throw ...; |
+| statements.cs:217:13:219:13 | {...} | statements.cs:218:17:218:45 | ...; |
+| statements.cs:221:13:223:13 | {...} | statements.cs:222:17:222:47 | ...; |
+| statements.cs:225:13:227:13 | {...} | statements.cs:226:17:226:47 | ...; |
+| statements.cs:234:13:236:13 | {...} | statements.cs:235:17:235:41 | ...; |
+| statements.cs:238:13:240:13 | {...} | statements.cs:239:17:239:41 | ...; |
+| statements.cs:247:13:256:13 | {...} | statements.cs:248:17:255:17 | lock (...) {...} |
+| statements.cs:251:21:253:21 | {...} | statements.cs:252:25:252:66 | throw ...; |

@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling <code>x.Equals(y)</code> on incomparable types will almost always return false. If two classes do 
+not have a common parent class their instances are considered incomparable.</p>
+
+</overview>
+<recommendation>
+<p>Carefully check the code for errors.</p>
+
+</recommendation>
+<example>
+<p>In this example both calls to the Equals method will always return false regardless of the contents of the <code>ArrayList</code> 
+or <code>String</code> because <code>ArrayList</code>s and <code>String</code>s are incomparable.</p>
+<sample src="IncomparableEquals.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, <a href="http://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method</a>.</li>
+
+</references>
+</qhelp>

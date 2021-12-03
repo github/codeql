@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A class that implements <code>Cloneable</code> should override <code>Object.clone</code>. For non-trivial
+objects, the <code>Cloneable</code> contract requires a deep copy of the object's internal state. A class
+that does not have a <code>clone</code> method indicates that the class is breaking the contract and will have undesired behavior.
+</p>
+
+</overview>
+<include src="MissingCloneDetails.inc.qhelp" />
+
+<recommendation>
+<p>
+The necessity of creating a deep copy of an object's internal state means that, for most objects, 
+<code>clone</code> must be overridden to satisfy the <code>Cloneable</code> contract. Implement a 
+<code>clone</code> method that properly creates the internal state of the cloned object.
+</p>
+
+<p>Notable exceptions to this recommendation are:</p>
+
+<ul>
+    <li>Classes that contain only primitive types (which will be properly cloned by <code>Object.clone</code>
+    as long as its <code>Cloneable</code> supertypes all call <code>super.clone</code>).</li>
+    <li>Subclasses of <code>Cloneable</code> classes that do not introduce new state.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>WrongStack</code> does not implement <code>clone</code>. This means
+that when <code>ws1clone</code> is cloned from <code>ws1</code>, the default <code>clone</code>
+implementation is used. This results in operations on the <code>ws1clone</code>
+stack affecting the <code>ws1</code> stack.</p>
+
+<sample src="MissingMethodCloneBad.java" />
+
+<p>In the following modified example, <code>RightStack</code> <i>does</i> implement 
+<code>clone</code>. This means that when <code>rs1clone</code> is cloned from <code>rs1</code>, 
+operations on the <code>rs1clone</code> stack do not affect the <code>rs1</code> stack.</p>
+
+<sample src="MissingMethodCloneGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 11. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#clone()">Object.clone()</a>.
+</li>
+
+
+</references>
+</qhelp>

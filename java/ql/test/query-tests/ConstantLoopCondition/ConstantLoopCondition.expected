@@ -1,0 +1,4 @@
+| A.java:8:11:8:15 | !... | $@ might not terminate, as this loop condition is constant within the loop. | A.java:8:5:8:16 | while (...) | Loop |
+| A.java:15:11:15:15 | ... > ... | $@ might not terminate, as this loop condition is constant within the loop. | A.java:14:5:14:19 | for (...;...;...) | Loop |
+| A.java:29:20:29:32 | ... < ... | $@ might not terminate, as this loop condition is constant within the loop. | A.java:29:5:29:38 | for (...;...;...) | Loop |
+| A.java:36:12:36:15 | cond | $@ might not terminate, as this loop condition is constant within the loop. | A.java:36:5:36:16 | while (...) | Loop |

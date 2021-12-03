@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Each call to the <code>printf</code> function, or a related function, should include
+the number of arguments defined by the format. Passing the function more arguments than
+required is usually harmless from a security perspective but indicates that different
+behavior was intended.
+</p>
+
+</overview>
+<recommendation>
+<p>Review the format and arguments expected by the highlighted function calls. Update either
+the format or the arguments so that the expected number of arguments are passed to the
+function.
+</p>
+
+</recommendation>
+<example><sample src="TooManyFormatArguments.cpp" />
+
+</example>
+<references>
+
+<li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
+<li>Microsoft C Runtime Library Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, wprintf</a>.</li>
+
+
+
+</references>
+</qhelp>

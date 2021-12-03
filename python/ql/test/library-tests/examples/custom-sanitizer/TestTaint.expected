@@ -1,0 +1,28 @@
+| test.py:14 | test_basic | s | <NO TAINT> | ok |
+| test.py:16 | test_basic | s | externally controlled string | ok |
+| test.py:19 | test_basic | s | externally controlled string | ok |
+| test.py:21 | test_basic | s | <NO TAINT> | ok |
+| test.py:29 | test_or | s | externally controlled string | ok |
+| test.py:31 | test_or | s | externally controlled string | ok |
+| test.py:35 | test_or | s | externally controlled string | ok |
+| test.py:37 | test_or | s | externally controlled string | ok |
+| test.py:41 | test_or | s | externally controlled string | ok |
+| test.py:43 | test_or | s | externally controlled string | ok |
+| test.py:51 | test_and | s | <NO TAINT> | ok |
+| test.py:53 | test_and | s | externally controlled string | ok |
+| test.py:57 | test_and | s | externally controlled string | ok |
+| test.py:59 | test_and | s | <NO TAINT> | ok |
+| test.py:63 | test_and | s | externally controlled string | ok |
+| test.py:65 | test_and | s | <NO TAINT> | ok |
+| test.py:73 | test_tricky | s | externally controlled string | failure |
+| test.py:77 | test_tricky | s_ | externally controlled string | failure |
+| test.py:83 | test_nesting_not | s | <NO TAINT> | ok |
+| test.py:85 | test_nesting_not | s | externally controlled string | ok |
+| test.py:88 | test_nesting_not | s | externally controlled string | ok |
+| test.py:90 | test_nesting_not | s | <NO TAINT> | ok |
+| test.py:98 | test_nesting_not_with_and_true | s | externally controlled string | ok |
+| test.py:100 | test_nesting_not_with_and_true | s | <NO TAINT> | ok |
+| test.py:103 | test_nesting_not_with_and_true | s | <NO TAINT> | ok |
+| test.py:105 | test_nesting_not_with_and_true | s | externally controlled string | ok |
+| test.py:108 | test_nesting_not_with_and_true | s | externally controlled string | ok |
+| test.py:110 | test_nesting_not_with_and_true | s | <NO TAINT> | ok |

@@ -1,0 +1,8 @@
+| template_functions.cpp:3:8:3:8 | X<T> | template_functions.cpp:6:5:6:15 | operator T * | template_functions.cpp:6:28:6:32 | (T *)... |
+| template_functions.cpp:3:8:3:8 | X<T> | template_functions.cpp:6:5:6:15 | operator T * | template_functions.cpp:6:32:6:32 | 1 |
+| template_functions.cpp:3:8:3:8 | X<int> | template_functions.cpp:6:5:6:5 | operator int * | template_functions.cpp:6:28:6:32 | (int *)... |
+| template_functions.cpp:3:8:3:8 | X<int> | template_functions.cpp:6:5:6:5 | operator int * | template_functions.cpp:6:32:6:32 | 1 |
+| template_functions.cpp:13:10:13:14 | S<Q *> | template_functions.cpp:16:5:16:15 | operator Q * | template_functions.cpp:16:28:16:32 | (Q *)... |
+| template_functions.cpp:13:10:13:14 | S<Q *> | template_functions.cpp:16:5:16:15 | operator Q * | template_functions.cpp:16:32:16:32 | 2 |
+| template_functions.cpp:13:10:13:14 | S<int *> | template_functions.cpp:16:5:16:5 | operator int * | template_functions.cpp:16:28:16:32 | (int *)... |
+| template_functions.cpp:13:10:13:14 | S<int *> | template_functions.cpp:16:5:16:5 | operator int * | template_functions.cpp:16:32:16:32 | 2 |

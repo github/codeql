@@ -1,0 +1,55 @@
+| :0:0:0:0 | :0:0:0:0 | top | 0 | 1 | 1 |
+| :0:0:0:0 | top_and_nested.h:2:16:2:24 | top -> nested | 0 | 1 |  |
+| :0:0:0:0 | top_and_nested.h:3:16:3:30 | top -> nested | 0 | 2 + (1) |  |
+| ascii_nul.c:7:1:7:34 | ascii_nul.c:3:20:3:32 | IGNORE2 -> IGNORE | 0 | ID("escaped: \\0, raw: \u0000") |  |
+| ascii_nul.c:7:1:7:34 | ascii_nul.c:7:1:7:34 | IGNORE2 | 0 | ID("escaped: \\0, raw: \u0000") | "escaped: \\0, raw: \u0000" |
+| ascii_nul.c:7:1:7:34 | ascii_nul.c:7:9:7:33 | IGNORE2 -> ID | 0 | "escaped: \\0, raw: \u0000" | "escaped: \\0, raw: \u0000" |
+| test.c:4:1:4:6 | test.c:4:1:4:6 | top | 0 | 1 | 1 |
+| test.c:4:1:4:6 | top_and_nested.h:2:16:2:24 | top -> nested | 0 | 1 |  |
+| test.c:4:1:4:6 | top_and_nested.h:3:16:3:30 | top -> nested | 0 | 2 + (1) |  |
+| test.c:6:1:8:1 | test.c:6:1:8:1 | top | 0 | "\\"Hello " "world\\"" | "\\"Hello " "world\\"" |
+| test.c:6:1:8:1 | top_and_nested.h:2:16:2:24 | top -> nested | 0 | "\\"Hello " "world\\"" |  |
+| test.c:6:1:8:1 | top_and_nested.h:3:16:3:30 | top -> nested | 0 | 2 + ("\\"Hello " "world\\"") |  |
+| test.c:10:1:12:4 | test.c:10:1:12:4 | top | 0 | top(2) nested(4) |  |
+| test.c:10:1:12:4 | test.c:11:5:11:10 | top -> top | 0 | 2 | 2 |
+| test.c:10:1:12:4 | test.c:11:38:11:46 | top -> nested | 0 | 4 |  |
+| test.c:10:1:12:4 | top_and_nested.h:2:16:2:24 | top -> nested | 0 |  |  |
+| test.c:10:1:12:4 | top_and_nested.h:2:16:2:24 | top -> top -> nested | 0 | 2 |  |
+| test.c:10:1:12:4 | top_and_nested.h:3:16:3:30 | top -> nested | 0 | 2 + () |  |
+| test.c:10:1:12:4 | top_and_nested.h:3:16:3:30 | top -> top -> nested | 0 | 2 + (2) |  |
+| test.c:22:17:24:6 | test.c:22:17:24:6 | CONCAT | 0 | HELLO | "hello" |
+| test.c:22:17:24:6 | test.c:22:17:24:6 | CONCAT | 1 | WORLD | "word" |
+| test.c:27:17:33:1 | test.c:27:17:33:1 | CONCAT | 0 | "hello" | "hello" |
+| test.c:27:17:33:1 | test.c:27:17:33:1 | CONCAT | 1 | "Semmle" | "Semmle" |
+| test.c:42:1:42:13 | test.c:42:1:42:13 | APPLY | 0 | top | top |
+| test.c:42:1:42:13 | test.c:42:1:42:13 | APPLY | 1 | 3 | 3 |
+| test.c:42:1:42:13 | test.c:42:7:41:24 | APPLY -> top | 0 | 3 | 3 |
+| test.c:42:1:42:13 | top_and_nested.h:2:16:2:24 | APPLY -> top -> nested | 0 | 3 |  |
+| test.c:42:1:42:13 | top_and_nested.h:3:16:3:30 | APPLY -> top -> nested | 0 | 2 + (3) |  |
+| test.c:47:1:47:23 | test.c:45:15:45:22 | DECLARE_STRING -> ID | 0 | string1 | string1 |
+| test.c:47:1:47:23 | test.c:45:26:45:34 | DECLARE_STRING -> ID | 0 | "string1" | "string1" |
+| test.c:47:1:47:23 | test.c:47:1:47:23 | DECLARE_STRING | 0 | string1 | string1 |
+| test.c:48:1:48:27 | test.c:45:15:45:22 | DECLARE_STRING -> ID | 0 | string2 | string2 |
+| test.c:48:1:48:27 | test.c:45:26:45:34 | DECLARE_STRING -> ID | 0 | "ID(string2)" | "ID(string2)" |
+| test.c:48:1:48:27 | test.c:48:1:48:27 | DECLARE_STRING | 0 | ID(string2) | string2 |
+| test.c:48:1:48:27 | test.c:48:16:48:26 | DECLARE_STRING -> ID | 0 | string2 | string2 |
+| test.c:53:17:54:26 | test.c:53:17:54:26 | ID | 0 | ID (1) | 1 |
+| test.c:53:17:54:26 | test.c:53:21:54:25 | ID -> ID | 0 | 1 | 1 |
+| test.c:55:17:56:27 | test.c:50:21:50:25 | APPLY_ID -> ID | 0 | 2 | 2 |
+| test.c:55:17:56:27 | test.c:55:17:56:27 | APPLY_ID | 0 | 2 | 2 |
+| test.c:62:1:62:11 | test.c:62:1:62:11 | VARARG_ID | 0 |  |  |
+| test.c:70:3:70:37 | test.c:70:3:70:37 | VARARG_SECOND | 0 | "Format string only" | "Format string only" |
+| test.c:70:3:70:37 | test.c:70:3:70:37 | VARARG_SECOND | 1 |  |  |
+| test.c:73:3:73:30 | test.c:73:3:73:30 | VARARG_SECOND | 0 | "%d %d" | "%d %d" |
+| test.c:73:3:73:30 | test.c:73:3:73:30 | VARARG_SECOND | 1 | i, j |  |
+| test.c:79:1:79:45 | test.c:79:1:79:45 | ID | 0 | int myarray <: :> = VARARG_ID(<% 4, 5 %>) | int myarray <: :> = <% 4, 5 %> |
+| test.c:79:1:79:45 | test.c:79:24:79:44 | ID -> VARARG_ID | 0 | <% 4, 5 %> | <% 4, 5 %> |
+| test.c:81:30:81:37 | test.c:81:30:81:37 | APPLY | 0 |  |  |
+| test.c:81:30:81:37 | test.c:81:30:81:37 | APPLY | 1 |  |  |
+| test.c:82:1:82:4 | test.c:82:1:82:4 | ID | 0 |  |  |
+| test.c:84:5:84:20 | test.c:84:5:84:20 | APPLY | 0 | ID | ID |
+| test.c:84:5:84:20 | test.c:84:5:84:20 | APPLY | 1 | ID(1) | 1 |
+| test.c:84:5:84:20 | test.c:84:11:41:24 | APPLY -> ID | 0 | 1 | 1 |
+| test.c:84:5:84:20 | test.c:84:15:84:19 | APPLY -> ID | 0 | 1 | 1 |
+| test.c:85:21:85:40 | test.c:85:21:85:40 | CMD_LINE_MACRO | 0 | 5 | 5 |
+| test.c:85:21:85:40 | test.c:85:21:85:40 | CMD_LINE_MACRO | 1 | 6 | 6 |

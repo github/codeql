@@ -1,0 +1,6 @@
+| class Special1 | declares | __add__ | int 1 |
+| class Special1 | has | __add__ | int 1 |
+| class Special2 | declares | __float__ | int 2 |
+| class Special2 | has | __float__ | int 2 |
+| class Special3 | has | __add__ | int 1 |
+| class Special3 | has | __float__ | int 2 |

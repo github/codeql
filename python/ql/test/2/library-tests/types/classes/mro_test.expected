@@ -1,0 +1,12 @@
+| class A | [A, ??, object] |
+| class J | [J, ??, object] |
+| class MyDict | [MyDict, dict, object] |
+| class MyList | [MyList, list, object] |
+| class O1 | [O1] |
+| class O2 | [O2, O1] |
+| class O3 | [O3, O1] |
+| class O4 | [O4, O2, O1, O3] |
+| class W | [W, object] |
+| class X | [X, W, object] |
+| class Y | [Y, X, W, object] |
+| class Z | [Z, Y, X, W, object] |

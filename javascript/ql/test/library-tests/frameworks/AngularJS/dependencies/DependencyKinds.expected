@@ -1,0 +1,37 @@
+| dependency-kinds.js:2:5:4:5 | functio ... .\\n    } | explicitlyInjectedControllerServiceA |
+| dependency-kinds.js:2:5:4:5 | functio ... .\\n    } | explicitlyInjectedControllerServiceB |
+| dependency-kinds.js:8:14:10:10 | ['modul ...      }] | moduleRunService |
+| dependency-kinds.js:11:17:13:10 | ['modul ...      }] | moduleConfigProvider |
+| dependency-kinds.js:17:32:19:10 | ['someS ...      }] | someServiceService1 |
+| dependency-kinds.js:20:32:22:10 | ['someS ...      }] | someServiceService2a |
+| dependency-kinds.js:20:32:22:10 | ['someS ...      }] | someServiceService2b |
+| dependency-kinds.js:26:32:28:9 | functio ...       } | someServiceService4 |
+| dependency-kinds.js:29:32:31:9 | functio ...       } | someServiceService5a |
+| dependency-kinds.js:29:32:31:9 | functio ...       } | someServiceService5b |
+| dependency-kinds.js:32:39:34:10 | ['someC ...      }] | someControllerService |
+| dependency-kinds.js:35:37:37:10 | ['someD ...      }] | someDirectiveService |
+| dependency-kinds.js:38:31:40:10 | ['someF ...      }] | someFilterService |
+| dependency-kinds.js:43:25:45:14 | ['compo ...      }] | componentControllerDependency |
+| dependency-kinds.js:47:37:49:10 | ['someA ...      }] | someAnimationService |
+| dependency-kinds.js:50:32:52:9 | functio ...       } | someServiceService6 |
+| dependency-kinds.js:53:33:55:9 | functio ...       } | someDecorateeService |
+| dependency-kinds.js:56:34:60:9 | functio ...       } | someProviderIdService1 |
+| dependency-kinds.js:57:25:59:13 | functio ...       } | providerCreatedInjectableFunctinDependency1 |
+| dependency-kinds.js:61:17:68:9 | functio ...       } | $provide |
+| dependency-kinds.js:62:44:62:80 | functio ... ice7){} | someConfigServiceService7 |
+| dependency-kinds.js:63:46:67:13 | functio ...       } | someProviderService2 |
+| dependency-kinds.js:64:29:66:17 | functio ...       } | providerCreatedInjectableFunctinDependency2 |
+| dependency-kinds.js:77:29:78:17 | functio ...       } | linkControllerDependency |
+| dependency-kinds.js:83:17:85:9 | functio ...       } | $controllerProvider |
+| dependency-kinds.js:84:71:84:117 | functio ... ency){} | controllerThroughProviderDependency |
+| dependency-kinds.js:86:17:88:9 | functio ...       } | $filterProvider |
+| dependency-kinds.js:87:63:87:105 | functio ... ency){} | filterThroughProviderDependency |
+| dependency-kinds.js:89:17:91:9 | functio ...       } | $compileProvider |
+| dependency-kinds.js:90:68:90:113 | functio ... ency){} | directiveThroughProviderDependency |
+| dependency-kinds.js:92:17:94:9 | functio ...       } | $compileProvider |
+| dependency-kinds.js:95:17:97:9 | functio ...       } | $animateProvider |
+| dependency-kinds.js:96:67:96:112 | functio ... ency){} | animationThroughProviderDependency |
+| dependency-kinds.js:98:33:98:63 | functio ... ency){} | animationDependency |
+| dependency-kinds.js:111:17:117:9 | functio ...       } | $routeProvider |
+| dependency-kinds.js:114:33:115:21 | functio ...       } | routeControllerDependency |
+| dependency-kinds.js:121:14:123:10 | ['modul ...      }] | moduleRunService |

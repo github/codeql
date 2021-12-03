@@ -1,0 +1,2 @@
+| tst.js:2:1:2:1 | g | This definition of g is useless, since its value is never read. |
+| worker.js:3:1:3:9 | onmissage | This definition of onmissage is useless, since its value is never read. |

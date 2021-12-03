@@ -1,0 +1,8 @@
+noBody
+| LocalFunction.cs:16:9:16:41 | localExtern |
+localFunctionModifier
+| LocalFunction.cs:9:9:12:9 | mul | async |
+| LocalFunction.cs:9:9:12:9 | mul | private |
+| LocalFunction.cs:16:9:16:41 | localExtern | extern |
+| LocalFunction.cs:16:9:16:41 | localExtern | private |
+| LocalFunction.cs:16:9:16:41 | localExtern | static |

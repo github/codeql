@@ -1,0 +1,16 @@
+| short-circuiting-typescript.ts:4:10:4:11 | o1 | file://:0:0:0:0 | null |
+| short-circuiting-typescript.ts:4:10:4:11 | o1 | short-circuiting-typescript.ts:2:14:2:15 | object literal |
+| short-circuiting-typescript.ts:8:10:8:11 | o2 | file://:0:0:0:0 | null |
+| short-circuiting-typescript.ts:8:10:8:11 | o2 | short-circuiting-typescript.ts:6:14:6:15 | object literal |
+| short-circuiting-typescript.ts:13:10:13:11 | o3 | file://:0:0:0:0 | null |
+| short-circuiting-typescript.ts:13:10:13:11 | o3 | short-circuiting-typescript.ts:10:14:10:15 | object literal |
+| short-circuiting-typescript.ts:14:10:14:11 | o4 | file://:0:0:0:0 | null |
+| short-circuiting-typescript.ts:14:10:14:11 | o4 | short-circuiting-typescript.ts:11:14:11:15 | object literal |
+| short-circuiting.js:4:10:4:11 | o1 | file://:0:0:0:0 | null |
+| short-circuiting.js:4:10:4:11 | o1 | short-circuiting.js:2:14:2:15 | object literal |
+| short-circuiting.js:8:10:8:11 | o2 | file://:0:0:0:0 | null |
+| short-circuiting.js:8:10:8:11 | o2 | short-circuiting.js:6:14:6:15 | object literal |
+| short-circuiting.js:13:10:13:11 | o3 | file://:0:0:0:0 | null |
+| short-circuiting.js:13:10:13:11 | o3 | short-circuiting.js:10:14:10:15 | object literal |
+| short-circuiting.js:14:10:14:11 | o4 | file://:0:0:0:0 | null |
+| short-circuiting.js:14:10:14:11 | o4 | short-circuiting.js:11:14:11:15 | object literal |

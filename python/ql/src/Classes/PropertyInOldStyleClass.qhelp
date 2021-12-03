@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Property descriptors are only supported for the new-style classes that were introduced in Python 
+2.1. Property descriptors should only be used in new-style classes.</p>
+
+</overview>
+<recommendation>
+
+<p>If you want to define properties in a class, then ensure that the class is a new-style class. You can 
+convert an old-style class to a new-style class by inheriting from <code>object</code>.</p>
+
+</recommendation>
+<example>
+<p>In the following example all the classes attempt to set a property for <code>x</code>. However, only 
+the third and fourth classes are new-style classes. Consequently, the <code>x</code> 
+property is only available for the <code>NewStyle</code> and <code>InheritNewStyle</code> classes.</p>
+
+<p>If you define the <code>OldStyle</code> class as inheriting from a new-style class, then the <code>x
+</code> property would be available for both the <code>OldStyle</code> and <code>InheritOldStyle</code> classes.</p>
+
+<sample src="PropertyInOldStyleClass.py" />
+
+
+</example>
+<references>
+
+<li>Python Glossary: <a href="http://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
+classes</a>,
+ <a href="http://docs.python.org/2/reference/datamodel.html#implementing-descriptors">
+Descriptors</a>.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#property">Property</a>.</li>
+<li>The History of Python: <a href="http://python-history.blogspot.co.uk/2010/06/inside-story-on-new-style-classes.html">
+Inside story on new-style classes</a>.</li>
+
+
+</references>
+</qhelp>

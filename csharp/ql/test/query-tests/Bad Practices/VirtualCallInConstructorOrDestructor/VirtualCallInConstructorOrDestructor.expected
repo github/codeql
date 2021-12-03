@@ -1,0 +1,5 @@
+| VirtualCallInConstructorOrDestructor.cs:45:13:45:23 | call to method f_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:53:17:53:25 | access to method f_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:59:21:59:29 | access to property p_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:64:17:64:23 | access to indexer | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:69:13:69:21 | access to event e_virtual | Avoid virtual calls in a constructor or destructor. |

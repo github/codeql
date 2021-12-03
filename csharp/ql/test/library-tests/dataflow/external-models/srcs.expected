@@ -1,0 +1,22 @@
+invalidModelRow
+#select
+| Sources.cs:8:17:8:22 | call to method Src1 | qltest |
+| Sources.cs:8:17:8:22 | call to method Src1 | qltest-all-overloads |
+| Sources.cs:9:17:9:24 | call to method Src1 | qltest |
+| Sources.cs:9:17:9:24 | call to method Src1 | qltest-all-overloads |
+| Sources.cs:12:17:12:26 | call to method Src2 | qltest |
+| Sources.cs:12:17:12:26 | call to method Src2 | qltest-w-subtypes |
+| Sources.cs:13:17:13:26 | call to method Src3 | qltest-w-subtypes |
+| Sources.cs:15:13:15:21 | [post] this access | qltest-argany |
+| Sources.cs:15:20:15:20 | [post] access to local variable x | qltest-argany |
+| Sources.cs:15:20:15:20 | [post] access to local variable x | qltest-argnum |
+| Sources.cs:17:17:17:33 | call to method TaggedSrcMethod | qltest-retval |
+| Sources.cs:18:17:18:30 | access to field TaggedSrcField | qltest-nospec |
+| Sources.cs:20:17:20:33 | call to method SrcTwoArg | qltest |
+| Sources.cs:24:14:24:20 | this | qltest-param |
+| Sources.cs:24:29:24:45 | taggedMethodParam | qltest-param |
+| Sources.cs:28:49:28:62 | taggedSrcParam | qltest-nospec |
+| Sources.cs:28:49:28:62 | taggedSrcParam | qltest-param |
+| Sources.cs:40:45:40:45 | p | qltest-param-override |
+| Sources.cs:47:50:47:50 | p | qltest-param-override |
+| Sources.cs:53:16:53:30 | this | qltest-param |

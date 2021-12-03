@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a format string includes conversion specifiers of the form <code>%(name)s</code> then the right hand side of the operation must be a mapping.
+A string is a format string if it appears on the left of a modulo (<code>%</code>) operator, the right hand side being the value to be formatted.
+If the right hand side is not a mapping then a <code>TypeError</code> will be raised.
+Mappings are usually <code>dict</code>s but can be any type that implements the mapping protocol.
+</p>
+
+
+</overview>
+<recommendation>
+<p>Change the format to match the arguments and ensure that the right hand side is always a mapping.
+
+</p></recommendation>
+<example>
+<p>In the following example the right hand side of the formatting operation can be a <code>tuple</code>, which is not a mapping.
+To fix this example, ensure that <code>args</code> is a mapping when <code>unlike_condition</code> occurs.
+</p>
+<sample src="ExpectedMappingForFormatString.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a></li>
+
+</references>
+</qhelp>

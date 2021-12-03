@@ -1,0 +1,13 @@
+| constants/Values.java:21:35:21:38 | true | true |
+| constants/Values.java:42:23:42:27 | !... | false |
+| constants/Values.java:70:23:70:35 | ... && ... | false |
+| constants/Values.java:71:22:71:34 | ... \|\| ... | true |
+| constants/Values.java:72:22:72:28 | ... < ... | false |
+| constants/Values.java:73:22:73:29 | ... <= ... | true |
+| constants/Values.java:74:22:74:28 | ... > ... | false |
+| constants/Values.java:75:23:75:30 | ... >= ... | true |
+| constants/Values.java:76:22:76:29 | ... == ... | true |
+| constants/Values.java:77:22:77:29 | ... != ... | false |
+| constants/Values.java:78:23:78:41 | ...?...:... | false |
+| constants/Values.java:80:23:80:36 | ... == ... | true |
+| constants/Values.java:81:24:81:37 | ... != ... | false |

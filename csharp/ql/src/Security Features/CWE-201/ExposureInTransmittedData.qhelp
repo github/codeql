@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Transmitting sensitive data to the user is a potential security risk. Always ensure that
+transmitted data is intended for the user. For example, passwords and the contents of 
+database exceptions are generally not appropriate to send to the user, as they reveal
+information that could be abused or exploited.
+</p>
+</overview>
+<recommendation>
+<p>
+Avoid transmitting passwords or exceptions to the user. Instead, create a more user-friendly
+message that does not contain potentially sensitive information. Technical errors should be
+written to a log file.
+</p>
+</recommendation>
+<example>
+<p>
+The following example shows the user password being sent back to the user.
+</p>
+<sample src="TransmittedPassword.cs" />
+
+<p>
+The following example shows a database exception being sent to the user. Exceptions
+can often contain unnecessary technical or sensitive information that should not be seen by the user.
+</p>
+<sample src="TransmittedException.cs" />
+
+</example>
+<references>
+
+<li>OWASP: <a href="https://www.owasp.org/index.php/Top_10_2013-A6-Sensitive_Data_Exposure">Sensitive Data Exposure</a>.</li>
+
+</references>
+</qhelp>

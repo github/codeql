@@ -1,0 +1,10 @@
+edges
+| test.py:13:16:13:22 | ControlFlowNode for request | test.py:13:16:13:27 | ControlFlowNode for Attribute |
+| test.py:13:16:13:27 | ControlFlowNode for Attribute | test.py:15:36:15:39 | ControlFlowNode for data |
+nodes
+| test.py:13:16:13:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:13:16:13:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:15:36:15:39 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+subpaths
+#select
+| test.py:15:36:15:39 | ControlFlowNode for data | test.py:13:16:13:22 | ControlFlowNode for request | test.py:15:36:15:39 | ControlFlowNode for data | Call to hmac.new [param 1] with untrusted data from $@. | test.py:13:16:13:22 | ControlFlowNode for request | ControlFlowNode for request |

@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Passing untrusted format strings to <code>String.Format</code> can throw exceptions
+and cause a denial of service. For example, if the format string references a missing argument,
+or an argument of the wrong type, then <code>System.FormatException</code> is thrown.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Use a string literal for the format string to prevent the possibility of data flow from
+an untrusted source. This also helps to prevent errors where the arguments to
+<code>String.Format</code> do not match the format string.</p>
+
+<p>If the format string cannot be constant, ensure that it comes from a secure
+data source or is compiled into the source code.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, the format string is read from an HTTP request, which could cause
+the application to crash.</p>
+
+<sample src="UncontrolledFormatStringBad.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Format_string_attack">Format string attack</a>.
+</li>
+
+<li>
+Microsoft docs:
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.format">String.Format Method</a>
+</li>
+
+</references>
+</qhelp>

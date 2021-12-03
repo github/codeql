@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>A for loop iteration variable is not used in the body of the loop, and the loop does not count the number of items in the sequence.
+This is suspicious as there is rarely any reason to iterate over a sequence and not use the contents. 
+Not using the loop variable can often indicate a logical error or typo.
+</p>
+
+</overview>
+<recommendation>
+<p>Carefully check that the loop variable should not be used. 
+If the variable is genuinely not being used and the code is correct, then rename the variable to <code>_</code> 
+or <code>unused</code> to indicate to readers of the code that it is intentionally unused.
+</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>for</code> loop iteration variable <code>x</code> is never used. It appears that the
+original <code>test</code> function was used to test <code>TypeA</code> and was subsequently modified to test <code>TypeB</code> as well.
+</p>
+<sample src="SuspiciousUnusedLoopIterationVariable.py" />
+<p>
+It is likely that the change from <code>x = TypeA()</code> to <code>x = t()</code> was forgotten. The fixed version is shown below.
+</p>
+<sample src="SuspiciousUnusedLoopIterationVariableFixed.py" />
+
+</example>
+<references>
+    <li>Python Language Reference: <a href="https://docs.python.org/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
+    <li>Python Tutorial: <a href="https://docs.python.org/tutorial/controlflow.html#for-statements">For statements</a>.</li>
+</references>
+</qhelp>

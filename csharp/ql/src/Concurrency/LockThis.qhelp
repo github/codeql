@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is inadvisable to use <code>this</code> in a <code>lock</code> statement,
+because other classes could also attempt to lock the object, resulting in inefficiency or
+deadlock.</p>
+
+</overview>
+<recommendation>
+<p>Create a <code>private readonly Object</code>
+which is used exclusively for locking. This ensures that no other classes can
+use the same lock.
+
+</p></recommendation>
+<example>
+<p>The following example uses a <code>private readonly</code> 
+variable called <code>mutex</code> to use in the <code>lock</code> statement.</p>
+
+<sample src="LockThis.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Reference: <a href="http://msdn.microsoft.com/en-gb/library/c5kehkcz.aspx">lock Statement</a>.</li>
+
+
+</references>
+</qhelp>

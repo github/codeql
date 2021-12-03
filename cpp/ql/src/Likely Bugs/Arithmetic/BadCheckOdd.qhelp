@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds code that uses 
+<code>x % 2 == 1</code>
+to check whether a number <tt>x</tt> is odd, which does not work for negative numbers. 
+Applying <code>%</code> to negative numbers produces negative results.
+For example, <code>(-5) % 2 </code> equals <code>-1</code>, not <code>1</code>.
+As a result, this check incorrectly considers all negative numbers as even.
+</p>
+
+</overview>
+<recommendation>
+<p>Consider using 
+<code>x % 2 != 0</code> or <code>(x &amp; 1) == 1</code> instead.
+</p>
+
+</recommendation>
+<references>
+
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiplicative-operators-and-the-modulus-operator">Multiplicative Operators and the Modulus Operator</a>.
+</li>
+<li>
+  Wikipedia: <a href="http://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
+</li>
+
+
+
+</references>
+</qhelp>

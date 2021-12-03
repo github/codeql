@@ -1,0 +1,7 @@
+@import "../../suites/c/correctness"
+@import "../../suites/c/maintainability"
+@import "../../suites/c/readability"
+@import "../../suites/c/useless-code"
+
+@import "../../suites/c/metrics"
+@import "../../suites/c/metric-defects"

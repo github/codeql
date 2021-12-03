@@ -1,0 +1,11 @@
+| Test.java:36:47:36:52 | query1 | Query might not neutralize special characters in $@. | Test.java:35:8:35:15 | category | this expression |
+| Test.java:42:57:42:62 | query2 | Query might not neutralize special characters in $@. | Test.java:41:51:41:52 | id | this expression |
+| Test.java:50:62:50:67 | query3 | Query might not neutralize special characters in $@. | Test.java:49:8:49:15 | category | this expression |
+| Test.java:62:47:62:61 | querySbToString | Query might not neutralize special characters in $@. | Test.java:58:19:58:26 | category | this expression |
+| Test.java:70:40:70:44 | query | Query might not neutralize special characters in $@. | Test.java:69:50:69:54 | price | this expression |
+| Test.java:70:40:70:44 | query | Query might not neutralize special characters in $@. | Test.java:69:77:69:80 | item | this expression |
+| Test.java:78:46:78:50 | query | Query might not neutralize special characters in $@. | Test.java:77:50:77:54 | price | this expression |
+| Test.java:78:46:78:50 | query | Query might not neutralize special characters in $@. | Test.java:77:77:77:80 | item | this expression |
+| Test.java:98:47:98:60 | queryFromField | Query might not neutralize special characters in $@. | Test.java:97:8:97:19 | categoryName | this expression |
+| Test.java:108:47:108:61 | querySbToString | Query might not neutralize special characters in $@. | Test.java:104:19:104:30 | categoryName | this expression |
+| Test.java:118:47:118:62 | querySb2ToString | Query might not neutralize special characters in $@. | Test.java:114:46:114:57 | categoryName | this expression |

@@ -1,0 +1,10 @@
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (test.ql:9,27-51)
+| 9 | ControlFlowNode for has_type_int | Function has_type_int | builtin-class function |
+| 9 | ControlFlowNode for has_type_int() | has_type_int() | builtin-class int |
+| 9 | ControlFlowNode for x | has_type_int() | builtin-class int |
+| 10 | ControlFlowNode for has_type_float | Function has_type_float | builtin-class function |
+| 10 | ControlFlowNode for has_type_float() | has_type_float() | builtin-class float |
+| 10 | ControlFlowNode for y | has_type_float() | builtin-class float |
+| 11 | ControlFlowNode for Tuple | Tuple | builtin-class tuple |
+| 11 | ControlFlowNode for x | has_type_int() | builtin-class int |
+| 11 | ControlFlowNode for y | has_type_float() | builtin-class float |

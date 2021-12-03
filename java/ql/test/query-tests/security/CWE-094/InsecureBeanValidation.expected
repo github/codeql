@@ -1,0 +1,8 @@
+edges
+| InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value |
+nodes
+| InsecureBeanValidation.java:7:28:7:40 | object : String | semmle.label | object : String |
+| InsecureBeanValidation.java:11:64:11:68 | value | semmle.label | value |
+subpaths
+#select
+| InsecureBeanValidation.java:11:64:11:68 | value | InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | Custom constraint error message contains unsanitized user data |

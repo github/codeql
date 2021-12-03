@@ -1,0 +1,1 @@
+| InefficientOutputStreamBad.java:5:14:5:39 | InefficientOutputStreamBad | This class extends java.io.OutputStream and implements $@, but does not override write(byte[],int,int) | InefficientOutputStreamBad.java:15:14:15:18 | write | write |

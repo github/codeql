@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Pointer arithmetic in C and C++ is automatically scaled according
+to the size of the data type. For example, if the type of <tt>p</tt>
+is <tt>T*</tt> and <tt>sizeof(T) == 4</tt> then the
+expression <tt>p+1</tt> adds 4 bytes to <tt>p</tt>.
+</p>
+
+<p>
+This query finds code of the form <tt>p + k*sizeof(T)</tt>. Such code
+is usually a mistake because there is no need to manually scale the
+offset by <tt>sizeof(T)</tt>.
+</p>
+
+</overview>
+<recommendation>
+
+<ol>
+<li>Whenever possible, use the array subscript operator rather than
+pointer arithmetic. For example, replace <tt>*(p+k)</tt>
+with <tt>p[k]</tt>.</li>
+<li>Cast to the correct type before using pointer arithmetic. For
+example, if the type of <tt>p</tt> is <tt>char*</tt> but it really
+points to an array of type <tt>double[]</tt> then use the syntax
+<tt>(double*)p + k</tt> to get a pointer to the <tt>k</tt>'th element
+of the array.</li>
+</ol>
+
+</recommendation>
+<example>
+
+<sample src="SuspiciousAddWithSizeof.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

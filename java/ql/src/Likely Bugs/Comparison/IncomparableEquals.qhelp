@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Calls of the form <code>x.equals(y)</code>,
+where <code>x</code> and <code>y</code> have incomparable types,
+should always return <code>false</code> because the runtime types 
+of <code>x</code> and <code>y</code> will be different. 
+Two types are incomparable if they are distinct
+and do not have a common subtype.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that such comparisons use comparable types.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the call to <code>equals</code> on line 5 refers to the whole array by
+mistake, instead of a specific element. Therefore, "Value not found" is returned.</p>
+
+<sample src="IncomparableEquals.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

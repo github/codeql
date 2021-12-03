@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>for</code> statement is designed to allow you to iterate over the elements of a
+sequence or other iterable object. If a non-iterable object is used in a <code>for</code> statement
+(<code>for var in object:</code>) then a TypeError will be raised.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Since this defect usually indicates a logical error, it is not possible to give a general method
+for addressing the defect. </p>
+
+</recommendation>
+<example>
+<p>
+In this example, the loop may attempt to iterate over <code>None</code>, which is not an iterable.
+It is likely that the programmer forgot to test for <code>None</code> before the loop.
+</p>
+<sample src="NonIteratorInForLoop.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/reference/compound_stmts.html#the-for-statement">The for statement</a>,
+ <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/dev/library/stdtypes.html#iterator-types">Iterator types</a>.</li>
+<li>Scipy lecture notes: <a href="http://scipy-lectures.github.io/advanced/advanced_python/#iterators">Iterators,
+generator expressions and generators</a>.</li>
+
+
+</references>
+</qhelp>

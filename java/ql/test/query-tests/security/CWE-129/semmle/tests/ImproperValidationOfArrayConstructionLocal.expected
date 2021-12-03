@@ -1,0 +1,15 @@
+edges
+| Test.java:76:27:76:60 | getProperty(...) : String | Test.java:78:37:78:48 | userProperty : String |
+| Test.java:78:37:78:48 | userProperty : String | Test.java:78:37:78:55 | trim(...) : String |
+| Test.java:78:37:78:55 | trim(...) : String | Test.java:80:31:80:34 | size |
+| Test.java:78:37:78:55 | trim(...) : String | Test.java:86:34:86:37 | size |
+nodes
+| Test.java:76:27:76:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:78:37:78:48 | userProperty : String | semmle.label | userProperty : String |
+| Test.java:78:37:78:55 | trim(...) : String | semmle.label | trim(...) : String |
+| Test.java:80:31:80:34 | size | semmle.label | size |
+| Test.java:86:34:86:37 | size | semmle.label | size |
+subpaths
+#select
+| Test.java:83:34:83:34 | 0 | Test.java:76:27:76:60 | getProperty(...) : String | Test.java:80:31:80:34 | size | The $@ is accessed here, but the array is initialized using $@ which may be zero. | Test.java:80:23:80:35 | new int[] | array | Test.java:76:27:76:60 | getProperty(...) | User-provided value |
+| Test.java:89:37:89:37 | 0 | Test.java:76:27:76:60 | getProperty(...) : String | Test.java:86:34:86:37 | size | The $@ is accessed here, but the array is initialized using $@ which may be zero. | Test.java:86:26:86:38 | new int[] | array | Test.java:76:27:76:60 | getProperty(...) | User-provided value |

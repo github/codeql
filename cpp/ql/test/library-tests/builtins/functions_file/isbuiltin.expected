@@ -1,0 +1,4 @@
+| file://:0:0:0:0 | __builtin_add_overflow | true | 0 | file://:0:0:0:0 | bool |
+| file://:0:0:0:0 | __builtin_foobar | true | 1 | file://:0:0:0:0 | int |
+| file://:0:0:0:0 | __builtin_malloc | true | 4 | file://:0:0:0:0 | float |
+| test.c:1:6:1:6 | f | false | 3 | file://:0:0:0:0 | long |

@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>An <code>if</code> statement where both branches do nothing but return or write to a variable can 
+be difficult to read. It takes up a lot of lines of code and, in the case of assignment, requires 
+the declaration of the variable to be on a different line to the two assignments. It also does not 
+adequately express the intent of the programmer to assign or return a value based on a condition.</p>
+
+</overview>
+<recommendation>
+<p>This pattern can be better expressed using the ternary (<code>?</code>) operator. This solves all 
+the above problems by making shorter code that is easier to read and better expresses the intent of 
+the programmer.</p> 
+
+</recommendation>
+<example>
+<p>In this example the <code>if</code> statement controls only what is returned by the method.</p>
+<sample src="MissedTernaryOpportunity.cs" />
+
+<p>It could be expressed a lot more simply using the ternary operator.</p>
+<sample src="MissedTernaryOpportunityFix.cs" />
+</example>
+</qhelp>

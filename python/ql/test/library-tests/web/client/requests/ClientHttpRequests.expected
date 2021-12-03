@@ -1,0 +1,2 @@
+| test.py:3:1:3:27 | ControlFlowNode for Attribute() | test.py:3:14:3:26 | ControlFlowNode for Str | GET |
+| test.py:4:1:4:28 | ControlFlowNode for Attribute() | test.py:4:15:4:27 | ControlFlowNode for Str | POST |

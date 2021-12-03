@@ -1,0 +1,2 @@
+| statements_test.py:5:8:5:11 | True | Testing a constant will always give the same result. |
+| statements_test.py:9:8:9:8 | IntegerLiteral | Testing a constant will always give the same result. |

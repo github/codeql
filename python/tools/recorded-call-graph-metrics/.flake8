@@ -1,0 +1,6 @@
+# As described in https://github.com/psf/black/blob/master/docs/compatible_configs.md#flake8
+# and https://black.readthedocs.io/en/stable/the_black_code_style.html#line-length
+[flake8]
+max-line-length = 88
+select = C,E,F,W,B,B950
+ignore = E203, E501, W503

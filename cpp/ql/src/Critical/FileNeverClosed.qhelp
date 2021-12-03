@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds calls to <code>fopen</code> with no corresponding <code>fclose</code> call in the entire program.
+Leaving files open will cause a resource leak that will persist even after the program terminates.
+</p>
+
+<include src="aliasAnalysisWarning.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>Ensure that all file or socket descriptors allocated by the program are freed before it terminates.</p>
+
+</recommendation>
+<example><sample src="FileNeverClosed.cpp" />
+
+
+
+
+</example>
+</qhelp>

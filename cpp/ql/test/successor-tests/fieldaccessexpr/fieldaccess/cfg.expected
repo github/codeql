@@ -1,0 +1,12 @@
+| fieldaccess | fieldaccess.cpp:1:7:1:7 | operator= | 1 | 1 | fieldaccess.cpp:1:7:1:7 | fieldaccess.cpp:1:7:1:7 | fieldaccess.cpp:1:7:1:7 | operator= | <none> |
+| fieldaccess | fieldaccess.cpp:1:7:1:7 | operator= | 1 | 1 | fieldaccess.cpp:1:7:1:7 | fieldaccess.cpp:1:7:1:7 | fieldaccess.cpp:1:7:1:7 | operator= | <none> |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 6 | 1 | fieldaccess.cpp:6:10:10:1 | fieldaccess.cpp:6:10:10:1 | fieldaccess.cpp:6:10:10:1 | { ... } | 7: declaration |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 7 | 2 | fieldaccess.cpp:7:2:7:6 | fieldaccess.cpp:7:2:7:6 | fieldaccess.cpp:7:2:7:6 | declaration | 8: declaration |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 8 | 3 | fieldaccess.cpp:8:2:8:7 | fieldaccess.cpp:8:2:8:7 | fieldaccess.cpp:8:2:8:7 | declaration | 9: ExprStmt |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 9 | 4 | fieldaccess.cpp:9:2:9:10 | fieldaccess.cpp:9:2:9:10 | fieldaccess.cpp:9:2:9:10 | ExprStmt | 9: c |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 9 | 5 | fieldaccess.cpp:9:6:9:6 | fieldaccess.cpp:9:6:9:6 | fieldaccess.cpp:9:6:9:6 | c | 9: x |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 9 | 6 | fieldaccess.cpp:9:9:9:9 | fieldaccess.cpp:9:9:9:9 | fieldaccess.cpp:9:9:9:9 | x | 9: i |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 9 | 7 | fieldaccess.cpp:9:2:9:2 | fieldaccess.cpp:9:2:9:2 | fieldaccess.cpp:9:2:9:2 | i | 9: ... = ... |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 9 | 8 | fieldaccess.cpp:9:2:9:9 | fieldaccess.cpp:9:2:9:9 | fieldaccess.cpp:9:2:9:9 | ... = ... | 10: return ... |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 10 | 9 | fieldaccess.cpp:10:1:10:1 | fieldaccess.cpp:10:1:10:1 | fieldaccess.cpp:10:1:10:1 | return ... | 10: f |
+| fieldaccess | fieldaccess.cpp:6:6:6:6 | f | 10 | 10 | fieldaccess.cpp:6:6:6:6 | fieldaccess.cpp:6:6:6:6 | fieldaccess.cpp:6:6:6:6 | f | <none> |

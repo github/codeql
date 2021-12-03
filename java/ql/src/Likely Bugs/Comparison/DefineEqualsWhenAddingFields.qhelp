@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a class overrides the default implementation of equality defined by
+the <code>Object.equals</code> method, and a subclass of that class
+declares additional fields to the ones that it inherits, the results of <code>equals</code>
+may be wrong, unless that subclass also redefines <code>equals</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>See if the subclass should provide its own implementation of <code>equals</code> to take into
+account the additional fields that it declares.</p>
+
+<p>If the subclass cannot provide its own implementation of <code>equals</code> because
+the inherited <code>equals</code> method is <code>final</code>, consider replacing inheritance
+by composition; instead of class <code>B</code> extending class <code>A</code>, class <code>B</code>
+could define a field of type <code>A</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, rectangles <code>r1</code> and <code>r2</code> are calculated to be equal,
+even though they have different dimensions. This is because the class <code>Rectangle</code> does
+not override <code>Square.equals</code>, so it uses a test for equality that is only applicable to squares,
+not rectangles. (Note that, in practice, the example should also include an implementation of
+<code>hashCode</code>.)</p>
+
+<sample src="DefineEqualsWhenAddingFields.java" />
+
+<p>To get the correct result, you must override <code>Square.equals</code> in class <code>Rectangle</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

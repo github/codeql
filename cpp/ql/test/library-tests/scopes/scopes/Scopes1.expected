@@ -1,0 +1,77 @@
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator delete[] |  |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator new[] |  |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:2:7:2:7 | A | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:7:7:7:7 | B | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:11:7:11:7 | C | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:15:7:15:7 | D | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:35:6:35:6 | f |  |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:46:8:46:8 | S | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:53:6:53:6 | g |  |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:58:7:58:10 | Name | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:62:7:62:11 | Table | Class |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:72:16:72:21 | strlen |  |
+| file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:74:11:74:13 | One | Namespace |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | fp_offset |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | gp_offset |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | operator= |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | operator= |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | overflow_arg_area |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | reg_save_area |  |
+| scopes.cpp:2:7:2:7 | A | Class | scopes.cpp:2:7:2:7 | operator= |  |
+| scopes.cpp:2:7:2:7 | A | Class | scopes.cpp:2:7:2:7 | operator= |  |
+| scopes.cpp:7:7:7:7 | B | Class | scopes.cpp:7:7:7:7 | operator= |  |
+| scopes.cpp:7:7:7:7 | B | Class | scopes.cpp:7:7:7:7 | operator= |  |
+| scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | C |  |
+| scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | operator= |  |
+| scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | operator= |  |
+| scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | D |  |
+| scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | operator= |  |
+| scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | operator= |  |
+| scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:21:7:21:10 | E | NestedClass |
+| scopes.cpp:21:7:21:10 | E | NestedClass | scopes.cpp:21:10:21:10 | operator= |  |
+| scopes.cpp:21:7:21:10 | E | NestedClass | scopes.cpp:21:10:21:10 | operator= |  |
+| scopes.cpp:21:7:21:10 | E | NestedClass | scopes.cpp:25:8:25:8 | G | NestedClass |
+| scopes.cpp:21:7:21:10 | E | NestedClass | scopes.cpp:31:7:31:13 | F | NestedClass |
+| scopes.cpp:25:8:25:8 | G | NestedClass | scopes.cpp:25:8:25:8 | operator= |  |
+| scopes.cpp:25:8:25:8 | G | NestedClass | scopes.cpp:25:8:25:8 | operator= |  |
+| scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | F |  |
+| scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | operator= |  |
+| scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | operator= |  |
+| scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:32:8:32:27 | doubleNestedFunction |  |
+| scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:46:8:46:8 | operator= |  |
+| scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:46:8:46:8 | operator= |  |
+| scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:47:7:47:8 | af |  |
+| scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:50:7:50:8 | ag |  |
+| scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | Name |  |
+| scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | operator= |  |
+| scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | operator= |  |
+| scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:59:14:59:14 | s |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:62:7:62:7 | Table |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:62:7:62:7 | operator= |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:63:9:63:9 | p |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:64:7:64:8 | sz |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:66:3:66:7 | Table |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:67:3:67:8 | ~Table |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:68:9:68:14 | lookup |  |
+| scopes.cpp:62:7:62:11 | Table | Class | scopes.cpp:69:8:69:13 | insert |  |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:77:8:77:8 | H<T> | Class |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:77:8:77:8 | H<long> | Class |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:77:8:77:8 | H<short> | Class |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:82:11:82:17 | h_short |  |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:83:10:83:15 | h_long |  |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:85:12:85:14 | One::Two | Namespace |
+| scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:95:8:95:8 | I | Class |
+| scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:76:18:76:18 | T |  |
+| scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:79:5:79:5 | t |  |
+| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | H |  |
+| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
+| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
+| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:79:5:79:5 | t |  |
+| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | H |  |
+| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
+| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
+| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:79:5:79:5 | t |  |
+| scopes.cpp:85:12:85:14 | One::Two | Namespace | scopes.cpp:87:8:87:13 | myEnum |  |
+| scopes.cpp:95:8:95:8 | I | Class | scopes.cpp:95:8:95:8 | operator= |  |
+| scopes.cpp:95:8:95:8 | I | Class | scopes.cpp:95:8:95:8 | operator= |  |
+| scopes.cpp:95:8:95:8 | I | Class | scopes.cpp:97:8:97:14 | myEnum2 |  |

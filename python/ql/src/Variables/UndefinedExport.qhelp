@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a module is imported using <code>import *</code>, all attributes listed in
+<code>__all__</code> are imported. If <code>__all__</code> includes attributes that
+are not defined in the module then an exception is triggered. This usually indicates
+a typographic error in the attributes in  <code>__all__</code> or in the name of the
+object.</p>
+
+</overview>
+<recommendation>
+
+<p>Correct any typographic errors, either in the name of the object or in the string in
+<code>__all__</code>. If there are no typographic errors, either delete the name from
+<code>__all__</code> or add the object to the module.</p>
+
+</recommendation>
+<example>
+<p>
+In the example, the function name <code>spam</code> has been misspelled in the <code>__all__</code> list.
+This will result in <code>spamm</code> being highlighted as an undefined export.
+Correcting the spelling will fix the defect.
+</p>
+<sample src="UndefinedExport.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a Package</a>.</li>
+
+
+</references>
+</qhelp>

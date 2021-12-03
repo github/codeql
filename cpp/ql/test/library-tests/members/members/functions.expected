@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| non-existent.cpp:2:8:2:8 | operator= |
+| non-existent.cpp:2:8:2:8 | operator= |
+| non-existent.cpp:2:17:2:17 | f |

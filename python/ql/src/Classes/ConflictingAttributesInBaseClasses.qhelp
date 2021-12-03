@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a class subclasses multiple base classes, attribute lookup is performed from left to right amongst the base classes.
+This form of attribute lookup is called "method resolution order" and is a solution to the 
+<a href="http://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">diamond inheritance problem</a> where several base classes
+override a method in a shared superclass.
+</p>
+<p>
+Unfortunately, this means that if more than one base class defines the same attribute, the leftmost base class will effectively override
+the attribute of the rightmost base class, even though the leftmost base class is not a subclass of the rightmost base class.
+Unless the methods in question are designed for inheritance, using <code>super</code>, then this implicit overriding may not be the desired behavior. 
+Even if it is the desired behavior it makes the code hard to understand and maintain.
+</p>
+
+</overview>
+<recommendation>
+<p>There are a number of ways that might be used to address this issue:
+</p><ul>
+    <li>Override the attribute in the subclass to implement the correct behavior.</li>
+    <li>Modify the class hierarchy and move equivalent or redundant methods to a common super class.</li>
+    <li>Modify the method hierarchy, breaking up complex methods into constituent parts.</li>
+    <li>Use delegation rather than inheritance.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+In this example the class <code>ThreadingTCPServer</code> inherits from <code>ThreadingMixIn</code> and from <code>TCPServer</code>.
+However, both these classes implement <code>process_request</code> which means that <code>ThreadingTCPServer</code> will inherit
+<code>process_request</code> from <code>ThreadingMixIn</code>. Consequently, the implementation of <code>process_request</code> in <code>TCPServer</code>
+will be ignored, which may not be the correct behavior.
+</p>
+<sample src="ConflictingAttributesInBaseClasses.py" />
+
+<p>
+This can be fixed either by overriding the method, as shown in class <code>ThreadingTCPServerOverriding</code>
+or by ensuring that the
+functionality provided by the two base classes does not overlap, as shown in class <code>ThreadingTCPServerChangedHierarchy</code>.
+</p>
+<sample src="ConflictingAttributesInBaseClasses_Fixed.py" />
+
+
+</example>
+<references>
+
+    <li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html">Data model</a>.</li>
+    <li>Python releases: <a href="https://www.python.org/download/releases/2.3/mro/">The Python 2.3 Method Resolution Order</a>.</li>
+    <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/C3_linearization">C3 linearization</a>.</li>
+    <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+
+
+</references>
+</qhelp>

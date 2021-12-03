@@ -1,0 +1,14 @@
+<beans>
+    <!--BAD: A non-abstract bean should use a concrete class.
+        'ConnectionPool' is an abstract class.-->
+    <bean id="wrongConnectionPool" 
+            class="documentation.examples.spring.ConnectionPool"/>
+    <bean id="appReqPool1" class="documentation.examples.spring.AppRequestConnectionPool" 
+            parent="wrongConnectionPool"/>
+
+    <!--GOOD: A bean that specifies an abstract class should be declared 'abstract'.-->
+    <bean id="connectionPool" 
+            class="documentation.examples.spring.ConnectionPool" abstract="true"/>
+    <bean id="appReqPool2" class="documentation.examples.spring.AppRequestConnectionPool" 
+            parent="connectionPool"/>
+</beans>

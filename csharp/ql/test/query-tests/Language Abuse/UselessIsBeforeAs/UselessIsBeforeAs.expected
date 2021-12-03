@@ -1,0 +1,1 @@
+| UselessIsBeforeAs.cs:8:21:8:31 | ... as ... | This 'as' expression performs a type test - it should be directly compared against null, rendering the 'is' $@ potentially redundant. | UselessIsBeforeAs.cs:5:13:5:23 | ... is ... | here |

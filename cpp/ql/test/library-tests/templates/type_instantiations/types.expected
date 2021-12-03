@@ -1,0 +1,62 @@
+| file://:0:0:0:0 | Cl<char, Sa, Sb> * |
+| file://:0:0:0:0 | _Complex __float128 |
+| file://:0:0:0:0 | _Complex double |
+| file://:0:0:0:0 | _Complex float |
+| file://:0:0:0:0 | _Complex long double |
+| file://:0:0:0:0 | _Decimal32 |
+| file://:0:0:0:0 | _Decimal64 |
+| file://:0:0:0:0 | _Decimal128 |
+| file://:0:0:0:0 | _Float32 |
+| file://:0:0:0:0 | _Float32x |
+| file://:0:0:0:0 | _Float64 |
+| file://:0:0:0:0 | _Float64x |
+| file://:0:0:0:0 | _Float128 |
+| file://:0:0:0:0 | _Float128x |
+| file://:0:0:0:0 | _Imaginary double |
+| file://:0:0:0:0 | _Imaginary float |
+| file://:0:0:0:0 | _Imaginary long double |
+| file://:0:0:0:0 | __float128 |
+| file://:0:0:0:0 | __int128 |
+| file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && |
+| file://:0:0:0:0 | auto |
+| file://:0:0:0:0 | bool |
+| file://:0:0:0:0 | char |
+| file://:0:0:0:0 | char8_t |
+| file://:0:0:0:0 | char16_t |
+| file://:0:0:0:0 | char32_t |
+| file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & |
+| file://:0:0:0:0 | decltype(nullptr) |
+| file://:0:0:0:0 | double |
+| file://:0:0:0:0 | error |
+| file://:0:0:0:0 | float |
+| file://:0:0:0:0 | int |
+| file://:0:0:0:0 | long |
+| file://:0:0:0:0 | long double |
+| file://:0:0:0:0 | long long |
+| file://:0:0:0:0 | short |
+| file://:0:0:0:0 | signed __int128 |
+| file://:0:0:0:0 | signed char |
+| file://:0:0:0:0 | signed int |
+| file://:0:0:0:0 | signed long |
+| file://:0:0:0:0 | signed long long |
+| file://:0:0:0:0 | signed short |
+| file://:0:0:0:0 | unknown |
+| file://:0:0:0:0 | unsigned __int128 |
+| file://:0:0:0:0 | unsigned char |
+| file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | unsigned long |
+| file://:0:0:0:0 | unsigned long long |
+| file://:0:0:0:0 | unsigned short |
+| file://:0:0:0:0 | void |
+| file://:0:0:0:0 | void * |
+| file://:0:0:0:0 | wchar_t |
+| test.h:2:8:2:9 | Sa |
+| test.h:3:8:3:9 | Sb |
+| test.h:5:16:5:16 | A |
+| test.h:5:25:5:25 | B |
+| test.h:5:34:5:34 | C |
+| test.h:6:7:6:8 | Cl<A, B, C> |
+| test.h:6:7:6:8 | Cl<char, Sa, Sb> |

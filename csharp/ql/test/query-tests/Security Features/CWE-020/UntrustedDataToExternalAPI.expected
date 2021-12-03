@@ -1,0 +1,12 @@
+edges
+| UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:13:28:13:31 | access to local variable name |
+nodes
+| UntrustedData.cs:9:20:9:30 | access to property Request | semmle.label | access to property Request |
+| UntrustedData.cs:9:20:9:42 | access to property QueryString | semmle.label | access to property QueryString |
+| UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UntrustedData.cs:13:28:13:31 | access to local variable name | semmle.label | access to local variable name |
+subpaths
+#select
+| UntrustedData.cs:9:20:9:30 | access to property Request | UntrustedData.cs:9:20:9:30 | access to property Request | UntrustedData.cs:9:20:9:30 | access to property Request | Call to System.Web.HttpRequest.get_QueryString with untrusted data from $@. | UntrustedData.cs:9:20:9:30 | access to property Request | access to property Request |
+| UntrustedData.cs:9:20:9:42 | access to property QueryString | UntrustedData.cs:9:20:9:42 | access to property QueryString | UntrustedData.cs:9:20:9:42 | access to property QueryString | Call to System.Collections.Specialized.NameValueCollection.get_Item with untrusted data from $@. | UntrustedData.cs:9:20:9:42 | access to property QueryString | access to property QueryString |
+| UntrustedData.cs:13:28:13:31 | access to local variable name | UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:13:28:13:31 | access to local variable name | Call to System.Web.HttpResponse.Write with untrusted data from $@. | UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | access to property QueryString : NameValueCollection |

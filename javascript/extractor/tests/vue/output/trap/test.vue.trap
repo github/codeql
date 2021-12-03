@@ -1,0 +1,17 @@
+#10000=@"/test.vue;sourcefile"
+files(#10000,"/test.vue")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=*
+xmlElements(#20001,"html",#10000,0,#10000)
+#20002=@"loc,{#10000},1,1,1,13"
+locations_default(#20002,#10000,1,1,1,13)
+xmllocations(#20001,#20002)
+numlines(#10000,1,0,0)
+filetype(#10000,"html")

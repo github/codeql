@@ -1,0 +1,2 @@
+| test1.js:13:16:13:30 | process.argv[2] | test1.js:6:15:6:15 | p |
+| test3.js:19:16:19:30 | process.argv[2] | test3.js:12:15:12:15 | p |

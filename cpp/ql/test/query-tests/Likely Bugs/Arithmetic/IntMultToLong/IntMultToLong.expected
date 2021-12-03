@@ -1,0 +1,15 @@
+| IntMultToLong.c:4:10:4:14 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
+| IntMultToLong.c:7:16:7:20 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
+| IntMultToLong.c:18:19:18:23 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
+| IntMultToLong.c:21:19:21:29 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
+| IntMultToLong.c:38:19:38:23 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
+| IntMultToLong.c:59:20:59:31 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
+| IntMultToLong.c:61:23:61:33 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
+| IntMultToLong.c:63:23:63:40 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
+| IntMultToLong.c:75:9:75:13 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'size_t'. |
+| IntMultToLong.c:99:14:99:35 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.c:103:14:103:46 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.c:108:14:108:78 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.c:119:14:119:26 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.c:126:14:126:32 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.cpp:2:10:2:14 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long'. |

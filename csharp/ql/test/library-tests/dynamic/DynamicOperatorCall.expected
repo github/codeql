@@ -1,0 +1,6 @@
+| dynamic.cs:35:13:35:14 | dynamic call to operator - | - | 0 | dynamic.cs:35:14:35:14 | access to local variable d |
+| dynamic.cs:36:13:36:17 | dynamic call to operator + | + | 0 | dynamic.cs:36:13:36:13 | access to local variable d |
+| dynamic.cs:36:13:36:17 | dynamic call to operator + | + | 1 | dynamic.cs:36:17:36:17 | access to local variable d |
+| dynamic.cs:37:9:37:14 | dynamic call to operator + | + | 0 | dynamic.cs:37:9:37:9 | access to local variable d |
+| dynamic.cs:37:9:37:14 | dynamic call to operator + | + | 1 | dynamic.cs:37:14:37:14 | access to local variable d |
+| dynamic.cs:47:9:47:11 | dynamic call to operator ++ | ++ | 0 | dynamic.cs:47:9:47:9 | access to local variable d |

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The standard library function <code>strncat</code> appends a source string to a target string. 
+The third argument defines the maximum number of characters to append and should be less than or equal
+to the remaining space in the destination buffer.</p>
+
+<p>Calls of the form <code>strncat(dest, src, strlen(dest))</code> or <code>strncat(dest, src, sizeof(dest))</code> set
+the third argument to the entire size of the destination buffer.
+Executing a call of this type may cause a buffer overflow unless the buffer is known to be empty.</p>
+
+<p>Similarly, calls of the form <code>strncat(dest, src, sizeof (dest) - strlen (dest))</code> allow one
+byte to be written ouside the <code>dest</code> buffer.</p>
+
+<p>Buffer overflows can lead to anything from a segmentation fault to a security vulnerability.</p>
+
+</overview>
+<recommendation>
+<p>Check the highlighted function calls carefully to ensure that no buffer overflow is possible. For a more robust solution, consider updating the function call to include the remaining space in the destination buffer.</p>
+
+</recommendation>
+<example><sample src="SuspiciousCallToStrncat.cpp" />
+
+
+</example>
+<references>
+
+<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/clibrary/cstring/strncat/">strncat</a>,
+                   <a href="http://www.cplusplus.com/reference/clibrary/cstring/strncpy/">strncpy</a>.</li>
+<li>
+  I. Gerg, <em>An Overview and Example of the Buffer-Overflow Exploit</em>. IANewsletter vol 7 no 4, 2005.
+</li>
+<li>
+  M. Donaldson, <em>Inside the Buffer Overflow Attack: Mechanism, Method &amp; Prevention</em>. SANS Institute InfoSec Reading Room, 2002.
+</li>
+<li>
+  CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.
+</li>
+
+
+</references>
+</qhelp>

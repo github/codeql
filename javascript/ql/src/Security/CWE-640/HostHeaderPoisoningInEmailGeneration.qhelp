@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using the HTTP Host header to construct a link in an email can facilitate phishing attacks and leak password reset tokens.
+A malicious user can send an HTTP request to the targeted web site, but with a Host header that refers to his own web site.
+This means the emails will be sent out to potential victims, originating from a server they trust, but with
+links leading to a malicious web site.
+</p>
+<p>
+If the email contains a password reset link, and should the victim click the link, the secret reset token will be leaked to the attacker.
+Using the leaked token, the attacker can then construct the real reset link and use it to change the victim's password.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Obtain the server's host name from a configuration file and avoid relying on the Host header.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses the <code>req.host</code> to generate a password reset link.
+This value is derived from the Host header, and can thus be set to anything by an attacker:
+</p>
+<sample src="examples/HostHeaderPoisoningInEmailGeneration.js"/>
+
+<p>
+To ensure the link refers to the correct web site, get the host name from a configuration file:
+</p>
+<sample src="examples/HostHeaderPoisoningInEmailGenerationGood.js"/>
+</example>
+
+<references>
+<li>
+Mitre:
+<a href="https://cwe.mitre.org/data/definitions/640.html">CWE-640: Weak Password Recovery Mechanism for Forgotten Password</a>.
+</li>
+<li>
+Ian Muscat:
+<a href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/">What is a Host Header Attack?</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| test.py:10:9:10:19 | Attribute | Mutation of descriptor $@ object may lead to action-at-a-distance effects or race conditions for properties. | test.py:3:1:3:33 | class MutatingDescriptor | MutatingDescriptor |
+| test.py:25:9:25:19 | Attribute | Mutation of descriptor $@ object may lead to action-at-a-distance effects or race conditions for properties. | test.py:3:1:3:33 | class MutatingDescriptor | MutatingDescriptor |

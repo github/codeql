@@ -1,0 +1,47 @@
+edges
+| xslt.py:10:17:10:28 | dict of etree.XML string | xslt.py:10:17:10:43 | etree.XML string |
+| xslt.py:10:17:10:28 | dict of etree.XML string | xslt.py:10:17:10:43 | etree.XML string |
+| xslt.py:10:17:10:43 | etree.XML string | xslt.py:11:27:11:35 | etree.XML string |
+| xslt.py:10:17:10:43 | etree.XML string | xslt.py:11:27:11:35 | etree.XML string |
+| xslt.py:11:17:11:36 | lxml etree xml | xslt.py:14:29:14:37 | lxml etree xml |
+| xslt.py:11:17:11:36 | lxml etree xml | xslt.py:14:29:14:37 | lxml etree xml |
+| xslt.py:11:27:11:35 | etree.XML string | xslt.py:11:17:11:36 | lxml etree xml |
+| xslt.py:11:27:11:35 | etree.XML string | xslt.py:11:17:11:36 | lxml etree xml |
+| xsltInjection.py:10:17:10:28 | dict of etree.XML string | xsltInjection.py:10:17:10:43 | etree.XML string |
+| xsltInjection.py:10:17:10:28 | dict of etree.XML string | xsltInjection.py:10:17:10:43 | etree.XML string |
+| xsltInjection.py:10:17:10:43 | etree.XML string | xsltInjection.py:11:27:11:35 | etree.XML string |
+| xsltInjection.py:10:17:10:43 | etree.XML string | xsltInjection.py:11:27:11:35 | etree.XML string |
+| xsltInjection.py:11:17:11:36 | lxml etree xml | xsltInjection.py:12:28:12:36 | lxml etree xml |
+| xsltInjection.py:11:17:11:36 | lxml etree xml | xsltInjection.py:12:28:12:36 | lxml etree xml |
+| xsltInjection.py:11:27:11:35 | etree.XML string | xsltInjection.py:11:17:11:36 | lxml etree xml |
+| xsltInjection.py:11:27:11:35 | etree.XML string | xsltInjection.py:11:17:11:36 | lxml etree xml |
+| xsltInjection.py:17:17:17:28 | dict of etree.XML string | xsltInjection.py:17:17:17:43 | etree.XML string |
+| xsltInjection.py:17:17:17:28 | dict of etree.XML string | xsltInjection.py:17:17:17:43 | etree.XML string |
+| xsltInjection.py:17:17:17:43 | etree.XML string | xsltInjection.py:18:27:18:35 | etree.XML string |
+| xsltInjection.py:17:17:17:43 | etree.XML string | xsltInjection.py:18:27:18:35 | etree.XML string |
+| xsltInjection.py:18:17:18:36 | lxml etree xml | xsltInjection.py:21:29:21:37 | lxml etree xml |
+| xsltInjection.py:18:17:18:36 | lxml etree xml | xsltInjection.py:21:29:21:37 | lxml etree xml |
+| xsltInjection.py:18:27:18:35 | etree.XML string | xsltInjection.py:18:17:18:36 | lxml etree xml |
+| xsltInjection.py:18:27:18:35 | etree.XML string | xsltInjection.py:18:17:18:36 | lxml etree xml |
+| xsltInjection.py:26:17:26:28 | dict of etree.XML string | xsltInjection.py:26:17:26:43 | etree.XML string |
+| xsltInjection.py:26:17:26:28 | dict of etree.XML string | xsltInjection.py:26:17:26:43 | etree.XML string |
+| xsltInjection.py:26:17:26:43 | etree.XML string | xsltInjection.py:27:27:27:35 | etree.XML string |
+| xsltInjection.py:26:17:26:43 | etree.XML string | xsltInjection.py:27:27:27:35 | etree.XML string |
+| xsltInjection.py:27:17:27:36 | lxml etree xml | xsltInjection.py:31:24:31:32 | lxml etree xml |
+| xsltInjection.py:27:17:27:36 | lxml etree xml | xsltInjection.py:31:24:31:32 | lxml etree xml |
+| xsltInjection.py:27:27:27:35 | etree.XML string | xsltInjection.py:27:17:27:36 | lxml etree xml |
+| xsltInjection.py:27:27:27:35 | etree.XML string | xsltInjection.py:27:17:27:36 | lxml etree xml |
+| xsltInjection.py:35:17:35:28 | dict of etree.XML string | xsltInjection.py:35:17:35:43 | etree.XML string |
+| xsltInjection.py:35:17:35:28 | dict of etree.XML string | xsltInjection.py:35:17:35:43 | etree.XML string |
+| xsltInjection.py:35:17:35:43 | etree.XML string | xsltInjection.py:36:34:36:42 | etree.XML string |
+| xsltInjection.py:35:17:35:43 | etree.XML string | xsltInjection.py:36:34:36:42 | etree.XML string |
+| xsltInjection.py:36:17:36:43 | lxml etree xml | xsltInjection.py:40:24:40:32 | lxml etree xml |
+| xsltInjection.py:36:17:36:43 | lxml etree xml | xsltInjection.py:40:24:40:32 | lxml etree xml |
+| xsltInjection.py:36:34:36:42 | etree.XML string | xsltInjection.py:36:17:36:43 | lxml etree xml |
+| xsltInjection.py:36:34:36:42 | etree.XML string | xsltInjection.py:36:17:36:43 | lxml etree xml |
+#select
+| xslt.py:14:29:14:37 | xslt_root | xslt.py:10:17:10:28 | dict of etree.XML string | xslt.py:14:29:14:37 | lxml etree xml | This XSLT query depends on $@. | xslt.py:10:17:10:28 | Attribute | a user-provided value |
+| xsltInjection.py:12:28:12:36 | xslt_root | xsltInjection.py:10:17:10:28 | dict of etree.XML string | xsltInjection.py:12:28:12:36 | lxml etree xml | This XSLT query depends on $@. | xsltInjection.py:10:17:10:28 | Attribute | a user-provided value |
+| xsltInjection.py:21:29:21:37 | xslt_root | xsltInjection.py:17:17:17:28 | dict of etree.XML string | xsltInjection.py:21:29:21:37 | lxml etree xml | This XSLT query depends on $@. | xsltInjection.py:17:17:17:28 | Attribute | a user-provided value |
+| xsltInjection.py:31:24:31:32 | xslt_root | xsltInjection.py:26:17:26:28 | dict of etree.XML string | xsltInjection.py:31:24:31:32 | lxml etree xml | This XSLT query depends on $@. | xsltInjection.py:26:17:26:28 | Attribute | a user-provided value |
+| xsltInjection.py:40:24:40:32 | xslt_root | xsltInjection.py:35:17:35:28 | dict of etree.XML string | xsltInjection.py:40:24:40:32 | lxml etree xml | This XSLT query depends on $@. | xsltInjection.py:35:17:35:28 | Attribute | a user-provided value |

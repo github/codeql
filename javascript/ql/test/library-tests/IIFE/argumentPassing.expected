@@ -1,0 +1,4 @@
+| tst.js:1:2:2:1 | function(x) {\\n} | tst.js:1:11:1:11 | x | tst.js:2:4:2:5 | 23 |
+| tst.js:4:2:5:1 | function(y) {\\n} | tst.js:4:11:4:11 | y | tst.js:5:3:5:4 | 42 |
+| tst.js:7:2:8:1 | function(z) {\\n} | tst.js:7:11:7:11 | z | tst.js:8:16:8:17 | 56 |
+| tst.js:10:5:11:1 | function(a) {\\n} | tst.js:10:14:10:14 | a | tst.js:11:3:11:4 | 72 |

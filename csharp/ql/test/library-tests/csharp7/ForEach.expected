@@ -1,0 +1,6 @@
+| CSharp7.cs:285:9:285:47 | foreach (... ... in ...) ... | 0 | CSharp7.cs:285:23:285:23 | Int32 a | CSharp7.cs:285:23:285:23 | a | CSharp7.cs:285:39:285:42 | access to local variable list | CSharp7.cs:285:45:285:47 | {...} |
+| CSharp7.cs:285:9:285:47 | foreach (... ... in ...) ... | 1 | CSharp7.cs:285:33:285:33 | String b | CSharp7.cs:285:33:285:33 | b | CSharp7.cs:285:39:285:42 | access to local variable list | CSharp7.cs:285:45:285:47 | {...} |
+| CSharp7.cs:287:9:287:44 | foreach (... ... in ...) ... | 0 | CSharp7.cs:287:23:287:23 | Int32 a | CSharp7.cs:287:23:287:23 | a | CSharp7.cs:287:36:287:39 | access to local variable list | CSharp7.cs:287:42:287:44 | {...} |
+| CSharp7.cs:287:9:287:44 | foreach (... ... in ...) ... | 1 | CSharp7.cs:287:30:287:30 | String b | CSharp7.cs:287:30:287:30 | b | CSharp7.cs:287:36:287:39 | access to local variable list | CSharp7.cs:287:42:287:44 | {...} |
+| CSharp7.cs:289:9:289:40 | foreach (... ... in ...) ... | 0 | CSharp7.cs:289:23:289:23 | Int32 a | CSharp7.cs:289:23:289:23 | a | CSharp7.cs:289:32:289:35 | access to local variable list | CSharp7.cs:289:38:289:40 | {...} |
+| CSharp7.cs:289:9:289:40 | foreach (... ... in ...) ... | 1 | CSharp7.cs:289:26:289:26 | String b | CSharp7.cs:289:26:289:26 | b | CSharp7.cs:289:32:289:35 | access to local variable list | CSharp7.cs:289:38:289:40 | {...} |

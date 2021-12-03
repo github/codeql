@@ -1,0 +1,2 @@
+| test.cpp:10:11:10:11 | x | Implicit downcast of bitfield $@ | test.cpp:2:6:2:6 | x | x |
+| test.cpp:26:25:26:25 | x | Implicit downcast of bitfield $@ | test.cpp:2:6:2:6 | x | x |

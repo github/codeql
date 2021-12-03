@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>ASP.NET is very flexible about the code that can be embedded into
+a page. It is not necessary that the individual code render blocks
+are valid syntax on their own. Rather, it is only necessary that
+all the code render blocks can compile as a group, once they are
+all emitted into a class that the ASP.NET infrastructure
+generates to implement the page.</p>
+
+<p>This flexibility is sometimes used to implement conditional
+portions of an HTML page. One code render block will have the beginning
+of an <code>If...Then</code> statement, and another will have the <code>End If</code>,
+with arbitrary ASP content in between.
+This conditional code can make the source code of the
+page hard to read and maintain, especially if the embedded ASP content
+has further conditional code within it.</p>
+</overview>
+
+<recommendation>
+<p>Consider moving the entire block of conditional code into a code-behind file.
+If the embedded ASP content is more than a few lines long, consider converting
+the ASP content into a user control.
+See <a href="https://msdn.microsoft.com/en-us/library/015103yb.aspx">ASP.NET Web Page Code Model</a>
+and <a href="https://msdn.microsoft.com/en-us/library/y6wb1a0e.aspx">ASP.NET User Controls</a>.</p>
+</recommendation>
+
+<example>
+<p>This example uses a split control structure, which can make the page harder
+to read.</p>
+<sample src="SplitControlStructureBad.aspx" />
+<p>The following example moves the code to a code-behind file. By separating the
+HTML content from the VB.Net content, the overall body of code should be easier
+to read and maintain.</p>
+<sample src="SplitControlStructureGood.aspx" />
+</example>
+
+<references>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms973868.aspx">Introduction to ASP.NET and Web Forms</a>,
+<a href="https://msdn.microsoft.com/en-us/library/fy30at8h(v=vs.100).aspx">ASP.NET Page Syntax</a>,
+<a href="https://msdn.microsoft.com/en-us/library/y6wb1a0e.aspx">ASP.NET User Controls</a>,
+<a href="https://msdn.microsoft.com/en-us/library/015103yb.aspx">ASP.NET Web Page Code Model</a>.</li>
+</references>
+</qhelp>

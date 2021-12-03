@@ -1,0 +1,29 @@
+| Rock-paper-scissors config | rockpaperscissors.py:13:10:13:17 | scissors | rockpaperscissors.py:13:5:13:18 | ControlFlowNode for rock() |  | rockpaperscissors.py:3:1:3:14 | Function rock | 0 | no attribute | scissors |
+| Rock-paper-scissors config | rockpaperscissors.py:16:11:16:14 | rock | rockpaperscissors.py:16:5:16:15 | ControlFlowNode for paper() |  | rockpaperscissors.py:6:1:6:15 | Function paper | 0 | no attribute | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:21:14:21:14 | scissors | rockpaperscissors.py:21:5:21:15 | ControlFlowNode for scissors() |  | rockpaperscissors.py:9:1:9:18 | Function scissors | 0 | no attribute | scissors |
+| Rock-paper-scissors config | rockpaperscissors.py:26:14:26:14 | paper | rockpaperscissors.py:26:5:26:15 | ControlFlowNode for scissors() |  | rockpaperscissors.py:9:1:9:18 | Function scissors | 0 | no attribute | paper |
+| Rock-paper-scissors config | rockpaperscissors.py:31:11:31:11 | scissors | rockpaperscissors.py:31:5:31:12 | ControlFlowNode for paper() |  | rockpaperscissors.py:6:1:6:15 | Function paper | 0 | no attribute | scissors |
+| Rock-paper-scissors config | rockpaperscissors.py:32:11:32:11 | paper | rockpaperscissors.py:32:5:32:12 | ControlFlowNode for paper() |  | rockpaperscissors.py:6:1:6:15 | Function paper | 0 | no attribute | paper |
+| Simple config | carrier.py:17:25:17:30 | simple.test | carrier.py:17:9:17:31 | ControlFlowNode for ImplicitCarrier() |  | carrier.py:4:5:4:28 | Function ImplicitCarrier.__init__ | 1 | no attribute | simple.test |
+| Simple config | carrier.py:25:13:25:35 | .attr = simple.test | carrier.py:25:9:25:36 | ControlFlowNode for hub() |  | carrier.py:13:1:13:13 | Function hub | 0 | attribute attr | simple.test |
+| Simple config | carrier.py:25:29:25:34 | simple.test | carrier.py:25:13:25:35 | ControlFlowNode for ImplicitCarrier() |  | carrier.py:4:5:4:28 | Function ImplicitCarrier.__init__ | 1 | no attribute | simple.test |
+| Simple config | carrier.py:26:10:26:10 | .attr = simple.test | carrier.py:26:10:26:21 | ControlFlowNode for Attribute() |  | carrier.py:10:5:10:23 | Function ImplicitCarrier.get_attr | 0 | attribute attr | simple.test |
+| Simple config | deep.py:6:15:6:17 | simple.test | deep.py:6:12:6:18 | ControlFlowNode for f1() | p0 = simple.test | deep.py:2:1:2:12 | Function f1 | 0 | no attribute | simple.test |
+| Simple config | deep.py:9:15:9:17 | simple.test | deep.py:9:12:9:18 | ControlFlowNode for f2() | p0 = simple.test | deep.py:5:1:5:12 | Function f2 | 0 | no attribute | simple.test |
+| Simple config | deep.py:12:15:12:17 | simple.test | deep.py:12:12:12:18 | ControlFlowNode for f3() | p0 = simple.test | deep.py:8:1:8:12 | Function f3 | 0 | no attribute | simple.test |
+| Simple config | deep.py:15:15:15:17 | simple.test | deep.py:15:12:15:18 | ControlFlowNode for f4() | p0 = simple.test | deep.py:11:1:11:12 | Function f4 | 0 | no attribute | simple.test |
+| Simple config | deep.py:18:15:18:17 | simple.test | deep.py:18:12:18:18 | ControlFlowNode for f5() | p0 = simple.test | deep.py:14:1:14:12 | Function f5 | 0 | no attribute | simple.test |
+| Simple config | deep.py:20:8:20:13 | simple.test | deep.py:20:5:20:14 | ControlFlowNode for f6() |  | deep.py:17:1:17:12 | Function f6 | 0 | no attribute | simple.test |
+| Simple config | test.py:21:10:21:10 | simple.test | test.py:21:5:21:11 | ControlFlowNode for sink() |  | test.py:12:1:12:14 | Function sink | 0 | no attribute | simple.test |
+| Simple config | test.py:25:10:25:10 | simple.test | test.py:25:5:25:11 | ControlFlowNode for sink() |  | test.py:12:1:12:14 | Function sink | 0 | no attribute | simple.test |
+| Simple config | test.py:47:10:47:12 | simple.test | test.py:47:5:47:13 | ControlFlowNode for sink() | p0 = simple.test | test.py:12:1:12:14 | Function sink | 0 | no attribute | simple.test |
+| Simple config | test.py:51:14:51:16 | simple.test | test.py:51:9:51:17 | ControlFlowNode for sink() | p1 = simple.test | test.py:12:1:12:14 | Function sink | 0 | no attribute | simple.test |
+| Simple config | test.py:55:11:55:11 | simple.test | test.py:55:5:55:12 | ControlFlowNode for sink2() |  | test.py:46:1:46:15 | Function sink2 | 0 | no attribute | simple.test |
+| Simple config | test.py:63:17:63:17 | simple.test | test.py:63:5:63:18 | ControlFlowNode for sink3() |  | test.py:49:1:49:21 | Function sink3 | 1 | no attribute | simple.test |
+| Simple config | test.py:70:17:70:17 | simple.test | test.py:70:5:70:18 | ControlFlowNode for sink3() |  | test.py:49:1:49:21 | Function sink3 | 1 | no attribute | simple.test |
+| Simple config | test.py:77:13:77:13 | simple.test | test.py:77:9:77:14 | ControlFlowNode for hub() |  | test.py:72:1:72:13 | Function hub | 0 | no attribute | simple.test |
+| Simple config | test.py:116:13:116:13 | .x = simple.test | test.py:116:9:116:14 | ControlFlowNode for hub() |  | test.py:72:1:72:13 | Function hub | 0 | attribute x | simple.test |
+| Simple config | test.py:117:12:117:12 | .x = simple.test | test.py:117:5:117:13 | ControlFlowNode for x_sink() |  | test.py:105:1:105:16 | Function x_sink | 0 | attribute x | simple.test |
+| Simple config | test.py:196:19:196:19 | simple.test | test.py:196:8:196:25 | ControlFlowNode for isinstance() |  | file://:0:0:0:0 | Builtin-function isinstance | 0 | no attribute | simple.test |
+| Taint carrier config | carrier.py:29:13:29:32 | explicit.carrier | carrier.py:29:9:29:33 | ControlFlowNode for hub() |  | carrier.py:13:1:13:13 | Function hub | 0 | no attribute | explicit.carrier |
+| Taint carrier config | carrier.py:33:25:33:44 | explicit.carrier | carrier.py:33:9:33:45 | ControlFlowNode for ImplicitCarrier() |  | carrier.py:4:5:4:28 | Function ImplicitCarrier.__init__ | 1 | no attribute | explicit.carrier |

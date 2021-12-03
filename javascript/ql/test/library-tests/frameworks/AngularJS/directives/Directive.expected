@@ -1,0 +1,5 @@
+| d1 | d1 | tst.js:20:3:24:4 | m.direc ... };\\n  }) |
+| d2 | d2 | tst.js:25:3:32:4 | m.direc ... };\\n  }) |
+| d3 | d3 | tst.js:33:3:39:4 | m.direc ... };\\n  }) |
+| d4 | d4 | tst.js:40:3:49:4 | m.direc ... };\\n  }) |
+| heroDetail | heroDetail | tst.js:11:1:16:2 | angular ... \\n  }\\n}) |

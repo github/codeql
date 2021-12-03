@@ -1,0 +1,19 @@
+| file://:0:0:0:0 | __va_list_tag | 0 __va_list_tag::gp_offset |
+| file://:0:0:0:0 | __va_list_tag | 1 __va_list_tag::fp_offset |
+| file://:0:0:0:0 | __va_list_tag | 2 __va_list_tag::overflow_arg_area |
+| file://:0:0:0:0 | __va_list_tag | 3 __va_list_tag::reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 4 __va_list_tag::operator= |
+| file://:0:0:0:0 | __va_list_tag | 5 __va_list_tag::operator= |
+| h.h:2:7:2:8 | CA | 0 CA::CB<TB> |
+| h.h:2:7:2:8 | CA | 0 CA::CB<double> |
+| h.h:2:7:2:8 | CA | 0 CA::CB<float> |
+| h.h:2:7:2:8 | CA | 0 CA::CB<int> |
+| h.h:2:7:2:8 | CA | 1 CA::operator= |
+| h.h:2:7:2:8 | CA | 2 CA::operator= |
+| h.h:5:11:5:12 | CB<TB> | <none> |
+| h.h:5:11:5:12 | CB<double> | 0 CA::CB<double>::operator= |
+| h.h:5:11:5:12 | CB<double> | 1 CA::CB<double>::operator= |
+| h.h:5:11:5:12 | CB<float> | 0 CA::CB<float>::operator= |
+| h.h:5:11:5:12 | CB<float> | 1 CA::CB<float>::operator= |
+| h.h:5:11:5:12 | CB<int> | 0 CA::CB<int>::operator= |
+| h.h:5:11:5:12 | CB<int> | 1 CA::CB<int>::operator= |

@@ -1,0 +1,1 @@
+| compare.py:22:12:22:17 | Compare | Comparison of identical values; may be missing 'self'. |

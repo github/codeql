@@ -1,0 +1,73 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using a cryptographically weak pseudo-random number generator to generate a security-sensitive value,
+such as a password, makes it easier for an attacker to predict the value.
+</p>
+<p>
+Pseudo-random number generators generate a sequence of numbers that only approximates the properties
+of random numbers. The sequence is not truly random because it is completely determined by a
+relatively small set of initial values, the seed. If the random number generator is
+cryptographically weak, then this sequence may be easily predictable through outside observations.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use a cryptographically secure pseudo-random number generator if the output is to be used in a
+security sensitive context. As a rule of thumb, a value should be considered "security sensitive"
+if predicting it would allow the attacker to perform an action that they would otherwise be unable
+to perform. For example, if an attacker could predict the random password generated for a new user,
+they would be able to log in as that new user.
+</p>
+<p>
+For C#, <code>RNGCryptoServiceProvider</code> provides a cryptographically secure pseudo-random
+number generator. <code>Random</code> is not cryptographically secure, and should be avoided in
+security contexts. For contexts which are not security sensitive, <code>Random</code> may be
+preferable as it has a more convenient interface, and is likely to be faster.
+</p>
+<p>
+For the specific use-case of generating passwords, consider
+<code>System.Web.Security.Membership.GeneratePassword</code>, which provides a cryptographically
+secure method of generating random passwords.
+</p>
+
+</recommendation>
+
+<example>
+
+<p>
+The following examples show different ways of generating a password.
+</p>
+
+<p>
+In the first case, we generate a fresh password by appending a random integer to the end of a static
+string. The random number generator used (<code>Random</code>) is not cryptographically secure,
+so it may be possible for an attacker to predict the generated password.
+</p>
+<p>
+In the second example, a cryptographically secure random number generator is used for the same
+purpose. In this case, it is much harder to predict the generated integers.
+</p>
+<p>
+In the final example, the password is generated using the <code>Membership.GeneratePassword</code>
+library method, which uses a cryptographically secure random number generator to generate a random
+series of characters. This method should be preferred when generating passwords, if possible, as it
+avoids potential pitfalls when converting the output of a random number generator (usually an int or
+a byte) to a series of permitted characters.
+</p>
+<sample src="InsecureRandomness.cs" />
+
+</example>
+
+<references>
+
+  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+  <li>MSDN. <a href="http://msdn.microsoft.com/en-us/library/system.security.cryptography.randomnumbergenerator.aspx">RandomNumberGenerator</a>.</li>
+  <li>MSDN. <a href="https://msdn.microsoft.com/en-us/library/system.web.security.membership.generatepassword(v=vs.110).aspx">Membership.GeneratePassword</a>.</li>
+
+</references>
+</qhelp>

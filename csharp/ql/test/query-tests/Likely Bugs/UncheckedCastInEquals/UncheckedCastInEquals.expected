@@ -1,0 +1,1 @@
+| UncheckedCastInEquals.cs:7:17:7:27 | (...) ... | Missing type-check before casting parameter to 'Equals'. |

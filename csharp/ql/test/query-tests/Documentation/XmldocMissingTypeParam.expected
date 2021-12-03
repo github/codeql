@@ -1,0 +1,3 @@
+| documentation.cs:83:18:83:18 | T | Type parameter should be documented. |
+| documentation.cs:98:18:98:19 | T1 | Type parameter should be documented. |
+| documentation.cs:106:32:106:32 | T | Type parameter should be documented. |

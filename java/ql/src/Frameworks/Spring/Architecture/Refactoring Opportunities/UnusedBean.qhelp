@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Bean definitions that are specified but are never used are redundant and can be removed. Unused
+beans make the program harder to understand.
+</p>
+<p>
+A bean definition is considered to be used if one or more of the following is true:
+</p>
+<ul>
+<li>The bean is referenced or defined in the <code>&lt;constructor-arg&gt;</code> or
+<code>&lt;property&gt;</code> element of a live bean.</li>
+<li>The bean is injected in to a constructor or method of a live bean due to autowiring. This includes
+autowiring by annotation (<code>@Autowired</code> or <code>@Inject</code>), and autowiring configured
+by the autowired attribute within bean configuration files.</li>
+<li>The bean is explictly loaded from a factory bean. It is not always possible to determine when
+this occurs, because factory beans are loaded using a <code>String</code> value, which may contain
+arbitrary values.</li>
+<li>The bean is called reflectively by the Spring framework. For example, if the class is a Spring
+MVC framework controller, it may be called in response to web requests.</li>
+<li>The bean has a static initializer.</li>
+<li>The bean is not lazy, and has a constructor or instance initializer that modifies state outside
+of the bean.</li>
+</ul>
+<p>
+Any bean which is not used in one or more ways will be marked as "dead".
+</p>
+</overview>
+<recommendation>
+<p>
+First verify that the bean definition is never used at runtime. In some cases beans may be used in
+framework-specific ways, or may be loaded by name from a bean factory in a way that is impossible
+to determine statically.
+</p>
+<p>
+After confirming that the bean is not required, remove the bean. You will also need remove any
+references to this bean, which may, in turn, require removing other beans or references.
+</p>
+</recommendation>
+<example>
+<p>The following example shows a configuration file that includes two beans:</p>
+<sample src="UnusedBean.xml"/>
+<p>This XML file is loaded with the following Java class:</p>
+<sample src="UnusedBean.java" />
+<p>
+This class constructs a Spring <code>ApplicationContext</code> using the XML file, then loads the
+"petStore" bean. Given these two files, the "clinic" bean will be marked as dead because it is
+not used in any context, unlike the "petStore" bean.
+</p>
+</example>
+<references>
+<li>
+Spring Framework Reference Documentation 4.2:
+<a href="http://docs.spring.io/spring/docs/4.2.3.RELEASE/spring-framework-reference/html/beans.html#beans-definition">6.3 Bean overview</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+name: codeql/ruby-all
+version: 0.0.2
+extractor: ruby
+dbscheme: ruby.dbscheme
+upgrades: upgrades
+library: true

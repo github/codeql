@@ -1,0 +1,3 @@
+| __builtin_constant_p.c:6:27:6:27 | function call is not allowed in a constant expression | 4 | bad_constant_function_call |
+| __builtin_constant_p.c:7:27:7:27 | expression must have a constant value | 4 | expr_not_constant |
+| file://:0:0:0:0 | There was an error during this compilation | 4 | Error occurred |

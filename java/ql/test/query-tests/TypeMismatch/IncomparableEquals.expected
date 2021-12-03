@@ -1,0 +1,2 @@
+| incomparable_equals/B.java:7:3:7:13 | equals(...) | Call to equals() comparing incomparable types T and String. |
+| incomparable_equals/F.java:5:3:5:13 | equals(...) | Call to equals() comparing incomparable types int[] and int[][]. |

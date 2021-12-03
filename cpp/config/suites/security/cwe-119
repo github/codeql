@@ -1,0 +1,13 @@
+# CWE-119: Improper Restriction of Operations within the Bounds of a Memory Buffer
++ semmlecode-cpp-queries/Security/CWE/CWE-119/OverflowBuffer.ql: /CWE/CWE-119
+    @name Call to memory access function may overflow buffer (CWE-119)
++ semmlecode-cpp-queries/Critical/OverflowStatic.ql: /CWE/CWE-119
+    @name Static array access may cause overflow (CWE-119)
++ semmlecode-cpp-queries/Critical/OverflowDestination.ql: /CWE/CWE-119
+    @name Copy function using source size (CWE-119)
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToStrncat.ql: /CWE/CWE-119
+    @name Potentially unsafe call to strncat (CWE-119)
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/StrncpyFlippedArgs.ql: /CWE/CWE-119
+    @name Possibly wrong buffer size in string copy (CWE-119)
++ semmlecode-cpp-queries/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql: /CWE/CWE-119
+    @name Upcast array used in pointer arithmetic (CWE-119)

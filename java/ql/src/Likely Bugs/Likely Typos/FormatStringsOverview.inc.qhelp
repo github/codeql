@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When formatting strings using <code>printf</code>-style format strings, one
+must ensure that the number of supplied arguments matches the number of
+arguments referenced by the format string. Additional arguments will be thrown
+away silently, which may not be the intended behavior, and too few arguments will cause an
+<code>IllegalFormatException</code>.
+</p>
+<p>
+Format strings are used by the <code>format</code> method on the classes
+<code>String</code>, <code>Formatter</code>, <code>Console</code>,
+<code>PrintWriter</code>, and <code>PrintStream</code>. Several of these
+classes also supply the method alias <code>printf</code>. The class
+<code>Console</code> has two additional methods, <code>readLine</code> and
+<code>readPassword</code>, that also use format strings.
+</p>
+</overview>
+
+</qhelp>

@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A dollar assertion <code>$</code> in a regular expression only matches at the end of the input, or
+(for multi-line regular expressions) at the end of a line. If it is followed by a pattern
+that must match a non-empty sequence of (non-newline) input characters, it cannot possibly match,
+rendering the entire regular expression unmatchable.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression to find and correct any typos.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression <code>r"\.\(\w+$\)"</code> cannot match any
+string, since it contains a dollar assertion followed by an escape sequence that matches a
+closing parenthesis.
+</p>
+
+<p>
+The second regular expression, <code>r"\.\(\w+\)$"</code>, has the dollar at the end and will work as expected.
+</p>
+
+<sample src="UnmatchableDollar.py" />
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="https://docs.python.org/library/re.html">Regular expression operations</a>.</li>
+<li>Regular-Expressions.info: <a href="http://www.regular-expressions.info/anchors.html">Start of String and End of String Anchors</a>.</li>
+
+</references>
+</qhelp>

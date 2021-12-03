@@ -1,0 +1,19 @@
+| 19 | ControlFlowNode for f() | Function f |
+| 21 | ControlFlowNode for f() | Function f |
+| 22 | ControlFlowNode for C() | class C |
+| 23 | ControlFlowNode for Attribute() | Method(Function f, C()) |
+| 24 | ControlFlowNode for Attribute() | Method(Function C.n, C()) |
+| 25 | ControlFlowNode for Attribute() | Function C.n |
+| 29 | ControlFlowNode for staticmethod() | builtin-class staticmethod |
+| 33 | ControlFlowNode for Attribute() | Function D.foo |
+| 34 | ControlFlowNode for Attribute() | Function D.foo |
+| 34 | ControlFlowNode for D() | class D |
+| 37 | ControlFlowNode for Attribute() | Method(builtin method append, List) |
+| 38 | ControlFlowNode for len() | Builtin-function len |
+| 40 | ControlFlowNode for f() | Function f |
+| 41 | ControlFlowNode for C() | class C |
+| 42 | ControlFlowNode for Attribute() | Method(Function C.n, C()) |
+| 45 | ControlFlowNode for open() | Builtin-function open |
+| 46 | ControlFlowNode for open() | Builtin-function open |
+| 51 | ControlFlowNode for foo() | Function foo |
+| 55 | ControlFlowNode for bar() | Function bar |

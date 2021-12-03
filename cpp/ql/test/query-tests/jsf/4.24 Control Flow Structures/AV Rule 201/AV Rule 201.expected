@@ -1,0 +1,9 @@
+| AV Rule 201.c:13:3:13:3 | i | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:12:2:15:2 | { ... } | loop |
+| AV Rule 201.c:29:4:29:4 | i | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:26:2:38:2 | { ... } | loop |
+| AV Rule 201.c:30:4:30:4 | j | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:28:3:32:3 | { ... } | loop |
+| AV Rule 201.c:55:5:55:5 | j | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:52:3:57:3 | { ... } | loop |
+| AV Rule 201.c:55:5:55:5 | j | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:54:4:56:4 | { ... } | loop |
+| AV Rule 201.c:65:4:65:11 | char_ptr | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:62:2:66:2 | { ... } | loop |
+| AV Rule 201.c:71:23:71:23 | i | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:70:2:78:2 | { ... } | loop |
+| AV Rule 201.c:75:8:75:8 | i | Loop counters should not be modified in the body of the $@. | AV Rule 201.c:70:2:78:2 | { ... } | loop |
+| StructMembers.cpp:26:8:26:8 | b | Loop counters should not be modified in the body of the $@. | StructMembers.cpp:14:3:28:3 | { ... } | loop |

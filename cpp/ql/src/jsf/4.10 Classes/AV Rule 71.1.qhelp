@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds calls to virtual functions from a constructor or destructor
+that may resolve to a different function than was intended. When instantiating
+a derived class, the resolution of a virtual function call depends on the type
+that defines the constructor/destructor <i>that is currently running</i>, not
+the class that is being instantiated. This is to prevent the calling of
+functions in the derived class that rely on fields declared in the derived
+class. The values of such fields are undefined until the constructor of the
+derived class is invoked <i>after</i> the constructor of the base class. Values
+declared in the derived class are likewise destructed <i>prior</i> to
+invocation of the destructor of the base class.
+</p>
+
+<p>
+The indicated function call is a call to a virtual function in a constructor or destructor, which will most
+likely not call the intended function, or if correct would be difficult to interpret without knowledge of the class'
+inheritance graph.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Do not call virtual functions from the constructor or destructor. Change the virtual function in the base into a non-virtual function and pass
+any required parameters from the derived classes, or simply perform initialization that requires a virtual function after construction/before destruction. 
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 71.1.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  AV Rule 71.1, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  S. Meyers. <em>Effective C++ 3d ed.</em> pp 48-52. Addison-Wesley Professional, 2005.
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/cplusplus/OOP50-CPP.+Do+not+invoke+virtual+functions+from+constructors+or+destructors">OOP50-CPP. Do not invoke virtual functions from constructors or destructors</a>
+</li>
+
+
+<!-- Reference of C++ spec that specifies virtual function -->
+<!-- Reference to Effective C++ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,7 @@
+| templates.cpp:9:5:9:14 | using c | UsingDeclarationEntry, enclosingElement:std |
+| usings.cpp:8:1:8:11 | using nf | UsingDeclarationEntry, enclosingElement:(global namespace) |
+| usings.cpp:9:1:9:17 | using namespace N | UsingDirectiveEntry, enclosingElement:(global namespace) |
+| usings.cpp:18:3:18:13 | using bf | UsingDeclarationEntry, enclosingElement:D |
+| usings.cpp:21:5:21:14 | using gf | UsingDeclarationEntry, enclosingElement:{ ... } |
+| usings.cpp:34:3:34:20 | using tbf | UsingDeclarationEntry, enclosingElement:TD |
+| usings.cpp:42:5:42:22 | using foo | UsingDeclarationEntry, enclosingElement:nsbar |

@@ -1,0 +1,76 @@
+| module-environment-detection.js:23:8:23:36 | typeof  ... efined' | This guard always evaluates to true. |
+| regression.js:9:9:9:12 | date | This guard always evaluates to true. |
+| regression.js:13:25:13:40 | obj != undefined | This guard always evaluates to true. |
+| tst2.js:4:12:4:35 | typeof  ... efined" | This guard always evaluates to true. |
+| tst.js:18:5:18:5 | u | This guard always evaluates to false. |
+| tst.js:19:5:19:5 | n | This guard always evaluates to false. |
+| tst.js:20:5:20:5 | o | This guard always evaluates to true. |
+| tst.js:23:5:23:5 | u | This guard always evaluates to false. |
+| tst.js:24:5:24:5 | n | This guard always evaluates to false. |
+| tst.js:25:5:25:5 | o | This guard always evaluates to true. |
+| tst.js:28:5:28:6 | !u | This guard always evaluates to true. |
+| tst.js:29:5:29:6 | !n | This guard always evaluates to true. |
+| tst.js:30:5:30:6 | !o | This guard always evaluates to false. |
+| tst.js:33:5:33:7 | !!u | This guard always evaluates to false. |
+| tst.js:34:5:34:7 | !!n | This guard always evaluates to false. |
+| tst.js:35:5:35:7 | !!o | This guard always evaluates to true. |
+| tst.js:38:5:38:18 | u != undefined | This guard always evaluates to false. |
+| tst.js:39:5:39:18 | n != undefined | This guard always evaluates to false. |
+| tst.js:40:5:40:18 | o != undefined | This guard always evaluates to true. |
+| tst.js:43:5:43:18 | u == undefined | This guard always evaluates to true. |
+| tst.js:44:5:44:18 | n == undefined | This guard always evaluates to true. |
+| tst.js:45:5:45:18 | o == undefined | This guard always evaluates to false. |
+| tst.js:48:5:48:19 | u === undefined | This guard always evaluates to true. |
+| tst.js:49:5:49:19 | n === undefined | This guard always evaluates to false. |
+| tst.js:50:5:50:19 | o === undefined | This guard always evaluates to false. |
+| tst.js:53:9:53:9 | u | This guard always evaluates to false. |
+| tst.js:56:9:56:9 | n | This guard always evaluates to false. |
+| tst.js:59:9:59:9 | o | This guard always evaluates to true. |
+| tst.js:66:5:66:5 | u | This guard always evaluates to false. |
+| tst.js:67:5:67:5 | n | This guard always evaluates to false. |
+| tst.js:68:5:68:5 | o | This guard always evaluates to true. |
+| tst.js:71:9:71:23 | u !== undefined | This guard always evaluates to false. |
+| tst.js:74:9:74:23 | n !== undefined | This guard always evaluates to true. |
+| tst.js:77:9:77:23 | o !== undefined | This guard always evaluates to true. |
+| tst.js:84:9:84:22 | u == undefined | This guard always evaluates to true. |
+| tst.js:85:9:85:22 | n == undefined | This guard always evaluates to true. |
+| tst.js:86:9:86:22 | o == undefined | This guard always evaluates to false. |
+| tst.js:89:9:89:22 | u != undefined | This guard always evaluates to false. |
+| tst.js:90:9:90:22 | n != undefined | This guard always evaluates to false. |
+| tst.js:91:9:91:22 | o != undefined | This guard always evaluates to true. |
+| tst.js:94:9:94:32 | typeof  ... efined" | This guard always evaluates to true. |
+| tst.js:95:9:95:32 | typeof  ... efined" | This guard always evaluates to false. |
+| tst.js:96:9:96:32 | typeof  ... efined" | This guard always evaluates to false. |
+| tst.js:100:5:100:27 | typeof  ... nction" | This guard always evaluates to true. |
+| tst.js:101:5:101:27 | typeof  ... nction" | This guard always evaluates to false. |
+| tst.js:114:5:114:15 | empty_array | This guard always evaluates to true. |
+| tst.js:115:5:115:22 | pseudo_empty_array | This guard always evaluates to true. |
+| tst.js:116:5:116:19 | non_empty_array | This guard always evaluates to true. |
+| tst.js:124:6:124:20 | u !== undefined | This guard always evaluates to false. |
+| tst.js:124:25:124:34 | u !== null | This guard always evaluates to true. |
+| tst.js:125:5:125:19 | u !== undefined | This guard always evaluates to false. |
+| tst.js:125:24:125:33 | u !== null | This guard always evaluates to true. |
+| tst.js:127:5:127:18 | u != undefined | This guard always evaluates to false. |
+| tst.js:127:23:127:31 | u != null | This guard always evaluates to false. |
+| tst.js:127:23:127:31 | u != null | This guard always evaluates to true. |
+| tst.js:128:5:128:18 | u == undefined | This guard always evaluates to true. |
+| tst.js:128:23:128:31 | u == null | This guard always evaluates to false. |
+| tst.js:128:23:128:31 | u == null | This guard always evaluates to true. |
+| tst.js:129:5:129:19 | u !== undefined | This guard always evaluates to false. |
+| tst.js:129:24:129:33 | u !== null | This guard always evaluates to true. |
+| tst.js:130:5:130:22 | !(u === undefined) | This guard always evaluates to false. |
+| tst.js:130:27:130:39 | !(u === null) | This guard always evaluates to true. |
+| tst.js:131:5:131:19 | u === undefined | This guard always evaluates to true. |
+| tst.js:131:24:131:33 | u === null | This guard always evaluates to false. |
+| tst.js:132:7:132:21 | u === undefined | This guard always evaluates to true. |
+| tst.js:132:26:132:35 | u === null | This guard always evaluates to false. |
+| tst.js:133:5:133:22 | !(u === undefined) | This guard always evaluates to false. |
+| tst.js:133:27:133:36 | u !== null | This guard always evaluates to true. |
+| tst.js:135:5:135:18 | u == undefined | This guard always evaluates to true. |
+| tst.js:135:23:135:31 | u == null | This guard always evaluates to true. |
+| tst.js:138:24:138:33 | x === null | This guard always evaluates to false. |
+| tst.js:140:13:140:22 | x === null | This guard always evaluates to false. |
+| tst.js:156:23:156:31 | x != null | This guard always evaluates to true. |
+| tst.js:158:13:158:21 | x != null | This guard always evaluates to true. |
+| tst.js:177:2:177:2 | u | This guard always evaluates to false. |
+| tst.js:178:2:178:2 | u | This guard always evaluates to false. |

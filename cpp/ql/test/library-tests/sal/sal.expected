@@ -1,0 +1,15 @@
+| test.cpp:6:3:6:19 | __in_ecount(x) | test.cpp:6:33:6:36 | str1 |
+| test.cpp:7:3:7:6 | __in | test.cpp:7:12:7:15 | len1 |
+| test.cpp:8:3:8:19 | __in_ecount(x) | test.cpp:8:32:8:35 | str2 |
+| test.cpp:9:3:9:6 | __in | test.cpp:9:12:9:15 | len2 |
+| test.cpp:10:3:10:10 | __in_opt | test.cpp:10:21:10:29 | opt_param |
+| test.cpp:11:3:11:12 | __reserved | test.cpp:11:23:11:30 | reserved |
+| test.cpp:13:1:13:13 | _Ret_notnull_ | test.cpp:16:7:16:8 | f1 |
+| test.cpp:14:1:14:21 | _Must_inspect_result_ | test.cpp:16:7:16:8 | f1 |
+| test.cpp:15:1:15:14 | _Check_return_ | test.cpp:16:7:16:8 | f1 |
+| test.cpp:16:10:16:14 | _Out_ | test.cpp:16:44:16:44 | x |
+| test.cpp:16:16:16:37 | _Result_zeroonfailure_ | test.cpp:16:44:16:44 | x |
+| test.cpp:18:1:18:13 | _Ret_notnull_ | test.cpp:22:7:22:8 | f2 |
+| test.cpp:21:1:21:14 | _Check_return_ | test.cpp:22:7:22:8 | f2 |
+| test.cpp:23:5:23:9 | _Out_ | test.cpp:25:6:25:6 | x |
+| test.cpp:29:20:29:23 | _In_ | test.cpp:29:38:29:38 | a |

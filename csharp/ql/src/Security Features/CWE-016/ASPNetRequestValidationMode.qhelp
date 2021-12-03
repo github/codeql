@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+			The <code>requestValidationMode</code> attribute in ASP.NET is used to configure built-in validation to
+			protect applications against code injections. Downgrading or disabling
+			this configuration is not recommended. The default value of 4.5
+			is the only recommended value, as previous versions only test a subset of requests.
+		</p>
+
+	</overview>
+	<recommendation>
+
+		<p>
+			Always set <code>requestValidationMode</code> to 4.5, or leave it at its default value.
+		</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+			The following example shows the <code>requestValidationMode</code>
+			attribute set to a value of 4.0, which disables some protections and
+			ignores individual <code>Page</code> directives:
+		</p>
+
+		<sample src="ASPNetRequestValidationModeBad.config" />
+
+		<p>
+			Setting the value to 4.5 enables request validation for all requests:
+		</p>
+
+		<sample src="ASPNetRequestValidationModeGood.config" />
+
+	</example>
+	<references>
+
+		<li>
+			Microsoft:
+			<a
+				href="https://docs.microsoft.com/en-us/dotnet/api/system.web.configuration.httpruntimesection.requestvalidationmode?view=netframework-4.8">HttpRuntimeSection.RequestValidationMode Property
+				</a>.
+		</li>
+		<li>
+			OWASP:
+			<a
+				href="https://www.owasp.org/index.php/ASP.NET_Request_Validation">ASP.NET Request Validation</a>.
+		</li>
+	</references>
+
+</qhelp>

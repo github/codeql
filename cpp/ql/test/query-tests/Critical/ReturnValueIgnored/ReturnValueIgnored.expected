@@ -1,0 +1,1 @@
+| test.cpp:32:2:32:11 | call to myFunction | Result of call to myFunction is ignored; 92% of calls to this function have their result used. |

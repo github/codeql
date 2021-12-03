@@ -1,0 +1,92 @@
+| isolate scope for directive1 | scope-access.js:4:41:4:45 | scope |
+| isolate scope for directive1 | scope-access.js:5:17:5:21 | scope |
+| isolate scope for directive1 | scope-access.js:7:20:7:21 | {} |
+| isolate scope for directive2 | scope-access.js:12:34:12:39 | $scope |
+| isolate scope for directive2 | scope-access.js:13:17:13:22 | $scope |
+| isolate scope for directive2 | scope-access.js:15:20:15:21 | {} |
+| isolate scope for directive3 | scope-access.js:20:39:20:44 | $scope |
+| isolate scope for directive3 | scope-access.js:21:17:21:22 | $scope |
+| isolate scope for directive3 | scope-access.js:23:20:23:21 | {} |
+| isolate scope for directive4 | scope-access.js:28:45:28:45 | a |
+| isolate scope for directive4 | scope-access.js:29:17:29:17 | a |
+| isolate scope for directive4 | scope-access.js:31:20:31:21 | {} |
+| isolate scope for directive5 | scope-access.js:37:17:37:20 | this |
+| isolate scope for directive5 | scope-access.js:39:20:39:21 | {} |
+| isolate scope for directive6 | scope-access.js:46:23:46:26 | this |
+| isolate scope for directive6 | scope-access.js:48:20:48:21 | {} |
+| isolate scope for myCustomer | dev-guide-5.js:11:12:13:5 | { // Sc ... y\\n    } |
+| isolate scope for myCustomer | dev-guide-6.js:11:12:13:5 | { // Sc ... y\\n    } |
+| scope for <directive7>...</> | scope-access.js:54:34:54:39 | $scope |
+| scope for <directive7>...</> | scope-access.js:55:17:55:22 | $scope |
+| scope for <div>...</> | dev-guide-1.js:4:49:4:54 | $scope |
+| scope for <div>...</> | dev-guide-1.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-1.js:7:3:7:8 | $scope |
+| scope for <div>...</> | dev-guide-1.js:8:5:8:10 | $scope |
+| scope for <div>...</> | dev-guide-1.js:8:34:8:39 | $scope |
+| scope for <div>...</> | dev-guide-2.js:4:66:4:71 | $scope |
+| scope for <div>...</> | dev-guide-2.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-2.js:8:51:8:56 | $scope |
+| scope for <div>...</> | dev-guide-2.js:9:3:9:8 | $scope |
+| scope for <div>...</> | dev-guide-3.js:4:52:4:57 | $scope |
+| scope for <div>...</> | dev-guide-3.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-3.js:6:3:6:8 | $scope |
+| scope for <div>...</> | dev-guide-3.js:7:5:7:10 | $scope |
+| scope for <div>...</> | dev-guide-4.js:4:52:4:57 | $scope |
+| scope for <div>...</> | dev-guide-4.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-4.js:10:51:10:56 | $scope |
+| scope for <div>...</> | dev-guide-4.js:11:3:11:8 | $scope |
+| scope for <div>...</> | dev-guide-5.js:4:47:4:52 | $scope |
+| scope for <div>...</> | dev-guide-5.js:4:47:4:52 | $scope |
+| scope for <div>...</> | dev-guide-5.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-5.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-5.js:6:3:6:8 | $scope |
+| scope for <div>...</> | dev-guide-5.js:6:3:6:8 | $scope |
+| scope for <div>...</> | dev-guide-6.js:4:47:4:52 | $scope |
+| scope for <div>...</> | dev-guide-6.js:4:47:4:52 | $scope |
+| scope for <div>...</> | dev-guide-6.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-6.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-6.js:6:3:6:8 | $scope |
+| scope for <div>...</> | dev-guide-6.js:6:3:6:8 | $scope |
+| scope for <elementthatusescontroller1>...</> | scope-access.js:59:52:59:57 | $scope |
+| scope for <elementthatusescontroller1>...</> | scope-access.js:60:9:60:14 | $scope |
+| scope for <li>...</> | dev-guide-3.js:4:52:4:57 | $scope |
+| scope for <li>...</> | dev-guide-3.js:4:52:4:57 | $scope |
+| scope for <li>...</> | dev-guide-3.js:5:3:5:8 | $scope |
+| scope for <li>...</> | dev-guide-3.js:5:3:5:8 | $scope |
+| scope for <li>...</> | dev-guide-3.js:6:3:6:8 | $scope |
+| scope for <li>...</> | dev-guide-3.js:6:3:6:8 | $scope |
+| scope for <li>...</> | dev-guide-3.js:7:5:7:10 | $scope |
+| scope for <li>...</> | dev-guide-3.js:7:5:7:10 | $scope |
+| scope in dev-guide-1.html | dev-guide-1.js:4:49:4:54 | $scope |
+| scope in dev-guide-1.html | dev-guide-1.js:5:3:5:8 | $scope |
+| scope in dev-guide-1.html | dev-guide-1.js:7:3:7:8 | $scope |
+| scope in dev-guide-1.html | dev-guide-1.js:8:5:8:10 | $scope |
+| scope in dev-guide-1.html | dev-guide-1.js:8:34:8:39 | $scope |
+| scope in dev-guide-2.html | dev-guide-2.js:4:66:4:71 | $scope |
+| scope in dev-guide-2.html | dev-guide-2.js:5:3:5:8 | $scope |
+| scope in dev-guide-2.html | dev-guide-2.js:8:51:8:56 | $scope |
+| scope in dev-guide-2.html | dev-guide-2.js:9:3:9:8 | $scope |
+| scope in dev-guide-3.html | dev-guide-3.js:4:52:4:57 | $scope |
+| scope in dev-guide-3.html | dev-guide-3.js:5:3:5:8 | $scope |
+| scope in dev-guide-3.html | dev-guide-3.js:6:3:6:8 | $scope |
+| scope in dev-guide-3.html | dev-guide-3.js:7:5:7:10 | $scope |
+| scope in dev-guide-4.html | dev-guide-4.js:4:52:4:57 | $scope |
+| scope in dev-guide-4.html | dev-guide-4.js:5:3:5:8 | $scope |
+| scope in dev-guide-4.html | dev-guide-4.js:10:51:10:56 | $scope |
+| scope in dev-guide-4.html | dev-guide-4.js:11:3:11:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-5.js:4:47:4:52 | $scope |
+| scope in dev-guide-5.html | dev-guide-5.js:5:3:5:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-5.js:6:3:6:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-6.js:4:47:4:52 | $scope |
+| scope in dev-guide-5.html | dev-guide-6.js:5:3:5:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-6.js:6:3:6:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-5.js:4:47:4:52 | $scope |
+| scope in dev-guide-6.html | dev-guide-5.js:5:3:5:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-5.js:6:3:6:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-6.js:4:47:4:52 | $scope |
+| scope in dev-guide-6.html | dev-guide-6.js:5:3:5:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-6.js:6:3:6:8 | $scope |
+| scope in scope-access.html | scope-access.js:54:34:54:39 | $scope |
+| scope in scope-access.html | scope-access.js:55:17:55:22 | $scope |
+| scope in scope-access.html | scope-access.js:59:52:59:57 | $scope |
+| scope in scope-access.html | scope-access.js:60:9:60:14 | $scope |

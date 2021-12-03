@@ -1,0 +1,7 @@
+| global.js:1:1:1:32 | _.map([ ... (x) {}) | map |
+| tst.js:9:3:9:9 | map1(x) | map |
+| tst.js:10:3:10:9 | map2(x) | map |
+| tst.js:11:3:11:9 | map3(x) | map |
+| tst.js:12:3:12:9 | map4(x) | map |
+| tst.js:13:3:13:15 | lodash.map(x) | map |
+| tst.js:14:3:14:19 | underscore.map(x) | map |

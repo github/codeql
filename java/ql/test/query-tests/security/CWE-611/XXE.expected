@@ -1,0 +1,351 @@
+edges
+| DocumentBuilderTests.java:93:21:93:73 | new SAXSource(...) : SAXSource | DocumentBuilderTests.java:94:16:94:21 | source : SAXSource |
+| DocumentBuilderTests.java:93:35:93:72 | new InputSource(...) : InputSource | DocumentBuilderTests.java:93:21:93:73 | new SAXSource(...) : SAXSource |
+| DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | DocumentBuilderTests.java:93:35:93:72 | new InputSource(...) : InputSource |
+| DocumentBuilderTests.java:94:16:94:21 | source : SAXSource | DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) |
+| DocumentBuilderTests.java:100:24:100:62 | new StreamSource(...) : StreamSource | DocumentBuilderTests.java:101:46:101:51 | source : StreamSource |
+| DocumentBuilderTests.java:100:24:100:62 | new StreamSource(...) : StreamSource | DocumentBuilderTests.java:102:16:102:21 | source : StreamSource |
+| DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:100:24:100:62 | new StreamSource(...) : StreamSource |
+| DocumentBuilderTests.java:101:46:101:51 | source : StreamSource | DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) |
+| DocumentBuilderTests.java:102:16:102:21 | source : StreamSource | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) |
+| SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource | SAXSourceTests.java:20:18:20:23 | source |
+| SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource | SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource |
+| SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) |
+| SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) |
+| SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) |
+| SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | SchemaTests.java:38:39:38:77 | new StreamSource(...) |
+| SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | SchemaTests.java:45:39:45:77 | new StreamSource(...) |
+| SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) |
+| SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | SimpleXMLTests.java:31:52:31:52 | b : byte[] |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | SimpleXMLTests.java:31:41:31:53 | new String(...) |
+| SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | SimpleXMLTests.java:38:52:38:52 | b : byte[] |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | SimpleXMLTests.java:38:41:38:53 | new String(...) |
+| SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) |
+| SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) |
+| SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) |
+| SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) |
+| SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) |
+| SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | SimpleXMLTests.java:90:48:90:48 | b : byte[] |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | SimpleXMLTests.java:90:37:90:49 | new String(...) |
+| SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | SimpleXMLTests.java:97:48:97:48 | b : byte[] |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | SimpleXMLTests.java:97:37:97:49 | new String(...) |
+| SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | SimpleXMLTests.java:104:37:104:37 | b : byte[] |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | SimpleXMLTests.java:104:26:104:38 | new String(...) |
+| SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | SimpleXMLTests.java:111:37:111:37 | b : byte[] |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | SimpleXMLTests.java:111:26:111:38 | new String(...) |
+| SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) |
+| SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) |
+| SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) |
+| SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | SimpleXMLTests.java:146:33:146:33 | b : byte[] |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | SimpleXMLTests.java:146:22:146:34 | new String(...) |
+| SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] |
+| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | SimpleXMLTests.java:153:33:153:33 | b : byte[] |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | SimpleXMLTests.java:153:22:153:34 | new String(...) |
+| TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | TransformerTests.java:20:27:20:65 | new StreamSource(...) |
+| TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | TransformerTests.java:21:23:21:61 | new StreamSource(...) |
+| TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | TransformerTests.java:71:27:71:65 | new StreamSource(...) |
+| TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | TransformerTests.java:72:23:72:61 | new StreamSource(...) |
+| TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | TransformerTests.java:79:27:79:65 | new StreamSource(...) |
+| TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | TransformerTests.java:80:23:80:61 | new StreamSource(...) |
+| TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | TransformerTests.java:88:27:88:65 | new StreamSource(...) |
+| TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | TransformerTests.java:89:23:89:61 | new StreamSource(...) |
+| TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | TransformerTests.java:97:27:97:65 | new StreamSource(...) |
+| TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | TransformerTests.java:98:23:98:61 | new StreamSource(...) |
+| TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | TransformerTests.java:103:21:103:59 | new StreamSource(...) |
+| TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | TransformerTests.java:116:21:116:59 | new StreamSource(...) |
+| TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | TransformerTests.java:122:21:122:59 | new StreamSource(...) |
+| TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | TransformerTests.java:129:21:129:59 | new StreamSource(...) |
+| TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) |
+| TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource | TransformerTests.java:141:18:141:70 | new SAXSource(...) |
+| TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource |
+| XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) |
+| XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) |
+| XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) |
+| XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | XMLReaderTests.java:70:18:70:55 | new InputSource(...) |
+| XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | XMLReaderTests.java:78:18:78:55 | new InputSource(...) |
+| XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) |
+| XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) |
+| XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) |
+| XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) |
+nodes
+| DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:71:19:71:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:79:19:79:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:87:19:87:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:93:21:93:73 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| DocumentBuilderTests.java:93:35:93:72 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DocumentBuilderTests.java:94:16:94:21 | source : SAXSource | semmle.label | source : SAXSource |
+| DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) | semmle.label | getInputSource(...) |
+| DocumentBuilderTests.java:100:24:100:62 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) | semmle.label | sourceToInputSource(...) |
+| DocumentBuilderTests.java:101:46:101:51 | source : StreamSource | semmle.label | source : StreamSource |
+| DocumentBuilderTests.java:102:16:102:21 | source : StreamSource | semmle.label | source : StreamSource |
+| DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:13:18:13:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:30:18:30:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:38:18:38:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:46:18:46:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:55:18:55:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:64:18:64:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:73:18:73:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:8:17:8:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:23:17:23:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:30:17:30:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:37:17:37:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:45:17:45:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:53:17:53:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:61:17:61:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SAXSourceTests.java:20:18:20:23 | source | semmle.label | source |
+| SchemaTests.java:12:39:12:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:25:39:25:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:31:39:31:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:38:39:38:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:45:39:45:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:31:41:31:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:38:41:38:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:90:37:90:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:97:37:97:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:104:26:104:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:111:26:111:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:146:22:146:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:153:22:153:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | semmle.label | b : byte[] |
+| TransformerTests.java:20:27:20:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:21:23:21:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:71:27:71:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:72:23:72:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:79:27:79:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:80:23:80:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:88:27:88:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:89:23:89:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:97:27:97:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:98:23:98:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:103:21:103:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:116:21:116:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:122:21:122:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:129:21:129:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:136:21:136:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:141:18:141:70 | new SAXSource(...) | semmle.label | new SAXSource(...) |
+| TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XMLReaderTests.java:16:18:16:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:56:18:56:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:63:18:63:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:70:18:70:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:78:18:78:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:86:18:86:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:94:18:94:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:100:18:100:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+subpaths
+#select
+| DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:42:19:42:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:49:19:49:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:64:19:64:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:71:19:71:39 | getInputStream(...) | DocumentBuilderTests.java:71:19:71:39 | getInputStream(...) | DocumentBuilderTests.java:71:19:71:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:71:19:71:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:79:19:79:39 | getInputStream(...) | DocumentBuilderTests.java:79:19:79:39 | getInputStream(...) | DocumentBuilderTests.java:79:19:79:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:79:19:79:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:87:19:87:39 | getInputStream(...) | DocumentBuilderTests.java:87:19:87:39 | getInputStream(...) | DocumentBuilderTests.java:87:19:87:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:87:19:87:39 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) | user input |
+| DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) | user input |
+| SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | user input |
+| SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | user input |
+| SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:13:18:13:38 | getInputStream(...) | user input |
+| SAXParserTests.java:30:18:30:38 | getInputStream(...) | SAXParserTests.java:30:18:30:38 | getInputStream(...) | SAXParserTests.java:30:18:30:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:30:18:30:38 | getInputStream(...) | user input |
+| SAXParserTests.java:38:18:38:38 | getInputStream(...) | SAXParserTests.java:38:18:38:38 | getInputStream(...) | SAXParserTests.java:38:18:38:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:38:18:38:38 | getInputStream(...) | user input |
+| SAXParserTests.java:46:18:46:38 | getInputStream(...) | SAXParserTests.java:46:18:46:38 | getInputStream(...) | SAXParserTests.java:46:18:46:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:46:18:46:38 | getInputStream(...) | user input |
+| SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:55:18:55:38 | getInputStream(...) | user input |
+| SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:64:18:64:38 | getInputStream(...) | user input |
+| SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:73:18:73:38 | getInputStream(...) | user input |
+| SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:37:17:37:37 | getInputStream(...) | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | user input |
+| SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | user input |
+| SAXSourceTests.java:20:18:20:23 | source | SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:20:18:20:23 | source | Unsafe parsing of XML file from $@. | SAXSourceTests.java:17:62:17:82 | getInputStream(...) | user input |
+| SchemaTests.java:12:39:12:77 | new StreamSource(...) | SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:12:56:12:76 | getInputStream(...) | user input |
+| SchemaTests.java:25:39:25:77 | new StreamSource(...) | SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:25:56:25:76 | getInputStream(...) | user input |
+| SchemaTests.java:31:39:31:77 | new StreamSource(...) | SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:31:56:31:76 | getInputStream(...) | user input |
+| SchemaTests.java:38:39:38:77 | new StreamSource(...) | SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | SchemaTests.java:38:39:38:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:38:56:38:76 | getInputStream(...) | user input |
+| SchemaTests.java:45:39:45:77 | new StreamSource(...) | SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | SchemaTests.java:45:39:45:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:45:56:45:76 | getInputStream(...) | user input |
+| SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | user input |
+| SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | user input |
+| SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:24:63:24:83 | getInputStream(...) | user input |
+| SimpleXMLTests.java:31:41:31:53 | new String(...) | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:31:41:31:53 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:38:41:38:53 | new String(...) | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:38:41:38:53 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) | user input |
+| SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | user input |
+| SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | user input |
+| SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | user input |
+| SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | user input |
+| SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:68:59:68:79 | getInputStream(...) | user input |
+| SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:73:59:73:79 | getInputStream(...) | user input |
+| SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:78:48:78:68 | getInputStream(...) | user input |
+| SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:83:48:83:68 | getInputStream(...) | user input |
+| SimpleXMLTests.java:90:37:90:49 | new String(...) | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:90:37:90:49 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:97:37:97:49 | new String(...) | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:97:37:97:49 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:104:26:104:38 | new String(...) | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:104:26:104:38 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:111:26:111:38 | new String(...) | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:111:26:111:38 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | user input |
+| SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) | user input |
+| SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | user input |
+| SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:129:44:129:64 | getInputStream(...) | user input |
+| SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | user input |
+| SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:139:44:139:64 | getInputStream(...) | user input |
+| SimpleXMLTests.java:146:22:146:34 | new String(...) | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:146:22:146:34 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) | user input |
+| SimpleXMLTests.java:153:22:153:34 | new String(...) | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:153:22:153:34 | new String(...) | Unsafe parsing of XML file from $@. | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) | user input |
+| TransformerTests.java:20:27:20:65 | new StreamSource(...) | TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | TransformerTests.java:20:27:20:65 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:20:44:20:64 | getInputStream(...) | user input |
+| TransformerTests.java:21:23:21:61 | new StreamSource(...) | TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | TransformerTests.java:21:23:21:61 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:21:40:21:60 | getInputStream(...) | user input |
+| TransformerTests.java:71:27:71:65 | new StreamSource(...) | TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | TransformerTests.java:71:27:71:65 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:71:44:71:64 | getInputStream(...) | user input |
+| TransformerTests.java:72:23:72:61 | new StreamSource(...) | TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | TransformerTests.java:72:23:72:61 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:72:40:72:60 | getInputStream(...) | user input |
+| TransformerTests.java:79:27:79:65 | new StreamSource(...) | TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | TransformerTests.java:79:27:79:65 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:79:44:79:64 | getInputStream(...) | user input |
+| TransformerTests.java:80:23:80:61 | new StreamSource(...) | TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | TransformerTests.java:80:23:80:61 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:80:40:80:60 | getInputStream(...) | user input |
+| TransformerTests.java:88:27:88:65 | new StreamSource(...) | TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | TransformerTests.java:88:27:88:65 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:88:44:88:64 | getInputStream(...) | user input |
+| TransformerTests.java:89:23:89:61 | new StreamSource(...) | TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | TransformerTests.java:89:23:89:61 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:89:40:89:60 | getInputStream(...) | user input |
+| TransformerTests.java:97:27:97:65 | new StreamSource(...) | TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | TransformerTests.java:97:27:97:65 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:97:44:97:64 | getInputStream(...) | user input |
+| TransformerTests.java:98:23:98:61 | new StreamSource(...) | TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | TransformerTests.java:98:23:98:61 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:98:40:98:60 | getInputStream(...) | user input |
+| TransformerTests.java:103:21:103:59 | new StreamSource(...) | TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | TransformerTests.java:103:21:103:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:103:38:103:58 | getInputStream(...) | user input |
+| TransformerTests.java:116:21:116:59 | new StreamSource(...) | TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | TransformerTests.java:116:21:116:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:116:38:116:58 | getInputStream(...) | user input |
+| TransformerTests.java:122:21:122:59 | new StreamSource(...) | TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | TransformerTests.java:122:21:122:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:122:38:122:58 | getInputStream(...) | user input |
+| TransformerTests.java:129:21:129:59 | new StreamSource(...) | TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | TransformerTests.java:129:21:129:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:129:38:129:58 | getInputStream(...) | user input |
+| TransformerTests.java:136:21:136:59 | new StreamSource(...) | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:136:38:136:58 | getInputStream(...) | user input |
+| TransformerTests.java:141:18:141:70 | new SAXSource(...) | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | TransformerTests.java:141:18:141:70 | new SAXSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:141:48:141:68 | getInputStream(...) | user input |
+| UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | user input |
+| XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:16:34:16:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:56:34:56:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:63:34:63:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:70:18:70:55 | new InputSource(...) | XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | XMLReaderTests.java:70:18:70:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:70:34:70:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:78:18:78:55 | new InputSource(...) | XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | XMLReaderTests.java:78:18:78:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:78:34:78:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:86:18:86:55 | new InputSource(...) | XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:86:34:86:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:94:34:94:54 | getInputStream(...) | user input |
+| XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:100:34:100:54 | getInputStream(...) | user input |
+| XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | Unsafe parsing of XML file from $@. | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | user input |
+| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | Unsafe parsing of XML file from $@. | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | user input |

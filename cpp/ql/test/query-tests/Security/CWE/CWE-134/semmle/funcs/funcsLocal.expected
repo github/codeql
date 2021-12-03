@@ -1,0 +1,160 @@
+edges
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:17:9:17:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:17:9:17:10 | i1 indirection |
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | (void *)... | funcsLocal.c:58:9:58:10 | e1 indirection |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 indirection |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 indirection |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 indirection |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 indirection |
+| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | (const char *)... |
+| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 indirection |
+| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | (const char *)... |
+| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 indirection |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | (const char *)... |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | (const char *)... |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 indirection |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 indirection |
+| funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | (const char *)... |
+| funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | i4 indirection |
+| funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | (const char *)... |
+| funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 indirection |
+| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | (const char *)... |
+| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 indirection |
+| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | (const char *)... |
+| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 indirection |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | (const char *)... |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | (const char *)... |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 indirection |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 indirection |
+| funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | (const char *)... |
+| funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | i6 indirection |
+| funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | (const char *)... |
+| funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 indirection |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | (const char *)... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | (const char *)... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... indirection |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... indirection |
+| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | (const char *)... |
+| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... indirection |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | (const char *)... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | (const char *)... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... indirection |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... indirection |
+subpaths
+nodes
+| funcsLocal.c:16:8:16:9 | (void *)... | semmle.label | (void *)... |
+| funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
+| funcsLocal.c:16:8:16:9 | i1 | semmle.label | i1 |
+| funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
+| funcsLocal.c:17:9:17:10 | i1 indirection | semmle.label | i1 indirection |
+| funcsLocal.c:17:9:17:10 | i1 indirection | semmle.label | i1 indirection |
+| funcsLocal.c:26:8:26:9 | fgets output argument | semmle.label | fgets output argument |
+| funcsLocal.c:26:8:26:9 | i3 | semmle.label | i3 |
+| funcsLocal.c:27:9:27:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:27:9:27:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
+| funcsLocal.c:27:9:27:10 | i3 indirection | semmle.label | i3 indirection |
+| funcsLocal.c:27:9:27:10 | i3 indirection | semmle.label | i3 indirection |
+| funcsLocal.c:31:13:31:17 | call to fgets | semmle.label | call to fgets |
+| funcsLocal.c:31:13:31:17 | call to fgets | semmle.label | call to fgets |
+| funcsLocal.c:31:19:31:21 | fgets output argument | semmle.label | fgets output argument |
+| funcsLocal.c:31:19:31:21 | i41 | semmle.label | i41 |
+| funcsLocal.c:32:9:32:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:32:9:32:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
+| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
+| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
+| funcsLocal.c:32:9:32:10 | i4 indirection | semmle.label | i4 indirection |
+| funcsLocal.c:32:9:32:10 | i4 indirection | semmle.label | i4 indirection |
+| funcsLocal.c:36:7:36:8 | gets output argument | semmle.label | gets output argument |
+| funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
+| funcsLocal.c:37:9:37:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:37:9:37:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
+| funcsLocal.c:37:9:37:10 | i5 indirection | semmle.label | i5 indirection |
+| funcsLocal.c:37:9:37:10 | i5 indirection | semmle.label | i5 indirection |
+| funcsLocal.c:41:13:41:16 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:41:13:41:16 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:41:18:41:20 | gets output argument | semmle.label | gets output argument |
+| funcsLocal.c:41:18:41:20 | i61 | semmle.label | i61 |
+| funcsLocal.c:42:9:42:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:42:9:42:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
+| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
+| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
+| funcsLocal.c:42:9:42:10 | i6 indirection | semmle.label | i6 indirection |
+| funcsLocal.c:42:9:42:10 | i6 indirection | semmle.label | i6 indirection |
+| funcsLocal.c:46:7:46:9 | * ... | semmle.label | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | semmle.label | * ... |
+| funcsLocal.c:46:7:46:9 | gets output argument | semmle.label | gets output argument |
+| funcsLocal.c:47:9:47:11 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:47:9:47:11 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:47:9:47:11 | * ... indirection | semmle.label | * ... indirection |
+| funcsLocal.c:47:9:47:11 | * ... indirection | semmle.label | * ... indirection |
+| funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:53:9:53:11 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:53:9:53:11 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:53:9:53:11 | * ... indirection | semmle.label | * ... indirection |
+| funcsLocal.c:53:9:53:11 | * ... indirection | semmle.label | * ... indirection |
+| funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
+| funcsLocal.c:58:9:58:10 | e1 indirection | semmle.label | e1 indirection |
+| funcsLocal.c:58:9:58:10 | e1 indirection | semmle.label | e1 indirection |
+#select
+| funcsLocal.c:17:9:17:10 | i1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |
+| funcsLocal.c:27:9:27:10 | i3 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:26:8:26:9 | i3 | fgets |
+| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:13:31:17 | call to fgets | fgets |
+| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:19:31:21 | i41 | fgets |
+| funcsLocal.c:37:9:37:10 | i5 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:36:7:36:8 | i5 | gets |
+| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:13:41:16 | call to gets | gets |
+| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:18:41:20 | i61 | gets |
+| funcsLocal.c:47:9:47:11 | * ... | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:46:7:46:9 | * ... | gets |
+| funcsLocal.c:53:9:53:11 | * ... | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:52:8:52:11 | call to gets | gets |
+| funcsLocal.c:58:9:58:10 | e1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |

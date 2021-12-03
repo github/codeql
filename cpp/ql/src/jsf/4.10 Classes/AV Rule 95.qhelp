@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Inherited default parameters should not be redefined because this obscures the behavior of the code. Default values are statically bound and when they are redefined in dynamically bound function calls this reduces readability of the code, increasing the risk of introducing defects.</p>
+
+<p>For example, while C++ dynamically binds virtual methods, the default parameters of those methods are statically bound. Hence, the draw() method of the derived type (Circle), if referenced through a base type pointer (Shape *), will be invoked with the default parameters of the base type (Shape).</p>
+<sample src="AV Rule 95.cpp" />
+
+
+</overview>
+<references>
+
+
+<li>
+  AV Rule 95, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  Scott Meyers. Item 38, Effective C++: 50 Specific Ways to Improve Your Programs and Design, 2nd Edition. Addison-Wesley, 1998.
+</li>
+
+
+</references>
+</qhelp>

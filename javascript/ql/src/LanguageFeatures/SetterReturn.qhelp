@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Returning a value from a property setter function is useless, since it will
+always be ignored.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the return statement altogether, or replace it with a simple <code>return;</code>
+statement that does not return a value.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a constructor function <code>Point</code> that uses property accessors
+on <code>x</code> and <code>y</code> to ensure that they are only set to integer values. It returns
+the new values for <code>x</code> and <code>y</code> from their setters, but these return values
+will simply be ignored.
+</p>
+
+<sample src="examples/SetterReturn.js" />
+
+<p>
+It would be clearer to omit the return statements:
+</p>
+
+<sample src="examples/SetterReturnGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set">Property setters</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,81 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A variable arity method, commonly known as a varargs method, may be called
+with different numbers of arguments. For example, the method <code>sum(int...&nbsp;values)</code>
+may be called in all of the following ways:</p>
+
+<ul>
+<li><code>sum()</code></li>
+<li><code>sum(1)</code></li>
+<li><code>sum(1,2,3)</code></li>
+<li><code>sum(new int[] { 1, 2, 3 })</code></li>
+</ul>
+
+<p>When a method <code>foo(T...&nbsp;x)</code> is called with an argument that is neither 
+<code>T</code> nor <code>T[]</code>, but the argument can be cast as either, the choice of which
+type the argument is cast as is compiler-dependent.</p>
+
+</overview>
+<recommendation>
+
+<p>When a variable arity method, for example <code>m(T... ts)</code>, is called with a
+single argument (for example <code>m(arg)</code>), the type of the argument should be
+either <code>T</code> or <code>T[]</code> (insert a cast if necessary).</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the calls to <code>length</code> do not pass an argument of the same 
+type as the parameter of <code>length</code>, which is <code>Object</code> or an array of 
+<code>Object</code>. Therefore, when the program is compiled with javac, the output is:</p>
+
+<sample language="java">
+3
+2
+</sample>
+
+<p>When the program is compiled with a different compiler, for example the default compiler for some
+versions of Eclipse, the output may be:</p>
+
+<sample language="java">
+3
+1
+</sample>
+
+<sample src="InexactVarArg.java" />
+
+<p>To avoid this compiler-dependent behavior, <code>length(words)</code> should be replaced by either of the following:</p>
+
+<ul>
+<li><code>length((Object) words)</code></li>
+<li><code>length((Object[]) words)</code></li>
+</ul>
+
+<p>Similarly, <code>length(lists)</code> should be replaced by one of the following:</p>
+
+<ul>
+<li><code>length((Object) lists)</code></li>
+<li><code>length((Object[]) lists)</code></li>
+</ul>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.4.1">8.4.1 Formal Parameters</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.12.4.2">15.12.4.2 Evaluate Arguments</a>.</li>
+
+
+</references>
+</qhelp>

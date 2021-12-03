@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule identifies a field that hides a field in a superclass because the field has the same name and, additionally, 
+there are no methods in the subclass that refer to the field in the superclass directly using <code>super.field</code>. 
+Redefining the field in the subclass is a common mistake.</p>
+
+</overview>
+<recommendation>
+<p>Check that the field should indeed be redefined in the subclass. If it should be redefined then consider changing 
+its name to be more clear about what the field does.</p>
+
+</recommendation>
+<example>
+<p>In this example the "name" property in Employee masks the "name" property in Person. This was probably not what was 
+intended.</p>
+<sample src="FieldMasksSuperField.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Programming Guide, <a href="http://msdn.microsoft.com/en-us/library/aa691135(v=vs.71).aspx">Hiding through inheritance</a>.</li>
+
+</references>
+</qhelp>

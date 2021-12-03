@@ -1,0 +1,2 @@
+| StringBuilderInLoop.cs:10:22:10:40 | object creation of type StringBuilder | Creating a 'StringBuilder' in a loop. |
+| StringBuilderInLoop.cs:36:28:36:46 | object creation of type StringBuilder | Creating a 'StringBuilder' in a loop. |

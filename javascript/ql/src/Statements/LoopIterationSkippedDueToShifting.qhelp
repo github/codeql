@@ -1,0 +1,69 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  Items can be removed from an array using the <code>splice</code> method, but when doing so,
+  all subsequent items will be shifted to a lower index. If this is done while iterating over
+  the array, the shifting may cause the loop to skip over the element immediately after the
+  removed element.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Determine what the loop is supposed to do:
+</p>
+
+<ul>
+  <li>
+    If the intention is to remove <em>every occurrence</em> of a certain value, decrement the loop counter after removing an element, to counterbalance
+    the shift.
+  </li>
+  <li>
+    If the loop is only intended to remove <em>a single value</em> from the array, consider adding a <code>break</code> after the <code>splice</code> call.
+  </li>
+  <li>
+    If the loop is deliberately skipping over elements, consider moving the index increment into the body of the loop,
+    so it is clear that the loop is not a trivial array iteration loop.
+  </li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+In this example, a function is intended to remove "<code>..</code>" parts from a path:
+</p>
+
+<sample src="examples/LoopIterationSkippedDueToShifting.js" />
+
+<p>
+However, whenever the input contain two "<code>..</code>" parts right after one another, only the first will be removed.
+For example, the string "<code>../../secret.txt</code>" will be mapped to "<code>../secret.txt</code>". After removing
+the element at index 0, the loop counter is incremented to 1, but the second "<code>..</code>" string has now been shifted down to
+index 0 and will therefore be skipped.
+</p>
+
+<p>
+One way to avoid this is to decrement the loop counter after removing an element from the array:
+</p>
+
+<sample src="examples/LoopIterationSkippedDueToShiftingGood.js" />
+
+<p>
+Alternatively, use the <code>filter</code> method:
+</p>
+
+<sample src="examples/LoopIterationSkippedDueToShiftingGoodFilter.js" />
+
+</example>
+<references>
+
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">Array.prototype.splice()</a>.</li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">Array.prototype.filter()</a>.</li>
+
+</references>
+</qhelp>

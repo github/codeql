@@ -1,0 +1,3 @@
+# CWE-457: Use of Uninitialized Variable
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UninitializedLocal.ql: /CWE/CWE-457
+    @name Potentially uninitialized local variable (CWE-457)

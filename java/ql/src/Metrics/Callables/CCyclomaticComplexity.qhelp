@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The cyclomatic complexity of a method (or constructor) is the number
+of possible linearly-independent execution paths through that method (see [Wikipedia]).
+It was originally introduced as a complexity measure by Thomas McCabe
+[McCabe].
+</p>
+
+<p>A method with high cyclomatic complexity is typically difficult to
+understand and test.
+</p>
+
+</overview>
+<example>
+
+<sample src="CCyclomaticComplexity.java" />
+
+<p>
+The control flow graph for this method is as follows:
+</p>
+
+<img src="./CCyclomaticComplexity_ControlFlow.png" alt="Control Flow Diagram" />
+
+<p>
+As you can see from the graph, the number of linearly-independent execution
+paths through the method is 3. Therefore, the cyclomatic complexity is 3.</p>
+
+</example>
+<recommendation>
+
+<p>
+Simplify methods that have a high cyclomatic complexity. For example,
+tidy up complex logic, and/or split methods into multiple smaller
+methods using the 'Extract Method' refactoring from [Fowler].
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+T. J. McCabe, <em>A Complexity Measure</em>. IEEE Transactions on Software Engineering, SE-2(4), December 1976.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a>.
+</li>
+
+
+</references>
+</qhelp>

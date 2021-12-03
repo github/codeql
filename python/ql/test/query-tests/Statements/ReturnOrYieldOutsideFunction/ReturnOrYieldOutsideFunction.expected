@@ -1,0 +1,9 @@
+| ReturnOrYieldOutsideFunction_test.py:31:9:31:23 | Return | 'return' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:36:9:36:15 | Yield | 'yield' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:41:9:41:25 | YieldFrom | 'yield from' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:45:5:45:12 | Return | 'return' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:49:5:49:11 | Yield | 'yield' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:53:5:53:16 | YieldFrom | 'yield from' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:57:1:57:14 | YieldFrom | 'yield from' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:60:1:60:12 | Return | 'return' is used outside a function. |
+| ReturnOrYieldOutsideFunction_test.py:63:1:63:11 | Yield | 'yield' is used outside a function. |

@@ -1,0 +1,13 @@
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 1 | 1 | aggregateinitializer.c:1:10:4:1 | aggregateinitializer.c:1:10:4:1 | aggregateinitializer.c:1:10:4:1 | { ... } | declaration |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 1 | 13 | aggregateinitializer.c:1:6:1:6 | aggregateinitializer.c:1:6:1:6 | aggregateinitializer.c:1:6:1:6 | f | <none> |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 2 | 2 | aggregateinitializer.c:2:2:2:16 | aggregateinitializer.c:2:2:2:16 | aggregateinitializer.c:2:2:2:16 | declaration | declaration |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 3 | aggregateinitializer.c:3:2:3:28 | aggregateinitializer.c:3:2:3:28 | aggregateinitializer.c:3:2:3:28 | declaration | initializer for x |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 4 | aggregateinitializer.c:3:11:3:27 | aggregateinitializer.c:3:11:3:27 | aggregateinitializer.c:3:11:3:27 | initializer for x | a |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 5 | aggregateinitializer.c:3:14:3:14 | aggregateinitializer.c:3:14:3:14 | aggregateinitializer.c:3:14:3:14 | a | b |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 6 | aggregateinitializer.c:3:18:3:18 | aggregateinitializer.c:3:18:3:18 | aggregateinitializer.c:3:18:3:18 | b | ... + ... |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 7 | aggregateinitializer.c:3:14:3:18 | aggregateinitializer.c:3:14:3:18 | aggregateinitializer.c:3:14:3:18 | ... + ... | c |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 8 | aggregateinitializer.c:3:21:3:21 | aggregateinitializer.c:3:21:3:21 | aggregateinitializer.c:3:21:3:21 | c | d |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 9 | aggregateinitializer.c:3:25:3:25 | aggregateinitializer.c:3:25:3:25 | aggregateinitializer.c:3:25:3:25 | d | ... - ... |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 10 | aggregateinitializer.c:3:21:3:25 | aggregateinitializer.c:3:21:3:25 | aggregateinitializer.c:3:21:3:25 | ... - ... | {...} |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 3 | 11 | aggregateinitializer.c:3:11:3:27 | aggregateinitializer.c:3:11:3:27 | aggregateinitializer.c:3:11:3:27 | {...} | return ... |
+| aggregateinitializer | aggregateinitializer.c:1:6:1:6 | f | 4 | 12 | aggregateinitializer.c:4:1:4:1 | aggregateinitializer.c:4:1:4:1 | aggregateinitializer.c:4:1:4:1 | return ... | f |

@@ -1,0 +1,1 @@
+| test.cpp:10:5:10:17 | ... = ... | Assignment of '0' to parameter '$@' has no effect. | test.cpp:3:42:3:44 | buf | buf |

@@ -1,0 +1,34 @@
+| box.cpp:3:6:3:6 | definition of h | -------- | --- |
+| box.h:2:8:2:8 | declaration of Box | -------- | --- |
+| box.h:2:8:2:8 | declaration of Box | -------- | --- |
+| box.h:2:8:2:8 | declaration of Box | -------- | --- |
+| box.h:2:8:2:8 | declaration of Box | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
+| box.h:2:8:2:8 | definition of Box | no except | --- |
+| box.h:2:8:2:8 | definition of Box | no except | --- |
+| box.h:2:8:2:8 | definition of Box | no except | --- |
+| box.h:2:8:2:8 | definition of Box | no except | --- |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:3:3:3:5 | definition of Box | -------- | __has_nothrow_copy |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:15 | definition of box | -------- | --- |
+| box.h:9:15:9:17 | definition of box | -------- | --- |
+| noexcept.cpp:2:7:2:7 | declaration of operator= | -------- | --- |
+| noexcept.cpp:2:7:2:7 | declaration of operator= | -------- | --- |
+| noexcept.cpp:5:6:5:10 | declaration of swap1 | -------- | --- |
+| noexcept.cpp:6:6:6:10 | declaration of swap2 | no except | --- |
+| noexcept.cpp:7:6:7:10 | declaration of swap3 | -------- | 1 |
+| noexcept.cpp:9:5:9:5 | definition of f | -------- | --- |
+| noexcept.cpp:15:6:15:6 | definition of g | -------- | --- |

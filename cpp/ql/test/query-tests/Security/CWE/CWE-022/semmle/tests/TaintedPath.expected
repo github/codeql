@@ -1,0 +1,22 @@
+edges
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName indirection |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName indirection |
+subpaths
+nodes
+| test.c:9:23:9:26 | argv | semmle.label | argv |
+| test.c:9:23:9:26 | argv | semmle.label | argv |
+| test.c:17:11:17:18 | (const char *)... | semmle.label | (const char *)... |
+| test.c:17:11:17:18 | (const char *)... | semmle.label | (const char *)... |
+| test.c:17:11:17:18 | fileName | semmle.label | fileName |
+| test.c:17:11:17:18 | fileName | semmle.label | fileName |
+| test.c:17:11:17:18 | fileName | semmle.label | fileName |
+| test.c:17:11:17:18 | fileName indirection | semmle.label | fileName indirection |
+| test.c:17:11:17:18 | fileName indirection | semmle.label | fileName indirection |
+#select
+| test.c:17:11:17:18 | fileName | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename) | test.c:9:23:9:26 | argv | user input (argv) |

@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+
+		The Vue framework invokes the methods of a Vue instance with
+		the instance as the receiver.  It is however impossible to perform
+		this binding of instance and receiver for arrow functions, so the
+		<code>this</code> variable in an arrow function on a Vue instance may
+		not have the value that the programmer expects.
+
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		Ensure that the methods on a Vue instance can have their receiver bound to the instance.
+	</p>
+</recommendation>
+
+<example>
+
+	<p>
+
+		The following example shows two similar Vue instances, the only
+		difference is how the <code>created</code> life cycle hook
+		callback is defined.
+
+		The first Vue instance uses an arrow function as the callback.
+		This means that the <code>this</code> variable will have the global
+		object as its value, causing <code>this.myProperty</code> to evaluate
+		to <code>undefined</code>, which may not be intended.
+
+		Instead, the second Vue instance uses an ordinary function as the callback,
+		causing <code>this.myProperty</code> to evaluate to <code>42</code>.
+
+	</p>
+
+	<sample src="examples/ArrowMethodOnVueInstance.js"/>
+
+</example>
+
+<references>
+	<li>Vue documentation: <a href="https://vuejs.org/v2/guide/instance.html">The Vue Instance</a></li>
+</references>
+</qhelp>

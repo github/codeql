@@ -1,0 +1,7 @@
+| comments.js:1:1:1:15 | // line comment |  line comment |
+| comments.js:2:1:2:19 | /* block comment */ |  block comment  |
+| comments.js:3:7:3:29 | <!-- HT ... t start |  HTML comment start |
+| comments.js:4:1:4:18 | /** doc comment */ |  doc comment  |
+| comments.js:5:1:5:20 | --> HTML comment end |  HTML comment end |
+| comments.js:7:1:7:9 | /*start*/ | start |
+| comments.js:7:24:7:30 | /*end*/ | end |

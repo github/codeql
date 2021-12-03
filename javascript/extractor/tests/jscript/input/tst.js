@@ -1,0 +1,1 @@
+function ISMTPOnArrival::OnArrival( Msg, States) { }

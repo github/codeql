@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Enumerations, or enums, were introduced in Java 5, with the keyword
+<code>enum</code>. Code written before this may use <code>enum</code> as
+an identifier. To compile such code, you must compile it with a command
+such as <code>javac -source 1.4 ...</code>. However, this means that you 
+cannot use any new features that are provided in Java 5 and later.</p>
+
+</overview>
+<recommendation>
+
+<p>To make it easier to compile the code and add code that uses new Java features,
+rename any identifiers that are named <code>enum</code> in legacy code.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>enum</code> is used as the name of a variable. This means that the
+code does not compile unless the compiler's source language is set to 1.4 or earlier. To avoid this
+constraint, the variable should be renamed.</p>
+
+<sample src="EnumIdentifier.java" />
+
+</example>
+<references>
+
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.9">8.9 Enum Types</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric calculates the lack of cohesion of a type using a method proposed by Brian 
+Henderson-Sellers in his book <em>Object-Oriented Metrics</em>. Most well designed types will have 
+methods that access the same fields. If methods access disjoint subsets of the class's fields it is 
+an indication the class may have multiple responsibilities.</p>
+
+<p>The Henderson-Sellers method for calculating cohesion works as follows. Let <code>m</code> be 
+the number of methods in the type (excluding those that do not access any properties). Let <code>p
+</code> be the average number of methods that access each field (only for fields that are accessed 
+by methods in the type). LCOM is calculated as follows:</p>
+
+<p><img src="TLackOfCohesionHSFormula.png" alt="HS Lack of Cohesion Formula" /></p>
+
+<p>This gives values between 0 and 2. LCOM values over 0.95 are generally concerning.</p>
+
+</overview>
+<recommendation>
+<p>A high lack of cohesion metric often indicates a class has multiple distinct responsibilities. 
+The solution is to identify these responsibilities and to extract the associated methods and data 
+into separate classes.</p>
+
+</recommendation>
+<example>
+<sample src="TLackOfCohesionHS.cs" />
+<p>This example has an LCOM of 0.95 as shown here:</p>
+<pre>m = 5
+p = (1 + 1 + 1 + 1 + 2) / 5 = 1.2
+LCOM = (1.2 - 5) / (1 - 5) = 3.8 / 4 = 0.95</pre>
+
+</example>
+<references>
+
+  <li>Brian Henderson-Sellers. <em>Object-Oriented Metrics</em>. Prentice-Hall. 1996.</li>
+  <li>Oege de Moor et al. Keynote Address: .QL for Source Code Analysis. Proceedings of the 7th IEEE International Working Conference on Source Code Analysis and Manipulation. 2007.</li>
+
+</references>
+</qhelp>

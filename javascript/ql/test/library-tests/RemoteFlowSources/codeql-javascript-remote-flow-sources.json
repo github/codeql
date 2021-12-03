@@ -1,0 +1,10 @@
+{
+    "user input": [
+        "window.user.name",
+        "window.user.address",
+        "window.dob"
+    ],
+    "uncontrolled path": [
+        "window.upload"
+    ]
+}

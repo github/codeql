@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> If a file is opened then it should always be closed again, even if an
+exception is raised.
+Failing to ensure that all files are closed may result in failure due to too
+many open files.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that if you open a file it is always closed on exiting the method.
+Wrap the code between the <code>open()</code> and <code>close()</code>
+functions in a <code>with</code> statement or use a <code>try...finally</code>
+statement. Using a <code>with</code> statement is preferred as it is shorter
+and more readable.</p>
+
+</recommendation>
+<example>
+<p>The following code shows examples of different ways of closing a file. In the first example, the
+file is closed only if the method is exited successfully. In the other examples, the file is always
+closed on exiting the method.</p>
+
+<sample src="FileNotAlwaysClosed.py" />
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/reference/compound_stmts.html#the-with-statement">The with statement</a>,
+ <a href="http://docs.python.org/reference/compound_stmts.html#the-try-statement">The try statement</a>.</li>
+<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+
+
+
+</references>
+</qhelp>

@@ -1,0 +1,31 @@
+| test.py:3:1:3:16 | test.py:3 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
+| test.py:3:9:3:14 | test.py:3 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
+| test.py:5:6:5:13 | test.py:5 | ControlFlowNode for property | import | builtin-class property | builtin-class type |
+| test.py:5:6:5:13 | test.py:5 | ControlFlowNode for property() | import | property p | builtin-class property |
+| test.py:6:5:6:16 | test.py:6 | ControlFlowNode for FunctionExpr | import | Function C.p | builtin-class function |
+| test.py:7:16:7:16 | test.py:7 | ControlFlowNode for IntegerLiteral | runtime | int 0 | builtin-class int |
+| test.py:9:1:9:16 | test.py:9 | ControlFlowNode for ClassExpr | import | class D | builtin-class type |
+| test.py:9:9:9:14 | test.py:9 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
+| test.py:11:5:11:23 | test.py:11 | ControlFlowNode for FunctionExpr | import | Function D.__init__ | builtin-class function |
+| test.py:12:9:12:12 | test.py:12 | ControlFlowNode for self | runtime | self instance of D | class D |
+| test.py:12:18:12:18 | test.py:12 | ControlFlowNode for IntegerLiteral | runtime | int 0 | builtin-class int |
+| test.py:14:6:14:13 | test.py:14 | ControlFlowNode for property | import | builtin-class property | builtin-class type |
+| test.py:14:6:14:13 | test.py:14 | ControlFlowNode for property() | import | property q | builtin-class property |
+| test.py:15:5:15:16 | test.py:15 | ControlFlowNode for FunctionExpr | import | Function D.q | builtin-class function |
+| test.py:16:16:16:19 | test.py:16 | ControlFlowNode for self | runtime | self instance of D | class D |
+| test.py:18:6:18:6 | test.py:18 | ControlFlowNode for q | import | property q | builtin-class property |
+| test.py:18:6:18:13 | test.py:18 | ControlFlowNode for Attribute | import | property q.setter | builtin-class method |
+| test.py:18:6:18:13 | test.py:18 | ControlFlowNode for Attribute() | import | property q | builtin-class property |
+| test.py:19:5:19:23 | test.py:19 | ControlFlowNode for FunctionExpr | import | Function D.q | builtin-class function |
+| test.py:20:9:20:12 | test.py:20 | ControlFlowNode for self | runtime | self instance of D | class D |
+| test.py:22:1:22:14 | test.py:22 | ControlFlowNode for ClassExpr | import | class E | builtin-class type |
+| test.py:22:9:22:9 | test.py:22 | ControlFlowNode for C | import | class C | builtin-class type |
+| test.py:22:12:22:12 | test.py:22 | ControlFlowNode for D | import | class D | builtin-class type |
+| test.py:25:1:25:1 | test.py:25 | ControlFlowNode for C | import | class C | builtin-class type |
+| test.py:25:1:25:3 | test.py:25 | ControlFlowNode for Attribute | import | property p | builtin-class property |
+| test.py:26:1:26:1 | test.py:26 | ControlFlowNode for D | import | class D | builtin-class type |
+| test.py:26:1:26:3 | test.py:26 | ControlFlowNode for Attribute | import | property q | builtin-class property |
+| test.py:27:1:27:1 | test.py:27 | ControlFlowNode for E | import | class E | builtin-class type |
+| test.py:27:1:27:3 | test.py:27 | ControlFlowNode for Attribute | import | property p | builtin-class property |
+| test.py:28:1:28:1 | test.py:28 | ControlFlowNode for E | import | class E | builtin-class type |
+| test.py:28:1:28:3 | test.py:28 | ControlFlowNode for Attribute | import | property q | builtin-class property |

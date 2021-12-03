@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds uses of the short-circuit operators <code>&amp;&amp;</code> and 
+<code>||</code> where at least one of their operands is a compile-time constant. 
+Such expressions may be confusing for readers and can always be simplified to
+a constant value, or to the non-constant operand. The rule
+also finds comparisons on constant values (like <code>1 &gt; 0</code>), which can be
+evaluated ahead of time.</p>
+
+</overview>
+<recommendation>
+<p>Simplify the flagged expressions by using the following equivalences (where <tt>c</tt> stands for a non-zero constant, 
+and <tt>x</tt> can be an arbitrary expression):</p>
+
+<sample language="cpp">
+  0 &amp;&amp; x == 0    0 || x == x
+  x &amp;&amp; 0 == 0    x || 0 == x
+  c &amp;&amp; x == x    c || x == 1
+  x &amp;&amp; c == x    x || c == 1
+</sample>
+
+</recommendation>
+<example><sample src="LogicalExprCouldBeSimplified.cpp" />
+
+
+
+
+</example>
+</qhelp>

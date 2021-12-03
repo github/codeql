@@ -1,0 +1,34 @@
+nodes
+| node.js:8:10:8:12 | err |
+| node.js:8:10:8:12 | err |
+| node.js:11:13:11:15 | err |
+| node.js:11:13:11:21 | err.stack |
+| node.js:11:13:11:21 | err.stack |
+| tst.js:6:12:6:12 | e |
+| tst.js:6:12:6:12 | e |
+| tst.js:7:13:7:13 | e |
+| tst.js:7:13:7:13 | e |
+| tst.js:8:15:8:15 | e |
+| tst.js:16:20:16:20 | e |
+| tst.js:17:11:17:11 | e |
+| tst.js:17:11:17:17 | e.stack |
+| tst.js:17:11:17:17 | e.stack |
+edges
+| node.js:8:10:8:12 | err | node.js:11:13:11:15 | err |
+| node.js:8:10:8:12 | err | node.js:11:13:11:15 | err |
+| node.js:11:13:11:15 | err | node.js:11:13:11:21 | err.stack |
+| node.js:11:13:11:15 | err | node.js:11:13:11:21 | err.stack |
+| tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e |
+| tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e |
+| tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e |
+| tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e |
+| tst.js:6:12:6:12 | e | tst.js:8:15:8:15 | e |
+| tst.js:6:12:6:12 | e | tst.js:8:15:8:15 | e |
+| tst.js:8:15:8:15 | e | tst.js:16:20:16:20 | e |
+| tst.js:16:20:16:20 | e | tst.js:17:11:17:11 | e |
+| tst.js:17:11:17:11 | e | tst.js:17:11:17:17 | e.stack |
+| tst.js:17:11:17:11 | e | tst.js:17:11:17:17 | e.stack |
+#select
+| node.js:11:13:11:21 | err.stack | node.js:8:10:8:12 | err | node.js:11:13:11:21 | err.stack | Stack trace information from $@ may be exposed to an external user here. | node.js:8:10:8:12 | err | here |
+| tst.js:7:13:7:13 | e | tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e | Stack trace information from $@ may be exposed to an external user here. | tst.js:6:12:6:12 | e | here |
+| tst.js:17:11:17:17 | e.stack | tst.js:6:12:6:12 | e | tst.js:17:11:17:17 | e.stack | Stack trace information from $@ may be exposed to an external user here. | tst.js:6:12:6:12 | e | here |

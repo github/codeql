@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<include src="IterableOverview.inc.qhelp" />
+
+<recommendation>
+<p>
+When writing the <code>iterator()</code> method in an
+<code>Iterable&lt;T&gt;</code> then it is important to make sure that each call
+will result in a fresh <code>Iterator&lt;T&gt;</code> instance containing all
+the necessary state for keeping track of the iteration.  If the iterator is
+stored in the <code>Iterable&lt;T&gt;</code>, or somehow refers to iteration
+state stored in the <code>Iterable&lt;T&gt;</code>, then subsequent calls to
+<code>iterator()</code> can result in loops that only traverse a subset of the
+elements or have no effect at all.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example returns the same iterator on every call, and therefore
+causes the second loop to terminate immediately without any effect.
+</p>
+<sample src="WrappedIteratorBad1.java" />
+
+<p>
+This second example returns a newly created iterator each time,
+but still relies on iteration state stored
+in the surrounding class, and therefore also causes the second loop to
+terminate immediately.
+</p>
+<sample src="WrappedIteratorBad2.java" />
+
+<p>
+The code should instead be written like this, such that each call to
+<code>iterator()</code> correctly gives a fresh iterator that starts at the
+beginning.
+</p>
+<sample src="WrappedIteratorGood.java" />
+</example>
+
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.14.2">The enhanced for statement</a>.
+</li>
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Iterable.html">Interface Iterable&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html">Interface Iterator&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/DirectoryStream.html">Interface DirectoryStream&lt;T&gt;</a>.
+</li>
+
+</references>
+
+</qhelp>

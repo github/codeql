@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric provides an indication of the lack of cohesion of a reference
+type, using a method proposed by Brian Henderson-Sellers in 1996. The idea
+behind measuring a type's cohesion is that most methods in well-designed
+classes will access the same fields. Types that exhibit a lack of cohesion
+are often trying to take on multiple responsibilities, and should be split
+into several smaller classes.
+</p>
+
+<p>
+Various measures of lack of cohesion have been proposed: while the basic
+intuition is simple, the precise way to measure this property has been the
+subject of intense debate. Rather than getting involved in this debate,
+more than one such lack of cohesion measure is provided for comparison purposes.
+</p>
+
+<p>
+The Henderson-Sellers version of lack of cohesion can be defined as follows.
+Let <code>M</code> be the set of methods in a class, <code>F</code> be the
+set of fields in the class, <code>r(f)</code> be the number of methods that
+access field <code>f</code>, and <code>ar</code> be the mean of
+<code>r(f)</code> over <code>f</code> in <code>F</code>, then the lack of
+cohesion measure <code>LCOM</code> can be defined as:
+</p>
+
+<pre>
+LCOM = (ar - |M|) / (1 - |M|)
+</pre>
+
+<p>
+As per [Walton], we restrict <code>M</code> to methods that read some field in
+the class, and <code>F</code> to fields that are read by some method in the
+class. High values of <code>LCOM</code> indicate a worrisome lack of cohesion.
+The precise value of the metric for which warnings are issued is configurable,
+but as a rough indication, an <code>LCOM</code> of <code>0.95</code> or more
+may give you cause for concern.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Types generally lack cohesion because they are taking on more responsibilities
+than they should (see [Martin] for more on responsibilities). In general, the
+solution is to identify each of the different responsibilities the class is
+taking on, and split them out into multiple classes, e.g. using the 'Extract
+Class' refactoring from [Fowler].
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em> pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+B. Henderson-Sellers. <em>Object-Oriented Metrics: Measures of Complexity</em>. Prentice-Hall, 1996.
+</li>
+<li>
+R. Martin. <em>Agile Software Development: Principles, Patterns, and Practices</em>
+Chapter 8 - SRP: The Single-Responsibility Principle. Pearson Education, 2003.
+</li>
+<li>
+O. de Moor et al. <em>Keynote Address: .QL for Source Code Analysis</em>. Proceedings of the 7th IEEE International Working Conference on Source Code Analysis and Manipulation, 2007.
+</li>
+
+
+</references>
+</qhelp>

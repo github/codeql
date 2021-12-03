@@ -1,0 +1,5 @@
+| bar.js:5:14:5:18 | x.Foo | ns.very.long.namespace.Foo |
+| bar.js:12:14:12:21 | iife.Foo | IIFE.Foo |
+| closure.js:8:12:8:28 | goog.net.SomeType | goog.net.SomeType |
+| closure.js:9:12:9:23 | net.SomeType | goog.net.SomeType |
+| closure.js:10:12:10:19 | SomeType | goog.net.SomeType |

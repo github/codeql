@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>This query detects literals used in the Solorigate code.</p>
+    <p>This query detects when the code includes at least 30 of the literals used in the Solorigate tampered code</p>
+    <p>Please notice that by themselves these literals are not malign.</p>
+  </overview>
+
+  <include src="Solorigate.inc.qhelp" />
+
+</qhelp>

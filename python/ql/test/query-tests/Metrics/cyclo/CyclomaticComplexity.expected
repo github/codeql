@@ -1,0 +1,6 @@
+| code.py:23:1:23:17 | Function nested | 4 |
+| code.py:12:1:12:21 | Function two_branch | 3 |
+| code.py:6:1:6:18 | Function one_branch | 2 |
+| code.py:35:1:35:21 | Function exceptions | 2 |
+| code.py:1:1:1:16 | Function f_linear | 1 |
+| code.py:45:1:45:39 | Function must_be_positive | 1 |

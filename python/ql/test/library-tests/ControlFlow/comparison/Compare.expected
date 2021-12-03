@@ -1,0 +1,6 @@
+| 1 | ControlFlowNode for Compare | a | b | == |
+| 2 | ControlFlowNode for Compare | c | d | > |
+| 3 | ControlFlowNode for Compare | e | f | < |
+| 4 | ControlFlowNode for Compare | g | h | >= |
+| 5 | ControlFlowNode for Compare | i | j | <= |
+| 6 | ControlFlowNode for Compare | k | l | != |

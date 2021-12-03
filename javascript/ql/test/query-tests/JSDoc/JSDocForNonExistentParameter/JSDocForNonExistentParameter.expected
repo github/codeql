@@ -1,0 +1,4 @@
+| tst.js:4:4:4:9 | @param | @param tag refers to non-existent parameter prameter. |
+| tst.js:12:4:12:9 | @param | @param tag refers to non-existent parameter sign. |
+| tst.js:51:4:51:9 | @param | @param tag refers to non-existent parameter opts. |
+| tst.js:57:4:57:9 | @param | @param tag refers to non-existent parameter opts. |

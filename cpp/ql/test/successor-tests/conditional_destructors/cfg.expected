@@ -1,0 +1,175 @@
+| C1::C1 | false | 237 | 237 | C1 |
+| C1::C1 | false | 359 | 359 | C1 |
+| C1::C1 | false | 363 | 363 | C1 |
+| C1::C1 | false | 398 | 398 | ExprStmt |
+| C1::C1 | false | 400 | 400 | this |
+| C1::C1 | false | 401 | 401 | val |
+| C1::C1 | false | 403 | 403 | x |
+| C1::C1 | false | 405 | 405 | ... = ... |
+| C1::C1 | false | 407 | 407 | return ... |
+| C1::C1 | false | 409 | 409 | { ... } |
+| C1::C1 | true | 398 | 403 |  |
+| C1::C1 | true | 400 | 401 |  |
+| C1::C1 | true | 401 | 405 |  |
+| C1::C1 | true | 403 | 400 |  |
+| C1::C1 | true | 405 | 407 |  |
+| C1::C1 | true | 407 | 237 |  |
+| C1::C1 | true | 409 | 398 |  |
+| C1::operator= | false | 348 | 348 | operator= |
+| C1::operator= | false | 355 | 355 | operator= |
+| C1::operator== | false | 226 | 226 | operator== |
+| C1::operator== | false | 376 | 376 | return ... |
+| C1::operator== | false | 378 | 378 | this |
+| C1::operator== | false | 379 | 379 | val |
+| C1::operator== | false | 382 | 382 | other |
+| C1::operator== | false | 384 | 384 | (reference dereference) |
+| C1::operator== | false | 385 | 385 | val |
+| C1::operator== | false | 387 | 387 | ... == ... |
+| C1::operator== | false | 389 | 389 | { ... } |
+| C1::operator== | true | 376 | 378 |  |
+| C1::operator== | true | 378 | 379 |  |
+| C1::operator== | true | 379 | 382 |  |
+| C1::operator== | true | 382 | 385 |  |
+| C1::operator== | true | 385 | 387 |  |
+| C1::operator== | true | 387 | 226 |  |
+| C1::operator== | true | 389 | 376 |  |
+| C2::C2 | false | 170 | 170 | C2 |
+| C2::C2 | false | 288 | 288 | C2 |
+| C2::C2 | false | 334 | 334 | ExprStmt |
+| C2::C2 | false | 336 | 336 | this |
+| C2::C2 | false | 337 | 337 | val |
+| C2::C2 | false | 339 | 339 | x |
+| C2::C2 | false | 341 | 341 | ... = ... |
+| C2::C2 | false | 343 | 343 | return ... |
+| C2::C2 | false | 345 | 345 | { ... } |
+| C2::C2 | true | 334 | 339 |  |
+| C2::C2 | true | 336 | 337 |  |
+| C2::C2 | true | 337 | 341 |  |
+| C2::C2 | true | 339 | 336 |  |
+| C2::C2 | true | 341 | 343 |  |
+| C2::C2 | true | 343 | 170 |  |
+| C2::C2 | true | 345 | 334 |  |
+| C2::operator= | false | 282 | 282 | operator= |
+| C2::operator== | false | 159 | 159 | operator== |
+| C2::operator== | false | 301 | 301 | return ... |
+| C2::operator== | false | 303 | 303 | this |
+| C2::operator== | false | 304 | 304 | val |
+| C2::operator== | false | 307 | 307 | other |
+| C2::operator== | false | 309 | 309 | (reference dereference) |
+| C2::operator== | false | 310 | 310 | val |
+| C2::operator== | false | 312 | 312 | ... == ... |
+| C2::operator== | false | 314 | 314 | { ... } |
+| C2::operator== | true | 301 | 303 |  |
+| C2::operator== | true | 303 | 304 |  |
+| C2::operator== | true | 304 | 307 |  |
+| C2::operator== | true | 307 | 310 |  |
+| C2::operator== | true | 310 | 312 |  |
+| C2::operator== | true | 312 | 159 |  |
+| C2::operator== | true | 314 | 301 |  |
+| C2::~C2 | false | 316 | 316 | ~C2 |
+| C2::~C2 | false | 321 | 321 | ; |
+| C2::~C2 | false | 323 | 323 | return ... |
+| C2::~C2 | false | 325 | 325 | { ... } |
+| C2::~C2 | true | 321 | 323 |  |
+| C2::~C2 | true | 323 | 316 |  |
+| C2::~C2 | true | 325 | 321 |  |
+| __va_list_tag::operator= | false | 57 | 57 | operator= |
+| __va_list_tag::operator= | false | 63 | 63 | operator= |
+| f1 | false | 215 | 215 | f1 |
+| f1 | false | 220 | 220 | if (...) ...  |
+| f1 | false | 234 | 234 | call to operator== |
+| f1 | false | 235 | 235 | call to C1 |
+| f1 | false | 240 | 240 | 1 |
+| f1 | false | 241 | 241 | temporary object |
+| f1 | false | 242 | 242 | (const C1)... |
+| f1 | false | 243 | 243 | call to C1 |
+| f1 | false | 247 | 247 | 2 |
+| f1 | false | 248 | 248 | temporary object |
+| f1 | false | 249 | 249 | (const C1)... |
+| f1 | false | 250 | 250 | (reference to) |
+| f1 | false | 251 | 251 | ; |
+| f1 | false | 253 | 253 | { ... } |
+| f1 | false | 255 | 255 | if (...) ...  |
+| f1 | false | 258 | 258 | call to operator== |
+| f1 | false | 259 | 259 | call to C1 |
+| f1 | false | 263 | 263 | 3 |
+| f1 | false | 264 | 264 | temporary object |
+| f1 | false | 265 | 265 | (const C1)... |
+| f1 | false | 266 | 266 | call to C1 |
+| f1 | false | 270 | 270 | 3 |
+| f1 | false | 271 | 271 | temporary object |
+| f1 | false | 272 | 272 | (const C1)... |
+| f1 | false | 273 | 273 | (reference to) |
+| f1 | false | 274 | 274 | ; |
+| f1 | false | 276 | 276 | { ... } |
+| f1 | false | 278 | 278 | return ... |
+| f1 | false | 280 | 280 | { ... } |
+| f1 | true | 220 | 247 |  |
+| f1 | true | 234 | 253 | T |
+| f1 | true | 234 | 255 | F |
+| f1 | true | 235 | 234 |  |
+| f1 | true | 240 | 235 |  |
+| f1 | true | 243 | 240 |  |
+| f1 | true | 247 | 243 |  |
+| f1 | true | 251 | 255 |  |
+| f1 | true | 253 | 251 |  |
+| f1 | true | 255 | 270 |  |
+| f1 | true | 258 | 276 | T |
+| f1 | true | 258 | 278 | F |
+| f1 | true | 259 | 258 |  |
+| f1 | true | 263 | 259 |  |
+| f1 | true | 266 | 263 |  |
+| f1 | true | 270 | 266 |  |
+| f1 | true | 274 | 278 |  |
+| f1 | true | 276 | 274 |  |
+| f1 | true | 278 | 215 |  |
+| f1 | true | 280 | 220 |  |
+| f2 | false | 148 | 148 | f2 |
+| f2 | false | 153 | 153 | if (...) ...  |
+| f2 | false | 167 | 167 | call to operator== |
+| f2 | false | 168 | 168 | call to C2 |
+| f2 | false | 173 | 173 | 1 |
+| f2 | false | 174 | 174 | temporary object |
+| f2 | false | 175 | 175 | (const C2)... |
+| f2 | false | 176 | 176 | call to C2 |
+| f2 | false | 180 | 180 | 2 |
+| f2 | false | 181 | 181 | temporary object |
+| f2 | false | 182 | 182 | (const C2)... |
+| f2 | false | 183 | 183 | (reference to) |
+| f2 | false | 184 | 184 | ; |
+| f2 | false | 186 | 186 | { ... } |
+| f2 | false | 188 | 188 | if (...) ...  |
+| f2 | false | 191 | 191 | call to operator== |
+| f2 | false | 192 | 192 | call to C2 |
+| f2 | false | 196 | 196 | 3 |
+| f2 | false | 197 | 197 | temporary object |
+| f2 | false | 198 | 198 | (const C2)... |
+| f2 | false | 199 | 199 | call to C2 |
+| f2 | false | 203 | 203 | 3 |
+| f2 | false | 204 | 204 | temporary object |
+| f2 | false | 205 | 205 | (const C2)... |
+| f2 | false | 206 | 206 | (reference to) |
+| f2 | false | 207 | 207 | ; |
+| f2 | false | 209 | 209 | { ... } |
+| f2 | false | 211 | 211 | return ... |
+| f2 | false | 213 | 213 | { ... } |
+| f2 | true | 153 | 180 |  |
+| f2 | true | 167 | 186 | T |
+| f2 | true | 167 | 188 | F |
+| f2 | true | 168 | 167 |  |
+| f2 | true | 173 | 168 |  |
+| f2 | true | 176 | 173 |  |
+| f2 | true | 180 | 176 |  |
+| f2 | true | 184 | 188 |  |
+| f2 | true | 186 | 184 |  |
+| f2 | true | 188 | 203 |  |
+| f2 | true | 191 | 209 | T |
+| f2 | true | 191 | 211 | F |
+| f2 | true | 192 | 191 |  |
+| f2 | true | 196 | 192 |  |
+| f2 | true | 199 | 196 |  |
+| f2 | true | 203 | 199 |  |
+| f2 | true | 207 | 211 |  |
+| f2 | true | 209 | 207 |  |
+| f2 | true | 211 | 148 |  |
+| f2 | true | 213 | 153 |  |

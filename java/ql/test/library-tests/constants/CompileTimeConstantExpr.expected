@@ -1,0 +1,17 @@
+| constants/Constants.java:5:22:5:40 | Initializers.SFIELD |
+| constants/Constants.java:6:22:6:46 | new Initializers(...).IFIELD |
+| constants/Constants.java:11:17:11:17 | 3 |
+| constants/Constants.java:12:17:12:17 | x |
+| constants/Constants.java:13:17:13:17 | y |
+| constants/Constants.java:15:15:15:33 | Initializers.SFIELD |
+| constants/Constants.java:15:15:15:37 | ... + ... |
+| constants/Constants.java:15:37:15:37 | 1 |
+| constants/Constants.java:16:23:16:41 | Initializers.SFIELD |
+| constants/Constants.java:18:16:18:17 | 12 |
+| constants/Constants.java:19:19:19:28 | "a string" |
+| constants/Constants.java:20:17:20:31 | ...?...:... |
+| constants/Constants.java:20:18:20:18 | 3 |
+| constants/Constants.java:20:18:20:22 | ... < ... |
+| constants/Constants.java:20:22:20:22 | 5 |
+| constants/Constants.java:20:27:20:27 | 1 |
+| constants/Constants.java:20:31:20:31 | 2 |

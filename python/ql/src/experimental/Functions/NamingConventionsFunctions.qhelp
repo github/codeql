@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A function name that begins with an uppercase letter does not follow standard
+naming conventions. This decreases code readability. For example, <code>Jump</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Write the function name beginning with an lowercase letter. For example, <code>jump</code>.
+</p>
+
+</recommendation>
+
+<references>
+
+<li>
+  Guido van Rossum, Barry Warsaw, Nick Coghlan <em>PEP 8 -- Style Guide for Python Code</em>
+  <a href="https://www.python.org/dev/peps/pep-0008/#function-and-variable-names">Python Function and Variable Names</a>
+</li>
+
+</references>
+
+</qhelp>

@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>delete</code> expressions whose argument is a pointer that points to memory
+allocated using the <code>malloc</code> function, and calls to <code>free</code> whose argument is a
+pointer that points to memory allocated using the <code>new</code> operator. Behavior in such cases
+is undefined and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use the <code>delete</code> operator when freeing memory allocated with <code>new</code>, and the
+<code>free</code> function when freeing memory allocated with <code>malloc</code>.
+</p>
+
+</recommendation>
+<example><sample src="NewFreeMismatch.cpp" />
+
+</example>
+<references>
+<li>isocpp.org 'Standard C++', "<a href="https://isocpp.org/wiki/faq/freestore-mgmt#mixing-malloc-and-delete">Can I free() pointers allocated with new? Can I delete pointers allocated with malloc()?</a>"</li>
+<li>Wikipedia, "<a href="https://en.wikipedia.org/wiki/New_and_delete_(C%2B%2B)#Relation_to_malloc_and_free">Relation to malloc and free</a>" in <i>new and delete (C++)</i>.</li>
+</references>
+</qhelp>

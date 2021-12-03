@@ -1,0 +1,8 @@
+| client1.ts:4:9:4:19 | F.Component | Component in module 'framework1' |
+| client1.ts:5:9:5:29 | Util.De ... mponent | Util.DefaultComponent in global scope |
+| client2.ts:4:9:4:19 | F.Component | Component in module 'framework2' |
+| client2.ts:5:9:5:30 | Util2.D ... mponent | Util2.DefaultComponent in global scope |
+| client2_lazy.ts:4:9:4:19 | F.Component | Component in module 'framework2' |
+| client2_lazy.ts:5:9:5:30 | Util2.D ... mponent | Util2.DefaultComponent in global scope |
+| declare-module-client2.ts:5:8:5:8 | C | C in module 'foo' |
+| declare-module-client.ts:5:8:5:8 | C | C in module 'foo' |

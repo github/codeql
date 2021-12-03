@@ -1,0 +1,5 @@
+| duplicates.js:2:5:2:18 | function f(){} | This function has a duplicate dependency '$@'. | duplicates.js:3:26:3:31 | 'dup5' | dup5 |
+| duplicates.js:6:33:6:56 | functio ... up2b){} | This function has a duplicate dependency '$@'. | duplicates.js:6:24:6:30 | 'dup2a' | dup2a |
+| duplicates.js:7:33:7:56 | functio ... up3b){} | This function has a duplicate dependency '$@'. | duplicates.js:7:24:7:30 | 'dup3b' | dup3b |
+| duplicates.js:8:43:8:78 | functio ... up4C){} | This function has a duplicate dependency '$@'. | duplicates.js:8:35:8:40 | 'dup4' | dup4 |
+| duplicates.js:15:35:15:112 | functio ...       } | This function has a duplicate dependency '$@'. | duplicates.js:15:25:15:32 | 'dup11a' | dup11a |

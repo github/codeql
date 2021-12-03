@@ -1,0 +1,3 @@
+# CWE-428: Unquoted Search Path or Element
++ semmlecode-cpp-queries/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql: /CWE/CWE-428
+    @name NULL application name with an unquoted path in call to CreateProcess (CWE-428)

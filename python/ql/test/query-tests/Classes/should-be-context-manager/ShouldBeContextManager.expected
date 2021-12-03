@@ -1,0 +1,2 @@
+| should_be_context_manager.py:3:1:3:22 | class MegaDel | Class MegaDel implements __del__ (presumably to release some resource). Consider making it a context manager. |
+| should_be_context_manager.py:16:1:16:22 | class MiniDel | Class MiniDel implements __del__ (presumably to release some resource). Consider making it a context manager. |

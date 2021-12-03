@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+React component state updates using <code>setState</code> may asynchronously update
+<code>this.props</code> and <code>this.state</code>, thus it is not safe to use either of the two
+when calculating the new state passed to <code>setState</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use the callback-based variant of <code>setState</code>: instead of calculating the new state
+directly and passing it to <code>setState</code>, pass a callback function that calculates the new
+state when the update is about to be performed.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses <code>setState</code> to update the <code>counter</code> property of
+<code>this.state</code>, relying on the current (potentially stale) value of that property:
+</p>
+
+<sample language="javascript">
+this.setState({
+  counter: this.state.counter + 1
+});
+</sample>
+
+<p>
+Instead, the callback form of <code>setState</code> should be used:
+</p>
+
+<sample language="javascript">
+this.setState(prevState => ({
+  counter: prevState.counter + 1
+}));
+</sample>
+</example>
+
+<references>
+<li>React Quick Start: <a href="https://facebook.github.io/react/docs/state-and-lifecycle.html">State and Lifecycle</a>.</li>
+</references>
+</qhelp>

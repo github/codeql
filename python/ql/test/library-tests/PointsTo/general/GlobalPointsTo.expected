@@ -1,0 +1,192 @@
+| Class Base | 147 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class Base | 147 | ControlFlowNode for __init__ | Function __init__ |
+| Class Base2 | 175 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class Base2 | 175 | ControlFlowNode for __init__ | Function __init__ |
+| Class Base2 | 178 | ControlFlowNode for IntegerLiteral | int 1 |
+| Class Base2 | 178 | ControlFlowNode for x | int 1 |
+| Class Derived4 | 182 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class Derived4 | 182 | ControlFlowNode for __init__ | Function __init__ |
+| Class DiGraph | 272 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class DiGraph | 272 | ControlFlowNode for __init__ | Function __init__ |
+| Class DiGraph | 275 | ControlFlowNode for FunctionExpr | Function add_node |
+| Class DiGraph | 275 | ControlFlowNode for add_node | Function add_node |
+| Class E | 195 | ControlFlowNode for FunctionExpr | Function _internal |
+| Class E | 195 | ControlFlowNode for _internal | Function _internal |
+| Class E | 201 | ControlFlowNode for _internal | Function _internal |
+| Class E | 201 | ControlFlowNode for _internal() | Function wrapper |
+| Class E | 202 | ControlFlowNode for FunctionExpr | Function method |
+| Class E | 202 | ControlFlowNode for method | Function wrapper |
+| Class F | 250 | ControlFlowNode for g3 | NoneType None |
+| Class F | 251 | ControlFlowNode for g3 | NoneType None |
+| Class G | 256 | ControlFlowNode for IntegerLiteral | int 0 |
+| Class G | 256 | ControlFlowNode for attr | int 0 |
+| Class G | 258 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class G | 258 | ControlFlowNode for __init__ | Function __init__ |
+| Class G | 261 | ControlFlowNode for FunctionExpr | Function meth |
+| Class G | 261 | ControlFlowNode for meth | Function meth |
+| Class Ugly | 240 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class Ugly | 240 | ControlFlowNode for __init__ | Function __init__ |
+| Class Ugly | 244 | ControlFlowNode for FunctionExpr | Function meth |
+| Class Ugly | 244 | ControlFlowNode for meth | Function meth |
+| Class X | 36 | ControlFlowNode for classmethod | builtin-class classmethod |
+| Class X | 36 | ControlFlowNode for classmethod() | classmethod() |
+| Class X | 37 | ControlFlowNode for FunctionExpr | Function method1 |
+| Class X | 37 | ControlFlowNode for method1 | classmethod() |
+| Class X | 40 | ControlFlowNode for deco() | deco() |
+| Class X | 41 | ControlFlowNode for FunctionExpr | Function method2 |
+| Class X | 41 | ControlFlowNode for method2 | deco() |
+| Module pointsto_test | 17 | ControlFlowNode for Attribute | list object |
+| Module pointsto_test | 17 | ControlFlowNode for Compare | bool False |
+| Module pointsto_test | 17 | ControlFlowNode for Compare | bool True |
+| Module pointsto_test | 17 | ControlFlowNode for IntegerLiteral | int 2 |
+| Module pointsto_test | 17 | ControlFlowNode for len | Builtin-function len |
+| Module pointsto_test | 17 | ControlFlowNode for len() | len() |
+| Module pointsto_test | 17 | ControlFlowNode for sys | Module sys |
+| Module pointsto_test | 18 | ControlFlowNode for C | class C |
+| Module pointsto_test | 18 | ControlFlowNode for v1 | class C |
+| Module pointsto_test | 20 | ControlFlowNode for D | class D |
+| Module pointsto_test | 20 | ControlFlowNode for v1 | class D |
+| Module pointsto_test | 21 | ControlFlowNode for v1 | class C |
+| Module pointsto_test | 21 | ControlFlowNode for v1 | class D |
+| Module pointsto_test | 21 | ControlFlowNode for v1() | v1() |
+| Module pointsto_test | 21 | ControlFlowNode for v2 | v1() |
+| Module pointsto_test | 23 | ControlFlowNode for FunctionExpr | Function f |
+| Module pointsto_test | 23 | ControlFlowNode for f | Function f |
+| Module pointsto_test | 30 | ControlFlowNode for FunctionExpr | Function g |
+| Module pointsto_test | 30 | ControlFlowNode for g | Function g |
+| Module pointsto_test | 33 | ControlFlowNode for f | Function f |
+| Module pointsto_test | 33 | ControlFlowNode for f() | C() |
+| Module pointsto_test | 33 | ControlFlowNode for f() | D() |
+| Module pointsto_test | 33 | ControlFlowNode for g | Function g |
+| Module pointsto_test | 33 | ControlFlowNode for g() | C() |
+| Module pointsto_test | 33 | ControlFlowNode for g() | D() |
+| Module pointsto_test | 33 | ControlFlowNode for v4 | C() |
+| Module pointsto_test | 33 | ControlFlowNode for v4 | D() |
+| Module pointsto_test | 35 | ControlFlowNode for ClassExpr | class X |
+| Module pointsto_test | 35 | ControlFlowNode for X | class X |
+| Module pointsto_test | 35 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 44 | ControlFlowNode for FunctionExpr | Function deco |
+| Module pointsto_test | 44 | ControlFlowNode for deco | Function deco |
+| Module pointsto_test | 47 | ControlFlowNode for v1 | class C |
+| Module pointsto_test | 47 | ControlFlowNode for v1 | class D |
+| Module pointsto_test | 48 | ControlFlowNode for v2 | v1() |
+| Module pointsto_test | 50 | ControlFlowNode for v4 | C() |
+| Module pointsto_test | 50 | ControlFlowNode for v4 | D() |
+| Module pointsto_test | 51 | ControlFlowNode for list | builtin-class list |
+| Module pointsto_test | 53 | ControlFlowNode for FunctionExpr | Function h |
+| Module pointsto_test | 53 | ControlFlowNode for h | Function h |
+| Module pointsto_test | 60 | ControlFlowNode for FunctionExpr | Function j |
+| Module pointsto_test | 60 | ControlFlowNode for j | Function j |
+| Module pointsto_test | 62 | ControlFlowNode for dict | builtin-class dict |
+| Module pointsto_test | 63 | ControlFlowNode for IntegerLiteral | int 7 |
+| Module pointsto_test | 63 | ControlFlowNode for dict | int 7 |
+| Module pointsto_test | 64 | ControlFlowNode for dict | int 7 |
+| Module pointsto_test | 65 | ControlFlowNode for tuple | builtin-class tuple |
+| Module pointsto_test | 66 | ControlFlowNode for tuple | builtin-class tuple |
+| Module pointsto_test | 69 | ControlFlowNode for Attribute | Attribute |
+| Module pointsto_test | 69 | ControlFlowNode for X | class X |
+| Module pointsto_test | 70 | ControlFlowNode for Attribute | deco() |
+| Module pointsto_test | 70 | ControlFlowNode for X | class X |
+| Module pointsto_test | 72 | ControlFlowNode for ImportExpr | Module abc |
+| Module pointsto_test | 72 | ControlFlowNode for ImportMember | Function abstractmethod |
+| Module pointsto_test | 72 | ControlFlowNode for abstractmethod | Function abstractmethod |
+| Module pointsto_test | 73 | ControlFlowNode for abstractmethod | Function abstractmethod |
+| Module pointsto_test | 75 | ControlFlowNode for C | class C |
+| Module pointsto_test | 75 | ControlFlowNode for C() | C() |
+| Module pointsto_test | 75 | ControlFlowNode for type | builtin-class type |
+| Module pointsto_test | 75 | ControlFlowNode for type() | class C |
+| Module pointsto_test | 76 | ControlFlowNode for sys | Module sys |
+| Module pointsto_test | 76 | ControlFlowNode for type | builtin-class type |
+| Module pointsto_test | 76 | ControlFlowNode for type() | builtin-class module |
+| Module pointsto_test | 78 | ControlFlowNode for type | builtin-class type |
+| Module pointsto_test | 79 | ControlFlowNode for Dict | Dict |
+| Module pointsto_test | 79 | ControlFlowNode for Tuple | Tuple |
+| Module pointsto_test | 79 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 79 | ControlFlowNode for type | builtin-class type |
+| Module pointsto_test | 79 | ControlFlowNode for type() | type() |
+| Module pointsto_test | 81 | ControlFlowNode for FunctionExpr | Function k |
+| Module pointsto_test | 81 | ControlFlowNode for k | Function k |
+| Module pointsto_test | 88 | ControlFlowNode for FunctionExpr | Function outer |
+| Module pointsto_test | 88 | ControlFlowNode for outer | Function outer |
+| Module pointsto_test | 95 | ControlFlowNode for FunctionExpr | Function never_none |
+| Module pointsto_test | 95 | ControlFlowNode for never_none | Function never_none |
+| Module pointsto_test | 104 | ControlFlowNode for FunctionExpr | Function outer_use_vars |
+| Module pointsto_test | 104 | ControlFlowNode for outer_use_vars | Function outer_use_vars |
+| Module pointsto_test | 112 | ControlFlowNode for FunctionExpr | Function literals_in_func |
+| Module pointsto_test | 112 | ControlFlowNode for literals_in_func | Function literals_in_func |
+| Module pointsto_test | 122 | ControlFlowNode for Lambda | Function lambda |
+| Module pointsto_test | 122 | ControlFlowNode for y | Function lambda |
+| Module pointsto_test | 124 | ControlFlowNode for FunctionExpr | Function following |
+| Module pointsto_test | 124 | ControlFlowNode for following | Function following |
+| Module pointsto_test | 127 | ControlFlowNode for Dict | Dict |
+| Module pointsto_test | 127 | ControlFlowNode for FunctionExpr | Function params_and_defaults |
+| Module pointsto_test | 127 | ControlFlowNode for IntegerLiteral | int 1 |
+| Module pointsto_test | 127 | ControlFlowNode for params_and_defaults | Function params_and_defaults |
+| Module pointsto_test | 132 | ControlFlowNode for FunctionExpr | Function inner_cls |
+| Module pointsto_test | 132 | ControlFlowNode for inner_cls | Function inner_cls |
+| Module pointsto_test | 138 | ControlFlowNode for ImportExpr | Module xyz |
+| Module pointsto_test | 139 | ControlFlowNode for ImportExpr | Module xyz |
+| Module pointsto_test | 139 | ControlFlowNode for xyz | Module xyz |
+| Module pointsto_test | 140 | ControlFlowNode for Attribute | float 1.0 |
+| Module pointsto_test | 140 | ControlFlowNode for xyz | Module xyz |
+| Module pointsto_test | 141 | ControlFlowNode for z | float 3.0 |
+| Module pointsto_test | 145 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 145 | ControlFlowNode for ClassExpr | class Base |
+| Module pointsto_test | 145 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 155 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 155 | ControlFlowNode for ClassExpr | class Derived1 |
+| Module pointsto_test | 155 | ControlFlowNode for Derived1 | class Derived1 |
+| Module pointsto_test | 158 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 158 | ControlFlowNode for ClassExpr | class Derived2 |
+| Module pointsto_test | 158 | ControlFlowNode for Derived2 | class Derived2 |
+| Module pointsto_test | 161 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 161 | ControlFlowNode for ClassExpr | class Derived3 |
+| Module pointsto_test | 161 | ControlFlowNode for Derived3 | class Derived3 |
+| Module pointsto_test | 164 | ControlFlowNode for Base | class Base |
+| Module pointsto_test | 164 | ControlFlowNode for Base() | Base() |
+| Module pointsto_test | 164 | ControlFlowNode for thing | Base() |
+| Module pointsto_test | 167 | ControlFlowNode for FunctionExpr | Function multiple_assignment |
+| Module pointsto_test | 167 | ControlFlowNode for multiple_assignment | Function multiple_assignment |
+| Module pointsto_test | 173 | ControlFlowNode for Base2 | class Base2 |
+| Module pointsto_test | 173 | ControlFlowNode for ClassExpr | class Base2 |
+| Module pointsto_test | 173 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 180 | ControlFlowNode for Base2 | class Base2 |
+| Module pointsto_test | 180 | ControlFlowNode for ClassExpr | class Derived4 |
+| Module pointsto_test | 180 | ControlFlowNode for Derived4 | class Derived4 |
+| Module pointsto_test | 187 | ControlFlowNode for FunctionExpr | Function vararg_kwarg |
+| Module pointsto_test | 187 | ControlFlowNode for vararg_kwarg | Function vararg_kwarg |
+| Module pointsto_test | 193 | ControlFlowNode for ClassExpr | class E |
+| Module pointsto_test | 193 | ControlFlowNode for E | class E |
+| Module pointsto_test | 193 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 206 | ControlFlowNode for FunctionExpr | Function calls_next |
+| Module pointsto_test | 206 | ControlFlowNode for calls_next | Function calls_next |
+| Module pointsto_test | 213 | ControlFlowNode for ImportExpr | Module sys |
+| Module pointsto_test | 213 | ControlFlowNode for ImportMember | Builtin-function exit |
+| Module pointsto_test | 213 | ControlFlowNode for exit | Builtin-function exit |
+| Module pointsto_test | 217 | ControlFlowNode for None | NoneType None |
+| Module pointsto_test | 217 | ControlFlowNode for g1 | NoneType None |
+| Module pointsto_test | 219 | ControlFlowNode for FunctionExpr | Function assign_global |
+| Module pointsto_test | 219 | ControlFlowNode for assign_global | Function assign_global |
+| Module pointsto_test | 226 | ControlFlowNode for None | NoneType None |
+| Module pointsto_test | 226 | ControlFlowNode for g2 | NoneType None |
+| Module pointsto_test | 228 | ControlFlowNode for FunctionExpr | Function init |
+| Module pointsto_test | 228 | ControlFlowNode for init | Function init |
+| Module pointsto_test | 232 | ControlFlowNode for init | Function init |
+| Module pointsto_test | 232 | ControlFlowNode for init() | NoneType None |
+| Module pointsto_test | 233 | ControlFlowNode for g2 | int 102 |
+| Module pointsto_test | 236 | ControlFlowNode for None | NoneType None |
+| Module pointsto_test | 236 | ControlFlowNode for g3 | NoneType None |
+| Module pointsto_test | 238 | ControlFlowNode for ClassExpr | class Ugly |
+| Module pointsto_test | 238 | ControlFlowNode for Ugly | class Ugly |
+| Module pointsto_test | 238 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 248 | ControlFlowNode for ClassExpr | class F |
+| Module pointsto_test | 248 | ControlFlowNode for F | class F |
+| Module pointsto_test | 248 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 254 | ControlFlowNode for ClassExpr | class G |
+| Module pointsto_test | 254 | ControlFlowNode for G | class G |
+| Module pointsto_test | 254 | ControlFlowNode for object | builtin-class object |
+| Module pointsto_test | 267 | ControlFlowNode for Derived4 | class Derived4 |
+| Module pointsto_test | 267 | ControlFlowNode for Derived4() | Derived4() |
+| Module pointsto_test | 270 | ControlFlowNode for ClassExpr | class DiGraph |
+| Module pointsto_test | 270 | ControlFlowNode for DiGraph | class DiGraph |
+| Module pointsto_test | 270 | ControlFlowNode for object | builtin-class object |

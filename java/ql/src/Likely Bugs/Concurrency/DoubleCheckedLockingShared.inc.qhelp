@@ -1,0 +1,114 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Double-checked locking is a common pattern for lazy initialization of a field
+accessed by multiple threads.
+Depending on the memory model of the underlying runtime, it can, however, be
+quite difficult to implement correctly, since reorderings performed by
+compiler, runtime, or CPU might expose un-initialized or half-way initialized
+objects to other threads.
+Java has since version 5 improved its memory model to support double-checked
+locking if the underlying field is marked <code>volatile</code> and if all
+initialization happens before the volatile write.
+</p>
+</overview>
+
+<recommendation>
+
+<p>
+First, it should be considered whether the getter that performs the lazy
+initialization is performance critical.
+If not, a much simpler solution is to completely avoid double-checked locking
+and simply mark the entire getter as <code>synchronized</code>.
+This is much easier to get right and guards against hard-to-find concurrency bugs.
+</p>
+<p>
+If double-checked locking is used, it is important that the underlying field is
+<code>volatile</code> and that the update to the field is the last thing that
+happens in the synchronized region, that is, all initialization must be done
+before the field is assigned.
+Furthermore, the Java version must be 5 or newer.
+Reading a <code>volatile</code> field has a slight overhead, so it is also
+useful to use a local variable to minimize the number of volatile reads.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following code lazily initializes <code>f</code> to <code>new MyObject()</code>.
+</p>
+<sample src="DoubleCheckedLockingBad1.java"/>
+<p>
+This code is not thread-safe as another thread might see the assignment to
+<code>f</code> before the constructor finishes evaluating, for example if the
+compiler inlines the memory allocation and the constructor and reorders the
+assignment to <code>f</code> to occur just after the memory allocation.
+</p>
+
+<p>
+Another example that also is not thread-safe, even when <code>volatile</code>
+is used, is if additional initialization happens after the assignment to
+<code>f</code>, since then other threads may access the constructed object
+before it is fully initialized, even without any reorderings by the compiler or
+runtime.
+</p>
+<sample src="DoubleCheckedLockingBad2.java"/>
+
+<p>
+The code above should be rewritten to both use <code>volatile</code> and finish
+all initialization before <code>f</code> is updated. Additionally, a local
+variable can be used to avoid reading the field more times than neccessary.
+</p>
+<sample src="DoubleCheckedLockingGood.java"/>
+
+<p>
+As a final note, it is possible to use double-checked locking correctly without
+<code>volatile</code> if the object you construct is immutable (that is, the
+object declares all fields as <code>final</code>), and the double-checked field
+is read exactly once outside the synchronized block.
+</p>
+<p>
+Given that all fields in <code>MyImmutableObject</code> are declared
+<code>final</code> then the following example is protected against exposing
+uninitialized fields to another thread. However, since there are two reads of
+<code>f</code> without synchronization, it is possible that these are
+reordered, which means that this method can return <code>null</code>.
+</p>
+<sample src="DoubleCheckedLockingBad3.java"/>
+<p>
+In this case, using a local variable to minimize the number of field reads is
+no longer a performance improvement, but rather a crucial detail that is
+necessary for correctness.
+</p>
+
+</example>
+
+<references>
+
+<li>
+<a href="https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.4">17.4. Memory Model</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
+</li>
+<li>
+Aleksey Shipilëv:
+<a href="https://shipilev.net/blog/2014/safe-public-construction/">Safe Publication and Safe Initialization in Java</a>.
+</li>
+<li>
+Aleksey Shipilëv:
+<a href="https://shipilev.net/blog/2016/close-encounters-of-jmm-kind/">Close Encounters of The Java Memory Model Kind</a>.
+</li>
+
+</references>
+
+</qhelp>

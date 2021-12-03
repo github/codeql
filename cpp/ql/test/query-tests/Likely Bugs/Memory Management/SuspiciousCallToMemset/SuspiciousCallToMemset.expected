@@ -1,0 +1,31 @@
+| doc_tests.c:29:2:29:7 | call to memset | The size of the memory area set by memset should not be the size of the type T *. |
+| test.cpp:26:3:26:8 | call to memset | The size of the memory area set by memset should not be the size of the type otherStruct. |
+| test.cpp:32:4:32:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:34:4:34:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:37:4:37:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:39:4:39:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:41:4:41:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:43:4:43:9 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:48:5:48:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:49:5:49:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:51:5:51:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:53:5:53:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:55:5:55:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:56:5:56:10 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:68:3:68:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:72:3:72:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:76:3:76:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:80:3:80:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:86:3:86:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:89:3:89:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:93:3:93:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:94:3:94:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:97:3:97:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:99:3:99:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:100:3:100:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStructPtr. |
+| test.cpp:101:3:101:8 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct **. |
+| test.cpp:129:2:129:7 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:130:2:130:7 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct. |
+| test.cpp:135:2:135:7 | call to memset | The size of the memory area set by memset should not be the size of the type myStruct *. |
+| test.cpp:170:2:170:7 | call to memset | The size of the memory area set by memset should not be the size of the type intArray. |
+| test.cpp:172:2:172:7 | call to memset | The size of the memory area set by memset should not be the size of the type intArrayPointer *. |

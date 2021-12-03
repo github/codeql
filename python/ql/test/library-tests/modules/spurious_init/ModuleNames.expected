@@ -1,0 +1,5 @@
+| root | root |
+| root/__init__.py | root.__init__ |
+| root/src-folder/package | package |
+| root/src-folder/package/__init__.py | package.__init__ |
+| root/src-folder/package/module.py | package.module |

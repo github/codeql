@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="../jsfNote.inc.qhelp" />
+
+<p>
+This query highlights identifiers in an inner scope that hide (have the same name as) an identifier in an outer scope.
+This should be avoided as it can cause confusion about the actual variable being used in an expression.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Change the name of the identifier so it does not hide another on an outer scope. 
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 135.cpp" />
+
+
+
+</example>
+<references>
+
+<li>AV Rule 135, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li></references></qhelp>

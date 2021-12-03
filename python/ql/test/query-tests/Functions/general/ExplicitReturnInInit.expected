@@ -1,0 +1,2 @@
+| explicit_return_in_init.py:4:9:4:19 | Return | Explicit return in __init__ method. |
+| explicit_return_in_init.py:102:9:102:18 | Return | Explicit return in __init__ method. |

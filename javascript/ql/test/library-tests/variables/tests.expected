@@ -1,0 +1,141 @@
+capture
+| arrayPatternDefault.js:1:11:1:11 | o | o | arrayPatternDefault.js:1:11:1:11 | o |
+| arrayPatternDefault.js:2:8:2:8 | x | x | arrayPatternDefault.js:2:8:2:8 | x |
+| assignments.js:4:6:4:6 | g | g | assignments.js:4:6:4:6 | g |
+| assignments.js:4:19:4:19 | h | h | assignments.js:4:19:4:19 | h |
+| defaultargs.js:2:7:2:7 | x | x | defaultargs.js:2:7:2:7 | x |
+| defaultargs.js:2:10:2:18 | arguments | arguments | defaultargs.js:2:10:2:18 | arguments |
+| defaultargs.js:3:12:3:12 | f | f | defaultargs.js:3:12:3:12 | f |
+| defaultargs.js:3:14:3:14 | x | x | defaultargs.js:3:14:3:14 | x |
+| defaultargs.js:3:17:3:17 | y | y | defaultargs.js:3:17:3:17 | y |
+| defaultargs.js:4:12:4:12 | g | g | defaultargs.js:4:12:4:12 | g |
+| defaultargs.js:4:14:4:14 | x | x | defaultargs.js:4:14:4:14 | x |
+| defaultargs.js:4:32:4:32 | y | y | defaultargs.js:4:32:4:32 | y |
+| for.js:1:11:1:11 | o | o | for.js:1:11:1:11 | o |
+| for.js:2:7:2:7 | x | x | for.js:2:7:2:7 | x |
+| legacyletstmt.js:3:6:3:6 | x | x | legacyletstmt.js:3:6:3:6 | x |
+| legacyletstmt.js:3:14:3:14 | y | y | legacyletstmt.js:3:14:3:14 | y |
+| let.js:2:9:2:9 | x | x | let.js:2:9:2:9 | x |
+| let.js:4:13:4:13 | x | x | let.js:4:13:4:13 | x |
+| let.js:5:18:5:18 | x | x | let.js:5:18:5:18 | x |
+| let.js:5:26:5:26 | y | y | let.js:5:26:5:26 | y |
+| let.js:6:17:6:17 | x | x | let.js:6:17:6:17 | x |
+| let.js:9:18:9:18 | x | x | let.js:9:18:9:18 | x |
+| let.js:14:14:14:14 | x | x | let.js:14:14:14:14 | x |
+| let.js:17:11:17:11 | y | y | let.js:17:11:17:11 | y |
+| typeoftype.ts:2:7:2:7 | x | x | typeoftype.ts:2:7:2:7 | x |
+| typeoftype.ts:3:12:3:12 | g | g | typeoftype.ts:3:12:3:12 | g |
+| typeoftype.ts:4:9:4:9 | y | y | typeoftype.ts:4:9:4:9 | y |
+| variables.js:9:6:9:6 | x | x | variables.js:9:6:9:6 | x |
+| variables.js:9:6:9:6 | x | x | variables.js:11:6:11:6 | x |
+| variables.js:13:12:13:12 | y | y | variables.js:13:12:13:12 | y |
+| variables.js:13:15:13:15 | z | z | variables.js:13:15:13:15 | z |
+| variables.js:15:6:15:6 | x | x | variables.js:15:6:15:6 | x |
+| variables.js:16:11:16:11 | h | h | variables.js:16:11:16:11 | h |
+| variables.js:16:13:16:13 | z | z | variables.js:16:13:16:13 | z |
+| variables.js:18:11:18:11 | y | y | variables.js:18:11:18:11 | y |
+getAnAssignedExpr
+| also_a_global | variables.js:2:17:2:18 | 23 |
+| g | assignments.js:4:10:4:24 | function h() {} |
+| h | assignments.js:4:10:4:24 | function h() {} |
+| x | assignments.js:1:9:1:10 | 23 |
+| x | legacyletstmt.js:1:9:1:10 | 42 |
+| x | legacyletstmt.js:3:10:3:11 | 23 |
+| x | let.js:2:13:2:14 | 23 |
+| x | let.js:4:17:4:18 | 42 |
+| x | let.js:5:22:5:23 | 23 |
+| x | let.js:6:21:6:22 | 56 |
+| y | assignments.js:2:5:2:6 | 42 |
+| y | assignments.js:5:6:5:7 | 56 |
+| y | legacyletstmt.js:1:17:1:18 | 19 |
+| y | legacyletstmt.js:3:18:3:19 | 19 |
+| y | let.js:5:30:5:33 | x-19 |
+| y | let.js:17:15:17:15 | x |
+| y | let.js:19:12:19:13 | 19 |
+getDeclaringContainer
+| arrayPatternDefault.js:1:2:1:1 | arguments | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| arrayPatternDefault.js:1:11:1:11 | o | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| arrayPatternDefault.js:2:8:2:8 | x | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| assignments.js:3:1:3:0 | arguments | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
+| assignments.js:4:6:4:6 | g | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
+| assignments.js:4:10:4:9 | arguments | assignments.js:4:10:4:24 | function h() {} |
+| assignments.js:4:19:4:19 | h | assignments.js:4:10:4:24 | function h() {} |
+| defaultargs.js:2:7:2:7 | x | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:2:10:2:18 | arguments | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:3:3:3:2 | arguments | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:3:12:3:12 | f | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:3:14:3:14 | x | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:3:17:3:17 | y | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:4:3:4:2 | arguments | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| defaultargs.js:4:12:4:12 | g | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:4:14:4:14 | x | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| defaultargs.js:4:32:4:32 | y | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| for.js:1:2:1:1 | arguments | for.js:1:2:5:1 | functio ...    x;\\n} |
+| for.js:1:11:1:11 | o | for.js:1:2:5:1 | functio ...    x;\\n} |
+| for.js:2:7:2:7 | x | for.js:1:2:5:1 | functio ...    x;\\n} |
+| legacyletstmt.js:3:6:3:6 | x | legacyletstmt.js:1:1:8:0 | <toplevel> |
+| legacyletstmt.js:3:14:3:14 | y | legacyletstmt.js:1:1:8:0 | <toplevel> |
+| let.js:2:9:2:9 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:4:13:4:13 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:5:18:5:18 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:5:26:5:26 | y | let.js:1:1:22:0 | <toplevel> |
+| let.js:6:17:6:17 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:9:18:9:18 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:14:1:14:0 | arguments | let.js:14:1:21:1 | functio ...     }\\n} |
+| let.js:14:14:14:14 | x | let.js:14:1:21:1 | functio ...     }\\n} |
+| let.js:17:11:17:11 | y | let.js:14:1:21:1 | functio ...     }\\n} |
+| typeoftype.ts:1:1:1:0 | arguments | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:2:7:2:7 | x | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:3:3:3:2 | arguments | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
+| typeoftype.ts:3:12:3:12 | g | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:4:9:4:9 | y | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
+| variables.js:8:1:8:0 | arguments | variables.js:8:1:12:1 | functio ... ar x;\\n} |
+| variables.js:9:6:9:6 | x | variables.js:8:1:12:1 | functio ... ar x;\\n} |
+| variables.js:13:1:13:0 | arguments | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:13:12:13:12 | y | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:13:15:13:15 | z | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:15:6:15:6 | x | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:16:2:16:1 | arguments | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+| variables.js:16:11:16:11 | h | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:16:13:16:13 | z | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+| variables.js:18:11:18:11 | y | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+varBindings
+| arrayPatternDefault.js:2:23:2:23 | o | arrayPatternDefault.js:1:11:1:11 | o |
+| arrayPatternDefault.js:3:10:3:10 | x | arrayPatternDefault.js:2:8:2:8 | x |
+| assignments.js:2:1:2:1 | y | assignments.js:1:13:1:13 | y |
+| assignments.js:2:1:2:1 | y | legacyletstmt.js:1:13:1:13 | y |
+| assignments.js:5:2:5:2 | y | assignments.js:1:13:1:13 | y |
+| assignments.js:5:2:5:2 | y | legacyletstmt.js:1:13:1:13 | y |
+| defaultargs.js:3:21:3:21 | x | defaultargs.js:3:14:3:14 | x |
+| for.js:3:9:3:9 | x | for.js:2:7:2:7 | x |
+| for.js:3:15:3:15 | o | for.js:1:11:1:11 | o |
+| for.js:4:7:4:7 | x | for.js:2:7:2:7 | x |
+| legacyletstmt.js:4:15:4:15 | x | legacyletstmt.js:3:6:3:6 | x |
+| legacyletstmt.js:4:19:4:19 | y | legacyletstmt.js:3:14:3:14 | y |
+| legacyletstmt.js:7:13:7:13 | x | assignments.js:1:5:1:5 | x |
+| legacyletstmt.js:7:13:7:13 | x | legacyletstmt.js:1:5:1:5 | x |
+| legacyletstmt.js:7:17:7:17 | y | assignments.js:1:13:1:13 | y |
+| legacyletstmt.js:7:17:7:17 | y | legacyletstmt.js:1:13:1:13 | y |
+| let.js:5:30:5:30 | x | let.js:4:13:4:13 | x |
+| let.js:5:36:5:36 | x | let.js:5:18:5:18 | x |
+| let.js:5:38:5:38 | y | let.js:5:26:5:26 | y |
+| let.js:7:25:7:25 | x | let.js:6:17:6:17 | x |
+| let.js:9:28:9:28 | x | let.js:4:13:4:13 | x |
+| let.js:10:13:10:13 | x | let.js:9:18:9:18 | x |
+| let.js:15:13:15:13 | x | let.js:14:14:14:14 | x |
+| let.js:17:15:17:15 | x | let.js:14:14:14:14 | x |
+| let.js:19:7:19:7 | y | let.js:17:11:17:11 | y |
+| variables.js:3:1:3:6 | global | variables.js:1:5:1:10 | global |
+| variables.js:4:1:4:14 | another_global | variables.js:6:6:6:19 | another_global |
+| variables.js:10:2:10:2 | x | variables.js:9:6:9:6 | x |
+| variables.js:10:2:10:2 | x | variables.js:11:6:11:6 | x |
+| variables.js:10:4:10:4 | z | variables.js:24:5:24:5 | z |
+| variables.js:14:2:14:2 | x | variables.js:15:6:15:6 | x |
+| variables.js:14:4:14:4 | y | variables.js:13:12:13:12 | y |
+| variables.js:14:6:14:6 | z | variables.js:13:15:13:15 | z |
+| variables.js:19:4:19:4 | x | variables.js:15:6:15:6 | x |
+| variables.js:19:6:19:6 | y | variables.js:18:11:18:11 | y |
+| variables.js:19:8:19:8 | z | variables.js:16:13:16:13 | z |
+| variables.js:21:10:21:10 | x | variables.js:15:6:15:6 | x |
+| variables.js:21:12:21:12 | y | variables.js:13:12:13:12 | y |
+| variables.js:21:14:21:14 | z | variables.js:16:13:16:13 | z |

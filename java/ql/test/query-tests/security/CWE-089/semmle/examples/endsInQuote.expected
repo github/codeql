@@ -1,0 +1,26 @@
+| controlledStrings | 4 | Test.java:137:26:137:79 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 12 | Test.java:145:27:145:80 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 20 | Test.java:153:35:153:88 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 28 | Test.java:161:32:161:85 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 36 | Test.java:169:38:169:91 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 44 | Test.java:177:37:177:90 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 5 | Test.java:34:20:34:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 12 | Test.java:41:20:41:47 | "{ call get_product_by_id('" |
+| tainted | 19 | Test.java:48:20:48:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 28 | Test.java:57:19:57:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 40 | Test.java:69:19:69:46 | "UPDATE PRODUCT SET PRICE='" |
+| tainted | 40 | Test.java:69:19:69:73 | ... + ... |
+| tainted | 40 | Test.java:69:19:69:86 | ... + ... |
+| tainted | 40 | Test.java:69:58:69:73 | "' WHERE ITEM='" |
+| tainted | 40 | Test.java:69:84:69:86 | "'" |
+| tainted | 41 | Test.java:70:40:70:44 | query |
+| tainted | 48 | Test.java:77:19:77:46 | "UPDATE PRODUCT SET PRICE='" |
+| tainted | 48 | Test.java:77:19:77:73 | ... + ... |
+| tainted | 48 | Test.java:77:19:77:86 | ... + ... |
+| tainted | 48 | Test.java:77:58:77:73 | "' WHERE ITEM='" |
+| tainted | 48 | Test.java:77:84:77:86 | "'" |
+| tainted | 49 | Test.java:78:46:78:50 | query |
+| tainted | 57 | Test.java:86:20:86:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 4 | Test.java:96:28:96:81 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 11 | Test.java:103:19:103:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 22 | Test.java:114:20:114:42 | "WHERE ITEM_CATEGORY='" |

@@ -1,0 +1,12 @@
+edges
+| Test.java:33:30:33:74 | getParameter(...) : String | Test.java:34:20:34:32 | userParameter : String |
+| Test.java:34:20:34:32 | userParameter : String | Test.java:37:31:37:43 | format : String |
+| Test.java:37:31:37:43 | format : String | Test.java:39:25:39:30 | format |
+nodes
+| Test.java:33:30:33:74 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:34:20:34:32 | userParameter : String | semmle.label | userParameter : String |
+| Test.java:37:31:37:43 | format : String | semmle.label | format : String |
+| Test.java:39:25:39:30 | format | semmle.label | format |
+subpaths
+#select
+| Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | $@ flows to here and is used in a format string. | Test.java:33:30:33:74 | getParameter(...) | User-provided value |

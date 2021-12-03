@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+
+<p> Variables that are defined in a group, for example <code>x, y = func()</code> are handled collectively.
+If they are all unused, then this is reported. Otherwise they are all treated as used.
+</p>
+
+</fragment>
+</qhelp>

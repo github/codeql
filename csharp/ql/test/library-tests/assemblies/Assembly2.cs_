@@ -1,0 +1,23 @@
+using System;
+using Assembly2;
+
+namespace Assembly1
+{
+	[Class3()]
+	public delegate Class2 del1(Class3 c3);
+
+	[Class3()]
+	public class Class1
+	{
+		[Class2()]
+		static public Class2 a;
+		static public Class2 b() { return new Class2(); }
+		[Class3()]
+		static public Class3.Class4 c(Class3 x) { return new Class3.Class4(); }
+		[Class2()]
+		static public int d() { return 1; }
+		static public del2 e() { return f; }
+		static public int f(int x) { return x; }
+		static public Class3.Class5<Class2> g(Class3.Class5<Class2> x) { return x;  }
+	}
+}

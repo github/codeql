@@ -1,0 +1,20 @@
+edges
+| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) |
+| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) |
+| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) |
+| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) |
+nodes
+| UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | semmle.label | new URI(...) |
+| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | semmle.label | new URI(...) |
+| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlRedirectJax.java:10:24:10:62 | new URI(...) | semmle.label | new URI(...) |
+| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlRedirectJax.java:13:33:13:71 | new URI(...) | semmle.label | new URI(...) |
+| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+subpaths
+#select
+| UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | Potentially untrusted URL redirection due to $@. | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) | user-provided value |
+| UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | Potentially untrusted URL redirection due to $@. | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) | user-provided value |
+| UrlRedirectJax.java:10:24:10:62 | new URI(...) | UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | Potentially untrusted URL redirection due to $@. | UrlRedirectJax.java:10:32:10:61 | getParameter(...) | user-provided value |
+| UrlRedirectJax.java:13:33:13:71 | new URI(...) | UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | Potentially untrusted URL redirection due to $@. | UrlRedirectJax.java:13:41:13:70 | getParameter(...) | user-provided value |

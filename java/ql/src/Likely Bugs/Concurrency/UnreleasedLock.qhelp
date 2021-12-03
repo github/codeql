@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a thread acquires a lock it must make sure to unlock it again;
+failing to do so can lead to deadlocks.  If a lock allows a thread to acquire
+it multiple times, for example <code>java.util.concurrent.locks.ReentrantLock</code>,
+then the number of locks must match the number of unlocks in order to fully
+release the lock.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is recommended practice always to immediately follow a call to <code>lock</code>
+with a <code>try</code> block and place the call to <code>unlock</code> inside the
+<code>finally</code> block.  Beware of calls inside the <code>finally</code> block
+that could cause exceptions, as this may result in skipping the call to <code>unlock</code>.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+The typical pattern for using locks safely looks like this:
+</p>
+
+<sample src="UnreleasedLock.java" />
+
+<p>
+If any code that can cause a premature method exit (for example by throwing an
+exception) is inserted at either point <code>A</code> or <code>B</code> then
+the method might not unlock, so this should be avoided.
+</p>
+
+</example>
+<references>
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Lock.html">java.util.concurrent.locks.Lock</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/ReentrantLock.html">java.util.concurrent.locks.ReentrantLock</a>.
+</li>
+
+
+</references>
+</qhelp>

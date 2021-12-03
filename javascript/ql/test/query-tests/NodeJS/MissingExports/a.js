@@ -1,0 +1,1 @@
+exports.f = function() { return 42; };

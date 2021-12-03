@@ -1,0 +1,1 @@
+| newstyle_test.py:15:9:15:15 | super() | super() will not work in old-style classes |

@@ -1,0 +1,2 @@
+| test.c:20:2:20:7 | call to strcat | Always check the size of the source buffer when using strcat. |
+| test.c:33:5:33:10 | call to strcat | Always check the size of the source buffer when using strcat. |

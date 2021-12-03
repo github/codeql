@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An empty character class in a regular expression does not match anything and may indicate missing code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Omit the empty character class. If the whole regular expression would become empty, use
+<code>/(?:)/</code> to express a deliberately empty regular expression.</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the programmer presumably meant to write a regular expression that matches
+an opening square bracket or curly brace, followed by one or more letters or digits, followed by
+a closing square bracket or curly brace. However, they forgot to escape the closing square bracket
+with a backslash, leading to an empty character class. The resulting regular expression is malformed
+and could be interpreted differently on different platforms.
+</p>
+
+<sample src="examples/EmptyCharacterClass.js" />
+
+<p>
+To fix this problem, the regular expression should be rewritten to <code>/[[{]\w+[\]}]/</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

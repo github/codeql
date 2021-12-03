@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> Multiple assignments to a single variable without an intervening usage makes the first assignment redundant.
+Its value is lost.
+</p>
+
+</overview>
+<recommendation>
+<p>Ensure that the second assignment is in fact correct.
+Then delete the first assignment (taking care not to delete right hand side if it has side effects).</p>
+
+</recommendation>
+<example>
+<p>In this example, <code>x</code> is assigned the value of 42 but then the value is changed to 12
+before <code>x</code> is used. This makes the first assignment useless.</p>
+<sample src="MultiplyDefined.py" />
+
+</example>
+<references>
+
+    <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>.</li>
+
+</references>
+</qhelp>

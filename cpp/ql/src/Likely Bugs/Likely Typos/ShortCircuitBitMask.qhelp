@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds a short-circuiting logical operator that is applied to what looks like a bit-mask.
+This may be a typo for a bitwise operator. Bit-masks are assumed to be constant operands whose
+value is a power of 2, except 1 and 0, since these could be legitimate truth values. Hexadecimal and octal
+literals are also considered bit masks. </p>
+
+</overview>
+<recommendation>
+<p>Check if there should be a bitwise operator used instead of logical operator, or whether the constant should be compared to something.</p>
+
+</recommendation>
+<example><sample src="ShortCircuitBitMask.cpp" />
+
+</example>
+<references>
+
+
+<li>
+  B. Stroustrup, <em>The C++ Programming Language special ed</em>, p 123 Short-circuit operators. Addison-Wesley, 2000.
+</li>
+
+
+
+</references>
+</qhelp>

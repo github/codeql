@@ -1,0 +1,3 @@
+| Test.cs:11:32:11:161 | object creation of type XmlTextReader | Insecure XML processing: DTD processing is enabled with an insecure resolver |
+| Test.cs:21:29:21:63 | call to method Create | Insecure XML processing: DTD processing enabled in settings, insecure resolver set in settings |
+| Test.cs:24:33:24:134 | object creation of type XmlTextReader | Insecure XML processing: DTD processing is enabled with an insecure resolver |

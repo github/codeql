@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds compile-time constants other than zero (and some common error markers, like
+<code>-1</code> and <code>0xdeadbeef</code>) which are (explicitly or implicitly) converted to a pointer type. 
+This is a dangerous practice, since the meaning of the numerical value of pointers is platform dependent.</p>
+
+</overview>
+<recommendation>
+<p>Do not assign integer literals (except NULL) to pointers.</p>
+
+</recommendation>
+<example><sample src="NonzeroValueCastToPointer.cpp" />
+
+</example>
+<references>
+
+
+<li>
+  Cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.
+</li>
+<li>
+  The CERT C Secure Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/INT36-C.+Converting+a+pointer+to+integer+or+integer+to+pointer">INT36-C. Converting a pointer to integer or integer to pointer</a>.
+</li>
+
+
+
+
+
+
+
+</references>
+</qhelp>

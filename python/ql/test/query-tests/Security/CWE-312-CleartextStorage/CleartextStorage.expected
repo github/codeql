@@ -1,0 +1,21 @@
+edges
+| password_in_cookie.py:7:16:7:43 | ControlFlowNode for Attribute() | password_in_cookie.py:9:33:9:40 | ControlFlowNode for password |
+| password_in_cookie.py:14:16:14:43 | ControlFlowNode for Attribute() | password_in_cookie.py:16:33:16:40 | ControlFlowNode for password |
+| test.py:6:12:6:21 | ControlFlowNode for get_cert() | test.py:8:20:8:23 | ControlFlowNode for cert |
+| test.py:6:12:6:21 | ControlFlowNode for get_cert() | test.py:9:17:9:29 | ControlFlowNode for List |
+| test.py:9:17:9:29 | ControlFlowNode for List | test.py:10:25:10:29 | ControlFlowNode for lines |
+nodes
+| password_in_cookie.py:7:16:7:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| password_in_cookie.py:9:33:9:40 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| password_in_cookie.py:14:16:14:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| password_in_cookie.py:16:33:16:40 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| test.py:6:12:6:21 | ControlFlowNode for get_cert() | semmle.label | ControlFlowNode for get_cert() |
+| test.py:8:20:8:23 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
+| test.py:9:17:9:29 | ControlFlowNode for List | semmle.label | ControlFlowNode for List |
+| test.py:10:25:10:29 | ControlFlowNode for lines | semmle.label | ControlFlowNode for lines |
+subpaths
+#select
+| password_in_cookie.py:9:33:9:40 | ControlFlowNode for password | password_in_cookie.py:7:16:7:43 | ControlFlowNode for Attribute() | password_in_cookie.py:9:33:9:40 | ControlFlowNode for password | $@ is stored here. | password_in_cookie.py:7:16:7:43 | ControlFlowNode for Attribute() | Sensitive data (password) |
+| password_in_cookie.py:16:33:16:40 | ControlFlowNode for password | password_in_cookie.py:14:16:14:43 | ControlFlowNode for Attribute() | password_in_cookie.py:16:33:16:40 | ControlFlowNode for password | $@ is stored here. | password_in_cookie.py:14:16:14:43 | ControlFlowNode for Attribute() | Sensitive data (password) |
+| test.py:8:20:8:23 | ControlFlowNode for cert | test.py:6:12:6:21 | ControlFlowNode for get_cert() | test.py:8:20:8:23 | ControlFlowNode for cert | $@ is stored here. | test.py:6:12:6:21 | ControlFlowNode for get_cert() | Sensitive data (certificate) |
+| test.py:10:25:10:29 | ControlFlowNode for lines | test.py:6:12:6:21 | ControlFlowNode for get_cert() | test.py:10:25:10:29 | ControlFlowNode for lines | $@ is stored here. | test.py:6:12:6:21 | ControlFlowNode for get_cert() | Sensitive data (certificate) |

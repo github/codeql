@@ -1,0 +1,9 @@
+| six | Package six |
+| six.moves | Package six.moves |
+| six.moves.http_client | Module http.client |
+| six.moves.http_client.HTTPConnection | class HTTPConnection |
+| six.moves.range | builtin-class range |
+| six.moves.urllib | Package six.moves.urllib |
+| six.moves.urllib.parse | Module six.moves.urllib_parse |
+| six.moves.urllib.parse.urlsplit | Function urlsplit |
+| six.moves.zip | builtin-class zip |

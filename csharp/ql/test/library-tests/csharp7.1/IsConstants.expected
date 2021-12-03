@@ -1,0 +1,3 @@
+| csharp71.cs:24:13:24:33 | ... is ... | csharp71.cs:24:13:24:24 | object creation of type Object | csharp71.cs:24:29:24:33 | "abc" | abc |
+| csharp71.cs:25:13:25:22 | ... is ... | csharp71.cs:25:13:25:14 | "" | csharp71.cs:25:19:25:22 | null | null |
+| csharp71.cs:26:13:26:21 | ... is ... | csharp71.cs:26:13:26:13 | access to local variable b | csharp71.cs:26:18:26:21 | true | true |

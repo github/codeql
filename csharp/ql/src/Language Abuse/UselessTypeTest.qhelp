@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>For any type <code>B</code>, an instance of a type derived from <code>B </code> is also an instance 
+of <code>B</code>. There is no need to test for this explicitly.</p>
+
+</overview>
+<recommendation>
+<p>Remove the useless type test.</p>
+
+</recommendation>
+<example>
+<p>In this example class <code>Sub</code> extends class <code>Super</code>. A new instance of <code>
+Sub</code>, <code>sub</code> is initialized and checked to see if it is an instance of <code>Super
+</code>. Since <code>Sub</code> extends <code>Super</code> then there is no need to test that <code>
+sub</code> is a <code>Super</code> because it is guaranteed to be the case.</p>
+<sample src="UselessTypeTest.cs" />
+</example>
+</qhelp>

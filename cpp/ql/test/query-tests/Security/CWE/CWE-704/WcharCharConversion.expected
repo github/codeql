@@ -1,0 +1,5 @@
+| WcharCharConversion.cpp:21:20:21:22 | array to pointer conversion | Conversion from const char * to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:22:20:22:25 | lpcstr | Conversion from LPCSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:24:22:24:27 | lpChar | Conversion from char * to wchar_t *. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:26:23:26:28 | lpChar | Conversion from char * to LPCWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:27:17:27:22 | lpChar | Conversion from char * to LPWSTR. Use of invalid string can lead to undefined behavior. |

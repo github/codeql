@@ -1,0 +1,24 @@
+test_documentRef
+| customization.js:2:13:2:31 | customGetDocument() |
+| event-handler-receiver.js:1:1:1:8 | document |
+| event-handler-receiver.js:5:1:5:8 | document |
+| nameditems.js:1:1:1:8 | document |
+test_locationRef
+| customization.js:3:3:3:14 | doc.location |
+test_domValueRef
+| customization.js:4:3:4:20 | doc.getElementById |
+| customization.js:4:3:4:28 | doc.get ... 'test') |
+| event-handler-receiver.html:4:20:4:19 | this |
+| event-handler-receiver.js:1:1:1:23 | documen ... entById |
+| event-handler-receiver.js:1:1:1:32 | documen ... my-id') |
+| event-handler-receiver.js:1:44:1:43 | this |
+| event-handler-receiver.js:2:3:2:17 | this.parentNode |
+| event-handler-receiver.js:5:1:5:23 | documen ... entById |
+| event-handler-receiver.js:5:1:5:32 | documen ... my-id') |
+| event-handler-receiver.js:5:60:5:59 | this |
+| event-handler-receiver.js:6:3:6:17 | this.parentNode |
+| nameditems.js:1:1:1:23 | documen ... entById |
+| nameditems.js:1:1:1:30 | documen ... ('foo') |
+| nameditems.js:1:1:2:19 | documen ... em('x') |
+| tst.js:49:3:49:8 | window |
+| tst.js:50:3:50:8 | window |

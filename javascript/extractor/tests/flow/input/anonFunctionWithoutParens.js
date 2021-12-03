@@ -1,0 +1,1 @@
+export type Callback = (Error => void);

@@ -1,0 +1,14 @@
+| consts.cpp:81:9:81:10 | c8 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:86:9:86:10 | v1 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:91:9:91:10 | v2 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:95:9:95:10 | v3 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:100:9:100:10 | v4 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:103:9:103:15 | call to varFunc | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:107:9:107:10 | v5 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:112:9:112:10 | v6 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:116:9:116:13 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:121:9:121:10 | v8 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:130:9:130:10 | v9 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:135:9:135:11 | v10 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:140:9:140:11 | v11 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:145:9:145:11 | v12 | The format string argument to printf should be constant to prevent security issues and other potential errors. |

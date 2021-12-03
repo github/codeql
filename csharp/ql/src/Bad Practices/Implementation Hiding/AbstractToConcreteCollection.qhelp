@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Casting from an abstract collection to a concrete implementation is bad practice. It makes your code fragile because it becomes 
+more difficult to change which implementation you are using at a later date.</p>
+
+</overview>
+<recommendation>
+<p>Consider using the abstract collection's methods and remove the cast.</p>
+
+</recommendation>
+<example>
+<p>The example shows casting from an <code>IEnumerable&lt;string&gt;</code> to a <code>List&lt;string&gt;</code>. This should be avoided where possible.</p>
+<sample src="AbstractToConcreteCollectionBad.cs" />
+
+</example>
+<references>
+
+  <li>C# Corner, <a href="http://www.c-sharpcorner.com/UploadFile/rmcochran/csharp_interrfaces03052006095933AM/csharp_interrfaces.aspx">C# Interface Based Development</a>.</li>
+
+</references>
+</qhelp>

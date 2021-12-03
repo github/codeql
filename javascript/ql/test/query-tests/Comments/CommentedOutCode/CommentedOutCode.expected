@@ -1,0 +1,10 @@
+| commentedCode.js:11:3:11:21 | // if (something) { | This comment appears to contain commented-out code. |
+| commentedCode.js:14:3:16:6 | // if (x) { | This comment appears to contain commented-out code. |
+| commentedCode.js:18:3:18:38 | // // c ... are bad | This comment appears to contain commented-out code. |
+| commentedCode.js:20:3:20:39 | /*// co ... e bad*/ | This comment appears to contain commented-out code. |
+| commentedCode.js:22:3:22:40 | /* // c ... e bad*/ | This comment appears to contain commented-out code. |
+| commentedCode.js:24:3:24:42 | // ///  ...  bad // | This comment appears to contain commented-out code. |
+| commentedCode.js:26:3:26:42 | /*////  ...  bad */ | This comment appears to contain commented-out code. |
+| commentedCode.js:28:3:28:42 | /* ///  ...  bad */ | This comment appears to contain commented-out code. |
+| commentedCode.js:139:1:139:27 | //alert ... e yo"); | This comment appears to contain commented-out code. |
+| commentedCode.js:142:1:142:20 | // scale to {0, 255} | This comment appears to contain commented-out code. |

@@ -1,0 +1,9 @@
+# CWE-468: Incorrect pointer scaling
++ semmlecode-cpp-queries/Security/CWE/CWE-468/IncorrectPointerScaling.ql: /CWE/CWE-468
+    @name Suspicious pointer scaling (CWE-468)
++ semmlecode-cpp-queries/Security/CWE/CWE-468/IncorrectPointerScalingChar.ql: /CWE/CWE-468
+    @name Suspicious pointer scaling to char (CWE-468)
++ semmlecode-cpp-queries/Security/CWE/CWE-468/IncorrectPointerScalingVoid.ql: /CWE/CWE-468
+    @name Suspicious pointer scaling to void (CWE-468)
++ semmlecode-cpp-queries/Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql: /CWE/CWE-468
+    @name Suspicious add with sizeof (CWE-468)

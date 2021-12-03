@@ -1,0 +1,22 @@
+| HResultBooleanConversion.c:42:12:42:23 | call to BoolFunction | Implicit conversion from BOOL to HRESULT |
+| HResultBooleanConversion.c:47:12:47:24 | call to BoolFunction2 | Implicit conversion from bool to HRESULT |
+| HResultBooleanConversion.c:53:15:53:16 | hr | Explicit conversion from HRESULT to BOOL |
+| HResultBooleanConversion.c:57:15:57:16 | hr | Explicit conversion from HRESULT to bool |
+| HResultBooleanConversion.c:66:9:66:33 | (...) | Explicit conversion from BOOL to HRESULT |
+| HResultBooleanConversion.c:70:9:70:34 | (...) | Explicit conversion from bool to HRESULT |
+| HResultBooleanConversion.c:78:14:78:37 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to BOOL |
+| HResultBooleanConversion.c:79:15:79:38 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to bool |
+| HResultBooleanConversion.c:82:10:82:11 | hr | Usage of a type HRESULT as an argument of a unary logical operation |
+| HResultBooleanConversion.c:92:9:92:10 | hr | Direct usage of a type HRESULT as a conditional expression |
+| HResultBooleanConversion.c:106:13:106:27 | call to HresultFunction | Usage of a type HRESULT as an argument of a unary logical operation |
+| HResultBooleanConversion.cpp:39:12:39:23 | call to BoolFunction | Implicit conversion from BOOL to HRESULT |
+| HResultBooleanConversion.cpp:44:12:44:24 | call to BoolFunction2 | Implicit conversion from bool to HRESULT |
+| HResultBooleanConversion.cpp:50:15:50:16 | hr | Explicit conversion from HRESULT to BOOL |
+| HResultBooleanConversion.cpp:54:15:54:16 | hr | Explicit conversion from HRESULT to bool |
+| HResultBooleanConversion.cpp:63:9:63:33 | (...) | Explicit conversion from BOOL to HRESULT |
+| HResultBooleanConversion.cpp:67:9:67:34 | (...) | Explicit conversion from bool to HRESULT |
+| HResultBooleanConversion.cpp:75:14:75:37 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to BOOL |
+| HResultBooleanConversion.cpp:76:15:76:38 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to bool |
+| HResultBooleanConversion.cpp:79:10:79:11 | hr | Implicit conversion from HRESULT to bool |
+| HResultBooleanConversion.cpp:89:9:89:10 | hr | Implicit conversion from HRESULT to bool |
+| HResultBooleanConversion.cpp:103:13:103:27 | call to HresultFunction | Implicit conversion from HRESULT to bool |

@@ -1,0 +1,12 @@
+edges
+nodes
+| ExposureOfPrivateInformation.cs:16:50:16:84 | access to indexer | semmle.label | access to indexer |
+| ExposureOfPrivateInformation.cs:18:50:18:65 | call to method getTelephone | semmle.label | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:22:21:22:36 | call to method getTelephone | semmle.label | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:40:21:40:33 | access to property Text | semmle.label | access to property Text |
+subpaths
+#select
+| ExposureOfPrivateInformation.cs:16:50:16:84 | access to indexer | ExposureOfPrivateInformation.cs:16:50:16:84 | access to indexer | ExposureOfPrivateInformation.cs:16:50:16:84 | access to indexer | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:16:50:16:84 | access to indexer | access to indexer |
+| ExposureOfPrivateInformation.cs:18:50:18:65 | call to method getTelephone | ExposureOfPrivateInformation.cs:18:50:18:65 | call to method getTelephone | ExposureOfPrivateInformation.cs:18:50:18:65 | call to method getTelephone | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:18:50:18:65 | call to method getTelephone | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:22:21:22:36 | call to method getTelephone | ExposureOfPrivateInformation.cs:22:21:22:36 | call to method getTelephone | ExposureOfPrivateInformation.cs:22:21:22:36 | call to method getTelephone | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:22:21:22:36 | call to method getTelephone | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:40:21:40:33 | access to property Text | ExposureOfPrivateInformation.cs:40:21:40:33 | access to property Text | ExposureOfPrivateInformation.cs:40:21:40:33 | access to property Text | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:40:21:40:33 | access to property Text | access to property Text |

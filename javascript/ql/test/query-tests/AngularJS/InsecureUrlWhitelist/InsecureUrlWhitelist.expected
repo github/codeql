@@ -1,0 +1,5 @@
+| tst.js:3:9:23:10 | $sceDel ...      ]) | '$@' is not a secure whitelist entry, because the TLD '*' is insecurely specified. | tst.js:8:13:8:31 | "https://example.*" | "https://example.*" |
+| tst.js:3:9:23:10 | $sceDel ...      ]) | '$@' is not a secure whitelist entry, because the domain '**.example.com' is insecurely specified. | tst.js:6:13:6:38 | "https: ... .com/*" | "https: ... .com/*" |
+| tst.js:3:9:23:10 | $sceDel ...      ]) | '$@' is not a secure whitelist entry, because the domain 'example.**' is insecurely specified. | tst.js:7:13:7:32 | "https://example.**" | "https://example.**" |
+| tst.js:3:9:23:10 | $sceDel ...      ]) | '$@' is not a secure whitelist entry, because the scheme '*' is insecurely specified. | tst.js:5:13:5:31 | "*://example.org/*" | "*://example.org/*" |
+| tst.js:3:9:23:10 | $sceDel ...      ]) | '$@' is not a secure whitelist entry, because the scheme '**' is insecurely specified. | tst.js:4:13:4:32 | "**://example.com/*" | "**://example.com/*" |

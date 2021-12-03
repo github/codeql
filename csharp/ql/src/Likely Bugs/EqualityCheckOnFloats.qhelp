@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Directly comparing two floating point values is dangerous due to the imprecision encountered 
+when storing and performing arithmetic on them.</p>
+
+</overview>
+<recommendation>
+<p>Floating point numbers should be treated as equal if the difference between their values is 
+within a certain margin of error. The appropriate margin of error depends on the situation in which 
+it is used.</p>
+
+<p>As a cautionary note, floating-point comparison is a non-trivial topic, and our documentation 
+here takes a pragmatic approach rather than trying to do it justice. You are strongly advised to 
+consult the references for further information.</p>
+
+</recommendation>
+<example>
+<p>Although you might expect this example to output "True" it actually outputs "False" due to the 
+imprecise way floating point arithmetic is performed.</p>
+<sample src="EqualityCheckOnFloats.cs" />
+
+<p>The class should be changed to perform a comparison with a tolerance value as in the following 
+example.</p>
+<sample src="EqualityCheckOnFloatsFix.cs" />
+
+</example>
+<references>
+
+  <li>Oracle Numerical Computation Guide: <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>.</li>
+  <li>Bruce Dawson: <a href="https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/">Comparing Floating Point Numbers</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,21 @@
+| a1.cpp:6:8:6:15 | NonEmpty | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.cpp:10:8:10:10 | Bar | 0 | file://:0:0:0:0 | Empty * | 1 types |
+| a1.cpp:10:8:10:10 | Bar | 1 | file://:0:0:0:0 | NonEmpty * | 1 types |
+| a1.cpp:10:8:10:10 | Bar | 2 | file://:0:0:0:0 | int | 1 types |
+| a2.cpp:6:8:6:15 | NonEmpty | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.cpp:10:8:10:10 | Bar | 0 | file://:0:0:0:0 | Empty * | 1 types |
+| a2.cpp:10:8:10:10 | Bar | 1 | file://:0:0:0:0 | NonEmpty * | 1 types |
+| a2.cpp:10:8:10:10 | Bar | 2 | file://:0:0:0:0 | int | 1 types |
+| b1.cpp:6:7:6:21 | AppleCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.cpp:11:7:11:22 | BananaCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.cpp:16:7:16:12 | Cherry | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.cpp:23:7:23:12 | Damson | 0 | file://:0:0:0:0 | int | 1 types |
+| b1.cpp:29:9:29:23 | AppleCompatible | 0 | file://:0:0:0:0 | long | 1 types |
+| b2.cpp:2:7:2:21 | AppleCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b2.cpp:9:7:9:22 | BananaCompatible | 0 | file://:0:0:0:0 | int | 1 types |
+| b2.cpp:14:7:14:12 | Cherry | 0 | file://:0:0:0:0 | short | 1 types |
+| b2.cpp:21:7:21:12 | Damson | 0 | file://:0:0:0:0 | int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 0 | file://:0:0:0:0 | unsigned int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 1 | file://:0:0:0:0 | unsigned int | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 2 | file://:0:0:0:0 | void * | 1 types |
+| file://:0:0:0:0 | __va_list_tag | 3 | file://:0:0:0:0 | void * | 1 types |

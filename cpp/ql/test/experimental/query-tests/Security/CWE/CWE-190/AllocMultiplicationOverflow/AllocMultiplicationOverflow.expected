@@ -1,0 +1,18 @@
+edges
+| test.cpp:22:17:22:21 | ... * ... | test.cpp:23:33:23:37 | size1 |
+nodes
+| test.cpp:13:33:13:37 | ... * ... | semmle.label | ... * ... |
+| test.cpp:15:31:15:35 | ... * ... | semmle.label | ... * ... |
+| test.cpp:19:34:19:38 | ... * ... | semmle.label | ... * ... |
+| test.cpp:22:17:22:21 | ... * ... | semmle.label | ... * ... |
+| test.cpp:23:33:23:37 | size1 | semmle.label | size1 |
+| test.cpp:30:27:30:31 | ... * ... | semmle.label | ... * ... |
+| test.cpp:31:27:31:31 | ... * ... | semmle.label | ... * ... |
+subpaths
+#select
+| test.cpp:13:33:13:37 | ... * ... | test.cpp:13:33:13:37 | ... * ... | test.cpp:13:33:13:37 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:13:33:13:37 | ... * ... | multiplication |
+| test.cpp:15:31:15:35 | ... * ... | test.cpp:15:31:15:35 | ... * ... | test.cpp:15:31:15:35 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:15:31:15:35 | ... * ... | multiplication |
+| test.cpp:19:34:19:38 | ... * ... | test.cpp:19:34:19:38 | ... * ... | test.cpp:19:34:19:38 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:19:34:19:38 | ... * ... | multiplication |
+| test.cpp:23:33:23:37 | size1 | test.cpp:22:17:22:21 | ... * ... | test.cpp:23:33:23:37 | size1 | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:22:17:22:21 | ... * ... | multiplication |
+| test.cpp:30:27:30:31 | ... * ... | test.cpp:30:27:30:31 | ... * ... | test.cpp:30:27:30:31 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:30:27:30:31 | ... * ... | multiplication |
+| test.cpp:31:27:31:31 | ... * ... | test.cpp:31:27:31:31 | ... * ... | test.cpp:31:27:31:31 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:31:27:31:31 | ... * ... | multiplication |

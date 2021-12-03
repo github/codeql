@@ -1,0 +1,3 @@
+| segfault.cpp:7:16:7:16 | 0 |
+| segfault.cpp:7:16:7:16 | (Zero)... |
+| segfault.cpp:11:7:11:12 | call to C |

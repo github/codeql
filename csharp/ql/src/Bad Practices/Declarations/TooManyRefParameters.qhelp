@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Whilst passing method arguments using <code>ref</code> is occasionally a sensible thing to do 
+(the canonical example is when writing a 'swap' method), overusing reference parameters can make 
+methods needlessly difficult to understand and call.</p>
+
+<p>Methods end up relying on their parameters being correctly initialized elsewhere and can have 
+problems such as aliasing (when two parameters refer to the same object). They can be difficult to 
+call because the references must refer to l-values (rather than temporary objects), so additional 
+objects must be created to hold the results of the call. Their results can also be difficult to 
+forward to other methods.</p>
+
+</overview>
+<recommendation>
+<p>Whilst it is not applicable in every situation, and some judgment must be applied, a common 
+solution is to create a new class that wraps the values you are trying to set in the method and then 
+modify the method to return a new instance of it.</p>
+
+</recommendation>
+<example>
+<p>In this example, populating the <code>name</code>, <code>address</code> and <code>tel</code> 
+fields is done via a method that takes <code>ref</code> parameters. This is not very good practice 
+and makes the method confusing.</p>
+<sample src="TooManyRefParametersBad.cs" />
+
+<p>It is better to wrap the values in their own <code>Details</code> class and then return a new 
+instance of <code>Details</code>. It is easier to pass to other functions correctly and is easier 
+to understand.</p>
+<sample src="TooManyRefParametersGood.cs" />
+</example>
+</qhelp>

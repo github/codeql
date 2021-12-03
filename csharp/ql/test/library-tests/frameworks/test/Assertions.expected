@@ -1,0 +1,31 @@
+assertTrue
+| ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:9:28:9:33 | IsTrue | ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:9:40:9:40 | b |
+| DoesNotReturnIf.cs:8:22:8:31 | AssertTrue | DoesNotReturnIf.cs:8:95:8:103 | condition |
+| DoesNotReturnIf.cs:16:22:16:32 | AssertTrue2 | DoesNotReturnIf.cs:17:75:17:84 | condition1 |
+| DoesNotReturnIf.cs:16:22:16:32 | AssertTrue2 | DoesNotReturnIf.cs:18:75:18:84 | condition2 |
+| nunit.cs:28:21:28:24 | True | nunit.cs:28:31:28:39 | condition |
+| nunit.cs:29:21:29:24 | True | nunit.cs:29:31:29:39 | condition |
+| nunit.cs:31:21:31:26 | IsTrue | nunit.cs:31:33:31:41 | condition |
+| nunit.cs:32:21:32:26 | IsTrue | nunit.cs:32:33:32:41 | condition |
+| nunit.cs:52:21:52:24 | That | nunit.cs:52:31:52:39 | condition |
+| nunit.cs:53:21:53:24 | That | nunit.cs:53:31:53:39 | condition |
+| nunit.cs:54:21:54:24 | That | nunit.cs:54:31:54:39 | condition |
+assertFalse
+| ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:10:28:10:34 | IsFalse | ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:10:41:10:41 | b |
+| DoesNotReturnIf.cs:12:22:12:32 | AssertFalse | DoesNotReturnIf.cs:12:95:12:103 | condition |
+| nunit.cs:34:21:34:25 | False | nunit.cs:34:32:34:40 | condition |
+| nunit.cs:35:21:35:25 | False | nunit.cs:35:32:35:40 | condition |
+| nunit.cs:37:21:37:27 | IsFalse | nunit.cs:37:34:37:42 | condition |
+| nunit.cs:38:21:38:27 | IsFalse | nunit.cs:38:34:38:42 | condition |
+assertNull
+| ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:7:28:7:33 | IsNull | ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:7:42:7:42 | o |
+| nunit.cs:40:21:40:24 | Null | nunit.cs:40:33:40:40 | anObject |
+| nunit.cs:41:21:41:24 | Null | nunit.cs:41:33:41:40 | anObject |
+| nunit.cs:43:21:43:26 | IsNull | nunit.cs:43:35:43:42 | anObject |
+| nunit.cs:44:21:44:26 | IsNull | nunit.cs:44:35:44:42 | anObject |
+assertNonNull
+| ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:8:28:8:36 | IsNotNull | ../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs:8:45:8:45 | o |
+| nunit.cs:46:21:46:27 | NotNull | nunit.cs:46:36:46:43 | anObject |
+| nunit.cs:47:21:47:27 | NotNull | nunit.cs:47:36:47:43 | anObject |
+| nunit.cs:49:21:49:29 | IsNotNull | nunit.cs:49:38:49:45 | anObject |
+| nunit.cs:50:21:50:29 | IsNotNull | nunit.cs:50:38:50:45 | anObject |

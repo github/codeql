@@ -1,0 +1,1 @@
+class Point extends Object {}

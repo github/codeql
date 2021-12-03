@@ -1,0 +1,4 @@
+| AV Rule 82.cpp:18:9:18:17 | operator= | Assignment operator in class Bad1 does not return a reference to *this. |
+| AV Rule 82.cpp:24:8:24:16 | operator= | Assignment operator in class Bad2 should have return type Bad2&. Otherwise a copy is created at each call. |
+| AV Rule 82.cpp:63:29:63:29 | operator= | Assignment operator in class TemplateReturnAssignment<int> does not return a reference to *this. |
+| AV Rule 82.cpp:199:52:199:52 | operator= | Assignment operator in class TemplatedAssignmentBad should have return type TemplatedAssignmentBad&. Otherwise a copy is created at each call. |

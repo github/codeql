@@ -1,0 +1,140 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [],
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 4
+              }
+            }
+          },
+          "selfClosing": false,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 5
+            }
+          }
+        },
+        "closingElement": {
+          "type": "JSXClosingElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 14
+              },
+              "end": {
+                "offset": 17
+              }
+            }
+          },
+          "loc": {
+            "start": {
+              "offset": 12
+            },
+            "end": {
+              "offset": 18
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "JSXExpressionContainer",
+            "expression": {
+              "type": "ObjectExpression",
+              "properties": [
+                {
+                  "type": "Property",
+                  "method": false,
+                  "shorthand": true,
+                  "computed": false,
+                  "key": {
+                    "type": "Identifier",
+                    "name": "a",
+                    "loc": {
+                      "start": {
+                        "offset": 8
+                      },
+                      "end": {
+                        "offset": 9
+                      }
+                    }
+                  },
+                  "kind": "init",
+                  "value": {
+                    "type": "Identifier",
+                    "name": "a",
+                    "loc": {
+                      "start": {
+                        "offset": 8
+                      },
+                      "end": {
+                        "offset": 9
+                      }
+                    }
+                  },
+                  "loc": {
+                    "start": {
+                      "offset": 8
+                    },
+                    "end": {
+                      "offset": 9
+                    }
+                  }
+                }
+              ],
+              "loc": {
+                "start": {
+                  "offset": 7
+                },
+                "end": {
+                  "offset": 10
+                }
+              }
+            },
+            "loc": {
+              "start": {
+                "offset": 5
+              },
+              "end": {
+                "offset": 12
+              }
+            }
+          }
+        ],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 18
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 18
+        }
+      }
+    }
+  ]
+}

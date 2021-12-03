@@ -1,0 +1,4 @@
+| test.c:31:22:31:27 | call to gmtime | Call to gmtime is potentially dangerous |
+| test.c:48:19:48:27 | call to localtime | Call to localtime is potentially dangerous |
+| test.c:49:22:49:26 | call to ctime | Call to ctime is potentially dangerous |
+| test.c:50:23:50:29 | call to asctime | Call to asctime is potentially dangerous |

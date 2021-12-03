@@ -1,0 +1,65 @@
+nodes
+| CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword |
+| CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
+| CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
+| CleartextStorage2.js:7:33:7:34 | pw |
+| CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") |
+| CleartextStorage.js:7:26:7:27 | pw |
+| CleartextStorage.js:7:26:7:27 | pw |
+| tst-angularjs.js:3:32:3:45 | data1.password |
+| tst-angularjs.js:3:32:3:45 | data1.password |
+| tst-angularjs.js:3:32:3:45 | data1.password |
+| tst-angularjs.js:4:33:4:46 | data2.password |
+| tst-angularjs.js:4:33:4:46 | data2.password |
+| tst-angularjs.js:4:33:4:46 | data2.password |
+| tst-angularjs.js:5:27:5:40 | data3.password |
+| tst-angularjs.js:5:27:5:40 | data3.password |
+| tst-angularjs.js:5:27:5:40 | data3.password |
+| tst-angularjs.js:6:33:6:46 | data4.password |
+| tst-angularjs.js:6:33:6:46 | data4.password |
+| tst-angularjs.js:6:33:6:46 | data4.password |
+| tst-webstorage.js:1:18:1:30 | data.password |
+| tst-webstorage.js:1:18:1:30 | data.password |
+| tst-webstorage.js:1:18:1:30 | data.password |
+| tst-webstorage.js:2:27:2:39 | data.password |
+| tst-webstorage.js:2:27:2:39 | data.password |
+| tst-webstorage.js:2:27:2:39 | data.password |
+| tst-webstorage.js:3:20:3:32 | data.password |
+| tst-webstorage.js:3:20:3:32 | data.password |
+| tst-webstorage.js:3:20:3:32 | data.password |
+| tst-webstorage.js:4:29:4:41 | data.password |
+| tst-webstorage.js:4:29:4:41 | data.password |
+| tst-webstorage.js:4:29:4:41 | data.password |
+edges
+| CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
+| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
+| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
+| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
+| tst-angularjs.js:3:32:3:45 | data1.password | tst-angularjs.js:3:32:3:45 | data1.password |
+| tst-angularjs.js:4:33:4:46 | data2.password | tst-angularjs.js:4:33:4:46 | data2.password |
+| tst-angularjs.js:5:27:5:40 | data3.password | tst-angularjs.js:5:27:5:40 | data3.password |
+| tst-angularjs.js:6:33:6:46 | data4.password | tst-angularjs.js:6:33:6:46 | data4.password |
+| tst-webstorage.js:1:18:1:30 | data.password | tst-webstorage.js:1:18:1:30 | data.password |
+| tst-webstorage.js:2:27:2:39 | data.password | tst-webstorage.js:2:27:2:39 | data.password |
+| tst-webstorage.js:3:20:3:32 | data.password | tst-webstorage.js:3:20:3:32 | data.password |
+| tst-webstorage.js:4:29:4:41 | data.password | tst-webstorage.js:4:29:4:41 | data.password |
+#select
+| CleartextStorage2.js:7:19:7:34 | 'password=' + pw | CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | Sensitive data returned by $@ is stored here. | CleartextStorage2.js:5:12:5:58 | url.par ... assword | an access to current_password |
+| CleartextStorage.js:7:26:7:27 | pw | CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:7:26:7:27 | pw | Sensitive data returned by $@ is stored here. | CleartextStorage.js:5:12:5:40 | req.par ... sword") | a call to param |
+| tst-angularjs.js:3:32:3:45 | data1.password | tst-angularjs.js:3:32:3:45 | data1.password | tst-angularjs.js:3:32:3:45 | data1.password | Sensitive data returned by $@ is stored here. | tst-angularjs.js:3:32:3:45 | data1.password | an access to password |
+| tst-angularjs.js:4:33:4:46 | data2.password | tst-angularjs.js:4:33:4:46 | data2.password | tst-angularjs.js:4:33:4:46 | data2.password | Sensitive data returned by $@ is stored here. | tst-angularjs.js:4:33:4:46 | data2.password | an access to password |
+| tst-angularjs.js:5:27:5:40 | data3.password | tst-angularjs.js:5:27:5:40 | data3.password | tst-angularjs.js:5:27:5:40 | data3.password | Sensitive data returned by $@ is stored here. | tst-angularjs.js:5:27:5:40 | data3.password | an access to password |
+| tst-angularjs.js:6:33:6:46 | data4.password | tst-angularjs.js:6:33:6:46 | data4.password | tst-angularjs.js:6:33:6:46 | data4.password | Sensitive data returned by $@ is stored here. | tst-angularjs.js:6:33:6:46 | data4.password | an access to password |
+| tst-webstorage.js:1:18:1:30 | data.password | tst-webstorage.js:1:18:1:30 | data.password | tst-webstorage.js:1:18:1:30 | data.password | Sensitive data returned by $@ is stored here. | tst-webstorage.js:1:18:1:30 | data.password | an access to password |
+| tst-webstorage.js:2:27:2:39 | data.password | tst-webstorage.js:2:27:2:39 | data.password | tst-webstorage.js:2:27:2:39 | data.password | Sensitive data returned by $@ is stored here. | tst-webstorage.js:2:27:2:39 | data.password | an access to password |
+| tst-webstorage.js:3:20:3:32 | data.password | tst-webstorage.js:3:20:3:32 | data.password | tst-webstorage.js:3:20:3:32 | data.password | Sensitive data returned by $@ is stored here. | tst-webstorage.js:3:20:3:32 | data.password | an access to password |
+| tst-webstorage.js:4:29:4:41 | data.password | tst-webstorage.js:4:29:4:41 | data.password | tst-webstorage.js:4:29:4:41 | data.password | Sensitive data returned by $@ is stored here. | tst-webstorage.js:4:29:4:41 | data.password | an access to password |

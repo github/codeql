@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+For performance reasons, most collection classes in the standard library are not thread-safe, instead requiring
+the user to guarantee they are used from at most one thread at a time by external locking or data structure
+invariants.
+</p>
+
+<p>
+For example, the behavior of <code>Dictionary</code> when a write happens concurrently with another write or a read is 
+undefined, and frequently leads to data corruption and can lead to ​ issues as serious as livelock.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If a static data member such as a <code>Dictionary</code> is likely to be accessed from multiple threads, ensure
+that either it is of a concurrency-safe collection type, or that all reads and writes are guarded by a suitable lock or monitor.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following code uses a static dictionary to store properties, but provides unsynchronized access to that
+dictionary. This means that multiple threads can access the dictionary, potentially leading to a race condition.
+</p>
+
+<sample src="UnsynchronizedStaticAccess.cs" />
+
+</example>
+<references>
+  <li>MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/xfhwa508.aspx#Anchor_10">Dictionary: Thread safety</a>.</li>
+</references>
+</qhelp>

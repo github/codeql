@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An empty <code>finalize</code> method is useless and may prevent finalization from 
+working properly. This is because, unlike a constructor, a finalizer does not implicitly call the 
+finalizer of the superclass. Thus, an empty finalizer prevents any finalization logic that is 
+defined in any of its superclasses from being executed.</p>
+
+</overview>
+<recommendation>
+
+<p>Do not include an empty <code>finalize</code> method.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the empty <code>finalize</code> method in class <code>ExtendedLog</code>
+prevents the <code>finalize</code> method in class <code>Log</code> from being called. The result is
+that the log file is not closed. To fix this, remove the empty <code>finalize</code> method.</p>
+
+<sample src="EmptyFinalize.java" />
+
+</example>
+<references>
+
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.6">12.6 Finalization of Class Instances</a>.
+</li>
+
+
+</references>
+</qhelp>

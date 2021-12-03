@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a synchronized method is overridden in a subclass,
+the compiler does not require the overriding method to be
+synchronized. However, if the overriding method is not synchronized, the thread-safety of the 
+subclass may be broken.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the overriding
+method is synchronized, if necessary.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.1">Synchronization</a>.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

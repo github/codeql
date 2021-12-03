@@ -1,0 +1,7 @@
+| robonode/src/app.js:43:13:43:27 | res.status(500) | Response 500 is not specified by $@. | robonode/src/assets/raml/api.raml:9:5:14:2 | description: \| | description: \| |
+| robonode/src/app.js:78:17:78:31 | res.status(422) | Response 422 is not specified by $@. | robonode/src/assets/raml/api.raml:30:9:54:4 | description: \| | description: \| |
+| robonode/src/app.js:91:21:91:35 | res.status(500) | Response 500 is not specified by $@. | robonode/src/assets/raml/api.raml:30:9:54:4 | description: \| | description: \| |
+| robonode/src/app.js:115:13:115:27 | res.status(422) | Response 422 is not specified by $@. | robonode/src/assets/raml/api.raml:30:9:54:4 | description: \| | description: \| |
+| robonode/src/app.js:122:9:122:23 | res.status(500) | Response 500 is not specified by $@. | robonode/src/assets/raml/api.raml:30:9:54:4 | description: \| | description: \| |
+| robonode/src/app.js:139:13:139:27 | res.status(500) | Response 500 is not specified by $@. | robonode/src/assets/raml/api.raml:56:9:72:14 | description: \| | description: \| |
+| robonode/src/app.js:144:13:144:27 | res.status(202) | Response 202 is not specified by $@. | robonode/src/assets/raml/api.raml:56:9:72:14 | description: \| | description: \| |

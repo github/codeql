@@ -1,0 +1,72 @@
+| Fields.java:12:19:21:3 | SSA init(this.xs) | Fields.java:13:15:13:16 | xs |
+| Fields.java:14:5:14:9 | SSA impl upd[nonlocal](this.xs) | Fields.java:15:9:15:10 | xs |
+| Fields.java:15:5:15:10 | SSA def(x) | Fields.java:16:9:16:9 | x |
+| Fields.java:17:7:17:11 | SSA impl upd[nonlocal](this.xs) | Fields.java:18:9:18:15 | this.xs |
+| Fields.java:18:5:18:16 | SSA phi(this.xs) | Fields.java:18:9:18:15 | this.xs |
+| Fields.java:19:5:19:19 | SSA def(this.xs) | Fields.java:20:9:20:10 | xs |
+| Fields.java:23:19:49:3 | SSA init(Fields.stat) | Fields.java:27:15:27:18 | stat |
+| Fields.java:23:19:49:3 | SSA init(this.xs) | Fields.java:26:15:26:16 | xs |
+| Fields.java:24:12:24:27 | SSA def(f) | Fields.java:25:15:25:15 | f |
+| Fields.java:24:12:24:27 | SSA impl upd[explicit qualifier](f.xs) | Fields.java:25:15:25:18 | f.xs |
+| Fields.java:24:16:24:27 | SSA impl upd[nonlocal](Fields.stat) | Fields.java:27:15:27:18 | stat |
+| Fields.java:28:5:28:12 | SSA impl upd[nonlocal](Fields.stat) | Fields.java:31:9:31:12 | stat |
+| Fields.java:28:5:28:12 | SSA impl upd[nonlocal](f.xs) | Fields.java:29:9:29:12 | f.xs |
+| Fields.java:28:5:28:12 | SSA impl upd[nonlocal](this.xs) | Fields.java:30:9:30:10 | xs |
+| Fields.java:32:5:32:9 | SSA impl upd[nonlocal](Fields.stat) | Fields.java:35:9:35:12 | stat |
+| Fields.java:32:5:32:9 | SSA impl upd[nonlocal](f.xs) | Fields.java:33:9:33:12 | f.xs |
+| Fields.java:32:5:32:9 | SSA impl upd[nonlocal](this.xs) | Fields.java:34:9:34:10 | xs |
+| Fields.java:36:5:36:19 | SSA def(this.xs) | Fields.java:38:9:38:10 | xs |
+| Fields.java:39:5:39:21 | SSA def(f.xs) | Fields.java:40:9:40:12 | f.xs |
+| Fields.java:41:5:41:10 | SSA def(z) | Fields.java:42:9:42:9 | z |
+| Fields.java:43:7:43:22 | SSA def(f) | Fields.java:44:9:44:9 | f |
+| Fields.java:43:7:43:22 | SSA impl upd[explicit qualifier](f.xs) | Fields.java:44:9:44:12 | f.xs |
+| Fields.java:43:11:43:22 | SSA impl upd[nonlocal](Fields.stat) | Fields.java:48:9:48:12 | stat |
+| Fields.java:44:5:44:13 | SSA phi(Fields.stat) | Fields.java:48:9:48:12 | stat |
+| Fields.java:44:5:44:13 | SSA phi(f) | Fields.java:44:9:44:9 | f |
+| Fields.java:44:5:44:13 | SSA phi(f.xs) | Fields.java:44:9:44:12 | f.xs |
+| Fields.java:45:5:45:16 | SSA impl upd[nonlocal](Fields.stat) | Fields.java:48:9:48:12 | stat |
+| Nested.java:8:29:8:57 | SSA init(next(..).p1) | Nested.java:8:38:8:39 | p1 |
+| Nested.java:8:29:8:57 | SSA init(next(..).x1) | Nested.java:8:43:8:44 | x1 |
+| Nested.java:16:22:16:34 | SSA init(getInt(..).obj) | Nested.java:16:22:16:24 | obj |
+| Nested.java:18:15:23:5 | SSA def(h2) | Nested.java:25:9:25:10 | h2 |
+| Nested.java:19:27:22:7 | SSA init(getInt(..).hash) | Nested.java:21:21:21:24 | hash |
+| Nested.java:19:27:22:7 | SSA init(getInt(..).x2) | Nested.java:21:16:21:17 | x2 |
+| Nested.java:20:19:20:39 | SSA def(hnest) | Nested.java:21:37:21:41 | hnest |
+| Nested.java:20:27:20:39 | SSA init(getInt(..).obj) | Nested.java:20:27:20:29 | obj |
+| Nested.java:30:23:30:36 | SSA init(getInt(..).obj2) | Nested.java:30:23:30:26 | obj2 |
+| Nested.java:33:29:42:3 | SSA init(p3) | Nested.java:35:9:35:10 | p3 |
+| Nested.java:37:20:37:25 | SSA init(getInt(..).x3) | Nested.java:37:20:37:21 | x3 |
+| Nested.java:40:20:40:25 | SSA init(getInt(..).x3) | Nested.java:40:20:40:21 | x3 |
+| Test.java:4:19:32:2 | SSA init(param) | Test.java:9:7:9:11 | param |
+| Test.java:6:7:6:11 | SSA def(x) | Test.java:10:4:10:4 | x |
+| Test.java:6:7:6:11 | SSA def(x) | Test.java:20:10:20:10 | x |
+| Test.java:10:4:10:6 | SSA def(x) | Test.java:11:10:11:10 | x |
+| Test.java:11:4:11:10 | SSA def(y) | Test.java:20:14:20:14 | y |
+| Test.java:11:8:11:10 | SSA def(x) | Test.java:20:10:20:10 | x |
+| Test.java:14:4:14:8 | SSA def(y) | Test.java:15:4:15:4 | y |
+| Test.java:15:4:15:9 | SSA def(y) | Test.java:20:14:20:14 | y |
+| Test.java:19:3:19:3 | SSA phi(x) | Test.java:20:10:20:10 | x |
+| Test.java:19:3:19:3 | SSA phi(y) | Test.java:20:14:20:14 | y |
+| Test.java:20:10:20:10 | SSA phi(param) | Test.java:21:8:21:12 | param |
+| Test.java:20:10:20:10 | SSA phi(y) | Test.java:20:14:20:14 | y |
+| Test.java:21:8:21:14 | SSA def(param) | Test.java:21:8:21:12 | param |
+| Test.java:24:4:24:9 | SSA def(y) | Test.java:20:14:20:14 | y |
+| Test.java:27:12:27:16 | SSA def(i) | Test.java:27:19:27:19 | i |
+| Test.java:27:19:27:19 | SSA phi(i) | Test.java:27:19:27:19 | i |
+| Test.java:27:19:27:19 | SSA phi(x) | Test.java:28:4:28:4 | x |
+| Test.java:27:19:27:19 | SSA phi(x) | Test.java:31:10:31:10 | x |
+| Test.java:27:25:27:27 | SSA def(i) | Test.java:27:19:27:19 | i |
+| Test.java:28:4:28:9 | SSA def(x) | Test.java:28:4:28:4 | x |
+| Test.java:28:4:28:9 | SSA def(x) | Test.java:31:10:31:10 | x |
+| TestInstanceOfPattern.java:3:24:9:2 | SSA init(obj) | TestInstanceOfPattern.java:4:7:4:9 | obj |
+| TestInstanceOfPattern.java:4:29:4:29 | SSA def(s) | TestInstanceOfPattern.java:5:8:5:8 | s |
+| TestInstanceOfPattern.java:7:8:7:8 | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:7:8:7:8 | s |
+| TestInstanceOfPattern.java:10:25:16:2 | SSA init(obj) | TestInstanceOfPattern.java:11:9:11:11 | obj |
+| TestInstanceOfPattern.java:11:31:11:31 | SSA def(s) | TestInstanceOfPattern.java:14:8:14:8 | s |
+| TestInstanceOfPattern.java:12:8:12:8 | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:12:8:12:8 | s |
+| TestInstanceOfPattern.java:17:25:23:2 | SSA init(obj) | TestInstanceOfPattern.java:18:7:18:9 | obj |
+| TestInstanceOfPattern.java:18:29:18:29 | SSA def(s) | TestInstanceOfPattern.java:18:34:18:34 | s |
+| TestInstanceOfPattern.java:21:8:21:8 | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:21:8:21:8 | s |
+| TestInstanceOfPattern.java:24:25:30:2 | SSA init(obj) | TestInstanceOfPattern.java:25:7:25:9 | obj |
+| TestInstanceOfPattern.java:24:25:30:2 | SSA init(this.s) | TestInstanceOfPattern.java:25:34:25:34 | s |
+| TestInstanceOfPattern.java:24:25:30:2 | SSA init(this.s) | TestInstanceOfPattern.java:26:8:26:8 | s |

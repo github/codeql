@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds <code>switch</code> statements that switch on values of an enumeration type 
+but do not provide cases for all the enumeration constants or a default case. This is an 
+indication that there may be cases unhandled by the <code>switch</code> statement.</p>
+
+</overview>
+<recommendation>
+<p>Provide a case for every enumeration constant, or introduce a <code>default</code> case if several constants should be treated the same way.</p>
+
+</recommendation>
+<example><sample src="MissingEnumCaseInSwitch.cpp" />
+
+</example>
+<references>
+
+<li>
+  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ switch statement</a>
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/switch-statement-cpp">switch statement (C++)</a>
+</li>
+<li>
+  M. Henricson and E. Nyquist, <i>Industrial Strength C++</i>, Chapter 4: Control Flow, Rec 4.5. Prentice Hall PTR, 1997 (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">available online</a>).
+</li>
+
+
+
+
+
+</references>
+</qhelp>

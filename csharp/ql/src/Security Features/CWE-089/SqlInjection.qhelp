@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a SQL query is built using string concatenation, and the
+components of the concatenation include user input, a user 
+is likely to be able to run malicious database queries.</p>
+</overview>
+
+<recommendation>
+<p>Usually, it is better to use a prepared statement than to build a
+complete query with string concatenation. A prepared statement can
+include a parameter, written as either a question mark (<code>?</code>) or with
+an explicit name (<code>@parameter</code>), for each part of the SQL query that is
+expected to be filled in by a different value each time it is run.
+When the query is later executed, a value must be
+supplied for each parameter in the query.</p>
+
+<p>It is good practice to use prepared statements for supplying
+parameters to a query, whether or not any of the parameters are
+directly traceable to user input. Doing so avoids any need to worry
+about quoting and escaping.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the code runs a simple SQL query in three different ways.</p>
+
+<p>The first way involves building a query, <code>query1</code>, by concatenating a
+user-supplied text box value with some string literals. The text box value
+can include special characters, so this code allows for SQL injection attacks.</p>
+
+<p>The second way uses a stored procedure, <code>ItemsStoredProcedure</code>, with a
+single parameter (<code>@category</code>). The parameter is then given a value by
+calling <code>Parameters.Add</code>. This version is immune to injection attacks,
+because any special characters are not given any special treatment.</p>
+
+<p>The third way builds a query, <code>query2</code>, with a
+single string literal that includes a parameter (<code>@category</code>). The parameter is then given a value by
+calling <code>Parameters.Add</code>. This version is immune to injection attacks,
+because any special characters are not given any special treatment.</p>
+
+<sample src="SqlInjection.cs" />
+</example>
+
+<references>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ff648339.aspx">How To: Protect From SQL Injection in ASP.NET</a>.</li>
+</references>
+</qhelp>

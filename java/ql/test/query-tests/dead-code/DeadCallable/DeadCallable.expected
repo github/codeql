@@ -1,0 +1,5 @@
+| Main.java:1:14:1:17 | <obinit> | The method <obinit> is only used from dead code originating at $@. | Main.java:1:14:1:17 | Main | Main |
+| Main.java:7:15:7:20 | unused | The method unused is entirely unused. | Main.java:7:15:7:20 | unused | unused |
+| Main.java:11:15:11:30 | indirectlyUnused | The method indirectlyUnused is only used from dead code originating at $@. | Main.java:7:15:7:20 | unused | unused |
+| Main.java:13:15:13:17 | foo | The method foo is only used from, or in, a dead-code cycle. | Main.java:13:15:13:17 | foo | foo |
+| Main.java:14:15:14:17 | bar | The method bar is only used from, or in, a dead-code cycle. | Main.java:14:15:14:17 | bar | bar |

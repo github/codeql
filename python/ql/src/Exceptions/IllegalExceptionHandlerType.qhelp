@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the class specified in an <code>except</code> handler (within a <code>try</code> statement) is
+not a legal exception class, then it will never match a raised exception and never be executed
+</p>
+
+<p>Legal exception classes are:</p>
+<ul>
+<li>Any old-style classes (Python 2 only)</li>
+<li>Any subclass of the builtin class <code>BaseException</code></li>
+</ul>
+<p>
+However, it recommended that you only use subclasses of the builtin class
+<code>Exception</code> (which is itself a subclass of <code>BaseException</code>).
+</p>
+
+</overview>
+<recommendation>
+<p>Ensure that the specified class is the one intended. If it is not then replace it with
+the correct one. Otherwise the entire <code>except</code> block can be deleted.
+</p>
+
+</recommendation>
+<example>
+
+<sample src="IllegalExceptionHandlerType.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/tutorial/errors.html#handling-exceptions">Handling Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

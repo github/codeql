@@ -1,0 +1,9 @@
+<!-- Adapted from the AngularJS Developer Guide (https://docs.angularjs.org/guide),
+which is licensed under the MIT license; see file LICENSE in parent directory. -->
+<div ng-controller="MyController">
+  Your name:
+    <input type="text" ng-model="username"> <!-- ScopeProperty -->
+    <button ng-click='sayHello()'>greet</button> <!-- ScopeProperty -->
+  <hr>
+  {{greeting}} <!-- ScopeProperty -->
+</div>

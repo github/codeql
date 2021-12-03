@@ -1,0 +1,6 @@
+| c_overload.c:3:13:3:13 | f | f | 0 |
+| c_overload.c:5:40:5:40 | f | f | 1 |
+| c_overload.c:9:43:9:43 | f | f | 1 |
+| c_overload.c:15:35:15:35 | g | g | 1 |
+| c_overload.c:19:38:19:38 | g | g | 1 |
+| c_overload.c:27:5:27:8 | main | main | 0 |

@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The function <code>next()</code> will raise a <code>StopIteration</code> exception
+if the underlying iterator is exhausted. 
+Normally this is fine, but in a generator may cause problems.
+Since the <code>StopIteration</code> is an exception it will be propagated out of the generator
+causing termination of the generator. This is unlikely to be the expected behavior and may mask
+errors.
+</p>
+
+<p>
+This problem is considered sufficiently serious that <a href="https://www.python.org/dev/peps/pep-0479">PEP 479</a>
+has been accepted to modify the handling of <code>StopIteration</code> in generators. Consequently, code that does not handle
+<code>StopIteration</code> properly is likely to fail in future versions of Python.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Each call to <code>next()</code> should be wrapped in a <code>try-except</code> to explicitly 
+handle <code>StopIteration</code> exceptions.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, an empty file part way through iteration will silently truncate the output as
+the <code>StopIteration</code> exception propagates to the top level.
+</p>
+
+<sample src="UnguardedNextInGeneratorBad.py"/>
+
+<p>
+In the following example <code>StopIteration</code> exception is explicitly handled,
+allowing all the files to be processed.
+</p>
+
+<sample src="UnguardedNextInGeneratorGood.py"/>
+
+</example>
+<references>
+
+<li>Python PEP index: <a href="https://www.python.org/dev/peps/pep-0479">PEP 479</a>.</li>
+
+
+</references>
+</qhelp>

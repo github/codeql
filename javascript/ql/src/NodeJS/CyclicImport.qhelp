@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Module imports in node.js can be cyclic, that is, a module can (directly or indirectly) import itself.
+In order to prevent an infinite loop, such cyclic imports return incomplete copies of the loaded
+module, which do not yet have all exported members available. Such incomplete modules are difficult
+to work with, and cyclic dependencies in general make the code hard to maintain and understand.
+Consequently, cyclic imports should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Refactor the involved modules to break the dependency cycle.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, module <code>a.js</code> depends on module <code>b.js</code>, which in turn
+depends on module <code>a.js</code>, so they each import the other module, leading to an import cycle.
+</p>
+
+<sample src="examples/CyclicImport.js" />
+
+<p>
+The cyclic dependency can be fixed by moving <code>firstName</code> into module <code>b.js</code>,
+so that it no longer depends on <code>a.js</code>:
+</p>
+
+<sample src="examples/CyclicImportGood.js" />
+
+</example>
+<references>
+
+
+<li>Brad Harris: <a href="https://web.archive.org/web/20200203213815/http://selfcontained.us/2012/05/08/node-js-circular-dependencies/">node.js and circular dependencies</a>.</li>
+<li>Node.js Manual: <a href="http://nodejs.org/api/modules.html#modules_cycles">Modules</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,46 @@
+| 15 | Comment #else: |
+| 16 | Comment #    do_something_else() |
+| 21 | Comment #class CommentedOut: |
+| 23 | Comment #    def __init__(self): |
+| 25 | Comment #       pass |
+| 27 | Comment #    def method(self): |
+| 29 | Comment #        pass |
+| 31 | Comment #def g(y): |
+| 32 | Comment #    assert y   |
+| 33 | Comment #    with y: |
+| 34 | Comment #        # Commented out comment |
+| 35 | Comment #        if y: |
+| 36 | Comment #             do_something() |
+| 37 | Comment #        else: |
+| 38 | Comment #             do_something_else() |
+| 40 | Comment #def h(z): |
+| 41 | Comment #    '''Doc string |
+| 42 | Comment #    ''' |
+| 43 | Comment #    # Commented out comment |
+| 45 | Comment #    followed_by_space() |
+| 48 | Comment #    more_code() |
+| 50 | Comment #def j(): |
+| 51 | Comment #    """ Doc string """ |
+| 52 | Comment #    pass |
+| 54 | Comment #def k(): |
+| 56 | Comment #    """ Doc string """ |
+| 57 | Comment #    pass |
+| 59 | Comment #def l(): |
+| 61 | Comment #    """  |
+| 62 | Comment #      Doc string  |
+| 63 | Comment #    """ |
+| 65 | Comment #    pass |
+| 71 | Comment #def m(): |
+| 72 | Comment #    pass |
+| 78 | Comment #with x: |
+| 79 | Comment #    pass |
+| 80 | Comment #try: |
+| 81 | Comment #    call() |
+| 82 | Comment #except Exception: |
+| 83 | Comment #    pass |
+| 84 | Comment #except: |
+| 85 | Comment #    pass |
+| 94 | Comment #  def f(): |
+| 95 | Comment #      call() |
+| 96 | Comment #      x.y = z |
+| 97 | Comment #      return x |

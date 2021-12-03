@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>To be able to use the <code>isAnnotationPresent</code> method on an <code>AnnotatedElement</code> at runtime,
+an annotation must be explicitly annotated with a <code>RUNTIME</code> retention policy.
+Otherwise, the annotation is not retained at runtime and cannot be observed using reflection.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Explicitly annotate annotations with a <code>RUNTIME</code> retention policy
+if you want to observe their presence using <code>AnnotatedElement.isAnnotationPresent</code>
+at runtime.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the call to <code>isAnnotationPresent</code> returns <code>false</code>
+because the annotation cannot be observed using reflection.</p>
+
+<sample src="AnnotationPresentCheck.java" />
+
+<p>To correct this, the annotation is annotated with a <code>RUNTIME</code> retention policy.</p>
+
+<sample src="AnnotationPresentCheckFix.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Retention.html">Annotation Type Retention</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/RetentionPolicy.html#RUNTIME">RetentionPolicy.RUNTIME</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html#isAnnotationPresent(java.lang.Class)">AnnotatedElement.isAnnotationPresent()</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,24 @@
+indexes
+| ranges.cs:10:31:10:32 | ^... | ranges.cs:10:32:10:32 | 1 |
+| ranges.cs:16:28:16:30 | ^... | ranges.cs:16:29:16:30 | 10 |
+| ranges.cs:16:33:16:34 | ^... | ranges.cs:16:34:16:34 | 5 |
+ranges
+| ranges.cs:9:28:9:31 | ... .. ... |
+| ranges.cs:10:28:10:32 | ... .. ... |
+| ranges.cs:12:28:12:31 | ... .. ... |
+| ranges.cs:13:28:13:30 | ... .. ... |
+| ranges.cs:14:28:14:30 | ... .. ... |
+| ranges.cs:15:28:15:29 | ... .. ... |
+| ranges.cs:16:28:16:34 | ... .. ... |
+rangeStart
+| ranges.cs:9:28:9:31 | ... .. ... | ranges.cs:9:28:9:28 | 1 |
+| ranges.cs:10:28:10:32 | ... .. ... | ranges.cs:10:28:10:28 | 0 |
+| ranges.cs:12:28:12:31 | ... .. ... | ranges.cs:12:28:12:28 | access to local variable x |
+| ranges.cs:14:28:14:30 | ... .. ... | ranges.cs:14:28:14:28 | access to local variable x |
+| ranges.cs:16:28:16:34 | ... .. ... | ranges.cs:16:28:16:30 | ^... |
+rangeEnd
+| ranges.cs:9:28:9:31 | ... .. ... | ranges.cs:9:31:9:31 | 3 |
+| ranges.cs:10:28:10:32 | ... .. ... | ranges.cs:10:31:10:32 | ^... |
+| ranges.cs:12:28:12:31 | ... .. ... | ranges.cs:12:31:12:31 | access to local variable y |
+| ranges.cs:13:28:13:30 | ... .. ... | ranges.cs:13:30:13:30 | access to local variable y |
+| ranges.cs:16:28:16:34 | ... .. ... | ranges.cs:16:33:16:34 | ^... |

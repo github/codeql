@@ -1,0 +1,5 @@
+| constants.h:5:9:5:19 | abcabcabc | Magic constant: literal 'abcabcabc' is repeated 30 times and should be encapsulated in a constant. |
+| constants.h:5:9:5:19 | abcabcabc | Magic constant: literal 'abcabcabc' is repeated 30 times and should be encapsulated in a constant. |
+| joining.cpp:39:5:39:18 | testrepo.git | Magic constant: literal 'testrepo.git' is repeated 21 times and should be encapsulated in a constant. |
+| joining.cpp:107:8:107:28 | NO T_VOID CONSTRUCT | Magic constant: literal 'NO T_VOID CONSTRUCT' is repeated 21 times and should be encapsulated in a constant. |
+| joining.cpp:173:8:173:47 | compiler error: no const of base type  | Magic constant: literal 'compiler error: no const of base type ' is repeated 21 times and should be encapsulated in a constant. |

@@ -1,0 +1,16 @@
+| tst.ts:52:3:52:23 | obj.sim ... od(str) | TestInterface.simpleMethod in global scope | no concrete target |
+| tst.ts:53:3:53:24 | obj.gen ... od(str) | TestInterface.genericMethod in global scope | no concrete target |
+| tst.ts:54:3:54:24 | obj.gen ... od(num) | TestInterface.genericMethod in global scope | no concrete target |
+| tst.ts:55:3:55:27 | obj.ove ... od(num) | TestInterface.overloadedMethod in global scope | no concrete target |
+| tst.ts:56:3:56:27 | obj.ove ... od(str) | TestInterface.overloadedMethod in global scope | no concrete target |
+| tst.ts:57:3:57:26 | obj.ove ... hod([]) | TestInterface.overloadedMethod in global scope | no concrete target |
+| tst.ts:58:3:58:36 | obj.gen ... ([num]) | TestInterface.genericOverloadedMethod in global scope | no concrete target |
+| tst.ts:59:3:59:39 | obj.gen ... : str}) | TestInterface.genericOverloadedMethod in global scope | no concrete target |
+| tst.ts:60:3:60:34 | obj.gen ... od(num) | TestInterface.genericOverloadedMethod in global scope | no concrete target |
+| tst.ts:64:3:64:23 | obj.sim ... od(str) | TestClass.simpleMethod in global scope | simpleM ... ength } |
+| tst.ts:65:3:65:24 | obj.gen ... od(str) | TestClass.genericMethod in global scope | generic ... rn x; } |
+| tst.ts:66:3:66:24 | obj.gen ... od(num) | TestClass.genericMethod in global scope | generic ... rn x; } |
+| tst.ts:67:3:67:27 | obj.ove ... od(num) | TestClass.overloadedMethod in global scope | overloa ... rn x; } |
+| tst.ts:68:3:68:27 | obj.ove ... od(str) | TestClass.overloadedMethod in global scope | overloa ... rn x; } |
+| tst.ts:69:3:69:36 | obj.gen ... ([num]) | TestClass.genericOverloadedMethod in global scope | generic ... null; } |
+| tst.ts:70:3:70:39 | obj.gen ... : str}) | TestClass.genericOverloadedMethod in global scope | generic ... null; } |

@@ -1,0 +1,5 @@
+spuriousCallee
+missingCallee
+| constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 |
+| constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 |
+badAnnotation

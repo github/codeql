@@ -1,0 +1,51 @@
+edges
+| SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:33:21:33:40 | access to property Text : String |
+| SqlInjection.cs:33:21:33:40 | access to property Text : String | SqlInjection.cs:34:50:34:55 | access to local variable query1 |
+| SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:68:33:68:52 | access to property Text : String |
+| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:69:56:69:61 | access to local variable query1 |
+| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:70:55:70:60 | access to local variable query1 |
+| SqlInjection.cs:82:21:82:29 | access to property Text : String | SqlInjection.cs:83:50:83:55 | access to local variable query1 |
+| SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query |
+| SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query |
+| SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query |
+| SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query |
+| SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query |
+| SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query |
+| SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query |
+nodes
+| SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| SqlInjection.cs:33:21:33:40 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjection.cs:34:50:34:55 | access to local variable query1 | semmle.label | access to local variable query1 |
+| SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| SqlInjection.cs:68:33:68:52 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjection.cs:69:56:69:61 | access to local variable query1 | semmle.label | access to local variable query1 |
+| SqlInjection.cs:70:55:70:60 | access to local variable query1 | semmle.label | access to local variable query1 |
+| SqlInjection.cs:82:21:82:29 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjection.cs:83:50:83:55 | access to local variable query1 | semmle.label | access to local variable query1 |
+| SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | semmle.label | access to local variable query |
+subpaths
+#select
+| SqlInjection.cs:34:50:34:55 | access to local variable query1 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:34:50:34:55 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | this ASP.NET user input |
+| SqlInjection.cs:69:56:69:61 | access to local variable query1 | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:69:56:69:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | this ASP.NET user input |
+| SqlInjection.cs:70:55:70:60 | access to local variable query1 | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:70:55:70:60 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | this ASP.NET user input |
+| SqlInjection.cs:83:50:83:55 | access to local variable query1 | SqlInjection.cs:82:21:82:29 | access to property Text : String | SqlInjection.cs:83:50:83:55 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:82:21:82:29 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | this TextBox text |
+| SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | Query might include code from $@. | SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | this TextBox text |

@@ -1,0 +1,1 @@
+| onepackage/MutualDependency.java:10:22:10:22 | B | This type and type $@ are mutually dependent. | otherpackage/OtherClass.java:3:14:3:23 | OtherClass | OtherClass |

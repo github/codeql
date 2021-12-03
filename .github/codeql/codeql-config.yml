@@ -2,3 +2,10 @@ name: "CodeQL config"
 
 queries:
   - uses: security-and-quality
+
+paths-ignore:
+  - '/cpp/'
+  - '/java/'
+  - '/python/'
+  - '/javascript/ql/test'
+  - '/javascript/extractor/tests'

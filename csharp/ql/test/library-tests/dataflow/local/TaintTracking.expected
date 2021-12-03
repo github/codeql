@@ -1,0 +1,57 @@
+| LocalDataFlow.cs:52:15:52:19 | access to local variable sink0 |
+| LocalDataFlow.cs:61:15:61:19 | access to local variable sink1 |
+| LocalDataFlow.cs:69:15:69:19 | access to local variable sink5 |
+| LocalDataFlow.cs:77:15:77:19 | access to local variable sink6 |
+| LocalDataFlow.cs:85:15:85:19 | [b (line 48): false] access to local variable sink7 |
+| LocalDataFlow.cs:93:15:93:19 | access to local variable sink8 |
+| LocalDataFlow.cs:101:15:101:19 | access to local variable sink9 |
+| LocalDataFlow.cs:109:15:109:20 | access to local variable sink15 |
+| LocalDataFlow.cs:112:15:112:20 | access to local variable sink16 |
+| LocalDataFlow.cs:114:15:114:20 | access to local variable sink17 |
+| LocalDataFlow.cs:116:15:116:20 | access to local variable sink18 |
+| LocalDataFlow.cs:118:15:118:20 | access to local variable sink19 |
+| LocalDataFlow.cs:120:15:120:20 | access to local variable sink45 |
+| LocalDataFlow.cs:123:15:123:20 | access to local variable sink46 |
+| LocalDataFlow.cs:125:15:125:20 | access to local variable sink47 |
+| LocalDataFlow.cs:127:15:127:20 | access to local variable sink49 |
+| LocalDataFlow.cs:129:15:129:20 | access to local variable sink50 |
+| LocalDataFlow.cs:131:15:131:20 | access to local variable sink51 |
+| LocalDataFlow.cs:133:15:133:20 | access to local variable sink52 |
+| LocalDataFlow.cs:161:15:161:20 | access to local variable sink20 |
+| LocalDataFlow.cs:163:15:163:20 | access to local variable sink21 |
+| LocalDataFlow.cs:165:15:165:20 | access to local variable sink22 |
+| LocalDataFlow.cs:175:15:175:20 | access to local variable sink25 |
+| LocalDataFlow.cs:183:15:183:20 | access to local variable sink26 |
+| LocalDataFlow.cs:185:15:185:20 | access to local variable sink27 |
+| LocalDataFlow.cs:187:15:187:20 | access to local variable sink28 |
+| LocalDataFlow.cs:189:15:189:20 | access to local variable sink29 |
+| LocalDataFlow.cs:191:15:191:20 | access to local variable sink30 |
+| LocalDataFlow.cs:207:15:207:20 | access to local variable sink31 |
+| LocalDataFlow.cs:209:15:209:20 | access to local variable sink32 |
+| LocalDataFlow.cs:219:15:219:20 | access to local variable sink33 |
+| LocalDataFlow.cs:221:15:221:20 | access to local variable sink48 |
+| LocalDataFlow.cs:231:15:231:20 | access to local variable sink34 |
+| LocalDataFlow.cs:233:15:233:20 | access to local variable sink35 |
+| LocalDataFlow.cs:236:15:236:20 | access to local variable sink36 |
+| LocalDataFlow.cs:249:15:249:20 | access to local variable sink53 |
+| LocalDataFlow.cs:251:15:251:20 | access to local variable sink54 |
+| LocalDataFlow.cs:265:15:265:20 | access to local variable sink60 |
+| LocalDataFlow.cs:274:15:274:20 | access to local variable sink69 |
+| LocalDataFlow.cs:282:15:282:20 | access to local variable sink70 |
+| LocalDataFlow.cs:290:19:290:24 | access to local variable sink71 |
+| LocalDataFlow.cs:300:23:300:28 | access to local variable sink72 |
+| LocalDataFlow.cs:315:15:315:20 | access to local variable sink73 |
+| LocalDataFlow.cs:316:15:316:20 | access to local variable sink74 |
+| LocalDataFlow.cs:342:15:342:21 | access to parameter tainted |
+| SSA.cs:9:15:9:22 | access to local variable ssaSink0 |
+| SSA.cs:25:15:25:22 | access to local variable ssaSink1 |
+| SSA.cs:43:15:43:22 | access to local variable ssaSink2 |
+| SSA.cs:60:15:60:22 | access to local variable ssaSink3 |
+| SSA.cs:69:15:69:34 | access to field SsaFieldSink0 |
+| SSA.cs:98:15:98:22 | access to local variable ssaSink4 |
+| SSA.cs:124:15:124:34 | access to field SsaFieldSink1 |
+| SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
+| Splitting.cs:8:19:8:19 | [b (line 3): true] access to local variable x |
+| Splitting.cs:12:15:12:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:25:15:25:15 | [b (line 17): true] access to local variable x |
+| Splitting.cs:27:19:27:19 | access to local variable x |

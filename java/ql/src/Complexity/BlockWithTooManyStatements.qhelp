@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Code has a tendency to become more complex over time.
+A method that is initially simple may need to be extended to accommodate additional functionality or to
+address defects. Before long it becomes unreadable and unmaintainable, with
+many complex statements nested within each other.</p>
+
+<p>This rule applies to a block that contains
+a significant number of complex statements. Note that this
+is quite different from just considering the number of statements in a block, because
+each complex statement is potentially a candidate for being extracted to a new method as part of refactoring.
+For the purposes of this rule, loops and switch statements are considered to be complex.</p>
+
+</overview>
+<recommendation>
+
+<p>To make the code more understandable and less complex, identify logical units and extract them to 
+new methods. As a result, the top-level logic becomes clearer.</p>
+
+</recommendation>
+<references>
+
+
+  <li>
+  M. Fowler, <em>Refactoring: Improving the Design of Existing Code</em>.
+  Addison-Wesley Professional, 1999.
+  </li>
+  <li>
+  W. C. Wake, <em>Refactoring Workbook</em>.
+  Addison-Wesley Professional, 2004.
+  </li>
+
+
+</references>
+</qhelp>

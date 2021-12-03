@@ -1,0 +1,127 @@
+#10000=@"/comments.ts;sourcefile"
+files(#10000,"/comments.ts")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+#20002=*
+comments(#20002,0,#20001," c1","// c1")
+#20003=@"loc,{#10000},1,1,1,5"
+locations_default(#20003,#10000,1,1,1,5)
+hasLocation(#20002,#20003)
+#20004=*
+comments(#20004,1,#20001," b ","/* b */")
+#20005=@"loc,{#10000},2,3,2,9"
+locations_default(#20005,#10000,2,3,2,9)
+hasLocation(#20004,#20005)
+#20006=*
+comments(#20006,0,#20001," d","// d")
+#20007=@"loc,{#10000},2,15,2,18"
+locations_default(#20007,#10000,2,15,2,18)
+hasLocation(#20006,#20007)
+#20008=*
+comments(#20008,1,#20001," e ","/* e */")
+#20009=@"loc,{#10000},3,1,3,7"
+locations_default(#20009,#10000,3,1,3,7)
+hasLocation(#20008,#20009)
+#20010=*
+comments(#20010,0,#20001," f","// f")
+#20011=@"loc,{#10000},4,1,4,4"
+locations_default(#20011,#10000,4,1,4,4)
+hasLocation(#20010,#20011)
+#20012=*
+lines(#20012,#20001,"// c1","
+")
+hasLocation(#20012,#20003)
+#20013=*
+lines(#20013,#20001,"a /* b */ + c // d","
+")
+#20014=@"loc,{#10000},2,1,2,18"
+locations_default(#20014,#10000,2,1,2,18)
+hasLocation(#20013,#20014)
+#20015=*
+lines(#20015,#20001,"/* e */","
+")
+hasLocation(#20015,#20009)
+#20016=*
+lines(#20016,#20001,"// f","")
+hasLocation(#20016,#20011)
+numlines(#20001,4,1,4)
+#20017=*
+tokeninfo(#20017,6,#20001,0,"a")
+#20018=@"loc,{#10000},2,1,2,1"
+locations_default(#20018,#10000,2,1,2,1)
+hasLocation(#20017,#20018)
+next_token(#20002,#20017)
+#20019=*
+tokeninfo(#20019,8,#20001,1,"+")
+#20020=@"loc,{#10000},2,11,2,11"
+locations_default(#20020,#10000,2,11,2,11)
+hasLocation(#20019,#20020)
+next_token(#20004,#20019)
+#20021=*
+tokeninfo(#20021,6,#20001,2,"c")
+#20022=@"loc,{#10000},2,13,2,13"
+locations_default(#20022,#10000,2,13,2,13)
+hasLocation(#20021,#20022)
+#20023=*
+tokeninfo(#20023,0,#20001,3,"")
+#20024=@"loc,{#10000},4,5,4,4"
+locations_default(#20024,#10000,4,5,4,4)
+hasLocation(#20023,#20024)
+next_token(#20006,#20023)
+next_token(#20008,#20023)
+next_token(#20010,#20023)
+toplevels(#20001,0)
+#20025=@"loc,{#10000},2,1,4,4"
+locations_default(#20025,#10000,2,1,4,4)
+hasLocation(#20001,#20025)
+#20026=*
+stmts(#20026,2,#20001,0,"a /* b */ + c")
+#20027=@"loc,{#10000},2,1,2,13"
+locations_default(#20027,#10000,2,1,2,13)
+hasLocation(#20026,#20027)
+stmt_containers(#20026,#20001)
+#20028=*
+exprs(#20028,34,#20026,0,"a /* b */ + c")
+hasLocation(#20028,#20027)
+enclosing_stmt(#20028,#20026)
+expr_containers(#20028,#20001)
+#20029=*
+exprs(#20029,79,#20028,0,"a")
+hasLocation(#20029,#20018)
+enclosing_stmt(#20029,#20026)
+expr_containers(#20029,#20001)
+literals("a","a",#20029)
+#20030=@"var;{a};{#20000}"
+variables(#20030,"a",#20000)
+bind(#20029,#20030)
+#20031=*
+exprs(#20031,79,#20028,1,"c")
+hasLocation(#20031,#20022)
+enclosing_stmt(#20031,#20026)
+expr_containers(#20031,#20001)
+literals("c","c",#20031)
+#20032=@"var;{c};{#20000}"
+variables(#20032,"c",#20000)
+bind(#20031,#20032)
+#20033=*
+entry_cfg_node(#20033,#20001)
+#20034=@"loc,{#10000},2,1,2,0"
+locations_default(#20034,#10000,2,1,2,0)
+hasLocation(#20033,#20034)
+#20035=*
+exit_cfg_node(#20035,#20001)
+hasLocation(#20035,#20024)
+successor(#20026,#20029)
+successor(#20031,#20028)
+successor(#20029,#20031)
+successor(#20028,#20035)
+successor(#20033,#20026)
+numlines(#10000,4,1,4)
+filetype(#10000,"typescript")

@@ -1,0 +1,32 @@
+<html>
+  <div strings="{{'string1' 'string2' 'string3''string4'}}"
+
+       numbers="{{0 12}}"
+
+       identifiers="{{a b3 cd }}"
+
+       NONE="{{4e}}"
+
+       other="{{ ( ) { } [ ] . , ; : ?}}"
+
+       operators="{{ + - * / % === !== == != <  >  <=  >=  &&  ||  !  =  |}}"
+
+       complex1="{{foo.bar|baz%qux|quux}}"
+
+       complex2="{{ foo . bar | baz % qux | quux }}"
+
+       complex3="{{foo('bar')}}"
+
+       complex4="{{ foo ( 'bar' ) }}"
+
+       complex5="{{'str1'var'str2'}}"
+
+       complex6="{{'str'(}}"
+
+       complex7="{{('str'}}"
+
+       complex8="{{a}} {{b}}"
+
+       known_AngularJs_limitation="{{'}}'}}"
+       />
+</html>

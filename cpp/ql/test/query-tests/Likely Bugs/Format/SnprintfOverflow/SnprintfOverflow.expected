@@ -1,0 +1,4 @@
+| test.cpp:25:10:25:17 | call to snprintf | The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow. | test.cpp:25:35:25:43 | ... - ... | size argument |
+| test.cpp:62:12:62:19 | call to snprintf | The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow. | test.cpp:62:26:62:34 | remaining | size argument |
+| test.cpp:76:10:76:17 | call to snprintf | The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow. | test.cpp:76:24:76:32 | ... - ... | size argument |
+| test.cpp:100:10:100:19 | call to snprintf_s | The $@ of this snprintf call is derived from its return value, which may exceed the size of the buffer and overflow. | test.cpp:100:35:100:54 | ... - ... | size argument |

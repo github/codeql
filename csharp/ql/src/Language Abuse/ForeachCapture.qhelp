@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Avoid capturing the loop variable of <code>foreach</code> statements in lambda or delegate functions because 
+the value captured varies depending on the version of C# used. In C# 5.0 and above the value captured is the 
+<em>original</em> value but in earlier versions of C# the value captured is the <em>current</em> value. 
+If the function is used outside of the loop, then the function will behave differently in different versions of C#.</p>
+</overview>
+
+<recommendation>
+<p>Make a copy of the loop variable, which can be safely captured in the lambda function without being 
+changed by the loop.</p>
+</recommendation>
+
+<example>
+<p>The following example creates a list of functions, where each function is intended to print out a different number.
+However on older compilers, the actual output is <code>10 10 10 10 10 10 10 10 10 10</code>.</p>
+
+<sample src="ForeachCapture.cs"/>
+
+<p>The bug can be fixed by introducing a new variable (<code>i2</code>) which does not capture the loop variable.</p>
+
+<sample src="ForeachCaptureFix.cs"/>
+
+<p>The output of the new code is <code>1 2 3 4 5 6 7 8 9 10</code> as intended.</p>
+</example>
+
+<references>
+
+  <li>Eric Lippert's Blog: <a href="https://docs.microsoft.com/en-gb/archive/blogs/ericlippert/closing-over-the-loop-variable-considered-harmful">Closing over the loop variable considered harmful</a>.</li>
+
+</references>
+
+</qhelp>

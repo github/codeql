@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A non-public class or interface that is not used anywhere
+in the program may cause a programmer to waste time and effort maintaining and documenting it.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that redundant types are removed from the program.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Wikipedia:
+  <a href="http://en.wikipedia.org/wiki/Unreachable_code">Unreachable code</a>.
+</li>
+
+
+
+
+</references>
+</qhelp>

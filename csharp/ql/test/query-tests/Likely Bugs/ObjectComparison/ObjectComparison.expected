@@ -1,0 +1,4 @@
+| ObjectComparison.cs:16:13:16:26 | ... == ... | Reference equality for System.Object comparisons ($@ argument has type Object). | ObjectComparison.cs:16:13:16:21 | (...) ... | this |
+| ObjectComparison.cs:17:13:17:26 | ... == ... | Reference equality for System.Object comparisons ($@ argument has type Object). | ObjectComparison.cs:17:18:17:26 | (...) ... | this |
+| ObjectComparison.cs:18:13:18:21 | ... == ... | Reference equality for System.Object comparisons ($@ argument has type I). | ObjectComparison.cs:18:13:18:16 | (...) ... | this |
+| ObjectComparison.cs:19:13:19:21 | ... == ... | Reference equality for System.Object comparisons ($@ argument has type I). | ObjectComparison.cs:19:18:19:21 | (...) ... | this |

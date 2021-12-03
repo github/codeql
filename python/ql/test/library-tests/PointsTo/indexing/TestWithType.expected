@@ -1,0 +1,27 @@
+| 1 | ControlFlowNode for ImportExpr | Module fake_collections | builtin-class module | 1 |
+| 1 | ControlFlowNode for ImportMember | class deque | builtin-class type | 4 |
+| 1 | ControlFlowNode for deque | class deque | builtin-class type | 4 |
+| 2 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 2 |
+| 2 | ControlFlowNode for f | Function f | builtin-class function | 2 |
+| 3 | ControlFlowNode for d | deque() | class deque | 3 |
+| 3 | ControlFlowNode for deque | class deque | builtin-class type | 4 |
+| 3 | ControlFlowNode for deque() | deque() | class deque | 3 |
+| 4 | ControlFlowNode for List | List | builtin-class list | 4 |
+| 4 | ControlFlowNode for l | List | builtin-class list | 4 |
+| 6 | ControlFlowNode for d | deque() | class deque | 3 |
+| 7 | ControlFlowNode for l | List | builtin-class list | 4 |
+| 8 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 8 |
+| 8 | ControlFlowNode for t | int 1 | builtin-class int | 8 |
+| 9 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 9 |
+| 9 | ControlFlowNode for Subscript | int 1 | builtin-class int | 8 |
+| 9 | ControlFlowNode for d | deque() | class deque | 3 |
+| 9 | ControlFlowNode for t | int 1 | builtin-class int | 8 |
+| 10 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 10 |
+| 10 | ControlFlowNode for Subscript | int 1 | builtin-class int | 8 |
+| 10 | ControlFlowNode for l | List | builtin-class list | 4 |
+| 10 | ControlFlowNode for t | int 1 | builtin-class int | 8 |
+| 11 | ControlFlowNode for d | deque() | class deque | 3 |
+| 12 | ControlFlowNode for l | List | builtin-class list | 4 |
+| 13 | ControlFlowNode for d | deque() | class deque | 3 |
+| 14 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 14 |
+| 14 | ControlFlowNode for d | deque() | class deque | 3 |

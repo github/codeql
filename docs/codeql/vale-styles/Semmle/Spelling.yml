@@ -1,0 +1,7 @@
+# This enables spell checking using the built-in US English dictionary
+
+extends: spelling
+message: "Did you really mean '%s'?"
+ignorecase: true
+level: error
+ignore: vale-styles/Semmle/ignore.txt

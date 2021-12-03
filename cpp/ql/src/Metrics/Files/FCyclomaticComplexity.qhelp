@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+This metric measures the average cyclomatic complexity of the functions in a file.
+</p>
+
+<p>
+The cyclomatic complexity of a function is the number of linearly independent execution paths
+through that function. A path is linearly independent path if it differs from all other paths
+by at least one node. Straight-line code therefore has a cyclomatic complexity of one, while
+branches, switches and loops increase cyclomatic complexity.
+</p>
+
+<p>
+Functions with a high cyclomatic complexity are typically hard to understand and test. By extension,
+files whose functions have a high average cyclomatic complexity are problematic, and usually would
+benefit from refactoring.
+</p>
+
+<p>
+As a concrete example, consider the following function:
+</p>
+
+<sample src="FCyclomaticComplexity.cpp" />
+
+<p>
+The control flow graph for this function is as follows:
+</p>
+
+<img src="./FCyclomaticComplexity_ControlFlow.png" alt="Control Flow Graph" />
+
+<p>
+The graph shows that the number of linearly independent execution
+paths through the function, and hence its cyclomatic complexity, is
+<code>3</code>. The three paths are:
+</p>
+
+<ul>
+<li><code>start -> iEven -> end</code></li>
+<li><code>start -> iOdd -> jEven -> end</code></li>
+<li><code>start -> iOdd -> jOdd -> end</code></li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Functions with a high cyclomatic complexity should be simplified, for instance by
+tidying up any complex logic within them or by splitting them into multiple methods
+using the Extract Method refactoring.
+</p>
+
+</recommendation>
+<references>
+
+<li>
+M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+T. J. McCabe, <em>A Complexity Measure</em>. IEEE Transactions on Software Engineering, SE-2(4), December 1976.
+</li>
+<li>
+Dave Thomas, <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>, in Journal of Object Technology, vol. 4, no. 1, January-February 2005, pp. 7-11.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a>
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Code_refactoring">Code refactoring</a>
+</li>
+
+</references>
+</qhelp>

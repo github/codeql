@@ -1,0 +1,10 @@
+| test.cpp:16:13:16:14 | _t | This parameter of type $@ is 4096 bytes - consider passing a const pointer/reference instead. | test.cpp:6:8:6:20 | myLargeStruct | myLargeStruct |
+| test.cpp:24:44:24:48 | mtc_t | This parameter of type $@ is 4096 bytes - consider passing a const pointer/reference instead. | test.cpp:11:7:11:21 | myTemplateClass<myLargeStruct> | myTemplateClass<myLargeStruct> |
+| test.cpp:28:49:28:49 | b | This parameter of type $@ is 4096 bytes - consider passing a const pointer/reference instead. | test.cpp:6:8:6:20 | myLargeStruct | myLargeStruct |
+| test.cpp:104:16:104:16 | a | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:105:16:105:16 | b | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:106:16:106:16 | c | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:107:16:107:16 | d | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:108:16:108:16 | e | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:109:16:109:16 | f | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:161:7:161:7 | b | This parameter of type $@ is 3208 bytes - consider passing a const pointer/reference instead. | test.cpp:153:8:153:10 | big | big |

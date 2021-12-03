@@ -1,0 +1,10 @@
+| each.js:11:9:11:16 | source() | each.js:13:12:13:15 | item |
+| map.js:10:13:10:20 | source() | map.js:12:14:12:17 | item |
+| map.js:20:19:20:26 | source() | map.js:23:27:23:32 | result |
+| map.js:26:13:26:20 | source() | map.js:28:27:28:32 | result |
+| sortBy.js:10:22:10:29 | source() | sortBy.js:12:27:12:32 | result |
+| waterfall.js:8:30:8:37 | source() | waterfall.js:11:12:11:16 | taint |
+| waterfall.js:8:30:8:37 | source() | waterfall.js:20:10:20:14 | taint |
+| waterfall.js:28:18:28:25 | source() | waterfall.js:39:10:39:12 | err |
+| waterfall.js:46:22:46:29 | source() | waterfall.js:49:12:49:16 | taint |
+| waterfall.js:46:22:46:29 | source() | waterfall.js:55:10:55:14 | taint |

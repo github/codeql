@@ -1,0 +1,2 @@
+| computedgoto.c:10:9:10:18 | &&myLabel1 | computedgoto.c:7:1:7:9 | label ...: |
+| computedgoto.c:12:9:12:18 | &&myLabel2 | computedgoto.c:15:1:15:9 | label ...: |

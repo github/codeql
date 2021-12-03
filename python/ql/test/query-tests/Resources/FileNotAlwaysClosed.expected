@@ -1,0 +1,9 @@
+| resources_test.py:4:10:4:25 | open() | File may not be closed if an exception is raised. |
+| resources_test.py:9:10:9:25 | open() | File is opened but is not closed. |
+| resources_test.py:49:14:49:29 | open() | File is opened but is not closed. |
+| resources_test.py:58:14:58:29 | open() | File is opened but is not closed. |
+| resources_test.py:79:11:79:26 | open() | File may not be closed if an exception is raised. |
+| resources_test.py:108:11:108:20 | open() | File is opened but is not closed. |
+| resources_test.py:112:11:112:28 | opener_func2() | File may not be closed if an exception is raised. |
+| resources_test.py:129:15:129:24 | open() | File is opened but is not closed. |
+| resources_test.py:237:11:237:26 | open() | File is opened but is not closed. |

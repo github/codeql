@@ -1,0 +1,9 @@
+| tests1.cpp:26:21:26:26 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests1.cpp:36:21:36:26 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests1.cpp:56:21:56:27 | call to realloc | This allocation does not include space to null-terminate the string. |
+| tests1.cpp:67:21:67:26 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests1.cpp:89:25:89:30 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests1.cpp:109:25:109:30 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests3.cpp:25:21:25:31 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests3.cpp:30:21:30:31 | call to malloc | This allocation does not include space to null-terminate the string. |
+| tests3.cpp:53:17:53:44 | new[] | This allocation does not include space to null-terminate the string. |

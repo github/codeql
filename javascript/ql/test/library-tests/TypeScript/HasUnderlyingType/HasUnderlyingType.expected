@@ -1,0 +1,6 @@
+underlyingTypeNode
+| foo | Bar | foo.ts:3:1:5:1 | use (instance (member Bar (member exports (module foo)))) |
+| foo | Bar | foo.ts:3:12:3:12 | use (instance (member Bar (member exports (module foo)))) |
+#select
+| tst.ts:8:14:8:16 | arg | Base in global scope |
+| tst.ts:8:14:8:16 | arg | Sub in global scope |

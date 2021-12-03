@@ -1,0 +1,4 @@
+- description: Security-extended queries for C#
+- queries: .
+- apply: security-extended-selectors.yml
+  from: codeql/suite-helpers

@@ -1,0 +1,2 @@
+| jslint.js:7:1:7:1 | z | Variable 'z' is used before its $@. | jslint.js:8:11:8:11 | z | declaration |
+| tst2.js:5:13:5:13 | x | Variable 'x' is used before its $@. | tst2.js:6:5:6:5 | x | declaration |

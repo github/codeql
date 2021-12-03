@@ -1,0 +1,84 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>delete</code> expressions that are using a pointer that points to memory
+allocated using the <code>new[]</code> operator. This should be avoided since it
+results in undefined behavior, as per &sect;5.3.5 of the ISO/IEC C++ Standard:
+</p>
+
+<blockquote>
+<p>"In the first alternative (<i>delete object</i>), the value of the operand of <code>delete</code> may be a null pointer value, a pointer to
+a non-array object created by a previous <i>new-expression</i>, or a pointer to a sub-object representing a base class of such an object.
+If not, the behavior is undefined."</p>
+</blockquote>
+
+<p>
+Besides being formally undefined, there are two practical reasons why this is likely to cause defects. For the first of these, consider
+what happens when invoking <code>X *p = new X[23]</code>:
+</p>
+
+<ol>
+<li>Sufficient memory is allocated to hold <code>23</code> instances of type <code>X</code> by invoking <code>::operator new(sizeof(X) * 23)</code>.</li>
+<li>Each of the <code>23</code> instances of <code>X</code> is constructed at its correct place in memory (as if doing a <i>placement new</i>).</li>
+</ol>
+
+<p>
+If <code>delete[] p</code> is subsequently executed, the reverse happens:
+</p>
+
+<ol>
+<li>The destructor for each of the <code>23</code> instances of <code>X</code> is invoked (as if doing an explicit <code>(p + i)->~X()</code>).</li>
+<li>The memory allocated by <code>::operator new</code> is deallocated by invoking <code>::operator delete(p)</code>.</li>
+</ol>
+
+<p>
+By contrast, <code>delete p</code> (without the <code>[]</code> brackets) would generally assume that <code>p</code> points to exactly one instance
+of <code>X</code>, and only call the destructor for that (although this behavior cannot be relied upon, since the results are formally undefined).
+The practical result of this is that the destructors for the remaining <code>X</code> instances, which might do crucial things such as freeing
+resources, will not be called.
+</p>
+
+<p>
+There is also a second practical reason why this may cause a defect. In order to call the destructors of the array elements when <code>delete[]</code>
+is called, the implementation must know the size of array to which <code>p</code> points at deletion time. Bearing in mind that <code>p</code> is a pointer,
+and carries no array size information in its type, this information would not in general be available unless the implementation somehow stores it when
+<code>new[]</code> is invoked. There are two common ways in which this is done:
+</p>
+
+<ul>
+<li>The most common approach is to allocate a small amount of extra memory (a <i>header</i>) before the start of the array and store the size in it.
+When invoking <code>delete[] p</code>, the implementation then just needs to walk back a fixed amount from the passed-in pointer to read the size.
+The implication of this is that <code>p</code> itself (the pointer to the first element in the array) is <i>not</i> the pointer returned by
+<code>::operator new</code>, and so it is not safe to call <code>::operator delete</code> on it. Instead, it should be called on a pointer that
+points to the start of the header. Invoking <code>delete p</code> would use the wrong address, with potentially catastrophic results.</li>
+<li>An alternative, less common, approach is to store a map from pointers to the sizes of the arrays (if any) to which they point. When
+invoking <code>delete[] p</code>, the implementation looks up the pointer in the map, invokes the relevant number of destructors, deallocates
+the memory <i>and removes the pointer from the map</i>. If <code>delete p</code> is called instead, not only will the relevant number of
+destructors likely not be called (as previously noted), but the pointer will also likely not be removed from the map. In practical terms, this is
+potentially less of a serious issue than that posed by the first approach, but it should still be avoided.</li>
+</ul>
+
+<include src="pointsToWarning.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>
+Use the <code>delete[]</code> operator when freeing memory allocated with <code>new[]</code>.
+</p>
+
+</recommendation>
+<example><sample src="NewArrayDeleteMismatch.cpp" />
+
+
+
+</example>
+<references>
+<li>S. Meyers. <em>Effective C++ 3d ed.</em> pp 73-75. Addison-Wesley Professional, 2005.</li><li>
+<em>ISO/IEC 14882:2011, Information technology - Programming languages - C++</em> &sect;5.3.5. International Organization for Standardization, Geneva, Switzerland, 2011.</li>
+</references>
+</qhelp>

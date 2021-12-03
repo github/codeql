@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds classes with virtual functions but no virtual destructor. Deleting a class without a virtual destructor will 
+only call the destructor of the type of the pointer being deleted. This can cause a defect if the pointer type is a base 
+type while the object instance is a derived type.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Make sure that all classes with virtual functions also have a virtual destructor, especially if other classes derive from them.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 78.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  AV Rule 78, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  S. Meyers. <em>Effective C++ 3d ed.</em> pp 40-44. Addison-Wesley Professional, 2005.
+</li>
+<li>
+  <a href="http://blogs.msdn.com/b/oldnewthing/archive/2004/05/07/127826.aspx">When should your destructor be virtual?</a>
+</li>
+
+
+</references>
+</qhelp>

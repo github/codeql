@@ -1,0 +1,2 @@
+| test.py:5:11:5:11 | x | x may have a different value in Python 3, as the $@ will not be in scope. | test.py:4:12:4:12 | x | list comprehension variable |
+| test.py:10:11:10:11 | y | y may have a different value in Python 3, as the $@ will not be in scope. | test.py:9:12:9:12 | y | list comprehension variable |

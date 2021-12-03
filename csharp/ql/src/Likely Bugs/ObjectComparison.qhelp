@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If one or both operands of a comparison have the compile type <code>System.Object</code> or
+interface type, a reference comparison will be performed. This is often not what is wanted,
+especially when the runtime type of one of the operands declares <code>operator==</code>.</p>
+
+<p>It should be noted that an exception is made for comparisons to read-only constants - a 
+reference comparison is more likely to be intentional in such cases.</p>
+
+</overview>
+<recommendation>
+<p>Ensure a reference comparison is really the correct comparison to perform. If it is not then 
+choose a more appropriate comparison. If reference comparison is intended, use
+<code>ReferenceEquals</code> instead for clarity.</p>
+
+</recommendation>
+<example>
+<p>In this example the console will output "False" because a reference comparison is performed 
+instead of using the <code>==</code> operator overloaded in <code>AlwaysEqual</code>.</p>
+<sample src="ObjectComparison.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/53k8ybth.aspx">== Operator</a></li>
+
+</references>
+</qhelp>

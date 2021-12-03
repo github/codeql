@@ -1,0 +1,6 @@
+| RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:48:12:48:12 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:51:10:51:11 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | dereferenced here |

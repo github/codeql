@@ -1,0 +1,29 @@
+edges
+| tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open |
+| tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open |
+| tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:17:14:17:16 | tarfile.open |
+| tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:17:14:17:16 | tarfile.open |
+| tarslip.py:17:1:17:17 | tarfile.entry | tarslip.py:18:17:18:21 | tarfile.entry |
+| tarslip.py:17:1:17:17 | tarfile.entry | tarslip.py:18:17:18:21 | tarfile.entry |
+| tarslip.py:17:14:17:16 | tarfile.open | tarslip.py:17:1:17:17 | tarfile.entry |
+| tarslip.py:17:14:17:16 | tarfile.open | tarslip.py:17:1:17:17 | tarfile.entry |
+| tarslip.py:33:7:33:39 | tarfile.open | tarslip.py:34:14:34:16 | tarfile.open |
+| tarslip.py:33:7:33:39 | tarfile.open | tarslip.py:34:14:34:16 | tarfile.open |
+| tarslip.py:34:1:34:17 | tarfile.entry | tarslip.py:37:17:37:21 | tarfile.entry |
+| tarslip.py:34:1:34:17 | tarfile.entry | tarslip.py:37:17:37:21 | tarfile.entry |
+| tarslip.py:34:14:34:16 | tarfile.open | tarslip.py:34:1:34:17 | tarfile.entry |
+| tarslip.py:34:14:34:16 | tarfile.open | tarslip.py:34:1:34:17 | tarfile.entry |
+| tarslip.py:40:7:40:39 | tarfile.open | tarslip.py:41:24:41:26 | tarfile.open |
+| tarslip.py:40:7:40:39 | tarfile.open | tarslip.py:41:24:41:26 | tarfile.open |
+| tarslip.py:56:7:56:39 | tarfile.open | tarslip.py:57:14:57:16 | tarfile.open |
+| tarslip.py:56:7:56:39 | tarfile.open | tarslip.py:57:14:57:16 | tarfile.open |
+| tarslip.py:57:1:57:17 | tarfile.entry | tarslip.py:59:21:59:25 | tarfile.entry |
+| tarslip.py:57:1:57:17 | tarfile.entry | tarslip.py:59:21:59:25 | tarfile.entry |
+| tarslip.py:57:14:57:16 | tarfile.open | tarslip.py:57:1:57:17 | tarfile.entry |
+| tarslip.py:57:14:57:16 | tarfile.open | tarslip.py:57:1:57:17 | tarfile.entry |
+#select
+| tarslip.py:13:1:13:3 | tar | tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:12:7:12:39 | Attribute() | a potentially untrusted source |
+| tarslip.py:18:17:18:21 | entry | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:17:18:21 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:16:7:16:39 | Attribute() | a potentially untrusted source |
+| tarslip.py:37:17:37:21 | entry | tarslip.py:33:7:33:39 | tarfile.open | tarslip.py:37:17:37:21 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:33:7:33:39 | Attribute() | a potentially untrusted source |
+| tarslip.py:41:24:41:26 | tar | tarslip.py:40:7:40:39 | tarfile.open | tarslip.py:41:24:41:26 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:40:7:40:39 | Attribute() | a potentially untrusted source |
+| tarslip.py:59:21:59:25 | entry | tarslip.py:56:7:56:39 | tarfile.open | tarslip.py:59:21:59:25 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:56:7:56:39 | Attribute() | a potentially untrusted source |

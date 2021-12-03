@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<references>
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Formatter.html#syntax">Format string syntax</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html">Class String</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Formatter.html">Class Formatter</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Console.html">Class Console</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintWriter.html">Class PrintWriter</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintStream.html">Class PrintStream</a>.
+</li>
+<li>SLF4J library:
+<a href="https://www.slf4j.org/apidocs/org/slf4j/Logger.html">org.slf4j.Logger</a>.
+</li>
+
+</references>
+
+</qhelp>

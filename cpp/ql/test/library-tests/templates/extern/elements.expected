@@ -1,0 +1,8 @@
+| extern.cpp:0:0:0:0 | extern.cpp |
+| extern.cpp:1:20:1:20 | T |
+| extern.cpp:1:20:1:20 | definition of T |
+| extern.cpp:2:5:2:5 | declaration of f |
+| extern.cpp:2:5:2:5 | f |
+| extern.cpp:2:7:2:7 | (unnamed parameter 0) |
+| extern.cpp:2:7:2:7 | declaration of 1st parameter |
+| extern.cpp:4:1:4:58 | // Currently we don't have an element for this declaration |

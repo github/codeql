@@ -1,0 +1,70 @@
+| ComparisonTest.cs:9:13:9:19 | ... == ... | = | ComparisonTest.cs:9:13:9:13 | access to local variable i | ComparisonTest.cs:9:18:9:19 | 32 |
+| ComparisonTest.cs:10:13:10:19 | ... != ... | != | ComparisonTest.cs:10:13:10:13 | access to local variable i | ComparisonTest.cs:10:18:10:19 | 32 |
+| ComparisonTest.cs:11:13:11:18 | ... > ... | < | ComparisonTest.cs:11:17:11:18 | 32 | ComparisonTest.cs:11:13:11:13 | access to local variable i |
+| ComparisonTest.cs:12:13:12:18 | ... < ... | < | ComparisonTest.cs:12:13:12:13 | access to local variable i | ComparisonTest.cs:12:17:12:18 | 32 |
+| ComparisonTest.cs:13:13:13:19 | ... >= ... | <= | ComparisonTest.cs:13:18:13:19 | 32 | ComparisonTest.cs:13:13:13:13 | access to local variable i |
+| ComparisonTest.cs:14:13:14:19 | ... <= ... | <= | ComparisonTest.cs:14:13:14:13 | access to local variable i | ComparisonTest.cs:14:18:14:19 | 32 |
+| ComparisonTest.cs:19:9:19:23 | call to method Equals | = | ComparisonTest.cs:19:9:19:12 | this access | ComparisonTest.cs:19:21:19:22 | (...) ... |
+| ComparisonTest.cs:20:13:20:24 | call to method Equals | = | ComparisonTest.cs:20:13:20:13 | access to local variable o | ComparisonTest.cs:20:22:20:23 | (...) ... |
+| ComparisonTest.cs:21:13:21:26 | call to method Equals | = | ComparisonTest.cs:21:13:21:13 | access to local variable s | ComparisonTest.cs:21:22:21:25 | "32" |
+| ComparisonTest.cs:24:9:24:18 | call to method Equals | = | ComparisonTest.cs:24:9:24:18 | this access | ComparisonTest.cs:24:16:24:17 | (...) ... |
+| ComparisonTest.cs:25:9:25:21 | call to method Equals | = | ComparisonTest.cs:25:16:25:16 | access to local variable o | ComparisonTest.cs:25:19:25:20 | (...) ... |
+| ComparisonTest.cs:26:9:26:28 | call to method Equals | = | ComparisonTest.cs:26:23:26:23 | (...) ... | ComparisonTest.cs:26:26:26:27 | (...) ... |
+| ComparisonTest.cs:27:9:27:30 | call to method ReferenceEquals | = | ComparisonTest.cs:27:25:27:25 | (...) ... | ComparisonTest.cs:27:28:27:29 | (...) ... |
+| ComparisonTest.cs:28:9:28:37 | call to method ReferenceEquals | = | ComparisonTest.cs:28:32:28:32 | (...) ... | ComparisonTest.cs:28:35:28:36 | (...) ... |
+| ComparisonTest.cs:32:13:32:20 | call to operator == | = | ComparisonTest.cs:32:13:32:14 | access to local variable c1 | ComparisonTest.cs:32:19:32:20 | access to local variable c2 |
+| ComparisonTest.cs:33:13:33:20 | call to operator != | != | ComparisonTest.cs:33:13:33:14 | access to local variable c1 | ComparisonTest.cs:33:19:33:20 | access to local variable c2 |
+| ComparisonTest.cs:34:13:34:19 | call to operator > | < | ComparisonTest.cs:34:18:34:19 | access to local variable c2 | ComparisonTest.cs:34:13:34:14 | access to local variable c1 |
+| ComparisonTest.cs:35:13:35:19 | call to operator < | < | ComparisonTest.cs:35:13:35:14 | access to local variable c1 | ComparisonTest.cs:35:18:35:19 | access to local variable c2 |
+| ComparisonTest.cs:36:13:36:20 | call to operator >= | <= | ComparisonTest.cs:36:19:36:20 | access to local variable c2 | ComparisonTest.cs:36:13:36:14 | access to local variable c1 |
+| ComparisonTest.cs:37:13:37:20 | call to operator <= | <= | ComparisonTest.cs:37:13:37:14 | access to local variable c1 | ComparisonTest.cs:37:19:37:20 | access to local variable c2 |
+| ComparisonTest.cs:41:9:41:33 | call to method Compare | compare | ComparisonTest.cs:41:26:41:26 | (...) ... | ComparisonTest.cs:41:29:41:32 | "32" |
+| ComparisonTest.cs:45:9:45:34 | call to method Compare | compare | ComparisonTest.cs:45:29:45:29 | access to local variable i | ComparisonTest.cs:45:32:45:33 | 32 |
+| ComparisonTest.cs:48:9:48:26 | call to method CompareTo | compare | ComparisonTest.cs:48:9:48:10 | access to local variable c1 | ComparisonTest.cs:48:22:48:25 | "c2" |
+| ComparisonTest.cs:51:9:51:24 | call to method CompareTo | compare | ComparisonTest.cs:51:9:51:10 | access to local variable c1 | ComparisonTest.cs:51:22:51:23 | access to local variable c2 |
+| ComparisonTest.cs:83:21:83:34 | call to method CompareTo | compare | ComparisonTest.cs:83:21:83:21 | access to parameter x | ComparisonTest.cs:83:33:83:33 | access to parameter y |
+| ComparisonTest.cs:83:21:83:39 | ... == ... | = | ComparisonTest.cs:83:21:83:21 | access to parameter x | ComparisonTest.cs:83:33:83:33 | access to parameter y |
+| ComparisonTest.cs:83:21:83:39 | ... == ... | = | ComparisonTest.cs:83:21:83:34 | call to method CompareTo | ComparisonTest.cs:83:39:83:39 | 0 |
+| ComparisonTest.cs:85:17:85:30 | call to method CompareTo | compare | ComparisonTest.cs:85:17:85:17 | access to parameter x | ComparisonTest.cs:85:29:85:29 | access to parameter y |
+| ComparisonTest.cs:85:17:85:35 | ... == ... | < | ComparisonTest.cs:85:29:85:29 | access to parameter y | ComparisonTest.cs:85:17:85:17 | access to parameter x |
+| ComparisonTest.cs:85:17:85:35 | ... == ... | = | ComparisonTest.cs:85:17:85:30 | call to method CompareTo | ComparisonTest.cs:85:35:85:35 | 1 |
+| ComparisonTest.cs:87:17:87:30 | call to method CompareTo | compare | ComparisonTest.cs:87:17:87:17 | access to parameter x | ComparisonTest.cs:87:29:87:29 | access to parameter y |
+| ComparisonTest.cs:87:17:87:36 | ... == ... | < | ComparisonTest.cs:87:17:87:17 | access to parameter x | ComparisonTest.cs:87:29:87:29 | access to parameter y |
+| ComparisonTest.cs:87:17:87:36 | ... == ... | = | ComparisonTest.cs:87:17:87:30 | call to method CompareTo | ComparisonTest.cs:87:35:87:36 | -... |
+| ComparisonTest.cs:89:17:89:30 | call to method CompareTo | compare | ComparisonTest.cs:89:17:89:17 | access to parameter x | ComparisonTest.cs:89:29:89:29 | access to parameter y |
+| ComparisonTest.cs:89:17:89:34 | ... < ... | < | ComparisonTest.cs:89:17:89:30 | call to method CompareTo | ComparisonTest.cs:89:34:89:34 | 1 |
+| ComparisonTest.cs:89:17:89:34 | ... < ... | <= | ComparisonTest.cs:89:17:89:17 | access to parameter x | ComparisonTest.cs:89:29:89:29 | access to parameter y |
+| ComparisonTest.cs:91:17:91:30 | call to method CompareTo | compare | ComparisonTest.cs:91:17:91:17 | access to parameter x | ComparisonTest.cs:91:29:91:29 | access to parameter y |
+| ComparisonTest.cs:91:17:91:34 | ... < ... | < | ComparisonTest.cs:91:17:91:17 | access to parameter x | ComparisonTest.cs:91:29:91:29 | access to parameter y |
+| ComparisonTest.cs:91:17:91:34 | ... < ... | < | ComparisonTest.cs:91:17:91:30 | call to method CompareTo | ComparisonTest.cs:91:34:91:34 | 0 |
+| ComparisonTest.cs:93:17:93:30 | call to method CompareTo | compare | ComparisonTest.cs:93:17:93:17 | access to parameter x | ComparisonTest.cs:93:29:93:29 | access to parameter y |
+| ComparisonTest.cs:93:17:93:35 | ... > ... | < | ComparisonTest.cs:93:34:93:35 | -... | ComparisonTest.cs:93:17:93:30 | call to method CompareTo |
+| ComparisonTest.cs:93:17:93:35 | ... > ... | <= | ComparisonTest.cs:93:29:93:29 | access to parameter y | ComparisonTest.cs:93:17:93:17 | access to parameter x |
+| ComparisonTest.cs:95:17:95:30 | call to method CompareTo | compare | ComparisonTest.cs:95:17:95:17 | access to parameter x | ComparisonTest.cs:95:29:95:29 | access to parameter y |
+| ComparisonTest.cs:95:17:95:34 | ... > ... | < | ComparisonTest.cs:95:29:95:29 | access to parameter y | ComparisonTest.cs:95:17:95:17 | access to parameter x |
+| ComparisonTest.cs:95:17:95:34 | ... > ... | < | ComparisonTest.cs:95:34:95:34 | 0 | ComparisonTest.cs:95:17:95:30 | call to method CompareTo |
+| ComparisonTest.cs:97:17:97:30 | call to method CompareTo | compare | ComparisonTest.cs:97:17:97:17 | access to parameter x | ComparisonTest.cs:97:29:97:29 | access to parameter y |
+| ComparisonTest.cs:97:17:97:35 | ... <= ... | <= | ComparisonTest.cs:97:17:97:17 | access to parameter x | ComparisonTest.cs:97:29:97:29 | access to parameter y |
+| ComparisonTest.cs:97:17:97:35 | ... <= ... | <= | ComparisonTest.cs:97:17:97:30 | call to method CompareTo | ComparisonTest.cs:97:35:97:35 | 0 |
+| ComparisonTest.cs:99:17:99:30 | call to method CompareTo | compare | ComparisonTest.cs:99:17:99:17 | access to parameter x | ComparisonTest.cs:99:29:99:29 | access to parameter y |
+| ComparisonTest.cs:99:17:99:36 | ... <= ... | < | ComparisonTest.cs:99:17:99:17 | access to parameter x | ComparisonTest.cs:99:29:99:29 | access to parameter y |
+| ComparisonTest.cs:99:17:99:36 | ... <= ... | <= | ComparisonTest.cs:99:17:99:30 | call to method CompareTo | ComparisonTest.cs:99:35:99:36 | -... |
+| ComparisonTest.cs:101:17:101:30 | call to method CompareTo | compare | ComparisonTest.cs:101:17:101:17 | access to parameter x | ComparisonTest.cs:101:29:101:29 | access to parameter y |
+| ComparisonTest.cs:101:17:101:35 | ... >= ... | <= | ComparisonTest.cs:101:29:101:29 | access to parameter y | ComparisonTest.cs:101:17:101:17 | access to parameter x |
+| ComparisonTest.cs:101:17:101:35 | ... >= ... | <= | ComparisonTest.cs:101:35:101:35 | 0 | ComparisonTest.cs:101:17:101:30 | call to method CompareTo |
+| ComparisonTest.cs:103:17:103:30 | call to method CompareTo | compare | ComparisonTest.cs:103:17:103:17 | access to parameter x | ComparisonTest.cs:103:29:103:29 | access to parameter y |
+| ComparisonTest.cs:103:17:103:35 | ... >= ... | < | ComparisonTest.cs:103:29:103:29 | access to parameter y | ComparisonTest.cs:103:17:103:17 | access to parameter x |
+| ComparisonTest.cs:103:17:103:35 | ... >= ... | <= | ComparisonTest.cs:103:35:103:35 | 1 | ComparisonTest.cs:103:17:103:30 | call to method CompareTo |
+| ComparisonTest.cs:106:17:106:30 | call to method CompareTo | compare | ComparisonTest.cs:106:17:106:17 | access to parameter x | ComparisonTest.cs:106:29:106:29 | access to parameter y |
+| ComparisonTest.cs:106:17:106:43 | call to method CompareTo | compare | ComparisonTest.cs:106:17:106:30 | call to method CompareTo | ComparisonTest.cs:106:42:106:42 | 0 |
+| ComparisonTest.cs:106:17:106:56 | call to method CompareTo | compare | ComparisonTest.cs:106:17:106:43 | call to method CompareTo | ComparisonTest.cs:106:55:106:55 | 1 |
+| ComparisonTest.cs:106:17:106:61 | ... == ... | < | ComparisonTest.cs:106:29:106:29 | access to parameter y | ComparisonTest.cs:106:17:106:17 | access to parameter x |
+| ComparisonTest.cs:106:17:106:61 | ... == ... | < | ComparisonTest.cs:106:42:106:42 | 0 | ComparisonTest.cs:106:17:106:30 | call to method CompareTo |
+| ComparisonTest.cs:106:17:106:61 | ... == ... | = | ComparisonTest.cs:106:17:106:43 | call to method CompareTo | ComparisonTest.cs:106:55:106:55 | 1 |
+| ComparisonTest.cs:106:17:106:61 | ... == ... | = | ComparisonTest.cs:106:17:106:56 | call to method CompareTo | ComparisonTest.cs:106:61:106:61 | 0 |
+| ComparisonTest.cs:114:17:114:24 | dynamic call to operator == | = | ComparisonTest.cs:114:17:114:18 | access to local variable d1 | ComparisonTest.cs:114:23:114:24 | access to local variable d2 |
+| ComparisonTest.cs:115:13:115:20 | dynamic call to operator != | != | ComparisonTest.cs:115:13:115:14 | access to local variable d1 | ComparisonTest.cs:115:19:115:20 | access to local variable d2 |
+| ComparisonTest.cs:116:13:116:19 | dynamic call to operator > | < | ComparisonTest.cs:116:18:116:19 | access to local variable d2 | ComparisonTest.cs:116:13:116:14 | access to local variable d1 |
+| ComparisonTest.cs:117:13:117:19 | dynamic call to operator < | < | ComparisonTest.cs:117:13:117:14 | access to local variable d1 | ComparisonTest.cs:117:18:117:19 | access to local variable d2 |
+| ComparisonTest.cs:118:13:118:20 | dynamic call to operator >= | <= | ComparisonTest.cs:118:19:118:20 | access to local variable d2 | ComparisonTest.cs:118:13:118:14 | access to local variable d1 |
+| ComparisonTest.cs:119:13:119:20 | dynamic call to operator <= | <= | ComparisonTest.cs:119:13:119:14 | access to local variable d1 | ComparisonTest.cs:119:19:119:20 | access to local variable d2 |

@@ -1,0 +1,6 @@
+<beans>
+    <!-- This bean is referred to, so is live. -->
+    <bean id="petStore" class="org.sample.PetStoreService"/>
+    <!-- This bean is never referred to, so is dead. -->
+    <bean id="clinic" class="org.sample.ClinicService"/>
+</beans>

@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A <code>finally</code> block is normally used to perform cleanup operations at the end of a
+<code>try</code> statement; it is run no matter which way the associated <code>try</code> statement
+terminates: successful termination, a <code>return</code> statement, or an exception being thrown.
+</p>
+
+<p>
+If a <code>finally</code> block contains a <code>return</code> statement or a <code>break</code>
+or <code>continue</code> statement referring to a loop outside the <code>try</code> statement,
+this statement will jump out of the <code>finally</code> block, thus overriding any return value
+or exception throw arising from the <code>try</code> statement. This is often unintentional, and
+in any case makes the code hard to read.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully inspect all possible control flow paths through the <code>try</code> statement and
+its <code>finally</code> block. If the jump out of the <code>finally</code> block is unintentional,
+then correct it. If it is intentional, restructure the code to move the jump into the main
+<code>try</code> block instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet contains a <code>try</code> statement that acquires a resource and then
+performs an action on it. However, if the condition checked by function <code>someCond</code>
+holds, an <code>Error</code> is thrown instead of performing the action. The <code>finally</code>
+block releases the resource, and returns <code>true</code> if <code>someOtherCond</code> returns
+<code>true</code>.
+</p>
+
+<p>
+Note that if <code>someCond</code> and <code>someOtherCond</code> both return <code>true</code>,
+the exception thrown on line 5 is suppressed by the <code>return</code> statement on line 10.
+</p>
+
+<sample src="examples/JumpFromFinally.js" />
+
+<p>
+If the suppression of the thrown exception is intentional, the check for <code>someOtherCond</code>
+should be moved into the <code>try</code> statement like this:
+</p>
+
+<sample src="examples/JumpFromFinallyGood.js" />
+
+<p>
+While this transformation leads to some code duplication, it makes the control flow more explicit
+and easier to understand.
+</p>
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch">try...catch</a>.</li>
+
+
+</references>
+</qhelp>

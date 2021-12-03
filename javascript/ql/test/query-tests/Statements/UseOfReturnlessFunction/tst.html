@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function addHandlers () {
+        const cdoc = document.getElementById('container').contentDocument;
+        if (cdoc) {
+          const scriptelm = cdoc.createElement('script');
+          scriptelm.src = '../handlers.js';
+          cdoc.getElementsByTagName('head')[0].appendChild(scriptelm);
+        }
+      }
+    </script>
+  </head>
+  <body onload="return addHandlers();">
+    <object id="container" data="editor/svg-editor.html" onload="addHandlers()"></object>
+    <a href="javascript:addHandlers()">Foo</a>
+    <div onclick="addHandlers()">Click me</div>
+    <div onclick="console.log(addHandlers() + 3)">Click me</div> <!-- NOT OK! -->
+  </body>
+</html>

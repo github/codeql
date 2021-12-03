@@ -1,0 +1,11 @@
+| C::ff() | 4 | 4 | 0 |
+| C::gg<T>(T) | 4 | 4 | 0 |
+| conventional() | 4 | 4 | 1 |
+| hh() | 4 | 4 | 0 |
+| long_char() | 3 | 3 | 0 |
+| long_string() | 5 | 5 | 0 |
+| misleading_comment() | 7 | 2 | 5 |
+| numlines | 73 | 54 | 8 |
+| onceUsedTemplateFunction<T>(T) | 6 | 6 | 0 |
+| templateFunctionUser(signed int,unsigned int) | 5 | 5 | 0 |
+| twiceUsedTemplateFunction<T>(T) | 6 | 6 | 0 |

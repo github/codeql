@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Use of <code>goto</code> statements makes code more difficult to understand and maintain.
+Consequently, the use of <code>goto</code> statements is deprecated except as a mechanism
+for breaking out of multiple nested loops, or jumping to error-handling code at
+the end of a function. This rule identifies complex (and therefore hard to
+understand) uses of <code>goto</code> statements. Function bodies that include
+multiple <code>goto</code> statements that jump forward and multiple
+<code>goto</code> statements that jump backwards are highlighted.</p>
+
+</overview>
+<recommendation>
+<p>
+In most cases the code can be rewritten and/or rearranged by:
+</p>
+<ul>
+<li>using structured control flow constructs, such as <code>if</code>, <code>while</code>,
+    and <code>for</code>;</li>
+<li>using <code>break</code> or <code>continue</code> to stop a loop iteration early; or</li>
+<li>using <code>return</code> to exit a function early</li>
+</ul>
+
+<p>
+The <code>goto</code> statement may be the best solution for breaking out of
+deeply nested loops, or for jumping to error handling code, without adversely
+affecting the readability of the function.  Such uses will not be flagged by
+this rule.
+</p>
+
+</recommendation>
+<references>
+
+<li>
+  <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>, AV Rule 189. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  E. W. Dijkstra Archive: <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215)</a>.
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/goto-statement-cpp">goto Statement (C++)</a>.
+</li>
+<li>
+  Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, Rule 4.6. Prentice Hall PTR, 1997.
+  (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">PDF</a>).
+</li>
+<li>
+  cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/control/">Control Structures</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,46 @@
+| file://:0:0:0:0 | operator delete[] | isTopLevel() | 1 | 1 |
+| file://:0:0:0:0 | operator new[] | isTopLevel() | 1 | 1 |
+| file://:0:0:0:0 | operator= |  | 1 | 1 |
+| file://:0:0:0:0 | operator= |  | 1 | 1 |
+| scopes.cpp:2:7:2:7 | operator= |  | 1 | 1 |
+| scopes.cpp:2:7:2:7 | operator= |  | 1 | 1 |
+| scopes.cpp:7:7:7:7 | operator= |  | 1 | 1 |
+| scopes.cpp:7:7:7:7 | operator= |  | 1 | 1 |
+| scopes.cpp:11:7:11:7 | C |  | 1 | 1 |
+| scopes.cpp:11:7:11:7 | operator= |  | 1 | 1 |
+| scopes.cpp:11:7:11:7 | operator= |  | 1 | 1 |
+| scopes.cpp:15:7:15:7 | D |  | 1 | 1 |
+| scopes.cpp:15:7:15:7 | operator= |  | 1 | 1 |
+| scopes.cpp:15:7:15:7 | operator= |  | 1 | 1 |
+| scopes.cpp:21:10:21:10 | operator= |  | 1 | 1 |
+| scopes.cpp:21:10:21:10 | operator= |  | 1 | 1 |
+| scopes.cpp:25:8:25:8 | operator= |  | 1 | 1 |
+| scopes.cpp:25:8:25:8 | operator= |  | 1 | 1 |
+| scopes.cpp:31:13:31:13 | F |  | 1 | 1 |
+| scopes.cpp:31:13:31:13 | operator= |  | 1 | 1 |
+| scopes.cpp:31:13:31:13 | operator= |  | 1 | 1 |
+| scopes.cpp:32:8:32:27 | doubleNestedFunction |  | 1 | 1 |
+| scopes.cpp:35:6:35:6 | f | isTopLevel() | 1 | 1 |
+| scopes.cpp:46:8:46:8 | operator= |  | 1 | 1 |
+| scopes.cpp:46:8:46:8 | operator= |  | 1 | 1 |
+| scopes.cpp:47:7:47:8 | af |  | 1 | 1 |
+| scopes.cpp:50:7:50:8 | ag |  | 1 | 1 |
+| scopes.cpp:53:6:53:6 | g | isTopLevel() | 1 | 1 |
+| scopes.cpp:58:7:58:7 | Name |  | 1 | 1 |
+| scopes.cpp:58:7:58:7 | operator= |  | 1 | 1 |
+| scopes.cpp:58:7:58:7 | operator= |  | 1 | 1 |
+| scopes.cpp:62:7:62:7 | Table |  | 1 | 1 |
+| scopes.cpp:62:7:62:7 | operator= |  | 1 | 1 |
+| scopes.cpp:66:3:66:7 | Table |  | 1 | 1 |
+| scopes.cpp:67:3:67:8 | ~Table |  | 1 | 1 |
+| scopes.cpp:68:9:68:14 | lookup |  | 1 | 1 |
+| scopes.cpp:69:8:69:13 | insert |  | 1 | 1 |
+| scopes.cpp:72:16:72:21 | strlen | isTopLevel() | 1 | 1 |
+| scopes.cpp:77:8:77:8 | H |  | 1 | 0 |
+| scopes.cpp:77:8:77:8 | H |  | 1 | 0 |
+| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
+| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
+| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
+| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
+| scopes.cpp:95:8:95:8 | operator= |  | 1 | 0 |
+| scopes.cpp:95:8:95:8 | operator= |  | 1 | 0 |

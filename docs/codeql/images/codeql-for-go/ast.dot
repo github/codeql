@@ -1,0 +1,22 @@
+digraph ast {
+    graph [dpi=300];
+    "x" [shape=rect];
+    "y" [shape=rect];
+    "x + y" [shape=rect];
+    "(x + y)" [shape=rect];
+    "z" [shape=rect];
+    "(x + y) * z" [shape=rect];
+    invis1 [style=invis];
+    invis2 [style=invis];
+    invis3 [style=invis];
+
+    "(x + y) * z" -> "(x + y)" [label=" 0"];
+    "(x + y) * z" -> "z" [label=" 1"];
+    "(x + y)" -> "x + y" [label=" 0"];
+    "x + y" -> "x" [label=" 0"];
+    "x + y" -> "y" [label=" 1"];
+
+    "z" -> invis1 [style=invis];
+    invis1 -> invis2 [style=invis];
+    invis1 -> invis3 [style=invis];
+}

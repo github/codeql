@@ -1,0 +1,9 @@
+| nonmembercallexpr | nonmembercallexpr.c:1:6:1:6 | g | 1 | 1 | nonmembercallexpr.c:1:10:1:12 | nonmembercallexpr.c:1:10:1:12 | nonmembercallexpr.c:1:10:1:12 | { ... } | 1: return ... |
+| nonmembercallexpr | nonmembercallexpr.c:1:6:1:6 | g | 1 | 2 | nonmembercallexpr.c:1:12:1:12 | nonmembercallexpr.c:1:12:1:12 | nonmembercallexpr.c:1:12:1:12 | return ... | 1: g |
+| nonmembercallexpr | nonmembercallexpr.c:1:6:1:6 | g | 1 | 3 | nonmembercallexpr.c:1:6:1:6 | nonmembercallexpr.c:1:6:1:6 | nonmembercallexpr.c:1:6:1:6 | g | <none> |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 3 | 1 | nonmembercallexpr.c:3:10:6:1 | nonmembercallexpr.c:3:10:6:1 | nonmembercallexpr.c:3:10:6:1 | { ... } | 4: ExprStmt |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 4 | 2 | nonmembercallexpr.c:4:2:4:5 | nonmembercallexpr.c:4:2:4:5 | nonmembercallexpr.c:4:2:4:5 | ExprStmt | 4: call to g |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 4 | 3 | nonmembercallexpr.c:4:2:4:2 | nonmembercallexpr.c:4:2:4:2 | nonmembercallexpr.c:4:2:4:2 | call to g | 5: ; |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 5 | 4 | nonmembercallexpr.c:5:2:5:2 | nonmembercallexpr.c:5:2:5:2 | nonmembercallexpr.c:5:2:5:2 | ; | 6: return ... |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 6 | 5 | nonmembercallexpr.c:6:1:6:1 | nonmembercallexpr.c:6:1:6:1 | nonmembercallexpr.c:6:1:6:1 | return ... | 6: f |
+| nonmembercallexpr | nonmembercallexpr.c:3:6:3:6 | f | 6 | 6 | nonmembercallexpr.c:3:6:3:6 | nonmembercallexpr.c:3:6:3:6 | nonmembercallexpr.c:3:6:3:6 | f | <none> |

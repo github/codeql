@@ -1,0 +1,146 @@
+nodes
+| FileAccessToHttp.js:4:5:4:47 | content |
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") |
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") |
+| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} |
+| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} |
+| FileAccessToHttp.js:9:12:9:31 | { Referer: content } |
+| FileAccessToHttp.js:9:23:9:29 | content |
+| bufferRead.js:12:13:12:43 | buffer |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) |
+| bufferRead.js:15:15:15:62 | postData |
+| bufferRead.js:15:26:15:31 | buffer |
+| bufferRead.js:15:26:15:62 | buffer. ... esRead) |
+| bufferRead.js:33:21:33:28 | postData |
+| bufferRead.js:33:21:33:28 | postData |
+| googlecompiler.js:7:19:7:28 | codestring |
+| googlecompiler.js:9:7:15:4 | post_data |
+| googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) |
+| googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } |
+| googlecompiler.js:14:21:14:30 | codestring |
+| googlecompiler.js:38:18:38:26 | post_data |
+| googlecompiler.js:38:18:38:26 | post_data |
+| googlecompiler.js:44:54:44:57 | data |
+| googlecompiler.js:44:54:44:57 | data |
+| googlecompiler.js:56:14:56:17 | data |
+| readFileSync.js:5:5:5:39 | data |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") |
+| readFileSync.js:7:7:7:25 | s |
+| readFileSync.js:7:11:7:14 | data |
+| readFileSync.js:7:11:7:25 | data.toString() |
+| readFileSync.js:26:18:26:18 | s |
+| readFileSync.js:26:18:26:18 | s |
+| readStreamRead.js:13:13:13:35 | chunk |
+| readStreamRead.js:13:21:13:35 | readable.read() |
+| readStreamRead.js:13:21:13:35 | readable.read() |
+| readStreamRead.js:30:19:30:23 | chunk |
+| readStreamRead.js:30:19:30:23 | chunk |
+| request.js:6:19:6:26 | jsonData |
+| request.js:8:11:8:20 | {jsonData} |
+| request.js:8:11:8:20 | {jsonData} |
+| request.js:8:12:8:19 | jsonData |
+| request.js:13:18:13:24 | xmlData |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } |
+| request.js:22:11:22:17 | xmlData |
+| request.js:28:52:28:55 | data |
+| request.js:28:52:28:55 | data |
+| request.js:35:14:35:17 | data |
+| request.js:43:51:43:54 | data |
+| request.js:43:51:43:54 | data |
+| request.js:50:13:50:16 | data |
+| sentAsHeaders.js:10:79:10:84 | buffer |
+| sentAsHeaders.js:10:79:10:84 | buffer |
+| sentAsHeaders.js:11:13:11:59 | content |
+| sentAsHeaders.js:11:23:11:28 | buffer |
+| sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) |
+| sentAsHeaders.js:12:9:12:81 | content |
+| sentAsHeaders.js:12:19:12:25 | content |
+| sentAsHeaders.js:12:19:12:74 | content ... =", "") |
+| sentAsHeaders.js:12:19:12:81 | content ... .trim() |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
+| sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } |
+| sentAsHeaders.js:18:31:18:53 | "http:/ ... content |
+| sentAsHeaders.js:18:47:18:53 | content |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
+| sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } |
+| sentAsHeaders.js:24:31:24:53 | "http:/ ... content |
+| sentAsHeaders.js:24:47:24:53 | content |
+edges
+| FileAccessToHttp.js:4:5:4:47 | content | FileAccessToHttp.js:9:23:9:29 | content |
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content |
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content |
+| FileAccessToHttp.js:9:12:9:31 | { Referer: content } | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} |
+| FileAccessToHttp.js:9:12:9:31 | { Referer: content } | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} |
+| FileAccessToHttp.js:9:23:9:29 | content | FileAccessToHttp.js:9:12:9:31 | { Referer: content } |
+| bufferRead.js:12:13:12:43 | buffer | bufferRead.js:15:26:15:31 | buffer |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:43 | buffer |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:43 | buffer |
+| bufferRead.js:15:15:15:62 | postData | bufferRead.js:33:21:33:28 | postData |
+| bufferRead.js:15:15:15:62 | postData | bufferRead.js:33:21:33:28 | postData |
+| bufferRead.js:15:26:15:31 | buffer | bufferRead.js:15:26:15:62 | buffer. ... esRead) |
+| bufferRead.js:15:26:15:62 | buffer. ... esRead) | bufferRead.js:15:15:15:62 | postData |
+| googlecompiler.js:7:19:7:28 | codestring | googlecompiler.js:14:21:14:30 | codestring |
+| googlecompiler.js:9:7:15:4 | post_data | googlecompiler.js:38:18:38:26 | post_data |
+| googlecompiler.js:9:7:15:4 | post_data | googlecompiler.js:38:18:38:26 | post_data |
+| googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | googlecompiler.js:9:7:15:4 | post_data |
+| googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } | googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) |
+| googlecompiler.js:14:21:14:30 | codestring | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } |
+| googlecompiler.js:44:54:44:57 | data | googlecompiler.js:56:14:56:17 | data |
+| googlecompiler.js:44:54:44:57 | data | googlecompiler.js:56:14:56:17 | data |
+| googlecompiler.js:56:14:56:17 | data | googlecompiler.js:7:19:7:28 | codestring |
+| readFileSync.js:5:5:5:39 | data | readFileSync.js:7:11:7:14 | data |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:5:5:5:39 | data |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:5:5:5:39 | data |
+| readFileSync.js:7:7:7:25 | s | readFileSync.js:26:18:26:18 | s |
+| readFileSync.js:7:7:7:25 | s | readFileSync.js:26:18:26:18 | s |
+| readFileSync.js:7:11:7:14 | data | readFileSync.js:7:11:7:25 | data.toString() |
+| readFileSync.js:7:11:7:25 | data.toString() | readFileSync.js:7:7:7:25 | s |
+| readStreamRead.js:13:13:13:35 | chunk | readStreamRead.js:30:19:30:23 | chunk |
+| readStreamRead.js:13:13:13:35 | chunk | readStreamRead.js:30:19:30:23 | chunk |
+| readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:13:13:13:35 | chunk |
+| readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:13:13:13:35 | chunk |
+| request.js:6:19:6:26 | jsonData | request.js:8:12:8:19 | jsonData |
+| request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | {jsonData} |
+| request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | {jsonData} |
+| request.js:13:18:13:24 | xmlData | request.js:22:11:22:17 | xmlData |
+| request.js:22:11:22:17 | xmlData | request.js:16:11:23:3 | {\\n    u ... ody\\n  } |
+| request.js:22:11:22:17 | xmlData | request.js:16:11:23:3 | {\\n    u ... ody\\n  } |
+| request.js:28:52:28:55 | data | request.js:35:14:35:17 | data |
+| request.js:28:52:28:55 | data | request.js:35:14:35:17 | data |
+| request.js:35:14:35:17 | data | request.js:6:19:6:26 | jsonData |
+| request.js:43:51:43:54 | data | request.js:50:13:50:16 | data |
+| request.js:43:51:43:54 | data | request.js:50:13:50:16 | data |
+| request.js:50:13:50:16 | data | request.js:13:18:13:24 | xmlData |
+| sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:11:23:11:28 | buffer |
+| sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:11:23:11:28 | buffer |
+| sentAsHeaders.js:11:13:11:59 | content | sentAsHeaders.js:12:19:12:25 | content |
+| sentAsHeaders.js:11:23:11:28 | buffer | sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) |
+| sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) | sentAsHeaders.js:11:13:11:59 | content |
+| sentAsHeaders.js:12:9:12:81 | content | sentAsHeaders.js:18:47:18:53 | content |
+| sentAsHeaders.js:12:9:12:81 | content | sentAsHeaders.js:24:47:24:53 | content |
+| sentAsHeaders.js:12:19:12:25 | content | sentAsHeaders.js:12:19:12:74 | content ... =", "") |
+| sentAsHeaders.js:12:19:12:74 | content ... =", "") | sentAsHeaders.js:12:19:12:81 | content ... .trim() |
+| sentAsHeaders.js:12:19:12:81 | content ... .trim() | sentAsHeaders.js:12:9:12:81 | content |
+| sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
+| sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
+| sentAsHeaders.js:18:31:18:53 | "http:/ ... content | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } |
+| sentAsHeaders.js:18:47:18:53 | content | sentAsHeaders.js:18:31:18:53 | "http:/ ... content |
+| sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
+| sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
+| sentAsHeaders.js:24:31:24:53 | "http:/ ... content | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } |
+| sentAsHeaders.js:24:47:24:53 | content | sentAsHeaders.js:24:31:24:53 | "http:/ ... content |
+#select
+| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | $@ flows directly to outbound network request | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | File data |
+| bufferRead.js:33:21:33:28 | postData | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:33:21:33:28 | postData | $@ flows directly to outbound network request | bufferRead.js:12:22:12:43 | new Buf ... s.size) | File data |
+| googlecompiler.js:38:18:38:26 | post_data | googlecompiler.js:44:54:44:57 | data | googlecompiler.js:38:18:38:26 | post_data | $@ flows directly to outbound network request | googlecompiler.js:44:54:44:57 | data | File data |
+| readFileSync.js:26:18:26:18 | s | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:26:18:26:18 | s | $@ flows directly to outbound network request | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | File data |
+| readStreamRead.js:30:19:30:23 | chunk | readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:30:19:30:23 | chunk | $@ flows directly to outbound network request | readStreamRead.js:13:21:13:35 | readable.read() | File data |
+| request.js:8:11:8:20 | {jsonData} | request.js:28:52:28:55 | data | request.js:8:11:8:20 | {jsonData} | $@ flows directly to outbound network request | request.js:28:52:28:55 | data | File data |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } | request.js:43:51:43:54 | data | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | $@ flows directly to outbound network request | request.js:43:51:43:54 | data | File data |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | $@ flows directly to outbound network request | sentAsHeaders.js:10:79:10:84 | buffer | File data |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | $@ flows directly to outbound network request | sentAsHeaders.js:10:79:10:84 | buffer | File data |

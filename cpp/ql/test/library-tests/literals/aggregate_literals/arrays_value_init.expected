@@ -1,0 +1,6 @@
+| aggregate_literals.c:32:20:32:25 | {...} | file://:0:0:0:0 | int[2] | 1 |
+| aggregate_literals.c:34:20:34:31 | {...} | file://:0:0:0:0 | int[2] | 0 |
+| aggregate_literals.c:57:13:67:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 2 |
+| aggregate_literals.c:73:5:83:5 | {...} | file://:0:0:0:0 | someStruct[3] | 2 |
+| aggregate_literals.c:84:5:88:5 | {...} | file://:0:0:0:0 | int[3] | 2 |
+| aggregate_literals.c:89:5:99:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 2 |

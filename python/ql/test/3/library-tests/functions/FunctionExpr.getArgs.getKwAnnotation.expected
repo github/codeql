@@ -1,0 +1,2 @@
+| test.py:4:1:11:2 | FunctionExpr | 0 | test.py:9:19:9:21 | int |
+| test.py:23:1:31:2 | FunctionExpr | 1 | test.py:29:24:29:28 | Str |

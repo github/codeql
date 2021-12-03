@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds namespaces that have an abstractness greater than 0.20.</p>
+
+<p>Abstractness measures the proportion of abstract types in
+      a package relative to the total number of types in that package.
+      A metric value close to 1 indicates a highly abstract package
+      that is also unstable. The class hierarchy is probably over-engineered, and the abstract types are unlikely to be much used.</p>
+</overview>
+
+<recommendation>
+<p>Consider reducing the level of abstraction by simplifying the class hierarchy.</p>
+</recommendation>
+
+<references>
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+ <li>Geeks for Geeks: <a href="https://www.geeksforgeeks.org/abstraction-in-c/">Abstraction in C++</a></li>
+</references>
+</qhelp>

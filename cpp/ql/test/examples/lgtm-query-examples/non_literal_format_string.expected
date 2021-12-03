@@ -1,0 +1,1 @@
+| test.cpp:5:9:5:15 | call to sprintf | sprintf called with variable format string. |

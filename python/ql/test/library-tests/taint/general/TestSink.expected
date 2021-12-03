@@ -1,0 +1,43 @@
+| Command injection | sanitizer.py:16 | 20 | x | Command injection |
+| Command injection | sanitizer.py:31 | 33 | x | Command injection |
+| Command injection | sanitizer.py:31 | 35 | x | Command injection |
+| SQL injection | sanitizer.py:9 | 13 | x | SQL injection |
+| SQL injection | sanitizer.py:24 | 26 | x | SQL injection |
+| SQL injection | sanitizer.py:24 | 28 | x | SQL injection |
+| basic.custom | test.py:120 | 122 | t | basic.custom |
+| basic.custom | test.py:126 | 130 | t | basic.custom |
+| basic.custom | test.py:146 | 151 | t | basic.custom |
+| explicit.carrier | carrier.py:21 | 22 | Attribute() | simple.test |
+| explicit.carrier | carrier.py:29 | 30 | Attribute() | simple.test |
+| explicit.carrier | carrier.py:33 | 35 | Attribute() | simple.test |
+| rock | rockpaperscissors.py:16 | 16 | ROCK | rock |
+| rock | rockpaperscissors.py:24 | 26 | y | paper |
+| scissors | rockpaperscissors.py:13 | 13 | SCISSORS | scissors |
+| simple.test | carrier.py:17 | 18 | Attribute | simple.test |
+| simple.test | carrier.py:25 | 26 | Attribute() | simple.test |
+| simple.test | module.py:3 | 89 | t | simple.test |
+| simple.test | module.py:3 | 106 | Attribute | simple.test |
+| simple.test | module.py:3 | 111 | Attribute | simple.test |
+| simple.test | module.py:3 | 156 | unsafe | simple.test |
+| simple.test | module.py:7 | 101 | t | simple.test |
+| simple.test | test.py:3 | 3 | SOURCE | simple.test |
+| simple.test | test.py:6 | 7 | s | simple.test |
+| simple.test | test.py:10 | 13 | arg | simple.test |
+| simple.test | test.py:10 | 17 | t | simple.test |
+| simple.test | test.py:20 | 13 | arg | simple.test |
+| simple.test | test.py:37 | 41 | t | simple.test |
+| simple.test | test.py:62 | 13 | arg | simple.test |
+| simple.test | test.py:67 | 13 | arg | simple.test |
+| simple.test | test.py:76 | 78 | t | simple.test |
+| simple.test | test.py:128 | 132 | t | simple.test |
+| simple.test | test.py:159 | 160 | t | simple.test |
+| simple.test | test.py:168 | 172 | Subscript | simple.test |
+| simple.test | test.py:169 | 173 | Subscript | simple.test |
+| simple.test | test.py:178 | 180 | t | simple.test |
+| simple.test | test.py:178 | 186 | t | simple.test |
+| simple.test | test.py:195 | 197 | t | simple.test |
+| simple.test | test.py:195 | 199 | t | simple.test |
+| simple.test | test.py:208 | 214 | x | simple.test |
+| simple.test | test.py:217 | 220 | tainted | simple.test |
+| simple.test | test.py:229 | 231 | tainted | simple.test |
+| simple.test | test.py:229 | 233 | tainted | simple.test |

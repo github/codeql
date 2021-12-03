@@ -1,0 +1,9 @@
+| Local Variable local2 | Function func2 | Function inner1 |
+| Local Variable local4 | Function func3 | Function inner2 |
+| Local Variable local4 | Function func3 | Function inner_outer |
+| Local Variable local5 | Function inner_outer | Function inner2 |
+| Local Variable param4 | Function func3 | Function inner2 |
+| Local Variable param4 | Function func3 | Function inner_outer |
+| Local Variable param5 | Function func3 | Function inner_outer |
+| Local Variable param6 | Function func4 | Function meth_inner |
+| Local Variable z | Function func6 | Function listcomp |

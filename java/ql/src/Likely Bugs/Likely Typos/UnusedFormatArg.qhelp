@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<include src="FormatStringsOverview.inc.qhelp" />
+
+<recommendation>
+<p>
+  Change the format string to use all the arguments, or remove the unnecessary arguments.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example supplies three arguments to be formatted, but the
+format string only refers to two arguments, so this will silently ignore the
+third argument.
+</p>
+<sample src="UnusedFormatArgBad.java" />
+
+</example>
+
+<include src="FormatStringsRefs.inc.qhelp" />
+
+</qhelp>

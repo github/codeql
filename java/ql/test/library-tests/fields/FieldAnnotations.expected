@@ -1,0 +1,2 @@
+| fields/FieldTest.java:6:9:6:37 | SuppressWarnings | fields/FieldTest.java:6:54:6:54 | l |
+| fields/FieldTest.java:6:9:6:37 | SuppressWarnings | fields/FieldTest.java:6:57:6:57 | m |

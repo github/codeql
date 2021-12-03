@@ -1,0 +1,18 @@
+edges
+| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:210:17:210:20 | data |
+| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:241:37:241:40 | data |
+| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:249:17:249:21 | data2 |
+| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:280:37:280:41 | data2 |
+nodes
+| Test.java:206:14:206:57 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| Test.java:210:17:210:20 | data | semmle.label | data |
+| Test.java:241:37:241:40 | data | semmle.label | data |
+| Test.java:245:15:245:35 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| Test.java:249:17:249:21 | data2 | semmle.label | data2 |
+| Test.java:280:37:280:41 | data2 | semmle.label | data2 |
+subpaths
+#select
+| Test.java:210:17:210:24 | ... + ... | Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:210:17:210:20 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:206:14:206:57 | nextInt(...) | Uncontrolled value |
+| Test.java:241:37:241:46 | ... + ... | Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:241:37:241:40 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:206:14:206:57 | nextInt(...) | Uncontrolled value |
+| Test.java:249:17:249:25 | ... + ... | Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:249:17:249:21 | data2 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:245:15:245:35 | nextInt(...) | Uncontrolled value |
+| Test.java:280:37:280:47 | ... + ... | Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:280:37:280:41 | data2 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:245:15:245:35 | nextInt(...) | Uncontrolled value |

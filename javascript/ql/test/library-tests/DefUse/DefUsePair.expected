@@ -1,0 +1,35 @@
+| classes.js:1:1:2:1 | class Foo {\\n} | classes.js:4:1:4:3 | Foo |
+| classes.js:7:5:8:5 | class L ... {\\n    } | classes.js:10:5:10:12 | LocalFoo |
+| es2015.js:1:10:1:11 | fn | es2015.js:2:3:2:4 | fn |
+| es2015.js:5:16:5:16 | i | es2015.js:5:32:5:32 | i |
+| es2015.js:5:16:5:16 | i | es2015.js:5:34:5:34 | i |
+| es2015modules.js:1:10:1:12 | foo | es2015modules.js:4:3:4:5 | foo |
+| es2015modules.js:1:15:1:24 | bar as baz | es2015modules.js:6:3:6:5 | baz |
+| es2015modules.js:10:10:10:13 | quux | es2015modules.js:7:3:7:6 | quux |
+| es2015modules.js:15:17:15:17 | f | es2015modules.js:12:1:12:1 | f |
+| es2015modules.js:16:25:16:25 | g | es2015modules.js:13:1:13:1 | g |
+| fundecls.js:3:12:3:12 | f | fundecls.js:4:3:4:3 | f |
+| fundecls.js:9:10:9:10 | s | fundecls.js:7:1:7:1 | s |
+| fundecls.js:12:12:12:12 | f | fundecls.js:10:3:10:3 | f |
+| fundecls.js:18:12:18:12 | f | fundecls.js:17:3:17:3 | f |
+| fundecls.js:23:12:23:12 | f | fundecls.js:24:3:24:3 | f |
+| fundecls.js:34:12:34:12 | f | fundecls.js:35:3:35:3 | f |
+| fundecls.js:39:11:39:11 | x | fundecls.js:40:7:40:7 | x |
+| fundecls.js:41:14:41:14 | f | fundecls.js:45:3:45:3 | f |
+| fundecls.js:43:14:43:14 | f | fundecls.js:45:3:45:3 | f |
+| fundecls.js:48:11:48:11 | x | fundecls.js:50:7:50:7 | x |
+| tst.js:1:12:1:12 | o | tst.js:3:12:3:12 | o |
+| tst.js:1:12:1:12 | o | tst.js:5:16:5:16 | o |
+| tst.js:2:9:2:14 | y = 23 | tst.js:8:17:8:17 | y |
+| tst.js:2:17:2:21 | i = 0 | tst.js:4:5:4:5 | i |
+| tst.js:2:17:2:21 | i = 0 | tst.js:7:6:7:6 | i |
+| tst.js:4:3:4:5 | ++i | tst.js:4:5:4:5 | i |
+| tst.js:4:3:4:5 | ++i | tst.js:7:6:7:6 | i |
+| tst.js:5:11:5:11 | z | tst.js:6:7:6:7 | z |
+| tst.js:5:11:5:11 | z | tst.js:8:14:8:14 | z |
+| tst.js:7:4:7:6 | --i | tst.js:7:6:7:6 | i |
+| tst.js:12:2:12:7 | x = 42 | tst.js:14:9:14:9 | x |
+| tst.js:19:11:19:11 | x | tst.js:18:9:18:9 | x |
+| tst.js:23:6:23:23 | {a = b, c = d} = e | tst.js:24:2:24:2 | a |
+| tst.js:23:6:23:23 | {a = b, c = d} = e | tst.js:24:6:24:6 | c |
+| tst.js:26:11:26:11 | a | tst.js:27:2:27:2 | a |

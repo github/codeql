@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | builtin-class bool | bool |
+| file://:0:0:0:0 | builtin-class classmethod | classmethod |
+| file://:0:0:0:0 | builtin-class float | float |
+| file://:0:0:0:0 | builtin-class int | int |
+| file://:0:0:0:0 | builtin-class object | object |
