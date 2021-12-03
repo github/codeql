@@ -100,7 +100,7 @@ class TuplePattern extends Pattern, TTuplePattern {
 
 private class TPatternNode =
   TArrayPattern or TFindPattern or THashPattern or TAlternativePattern or TAsPattern or
-      TVariableReferencePattern;
+      TParenthesizedPattern or TVariableReferencePattern;
 
 private class TPattern =
   TPatternNode or TLiteral or TLambda or TConstantAccess or TLocalVariableAccess or
@@ -386,6 +386,30 @@ class AsPattern extends CasePattern, TAsPattern {
     pred = "getPattern" and result = this.getPattern()
     or
     pred = "getVariableAccess" and result = this.getVariableAccess()
+  }
+}
+
+/**
+ * A parenthesized pattern:
+ * ```rb
+ * in (1 ..)
+ * in (0 | "" | [] | {})
+ */
+class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
+  private Ruby::ParenthesizedPattern g;
+
+  ParenthesizedPattern() { this = TParenthesizedPattern(g) }
+
+  final CasePattern getPattern() { toGenerated(result) = g.getChild() }
+
+  final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
+
+  final override string toString() { result = "( ... )" }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getPattern" and result = this.getPattern()
   }
 }
 

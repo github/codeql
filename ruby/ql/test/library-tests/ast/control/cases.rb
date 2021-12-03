@@ -104,6 +104,8 @@ case expr
   in :foo
   in :"foo bar"
   in -5 | +10
+  in (1 ..)
+  in (0 | "" | [] | {})
 end
 
 # array patterns

@@ -3,10 +3,10 @@
 | cases.rb:26:1:29:3 | case ... | CaseExpr |
 | cases.rb:31:1:37:3 | case ... | CaseExpr |
 | cases.rb:39:1:80:3 | case ... | CaseExpr |
-| cases.rb:86:1:107:3 | case ... | CaseExpr |
-| cases.rb:111:1:119:3 | case ... | CaseExpr |
-| cases.rb:123:1:128:3 | case ... | CaseExpr |
-| cases.rb:132:1:140:3 | case ... | CaseExpr |
+| cases.rb:86:1:109:3 | case ... | CaseExpr |
+| cases.rb:113:1:121:3 | case ... | CaseExpr |
+| cases.rb:125:1:130:3 | case ... | CaseExpr |
+| cases.rb:134:1:142:3 | case ... | CaseExpr |
 | conditionals.rb:10:1:12:3 | if ... | IfExpr |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr |
 | conditionals.rb:22:1:30:3 | if ... | IfExpr |

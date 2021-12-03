@@ -46,6 +46,8 @@ predicate casePattern(Ruby::AstNode node) {
   node = any(Ruby::AsPattern parent).getValue()
   or
   node = any(Ruby::KeywordPattern parent).getValue()
+  or
+  node = any(Ruby::ParenthesizedPattern parent).getChild()
 }
 
 /**

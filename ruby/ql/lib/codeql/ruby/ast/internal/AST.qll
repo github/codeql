@@ -216,6 +216,7 @@ private module Cached {
     TOptionalParameter(Ruby::OptionalParameter g) or
     TPair(Ruby::Pair g) or
     TParenthesizedExpr(Ruby::ParenthesizedStatements g) or
+    TParenthesizedPattern(Ruby::ParenthesizedPattern g) or
     TRShiftExprReal(Ruby::Binary g) { g instanceof @ruby_binary_ranglerangle } or
     TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
     TRangeLiteralReal(Ruby::Range g) or
@@ -335,10 +336,10 @@ private module Cached {
         TLeftAssignmentList or TLine or TLocalVariableAccessReal or TLogicalAndExprReal or
         TLogicalOrExprReal or TMethod or TModuleDeclaration or TModuloExprReal or TMulExprReal or
         TNEExpr or TNextStmt or TNilLiteral or TNoRegExpMatchExpr or TNotExpr or
-        TOptionalParameter or TPair or TParenthesizedExpr or TRShiftExprReal or TRangeLiteralReal or
-        TRationalLiteral or TRedoStmt or TRegExpLiteral or TRegExpMatchExpr or
-        TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or TRegularSuperCall or
-        TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
+        TOptionalParameter or TPair or TParenthesizedExpr or TParenthesizedPattern or
+        TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
+        TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
+        TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
         TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
         TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
         TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
@@ -465,6 +466,7 @@ private module Cached {
     n = TOptionalParameter(result) or
     n = TPair(result) or
     n = TParenthesizedExpr(result) or
+    n = TParenthesizedPattern(result) or
     n = TRangeLiteralReal(result) or
     n = TRationalLiteral(result) or
     n = TRedoStmt(result) or
