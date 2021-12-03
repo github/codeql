@@ -136,7 +136,10 @@ func simpleflow() {
 
 	c3 := test.C{""}
 	c3.Set(a.Src1().(string))
-	b.Sink1(c3.Get()) // $ MISSING: hasTaintFlow="call to Get"
-	c4 := c3
-	b.Sink1(c4.Get()) // $ hasTaintFlow="call to Get"
+	b.Sink1(c3.Get()) // $ hasTaintFlow="call to Get"
+
+	c4 := test.C{""}
+	c4.Set(a.Src1().(string))
+	c4.Set("")
+	b.Sink1(c4.Get()) // $ SPURIOUS: hasTaintFlow="call to Get" // because we currently don't clear content
 }

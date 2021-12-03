@@ -12,4 +12,8 @@ invalidModelRow
 | test.go:93:46:93:53 | call to Src1 | qltest |
 | test.go:97:35:97:42 | call to Src1 | qltest |
 | test.go:101:42:101:49 | call to Src1 | qltest |
-| test.go:123:8:123:15 | call to Src1 | qltest |
+| test.go:126:8:126:15 | call to Src1 | qltest |
+| test.go:131:9:131:16 | call to Src1 | qltest |
+| test.go:134:15:134:22 | call to Src1 | qltest |
+| test.go:138:9:138:16 | call to Src1 | qltest |
+| test.go:142:9:142:16 | call to Src1 | qltest |

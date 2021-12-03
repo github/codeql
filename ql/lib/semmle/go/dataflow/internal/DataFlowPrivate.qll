@@ -154,12 +154,14 @@ predicate readStep(Node node1, Content c, Node node2) {
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, Content c) {
-  // note for review: Java clears content in the pre-update node if there is a storeStep into a post-update node;
-  //   I assume that's not compatible with our current post-update node implementation?
-  c instanceof FieldContent and
-  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
-  or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  // Because our post-update nodes are shared between multiple pre-update
+  // nodes, attempting to clear content causes summary stores into arg in
+  // particular to malfunction.
+  none()
+  // c instanceof FieldContent and
+  // FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
+  // or
+  // FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /** Gets the type of `n` used for type pruning. */

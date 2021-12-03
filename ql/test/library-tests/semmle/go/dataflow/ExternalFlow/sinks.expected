@@ -15,8 +15,13 @@ invalidModelRow
 | test.go:99:10:99:16 | taint11 | qltest |
 | test.go:102:10:102:32 | call to GetMapKey | qltest |
 | test.go:104:11:104:11 | k | qltest |
-| test.go:109:10:109:16 | taint13 | qltest |
-| test.go:112:10:112:20 | index expression | qltest |
-| test.go:116:10:116:16 | taint15 | qltest |
-| test.go:120:10:120:17 | index expression | qltest |
-| test.go:125:10:125:16 | taint16 | qltest |
+| test.go:107:11:107:11 | k | qltest |
+| test.go:112:10:112:16 | taint13 | qltest |
+| test.go:115:10:115:20 | index expression | qltest |
+| test.go:119:10:119:16 | taint15 | qltest |
+| test.go:123:10:123:17 | index expression | qltest |
+| test.go:128:10:128:16 | taint16 | qltest |
+| test.go:132:10:132:13 | selection of F | qltest |
+| test.go:135:10:135:17 | call to Get | qltest |
+| test.go:139:10:139:17 | call to Get | qltest |
+| test.go:144:10:144:17 | call to Get | qltest |
