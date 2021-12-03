@@ -25,9 +25,8 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
   )
   or
-  exists(getACallBasedTokenFeatureComponent(endpoint, _, featureName)) and
   result =
-    concat(DataFlow::CallNode call, string component |
+    strictconcat(DataFlow::CallNode call, string component |
       component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
     |
       component, " "
