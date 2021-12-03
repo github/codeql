@@ -34,15 +34,17 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
   )
   or
   c instanceof CollectionContent and
-  exists(BinaryOperationNode send | send.hasOperands(node1, node2) | send.getOperator() = "<-")
+  exists(SendStmt send |
+    send.getChannel() = node2.(ExprNode).asExpr() and send.getValue() = node1.(ExprNode).asExpr()
+  )
   or
   c instanceof MapKeyContent and
-  node1.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node1, node2, _))
+  node2.getType() instanceof MapType and
+  exists(Write w | w.writesElement(node2, node1, _))
   or
   c instanceof MapValueContent and
-  node1.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node1, _, node2))
+  node2.getType() instanceof MapType and
+  exists(Write w | w.writesElement(node2, _, node1))
 }
 
 /**
@@ -65,7 +67,7 @@ predicate containerReadStep(Node node1, Node node2, Content c) {
   or
   c instanceof CollectionContent and
   exists(UnaryOperationNode recv | recv = node2 |
-    node2 = recv.getOperand() and
+    node1 = recv.getOperand() and
     recv.getOperator() = "<-"
   )
   or

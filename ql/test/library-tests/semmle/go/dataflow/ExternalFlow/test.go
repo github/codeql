@@ -92,7 +92,7 @@ func simpleflow() {
 
 	taint10 := test.StepArgResCollectionContent(a.Src1()).(chan interface{})
 	b.Sink1(test.GetElement(taint10)) // $ hasTaintFlow="call to GetElement"
-	b.Sink1(<-taint10)                // $ MISSING: hasTaintFlow="<-..."
+	b.Sink1(<-taint10)                // $ hasTaintFlow="<-..."
 
 	srcCollection := test.SetElement(a.Src1())
 	taint11 := test.StepArgCollectionContentRes(srcCollection)
@@ -109,14 +109,14 @@ func simpleflow() {
 
 	srcMap13 := map[string]string{src.(string): ""}
 	taint13 := test.StepArgMapKeyContentRes(srcMap13)
-	b.Sink1(taint13) // $ MISSING: hasTaintFlow="taint13"
+	b.Sink1(taint13) // $ hasTaintFlow="taint13"
 
 	taint14 := test.StepArgResMapValueContent(src).(map[string]string)
 	b.Sink1(taint14[""]) // $ hasTaintFlow="index expression"
 
 	srcMap15 := map[string]string{"": src.(string)}
 	taint15 := test.StepArgMapValueContentRes(srcMap15)
-	b.Sink1(taint15) // $ MISSING: hasTaintFlow="taint15"
+	b.Sink1(taint15) // $ hasTaintFlow="taint15"
 
 	slice := make([]interface{}, 0)
 	slice = append(slice, src)
