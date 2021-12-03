@@ -1,3 +1,5 @@
 
-class Class2 { }
+class Class2 {
+    fun fun2() { }
+}
 
