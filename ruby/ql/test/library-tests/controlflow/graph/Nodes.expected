@@ -241,6 +241,9 @@ positionalArguments
 | ifs.rb:38:12:38:17 | ... == ... | ifs.rb:38:17:38:17 | 2 |
 | ifs.rb:48:5:48:15 | call to puts | ifs.rb:48:10:48:15 | "true" |
 | ifs.rb:51:3:51:13 | call to puts | ifs.rb:51:8:51:13 | "done" |
+| ifs.rb:55:7:55:14 | [false] ... \|\| ... | ifs.rb:55:13:55:14 | b2 |
+| ifs.rb:55:7:55:14 | [true] ... \|\| ... | ifs.rb:55:13:55:14 | b2 |
+| ifs.rb:56:5:56:19 | call to puts | ifs.rb:56:10:56:19 | "b1 or b2" |
 | loops.rb:2:9:2:14 | ... >= ... | loops.rb:2:14:2:14 | 0 |
 | loops.rb:3:5:3:10 | call to puts | loops.rb:3:10:3:10 | x |
 | loops.rb:4:7:4:8 | ... - ... | loops.rb:4:10:4:10 | 1 |
