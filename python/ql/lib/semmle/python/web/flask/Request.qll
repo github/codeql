@@ -32,12 +32,7 @@ class FlaskRequestData extends HttpRequestTaintSource {
 class FlaskRequestArgs extends HttpRequestTaintSource {
   FlaskRequestArgs() {
     exists(string attr | flask_request_attr(this, attr) |
-      attr = "args" or
-      attr = "form" or
-      attr = "values" or
-      attr = "files" or
-      attr = "headers" or
-      attr = "json"
+      attr in ["args", "form", "values", "files", "headers", "json"]
     )
   }
 

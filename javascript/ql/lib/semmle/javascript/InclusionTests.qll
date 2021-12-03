@@ -94,13 +94,13 @@ module InclusionTest {
    */
   private class Includes_Native extends Range, DataFlow::MethodCallNode {
     Includes_Native() {
-      getMethodName() = "includes" and
-      getNumArgument() = 1
+      this.getMethodName() = "includes" and
+      this.getNumArgument() = 1
     }
 
-    override DataFlow::Node getContainerNode() { result = getReceiver() }
+    override DataFlow::Node getContainerNode() { result = this.getReceiver() }
 
-    override DataFlow::Node getContainedNode() { result = getArgument(0) }
+    override DataFlow::Node getContainedNode() { result = this.getArgument(0) }
   }
 
   /**
@@ -117,9 +117,9 @@ module InclusionTest {
       )
     }
 
-    override DataFlow::Node getContainerNode() { result = getArgument(0) }
+    override DataFlow::Node getContainerNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getContainedNode() { result = getArgument(1) }
+    override DataFlow::Node getContainedNode() { result = this.getArgument(1) }
   }
 
   /**

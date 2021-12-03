@@ -71,13 +71,7 @@ predicate isCompatibleRequestedService(InjectableFunctionServiceRequest request,
     isRunMethod(request) or
     isControllerFunction(request)
   ) and
-  (
-    kind = "value" or
-    kind = "service" or
-    kind = "factory" or
-    kind = "constant" or
-    kind = "provider-value"
-  )
+  kind = ["value", "service", "factory", "constant", "provider-value"]
   or
   isControllerFunction(request) and
   kind = "controller-only"

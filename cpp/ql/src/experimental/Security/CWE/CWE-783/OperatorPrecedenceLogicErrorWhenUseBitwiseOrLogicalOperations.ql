@@ -188,8 +188,7 @@ where
   isBitwiseandBitwise(exp) and
   isDifferentResults(exp.(BinaryBitwiseOperation).getLeftOperand(),
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getLeftOperand(),
-    exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getRightOperand(),
-    exp.(BinaryBitwiseOperation),
-    exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation)) and
+    exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getRightOperand(), exp,
+    exp.(BinaryBitwiseOperation).getRightOperand()) and
   msg = "specify the priority with parentheses."
 select exp, msg

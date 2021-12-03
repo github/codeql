@@ -78,6 +78,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import semmle.code.csharp.dispatch.OverridableCallable
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -347,12 +348,15 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-private class UnboundCallable extends Callable, Virtualizable {
+private class UnboundCallable extends Callable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.overridesOrImplementsOrEquals(c) and
+      this.(Virtualizable).overridesOrImplementsOrEquals(c) or
+      this = c.(OverridableCallable).getAnUltimateImplementor() or
+      this = c.(OverridableCallable).getAnOverrider+()
+    |
       this != c and
       that = c.getUnboundDeclaration()
     )
@@ -409,7 +413,7 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
-    exists(Member m |
+    exists(Declaration m |
       (
         result = m
         or
@@ -427,7 +431,7 @@ private Element interpretElement0(
       result = t
       or
       subtypes = true and
-      result = t.(UnboundValueOrRefType).getASubTypeUnbound+()
+      result = t.getASubTypeUnbound+()
     ) and
     result = t and
     name = "" and

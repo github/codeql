@@ -97,7 +97,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
       else result = c.getName() + "(..)." + v.getName()
     )
     or
-    result = this.(SsaSourceField).ppQualifier() + "." + getVariable().toString()
+    result = this.(SsaSourceField).ppQualifier() + "." + this.getVariable().toString()
   }
 
   /**
@@ -117,7 +117,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
   Location getLocation() {
     exists(LocalScopeVariable v | this = TLocalVar(_, v) and result = v.getLocation())
     or
-    this instanceof SsaSourceField and result = getFirstAccess().getLocation()
+    this instanceof SsaSourceField and result = this.getFirstAccess().getLocation()
   }
 
   /** Gets the type of this variable. */
@@ -140,7 +140,7 @@ class SsaSourceField extends SsaSourceVariable {
   }
 
   /** Gets the field corresponding to this named field. */
-  Field getField() { result = getVariable() }
+  Field getField() { result = this.getVariable() }
 
   /** Gets a string representation of the qualifier. */
   string ppQualifier() {
@@ -155,8 +155,8 @@ class SsaSourceField extends SsaSourceVariable {
 
   /** Holds if the field itself or any of the fields part of the qualifier are volatile. */
   predicate isVolatile() {
-    getField().isVolatile() or
-    getQualifier().(SsaSourceField).isVolatile()
+    this.getField().isVolatile() or
+    this.getQualifier().(SsaSourceField).isVolatile()
   }
 }
 
@@ -932,10 +932,10 @@ class SsaVariable extends TSsaVariable {
   string toString() { none() }
 
   /** Gets the source location for this element. */
-  Location getLocation() { result = getCFGNode().getLocation() }
+  Location getLocation() { result = this.getCFGNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
-  BasicBlock getBasicBlock() { result = getCFGNode().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.getCFGNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
   RValue getAUse() {
@@ -989,14 +989,16 @@ class SsaUpdate extends SsaVariable {
 /** An SSA variable that is defined by a `VariableUpdate`. */
 class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
   SsaExplicitUpdate() {
-    exists(VariableUpdate upd | upd = this.getCFGNode() and getDestVar(upd) = getSourceVariable())
+    exists(VariableUpdate upd |
+      upd = this.getCFGNode() and getDestVar(upd) = this.getSourceVariable()
+    )
   }
 
-  override string toString() { result = "SSA def(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = getSourceVariable()
+    result = this.getCFGNode() and getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -1010,22 +1012,22 @@ class SsaImplicitUpdate extends SsaUpdate {
   SsaImplicitUpdate() { not this instanceof SsaExplicitUpdate }
 
   override string toString() {
-    result = "SSA impl upd[" + getKind() + "](" + getSourceVariable() + ")"
+    result = "SSA impl upd[" + this.getKind() + "](" + this.getSourceVariable() + ")"
   }
 
   private string getKind() {
     this = TSsaUntracked(_, _) and result = "untracked"
     or
-    certainVariableUpdate(getSourceVariable().getQualifier(), getCFGNode(), _, _) and
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) and
     result = "explicit qualifier"
     or
-    if uncertainVariableUpdate(getSourceVariable().getQualifier(), getCFGNode(), _, _)
+    if uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
     then
-      if exists(getANonLocalUpdate())
+      if exists(this.getANonLocalUpdate())
       then result = "nonlocal + nonlocal qualifier"
       else result = "nonlocal qualifier"
     else (
-      exists(getANonLocalUpdate()) and result = "nonlocal"
+      exists(this.getANonLocalUpdate()) and result = "nonlocal"
     )
   }
 
@@ -1034,9 +1036,9 @@ class SsaImplicitUpdate extends SsaUpdate {
    */
   FieldWrite getANonLocalUpdate() {
     exists(SsaSourceField f, Callable setter |
-      f = getSourceVariable() and
+      f = this.getSourceVariable() and
       relevantFieldUpdate(setter, f.getField(), result) and
-      updatesNamedField(getCFGNode(), f, setter)
+      updatesNamedField(this.getCFGNode(), f, setter)
     )
   }
 
@@ -1049,8 +1051,8 @@ class SsaImplicitUpdate extends SsaUpdate {
    */
   predicate assignsUnknownValue() {
     this = TSsaUntracked(_, _) or
-    certainVariableUpdate(getSourceVariable().getQualifier(), getCFGNode(), _, _) or
-    uncertainVariableUpdate(getSourceVariable().getQualifier(), getCFGNode(), _, _)
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) or
+    uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
   }
 }
 
@@ -1072,30 +1074,31 @@ class SsaUncertainImplicitUpdate extends SsaImplicitUpdate, TSsaUncertainUpdate 
  * includes initial values of parameters, fields, and closure variables.
  */
 class SsaImplicitInit extends SsaVariable, TSsaEntryDef {
-  override string toString() { result = "SSA init(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA init(" + this.getSourceVariable() + ")" }
 
   /** Holds if this is a closure variable that captures the value of `capturedvar`. */
   predicate captures(SsaVariable capturedvar) {
-    ssaDefReachesCapture(_, capturedvar, getSourceVariable())
+    ssaDefReachesCapture(_, capturedvar, this.getSourceVariable())
   }
 
   /**
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
   predicate isParameterDefinition(Parameter p) {
-    getSourceVariable() = TLocalVar(p.getCallable(), p) and p.getCallable().getBody() = getCFGNode()
+    this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
+    p.getCallable().getBody() = this.getCFGNode()
   }
 }
 
 /** An SSA phi node. */
 class SsaPhiNode extends SsaVariable, TSsaPhiNode {
-  override string toString() { result = "SSA phi(" + getSourceVariable() + ")" }
+  override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
   /** Gets an input to the phi node defining the SSA variable. */
   SsaVariable getAPhiInput() {
     exists(BasicBlock phiPred, TrackedVar v |
-      v = getSourceVariable() and
-      getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
+      v = this.getSourceVariable() and
+      this.getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(v, result, phiPred)
     )
   }

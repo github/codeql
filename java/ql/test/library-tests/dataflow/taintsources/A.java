@@ -14,36 +14,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class A {
+
+  private static void sink(Object o) {}
+
   public static void main(String[] args) {
-    String[] a = args; // user input
-    String s = args[0]; // user input
+    sink(args); // $hasLocalValueFlow
+    sink(args[0]); // $hasLocalTaintFlow
   }
 
   public static void userInput() throws SQLException, IOException, MalformedURLException {
-    System.getenv("test"); // user input
+    sink(System.getenv("test")); // $hasLocalValueFlow
     class TestServlet extends HttpServlet {
       @Override
       protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
-        req.getParameter("test"); // remote user input
-        req.getHeader("test"); // remote user input
-        req.getQueryString(); // remote user input
-        req.getCookies()[0].getValue(); // remote user input
+          throws ServletException, IOException {
+        sink(req.getParameter("test")); // $hasRemoteValueFlow
+        sink(req.getHeader("test")); // $hasRemoteValueFlow
+        sink(req.getQueryString()); // $hasRemoteValueFlow
+        sink(req.getCookies()[0].getValue()); // $hasRemoteValueFlow
       }
     }
-    new Properties().getProperty("test"); // user input
-    System.getProperty("test"); // user input
+    sink(new Properties().getProperty("test")); // $hasLocalValueFlow
+    sink(System.getProperty("test")); // $hasLocalValueFlow
     new Object() {
       public void test(ResultSet rs) throws SQLException {
-        rs.getString(0); // user input
+        sink(rs.getString(0)); // $hasLocalValueFlow
       }
     };
-    new URL("test").openConnection().getInputStream(); // remote user input
-    new Socket("test", 1234).getInputStream(); // remote user input
-    InetAddress.getByName("test").getHostName(); // remote user input
+    sink(new URL("test").openConnection().getInputStream()); // $hasRemoteValueFlow
+    sink(new Socket("test", 1234).getInputStream()); // $hasRemoteValueFlow
+    sink(InetAddress.getByName("test").getHostName()); // $hasRemoteValueFlow
 
-    System.in.read(); // user input
-    new FileInputStream("test").read(); // user input
+    sink(System.in); // $hasLocalValueFlow
+    sink(new FileInputStream("test")); // $hasLocalValueFlow
   }
 
 }

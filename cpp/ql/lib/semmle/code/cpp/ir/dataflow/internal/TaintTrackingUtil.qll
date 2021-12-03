@@ -44,8 +44,6 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
     fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
   )
-  or
-  toOperand.(LoadOperand).getAnyDef() = fromInstr
 }
 
 /**
@@ -83,8 +81,6 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
-  or
-  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Flow from an element to an array or union that contains it.
   instrTo.(ChiInstruction).getPartialOperand() = opFrom and

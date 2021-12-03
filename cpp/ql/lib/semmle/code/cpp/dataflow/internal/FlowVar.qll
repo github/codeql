@@ -354,7 +354,7 @@ module FlowVar_internal {
         result = def.getAUse(v)
         or
         exists(SsaDefinition descendentDef |
-          getASuccessorSsaVar+() = TSsaVar(descendentDef, _) and
+          this.getASuccessorSsaVar+() = TSsaVar(descendentDef, _) and
           result = descendentDef.getAUse(v)
         )
       )
@@ -515,7 +515,7 @@ module FlowVar_internal {
       this.bbInLoopCondition(bbInside) and
       not this.bbInLoop(bbOutside) and
       bbOutside = bbInside.getASuccessor() and
-      not reachesWithoutAssignment(bbInside, v)
+      not this.reachesWithoutAssignment(bbInside, v)
     }
 
     /**
@@ -546,7 +546,7 @@ module FlowVar_internal {
     private predicate bbInLoop(BasicBlock bb) {
       bbDominates(this.(Loop).getStmt(), bb)
       or
-      bbInLoopCondition(bb)
+      this.bbInLoopCondition(bb)
     }
 
     /** Holds if `sbb` is inside this loop. */
@@ -563,7 +563,7 @@ module FlowVar_internal {
         bb = this.(Loop).getStmt() and
         v = this.getARelevantVariable()
         or
-        reachesWithoutAssignment(bb.getAPredecessor(), v) and
+        this.reachesWithoutAssignment(bb.getAPredecessor(), v) and
         this.bbInLoop(bb)
       ) and
       not assignsToVar(bb, v)

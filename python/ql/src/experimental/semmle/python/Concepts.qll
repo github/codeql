@@ -253,3 +253,184 @@ class NoSQLSanitizer extends DataFlow::Node {
   /** Gets the argument that specifies the NoSQL query to be sanitized. */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
+
+/** Provides classes for modeling HTTP Header APIs. */
+module HeaderDeclaration {
+  /**
+   * A data-flow node that collects functions setting HTTP Headers.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HeaderDeclaration` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getNameArg();
+
+    /**
+     * Gets the argument containing the header value.
+     */
+    abstract DataFlow::Node getValueArg();
+  }
+}
+
+/**
+ * A data-flow node that collects functions setting HTTP Headers.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderDeclaration::Range` instead.
+ */
+class HeaderDeclaration extends DataFlow::Node {
+  HeaderDeclaration::Range range;
+
+  HeaderDeclaration() { this = range }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+  /**
+   * Gets the argument containing the header value.
+   */
+  DataFlow::Node getValueArg() { result = range.getValueArg() }
+}
+
+/** Provides classes for modeling JWT encoding-related APIs. */
+module JWTEncoding {
+  /**
+   * A data-flow node that collects methods encoding a JWT token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JWTEncoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the encoding payload.
+     */
+    abstract DataFlow::Node getPayload();
+
+    /**
+     * Gets the argument containing the encoding key.
+     */
+    abstract DataFlow::Node getKey();
+
+    /**
+     * Gets the argument for the algorithm used in the encoding.
+     */
+    abstract DataFlow::Node getAlgorithm();
+
+    /**
+     * Gets a string representation of the algorithm used in the encoding.
+     */
+    abstract string getAlgorithmString();
+  }
+}
+
+/**
+ * A data-flow node that collects methods encoding a JWT token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JWTEncoding::Range` instead.
+ */
+class JWTEncoding extends DataFlow::Node instanceof JWTEncoding::Range {
+  /**
+   * Gets the argument containing the payload.
+   */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /**
+   * Gets the argument containing the encoding key.
+   */
+  DataFlow::Node getKey() { result = super.getKey() }
+
+  /**
+   * Gets the argument for the algorithm used in the encoding.
+   */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /**
+   * Gets a string representation of the algorithm used in the encoding.
+   */
+  string getAlgorithmString() { result = super.getAlgorithmString() }
+}
+
+/** Provides classes for modeling JWT decoding-related APIs. */
+module JWTDecoding {
+  /**
+   * A data-flow node that collects methods decoding a JWT token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JWTDecoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the encoding payload.
+     */
+    abstract DataFlow::Node getPayload();
+
+    /**
+     * Gets the argument containing the encoding key.
+     */
+    abstract DataFlow::Node getKey();
+
+    /**
+     * Gets the argument for the algorithm used in the encoding.
+     */
+    abstract DataFlow::Node getAlgorithm();
+
+    /**
+     * Gets a string representation of the algorithm used in the encoding.
+     */
+    abstract string getAlgorithmString();
+
+    /**
+     * Gets the options Node used in the encoding.
+     */
+    abstract DataFlow::Node getOptions();
+
+    /**
+     * Checks if the signature gets verified while decoding.
+     */
+    abstract predicate verifiesSignature();
+  }
+}
+
+/**
+ * A data-flow node that collects methods encoding a JWT token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JWTDecoding::Range` instead.
+ */
+class JWTDecoding extends DataFlow::Node instanceof JWTDecoding::Range {
+  /**
+   * Gets the argument containing the payload.
+   */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /**
+   * Gets the argument containing the encoding key.
+   */
+  DataFlow::Node getKey() { result = super.getKey() }
+
+  /**
+   * Gets the argument for the algorithm used in the encoding.
+   */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /**
+   * Gets a string representation of the algorithm used in the encoding.
+   */
+  string getAlgorithmString() { result = super.getAlgorithmString() }
+
+  /**
+   * Gets the options Node used in the encoding.
+   */
+  DataFlow::Node getOptions() { result = super.getOptions() }
+
+  /**
+   * Checks if the signature gets verified while decoding.
+   */
+  predicate verifiesSignature() { super.verifiesSignature() }
+}

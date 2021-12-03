@@ -14,7 +14,7 @@ class JavadocParent extends @javadocParent, Top {
   JavadocElement getChild(int index) { result = this.getAChild() and result.getIndex() = index }
 
   /** Gets the number of documentation elements attached to this parent. */
-  int getNumChild() { result = count(getAChild()) }
+  int getNumChild() { result = count(this.getAChild()) }
 
   /** Gets a documentation element with the specified Javadoc tag name. */
   JavadocTag getATag(string name) { result = this.getAChild() and result.getTagName() = name }
@@ -33,7 +33,9 @@ class Javadoc extends JavadocParent, @javadoc {
   /** Gets the value of the `@author` tag, if any. */
   string getAuthor() { result = this.getATag("@author").getChild(0).toString() }
 
-  override string toString() { result = toStringPrefix() + getChild(0) + toStringPostfix() }
+  override string toString() {
+    result = this.toStringPrefix() + this.getChild(0) + this.toStringPostfix()
+  }
 
   private string toStringPrefix() {
     if isEolComment(this)
@@ -47,7 +49,7 @@ class Javadoc extends JavadocParent, @javadoc {
     if isEolComment(this)
     then result = ""
     else (
-      if strictcount(getAChild()) = 1 then result = " */" else result = " ... */"
+      if strictcount(this.getAChild()) = 1 then result = " */" else result = " ... */"
     )
   }
 
@@ -119,10 +121,10 @@ class ThrowsTag extends JavadocTag {
 
 /** A Javadoc `@see` tag. */
 class SeeTag extends JavadocTag {
-  SeeTag() { getTagName() = "@see" }
+  SeeTag() { this.getTagName() = "@see" }
 
   /** Gets the name of the entity referred to. */
-  string getReference() { result = getChild(0).toString() }
+  string getReference() { result = this.getChild(0).toString() }
 }
 
 /** A Javadoc `@author` tag. */

@@ -19,10 +19,5 @@ class Modifier extends Element, @modifier {
  * An access modifier: `public`, `private`, `internal` or `protected`.
  */
 class AccessModifier extends Modifier {
-  AccessModifier() {
-    this.hasName("public") or
-    this.hasName("private") or
-    this.hasName("internal") or
-    this.hasName("protected")
-  }
+  AccessModifier() { this.hasName(["public", "private", "internal", "protected"]) }
 }

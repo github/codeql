@@ -25,14 +25,14 @@ private class TypeLiteralToParseAsFlowConfiguration extends DataFlowForSerializa
     )
   }
 
-  TypeLiteral getSourceWithFlowToParseAs() { hasFlow(DataFlow::exprNode(result), _) }
+  TypeLiteral getSourceWithFlowToParseAs() { this.hasFlow(DataFlow::exprNode(result), _) }
 }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */
 class HttpResponseParseAsDeserializableField extends DeserializableField {
   HttpResponseParseAsDeserializableField() {
     exists(RefType decltype, TypeLiteralToParseAsFlowConfiguration conf |
-      decltype = getDeclaringType() and
+      decltype = this.getDeclaringType() and
       conf.getSourceWithFlowToParseAs().getReferencedType() = decltype and
       decltype.fromSource()
     )

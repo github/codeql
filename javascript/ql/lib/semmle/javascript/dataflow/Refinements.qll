@@ -53,21 +53,18 @@ abstract class RefinementCandidate extends Expr {
  * A refinement candidate that references at most one variable, and hence
  * can be used to refine the abstract values inferred for that variable.
  */
-class Refinement extends Expr {
-  Refinement() {
-    this instanceof RefinementCandidate and
-    count(this.(RefinementCandidate).getARefinedVar()) <= 1
-  }
+class Refinement extends Expr instanceof RefinementCandidate {
+  Refinement() { count(this.(RefinementCandidate).getARefinedVar()) <= 1 }
 
   /**
    * Gets the variable refined by this expression, if any.
    */
-  SsaSourceVariable getRefinedVar() { result = this.(RefinementCandidate).getARefinedVar() }
+  SsaSourceVariable getRefinedVar() { result = super.getARefinedVar() }
 
   /**
    * Gets a refinement value inferred for this expression in context `ctxt`.
    */
-  RefinementValue eval(RefinementContext ctxt) { result = this.(RefinementCandidate).eval(ctxt) }
+  RefinementValue eval(RefinementContext ctxt) { result = super.eval(ctxt) }
 }
 
 /** A literal, viewed as a refinement expression. */

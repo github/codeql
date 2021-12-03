@@ -61,8 +61,8 @@ void testReferencePointer1()
 
 		system(buffer); // BAD
 		system(data); // BAD
-		system(dataref); // BAD [NOT DETECTED]
-		system(data2); // BAD [NOT DETECTED]
+		system(dataref); // BAD
+		system(data2); // BAD
 	}
 }
 

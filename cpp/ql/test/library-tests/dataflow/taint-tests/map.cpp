@@ -28,12 +28,12 @@ void test_pair()
 	b.first = source();
 	sink(b.first); // $ ast,ir
 	sink(b.second);
-	sink(b); // $ MISSING: ast,ir
+	sink(b); // $ ir MISSING: ast
 
 	c.second = source();
 	sink(c.first);
 	sink(c.second); // $ ast,ir
-	sink(c); // $ MISSING: ast,ir
+	sink(c); // $ ir MISSING: ast
 
 	std::pair<char *, char *> d("123", "456");
 	sink(d.first);
@@ -43,21 +43,21 @@ void test_pair()
 	std::pair<char *, char *> e(source(), "456");
 	sink(e.first); // $ ast,ir
 	sink(e.second);
-	sink(e); // $ MISSING: ast,ir
+	sink(e); // $ ir MISSING: ast
 
 	std::pair<char *, char *> f("123", source());
-	sink(f.first); // $ SPURIOUS: ir
+	sink(f.first);
 	sink(f.second); // $ ast,ir
 	sink(f); // $ ast,ir
 
 	std::pair<char *, char *> g(f);
-	sink(g.first); // $ SPURIOUS: ir
+	sink(g.first);
 	sink(g.second); // $ ast,ir
 	sink(g); // $ ast,ir
 
 	std::pair<char *, char *> h;
 	h = f;
-	sink(h.first); // $ SPURIOUS: ir
+	sink(h.first);
 	sink(h.second); // $ ast,ir
 	sink(h); // $ ast,ir
 
@@ -67,17 +67,17 @@ void test_pair()
 	std::pair<char *, char *> l("123", "456");
  	i.swap(j);
 	k.swap(l);
-	sink(i.first); // $ SPURIOUS: ir
-	sink(i.second); // $ ir MISSING: ast
+	sink(i.first);
+	sink(i.second); // $ MISSING: ast,ir
 	sink(i); // $ ast,ir
-	sink(j.first); // $ SPURIOUS: ir
+	sink(j.first);
 	sink(j.second); // $ SPURIOUS: ast,ir
 	sink(j); // $ SPURIOUS: ast,ir
-	sink(k.first); // $ SPURIOUS: ir
+	sink(k.first);
 	sink(k.second); // $ SPURIOUS: ast,ir
 	sink(k); // $ SPURIOUS: ast,ir
-	sink(l.first); // $ SPURIOUS: ir
-	sink(l.second); // $ ir MISSING: ast
+	sink(l.first);
+	sink(l.second); // $ MISSING: ast,ir
 	sink(l); // $ ast,ir
 
 	sink(make_pair("123", "456"));
@@ -87,7 +87,7 @@ void test_pair()
 	sink(make_pair(source(), "456").first); // $ ast,ir
 	sink(make_pair(source(), "456").second);
 	sink(make_pair("123", source())); // $ ast,ir
-	sink(make_pair("123", source()).first); // $ SPURIOUS: ir
+	sink(make_pair("123", source()).first);
 	sink(make_pair("123", source()).second); // $ ast,ir
 
 	std::pair<std::pair<char *, char *>, char *> m;
@@ -105,10 +105,10 @@ void test_map()
 	std::map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // $ SPURIOUS: ir
+	sink(m2.insert(std::make_pair("abc", source())).first);
 	sink(m3.insert(std::make_pair(source(), "def")).first); // $ MISSING: ast,ir
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // $ ast,ir
-	sink(m5.insert_or_assign("abc", source()).first); // $ SPURIOUS: ir
+	sink(m5.insert_or_assign("abc", source()).first);
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // $ ast,ir
 	sink(m1);
 	sink(m2); // $ ast,ir
@@ -169,9 +169,9 @@ void test_map()
 	sink(m12.at("abc") = "def");
 	sink(m13.at("abc") = source()); // $ ast,ir
 	sink(m10["abc"]);
-	sink(m11["abc"]); // $ ast MISSING: ir
+	sink(m11["abc"]); // $ ast,ir
 	sink(m12["abc"]);
-	sink(m13["abc"]); // $ ast MISSING: ir
+	sink(m13["abc"]); // $ ast,ir
 
 	// ranges
 	std::map<char *, char *> m14;
@@ -179,12 +179,12 @@ void test_map()
 	m14.insert(std::make_pair("b", source()));
 	m14.insert(std::make_pair("c", source()));
 	m14.insert(std::make_pair("d", "d"));
-	sink(m2.lower_bound("b")); // $ ast,ir
-	sink(m2.upper_bound("b")); // $ ast,ir
-	sink(m2.equal_range("b").first); // $ ir
-	sink(m2.equal_range("b").second); // $ ir MISSING: ast
-	sink(m2.upper_bound("c")); // $ SPURIOUS: ast,ir
-	sink(m2.equal_range("c").second); // $ SPURIOUS: ir
+	sink(m14.lower_bound("b")); // $ ast,ir=179:33 ast,ir=180:33
+	sink(m14.upper_bound("b")); // $ ast,ir=179:33 ast,ir=180:33
+	sink(m14.equal_range("b").first); // $ MISSING: ast,ir
+	sink(m14.equal_range("b").second); // $ MISSING: ast,ir
+	sink(m14.upper_bound("c")); // $ SPURIOUS: ast,ir=179:33 ast,ir=180:33
+	sink(m14.equal_range("c").second);
 
 	// swap
 	std::map<char *, char *> m15, m16, m17, m18;
@@ -232,7 +232,7 @@ void test_map()
 	std::map<char *, char *> m24, m25;
 	sink(m24.emplace("abc", "def").first);
 	sink(m24);
-	sink(m24.emplace("abc", source()).first); // $ SPURIOUS: ir
+	sink(m24.emplace("abc", source()).first);
 	sink(m24); // $ ast,ir
 	sink(m25.emplace_hint(m25.begin(), "abc", "def"));
 	sink(m25);
@@ -243,7 +243,7 @@ void test_map()
 	std::map<char *, char *> m26, m27;
 	sink(m26.try_emplace("abc", "def").first);
 	sink(m26);
-	sink(m26.try_emplace("abc", source()).first); // $ SPURIOUS: ir
+	sink(m26.try_emplace("abc", source()).first);
 	sink(m26); // $ ast,ir
 	sink(m27.try_emplace(m27.begin(), "abc", "def"));
 	sink(m27);
@@ -257,10 +257,10 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // $ SPURIOUS: ir
+	sink(m2.insert(std::make_pair("abc", source())).first);
 	sink(m3.insert(std::make_pair(source(), "def")).first); // $ MISSING: ast,ir
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // $ ast,ir
-	sink(m5.insert_or_assign("abc", source()).first); // $ SPURIOUS: ir
+	sink(m5.insert_or_assign("abc", source()).first);
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // $ ast,ir
 	sink(m1);
 	sink(m2); // $ ast,ir
@@ -321,9 +321,9 @@ void test_unordered_map()
 	sink(m12.at("abc") = "def");
 	sink(m13.at("abc") = source()); // $ ast,ir
 	sink(m10["abc"]);
-	sink(m11["abc"]); // $ ast MISSING: ir
+	sink(m11["abc"]); // $ ast,ir
 	sink(m12["abc"]);
-	sink(m13["abc"]); // $ ast MISSING: ir
+	sink(m13["abc"]); // $ ast,ir
 
 	// ranges
 	std::unordered_map<char *, char *> m14;
@@ -331,9 +331,9 @@ void test_unordered_map()
 	m14.insert(std::make_pair("b", source()));
 	m14.insert(std::make_pair("c", source()));
 	m14.insert(std::make_pair("d", "d"));
-	sink(m2.equal_range("b").first); // $ ir
-	sink(m2.equal_range("b").second); // $ ir MISSING: ast
-	sink(m2.equal_range("c").second); // $ SPURIOUS: ir
+	sink(m14.equal_range("b").first);
+	sink(m14.equal_range("b").second); // $ MISSING: ast,ir
+	sink(m14.equal_range("c").second);
 
 	// swap
 	std::unordered_map<char *, char *> m15, m16, m17, m18;
@@ -381,7 +381,7 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m24, m25;
 	sink(m24.emplace("abc", "def").first);
 	sink(m24);
-	sink(m24.emplace("abc", source()).first); // $ SPURIOUS: ir
+	sink(m24.emplace("abc", source()).first);
 	sink(m24); // $ ast,ir
 	sink(m25.emplace_hint(m25.begin(), "abc", "def"));
 	sink(m25);
@@ -393,8 +393,8 @@ void test_unordered_map()
 	sink(m26.try_emplace("abc", "def").first);
 	sink(m26.try_emplace("abc", "def").second);
 	sink(m26);
-	sink(m26.try_emplace("abc", source()).first); // $ SPURIOUS: ir
-	sink(m26.try_emplace("abc", source()).second); // $ ir=396:30 SPURIOUS: ir=397:30 MISSING: ast=396:30
+	sink(m26.try_emplace("abc", source()).first);
+	sink(m26.try_emplace("abc", source()).second); // $ MISSING: ast,ir=396:30
 	sink(m26); // $ ast,ir=396:30 SPURIOUS: ast,ir=397:30
 	sink(m27.try_emplace(m27.begin(), "abc", "def"));
 	sink(m27);
@@ -428,7 +428,7 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m34, m35;
 	sink(m34.emplace(std::pair<char *, char *>("abc", "def")).first);
 	sink(m34);
-	sink(m34.emplace(std::pair<char *, char *>("abc", source())).first); // $ SPURIOUS: ir
+	sink(m34.emplace(std::pair<char *, char *>("abc", source())).first);
 	sink(m34); // $ ast,ir
 	sink(m34.emplace_hint(m34.begin(), "abc", "def")); // $ ast,ir
 	sink(m35.emplace().first);

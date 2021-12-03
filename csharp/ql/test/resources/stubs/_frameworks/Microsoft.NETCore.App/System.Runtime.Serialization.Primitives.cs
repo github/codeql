@@ -80,17 +80,17 @@ namespace System
             // Generated from `System.Runtime.Serialization.InvalidDataContractException` in `System.Runtime.Serialization.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidDataContractException : System.Exception
             {
-                public InvalidDataContractException(string message, System.Exception innerException) => throw null;
-                public InvalidDataContractException(string message) => throw null;
                 public InvalidDataContractException() => throw null;
                 protected InvalidDataContractException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public InvalidDataContractException(string message) => throw null;
+                public InvalidDataContractException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Runtime.Serialization.KnownTypeAttribute` in `System.Runtime.Serialization.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KnownTypeAttribute : System.Attribute
             {
-                public KnownTypeAttribute(string methodName) => throw null;
                 public KnownTypeAttribute(System.Type type) => throw null;
+                public KnownTypeAttribute(string methodName) => throw null;
                 public string MethodName { get => throw null; }
                 public System.Type Type { get => throw null; }
             }

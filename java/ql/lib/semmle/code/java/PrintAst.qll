@@ -151,7 +151,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets a child of this node.
    */
-  final PrintAstNode getAChild() { result = getChild(_) }
+  final PrintAstNode getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the parent of this node, if any.
@@ -169,7 +169,7 @@ class PrintAstNode extends TPrintAstNode {
    */
   string getProperty(string key) {
     key = "semmle.label" and
-    result = toString()
+    result = this.toString()
   }
 
   /**
@@ -178,7 +178,7 @@ class PrintAstNode extends TPrintAstNode {
    * this.
    */
   string getChildEdgeLabel(int childIndex) {
-    exists(getChild(childIndex)) and
+    exists(this.getChild(childIndex)) and
     result = childIndex.toString()
   }
 }
@@ -259,7 +259,7 @@ final class AnnotationPartNode extends ExprStmtNode {
   override ElementNode getChild(int childIndex) {
     result.getElement() =
       rank[childIndex](Element ch, string file, int line, int column |
-        ch = getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+        ch = this.getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
       |
         ch order by file, line, column
       )
@@ -352,7 +352,7 @@ private class SingleLocalVarDeclParent extends ExprOrStmt {
   LocalVariableDeclExpr getVariable() { result.getParent() = this }
 
   /** Gets the type access of the variable */
-  Expr getTypeAccess() { result = getVariable().getTypeAccess() }
+  Expr getTypeAccess() { result = this.getVariable().getTypeAccess() }
 }
 
 /**
@@ -460,7 +460,7 @@ final class ClassInterfaceNode extends ElementNode {
     childIndex >= 0 and
     result.(ElementNode).getElement() =
       rank[childIndex](Element e, string file, int line, int column |
-        e = getADeclaration() and locationSortKeys(e, file, line, column)
+        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
       |
         e order by file, line, column
       )
@@ -507,7 +507,7 @@ final class CompilationUnitNode extends ElementNode {
     childIndex >= 0 and
     result.(ElementNode).getElement() =
       rank[childIndex](Element e, string file, int line, int column |
-        e = getADeclaration() and locationSortKeys(e, file, line, column)
+        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
       |
         e order by file, line, column
       )
@@ -665,7 +665,7 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
   override Location getLocation() { none() }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
+    result.getElement() = ty.getTypeParameter(childIndex)
   }
 
   /**
@@ -686,7 +686,7 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   override string toString() { result = "(Generic Parameters)" }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
+    result.getElement() = c.getTypeParameter(childIndex)
   }
 
   /**

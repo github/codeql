@@ -6,9 +6,11 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
+private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 class PrintfFormatAttribute extends FormatAttribute {
-  PrintfFormatAttribute() { getArchetype() = ["printf", "__printf__"] }
+  PrintfFormatAttribute() { this.getArchetype() = ["printf", "__printf__"] }
 }
 
 /**
@@ -20,13 +22,13 @@ class AttributeFormattingFunction extends FormattingFunction {
 
   AttributeFormattingFunction() {
     exists(PrintfFormatAttribute printf_attrib |
-      printf_attrib = getAnAttribute() and
+      printf_attrib = this.getAnAttribute() and
       exists(printf_attrib.getFirstFormatArgIndex()) // exclude `vprintf` style format functions
     )
   }
 
   override int getFormatParameterIndex() {
-    forex(PrintfFormatAttribute printf_attrib | printf_attrib = getAnAttribute() |
+    forex(PrintfFormatAttribute printf_attrib | printf_attrib = this.getAnAttribute() |
       result = printf_attrib.getFormatIndex()
     )
   }
@@ -132,7 +134,7 @@ deprecated predicate variadicFormatter(Function f, int formatParamIndex) {
 class UserDefinedFormattingFunction extends FormattingFunction {
   override string getAPrimaryQlClass() { result = "UserDefinedFormattingFunction" }
 
-  UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _, _, _) }
+  UserDefinedFormattingFunction() { this.isVarargs() and callsVariadicFormatter(this, _, _, _) }
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, _, result, _) }
 
@@ -175,9 +177,7 @@ class FormattingFunctionCall extends Expr {
   /**
    * Gets the index at which the format string occurs in the argument list.
    */
-  int getFormatParameterIndex() {
-    result = this.getTarget().(FormattingFunction).getFormatParameterIndex()
-  }
+  int getFormatParameterIndex() { result = this.getTarget().getFormatParameterIndex() }
 
   /**
    * Gets the format expression used in this call.
@@ -191,7 +191,7 @@ class FormattingFunctionCall extends Expr {
     exists(int i |
       result = this.getArgument(i) and
       n >= 0 and
-      n = i - getTarget().(FormattingFunction).getFirstFormatArgumentIndex()
+      n = i - this.getTarget().getFirstFormatArgumentIndex()
     )
   }
 
@@ -251,7 +251,7 @@ class FormattingFunctionCall extends Expr {
   int getNumFormatArgument() {
     result = count(this.getFormatArgument(_)) and
     // format arguments must be known
-    exists(getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
+    exists(this.getTarget().getFirstFormatArgumentIndex())
   }
 
   /**
@@ -268,6 +268,18 @@ class FormattingFunctionCall extends Expr {
                 .(FormattingFunction)
                 .getOutputParameterIndex(isStream))
   }
+}
+
+/**
+ * Gets the number of digits required to represent the integer represented by `f`.
+ *
+ * `f` is assumed to be nonnegative.
+ */
+bindingset[f]
+private int lengthInBase10(float f) {
+  f = 0 and result = 1
+  or
+  result = f.log10().floor() + 1
 }
 
 /**
@@ -289,33 +301,27 @@ class FormatLiteral extends Literal {
    * a `char *` (either way, `%S` will have the opposite meaning).
    * DEPRECATED: Use getDefaultCharType() instead.
    */
-  deprecated predicate isWideCharDefault() {
-    getUse().getTarget().(FormattingFunction).isWideCharDefault()
-  }
+  deprecated predicate isWideCharDefault() { this.getUse().getTarget().isWideCharDefault() }
 
   /**
    * Gets the default character type expected for `%s` by this format literal.  Typically
    * `char` or `wchar_t`.
    */
-  Type getDefaultCharType() {
-    result = getUse().getTarget().(FormattingFunction).getDefaultCharType()
-  }
+  Type getDefaultCharType() { result = this.getUse().getTarget().getDefaultCharType() }
 
   /**
    * Gets the non-default character type expected for `%S` by this format literal.  Typically
    * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
    * which is correct for a particular function.
    */
-  Type getNonDefaultCharType() {
-    result = getUse().getTarget().(FormattingFunction).getNonDefaultCharType()
-  }
+  Type getNonDefaultCharType() { result = this.getUse().getTarget().getNonDefaultCharType() }
 
   /**
    * Gets the wide character type for this format literal.  This is usually `wchar_t`.  On some
    * snapshots there may be multiple results where we can't tell which is correct for a
    * particular function.
    */
-  Type getWideCharType() { result = getUse().getTarget().(FormattingFunction).getWideCharType() }
+  Type getWideCharType() { result = this.getUse().getTarget().getWideCharType() }
 
   /**
    * Holds if this `FormatLiteral` is in a context that supports
@@ -353,7 +359,7 @@ class FormatLiteral extends Literal {
   }
 
   private string getFlagRegexp() {
-    if isMicrosoft() then result = "[-+ #0']*" else result = "[-+ #0'I]*"
+    if this.isMicrosoft() then result = "[-+ #0']*" else result = "[-+ #0'I]*"
   }
 
   private string getFieldWidthRegexp() { result = "(?:[1-9][0-9]*|\\*|\\*[0-9]+\\$)?" }
@@ -361,13 +367,13 @@ class FormatLiteral extends Literal {
   private string getPrecRegexp() { result = "(?:\\.(?:[0-9]*|\\*|\\*[0-9]+\\$))?" }
 
   private string getLengthRegexp() {
-    if isMicrosoft()
+    if this.isMicrosoft()
     then result = "(?:hh?|ll?|L|q|j|z|t|w|I32|I64|I)?"
     else result = "(?:hh?|ll?|L|q|j|z|Z|t)?"
   }
 
   private string getConvCharRegexp() {
-    if isMicrosoft()
+    if this.isMicrosoft()
     then result = "[aAcCdeEfFgGimnopsSuxXZ@]"
     else result = "[aAcCdeEfFgGimnopsSuxX@]"
   }
@@ -747,16 +753,16 @@ class FormatLiteral extends Literal {
    * Gets the argument type required by the nth conversion specifier.
    */
   Type getConversionType(int n) {
-    result = getConversionType1(n) or
-    result = getConversionType1b(n) or
-    result = getConversionType2(n) or
-    result = getConversionType3(n) or
-    result = getConversionType4(n) or
-    result = getConversionType6(n) or
-    result = getConversionType7(n) or
-    result = getConversionType8(n) or
-    result = getConversionType9(n) or
-    result = getConversionType10(n)
+    result = this.getConversionType1(n) or
+    result = this.getConversionType1b(n) or
+    result = this.getConversionType2(n) or
+    result = this.getConversionType3(n) or
+    result = this.getConversionType4(n) or
+    result = this.getConversionType6(n) or
+    result = this.getConversionType7(n) or
+    result = this.getConversionType8(n) or
+    result = this.getConversionType9(n) or
+    result = this.getConversionType10(n)
   }
 
   private Type getConversionType1(int n) {
@@ -786,15 +792,15 @@ class FormatLiteral extends Literal {
         or
         conv = ["c", "C"] and
         len = ["l", "w"] and
-        result = getWideCharType()
+        result = this.getWideCharType()
         or
         conv = "c" and
         (len != "l" and len != "w" and len != "h") and
-        result = getDefaultCharType()
+        result = this.getDefaultCharType()
         or
         conv = "C" and
         (len != "l" and len != "w" and len != "h") and
-        result = getNonDefaultCharType()
+        result = this.getNonDefaultCharType()
       )
     )
   }
@@ -831,15 +837,15 @@ class FormatLiteral extends Literal {
         or
         conv = ["s", "S"] and
         len = ["l", "w"] and
-        result.(PointerType).getBaseType() = getWideCharType()
+        result.(PointerType).getBaseType() = this.getWideCharType()
         or
         conv = "s" and
         (len != "l" and len != "w" and len != "h") and
-        result.(PointerType).getBaseType() = getDefaultCharType()
+        result.(PointerType).getBaseType() = this.getDefaultCharType()
         or
         conv = "S" and
         (len != "l" and len != "w" and len != "h") and
-        result.(PointerType).getBaseType() = getNonDefaultCharType()
+        result.(PointerType).getBaseType() = this.getNonDefaultCharType()
       )
     )
   }
@@ -894,19 +900,19 @@ class FormatLiteral extends Literal {
     exists(string len, string conv |
       this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (len != "l" and len != "w" and len != "h") and
-      getUse().getTarget().(FormattingFunction).getFormatCharType().getSize() > 1 and // wide function
+      this.getUse().getTarget().getFormatCharType().getSize() > 1 and // wide function
       (
         conv = "c" and
-        result = getNonDefaultCharType()
+        result = this.getNonDefaultCharType()
         or
         conv = "C" and
-        result = getDefaultCharType()
+        result = this.getDefaultCharType()
         or
         conv = "s" and
-        result.(PointerType).getBaseType() = getNonDefaultCharType()
+        result.(PointerType).getBaseType() = this.getNonDefaultCharType()
         or
         conv = "S" and
-        result.(PointerType).getBaseType() = getDefaultCharType()
+        result.(PointerType).getBaseType() = this.getDefaultCharType()
       )
     )
   }
@@ -939,9 +945,13 @@ class FormatLiteral extends Literal {
    * not account for positional arguments (`$`).
    */
   int getFormatArgumentIndexFor(int n, int mode) {
-    hasFormatArgumentIndexFor(n, mode) and
+    this.hasFormatArgumentIndexFor(n, mode) and
     (3 * n) + mode =
-      rank[result + 1](int n2, int mode2 | hasFormatArgumentIndexFor(n2, mode2) | (3 * n2) + mode2)
+      rank[result + 1](int n2, int mode2 |
+        this.hasFormatArgumentIndexFor(n2, mode2)
+      |
+        (3 * n2) + mode2
+      )
   }
 
   /**
@@ -951,7 +961,7 @@ class FormatLiteral extends Literal {
   int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
     exists(this.getConversionChar(n)) and
-    result = count(int mode | hasFormatArgumentIndexFor(n, mode))
+    result = count(int mode | this.hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
@@ -963,7 +973,7 @@ class FormatLiteral extends Literal {
       // At least one conversion specifier has a parameter field, in which case,
       // they all should have.
       result = max(string s | this.getParameterField(_) = s + "$" | s.toInt())
-    else result = count(int n, int mode | hasFormatArgumentIndexFor(n, mode))
+    else result = count(int n, int mode | this.hasFormatArgumentIndexFor(n, mode))
   }
 
   /**
@@ -1050,65 +1060,89 @@ class FormatLiteral extends Literal {
         or
         this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isSigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = 1 + ((sizeBits - 1) / 10.0.log2()).ceil()
-          // this calculation is as %u (below) only we take out the sign bit (- 1) and allow a whole
-          // character for it to be expressed as '-'.
-        )
+        len =
+          min(float cand |
+            // The first case handles length sub-specifiers
+            // Subtract one in the exponent because one bit is for the sign.
+            // Add 1 to account for the possible sign in the output.
+            cand = 1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1))
+            or
+            // The second case uses range analysis to deduce a length that's shorter than the length
+            // of the number -2^31.
+            exists(Expr arg, float lower, float upper |
+              arg = this.getUse().getConversionArgument(n) and
+              lower = lowerBound(arg.getFullyConverted()) and
+              upper = upperBound(arg.getFullyConverted())
+            |
+              cand =
+                max(int cand0 |
+                  // Include the sign bit in the length if it can be negative
+                  (
+                    if lower < 0
+                    then cand0 = 1 + lengthInBase10(lower.abs())
+                    else cand0 = lengthInBase10(lower)
+                  )
+                  or
+                  (
+                    if upper < 0
+                    then cand0 = 1 + lengthInBase10(upper.abs())
+                    else cand0 = lengthInBase10(upper)
+                  )
+                )
+            )
+          )
         or
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isUnsigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = (sizeBits / 10.0.log2()).ceil()
-          // convert the size from bits to decimal characters, and round up as you can't have
-          // fractional characters (10.0.log2() is the number of bits expressed per decimal character)
-        )
+        len =
+          min(float cand |
+            // The first case handles length sub-specifiers
+            cand = 2.pow(this.getIntegralDisplayType(n).getSize() * 8)
+            or
+            // The second case uses range analysis to deduce a length that's shorter than
+            // the length of the number 2^31 - 1.
+            exists(Expr arg, float lower |
+              arg = this.getUse().getConversionArgument(n) and
+              lower = lowerBound(arg.getFullyConverted())
+            |
+              cand =
+                max(float cand0 |
+                  // If lower can be negative we use `(unsigned)-1` as the candidate value.
+                  lower < 0 and
+                  cand0 = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  or
+                  cand0 = upperBound(arg.getFullyConverted())
+                )
+            )
+          |
+            lengthInBase10(cand)
+          )
         or
         this.getConversionChar(n).toLowerCase() = "x" and
         // e.g. "12345678"
         exists(int sizeBytes, int baseLen |
           sizeBytes =
             min(int bytes |
-              bytes = getIntegralDisplayType(n).getSize()
+              bytes = this.getIntegralDisplayType(n).getSize()
               or
               exists(IntegralType t |
-                t = getUse().getConversionArgument(n).getType().getUnderlyingType()
+                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
               |
                 t.isUnsigned() and bytes = t.getSize()
               )
             ) and
           baseLen = sizeBytes * 2 and
           (
-            if hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
+            if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
         )
         or
         this.getConversionChar(n).toLowerCase() = "p" and
         exists(PointerType ptrType, int baseLen |
-          ptrType = getFullyConverted().getType() and
+          ptrType = this.getFullyConverted().getType() and
           baseLen = max(ptrType.getSize() * 2) and // e.g. "0x1234567812345678"; exact format is platform dependent
           (
-            if hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
+            if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
         )
         or
@@ -1117,17 +1151,17 @@ class FormatLiteral extends Literal {
         exists(int sizeBits, int baseLen |
           sizeBits =
             min(int bits |
-              bits = getIntegralDisplayType(n).getSize() * 8
+              bits = this.getIntegralDisplayType(n).getSize() * 8
               or
               exists(IntegralType t |
-                t = getUse().getConversionArgument(n).getType().getUnderlyingType()
+                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
               |
                 t.isUnsigned() and bits = t.getSize() * 8
               )
             ) and
           baseLen = (sizeBits / 3.0).ceil() and
           (
-            if hasAlternateFlag(n) then len = 1 + baseLen else len = baseLen // "0"
+            if this.hasAlternateFlag(n) then len = 1 + baseLen else len = baseLen // "0"
           )
         )
         or
@@ -1150,8 +1184,8 @@ class FormatLiteral extends Literal {
    */
   int getMaxConvertedLengthLimited(int n) {
     if this.getConversionChar(n).toLowerCase() = "f"
-    then result = getMaxConvertedLength(n).minimum(8)
-    else result = getMaxConvertedLength(n)
+    then result = this.getMaxConvertedLength(n).minimum(8)
+    else result = this.getMaxConvertedLength(n)
   }
 
   /**

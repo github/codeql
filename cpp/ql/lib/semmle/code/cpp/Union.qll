@@ -37,7 +37,7 @@ class Union extends Struct {
  * ```
  */
 class LocalUnion extends Union {
-  LocalUnion() { isLocal() }
+  LocalUnion() { this.isLocal() }
 
   override string getAPrimaryQlClass() { result = "LocalUnion" }
 }

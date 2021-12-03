@@ -18,6 +18,12 @@ private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract DataFlowCallable getEnclosingCallableImpl();
@@ -311,6 +317,18 @@ module LocalFlow {
   }
 
   /**
+   * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
+   * involving SSA definition `def`.
+   */
+  predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      nodeTo = TExprNode(cfnTo) and
+      nodeFrom = TExprNode(cfnFrom)
+    )
+  }
+
+  /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def.
    */
@@ -322,14 +340,7 @@ module LocalFlow {
     )
     or
     // Flow from read to next read
-    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
-      nodeTo = TExprNode(cfnTo)
-    |
-      nodeFrom = TExprNode(cfnFrom)
-      or
-      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
-    )
+    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi node
     exists(Ssa::PhiNode phi |
@@ -398,6 +409,12 @@ module LocalFlow {
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+  or
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _) and
+    not LocalFlow::usesInstanceField(def)
+  )
   or
   LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
   or
@@ -716,6 +733,8 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
     exists(Ssa::Definition def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
       LocalFlow::usesInstanceField(def)
@@ -772,12 +791,14 @@ predicate nodeIsHidden(Node n) {
     def instanceof Ssa::ImplicitCallDefinition
   )
   or
-  exists(Parameter p |
-    p = n.(ParameterNode).getParameter() and
+  exists(Parameter p | p = n.(ParameterNode).getParameter() |
     not p.fromSource()
+    or
+    p.getCallable() instanceof SummarizedCallable
   )
   or
-  n = TInstanceParameterNode(any(Callable c | not c.fromSource()))
+  n =
+    TInstanceParameterNode(any(Callable c | not c.fromSource() or c instanceof SummarizedCallable))
   or
   n instanceof YieldReturnNode
   or
@@ -1691,9 +1712,6 @@ predicate clearsContent(Node n, Content c) {
   or
   fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n) and
-  not c instanceof ElementContent
-  or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
   or
   exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
@@ -1929,15 +1947,6 @@ class Unit extends TUnit {
   string toString() { result = "unit" }
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) { none() }
-
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
@@ -2002,4 +2011,15 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )
+}
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }

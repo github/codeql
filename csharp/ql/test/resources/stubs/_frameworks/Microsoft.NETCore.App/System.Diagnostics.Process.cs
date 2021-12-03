@@ -54,18 +54,18 @@ namespace System
             public System.DateTime ExitTime { get => throw null; }
             public event System.EventHandler Exited;
             public static System.Diagnostics.Process GetCurrentProcess() => throw null;
-            public static System.Diagnostics.Process GetProcessById(int processId, string machineName) => throw null;
             public static System.Diagnostics.Process GetProcessById(int processId) => throw null;
-            public static System.Diagnostics.Process[] GetProcesses(string machineName) => throw null;
+            public static System.Diagnostics.Process GetProcessById(int processId, string machineName) => throw null;
             public static System.Diagnostics.Process[] GetProcesses() => throw null;
-            public static System.Diagnostics.Process[] GetProcessesByName(string processName, string machineName) => throw null;
+            public static System.Diagnostics.Process[] GetProcesses(string machineName) => throw null;
             public static System.Diagnostics.Process[] GetProcessesByName(string processName) => throw null;
+            public static System.Diagnostics.Process[] GetProcessesByName(string processName, string machineName) => throw null;
             public System.IntPtr Handle { get => throw null; }
             public int HandleCount { get => throw null; }
             public bool HasExited { get => throw null; }
             public int Id { get => throw null; }
-            public void Kill(bool entireProcessTree) => throw null;
             public void Kill() => throw null;
+            public void Kill(bool entireProcessTree) => throw null;
             public static void LeaveDebugMode() => throw null;
             public string MachineName { get => throw null; }
             public System.Diagnostics.ProcessModule MainModule { get => throw null; }
@@ -103,13 +103,13 @@ namespace System
             public System.IO.StreamReader StandardError { get => throw null; }
             public System.IO.StreamWriter StandardInput { get => throw null; }
             public System.IO.StreamReader StandardOutput { get => throw null; }
+            public bool Start() => throw null;
+            public static System.Diagnostics.Process Start(System.Diagnostics.ProcessStartInfo startInfo) => throw null;
+            public static System.Diagnostics.Process Start(string fileName) => throw null;
+            public static System.Diagnostics.Process Start(string fileName, System.Collections.Generic.IEnumerable<string> arguments) => throw null;
+            public static System.Diagnostics.Process Start(string fileName, string arguments) => throw null;
             public static System.Diagnostics.Process Start(string fileName, string userName, System.Security.SecureString password, string domain) => throw null;
             public static System.Diagnostics.Process Start(string fileName, string arguments, string userName, System.Security.SecureString password, string domain) => throw null;
-            public static System.Diagnostics.Process Start(string fileName, string arguments) => throw null;
-            public static System.Diagnostics.Process Start(string fileName, System.Collections.Generic.IEnumerable<string> arguments) => throw null;
-            public static System.Diagnostics.Process Start(string fileName) => throw null;
-            public static System.Diagnostics.Process Start(System.Diagnostics.ProcessStartInfo startInfo) => throw null;
-            public bool Start() => throw null;
             public System.Diagnostics.ProcessStartInfo StartInfo { get => throw null; set => throw null; }
             public System.DateTime StartTime { get => throw null; }
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set => throw null; }
@@ -122,8 +122,8 @@ namespace System
             public void WaitForExit() => throw null;
             public bool WaitForExit(int milliseconds) => throw null;
             public System.Threading.Tasks.Task WaitForExitAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public bool WaitForInputIdle(int milliseconds) => throw null;
             public bool WaitForInputIdle() => throw null;
+            public bool WaitForInputIdle(int milliseconds) => throw null;
             public int WorkingSet { get => throw null; }
             public System.Int64 WorkingSet64 { get => throw null; }
         }
@@ -147,8 +147,8 @@ namespace System
             public void CopyTo(System.Diagnostics.ProcessModule[] array, int index) => throw null;
             public int IndexOf(System.Diagnostics.ProcessModule module) => throw null;
             public System.Diagnostics.ProcessModule this[int index] { get => throw null; }
-            public ProcessModuleCollection(System.Diagnostics.ProcessModule[] processModules) => throw null;
             protected ProcessModuleCollection() => throw null;
+            public ProcessModuleCollection(System.Diagnostics.ProcessModule[] processModules) => throw null;
         }
 
         // Generated from `System.Diagnostics.ProcessPriorityClass` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -177,9 +177,9 @@ namespace System
             public bool LoadUserProfile { get => throw null; set => throw null; }
             public System.Security.SecureString Password { get => throw null; set => throw null; }
             public string PasswordInClearText { get => throw null; set => throw null; }
-            public ProcessStartInfo(string fileName, string arguments) => throw null;
-            public ProcessStartInfo(string fileName) => throw null;
             public ProcessStartInfo() => throw null;
+            public ProcessStartInfo(string fileName) => throw null;
+            public ProcessStartInfo(string fileName, string arguments) => throw null;
             public bool RedirectStandardError { get => throw null; set => throw null; }
             public bool RedirectStandardInput { get => throw null; set => throw null; }
             public bool RedirectStandardOutput { get => throw null; set => throw null; }
@@ -223,8 +223,8 @@ namespace System
             public int IndexOf(System.Diagnostics.ProcessThread thread) => throw null;
             public void Insert(int index, System.Diagnostics.ProcessThread thread) => throw null;
             public System.Diagnostics.ProcessThread this[int index] { get => throw null; }
-            public ProcessThreadCollection(System.Diagnostics.ProcessThread[] processThreads) => throw null;
             protected ProcessThreadCollection() => throw null;
+            public ProcessThreadCollection(System.Diagnostics.ProcessThread[] processThreads) => throw null;
             public void Remove(System.Diagnostics.ProcessThread thread) => throw null;
         }
 

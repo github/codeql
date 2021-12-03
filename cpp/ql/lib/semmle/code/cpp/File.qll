@@ -52,7 +52,7 @@ class Container extends Locatable, @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -79,7 +79,7 @@ class Container extends Locatable, @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -105,7 +105,9 @@ class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -124,7 +126,9 @@ class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() {
@@ -135,20 +139,20 @@ class Container extends Locatable, @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -157,7 +161,7 @@ class Container extends Locatable, @container {
    *
    * This is the absolute path of the container.
    */
-  override string toString() { result = getAbsolutePath() }
+  override string toString() { result = this.getAbsolutePath() }
 }
 
 /**

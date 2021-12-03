@@ -14,11 +14,14 @@ import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
+cached
 abstract class SensitiveExpr extends Expr {
   /** Gets a human-readable description of this expression for use in alert messages. */
+  cached
   abstract string describe();
 
   /** Gets a classification of the kind of sensitive data this expression might contain. */
+  cached
   abstract SensitiveDataClassification getClassification();
 }
 
@@ -54,7 +57,7 @@ class SensitiveCall extends SensitiveExpr, InvokeExpr {
     )
   }
 
-  override string describe() { result = "a call to " + getCalleeName() }
+  override string describe() { result = "a call to " + this.getCalleeName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
@@ -142,7 +145,7 @@ abstract class SensitiveAction extends DataFlow::Node { }
 /** A call that may perform authorization. */
 class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
   AuthorizationCall() {
-    exists(string s | s = getCalleeName() |
+    exists(string s | s = this.getCalleeName() |
       // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
       // also exclude `author`
       s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)|verify).*") and
@@ -155,7 +158,7 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
 /** A call to a function whose name suggests that it encodes or encrypts its arguments. */
 class ProtectCall extends DataFlow::CallNode {
   ProtectCall() {
-    exists(string s | getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+    exists(string s | this.getCalleeName().regexpMatch("(?i).*" + s + ".*") |
       s = "protect" or s = "encode" or s = "encrypt"
     )
   }

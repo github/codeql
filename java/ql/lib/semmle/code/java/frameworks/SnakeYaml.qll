@@ -37,14 +37,14 @@ private class SafeYamlConstructionFlowConfig extends DataFlow2::Configuration {
     src.asExpr() instanceof SafeSnakeYamlConstruction
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink = yamlClassInstanceExprArgument(_) }
+  override predicate isSink(DataFlow::Node sink) { sink = this.yamlClassInstanceExprArgument(_) }
 
   private DataFlow::ExprNode yamlClassInstanceExprArgument(ClassInstanceExpr cie) {
     cie.getConstructedType() instanceof Yaml and
     result.getExpr() = cie.getArgument(0)
   }
 
-  ClassInstanceExpr getSafeYaml() { hasFlowTo(yamlClassInstanceExprArgument(result)) }
+  ClassInstanceExpr getSafeYaml() { this.hasFlowTo(this.yamlClassInstanceExprArgument(result)) }
 }
 
 /**
@@ -70,13 +70,13 @@ private class SafeYamlFlowConfig extends DataFlow3::Configuration {
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeYaml }
 
-  override predicate isSink(DataFlow::Node sink) { sink = yamlParseQualifier(_) }
+  override predicate isSink(DataFlow::Node sink) { sink = this.yamlParseQualifier(_) }
 
   private DataFlow::ExprNode yamlParseQualifier(SnakeYamlParse syp) {
     result.getExpr() = syp.getQualifier()
   }
 
-  SnakeYamlParse getASafeSnakeYamlParse() { hasFlowTo(yamlParseQualifier(result)) }
+  SnakeYamlParse getASafeSnakeYamlParse() { this.hasFlowTo(this.yamlParseQualifier(result)) }
 }
 
 /**

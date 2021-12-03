@@ -79,9 +79,12 @@ private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.Slice
+  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
+  private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
@@ -95,6 +98,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.ratpack.Ratpack
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
@@ -104,6 +109,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.frameworks.spring.SpringWebUtil
+  private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.GroovyInjection
@@ -114,9 +120,6 @@ private module Frameworks {
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
-  private import semmle.code.java.frameworks.android.Android
-  private import semmle.code.java.frameworks.android.Slice
-  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
@@ -321,33 +324,11 @@ private predicate summaryModelCsv(string row) {
       "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
       "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
       "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
       "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
       // arg to arg
       "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
-      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
-      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
       // constructor flow
       "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
       "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
@@ -372,7 +353,11 @@ private predicate summaryModelCsv(string row) {
       "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
       "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
       "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
-      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[]);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[],int,int);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(int);;Argument[0];Argument[-1];taint",
+      "java.io;FilterOutputStream;true;FilterOutputStream;(OutputStream);;Argument[0];Argument[-1];taint"
     ]
 }
 

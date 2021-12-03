@@ -91,12 +91,12 @@ module NodeJSLib {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = getFunction().getParameter(0) }
+    Parameter getRequestParameter() { result = this.getFunction().getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = getFunction().getParameter(1) }
+    Parameter getResponseParameter() { result = this.getFunction().getParameter(1) }
   }
 
   /**
@@ -222,23 +222,25 @@ module NodeJSLib {
 
     RouteSetup() {
       server.flowsTo(this) and
-      handler = getLastArgument()
+      handler = this.getLastArgument()
       or
-      server.flowsTo(getReceiver()) and
+      server.flowsTo(this.getReceiver()) and
       this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
-      getArgument(0).getStringValue() = "request" and
-      handler = getArgument(1)
+      this.getArgument(0).getStringValue() = "request" and
+      handler = this.getArgument(1)
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
+        succ = this.getARouteHandler(t2)
+      |
         result = succ.backtrack(t2, t)
         or
         t = t2 and
@@ -516,21 +518,18 @@ module NodeJSLib {
     string getMethodName() { result = methodName }
 
     override DataFlow::Node getAPathArgument() {
-      exists(int i | fsFileParam(methodName, i) | result = getArgument(i))
+      exists(int i | fsFileParam(methodName, i) | result = this.getArgument(i))
     }
   }
 
   /** A write to the file system. */
   private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
     NodeJSFileSystemAccessWrite() {
-      methodName = "appendFile" or
-      methodName = "appendFileSync" or
-      methodName = "write" or
-      methodName = "writeFile" or
-      methodName = "writeFileSync" or
-      methodName = "writeSync" or
-      methodName = "link" or
-      methodName = "linkSync"
+      methodName =
+        [
+          "appendFile", "appendFileSync", "write", "writeFile", "writeFileSync", "writeSync",
+          "link", "linkSync"
+        ]
     }
 
     override DataFlow::Node getADataNode() {
@@ -538,11 +537,11 @@ module NodeJSLib {
         if paramName = "callback"
         then
           exists(DataFlow::ParameterNode p |
-            p = getCallback(i).getAParameter() and
+            p = this.getCallback(i).getAParameter() and
             p.getName().regexpMatch("(?i)data|buffer|string") and
             result = p
           )
-        else result = getArgument(i)
+        else result = this.getArgument(i)
       )
     }
   }
@@ -557,18 +556,18 @@ module NodeJSLib {
     }
 
     override DataFlow::Node getADataNode() {
-      if methodName.regexpMatch(".*Sync")
+      if methodName.matches("%Sync")
       then result = this
       else
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
           if paramName = "callback"
           then
             exists(DataFlow::ParameterNode p |
-              p = getCallback(i).getAParameter() and
+              p = this.getCallback(i).getAParameter() and
               p.getName().regexpMatch("(?i)data|buffer|string") and
               result = p
             )
-          else result = getArgument(i)
+          else result = this.getArgument(i)
         )
     }
   }
@@ -589,7 +588,7 @@ module NodeJSLib {
       )
     }
 
-    override DataFlow::Node getADataNode() { result = getArgument(0) }
+    override DataFlow::Node getADataNode() { result = this.getArgument(0) }
 
     override DataFlow::Node getAPathArgument() { result = stream.getAPathArgument() }
   }
@@ -612,11 +611,11 @@ module NodeJSLib {
       result = this
       or
       method = "pipe" and
-      result = getArgument(0)
+      result = this.getArgument(0)
       or
       method = EventEmitter::on() and
-      getArgument(0).mayHaveStringValue("data") and
-      result = getCallback(1).getParameter(0)
+      this.getArgument(0).mayHaveStringValue("data") and
+      result = this.getCallback(1).getParameter(0)
     }
 
     override DataFlow::Node getAPathArgument() { result = stream.getAPathArgument() }
@@ -699,32 +698,22 @@ module NodeJSLib {
         )
         or
         shell = false and
-        (
-          methodName = "execFile" or
-          methodName = "execFileSync" or
-          methodName = "spawn" or
-          methodName = "spawnSync" or
-          methodName = "fork"
-        )
+        methodName = ["execFile", "execFileSync", "spawn", "spawnSync", "fork"]
       ) and
       // all of the above methods take the command as their first argument
-      result = getParameter(0).getARhs()
+      result = this.getParameter(0).getARhs()
     }
 
-    override DataFlow::Node getACommandArgument() { result = getACommandArgument(_) }
+    override DataFlow::Node getACommandArgument() { result = this.getACommandArgument(_) }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument(true) }
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      arg = this.getACommandArgument(true)
+    }
 
     override DataFlow::Node getArgumentList() {
-      (
-        methodName = "execFile" or
-        methodName = "execFileSync" or
-        methodName = "fork" or
-        methodName = "spawn" or
-        methodName = "spawnSync"
-      ) and
+      methodName = ["execFile", "execFileSync", "fork", "spawn", "spawnSync"] and
       // all of the above methods take the argument list as their second argument
-      result = getParameter(1).getARhs()
+      result = this.getParameter(1).getARhs()
     }
 
     override predicate isSync() { methodName.matches("%Sync") }
@@ -732,16 +721,16 @@ module NodeJSLib {
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
-      not result = getParameter(0).getARhs() and
+      not result = this.getParameter(0).getARhs() and
       // fork/spawn and all sync methos always has options as the last argument
       if
-        methodName.regexpMatch("fork.*") or
-        methodName.regexpMatch("spawn.*") or
-        methodName.regexpMatch(".*Sync")
-      then result = getLastArgument()
+        methodName.matches("fork%") or
+        methodName.matches("spawn%") or
+        methodName.matches("%Sync")
+      then result = this.getLastArgument()
       else
         // the rest (exec/execFile) has the options argument as their second last.
-        result = getParameter(this.getNumArgument() - 2).getARhs()
+        result = this.getParameter(this.getNumArgument() - 2).getARhs()
     }
   }
 
@@ -796,7 +785,7 @@ module NodeJSLib {
           "runInThisContext"
         ] and
       // all of the above methods/constructors take the command as their first argument
-      result = getArgument(0)
+      result = this.getArgument(0)
     }
   }
 
@@ -810,12 +799,12 @@ module NodeJSLib {
     DataFlow::ValueNode arg;
 
     RouteSetupCandidate() {
-      getMethodName() = "createServer" and
-      arg = getLastArgument()
+      this.getMethodName() = "createServer" and
+      arg = this.getLastArgument()
       or
-      getMethodName().regexpMatch("on(ce)?") and
-      getArgument(0).mayHaveStringValue("request") and
-      arg = getArgument(1)
+      this.getMethodName().regexpMatch("on(ce)?") and
+      this.getArgument(0).mayHaveStringValue("request") and
+      arg = this.getArgument(1)
     }
 
     override DataFlow::ValueNode getARouteHandlerArg() { result = arg }
@@ -853,7 +842,7 @@ module NodeJSLib {
           or
           callee = DataFlow::moduleMember(moduleName, "request")
         ) and
-        url = getArgument(0)
+        url = this.getArgument(0)
       )
     }
 
@@ -864,7 +853,7 @@ module NodeJSLib {
         name = "host" or
         name = "hostname"
       |
-        result = getOptionArgument(1, name)
+        result = this.getOptionArgument(1, name)
       )
     }
 
@@ -877,7 +866,7 @@ module NodeJSLib {
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       promise = false and
       exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
-        res = getCallback(1).getParameter(0) and
+        res = this.getCallback(1).getParameter(0) and
         onData = res.getAMethodCall(EventEmitter::on()) and
         onData.getArgument(0).mayHaveStringValue("data") and
         result = onData.getCallback(1).getParameter(0) and
@@ -948,7 +937,7 @@ module NodeJSLib {
    * A data flow node that is a login callback for an HTTP or HTTPS request made by a Node.js process.
    */
   private class ClientRequestLoginHandler extends ClientRequestHandler {
-    ClientRequestLoginHandler() { getAHandledEvent() = "login" }
+    ClientRequestLoginHandler() { this.getAHandledEvent() = "login" }
   }
 
   /**
@@ -1131,13 +1120,13 @@ module NodeJSLib {
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
     /**
      * Gets a reference to this server.
      */
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
   }
 
   /**

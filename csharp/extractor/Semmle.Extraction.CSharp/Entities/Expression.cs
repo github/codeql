@@ -178,7 +178,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var defaultValue = parameter.ExplicitDefaultValue;
 
-            if (parameter.Type is INamedTypeSymbol nt && nt.EnumUnderlyingType is not null)
+            var type = parameter.Type;
+            if (type.IsBoundNullable() && type is INamedTypeSymbol named)
+            {
+                type = named.TypeArguments[0];
+            }
+
+            if (type is INamedTypeSymbol nt && nt.EnumUnderlyingType is not null)
             {
                 // = (MyEnum)1, = MyEnum.Value1, = default(MyEnum), = new MyEnum()
                 // we're generating a (MyEnum)value cast expression:
@@ -194,7 +200,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
             }
 
-            if (parameter.Type.SpecialType == SpecialType.System_Object)
+            if (parameter.Type.SpecialType is SpecialType.System_Object)
             {
                 // this can happen in VB.NET
                 cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
@@ -205,7 +211,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             // const literal:
-            return Literal.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, location);
+            return Literal.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
         }
 
         /// <summary>

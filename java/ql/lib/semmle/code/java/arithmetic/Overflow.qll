@@ -2,9 +2,9 @@ import java
 
 /** A subclass of `PrimitiveType` with width-based ordering methods. */
 class OrdPrimitiveType extends PrimitiveType {
-  predicate widerThan(OrdPrimitiveType that) { getWidthRank() > that.getWidthRank() }
+  predicate widerThan(OrdPrimitiveType that) { this.getWidthRank() > that.getWidthRank() }
 
-  predicate widerThanOrEqualTo(OrdPrimitiveType that) { getWidthRank() >= that.getWidthRank() }
+  predicate widerThanOrEqualTo(OrdPrimitiveType that) { this.getWidthRank() >= that.getWidthRank() }
 
   OrdPrimitiveType maxType(OrdPrimitiveType that) {
     this.widerThan(that) and result = this

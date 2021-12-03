@@ -11,17 +11,8 @@ import cpp
  */
 bindingset[s]
 private predicate suspicious(string s) {
-  (
-    s.matches("%password%") or
-    s.matches("%passwd%") or
-    s.matches("%trusted%")
-  ) and
-  not (
-    s.matches("%hash%") or
-    s.matches("%crypt%") or
-    s.matches("%file%") or
-    s.matches("%path%")
-  )
+  s.matches(["%password%", "%passwd%", "%trusted%"]) and
+  not s.matches(["%hash%", "%crypt%", "%file%", "%path%"])
 }
 
 /**
@@ -29,7 +20,7 @@ private predicate suspicious(string s) {
  */
 class SensitiveVariable extends Variable {
   SensitiveVariable() {
-    suspicious(getName().toLowerCase()) and
+    suspicious(this.getName().toLowerCase()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }
@@ -39,7 +30,7 @@ class SensitiveVariable extends Variable {
  */
 class SensitiveFunction extends Function {
   SensitiveFunction() {
-    suspicious(getName().toLowerCase()) and
+    suspicious(this.getName().toLowerCase()) and
     not this.getUnspecifiedType() instanceof IntegralType
   }
 }

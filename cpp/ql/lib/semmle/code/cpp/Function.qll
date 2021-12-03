@@ -43,26 +43,26 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   string getFullSignature() {
     exists(string name, string templateArgs, string args |
-      result = name + templateArgs + args + " -> " + getType().toString() and
-      name = getQualifiedName() and
+      result = name + templateArgs + args + " -> " + this.getType().toString() and
+      name = this.getQualifiedName() and
       (
-        if exists(getATemplateArgument())
+        if exists(this.getATemplateArgument())
         then
           templateArgs =
             "<" +
               concat(int i |
-                exists(getTemplateArgument(i))
+                exists(this.getTemplateArgument(i))
               |
-                getTemplateArgument(i).toString(), ", " order by i
+                this.getTemplateArgument(i).toString(), ", " order by i
               ) + ">"
         else templateArgs = ""
       ) and
       args =
         "(" +
           concat(int i |
-            exists(getParameter(i))
+            exists(this.getParameter(i))
           |
-            getParameter(i).getType().toString(), ", " order by i
+            this.getParameter(i).getType().toString(), ", " order by i
           ) + ")"
     )
   }
@@ -70,7 +70,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Gets a specifier of this function. */
   override Specifier getASpecifier() {
     funspecifiers(underlyingElement(this), unresolveElement(result)) or
-    result.hasName(getADeclarationEntry().getASpecifier())
+    result.hasName(this.getADeclarationEntry().getASpecifier())
   }
 
   /** Gets an attribute of this function. */
@@ -149,7 +149,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Holds if this function is declared with `__attribute__((naked))` or
    * `__declspec(naked)`.
    */
-  predicate isNaked() { getAnAttribute().hasName("naked") }
+  predicate isNaked() { this.getAnAttribute().hasName("naked") }
 
   /**
    * Holds if this function has a trailing return type.
@@ -172,7 +172,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the return type of this function after specifiers have been deeply
    * stripped and typedefs have been resolved.
    */
-  Type getUnspecifiedType() { result = getType().getUnspecifiedType() }
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
 
   /**
    * Gets the nth parameter of this function. There is no result for the
@@ -206,7 +206,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   int getEffectiveNumberOfParameters() {
     // This method is overridden in `MemberFunction`, where the result is
     // adjusted to account for the implicit `this` parameter.
-    result = getNumberOfParameters()
+    result = this.getNumberOfParameters()
   }
 
   /**
@@ -216,7 +216,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * return `int p1, int p2`.
    */
   string getParameterString() {
-    result = concat(int i | | min(getParameter(i).getTypedName()), ", " order by i)
+    result = concat(int i | | min(this.getParameter(i).getTypedName()), ", " order by i)
   }
 
   /** Gets a call to this function. */
@@ -229,7 +229,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   override FunctionDeclarationEntry getADeclarationEntry() {
     if fun_decls(_, underlyingElement(this), _, _, _)
-    then declEntry(result)
+    then this.declEntry(result)
     else
       exists(Function f |
         this.isConstructedFrom(f) and
@@ -250,7 +250,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the location of a `FunctionDeclarationEntry` corresponding to this
    * declaration.
    */
-  override Location getADeclarationLocation() { result = getADeclarationEntry().getLocation() }
+  override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
   /** Holds if this Function is a Template specialization. */
   predicate isSpecialization() {
@@ -265,14 +265,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * definition, if any.
    */
   override FunctionDeclarationEntry getDefinition() {
-    result = getADeclarationEntry() and
+    result = this.getADeclarationEntry() and
     result.isDefinition()
   }
 
   /** Gets the location of the definition, if any. */
   override Location getDefinitionLocation() {
-    if exists(getDefinition())
-    then result = getDefinition().getLocation()
+    if exists(this.getDefinition())
+    then result = this.getDefinition().getLocation()
     else exists(Function f | this.isConstructedFrom(f) and result = f.getDefinition().getLocation())
   }
 
@@ -281,7 +281,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * definition, if possible.)
    */
   override Location getLocation() {
-    if exists(getDefinition())
+    if exists(this.getDefinition())
     then result = this.getDefinitionLocation()
     else result = this.getADeclarationLocation()
   }
@@ -299,7 +299,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   BlockStmt getBlock() { result.getParentScope() = this }
 
   /** Holds if this function has an entry point. */
-  predicate hasEntryPoint() { exists(getEntryPoint()) }
+  predicate hasEntryPoint() { exists(this.getEntryPoint()) }
 
   /**
    * Gets the first node in this function's control flow graph.
@@ -392,7 +392,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Holds if this function has C linkage, as specified by one of its
    * declaration entries. For example: `extern "C" void foo();`.
    */
-  predicate hasCLinkage() { getADeclarationEntry().hasCLinkage() }
+  predicate hasCLinkage() { this.getADeclarationEntry().hasCLinkage() }
 
   /**
    * Holds if this function is constructed from `f` as a result
@@ -409,27 +409,27 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * several functions that are not linked together have been compiled. An
    * example would be a project with many 'main' functions.
    */
-  predicate isMultiplyDefined() { strictcount(getFile()) > 1 }
+  predicate isMultiplyDefined() { strictcount(this.getFile()) > 1 }
 
   /** Holds if this function is a varargs function. */
-  predicate isVarargs() { hasSpecifier("varargs") }
+  predicate isVarargs() { this.hasSpecifier("varargs") }
 
   /** Gets a type that is specified to be thrown by the function. */
-  Type getAThrownType() { result = getADeclarationEntry().getAThrownType() }
+  Type getAThrownType() { result = this.getADeclarationEntry().getAThrownType() }
 
   /**
    * Gets the `i`th type specified to be thrown by the function.
    */
-  Type getThrownType(int i) { result = getADeclarationEntry().getThrownType(i) }
+  Type getThrownType(int i) { result = this.getADeclarationEntry().getThrownType(i) }
 
   /** Holds if the function has an exception specification. */
-  predicate hasExceptionSpecification() { getADeclarationEntry().hasExceptionSpecification() }
+  predicate hasExceptionSpecification() { this.getADeclarationEntry().hasExceptionSpecification() }
 
   /** Holds if this function has a `throw()` exception specification. */
-  predicate isNoThrow() { getADeclarationEntry().isNoThrow() }
+  predicate isNoThrow() { this.getADeclarationEntry().isNoThrow() }
 
   /** Holds if this function has a `noexcept` exception specification. */
-  predicate isNoExcept() { getADeclarationEntry().isNoExcept() }
+  predicate isNoExcept() { this.getADeclarationEntry().isNoExcept() }
 
   /**
    * Gets a function that overloads this one.
@@ -539,7 +539,7 @@ private predicate candGetAnOverloadNonMember(string name, Namespace namespace, F
  */
 class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
-  override Function getDeclaration() { result = getFunction() }
+  override Function getDeclaration() { result = this.getFunction() }
 
   override string getAPrimaryQlClass() { result = "FunctionDeclarationEntry" }
 
@@ -586,7 +586,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    *   case, catch) plus the number of branching expressions (`?`, `&&`,
    *   `||`) plus one.
    */
-  int getCyclomaticComplexity() { result = 1 + cyclomaticComplexityBranches(getBlock()) }
+  int getCyclomaticComplexity() { result = 1 + cyclomaticComplexityBranches(this.getBlock()) }
 
   /**
    * If this is a function definition, get the block containing the
@@ -594,7 +594,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    */
   BlockStmt getBlock() {
     this.isDefinition() and
-    result = getFunction().getBlock() and
+    result = this.getFunction().getBlock() and
     result.getFile() = this.getFile()
   }
 
@@ -604,7 +604,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    */
   pragma[noopt]
   int getNumberOfLines() {
-    exists(BlockStmt b, Location l, int start, int end, int diff | b = getBlock() |
+    exists(BlockStmt b, Location l, int start, int end, int diff | b = this.getBlock() |
       l = b.getLocation() and
       start = l.getStartLine() and
       end = l.getEndLine() and
@@ -618,7 +618,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * declaration.
    */
   ParameterDeclarationEntry getAParameterDeclarationEntry() {
-    result = getParameterDeclarationEntry(_)
+    result = this.getParameterDeclarationEntry(_)
   }
 
   /**
@@ -639,7 +639,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * return 'int p1, int p2'.
    */
   string getParameterString() {
-    result = concat(int i | | min(getParameterDeclarationEntry(i).getTypedName()), ", " order by i)
+    result =
+      concat(int i | | min(this.getParameterDeclarationEntry(i).getTypedName()), ", " order by i)
   }
 
   /**
@@ -647,10 +648,10 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    *
    *    `extern "C" void foo();`
    */
-  predicate hasCLinkage() { getASpecifier() = "c_linkage" }
+  predicate hasCLinkage() { this.getASpecifier() = "c_linkage" }
 
   /** Holds if this declaration entry has a void parameter list. */
-  predicate hasVoidParamList() { getASpecifier() = "void_param_list" }
+  predicate hasVoidParamList() { this.getASpecifier() = "void_param_list" }
 
   /** Holds if this declaration is also a definition of its function. */
   override predicate isDefinition() { fun_def(underlyingElement(this)) }
@@ -665,7 +666,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   predicate isImplicit() { fun_implicit(underlyingElement(this)) }
 
   /** Gets a type that is specified to be thrown by the declared function. */
-  Type getAThrownType() { result = getThrownType(_) }
+  Type getAThrownType() { result = this.getThrownType(_) }
 
   /**
    * Gets the `i`th type specified to be thrown by the declared function
@@ -690,8 +691,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   predicate hasExceptionSpecification() {
     fun_decl_throws(underlyingElement(this), _, _) or
     fun_decl_noexcept(underlyingElement(this), _) or
-    isNoThrow() or
-    isNoExcept()
+    this.isNoThrow() or
+    this.isNoExcept()
   }
 
   /**
@@ -763,7 +764,7 @@ class Operator extends Function {
  */
 class TemplateFunction extends Function {
   TemplateFunction() {
-    is_function_template(underlyingElement(this)) and exists(getATemplateArgument())
+    is_function_template(underlyingElement(this)) and exists(this.getATemplateArgument())
   }
 
   override string getAPrimaryQlClass() { result = "TemplateFunction" }

@@ -160,10 +160,12 @@ module TaintTracking {
    * of the standard library. Override `Configuration::isSanitizerGuard`
    * for analysis-specific taint sanitizer guards.
    */
+  cached
   abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
     /**
      * Holds if this guard applies to the flow in `cfg`.
      */
+    cached
     abstract predicate appliesTo(Configuration cfg);
   }
 
@@ -924,13 +926,11 @@ module TaintTracking {
         pred = invoke.getArgument(0) and
         succ = invoke
       |
-        name = "Error" or
-        name = "EvalError" or
-        name = "RangeError" or
-        name = "ReferenceError" or
-        name = "SyntaxError" or
-        name = "TypeError" or
-        name = "URIError"
+        name =
+          [
+            "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError",
+            "URIError"
+          ]
       )
     }
   }
@@ -1129,7 +1129,7 @@ module TaintTracking {
         idx = astNode.getAnOperand() and
         idx.getPropertyNameExpr() = x and
         // and the other one is guaranteed to be `undefined`
-        forex(InferredType tp | tp = undef.getAType() | tp = TTUndefined())
+        unique(InferredType tp | tp = pragma[only_bind_into](undef.getAType())) = TTUndefined()
       )
     }
 

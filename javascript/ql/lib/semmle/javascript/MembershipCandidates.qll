@@ -165,6 +165,7 @@ module MembershipCandidate {
     EnumerationRegExp enumeration;
     boolean polarity;
 
+    pragma[nomagic]
     RegExpEnumerationCandidate() {
       exists(DataFlow::MethodCallNode mcn, DataFlow::Node base, string m, DataFlow::Node firstArg |
         (

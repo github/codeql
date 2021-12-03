@@ -25,14 +25,14 @@ class FacesConfigXMLElement extends XMLElement {
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() { result = allCharactersString().trim() }
+  string getValue() { result = this.allCharactersString().trim() }
 }
 
 /**
  * An element in a JSF config file that declares a managed bean.
  */
 class FacesConfigManagedBean extends FacesConfigXMLElement {
-  FacesConfigManagedBean() { getName() = "managed-bean" }
+  FacesConfigManagedBean() { this.getName() = "managed-bean" }
 }
 
 /**
@@ -40,21 +40,21 @@ class FacesConfigManagedBean extends FacesConfigXMLElement {
  */
 class FacesConfigManagedBeanClass extends FacesConfigXMLElement {
   FacesConfigManagedBeanClass() {
-    getName() = "managed-bean-class" and
-    getParent() instanceof FacesConfigManagedBean
+    this.getName() = "managed-bean-class" and
+    this.getParent() instanceof FacesConfigManagedBean
   }
 
   /**
    * Gets the `Class` of the managed bean.
    */
-  Class getManagedBeanClass() { result.getQualifiedName() = getValue() }
+  Class getManagedBeanClass() { result.getQualifiedName() = this.getValue() }
 }
 
 /**
  * An element in a JSF config file that declares a custom component.
  */
 class FacesConfigComponent extends FacesConfigXMLElement {
-  FacesConfigComponent() { getName() = "component" }
+  FacesConfigComponent() { this.getName() = "component" }
 }
 
 /**
@@ -62,12 +62,12 @@ class FacesConfigComponent extends FacesConfigXMLElement {
  */
 class FacesConfigComponentClass extends FacesConfigXMLElement {
   FacesConfigComponentClass() {
-    getName() = "component-class" and
-    getParent() instanceof FacesConfigComponent
+    this.getName() = "component-class" and
+    this.getParent() instanceof FacesConfigComponent
   }
 
   /**
    * Gets the `Class` of the faces component.
    */
-  Class getFacesComponentClass() { result.getQualifiedName() = getValue() }
+  Class getFacesComponentClass() { result.getQualifiedName() = this.getValue() }
 }

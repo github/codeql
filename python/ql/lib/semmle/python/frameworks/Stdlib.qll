@@ -10,6 +10,8 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /** Provides models for the Python standard library. */
@@ -167,6 +169,74 @@ module Stdlib {
       override string getAsyncMethodName() { none() }
     }
   }
+
+  /**
+   * Provides models for the `urllib.parse.SplitResult` class
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.SplitResult.
+   */
+  module SplitResult {
+    /** Gets a reference to the `urllib.parse.SplitResult` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("SplitResult")
+    }
+
+    /**
+     * A source of instances of `urllib.parse.SplitResult`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `SplitResult::instance()` to get references to instances of `urllib.parse.SplitResult`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `urllib.parse.SplitResult`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `urllib.parse.SplitResult`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "urllib.parse.SplitResult" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "netloc", "path", "query", "fragment", "username", "password", "hostname", "port"
+          ]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `urllib.parse.SplitResult`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // TODO
+        none()
+      }
+    }
+  }
 }
 
 /**
@@ -186,12 +256,45 @@ private module StdlibPrivate {
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    API::Node path() { result = os().getMember("path") }
+    API::Node path() {
+      result = os().getMember("path")
+      or
+      // although the following modules should not be used directly, they certainly can.
+      // Each one doesn't expose the full `os.path` API, so this is an overapproximation
+      // that made implementation easy. See
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/posixpath.py#L31-L38
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/ntpath.py#L26-L32
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/genericpath.py#L9-L11
+      result = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+    }
 
     /** Provides models for the `os.path` module */
     module path {
       /** Gets a reference to the `os.path.join` function. */
       API::Node join() { result = path().getMember("join") }
+    }
+  }
+
+  /**
+   * The `os` module has multiple methods for getting the status of a file, like
+   * a stat() system call.
+   *
+   * Note: `os.fstat` and `os.fstatvfs` operate on file-descriptors.
+   *
+   * See:
+   * - https://docs.python.org/3.10/library/os.html#os.stat
+   * - https://docs.python.org/3.10/library/os.html#os.lstat
+   * - https://docs.python.org/3.10/library/os.html#os.statvfs
+   * - https://docs.python.org/3.10/library/os.html#os.fstat
+   * - https://docs.python.org/3.10/library/os.html#os.fstatvfs
+   */
+  private class OsProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OsProbingCall() {
+      this = os().getMember(["stat", "lstat", "statvfs", "fstat", "fstatvfs"]).getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
     }
   }
 
@@ -784,7 +887,7 @@ private module StdlibPrivate {
     Base64EncodeCall() {
       name in [
           "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-          "encodestring", "a85encode", "b85encode", "encodebytes"
+          "encodestring", "a85encode", "b85encode", "encodebytes", "b32hexencode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -799,7 +902,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32encode" and result = "Base32"
+      name in ["b32encode", "b32hexencode"] and result = "Base32"
       or
       name = "b16encode" and result = "Base16"
       or
@@ -816,7 +919,7 @@ private module StdlibPrivate {
     Base64DecodeCall() {
       name in [
           "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-          "decodestring", "a85decode", "b85decode", "decodebytes"
+          "decodestring", "a85decode", "b85decode", "decodebytes", "b32hexdecode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -833,7 +936,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32decode" and result = "Base32"
+      name in ["b32decode", "b32hexdecode"] and result = "Base32"
       or
       name = "b16decode" and result = "Base16"
       or
@@ -1249,6 +1352,161 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // wsgiref.simple_server
+  // ---------------------------------------------------------------------------
+  /** Provides models for the `wsgiref.simple_server` module. */
+  private module WsgirefSimpleServer {
+    class WsgiServerSubclass extends Class, SelfRefMixin {
+      WsgiServerSubclass() {
+        this.getABase() =
+          API::moduleImport("wsgiref")
+              .getMember("simple_server")
+              .getMember("WSGIServer")
+              .getASubclass*()
+              .getAUse()
+              .asExpr()
+      }
+    }
+
+    /**
+     * A function that was passed to the `set_app` method of a
+     * `wsgiref.simple_server.WSGIServer` instance.
+     *
+     * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIServer.set_app
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L137
+     * for how a request is processed and given to an application.
+     */
+    class WsgirefSimpleServerApplication extends HTTP::Server::RequestHandler::Range {
+      WsgirefSimpleServerApplication() {
+        exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
+          (
+            setAppCall =
+              API::moduleImport("wsgiref")
+                  .getMember("simple_server")
+                  .getMember("WSGIServer")
+                  .getASubclass*()
+                  .getReturn()
+                  .getMember("set_app")
+                  .getACall()
+            or
+            setAppCall
+                .(DataFlow::MethodCallNode)
+                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app")
+          ) and
+          appArg in [setAppCall.getArg(0), setAppCall.getArgByName("application")]
+        |
+          appArg = poorMansFunctionTracker(this)
+        )
+      }
+
+      override Parameter getARoutedParameter() { none() }
+
+      override string getFramework() { result = "Stdlib: wsgiref.simple_server application" }
+    }
+
+    /**
+     * The parameter of a `WsgirefSimpleServerApplication` that takes the WSGI environment
+     * when processing a request.
+     *
+     * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
+     */
+    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WSGIEnvirontParameter() {
+        exists(WsgirefSimpleServerApplication func |
+          if func.isMethod()
+          then this.getParameter() = func.getArg(1)
+          else this.getParameter() = func.getArg(0)
+        )
+      }
+
+      override string getSourceType() {
+        result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
+      }
+    }
+
+    /**
+     * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
+     * takes the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    private DataFlow::TypeTrackingNode startResponse(DataFlow::TypeTracker t) {
+      t.start() and
+      exists(WsgirefSimpleServerApplication func |
+        if func.isMethod()
+        then result.(DataFlow::ParameterNode).getParameter() = func.getArg(2)
+        else result.(DataFlow::ParameterNode).getParameter() = func.getArg(1)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = startResponse(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
+     * takes the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    DataFlow::Node startResponse() { startResponse(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Gets a reference to the `write` function (that will write data to the response),
+     * which is the return value from calling the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    private DataFlow::TypeTrackingNode writeFunction(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::CallCfgNode).getFunction() = startResponse()
+      or
+      exists(DataFlow::TypeTracker t2 | result = writeFunction(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the `write` function (that will write data to the response),
+     * which is the return value from calling the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    DataFlow::Node writeFunction() { writeFunction(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * A call to the `write` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L276
+     */
+    class WsgirefSimpleServerApplicationWriteCall extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CallCfgNode {
+      WsgirefSimpleServerApplicationWriteCall() { this.getFunction() = writeFunction() }
+
+      override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { none() }
+    }
+
+    /**
+     * A return from a `WsgirefSimpleServerApplication`, which is included in the response body.
+     */
+    class WsgirefSimpleServerApplicationReturn extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CfgNode {
+      WsgirefSimpleServerApplicationReturn() {
+        exists(WsgirefSimpleServerApplication requestHandler |
+          node = requestHandler.getAReturnValueFlowNode()
+        )
+      }
+
+      override DataFlow::Node getBody() { result = this }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { none() }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
@@ -1384,7 +1642,7 @@ private module StdlibPrivate {
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
           "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
-          "unlink", "link_to", "write_bytes", "write_text"
+          "unlink", "link_to", "write_bytes", "write_text", "hardlink_to"
         ] and
       pathlibPath().flowsTo(fileAccess.getObject()) and
       fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
@@ -1466,15 +1724,36 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::TypeTrackingNode hashlibNewCallNameBacktracker(
+    DataFlow::TypeBackTracker t, DataFlow::Node arg
+  ) {
+    t.start() and
+    hashlibNewCallImpl(_, arg) and
+    result = arg.getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = hashlibNewCallNameBacktracker(t2, arg).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::LocalSourceNode hashlibNewCallNameBacktracker(DataFlow::Node arg) {
+    result = hashlibNewCallNameBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  /** Holds when `call` is a call to `hashlib.new` with `nameArg` as the first argument. */
+  private predicate hashlibNewCallImpl(DataFlow::CallCfgNode call, DataFlow::Node nameArg) {
+    call = API::moduleImport("hashlib").getMember("new").getACall() and
+    nameArg in [call.getArg(0), call.getArgByName("name")]
+  }
+
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-    exists(DataFlow::Node nameArg |
-      result = API::moduleImport("hashlib").getMember("new").getACall() and
-      nameArg in [result.getArg(0), result.getArgByName("name")] and
-      exists(StrConst str |
-        nameArg.getALocalSource() = DataFlow::exprNode(str) and
-        algorithmName = str.getText()
-      )
+    exists(DataFlow::Node origin, DataFlow::Node nameArg |
+      origin = hashlibNewCallNameBacktracker(nameArg) and
+      algorithmName = origin.asExpr().(StrConst).getText() and
+      hashlibNewCallImpl(result, nameArg)
     )
   }
 
@@ -1748,6 +2027,30 @@ private module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getRegexKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // urllib
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `urllib.parse.urlsplit`
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.urlsplit
+   */
+  class UrllibParseUrlsplitCall extends Stdlib::SplitResult::InstanceSource, DataFlow::CallCfgNode {
+    UrllibParseUrlsplitCall() {
+      this = API::moduleImport("urllib").getMember("parse").getMember("urlsplit").getACall()
+    }
+
+    /** Gets the argument that specifies the URL. */
+    DataFlow::Node getUrl() { result in [this.getArg(0), this.getArgByName("url")] }
+  }
+
+  /** Extra taint-step such that the result of `urllib.parse.urlsplit(tainted_string)` is tainted. */
+  private class UrllibParseUrlsplitCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeTo.(UrllibParseUrlsplitCall).getUrl() = nodeFrom
+    }
   }
 }
 

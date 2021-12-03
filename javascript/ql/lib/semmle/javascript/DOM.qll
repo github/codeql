@@ -51,41 +51,37 @@ module DOM {
      * Gets the root element (i.e. an element without a parent) in which this element is contained.
      */
     ElementDefinition getRoot() {
-      if not exists(getParent()) then result = this else result = getParent().getRoot()
+      if not exists(this.getParent()) then result = this else result = this.getParent().getRoot()
     }
 
     /**
      * Gets the document element to which this element belongs, if it can be determined.
      */
-    DocumentElementDefinition getDocument() { result = getRoot() }
+    DocumentElementDefinition getDocument() { result = this.getRoot() }
   }
 
   /**
    * An HTML element, viewed as an `ElementDefinition`.
    */
-  private class HtmlElementDefinition extends ElementDefinition, @xmlelement {
-    HtmlElementDefinition() { this instanceof HTML::Element }
-
-    override string getName() { result = this.(HTML::Element).getName() }
+  private class HtmlElementDefinition extends ElementDefinition, @xmlelement instanceof HTML::Element {
+    override string getName() { result = HTML::Element.super.getName() }
 
     override AttributeDefinition getAttribute(int i) {
-      result = this.(HTML::Element).getAttribute(i)
+      result = HTML::Element.super.getAttribute(i)
     }
 
-    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
+    override ElementDefinition getParent() { result = HTML::Element.super.getParent() }
   }
 
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
-    JsxElementDefinition() { this instanceof JSXElement }
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JSXElement {
+    override string getName() { result = JSXElement.super.getName() }
 
-    override string getName() { result = this.(JSXElement).getName() }
+    override AttributeDefinition getAttribute(int i) { result = JSXElement.super.getAttribute(i) }
 
-    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
-
-    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
+    override ElementDefinition getParent() { result = super.getJsxParent() }
   }
 
   /**
@@ -112,7 +108,7 @@ module DOM {
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() { result = getValueNode().getStringValue() }
+    string getStringValue() { result = this.getValueNode().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
@@ -124,21 +120,19 @@ module DOM {
      * such as `{{window.location.url}}`.
      */
     predicate mayHaveTemplateValue() {
-      getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
+      this.getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
     }
   }
 
   /**
    * An HTML attribute, viewed as an `AttributeDefinition`.
    */
-  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
-    HtmlAttributeDefinition() { this instanceof HTML::Attribute }
+  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute instanceof HTML::Attribute {
+    override string getName() { result = HTML::Attribute.super.getName() }
 
-    override string getName() { result = this.(HTML::Attribute).getName() }
+    override string getStringValue() { result = super.getValue() }
 
-    override string getStringValue() { result = this.(HTML::Attribute).getValue() }
-
-    override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
+    override ElementDefinition getElement() { result = HTML::Attribute.super.getElement() }
   }
 
   /**
@@ -179,15 +173,7 @@ module DOM {
       eltName = attr.getElement().getName() and
       attrName = attr.getName()
     |
-      (
-        eltName = "script" or
-        eltName = "iframe" or
-        eltName = "embed" or
-        eltName = "video" or
-        eltName = "audio" or
-        eltName = "source" or
-        eltName = "track"
-      ) and
+      eltName = ["script", "iframe", "embed", "video", "audio", "source", "track"] and
       attrName = "src"
       or
       (
@@ -258,11 +244,11 @@ module DOM {
   /** Gets a call that queries the DOM for a collection of DOM nodes. */
   private DataFlow::SourceNode domElementCollection() {
     exists(string collectionName |
-      collectionName = "getElementsByClassName" or
-      collectionName = "getElementsByName" or
-      collectionName = "getElementsByTagName" or
-      collectionName = "getElementsByTagNameNS" or
-      collectionName = "querySelectorAll"
+      collectionName =
+        [
+          "getElementsByClassName", "getElementsByName", "getElementsByTagName",
+          "getElementsByTagNameNS", "querySelectorAll"
+        ]
     |
       (
         result = documentRef().getAMethodCall(collectionName) or
@@ -274,11 +260,8 @@ module DOM {
   /** Gets a call that creates a DOM node or queries the DOM for a DOM node. */
   private DataFlow::SourceNode domElementCreationOrQuery() {
     exists(string methodName |
-      methodName = "createElement" or
-      methodName = "createElementNS" or
-      methodName = "createRange" or
-      methodName = "getElementById" or
-      methodName = "querySelector"
+      methodName =
+        ["createElement", "createElementNS", "createRange", "getElementById", "querySelector"]
     |
       result = documentRef().getAMethodCall(methodName) or
       result = DataFlow::globalVarRef(methodName).getACall()
@@ -465,11 +448,7 @@ module DOM {
     private class DefaultRange extends Range {
       DefaultRange() {
         exists(string propName | this = documentRef().getAPropertyRead(propName) |
-          propName = "documentURI" or
-          propName = "documentURIObject" or
-          propName = "location" or
-          propName = "referrer" or
-          propName = "URL"
+          propName = ["documentURI", "documentURIObject", "location", "referrer", "URL"]
         )
         or
         this = DOM::domValueRef().getAPropertyRead("baseUri")

@@ -15,10 +15,10 @@ private class MallocAllocationFunction extends AllocationFunction {
 
   MallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdOrBslName("malloc") and // malloc(size)
+    this.hasGlobalOrStdOrBslName("malloc") and // malloc(size)
     sizeArg = 0
     or
-    hasGlobalName([
+    this.hasGlobalName([
         // --- Windows Memory Management for Windows Drivers
         "MmAllocateContiguousMemory", // MmAllocateContiguousMemory(size, maxaddress)
         "MmAllocateContiguousNodeMemory", // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
@@ -39,7 +39,7 @@ private class MallocAllocationFunction extends AllocationFunction {
       ]) and
     sizeArg = 0
     or
-    hasGlobalName([
+    this.hasGlobalName([
         // --- Windows Memory Management for Windows Drivers
         "ExAllocatePool", // ExAllocatePool(type, size)
         "ExAllocatePoolWithTag", // ExAllocatePool(type, size, tag)
@@ -56,10 +56,10 @@ private class MallocAllocationFunction extends AllocationFunction {
       ]) and
     sizeArg = 1
     or
-    hasGlobalName("HeapAlloc") and // HeapAlloc(heap, flags, size)
+    this.hasGlobalName("HeapAlloc") and // HeapAlloc(heap, flags, size)
     sizeArg = 2
     or
-    hasGlobalName([
+    this.hasGlobalName([
         // --- Windows Memory Management for Windows Drivers
         "MmAllocatePagesForMdl", // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
         "MmAllocatePagesForMdlEx", // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
@@ -79,7 +79,7 @@ private class AllocaAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   AllocaAllocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         // --- stack allocation
         "alloca", // // alloca(size)
         "__builtin_alloca", // __builtin_alloca(size)
@@ -104,7 +104,7 @@ private class CallocAllocationFunction extends AllocationFunction {
 
   CallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdOrBslName("calloc") and // calloc(num, size)
+    this.hasGlobalOrStdOrBslName("calloc") and // calloc(num, size)
     sizeArg = 1 and
     multArg = 0
   }
@@ -124,11 +124,11 @@ private class ReallocAllocationFunction extends AllocationFunction {
 
   ReallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdOrBslName("realloc") and // realloc(ptr, size)
+    this.hasGlobalOrStdOrBslName("realloc") and // realloc(ptr, size)
     sizeArg = 1 and
     reallocArg = 0
     or
-    hasGlobalName([
+    this.hasGlobalName([
         // --- Windows Global / Local legacy allocation
         "LocalReAlloc", // LocalReAlloc(ptr, size, flags)
         "GlobalReAlloc", // GlobalReAlloc(ptr, size, flags)
@@ -140,7 +140,7 @@ private class ReallocAllocationFunction extends AllocationFunction {
     sizeArg = 1 and
     reallocArg = 0
     or
-    hasGlobalName("HeapReAlloc") and // HeapReAlloc(heap, flags, ptr, size)
+    this.hasGlobalName("HeapReAlloc") and // HeapReAlloc(heap, flags, ptr, size)
     sizeArg = 3 and
     reallocArg = 2
   }
@@ -156,7 +156,7 @@ private class ReallocAllocationFunction extends AllocationFunction {
  */
 private class SizelessAllocationFunction extends AllocationFunction {
   SizelessAllocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         // --- Windows Memory Management for Windows Drivers
         "ExAllocateFromLookasideListEx", // ExAllocateFromLookasideListEx(list)
         "ExAllocateFromPagedLookasideList", // ExAllocateFromPagedLookasideList(list)
@@ -209,18 +209,18 @@ private class CallAllocationExpr extends AllocationExpr, FunctionCall {
   AllocationFunction target;
 
   CallAllocationExpr() {
-    target = getTarget() and
+    target = this.getTarget() and
     // realloc(ptr, 0) only frees the pointer
     not (
       exists(target.getReallocPtrArg()) and
-      getArgument(target.getSizeArg()).getValue().toInt() = 0
+      this.getArgument(target.getSizeArg()).getValue().toInt() = 0
     ) and
     // these are modelled directly (and more accurately), avoid duplication
     not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
 
   override Expr getSizeExpr() {
-    exists(Expr sizeExpr | sizeExpr = getArgument(target.getSizeArg()) |
+    exists(Expr sizeExpr | sizeExpr = this.getArgument(target.getSizeArg()) |
       if exists(target.getSizeMult())
       then result = sizeExpr
       else
@@ -233,16 +233,18 @@ private class CallAllocationExpr extends AllocationExpr, FunctionCall {
 
   override int getSizeMult() {
     // malloc with multiplier argument that is a constant
-    result = getArgument(target.getSizeMult()).getValue().toInt()
+    result = this.getArgument(target.getSizeMult()).getValue().toInt()
     or
     // malloc with no multiplier argument
     not exists(target.getSizeMult()) and
-    deconstructSizeExpr(getArgument(target.getSizeArg()), _, result)
+    deconstructSizeExpr(this.getArgument(target.getSizeArg()), _, result)
   }
 
-  override int getSizeBytes() { result = getSizeExpr().getValue().toInt() * getSizeMult() }
+  override int getSizeBytes() {
+    result = this.getSizeExpr().getValue().toInt() * this.getSizeMult()
+  }
 
-  override Expr getReallocPtr() { result = getArgument(target.getReallocPtrArg()) }
+  override Expr getReallocPtr() { result = this.getArgument(target.getReallocPtrArg()) }
 
   override Type getAllocatedElementType() {
     result =
@@ -259,11 +261,11 @@ private class CallAllocationExpr extends AllocationExpr, FunctionCall {
 private class NewAllocationExpr extends AllocationExpr, NewExpr {
   NewAllocationExpr() { this instanceof NewExpr }
 
-  override int getSizeBytes() { result = getAllocatedType().getSize() }
+  override int getSizeBytes() { result = this.getAllocatedType().getSize() }
 
-  override Type getAllocatedElementType() { result = getAllocatedType() }
+  override Type getAllocatedElementType() { result = this.getAllocatedType() }
 
-  override predicate requiresDealloc() { not exists(getPlacementPointer()) }
+  override predicate requiresDealloc() { not exists(this.getPlacementPointer()) }
 }
 
 /**
@@ -274,18 +276,18 @@ private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
 
   override Expr getSizeExpr() {
     // new array expr with variable size
-    result = getExtent()
+    result = this.getExtent()
   }
 
   override int getSizeMult() {
     // new array expr with variable size
-    exists(getExtent()) and
-    result = getAllocatedElementType().getSize()
+    exists(this.getExtent()) and
+    result = this.getAllocatedElementType().getSize()
   }
 
   override Type getAllocatedElementType() { result = NewArrayExpr.super.getAllocatedElementType() }
 
-  override int getSizeBytes() { result = getAllocatedType().getSize() }
+  override int getSizeBytes() { result = this.getAllocatedType().getSize() }
 
-  override predicate requiresDealloc() { not exists(getPlacementPointer()) }
+  override predicate requiresDealloc() { not exists(this.getPlacementPointer()) }
 }

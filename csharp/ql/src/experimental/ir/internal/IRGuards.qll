@@ -107,7 +107,7 @@ private predicate impliesValue(
     wholeIsTrue = true and partIsTrue = true and part = blo.getAnOperand()
     or
     wholeIsTrue = true and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, true)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, true)
   )
   or
   blo instanceof LogicalOrExpr and
@@ -115,7 +115,7 @@ private predicate impliesValue(
     wholeIsTrue = false and partIsTrue = false and part = blo.getAnOperand()
     or
     wholeIsTrue = false and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, false)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, false)
   )
 }
 
@@ -139,7 +139,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
       part.comparesLt(left, right, k, isLessThan, partIsTrue)
     )
@@ -153,7 +153,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
       part.comparesEq(left, right, k, areEqual, partIsTrue)
     )

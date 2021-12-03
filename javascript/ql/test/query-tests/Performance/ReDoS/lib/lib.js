@@ -13,3 +13,7 @@ if (typeof define !== 'undefined' && define.amd) { // AMD
 }
 
 module.exports.closure = require("./closure")
+
+module.exports.func = function (conf) {
+	return require("./indirect")
+}

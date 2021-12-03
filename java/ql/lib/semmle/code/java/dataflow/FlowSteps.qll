@@ -11,6 +11,7 @@ private import semmle.code.java.dataflow.DataFlow
  */
 private module Frameworks {
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.android.AsyncTask
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Guice
@@ -60,6 +61,20 @@ class AdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
    * step for all configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/**
+ * A unit class for adding additional value steps.
+ *
+ * Extend this class to add additional value-preserving steps that should apply
+ * to all data flow configurations.
+ */
+class AdditionalValueStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` is a value-preserving step and
+   * should apply to all data flow configurations.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }

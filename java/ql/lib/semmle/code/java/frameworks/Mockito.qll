@@ -11,8 +11,8 @@ import java
  */
 class MockitoVerifyMethod extends Method {
   MockitoVerifyMethod() {
-    getDeclaringType().getPackage().getName().matches("org.mockito%") and
-    hasName("verify")
+    this.getDeclaringType().getPackage().getName().matches("org.mockito%") and
+    this.hasName("verify")
   }
 }
 
@@ -21,7 +21,7 @@ class MockitoVerifyMethod extends Method {
  */
 class MockitoVerifiedMethodAccess extends MethodAccess {
   MockitoVerifiedMethodAccess() {
-    getQualifier().(MethodAccess).getMethod() instanceof MockitoVerifyMethod
+    this.getQualifier().(MethodAccess).getMethod() instanceof MockitoVerifyMethod
   }
 }
 
@@ -41,8 +41,8 @@ class MockitoMockableType extends ClassOrInterface {
  */
 class MockitoInitMocks extends Method {
   MockitoInitMocks() {
-    getDeclaringType().hasQualifiedName("org.mockito", "MockitoAnnotations") and
-    hasName("initMocks")
+    this.getDeclaringType().hasQualifiedName("org.mockito", "MockitoAnnotations") and
+    this.hasName("initMocks")
   }
 }
 
@@ -61,10 +61,10 @@ class MockitoInitedTest extends Class {
     or
     // Call to `MockitoAnnotations.initMocks()`, either by the constructor or by a `@Before` method.
     exists(MockitoInitMocks initMocks |
-      getAConstructor().calls*(initMocks)
+      this.getAConstructor().calls*(initMocks)
       or
       exists(Method m |
-        m = getAnAncestor().getAMethod() and
+        m = this.getAnAncestor().getAMethod() and
         (
           m.hasAnnotation("org.junit", "Before") or
           m.hasAnnotation("org.testng.annotations", "BeforeMethod")
@@ -85,8 +85,8 @@ class MockitoInitedTest extends Class {
  */
 class MockitoAnnotation extends Annotation {
   MockitoAnnotation() {
-    getType().getPackage().getName().matches("org.mockito") or
-    getType().getPackage().getName().matches("org.mockito.%")
+    this.getType().getPackage().getName().matches("org.mockito") or
+    this.getType().getPackage().getName().matches("org.mockito.%")
   }
 }
 
@@ -95,11 +95,11 @@ class MockitoAnnotation extends Annotation {
  */
 class MockitoExclusiveAnnotation extends MockitoAnnotation {
   MockitoExclusiveAnnotation() {
-    getType().hasQualifiedName("org.mockito", "Mock") or
-    getType().hasQualifiedName("org.mockito", "MockitoAnnotations$Mock") or
-    getType().hasQualifiedName("org.mockito", "InjectMocks") or
-    getType().hasQualifiedName("org.mockito", "Spy") or
-    getType().hasQualifiedName("org.mockito", "Captor")
+    this.getType().hasQualifiedName("org.mockito", "Mock") or
+    this.getType().hasQualifiedName("org.mockito", "MockitoAnnotations$Mock") or
+    this.getType().hasQualifiedName("org.mockito", "InjectMocks") or
+    this.getType().hasQualifiedName("org.mockito", "Spy") or
+    this.getType().hasQualifiedName("org.mockito", "Captor")
   }
 }
 
@@ -107,16 +107,16 @@ class MockitoExclusiveAnnotation extends MockitoAnnotation {
  * A field which has a Mockito annotation.
  */
 class MockitoAnnotatedField extends Field {
-  MockitoAnnotatedField() { getAnAnnotation() instanceof MockitoAnnotation }
+  MockitoAnnotatedField() { this.getAnAnnotation() instanceof MockitoAnnotation }
 
   /**
    * Holds if this field will be processed by Mockito.
    */
   predicate isValid() {
     // Mockito annotations are never parsed if the test isn't properly initialized.
-    getDeclaringType() instanceof MockitoInitedTest and
+    this.getDeclaringType() instanceof MockitoInitedTest and
     // There should only be one "exclusive" mockito annotation per field.
-    count(getAnAnnotation().(MockitoExclusiveAnnotation)) = 1
+    count(this.getAnAnnotation().(MockitoExclusiveAnnotation)) = 1
   }
 }
 
@@ -125,16 +125,16 @@ class MockitoAnnotatedField extends Field {
  */
 class MockitoMockedField extends MockitoAnnotatedField {
   MockitoMockedField() {
-    hasAnnotation("org.mockito", "Mock")
+    this.hasAnnotation("org.mockito", "Mock")
     or
     // Deprecated style.
-    hasAnnotation("org.mockito", "MockitoAnnotations$Mock")
+    this.hasAnnotation("org.mockito", "MockitoAnnotations$Mock")
   }
 
   override predicate isValid() {
     super.isValid() and
     // The type must also be mockable, otherwise it will not be initialized.
-    getType() instanceof MockitoMockableType
+    this.getType() instanceof MockitoMockableType
   }
 
   /**
@@ -142,12 +142,13 @@ class MockitoMockedField extends MockitoAnnotatedField {
    */
   predicate isReferencedByInjection() {
     exists(MockitoInjectedField injectedField |
-      injectedField.getDeclaringType() = getDeclaringType()
+      injectedField.getDeclaringType() = this.getDeclaringType()
     |
       // A `@Mock` is injected if it is used in one of the invoked callables (constructor or
       // setter), or injected directly onto a field.
-      getType().(RefType).getAnAncestor() = injectedField.getAnInvokedCallable().getAParamType() or
-      getType().(RefType).getAnAncestor() = injectedField.getASetField().getType()
+      this.getType().(RefType).getAnAncestor() =
+        injectedField.getAnInvokedCallable().getAParamType() or
+      this.getType().(RefType).getAnAncestor() = injectedField.getASetField().getType()
     )
   }
 }
@@ -156,25 +157,25 @@ class MockitoMockedField extends MockitoAnnotatedField {
  * A field annotated with `@InjectMocks`.
  */
 class MockitoInjectedField extends MockitoAnnotatedField {
-  MockitoInjectedField() { hasAnnotation("org.mockito", "InjectMocks") }
+  MockitoInjectedField() { this.hasAnnotation("org.mockito", "InjectMocks") }
 
   override predicate isValid() {
     super.isValid() and
     (
       // If we need to initialize the field, it is only valid if the type is a `Class` that is not
       // local, is static if it is a nested class, and is not abstract.
-      exists(getInitializer())
+      exists(this.getInitializer())
       or
-      exists(Class c | c = getType() |
+      exists(Class c | c = this.getType() |
         not c.isLocal() and
-        (getType() instanceof NestedClass implies c.(NestedClass).isStatic()) and
+        (this.getType() instanceof NestedClass implies c.(NestedClass).isStatic()) and
         not c.isAbstract()
       )
     ) and
     (
       // If neither of these is true, then mockito will fail to initialize this field.
-      usingConstructorInjection() or
-      usingPropertyInjection()
+      this.usingConstructorInjection() or
+      this.usingPropertyInjection()
     )
   }
 
@@ -184,7 +185,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
    * Note: this does not include the no-arg constructor.
    */
   predicate usingConstructorInjection() {
-    not exists(getInitializer()) and exists(getMockInjectedClass().getAMostMockableConstructor())
+    not exists(this.getInitializer()) and
+    exists(this.getMockInjectedClass().getAMostMockableConstructor())
   }
 
   /**
@@ -194,10 +196,10 @@ class MockitoInjectedField extends MockitoAnnotatedField {
    * constructor, in addition to any property.
    */
   predicate usingPropertyInjection() {
-    not usingConstructorInjection() and
+    not this.usingConstructorInjection() and
     (
-      exists(getInitializer()) or
-      exists(getMockInjectedClass().getNoArgsConstructor())
+      exists(this.getInitializer()) or
+      exists(this.getMockInjectedClass().getNoArgsConstructor())
     )
   }
 
@@ -212,18 +214,18 @@ class MockitoInjectedField extends MockitoAnnotatedField {
   Callable getAnInvokedCallable() {
     exists(MockitoMockInjectedClass mockInjectedClass |
       // This is the type we are constructing/injecting.
-      mockInjectedClass = getType()
+      mockInjectedClass = this.getType()
     |
-      if usingConstructorInjection()
+      if this.usingConstructorInjection()
       then
         // If there is no initializer for this field, and there is a most mockable constructor,
         // then we are doing a parameterized injection of mocks into a most mockable constructor.
         result = mockInjectedClass.getAMostMockableConstructor()
       else
-        if usingPropertyInjection()
+        if this.usingPropertyInjection()
         then
           // We will call the no-arg constructor if the field wasn't initialized.
-          not exists(getInitializer()) and
+          not exists(this.getInitializer()) and
           result = mockInjectedClass.getNoArgsConstructor()
           or
           // Perform property injection into setter fields, but only where there exists a mock
@@ -249,9 +251,9 @@ class MockitoInjectedField extends MockitoAnnotatedField {
    * Field injection only occurs if property injection and not constructor injection is used.
    */
   Field getASetField() {
-    if usingPropertyInjection()
+    if this.usingPropertyInjection()
     then
-      result = getMockInjectedClass().getASetField() and
+      result = this.getMockInjectedClass().getASetField() and
       exists(MockitoMockedField mockedField |
         mockedField.getDeclaringType() = this.getDeclaringType() and
         mockedField.isValid()
@@ -268,15 +270,15 @@ class MockitoInjectedField extends MockitoAnnotatedField {
  * A field annotated with the Mockito `@Spy` annotation.
  */
 class MockitoSpiedField extends MockitoAnnotatedField {
-  MockitoSpiedField() { hasAnnotation("org.mockito", "Spy") }
+  MockitoSpiedField() { this.hasAnnotation("org.mockito", "Spy") }
 
   override predicate isValid() {
     super.isValid() and
     (
-      exists(getInitializer())
+      exists(this.getInitializer())
       or
       exists(Constructor c |
-        c = getType().(RefType).getAConstructor() and c.getNumberOfParameters() = 0
+        c = this.getType().(RefType).getAConstructor() and c.getNumberOfParameters() = 0
       )
     )
   }
@@ -284,7 +286,7 @@ class MockitoSpiedField extends MockitoAnnotatedField {
   /**
    * Holds if construction ever occurs.
    */
-  predicate isConstructed() { not exists(getInitializer()) }
+  predicate isConstructed() { not exists(this.getInitializer()) }
 }
 
 private int mockableParameterCount(Constructor constructor) {
@@ -312,8 +314,8 @@ library class MockitoMockInjectedClass extends Class {
    * Mockito will call only one of them, but which one is dependent on the JVM...
    */
   Constructor getAMostMockableConstructor() {
-    result = getAConstructor() and
-    mockableParameterCount(result) = max(mockableParameterCount(getAConstructor())) and
+    result = this.getAConstructor() and
+    mockableParameterCount(result) = max(mockableParameterCount(this.getAConstructor())) and
     result.getNumberOfParameters() > 0
   }
 
@@ -331,7 +333,7 @@ library class MockitoMockInjectedClass extends Class {
    * it sets.
    */
   Method getASetterMethod() {
-    result = getAMethod() and
+    result = this.getAMethod() and
     exists(MockitoSettableField settableField | result = settableField.getSetterMethod())
   }
 
@@ -342,7 +344,7 @@ library class MockitoMockInjectedClass extends Class {
    * setter method.
    */
   MockitoSettableField getASetField() {
-    result = getAField() and
+    result = this.getAField() and
     not exists(result.getSetterMethod())
   }
 }
@@ -353,8 +355,8 @@ library class MockitoMockInjectedClass extends Class {
  */
 class MockitoSettableField extends Field {
   MockitoSettableField() {
-    not isFinal() and
-    not isStatic() and
+    not this.isFinal() and
+    not this.isStatic() and
     exists(MockitoMockInjectedClass injectedClass | injectedClass = this.getDeclaringType())
   }
 

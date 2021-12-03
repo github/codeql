@@ -30,7 +30,7 @@ DataFlowType getContentType(Content c) { result = c.getType() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getErasedRepr(c.getReturnType()) and
+  result = getErasedRepr(c.asCallable().getReturnType()) and
   exists(rk)
 }
 
@@ -62,7 +62,7 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c.asCallable() = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
@@ -70,6 +70,32 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
+}
+
+/** Gets the summary component for specification component `c`, if any. */
+private string getContentSpecificCsv(Content c) {
+  exists(Field f, string package, string className, string fieldName |
+    f = c.(FieldContent).getField() and
+    f.hasQualifiedName(package, className, fieldName) and
+    result = "Field[" + package + "." + className + "." + fieldName + "]"
+  )
+  or
+  exists(SyntheticField f |
+    f = c.(SyntheticFieldContent).getField() and result = "SyntheticField[" + f + "]"
+  )
+  or
+  c instanceof ArrayContent and result = "ArrayElement"
+  or
+  c instanceof CollectionContent and result = "Element"
+  or
+  c instanceof MapKeyContent and result = "MapKey"
+  or
+  c instanceof MapValueContent and result = "MapValue"
+}
+
+/** Gets the textual representation of the content in the format used for flow summaries. */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
 }
 
 class SourceOrSinkElement = Top;
@@ -119,7 +145,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { result.asCall() = this.asElement() }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result = this.asElement() }
+  DataFlowCallable asCallable() { result.asCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
   Callable getCallTarget() { result = this.asCall().asCall().getCallee().getSourceDeclaration() }

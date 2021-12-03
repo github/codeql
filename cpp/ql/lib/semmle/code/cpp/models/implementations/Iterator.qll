@@ -35,6 +35,16 @@ private class IteratorByTraits extends Iterator {
 }
 
 /**
+ * The C++ standard includes an `std::iterator_traits` specialization for pointer types. When
+ * this specialization is included in the database, a pointer type `T*` will be an instance
+ * of the `IteratorByTraits` class. However, if the `T*` specialization is not in the database,
+ * we need to explicitly include them with this class.
+ */
+private class IteratorByPointer extends Iterator instanceof PointerType {
+  IteratorByPointer() { not this instanceof IteratorByTraits }
+}
+
+/**
  * A type which has the typedefs expected for an iterator.
  */
 private class IteratorByTypedefs extends Iterator, Class {

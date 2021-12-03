@@ -51,7 +51,7 @@ module Electron {
   private class BrowserObjectByType extends BrowserObject {
     BrowserObjectByType() {
       exists(string tp | tp = "BrowserWindow" or tp = "BrowserView" |
-        asExpr().getType().hasUnderlyingType("electron", tp)
+        this.asExpr().getType().hasUnderlyingType("electron", tp)
       )
     }
   }
@@ -162,7 +162,7 @@ module Electron {
        */
       override DataFlow::Node getSentItem(int i) {
         i >= 1 and
-        result = getArgument(i)
+        result = this.getArgument(i)
       }
 
       /**
@@ -206,8 +206,8 @@ module Electron {
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) or
-      result = getOptionArgument(0, "url")
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(0, "url")
     }
 
     override DataFlow::Node getHost() {
@@ -215,7 +215,7 @@ module Electron {
         name = "host" or
         name = "hostname"
       |
-        result = getOptionArgument(0, name)
+        result = this.getOptionArgument(0, name)
       )
     }
 

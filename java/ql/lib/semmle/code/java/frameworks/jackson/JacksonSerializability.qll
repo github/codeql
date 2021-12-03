@@ -32,21 +32,21 @@ abstract class JacksonSerializableType extends Type { }
 private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   JacksonWriteValueMethod() {
     (
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+      this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
+      this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
     ) and
-    getName().matches("writeValue%") and
-    getParameter(getNumberOfParameters() - 1).getType() instanceof TypeObject
+    this.getName().matches("writeValue%") and
+    this.getParameter(this.getNumberOfParameters() - 1).getType() instanceof TypeObject
   }
 
   override predicate returnsTaintFrom(int arg) {
-    getNumberOfParameters() = 1 and
+    this.getNumberOfParameters() = 1 and
     arg = 0
   }
 
   override predicate transfersTaint(int src, int sink) {
-    getNumberOfParameters() > 1 and
-    src = getNumberOfParameters() - 1 and
+    this.getNumberOfParameters() > 1 and
+    src = this.getNumberOfParameters() - 1 and
     sink = 0
   }
 }
@@ -58,10 +58,10 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
 private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
     (
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") or
-      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+      this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") or
+      this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
     ) and
-    hasName(["readValue", "readValues"])
+    this.hasName(["readValue", "readValues"])
   }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
@@ -109,7 +109,7 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForS
     )
   }
 
-  TypeLiteral getSourceWithFlowToJacksonDatabind() { hasFlow(DataFlow::exprNode(result), _) }
+  TypeLiteral getSourceWithFlowToJacksonDatabind() { this.hasFlow(DataFlow::exprNode(result), _) }
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */
@@ -139,7 +139,7 @@ private class FieldReferencedJacksonDeserializableType extends JacksonDeserializ
 class JacksonSerializableField extends SerializableField {
   JacksonSerializableField() {
     exists(JacksonSerializableType superType |
-      superType = getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getASupertype*() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
@@ -151,7 +151,7 @@ class JacksonSerializableField extends SerializableField {
 class JacksonDeserializableField extends DeserializableField {
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
-      superType = getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getASupertype*() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
@@ -161,7 +161,7 @@ class JacksonDeserializableField extends DeserializableField {
 
 /** A call to a field that may be deserialized using the Jackson JSON framework. */
 private class JacksonDeserializableFieldAccess extends FieldAccess {
-  JacksonDeserializableFieldAccess() { getField() instanceof JacksonDeserializableField }
+  JacksonDeserializableFieldAccess() { this.getField() instanceof JacksonDeserializableField }
 }
 
 /**
@@ -194,19 +194,19 @@ class JacksonAddMixinCall extends MethodAccess {
   /**
    * Gets a possible type for the target of the mixing, if any can be deduced.
    */
-  RefType getATarget() { result = inferClassParameterType(getArgument(0)) }
+  RefType getATarget() { result = inferClassParameterType(this.getArgument(0)) }
 
   /**
    * Gets a possible type that will be mixed in, if any can be deduced.
    */
-  RefType getAMixedInType() { result = inferClassParameterType(getArgument(1)) }
+  RefType getAMixedInType() { result = inferClassParameterType(this.getArgument(1)) }
 }
 
 /**
  * A Jackson annotation.
  */
 class JacksonAnnotation extends Annotation {
-  JacksonAnnotation() { getType().getPackage().hasName("com.fasterxml.jackson.annotation") }
+  JacksonAnnotation() { this.getType().getPackage().hasName("com.fasterxml.jackson.annotation") }
 }
 
 /**
@@ -228,7 +228,7 @@ class JacksonMixinType extends ClassOrInterface {
    * Gets a callable from this type that is mixed in by Jackson.
    */
   Callable getAMixedInCallable() {
-    result = getACallable() and
+    result = this.getACallable() and
     (
       result.(Constructor).isDefaultConstructor() or
       result.getAnAnnotation() instanceof JacksonAnnotation or
@@ -240,7 +240,7 @@ class JacksonMixinType extends ClassOrInterface {
    * Gets a field that is mixed in by Jackson.
    */
   Field getAMixedInField() {
-    result = getAField() and
+    result = this.getAField() and
     result.getAnAnnotation() instanceof JacksonAnnotation
   }
 }
@@ -264,17 +264,17 @@ class JacksonMixedInCallable extends Callable {
    * Gets a callable on a possible target that this is mixed into.
    */
   Callable getATargetCallable() {
-    exists(RefType targetType | targetType = getATargetType() |
-      result = getATargetType().getACallable() and
+    exists(RefType targetType | targetType = this.getATargetType() |
+      result = this.getATargetType().getACallable() and
       if this instanceof Constructor
       then
         // The mixed in type will have a different name to the target type, so just compare the
         // parameters.
         result.getSignature().suffix(targetType.getName().length()) =
-          getSignature().suffix(getDeclaringType().getName().length())
+          this.getSignature().suffix(this.getDeclaringType().getName().length())
       else
         // Signatures should match
-        result.getSignature() = getSignature()
+        result.getSignature() = this.getSignature()
     )
   }
 }
@@ -285,6 +285,7 @@ private class JacksonModel extends SummaryModelCsv {
       [
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Element of MapValue of Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",

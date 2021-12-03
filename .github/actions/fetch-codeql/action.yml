@@ -1,0 +1,14 @@
+name: Fetch CodeQL
+description: Fetches the latest version of CodeQL
+runs:
+  using: composite
+  steps:
+    - name: Fetch CodeQL
+      shell: bash
+      run: |
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
+        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
+        unzip -q -d "${RUNNER_TEMP}" codeql-linux64.zip
+        echo "${RUNNER_TEMP}/codeql" >> "${GITHUB_PATH}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

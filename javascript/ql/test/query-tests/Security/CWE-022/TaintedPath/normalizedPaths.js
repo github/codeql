@@ -380,3 +380,25 @@ app.get('/slash-stuff', (req, res) => {
 
   fs.readFileSync(slash(path)); // NOT OK
 });
+
+app.get('/dotdot-regexp', (req, res) => {
+  let path = pathModule.normalize(req.query.x);
+  if (pathModule.isAbsolute(path))
+    return;
+  fs.readFileSync(path); // NOT OK
+  if (!path.match(/\./)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.match(/\.\./)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.match(/\.\.\//)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.match(/\.\.\/foo/)) {
+    fs.readFileSync(path); // NOT OK
+  }
+  if (!path.match(/(\.\.\/|\.\.\\)/)) {
+    fs.readFileSync(path); // OK
+  }
+});

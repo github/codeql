@@ -97,7 +97,7 @@ void randomTester() {
     int r = 0;
     int *ptr_r = &r;
     *ptr_r = RAND();
-    r += 100; // BAD
+    r += 100; // BAD [NOT DETECTED]
   }
 
   {
