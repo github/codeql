@@ -21,7 +21,10 @@ predicate parameterPosition(int i) {
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-DataFlowCall summaryDataFlowCall(Node receiver) { none() }
+DataFlowCall summaryDataFlowCall(Node receiver) {
+  // We do not currently have support for callback-based library models.
+  none()
+}
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
