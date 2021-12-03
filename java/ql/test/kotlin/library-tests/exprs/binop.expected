@@ -77,4 +77,5 @@
 | exprs.kt:161:8:161:16 | ... != ... | exprs.kt:161:8:161:8 | r | exprs.kt:161:13:161:16 | null |
 | exprs.kt:190:31:190:37 | ... + ... | exprs.kt:190:31:190:32 | <get-a1>(...) | exprs.kt:190:36:190:37 | a2 |
 | exprs.kt:206:19:206:25 | ... + ... | exprs.kt:206:20:206:21 | ...!! | exprs.kt:206:25:206:25 | 5 |
+| funcExprs.kt:24:35:24:42 | ... + ... | funcExprs.kt:24:35:24:38 | this | funcExprs.kt:24:42:24:42 | a |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:29:5:29 | x |

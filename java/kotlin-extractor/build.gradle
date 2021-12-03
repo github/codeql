@@ -27,9 +27,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 sourceSets {
     main {
         kotlin {
-            excludes = ["utils/versions/v_1_4/*.kt"]
+            excludes = ["utils/versions/v_1_4/*.kt", "utils/versions/v_1_6/*.kt"]
             // change the above line to the below for building with kotlinVersion=1.4.32:
-            //excludes = ["utils/versions/default/*.kt"]
+            //excludes = ["utils/versions/default/*.kt", "utils/versions/v_1_6/*.kt"]
         }
     }
 }

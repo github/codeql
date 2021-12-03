@@ -13,7 +13,9 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
+import org.jetbrains.kotlin.util.OperatorNameConventions
 
 open class KotlinUsesExtractor(
     open val logger: Logger,
@@ -452,8 +454,17 @@ class X {
             }
         }
 
+    private val IrDeclaration.isAnonymousFunction get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
+
+    fun getFunctionShortName(f: IrFunction) : String {
+        if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
+            return OperatorNameConventions.INVOKE.asString()
+        else
+            return f.name.asString()
+    }
+
     fun getFunctionLabel(f: IrFunction) : String {
-        return getFunctionLabel(f.parent, f.name.asString(), f.valueParameters, f.returnType, f.extensionReceiverParameter)
+        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter)
     }
 
     fun getFunctionLabel(
@@ -477,8 +488,7 @@ class X {
     }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL &&
-                this.origin != IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+        return this.visibility == DescriptorVisibilities.LOCAL
     }
 
     private val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf()

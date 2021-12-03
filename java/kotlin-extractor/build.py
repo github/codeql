@@ -135,8 +135,14 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     if version.startswith('1.4'):
         shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
+        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_6')
     else:
-        shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
+        if version.startswith('1.6'):
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/default')
+        else:
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_4')
+            shutil.rmtree(tmp_dir + '/main/kotlin/utils/versions/v_1_6')
 
     srcs = find_sources(tmp_dir)
 

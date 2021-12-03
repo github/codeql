@@ -1,0 +1,55 @@
+lambdaClassMembers
+| funcExprs.kt:14:26:14:33 |  | funcExprs.kt:14:26:14:33 |  | Constructor |  |
+| funcExprs.kt:14:26:14:33 |  | funcExprs.kt:14:26:14:33 | invoke | Method | invoke() |
+| funcExprs.kt:14:26:14:33 |  | funcExprs.kt:14:26:14:33 | invoke | Method | invoke() |
+| funcExprs.kt:15:26:15:33 |  | funcExprs.kt:15:26:15:33 |  | Constructor |  |
+| funcExprs.kt:15:26:15:33 |  | funcExprs.kt:15:26:15:33 | invoke | Method | invoke() |
+| funcExprs.kt:16:26:16:33 |  | funcExprs.kt:16:26:16:33 |  | Constructor |  |
+| funcExprs.kt:16:26:16:33 |  | funcExprs.kt:16:26:16:33 | invoke | Method | invoke() |
+| funcExprs.kt:17:29:17:38 |  | funcExprs.kt:17:29:17:38 |  | Constructor |  |
+| funcExprs.kt:17:29:17:38 |  | funcExprs.kt:17:29:17:38 | invoke | Method | invoke(int) |
+| funcExprs.kt:17:29:17:38 |  | funcExprs.kt:17:29:17:38 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:18:29:18:34 |  | funcExprs.kt:18:29:18:34 |  | Constructor |  |
+| funcExprs.kt:18:29:18:34 |  | funcExprs.kt:18:29:18:34 | invoke | Method | invoke(int) |
+| funcExprs.kt:18:29:18:34 |  | funcExprs.kt:18:29:18:34 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:19:29:19:42 |  | funcExprs.kt:19:29:19:42 |  | Constructor |  |
+| funcExprs.kt:19:29:19:42 |  | funcExprs.kt:19:29:19:42 | invoke | Method | invoke(int) |
+| funcExprs.kt:19:29:19:42 |  | funcExprs.kt:19:29:19:42 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:21:29:21:37 |  | funcExprs.kt:21:29:21:37 |  | Constructor |  |
+| funcExprs.kt:21:29:21:37 |  | funcExprs.kt:21:29:21:37 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:22:28:22:50 |  | funcExprs.kt:22:28:22:50 |  | Constructor |  |
+| funcExprs.kt:22:28:22:50 |  | funcExprs.kt:22:28:22:50 | invoke | Method | invoke(int,int) |
+| funcExprs.kt:22:28:22:50 |  | funcExprs.kt:22:28:22:50 | invoke | Method | invoke(java.lang.Object,java.lang.Object) |
+| funcExprs.kt:23:28:23:40 |  | funcExprs.kt:23:28:23:40 |  | Constructor |  |
+| funcExprs.kt:23:28:23:40 |  | funcExprs.kt:23:28:23:40 | invoke | Method | invoke(int,int) |
+| funcExprs.kt:23:28:23:40 |  | funcExprs.kt:23:28:23:40 | invoke | Method | invoke(java.lang.Object,java.lang.Object) |
+| funcExprs.kt:24:28:24:44 |  | funcExprs.kt:24:28:24:44 |  | Constructor |  |
+| funcExprs.kt:24:28:24:44 |  | funcExprs.kt:24:28:24:44 | invoke | ExtensionMethod | invoke(int,int) |
+| funcExprs.kt:24:28:24:44 |  | funcExprs.kt:24:28:24:44 | invoke | Method | invoke(java.lang.Object,java.lang.Object) |
+| funcExprs.kt:25:28:25:51 |  | funcExprs.kt:25:28:25:51 |  | Constructor |  |
+| funcExprs.kt:25:28:25:51 |  | funcExprs.kt:25:28:25:51 | invoke | Method | invoke(int) |
+| funcExprs.kt:25:28:25:51 |  | funcExprs.kt:25:28:25:51 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:25:37:25:47 |  | funcExprs.kt:25:37:25:47 |  | Constructor |  |
+| funcExprs.kt:25:37:25:47 |  | funcExprs.kt:25:37:25:47 | invoke | Method | invoke(int) |
+| funcExprs.kt:25:37:25:47 |  | funcExprs.kt:25:37:25:47 | invoke | Method | invoke(java.lang.Object) |
+| funcExprs.kt:27:29:27:112 |  | funcExprs.kt:27:29:27:112 |  | Constructor |  |
+| funcExprs.kt:27:29:27:112 |  | funcExprs.kt:27:29:27:112 | invoke | Method | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) |
+| funcExprs.kt:27:29:27:112 |  | funcExprs.kt:27:29:27:112 | invoke | Method | invoke(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) |
+| funcExprs.kt:28:29:28:117 |  | funcExprs.kt:28:29:28:117 |  | Constructor |  |
+| funcExprs.kt:28:29:28:117 |  | funcExprs.kt:28:29:28:117 | invoke | Method | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) |
+| funcExprs.kt:28:29:28:117 |  | funcExprs.kt:28:29:28:117 | invoke | Method | invoke(java.lang.Object[]) |
+lambdaClassInterfaces
+| funcExprs.kt:14:26:14:33 |  | Function0<Integer> |
+| funcExprs.kt:15:26:15:33 |  | Function0<Object> |
+| funcExprs.kt:16:26:16:33 |  | Function0<Object> |
+| funcExprs.kt:17:29:17:38 |  | Function1<Integer,Integer> |
+| funcExprs.kt:18:29:18:34 |  | Function1<Integer,Integer> |
+| funcExprs.kt:19:29:19:42 |  | Function1<Integer,Integer> |
+| funcExprs.kt:21:29:21:37 |  | Function1<Object,Object> |
+| funcExprs.kt:22:28:22:50 |  | Function2<Integer,Integer,Integer> |
+| funcExprs.kt:23:28:23:40 |  | Function2<Integer,Integer,Integer> |
+| funcExprs.kt:24:28:24:44 |  | Function2<Integer,Integer,Integer> |
+| funcExprs.kt:25:28:25:51 |  | Function1<Integer,Function1<Integer,Double>> |
+| funcExprs.kt:25:37:25:47 |  | Function1<Integer,Double> |
+| funcExprs.kt:27:29:27:112 |  | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit> |
+| funcExprs.kt:28:29:28:117 |  | FunctionN<String> |
