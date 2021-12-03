@@ -297,11 +297,11 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
  */
 pragma[noinline]
 private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
-  exists(ParameterNode param, ConstantBooleanArgumentNode arg |
+  exists(SsaParameterNode param, ConstantBooleanArgumentNode arg |
     // get constant bool argument and parameter for this call
     viableParamArg(call, param, arg) and
     // which is used in a guard controlling `n` with the opposite value of `arg`
-    result.ensures(param.(SsaParameterNode).getAUse(), arg.getBooleanValue().booleanNot())
+    result.ensures(param.getAUse(), arg.getBooleanValue().booleanNot())
   )
 }
 
