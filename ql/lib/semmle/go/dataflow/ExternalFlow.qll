@@ -190,20 +190,20 @@ predicate summaryModel(
 }
 
 /** Holds if `package` have CSV framework coverage. */
-private predicate relevantPackage(string package) {
+private predicate packageHasCsvCoverage(string package) {
   sourceModel(package, _, _, _, _, _, _, _) or
   sinkModel(package, _, _, _, _, _, _, _) or
   summaryModel(package, _, _, _, _, _, _, _, _)
 }
 
 /**
- * Holds if `shortpkg` and `longpkg` have CSV framework coverage and `shortpkg`
- * is a subpackage of `longpkg`.
+ * Holds if `package` and `subpkg` have CSV framework coverage and `subpkg`
+ * is a subpackage of `package`.
  */
-private predicate packageLink(string shortpkg, string longpkg) {
-  relevantPackage(shortpkg) and
-  relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+private predicate packageHasASubpackage(string package, string subpkg) {
+  packageHasCsvCoverage(package) and
+  packageHasCsvCoverage(subpkg) and
+  subpkg.prefix(subpkg.indexOf(".")) = package
 }
 
 /**
@@ -211,7 +211,7 @@ private predicate packageLink(string shortpkg, string longpkg) {
  * any other package with CSV framework coverage.
  */
 private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageLink(_, package)
+  packageHasCsvCoverage(package) and not packageHasASubpackage(_, package)
 }
 
 /**
@@ -219,9 +219,9 @@ private predicate canonicalPackage(string package) {
  * subpackage of `package` (or they are the same), and `package` is not a
  * subpackage of any other package with CSV framework coverage.
  */
-private predicate canonicalPkgLink(string package, string subpkg) {
+private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
   canonicalPackage(package) and
-  (subpkg = package or packageLink(package, subpkg))
+  (subpkg = package or packageHasASubpackage(package, subpkg))
 }
 
 /**
@@ -230,13 +230,13 @@ private predicate canonicalPkgLink(string package, string subpkg) {
  * which have CSV framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
+  pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
   (
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string output |
-        canonicalPkgLink(package, subpkg) and
+        canonicalPackageHasASubpackage(package, subpkg) and
         sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
       )
     or
@@ -244,7 +244,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input |
-        canonicalPkgLink(package, subpkg) and
+        canonicalPackageHasASubpackage(package, subpkg) and
         sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
       )
     or
@@ -252,7 +252,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output |
-        canonicalPkgLink(package, subpkg) and
+        canonicalPackageHasASubpackage(package, subpkg) and
         summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
       )
   )

@@ -545,6 +545,10 @@ module Public {
     abstract predicate isParameterOf(DataFlowCallable c, int i);
   }
 
+  /**
+   * A summary node which represents a parameter in a function which doesn't
+   * already have a parameter nodes.
+   */
   class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
     DataFlowCallable c;
     int i;
@@ -1085,18 +1089,20 @@ module Public {
    * A data-flow node representing an index of an array, map, slice or string defined from `range` statement.
    *
    * Example: in `i, _ := range y { ... }`, this represents the `Node` that extracts the index from the
-   * range statement, which will flow to `x`.
+   * range statement, which will flow to `i`.
    */
   class RangeIndexNode extends Node {
     DataFlow::Node base;
 
     RangeIndexNode() {
+      // when there is a comma, as in `i, x := range y { ... }`
       exists(IR::ExtractTupleElementInstruction extract |
         this.asInstruction() = extract and
         extract.extractsElement(_, 0) and
         extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
       )
       or
+      // when there is no comma, as in `i := range y { ... }`
       not exists(IR::ExtractTupleElementInstruction extract |
         extract.getBase() = this.asInstruction()
       ) and
