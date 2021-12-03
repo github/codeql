@@ -123,7 +123,20 @@ func simpleflow() {
 	b.Sink1(slice[0]) // $ hasTaintFlow="index expression"
 
 	ch := make(chan string)
-	ch <- a.Src1()
+	ch <- a.Src1().(string)
 	taint16 := test.StepArgCollectionContentRes(ch)
 	b.Sink1(taint16) // $ MISSING: hasTaintFlow="taint16" // currently fails due to lack of post-update nodes after send statements
+
+	c1 := test.C{""}
+	c1.Set(a.Src1().(string))
+	b.Sink1(c1.F) // $ hasTaintFlow="selection of F"
+
+	c2 := test.C{a.Src1().(string)}
+	b.Sink1(c2.Get()) // $ hasTaintFlow="call to Get"
+
+	c3 := test.C{""}
+	c3.Set(a.Src1().(string))
+	b.Sink1(c3.Get()) // $ MISSING: hasTaintFlow="call to Get"
+	c4 := c3
+	b.Sink1(c4.Get()) // $ hasTaintFlow="call to Get"
 }

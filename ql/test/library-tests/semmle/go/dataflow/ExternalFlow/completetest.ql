@@ -32,6 +32,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "github.com/nonexistent/test;;false;GetElement;;;Element of Argument[0];ReturnValue;value",
         "github.com/nonexistent/test;;false;GetMapKey;;;MapKey of Argument[0];ReturnValue;value",
         "github.com/nonexistent/test;;false;SetElement;;;Argument[0];Element of ReturnValue;value",
+        "github.com/nonexistent/test;C;false;Get;;;Field[github.com/nonexistent/test.C.F] of Argument[-1];ReturnValue;value",
+        "github.com/nonexistent/test;C;false;Set;;;Argument[0];Field[github.com/nonexistent/test.C.F] of Argument[-1];value",
       ]
   }
 }

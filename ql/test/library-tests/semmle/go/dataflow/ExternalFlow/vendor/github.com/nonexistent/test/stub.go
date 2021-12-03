@@ -59,3 +59,10 @@ type B interface {
 	Sink1(arg interface{})
 	SinkMethod() interface{}
 }
+
+type C struct {
+	F string
+}
+
+func (c C) Set(f string) {}
+func (c C) Get() string  { return "" }
