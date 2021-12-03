@@ -299,6 +299,21 @@ class SystemNullableStruct extends SystemUnboundGenericStruct {
   }
 }
 
+/** Data flow for `System.Nullable<>`. */
+private class SystemNullableFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Nullable<>;false;GetValueOrDefault;();;Property[System.Nullable<>.Value] of Argument[-1];ReturnValue;value",
+        "System;Nullable<>;false;GetValueOrDefault;(T);;Argument[0];ReturnValue;value",
+        "System;Nullable<>;false;GetValueOrDefault;(T);;Property[System.Nullable<>.Value] of Argument[-1];ReturnValue;value",
+        "System;Nullable<>;false;Nullable;(T);;Argument[0];Property[System.Nullable<>.Value] of ReturnValue;value",
+        "System;Nullable<>;false;get_HasValue;();;Property[System.Nullable<>.Value] of Argument[-1];ReturnValue;taint",
+        "System;Nullable<>;false;get_Value;();;Argument[-1];ReturnValue;taint",
+      ]
+  }
+}
+
 /** The `System.NullReferenceException` class. */
 class SystemNullReferenceExceptionClass extends SystemClass {
   SystemNullReferenceExceptionClass() { this.hasName("NullReferenceException") }

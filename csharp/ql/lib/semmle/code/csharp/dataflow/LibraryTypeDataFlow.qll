@@ -546,49 +546,6 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
   }
 }
 
-/** Data flow for `System.Nullable<>`. */
-class SystemNullableFlow extends LibraryTypeDataFlow, SystemNullableStruct {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    c.(Constructor).getDeclaringType() = this and
-    source = getFlowSourceArg(c, 0, sourceAp) and
-    sourceAp = AccessPath::empty() and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::property(this.getValueProperty())
-    or
-    preservesValue = true and
-    c = this.getAGetValueOrDefaultMethod() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp = AccessPath::property(this.getValueProperty()) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-    or
-    preservesValue = false and
-    c = this.getHasValueProperty().getGetter() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp = AccessPath::property(this.getValueProperty()) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-    or
-    preservesValue = true and
-    c = this.getAGetValueOrDefaultMethod() and
-    source = getFlowSourceArg(c, 0, _) and
-    sourceAp = AccessPath::empty() and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-    or
-    preservesValue = false and
-    c = this.getValueProperty().getGetter() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp = AccessPath::empty() and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-  }
-}
-
 /** Data flow for `System.Collections.IEnumerable` (and sub types). */
 class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   IEnumerableFlow() { this.getABaseType*() instanceof SystemCollectionsIEnumerableInterface }
