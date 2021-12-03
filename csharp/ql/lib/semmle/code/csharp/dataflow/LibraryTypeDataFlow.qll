@@ -1330,25 +1330,6 @@ class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Convert`. */
-class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    this.methodFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = this.getAMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
 /** Data flow for `System.Web.HttpCookie`. */
 class SystemWebHttpCookieFlow extends LibraryTypeDataFlow, SystemWebHttpCookie {
   override predicate callableFlow(
