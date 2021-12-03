@@ -127,22 +127,19 @@ module FunctionBodies {
     // If a function has more than 256 body subtokens, then featurize it as absent. This
     // approximates the behavior of the classifer on non-generic body features where large body
     // features are replaced by the absent token.
-    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) > 256
+    if
+      strictcount(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) >
+        256
     then result = ""
     else
       result =
-        concat(int i, string rankedToken |
-          rankedToken =
-            rank[i](DatabaseFeatures::AstNode node, string token, Location l |
-              bodyTokens(entity, node, token) and l = node.getLocation()
-            |
-              token
-              order by
-                l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-                l.getEndColumn(), token
-            )
+        strictconcat(DatabaseFeatures::AstNode node, string token, Location l |
+          bodyTokens(entity, node, token) and l = node.getLocation()
         |
-          rankedToken, " " order by i
+          token, " "
+          order by
+            l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+            l.getEndColumn(), token
         )
   }
 }
