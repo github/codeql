@@ -93,7 +93,7 @@ class SystemBooleanStruct extends BoolType {
 }
 
 /** Data flow for `System.Boolean`. */
-private class SystemBoolean32FlowModelCsv extends SummaryModelCsv {
+private class SystemBooleanFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
