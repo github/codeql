@@ -132,6 +132,7 @@ open class KotlinFileExtractor(
     }
 
     private fun extractAnonymousClassStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        // TODO: is this the same as @localtypedeclstmt
         val stmtId = tw.getFreshIdLabel<DbAnonymousclassdeclstmt>()
         tw.writeStmts_anonymousclassdeclstmt(stmtId, parent, idx, callable)
         tw.writeKtAnonymousClassDeclarationStmts(stmtId, id)
