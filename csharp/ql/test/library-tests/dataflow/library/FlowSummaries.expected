@@ -2343,19 +2343,21 @@
 | System;Convert;false;ChangeType;(System.Object,System.Type,System.IFormatProvider);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ChangeType;(System.Object,System.TypeCode);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ChangeType;(System.Object,System.TypeCode,System.IFormatProvider);;Argument[0];ReturnValue;taint |
-| System;Convert;false;FromBase64CharArray;(System.Char[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
-| System;Convert;false;FromBase64String;(System.String);;Argument[0];ReturnValue;taint |
-| System;Convert;false;FromHexString;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint |
-| System;Convert;false;FromHexString;(System.String);;Argument[0];ReturnValue;taint |
+| System;Convert;false;FromBase64CharArray;(System.Char[],System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;taint |
+| System;Convert;false;FromBase64String;(System.String);;Argument[0];Element of ReturnValue;taint |
+| System;Convert;false;FromHexString;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];Element of ReturnValue;taint |
+| System;Convert;false;FromHexString;(System.String);;Argument[0];Element of ReturnValue;taint |
 | System;Convert;false;GetTypeCode;(System.Object);;Argument[0];ReturnValue;taint |
 | System;Convert;false;IsDBNull;(System.Object);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32,System.Base64FormattingOptions);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64String;(System.Byte[]);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64String;(System.Byte[],System.Base64FormattingOptions);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64String;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64String;(System.Byte[],System.Int32,System.Int32,System.Base64FormattingOptions);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToBase64String;(System.ReadOnlySpan<System.Byte>,System.Base64FormattingOptions);;Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];Element of Argument[3];taint |
+| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32,System.Base64FormattingOptions);;Element of Argument[0];Element of Argument[3];taint |
+| System;Convert;false;ToBase64CharArray;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32,System.Base64FormattingOptions);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64String;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64String;(System.Byte[],System.Base64FormattingOptions);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64String;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64String;(System.Byte[],System.Int32,System.Int32,System.Base64FormattingOptions);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToBase64String;(System.ReadOnlySpan<System.Byte>,System.Base64FormattingOptions);;Element of Argument[0];ReturnValue;taint |
 | System;Convert;false;ToBoolean;(System.Boolean);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToBoolean;(System.Byte);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToBoolean;(System.Char);;Argument[0];ReturnValue;taint |
@@ -2465,9 +2467,9 @@
 | System;Convert;false;ToDouble;(System.UInt16);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToDouble;(System.UInt32);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToDouble;(System.UInt64);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToHexString;(System.Byte[]);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToHexString;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
-| System;Convert;false;ToHexString;(System.ReadOnlySpan<System.Byte>);;Argument[0];ReturnValue;taint |
+| System;Convert;false;ToHexString;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToHexString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;ToHexString;(System.ReadOnlySpan<System.Byte>);;Element of Argument[0];ReturnValue;taint |
 | System;Convert;false;ToInt16;(System.Boolean);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToInt16;(System.Byte);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToInt16;(System.Char);;Argument[0];ReturnValue;taint |
@@ -2655,9 +2657,15 @@
 | System;Convert;false;ToUInt64;(System.UInt16);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToUInt64;(System.UInt32);;Argument[0];ReturnValue;taint |
 | System;Convert;false;ToUInt64;(System.UInt64);;Argument[0];ReturnValue;taint |
-| System;Convert;false;TryFromBase64Chars;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>,System.Int32);;Argument[0];ReturnValue;taint |
+| System;Convert;false;TryFromBase64Chars;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>,System.Int32);;Element of Argument[0];Argument[2];taint |
+| System;Convert;false;TryFromBase64Chars;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>,System.Int32);;Element of Argument[0];Element of Argument[1];taint |
+| System;Convert;false;TryFromBase64Chars;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System;Convert;false;TryFromBase64String;(System.String,System.Span<System.Byte>,System.Int32);;Argument[0];Argument[2];taint |
+| System;Convert;false;TryFromBase64String;(System.String,System.Span<System.Byte>,System.Int32);;Argument[0];Element of Argument[1];taint |
 | System;Convert;false;TryFromBase64String;(System.String,System.Span<System.Byte>,System.Int32);;Argument[0];ReturnValue;taint |
-| System;Convert;false;TryToBase64Chars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>,System.Int32,System.Base64FormattingOptions);;Argument[0];ReturnValue;taint |
+| System;Convert;false;TryToBase64Chars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>,System.Int32,System.Base64FormattingOptions);;Element of Argument[0];Argument[2];taint |
+| System;Convert;false;TryToBase64Chars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>,System.Int32,System.Base64FormattingOptions);;Element of Argument[0];Element of Argument[1];taint |
+| System;Convert;false;TryToBase64Chars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>,System.Int32,System.Base64FormattingOptions);;Element of Argument[0];ReturnValue;taint |
 | System;Int32;false;Parse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider);;Element of Argument[0];ReturnValue;taint |
 | System;Int32;false;Parse;(System.String);;Argument[0];ReturnValue;taint |
 | System;Int32;false;Parse;(System.String,System.Globalization.NumberStyles);;Argument[0];ReturnValue;taint |
@@ -2690,15 +2698,15 @@
 | System;String;false;Concat;(System.Object,System.Object,System.Object);;Argument[1];ReturnValue;taint |
 | System;String;false;Concat;(System.Object,System.Object,System.Object);;Argument[2];ReturnValue;taint |
 | System;String;false;Concat;(System.Object[]);;Element of Argument[0];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[1];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[1];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[2];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[1];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[2];ReturnValue;taint |
-| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Argument[3];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[1];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[1];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[2];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[1];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[2];ReturnValue;taint |
+| System;String;false;Concat;(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>);;Element of Argument[3];ReturnValue;taint |
 | System;String;false;Concat;(System.String,System.String);;Argument[0];ReturnValue;taint |
 | System;String;false;Concat;(System.String,System.String);;Argument[1];ReturnValue;taint |
 | System;String;false;Concat;(System.String,System.String,System.String);;Argument[0];ReturnValue;taint |
