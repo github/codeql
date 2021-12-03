@@ -87,7 +87,14 @@ open class KotlinUsesExtractor(
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
     }
 
-    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): UseClassInstanceResult {
+    private fun anyDeclarationExtracted(c: IrClass, id: Label<out DbClassorinterface>) =
+        c.declarations.any {
+            it is IrFunction &&
+            tw.getExistingLabelFor<DbCallable>(getFunctionLabel(
+                id, it.name.asString(), it.valueParameters, it.returnType, it.extensionReceiverParameter)) != null
+        }
+
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): UseClassInstanceResult {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
         }
@@ -100,7 +107,8 @@ open class KotlinUsesExtractor(
 
         val extractClass = substituteClass ?: c
 
-        val classTypeResult = addClassLabel(extractClass, typeArgs)
+        val classTypeResult = addClassLabel(extractClass, typeArgs, inReceiverContext)
+
         // Extract both the Kotlin and equivalent Java classes, so that we have database entries
         // for both even if all internal references to the Kotlin type are substituted.
         if(c != extractClass) {
@@ -137,17 +145,27 @@ open class KotlinUsesExtractor(
         externalClassExtractor.extractLater(c)
     }
 
-    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): TypeResult<DbClassorinterface> {
+    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
         val classLabelResult = getClassLabel(c, typeArgs)
+
+        var shouldExtractClass = false
+
         val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel, {
             // If this is a generic type instantiation then it has no
             // source entity, so we need to extract it here
-            if (typeArgs.isNotEmpty()) {
-                this.withSourceFileOfClass(c).extractClassInstance(c, typeArgs)
-            }
+            shouldExtractClass = true
 
             extractClassLaterIfExternal(c)
         })
+
+        if (typeArgs.isNotEmpty()) {
+            // Extract again if we've already extracted the class itself but not its declared functions:
+            // This might happen e.g. if we see it for the first time in the context of a parameter type (which doesn't
+            // require method prototype extraction), then later as a function receiver (which does).
+            if (shouldExtractClass || (inReceiverContext && !anyDeclarationExtracted(c, classLabel)))
+                this.withSourceFileOfClass(c).extractClassInstance(c, typeArgs, inReceiverContext)
+        }
+
         return TypeResult(
             classLabel,
             c.fqNameWhenAvailable?.asString(),
@@ -441,10 +459,10 @@ class X {
         }
     }
 
-    fun useDeclarationParent(dp: IrDeclarationParent): Label<out DbElement> =
+    fun useDeclarationParent(dp: IrDeclarationParent, classTypeArguments: List<IrTypeArgument>? = null, inReceiverContext: Boolean = false): Label<out DbElement> =
         when(dp) {
             is IrFile -> usePackage(dp.fqName.asString())
-            is IrClass -> useClassSource(dp)
+            is IrClass -> if (classTypeArguments != null) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
             is IrFunction -> useFunction(dp)
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass)
@@ -452,12 +470,27 @@ class X {
             }
         }
 
-    fun getFunctionLabel(f: IrFunction) : String {
-        return getFunctionLabel(f.parent, f.name.asString(), f.valueParameters, f.returnType, f.extensionReceiverParameter)
+    fun getFunctionLabel(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null) : String {
+        return getFunctionLabel(f.parent, f.name.asString(), f.valueParameters, f.returnType, f.extensionReceiverParameter, classTypeArguments)
     }
 
     fun getFunctionLabel(
         parent: IrDeclarationParent,
+        name: String,
+        parameters: List<IrValueParameter>,
+        returnType: IrType,
+        extensionReceiverParameter: IrValueParameter?,
+        classTypeArguments: List<IrTypeArgument>? = null
+    ): String {
+        val parentId = useDeclarationParent(parent, classTypeArguments, true)
+        return getFunctionLabel(parentId, name, parameters, returnType, extensionReceiverParameter)
+    }
+
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>) =
+        getFunctionLabel(parentId, f.name.asString(), f.valueParameters, f.returnType, f.extensionReceiverParameter)
+
+    fun getFunctionLabel(
+        parentId: Label<out DbElement>,
         name: String,
         parameters: List<IrValueParameter>,
         returnType: IrType,
@@ -472,7 +505,6 @@ class X {
                         }
         val paramTypeIds = allParams.joinToString { "{${useType(erase(it.type)).javaResult.id}}" }
         val returnTypeId = useType(erase(returnType)).javaResult.id
-        val parentId = useDeclarationParent(parent)
         return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
     }
 
@@ -505,20 +537,26 @@ class X {
         return res
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction): Label<out T> {
-        if (f.isLocalFunction()) {
-            val ids = getLocalFunctionLabels(f)
-            @Suppress("UNCHECKED_CAST")
-            return ids.function as Label<out T>
-        }
-
-        val label = getFunctionLabel(f)
+    fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
         val id: Label<T> = tw.getLabelFor(label)
-        if(isExternalDeclaration(f)) {
+        if (isExternalDeclaration(f)) {
             extractExternalEnclosingClassLater(f)
         }
         return id
     }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null): Label<out T> {
+        if (f.isLocalFunction()) {
+            val ids = getLocalFunctionLabels(f)
+            @Suppress("UNCHECKED_CAST")
+            return ids.function as Label<out T>
+        } else {
+            return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArguments))
+        }
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>) =
+        useFunctionCommon<T>(f, getFunctionLabel(f, parentId))
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
@@ -696,7 +734,7 @@ class X {
 
     fun useValueDeclaration(d: IrValueDeclaration): Label<out DbVariable> =
         when(d) {
-            is IrValueParameter -> useValueParameter(d)
+            is IrValueParameter -> useValueParameter(d, null)
             is IrVariable -> useVariable(d)
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrValueDeclaration: " + d.javaClass)
@@ -729,9 +767,12 @@ class X {
     fun eraseTypeParameter(t: IrTypeParameter) =
         erase(t.superTypes[0])
 
-    fun getValueParameterLabel(vp: IrValueParameter): String {
-        @Suppress("UNCHECKED_CAST")
-        val parentId: Label<out DbMethod> = useDeclarationParent(vp.parent) as Label<out DbMethod>
+    /**
+     * Gets the label for `vp` in the context of function instance `parent`, or in that of its declaring function if
+     * `parent` is null.
+     */
+    fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
+        val parentId = parent ?: useDeclarationParent(vp.parent)
         val idx = vp.index
         if (idx < 0) {
             // We're not extracting this and this@TYPE parameters of functions:
@@ -740,8 +781,9 @@ class X {
         return "@\"params;{$parentId};$idx\""
     }
 
-    fun useValueParameter(vp: IrValueParameter): Label<out DbParam> =
-        tw.getLabelFor(getValueParameterLabel(vp))
+
+    fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
+        tw.getLabelFor(getValueParameterLabel(vp, parent))
 
     fun getFieldLabel(f: IrField): String {
         val parentId = useDeclarationParent(f.parent)
@@ -751,13 +793,17 @@ class X {
     fun useField(f: IrField): Label<out DbField> =
         tw.getLabelFor(getFieldLabel(f))
 
-    fun getPropertyLabel(p: IrProperty): String {
-        val parentId = useDeclarationParent(p.parent)
-        return "@\"property;{$parentId};${p.name.asString()}\""
-    }
+    fun getPropertyLabel(p: IrProperty) =
+        getPropertyLabel(p, useDeclarationParent(p.parent))
+
+    fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>) =
+        "@\"property;{$parentId};${p.name.asString()}\""
 
     fun useProperty(p: IrProperty): Label<out DbKt_property> =
         tw.getLabelFor(getPropertyLabel(p))
+
+    fun useProperty(p: IrProperty, parentId: Label<out DbElement>): Label<out DbKt_property> =
+        tw.getLabelFor(getPropertyLabel(p, parentId))
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent)

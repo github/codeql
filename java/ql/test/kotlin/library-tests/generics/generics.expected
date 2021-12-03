@@ -34,11 +34,25 @@ function
 | generics.kt:11:6:11:19 | toString | toString() |
 | generics.kt:13:1:18:1 | <obinit> | <obinit>() |
 | generics.kt:13:1:18:1 | C1 | C1(java.lang.Object) |
+| generics.kt:13:1:18:1 | C1<Integer,Integer> | C1<Integer,Integer>(int) |
+| generics.kt:13:1:18:1 | C1<String,Integer> | C1<String,Integer>(java.lang.String) |
+| generics.kt:13:1:18:1 | equals | equals(java.lang.Object) |
+| generics.kt:13:1:18:1 | equals | equals(java.lang.Object) |
 | generics.kt:13:1:18:1 | equals | equals(java.lang.Object) |
 | generics.kt:13:1:18:1 | hashCode | hashCode() |
+| generics.kt:13:1:18:1 | hashCode | hashCode() |
+| generics.kt:13:1:18:1 | hashCode | hashCode() |
+| generics.kt:13:1:18:1 | toString | toString() |
+| generics.kt:13:1:18:1 | toString | toString() |
 | generics.kt:13:1:18:1 | toString | toString() |
 | generics.kt:13:16:13:23 | <get-t> | <get-t>() |
+| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
+| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
+| generics.kt:14:5:14:19 | f1 | f1(int) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |
+| generics.kt:14:5:14:19 | f1 | f1(java.lang.String) |
+| generics.kt:15:5:17:5 | f2 | f2(java.lang.Object) |
+| generics.kt:15:5:17:5 | f2 | f2(java.lang.Object) |
 | generics.kt:15:5:17:5 | f2 | f2(java.lang.Object) |
 | generics.kt:20:1:22:1 | <obinit> | <obinit>() |
 | generics.kt:20:1:22:1 | C2 | C2() |
@@ -59,8 +73,6 @@ genericFunction
 | generics.kt:15:5:17:5 | f2 | generics.kt:15:10:15:10 | U | 0 |
 | generics.kt:21:5:21:23 | f4 | generics.kt:21:10:21:10 | P | 0 |
 genericCall
-| generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
-| generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |
 | generics.kt:32:8:32:12 | f4(...) | generics.kt:21:10:21:10 | P | Integer |
 genericCtor
 | generics.kt:16:16:16:26 | new C1(...) | 0 | U |
