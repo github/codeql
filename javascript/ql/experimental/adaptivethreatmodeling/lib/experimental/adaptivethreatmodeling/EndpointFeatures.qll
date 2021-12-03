@@ -277,10 +277,11 @@ private string getASupportedFeatureName() {
  * `featureValue` for the endpoint `endpoint`.
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  featureName = getASupportedFeatureName() and
+  ModelScoring::endpoints(endpoint) and
   (
-    featureValue = unique(string x | x = getTokenFeature(endpoint, featureName))
-    or
-    not exists(unique(string x | x = getTokenFeature(endpoint, featureName))) and featureValue = ""
+    if strictcount(getTokenFeature(endpoint, featureName)) = 1
+    then featureValue = getTokenFeature(endpoint, featureName)
+    // Performance note: this is a Cartesian product between all endpoints and feature names.
+    else (featureValue = "" and featureName = getASupportedFeatureName())
   )
 }
