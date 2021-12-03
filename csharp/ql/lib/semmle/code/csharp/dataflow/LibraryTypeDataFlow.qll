@@ -537,69 +537,6 @@ class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReader
 
 /** Data flow for `System.Text.StringBuilder`. */
 class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringBuilderClass {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    (
-      this.constructorFlow(source, sourceAp, sink, sinkAp, c) and
-      preservesValue = true
-      or
-      this.methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
-    )
-  }
-
-  private predicate constructorFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    Constructor c
-  ) {
-    c = this.getAMember() and
-    c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(0) and
-    sourceAp = AccessPath::empty() and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::element()
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationMethod m, boolean preservesValue
-  ) {
-    exists(string name | m = this.getAMethod() and m.hasUndecoratedName(name) |
-      name = "ToString" and
-      source = TCallableFlowSourceQualifier() and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty() and
-      preservesValue = false
-      or
-      name.regexpMatch("Append(Format|Line|Join)?") and
-      preservesValue = true and
-      (
-        exists(int i, Type t |
-          t = m.getParameter(i).getType() and
-          source = TCallableFlowSourceArg(i) and
-          sink = TCallableFlowSinkQualifier() and
-          sinkAp = AccessPath::element()
-        |
-          (
-            t instanceof StringType or
-            t instanceof ObjectType
-          ) and
-          sourceAp = AccessPath::empty()
-          or
-          isCollectionType(t) and
-          sourceAp = AccessPath::element()
-        )
-        or
-        source = TCallableFlowSourceQualifier() and
-        sourceAp = AccessPath::empty() and
-        sink = TCallableFlowSinkReturn() and
-        sinkAp = AccessPath::empty()
-      )
-    )
-  }
-
   override predicate clearsContent(
     CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
