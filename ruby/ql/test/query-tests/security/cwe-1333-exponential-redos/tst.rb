@@ -373,3 +373,8 @@ good43 = /^X(\u0061|b)+Y$/
 
 # NOT GOOD
 bad88 = /X([[:digit:]]|\d)+Y/
+
+# NOT GOOD
+bad89 = /\G(a|\w)*$/
+bad90 = /\b(a|\w)*$/
+
