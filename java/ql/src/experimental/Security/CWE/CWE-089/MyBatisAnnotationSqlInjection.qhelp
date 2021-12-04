@@ -4,13 +4,13 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>MyBatis allows operating the database by annotating a method with the annotations <code>@Select</code>, <code>@Insert</code>, etc. to construct dynamic SQL statements.
+<p>MyBatis uses methods with the annotations <code>@Select</code>, <code>@Insert</code>, etc. to construct dynamic SQL statements.
 If the syntax <code>${param}</code> is used in those statements, and <code>param</code> is a parameter of the annotated method, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
 </overview>
 
 <<recommendation>
 <p>
-When writing MyBatis mapping statements, try to use the syntax <code>#{xxx}</code>. If the syntax <code>${xxx}</code> must be used, any parameters included in it should be sanitized to prevent SQL injection attacks.
+When writing MyBatis mapping statements, use the syntax <code>#{xxx}</code> whenever possible. If the syntax <code>${xxx}</code> must be used, any parameters included in it should be sanitized to prevent SQL injection attacks.
 </p>
 </recommendation>
 
@@ -18,7 +18,7 @@ When writing MyBatis mapping statements, try to use the syntax <code>#{xxx}</cod
 <p>
 The following sample shows a bad and a good example of MyBatis annotations usage. The <code>bad1</code> method uses <code>$(name)</code> 
 in the <code>@Select</code> annotation to dynamically build a SQL statement, which causes a SQL injection vulnerability. 
-The <code>good1</code> method uses <code>#{name}</code> in the <code>@Select</code> annotation to to dynamically include the parameter in a SQL statement, which allows the MyBatis framework to handle the sanitization, preventing the vulnerability.
+The <code>good1</code> method uses <code>#{name}</code> in the <code>@Select</code> annotation to dynamically include the parameter in a SQL statement, which causes the MyBatis framework to sanitize the input provided, preventing the vulnerability.
 </p>
 <sample src="MyBatisAnnotationSqlInjection.java" />
 </example>

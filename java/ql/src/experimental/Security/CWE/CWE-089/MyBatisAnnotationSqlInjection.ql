@@ -23,7 +23,7 @@ private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink instanceof MyBatisAnnotationMethodCallAnArgument
+    sink instanceof MyBatisAnnotatedMethodCallArgument
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

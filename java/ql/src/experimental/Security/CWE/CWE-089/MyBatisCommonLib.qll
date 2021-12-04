@@ -68,12 +68,12 @@ MethodAccess getMyBatisSqlOperationAnnotationMethodAccess(IbatisSqlOperationAnno
 }
 
 /** Get the #{...} or ${...} parameters in the Mybatis mapper xml file. */
-private string getAnMybatiXmlSetValue(XMLElement xmle) {
+private string getAnMybatisXmlSetValue(XMLElement xmle) {
   result = xmle.getTextValue().trim().regexpFind("(#|\\$)\\{[^\\}]*\\}", _, _)
 }
 
 /** Get the #{...} or ${...} parameters in the Mybatis sql operation annotation value. */
-private string getAnMybatiAnnotationSetValue(IbatisSqlOperationAnnotation isoa) {
+private string getAMybatisAnnotationSqlValue(IbatisSqlOperationAnnotation isoa) {
   result = isoa.getSqlValue().trim().regexpFind("(#|\\$)\\{[^\\}]*\\}", _, _)
 }
 
@@ -84,11 +84,12 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
   exists(MethodAccess ma, string setValue |
     (
       ma = getMyBatisMapperXmlMethodAccess(xmle) and
-      setValue = getAnMybatiXmlSetValue(xmle)
+      setValue = getAnMybatisXmlSetValue(xmle)
       or
       ma = getMyBatisSqlOperationAnnotationMethodAccess(isoa) and
-      setValue = getAnMybatiAnnotationSetValue(isoa)
+      setValue = getAMybatisAnnotationSqlValue(isoa)
     ) and
+    not setValue.regexpMatch("\\$\\{" + getAnMybatisConfigurationVariableKey() + "\\}") and
     (
       // The method parameters use `@Param` annotation. Due to improper use of this parameter, SQL injection vulnerabilities are caused.
       // e.g.
@@ -154,7 +155,6 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
           ma.getMethod().getParameterType(i) instanceof Array
         ) and
         setValue.matches("%${%}") and
-        not setValue = "${" + getAnMybatisConfigurationVariableKey() + "}" and
         ma.getArgument(i) = node.asExpr()
       )
       or
@@ -170,7 +170,6 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
         ma.getMethod().getNumberOfParameters() = i and
         not ma.getMethod().getAParameter().getAnAnnotation().getType() instanceof TypeParam and
         setValue.matches("%${%}") and
-        not setValue = "${" + getAnMybatisConfigurationVariableKey() + "}" and
         ma.getAnArgument() = node.asExpr()
       )
     )

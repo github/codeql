@@ -70,7 +70,7 @@ private class IbatisUpdateAnnotationType extends AnnotationType {
 }
 
 /**
- * Ibatis sql operation annotation.
+ * An Ibatis SQL operation annotation.
  */
 class IbatisSqlOperationAnnotation extends Annotation {
   IbatisSqlOperationAnnotation() {
@@ -84,9 +84,7 @@ class IbatisSqlOperationAnnotation extends Annotation {
    * Get the SQL statement string.
    */
   string getSqlValue() {
-    result = this.getValue("value").(CompileTimeConstantExpr).getStringValue() or
-    result =
-      this.getValue("value").(ArrayInit).getInit(_).(CompileTimeConstantExpr).getStringValue()
+    result = this.getAValue("value").(CompileTimeConstantExpr).getStringValue()
   }
 }
 
