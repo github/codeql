@@ -81,22 +81,48 @@ abstract class SensitiveVariableAccess extends SensitiveExpr {
 /** A write to a location that might contain sensitive data. */
 abstract class SensitiveWrite extends DataFlow::Node { }
 
+/**
+ * Holds if `node` is a write to a variable or property named `name`.
+ *
+ * Helper predicate factored out for performance,
+ * to filter `name` as much as possible before using it in
+ * regex matching.
+ */
+pragma[nomagic]
+private predicate writesProperty(DataFlow::Node node, string name) {
+  exists(DataFlow::PropWrite pwn |
+    pwn.getPropertyName() = name and
+    pwn.getRhs() = node
+  )
+  or
+  exists(VarDef v | v.getAVariable().getName() = name |
+    if exists(v.getSource())
+    then v.getSource() = node.asExpr()
+    else node = DataFlow::ssaDefinitionNode(SSA::definition(v))
+  )
+}
+
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification classification;
 
   BasicSensitiveWrite() {
-    exists(string name | nameIndicatesSensitiveData(name, classification) |
-      exists(DataFlow::PropWrite pwn |
-        pwn.getPropertyName() = name and
-        pwn.getRhs() = this
-      )
-      or
-      exists(VarDef v | v.getAVariable().getName() = name |
-        if exists(v.getSource())
-        then v.getSource() = this.asExpr()
-        else this = DataFlow::ssaDefinitionNode(SSA::definition(v))
-      )
+    exists(string name |
+      /*
+       * PERFORMANCE OPTIMISATION:
+       * `nameIndicatesSensitiveData` performs a `regexpMatch` on `name`.
+       * To carry out a regex match, we must first compute the Cartesian product
+       * of all possible `name`s and regexes, then match.
+       * To keep this product as small as possible,
+       * we want to filter `name` as much as possible before the product.
+       *
+       * Do this by factoring out a helper predicate containing the filtering
+       * logic that restricts `name`. This helper predicate will get picked first
+       * in the join order, since it is the only call here that binds `name`.
+       */
+
+      writesProperty(this, name) and
+      nameIndicatesSensitiveData(name, classification)
     )
   }
 
