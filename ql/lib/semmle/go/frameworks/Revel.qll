@@ -294,7 +294,7 @@ module Revel {
       exists(Type controllerType, string controllerRe, string handlerRe, string pathRe |
         controllerType = skipImplicitFieldReads(this.getReceiver().asInstruction()).getResultType() and
         controllerRe = "\\Q" + controllerType.getName() + "\\E" and
-        handlerRe = "\\Q" + this.asExpr().getEnclosingFunction().getName() + "\\E" and
+        handlerRe = "\\Q" + this.getRoot().(FuncDef).getName() + "\\E" and
         // find a file named '/views/<controller>/<handler>(.<template type>).html
         pathRe = "/views/" + controllerRe + "/" + handlerRe + "(\\..*)?\\.html?"
       |
