@@ -168,6 +168,27 @@ private module Settings {
 
     boolean getValue() { result = valueLiteral.getValue() }
   }
+
+  /**
+   * A node that sets a Stringlike value.
+   */
+  class StringlikeSetting extends LiteralSetting {
+    override StringlikeLiteral valueLiteral;
+  }
+
+  /**
+   * A node that sets a Stringlike value, or `nil`.
+   */
+  class NillableStringlikeSetting extends LiteralSetting {
+    NillableStringlikeSetting() {
+      valueLiteral instanceof StringlikeLiteral or
+      valueLiteral instanceof NilLiteral
+    }
+
+    string getStringValue() { result = valueLiteral.(StringlikeLiteral).getValueText() }
+
+    predicate isNilValue() { valueLiteral instanceof NilLiteral }
+  }
 }
 
 /**
@@ -184,5 +205,72 @@ private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
   override boolean getVerificationSetting() { result = this.getValue() }
 }
 
+/**
+ * Sets the cipher to be used for encrypted cookies. Defaults to "aes-256-gcm".
+ * This can be set to any cipher supported by
+ * https://ruby-doc.org/stdlib-2.7.1/libdoc/openssl/rdoc/OpenSSL/Cipher.html
+ */
+private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
+  CookieSecurityConfigurationSetting::Range {
+  EncryptedCookieCipherSetting() {
+    this.getReceiver() instanceof Config::ActionDispatchNode and
+    this.getMethodName() = "encrypted_cookie_cipher="
+  }
+
+  OpenSSLCipher getCipher() { this.getValueText() = result.getName() }
+
+  OpenSSLCipher getDefaultCipher() { result.getName() = "aes-256-gcm" }
+
+  override string getSecurityWarningMessage() {
+    this.getCipher().isWeak() and
+    result = this.getValueText() + " is a weak cipher."
+  }
+}
+
+/**
+ * If true, signed and encrypted cookies will use the AES-256-GCM cipher rather
+ * than the older AES-256-CBC cipher. Defaults to true.
+ */
+private class UseAuthenticatedCookieEncryptionSetting extends Settings::BooleanSetting,
+  CookieSecurityConfigurationSetting::Range {
+  UseAuthenticatedCookieEncryptionSetting() {
+    this.getReceiver() instanceof Config::ActionDispatchNode and
+    this.getMethodName() = "use_authenticated_cookie_encryption="
+  }
+
+  boolean getDefaultValue() { result = true }
+
+  override string getSecurityWarningMessage() {
+    this.getValue() = false and
+    result = this.getSettingString() + " selects a weaker block mode for authenticated cookies."
+  }
+}
+
+// TODO: this may also take a proc that specifies how to handle specific requests
+/**
+ * Configures the default value of the `SameSite` attribute when setting cookies.
+ * Valid string values are `strict`, `lax`, and `none`.
+ * The attribute can be omitted by setting this to `nil`.
+ * The default if unset is `:lax`.
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#strict
+ */
+private class CookiesSameSiteProtectionSetting extends Settings::NillableStringlikeSetting,
+  CookieSecurityConfigurationSetting::Range {
+  CookiesSameSiteProtectionSetting() {
+    this.getReceiver() instanceof Config::ActionDispatchNode and
+    this.getMethodName() = "cookies_same_site_protection="
+  }
+
+  string getDefaultValue() { result = "lax" }
+
+  override string getSecurityWarningMessage() {
+    // Mark unset as being potentially dangerous, as not all browsers default to "lax"
+    this.getStringValue().toLowerCase() = "none" and
+    result = "Setting 'SameSite' to 'None' may make an application more vulnerable to CSRF attacks."
+    or
+    this.isNilValue() and
+    result = "Unsetting 'SameSite' can disable same-site cookie restrictions in some browsers."
+  }
+}
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
