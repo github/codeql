@@ -1677,8 +1677,6 @@ open class KotlinFileExtractor(
 
                 if (types.size > BuiltInFunctionArity.BIG_ARITY) {
                     implementFunctionNInvoke(e.function, ids, locId, parameters)
-
-                    // todo: which method should be returned in `LambdaExpr.asMethod()`?
                 }
 
                 val exprParent = parent.expr(e, callable)

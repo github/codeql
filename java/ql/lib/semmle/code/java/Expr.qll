@@ -1256,7 +1256,21 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
    * Gets the implicit method corresponding to this lambda expression.
    * The parameters of the lambda expression are the parameters of this method.
    */
-  override Method asMethod() { result = this.getAnonymousClass().getAMethod() }
+  override Method asMethod() {
+    not isKotlinFunctionN() and
+    result = this.getAnonymousClass().getAMethod()
+    or
+    isKotlinFunctionN() and
+    result = this.getAnonymousClass().getAMethod() and
+    result.getNumberOfParameters() = 1
+  }
+
+  predicate isKotlinFunctionN() {
+    exists(RefType r |
+      this.getAnonymousClass().extendsOrImplements(r) and
+      r.getSourceDeclaration().hasQualifiedName("kotlin.jvm.functions", "FunctionN")
+    )
+  }
 
   /** Holds if the body of this lambda is an expression. */
   predicate hasExprBody() { lambdaKind(this, 0) }
@@ -2202,9 +2216,7 @@ class WhenBranch extends Top, @whenbranch {
   predicate isElseBranch() { when_branch_else(this) }
 
   /** Gets the `when` expression this is a branch of. */
-  WhenExpr getWhenExpr() {
-    this = result.getBranch(_)
-  }
+  WhenExpr getWhenExpr() { this = result.getBranch(_) }
 
   override string toString() { result = "... -> ..." }
 
