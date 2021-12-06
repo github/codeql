@@ -159,8 +159,8 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
      * Gets a FileTrapWriter like this one (using the same label manager,
      * writer etc), but using the given `filePath` for locations.
      */
-    fun makeFileTrapWriter(filePath: String) =
-        FileTrapWriter(lm, bw, filePath, false)
+    fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
+        FileTrapWriter(lm, bw, filePath, populateFileTables)
 
     /**
      * Gets a FileTrapWriter like this one (using the same label manager,
