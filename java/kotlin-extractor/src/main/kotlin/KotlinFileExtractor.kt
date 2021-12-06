@@ -409,8 +409,8 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
         val body = f.body
         if(body != null && extractBody) {
-            // Type substitution should only be used to extract a prototype, not the body as well:
-            assert(typeSubstitutionMap == null)
+            if(typeSubstitutionMap != null)
+                logger.warnElement(Severity.ErrorSevere, "Type substitution should only be used to extract a function prototype, not the body", f)
             extractBody(body, id)
         }
 
