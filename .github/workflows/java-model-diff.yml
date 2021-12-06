@@ -67,7 +67,10 @@ jobs:
             ls -1 "$d"
 
             analyzeDatabaseWithCheckout "baseline" $d
-            analyzeDatabaseWithCheckout "head" $d
+            if [[ "$s1" != "$s2" ]]
+            then
+              analyzeDatabaseWithCheckout "head" $d
+            fi
           done
       - name: Install diff2html
         run: |
@@ -75,14 +78,19 @@ jobs:
       - name: Generate Model Diff
         run: |
           set -x
-          MODELS=`pwd`/tmp-models
-          ls -1 tmp-models/
-          for m in $MODELS/*_baseline.qll ; do
-            t="${m/baseline/"head"}"
-            basename=`basename $m`
-            name="diff_${basename/_baseline.qll/""}"
-            (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
-          done
+          if [[ "$s1" == "$s2" ]]
+          then
+            echo "Skipping diff generation as github.base_ref and github.ref are the same"
+          else
+            MODELS=`pwd`/tmp-models
+            ls -1 tmp-models/
+            for m in $MODELS/*_baseline.qll ; do
+              t="${m/baseline/"head"}"
+              basename=`basename $m`
+              name="diff_${basename/_baseline.qll/""}"
+              (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
+            done
+          fi
       - uses: actions/upload-artifact@v2
         with:
           name: models
