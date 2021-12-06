@@ -104,7 +104,7 @@ module Public {
     ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
     /** INTERNAL: Use `getRoot()` instead. */
-    DataFlowCallable getEnclosingCallable() {
+    Callable getEnclosingCallable() {
       result.getFuncDef() = this.getRoot()
       or
       this = MkSummarizedParameterNode(result, _)
@@ -457,7 +457,7 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
-    DataFlowCallable getACalleeIncludingExternals() {
+    Callable getACalleeIncludingExternals() {
       result.asFunction() = this.getTarget()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
@@ -558,7 +558,7 @@ module Public {
   /** A representation of a parameter initialization. */
   abstract class ParameterNode extends DataFlow::Node {
     /** Holds if this node initializes the `i`th parameter of `fd`. */
-    abstract predicate isParameterOf(DataFlowCallable c, int i);
+    abstract predicate isParameterOf(Callable c, int i);
   }
 
   /**
@@ -566,7 +566,7 @@ module Public {
    * already have a parameter nodes.
    */
   class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
-    DataFlowCallable c;
+    Callable c;
     int i;
 
     SummarizedParameterNode() { this = MkSummarizedParameterNode(c, i) }
@@ -582,7 +582,7 @@ module Public {
       i = -1 and result = c.asFunction().(Method).getReceiverType()
     }
 
-    override predicate isParameterOf(DataFlowCallable call, int idx) { c = call and i = idx }
+    override predicate isParameterOf(Callable call, int idx) { c = call and i = idx }
 
     override string toString() { result = "parameter " + i + " of " + c.toString() }
 
@@ -601,9 +601,7 @@ module Public {
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      parm.isParameterOf(c.getFuncDef(), i)
-    }
+    override predicate isParameterOf(Callable c, int i) { parm.isParameterOf(c.getFuncDef(), i) }
   }
 
   /** A representation of a receiver initialization. */
