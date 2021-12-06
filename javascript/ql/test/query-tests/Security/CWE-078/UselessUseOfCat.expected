@@ -55,6 +55,7 @@ syncCommand
 | command-line-parameter-command-injection.js:27:2:27:58 | cp.exec ... tion"`) |
 | lib/lib.js:419:2:419:52 | cp.exec ...  true}) |
 | lib/lib.js:420:2:420:49 | cp.spaw ...  true}) |
+| lib/lib.js:515:3:515:37 | cp.exec ... .taint) |
 | other.js:7:5:7:36 | require ... nc(cmd) |
 | other.js:9:5:9:35 | require ... nc(cmd) |
 | other.js:12:5:12:30 | require ... nc(cmd) |

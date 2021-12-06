@@ -1586,11 +1586,49 @@ module DataFlow {
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
-      pred = cls.getADirectSuperClass*().getAReceiverNode().getAPropertyWrite(prop).getRhs() or
+      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs()
+      or
       pred = cls.getInstanceMethod(prop)
     |
+      succ = cls.getAnInstanceMemberAccess(prop)
+    )
+  }
+
+  private predicate localFieldStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    exists(ClassNode cls |
+      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs()
+      or
+      pred = cls.getInstanceMethod(prop)
+    |
+      succ = cls.getConstructor().getReceiver()
+    )
+  }
+
+  private predicate localFieldLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    exists(ClassNode cls |
+      pred = cls.getConstructor().getReceiver() and
       succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
+  }
+
+  /**
+   * A step that models steps to and from fields of a class.
+   */
+  private class LocalFieldStep extends DataFlow::SharedFlowStep {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      localFieldLoadStep(pred, succ, prop)
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::ClassNode cls |
+        pred = cls.getADirectSuperClass().getConstructor().getReceiver() and
+        succ = cls.getConstructor().getReceiver()
+      )
+    }
+
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      localFieldStoreStep(pred, succ, prop)
+    }
   }
 
   predicate argumentPassingStep = FlowSteps::argumentPassing/4;

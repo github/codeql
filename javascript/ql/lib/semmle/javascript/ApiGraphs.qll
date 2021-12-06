@@ -683,6 +683,7 @@ module API {
     /**
      * Holds if `ref` is a use of node `nd`.
      */
+    pragma[noinline]
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
@@ -737,22 +738,35 @@ module API {
       boundArgs = 0 and
       prop = ""
       or
+      result =
+        trackUseNodeHelperStep(trackUseNode(nd, false, boundArgs, prop, t.continue()), promisified,
+          boundArgs, prop)
+      or
+      t = useStep(nd, promisified, boundArgs, prop, result)
+    }
+
+    pragma[nomagic]
+    private DataFlow::SourceNode trackUseNodeHelperStep(
+      DataFlow::SourceNode start, boolean promisified, int boundArgs, string prop
+    ) {
       exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
+        start.flowsTo(promisify.getArgument(0)) and
         promisified = true and
         prop = "" and
-        result = promisify
+        result = promisify and
+        boundArgs = 0
       )
       or
       exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
+        start.flowsTo(pred) and
         prop = "" and
         result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
-        boundArgs in [0 .. 10]
+        boundArgs in [0 .. 10] and
+        promisified = [true, false]
       )
       or
       exists(DataFlow::Node pred, string preprop |
-        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
+        start.flowsTo(pred) and
         promisified = false and
         boundArgs = 0 and
         SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
@@ -761,8 +775,6 @@ module API {
         or
         preprop = ""
       )
-      or
-      t = useStep(nd, promisified, boundArgs, prop, result)
     }
 
     private import semmle.javascript.dataflow.internal.StepSummary

@@ -19,6 +19,7 @@ firebaseRef
 | tst.js:54:5:54:37 | this.fi ... ef('x') |
 | tst.js:58:1:58:61 | new Fir ... /news') |
 | tst.js:59:1:59:38 | new Fir ... /news') |
+| tst.js:70:1:70:12 | box2.x.ref() |
 firebaseSnapshot
 | tst.js:5:1:8:2 | fb.data ... ent;\\n}) |
 | tst.js:5:38:5:38 | x |

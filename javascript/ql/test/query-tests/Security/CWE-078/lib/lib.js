@@ -500,3 +500,18 @@ module.exports.myCommand = function (myCommand) {
 	}
 });
   
+class Base {
+	constructor(taint) {
+		this.taint = taint;
+	}
+}
+
+module.exports.Sub = class Sub extends Base {
+	constructor(taint) {
+		super(taint);
+	}
+
+	doBadStuff() {
+		cp.execSync("rm -rf " + this.taint); // NOT OK
+	}
+}
