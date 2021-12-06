@@ -1652,19 +1652,18 @@ open class KotlinFileExtractor(
                     functionN(pluginContext)(parameters.size).typeWith(types)
                 }
 
-                val lambdaType = pluginContext.referenceClass(FqName("kotlin.jvm.internal.Lambda"))!!.typeWith()
                 /*
                 * Extract generated class:
                 * ```
-                * class C : kotlin.jvm.internal.Lambda, kotlin.FunctionI<T0,T1, ... TI, R> {
-                *   constructor() { super(I); }
+                * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
+                *   constructor() { super(); }
                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
                 * }
                 * ```
                 * or in case of big arity lambdas
                 * ```
-                * class C : kotlin.jvm.internal.Lambda, kotlin.FunctionN<R> {
-                *   constructor() { super(I); }
+                * class C : Any, kotlin.FunctionN<R> {
+                *   constructor() { super(); }
                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
                 *   fun invoke(vararg args: Any?): R {
                 *     return invoke(args[0] as T0, args[1] as T1, ..., args[I] as TI)
@@ -1674,8 +1673,7 @@ open class KotlinFileExtractor(
                 * */
                 extractGeneratedClass(
                     e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
-                    listOf(lambdaType, fnInterface),
-                    listOf(e.function.valueParameters.size.toIrConst(pluginContext.irBuiltIns.intType, e.startOffset, e.endOffset)))
+                    listOf(pluginContext.irBuiltIns.anyType, fnInterface))
 
                 if (types.size > BuiltInFunctionArity.BIG_ARITY) {
                     implementFunctionNInvoke(e.function, ids, locId, parameters)
@@ -1692,8 +1690,7 @@ open class KotlinFileExtractor(
                 tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
                 val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                // todo: in Java, we're accessing the base functional interface type.
-                val typeAccessType = useType(lambdaType)
+                val typeAccessType = useType(fnInterface)
                 tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, idLambdaExpr, -3)
                 tw.writeCallableEnclosingExpr(typeAccessId, callable)
                 tw.writeStatementEnclosingExpr(typeAccessId, exprParent.enclosingStmt)
@@ -1951,7 +1948,7 @@ open class KotlinFileExtractor(
     private val IrType.isAnonymous: Boolean
         get() = ((this as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
 
-    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>, superConstructorArgs: List<IrExpression> = listOf()) : Label<out DbClass> {
+    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
         val ids = getLocalFunctionLabels(localFunction)
 
         // Write class
@@ -1977,10 +1974,6 @@ open class KotlinFileExtractor(
         // Super call
         val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
         tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
-        for (i in 0 until superConstructorArgs.size) {
-            val arg = superConstructorArgs[i]
-            extractExpressionExpr(arg, ids.constructor, superCallId, i, superCallId)
-        }
 
         val baseConstructor = superTypes.first().classOrNull!!.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
         val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
