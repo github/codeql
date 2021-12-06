@@ -79,9 +79,9 @@ module CallGraph {
       cls.getAClassReference(t.continue()) = result
     )
     or
-    exists(DataFlow::ObjectLiteralNode object, string prop |
+    exists(DataFlow::SourceNode object, string prop |
       function = object.getAPropertySource(prop) and
-      result = getAnObjectLiteralRef(object).getAPropertyRead(prop) and
+      result = getAnAllocationSiteRef(object).getAPropertyRead(prop) and
       t.start()
     )
     or
@@ -203,21 +203,26 @@ module CallGraph {
     )
     or
     exists(DataFlow::ObjectLiteralNode object, string name |
-      ref = getAnObjectLiteralRef(object).getAPropertyRead(name) and
+      ref = getAnAllocationSiteRef(object).getAPropertyRead(name) and
       result = object.getPropertyGetter(name)
       or
-      ref = getAnObjectLiteralRef(object).getAPropertyWrite(name) and
+      ref = getAnAllocationSiteRef(object).getAPropertyWrite(name) and
       result = object.getPropertySetter(name)
     )
   }
 
-  private predicate shouldTrackObjectLiteral(DataFlow::ObjectLiteralNode node) {
+  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
     (
+      (
+        node instanceof DataFlow::ObjectLiteralNode
+        or
+        node instanceof DataFlow::FunctionNode
+      ) and
       node.getAPropertySource() instanceof DataFlow::FunctionNode
       or
-      exists(node.getPropertyGetter(_))
+      exists(node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_))
       or
-      exists(node.getPropertySetter(_))
+      exists(node.(DataFlow::ObjectLiteralNode).getPropertySetter(_))
     ) and
     not node.getTopLevel().isExterns()
   }
@@ -228,14 +233,14 @@ module CallGraph {
    * To avoid false flow from callbacks passed in via "named parameters", we only track object
    * literals out of returns, not into calls.
    */
-  private StepSummary objectLiteralStep() { result = LevelStep() or result = ReturnStep() }
+  private StepSummary objectWithMethodsStep() { result = LevelStep() or result = ReturnStep() }
 
-  /** Gets a node that refers to the given object literal, via a limited form of type tracking. */
+  /** Gets a node that refers to the given object, via a limited form of type tracking. */
   cached
-  DataFlow::SourceNode getAnObjectLiteralRef(DataFlow::ObjectLiteralNode node) {
-    shouldTrackObjectLiteral(node) and
+  DataFlow::SourceNode getAnAllocationSiteRef(DataFlow::SourceNode node) {
+    shouldTrackObjectWithMethods(node) and
     result = node
     or
-    StepSummary::step(getAnObjectLiteralRef(node), result, objectLiteralStep())
+    StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
   }
 }
