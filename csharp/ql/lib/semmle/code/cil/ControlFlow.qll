@@ -56,6 +56,32 @@ class ControlFlowNode extends @cil_controlflow_node {
     )
   }
 
+  /**
+   * Gets the type of the `i`th operand. Unlike `getOperand(i).getType()`, this
+   * predicate takes into account when there are multiple possible operands with
+   * different types.
+   */
+  Type getOperandType(int i) {
+    strictcount(this.getOperand(i)) = 1 and
+    result = this.getOperand(i).getType()
+    or
+    strictcount(this.getOperand(i)) = 2 and
+    exists(ControlFlowNode op1, ControlFlowNode op2, Type t2 |
+      op1 = this.getOperand(i) and
+      op2 = this.getOperand(i) and
+      op1 != op2 and
+      result = op1.getType() and
+      t2 = op2.getType()
+    |
+      result = t2
+      or
+      result.(PrimitiveType).getUnderlyingType().getConversionIndex() >
+        t2.(PrimitiveType).getUnderlyingType().getConversionIndex()
+      or
+      op2 instanceof NullLiteral
+    )
+  }
+
   /** Gets an operand of this instruction, if any. */
   ControlFlowNode getAnOperand() { result = this.getOperand(_) }
 
