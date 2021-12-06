@@ -1,6 +1,5 @@
 package com.github.codeql.utils
 
-import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
@@ -77,34 +76,3 @@ fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSym
         annotations
     )
 }
-
-fun IrTypeArgument.upperBound(context: IrPluginContext) =
-    when(this) {
-        is IrStarProjection -> context.irBuiltIns.anyNType
-        is IrTypeProjection -> when(this.variance) {
-            Variance.INVARIANT -> this.type
-            Variance.IN_VARIANCE -> if (this.type.isNullable()) context.irBuiltIns.anyNType else context.irBuiltIns.anyType
-            Variance.OUT_VARIANCE -> this.type
-        }
-        else -> context.irBuiltIns.anyNType
-    }
-
-fun IrTypeArgument.lowerBound(context: IrPluginContext) =
-    when(this) {
-        is IrStarProjection -> context.irBuiltIns.nothingType
-        is IrTypeProjection -> when(this.variance) {
-            Variance.INVARIANT -> this.type
-            Variance.IN_VARIANCE -> this.type
-            Variance.OUT_VARIANCE -> if (this.type.isNullable()) context.irBuiltIns.nothingNType else context.irBuiltIns.nothingType
-        }
-        else -> context.irBuiltIns.nothingType
-    }
-
-fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, topLevelMatchHandler: (IrTypeArgument) -> IrType): IrType =
-    substitutionMap?.let { substMap ->
-        this.classifierOrNull?.let { typeClassifier ->
-            substMap[typeClassifier]?.let {
-                topLevelMatchHandler(it)
-            } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
-        } ?: this
-    } ?: this
