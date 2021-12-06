@@ -365,7 +365,7 @@ void test_securezero()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // GOOD: password is (probably) encrypted [FALSE POSITIVE]
+		recv(val(), password, 256, val()); // GOOD: password is (probably) encrypted
 
 		DoDisguisedOperation(password, 256); // decryption (disguised)
 

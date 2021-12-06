@@ -147,13 +147,18 @@ class NetworkRecv extends NetworkSendRecv {
 }
 
 /**
- * An expression that is an argument or return value from an encryption or
- * decryption call.
+ * An expression that is an argument or return value from an encryption /
+ * decryption call. This is quite inclusive to minimize false positives, for
+ * example `SecureZeroMemory` is not an encryption routine but a clue that
+ * encryption may be present.
  */
 class Encrypted extends Expr {
   Encrypted() {
     exists(FunctionCall fc |
-      fc.getTarget().getName().toLowerCase().regexpMatch(".*(crypt|encode|decode).*") and
+      fc.getTarget()
+          .getName()
+          .toLowerCase()
+          .regexpMatch(".*(crypt|encode|decode|hash|securezero).*") and
       (
         this = fc or
         this = fc.getAnArgument()
