@@ -1,9 +1,6 @@
 name: Models as Data
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       projects:
@@ -25,7 +22,7 @@ jobs:
         # ["google/guava", "spring-projects/spring-framework", "apache/poi"]
         # others
         # ["FasterXML/jackson-core", "FasterXML/jackson-databind", "google/gson", "JodaOrg/joda-time"
-        slugs: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
+        slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone self (github/codeql) for baseline
         uses: actions/checkout@v2
@@ -39,13 +36,11 @@ jobs:
           ref: ${{ github.ref }}
       - uses: ./codeql-baseline/.github/actions/fetch-codeql
       - name: Download database
-        env:
-          SLUG: ${{ matrix.slugs }}
         run: |
           set -x
           mkdir lib-dbs
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/$SLUG | jq .id`
+          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${matrix.slugs}} | jq .id`
           curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o $SHORTNAME.zip
           unzip -q -d $SHORTNAME-db $SHORTNAME.zip
           mkdir lib-dbs/$SHORTNAME/
@@ -74,10 +69,12 @@ jobs:
             analyzeDatabaseWithCheckout "baseline" $d
             analyzeDatabaseWithCheckout "head" $d
           done
+      - name: Install diff2html
+        run: |
+          npm install -g diff2html-cli
       - name: Generate Model Diff
         run: |
           set -x
-          npm install -g diff2html-cli
           MODELS=`pwd`/tmp-models
           ls -1 tmp-models/
           for m in $MODELS/*_baseline.qll ; do
