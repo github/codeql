@@ -169,6 +169,19 @@ open class KotlinUsesExtractor(
         return res
     }
 
+    fun fakeKotlinType(): Label<out DbKt_type> {
+        val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
+            tw.writePackages(it, "fake.kotlin")
+        })
+        val fakeKotlinClassId: Label<DbClass> = tw.getLabelFor("@\"FakeKotlinClass\"", {
+            tw.writeClasses(it, "FakeKotlinClass", fakeKotlinPackageId, it)
+        })
+        val fakeKotlinTypeId: Label<DbKt_nullable_type> = tw.getLabelFor("@\"FakeKotlinType\"", {
+            tw.writeKt_nullable_types(it, fakeKotlinClassId)
+        })
+        return fakeKotlinTypeId
+    }
+
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             if (args.isNotEmpty()) {
@@ -186,7 +199,8 @@ open class KotlinUsesExtractor(
         val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
         // TODO: args ought to be substituted, so e.g. MutableList<MutableList<String>> gets the Java type List<List<String>>
         val javaResult = classInstanceResult.typeResult
-        val kotlinResult = if (hasQuestionMark) {
+        val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
+            if (hasQuestionMark) {
                 val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
                 val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
                 val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -313,7 +327,8 @@ open class KotlinUsesExtractor(
                     addClassLabel(javaClass, listOf())
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
-            val kotlinResult = if (s.hasQuestionMark) {
+            val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
+                if (s.hasQuestionMark) {
                     val kotlinSignature = "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
                     val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -401,7 +416,8 @@ class X {
             s.classifier.owner is IrTypeParameter -> {
                 val javaResult = useTypeParameter(s.classifier.owner as IrTypeParameter)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
-                val kotlinResult = if (s.hasQuestionMark) {
+                val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
+                    if (s.hasQuestionMark) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
