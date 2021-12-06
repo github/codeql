@@ -1,40 +1,40 @@
-| test.kt:14:3:14:29 | p1 | test.kt:3:1:3:34 | SimpleInvariant<String> | file://:0:0:0:0 | Kotlin not-null SimpleInvariant<String> | Object |
-| test.kt:15:3:15:33 | p2 | test.kt:3:1:3:34 | SimpleInvariant<? extends String> | file://:0:0:0:0 | Kotlin not-null SimpleInvariant<? extends String> | Object |
-| test.kt:16:3:16:32 | p3 | test.kt:3:1:3:34 | SimpleInvariant<? super String> | file://:0:0:0:0 | Kotlin not-null SimpleInvariant<? super String> | Object |
-| test.kt:17:3:17:24 | p4 | test.kt:3:1:3:34 | SimpleInvariant<?> | file://:0:0:0:0 | Kotlin not-null SimpleInvariant<?> | Object |
-| test.kt:18:3:18:29 | p5 | test.kt:5:1:5:75 | NestedInvariant<String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<String> | Object |
-| test.kt:18:3:18:29 | p5 | test.kt:5:1:5:75 | NestedInvariant<String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<String> | SimpleInvariant<SimpleInvariant<String>> |
-| test.kt:19:3:19:33 | p6 | test.kt:5:1:5:75 | NestedInvariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<? extends String> | Object |
-| test.kt:19:3:19:33 | p6 | test.kt:5:1:5:75 | NestedInvariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<? extends String> | SimpleInvariant<SimpleInvariant<? extends String>> |
-| test.kt:20:3:20:32 | p7 | test.kt:5:1:5:75 | NestedInvariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<? super String> | Object |
-| test.kt:20:3:20:32 | p7 | test.kt:5:1:5:75 | NestedInvariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<? super String> | SimpleInvariant<SimpleInvariant<? super String>> |
-| test.kt:21:3:21:24 | p8 | test.kt:5:1:5:75 | NestedInvariant<?> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<?> | Object |
-| test.kt:21:3:21:24 | p8 | test.kt:5:1:5:75 | NestedInvariant<?> | file://:0:0:0:0 | Kotlin not-null NestedInvariant<?> | SimpleInvariant<SimpleInvariant<?>> |
-| test.kt:22:3:22:29 | p9 | test.kt:7:1:7:74 | NestedCovariant<String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<String> | Object |
-| test.kt:22:3:22:29 | p9 | test.kt:7:1:7:74 | NestedCovariant<String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<String> | SimpleInvariant<SimpleInvariant<? extends String>> |
-| test.kt:23:3:23:34 | p10 | test.kt:7:1:7:74 | NestedCovariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<? extends String> | Object |
-| test.kt:23:3:23:34 | p10 | test.kt:7:1:7:74 | NestedCovariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<? extends String> | SimpleInvariant<SimpleInvariant<? extends String>> |
-| test.kt:24:3:24:33 | p11 | test.kt:7:1:7:74 | NestedCovariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<? super String> | Object |
-| test.kt:24:3:24:33 | p11 | test.kt:7:1:7:74 | NestedCovariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<? super String> | SimpleInvariant<SimpleInvariant<?>> |
-| test.kt:25:3:25:25 | p12 | test.kt:7:1:7:74 | NestedCovariant<?> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<?> | Object |
-| test.kt:25:3:25:25 | p12 | test.kt:7:1:7:74 | NestedCovariant<?> | file://:0:0:0:0 | Kotlin not-null NestedCovariant<?> | SimpleInvariant<SimpleInvariant<?>> |
-| test.kt:26:3:26:34 | p13 | test.kt:9:1:9:77 | NestedContravariant<String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<String> | Object |
-| test.kt:26:3:26:34 | p13 | test.kt:9:1:9:77 | NestedContravariant<String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<String> | SimpleInvariant<SimpleInvariant<? super String>> |
-| test.kt:27:3:27:38 | p14 | test.kt:9:1:9:77 | NestedContravariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<? extends String> | Object |
-| test.kt:27:3:27:38 | p14 | test.kt:9:1:9:77 | NestedContravariant<? extends String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<? extends String> | SimpleInvariant<SimpleInvariant<?>> |
-| test.kt:28:3:28:37 | p15 | test.kt:9:1:9:77 | NestedContravariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<? super String> | Object |
-| test.kt:28:3:28:37 | p15 | test.kt:9:1:9:77 | NestedContravariant<? super String> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<? super String> | SimpleInvariant<SimpleInvariant<? super String>> |
-| test.kt:29:3:29:29 | p16 | test.kt:9:1:9:77 | NestedContravariant<?> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<?> | Object |
-| test.kt:29:3:29:29 | p16 | test.kt:9:1:9:77 | NestedContravariant<?> | file://:0:0:0:0 | Kotlin not-null NestedContravariant<?> | SimpleInvariant<SimpleInvariant<?>> |
-| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<String> | NestedInvariant<String> |
-| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<String> | Object |
-| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<String> | SimpleInvariant<SimpleInvariant<String>> |
-| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? super String> | NestedInvariant<? super String> |
-| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? super String> | Object |
-| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? super String> | SimpleInvariant<SimpleInvariant<? super String>> |
-| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? extends String> | NestedInvariant<? extends String> |
-| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? extends String> | Object |
-| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<? extends String> | SimpleInvariant<SimpleInvariant<? extends String>> |
-| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<?> | NestedInvariant<?> |
-| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<?> | Object |
-| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin not-null DoubleInherit<?> | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:14:3:14:29 | p1 | test.kt:3:1:3:34 | SimpleInvariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:15:3:15:33 | p2 | test.kt:3:1:3:34 | SimpleInvariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:16:3:16:32 | p3 | test.kt:3:1:3:34 | SimpleInvariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:17:3:17:24 | p4 | test.kt:3:1:3:34 | SimpleInvariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:18:3:18:29 | p5 | test.kt:5:1:5:75 | NestedInvariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:18:3:18:29 | p5 | test.kt:5:1:5:75 | NestedInvariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<String>> |
+| test.kt:19:3:19:33 | p6 | test.kt:5:1:5:75 | NestedInvariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:19:3:19:33 | p6 | test.kt:5:1:5:75 | NestedInvariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? extends String>> |
+| test.kt:20:3:20:32 | p7 | test.kt:5:1:5:75 | NestedInvariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:20:3:20:32 | p7 | test.kt:5:1:5:75 | NestedInvariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? super String>> |
+| test.kt:21:3:21:24 | p8 | test.kt:5:1:5:75 | NestedInvariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:21:3:21:24 | p8 | test.kt:5:1:5:75 | NestedInvariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:22:3:22:29 | p9 | test.kt:7:1:7:74 | NestedCovariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:22:3:22:29 | p9 | test.kt:7:1:7:74 | NestedCovariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? extends String>> |
+| test.kt:23:3:23:34 | p10 | test.kt:7:1:7:74 | NestedCovariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:23:3:23:34 | p10 | test.kt:7:1:7:74 | NestedCovariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? extends String>> |
+| test.kt:24:3:24:33 | p11 | test.kt:7:1:7:74 | NestedCovariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:24:3:24:33 | p11 | test.kt:7:1:7:74 | NestedCovariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:25:3:25:25 | p12 | test.kt:7:1:7:74 | NestedCovariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:25:3:25:25 | p12 | test.kt:7:1:7:74 | NestedCovariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:26:3:26:34 | p13 | test.kt:9:1:9:77 | NestedContravariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:26:3:26:34 | p13 | test.kt:9:1:9:77 | NestedContravariant<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? super String>> |
+| test.kt:27:3:27:38 | p14 | test.kt:9:1:9:77 | NestedContravariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:27:3:27:38 | p14 | test.kt:9:1:9:77 | NestedContravariant<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:28:3:28:37 | p15 | test.kt:9:1:9:77 | NestedContravariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:28:3:28:37 | p15 | test.kt:9:1:9:77 | NestedContravariant<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? super String>> |
+| test.kt:29:3:29:29 | p16 | test.kt:9:1:9:77 | NestedContravariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:29:3:29:29 | p16 | test.kt:9:1:9:77 | NestedContravariant<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |
+| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | NestedInvariant<String> |
+| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:30:3:30:28 | p17 | test.kt:11:1:11:51 | DoubleInherit<String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<String>> |
+| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | NestedInvariant<? super String> |
+| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:31:3:31:31 | p18 | test.kt:11:1:11:51 | DoubleInherit<? super String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? super String>> |
+| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | NestedInvariant<? extends String> |
+| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:32:3:32:32 | p19 | test.kt:11:1:11:51 | DoubleInherit<? extends String> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<? extends String>> |
+| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | NestedInvariant<?> |
+| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | Object |
+| test.kt:33:3:33:23 | p20 | test.kt:11:1:11:51 | DoubleInherit<?> | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass | SimpleInvariant<SimpleInvariant<?>> |

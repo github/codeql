@@ -1041,6 +1041,7 @@
 | Factory<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
 | Factory<T,K,S> | Class, ParameterizedType |
 | FairSync | Class |
+| FakeKotlinClass | Class |
 | Field | Class |
 | FieldAccessor | Interface |
 | FieldDelegate | Interface |
