@@ -563,7 +563,7 @@ class X {
         val label = if (parent is IrClass) {
             // todo: fix this. Ugly string concat to handle nested class IDs.
             // todo: Can the containing class have type arguments?
-            "${getUnquotedClassLabel(parent, listOf())}\$$cls"
+            "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
         } else {
             if (pkg.isEmpty()) cls else "$pkg.$cls"
         }
