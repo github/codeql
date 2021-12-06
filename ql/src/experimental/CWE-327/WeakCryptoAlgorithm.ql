@@ -6,6 +6,7 @@
  * @id go/weak-crypto-algorithm
  * @tags security
  *         external/cwe/cwe-327
+ *         external/cwe/cwe-328
  */
 
 import go
