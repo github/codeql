@@ -1136,7 +1136,7 @@ open class KotlinFileExtractor(
             type = useType(e.type)
         }
         val locId = tw.getLocation(e)
-        val methodId = useFunction<DbConstructor>(e.symbol.owner)
+        val methodId = useFunction<DbConstructor>(e.symbol.owner, (e.type as? IrSimpleType)?.arguments)
         tw.writeExprs_newexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(id, locId)
         tw.writeCallableEnclosingExpr(id, callable)
