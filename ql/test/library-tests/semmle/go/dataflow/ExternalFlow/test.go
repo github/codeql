@@ -1,8 +1,6 @@
 package main
 
 import (
-	"io"
-
 	"github.com/nonexistent/test"
 )
 
@@ -47,7 +45,7 @@ func main() {
 	var b test.B
 
 	b.Sink1(arg)
-	b.SinkMethod().(io.Writer).Write(arg.([]byte))
+	arg.(test.B).SinkMethod()
 
 	use(arg, arg1, t, taint, taintSlice, src, src1)
 }

@@ -1,16 +1,16 @@
 invalidModelRow
 #select
-| test.go:19:23:19:25 | arg | test.go:19:10:19:26 | call to StepArgRes |
-| test.go:20:27:20:29 | arg | test.go:20:2:20:30 | ... = ...[1] |
-| test.go:21:15:21:17 | arg | test.go:13:6:13:9 | definition of arg1 |
-| test.go:22:16:22:18 | arg | test.go:15:6:15:6 | definition of t |
-| test.go:23:10:23:10 | t | test.go:23:10:23:24 | call to StepQualRes |
-| test.go:24:2:24:2 | t | test.go:12:6:12:8 | definition of arg |
-| test.go:25:32:25:34 | arg | test.go:25:10:25:35 | call to StepArgResNoQual |
-| test.go:62:25:62:27 | src | test.go:62:12:62:28 | call to StepArgRes |
-| test.go:65:29:65:31 | src | test.go:65:2:65:32 | ... := ...[1] |
-| test.go:69:15:69:17 | src | test.go:68:6:68:11 | definition of taint3 |
-| test.go:73:21:73:23 | src | test.go:72:6:72:11 | definition of taint4 |
-| test.go:76:13:76:25 | type assertion | test.go:76:12:76:40 | call to StepQualRes |
-| test.go:80:3:80:15 | type assertion | test.go:79:6:79:11 | definition of taint6 |
-| test.go:83:34:83:36 | src | test.go:83:12:83:37 | call to StepArgResNoQual |
+| test.go:17:23:17:25 | arg | test.go:17:10:17:26 | call to StepArgRes |
+| test.go:18:27:18:29 | arg | test.go:18:2:18:30 | ... = ...[1] |
+| test.go:19:15:19:17 | arg | test.go:11:6:11:9 | definition of arg1 |
+| test.go:20:16:20:18 | arg | test.go:13:6:13:6 | definition of t |
+| test.go:21:10:21:10 | t | test.go:21:10:21:24 | call to StepQualRes |
+| test.go:22:2:22:2 | t | test.go:10:6:10:8 | definition of arg |
+| test.go:23:32:23:34 | arg | test.go:23:10:23:35 | call to StepArgResNoQual |
+| test.go:60:25:60:27 | src | test.go:60:12:60:28 | call to StepArgRes |
+| test.go:63:29:63:31 | src | test.go:63:2:63:32 | ... := ...[1] |
+| test.go:67:15:67:17 | src | test.go:66:6:66:11 | definition of taint3 |
+| test.go:71:21:71:23 | src | test.go:70:6:70:11 | definition of taint4 |
+| test.go:74:13:74:25 | type assertion | test.go:74:12:74:40 | call to StepQualRes |
+| test.go:78:3:78:15 | type assertion | test.go:77:6:77:11 | definition of taint6 |
+| test.go:81:34:81:36 | src | test.go:81:12:81:37 | call to StepArgResNoQual |
