@@ -15,6 +15,7 @@ on:
 
 jobs:
   model-diff:
+    name: Model Difference
     runs-on: ubuntu-latest
     strategy:
       matrix:
