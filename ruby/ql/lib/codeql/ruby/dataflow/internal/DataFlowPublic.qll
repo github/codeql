@@ -83,9 +83,9 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode {
+class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter getParameter() { none() }
+  final Parameter getParameter() { result = super.getParameter() }
 }
 
 /**
