@@ -6,6 +6,7 @@ android.net,,,60,,,,,,,,,,,,,,,,,,,,,,45,15
 android.os,,,122,,,,,,,,,,,,,,,,,,,,,,41,81
 android.util,,16,,,,,,,,,,,,,,,,,,,,,,16,,
 android.webkit,3,2,,,,,,,,,,,,,,,,,,,,3,,2,,
+androidx.slice,,5,88,,,,,,,,,,,,,,,,,,,,5,,27,61
 cn.hutool.core.codec,,,1,,,,,,,,,,,,,,,,,,,,,,1,
 com.esotericsoftware.kryo.io,,,1,,,,,,,,,,,,,,,,,,,,,,1,
 com.esotericsoftware.kryo5.io,,,1,,,,,,,,,,,,,,,,,,,,,,1,
