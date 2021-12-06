@@ -12,19 +12,14 @@ sourceSignatures
 | arrayCreations.kt:4:3:28:3 | test1 | test1() |
 | arrayCreations.kt:22:29:22:33 |  |  |
 | arrayCreations.kt:22:29:22:33 | invoke | invoke(int) |
-| arrayCreations.kt:22:29:22:33 | invoke | invoke(java.lang.Object) |
 | arrayCreations.kt:23:24:23:28 |  |  |
 | arrayCreations.kt:23:24:23:28 | invoke | invoke(int) |
-| arrayCreations.kt:23:24:23:28 | invoke | invoke(java.lang.Object) |
 | arrayCreations.kt:25:27:25:31 |  |  |
 | arrayCreations.kt:25:27:25:31 | invoke | invoke(int) |
-| arrayCreations.kt:25:27:25:31 | invoke | invoke(java.lang.Object) |
 | arrayCreations.kt:26:27:26:36 |  |  |
 | arrayCreations.kt:26:27:26:36 | invoke | invoke(int) |
-| arrayCreations.kt:26:27:26:36 | invoke | invoke(java.lang.Object) |
 | arrayCreations.kt:27:24:27:38 |  |  |
 | arrayCreations.kt:27:24:27:38 | invoke | invoke(int) |
-| arrayCreations.kt:27:24:27:38 | invoke | invoke(java.lang.Object) |
 | primitiveArrays.kt:3:1:7:1 | <obinit> | <obinit>() |
 | primitiveArrays.kt:3:1:7:1 | Test | Test() |
 | primitiveArrays.kt:3:1:7:1 | equals | equals(java.lang.Object) |

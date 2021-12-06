@@ -1,6 +1,8 @@
 | file://:0:0:0:0 | C1<Integer> | TypeAccess |
 | file://:0:0:0:0 | Integer | TypeAccess |
 | file://:0:0:0:0 | Integer | TypeAccess |
+| file://:0:0:0:0 | Object | TypeAccess |
+| file://:0:0:0:0 | Object | TypeAccess |
 | file://:0:0:0:0 | String | TypeAccess |
 | methods2.kt:7:1:10:1 | <obinit>(...) | MethodAccess |
 | methods3.kt:5:1:7:1 | <obinit>(...) | MethodAccess |
