@@ -1,5 +1,6 @@
 private import codeql.ruby.AST
 private import internal.AST
+private import internal.Control
 private import internal.TreeSitter
 
 /**
@@ -308,13 +309,36 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
   }
 }
 
-class CaseExpr extends ControlExpr, TCaseExpr {
-  private Ruby::Case g;
-
-  CaseExpr() { this = TCaseExpr(g) }
-
-  final override string getAPrimaryQlClass() { result = "CaseExpr" }
-
+/**
+ * A `case` statement. There are three forms of `case` statements:
+ * ```rb
+ * # a value-less case expression acting like an if-elsif expression:
+ * case
+ *   when x == 0 then puts "zero"
+ *   when x > 0 then puts "positive"
+ *   else puts "negative"
+ * end
+ *
+ * # a case expression that matches a value using `when` clauses:
+ * case value
+ *   when 1, 2 then puts "a is one or two"
+ *   when 3    then puts "a is three"
+ *   else           puts "I don't know what a is"
+ * end
+ *
+ * # a case expression that matches a value against patterns using `in` clauses:
+ * config = {db: {user: 'admin', password: 'abc123'}}
+ * case config
+ *   in db: {user:} # matches subhash and puts matched value in variable user
+ *     puts "Connect with user '#{user}'"
+ *   in connection: {username: } unless username == 'admin'
+ *     puts "Connect with user '#{username}'"
+ *   else
+ *     puts "Unrecognized structure of config"
+ * end
+ * ```
+ */
+class CaseExpr extends ControlExpr instanceof CaseExprImpl {
   /**
    * Gets the expression being compared, if any. For example, `foo` in the following example.
    * ```rb
@@ -334,22 +358,25 @@ class CaseExpr extends ControlExpr, TCaseExpr {
    * end
    * ```
    */
-  final Expr getValue() { toGenerated(result) = g.getValue() }
+  final Expr getValue() { result = super.getValue() }
 
   /**
-   * Gets the `n`th branch of this case expression, either a `WhenExpr` or a
-   * `StmtSequence`.
+   * Gets the `n`th branch of this case expression, either a `WhenExpr`, an
+   * `InClause`, or a `StmtSequence`.
    */
-  final Expr getBranch(int n) { toGenerated(result) = g.getChild(n) }
+  final Expr getBranch(int n) { result = super.getBranch(n) }
 
   /**
-   * Gets a branch of this case expression, either a `WhenExpr` or an
-   * `ElseExpr`.
+   * Gets a branch of this case expression, either a `WhenExpr`, an
+   * `InClause`, or a `StmtSequence`.
    */
   final Expr getABranch() { result = this.getBranch(_) }
 
+  /** Gets the `n`th `when` branch of this case expression. */
+  deprecated final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
+
   /** Gets a `when` branch of this case expression. */
-  final WhenExpr getAWhenBranch() { result = this.getABranch() }
+  deprecated final WhenExpr getAWhenBranch() { result = this.getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
   final StmtSequence getElseBranch() { result = this.getABranch() }
@@ -359,14 +386,18 @@ class CaseExpr extends ControlExpr, TCaseExpr {
    */
   final int getNumberOfBranches() { result = count(this.getBranch(_)) }
 
+  final override string getAPrimaryQlClass() { result = "CaseExpr" }
+
   final override string toString() { result = "case ..." }
 
   override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
+    result = ControlExpr.super.getAChild(pred)
     or
     pred = "getValue" and result = this.getValue()
     or
     pred = "getBranch" and result = this.getBranch(_)
+    or
+    pred = "getElseBranch" and result = this.getElseBranch()
   }
 }
 
@@ -419,6 +450,81 @@ class WhenExpr extends Expr, TWhenExpr {
     pred = "getBody" and result = this.getBody()
     or
     pred = "getPattern" and result = this.getPattern(_)
+  }
+}
+
+/**
+ * An `in` clause of a `case` expression.
+ * ```rb
+ * case foo
+ * in [ a ] then a
+ * end
+ * ```
+ */
+class InClause extends Expr, TInClause {
+  private Ruby::InClause g;
+
+  InClause() { this = TInClause(g) }
+
+  final override string getAPrimaryQlClass() { result = "InClause" }
+
+  /** Gets the body of this case-in expression. */
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  /**
+   * Gets the pattern in this case-in expression. In the
+   * following example, the pattern is `Point{ x:, y: }`.
+   * ```rb
+   * case foo
+   * in Point{ x:, y: }
+   *   x + y
+   * end
+   * ```
+   */
+  final CasePattern getPattern() { toGenerated(result) = g.getPattern() }
+
+  /**
+   * Gets the pattern guard condition in this case-in expression. In the
+   * following example, there are two pattern guard conditions `x > 10` and `x < 0`.
+   * ```rb
+   * case foo
+   * in [ x ] if x > 10 then ...
+   * in [ x ] unless x < 0 then ...
+   * end
+   * ```
+   */
+  final Expr getCondition() { toGenerated(result) = g.getGuard().getAFieldOrChild() }
+
+  /**
+   * Holds if the pattern guard in this case-in expression is an `if` condition. For example:
+   * ```rb
+   * case foo
+   * in [ x ] if x > 10 then ...
+   * end
+   * ```
+   */
+  predicate hasIfCondition() { g.getGuard() instanceof Ruby::IfGuard }
+
+  /**
+   * Holds if the pattern guard in this case-in expression is an `unless` condition. For example:
+   * ```rb
+   * case foo
+   * in [ x ] unless x < 10 then ...
+   * end
+   * ```
+   */
+  predicate hasUnlessCondition() { g.getGuard() instanceof Ruby::UnlessGuard }
+
+  final override string toString() { result = "in ... then ..." }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
+    or
+    pred = "getPattern" and result = this.getPattern()
+    or
+    pred = "getCondition" and result = this.getCondition()
   }
 }
 
@@ -583,7 +689,7 @@ class ForExpr extends Loop, TForExpr {
   final override string getAPrimaryQlClass() { result = "ForExpr" }
 
   /** Gets the body of this `for` loop. */
-  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+  final override StmtSequence getBody() { toGenerated(result) = g.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
   final Pattern getPattern() { toGenerated(result) = g.getPattern() }

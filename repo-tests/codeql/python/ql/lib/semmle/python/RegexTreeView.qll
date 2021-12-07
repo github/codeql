@@ -539,8 +539,8 @@ private int toHex(string hex) {
 /**
  * A word boundary, that is, a regular expression term of the form `\b`.
  */
-class RegExpWordBoundary extends RegExpEscape {
-  RegExpWordBoundary() { this.getUnescaped() = "b" }
+class RegExpWordBoundary extends RegExpSpecialChar {
+  RegExpWordBoundary() { this.getChar() = "\\b" }
 }
 
 /**
@@ -809,7 +809,7 @@ class RegExpDot extends RegExpSpecialChar {
 }
 
 /**
- * A dollar assertion `$` matching the end of a line.
+ * A dollar assertion `$` or `\Z` matching the end of a line.
  *
  * Example:
  *
@@ -818,13 +818,13 @@ class RegExpDot extends RegExpSpecialChar {
  * ```
  */
 class RegExpDollar extends RegExpSpecialChar {
-  RegExpDollar() { this.getChar() = "$" }
+  RegExpDollar() { this.getChar() = ["$", "\\Z"] }
 
   override string getPrimaryQLClass() { result = "RegExpDollar" }
 }
 
 /**
- * A caret assertion `^` matching the beginning of a line.
+ * A caret assertion `^` or `\A` matching the beginning of a line.
  *
  * Example:
  *
@@ -833,7 +833,7 @@ class RegExpDollar extends RegExpSpecialChar {
  * ```
  */
 class RegExpCaret extends RegExpSpecialChar {
-  RegExpCaret() { this.getChar() = "^" }
+  RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
   override string getPrimaryQLClass() { result = "RegExpCaret" }
 }

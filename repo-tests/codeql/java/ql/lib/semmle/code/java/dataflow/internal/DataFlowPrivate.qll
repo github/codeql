@@ -8,6 +8,7 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
+private import DataFlowImplConsistency
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -150,8 +151,11 @@ predicate readStep(Node node1, Content f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  c instanceof FieldContent and
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  exists(FieldAccess fa |
+    instanceFieldAssign(_, fa) and
+    n = getFieldQualifier(fa) and
+    c.(FieldContent).getField() = fa.getField()
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
@@ -227,18 +231,18 @@ class DataFlowCallable extends TDataFlowCallable {
   Field asFieldScope() { this = TFieldScope(result) }
 
   RefType getDeclaringType() {
-    result = asCallable().getDeclaringType() or
-    result = asFieldScope().getDeclaringType()
+    result = this.asCallable().getDeclaringType() or
+    result = this.asFieldScope().getDeclaringType()
   }
 
   string toString() {
-    result = asCallable().toString() or
-    result = "Field scope: " + asFieldScope().toString()
+    result = this.asCallable().toString() or
+    result = "Field scope: " + this.asFieldScope().toString()
   }
 
   Location getLocation() {
-    result = asCallable().getLocation() or
-    result = asFieldScope().getLocation()
+    result = this.asCallable().getLocation() or
+    result = this.asFieldScope().getLocation()
   }
 }
 
@@ -362,17 +366,6 @@ predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
-}
-
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
@@ -416,4 +409,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
+  }
 }

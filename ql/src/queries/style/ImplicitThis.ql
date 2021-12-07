@@ -2,8 +2,8 @@
  * @name Using implicit `this`
  * @description Writing member predicate calls with an implicit `this` can be confusing
  * @kind problem
- * @problem.severity recommendation
- * @precision very-high
+ * @problem.severity warning
+ * @precision high
  * @id ql/implicit-this
  * @tags maintainability
  */

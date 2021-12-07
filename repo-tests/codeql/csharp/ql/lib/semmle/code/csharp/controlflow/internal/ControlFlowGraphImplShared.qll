@@ -788,7 +788,7 @@ private module Cached {
    * The control flow graph is pruned for unreachable nodes.
    */
   cached
-  newtype TNode =
+  newtype TCfgNode =
     TEntryNode(CfgScope scope) { succEntrySplits(scope, _, _, _) } or
     TAnnotatedExitNode(CfgScope scope, boolean normal) {
       exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(_) |
@@ -807,7 +807,7 @@ private module Cached {
 
   /** Gets a successor node of a given flow type, if any. */
   cached
-  TNode getASuccessor(TNode pred, SuccessorType t) {
+  TCfgNode getASuccessor(TCfgNode pred, SuccessorType t) {
     // Callable entry node -> callable body
     exists(ControlFlowElement succElement, Splits succSplits, CfgScope scope |
       result = TElementNode(succElement, succSplits) and
@@ -942,5 +942,10 @@ module Consistency {
     not node instanceof TEntryNode and
     strictcount(getASuccessor(node, t)) > 1 and
     successor = getASuccessor(node, t)
+  }
+
+  query predicate deadEnd(Node node) {
+    not node instanceof TExitNode and
+    not exists(getASuccessor(node, _))
   }
 }

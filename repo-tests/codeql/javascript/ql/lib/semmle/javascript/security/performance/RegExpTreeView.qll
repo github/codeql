@@ -7,6 +7,14 @@
 import javascript
 
 /**
+ * Holds if `term` is an ecape class representing e.g. `\d`.
+ * `clazz` is which character class it represents, e.g. "d" for `\d`.
+ */
+predicate isEscapeClass(RegExpTerm term, string clazz) {
+  exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+}
+
+/**
  * Holds if the regular expression should not be considered.
  *
  * For javascript we make the pragmatic performance optimization to ignore minified files.
