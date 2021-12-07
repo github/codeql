@@ -57,15 +57,15 @@ deprecated predicate isSafeLocationProperty(PropAccess pacc) {
  * A call to a DOM method.
  */
 class DomMethodCallExpr extends MethodCallExpr {
-  DomMethodCallExpr() { isDomValue(getReceiver()) }
+  DomMethodCallExpr() { isDomValue(this.getReceiver()) }
 
   /**
    * Holds if `arg` is an argument that is interpreted as HTML.
    */
   predicate interpretsArgumentsAsHTML(Expr arg) {
     exists(int argPos, string name |
-      arg = getArgument(argPos) and
-      name = getMethodName()
+      arg = this.getArgument(argPos) and
+      name = this.getMethodName()
     |
       // individual signatures:
       name = "write"
@@ -89,7 +89,7 @@ class DomMethodCallExpr extends MethodCallExpr {
       ) and
       // restrict to potentially dangerous attributes
       exists(string attr | attr = ["action", "formaction", "href", "src", "xlink:href", "data"] |
-        getArgument(argPos - 1).getStringValue().toLowerCase() = attr
+        this.getArgument(argPos - 1).getStringValue().toLowerCase() = attr
       )
     )
   }
@@ -102,7 +102,7 @@ class DomPropWriteNode extends Assignment {
   PropAccess lhs;
 
   DomPropWriteNode() {
-    lhs = getLhs() and
+    lhs = this.getLhs() and
     isDomValue(lhs.getBase())
   }
 
@@ -165,7 +165,7 @@ private module PersistentWebStorage {
 
     override PersistentWriteAccess getAWrite() {
       exists(string name |
-        getArgument(0).mayHaveStringValue(name) and
+        this.getArgument(0).mayHaveStringValue(name) and
         result = getAWriteByName(name, kind)
       )
     }
@@ -179,11 +179,11 @@ private module PersistentWebStorage {
 
     WriteAccess() { this = webStorage(kind).getAMethodCall("setItem") }
 
-    string getKey() { getArgument(0).mayHaveStringValue(result) }
+    string getKey() { this.getArgument(0).mayHaveStringValue(result) }
 
     string getKind() { result = kind }
 
-    override DataFlow::Node getValue() { result = getArgument(1) }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
   }
 }
 
@@ -209,7 +209,7 @@ class PostMessageEventHandler extends Function {
   /**
    * Gets the parameter that contains the event.
    */
-  Parameter getEventParameter() { result = getParameter(paramIndex) }
+  Parameter getEventParameter() { result = this.getParameter(paramIndex) }
 }
 
 /**

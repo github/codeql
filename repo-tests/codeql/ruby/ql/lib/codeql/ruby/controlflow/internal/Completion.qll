@@ -14,7 +14,6 @@ private import SuccessorTypes
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b in [false, true] } or
-  TEmptinessCompletion(boolean isEmpty) { isEmpty in [false, true] } or
   TMatchingCompletion(boolean isMatch) { isMatch in [false, true] } or
   TReturnCompletion() or
   TBreakCompletion() or
@@ -54,9 +53,6 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n = TForIn(_) and
-  c instanceof EmptinessCompletion
-  or
   n instanceof BreakStmt and
   c = TBreakCompletion()
   or
@@ -196,7 +192,7 @@ private predicate inBooleanContext(AstNode n) {
   or
   exists(CaseExpr c, WhenExpr w |
     not exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
 }
@@ -218,7 +214,7 @@ private predicate inMatchingContext(AstNode n) {
   or
   exists(CaseExpr c, WhenExpr w |
     exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
   or
@@ -242,8 +238,8 @@ class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
 
 /**
  * A completion that represents evaluation of an expression, whose value determines
- * the successor. Either a Boolean completion (`BooleanCompletion`), an emptiness
- * completion (`EmptinessCompletion`), or a matching completion (`MatchingCompletion`).
+ * the successor. Either a Boolean completion (`BooleanCompletion`), or a matching
+ * completion (`MatchingCompletion`).
  */
 abstract class ConditionalCompletion extends NonNestedNormalCompletion {
   boolean value;
@@ -278,18 +274,6 @@ class TrueCompletion extends BooleanCompletion {
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
   FalseCompletion() { this.getValue() = false }
-}
-
-/**
- * A completion that represents evaluation of an emptiness test, for example
- * a test in a `for in` statement.
- */
-class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
-  EmptinessCompletion() { this = TEmptinessCompletion(value) }
-
-  override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
-
-  override string toString() { if value = true then result = "empty" else result = "non-empty" }
 }
 
 /**

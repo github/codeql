@@ -96,7 +96,7 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking, and the initial value is a promise.
    * The type tracking only ends after the value has been extracted from the promise.
    */
-  predicate startInPromise() { startInProp(Promises::valueProp()) }
+  predicate startInPromise() { this.startInProp(Promises::valueProp()) }
 
   /**
    * Holds if this is the starting point of type tracking

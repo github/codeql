@@ -1111,9 +1111,7 @@ module Redux {
 
     /** A heuristic call to `connect`, recognized by it taking arguments named `mapStateToProps` and `mapDispatchToProps`. */
     private class HeuristicConnectFunction extends ConnectCall {
-      HeuristicConnectFunction() {
-        this = API::root().getASuccessor(any(HeuristicConnectEntryPoint e)).getACall()
-      }
+      HeuristicConnectFunction() { this = any(HeuristicConnectEntryPoint e).getNode().getACall() }
 
       override API::Node getMapStateToProps() {
         result = getAParameter() and

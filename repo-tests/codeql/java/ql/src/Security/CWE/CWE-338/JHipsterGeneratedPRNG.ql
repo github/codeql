@@ -30,7 +30,7 @@ private class PredictableApacheRandomStringUtilsMethodAccess extends MethodAcces
 private class VulnerableJHipsterRandomUtilClass extends Class {
   VulnerableJHipsterRandomUtilClass() {
     // The package name that JHipster generated the 'RandomUtil' class in was dynamic. Thus 'hasQualifiedName' can not be used here.
-    getName() = "RandomUtil"
+    this.getName() = "RandomUtil"
   }
 }
 

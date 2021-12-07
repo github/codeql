@@ -626,9 +626,9 @@ library class ExprEvaluator extends int {
       // All assignments must have the same int value
       result =
         unique(Expr value |
-          value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
+          value = v.getAnAssignedValue() and not this.ignoreVariableAssignment(e, v, value)
         |
-          getValueInternalNonSubExpr(value)
+          this.getValueInternalNonSubExpr(value)
         )
     )
   }

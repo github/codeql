@@ -164,7 +164,7 @@ private module NodeJSCrypto {
       exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("crypto") and
         this = mod.getAMemberCall("create" + ["Hash", "Hmac", "Sign", "Cipher"]) and
-        algorithm.matchesName(getArgument(0).getStringValue())
+        algorithm.matchesName(this.getArgument(0).getStringValue())
       )
     }
 
@@ -190,15 +190,15 @@ private module NodeJSCrypto {
     }
 
     override CryptographicAlgorithm getAlgorithm() {
-      result.matchesName(getArgument(0).getStringValue())
+      result.matchesName(this.getArgument(0).getStringValue())
     }
 
     override int getSize() {
       symmetric = true and
-      result = getOptionArgument(1, "length").getIntValue()
+      result = this.getOptionArgument(1, "length").getIntValue()
       or
       symmetric = false and
-      result = getOptionArgument(1, "modulusLength").getIntValue()
+      result = this.getOptionArgument(1, "modulusLength").getIntValue()
     }
 
     override predicate isSymmetricKey() { symmetric = true }
@@ -212,7 +212,7 @@ private module NodeJSCrypto {
 
     override CryptographicAlgorithm getAlgorithm() { none() }
 
-    override int getSize() { result = getArgument(0).getIntValue() }
+    override int getSize() { result = this.getArgument(0).getIntValue() }
 
     override predicate isSymmetricKey() { none() }
   }
@@ -224,7 +224,7 @@ private module NodeJSCrypto {
       this = instantiation.getAMethodCall(any(string m | m = "update" or m = "write")).asExpr()
     }
 
-    override Expr getInput() { result = getArgument(0) }
+    override Expr getInput() { result = this.getArgument(0) }
 
     override CryptographicAlgorithm getAlgorithm() { result = instantiation.getAlgorithm() }
   }
@@ -365,9 +365,9 @@ private module CryptoJS {
     override CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithm) }
 
     override int getSize() {
-      result = getOptionArgument(optionArg, "keySize").getIntValue() * 32 // size is in words
+      result = this.getOptionArgument(optionArg, "keySize").getIntValue() * 32 // size is in words
       or
-      result = getArgument(optionArg).getIntValue() * 32 // size is in words
+      result = this.getArgument(optionArg).getIntValue() * 32 // size is in words
     }
 
     override predicate isSymmetricKey() { any() }
@@ -496,11 +496,11 @@ private module Forge {
           // `require('forge').cipher.createCipher("3DES-CBC").update("secret", "key");`
           (createName = "createCipher" or createName = "createDecipher") and
           this = mod.getAPropertyRead("cipher").getAMemberCall(createName) and
-          getArgument(0).asExpr().mayHaveStringValue(cipherName) and
+          this.getArgument(0).asExpr().mayHaveStringValue(cipherName) and
           cipherName = cipherPrefix + "-" + cipherSuffix and
           cipherSuffix = ["CBC", "CFB", "CTR", "ECB", "GCM", "OFB"] and
           algorithmName = cipherPrefix and
-          key = getArgument(1)
+          key = this.getArgument(1)
         )
         or
         // `require("forge").rc2.createEncryptionCipher("key").update("secret");`
@@ -508,7 +508,7 @@ private module Forge {
           createName = "createEncryptionCipher" or createName = "createDecryptionCipher"
         |
           this = mod.getAPropertyRead(algorithmName).getAMemberCall(createName) and
-          key = getArgument(0)
+          key = this.getArgument(0)
         )
       )
     }
@@ -583,7 +583,7 @@ private module Forge {
       result = this.getArgument(1).getIntValue()
       or
       exists(DataFlow::CallNode call | call.getCalleeName() = ["getBytes", "getBytesSync"] |
-        getArgument(1).getALocalSource() = call and
+        this.getArgument(1).getALocalSource() = call and
         result = call.getArgument(0).getIntValue() * 8 // bytes to bits
       )
     }
