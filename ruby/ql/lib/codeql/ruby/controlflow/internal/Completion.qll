@@ -84,6 +84,8 @@ private predicate mayRaise(Call c) {
 abstract class Completion extends TCompletion {
   /** Holds if this completion is valid for node `n`. */
   predicate isValidFor(AstNode n) {
+    exists(AstNode other | n = other.getDesugared() and this.isValidFor(other))
+    or
     this = n.(NonReturningCall).getACompletion()
     or
     completionIsValidForStmt(n, this)
@@ -228,8 +230,6 @@ private predicate inMatchingContext(AstNode n) {
   n instanceof CasePattern
   or
   n = any(VariableReferencePattern p).getVariableAccess()
-  or
-  n = any(CasePattern c).getDesugared()
   or
   n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
