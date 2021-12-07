@@ -32,18 +32,26 @@ class GenericGeneratedFile extends GeneratedFile {
   override string getTool() { lax_generated_by(this, result) or strict_generated_by(this, result) }
 }
 
+pragma[nomagic]
+int minStmtLine(File file) {
+  result =
+    min(int line |
+      line = any(Stmt s | s.getLocation().getFile() = file).getLocation().getStartLine()
+    )
+}
+
+pragma[nomagic]
+predicate isBeforeCode(Comment c, File f) {
+  f = c.getLocation().getFile() and
+  minStmtLine(f) < c.getLocation().getStartLine()
+}
+
 private string comment_or_docstring(File f, boolean before_code) {
   exists(Comment c |
     c.getLocation().getFile() = f and
     result = c.getText()
   |
-    if
-      exists(Stmt s |
-        s.getEnclosingModule().getFile() = f and
-        s.getLocation().getStartLine() < c.getLocation().getStartLine()
-      )
-    then before_code = false
-    else before_code = true
+    if isBeforeCode(c, f) then before_code = true else before_code = false
   )
   or
   exists(Module m | m.getFile() = f |

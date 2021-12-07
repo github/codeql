@@ -37,6 +37,7 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt().
    */
+  cached
   abstract AstNode getAChildNode();
 
   /**
@@ -113,7 +114,10 @@ class Comprehension extends Comprehension_, AstNode {
     result = Comprehension_.super.getLocation()
   }
 
-  override AstNode getAChildNode() { result = this.getASubExpression() }
+  override AstNode getAChildNode() {
+    Stages::SSA::ref() and
+    result = this.getASubExpression()
+  }
 
   Expr getASubExpression() {
     result = this.getIter() or
