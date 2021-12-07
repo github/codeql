@@ -3,10 +3,10 @@ import java
 string topToString(Top t) {
   result = t.toString()
   or
-  // TypeBound doesn't extend Top (but probably should)
+  // TypeBound doesn't extend Top (but probably should); part of Kotlin #6
   result = t.(TypeBound).toString()
   or
-  // XMLLocatable doesn't extend Top (but probably should)
+  // XMLLocatable doesn't extend Top (but probably should); part of Kotlin #6
   result = t.(XMLLocatable).toString()
   or
   // Java #142

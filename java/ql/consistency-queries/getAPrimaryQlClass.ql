@@ -2,9 +2,9 @@ import java
 
 from Top t
 where t.getAPrimaryQlClass() = "???"
-  // TypeBound doesn't extend Top (but probably should)
+  // TypeBound doesn't extend Top (but probably should); part of Kotlin #6
   and not t instanceof TypeBound
-  // XMLLocatable doesn't extend Top (but probably should)
+  // XMLLocatable doesn't extend Top (but probably should); part of Kotlin #6
   and not t instanceof XMLLocatable
 select t,
        concat(t.getAPrimaryQlClass(), ",")
