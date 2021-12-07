@@ -125,6 +125,8 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
     sink.asExpr() = any(NetworkSendRecv nsr | nsr.checkSocket()).getDataExpr()
     or
     sink.asExpr() instanceof Encrypted
+    or
+    sink.asExpr() instanceof SensitiveExpr
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -150,10 +152,15 @@ where
   sink.getNode().asExpr() = networkSendRecv.getDataExpr() and
   networkSendRecv.checkSocket() and
   // no flow from sensitive -> evidence of encryption
-  not exists(DataFlow::Node anySource, DataFlow::Node encrypted |
-    config.hasFlow(anySource, sink.getNode()) and
-    config.hasFlow(anySource, encrypted) and
+  not exists(DataFlow::Node encrypted |
+    config.hasFlow(source.getNode(), encrypted) and
     encrypted.asExpr() instanceof Encrypted
+  ) and
+  // only use the 'first' sensitive expression
+  not exists(DataFlow::Node sensitive |
+    config.hasFlow(sensitive, source.getNode()) and
+    sensitive.asExpr() instanceof SensitiveExpr and
+    not source.getNode() = sensitive
   ) and
   // construct result
   if networkSendRecv instanceof NetworkSend
@@ -165,4 +172,4 @@ where
     msg =
       "This operation receives into '" + sink.toString() +
         "', which may put unencrypted sensitive data into $@"
-select networkSendRecv, source, sink, msg, source, source.getNode().asExpr().toString()
+select networkSendRecv, source, sink, msg, source, source.getNode().toString()
