@@ -88,10 +88,11 @@ module SQL {
             // first argument to `squirrel.Expr`
             fn.hasQualifiedName(sq, "Expr")
             or
-            // first argument to the `Prefix` or `Suffix` method of one of the `*Builder` classes
+            // first argument to the `Prefix`, `Suffix` or `Where` method of one of the `*Builder` classes
             exists(string builder | builder.matches("%Builder") |
               fn.(Method).hasQualifiedName(sq, builder, "Prefix") or
-              fn.(Method).hasQualifiedName(sq, builder, "Suffix")
+              fn.(Method).hasQualifiedName(sq, builder, "Suffix") or
+              fn.(Method).hasQualifiedName(sq, builder, "Where")
             )
           ) and
           this = fn.getACall().getArgument(0) and

@@ -28,8 +28,30 @@ module TaintedPath {
 
   /**
    * A sanitizer guard for path-traversal vulnerabilities.
+   *
+   * Note this class should be extended to define more taint-path sanitizer guards, but isn't itself a
+   * `DataFlow::BarrierGuard` so that other queries can use this to define `BarrierGuard`s without
+   * introducing recursion. The class `SanitizerGuardAsBarrierGuard` plugs all instances of this class
+   * into the `DataFlow::BarrierGuard` type hierarchy.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::Node {
+    abstract predicate checks(Expr e, boolean branch);
+  }
+
+  /**
+   * A sanitizer guard for path-traversal vulnerabilities, as a `DataFlow::BarrierGuard`.
+   *
+   * Use this class if you want all `TaintedPath::SanitizerGuard`s as a `DataFlow::BarrierGuard`,
+   * e.g. to use directly in a `DataFlow::Configuration::isSanitizerGuard` method. If you want to
+   * provide a new instance of a tainted path sanitizer, extend `TaintedPath::SanitizerGuard` instead.
+   */
+  class SanitizerGuardAsBarrierGuard extends DataFlow::BarrierGuard {
+    SanitizerGuard guardImpl;
+
+    SanitizerGuardAsBarrierGuard() { this = guardImpl }
+
+    override predicate checks(Expr e, boolean branch) { guardImpl.checks(e, branch) }
+  }
 
   /** A source of untrusted data, considered as a taint source for path traversal. */
   class UntrustedFlowAsSource extends Source {
@@ -134,5 +156,9 @@ module TaintedPath {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsSanitizerGuard extends RegexpCheck, SanitizerGuard { }
+  class RegexpCheckAsSanitizerGuard extends SanitizerGuard {
+    RegexpCheckAsSanitizerGuard() { regexpFunctionChecksExpr(this, _, _) }
+
+    override predicate checks(Expr e, boolean branch) { regexpFunctionChecksExpr(this, e, branch) }
+  }
 }

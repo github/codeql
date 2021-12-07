@@ -27,7 +27,7 @@ module TaintedPath {
     }
 
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
+      guard instanceof SanitizerGuardAsBarrierGuard
     }
   }
 }
