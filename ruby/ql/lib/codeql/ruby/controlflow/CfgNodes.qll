@@ -128,6 +128,8 @@ class ReturningCfgNode extends AstCfgNode {
 /** A control-flow node that wraps a `StringComponent` AST expression. */
 class StringComponentCfgNode extends AstCfgNode {
   StringComponentCfgNode() { this.getNode() instanceof StringComponent }
+
+  string getValueText() { result = this.getNode().(StringComponent).getValueText() }
 }
 
 private Expr desugar(Expr n) {
@@ -463,8 +465,13 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
-  class StringInterpolationComponentCfgNode extends StmtSequenceCfgNode {
+  class StringInterpolationComponentCfgNode extends StringComponentCfgNode, StmtSequenceCfgNode {
     StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
+
+    // If last statement in the interpolation is a constant or local variable read,
+    // we attempt to look up its string value.
+    // If there's a result, we return that as the string value of the interpolation.
+    final override string getValueText() { result = this.getLastStmt().getValueText() }
   }
 
   private class StringlikeLiteralChildMapping extends ExprChildMapping, StringlikeLiteral {
@@ -477,8 +484,36 @@ module ExprNodes {
 
     final override StringlikeLiteral getExpr() { result = super.getExpr() }
 
+    /** Gets the `n`th component of this `StringlikeLiteral` */
+    StringComponentCfgNode getComponent(int n) { result.getNode() = e.getComponent(n) }
+
     /** Gets a component of this `StringlikeLiteral` */
-    StringComponentCfgNode getAComponent() { e.hasCfgChild(e.getComponent(_), this, result) }
+    StringComponentCfgNode getAComponent() { result = this.getComponent(_) }
+
+    // 0 components results in the empty string
+    // if all interpolations have a known string value, we will get a result
+    language[monotonicAggregates]
+    override string getValueText() {
+      result = e.getValueText()
+      or
+      result =
+        concat(StringComponent c, int i |
+          c = e.getComponent(i)
+        |
+          getComponentValueText(c) order by i
+        )
+    }
+
+    /**
+     * Get the `ValueText()` of a `StringComponent`.
+     * If the component has a CFG node, defer to that (in order to resolve variables in interpolations).
+     * Otherwise, defer to the AST node.
+     */
+    private string getComponentValueText(StringComponent c) {
+      exists(StringComponentCfgNode n | n.getNode() = c | result = n.getValueText())
+      or
+      not exists(StringComponentCfgNode n | n.getNode() = c) and result = c.getValueText()
+    }
   }
 
   /** A control-flow node that wraps a `StringLiteral` AST expression. */
