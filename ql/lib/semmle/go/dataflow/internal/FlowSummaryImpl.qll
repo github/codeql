@@ -85,6 +85,9 @@ module Public {
     /** Holds if this stack contains summary component `c`. */
     predicate contains(SummaryComponent c) { c = this.drop(_).head() }
 
+    /** Gets the bottom element of this stack. */
+    SummaryComponent bottom() { result = this.drop(this.length() - 1).head() }
+
     /** Gets a textual representation of this stack. */
     string toString() {
       exists(SummaryComponent head, SummaryComponentStack tail |
@@ -122,6 +125,38 @@ module Public {
 
     /** Gets a singleton stack representing a return of kind `rk`. */
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
+  }
+
+  private predicate noComponentSpecificCsv(SummaryComponent sc) {
+    not exists(getComponentSpecificCsv(sc))
+  }
+
+  /** Gets a textual representation of this component used for flow summaries. */
+  private string getComponentCsv(SummaryComponent sc) {
+    result = getComponentSpecificCsv(sc)
+    or
+    noComponentSpecificCsv(sc) and
+    (
+      exists(int i | sc = TParameterSummaryComponent(i) and result = "Parameter[" + i + "]")
+      or
+      exists(int i | sc = TArgumentSummaryComponent(i) and result = "Argument[" + i + "]")
+      or
+      sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
+    )
+  }
+
+  /** Gets a textual representation of this stack used for flow summaries. */
+  string getComponentStackCsv(SummaryComponentStack stack) {
+    exists(SummaryComponent head, SummaryComponentStack tail |
+      head = stack.head() and
+      tail = stack.tail() and
+      result = getComponentCsv(head) + " of " + getComponentStackCsv(tail)
+    )
+    or
+    exists(SummaryComponent c |
+      stack = TSingletonSummaryComponentStack(c) and
+      result = getComponentCsv(c)
+    )
   }
 
   /**
@@ -186,10 +221,19 @@ module Private {
     TArgumentSummaryComponent(int i) { parameterPosition(i) } or
     TReturnSummaryComponent(ReturnKind rk)
 
+  private TSummaryComponent thisParam() {
+    result = TParameterSummaryComponent(instanceParameterPosition())
+  }
+
   newtype TSummaryComponentStack =
     TSingletonSummaryComponentStack(SummaryComponent c) or
     TConsSummaryComponentStack(SummaryComponent head, SummaryComponentStack tail) {
       tail.(RequiredSummaryComponentStack).required(head)
+      or
+      tail.(RequiredSummaryComponentStack).required(TParameterSummaryComponent(_)) and
+      head = thisParam()
+      or
+      derivedFluentFlowPush(_, _, _, head, tail, _)
     }
 
   pragma[nomagic]
@@ -198,20 +242,130 @@ module Private {
     boolean preservesValue
   ) {
     c.propagatesFlow(input, output, preservesValue)
+    or
+    // observe side effects of callbacks on input arguments
+    c.propagatesFlow(output, input, preservesValue) and
+    preservesValue = true and
+    isCallbackParameter(input) and
+    isContentOfArgument(output, _)
+    or
+    // flow from the receiver of a callback into the instance-parameter
+    exists(SummaryComponentStack s, SummaryComponentStack callbackRef |
+      c.propagatesFlow(s, _, _) or c.propagatesFlow(_, s, _)
+    |
+      callbackRef = s.drop(_) and
+      (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
+      input = callbackRef.tail() and
+      output = TConsSummaryComponentStack(thisParam(), input) and
+      preservesValue = true
+    )
+    or
+    exists(SummaryComponentStack arg, SummaryComponentStack return |
+      derivedFluentFlow(c, input, arg, return, preservesValue)
+    |
+      arg.length() = 1 and
+      output = return
+      or
+      exists(SummaryComponent head, SummaryComponentStack tail |
+        derivedFluentFlowPush(c, input, arg, head, tail, 0) and
+        output = SummaryComponentStack::push(head, tail)
+      )
+    )
+    or
+    // Chain together summaries where values get passed into callbacks along the way
+    exists(SummaryComponentStack mid, boolean preservesValue1, boolean preservesValue2 |
+      c.propagatesFlow(input, mid, preservesValue1) and
+      c.propagatesFlow(mid, output, preservesValue2) and
+      mid.drop(mid.length() - 2) =
+        SummaryComponentStack::push(TParameterSummaryComponent(_),
+          SummaryComponentStack::singleton(TArgumentSummaryComponent(_))) and
+      preservesValue = preservesValue1.booleanAnd(preservesValue2)
+    )
+  }
+
+  /**
+   * Holds if `c` has a flow summary from `input` to `arg`, where `arg`
+   * writes to (contents of) the `i`th argument, and `c` has a
+   * value-preserving flow summary from the `i`th argument to a return value
+   * (`return`).
+   *
+   * In such a case, we derive flow from `input` to (contents of) the return
+   * value.
+   *
+   * As an example, this simplifies modeling of fluent methods:
+   * for `StringBuilder.append(x)` with a specified value flow from qualifier to
+   * return value and taint flow from argument 0 to the qualifier, then this
+   * allows us to infer taint flow from argument 0 to the return value.
+   */
+  pragma[nomagic]
+  private predicate derivedFluentFlow(
+    SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
+    SummaryComponentStack return, boolean preservesValue
+  ) {
+    exists(int i |
+      summary(c, input, arg, preservesValue) and
+      isContentOfArgument(arg, i) and
+      summary(c, SummaryComponentStack::singleton(TArgumentSummaryComponent(i)), return, true) and
+      return.bottom() = TReturnSummaryComponent(_)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate derivedFluentFlowPush(
+    SummarizedCallable c, SummaryComponentStack input, SummaryComponentStack arg,
+    SummaryComponent head, SummaryComponentStack tail, int i
+  ) {
+    derivedFluentFlow(c, input, arg, tail, _) and
+    head = arg.drop(i).head() and
+    i = arg.length() - 2
+    or
+    exists(SummaryComponent head0, SummaryComponentStack tail0 |
+      derivedFluentFlowPush(c, input, arg, head0, tail0, i + 1) and
+      head = arg.drop(i).head() and
+      tail = SummaryComponentStack::push(head0, tail0)
+    )
+  }
+
+  private predicate isCallbackParameter(SummaryComponentStack s) {
+    s.head() = TParameterSummaryComponent(_) and exists(s.tail())
+  }
+
+  private predicate isContentOfArgument(SummaryComponentStack s, int i) {
+    s.head() = TContentSummaryComponent(_) and isContentOfArgument(s.tail(), i)
+    or
+    s = TSingletonSummaryComponentStack(TArgumentSummaryComponent(i))
+  }
+
+  private predicate outputState(SummarizedCallable c, SummaryComponentStack s) {
+    summary(c, _, s, _)
+    or
+    exists(SummaryComponentStack out |
+      outputState(c, out) and
+      out.head() = TContentSummaryComponent(_) and
+      s = out.tail()
+    )
+    or
+    // Add the argument node corresponding to the requested post-update node
+    inputState(c, s) and isCallbackParameter(s)
+  }
+
+  private predicate inputState(SummarizedCallable c, SummaryComponentStack s) {
+    summary(c, s, _, _)
+    or
+    exists(SummaryComponentStack inp | inputState(c, inp) and s = inp.tail())
+    or
+    exists(SummaryComponentStack out |
+      outputState(c, out) and
+      out.head() = TParameterSummaryComponent(_) and
+      s = out.tail()
+    )
   }
 
   private newtype TSummaryNodeState =
-    TSummaryNodeInputState(SummaryComponentStack s) {
-      exists(SummaryComponentStack input |
-        summary(_, input, _, _) and
-        s = input.drop(_)
-      )
-    } or
-    TSummaryNodeOutputState(SummaryComponentStack s) {
-      exists(SummaryComponentStack output |
-        summary(_, _, output, _) and
-        s = output.drop(_)
-      )
+    TSummaryNodeInputState(SummaryComponentStack s) { inputState(_, s) } or
+    TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) } or
+    TSummaryNodeClearsContentState(int i, boolean post) {
+      any(SummarizedCallable sc).clearsContent(i, _) and post in [false, true]
     }
 
   /**
@@ -238,20 +392,14 @@ module Private {
     pragma[nomagic]
     predicate isInputState(SummarizedCallable c, SummaryComponentStack s) {
       this = TSummaryNodeInputState(s) and
-      exists(SummaryComponentStack input |
-        summary(c, input, _, _) and
-        s = input.drop(_)
-      )
+      inputState(c, s)
     }
 
     /** Holds if this state is a valid output state for `c`. */
     pragma[nomagic]
     predicate isOutputState(SummarizedCallable c, SummaryComponentStack s) {
       this = TSummaryNodeOutputState(s) and
-      exists(SummaryComponentStack output |
-        summary(c, _, output, _) and
-        s = output.drop(_)
-      )
+      outputState(c, s)
     }
 
     /** Gets a textual representation of this state. */
@@ -264,6 +412,12 @@ module Private {
       exists(SummaryComponentStack s |
         this = TSummaryNodeOutputState(s) and
         result = "to write: " + s
+      )
+      or
+      exists(int i, boolean post, string postStr |
+        this = TSummaryNodeClearsContentState(i, post) and
+        (if post = true then postStr = " (post)" else postStr = "") and
+        result = "clear: " + i + postStr
       )
     }
   }
@@ -286,6 +440,11 @@ module Private {
     not parameterReadState(c, state, _)
     or
     state.isOutputState(c, _)
+    or
+    exists(int i |
+      c.clearsContent(i, _) and
+      state = TSummaryNodeClearsContentState(i, _)
+    )
   }
 
   pragma[noinline]
@@ -321,6 +480,8 @@ module Private {
     parameterReadState(c, _, i)
     or
     isParameterPostUpdate(_, c, i)
+    or
+    c.clearsContent(i, _)
   }
 
   private predicate callbackOutput(
@@ -331,19 +492,12 @@ module Private {
     receiver = summaryNodeInputState(c, s.drop(1))
   }
 
-  private Node pre(Node post) {
-    summaryPostUpdateNode(post, result)
-    or
-    not summaryPostUpdateNode(post, _) and
-    result = post
-  }
-
   private predicate callbackInput(
     SummarizedCallable c, SummaryComponentStack s, Node receiver, int i
   ) {
     any(SummaryNodeState state).isOutputState(c, s) and
     s.head() = TParameterSummaryComponent(i) and
-    receiver = pre(summaryNodeOutputState(c, s.drop(1)))
+    receiver = summaryNodeInputState(c, s.drop(1))
   }
 
   /** Holds if a call targeting `receiver` should be synthesized inside `c`. */
@@ -395,10 +549,16 @@ module Private {
         or
         exists(int i | head = TParameterSummaryComponent(i) |
           result =
-            getCallbackParameterType(getNodeType(summaryNodeOutputState(pragma[only_bind_out](c),
+            getCallbackParameterType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.drop(1))), i)
         )
       )
+    )
+    or
+    exists(SummarizedCallable c, int i, ParamNode p |
+      n = summaryNode(c, TSummaryNodeClearsContentState(i, false)) and
+      p.isParameterOf(c, i) and
+      result = getNodeType(p)
     )
   }
 
@@ -421,10 +581,19 @@ module Private {
   }
 
   /** Holds if summary node `post` is a post-update node with pre-update node `pre`. */
-  predicate summaryPostUpdateNode(Node post, ParamNode pre) {
+  predicate summaryPostUpdateNode(Node post, Node pre) {
     exists(SummarizedCallable c, int i |
       isParameterPostUpdate(post, c, i) and
-      pre.isParameterOf(c, i)
+      pre.(ParamNode).isParameterOf(c, i)
+      or
+      pre = summaryNode(c, TSummaryNodeClearsContentState(i, false)) and
+      post = summaryNode(c, TSummaryNodeClearsContentState(i, true))
+    )
+    or
+    exists(SummarizedCallable callable, SummaryComponentStack s |
+      callbackInput(callable, s, _, _) and
+      pre = summaryNodeOutputState(callable, s) and
+      post = summaryNodeInputState(callable, s)
     )
   }
 
@@ -433,6 +602,22 @@ module Private {
     exists(SummarizedCallable callable, SummaryComponentStack s |
       ret = summaryNodeOutputState(callable, s) and
       s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
+    )
+  }
+
+  /**
+   * Holds if flow is allowed to pass from parameter `p`, to a return
+   * node, and back out to `p`.
+   */
+  predicate summaryAllowParameterReturnInSelf(ParamNode p) {
+    exists(SummarizedCallable c, int i | p.isParameterOf(c, i) |
+      c.clearsContent(i, _)
+      or
+      exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
+        summary(c, inputContents, outputContents, _) and
+        inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(i)) and
+        outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(i))
+      )
     )
   }
 
@@ -456,13 +641,11 @@ module Private {
         preservesValue = false and not summary(c, inputContents, outputContents, true)
       )
       or
-      // If flow through a method updates a parameter from some input A, and that
-      // parameter also is returned through B, then we'd like a combined flow from A
-      // to B as well. As an example, this simplifies modeling of fluent methods:
-      // for `StringBuilder.append(x)` with a specified value flow from qualifier to
-      // return value and taint flow from argument 0 to the qualifier, then this
-      // allows us to infer taint flow from argument 0 to the return value.
-      summaryPostUpdateNode(pred, succ) and preservesValue = true
+      exists(SummarizedCallable c, int i |
+        pred.(ParamNode).isParameterOf(c, i) and
+        succ = summaryNode(c, TSummaryNodeClearsContentState(i, _)) and
+        preservesValue = true
+      )
     }
 
     /**
@@ -490,10 +673,39 @@ module Private {
     }
 
     /**
-     * Holds if values stored inside content `c` are cleared when passed as
-     * input of type `input` in `call`.
+     * Holds if values stored inside content `c` are cleared at `n`. `n` is a
+     * synthesized summary node, so in order for values to be cleared at calls
+     * to the relevant method, it is important that flow does not pass over
+     * the argument, either via use-use flow or def-use flow.
+     *
+     * Example:
+     *
+     * ```
+     * a.b = taint;
+     * a.clearB(); // assume we have a flow summary for `clearB` that clears `b` on the qualifier
+     * sink(a.b);
+     * ```
+     *
+     * In the above, flow should not pass from `a` on the first line (or the second
+     * line) to `a` on the third line. Instead, there will be synthesized flow from
+     * `a` on line 2 to the post-update node for `a` on that line (via an intermediate
+     * node where field `b` is cleared).
      */
-    predicate summaryClearsContent(ArgNode arg, Content c) {
+    predicate summaryClearsContent(Node n, Content c) {
+      exists(SummarizedCallable sc, int i |
+        n = summaryNode(sc, TSummaryNodeClearsContentState(i, true)) and
+        sc.clearsContent(i, c)
+      )
+    }
+
+    /**
+     * Holds if values stored inside content `c` are cleared inside a
+     * callable to which `arg` is an argument.
+     *
+     * In such cases, it is important to prevent use-use flow out of
+     * `arg` (see comment for `summaryClearsContent`).
+     */
+    predicate summaryClearsContentArg(ArgNode arg, Content c) {
       exists(DataFlowCall call, int i |
         viableCallable(call).(SummarizedCallable).clearsContent(i, c) and
         arg.argumentOf(call, i)
@@ -553,25 +765,6 @@ module Private {
         ret.getKind() = rk
       )
     }
-
-    /**
-     * Holds if data is written into content `c` of argument `arg` using a flow summary.
-     *
-     * Depending on the type of `c`, this predicate may be relevant to include in the
-     * definition of `clearsContent()`.
-     */
-    predicate summaryStoresIntoArg(Content c, Node arg) {
-      exists(ParamUpdateReturnKind rk, ReturnNodeExt ret, PostUpdateNode out |
-        exists(DataFlowCall call, SummarizedCallable callable |
-          getNodeEnclosingCallable(ret) = callable and
-          viableCallable(call) = callable and
-          summaryStoreStep(_, c, ret) and
-          ret.getKind() = pragma[only_bind_into](rk) and
-          out = rk.getAnOutNode(call) and
-          arg = out.getPreUpdateNode()
-        )
-      )
-    }
   }
 
   /**
@@ -629,22 +822,6 @@ module Private {
       )
     }
 
-    /** Holds if specification component `c` parses as return value `n`. */
-    predicate parseReturn(string c, int n) {
-      specSplit(_, c, _) and
-      (
-        c = "ReturnValue" and n = 0
-        or
-        c.regexpCapture("ReturnValue\\[([-0-9]+)\\]", 1).toInt() = n
-        or
-        exists(int n1, int n2 |
-          c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-          c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-          n = [n1 .. n2]
-        )
-      )
-    }
-
     private SummaryComponent interpretComponent(string c) {
       specSplit(_, c, _) and
       (
@@ -652,9 +829,7 @@ module Private {
         or
         exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
         or
-        exists(int pos |
-          parseReturn(c, pos) and result = SummaryComponent::return(getReturnKind(pos))
-        )
+        c = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
         or
         result = interpretComponentSpecific(c)
       )
@@ -721,12 +896,15 @@ module Private {
       not exists(interpretComponent(c))
     }
 
-    private predicate inputNeedsReference(string c) { parseArg(c, _) }
+    private predicate inputNeedsReference(string c) {
+      c = "Argument" or
+      parseArg(c, _)
+    }
 
     private predicate outputNeedsReference(string c) {
+      c = "Argument" or
       parseArg(c, _) or
-      c = "ReturnValue" or
-      parseReturn(c, _)
+      c = "ReturnValue"
     }
 
     private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
@@ -759,20 +937,15 @@ module Private {
         exists(int pos |
           node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), pos)
         |
-          parseArg(c, pos)
+          c = "Argument" or parseArg(c, pos)
         )
         or
         exists(int pos | node.asNode().(ParamNode).isParameterOf(mid.asCallable(), pos) |
           c = "Parameter" or parseParam(c, pos)
         )
         or
-        exists(int pos |
-          node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnKind(pos)))
-        |
-          c = "ReturnValue" and pos = 0
-          or
-          parseReturn(c, pos)
-        )
+        c = "ReturnValue" and
+        node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnValueKind()))
         or
         interpretOutputSpecific(c, mid, node)
       )
@@ -787,16 +960,14 @@ module Private {
         interpretInput(input, idx + 1, ref, mid) and
         specSplit(input, c, idx)
       |
-        exists(int pos | node.asNode().(ArgNode).argumentOf(mid.asCall(), pos) | parseArg(c, pos))
+        exists(int pos | node.asNode().(ArgNode).argumentOf(mid.asCall(), pos) |
+          c = "Argument" or parseArg(c, pos)
+        )
         or
-        exists(int pos, ReturnNodeExt ret |
-          (
-            c = "ReturnValue" and pos = 0
-            or
-            parseReturn(c, pos)
-          ) and
+        exists(ReturnNodeExt ret |
+          c = "ReturnValue" and
           ret = node.asNode() and
-          ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
+          ret.getKind().(ValueReturnKind).getKind() = getReturnValueKind() and
           mid.asCallable() = getNodeEnclosingCallable(ret)
         )
         or
@@ -831,19 +1002,130 @@ module Private {
   module TestOutput {
     /** A flow summary to include in the `summary/3` query predicate. */
     abstract class RelevantSummarizedCallable extends SummarizedCallable {
-      /** Gets the string representation of this callable used by `summary/3`. */
-      string getFullString() { result = this.toString() }
+      /** Gets the string representation of this callable used by `summary/1`. */
+      abstract string getCallableCsv();
+
+      /** Holds if flow is propagated between `input` and `output`. */
+      predicate relevantSummary(
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      ) {
+        this.propagatesFlow(input, output, preservesValue)
+      }
     }
 
-    /** A query predicate for outputting flow summaries in QL tests. */
-    query predicate summary(string callable, string flow, boolean preservesValue) {
+    /** Render the kind in the format used in flow summaries. */
+    private string renderKind(boolean preservesValue) {
+      preservesValue = true and result = "value"
+      or
+      preservesValue = false and result = "taint"
+    }
+
+    /**
+     * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
+     * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+     * ext is hardcoded to empty.
+     */
+    query predicate summary(string csv) {
       exists(
-        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output
+        RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
+        boolean preservesValue
       |
-        callable = c.getFullString() and
-        c.propagatesFlow(input, output, preservesValue) and
-        flow = input + " -> " + output
+        c.relevantSummary(input, output, preservesValue) and
+        csv =
+          c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
+            getComponentStackCsv(output) + ";" + renderKind(preservesValue)
       )
+    }
+  }
+
+  /**
+   * Provides query predicates for rendering the generated data flow graph for
+   * a summarized callable.
+   *
+   * Import this module into a `.ql` file of `@kind graph` to render the graph.
+   * The graph is restricted to callables from `RelevantSummarizedCallable`.
+   */
+  module RenderSummarizedCallable {
+    /** A summarized callable to include in the graph. */
+    abstract class RelevantSummarizedCallable extends SummarizedCallable { }
+
+    private newtype TNodeOrCall =
+      MkNode(Node n) {
+        exists(RelevantSummarizedCallable c |
+          n = summaryNode(c, _)
+          or
+          n.(ParamNode).isParameterOf(c, _)
+        )
+      } or
+      MkCall(DataFlowCall call) {
+        call = summaryDataFlowCall(_) and
+        call.getEnclosingCallable() instanceof RelevantSummarizedCallable
+      }
+
+    private class NodeOrCall extends TNodeOrCall {
+      Node asNode() { this = MkNode(result) }
+
+      DataFlowCall asCall() { this = MkCall(result) }
+
+      string toString() {
+        result = this.asNode().toString()
+        or
+        result = this.asCall().toString()
+      }
+
+      /**
+       * Holds if this element is at the specified location.
+       * The location spans column `startcolumn` of line `startline` to
+       * column `endcolumn` of line `endline` in file `filepath`.
+       * For more information, see
+       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+       */
+      predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        this.asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        or
+        this.asCall().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      }
+    }
+
+    query predicate nodes(NodeOrCall n, string key, string val) {
+      key = "semmle.label" and val = n.toString()
+    }
+
+    private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
+      exists(boolean preservesValue |
+        Private::Steps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue) and
+        if preservesValue = true then value = "value" else value = "taint"
+      )
+      or
+      exists(Content c |
+        Private::Steps::summaryReadStep(a.asNode(), c, b.asNode()) and
+        value = "read (" + c + ")"
+        or
+        Private::Steps::summaryStoreStep(a.asNode(), c, b.asNode()) and
+        value = "store (" + c + ")"
+        or
+        Private::Steps::summaryClearsContent(a.asNode(), c) and
+        b = a and
+        value = "clear (" + c + ")"
+      )
+      or
+      summaryPostUpdateNode(b.asNode(), a.asNode()) and
+      value = "post-update"
+      or
+      b.asCall() = summaryDataFlowCall(a.asNode()) and
+      value = "receiver"
+      or
+      exists(int i |
+        summaryArgumentNode(b.asCall(), a.asNode(), i) and
+        value = "argument (" + i + ")"
+      )
+    }
+
+    query predicate edges(NodeOrCall a, NodeOrCall b, string key, string value) {
+      key = "semmle.label" and
+      value = strictconcat(string s | edgesComponent(a, b, s) | s, " / ")
     }
   }
 }
