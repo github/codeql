@@ -11,7 +11,10 @@ module Logrus {
 
   bindingset[result]
   private string getALogResultName() {
-    result.matches(["Debug%", "Error%", "Fatal%", "Info%", "Panic%", "Print%", "Trace%", "Warn%"])
+    result
+        .matches([
+            "Debug%", "Error%", "Fatal%", "Info%", "Log%", "Panic%", "Print%", "Trace%", "Warn%"
+          ])
   }
 
   bindingset[result]
@@ -23,7 +26,7 @@ module Logrus {
     LogCall() {
       exists(string name | name = getALogResultName() or name = getAnEntryUpdatingMethodName() |
         this.getTarget().hasQualifiedName(packagePath(), name) or
-        this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", name)
+        this.getTarget().(Method).hasQualifiedName(packagePath(), ["Entry", "Logger"], name)
       )
     }
 

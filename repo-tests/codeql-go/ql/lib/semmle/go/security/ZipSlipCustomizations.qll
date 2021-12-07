@@ -86,6 +86,27 @@ module ZipSlip {
     TaintedPathSanitizerAsSanitizer() { this instanceof TaintedPath::Sanitizer }
   }
 
+  pragma[noinline]
+  private predicate taintedPathGuardChecks(
+    TaintedPath::SanitizerGuard guard, DataFlow::Node checked, boolean branch
+  ) {
+    guard.checks(checked.asExpr(), branch)
+  }
+
+  pragma[noinline]
+  private predicate taintFlowsToCheckedNode(DataFlow::Node source, DataFlow::Node checked) {
+    taintedPathGuardChecks(_, checked, _) and
+    (
+      // Manual magic that is equivalent to `localTaint(source, checked)`
+      source = checked
+      or
+      exists(DataFlow::Node succ |
+        taintFlowsToCheckedNode(succ, checked) and
+        TaintTracking::localTaintStep(source, succ)
+      )
+    )
+  }
+
   /**
    * A sanitizer guard for zip-slip vulnerabilities which backtracks to sanitize expressions
    * that locally flow into a guarded expression. For example, an ordinary sanitizer guard
@@ -106,8 +127,8 @@ module ZipSlip {
 
     override predicate checks(Expr e, boolean branch) {
       exists(DataFlow::Node source, DataFlow::Node checked |
-        taintedPathGuard.checks(checked.asExpr(), branch) and
-        TaintTracking::localTaint(source, checked)
+        taintedPathGuardChecks(taintedPathGuard, checked, branch) and
+        taintFlowsToCheckedNode(source, checked)
       |
         e = source.asExpr()
       )
