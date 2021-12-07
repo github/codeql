@@ -89,7 +89,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
       origin = CfgOrigin::fromCfgNode(forigin)
     )
     or
-    procedureReturnsNone(callee, obj, origin)
+    this.procedureReturnsNone(callee, obj, origin)
   }
 
   private predicate procedureReturnsNone(

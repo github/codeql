@@ -47,7 +47,7 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
     or
     // Allow the wrapped intent created by Intent.getChooser to be consumed
     // by at the sink:
-    isSink(node) and
+    this.isSink(node) and
     allowIntentExtrasImplicitRead(node, content)
   }
 }

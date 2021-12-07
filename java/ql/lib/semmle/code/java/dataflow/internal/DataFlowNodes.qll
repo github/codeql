@@ -258,9 +258,9 @@ module Public {
     /** Gets the field corresponding to this node. */
     Field getField() { this = TFieldValueNode(result) }
 
-    override string toString() { result = getField().toString() }
+    override string toString() { result = this.getField().toString() }
 
-    override Location getLocation() { result = getField().getLocation() }
+    override Location getLocation() { result = this.getField().getLocation() }
   }
 
   /**
