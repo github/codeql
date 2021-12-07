@@ -3675,6 +3675,7 @@ ifs.rb:
 #-----|  -> self
 
 #   47| b
+#-----| false -> else ...
 #-----| true -> self
 
 #   47| then ...
@@ -3688,6 +3689,9 @@ ifs.rb:
 
 #   48| "true"
 #-----|  -> call to puts
+
+#   49| else ...
+#-----|  -> if ...
 
 #   51| call to puts
 #-----|  -> exit empty_else (normal)
@@ -4006,6 +4010,7 @@ loops.rb:
 #-----|  -> exit m4 (normal)
 
 #   31| ... < ...
+#-----| true -> do ...
 #-----| false -> while ...
 
 #   31| x
@@ -4013,6 +4018,9 @@ loops.rb:
 
 #   31| y
 #-----|  -> ... < ...
+
+#   31| do ...
+#-----|  -> x
 
 raise.rb:
 #    1| enter raise.rb
@@ -5116,8 +5124,19 @@ raise.rb:
 #  147| [ensure: raise] 3
 #-----|  -> [ensure: raise] return
 
+#  150| enter m13
+#-----|  -> ensure ...
+
 #  150| m13
 #-----|  -> m14
+
+#  150| exit m13
+
+#  150| exit m13 (normal)
+#-----|  -> exit m13
+
+#  151| ensure ...
+#-----|  -> exit m13 (normal)
 
 #  154| enter m14
 #-----|  -> element

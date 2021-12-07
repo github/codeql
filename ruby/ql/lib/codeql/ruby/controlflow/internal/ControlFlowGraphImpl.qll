@@ -932,7 +932,13 @@ module Trees {
   class StmtSequenceTree extends PostOrderTree, StmtSequence {
     override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
 
-    override predicate first(AstNode first) { first(this.getStmt(0), first) }
+    override predicate first(AstNode first) {
+      // If this sequence contains any statements, go to the first one.
+      first(this.getStmt(0), first)
+      or
+      // Otherwise, treat this node as a leaf node.
+      not exists(this.getStmt(0)) and first = this
+    }
 
     /** Gets the `i`th child in the body of this body statement. */
     AstNode getBodyChild(int i, boolean rescuable) {
