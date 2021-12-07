@@ -280,7 +280,9 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
   (
     if strictcount(getTokenFeature(endpoint, featureName)) = 1
     then featureValue = getTokenFeature(endpoint, featureName)
-    // Performance note: this is a Cartesian product between all endpoints and feature names.
-    else (featureValue = "" and featureName = getASupportedFeatureName())
+    else (
+      // Performance note: this is a Cartesian product between all endpoints and feature names.
+      featureValue = "" and featureName = getASupportedFeatureName()
+    )
   )
 }
