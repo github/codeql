@@ -21,7 +21,9 @@ module ImportStar {
   /** Holds if `n` refers to a variable that is defined in the module in which it occurs. */
   private predicate isDefinedLocally(NameNode n) {
     // Defined in an enclosing scope
-    exists(LocalVariable v | v.getId() = n.getId() and v.getScope() = n.getScope().getEnclosingScope*())
+    exists(LocalVariable v |
+      v.getId() = n.getId() and v.getScope() = n.getScope().getEnclosingScope*()
+    )
     or
     // Defined as a built-in
     n.getId() = Builtins::getBuiltinName()
