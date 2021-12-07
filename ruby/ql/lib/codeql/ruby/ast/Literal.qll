@@ -3,6 +3,7 @@ private import codeql.ruby.security.performance.RegExpTreeView as RETV
 private import internal.AST
 private import internal.Scope
 private import internal.TreeSitter
+private import codeql.ruby.controlflow.CfgNodes
 
 /**
  * A literal.
@@ -411,14 +412,14 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
   }
 
   override string getValueText() {
-    // 0 components should result in the empty string
-    // if there are any interpolations, there should be no result
-    // otherwise, concatenate all the components
     forall(StringComponent c | c = this.getComponent(_) |
       not c instanceof StringInterpolationComponent
     ) and
     result =
       concat(StringComponent c, int i | c = this.getComponent(i) | c.getValueText() order by i)
+    or
+    exists(this.getComponent(_)) and
+    result = this.getAControlFlowNode().(ExprNodes::StringlikeLiteralCfgNode).getValueText()
   }
 
   override string toString() {

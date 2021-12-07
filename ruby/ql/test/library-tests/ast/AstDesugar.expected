@@ -350,6 +350,12 @@ literals/literals.rb:
 #  105|         getStmt: [AddExpr] ... + ...
 #  105|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  105|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  105|     getArgument: [StringLiteral] "#{...}"
+#  105|       getComponent: [StringInterpolationComponent] #{...}
+#  105|         getStmt: [LocalVariableAccess] bar
+#  105|     getArgument: [StringLiteral] "#{...}"
+#  105|       getComponent: [StringInterpolationComponent] #{...}
+#  105|         getStmt: [ConstantReadAccess] BAR
 #  105|     getArgument: [StringLiteral] "baz"
 #  105|       getComponent: [StringTextComponent] baz
 #  106| [ArrayLiteral] %w(...)
@@ -359,6 +365,10 @@ literals/literals.rb:
 #  106|       getComponent: [StringTextComponent] foo
 #  106|     getArgument: [StringLiteral] "bar#{1+1}"
 #  106|       getComponent: [StringTextComponent] bar#{1+1}
+#  106|     getArgument: [StringLiteral] "#{bar}"
+#  106|       getComponent: [StringTextComponent] #{bar}
+#  106|     getArgument: [StringLiteral] "#{BAR}"
+#  106|       getComponent: [StringTextComponent] #{BAR}
 #  106|     getArgument: [StringLiteral] "baz"
 #  106|       getComponent: [StringTextComponent] baz
 #  109| [ArrayLiteral] %i(...)
@@ -393,6 +403,12 @@ literals/literals.rb:
 #  112|         getStmt: [AddExpr] ... + ...
 #  112|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
 #  112|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
+#  112|     getArgument: [SymbolLiteral] :"#{...}"
+#  112|       getComponent: [StringInterpolationComponent] #{...}
+#  112|         getStmt: [LocalVariableAccess] bar
+#  112|     getArgument: [SymbolLiteral] :"#{...}"
+#  112|       getComponent: [StringInterpolationComponent] #{...}
+#  112|         getStmt: [ConstantReadAccess] BAR
 #  112|     getArgument: [SymbolLiteral] :"baz"
 #  112|       getComponent: [StringTextComponent] baz
 #  113| [ArrayLiteral] %i(...)
@@ -410,6 +426,10 @@ literals/literals.rb:
 #  113|       getComponent: [StringTextComponent] 4
 #  113|     getArgument: [SymbolLiteral] :"}"
 #  113|       getComponent: [StringTextComponent] }
+#  113|     getArgument: [SymbolLiteral] :"#{bar}"
+#  113|       getComponent: [StringTextComponent] #{bar}
+#  113|     getArgument: [SymbolLiteral] :"#{BAR}"
+#  113|       getComponent: [StringTextComponent] #{BAR}
 #  113|     getArgument: [SymbolLiteral] :"baz"
 #  113|       getComponent: [StringTextComponent] baz
 control/loops.rb:

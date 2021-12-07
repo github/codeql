@@ -377,9 +377,11 @@
 | literals/literals.rb:55:1:55:20 | "FOO ' BAR " BAZ'" | FOO ' BAR " BAZ' |
 | literals/literals.rb:56:1:56:12 | "foo\\ bar" | foo\\ bar |
 | literals/literals.rb:57:1:57:12 | "foo\\ bar" | foo\\ bar |
+| literals/literals.rb:58:1:58:20 | "2 + 2 = #{...}" | 2 + 2 = 4 |
 | literals/literals.rb:58:13:58:13 | 2 | 2 |
 | literals/literals.rb:58:13:58:17 | ... + ... | 4 |
 | literals/literals.rb:58:17:58:17 | 2 | 2 |
+| literals/literals.rb:59:1:59:22 | "3 + 4 = #{...}" | 3 + 4 = 7 |
 | literals/literals.rb:59:15:59:15 | 3 | 3 |
 | literals/literals.rb:59:15:59:19 | ... + ... | 7 |
 | literals/literals.rb:59:19:59:19 | 4 | 4 |
@@ -392,16 +394,26 @@
 | literals/literals.rb:63:9:63:13 | "bar" | bar |
 | literals/literals.rb:63:15:63:19 | "baz" | baz |
 | literals/literals.rb:64:1:64:5 | "foo" | foo |
+| literals/literals.rb:64:7:64:21 | "bar#{...}" | bar1 |
 | literals/literals.rb:64:14:64:14 | 1 | 1 |
 | literals/literals.rb:64:14:64:18 | ... * ... | 1 |
 | literals/literals.rb:64:18:64:18 | 1 | 1 |
 | literals/literals.rb:64:23:64:27 | "baz" | baz |
+| literals/literals.rb:65:1:65:35 | "foo #{...} qux" | foo bar 5 baz qux |
+| literals/literals.rb:65:9:65:28 | "bar #{...} baz" | bar 5 baz |
 | literals/literals.rb:65:17:65:17 | 2 | 2 |
 | literals/literals.rb:65:17:65:21 | ... + ... | 5 |
 | literals/literals.rb:65:21:65:21 | 3 | 3 |
+| literals/literals.rb:66:1:66:22 | "foo #{...}" | foo 10 |
 | literals/literals.rb:66:17:66:17 | 1 | 1 |
 | literals/literals.rb:66:17:66:19 | ... + ... | 10 |
 | literals/literals.rb:66:19:66:19 | 9 | 9 |
+| literals/literals.rb:67:7:67:11 | "bar" | bar |
+| literals/literals.rb:68:7:68:11 | "bar" | bar |
+| literals/literals.rb:69:1:69:14 | "foo #{...}" | foo bar |
+| literals/literals.rb:69:9:69:11 | bar | bar |
+| literals/literals.rb:70:1:70:14 | "foo #{...}" | foo bar |
+| literals/literals.rb:70:9:70:11 | BAR | bar |
 | literals/literals.rb:73:1:73:2 | ?x | ?x |
 | literals/literals.rb:74:1:74:3 | ?\\n | ?\\n |
 | literals/literals.rb:75:1:75:3 | ?\\s | ?\\s |
@@ -419,10 +431,13 @@
 | literals/literals.rb:88:8:88:12 | "bar" | bar |
 | literals/literals.rb:89:1:89:10 | :"wibble" | wibble |
 | literals/literals.rb:90:1:90:17 | :"wibble wobble" | wibble wobble |
+| literals/literals.rb:91:1:91:30 | :"foo_#{...}_#{...}_#{...}" | foo_4_bar_bar |
 | literals/literals.rb:91:10:91:10 | 2 | 2 |
 | literals/literals.rb:91:10:91:14 | ... + ... | 4 |
 | literals/literals.rb:91:14:91:14 | 2 | 2 |
-| literals/literals.rb:92:1:92:17 | :"foo_#{ 1 + 1 }" | foo_#{ 1 + 1 } |
+| literals/literals.rb:91:19:91:21 | bar | bar |
+| literals/literals.rb:91:26:91:28 | BAR | bar |
+| literals/literals.rb:92:1:92:30 | :"foo_#{ 2 + 2}_#{bar}_#{BAR}" | foo_#{ 2 + 2}_#{bar}_#{BAR} |
 | literals/literals.rb:93:1:93:18 | :"foo_#{ 3 - 2 }" | foo_#{ 3 - 2 } |
 | literals/literals.rb:97:2:97:2 | 1 | 1 |
 | literals/literals.rb:97:5:97:5 | 2 | 2 |
@@ -442,13 +457,20 @@
 | literals/literals.rb:104:8:104:10 | "bar" | bar |
 | literals/literals.rb:104:12:104:14 | "baz" | baz |
 | literals/literals.rb:105:4:105:6 | "foo" | foo |
+| literals/literals.rb:105:8:105:16 | "bar#{...}" | bar2 |
 | literals/literals.rb:105:13:105:13 | 1 | 1 |
 | literals/literals.rb:105:13:105:15 | ... + ... | 2 |
 | literals/literals.rb:105:15:105:15 | 1 | 1 |
-| literals/literals.rb:105:18:105:20 | "baz" | baz |
+| literals/literals.rb:105:18:105:23 | "#{...}" | bar |
+| literals/literals.rb:105:20:105:22 | bar | bar |
+| literals/literals.rb:105:25:105:30 | "#{...}" | bar |
+| literals/literals.rb:105:27:105:29 | BAR | bar |
+| literals/literals.rb:105:32:105:34 | "baz" | baz |
 | literals/literals.rb:106:4:106:6 | "foo" | foo |
 | literals/literals.rb:106:8:106:16 | "bar#{1+1}" | bar#{1+1} |
-| literals/literals.rb:106:18:106:20 | "baz" | baz |
+| literals/literals.rb:106:18:106:23 | "#{bar}" | #{bar} |
+| literals/literals.rb:106:25:106:30 | "#{BAR}" | #{BAR} |
+| literals/literals.rb:106:32:106:34 | "baz" | baz |
 | literals/literals.rb:110:4:110:6 | :"foo" | foo |
 | literals/literals.rb:110:8:110:10 | :"bar" | bar |
 | literals/literals.rb:110:12:110:14 | :"baz" | baz |
@@ -456,17 +478,24 @@
 | literals/literals.rb:111:8:111:10 | :"bar" | bar |
 | literals/literals.rb:111:12:111:14 | :"baz" | baz |
 | literals/literals.rb:112:4:112:6 | :"foo" | foo |
+| literals/literals.rb:112:8:112:20 | :"bar#{...}" | bar6 |
 | literals/literals.rb:112:14:112:14 | 2 | 2 |
 | literals/literals.rb:112:14:112:18 | ... + ... | 6 |
 | literals/literals.rb:112:18:112:18 | 4 | 4 |
-| literals/literals.rb:112:22:112:24 | :"baz" | baz |
+| literals/literals.rb:112:22:112:27 | :"#{...}" | bar |
+| literals/literals.rb:112:24:112:26 | bar | bar |
+| literals/literals.rb:112:29:112:34 | :"#{...}" | bar |
+| literals/literals.rb:112:31:112:33 | BAR | bar |
+| literals/literals.rb:112:36:112:38 | :"baz" | baz |
 | literals/literals.rb:113:4:113:6 | :"foo" | foo |
 | literals/literals.rb:113:8:113:12 | :"bar#{" | bar#{ |
 | literals/literals.rb:113:14:113:14 | :"2" | 2 |
 | literals/literals.rb:113:16:113:16 | :"+" | + |
 | literals/literals.rb:113:18:113:18 | :"4" | 4 |
 | literals/literals.rb:113:20:113:20 | :"}" | } |
-| literals/literals.rb:113:22:113:24 | :"baz" | baz |
+| literals/literals.rb:113:22:113:27 | :"#{bar}" | #{bar} |
+| literals/literals.rb:113:29:113:34 | :"#{BAR}" | #{BAR} |
+| literals/literals.rb:113:36:113:38 | :"baz" | baz |
 | literals/literals.rb:117:3:117:5 | :foo | foo |
 | literals/literals.rb:117:8:117:8 | 1 | 1 |
 | literals/literals.rb:117:11:117:14 | :bar | bar |
@@ -490,9 +519,13 @@
 | literals/literals.rb:127:6:127:6 | 1 | 1 |
 | literals/literals.rb:130:1:130:7 | `ls -l` | ls -l |
 | literals/literals.rb:131:1:131:9 | `ls -l` | ls -l |
+| literals/literals.rb:132:1:132:32 | `du -d #{...} #{...} #{...}` | du -d 2 bar bar |
 | literals/literals.rb:132:11:132:11 | 1 | 1 |
 | literals/literals.rb:132:11:132:15 | ... + ... | 2 |
 | literals/literals.rb:132:15:132:15 | 1 | 1 |
+| literals/literals.rb:132:21:132:23 | bar | bar |
+| literals/literals.rb:132:28:132:30 | BAR | bar |
+| literals/literals.rb:133:1:133:20 | `du -d #{...}` | du -d 1 |
 | literals/literals.rb:133:13:133:13 | 5 | 5 |
 | literals/literals.rb:133:13:133:17 | ... - ... | 1 |
 | literals/literals.rb:133:17:133:17 | 4 | 4 |
@@ -500,17 +533,23 @@
 | literals/literals.rb:137:1:137:5 | /foo/ | foo |
 | literals/literals.rb:138:1:138:6 | /foo/ | foo |
 | literals/literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
+| literals/literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
 | literals/literals.rb:140:8:140:8 | 1 | 1 |
 | literals/literals.rb:140:8:140:12 | ... + ... | 2 |
 | literals/literals.rb:140:12:140:12 | 1 | 1 |
+| literals/literals.rb:140:20:140:22 | bar | bar |
+| literals/literals.rb:140:26:140:28 | BAR | bar |
 | literals/literals.rb:141:1:141:8 | /foo/ | foo |
 | literals/literals.rb:142:1:142:4 | // |  |
 | literals/literals.rb:143:1:143:7 | /foo/ | foo |
 | literals/literals.rb:144:1:144:8 | /foo/ | foo |
 | literals/literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
+| literals/literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
 | literals/literals.rb:146:10:146:10 | 1 | 1 |
 | literals/literals.rb:146:10:146:14 | ... + ... | 2 |
 | literals/literals.rb:146:14:146:14 | 1 | 1 |
+| literals/literals.rb:146:22:146:24 | bar | bar |
+| literals/literals.rb:146:28:146:30 | BAR | bar |
 | literals/literals.rb:147:1:147:10 | /foo/ | foo |
 | literals/literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals/literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
@@ -526,6 +565,7 @@
 | misc/misc.rb:3:18:3:21 | foo= | foo= |
 | misc/misc.rb:3:24:3:25 | [] | [] |
 | misc/misc.rb:3:28:3:30 | []= | []= |
+| misc/misc.rb:4:7:4:19 | :"foo_#{...}" | foo_bar |
 | misc/misc.rb:4:15:4:17 | bar | bar |
 | misc/misc.rb:5:7:5:9 | nil | nil |
 | misc/misc.rb:5:12:5:15 | true | true |
@@ -538,6 +578,7 @@
 | misc/misc.rb:8:12:8:14 | []= | []= |
 | misc/misc.rb:9:7:9:11 | super | super |
 | misc/misc.rb:9:13:9:16 | self | self |
+| misc/misc.rb:10:7:10:17 | :"\\n#{...}" | \\nbar |
 | misc/misc.rb:10:13:10:15 | bar | bar |
 | misc/misc.rb:10:19:10:24 | :"foo" | foo |
 | modules/classes.rb:11:28:11:31 | :baz | baz |

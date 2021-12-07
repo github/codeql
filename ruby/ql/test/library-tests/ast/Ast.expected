@@ -1463,6 +1463,22 @@ literals/literals.rb:
 #   66|       getStmt: [AddExpr] ... + ...
 #   66|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #   66|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 9
+#   67|   getStmt: [AssignExpr] ... = ...
+#   67|     getAnOperand/getLeftOperand: [LocalVariableAccess] bar
+#   67|     getAnOperand/getRightOperand: [StringLiteral] "bar"
+#   67|       getComponent: [StringTextComponent] bar
+#   68|   getStmt: [AssignExpr] ... = ...
+#   68|     getAnOperand/getLeftOperand: [ConstantAssignment] BAR
+#   68|     getAnOperand/getRightOperand: [StringLiteral] "bar"
+#   68|       getComponent: [StringTextComponent] bar
+#   69|   getStmt: [StringLiteral] "foo #{...}"
+#   69|     getComponent: [StringTextComponent] foo 
+#   69|     getComponent: [StringInterpolationComponent] #{...}
+#   69|       getStmt: [LocalVariableAccess] bar
+#   70|   getStmt: [StringLiteral] "foo #{...}"
+#   70|     getComponent: [StringTextComponent] foo 
+#   70|     getComponent: [StringInterpolationComponent] #{...}
+#   70|       getStmt: [ConstantReadAccess] BAR
 #   73|   getStmt: [CharacterLiteral] ?x
 #   74|   getStmt: [CharacterLiteral] ?\n
 #   75|   getStmt: [CharacterLiteral] ?\s
@@ -1487,14 +1503,20 @@ literals/literals.rb:
 #   89|     getComponent: [StringTextComponent] wibble
 #   90|   getStmt: [SymbolLiteral] :"wibble wobble"
 #   90|     getComponent: [StringTextComponent] wibble wobble
-#   91|   getStmt: [SymbolLiteral] :"foo_#{...}"
+#   91|   getStmt: [SymbolLiteral] :"foo_#{...}_#{...}_#{...}"
 #   91|     getComponent: [StringTextComponent] foo_
 #   91|     getComponent: [StringInterpolationComponent] #{...}
 #   91|       getStmt: [AddExpr] ... + ...
 #   91|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
 #   91|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
-#   92|   getStmt: [SymbolLiteral] :"foo_#{ 1 + 1 }"
-#   92|     getComponent: [StringTextComponent] foo_#{ 1 + 1 }
+#   91|     getComponent: [StringTextComponent] _
+#   91|     getComponent: [StringInterpolationComponent] #{...}
+#   91|       getStmt: [LocalVariableAccess] bar
+#   91|     getComponent: [StringTextComponent] _
+#   91|     getComponent: [StringInterpolationComponent] #{...}
+#   91|       getStmt: [ConstantReadAccess] BAR
+#   92|   getStmt: [SymbolLiteral] :"foo_#{ 2 + 2}_#{bar}_#{BAR}"
+#   92|     getComponent: [StringTextComponent] foo_#{ 2 + 2}_#{bar}_#{BAR}
 #   93|   getStmt: [SymbolLiteral] :"foo_#{ 3 - 2 }"
 #   93|     getComponent: [StringTextComponent] foo_#{ 3 - 2 }
 #   96|   getStmt: [ArrayLiteral] [...]
@@ -1537,6 +1559,12 @@ literals/literals.rb:
 #  105|         getStmt: [AddExpr] ... + ...
 #  105|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  105|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  105|     getElement: [StringLiteral] "#{...}"
+#  105|       getComponent: [StringInterpolationComponent] #{...}
+#  105|         getStmt: [LocalVariableAccess] bar
+#  105|     getElement: [StringLiteral] "#{...}"
+#  105|       getComponent: [StringInterpolationComponent] #{...}
+#  105|         getStmt: [ConstantReadAccess] BAR
 #  105|     getElement: [StringLiteral] "baz"
 #  105|       getComponent: [StringTextComponent] baz
 #  106|   getStmt: [ArrayLiteral] %w(...)
@@ -1544,6 +1572,10 @@ literals/literals.rb:
 #  106|       getComponent: [StringTextComponent] foo
 #  106|     getElement: [StringLiteral] "bar#{1+1}"
 #  106|       getComponent: [StringTextComponent] bar#{1+1}
+#  106|     getElement: [StringLiteral] "#{bar}"
+#  106|       getComponent: [StringTextComponent] #{bar}
+#  106|     getElement: [StringLiteral] "#{BAR}"
+#  106|       getComponent: [StringTextComponent] #{BAR}
 #  106|     getElement: [StringLiteral] "baz"
 #  106|       getComponent: [StringTextComponent] baz
 #  109|   getStmt: [ArrayLiteral] %i(...)
@@ -1570,6 +1602,12 @@ literals/literals.rb:
 #  112|         getStmt: [AddExpr] ... + ...
 #  112|           getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 2
 #  112|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 4
+#  112|     getElement: [SymbolLiteral] :"#{...}"
+#  112|       getComponent: [StringInterpolationComponent] #{...}
+#  112|         getStmt: [LocalVariableAccess] bar
+#  112|     getElement: [SymbolLiteral] :"#{...}"
+#  112|       getComponent: [StringInterpolationComponent] #{...}
+#  112|         getStmt: [ConstantReadAccess] BAR
 #  112|     getElement: [SymbolLiteral] :"baz"
 #  112|       getComponent: [StringTextComponent] baz
 #  113|   getStmt: [ArrayLiteral] %i(...)
@@ -1585,6 +1623,10 @@ literals/literals.rb:
 #  113|       getComponent: [StringTextComponent] 4
 #  113|     getElement: [SymbolLiteral] :"}"
 #  113|       getComponent: [StringTextComponent] }
+#  113|     getElement: [SymbolLiteral] :"#{bar}"
+#  113|       getComponent: [StringTextComponent] #{bar}
+#  113|     getElement: [SymbolLiteral] :"#{BAR}"
+#  113|       getComponent: [StringTextComponent] #{BAR}
 #  113|     getElement: [SymbolLiteral] :"baz"
 #  113|       getComponent: [StringTextComponent] baz
 #  116|   getStmt: [HashLiteral] {...}
@@ -1604,7 +1646,7 @@ literals/literals.rb:
 #  118|       getKey: [SymbolLiteral] :foo
 #  118|       getValue: [IntegerLiteral] 7
 #  118|     getElement: [HashSplatExpr] ** ...
-#  118|       getAnOperand/getOperand/getReceiver: [MethodCall] call to bar
+#  118|       getAnOperand/getOperand/getReceiver: [MethodCall] call to baz
 #  118|         getReceiver: [Self, SelfVariableAccess] self
 #  121|   getStmt: [ParenthesizedExpr] ( ... )
 #  121|     getStmt: [RangeLiteral] _ .. _
@@ -1640,12 +1682,18 @@ literals/literals.rb:
 #  130|     getComponent: [StringTextComponent] ls -l
 #  131|   getStmt: [SubshellLiteral] `ls -l`
 #  131|     getComponent: [StringTextComponent] ls -l
-#  132|   getStmt: [SubshellLiteral] `du -d #{...}`
+#  132|   getStmt: [SubshellLiteral] `du -d #{...} #{...} #{...}`
 #  132|     getComponent: [StringTextComponent] du -d 
 #  132|     getComponent: [StringInterpolationComponent] #{...}
 #  132|       getStmt: [AddExpr] ... + ...
 #  132|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  132|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  132|     getComponent: [StringTextComponent]  
+#  132|     getComponent: [StringInterpolationComponent] #{...}
+#  132|       getStmt: [LocalVariableAccess] bar
+#  132|     getComponent: [StringTextComponent]  
+#  132|     getComponent: [StringInterpolationComponent] #{...}
+#  132|       getStmt: [ConstantReadAccess] BAR
 #  133|   getStmt: [SubshellLiteral] `du -d #{...}`
 #  133|     getComponent: [StringTextComponent] du -d 
 #  133|     getComponent: [StringInterpolationComponent] #{...}
@@ -1680,13 +1728,31 @@ literals/literals.rb:
 #  139|     getComponent: [StringEscapeSequenceComponent] \s
 #  139|     getComponent: [StringTextComponent] bar
 #  139|     getComponent: [StringEscapeSequenceComponent] \S
-#  140|   getStmt: [RegExpLiteral] /foo#{...}bar/
+#  140|   getStmt: [RegExpLiteral] /foo#{...}bar#{...}#{...}/
+#  140|     getParsed: [RegExpSequence] foo2barbarbar
+#  140|       0: [RegExpConstant, RegExpNormalChar] f
+#  140|       1: [RegExpConstant, RegExpNormalChar] o
+#  140|       2: [RegExpConstant, RegExpNormalChar] o
+#  140|       3: [RegExpConstant, RegExpNormalChar] 2
+#  140|       4: [RegExpConstant, RegExpNormalChar] b
+#  140|       5: [RegExpConstant, RegExpNormalChar] a
+#  140|       6: [RegExpConstant, RegExpNormalChar] r
+#  140|       7: [RegExpConstant, RegExpNormalChar] b
+#  140|       8: [RegExpConstant, RegExpNormalChar] a
+#  140|       9: [RegExpConstant, RegExpNormalChar] r
+#  140|       10: [RegExpConstant, RegExpNormalChar] b
+#  140|       11: [RegExpConstant, RegExpNormalChar] a
+#  140|       12: [RegExpConstant, RegExpNormalChar] r
 #  140|     getComponent: [StringTextComponent] foo
 #  140|     getComponent: [StringInterpolationComponent] #{...}
 #  140|       getStmt: [AddExpr] ... + ...
 #  140|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  140|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  140|     getComponent: [StringTextComponent] bar
+#  140|     getComponent: [StringInterpolationComponent] #{...}
+#  140|       getStmt: [LocalVariableAccess] bar
+#  140|     getComponent: [StringInterpolationComponent] #{...}
+#  140|       getStmt: [ConstantReadAccess] BAR
 #  141|   getStmt: [RegExpLiteral] /foo/
 #  141|     getParsed: [RegExpSequence] foo
 #  141|       0: [RegExpConstant, RegExpNormalChar] f
@@ -1721,13 +1787,31 @@ literals/literals.rb:
 #  145|     getComponent: [StringEscapeSequenceComponent] \s
 #  145|     getComponent: [StringTextComponent] bar
 #  145|     getComponent: [StringEscapeSequenceComponent] \S
-#  146|   getStmt: [RegExpLiteral] /foo#{...}bar/
+#  146|   getStmt: [RegExpLiteral] /foo#{...}bar#{...}#{...}/
+#  146|     getParsed: [RegExpSequence] foo2barbarbar
+#  146|       0: [RegExpConstant, RegExpNormalChar] f
+#  146|       1: [RegExpConstant, RegExpNormalChar] o
+#  146|       2: [RegExpConstant, RegExpNormalChar] o
+#  146|       3: [RegExpConstant, RegExpNormalChar] 2
+#  146|       4: [RegExpConstant, RegExpNormalChar] b
+#  146|       5: [RegExpConstant, RegExpNormalChar] a
+#  146|       6: [RegExpConstant, RegExpNormalChar] r
+#  146|       7: [RegExpConstant, RegExpNormalChar] b
+#  146|       8: [RegExpConstant, RegExpNormalChar] a
+#  146|       9: [RegExpConstant, RegExpNormalChar] r
+#  146|       10: [RegExpConstant, RegExpNormalChar] b
+#  146|       11: [RegExpConstant, RegExpNormalChar] a
+#  146|       12: [RegExpConstant, RegExpNormalChar] r
 #  146|     getComponent: [StringTextComponent] foo
 #  146|     getComponent: [StringInterpolationComponent] #{...}
 #  146|       getStmt: [AddExpr] ... + ...
 #  146|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 1
 #  146|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
 #  146|     getComponent: [StringTextComponent] bar
+#  146|     getComponent: [StringInterpolationComponent] #{...}
+#  146|       getStmt: [LocalVariableAccess] bar
+#  146|     getComponent: [StringInterpolationComponent] #{...}
+#  146|       getStmt: [ConstantReadAccess] BAR
 #  147|   getStmt: [RegExpLiteral] /foo/
 #  147|     getParsed: [RegExpSequence] foo
 #  147|       0: [RegExpConstant, RegExpNormalChar] f
