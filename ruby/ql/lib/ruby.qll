@@ -2,5 +2,5 @@
  * Provides classes for working with Ruby programs.
  */
 
-import Customizations
+private import Customizations
 import codeql.ruby.AST
