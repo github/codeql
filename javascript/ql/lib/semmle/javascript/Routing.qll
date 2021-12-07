@@ -64,13 +64,13 @@ module Routing {
    * that does not correspond to the route that was just installed.
    * Typically this occurs when the route setup method is chainable and returns the router itself.
    */
-  Node getRouteSetupNode(DataFlow::CallNode call) { result = MkRouteSetup(call) }
+  Node getRouteSetupNode(DataFlow::Node call) { result = MkRouteSetup(call) }
 
   /**
    * A node in a routing tree modelling the composition of middleware functions and route handlers.
    *
    * More precisely, this is a node in a graph representing a set of possible routing trees, as the
-   * concrete shape of the  routing tree may be depend on branching control flow.
+   * concrete shape of the routing tree may be depend on branching control flow.
    *
    * Each node represents a function that can receive an incoming request, though not necessarily
    * a function with an explicit body in the source code.
@@ -410,7 +410,7 @@ module Routing {
      */
     abstract class UseSite extends Range {
       /**
-       * Gets a data flow ndoe that flows to this use-site in one step.
+       * Gets a data flow node that flows to this use-site in one step.
        */
       DataFlow::Node getSource() {
         result = getALocalSource()
