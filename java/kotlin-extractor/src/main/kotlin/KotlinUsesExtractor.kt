@@ -3,6 +3,7 @@ package com.github.codeql
 import com.github.codeql.utils.substituteTypeArguments
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
@@ -13,6 +14,7 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -475,8 +477,20 @@ class X {
     fun getFunctionShortName(f: IrFunction) : String {
         if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
             return OperatorNameConventions.INVOKE.asString()
-        else
-            return f.name.asString()
+        (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+            val propName = it.owner.name.asString()
+            when(f) {
+                it.owner.getter -> return JvmAbi.getterName(propName)
+                it.owner.setter -> return JvmAbi.setterName(propName)
+                else -> {
+                    logger.warn(
+                        Severity.ErrorSevere,
+                        "Function has a corresponding property, but is neither the getter nor the setter"
+                    )
+                }
+            }
+        }
+        return f.name.asString()
     }
 
     fun getFunctionLabel(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null) : String {

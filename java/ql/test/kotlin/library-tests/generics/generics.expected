@@ -53,10 +53,10 @@ function
 | generics.kt:13:1:18:1 | toString | toString() |
 | generics.kt:13:1:18:1 | toString | toString() |
 | generics.kt:13:1:18:1 | toString | toString() |
-| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
-| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
-| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
-| generics.kt:13:16:13:23 | <get-t> | <get-t>() |
+| generics.kt:13:16:13:23 | getT | getT() |
+| generics.kt:13:16:13:23 | getT | getT() |
+| generics.kt:13:16:13:23 | getT | getT() |
+| generics.kt:13:16:13:23 | getT | getT() |
 | generics.kt:14:5:14:19 | f1 | f1(int) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |

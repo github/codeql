@@ -478,7 +478,7 @@
 | exprs.kt:142:9:142:18 | ...=... | exprs.kt:142:1:144:1 | <obinit> | AssignExpr |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
-| exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | <get-n> | VarAccess |
+| exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | getN | VarAccess |
 | exprs.kt:143:27:143:31 | new C(...) | exprs.kt:143:5:143:33 | foo | ClassInstanceExpr |
 | exprs.kt:143:29:143:30 | 42 | exprs.kt:143:5:143:33 | foo | IntegerLiteral |
 | exprs.kt:146:1:146:18 | <obinit>(...) | exprs.kt:146:6:146:18 | Root | MethodAccess |
@@ -539,7 +539,7 @@
 | exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:1:176:1 | <obinit> | AssignExpr |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:1:176:1 | <obinit> | VarAccess |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:1:176:1 | <obinit> | VarAccess |
-| exprs.kt:172:18:172:29 | rgb | exprs.kt:172:18:172:29 | <get-rgb> | VarAccess |
+| exprs.kt:172:18:172:29 | rgb | exprs.kt:172:18:172:29 | getRgb | VarAccess |
 | exprs.kt:179:5:179:31 | south | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:179:27:179:31 | SOUTH | exprs.kt:178:1:181:1 | enums | VarAccess |
 | exprs.kt:180:5:180:27 | green | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
@@ -547,7 +547,7 @@
 | exprs.kt:185:1:193:1 | <obinit>(...) | exprs.kt:185:1:193:1 | Class1 | MethodAccess |
 | exprs.kt:186:5:186:14 | ...=... | exprs.kt:185:1:193:1 | <obinit> | AssignExpr |
 | exprs.kt:186:5:186:14 | a1 | exprs.kt:185:1:193:1 | <obinit> | VarAccess |
-| exprs.kt:186:5:186:14 | a1 | exprs.kt:186:5:186:14 | <get-a1> | VarAccess |
+| exprs.kt:186:5:186:14 | a1 | exprs.kt:186:5:186:14 | getA1 | VarAccess |
 | exprs.kt:186:14:186:14 | 1 | exprs.kt:185:1:193:1 | <obinit> | IntegerLiteral |
 | exprs.kt:188:9:188:18 | a2 | exprs.kt:187:13:192:5 | getObject | LocalVariableDeclExpr |
 | exprs.kt:188:18:188:18 | 2 | exprs.kt:187:13:192:5 | getObject | IntegerLiteral |
@@ -556,8 +556,8 @@
 | exprs.kt:189:16:191:9 | new (...) | exprs.kt:187:13:192:5 | getObject | ClassInstanceExpr |
 | exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 | <obinit> | AssignExpr |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:189:16:191:9 | <obinit> | VarAccess |
-| exprs.kt:190:13:190:49 | a3 | exprs.kt:190:13:190:49 | <get-a3> | VarAccess |
-| exprs.kt:190:31:190:32 | <get-a1>(...) | exprs.kt:189:16:191:9 | <obinit> | MethodAccess |
+| exprs.kt:190:13:190:49 | a3 | exprs.kt:190:13:190:49 | getA3 | VarAccess |
+| exprs.kt:190:31:190:32 | getA1(...) | exprs.kt:189:16:191:9 | <obinit> | MethodAccess |
 | exprs.kt:190:31:190:32 | this | exprs.kt:189:16:191:9 | <obinit> | ThisAccess |
 | exprs.kt:190:31:190:37 | ... + ... | exprs.kt:189:16:191:9 | <obinit> | AddExpr |
 | exprs.kt:190:36:190:37 | a2 | exprs.kt:189:16:191:9 | <obinit> | VarAccess |

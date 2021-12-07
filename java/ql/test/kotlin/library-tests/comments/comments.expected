@@ -16,7 +16,7 @@ commentOwners
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | toString |
 | comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
 | comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
-| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:13:17:46 | <get-members> |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:13:17:46 | getMembers |
 | comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | comments.kt:23:5:26:5 | add |
 | comments.kt:35:5:35:34 | /** Medium is in the middle */ | comments.kt:36:5:36:14 | Medium |
 | comments.kt:37:5:37:23 | /** This is high */ | comments.kt:38:5:38:11 | High |

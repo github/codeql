@@ -7,8 +7,8 @@ calls
 | Test.java:27:5:27:24 | getter(...) | Test.java:16:22:16:25 | user | Test.java:14:14:14:17 | Test | Generic2.class:0:0:0:0 | getter | Generic2.class:0:0:0:0 | Generic2<? super String> |
 | test.kt:1:1:10:1 | <obinit>(...) | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | <obinit> | test.kt:1:1:10:1 | Generic |
 | test.kt:5:32:5:46 | identity(...) | test.kt:5:3:5:46 | identity2 | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity | test.kt:1:1:10:1 | Generic |
-| test.kt:7:21:7:26 | <get-stored>(...) | test.kt:7:3:7:26 | getter | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> | test.kt:1:1:10:1 | Generic |
-| test.kt:8:26:8:31 | <set-stored>(...) | test.kt:8:3:8:41 | setter | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> | test.kt:1:1:10:1 | Generic |
+| test.kt:7:21:7:26 | getStored(...) | test.kt:7:3:7:26 | getter | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored | test.kt:1:1:10:1 | Generic |
+| test.kt:8:26:8:31 | setStored(...) | test.kt:8:3:8:41 | setter | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored | test.kt:1:1:10:1 | Generic |
 | test.kt:15:13:15:35 | identity(...) | test.kt:12:1:25:1 | user | test.kt:0:0:0:0 | TestKt | test.kt:6:3:6:35 | identity | test.kt:1:1:10:1 | Generic<String> |
 | test.kt:16:13:16:36 | identity2(...) | test.kt:12:1:25:1 | user | test.kt:0:0:0:0 | TestKt | test.kt:5:3:5:46 | identity2 | test.kt:1:1:10:1 | Generic<String> |
 | test.kt:19:16:19:23 | getter(...) | test.kt:12:1:25:1 | user | test.kt:0:0:0:0 | TestKt | test.kt:7:3:7:26 | getter | test.kt:1:1:10:1 | Generic<? extends String> |
@@ -57,8 +57,8 @@ refTypes
 | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | equals | equals(java.lang.Object) | Object | boolean | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | equals |
 | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | hashCode | hashCode() | No parameters | int | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | hashCode |
 | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | toString | toString() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | toString |
-| test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> | <get-stored>() | No parameters | T | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> |
-| test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> | <set-stored>(java.lang.Object) | T | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> |
+| test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored | getStored() | No parameters | T | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored |
+| test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored | setStored(java.lang.Object) | T | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored |
 | test.kt:1:1:10:1 | Generic | test.kt:5:3:5:46 | identity2 | identity2(java.lang.Object) | T | T | test.kt:1:1:10:1 | Generic | test.kt:5:3:5:46 | identity2 |
 | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity | identity(java.lang.Object) | T | T | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity |
 | test.kt:1:1:10:1 | Generic | test.kt:7:3:7:26 | getter | getter() | No parameters | T | test.kt:1:1:10:1 | Generic | test.kt:7:3:7:26 | getter |
@@ -66,8 +66,8 @@ refTypes
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:1:1:10:1 | equals | equals(java.lang.Object) | Object | boolean | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | equals |
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:1:1:10:1 | hashCode | hashCode() | No parameters | int | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | hashCode |
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:1:1:10:1 | toString | toString() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | toString |
-| test.kt:1:1:10:1 | Generic<? extends String> | test.kt:3:3:3:19 | <get-stored> | <get-stored>() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> |
-| test.kt:1:1:10:1 | Generic<? extends String> | test.kt:3:3:3:19 | <set-stored> | <set-stored>(java.lang.Void) | Void | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> |
+| test.kt:1:1:10:1 | Generic<? extends String> | test.kt:3:3:3:19 | getStored | getStored() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored |
+| test.kt:1:1:10:1 | Generic<? extends String> | test.kt:3:3:3:19 | setStored | setStored(java.lang.Void) | Void | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored |
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:5:3:5:46 | identity2 | identity2(java.lang.Void) | Void | String | test.kt:1:1:10:1 | Generic | test.kt:5:3:5:46 | identity2 |
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:6:3:6:35 | identity | identity(java.lang.Void) | Void | String | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity |
 | test.kt:1:1:10:1 | Generic<? extends String> | test.kt:7:3:7:26 | getter | getter() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:7:3:7:26 | getter |
@@ -75,8 +75,8 @@ refTypes
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:1:1:10:1 | equals | equals(java.lang.Object) | Object | boolean | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | equals |
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:1:1:10:1 | hashCode | hashCode() | No parameters | int | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | hashCode |
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:1:1:10:1 | toString | toString() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | toString |
-| test.kt:1:1:10:1 | Generic<? super String> | test.kt:3:3:3:19 | <get-stored> | <get-stored>() | No parameters | Object | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> |
-| test.kt:1:1:10:1 | Generic<? super String> | test.kt:3:3:3:19 | <set-stored> | <set-stored>(java.lang.String) | String | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> |
+| test.kt:1:1:10:1 | Generic<? super String> | test.kt:3:3:3:19 | getStored | getStored() | No parameters | Object | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored |
+| test.kt:1:1:10:1 | Generic<? super String> | test.kt:3:3:3:19 | setStored | setStored(java.lang.String) | String | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored |
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:5:3:5:46 | identity2 | identity2(java.lang.String) | String | Object | test.kt:1:1:10:1 | Generic | test.kt:5:3:5:46 | identity2 |
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:6:3:6:35 | identity | identity(java.lang.String) | String | Object | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity |
 | test.kt:1:1:10:1 | Generic<? super String> | test.kt:7:3:7:26 | getter | getter() | No parameters | Object | test.kt:1:1:10:1 | Generic | test.kt:7:3:7:26 | getter |
@@ -84,8 +84,8 @@ refTypes
 | test.kt:1:1:10:1 | Generic<String> | test.kt:1:1:10:1 | equals | equals(java.lang.Object) | Object | boolean | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | equals |
 | test.kt:1:1:10:1 | Generic<String> | test.kt:1:1:10:1 | hashCode | hashCode() | No parameters | int | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | hashCode |
 | test.kt:1:1:10:1 | Generic<String> | test.kt:1:1:10:1 | toString | toString() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:1:1:10:1 | toString |
-| test.kt:1:1:10:1 | Generic<String> | test.kt:3:3:3:19 | <get-stored> | <get-stored>() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <get-stored> |
-| test.kt:1:1:10:1 | Generic<String> | test.kt:3:3:3:19 | <set-stored> | <set-stored>(java.lang.String) | String | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | <set-stored> |
+| test.kt:1:1:10:1 | Generic<String> | test.kt:3:3:3:19 | getStored | getStored() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | getStored |
+| test.kt:1:1:10:1 | Generic<String> | test.kt:3:3:3:19 | setStored | setStored(java.lang.String) | String | void | test.kt:1:1:10:1 | Generic | test.kt:3:3:3:19 | setStored |
 | test.kt:1:1:10:1 | Generic<String> | test.kt:5:3:5:46 | identity2 | identity2(java.lang.String) | String | String | test.kt:1:1:10:1 | Generic | test.kt:5:3:5:46 | identity2 |
 | test.kt:1:1:10:1 | Generic<String> | test.kt:6:3:6:35 | identity | identity(java.lang.String) | String | String | test.kt:1:1:10:1 | Generic | test.kt:6:3:6:35 | identity |
 | test.kt:1:1:10:1 | Generic<String> | test.kt:7:3:7:26 | getter | getter() | No parameters | String | test.kt:1:1:10:1 | Generic | test.kt:7:3:7:26 | getter |
