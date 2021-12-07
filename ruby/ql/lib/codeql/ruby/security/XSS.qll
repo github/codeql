@@ -266,13 +266,13 @@ module ReflectedXSS {
   abstract class Source extends Shared::Source { }
 
   /** A data flow sink for stored XSS vulnerabilities. */
-  abstract class Sink extends Shared::Sink { }
+  class Sink = Shared::Sink;
 
   /** A sanitizer for stored XSS vulnerabilities. */
-  abstract class Sanitizer extends Shared::Sanitizer { }
+  class Sanitizer = Shared::Sanitizer;
 
   /** A sanitizer guard for stored XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
+  class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
@@ -314,13 +314,13 @@ module StoredXSS {
   abstract class Source extends Shared::Source { }
 
   /** A data flow sink for stored XSS vulnerabilities. */
-  abstract class Sink extends Shared::Sink { }
+  class Sink = Shared::Sink;
 
   /** A sanitizer for stored XSS vulnerabilities. */
-  abstract class Sanitizer extends Shared::Sanitizer { }
+  class Sanitizer = Shared::Sanitizer;
 
   /** A sanitizer guard for stored XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
+  class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that preserves dataflow in the context of stored XSS.
