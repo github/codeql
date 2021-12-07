@@ -42,10 +42,11 @@ class KotlinExtractorExtension(
             FileUtil.logger = logger
             val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
             srcDir.mkdirs()
+            val genericSpecialisationsExtracted = HashSet<String>()
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
                 fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
-                doFile(invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext)
+                doFile(invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
             }
             logger.printLimitedWarningCounts()
             // We don't want the compiler to continue and generate class
@@ -92,7 +93,8 @@ fun doFile(invocationTrapFile: String,
            srcDir: File,
            file: IrFile,
            primitiveTypeMapping: PrimitiveTypeMapping,
-           pluginContext: IrPluginContext) {
+           pluginContext: IrPluginContext,
+           genericSpecialisationsExtracted: MutableSet<String>) {
     val filePath = file.path
     val logger = FileLogger(logCounter, fileTrapWriter)
     logger.info("Extracting file $filePath")
@@ -120,8 +122,8 @@ fun doFile(invocationTrapFile: String,
             // Now elevate to a SourceFileTrapWriter, and populate the
             // file information
             val sftw = tw.makeSourceFileTrapWriter(file, true)
-            val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, file.path, primitiveTypeMapping, pluginContext)
-            val fileExtractor = KotlinSourceFileExtractor(logger, sftw, file, externalClassExtractor, primitiveTypeMapping, pluginContext)
+            val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, file.path, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            val fileExtractor = KotlinSourceFileExtractor(logger, sftw, file, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
             fileExtractor.extractFileContents(sftw.fileId)
             externalClassExtractor.extractExternalClasses()
         }

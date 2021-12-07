@@ -23,7 +23,8 @@ open class KotlinUsesExtractor(
     val dependencyCollector: OdasaOutput.TrapFileManager?,
     val externalClassExtractor: ExternalClassExtractor,
     val primitiveTypeMapping: PrimitiveTypeMapping,
-    val pluginContext: IrPluginContext
+    val pluginContext: IrPluginContext,
+    val genericSpecialisationsExtracted: MutableSet<String>
 ) {
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
@@ -77,7 +78,7 @@ open class KotlinUsesExtractor(
         if (isExternalDeclaration(cls) || clsFile == null) {
             val newTrapWriter = tw.makeFileTrapWriter(getIrClassBinaryPath(cls), false)
             val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-            return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext)
+            return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
         }
 
         if (this is KotlinSourceFileExtractor && this.file == clsFile) {
@@ -86,15 +87,8 @@ open class KotlinUsesExtractor(
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-        return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext)
+        return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
-
-    private fun anyDeclarationExtracted(c: IrClass, id: Label<out DbClassorinterface>) =
-        c.declarations.any {
-            it is IrFunction &&
-            tw.getExistingLabelFor<DbCallable>(getFunctionLabel(
-                id, it.name.asString(), it.valueParameters, it.returnType, it.extensionReceiverParameter)) != null
-        }
 
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): UseClassInstanceResult {
         if (c.isAnonymousObject) {
@@ -150,22 +144,26 @@ open class KotlinUsesExtractor(
     fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
         val classLabelResult = getClassLabel(c, typeArgs)
 
-        var shouldExtractClass = false
+        var instanceSeenBefore = true
 
         val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel, {
-            // If this is a generic type instantiation then it has no
-            // source entity, so we need to extract it here
-            shouldExtractClass = true
+            instanceSeenBefore = false
 
             extractClassLaterIfExternal(c)
         })
 
         if (typeArgs.isNotEmpty()) {
-            // Extract again if we've already extracted the class itself but not its declared functions:
-            // This might happen e.g. if we see it for the first time in the context of a parameter type (which doesn't
-            // require method prototype extraction), then later as a function receiver (which does).
-            if (shouldExtractClass || (inReceiverContext && !anyDeclarationExtracted(c, classLabel)))
-                this.withSourceFileOfClass(c).extractClassInstance(c, typeArgs, inReceiverContext)
+            // If this is a generic type instantiation then it has no
+            // source entity, so we need to extract it here
+            val extractorWithCSource by lazy { this.withSourceFileOfClass(c) }
+
+            if (!instanceSeenBefore) {
+                extractorWithCSource.extractClassInstance(c, typeArgs)
+            }
+
+            if (inReceiverContext && genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
+                extractorWithCSource.extractMemberPrototypes(c, typeArgs, classLabel)
+            }
         }
 
         return TypeResult(

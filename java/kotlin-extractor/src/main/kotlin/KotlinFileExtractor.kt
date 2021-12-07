@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.interpreter.toIrConst
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
@@ -28,8 +27,9 @@ open class KotlinFileExtractor(
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalClassExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
-    pluginContext: IrPluginContext
-): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext) {
+    pluginContext: IrPluginContext,
+    genericSpecialisationsExtracted: MutableSet<String>
+): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
 
     fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
         when (declaration) {
@@ -92,15 +92,15 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>, extractFunctionPrototypes: Boolean): Label<out DbClassorinterface> {
+    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
         if (typeArgs.isEmpty()) {
             logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
 
-        val results = addClassLabel(c, typeArgs)
-        val id = results.id
+        val classLabelResults = getClassLabel(c, typeArgs)
+        val id = tw.getLabelFor<DbClassorinterface>(classLabelResults.classLabel)
         val pkg = c.packageFqName?.asString() ?: ""
-        val cls = results.shortName
+        val cls = classLabelResults.shortName
         val pkgId = extractPackage(pkg)
         if(c.kind == ClassKind.INTERFACE) {
             @Suppress("UNCHECKED_CAST")
@@ -133,19 +133,19 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
 
-        if (extractFunctionPrototypes) {
-            val typeParamSubstitution = c.typeParameters.map({ it.symbol }).zip(typeArgs).toMap()
+        return id
+    }
 
-            c.declarations.map {
-                when(it) {
-                    is IrFunction -> extractFunction(it, id, false, typeParamSubstitution)
-                    is IrProperty -> extractProperty(it, id, false, typeParamSubstitution)
-                    else -> {}
-                }
+    fun extractMemberPrototypes(c: IrClass, typeArgs: List<IrTypeArgument>, id: Label<out DbClassorinterface>) {
+        val typeParamSubstitution = c.typeParameters.map({ it.symbol }).zip(typeArgs).toMap()
+
+        c.declarations.map {
+            when(it) {
+                is IrFunction -> extractFunction(it, id, false, typeParamSubstitution)
+                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution)
+                else -> {}
             }
         }
-
-        return id
     }
 
     private fun extracLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {

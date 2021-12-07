@@ -17,9 +17,10 @@ class KotlinSourceFileExtractor(
     val file: IrFile,
     externalClassExtractor: ExternalClassExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
-    pluginContext: IrPluginContext
+    pluginContext: IrPluginContext,
+    genericSpecialisationsExtracted: MutableSet<String>
 ) :
-  KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext) {
+  KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
 
     val fileClass by lazy {
         extractFileClass(file)
