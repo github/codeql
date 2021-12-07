@@ -35,6 +35,7 @@ open class KotlinFileExtractor(
             }
             is IrProperty -> extractProperty(declaration, parentId)
             is IrEnumEntry -> extractEnumEntry(declaration, parentId)
+            is IrField -> extractField(declaration, parentId)
             is IrTypeAlias -> extractTypeAlias(declaration) // TODO: Pass in and use parentId
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
