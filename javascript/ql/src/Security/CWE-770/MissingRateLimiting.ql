@@ -18,7 +18,6 @@ import javascript
 import semmle.javascript.security.dataflow.MissingRateLimiting
 import semmle.javascript.RestrictedLocations
 
-// TODO: Previously we used (FirstLineOf) here, but that doesn't work anymore.
 from
   Routing::Node useSite, ExpensiveRouteHandler r, string explanation, DataFlow::Node reference,
   string referenceLabel
