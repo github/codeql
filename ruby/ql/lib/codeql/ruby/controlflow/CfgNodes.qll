@@ -390,6 +390,8 @@ module ExprNodes {
 
     /** Gets the scope expression. */
     final ExprCfgNode getScopeExpr() { e.hasCfgChild(e.getScopeExpr(), this, result) }
+
+    override string getValueText() { result = this.getExpr().getValueText() }
   }
 
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
