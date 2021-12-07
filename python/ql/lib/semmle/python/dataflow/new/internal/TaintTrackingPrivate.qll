@@ -3,6 +3,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 private import semmle.python.ApiGraphs
+private import semmle.python.internal.CachedStages
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -30,6 +31,7 @@ private module Cached {
    */
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    Stages::Taint::ref() and
     localAdditionalTaintStep(nodeFrom, nodeTo)
     or
     any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
@@ -42,6 +44,7 @@ private module Cached {
    */
   cached
   predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    Stages::Taint::ref() and
     concatStep(nodeFrom, nodeTo)
     or
     subscriptStep(nodeFrom, nodeTo)

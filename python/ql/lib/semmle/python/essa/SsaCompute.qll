@@ -90,6 +90,7 @@
  */
 
 import python
+private import semmle.python.internal.CachedStages
 
 cached
 private module SsaComputeImpl {
@@ -308,6 +309,7 @@ private module SsaComputeImpl {
      */
     cached
     predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
+      Stages::SSA::ref() and
       Liveness::liveAtExit(v, b) and
       (
         defbb = b and

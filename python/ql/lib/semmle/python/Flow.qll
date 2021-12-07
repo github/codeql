@@ -1,5 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.internal.CachedStages
 
 /*
  * Note about matching parent and child nodes and CFG splitting:
@@ -122,7 +123,9 @@ class ControlFlowNode extends @py_flow_node {
   AstNode getNode() { py_flow_bb_node(this, result, _, _) }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
+    Stages::DataFlow::ref() and
     exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
@@ -1011,6 +1014,7 @@ class BasicBlock extends @py_flow_node {
 
   cached
   BasicBlock getImmediateDominator() {
+    Stages::SSA::ref() and
     this.firstNode().getImmediateDominator().getBasicBlock() = result
   }
 

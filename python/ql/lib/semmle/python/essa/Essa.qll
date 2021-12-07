@@ -5,6 +5,7 @@
 import python
 private import SsaCompute
 import semmle.python.essa.Definitions
+private import semmle.python.internal.CachedStages
 
 /** An (enhanced) SSA variable derived from `SsaSourceVariable`. */
 class EssaVariable extends TEssaDefinition {
@@ -270,6 +271,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
   /** Gets the input variable for this phi node on the edge `pred` -> `this.getBasicBlock()`, if any. */
   cached
   EssaVariable getInput(BasicBlock pred) {
+    Stages::SSA::ref() and
     result.getDefinition() = this.reachingDefinition(pred)
     or
     result.getDefinition() = this.inputEdgeRefinement(pred)

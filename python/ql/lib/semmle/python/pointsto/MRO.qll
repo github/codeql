@@ -178,10 +178,15 @@ class ClassList extends TClassList {
    * Gets a class list which is the de-duplicated form of the list containing elements of
    * this list from `n` onwards.
    */
+  pragma[noopt]
   ClassList deduplicate(int n) {
     n = this.length() and result = Empty()
     or
-    this.duplicate(n) and result = this.deduplicate(n + 1)
+    exists(int next |
+      this.duplicate(n) and
+      result = this.deduplicate(next) and
+      next = n + 1
+    )
     or
     exists(ClassObjectInternal cls, ClassList tail |
       this.deduplicateCons(n, cls, tail) and
@@ -479,10 +484,12 @@ private predicate needs_reversing(ClassList lst) {
   lst = Empty()
 }
 
+pragma[noopt]
 private predicate reverse_step(ClassList lst, ClassList remainder, ClassList reversed) {
   needs_reversing(lst) and remainder = lst and reversed = Empty()
   or
-  exists(ClassObjectInternal head, ClassList tail |
+  exists(ClassObjectInternal head, ClassList tail, TClassList cons |
+    reverse_step(lst, cons, tail) and
     reversed = Cons(head, tail) and
     reverse_stepCons(lst, remainder, head, tail)
   )

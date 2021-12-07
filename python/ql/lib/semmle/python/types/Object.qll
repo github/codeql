@@ -2,9 +2,11 @@ import python
 private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
+private import semmle.python.internal.CachedStages
 
 cached
 private predicate is_an_object(@py_object obj) {
+  Stages::DataFlow::ref() and
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
