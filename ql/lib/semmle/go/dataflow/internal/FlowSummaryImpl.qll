@@ -914,13 +914,9 @@ module Private {
       not exists(interpretComponent(c))
     }
 
-    private predicate inputNeedsReference(string c) {
-      c = "Argument" or
-      parseArg(c, _)
-    }
+    private predicate inputNeedsReference(string c) { parseArg(c, _) }
 
     private predicate outputNeedsReference(string c) {
-      c = "Argument" or
       parseArg(c, _) or
       c = "ReturnValue" or
       parseReturn(c, _)
@@ -956,7 +952,7 @@ module Private {
         exists(int pos |
           node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), pos)
         |
-          c = "Argument" or parseArg(c, pos)
+          parseArg(c, pos)
         )
         or
         exists(int pos | node.asNode().(ParamNode).isParameterOf(mid.asCallable(), pos) |
@@ -984,9 +980,7 @@ module Private {
         interpretInput(input, idx + 1, ref, mid) and
         specSplit(input, c, idx)
       |
-        exists(int pos | node.asNode().(ArgNode).argumentOf(mid.asCall(), pos) |
-          c = "Argument" or parseArg(c, pos)
-        )
+        exists(int pos | node.asNode().(ArgNode).argumentOf(mid.asCall(), pos) | parseArg(c, pos))
         or
         exists(int pos, ReturnNodeExt ret |
           (
