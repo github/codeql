@@ -22,7 +22,7 @@ class CandidateStringLiteral extends StringLiteral {
 
   CandidateStringLiteral() {
     tl = this.getTopLevel() and
-    v = getStringValue()
+    v = this.getStringValue()
   }
 
   /**
@@ -46,7 +46,7 @@ class CandidateStringLiteral extends StringLiteral {
   ASTNode getIntermediate() {
     result = this
     or
-    exists(ASTNode mid | mid = getIntermediate() |
+    exists(ASTNode mid | mid = this.getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )
@@ -57,7 +57,7 @@ class CandidateStringLiteral extends StringLiteral {
    */
   predicate isInScope(Scope scope) {
     scope instanceof GlobalScope or
-    getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
+    this.getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
   }
 }
 

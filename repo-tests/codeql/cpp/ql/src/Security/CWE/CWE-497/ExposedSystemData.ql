@@ -31,15 +31,15 @@ abstract class SystemData extends Element {
    */
   Expr getAnExprIndirect() {
     // direct SystemData
-    result = getAnExpr() or
+    result = this.getAnExpr() or
     // flow via global or member variable (conservative approximation)
-    result = getAnAffectedVar().getAnAccess() or
+    result = this.getAnAffectedVar().getAnAccess() or
     // flow via stack variable
-    definitionUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, result, getAnExprIndirect()) or
+    definitionUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, result, this.getAnExprIndirect()) or
     // flow from assigned value to assignment expression
-    result.(AssignExpr).getRValue() = getAnExprIndirect()
+    result.(AssignExpr).getRValue() = this.getAnExprIndirect()
   }
 
   /**

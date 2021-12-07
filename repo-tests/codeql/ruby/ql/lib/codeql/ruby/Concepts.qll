@@ -417,6 +417,12 @@ module HTTP {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
+      /**
+       * Gets a node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getURL() { result = super.getURL() }
+
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
 
@@ -441,6 +447,12 @@ module HTTP {
       abstract class Range extends MethodCall {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
+
+        /**
+         * Gets a node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getURL();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
@@ -581,6 +593,37 @@ module OrmInstantiation {
     /** Holds if a call to `methodName` on this instance may return a field of this ORM object. */
     bindingset[methodName]
     abstract predicate methodCallMayAccessField(string methodName);
+  }
+}
+
+/**
+ * A data-flow node that may set or unset Cross-site request forgery protection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CSRFProtectionSetting::Range` instead.
+ */
+class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+  /**
+   * Gets the boolean value corresponding to if CSRF protection is enabled
+   * (`true`) or disabled (`false`) by this node.
+   */
+  boolean getVerificationSetting() { result = super.getVerificationSetting() }
+}
+
+/** Provides a class for modeling new CSRF protection setting APIs. */
+module CSRFProtectionSetting {
+  /**
+   * A data-flow node that may set or unset Cross-site request forgery protection.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CSRFProtectionSetting` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the boolean value corresponding to if CSRF protection is enabled
+     * (`true`) or disabled (`false`) by this node.
+     */
+    abstract boolean getVerificationSetting();
   }
 }
 

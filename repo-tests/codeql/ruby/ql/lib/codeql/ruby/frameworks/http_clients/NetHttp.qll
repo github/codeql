@@ -46,7 +46,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
    * Gets the node representing the URL of the request.
    * Currently unused, but may be useful in future, e.g. to filter out certain requests.
    */
-  DataFlow::Node getURLArgument() { result = request.getArgument(0) }
+  override DataFlow::Node getURL() { result = request.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 

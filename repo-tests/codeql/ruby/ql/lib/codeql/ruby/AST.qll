@@ -18,6 +18,27 @@ private import ast.internal.Scope
 private import ast.internal.Synthesis
 private import ast.internal.TreeSitter
 
+cached
+private module Cached {
+  cached
+  ModuleBase getEnclosingModule(Scope s) {
+    result = s
+    or
+    not s instanceof ModuleBase and result = getEnclosingModule(s.getOuterScope())
+  }
+
+  cached
+  MethodBase getEnclosingMethod(Scope s) {
+    result = s
+    or
+    not s instanceof MethodBase and
+    not s instanceof ModuleBase and
+    result = getEnclosingMethod(s.getOuterScope())
+  }
+}
+
+private import Cached
+
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
  * program elements.
@@ -39,20 +60,10 @@ class AstNode extends TAstNode {
   final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /** Gets the enclosing module, if any. */
-  ModuleBase getEnclosingModule() {
-    exists(Scope::Range s |
-      s = scopeOf(toGeneratedInclSynth(this)) and
-      toGeneratedInclSynth(result) = s.getEnclosingModule()
-    )
-  }
+  ModuleBase getEnclosingModule() { result = getEnclosingModule(scopeOfInclSynth(this)) }
 
   /** Gets the enclosing method, if any. */
-  MethodBase getEnclosingMethod() {
-    exists(Scope::Range s |
-      s = scopeOf(toGeneratedInclSynth(this)) and
-      toGeneratedInclSynth(result) = s.getEnclosingMethod()
-    )
-  }
+  MethodBase getEnclosingMethod() { result = getEnclosingMethod(scopeOfInclSynth(this)) }
 
   /** Gets a textual representation of this node. */
   cached

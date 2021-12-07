@@ -69,7 +69,7 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /**
@@ -128,7 +128,7 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 
   predicate isSink(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |

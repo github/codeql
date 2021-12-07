@@ -80,7 +80,7 @@ module AccessPath {
     SsaExplicitDefinition getSsaDefinition() { result.getSourceVariable() = this }
 
     /** Gets the data flow node representing the value of this variable, if one exists. */
-    DataFlow::Node getValue() { result = getSsaDefinition().getRhsNode() }
+    DataFlow::Node getValue() { result = this.getSsaDefinition().getRhsNode() }
   }
 
   /**

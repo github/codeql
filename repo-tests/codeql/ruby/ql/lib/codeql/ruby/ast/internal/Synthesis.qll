@@ -3,6 +3,7 @@
 private import AST
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
+private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
@@ -15,6 +16,7 @@ newtype SynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BraceBlockKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
   ExponentExprKind() or
@@ -33,6 +35,7 @@ newtype SynthKind =
   MulExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
+  SimpleParameterKind() or
   SplatExprKind() or
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
@@ -812,5 +815,96 @@ private module ArrayLiteralDesugar {
     }
 
     final override predicate constantReadAccess(string name) { name = "::Array" }
+  }
+}
+
+/**
+ * ```rb
+ * for x in xs
+ *   <loop_body>
+ * end
+ * ```
+ * desugars to, roughly,
+ * ```rb
+ * xs.each { |__synth__0| x = __synth__0; <loop_body> }
+ * ```
+ *
+ * Note that for-loops, unlike blocks, do not create a new variable scope, so
+ * variables within this block inherit the enclosing scope. The exception to
+ * this is the synthesized variable declared by the block parameter, which is
+ * scoped to the synthesized block.
+ */
+private module ForLoopDesugar {
+  pragma[nomagic]
+  private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
+    exists(ForExpr for |
+      // each call
+      parent = for and
+      i = -1 and
+      child = SynthChild(MethodCallKind("each", false, 0))
+      or
+      exists(MethodCall eachCall | eachCall = TMethodCallSynth(for, -1, "each", false, 0) |
+        // receiver
+        parent = eachCall and
+        i = 0 and
+        child = childRef(for.getValue()) // value is the Enumerable
+        or
+        parent = eachCall and
+        i = -2 and
+        child = SynthChild(BraceBlockKind())
+        or
+        exists(Block block | block = TBraceBlockSynth(eachCall, -2) |
+          // block params
+          parent = block and
+          i = 0 and
+          child = SynthChild(SimpleParameterKind())
+          or
+          exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+            parent = param and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            or
+            // assignment to pattern from for loop to synth parameter
+            parent = block and
+            i = 1 and
+            child = SynthChild(AssignExprKind())
+            or
+            parent = TAssignExprSynth(block, 1) and
+            (
+              i = 0 and
+              child = childRef(for.getPattern())
+              or
+              i = 1 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            )
+          )
+          or
+          // rest of block body
+          parent = block and
+          child = childRef(for.getBody().(Do).getStmt(i - 2))
+        )
+      )
+    )
+  }
+
+  private class ForLoopSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      forLoopSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "each" and
+      setter = false and
+      arity = 0
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof TSimpleParameterSynth and
+      i = 0
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(ForExpr for).getBody()
+    }
   }
 }

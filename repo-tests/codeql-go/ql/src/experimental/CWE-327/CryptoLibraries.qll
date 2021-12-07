@@ -196,7 +196,7 @@ abstract class CryptographicOperation extends DataFlow::Node {
  * Models cryptographic operations of the `crypto/md5` package.
  */
 class Md5 extends CryptographicOperation, DataFlow::CallNode {
-  Md5() { getTarget().hasQualifiedName("crypto/md5", ["New", "Sum"]) }
+  Md5() { this.getTarget().hasQualifiedName("crypto/md5", ["New", "Sum"]) }
 
   override Expr getInput() { result = this.getArgument(0).asExpr() }
 
@@ -209,7 +209,7 @@ class Md5 extends CryptographicOperation, DataFlow::CallNode {
  * Models cryptographic operations of the `crypto/sha1` package.
  */
 class Sha1 extends CryptographicOperation, DataFlow::CallNode {
-  Sha1() { getTarget().hasQualifiedName("crypto/sha1", ["New", "Sum"]) }
+  Sha1() { this.getTarget().hasQualifiedName("crypto/sha1", ["New", "Sum"]) }
 
   override Expr getInput() { result = this.getArgument(0).asExpr() }
 
@@ -222,7 +222,7 @@ class Sha1 extends CryptographicOperation, DataFlow::CallNode {
  * Models cryptographic operations of the `crypto/des` package.
  */
 class Des extends CryptographicOperation, DataFlow::CallNode {
-  Des() { getTarget().hasQualifiedName("crypto/des", ["NewCipher", "NewTripleDESCipher"]) }
+  Des() { this.getTarget().hasQualifiedName("crypto/des", ["NewCipher", "NewTripleDESCipher"]) }
 
   override Expr getInput() { result = this.getArgument(0).asExpr() }
 
@@ -235,7 +235,7 @@ class Des extends CryptographicOperation, DataFlow::CallNode {
  * Models cryptographic operations of the `crypto/rc4` package.
  */
 class Rc4 extends CryptographicOperation, DataFlow::CallNode {
-  Rc4() { getTarget().hasQualifiedName("crypto/rc4", ["NewCipher"]) }
+  Rc4() { this.getTarget().hasQualifiedName("crypto/rc4", ["NewCipher"]) }
 
   override Expr getInput() { result = this.getArgument(0).asExpr() }
 

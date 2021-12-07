@@ -45,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
+    result = any(ConsoleGlobalEntry e).getNode()
   }
 
   /**

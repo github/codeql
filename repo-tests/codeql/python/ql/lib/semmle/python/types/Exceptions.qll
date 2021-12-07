@@ -41,7 +41,7 @@ class RaisingNode extends ControlFlowNode {
     or
     exists(FunctionObject func | this = func.getACall() | result = func.getARaisedType())
     or
-    result = systemExitRaise_objectapi()
+    result = this.systemExitRaise_objectapi()
   }
 
   /**
@@ -53,7 +53,7 @@ class RaisingNode extends ControlFlowNode {
     or
     exists(FunctionValue func | this = func.getACall() | result = func.getARaisedType())
     or
-    result = systemExitRaise()
+    result = this.systemExitRaise()
   }
 
   pragma[noinline]
