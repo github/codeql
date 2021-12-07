@@ -987,10 +987,6 @@ private module ControlFlowGraphImpl {
         completion = YieldCompletion(branchCompletion)
       )
     )
-    or
-    n instanceof KtAnonymousClassDeclarationStmt and
-    last = n and
-    completion = NormalCompletion()
   }
 
   /**

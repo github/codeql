@@ -131,17 +131,16 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private fun extractAnonymousClassStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extracLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         @Suppress("UNCHECKED_CAST")
         val id = extractClassSource(c) as Label<out DbClass>
-        extractAnonymousClassStmt(id, c, callable, parent, idx)
+        extracLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
-    private fun extractAnonymousClassStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        // TODO: is this the same as @localtypedeclstmt
-        val stmtId = tw.getFreshIdLabel<DbAnonymousclassdeclstmt>()
-        tw.writeStmts_anonymousclassdeclstmt(stmtId, parent, idx, callable)
-        tw.writeKtAnonymousClassDeclarationStmts(stmtId, id)
+    private fun extracLocalTypeDeclStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+        val stmtId = tw.getFreshIdLabel<DbLocaltypedeclstmt>()
+        tw.writeStmts_localtypedeclstmt(stmtId, parent, idx, callable)
+        tw.writeIsLocalClassOrInterface(id, stmtId)
         val locId = tw.getLocation(locElement)
         tw.writeHasLocation(stmtId, locId)
     }
@@ -533,7 +532,7 @@ open class KotlinFileExtractor(
             }
             is IrClass -> {
                 if (s.isAnonymousObject) {
-                    extractAnonymousClassStmt(s, callable, parent, idx)
+                    extracLocalTypeDeclStmt(s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
                 }
@@ -541,7 +540,7 @@ open class KotlinFileExtractor(
             is IrFunction -> {
                 if (s.isLocalFunction()) {
                     val classId =  extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
-                    extractAnonymousClassStmt(classId, s, callable, parent, idx)
+                    extracLocalTypeDeclStmt(classId, s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }

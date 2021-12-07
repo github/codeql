@@ -1137,11 +1137,6 @@ ktPropertyBackingFields(
   int backingField: @field ref
 )
 
-ktAnonymousClassDeclarationStmts(
-  unique int id: @anonymousclassdeclstmt ref,
-  int classId: @class ref
-)
-
 ktSyntheticBody(
   unique int id: @callable ref,
   int kind: int ref
