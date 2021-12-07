@@ -24,6 +24,14 @@ private newtype TNode =
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
+  /** Gets the callable in which this node occurs. */
+  DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+  /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) {
+    p.isParameterOf(c, pos)
+  }
+
   /** A data flow node that represents returning a value from a function. */
   class ReturnNode extends Node {
     ReturnKind kind;
