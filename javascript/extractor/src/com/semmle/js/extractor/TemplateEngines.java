@@ -22,7 +22,7 @@ public class TemplateEngines {
   public static final Pattern TEMPLATE_TAGS =
       Pattern.compile(
           StringUtil.glue(
-              "|", TemplateEngines.MUSTACHE_TAG_DOUBLE, MUSTACHE_TAG_TRIPLE, MUSTACHE_TAG_PERCENT, EJS_TAG),
+              "|", MUSTACHE_TAG_DOUBLE, MUSTACHE_TAG_TRIPLE, MUSTACHE_TAG_PERCENT, EJS_TAG),
           Pattern.DOTALL);
 
   /**
