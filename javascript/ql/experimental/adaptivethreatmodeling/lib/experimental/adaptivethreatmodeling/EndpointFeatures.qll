@@ -109,12 +109,13 @@ private string getACallBasedTokenFeatureComponent(
 
 /** This module provides functionality for getting the function body feature associated with a particular entity. */
 module FunctionBodies {
-  /** Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`. */
-  private predicate bodyTokens(
-    DatabaseFeatures::Entity entity, DatabaseFeatures::AstNode node, string token
-  ) {
-    DatabaseFeatures::astNodes(entity, _, _, node, _) and
-    token = unique(string t | DatabaseFeatures::nodeAttributes(node, t))
+  /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
+  private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
+    exists(DatabaseFeatures::AstNode node |
+      DatabaseFeatures::astNodes(entity, _, _, node, _) and
+      token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
+      location = node.getLocation()
+    )
   }
 
   /**
@@ -126,20 +127,18 @@ module FunctionBodies {
     // If a function has more than 256 body subtokens, then featurize it as absent. This
     // approximates the behavior of the classifer on non-generic body features where large body
     // features are replaced by the absent token.
-    if
-      strictcount(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) >
-        256
-    then result = ""
-    else
-      result =
-        strictconcat(DatabaseFeatures::AstNode node, string token, Location l |
-          bodyTokens(entity, node, token) and l = node.getLocation()
-        |
-          token, " "
-          order by
-            l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-            l.getEndColumn(), token
-        )
+    //
+    // We count locations instead of tokens because tokens are often not unique.
+    strictcount(Location l | bodyTokens(entity, l, _)) <= 256 and
+    result =
+      strictconcat(string token, Location l |
+        bodyTokens(entity, l, token)
+      |
+        token, " "
+        order by
+          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn(), token
+      )
   }
 }
 
