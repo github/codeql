@@ -9,6 +9,7 @@
 // Importing python under the `py` namespace to avoid importing `CallNode` from `Flow.qll` and thereby having a naming conflict with `API::CallNode`.
 private import python as py
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs used in a database.
@@ -683,6 +684,7 @@ module API {
      */
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
+      Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
       not result instanceof DataFlow::ModuleVariableNode
     }

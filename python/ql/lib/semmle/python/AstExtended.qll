@@ -1,4 +1,5 @@
 import python
+private import semmle.python.internal.CachedStages
 
 /** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
@@ -20,6 +21,7 @@ abstract class AstNode extends AstNode_ {
   ControlFlowNode getAFlowNode() { py_flow_bb_node(result, this, _, _) }
 
   /** Gets the location for this AST node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -106,7 +108,10 @@ class Comprehension extends Comprehension_, AstNode {
 
   override string toString() { result = "Comprehension" }
 
-  override Location getLocation() { result = Comprehension_.super.getLocation() }
+  override Location getLocation() {
+    Stages::SSA::ref() and
+    result = Comprehension_.super.getLocation()
+  }
 
   override AstNode getAChildNode() { result = this.getASubExpression() }
 

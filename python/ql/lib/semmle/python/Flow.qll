@@ -1001,12 +1001,16 @@ class BasicBlock extends @py_flow_node {
   string toString() { result = "BasicBlock" }
 
   /** Whether this basic block strictly dominates the other */
-  pragma[nomagic]
-  predicate strictlyDominates(BasicBlock other) { other.getImmediateDominator+() = this }
+  cached
+  predicate strictlyDominates(BasicBlock other) {
+    Stages::SSA::ref() and
+    other.getImmediateDominator+() = this
+  }
 
   /** Whether this basic block dominates the other */
-  pragma[nomagic]
+  cached
   predicate dominates(BasicBlock other) {
+    Stages::SSA::ref() and
     this = other
     or
     this.strictlyDominates(other)

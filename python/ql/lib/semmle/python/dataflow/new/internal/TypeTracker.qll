@@ -1,6 +1,7 @@
 /** Step Summaries and Type Tracking */
 
 private import TypeTrackerSpecific
+private import semmle.python.internal.CachedStages
 
 /**
  * A string that may appear as the name of a piece of content. This will usually include things like:
@@ -40,6 +41,7 @@ private module Cached {
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
   TypeTracker append(TypeTracker tt, StepSummary step) {
+    Stages::TypeTracking::ref() and
     exists(Boolean hasCall, OptionalContentName content | tt = MkTypeTracker(hasCall, content) |
       step = LevelStep() and result = tt
       or

@@ -37,6 +37,7 @@ module Stages {
    */
   cached
   module SSA {
+    // TODO: This is more a "basic AST", not a "SSA" stage.
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the Ast stage.
@@ -47,6 +48,10 @@ module Stages {
     private import semmle.python.essa.SsaDefinitions as SsaDefinitions
     private import semmle.python.essa.SsaCompute as SsaCompute
     private import semmle.python.essa.Essa as Essa
+    private import semmle.python.Module as PyModule
+    private import semmle.python.Exprs as Exprs
+    private import semmle.python.AstExtended as AstExtended
+    private import semmle.python.Flow as PyFlow
 
     /**
      * DONT USE!
@@ -61,6 +66,47 @@ module Stages {
       SsaCompute::SsaDefinitions::reachesEndOfBlock(_, _, _, _)
       or
       exists(any(Essa::PhiFunction p).getInput(_))
+      or
+      exists(PyModule::moduleNameFromFile(_))
+      or
+      exists(any(Exprs::Expr e).toString())
+      or
+      exists(any(AstExtended::AstNode n).getLocation())
+      or
+      exists(any(PyFlow::BasicBlock b).getImmediateDominator())
+      or
+      any(PyFlow::BasicBlock b).strictlyDominates(_)
+      or
+      any(PyFlow::BasicBlock b).dominates(_)
+    }
+  }
+
+  /**
+   * The `TypeTracking` stage.
+   */
+  cached
+  module TypeTracking {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the Ast stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    private import semmle.python.dataflow.new.DataFlow::DataFlow as NewDataFlow
+    private import semmle.python.ApiGraphs::API as API
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(any(NewDataFlow::TypeTracker t).append(_))
+      or
+      exists(any(API::Node n).getAMember().getAUse())
     }
   }
 
@@ -83,6 +129,7 @@ module Stages {
     private import semmle.python.types.Object as TypeObject
     private import semmle.python.objects.TObject as TObject
     private import semmle.python.Flow as Flow
+    private import semmle.python.objects.ObjectInternal as ObjectInternal
 
     /**
      * DONT USE!
@@ -107,6 +154,8 @@ module Stages {
       exists(TObject::TObject f)
       or
       exists(any(Flow::ControlFlowNode c).toString())
+      or
+      exists(any(ObjectInternal::ObjectInternal o).toString())
     }
   }
 

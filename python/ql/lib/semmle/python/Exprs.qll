@@ -1,6 +1,7 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.internal.CachedStages
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -8,7 +9,11 @@ class Expr extends Expr_, AstNode {
   override Scope getScope() { py_scopes(this, result) }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = "Expression" }
+  cached
+  override string toString() {
+    Stages::SSA::ref() and
+    result = "Expression"
+  }
 
   /** Gets the module in which this expression occurs */
   Module getEnclosingModule() { result = this.getScope().getEnclosingModule() }
