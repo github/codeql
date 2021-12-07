@@ -656,6 +656,7 @@ module PointsToInternal {
     builtin_not_in_outer_scope(def, context, value, origin)
   }
 
+  pragma[nomagic]
   private predicate undefined_variable(
     ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -674,6 +675,7 @@ module PointsToInternal {
     origin = def.getDefiningNode()
   }
 
+  pragma[nomagic]
   private predicate builtin_not_in_outer_scope(
     ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
