@@ -496,7 +496,7 @@ class X {
     }
 
     fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>) =
-        getFunctionLabel(parentId, f.name.asString(), f.valueParameters, f.returnType, f.extensionReceiverParameter)
+        getFunctionLabel(parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter)
 
     fun getFunctionLabel(
         parentId: Label<out DbElement>,
