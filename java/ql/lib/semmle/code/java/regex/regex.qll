@@ -1,23 +1,5 @@
 import java
-import semmle.code.java.dataflow.DataFlow2
-import semmle.code.java.dataflow.ExternalFlow
-
-class RegexFlowConf extends DataFlow2::Configuration {
-  RegexFlowConf() { this = "RegexFlowConf" }
-
-  override predicate isSource(DataFlow2::Node node) { node.asExpr() instanceof StringLiteral }
-
-  override predicate isSink(DataFlow2::Node node) { sinkNode(node, "regex-use") }
-}
-
-/**
- * Holds if `s` is used as a regex, with the mode `mode` (if known).
- * If regex mode is not known, `mode` will be `"None"`.
- */
-predicate used_as_regex(Expr s, string mode) {
-  any(RegexFlowConf c).hasFlow(DataFlow2::exprNode(s), _) and
-  mode = "None" // TODO: proper mode detection
-}
+private import RegexFlowConfigs
 
 /**
  * A string literal that is used as a regular exprssion.
