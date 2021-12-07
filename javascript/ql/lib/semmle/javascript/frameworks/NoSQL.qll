@@ -24,36 +24,25 @@ private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
  */
 private module MongoDB {
   /**
-   * Gets an access to `mongodb.MongoClient`.
+   * Gets an access to `mongodb.MongoClient` or a database.
+   *
+   * In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
+   * they were separated. To handle everything with a single model, we treat them as the same here.
    */
-  private API::Node getAMongoClient() {
+  private API::Node getAMongoClientOrDatabase() {
     result = API::moduleImport("mongodb").getMember("MongoClient")
     or
-    // The callback parameter is either a MongoClient or Db depending on the mongodb package version,
-    // but we just model it as both.
-    result = getAMongoDbCallback().getParameter(1)
-  }
-
-  /** Gets an API-graph node that refers to a `connect` callback. */
-  private API::Node getAMongoDbCallback() {
-    result = getAMongoClient().getMember("connect").getLastParameter()
-  }
-
-  /**
-   * Gets an API-graph node that may refer to a MongoDB database connection.
-   */
-  private API::Node getAMongoDb() {
-    result = getAMongoClient().getMember("db").getReturn()
+    result = getAMongoClientOrDatabase().getMember("db").getReturn()
     or
-    // The callback parameter is either a MongoClient or Db depending on the mongodb package version,
-    // but we just model it as both.
-    result = getAMongoDbCallback().getParameter(1)
+    result = getAMongoClientOrDatabase().getMember("connect").getLastParameter().getParameter(1)
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
   private API::Node getACollection() {
     // A collection resulting from calling `Db.collection(...)`.
-    exists(API::Node collection | collection = getAMongoDb().getMember("collection").getReturn() |
+    exists(API::Node collection |
+      collection = getAMongoClientOrDatabase().getMember("collection").getReturn()
+    |
       result = collection
       or
       result = collection.getParameter(1).getParameter(0)
