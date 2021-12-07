@@ -25,7 +25,7 @@
 | methods5.kt:8:3:8:3 | x | VarAccess |
 | methods5.kt:8:7:8:7 | 7 | IntegerLiteral |
 | methods5.kt:9:32:9:32 | 5 | IntegerLiteral |
-| methods5.kt:10:3:10:11 | new C1(...) | ClassInstanceExpr |
+| methods5.kt:10:3:10:11 | new C1<Integer>(...) | ClassInstanceExpr |
 | methods5.kt:10:13:10:18 | (...)... | CastExpr |
 | methods5.kt:10:13:10:18 | Unit | TypeAccess |
 | methods5.kt:10:13:10:18 | f1(...) | MethodAccess |

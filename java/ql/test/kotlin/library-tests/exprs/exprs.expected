@@ -819,7 +819,7 @@
 | localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
 | localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:9:34:9:34 | 5 | localFunctionCalls.kt:9:5:9:34 | f1 | IntegerLiteral |
-| localFunctionCalls.kt:10:5:10:13 | new C1(...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
+| localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:15:10:20 | (...)... | localFunctionCalls.kt:3:1:11:1 | x | CastExpr |
 | localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:15:10:20 | f1(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |

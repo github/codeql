@@ -35,6 +35,15 @@
 | Test.kt:1:1:8:1 | TestKt | Test.kt:5:3:5:25 | <get-rawField> |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:5:3:5:25 | <set-rawField> |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:6:3:6:22 | method |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:1:1:8:1 | equals |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:1:1:8:1 | hashCode |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:1:1:8:1 | toString |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:3:3:3:22 | <get-field> |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:3:3:3:22 | <set-field> |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:5:3:5:25 | <get-rawField> |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:5:3:5:25 | <set-rawField> |
+| Test.kt:1:1:8:1 | TestKt<ConstructorUsedKt> | Test.kt:6:3:6:22 | method |
 | Test.kt:1:1:8:1 | TestKt<FieldUsedKt> | Test.kt:1:1:8:1 | TestKt<FieldUsedKt> |
 | Test.kt:1:1:8:1 | TestKt<FieldUsedKt> | Test.kt:1:1:8:1 | equals |
 | Test.kt:1:1:8:1 | TestKt<FieldUsedKt> | Test.kt:1:1:8:1 | hashCode |
