@@ -138,6 +138,26 @@ SummaryComponent interpretComponentSpecific(string c) {
   )
 }
 
+/** Gets the textual representation of the content in the format used for flow summaries. */
+private string getContentSpecificCsv(Content c) {
+  c = TElementContent() and result = "Element"
+  or
+  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
+  or
+  exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
+}
+
+/** Gets the textual representation of a summary component in the format used for flow summaries. */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  or
+  exists(ReturnKind rk |
+    sc = TReturnSummaryComponent(rk) and
+    result = "ReturnValue[" + rk + "]" and
+    not rk instanceof NormalReturnKind
+  )
+}
+
 class SourceOrSinkElement = Element;
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */

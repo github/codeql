@@ -59,7 +59,7 @@ abstract class JdkInternalAccess extends Element {
 class JdkInternalTypeAccess extends JdkInternalAccess, TypeAccess {
   JdkInternalTypeAccess() { jdkInternalApi(this.getType().(RefType).getPackage().getName()) }
 
-  override string getAccessedApi() { result = getType().(RefType).getQualifiedName() }
+  override string getAccessedApi() { result = this.getType().(RefType).getQualifiedName() }
 
   override string getReplacement() {
     exists(RefType t | this.getType() = t |

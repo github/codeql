@@ -69,6 +69,11 @@ SummaryComponent interpretComponentSpecific(string c) {
   result = FlowSummary::SummaryComponent::argument(any(int i | i >= 0))
 }
 
+/** Gets the textual representation of a summary component in the format used for flow summaries. */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  sc = TArgumentSummaryComponent(-2) and result = "BlockArgument"
+}
+
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 NormalReturnKind getReturnValueKind() { any() }
 

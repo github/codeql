@@ -15,7 +15,7 @@ import java
 /** A variable of type `ReentrantLock`. */
 class LockVariable extends Variable {
   LockVariable() {
-    getType().(RefType).hasQualifiedName("java.util.concurrent.locks", "ReentrantLock")
+    this.getType().(RefType).hasQualifiedName("java.util.concurrent.locks", "ReentrantLock")
   }
 
   /** An access to method `lock` on this variable. */

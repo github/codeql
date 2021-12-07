@@ -28,12 +28,12 @@ class StaticFieldInit extends AssignExpr {
 
   IfStmt getAnEnclosingNullCheck() {
     result.getThen().getAChild*() = this.getEnclosingStmt() and
-    result.getCondition().(NullEQExpr).getAChildExpr() = getField().getAnAccess()
+    result.getCondition().(NullEQExpr).getAChildExpr() = this.getField().getAnAccess()
   }
 
   IfStmt getNearestNullCheck() {
-    result = getAnEnclosingNullCheck() and
-    not result.getAChild+() = getAnEnclosingNullCheck()
+    result = this.getAnEnclosingNullCheck() and
+    not result.getAChild+() = this.getAnEnclosingNullCheck()
   }
 }
 

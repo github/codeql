@@ -12,7 +12,7 @@ class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
    *
    * Gets the identifier naming the namespace.
    */
-  deprecated Identifier getId() { result = getIdentifier() }
+  deprecated Identifier getId() { result = this.getIdentifier() }
 
   /**
    * Gets the identifier naming the namespace.
@@ -32,7 +32,7 @@ class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
    * Gets the local namespace name induced by this namespace.
    */
   LocalNamespaceName getLocalNamespaceName() {
-    result = getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName()
+    result = this.getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName()
   }
 
   /**
@@ -58,22 +58,22 @@ class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
  */
 class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespace_declaration {
   /** Gets the name of this namespace. */
-  override Identifier getIdentifier() { result = getChildExpr(-1) }
+  override Identifier getIdentifier() { result = this.getChildExpr(-1) }
 
   /** Gets the name of this namespace as a string. */
-  override string getName() { result = getIdentifier().getName() }
+  override string getName() { result = this.getIdentifier().getName() }
 
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
     i >= 0 and
-    result = getChildStmt(i)
+    result = this.getChildStmt(i)
   }
 
   /** Gets a statement in this namespace. */
-  override Stmt getAStmt() { result = getStmt(_) }
+  override Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the number of statements in this namespace. */
-  int getNumStmt() { result = count(getAStmt()) }
+  int getNumStmt() { result = count(this.getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
 
@@ -86,7 +86,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
   predicate isInstantiated() { is_instantiated(this) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if has_declare_keyword(this) then result = this else result = getIdentifier()
+    if has_declare_keyword(this) then result = this else result = this.getIdentifier()
   }
 
   override string getAPrimaryQlClass() { result = "NamespaceDeclaration" }
@@ -113,7 +113,7 @@ class TypeDefinition extends ASTNode, @type_definition {
   /**
    * Gets the unqualified name of the type being defined.
    */
-  string getName() { result = getIdentifier().getName() }
+  string getName() { result = this.getIdentifier().getName() }
 
   /**
    * Gets the canonical name of the type being defined.
@@ -123,7 +123,7 @@ class TypeDefinition extends ASTNode, @type_definition {
   /**
    * Gets the type defined by this declaration.
    */
-  Type getType() { ast_node_type(getIdentifier(), result) }
+  Type getType() { ast_node_type(this.getIdentifier(), result) }
 
   override string getAPrimaryQlClass() { result = "TypeDefinition" }
 }
@@ -139,7 +139,7 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @external_module_de
    * declare module "fs" {...}
    * ```
    */
-  StringLiteral getNameLiteral() { result = getChildExpr(-1) }
+  StringLiteral getNameLiteral() { result = this.getChildExpr(-1) }
 
   /**
    * Gets the module name, such as `fs` in:
@@ -147,19 +147,19 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @external_module_de
    * declare module "fs" {...}
    * ```
    */
-  string getName() { result = getNameLiteral().getStringValue() }
+  string getName() { result = this.getNameLiteral().getStringValue() }
 
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
     i >= 0 and
-    result = getChildStmt(i)
+    result = this.getChildStmt(i)
   }
 
   /** Gets a statement in this namespace. */
-  override Stmt getAStmt() { result = getStmt(_) }
+  override Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the number of statements in this namespace. */
-  int getNumStmt() { result = count(getAStmt()) }
+  int getNumStmt() { result = count(this.getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
 
@@ -173,14 +173,14 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @global_augment
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
     i >= 0 and
-    result = getChildStmt(i)
+    result = this.getChildStmt(i)
   }
 
   /** Gets a statement in this namespace. */
-  override Stmt getAStmt() { result = getStmt(_) }
+  override Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the number of statements in this namespace. */
-  int getNumStmt() { result = count(getAStmt()) }
+  int getNumStmt() { result = count(this.getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
 
@@ -194,15 +194,15 @@ class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
    *
    * Gets the name under which the imported entity is imported.
    */
-  deprecated Identifier getId() { result = getIdentifier() }
+  deprecated Identifier getId() { result = this.getIdentifier() }
 
   /** Gets the name under which the imported entity is imported. */
-  Identifier getIdentifier() { result = getChildExpr(0) }
+  Identifier getIdentifier() { result = this.getChildExpr(0) }
 
   /** Gets the expression specifying the imported module or entity. */
-  Expr getImportedEntity() { result = getChildExpr(1) }
+  Expr getImportedEntity() { result = this.getChildExpr(1) }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
+  override ControlFlowNode getFirstControlFlowNode() { result = this.getIdentifier() }
 
   override string getAPrimaryQlClass() { result = "ImportEqualsDeclaration" }
 }
@@ -219,14 +219,14 @@ class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
  */
 class ExternalModuleReference extends Expr, Import, @external_module_reference {
   /** Gets the expression specifying the module. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpression() { result = this.getChildExpr(0) }
 
-  override PathExpr getImportedPath() { result = getExpression() }
+  override PathExpr getImportedPath() { result = this.getExpression() }
 
-  override Module getEnclosingModule() { result = getTopLevel() }
+  override Module getEnclosingModule() { result = this.getTopLevel() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpression().getFirstControlFlowNode()
+    result = this.getExpression().getFirstControlFlowNode()
   }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
@@ -240,13 +240,13 @@ private class LiteralExternalModulePath extends PathExpr, ConstantString {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
 
-  override string getValue() { result = getStringValue() }
+  override string getValue() { result = this.getStringValue() }
 }
 
 /** A TypeScript "export-assign" declaration. */
 class ExportAssignDeclaration extends Stmt, @export_assign_declaration {
   /** Gets the expression exported by this declaration. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpression() { result = this.getChildExpr(0) }
 
   override string getAPrimaryQlClass() { result = "ExportAssignDeclaration" }
 }
@@ -256,7 +256,7 @@ class ExportAsNamespaceDeclaration extends Stmt, @export_as_namespace_declaratio
   /**
    * Gets the `X` in `export as namespace X`.
    */
-  Identifier getIdentifier() { result = getChildExpr(0) }
+  Identifier getIdentifier() { result = this.getChildExpr(0) }
 
   override string getAPrimaryQlClass() { result = "ExportAsNamespaceDeclaration" }
 }
@@ -266,18 +266,18 @@ class ExportAsNamespaceDeclaration extends Stmt, @export_as_namespace_declaratio
  */
 class TypeAliasDeclaration extends @type_alias_declaration, TypeParameterized, Stmt {
   /** Gets the name of this type alias as a string. */
-  string getName() { result = getIdentifier().getName() }
+  string getName() { result = this.getIdentifier().getName() }
 
-  Identifier getIdentifier() { result = getChildTypeExpr(0) }
+  Identifier getIdentifier() { result = this.getChildTypeExpr(0) }
 
-  override TypeParameter getTypeParameter(int n) { result = getChildTypeExpr(n + 2) }
+  override TypeParameter getTypeParameter(int n) { result = this.getChildTypeExpr(n + 2) }
 
   /**
    * Gets the `T` in `type A = T`.
    */
-  TypeExpr getDefinition() { result = getChildTypeExpr(1) }
+  TypeExpr getDefinition() { result = this.getChildTypeExpr(1) }
 
-  override string describe() { result = "type alias " + getName() }
+  override string describe() { result = "type alias " + this.getName() }
 
   /**
    * Gets the canonical name of the type being defined.
@@ -298,7 +298,7 @@ class InterfaceDefinition extends @interface_definition, ClassOrInterface {
 
 /** A TypeScript interface declaration. */
 class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interface_declaration {
-  override Identifier getIdentifier() { result = getChildTypeExpr(0) }
+  override Identifier getIdentifier() { result = this.getChildTypeExpr(0) }
 
   override TypeParameter getTypeParameter(int n) {
     exists(int astIndex | typeexprs(result, _, this, astIndex, _) |
@@ -306,7 +306,7 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interface_declara
     )
   }
 
-  override string describe() { result = "interface " + getName() }
+  override string describe() { result = "interface " + this.getName() }
 
   /**
    * Gets the `n`th type from the `extends` clause of this interface, starting at 0.
@@ -343,28 +343,28 @@ class FunctionTypeExpr extends TypeExpr, @function_typeexpr {
   predicate isConstructor() { this instanceof ConstructorTypeExpr }
 
   /** Gets the function AST node that holds the parameters and return type. */
-  FunctionExpr getFunction() { result = getChildExpr(0) }
+  FunctionExpr getFunction() { result = this.getChildExpr(0) }
 
   /** Gets the `n`th parameter of this function type. */
-  Parameter getParameter(int n) { result = getFunction().getParameter(n) }
+  Parameter getParameter(int n) { result = this.getFunction().getParameter(n) }
 
   /** Gets any of the parameters of this function type. */
-  Parameter getAParameter() { result = getFunction().getAParameter() }
+  Parameter getAParameter() { result = this.getFunction().getAParameter() }
 
   /** Gets the number of parameters of this function type. */
-  int getNumParameter() { result = getFunction().getNumParameter() }
+  int getNumParameter() { result = this.getFunction().getNumParameter() }
 
   /** Gets the `n`th type parameter of this function type. */
-  TypeParameter getTypeParameter(int n) { result = getFunction().getTypeParameter(n) }
+  TypeParameter getTypeParameter(int n) { result = this.getFunction().getTypeParameter(n) }
 
   /** Gets any of the type parameters of this function type. */
-  TypeParameter getATypeParameter() { result = getFunction().getATypeParameter() }
+  TypeParameter getATypeParameter() { result = this.getFunction().getATypeParameter() }
 
   /** Gets the number of type parameters of this function type. */
-  int getNumTypeParameter() { result = getFunction().getNumTypeParameter() }
+  int getNumTypeParameter() { result = this.getFunction().getNumTypeParameter() }
 
   /** Gets the return type of this function type, if any. */
-  TypeExpr getReturnTypeAnnotation() { result = getFunction().getReturnTypeAnnotation() }
+  TypeExpr getReturnTypeAnnotation() { result = this.getFunction().getReturnTypeAnnotation() }
 
   override string getAPrimaryQlClass() { result = "FunctionTypeExpr" }
 }
@@ -404,17 +404,21 @@ class TypeDecl extends Identifier, TypeRef, LexicalDecl {
   string describe() {
     exists(ClassOrInterface ci | this = ci.getIdentifier() | result = ci.describe())
     or
-    exists(TypeParameter tp | this = tp.getIdentifier() | result = "type parameter " + getName())
+    exists(TypeParameter tp | this = tp.getIdentifier() |
+      result = "type parameter " + this.getName()
+    )
     or
-    exists(TypeAliasDeclaration td | this = td.getIdentifier() | result = "type alias " + getName())
+    exists(TypeAliasDeclaration td | this = td.getIdentifier() |
+      result = "type alias " + this.getName()
+    )
     or
-    exists(EnumDeclaration enum | this = enum.getIdentifier() | result = "enum " + getName())
+    exists(EnumDeclaration enum | this = enum.getIdentifier() | result = "enum " + this.getName())
     or
     exists(EnumMember member | this = member.getIdentifier() |
       result = "enum member " + member.getPrefixedName()
     )
     or
-    exists(ImportSpecifier im | this = im.getLocal() | result = "imported type " + getName())
+    exists(ImportSpecifier im | this = im.getLocal() | result = "imported type " + this.getName())
   }
 }
 
@@ -452,7 +456,7 @@ class LocalTypeName extends @local_type_name, LexicalName {
   override Scope getScope() { local_type_names(this, _, result) }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   /**
    * Gets a declaration of this type name.
@@ -467,7 +471,7 @@ class LocalTypeName extends @local_type_name, LexicalName {
    */
   TypeDecl getFirstDeclaration() {
     result =
-      min(getADeclaration() as decl
+      min(this.getADeclaration() as decl
         order by
           decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
       )
@@ -516,7 +520,7 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
   override Scope getScope() { local_namespace_names(this, _, result) }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   /**
    * Gets a declaration of this namespace name.
@@ -531,7 +535,7 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
    */
   LocalNamespaceDecl getFirstDeclaration() {
     result =
-      min(getADeclaration() as decl
+      min(this.getADeclaration() as decl
         order by
           decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
       )
@@ -558,7 +562,7 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
   /**
    * Gets the canonical name of the namespace referenced by this name.
    */
-  Namespace getNamespace() { result = getADeclaration().getNamespace() }
+  Namespace getNamespace() { result = this.getADeclaration().getNamespace() }
 
   override DeclarationSpace getDeclarationSpace() { result = "namespace" }
 }
@@ -586,7 +590,9 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 
-  override DataFlow::ClassNode getClass() { result.getAstNode() = getType().(ClassType).getClass() }
+  override DataFlow::ClassNode getClass() {
+    result.getAstNode() = this.getType().(ClassType).getClass()
+  }
 }
 
 /**
@@ -595,41 +601,41 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
 private class KeywordTypeExpr extends @keyword_typeexpr, TypeExpr {
   string getName() { literals(result, _, this) }
 
-  override predicate isAny() { getName() = "any" }
+  override predicate isAny() { this.getName() = "any" }
 
-  override predicate isString() { getName() = "string" }
+  override predicate isString() { this.getName() = "string" }
 
-  override predicate isStringy() { getName() = "string" }
+  override predicate isStringy() { this.getName() = "string" }
 
-  override predicate isNumber() { getName() = "number" }
+  override predicate isNumber() { this.getName() = "number" }
 
-  override predicate isNumbery() { getName() = "number" }
+  override predicate isNumbery() { this.getName() = "number" }
 
-  override predicate isBoolean() { getName() = "boolean" }
+  override predicate isBoolean() { this.getName() = "boolean" }
 
-  override predicate isBooleany() { getName() = "boolean" }
+  override predicate isBooleany() { this.getName() = "boolean" }
 
-  override predicate isUndefined() { getName() = "undefined" }
+  override predicate isUndefined() { this.getName() = "undefined" }
 
-  override predicate isNull() { getName() = "null" }
+  override predicate isNull() { this.getName() = "null" }
 
-  override predicate isVoid() { getName() = "void" }
+  override predicate isVoid() { this.getName() = "void" }
 
-  override predicate isNever() { getName() = "never" }
+  override predicate isNever() { this.getName() = "never" }
 
-  override predicate isThis() { getName() = "this" }
+  override predicate isThis() { this.getName() = "this" }
 
-  override predicate isSymbol() { getName() = "symbol" }
+  override predicate isSymbol() { this.getName() = "symbol" }
 
-  override predicate isUniqueSymbol() { getName() = "unique symbol" }
+  override predicate isUniqueSymbol() { this.getName() = "unique symbol" }
 
-  override predicate isObjectKeyword() { getName() = "object" }
+  override predicate isObjectKeyword() { this.getName() = "object" }
 
-  override predicate isUnknownKeyword() { getName() = "unknown" }
+  override predicate isUnknownKeyword() { this.getName() = "unknown" }
 
-  override predicate isBigInt() { getName() = "bigint" }
+  override predicate isBigInt() { this.getName() = "bigint" }
 
-  override predicate isConstKeyword() { getName() = "const" }
+  override predicate isConstKeyword() { this.getName() = "const" }
 
   override string getAPrimaryQlClass() { result = "KeywordTypeExpr" }
 }
@@ -639,7 +645,7 @@ private class KeywordTypeExpr extends @keyword_typeexpr, TypeExpr {
  */
 class PredefinedTypeExpr extends KeywordTypeExpr {
   PredefinedTypeExpr() {
-    not isThis() // The only keyword type that we don't consider a "predefined" type
+    not this.isThis() // The only keyword type that we don't consider a "predefined" type
   }
 }
 
@@ -647,7 +653,7 @@ class PredefinedTypeExpr extends KeywordTypeExpr {
  * A use of the `this` type.
  */
 class ThisTypeExpr extends KeywordTypeExpr {
-  ThisTypeExpr() { isThis() }
+  ThisTypeExpr() { this.isThis() }
 }
 
 /**
@@ -673,21 +679,21 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    *
    * For example, in `Array<number>`, the `Array` part is a type access having type arguments.
    */
-  predicate hasTypeArguments() { exists(getAsGenericType()) }
+  predicate hasTypeArguments() { exists(this.getAsGenericType()) }
 
   /**
    * Gets the `n`th type argument provided to this type by the enclosing generic type expression, if any.
    *
    * For example, in `Array<number>`, the `Array` part is a type access having the type argument `number`.
    */
-  TypeExpr getTypeArgument(int n) { result = getAsGenericType().getTypeArgument(n) }
+  TypeExpr getTypeArgument(int n) { result = this.getAsGenericType().getTypeArgument(n) }
 
   /**
    * Gets a type argument provided to this type by the enclosing generic type expression, if any.
    *
    * For example, in `Array<number>`, the `Array` part is a type access having the type argument `number`.
    */
-  TypeExpr getATypeArgument() { result = getAsGenericType().getATypeArgument() }
+  TypeExpr getATypeArgument() { result = this.getAsGenericType().getATypeArgument() }
 
   /**
    * Gets the number of type arguments provided to this type by the enclosing generic type expression,
@@ -696,8 +702,8 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    * For example, in `Array<number>`, the `Array` part is a type access having 1 type argument.
    */
   int getNumTypeArgument() {
-    if exists(getAsGenericType())
-    then result = getAsGenericType().getNumTypeArgument()
+    if exists(this.getAsGenericType())
+    then result = this.getAsGenericType().getNumTypeArgument()
     else result = 0
   }
 
@@ -707,7 +713,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
   TypeName getTypeName() { ast_node_symbol(this, result) }
 
   override predicate hasQualifiedName(string globalName) {
-    getTypeName().hasQualifiedName(globalName)
+    this.getTypeName().hasQualifiedName(globalName)
     or
     exists(LocalTypeAccess local | local = this |
       not exists(local.getLocalTypeName()) and // Without a local type name, the type is looked up in the global scope.
@@ -716,7 +722,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
   }
 
   override predicate hasQualifiedName(string moduleName, string exportedName) {
-    getTypeName().hasQualifiedName(moduleName, exportedName)
+    this.getTypeName().hasQualifiedName(moduleName, exportedName)
     or
     exists(ImportDeclaration imprt, ImportSpecifier spec |
       moduleName = getImportName(imprt) and
@@ -760,13 +766,13 @@ private string getImportName(Import imprt) {
 
 /** An identifier that is used as part of a type, such as `Date`. */
 class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, LexicalAccess {
-  override predicate isStringy() { getName() = "String" }
+  override predicate isStringy() { this.getName() = "String" }
 
-  override predicate isNumbery() { getName() = "Number" }
+  override predicate isNumbery() { this.getName() = "Number" }
 
-  override predicate isBooleany() { getName() = "Boolean" }
+  override predicate isBooleany() { this.getName() = "Boolean" }
 
-  override predicate isRawFunction() { getName() = "Function" }
+  override predicate isRawFunction() { this.getName() = "Function" }
 
   override Identifier getIdentifier() { result = this }
 
@@ -794,10 +800,10 @@ class QualifiedTypeAccess extends @qualified_type_access, TypeAccess {
    * If the prefix consists of multiple identifiers, the qualifier is itself a qualified namespace access.
    * For example, the qualifier of `lib.util.List` is `lib.util`.
    */
-  NamespaceAccess getQualifier() { result = getChildTypeExpr(0) }
+  NamespaceAccess getQualifier() { result = this.getChildTypeExpr(0) }
 
   /** Gets the last identifier in the name, such as `ServerRequest` in `http.ServerRequest`. */
-  override Identifier getIdentifier() { result = getChildTypeExpr(1) }
+  override Identifier getIdentifier() { result = this.getChildTypeExpr(1) }
 }
 
 /**
@@ -808,23 +814,23 @@ class QualifiedTypeAccess extends @qualified_type_access, TypeAccess {
  */
 class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
   /** Gets the name of the type, such as `Array` in `Array<number>`. */
-  TypeAccess getTypeAccess() { result = getChildTypeExpr(-1) }
+  TypeAccess getTypeAccess() { result = this.getChildTypeExpr(-1) }
 
   /** Gets the `n`th type argument, starting at 0. */
-  TypeExpr getTypeArgument(int n) { result = getChildTypeExpr(n) and n >= 0 }
+  TypeExpr getTypeArgument(int n) { result = this.getChildTypeExpr(n) and n >= 0 }
 
   /** Gets any of the type arguments. */
-  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+  TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
 
   /** Gets the number of type arguments. This is always at least one. */
-  int getNumTypeArgument() { result = count(getATypeArgument()) }
+  int getNumTypeArgument() { result = count(this.getATypeArgument()) }
 
   override predicate hasQualifiedName(string globalName) {
-    getTypeAccess().hasQualifiedName(globalName)
+    this.getTypeAccess().hasQualifiedName(globalName)
   }
 
   override predicate hasQualifiedName(string moduleName, string exportedName) {
-    getTypeAccess().hasQualifiedName(moduleName, exportedName)
+    this.getTypeAccess().hasQualifiedName(moduleName, exportedName)
   }
 
   override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
@@ -854,26 +860,26 @@ class StringLiteralTypeExpr extends @string_literal_typeexpr, LiteralTypeExpr { 
 /** A number literal used as a type. */
 class NumberLiteralTypeExpr extends @number_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of this literal type. */
-  int getIntValue() { result = getValue().toInt() }
+  int getIntValue() { result = this.getValue().toInt() }
 }
 
 /** A boolean literal used as a type. */
 class BooleanLiteralTypeExpr extends @boolean_literal_typeexpr, LiteralTypeExpr {
-  predicate isTrue() { getValue() = "true" }
+  predicate isTrue() { this.getValue() = "true" }
 
-  predicate isFalse() { getValue() = "false" }
+  predicate isFalse() { this.getValue() = "false" }
 }
 
 /** A bigint literal used as a TypeScript type annotation. */
 class BigIntLiteralTypeExpr extends @bigint_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of the bigint literal, if it can be represented as a QL integer. */
-  int getIntValue() { result = getValue().toInt() }
+  int getIntValue() { result = this.getValue().toInt() }
 
   /**
    * Gets the floating point value of this literal if it can be represented
    * as a QL floating point value.
    */
-  float getFloatValue() { result = getValue().toFloat() }
+  float getFloatValue() { result = this.getValue().toFloat() }
 }
 
 /**
@@ -885,7 +891,7 @@ class BigIntLiteralTypeExpr extends @bigint_literal_typeexpr, LiteralTypeExpr {
  */
 class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
   /** Gets the type of the array elements. */
-  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(0) }
 
   override string getAPrimaryQlClass() { result = "ArrayTypeExpr" }
 }
@@ -895,15 +901,15 @@ class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
  */
 class UnionTypeExpr extends @union_typeexpr, TypeExpr {
   /** Gets the `n`th type in the union, starting at 0. */
-  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
+  TypeExpr getElementType(int n) { result = this.getChildTypeExpr(n) }
 
   /** Gets any of the types in the union. */
-  TypeExpr getAnElementType() { result = getElementType(_) }
+  TypeExpr getAnElementType() { result = this.getElementType(_) }
 
   /** Gets the number of types in the union. This is always at least two. */
-  int getNumElementType() { result = count(getAnElementType()) }
+  int getNumElementType() { result = count(this.getAnElementType()) }
 
-  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
+  override TypeExpr getAnUnderlyingType() { result = this.getAnElementType().getAnUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "UnionTypeExpr" }
 }
@@ -913,10 +919,10 @@ class UnionTypeExpr extends @union_typeexpr, TypeExpr {
  */
 class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
   /** Gets the type `T` in `T[K]`, denoting the object type whose properties are to be extracted. */
-  TypeExpr getObjectType() { result = getChildTypeExpr(0) }
+  TypeExpr getObjectType() { result = this.getChildTypeExpr(0) }
 
   /** Gets the type `K` in `T[K]`, denoting the property names to extract from the object type. */
-  TypeExpr getIndexType() { result = getChildTypeExpr(1) }
+  TypeExpr getIndexType() { result = this.getChildTypeExpr(1) }
 
   override string getAPrimaryQlClass() { result = "IndexedAccessTypeExpr" }
 }
@@ -928,15 +934,15 @@ class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
  */
 class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
   /** Gets the `n`th operand of the intersection type, starting at 0. */
-  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
+  TypeExpr getElementType(int n) { result = this.getChildTypeExpr(n) }
 
   /** Gets any of the operands to the intersection type. */
-  TypeExpr getAnElementType() { result = getElementType(_) }
+  TypeExpr getAnElementType() { result = this.getElementType(_) }
 
   /** Gets the number of operands to the intersection type. This is always at least two. */
-  int getNumElementType() { result = count(getAnElementType()) }
+  int getNumElementType() { result = count(this.getAnElementType()) }
 
-  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
+  override TypeExpr getAnUnderlyingType() { result = this.getAnElementType().getAnUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "IntersectionTypeExpr" }
 }
@@ -946,11 +952,11 @@ class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
  */
 class ParenthesizedTypeExpr extends @parenthesized_typeexpr, TypeExpr {
   /** Gets the type inside the parentheses. */
-  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(0) }
 
-  override TypeExpr stripParens() { result = getElementType().stripParens() }
+  override TypeExpr stripParens() { result = this.getElementType().stripParens() }
 
-  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+  override TypeExpr getAnUnderlyingType() { result = this.getElementType().getAnUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "ParenthesizedTypeExpr" }
 }
@@ -960,13 +966,13 @@ class ParenthesizedTypeExpr extends @parenthesized_typeexpr, TypeExpr {
  */
 class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
   /** Gets the `n`th element type in the tuple, starting at 0. */
-  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) and n >= 0 }
+  TypeExpr getElementType(int n) { result = this.getChildTypeExpr(n) and n >= 0 }
 
   /** Gets any of the element types in the tuple. */
-  TypeExpr getAnElementType() { result = getElementType(_) }
+  TypeExpr getAnElementType() { result = this.getElementType(_) }
 
   /** Gets the number of elements in the tuple type. */
-  int getNumElementType() { result = count(getAnElementType()) }
+  int getNumElementType() { result = count(this.getAnElementType()) }
 
   /**
    * Gets the name of the `n`th tuple member, starting at 0.
@@ -974,7 +980,7 @@ class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
    */
   Identifier getElementName(int n) {
     // Type element names are at indices -1, -2, -3, ...
-    result = getChild(-(n + 1)) and n >= 0
+    result = this.getChild(-(n + 1)) and n >= 0
   }
 
   override string getAPrimaryQlClass() { result = "TupleTypeExpr" }
@@ -985,7 +991,7 @@ class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
  */
 class KeyofTypeExpr extends @keyof_typeexpr, TypeExpr {
   /** Gets the type `T` in `keyof T`, denoting the object type whose property names are to be extracted. */
-  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(0) }
 
   override string getAPrimaryQlClass() { result = "KeyofTypeExpr" }
 }
@@ -998,14 +1004,14 @@ class MappedTypeExpr extends @mapped_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the `K in C` part from `{ [K in C]: T }`.
    */
-  TypeParameter getTypeParameter() { result = getChildTypeExpr(0) }
+  TypeParameter getTypeParameter() { result = this.getChildTypeExpr(0) }
 
-  override TypeParameter getTypeParameter(int n) { n = 0 and result = getTypeParameter() }
+  override TypeParameter getTypeParameter(int n) { n = 0 and result = this.getTypeParameter() }
 
   /**
    * Gets the `T` part from `{ [K in C]: T }`.
    */
-  TypeExpr getElementType() { result = getChildTypeExpr(1) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(1) }
 
   override string describe() { result = "mapped type" }
 
@@ -1067,7 +1073,7 @@ class PredicateTypeExpr extends @predicate_typeexpr, TypeExpr {
  * ```
  */
 class IsTypeExpr extends PredicateTypeExpr {
-  IsTypeExpr() { exists(getPredicateType()) }
+  IsTypeExpr() { exists(this.getPredicateType()) }
 
   override string getAPrimaryQlClass() { result = "IsTypeExpr" }
 }
@@ -1077,9 +1083,9 @@ class IsTypeExpr extends PredicateTypeExpr {
  */
 class OptionalTypeExpr extends @optional_typeexpr, TypeExpr {
   /** Gets the type `T` in `T?` */
-  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(0) }
 
-  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+  override TypeExpr getAnUnderlyingType() { result = this.getElementType().getAnUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "OptionalTypeExpr" }
 }
@@ -1089,10 +1095,10 @@ class OptionalTypeExpr extends @optional_typeexpr, TypeExpr {
  */
 class RestTypeExpr extends @rest_typeexpr, TypeExpr {
   /** Gets the type `T[]` in `...T[]`, such as `string[]` in `[number, ...string[]]`. */
-  TypeExpr getArrayType() { result = getChildTypeExpr(0) }
+  TypeExpr getArrayType() { result = this.getChildTypeExpr(0) }
 
   /** Gets the type `T` in `...T[]`, such as `string` in `[number, ...string[]]`. */
-  TypeExpr getElementType() { result = getArrayType().(ArrayTypeExpr).getElementType() }
+  TypeExpr getElementType() { result = this.getArrayType().(ArrayTypeExpr).getElementType() }
 
   override string getAPrimaryQlClass() { result = "RestTypeExpr" }
 }
@@ -1102,9 +1108,9 @@ class RestTypeExpr extends @rest_typeexpr, TypeExpr {
  */
 class ReadonlyTypeExpr extends @readonly_typeexpr, TypeExpr {
   /** Gets the type `T` in `readonly T`. */
-  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+  TypeExpr getElementType() { result = this.getChildTypeExpr(0) }
 
-  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+  override TypeExpr getAnUnderlyingType() { result = this.getElementType().getAnUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "ReadonlyTypeExpr" }
 }
@@ -1162,12 +1168,12 @@ class QualifiedVarTypeAccess extends @qualified_var_type_access, VarTypeAccess {
   /**
    * Gets the qualifier in front of the name being accessed, such as `http` in `http.ServerRequest`.
    */
-  VarTypeAccess getQualifier() { result = getChildTypeExpr(0) }
+  VarTypeAccess getQualifier() { result = this.getChildTypeExpr(0) }
 
   /**
    * Gets the last identifier in the name, such as `ServerRequest` in `http.ServerRequest`.
    */
-  Identifier getIdentifier() { result = getChildTypeExpr(1) }
+  Identifier getIdentifier() { result = this.getChildTypeExpr(1) }
 }
 
 /**
@@ -1177,22 +1183,22 @@ class ConditionalTypeExpr extends @conditional_typeexpr, TypeExpr {
   /**
    * Gets the type to the left of the `extends` keyword, such as `T` in `T extends any[] ? A : B`.
    */
-  TypeExpr getCheckType() { result = getChildTypeExpr(0) }
+  TypeExpr getCheckType() { result = this.getChildTypeExpr(0) }
 
   /**
    * Gets the type to the right of the `extends` keyword, such as `any[]` in `T extends any[] ? A : B`.
    */
-  TypeExpr getExtendsType() { result = getChildTypeExpr(1) }
+  TypeExpr getExtendsType() { result = this.getChildTypeExpr(1) }
 
   /**
    * Gets the type to be used if the `extend` condition holds, such as `A` in `T extends any[] ? A : B`.
    */
-  TypeExpr getTrueType() { result = getChildTypeExpr(2) }
+  TypeExpr getTrueType() { result = this.getChildTypeExpr(2) }
 
   /**
    * Gets the type to be used if the `extend` condition fails, such as `B` in `T extends any[] ? A : B`.
    */
-  TypeExpr getFalseType() { result = getChildTypeExpr(3) }
+  TypeExpr getFalseType() { result = this.getChildTypeExpr(3) }
 
   override string getAPrimaryQlClass() { result = "ConditionalTypeExpr" }
 }
@@ -1204,11 +1210,11 @@ class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the type parameter capturing the matched type, such as `R` in `infer R`.
    */
-  TypeParameter getTypeParameter() { result = getChildTypeExpr(0) }
+  TypeParameter getTypeParameter() { result = this.getChildTypeExpr(0) }
 
-  override TypeParameter getTypeParameter(int n) { n = 0 and result = getTypeParameter() }
+  override TypeParameter getTypeParameter(int n) { n = 0 and result = this.getTypeParameter() }
 
-  override string describe() { result = "'infer' type " + getTypeParameter().getName() }
+  override string describe() { result = "'infer' type " + this.getTypeParameter().getName() }
 
   override string getAPrimaryQlClass() { result = "InferTypeExpr" }
 }
@@ -1221,17 +1227,17 @@ class TemplateLiteralTypeExpr extends @template_literal_typeexpr, TypeExpr {
    * Gets the `i`th element of this template literal, which may either
    * be a type expression or a constant template element.
    */
-  ExprOrType getElement(int i) { result = getChild(i) }
+  ExprOrType getElement(int i) { result = this.getChild(i) }
 
   /**
    * Gets an element of this template literal.
    */
-  ExprOrType getAnElement() { result = getElement(_) }
+  ExprOrType getAnElement() { result = this.getElement(_) }
 
   /**
    * Gets the number of elements of this template literal.
    */
-  int getNumElement() { result = count(getAnElement()) }
+  int getNumElement() { result = count(this.getAnElement()) }
 
   override string getAPrimaryQlClass() { result = "TemplateLiteralTypeExpr" }
 }
@@ -1260,25 +1266,25 @@ class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr 
    * Although it is common for this expression to take the form of a qualified name,
    * it can in general be any kind of expression.
    */
-  Expr getExpression() { result = getChildExpr(-1) }
+  Expr getExpression() { result = this.getChildExpr(-1) }
 
   /**
    * Gets the `n`th type argument, starting at 0.
    */
-  TypeExpr getTypeArgument(int n) { result = getChildTypeExpr(n) }
+  TypeExpr getTypeArgument(int n) { result = this.getChildTypeExpr(n) }
 
   /**
    * Gets any of the type arguments.
    */
-  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+  TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
 
   /**
    * Gets the number of type arguments. This is always at least one.
    */
-  int getNumTypeArgument() { result = count(getATypeArgument()) }
+  int getNumTypeArgument() { result = count(this.getATypeArgument()) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpression().getFirstControlFlowNode()
+    result = this.getExpression().getFirstControlFlowNode()
   }
 }
 
@@ -1290,13 +1296,13 @@ class TypeParameterized extends @type_parameterized, ASTNode {
   TypeParameter getTypeParameter(int n) { none() } // Overridden in subtypes.
 
   /** Gets any type parameter declared on this function or type. */
-  TypeParameter getATypeParameter() { result = getTypeParameter(_) }
+  TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
   /** Gets the number of type parameters declared on this function or type. */
-  int getNumTypeParameter() { result = count(getATypeParameter()) }
+  int getNumTypeParameter() { result = count(this.getATypeParameter()) }
 
   /** Holds if this function or type declares any type parameters. */
-  predicate hasTypeParameters() { exists(getATypeParameter()) }
+  predicate hasTypeParameters() { exists(this.getATypeParameter()) }
 
   /** Gets a description of this function or type. */
   string describe() { none() }
@@ -1309,22 +1315,22 @@ class TypeParameter extends @type_parameter, TypeExpr {
   /**
    * Gets the name of the type parameter as a string.
    */
-  string getName() { result = getIdentifier().getName() }
+  string getName() { result = this.getIdentifier().getName() }
 
   /**
    * Gets the identifier node of the type parameter, such as `T` in `class C<T>`.
    */
-  Identifier getIdentifier() { result = getChildTypeExpr(0) }
+  Identifier getIdentifier() { result = this.getChildTypeExpr(0) }
 
   /**
    * Gets the upper bound of the type parameter, such as `U` in `class C<T extends U>`.
    */
-  TypeExpr getBound() { result = getChildTypeExpr(1) }
+  TypeExpr getBound() { result = this.getChildTypeExpr(1) }
 
   /**
    * Gets the default value of the type parameter, such as `D` in `class C<T = D>`.
    */
-  TypeExpr getDefault() { result = getChildTypeExpr(2) }
+  TypeExpr getDefault() { result = this.getChildTypeExpr(2) }
 
   /**
    * Gets the function or type that declares this type parameter.
@@ -1334,7 +1340,7 @@ class TypeParameter extends @type_parameter, TypeExpr {
   /**
    * Gets the local type name declared by this type parameter.
    */
-  LocalTypeName getLocalTypeName() { result = getIdentifier().(TypeDecl).getLocalTypeName() }
+  LocalTypeName getLocalTypeName() { result = this.getIdentifier().(TypeDecl).getLocalTypeName() }
 
   override string getAPrimaryQlClass() { result = "TypeParameter" }
 }
@@ -1345,18 +1351,18 @@ class TypeParameter extends @type_parameter, TypeExpr {
  */
 class TypeAssertion extends Expr, @type_assertion {
   /** Gets the expression whose type to assert, that is, the `E` in `E as T` or `<T> E`. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpression() { result = this.getChildExpr(0) }
 
   /** Gets the type to cast to, that is, the `T` in `E as T` or `<T> E`. */
-  TypeExpr getTypeAnnotation() { result = getChildTypeExpr(1) }
+  TypeExpr getTypeAnnotation() { result = this.getChildTypeExpr(1) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpression().getFirstControlFlowNode()
+    result = this.getExpression().getFirstControlFlowNode()
   }
 
-  override Expr getUnderlyingValue() { result = getExpression().getUnderlyingValue() }
+  override Expr getUnderlyingValue() { result = this.getExpression().getUnderlyingValue() }
 
-  override Expr getUnderlyingReference() { result = getExpression().getUnderlyingReference() }
+  override Expr getUnderlyingReference() { result = this.getExpression().getUnderlyingReference() }
 
   override string getAPrimaryQlClass() { result = "TypeAssertion" }
 }
@@ -1376,10 +1382,10 @@ class PrefixTypeAssertion extends TypeAssertion, @prefix_type_assertion { }
  */
 class NonNullAssertion extends Expr, @non_null_assertion {
   /** Gets the expression whose type to assert. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpression() { result = this.getChildExpr(0) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpression().getFirstControlFlowNode()
+    result = this.getExpression().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "NonNullAssertion" }
@@ -1458,9 +1464,9 @@ class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier,
  * A qualified name that refers to a namespace from inside a type annotation.
  */
 class QualifiedNamespaceAccess extends NamespaceAccess, @qualified_namespace_access {
-  NamespaceAccess getQualifier() { result = getChildTypeExpr(0) }
+  NamespaceAccess getQualifier() { result = this.getChildTypeExpr(0) }
 
-  override Identifier getIdentifier() { result = getChildTypeExpr(1) }
+  override Identifier getIdentifier() { result = this.getChildTypeExpr(1) }
 }
 
 /**
@@ -1470,12 +1476,12 @@ class ImportTypeExpr extends TypeExpr, @import_typeexpr {
   /**
    * Gets the string literal with the imported path, such as `"http"` in `import("http")`.
    */
-  TypeExpr getPathExpr() { result = getChildTypeExpr(0) }
+  TypeExpr getPathExpr() { result = this.getChildTypeExpr(0) }
 
   /**
    * Gets the unresolved path string, such as `http` in `import("http")`.
    */
-  string getPath() { result = getPathExpr().(StringLiteralTypeExpr).getValue() }
+  string getPath() { result = this.getPathExpr().(StringLiteralTypeExpr).getValue() }
 
   /** Holds if this import is used in the context of a type, such as in `let x: import("foo")`. */
   predicate isTypeAccess() { this instanceof @import_type_access }
@@ -1518,10 +1524,10 @@ class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @import_var_typ
  */
 class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::ValueNode {
   /** Gets the name of this enum, such as `E` in `enum E { A, B }`. */
-  override Identifier getIdentifier() { result = getChildExpr(0) }
+  override Identifier getIdentifier() { result = this.getChildExpr(0) }
 
   /** Gets the name of this enum as a string. */
-  override string getName() { result = getIdentifier().getName() }
+  override string getName() { result = this.getIdentifier().getName() }
 
   /**
    * Gets the variable holding the enumeration object.
@@ -1532,14 +1538,14 @@ class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::Value
    * and all uses of the variable will be constant-folded by the TypeScript compiler,
    * but the analysis models it as an ordinary variable.
    */
-  Variable getVariable() { result = getIdentifier().(VarDecl).getVariable() }
+  Variable getVariable() { result = this.getIdentifier().(VarDecl).getVariable() }
 
   /**
    * Gets the local type name introduced by the enumeration.
    *
    * For example, this would be the type `E` introduced by `enum E { A, B }`.
    */
-  LocalTypeName getLocalTypeName() { result = getIdentifier().(TypeDecl).getLocalTypeName() }
+  LocalTypeName getLocalTypeName() { result = this.getIdentifier().(TypeDecl).getLocalTypeName() }
 
   /**
    * Gets the canonical name of the type being defined.
@@ -1558,34 +1564,34 @@ class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::Value
    * ```
    */
   override LocalNamespaceName getLocalNamespaceName() {
-    result = getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName()
+    result = this.getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName()
   }
 
   /** Gets the `n`th enum member, starting at 0, such as `A` or `B` in `enum E { A, B }`. */
   EnumMember getMember(int n) { properties(result, this, n + 1, _, _) }
 
   /** Gets the enum member with the given name, if any. */
-  EnumMember getMemberByName(string name) { result = getAMember() and result.getName() = name }
+  EnumMember getMemberByName(string name) { result = this.getAMember() and result.getName() = name }
 
   /** Gets any of the enum members. */
-  EnumMember getAMember() { result = getMember(_) }
+  EnumMember getAMember() { result = this.getMember(_) }
 
   /** Gets the number of enum members. */
-  int getNumMember() { result = count(getAMember()) }
+  int getNumMember() { result = count(this.getAMember()) }
 
   /** Gets the `n`th decorator applied to this enum declaration. */
-  Decorator getDecorator(int n) { result = getChildExpr(-n - 1) }
+  Decorator getDecorator(int n) { result = this.getChildExpr(-n - 1) }
 
   /** Gets a decorator applied to this enum declaration. */
-  Decorator getADecorator() { result = getDecorator(_) }
+  Decorator getADecorator() { result = this.getDecorator(_) }
 
   /** Gets the number of decorators applied to this enum declaration. */
-  int getNumDecorator() { result = count(getADecorator()) }
+  int getNumDecorator() { result = count(this.getADecorator()) }
 
   /** Holds if this enumeration is declared with the `const` keyword. */
   predicate isConst() { is_const_enum(this) }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
+  override ControlFlowNode getFirstControlFlowNode() { result = this.getIdentifier() }
 
   override string getAPrimaryQlClass() { result = "EnumDeclaration" }
 }
@@ -1604,20 +1610,20 @@ class EnumMember extends ASTNode, @enum_member {
    * a synthetic identifier node is created to represent the name.
    * In other words, the name will always be an identifier node.
    */
-  Identifier getIdentifier() { result = getChildExpr(0) }
+  Identifier getIdentifier() { result = this.getChildExpr(0) }
 
   /** Gets the name of the enum member as a string. */
-  string getName() { result = getIdentifier().getName() }
+  string getName() { result = this.getIdentifier().getName() }
 
   /** Gets the explicit initializer expression of this member, if any. */
-  Expr getInitializer() { result = getChildExpr(1) }
+  Expr getInitializer() { result = this.getChildExpr(1) }
 
   /** Gets the enum declaring this member. */
   EnumDeclaration getDeclaringEnum() { result.getAMember() = this }
 
   override string toString() { properties(this, _, _, _, result) }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
+  override ControlFlowNode getFirstControlFlowNode() { result = this.getIdentifier() }
 
   /**
    * Gets the name of the member prefixed by the declaring enum name.
@@ -1627,7 +1633,7 @@ class EnumMember extends ASTNode, @enum_member {
    * enum Color { red, green, blue }
    * ```
    */
-  string getPrefixedName() { result = getDeclaringEnum().getName() + "." + getName() }
+  string getPrefixedName() { result = this.getDeclaringEnum().getName() + "." + this.getName() }
 
   /**
    * Gets the canonical name of the type defined by this enum member.
@@ -1729,12 +1735,12 @@ class ReferenceImport extends LineComment {
   string value;
 
   ReferenceImport() {
-    getFile().getFileType().isTypeScript() and
+    this.getFile().getFileType().isTypeScript() and
     exists(string regex |
       regex = "/\\s*<reference\\s+([a-z]+)\\s*=\\s*[\"']([^\"']*)[\"']\\s*/>\\s*"
     |
-      attribute = getText().regexpCapture(regex, 1) and
-      value = getText().regexpCapture(regex, 2)
+      attribute = this.getText().regexpCapture(regex, 1) and
+      value = this.getText().regexpCapture(regex, 2)
     ) and
     (attribute = "path" or attribute = "types")
   }
@@ -1800,20 +1806,22 @@ class TypeRootFolder extends Folder {
   /**
    * Gets the enclosing `node_modules` folder.
    */
-  Folder getNodeModulesFolder() { result = getParentContainer() }
+  Folder getNodeModulesFolder() { result = this.getParentContainer() }
 
   /**
    * Gets the `d.ts` file correspnding to the given module name.
    *
    * Concretely, this is the file at `node_modules/@types/<moduleName>/index.d.ts` if it exists.
    */
-  File getModuleFile(string moduleName) { result = getFolder(moduleName).getFile("index.d.ts") }
+  File getModuleFile(string moduleName) {
+    result = this.getFolder(moduleName).getFile("index.d.ts")
+  }
 
   /**
    * Gets the priority with which this type root folder should be used from within the given search root.
    */
   int getSearchPriority(Folder searchRoot) {
-    findNodeModulesFolder(searchRoot, getNodeModulesFolder(), result)
+    findNodeModulesFolder(searchRoot, this.getNodeModulesFolder(), result)
   }
 }
 
@@ -1884,7 +1892,7 @@ class Type extends @type {
   /**
    * Gets the number of signatures of the given kind.
    */
-  int getNumSignature(SignatureKind kind) { result = count(getASignature(kind)) }
+  int getNumSignature(SignatureKind kind) { result = count(this.getASignature(kind)) }
 
   /**
    * Gets the last signature of the given kind.
@@ -1893,7 +1901,7 @@ class Type extends @type {
    * covering all cases but with less precision than the overloads.
    */
   CallSignatureType getLastSignature(SignatureKind kind) {
-    result = getSignature(kind, getNumSignature(kind) - 1)
+    result = this.getSignature(kind, this.getNumSignature(kind) - 1)
   }
 
   /**
@@ -1911,7 +1919,7 @@ class Type extends @type {
   /**
    * Gets the number of function call signatures.
    */
-  int getNumFunctionSignature() { result = count(getAFunctionSignature()) }
+  int getNumFunctionSignature() { result = count(this.getAFunctionSignature()) }
 
   /**
    * Gets the last function call signature.
@@ -1920,7 +1928,7 @@ class Type extends @type {
    * covering all cases but with less precision than the overloads.
    */
   FunctionCallSignatureType getLastFunctionSignature() {
-    result = getFunctionSignature(getNumFunctionSignature() - 1)
+    result = this.getFunctionSignature(this.getNumFunctionSignature() - 1)
   }
 
   /**
@@ -1944,13 +1952,13 @@ class Type extends @type {
    * covering all cases but with less precision than the overloads.
    */
   ConstructorCallSignatureType getLastConstructorSignature() {
-    result = getConstructorSignature(getNumConstructorSignature() - 1)
+    result = this.getConstructorSignature(this.getNumConstructorSignature() - 1)
   }
 
   /**
    * Gets the number of constructor call signatures.
    */
-  int getNumConstructorSignature() { result = count(getAConstructorSignature()) }
+  int getNumConstructorSignature() { result = count(this.getAConstructorSignature()) }
 
   /**
    * DEPRECATED. Method lookup on types is no longer supported.
@@ -2002,7 +2010,7 @@ class Type extends @type {
    * ```
    */
   Type unfold() {
-    result = unfoldUnionAndIntersection()
+    result = this.unfoldUnionAndIntersection()
     or
     result = this.(TypeAliasReference).getAliasedType().unfoldUnionAndIntersection()
   }
@@ -2015,7 +2023,7 @@ class Type extends @type {
    * without relying on the exact static type of the expression.
    */
   predicate hasUnderlyingTypeName(TypeName typeName) {
-    unfold().(TypeReference).getTypeName().getABaseTypeName*() = typeName
+    this.unfold().(TypeReference).getTypeName().getABaseTypeName*() = typeName
   }
 
   /**
@@ -2026,7 +2034,7 @@ class Type extends @type {
    * without relying on the exact static type of the expression.
    */
   predicate hasUnderlyingType(string globalName) {
-    any(TypeName tn | hasUnderlyingTypeName(tn)).hasQualifiedName(globalName)
+    any(TypeName tn | this.hasUnderlyingTypeName(tn)).hasQualifiedName(globalName)
   }
 
   /**
@@ -2037,7 +2045,7 @@ class Type extends @type {
    * without relying on the exact static type of the expression.
    */
   predicate hasUnderlyingType(string moduleName, string exportedName) {
-    any(TypeName tn | hasUnderlyingTypeName(tn)).hasQualifiedName(moduleName, exportedName)
+    any(TypeName tn | this.hasUnderlyingTypeName(tn)).hasQualifiedName(moduleName, exportedName)
   }
 }
 
@@ -2048,17 +2056,17 @@ class UnionOrIntersectionType extends Type, @union_or_intersection_type {
   /**
    * Gets the `i`th member of this union or intersection, starting at 0.
    */
-  Type getElementType(int i) { result = getChild(i) }
+  Type getElementType(int i) { result = this.getChild(i) }
 
   /**
    * Gets a member of this union or intersection.
    */
-  Type getAnElementType() { result = getElementType(_) }
+  Type getAnElementType() { result = this.getElementType(_) }
 
   /**
    * Gets the number of elements in this union or intersection.
    */
-  int getNumElementType() { result = count(int i | exists(getElementType(i))) }
+  int getNumElementType() { result = count(int i | exists(this.getElementType(i))) }
 }
 
 /**
@@ -2095,23 +2103,23 @@ class ArrayType extends Type {
   /**
    * Gets the type of element in the type.
    */
-  Type getArrayElementType() { result = getNumberIndexType() }
+  Type getArrayElementType() { result = this.getNumberIndexType() }
 }
 
 /**
  * An array type such as `Array<string>`, or equivalently, `string[]`.
  */
 class PlainArrayType extends ArrayType, TypeReference {
-  PlainArrayType() { hasQualifiedName("Array") }
+  PlainArrayType() { this.hasQualifiedName("Array") }
 
-  override Type getNumberIndexType() { result = getTypeArgument(0) }
+  override Type getNumberIndexType() { result = this.getTypeArgument(0) }
 }
 
 /**
  * A read-only array type such as `ReadonlyArray<string>`.
  */
 class ReadonlyArrayType extends ArrayType, TypeReference {
-  ReadonlyArrayType() { hasQualifiedName("ReadonlyArray") }
+  ReadonlyArrayType() { this.hasQualifiedName("ReadonlyArray") }
 }
 
 /**
@@ -2121,17 +2129,17 @@ class TupleType extends ArrayType, @tuple_type {
   /**
    * Gets the `i`th member of this tuple type, starting at 0.
    */
-  Type getElementType(int i) { result = getChild(i) }
+  Type getElementType(int i) { result = this.getChild(i) }
 
   /**
    * Gets a member of this tuple type.
    */
-  Type getAnElementType() { result = getElementType(_) }
+  Type getAnElementType() { result = this.getElementType(_) }
 
   /**
    * Gets the number of elements in this tuple type, including optional elements and the rest element.
    */
-  int getNumElementType() { result = count(int i | exists(getElementType(i))) }
+  int getNumElementType() { result = count(int i | exists(this.getElementType(i))) }
 
   /**
    * Gets the underlying instantiation of the `Array` type.
@@ -2139,7 +2147,9 @@ class TupleType extends ArrayType, @tuple_type {
    * For example, the tuple type `[string, number]` has `Array<string | number>`
    * as its underlying array type.
    */
-  PlainArrayType getUnderlyingArrayType() { result.getArrayElementType() = getArrayElementType() }
+  PlainArrayType getUnderlyingArrayType() {
+    result.getArrayElementType() = this.getArrayElementType()
+  }
 
   /**
    * Gets the number of required tuple elements, that is, excluding optional and rest elements.
@@ -2158,14 +2168,14 @@ class TupleType extends ArrayType, @tuple_type {
   /**
    * Holds if this tuple type has a rest element, such as `[number, ...string[]]` or `[...number[], string]`.
    */
-  predicate hasRestElement() { exists(getRestElementIndex()) }
+  predicate hasRestElement() { exists(this.getRestElementIndex()) }
 
   /**
    * Gets the type of the rest element, if there is one.
    *
    * For example, the rest element of `[number, ...string[]]` is `string`.
    */
-  Type getRestElementType() { result = getElementType(getRestElementIndex()) }
+  Type getRestElementType() { result = this.getElementType(this.getRestElementIndex()) }
 }
 
 /**
@@ -2226,12 +2236,12 @@ class NumberLiteralType extends LiteralType, @number_literal_type {
   /**
    * Gets the value of the literal as an integer.
    */
-  int getIntValue() { result = getStringValue().toInt() }
+  int getIntValue() { result = this.getStringValue().toInt() }
 
   /**
    * Gets the value of the literal as a floating-point value.
    */
-  float getFloatValue() { result = getStringValue().toFloat() }
+  float getFloatValue() { result = this.getStringValue().toFloat() }
 }
 
 /**
@@ -2250,12 +2260,12 @@ class BigIntLiteralType extends LiteralType {
   /**
    * Gets the value of the literal as an integer.
    */
-  int getIntValue() { result = getStringValue().toInt() }
+  int getIntValue() { result = this.getStringValue().toInt() }
 
   /**
    * Gets the value of the literal as a floating-point value.
    */
-  float getFloatValue() { result = getStringValue().toFloat() }
+  float getFloatValue() { result = this.getStringValue().toFloat() }
 }
 
 /**
@@ -2263,9 +2273,9 @@ class BigIntLiteralType extends LiteralType {
  */
 class BooleanType extends UnionType {
   BooleanType() {
-    getAnElementType() instanceof @true_type and
-    getAnElementType() instanceof @false_type and
-    count(getAnElementType()) = 2
+    this.getAnElementType() instanceof @true_type and
+    this.getAnElementType() instanceof @false_type and
+    count(this.getAnElementType()) = 2
   }
 }
 
@@ -2341,18 +2351,20 @@ class UniqueSymbolType extends SymbolType, @unique_symbol_type {
   /**
    * Gets the unqualified name of the variable exposing this symbol.
    */
-  string getName() { result = getCanonicalName().getName() }
+  string getName() { result = this.getCanonicalName().getName() }
 
   /**
    * Holds if the variable exposing this symbol has the given global qualified name.
    */
-  predicate hasQualifiedName(string globalName) { getCanonicalName().hasQualifiedName(globalName) }
+  predicate hasQualifiedName(string globalName) {
+    this.getCanonicalName().hasQualifiedName(globalName)
+  }
 
   /**
    * Holds if the variable exposing this symbol is exported from an external module under the given name.
    */
   predicate hasQualifiedName(string moduleName, string exportedName) {
-    getCanonicalName().hasQualifiedName(moduleName, exportedName)
+    this.getCanonicalName().hasQualifiedName(moduleName, exportedName)
   }
 }
 
@@ -2373,27 +2385,27 @@ class TypeReference extends Type, @type_reference {
   /**
    * Gets a syntactic declaration of this named type.
    */
-  TypeDefinition getADefinition() { result = getTypeName().getADefinition() }
+  TypeDefinition getADefinition() { result = this.getTypeName().getADefinition() }
 
   /**
    * Gets the `n`th type argument provided in this type, such as `string` in `Promise<string>`.
    */
-  Type getTypeArgument(int n) { result = getChild(n) }
+  Type getTypeArgument(int n) { result = this.getChild(n) }
 
   /**
    * Gets a type argument provided in this type.
    */
-  Type getATypeArgument() { result = getTypeArgument(_) }
+  Type getATypeArgument() { result = this.getTypeArgument(_) }
 
   /**
    * Holds if type arguments are provided in this type.
    */
-  predicate hasTypeArguments() { exists(getATypeArgument()) }
+  predicate hasTypeArguments() { exists(this.getATypeArgument()) }
 
   /**
    * Gets the number of type arguments provided in this type.
    */
-  int getNumTypeArgument() { result = count(int i | exists(getTypeArgument(i))) }
+  int getNumTypeArgument() { result = count(int i | exists(this.getTypeArgument(i))) }
 
   /**
    * Holds if the referenced type has the given qualified name, rooted in the global scope.
@@ -2401,7 +2413,7 @@ class TypeReference extends Type, @type_reference {
    * For example, `type.hasQualifiedName("React.Component")` holds if `type` is an instantiation
    * of the React `Component` class.
    */
-  predicate hasQualifiedName(string globalName) { getTypeName().hasQualifiedName(globalName) }
+  predicate hasQualifiedName(string globalName) { this.getTypeName().hasQualifiedName(globalName) }
 
   /**
    * Holds if the referenced type is exported from the given module under the given qualified name.
@@ -2410,7 +2422,7 @@ class TypeReference extends Type, @type_reference {
    * of the React `Component` class.
    */
   predicate hasQualifiedName(string moduleName, string exportedName) {
-    getTypeName().hasQualifiedName(moduleName, exportedName)
+    this.getTypeName().hasQualifiedName(moduleName, exportedName)
   }
 }
 
@@ -2420,7 +2432,7 @@ class TypeReference extends Type, @type_reference {
 class ClassType extends TypeReference {
   ClassDefinition declaration;
 
-  ClassType() { declaration = getADefinition() }
+  ClassType() { declaration = this.getADefinition() }
 
   /**
    * Gets the declaration of the referenced class.
@@ -2434,7 +2446,7 @@ class ClassType extends TypeReference {
 class InterfaceType extends TypeReference {
   InterfaceDeclaration declaration;
 
-  InterfaceType() { declaration = getADefinition() }
+  InterfaceType() { declaration = this.getADefinition() }
 
   /**
    * Gets the declaration of the referenced interface.
@@ -2448,7 +2460,7 @@ class InterfaceType extends TypeReference {
 class EnumType extends TypeReference {
   EnumDeclaration declaration;
 
-  EnumType() { declaration = getADefinition() }
+  EnumType() { declaration = this.getADefinition() }
 
   /**
    * Gets the declaration of the referenced enum.
@@ -2462,7 +2474,7 @@ class EnumType extends TypeReference {
 class EnumLiteralType extends TypeReference {
   EnumMember declaration;
 
-  EnumLiteralType() { declaration = getADefinition() }
+  EnumLiteralType() { declaration = this.getADefinition() }
 
   /**
    * Gets the declaration of the referenced enum member.
@@ -2511,7 +2523,7 @@ class TypeVariableType extends Type, @typevariable_type {
    *
    * Some type variables have no associated host declaration.
    */
-  TypeParameterized getAHostDeclaration() { result = getADeclaration().getHost() }
+  TypeParameterized getAHostDeclaration() { result = this.getADeclaration().getHost() }
 
   /**
    * Gets the type declaring this type variable, if any.
@@ -2533,11 +2545,11 @@ class TypeVariableType extends Type, @typevariable_type {
  * A type that refers to a type variable declared on a class, interface or function.
  */
 class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variable_type {
-  override TypeName getHostType() { result = getCanonicalName().getParent() }
+  override TypeName getHostType() { result = this.getCanonicalName().getParent() }
 
   override CanonicalName getCanonicalName() { type_symbol(this, result) }
 
-  override string getName() { result = getCanonicalName().getName() }
+  override string getName() { result = this.getCanonicalName().getName() }
 }
 
 /**
@@ -2573,9 +2585,9 @@ class ThisType extends Type, @this_type {
   /**
    * Gets the type containing the `this` type.
    */
-  TypeReference getEnclosingType() { result = getChild(0) }
+  TypeReference getEnclosingType() { result = this.getChild(0) }
 
-  override string toString() { result = getEnclosingType().getTypeName().getName() + ".this" }
+  override string toString() { result = this.getEnclosingType().getTypeName().getName() + ".this" }
 }
 
 /**
@@ -2591,7 +2603,7 @@ class TypeofType extends Type, @typeof_type {
   /**
    * Gets the unqualified name of `X` in `typeof X`.
    */
-  string getName() { result = getCanonicalName().getName() }
+  string getName() { result = this.getCanonicalName().getName() }
 
   /**
    * Holds if this refers to a value accessible by the global access path `globalName`.
@@ -2599,7 +2611,9 @@ class TypeofType extends Type, @typeof_type {
    * For example, `cls.hasQualifiedName("React.Component")` holds if `cls`
    * refers to the class constructor for `React.Component`.
    */
-  predicate hasQualifiedName(string globalName) { getCanonicalName().hasQualifiedName(globalName) }
+  predicate hasQualifiedName(string globalName) {
+    this.getCanonicalName().hasQualifiedName(globalName)
+  }
 
   /**
    * Holds if this refers to a value exported from `moduleName` under the access path `exportedName`.
@@ -2610,15 +2624,15 @@ class TypeofType extends Type, @typeof_type {
    * The `exportedName` may an empty string if this refers to the module object itself.
    */
   predicate hasQualifiedName(string moduleName, string exportedName) {
-    getCanonicalName().hasQualifiedName(moduleName, exportedName)
+    this.getCanonicalName().hasQualifiedName(moduleName, exportedName)
     or
     exportedName = "" and
-    getCanonicalName().getExternalModuleName() = moduleName
+    this.getCanonicalName().getExternalModuleName() = moduleName
   }
 
   override string toString() {
     // Avoid absolute path names in type strings.
-    result = "typeof " + getCanonicalName()
+    result = "typeof " + this.getCanonicalName()
   }
 }
 
@@ -2677,12 +2691,12 @@ class CallSignatureType extends @signature_type {
   /**
    * Gets a type contained in this signature, that is, the return type or a parameter type.
    */
-  Type getAChildType() { result = getChild(_) }
+  Type getAChildType() { result = this.getChild(_) }
 
   /**
    * Gets the return type of this signature.
    */
-  Type getReturnType() { result = getChild(-1) }
+  Type getReturnType() { result = this.getChild(-1) }
 
   /**
    * Gets the number of type parameters on this call signature.
@@ -2694,8 +2708,8 @@ class CallSignatureType extends @signature_type {
    */
   Type getTypeParameterBound(int n) {
     n >= 0 and
-    n < getNumTypeParameter() and
-    result = getChild(n)
+    n < this.getNumTypeParameter() and
+    result = this.getChild(n)
   }
 
   /**
@@ -2703,31 +2717,31 @@ class CallSignatureType extends @signature_type {
    */
   string getTypeParameterName(int n) {
     n >= 0 and
-    n < getNumTypeParameter() and
+    n < this.getNumTypeParameter() and
     signature_parameter_name(this, n, result)
   }
 
   /**
    * Holds if this call signature declares type parameters.
    */
-  predicate hasTypeParameters() { getNumTypeParameter() > 0 }
+  predicate hasTypeParameters() { this.getNumTypeParameter() > 0 }
 
   /**
    * Gets the type of the `n`th parameter declared in this signature.
    *
    * If the `n`th parameter is a rest parameter `...T[]`, gets type `T`.
    */
-  Type getParameter(int n) { n >= 0 and result = getChild(n + getNumTypeParameter()) }
+  Type getParameter(int n) { n >= 0 and result = this.getChild(n + this.getNumTypeParameter()) }
 
   /**
    * Gets the type of a parameter of this signature, including the rest parameter, if any.
    */
-  Type getAParameter() { result = getParameter(_) }
+  Type getAParameter() { result = this.getParameter(_) }
 
   /**
    * Gets the number of parameters, including the rest parameter, if any.
    */
-  int getNumParameter() { result = count(int i | exists(getParameter(i))) }
+  int getNumParameter() { result = count(int i | exists(this.getParameter(i))) }
 
   /**
    * Gets the number of required parameters, that is,
@@ -2739,15 +2753,15 @@ class CallSignatureType extends @signature_type {
    * Gets the number of optional parameters, that is,
    * parameters that are marked as optional with the `?` suffix or is a rest parameter.
    */
-  int getNumOptionalParameter() { result = getNumParameter() - getNumRequiredParameter() }
+  int getNumOptionalParameter() { result = this.getNumParameter() - this.getNumRequiredParameter() }
 
   /**
    * Holds if the `n`th parameter is required, that is, it is not marked as
    * optional with the `?` suffix.
    */
   predicate isRequiredParameter(int n) {
-    exists(getParameter(n)) and
-    n <= getNumRequiredParameter()
+    exists(this.getParameter(n)) and
+    n <= this.getNumRequiredParameter()
   }
 
   /**
@@ -2756,8 +2770,8 @@ class CallSignatureType extends @signature_type {
    * Note that rest parameters are not considered optional in this sense.
    */
   predicate isOptionalParameter(int n) {
-    exists(getParameter(n)) and
-    n > getNumRequiredParameter()
+    exists(this.getParameter(n)) and
+    n > this.getNumRequiredParameter()
   }
 
   /**
@@ -2765,13 +2779,13 @@ class CallSignatureType extends @signature_type {
    */
   string getParameterName(int n) {
     n >= 0 and
-    signature_parameter_name(this, n + getNumTypeParameter(), result)
+    signature_parameter_name(this, n + this.getNumTypeParameter(), result)
   }
 
   /**
    * Gets the name of a parameter of this signature.
    */
-  string getAParameterName() { result = getParameterName(_) }
+  string getAParameterName() { result = this.getParameterName(_) }
 
   /**
    * Holds if this signature declares a rest parameter, such as `(x: number, ...y: string[])`.
@@ -2784,8 +2798,8 @@ class CallSignatureType extends @signature_type {
    * For example, for the signature `(...y: string[])`, this gets the type `string`.
    */
   Type getRestParameterType() {
-    hasRestParameter() and
-    result = getParameter(getNumParameter() - 1)
+    this.hasRestParameter() and
+    result = this.getParameter(this.getNumParameter() - 1)
   }
 
   /**
@@ -2822,14 +2836,14 @@ class ConstructorCallSignatureType extends CallSignatureType, @constructor_signa
 private class PromiseTypeName extends TypeName {
   PromiseTypeName() {
     // The name must suggest it is a promise.
-    exists(string name | name = getName() |
+    exists(string name | name = this.getName() |
       name.matches("%Promise") or
       name.matches("%PromiseLike") or
       name.matches("%Thenable") or
       name.matches("%Deferred")
     ) and
     // The `then` method should take a callback, taking an argument of type `T`.
-    exists(TypeReference self, Type thenMethod | self = getType() |
+    exists(TypeReference self, Type thenMethod | self = this.getType() |
       self.getNumTypeArgument() = 1 and
       type_property(self, "then", thenMethod) and
       thenMethod
@@ -2850,12 +2864,12 @@ private class PromiseTypeName extends TypeName {
  */
 class PromiseType extends TypeReference {
   PromiseType() {
-    getNumTypeArgument() = 1 and
-    getTypeName() instanceof PromiseTypeName
+    this.getNumTypeArgument() = 1 and
+    this.getTypeName() instanceof PromiseTypeName
   }
 
   /**
    * Gets the content type of the promise.
    */
-  Type getElementType() { result = getTypeArgument(0) }
+  Type getElementType() { result = this.getTypeArgument(0) }
 }

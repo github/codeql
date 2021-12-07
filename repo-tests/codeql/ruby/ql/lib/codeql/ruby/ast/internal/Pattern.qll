@@ -30,3 +30,34 @@ class LeftAssignmentListImpl extends TuplePatternImpl, Ruby::LeftAssignmentList 
       )
   }
 }
+
+/**
+ * Holds if `node` is a case pattern.
+ */
+predicate casePattern(Ruby::AstNode node) {
+  node = any(Ruby::InClause parent).getPattern()
+  or
+  node = any(Ruby::ArrayPattern parent).getChild(_).(Ruby::UnderscorePatternExpr)
+  or
+  node = any(Ruby::FindPattern parent).getChild(_).(Ruby::UnderscorePatternExpr)
+  or
+  node = any(Ruby::AlternativePattern parent).getAlternatives(_)
+  or
+  node = any(Ruby::AsPattern parent).getValue()
+  or
+  node = any(Ruby::KeywordPattern parent).getValue()
+  or
+  node = any(Ruby::ParenthesizedPattern parent).getChild()
+}
+
+/**
+ * Holds if `node` is a class reference used in an
+ * array, find, or hash pattern.
+ */
+predicate classReferencePattern(Ruby::AstNode node) {
+  node = any(Ruby::ArrayPattern p).getClass()
+  or
+  node = any(Ruby::FindPattern p).getClass()
+  or
+  node = any(Ruby::HashPattern p).getClass()
+}

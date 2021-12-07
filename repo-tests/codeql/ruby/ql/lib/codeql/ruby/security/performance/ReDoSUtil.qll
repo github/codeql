@@ -13,7 +13,6 @@
  */
 
 import RegExpTreeView
-private import codeql.Locations
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
@@ -141,9 +140,9 @@ class RegExpRoot extends RegExpTerm {
     // there is at least one repetition
     getRoot(any(InfiniteRepetitionQuantifier q)) = this and
     // is actually used as a RegExp
-    isUsedAsRegExp() and
+    this.isUsedAsRegExp() and
     // not excluded for library specific reasons
-    not isExcluded(getRootTerm().getParent())
+    not isExcluded(this.getRootTerm().getParent())
   }
 }
 
@@ -219,9 +218,7 @@ private newtype TInputSymbol =
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
-      recc instanceof RegExpCharacterClassEscape
-      or
-      recc instanceof RegExpNamedCharacterProperty
+      isEscapeClass(recc, _)
     )
   } or
   /** An input symbol representing all characters matched by `.`. */
@@ -305,7 +302,7 @@ abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character matched by this character class.
    */
-  string choose() { result = getARelevantChar() and matches(result) }
+  string choose() { result = this.getARelevantChar() and this.matches(result) }
 }
 
 /**
@@ -343,22 +340,13 @@ private module CharacterClasses {
         char <= hi
       )
       or
-      exists(RegExpCharacterClassEscape escape | escape = child |
-        escape.getValue() = escape.getValue().toLowerCase() and
-        classEscapeMatches(escape.getValue(), char)
+      exists(string charClass | isEscapeClass(child, charClass) |
+        charClass.toLowerCase() = charClass and
+        classEscapeMatches(charClass, char)
         or
         char = getARelevantChar() and
-        escape.getValue() = escape.getValue().toUpperCase() and
-        not classEscapeMatches(escape.getValue().toLowerCase(), char)
-      )
-      or
-      exists(RegExpNamedCharacterProperty charProp | charProp = child |
-        not charProp.isInverted() and
-        namedCharacterPropertyMatches(charProp.getName(), char)
-        or
-        char = getARelevantChar() and
-        charProp.isInverted() and
-        not namedCharacterPropertyMatches(charProp.getName(), char)
+        charClass.toUpperCase() = charClass and
+        not classEscapeMatches(charClass, char)
       )
     )
   }
@@ -421,16 +409,10 @@ private module CharacterClasses {
       or
       child.(RegExpCharacterRange).isRange(_, result)
       or
-      exists(RegExpCharacterClassEscape escape | child = escape |
-        result = min(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+      exists(string charClass | isEscapeClass(child, charClass) |
+        result = min(string s | classEscapeMatches(charClass.toLowerCase(), s))
         or
-        result = max(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
-      )
-      or
-      exists(RegExpNamedCharacterProperty charProp | child = charProp |
-        result = min(string s | namedCharacterPropertyMatches(charProp.getName(), s))
-        or
-        result = max(string s | namedCharacterPropertyMatches(charProp.getName(), s))
+        result = max(string s | classEscapeMatches(charClass.toLowerCase(), s))
       )
     )
   }
@@ -481,59 +463,39 @@ private module CharacterClasses {
   }
 
   /**
-   * Holds if the named character property (e.g. from a POSIX bracket
-   * expression) `propName` matches `char`. For example, it holds when `name` is
-   * `"word"` and `char` is `"a"`.
-   *
-   * TODO: expand to cover more properties.
-   */
-  private predicate namedCharacterPropertyMatches(string propName, string char) {
-    propName = ["digit", "Digit"] and
-    char = "0123456789".charAt(_)
-    or
-    propName = ["space", "Space"] and
-    (
-      char = [" ", "\t", "\r", "\n"]
-      or
-      char = getARelevantChar() and
-      char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
-    )
-    or
-    propName = ["word", "Word"] and
-    char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
-  }
-
-  /**
    * An implementation of `CharacterClass` for \d, \s, and \w.
    */
   private class PositiveCharacterClassEscape extends CharacterClass {
-    RegExpCharacterClassEscape cc;
+    RegExpTerm cc;
+    string charClass;
 
     PositiveCharacterClassEscape() {
-      this = getCanonicalCharClass(cc) and cc.getValue() = ["d", "s", "w"]
+      isEscapeClass(cc, charClass) and
+      this = getCanonicalCharClass(cc) and
+      charClass = ["d", "s", "w"]
     }
 
     override string getARelevantChar() {
-      cc.getValue() = "d" and
+      charClass = "d" and
       result = ["0", "9"]
       or
-      cc.getValue() = "s" and
+      charClass = "s" and
       result = " "
       or
-      cc.getValue() = "w" and
+      charClass = "w" and
       result = ["a", "Z", "_", "0", "9"]
     }
 
-    override predicate matches(string char) { classEscapeMatches(cc.getValue(), char) }
+    override predicate matches(string char) { classEscapeMatches(charClass, char) }
 
     override string choose() {
-      cc.getValue() = "d" and
+      charClass = "d" and
       result = "9"
       or
-      cc.getValue() = "s" and
+      charClass = "s" and
       result = " "
       or
-      cc.getValue() = "w" and
+      charClass = "w" and
       result = "a"
     }
   }
@@ -542,88 +504,29 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \D, \S, and \W.
    */
   private class NegativeCharacterClassEscape extends CharacterClass {
-    RegExpCharacterClassEscape cc;
+    RegExpTerm cc;
+    string charClass;
 
     NegativeCharacterClassEscape() {
-      this = getCanonicalCharClass(cc) and cc.getValue() = ["D", "S", "W"]
+      isEscapeClass(cc, charClass) and
+      this = getCanonicalCharClass(cc) and
+      charClass = ["D", "S", "W"]
     }
 
     override string getARelevantChar() {
-      cc.getValue() = "D" and
+      charClass = "D" and
       result = ["a", "Z", "!"]
       or
-      cc.getValue() = "S" and
+      charClass = "S" and
       result = ["a", "9", "!"]
       or
-      cc.getValue() = "W" and
+      charClass = "W" and
       result = [" ", "!"]
     }
 
     bindingset[char]
     override predicate matches(string char) {
-      not classEscapeMatches(cc.getValue().toLowerCase(), char)
-    }
-  }
-
-  /**
-   * An implementation of `NamedCharacterProperty` for positive (non-inverted)
-   * character properties.
-   */
-  private class PositiveNamedCharacterProperty extends CharacterClass {
-    RegExpNamedCharacterProperty cp;
-
-    PositiveNamedCharacterProperty() { this = getCanonicalCharClass(cp) and not cp.isInverted() }
-
-    override string getARelevantChar() {
-      exists(string lowerName | lowerName = cp.getName().toLowerCase() |
-        lowerName = "digit" and
-        result = ["0", "9"]
-        or
-        lowerName = "space" and
-        result = [" "]
-        or
-        lowerName = "word" and
-        result = ["a", "Z", "_", "0", "9"]
-      )
-    }
-
-    override predicate matches(string char) { namedCharacterPropertyMatches(cp.getName(), char) }
-
-    override string choose() {
-      exists(string lowerName | lowerName = cp.getName().toLowerCase() |
-        lowerName = "digit" and
-        result = "9"
-        or
-        lowerName = "space" and
-        result = " "
-        or
-        lowerName = "word" and
-        result = "a"
-      )
-    }
-  }
-
-  private class InvertedNamedCharacterProperty extends CharacterClass {
-    RegExpNamedCharacterProperty cp;
-
-    InvertedNamedCharacterProperty() { this = getCanonicalCharClass(cp) and cp.isInverted() }
-
-    override string getARelevantChar() {
-      exists(string lowerName | lowerName = cp.getName().toLowerCase() |
-        lowerName = "digit" and
-        result = ["a", "Z", "!"]
-        or
-        lowerName = "space" and
-        result = ["a", "9", "!"]
-        or
-        lowerName = "word" and
-        result = [" ", "!"]
-      )
-    }
-
-    bindingset[char]
-    override predicate matches(string char) {
-      not namedCharacterPropertyMatches(cp.getName(), char)
+      not classEscapeMatches(charClass.toLowerCase(), char)
     }
   }
 }
@@ -702,16 +605,10 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     q2 = after(cc)
   )
   or
-  exists(RegExpCharacterClassEscape cc |
+  exists(RegExpTerm cc | isEscapeClass(cc, _) |
     q1 = before(cc) and
     lbl = CharClass(cc.getRawValue() + "|" + getCanonicalizationFlags(cc.getRootTerm())) and
     q2 = after(cc)
-  )
-  or
-  exists(RegExpNamedCharacterProperty cp |
-    q1 = before(cp) and
-    lbl = CharClass(cp.getRawValue()) and
-    q2 = after(cp)
   )
   or
   exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))

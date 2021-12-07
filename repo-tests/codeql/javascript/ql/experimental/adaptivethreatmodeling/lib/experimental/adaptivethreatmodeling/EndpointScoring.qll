@@ -11,7 +11,7 @@ import EndpointFeatures as EndpointFeatures
 import EndpointTypes
 
 private string getACompatibleModelChecksum() {
-  adaptiveThreatModelingModels(result, "javascript", _, "atm-endpoint-scoring")
+  availableMlModels(result, "javascript", _, "atm-endpoint-scoring")
 }
 
 /**

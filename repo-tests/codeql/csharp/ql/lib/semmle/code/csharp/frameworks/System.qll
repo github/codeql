@@ -92,6 +92,20 @@ class SystemBooleanStruct extends BoolType {
   }
 }
 
+/** Data flow for `System.Boolean`. */
+private class SystemBooleanFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];Argument[1];taint",
+        "System;Boolean;false;TryParse;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];Argument[1];taint",
+        "System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];ReturnValue;taint",
+      ]
+  }
+}
+
 /** The `System.Convert` class. */
 class SystemConvertClass extends SystemClass {
   SystemConvertClass() { this.hasName("Convert") }
@@ -536,6 +550,22 @@ class SystemUriClass extends SystemClass {
     result.getDeclaringType() = this and
     result.hasName("OriginalString") and
     result.getType() instanceof StringType
+  }
+}
+
+/** Data flow for `System.Uri`. */
+private class SystemUriFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Uri;false;ToString;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;Uri;(System.String,System.UriKind);;Argument[0];ReturnValue;taint",
+        "System;Uri;false;get_OriginalString;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;get_PathAndQuery;();;Argument[-1];ReturnValue;taint",
+        "System;Uri;false;get_Query;();;Argument[-1];ReturnValue;taint",
+      ]
   }
 }
 

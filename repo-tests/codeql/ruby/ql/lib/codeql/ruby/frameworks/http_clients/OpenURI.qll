@@ -14,7 +14,7 @@ private import codeql.ruby.frameworks.StandardLibrary
  */
 class OpenUriRequest extends HTTP::Client::Request::Range {
   API::Node requestNode;
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
 
   OpenUriRequest() {
     requestNode =
@@ -23,6 +23,8 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
     requestUse = requestNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }
+
+  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     result = requestNode.getAMethodCall(["read", "readlines"])
@@ -48,13 +50,15 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
  * ```
  */
 class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
 
   OpenUriKernelOpenRequest() {
     requestUse instanceof KernelMethodCall and
     this.getMethodName() = "open" and
     this = requestUse.asExpr().getExpr()
   }
+
+  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
 
   override DataFlow::CallNode getResponseBody() {
     result.asExpr().getExpr().(MethodCall).getMethodName() in ["read", "readlines"] and
