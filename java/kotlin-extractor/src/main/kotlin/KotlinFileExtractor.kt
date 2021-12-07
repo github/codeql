@@ -34,7 +34,7 @@ open class KotlinFileExtractor(
     fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
         when (declaration) {
             is IrClass -> extractClassSource(declaration)
-            is IrFunction -> extractFunction(declaration, parentId)
+            is IrFunction -> extractFunctionIfReal(declaration, parentId)
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
             }
@@ -141,7 +141,7 @@ open class KotlinFileExtractor(
 
         c.declarations.map {
             when(it) {
-                is IrFunction -> extractFunction(it, id, false, typeParamSubstitution)
+                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution)
                 is IrProperty -> extractProperty(it, id, false, typeParamSubstitution)
                 else -> {}
             }
@@ -356,6 +356,12 @@ open class KotlinFileExtractor(
                 else -> continue
             }
         }
+    }
+
+    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean = true, typeSubstitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>? = null) {
+        if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
+            return
+        extractFunction(f, parentId, extractBody, typeSubstitutionMap)
     }
 
     fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean = true, typeSubstitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>? = null): Label<out DbCallable> {
@@ -730,7 +736,8 @@ open class KotlinFileExtractor(
                    isFunction("kotlin", "Double", fName)
         }
 
-        fun extractMethodAccess(callTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
+        fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
+            val callTarget = syntacticCallTarget.target
             val id = tw.getFreshIdLabel<DbMethodaccess>()
             val type = useType(c.type)
             val locId = tw.getLocation(c)
@@ -2013,7 +2020,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // Extract local function as a member
-        extractFunction(localFunction, id)
+        extractFunctionIfReal(localFunction, id)
 
         // Extract constructor
         val unitType = useType(pluginContext.irBuiltIns.unitType)

@@ -6,9 +6,6 @@ cloneMethods
 sourceSignatures
 | arrayCreations.kt:3:1:29:1 | <obinit> | <obinit>() |
 | arrayCreations.kt:3:1:29:1 | TestArrayCreation | TestArrayCreation() |
-| arrayCreations.kt:3:1:29:1 | equals | equals(java.lang.Object) |
-| arrayCreations.kt:3:1:29:1 | hashCode | hashCode() |
-| arrayCreations.kt:3:1:29:1 | toString | toString() |
 | arrayCreations.kt:4:3:28:3 | test1 | test1() |
 | arrayCreations.kt:22:29:22:33 |  |  |
 | arrayCreations.kt:22:29:22:33 | invoke | invoke(int) |
@@ -22,9 +19,6 @@ sourceSignatures
 | arrayCreations.kt:27:24:27:38 | invoke | invoke(int) |
 | primitiveArrays.kt:3:1:7:1 | <obinit> | <obinit>() |
 | primitiveArrays.kt:3:1:7:1 | Test | Test() |
-| primitiveArrays.kt:3:1:7:1 | equals | equals(java.lang.Object) |
-| primitiveArrays.kt:3:1:7:1 | hashCode | hashCode() |
-| primitiveArrays.kt:3:1:7:1 | toString | toString() |
 | primitiveArrays.kt:5:3:5:123 | test | test(java.lang.Integer[],java.lang.Integer[],int[],java.lang.Integer[][],java.lang.Integer[][],int[][]) |
 #select
 | primitiveArrays.kt:5:12:5:24 | a | file://:0:0:0:0 | Integer[] | Integer | Integer | file://:0:0:0:0 | Kotlin nullable FakeKotlinClass |

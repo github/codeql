@@ -1,12 +1,7 @@
-| variables.kt:2:1:8:1 | other | Object | file://:0:0:0:0 | <none> |
 | variables.kt:3:5:3:21 | prop | int | variables.kt:3:21:3:21 | 1 |
 | variables.kt:5:20:5:29 | param | int | file://:0:0:0:0 | <none> |
 | variables.kt:6:9:6:25 | int local | int | variables.kt:6:21:6:25 | ... + ... |
 | variables.kt:10:1:10:21 | topLevel | int | file://:0:0:0:0 | <none> |
-| variables.kt:12:1:15:1 | other | Object | file://:0:0:0:0 | <none> |
-| variables.kt:16:1:34:1 | other | Object | file://:0:0:0:0 | <none> |
 | variables.kt:16:11:16:18 | o | C1 | file://:0:0:0:0 | <none> |
 | variables.kt:16:11:16:18 | o | C1 | variables.kt:16:11:16:18 | o |
 | variables.kt:23:9:23:10 | <this> | C1 | file://:0:0:0:0 | <none> |
-| variables.kt:36:1:45:1 | other | Object | file://:0:0:0:0 | <none> |
-| variables.kt:38:11:44:5 | other | Object | file://:0:0:0:0 | <none> |

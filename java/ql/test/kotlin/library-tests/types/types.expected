@@ -40,13 +40,10 @@
 | ? extends FileAttributeView | Wildcard |
 | ? extends ForkJoinTask<?> | Wildcard |
 | ? extends FormalTypeParameter | Wildcard |
-| ? extends Identity | Wildcard |
 | ? extends InetAddress | Wildcard |
 | ? extends IntStream | Wildcard |
-| ? extends Item | Wildcard |
 | ? extends K | Wildcard |
 | ? extends Kind<?> | Wildcard |
-| ? extends Label | Wildcard |
 | ? extends LinkOption | Wildcard |
 | ? extends Locale | Wildcard |
 | ? extends LongStream | Wildcard |
@@ -75,7 +72,6 @@
 | ? extends SoftReference<LambdaForm> | Wildcard |
 | ? extends SoftReference<MethodHandle> | Wildcard |
 | ? extends StackTraceElement | Wildcard |
-| ? extends StackTraceElement[] | Wildcard |
 | ? extends Stream<? extends R> | Wildcard |
 | ? extends String | Wildcard |
 | ? extends T | Wildcard |
@@ -97,19 +93,13 @@
 | ? extends WorkQueue | Wildcard |
 | ? extends X | Wildcard |
 | ? super A | Wildcard |
-| ? super Boolean | Wildcard |
-| ? super Byte | Wildcard |
-| ? super Character | Wildcard |
 | ? super Class<?> | Wildcard |
 | ? super Cleaner | Wildcard |
 | ? super Double | Wildcard |
 | ? super E | Wildcard |
-| ? super Entry<?> | Wildcard |
 | ? super Entry<K,V> | Wildcard |
-| ? super Float | Wildcard |
 | ? super ForkJoinPool | Wildcard |
 | ? super ForkJoinTask<?> | Wildcard |
-| ? super Identity | Wildcard |
 | ? super Integer | Wildcard |
 | ? super K | Wildcard |
 | ? super Long | Wildcard |
@@ -117,7 +107,6 @@
 | ? super Path | Wildcard |
 | ? super R | Wildcard |
 | ? super Reference<? extends T> | Wildcard |
-| ? super Short | Wildcard |
 | ? super StackFrame | Wildcard |
 | ? super Stream<StackFrame> | Wildcard |
 | ? super T | Wildcard |
@@ -129,16 +118,10 @@
 | A[] | Array |
 | AbstractChronology | Class |
 | AbstractCollection | Class, GenericType, ParameterizedType |
-| AbstractCollection<?> | Class, ParameterizedType |
 | AbstractCollection<E> | Class, ParameterizedType |
-| AbstractCollection<Future<T>> | Class, ParameterizedType |
 | AbstractCollection<Option> | Class, ParameterizedType |
 | AbstractExecutorService | Class |
 | AbstractInterruptibleChannel | Class |
-| AbstractList | Class, GenericType, ParameterizedType |
-| AbstractList<?> | Class, ParameterizedType |
-| AbstractList<E> | Class, ParameterizedType |
-| AbstractList<Future<T>> | Class, ParameterizedType |
 | AbstractMap | Class, GenericType, ParameterizedType |
 | AbstractMap<?,?> | Class, ParameterizedType |
 | AbstractMap<Identity,Entry<?>> | Class, ParameterizedType |
@@ -171,7 +154,6 @@
 | AnnotatedType[] | Array |
 | Annotation | Interface |
 | AnnotationType | Class |
-| AnnotationVisitor | Class |
 | Annotation[] | Array |
 | Annotation[][] | Array |
 | Any | Class |
@@ -183,7 +165,6 @@
 | Array<? extends AnnotatedType> | Class, ParameterizedType |
 | Array<? extends Annotation> | Class, ParameterizedType |
 | Array<? extends Annotation[]> | Class, ParameterizedType |
-| Array<? extends Attribute> | Class, ParameterizedType |
 | Array<? extends AttributedCharacterIterator> | Class, ParameterizedType |
 | Array<? extends BasicType> | Class, ParameterizedType |
 | Array<? extends BigInteger> | Class, ParameterizedType |
@@ -214,9 +195,7 @@
 | Array<? extends ForkJoinTask<?>> | Class, ParameterizedType |
 | Array<? extends FormalTypeParameter> | Class, ParameterizedType |
 | Array<? extends InetAddress> | Class, ParameterizedType |
-| Array<? extends Item> | Class, ParameterizedType |
 | Array<? extends Kind<?>> | Class, ParameterizedType |
-| Array<? extends Label> | Class, ParameterizedType |
 | Array<? extends LinkOption> | Class, ParameterizedType |
 | Array<? extends Locale> | Class, ParameterizedType |
 | Array<? extends MemberName> | Class, ParameterizedType |
@@ -240,7 +219,6 @@
 | Array<? extends SoftReference<LambdaForm>> | Class, ParameterizedType |
 | Array<? extends SoftReference<MethodHandle>> | Class, ParameterizedType |
 | Array<? extends StackTraceElement> | Class, ParameterizedType |
-| Array<? extends StackTraceElement[]> | Class, ParameterizedType |
 | Array<? extends String> | Class, ParameterizedType |
 | Array<? extends T> | Class, ParameterizedType |
 | Array<? extends TemporalField> | Class, ParameterizedType |
@@ -264,7 +242,6 @@
 | Array<Annotation> | Class, ParameterizedType |
 | Array<Annotation[]> | Class, ParameterizedType |
 | Array<ArrayAccess> | Class, ParameterizedType |
-| Array<Attribute> | Class, ParameterizedType |
 | Array<AttributedCharacterIterator> | Class, ParameterizedType |
 | Array<BasicType> | Class, ParameterizedType |
 | Array<BigInteger> | Class, ParameterizedType |
@@ -311,10 +288,8 @@
 | Array<Intrinsic> | Class, ParameterizedType |
 | Array<IsoCountryCode> | Class, ParameterizedType |
 | Array<IsoEra> | Class, ParameterizedType |
-| Array<Item> | Class, ParameterizedType |
 | Array<Kind<?>> | Class, ParameterizedType |
 | Array<Kind> | Class, ParameterizedType |
-| Array<Label> | Class, ParameterizedType |
 | Array<Level> | Class, ParameterizedType |
 | Array<LinkOption> | Class, ParameterizedType |
 | Array<Locale> | Class, ParameterizedType |
@@ -346,7 +321,6 @@
 | Array<SoftReference<LambdaForm>> | Class, ParameterizedType |
 | Array<SoftReference<MethodHandle>> | Class, ParameterizedType |
 | Array<StackTraceElement> | Class, ParameterizedType |
-| Array<StackTraceElement[]> | Class, ParameterizedType |
 | Array<State> | Class, ParameterizedType |
 | Array<Status> | Class, ParameterizedType |
 | Array<String> | Class, ParameterizedType |
@@ -376,10 +350,6 @@
 | ArrayAccess[] | Array |
 | ArrayAccessor | Class |
 | ArrayIndexOutOfBoundsException | Class |
-| ArrayList | Class, GenericType, ParameterizedType |
-| ArrayList<Future<T>> | Class, ParameterizedType |
-| ArrayListSpliterator | Class |
-| ArrayListSpliterator<E> | Class, ParameterizedType |
 | ArrayTypeSignature | Class |
 | AsynchronousChannel | Interface |
 | AsynchronousFileChannel | Class |
@@ -388,7 +358,6 @@
 | AtomicReference<U> | Class, ParameterizedType |
 | Attribute | Class |
 | AttributeView | Interface |
-| Attribute[] | Array |
 | AttributedCharacterIterator | Interface |
 | AttributedCharacterIterator[] | Array |
 | AuthPermission | Class |
@@ -404,11 +373,9 @@
 | BaseStream<Double,DoubleStream> | Interface, ParameterizedType |
 | BaseStream<Double,Stream<Double>> | Interface, ParameterizedType |
 | BaseStream<E,Stream<E>> | Interface, ParameterizedType |
-| BaseStream<Entry<K,V>,Stream<Entry<K,V>>> | Interface, ParameterizedType |
 | BaseStream<InetAddress,Stream<InetAddress>> | Interface, ParameterizedType |
 | BaseStream<Integer,IntStream> | Interface, ParameterizedType |
 | BaseStream<Integer,Stream<Integer>> | Interface, ParameterizedType |
-| BaseStream<K,Stream<K>> | Interface, ParameterizedType |
 | BaseStream<LocalDate,Stream<LocalDate>> | Interface, ParameterizedType |
 | BaseStream<Long,LongStream> | Interface, ParameterizedType |
 | BaseStream<Long,Stream<Long>> | Interface, ParameterizedType |
@@ -422,14 +389,12 @@
 | BaseStream<T,Stream<T>> | Interface, ParameterizedType |
 | BaseStream<U,Stream<U>> | Interface, ParameterizedType |
 | BaseStream<URL,Stream<URL>> | Interface, ParameterizedType |
-| BaseStream<V,Stream<V>> | Interface, ParameterizedType |
 | BaseType | Interface |
 | BasicFileAttributes | Interface |
 | BasicPermission | Class |
 | BasicType | Class |
 | BasicType[] | Array |
 | BiConsumer | GenericType, Interface, ParameterizedType |
-| BiConsumer<? super Identity,? super Entry<?>> | Interface, ParameterizedType |
 | BiConsumer<? super K,? super V> | Interface, ParameterizedType |
 | BiConsumer<? super Object,? super Object> | Interface, ParameterizedType |
 | BiConsumer<? super T,? super U> | Interface, ParameterizedType |
@@ -439,8 +404,6 @@
 | BiConsumer<R,T> | Interface, ParameterizedType |
 | BiConsumer<T,U> | Interface, ParameterizedType |
 | BiFunction | GenericType, Interface, ParameterizedType |
-| BiFunction<? super Entry<?>,? super Entry<?>,? extends Entry<?>> | Interface, ParameterizedType |
-| BiFunction<? super Identity,? super Entry<?>,? extends Entry<?>> | Interface, ParameterizedType |
 | BiFunction<? super K,? super K,? extends K> | Interface, ParameterizedType |
 | BiFunction<? super K,? super V,? extends U> | Interface, ParameterizedType |
 | BiFunction<? super K,? super V,? extends V> | Interface, ParameterizedType |
@@ -453,7 +416,6 @@
 | BiFunction<R,R,R> | Interface, ParameterizedType |
 | BiFunction<String,List<Integer>,ArrayIndexOutOfBoundsException> | Interface, ParameterizedType |
 | BiFunction<T,T,T> | Interface, ParameterizedType |
-| BiFunction<T,T,V> | Interface, ParameterizedType |
 | BiFunction<T,U,V> | Interface, ParameterizedType |
 | BiFunction<U,? super T,U> | Interface, ParameterizedType |
 | BiFunction<U,U,U> | Interface, ParameterizedType |
@@ -474,7 +436,6 @@
 | BottomSignature | Class |
 | BoundMethodHandle | Class |
 | Buffer | Class |
-| BufferedWriter | Class |
 | Builder | Class |
 | Builder | GenericType, Interface, ParameterizedType |
 | Builder | Interface |
@@ -498,7 +459,6 @@
 | ByteIterator | Class |
 | ByteOrder | Class |
 | ByteSignature | Class |
-| ByteVector | Class |
 | CallSite | Class |
 | Callable | GenericType, Interface, ParameterizedType |
 | Callable<? extends T> | Interface, ParameterizedType |
@@ -560,66 +520,31 @@
 | Class<?> | Class, ParameterizedType |
 | Class<?>[] | Array |
 | Class<A> | Class, ParameterizedType |
-| Class<AccessMode> | Class, ParameterizedType |
-| Class<AccessType> | Class, ParameterizedType |
-| Class<ArrayAccess> | Class, ParameterizedType |
-| Class<BasicType> | Class, ParameterizedType |
 | Class<Boolean> | Class, ParameterizedType |
 | Class<BoundMethodHandle> | Class, ParameterizedType |
 | Class<Byte> | Class, ParameterizedType |
-| Class<Category> | Class, ParameterizedType |
 | Class<Character> | Class, ParameterizedType |
-| Class<Characteristics> | Class, ParameterizedType |
-| Class<ChronoField> | Class, ParameterizedType |
-| Class<ChronoUnit> | Class, ParameterizedType |
-| Class<DayOfWeek> | Class, ParameterizedType |
 | Class<Double> | Class, ParameterizedType |
 | Class<E> | Class, ParameterizedType |
-| Class<ExtendedOption> | Class, ParameterizedType |
-| Class<FilteringMode> | Class, ParameterizedType |
 | Class<Float> | Class, ParameterizedType |
-| Class<FormatStyle> | Class, ParameterizedType |
 | Class<Integer> | Class, ParameterizedType |
-| Class<Intrinsic> | Class, ParameterizedType |
-| Class<IsoCountryCode> | Class, ParameterizedType |
-| Class<IsoEra> | Class, ParameterizedType |
 | Class<K> | Class, ParameterizedType |
-| Class<Kind> | Class, ParameterizedType |
-| Class<Level> | Class, ParameterizedType |
-| Class<LinkOption> | Class, ParameterizedType |
 | Class<Long> | Class, ParameterizedType |
-| Class<Modifier> | Class, ParameterizedType |
-| Class<Month> | Class, ParameterizedType |
 | Class<NoSuchMemberException> | Class, ParameterizedType |
 | Class<Object> | Class, ParameterizedType |
 | Class<Object>[] | Array |
-| Class<Option> | Class, ParameterizedType |
-| Class<ResolverStyle> | Class, ParameterizedType |
-| Class<RetentionPolicy> | Class, ParameterizedType |
 | Class<S> | Class, ParameterizedType |
-| Class<SettingsParser> | Class, ParameterizedType |
 | Class<Short> | Class, ParameterizedType |
-| Class<SignStyle> | Class, ParameterizedType |
 | Class<SpeciesData> | Class, ParameterizedType |
-| Class<State> | Class, ParameterizedType |
-| Class<Status> | Class, ParameterizedType |
 | Class<String> | Class, ParameterizedType |
 | Class<T> | Class, ParameterizedType |
-| Class<Tag> | Class, ParameterizedType |
-| Class<TextStyle> | Class, ParameterizedType |
-| Class<TimeDefinition> | Class, ParameterizedType |
-| Class<TimeUnit> | Class, ParameterizedType |
-| Class<Type> | Class, ParameterizedType |
 | Class<U> | Class, ParameterizedType |
-| Class<UnicodeScript> | Class, ParameterizedType |
 | Class<V> | Class, ParameterizedType |
 | Class<Void> | Class, ParameterizedType |
-| Class<Wrapper> | Class, ParameterizedType |
 | ClassDataSlot | Class |
 | ClassDataSlot[] | Array |
 | ClassLoader | Class |
 | ClassNotFoundException | Class |
-| ClassReader | Class |
 | ClassSignature | Class |
 | ClassSpecializer | Class, GenericType, ParameterizedType |
 | ClassSpecializer<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
@@ -631,8 +556,6 @@
 | ClassValue<MethodHandle[]> | Class, ParameterizedType |
 | ClassValue<T> | Class, ParameterizedType |
 | ClassValueMap | Class |
-| ClassVisitor | Class |
-| ClassWriter | Class |
 | Class[] | Array |
 | ClassicFormat | Class |
 | Cleanable | Interface |
@@ -808,12 +731,8 @@
 | Comparable<ZoneOffset> | Interface, ParameterizedType |
 | Comparable<ZoneOffsetTransition> | Interface, ParameterizedType |
 | Comparator | GenericType, Interface, ParameterizedType |
-| Comparator<? super Double> | Interface, ParameterizedType |
 | Comparator<? super E> | Interface, ParameterizedType |
-| Comparator<? super Entry<K,V>> | Interface, ParameterizedType |
-| Comparator<? super Integer> | Interface, ParameterizedType |
 | Comparator<? super K> | Interface, ParameterizedType |
-| Comparator<? super Long> | Interface, ParameterizedType |
 | Comparator<? super T> | Interface, ParameterizedType |
 | Comparator<? super U> | Interface, ParameterizedType |
 | Comparator<? super V> | Interface, ParameterizedType |
@@ -859,19 +778,13 @@
 | ConstructorRepository | Class |
 | Constructor[] | Array |
 | Consumer | GenericType, Interface, ParameterizedType |
-| Consumer<? super Boolean> | Interface, ParameterizedType |
-| Consumer<? super Byte> | Interface, ParameterizedType |
-| Consumer<? super Character> | Interface, ParameterizedType |
 | Consumer<? super Double> | Interface, ParameterizedType |
 | Consumer<? super E> | Interface, ParameterizedType |
 | Consumer<? super Entry<K,V>> | Interface, ParameterizedType |
-| Consumer<? super Float> | Interface, ParameterizedType |
 | Consumer<? super Integer> | Interface, ParameterizedType |
 | Consumer<? super K> | Interface, ParameterizedType |
 | Consumer<? super Long> | Interface, ParameterizedType |
-| Consumer<? super Path> | Interface, ParameterizedType |
 | Consumer<? super Reference<? extends T>> | Interface, ParameterizedType |
-| Consumer<? super Short> | Interface, ParameterizedType |
 | Consumer<? super StackFrame> | Interface, ParameterizedType |
 | Consumer<? super T> | Interface, ParameterizedType |
 | Consumer<? super U> | Interface, ParameterizedType |
@@ -945,7 +858,6 @@
 | Duration | Class |
 | E | TypeVariable |
 | E[] | Array |
-| Edge | Class |
 | Empty | Class |
 | Entry | Class |
 | Entry | Class, GenericType, ParameterizedType |
@@ -1022,7 +934,6 @@
 | Enumeration<Object> | Interface, ParameterizedType |
 | Enumeration<Permission> | Interface, ParameterizedType |
 | Enumeration<String> | Interface, ParameterizedType |
-| Enumeration<T> | Interface, ParameterizedType |
 | Enumeration<URL> | Interface, ParameterizedType |
 | Enumeration<V> | Interface, ParameterizedType |
 | Era | Interface |
@@ -1048,8 +959,6 @@
 | FieldPosition | Class |
 | FieldTypeSignature | Interface |
 | FieldTypeSignature[] | Array |
-| FieldVisitor | Class |
-| FieldWriter | Class |
 | Field[] | Array |
 | File | Class |
 | FileAttribute | GenericType, Interface, ParameterizedType |
@@ -1117,7 +1026,6 @@
 | FormatStyle[] | Array |
 | ForwardingNode | Class, GenericType, ParameterizedType |
 | FractionPrinterParser | Class |
-| Frame | Class |
 | Function | GenericType, Interface, ParameterizedType |
 | Function1 | GenericType, Interface, ParameterizedType |
 | Function1<Integer,Boolean> | Interface, ParameterizedType |
@@ -1129,7 +1037,6 @@
 | Function1<Integer,Long> | Interface, ParameterizedType |
 | Function1<Integer,Short> | Interface, ParameterizedType |
 | Function1<Integer,T> | Interface, ParameterizedType |
-| Function<? super Identity,? extends Entry<?>> | Interface, ParameterizedType |
 | Function<? super K,? extends U> | Interface, ParameterizedType |
 | Function<? super K,? extends V> | Interface, ParameterizedType |
 | Function<? super Object,? extends Object> | Interface, ParameterizedType |
@@ -1143,7 +1050,6 @@
 | Function<? super T,? extends R> | Interface, ParameterizedType |
 | Function<? super T,? extends Stream<? extends R>> | Interface, ParameterizedType |
 | Function<? super T,? extends U> | Interface, ParameterizedType |
-| Function<? super T,? extends V> | Interface, ParameterizedType |
 | Function<? super V,? extends T> | Interface, ParameterizedType |
 | Function<? super V,? extends U> | Interface, ParameterizedType |
 | Function<A,R> | Interface, ParameterizedType |
@@ -1165,7 +1071,6 @@
 | Function<T,V> | Interface, ParameterizedType |
 | Function<T> | Interface, ParameterizedType |
 | Function<V,R> | Interface, ParameterizedType |
-| Function<V,T> | Interface, ParameterizedType |
 | Function<V,V> | Interface, ParameterizedType |
 | Future | GenericType, Interface, ParameterizedType |
 | Future<?> | Interface, ParameterizedType |
@@ -1190,7 +1095,6 @@
 | Global | Class |
 | GroupPrincipal | Interface |
 | Guard | Interface |
-| Handle | Class |
 | Hashtable | Class, GenericType, ParameterizedType |
 | Hashtable<?,?> | Class, ParameterizedType |
 | Hashtable<Object,Object> | Class, ParameterizedType |
@@ -1247,8 +1151,6 @@
 | IsoCountryCode[] | Array |
 | IsoEra | Class |
 | IsoEra[] | Array |
-| Item | Class |
-| Item[] | Array |
 | Iterable | GenericType, Interface, ParameterizedType |
 | Iterable<? extends Attribute> | Interface, ParameterizedType |
 | Iterable<? extends Callable<T>> | Interface, ParameterizedType |
@@ -1352,8 +1254,6 @@
 | Kind<?>[] | Array |
 | Kind<T> | Interface, ParameterizedType |
 | Kind[] | Array |
-| Label | Class |
-| Label[] | Array |
 | LambdaForm | Class |
 | LambdaFormEditor | Class |
 | LangReflectAccess | Interface |
@@ -1432,7 +1332,6 @@
 | LoopClauses | Class |
 | ManagedBlocker | Interface |
 | Map | GenericType, Interface, ParameterizedType |
-| Map<? extends Identity,Entry<?>> | Interface, ParameterizedType |
 | Map<? extends K,? extends V> | Interface, ParameterizedType |
 | Map<? extends K,V> | Interface, ParameterizedType |
 | Map<? extends WeakReference<Class<?>>,?> | Interface, ParameterizedType |
@@ -1516,8 +1415,6 @@
 | MethodTypeForm | Class |
 | MethodTypeSignature | Class |
 | MethodType[] | Array |
-| MethodVisitor | Class |
-| MethodWriter | Class |
 | Method[] | Array |
 | Modifier | Class |
 | Modifier | Interface |
@@ -1529,7 +1426,6 @@
 | ModuleLayer | Class |
 | ModuleReader | Interface |
 | ModuleReference | Class |
-| ModuleVisitor | Class |
 | Month | Class |
 | Month[] | Array |
 | MutableCollection | GenericType, Interface, ParameterizedType |
@@ -1545,8 +1441,6 @@
 | NamedFunction | Class |
 | NamedPackage | Class |
 | NativeLibrary | Class |
-| NestHost | Class |
-| NestMembers | Class |
 | NetworkInterface | Class |
 | NoSuchMemberException | TypeVariable |
 | Node | Class |
@@ -1645,7 +1539,6 @@
 | Predicate<? super E> | Interface, ParameterizedType |
 | Predicate<? super Entry<K,V>> | Interface, ParameterizedType |
 | Predicate<? super ForkJoinPool> | Interface, ParameterizedType |
-| Predicate<? super K> | Interface, ParameterizedType |
 | Predicate<? super T> | Interface, ParameterizedType |
 | Predicate<? super V> | Interface, ParameterizedType |
 | Predicate<T> | Interface, ParameterizedType |
@@ -1676,8 +1569,6 @@
 | Queue<NativeLibrary> | Interface, ParameterizedType |
 | R | TypeVariable |
 | Random | Class |
-| RandomAccess | Interface |
-| RandomAccessSpliterator | Class, GenericType, ParameterizedType |
 | RandomDoublesSpliterator | Class |
 | RandomIntsSpliterator | Class |
 | RandomLongsSpliterator | Class |
@@ -1819,21 +1710,18 @@
 | SpeciesData<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
 | SpeciesData<T,K,S> | Class, ParameterizedType |
 | Spliterator | GenericType, Interface, ParameterizedType |
-| Spliterator<Character> | Interface, ParameterizedType |
 | Spliterator<Double> | Interface, ParameterizedType |
 | Spliterator<E> | Interface, ParameterizedType |
 | Spliterator<Entry<K,V>> | Interface, ParameterizedType |
 | Spliterator<Integer> | Interface, ParameterizedType |
 | Spliterator<K> | Interface, ParameterizedType |
 | Spliterator<Long> | Interface, ParameterizedType |
-| Spliterator<Path> | Interface, ParameterizedType |
 | Spliterator<T> | Interface, ParameterizedType |
 | Spliterator<V> | Interface, ParameterizedType |
 | StackFrame | Interface |
 | StackFrameInfo | Class |
 | StackTraceElement | Class |
 | StackTraceElement[] | Array |
-| StackTraceElement[][] | Array |
 | StackWalker | Class |
 | State | Class |
 | State[] | Array |
@@ -1845,10 +1733,8 @@
 | Stream<Configuration> | Interface, ParameterizedType |
 | Stream<Double> | Interface, ParameterizedType |
 | Stream<E> | Interface, ParameterizedType |
-| Stream<Entry<K,V>> | Interface, ParameterizedType |
 | Stream<InetAddress> | Interface, ParameterizedType |
 | Stream<Integer> | Interface, ParameterizedType |
-| Stream<K> | Interface, ParameterizedType |
 | Stream<LocalDate> | Interface, ParameterizedType |
 | Stream<Long> | Interface, ParameterizedType |
 | Stream<ModuleLayer> | Interface, ParameterizedType |
@@ -1861,7 +1747,6 @@
 | Stream<T> | Interface, ParameterizedType |
 | Stream<U> | Interface, ParameterizedType |
 | Stream<URL> | Interface, ParameterizedType |
-| Stream<V> | Interface, ParameterizedType |
 | String | Class |
 | StringBuffer | Class |
 | StringBuilder | Class |
@@ -1960,7 +1845,6 @@
 | TypeArgument | Interface |
 | TypeArgument[] | Array |
 | TypeParam | Class |
-| TypePath | Class |
 | TypeSignature | Interface |
 | TypeSignature[] | Array |
 | TypeTree | Interface |

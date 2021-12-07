@@ -12,11 +12,7 @@
 | test.kt:6:1:10:1 | <obinit>(...) |
 | test.kt:6:1:10:1 | Foo |
 | test.kt:6:1:10:1 | Foo |
-| test.kt:6:1:10:1 | equals |
-| test.kt:6:1:10:1 | hashCode |
-| test.kt:6:1:10:1 | other |
 | test.kt:6:1:10:1 | super(...) |
-| test.kt:6:1:10:1 | toString |
 | test.kt:6:1:10:1 | { ... } |
 | test.kt:6:1:10:1 | { ... } |
 | test.kt:6:11:6:11 | T |

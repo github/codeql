@@ -7,10 +7,6 @@
 | Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | <obinit> | Method |
 | Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt |
 | Test.kt:3:8:80:1 | Test | Constructor | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:8:80:1 | equals | Method | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:8:80:1 | hashCode | Method | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:8:80:1 | other | Parameter | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:8:80:1 | toString | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:4:2:79:2 | test | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt |
 | Test.kt:5:3:5:16 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
