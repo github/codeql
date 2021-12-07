@@ -15,22 +15,22 @@ module ImportStar {
     s = n.getScope().getEnclosingScope*() and
     exists(potentialImportStarBase(s)) and
     // Not already defined in an enclosing scope.
-    not isDefinedLocally(n, name)
+    not isDefinedLocally(n)
   }
 
   /** Holds if `n` refers to a variable that is defined in the module in which it occurs. */
-  private predicate isDefinedLocally(NameNode n, string name) {
+  private predicate isDefinedLocally(NameNode n) {
     // Defined in an enclosing scope
-    exists(LocalVariable v | v.getId() = name and v.getScope() = n.getScope().getEnclosingScope*())
+    exists(LocalVariable v | v.getId() = n.getId() and v.getScope() = n.getScope().getEnclosingScope*())
     or
     // Defined as a built-in
-    name = Builtins::getBuiltinName()
+    n.getId() = Builtins::getBuiltinName()
     or
     // Defined as a global in this module
-    globalNameDefinedInModule(name, n.getEnclosingModule())
+    globalNameDefinedInModule(n.getId(), n.getEnclosingModule())
     or
     // A non-built-in that still has file-specific meaning
-    name in ["__name__", "__package__"]
+    n.getId() in ["__name__", "__package__"]
   }
 
   /** Holds if a global variable called `name` is assigned a value in the module `m`. */
@@ -50,7 +50,7 @@ module ImportStar {
   predicate importStarResolvesTo(NameNode n, Module m) {
     m = getStarImported+(n.getEnclosingModule()) and
     globalNameDefinedInModule(n.getId(), m) and
-    not isDefinedLocally(n, n.getId())
+    not isDefinedLocally(n)
   }
 
   /**
