@@ -464,7 +464,7 @@ class X {
     fun useDeclarationParent(dp: IrDeclarationParent, classTypeArguments: List<IrTypeArgument>? = null, inReceiverContext: Boolean = false): Label<out DbElement> =
         when(dp) {
             is IrFile -> usePackage(dp.fqName.asString())
-            is IrClass -> if (classTypeArguments != null) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
+            is IrClass -> if (classTypeArguments != null && !dp.isAnonymousObject) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
             is IrFunction -> useFunction(dp)
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass)
