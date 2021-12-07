@@ -274,19 +274,6 @@ module ReflectedXSS {
   /** A sanitizer guard for stored XSS vulnerabilities. */
   abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
-  // Consider all arbitrary XSS sinks to be reflected XSS sinks
-  private class AnySink extends Sink instanceof Shared::Sink { }
-
-  // Consider all arbitrary XSS sanitizers to be reflected XSS sanitizers
-  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
-
-  // Consider all arbitrary XSS sanitizer guards to be reflected XSS sanitizer guards
-  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
-    override predicate checks(CfgNode expr, boolean branch) {
-      Shared::SanitizerGuard.super.checks(expr, branch)
-    }
-  }
-
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
    */
@@ -334,19 +321,6 @@ module StoredXSS {
 
   /** A sanitizer guard for stored XSS vulnerabilities. */
   abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
-  // Consider all arbitrary XSS sinks to be stored XSS sinks
-  private class AnySink extends Sink instanceof Shared::Sink { }
-
-  // Consider all arbitrary XSS sanitizers to be stored XSS sanitizers
-  private class AnySanitizer extends Sanitizer instanceof Shared::Sanitizer { }
-
-  // Consider all arbitrary XSS sanitizer guards to be stored XSS sanitizer guards
-  private class AnySanitizerGuard extends SanitizerGuard instanceof Shared::SanitizerGuard {
-    override predicate checks(CfgNode expr, boolean branch) {
-      Shared::SanitizerGuard.super.checks(expr, branch)
-    }
-  }
 
   /**
    * An additional step that preserves dataflow in the context of stored XSS.
