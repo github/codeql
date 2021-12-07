@@ -62,6 +62,7 @@ xssSink
 | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
 | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
 | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
 | views/hbs_sinks.hbs:17:9:17:32 | {{{ rawHtmlSafeValue }}} |
 | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
 | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |

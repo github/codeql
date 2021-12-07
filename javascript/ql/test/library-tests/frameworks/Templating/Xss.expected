@@ -119,6 +119,9 @@ nodes
 | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
 | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
 | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
 | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
 | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
 | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
@@ -169,6 +172,8 @@ edges
 | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
 | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
 | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
 | app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
 | app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
 | app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
@@ -268,6 +273,8 @@ edges
 | views/hbs_sinks.hbs:12:13:12:19 | rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
 | views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
 | views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
 | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
 | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
 | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
@@ -304,6 +311,7 @@ edges
 | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
 | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
 | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
 | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} | app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} | Cross-site scripting vulnerability due to $@. | app.js:30:26:30:46 | req.que ... tmlProp | user-provided value |
 | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} | app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} | Cross-site scripting vulnerability due to $@. | app.js:33:33:33:64 | req.que ... eralRaw | user-provided value |
 | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} | app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} | Cross-site scripting vulnerability due to $@. | app.js:35:33:35:64 | req.que ... CodeRaw | user-provided value |
