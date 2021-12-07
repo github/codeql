@@ -710,6 +710,14 @@ module Private {
       )
     }
 
+    pragma[noinline]
+    private predicate viableParam(
+      DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos, ParamNode p
+    ) {
+      p.isParameterOf(sc, ppos) and
+      sc = viableCallable(call)
+    }
+
     /**
      * Holds if values stored inside content `c` are cleared inside a
      * callable to which `arg` is an argument.
@@ -718,23 +726,18 @@ module Private {
      * `arg` (see comment for `summaryClearsContent`).
      */
     predicate summaryClearsContentArg(ArgNode arg, Content c) {
-      exists(DataFlowCall call, ParameterPosition ppos, ArgumentPosition apos |
-        viableCallable(call).(SummarizedCallable).clearsContent(ppos, c) and
-        arg.argumentOf(call, apos) and
-        parameterMatch(ppos, apos)
+      exists(DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos |
+        argumentPositionMatch(call, arg, ppos) and
+        viableParam(call, sc, ppos, _) and
+        sc.clearsContent(ppos, c)
       )
     }
 
     pragma[nomagic]
     private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
-      exists(
-        DataFlowCall call, ParameterPosition ppos, ArgumentPosition apos,
-        SummarizedCallable callable
-      |
-        arg.argumentOf(call, apos) and
-        viableCallable(call) = callable and
-        result.isParameterOf(callable, ppos) and
-        parameterMatch(ppos, apos) and
+      exists(DataFlowCall call, ParameterPosition ppos, SummarizedCallable sc |
+        argumentPositionMatch(call, arg, ppos) and
+        viableParam(call, sc, ppos, result) and
         out = rk.getAnOutNode(call)
       )
     }

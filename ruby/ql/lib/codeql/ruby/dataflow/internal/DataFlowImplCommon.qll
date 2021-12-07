@@ -63,6 +63,18 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
 }
 
 /**
+ * Holds if `arg` is an argument of `call` with an argument position that matches
+ * parameter position `ppos`.
+ */
+pragma[noinline]
+predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPosition ppos) {
+  exists(ArgumentPosition apos |
+    arg.argumentOf(call, apos) and
+    parameterMatch(ppos, apos)
+  )
+}
+
+/**
  * Provides a simple data-flow analysis for resolving lambda calls. The analysis
  * currently excludes read-steps, store-steps, and flow-through.
  *
@@ -71,31 +83,27 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {
-  private predicate viableParamNonLambda(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
-    exists(ParameterPosition ppos |
-      p.isParameterOf(viableCallable(call), ppos) and
-      parameterMatch(ppos, apos)
-    )
+  pragma[noinline]
+  private predicate viableParamNonLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallable(call), ppos)
   }
 
-  private predicate viableParamLambda(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
-    exists(ParameterPosition ppos |
-      p.isParameterOf(viableCallableLambda(call, _), ppos) and
-      parameterMatch(ppos, apos)
-    )
+  pragma[noinline]
+  private predicate viableParamLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallableLambda(call, _), ppos)
   }
 
   private predicate viableParamArgNonLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(ArgumentPosition pos |
-      viableParamNonLambda(call, pos, p) and
-      arg.argumentOf(call, pos)
+    exists(ParameterPosition ppos |
+      viableParamNonLambda(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos)
     )
   }
 
   private predicate viableParamArgLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(ArgumentPosition pos |
-      viableParamLambda(call, pos, p) and
-      arg.argumentOf(call, pos)
+    exists(ParameterPosition ppos |
+      viableParamLambda(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos)
     )
   }
 
