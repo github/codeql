@@ -7,8 +7,8 @@ import com.semmle.util.locations.Position;
 import com.semmle.util.trap.TrapWriter.Label;
 
 public class TemplateEngines {
-  private static final String MUSTACHE_TAG_TRIPLE = "\\{\\{\\{(.*?)\\}\\}\\}"; // {{{ x }}}
-  private static final String MUSTACHE_TAG_DOUBLE = "\\{\\{(?!\\{)(.*?)\\}\\}"; // {{ x }}}
+  private static final String MUSTACHE_TAG_TRIPLE = "\\{\\{\\{[~]?(.*?)[~]?\\}\\}\\}"; // {{{ x }}}
+  private static final String MUSTACHE_TAG_DOUBLE = "\\{\\{(?!\\{)[~&]?(.*?)[~]?\\}\\}"; // {{ x }}}
   private static final String MUSTACHE_TAG_PERCENT = "\\{%(?!>)(.*?)%\\}"; // {% x %}
   private static final String EJS_TAG = "<%(?![%<>}])[-=]?(.*?)[_-]?%>"; // <% x %>
 

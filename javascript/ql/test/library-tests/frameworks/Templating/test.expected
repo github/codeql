@@ -57,12 +57,16 @@ xssSink
 | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
 | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
 | views/ejs_sinks.ejs:24:9:24:57 | <%- include('ejs_include1', { foo: rawHtml }) _%> |
-| views/hbs_sinks.hbs:4:9:4:23 | {{{ rawHtml }}} |
-| views/hbs_sinks.hbs:5:9:5:32 | {{{ rawHtmlSafeValue }}} |
-| views/hbs_sinks.hbs:7:9:7:34 | {{{ object.rawHtmlProp }}} |
-| views/hbs_sinks.hbs:11:43:11:72 | {{{ dataInStringLiteralRaw }}} |
-| views/hbs_sinks.hbs:14:42:14:71 | {{{ dataInGeneratedCodeRaw }}} |
-| views/hbs_sinks.hbs:22:39:22:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:17:9:17:32 | {{{ rawHtmlSafeValue }}} |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
 | views/instantiated_as_ejs.html:4:9:4:23 | <%- xss_sink %> |
 | views/instantiated_as_hbs.html:7:9:7:24 | {{{ xss_sink }}} |
 | views/njk_sinks.njk:4:12:4:18 | rawHtml |
@@ -81,9 +85,9 @@ codeInjectionSink
 | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
 | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
-| views/hbs_sinks.hbs:13:39:13:63 | {{ dataInGeneratedCode }} |
-| views/hbs_sinks.hbs:16:19:16:38 | {{ backslashSink1 }} |
-| views/hbs_sinks.hbs:21:39:21:68 | {{ dataInEventHandlerString }} |
+| views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
 | views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
 | views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
 | views/njk_sinks.njk:15:46:15:91 | {{ dataInGeneratedCodeJsonRaw \| json \| safe }} |
