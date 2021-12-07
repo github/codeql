@@ -14,7 +14,7 @@ CODEQL_PLATFORM = osx64
 endif
 endif
 
-FILES=codeql-extractor.yml\
+FILES=codeql-extractor.template.yml\
       tools/qltest.cmd\
       tools/index-files.sh\
       tools/index-files.cmd\
@@ -30,7 +30,8 @@ extractor-common:
 	rm -rf build
 	mkdir build
 	mkdir build/codeql-extractor-ruby
-	cp codeql-extractor.yml ql/lib/ruby.dbscheme ql/lib/ruby.dbscheme.stats build/codeql-extractor-ruby
+	cp codeql-extractor.template.yml build/codeql-extractor-ruby/codeql-extractor.yml
+	cp ql/lib/ruby.dbscheme ql/lib/ruby.dbscheme.stats build/codeql-extractor-ruby
 	cp -r tools build/codeql-extractor-ruby/
 
 .PHONY:	tools
@@ -54,7 +55,7 @@ extractor:	$(FILES) $(BIN_FILES)
 	mkdir extractor-pack
 	mkdir extractor-pack/tools
 	mkdir extractor-pack/tools/$(CODEQL_PLATFORM)
-	cp codeql-extractor.yml extractor-pack/codeql-extractor.yml
+	cp codeql-extractor.template.yml extractor-pack/codeql-extractor.yml
 	cp tools/qltest.cmd extractor-pack/tools/qltest.cmd
 	cp tools/index-files.sh extractor-pack/tools/index-files.sh
 	cp tools/index-files.cmd extractor-pack/tools/index-files.cmd
