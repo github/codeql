@@ -1046,14 +1046,14 @@ case.rb:
 #-----| match -> exit case_match_various (normal)
 
 #   74| in ... then ...
-#-----|  -> foo
+#-----|  -> ^...
 
 #   74| ^...
-#-----| no-match -> in ... then ...
-#-----| match -> exit case_match_various (normal)
+#-----|  -> foo
 
 #   74| foo
-#-----|  -> ^...
+#-----| no-match -> in ... then ...
+#-----| match -> exit case_match_various (normal)
 
 #   75| in ... then ...
 #-----|  -> "string"
@@ -1154,15 +1154,15 @@ case.rb:
 #-----|  -> 5
 
 #   83| 5
-#-----| no-match -> foo
+#-----| no-match -> ^...
 #-----| match -> exit case_match_various (normal)
 
 #   83| ^...
-#-----| no-match -> "string"
-#-----| match -> exit case_match_various (normal)
+#-----|  -> foo
 
 #   83| foo
-#-----|  -> ^...
+#-----| no-match -> "string"
+#-----| match -> exit case_match_various (normal)
 
 #   83| "string"
 #-----| no-match -> in ... then ...

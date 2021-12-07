@@ -722,7 +722,7 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getPattern() and i = 0 }
   }
 
-  private class VariableReferencePatternTree extends StandardPostOrderTree, VariableReferencePattern {
+  private class VariableReferencePatternTree extends StandardPreOrderTree, VariableReferencePattern {
     override ControlFlowTree getChildElement(int i) { result = this.getVariableAccess() and i = 0 }
   }
 
