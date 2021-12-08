@@ -2010,7 +2010,8 @@ open class KotlinFileExtractor(
         extractFunction(localFunction, id)
 
         // Extract constructor
-        tw.writeConstrs(ids.constructor, "", "", ids.type.javaResult.id, ids.type.kotlinResult.id, id, ids.constructor)
+        val unitType = useType(pluginContext.irBuiltIns.unitType)
+        tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, unitType.kotlinResult.id, id, ids.constructor)
         tw.writeHasLocation(ids.constructor, locId)
 
         // Constructor body
