@@ -1,4 +1,6 @@
 private import cpp
+private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.dataflow.internal.DataFlowUtil
 
 /**
  * Gets a function that might be called by `call`.
@@ -63,3 +65,17 @@ predicate mayBenefitFromCallContext(Call call, Function f) { none() }
  * restricted to those `call`s for which a context might make a difference.
  */
 Function viableImplInCallContext(Call call, Call ctx) { none() }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { any(ParameterNode p).isParameterOf(_, this) }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { any(ArgumentNode a).argumentOf(_, this) }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }

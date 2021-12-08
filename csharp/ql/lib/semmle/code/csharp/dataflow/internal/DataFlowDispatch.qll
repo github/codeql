@@ -5,7 +5,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dispatch.RuntimeCallable
@@ -13,7 +13,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
 private predicate summarizedCallable(DataFlowCallable c) {
-  c instanceof SummarizedCallable
+  c instanceof FlowSummary::SummarizedCallable
   or
   FlowSummaryImpl::Private::summaryReturnNode(_, TJumpReturnKind(c, _))
   or
@@ -108,13 +108,27 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(SummarizedCallable c, Node receiver) {
+    TSummaryCall(FlowSummary::SummarizedCallable c, Node receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
+
+  private int parameterPosition() {
+    result =
+      [
+        -1, any(Parameter p).getPosition(),
+        ImplicitCapturedParameterNodeImpl::getParameterPosition(_)
+      ]
+  }
+
+  cached
+  newtype TParameterPosition = MkParameterPosition(int i) { i = parameterPosition() }
+
+  cached
+  newtype TArgumentPosition = MkArgumentPosition(int i) { i = parameterPosition() }
 }
 
 import Cached
@@ -388,7 +402,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
-  private SummarizedCallable c;
+  private FlowSummary::SummarizedCallable c;
   private Node receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
@@ -409,4 +423,38 @@ class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
   override Location getLocation() { result = c.getLocation() }
+}
+
+/** A parameter position represented by an integer. */
+class ParameterPosition extends MkParameterPosition {
+  private int i;
+
+  ParameterPosition() { this = MkParameterPosition(i) }
+
+  /** Gets the underlying integer. */
+  int getPosition() { result = i }
+
+  /** Gets a textual representation of this position. */
+  string toString() { result = i.toString() }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends MkArgumentPosition {
+  private int i;
+
+  ArgumentPosition() { this = MkArgumentPosition(i) }
+
+  /** Gets the underlying integer. */
+  int getPosition() { result = i }
+
+  /** Gets a textual representation of this position. */
+  string toString() { result = i.toString() }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  exists(int i |
+    ppos = MkParameterPosition(i) and
+    apos = MkArgumentPosition(i)
+  )
 }

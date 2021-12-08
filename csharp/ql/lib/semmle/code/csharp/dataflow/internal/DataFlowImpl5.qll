@@ -256,11 +256,11 @@ private class ArgNodeEx extends NodeEx {
 private class ParamNodeEx extends NodeEx {
   ParamNodeEx() { this.asNode() instanceof ParamNode }
 
-  predicate isParameterOf(DataFlowCallable c, int i) {
-    this.asNode().(ParamNode).isParameterOf(c, i)
+  predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    this.asNode().(ParamNode).isParameterOf(c, pos)
   }
 
-  int getPosition() { this.isParameterOf(_, result) }
+  ParameterPosition getPosition() { this.isParameterOf(_, result) }
 
   predicate allowParameterReturnInSelf() { allowParameterReturnInSelfCached(this.asNode()) }
 }
@@ -1447,7 +1447,7 @@ private module Stage2 {
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
-    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
+    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, ParameterPosition pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
       revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
@@ -2142,7 +2142,7 @@ private module Stage3 {
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
-    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
+    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, ParameterPosition pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
       revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
@@ -2908,7 +2908,7 @@ private module Stage4 {
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
-    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
+    exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, ParameterPosition pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
       revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
@@ -2992,7 +2992,7 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
 
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
-  int getParameterPos() { p.isParameterOf(_, result) }
+  ParameterPosition getParameterPos() { p.isParameterOf(_, result) }
 
   ParamNodeEx getParamNode() { result = p }
 
@@ -3639,39 +3639,40 @@ private predicate pathOutOfCallable(PathNodeMid mid, NodeEx out, CallContext cc)
  */
 pragma[noinline]
 private predicate pathIntoArg(
-  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa,
-  Configuration config
+  PathNodeMid mid, ParameterPosition ppos, CallContext cc, DataFlowCall call, AccessPath ap,
+  AccessPathApprox apa, Configuration config
 ) {
-  exists(ArgNode arg |
+  exists(ArgNode arg, ArgumentPosition apos |
     arg = mid.getNodeEx().asNode() and
     cc = mid.getCallContext() and
-    arg.argumentOf(call, i) and
+    arg.argumentOf(call, apos) and
     ap = mid.getAp() and
     apa = ap.getApprox() and
-    config = mid.getConfiguration()
+    config = mid.getConfiguration() and
+    parameterMatch(ppos, apos)
   )
 }
 
 pragma[nomagic]
 private predicate parameterCand(
-  DataFlowCallable callable, int i, AccessPathApprox apa, Configuration config
+  DataFlowCallable callable, ParameterPosition pos, AccessPathApprox apa, Configuration config
 ) {
   exists(ParamNodeEx p |
     Stage4::revFlow(p, _, _, apa, config) and
-    p.isParameterOf(callable, i)
+    p.isParameterOf(callable, pos)
   )
 }
 
 pragma[nomagic]
 private predicate pathIntoCallable0(
-  PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPath ap, Configuration config
+  PathNodeMid mid, DataFlowCallable callable, ParameterPosition pos, CallContext outercc,
+  DataFlowCall call, AccessPath ap, Configuration config
 ) {
   exists(AccessPathApprox apa |
-    pathIntoArg(mid, pragma[only_bind_into](i), outercc, call, ap, pragma[only_bind_into](apa),
+    pathIntoArg(mid, pragma[only_bind_into](pos), outercc, call, ap, pragma[only_bind_into](apa),
       pragma[only_bind_into](config)) and
     callable = resolveCall(call, outercc) and
-    parameterCand(callable, pragma[only_bind_into](i), pragma[only_bind_into](apa),
+    parameterCand(callable, pragma[only_bind_into](pos), pragma[only_bind_into](apa),
       pragma[only_bind_into](config))
   )
 }
@@ -3686,9 +3687,9 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParamNodeEx p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call, Configuration config
 ) {
-  exists(int i, DataFlowCallable callable, AccessPath ap |
-    pathIntoCallable0(mid, callable, i, outercc, call, ap, config) and
-    p.isParameterOf(callable, i) and
+  exists(ParameterPosition pos, DataFlowCallable callable, AccessPath ap |
+    pathIntoCallable0(mid, callable, pos, outercc, call, ap, config) and
+    p.isParameterOf(callable, pos) and
     (
       sc = TSummaryCtxSome(p, ap)
       or
@@ -3712,7 +3713,7 @@ private predicate paramFlowsThrough(
   ReturnKindExt kind, CallContextCall cc, SummaryCtxSome sc, AccessPath ap, AccessPathApprox apa,
   Configuration config
 ) {
-  exists(PathNodeMid mid, RetNodeEx ret, int pos |
+  exists(PathNodeMid mid, RetNodeEx ret, ParameterPosition pos |
     mid.getNodeEx() = ret and
     kind = ret.getKind() and
     cc = mid.getCallContext() and
@@ -4441,24 +4442,25 @@ private module FlowExploration {
 
   pragma[noinline]
   private predicate partialPathIntoArg(
-    PartialPathNodeFwd mid, int i, CallContext cc, DataFlowCall call, PartialAccessPath ap,
-    Configuration config
+    PartialPathNodeFwd mid, ParameterPosition ppos, CallContext cc, DataFlowCall call,
+    PartialAccessPath ap, Configuration config
   ) {
-    exists(ArgNode arg |
+    exists(ArgNode arg, ArgumentPosition apos |
       arg = mid.getNodeEx().asNode() and
       cc = mid.getCallContext() and
-      arg.argumentOf(call, i) and
+      arg.argumentOf(call, apos) and
       ap = mid.getAp() and
-      config = mid.getConfiguration()
+      config = mid.getConfiguration() and
+      parameterMatch(ppos, apos)
     )
   }
 
   pragma[nomagic]
   private predicate partialPathIntoCallable0(
-    PartialPathNodeFwd mid, DataFlowCallable callable, int i, CallContext outercc,
+    PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPosition pos, CallContext outercc,
     DataFlowCall call, PartialAccessPath ap, Configuration config
   ) {
-    partialPathIntoArg(mid, i, outercc, call, ap, config) and
+    partialPathIntoArg(mid, pos, outercc, call, ap, config) and
     callable = resolveCall(call, outercc)
   }
 
@@ -4467,9 +4469,9 @@ private module FlowExploration {
     TSummaryCtx1 sc1, TSummaryCtx2 sc2, DataFlowCall call, PartialAccessPath ap,
     Configuration config
   ) {
-    exists(int i, DataFlowCallable callable |
-      partialPathIntoCallable0(mid, callable, i, outercc, call, ap, config) and
-      p.isParameterOf(callable, i) and
+    exists(ParameterPosition pos, DataFlowCallable callable |
+      partialPathIntoCallable0(mid, callable, pos, outercc, call, ap, config) and
+      p.isParameterOf(callable, pos) and
       sc1 = TSummaryCtx1Param(p) and
       sc2 = TSummaryCtx2Some(ap)
     |
@@ -4633,22 +4635,23 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate revPartialPathFlowsThrough(
-    int pos, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, RevPartialAccessPath ap,
-    Configuration config
+    ArgumentPosition apos, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2,
+    RevPartialAccessPath ap, Configuration config
   ) {
-    exists(PartialPathNodeRev mid, ParamNodeEx p |
+    exists(PartialPathNodeRev mid, ParamNodeEx p, ParameterPosition ppos |
       mid.getNodeEx() = p and
-      p.getPosition() = pos and
+      p.getPosition() = ppos and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       ap = mid.getAp() and
-      config = mid.getConfiguration()
+      config = mid.getConfiguration() and
+      parameterMatch(ppos, apos)
     )
   }
 
   pragma[nomagic]
   private predicate revPartialPathThroughCallable0(
-    DataFlowCall call, PartialPathNodeRev mid, int pos, RevPartialAccessPath ap,
+    DataFlowCall call, PartialPathNodeRev mid, ArgumentPosition pos, RevPartialAccessPath ap,
     Configuration config
   ) {
     exists(TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2 |
@@ -4661,7 +4664,7 @@ private module FlowExploration {
   private predicate revPartialPathThroughCallable(
     PartialPathNodeRev mid, ArgNodeEx node, RevPartialAccessPath ap, Configuration config
   ) {
-    exists(DataFlowCall call, int pos |
+    exists(DataFlowCall call, ArgumentPosition pos |
       revPartialPathThroughCallable0(call, mid, pos, ap, config) and
       node.asNode().(ArgNode).argumentOf(call, pos)
     )
