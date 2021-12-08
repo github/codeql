@@ -194,7 +194,9 @@ class ControlFlowNode extends @py_flow_node {
   BasicBlock getBasicBlock() { result.contains(this) }
 
   /** Gets the scope containing this flow node */
+  cached
   Scope getScope() {
+    Stages::SSA::ref() and
     if this.getNode() instanceof Scope
     then
       /* Entry or exit node */

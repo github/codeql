@@ -20,8 +20,6 @@
  * on some but not all the cached predicates in the combined stage.
  */
 
-import python
-
 /**
  * Contains a `cached module` for each stage.
  * Each `cached module` ensures that predicates that are supposed to be in the same stage, are in the same stage.
@@ -79,11 +77,15 @@ module Stages {
       or
       any(AstExtended::AstNode n).contains(_)
       or
+      exists(any(AstExtended::AstNode n).getAFlowNode())
+      or
       exists(any(PyFlow::BasicBlock b).getImmediateDominator())
       or
       any(PyFlow::BasicBlock b).strictlyDominates(_)
       or
       any(PyFlow::BasicBlock b).dominates(_)
+      or
+      exists(any(PyFlow::ControlFlowNode b).getScope())
     }
   }
 
@@ -136,6 +138,7 @@ module Stages {
     private import semmle.python.objects.TObject as TObject
     private import semmle.python.Flow as Flow
     private import semmle.python.objects.ObjectInternal as ObjectInternal
+    private import semmle.python.objects.ObjectAPI as ObjectAPI
 
     /**
      * DONT USE!
@@ -162,6 +165,8 @@ module Stages {
       exists(any(Flow::ControlFlowNode c).toString())
       or
       exists(any(ObjectInternal::ObjectInternal o).toString())
+      or
+      exists(any(ObjectAPI::Value::named(_)))
     }
   }
 
