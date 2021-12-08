@@ -279,11 +279,11 @@ edges
 | GlobalDataFlow.cs:465:51:465:64 | "taint source" : String | GlobalDataFlow.cs:465:22:465:65 | call to method Join : String |
 | GlobalDataFlow.cs:474:20:474:49 | call to method Run<String> [property Result] : String | GlobalDataFlow.cs:475:25:475:28 | access to local variable task [property Result] : String |
 | GlobalDataFlow.cs:474:35:474:48 | "taint source" : String | GlobalDataFlow.cs:474:20:474:49 | call to method Run<String> [property Result] : String |
-| GlobalDataFlow.cs:475:25:475:28 | access to local variable task [property Result] : String | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [field m_configuredTaskAwaiter, field m_task, property Result] : String |
-| GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [field m_configuredTaskAwaiter, field m_task, property Result] : String | GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [field m_configuredTaskAwaiter, field m_task, property Result] : String |
-| GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [field m_configuredTaskAwaiter, field m_task, property Result] : String | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [field m_task, property Result] : String |
-| GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [field m_task, property Result] : String | GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [field m_task, property Result] : String |
-| GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [field m_task, property Result] : String | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult : String |
+| GlobalDataFlow.cs:475:25:475:28 | access to local variable task [property Result] : String | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult : String |
 | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult : String | GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 |
 | GlobalDataFlow.cs:483:53:483:55 | arg : String | GlobalDataFlow.cs:487:15:487:17 | access to parameter arg : String |
 | GlobalDataFlow.cs:486:21:486:21 | s : String | GlobalDataFlow.cs:486:32:486:32 | access to parameter s |
@@ -567,10 +567,10 @@ nodes
 | GlobalDataFlow.cs:474:20:474:49 | call to method Run<String> [property Result] : String | semmle.label | call to method Run<String> [property Result] : String |
 | GlobalDataFlow.cs:474:35:474:48 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:475:25:475:28 | access to local variable task [property Result] : String | semmle.label | access to local variable task [property Result] : String |
-| GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [field m_configuredTaskAwaiter, field m_task, property Result] : String | semmle.label | call to method ConfigureAwait [field m_configuredTaskAwaiter, field m_task, property Result] : String |
-| GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [field m_configuredTaskAwaiter, field m_task, property Result] : String | semmle.label | access to local variable awaitable [field m_configuredTaskAwaiter, field m_task, property Result] : String |
-| GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [field m_task, property Result] : String | semmle.label | call to method GetAwaiter [field m_task, property Result] : String |
-| GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [field m_task, property Result] : String | semmle.label | access to local variable awaiter [field m_task, property Result] : String |
+| GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | semmle.label | call to method ConfigureAwait [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:476:23:476:31 | access to local variable awaitable [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | semmle.label | access to local variable awaitable [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | semmle.label | call to method GetAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String |
+| GlobalDataFlow.cs:477:22:477:28 | access to local variable awaiter [synthetic m_task_configured_task_awaitable, property Result] : String | semmle.label | access to local variable awaiter [synthetic m_task_configured_task_awaitable, property Result] : String |
 | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult : String | semmle.label | call to method GetResult : String |
 | GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 | semmle.label | access to local variable sink45 |
 | GlobalDataFlow.cs:483:53:483:55 | arg : String | semmle.label | arg : String |
