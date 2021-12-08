@@ -391,14 +391,11 @@ private module Cached {
 
   /**
    * Holds if `p` is the parameter of a viable dispatch target of `call`,
-   * and `p` matches arguments at position `apos`.
+   * and `p` has position `ppos`.
    */
   pragma[nomagic]
-  private predicate viableParam(DataFlowCall call, ArgumentPosition apos, ParamNode p) {
-    exists(ParameterPosition ppos |
-      p.isParameterOf(viableCallableExt(call), ppos) and
-      parameterMatch(ppos, apos)
-    )
+  private predicate viableParam(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallableExt(call), ppos)
   }
 
   /**
@@ -407,9 +404,9 @@ private module Cached {
    */
   cached
   predicate viableParamArg(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(ArgumentPosition pos |
-      viableParam(call, pos, p) and
-      arg.argumentOf(call, pos) and
+    exists(ParameterPosition ppos |
+      viableParam(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos) and
       compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
     )
   }

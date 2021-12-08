@@ -165,7 +165,7 @@ language-defined classes `ParameterPosition` and `ArgumentPosition`,
 so these three predicates must be defined:
 ```ql
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos)
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
 predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)

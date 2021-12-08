@@ -71,6 +71,12 @@ string getComponentSpecificCsv(SummaryComponent sc) {
   sc = TArgumentSummaryComponent(-2) and result = "BlockArgument"
 }
 
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
+string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 NormalReturnKind getReturnValueKind() { any() }
 
@@ -121,9 +127,8 @@ private module UnusedSourceSinkInterpretation {
 
 import UnusedSourceSinkInterpretation
 
-/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
-ArgumentPosition parseParamBody(string s) {
+private int parsePosition(string s) {
   result = s.regexpCapture("([-0-9]+)", 1).toInt()
   or
   exists(int n1, int n2 |
@@ -133,6 +138,10 @@ ArgumentPosition parseParamBody(string s) {
   )
 }
 
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
+bindingset[s]
+ArgumentPosition parseParamBody(string s) { result = parsePosition(s) }
+
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
-ParameterPosition parseArgBody(string s) { result = parseParamBody(s) }
+ParameterPosition parseArgBody(string s) { result = parsePosition(s) }

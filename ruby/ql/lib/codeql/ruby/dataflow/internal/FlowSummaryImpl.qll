@@ -144,11 +144,13 @@ module Public {
     noComponentSpecificCsv(sc) and
     (
       exists(ArgumentPosition pos |
-        sc = TParameterSummaryComponent(pos) and result = "Parameter[" + pos + "]"
+        sc = TParameterSummaryComponent(pos) and
+        result = "Parameter[" + getArgumentPositionCsv(pos) + "]"
       )
       or
       exists(ParameterPosition pos |
-        sc = TArgumentSummaryComponent(pos) and result = "Argument[" + pos + "]"
+        sc = TArgumentSummaryComponent(pos) and
+        result = "Argument[" + getParameterPositionCsv(pos) + "]"
       )
       or
       sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
