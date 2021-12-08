@@ -20,13 +20,13 @@ string topToString(Top t) {
 }
 
 string not1ToString() {
-  exists(Top t | count(topToString(t)) != 1 and result = "Top which doesn't have exactly 1 toString: " + t.getPrimaryQlClasses())
+  exists(Top t | count(topToString(t)) != 1 and result = "Top which doesn't have exactly 1 toString")
   or
-  exists(Location l | count(l.toString()) != 1 and result = "Location which doesn't have exactly 1 toString: " + concat(l.getAQlClass(), ", "))
+  exists(Location l | count(l.toString()) != 1 and result = "Location which doesn't have exactly 1 toString")
   or
-  exists(Module m | count(m.toString()) != 1 and result = "Module which doesn't have exactly 1 toString: " + concat(m.getAQlClass(), ", "))
+  exists(Module m | count(m.toString()) != 1 and result = "Module which doesn't have exactly 1 toString")
   or
-  exists(Directive d | count(d.toString()) != 1 and result = "Directive which doesn't have exactly 1 toString: " + concat(d.getAQlClass(), ", "))
+  exists(Directive d | count(d.toString()) != 1 and result = "Directive which doesn't have exactly 1 toString")
 }
 
 select not1ToString()
