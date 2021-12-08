@@ -83,7 +83,7 @@ positionalArguments
 | case.rb:3:29:3:37 | call to puts | case.rb:3:34:3:37 | "x2" |
 | case.rb:4:17:4:24 | call to puts | case.rb:4:22:4:24 | "2" |
 | case.rb:14:13:14:18 | ... == ... | case.rb:14:18:14:18 | 5 |
-| case.rb:15:13:15:17 | ... < ... | case.rb:15:17:15:17 | 0 |
+| case.rb:15:17:15:21 | ... < ... | case.rb:15:21:15:21 | 0 |
 | case.rb:28:14:28:25 | call to raise | case.rb:28:20:28:25 | "oops" |
 | case.rb:76:8:76:18 | call to [] | case.rb:76:11:76:13 | "foo" |
 | case.rb:76:8:76:18 | call to [] | case.rb:76:15:76:17 | "bar" |

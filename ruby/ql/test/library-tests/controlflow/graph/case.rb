@@ -12,7 +12,7 @@ def case_match value
     in 2
       4
     in x if x == 5 then 6
-    in x if x < 0 then 7
+    in x unless x < 0 then 7
     else 8
   end
 end

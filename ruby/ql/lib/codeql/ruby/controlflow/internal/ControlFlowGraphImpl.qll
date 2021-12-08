@@ -429,12 +429,12 @@ module Trees {
       not c.(MatchingCompletion).getValue() = false
       or
       not exists(this.getElseBranch()) and
-      exists(Completion lc, Expr lastBranch |
+      exists(MatchingCompletion lc, Expr lastBranch |
         lastBranch = max(int i | | this.getBranch(i) order by i) and
-        lc.(MatchingCompletion).getValue() = false and
+        lc.getValue() = false and
         last(lastBranch, last, lc) and
-        c.getInnerCompletion() = lc and
-        c instanceof RaiseCompletion
+        c instanceof RaiseCompletion and
+        not c instanceof NestedCompletion
       )
     }
 
@@ -480,7 +480,8 @@ module Trees {
     final override predicate last(AstNode last, Completion c) {
       c.(MatchingCompletion).getValue() = false and
       (
-        last = this
+        last = this and
+        c.isValidFor(this)
         or
         exists(AstNode node |
           node = this.getClass() or
@@ -493,6 +494,7 @@ module Trees {
       or
       c.(MatchingCompletion).getValue() = true and
       last = this and
+      c.isValidFor(this) and
       not exists(this.getPrefixElement(_)) and
       not exists(this.getRestVariableAccess())
       or
@@ -512,14 +514,16 @@ module Trees {
       succ = this and
       c.(MatchingCompletion).getValue() = true
       or
-      pred = this and
-      first(this.getPrefixElement(0), succ) and
-      c.(MatchingCompletion).getValue() = true
-      or
-      not exists(this.getPrefixElement(_)) and
-      pred = this and
-      first(this.getRestVariableAccess(), succ) and
-      c.(MatchingCompletion).getValue() = true
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getPrefixElement(0)
+        or
+        not exists(this.getPrefixElement(_)) and
+        next = this.getRestVariableAccess()
+      )
       or
       last(max(int i | | this.getPrefixElement(i) order by i), pred, c) and
       first(this.getRestVariableAccess(), succ) and
@@ -565,7 +569,8 @@ module Trees {
       or
       c.(MatchingCompletion).getValue() = false and
       (
-        last = this
+        last = this and
+        c.isValidFor(this)
         or
         exists(AstNode node | node = this.getClass() or node = this.getElement(_) |
           last(node, last, c)
@@ -578,14 +583,16 @@ module Trees {
       succ = this and
       c.(MatchingCompletion).getValue() = true
       or
-      pred = this and
-      first(this.getPrefixVariableAccess(), succ) and
-      c.(MatchingCompletion).getValue() = true
-      or
-      pred = this and
-      first(this.getElement(0), succ) and
-      not exists(this.getPrefixVariableAccess()) and
-      c.(MatchingCompletion).getValue() = true
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getPrefixVariableAccess()
+        or
+        not exists(this.getPrefixVariableAccess()) and
+        next = this.getElement(0)
+      )
       or
       last(this.getPrefixVariableAccess(), pred, c) and
       first(this.getElement(0), succ) and
@@ -619,7 +626,8 @@ module Trees {
     final override predicate last(AstNode last, Completion c) {
       c.(MatchingCompletion).getValue() = false and
       (
-        last = this
+        last = this and
+        c.isValidFor(this)
         or
         exists(AstNode node |
           node = this.getClass() or
@@ -646,14 +654,16 @@ module Trees {
       succ = this and
       c.(MatchingCompletion).getValue() = true
       or
-      pred = this and
-      first(this.getValue(0), succ) and
-      c.(MatchingCompletion).getValue() = true
-      or
-      not exists(this.getValue(_)) and
-      pred = this and
-      first(this.getRestVariableAccess(), succ) and
-      c.(MatchingCompletion).getValue() = true
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getValue(0)
+        or
+        not exists(this.getValue(_)) and
+        next = this.getRestVariableAccess()
+      )
       or
       last(max(int i | | this.getValue(i) order by i), pred, c) and
       first(this.getRestVariableAccess(), succ) and
@@ -732,19 +742,35 @@ module Trees {
       child = this.getCondition()
     }
 
+    private predicate lastCondition(AstNode last, BooleanCompletion c, boolean flag) {
+      last(this.getCondition(), last, c) and
+      (
+        flag = true and this.hasIfCondition()
+        or
+        flag = false and this.hasUnlessCondition()
+      )
+    }
+
     final override predicate last(AstNode last, Completion c) {
       last(this.getPattern(), last, c) and
       c.(MatchingCompletion).getValue() = false
       or
-      exists(Completion pc |
-        last(this.getCondition(), last, pc) and
-        pc.(ConditionalCompletion).getValue() = false and
-        c.(MatchingCompletion).getValue() = false
+      exists(BooleanCompletion bc, boolean flag, MatchingCompletion mc |
+        lastCondition(last, bc, flag) and
+        c =
+          any(NestedMatchingCompletion nmc |
+            nmc.getInnerCompletion() = bc and nmc.getOuterCompletion() = mc
+          )
+      |
+        mc.getValue() = false and
+        bc.getValue() = flag.booleanNot()
+        or
+        not exists(this.getBody()) and
+        mc.getValue() = true and
+        bc.getValue() = flag
       )
       or
       last(this.getBody(), last, c)
-      or
-      not exists(this.getBody()) and last(this.getCondition(), last, c)
       or
       not exists(this.getBody()) and
       not exists(this.getCondition()) and
@@ -766,15 +792,10 @@ module Trees {
         not exists(this.getCondition()) and next = this.getBody()
       )
       or
-      exists(Completion pc, boolean flag |
-        flag = true and this.hasIfCondition()
-        or
-        flag = false and this.hasUnlessCondition()
-      |
-        last(this.getCondition(), pred, pc) and
-        pc.(ConditionalCompletion).getValue() = flag and
-        first(this.getBody(), succ) and
-        c.(MatchingCompletion).getValue() = true
+      exists(boolean flag |
+        lastCondition(pred, c, flag) and
+        c.(BooleanCompletion).getValue() = flag and
+        first(this.getBody(), succ)
       )
     }
   }
