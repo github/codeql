@@ -45,12 +45,16 @@ private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::C
 
 from
   MyBatisMapperXmlSqlInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-  MyBatisMapperXMLElement mmxe, MethodAccess ma
+  MyBatisMapperXMLElement mmxe, MethodAccess ma, string unsafeExpression
 where
   cfg.hasFlowPath(source, sink) and
   ma.getAnArgument() = sink.getNode().asExpr() and
   myBatisMapperXMLElementFromMethod(ma.getMethod(), mmxe) and
-  isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, getAMybatisXmlSetValue(mmxe), mmxe)
+  unsafeExpression = getAMybatisXmlSetValue(mmxe) and
+  (
+    isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression) or
+    isMybatisXmlCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression, mmxe)
+  )
 select sink.getNode(), source, sink,
   "MyBatis Mapper XML SQL injection might include code from $@ to $@.", source.getNode(),
   "this user input", mmxe, "this SQL operation"
