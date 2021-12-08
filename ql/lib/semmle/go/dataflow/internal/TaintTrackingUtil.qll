@@ -30,11 +30,12 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
 }
 
-private Type getElementType(Type container) {
-  result = container.(ArrayType).getElementType() or
-  result = container.(SliceType).getElementType() or
-  result = container.(ChanType).getElementType() or
-  result = container.(MapType).getValueType()
+private Type getElementType(Type containerType) {
+  result = containerType.(ArrayType).getElementType() or
+  result = containerType.(SliceType).getElementType() or
+  result = containerType.(ChanType).getElementType() or
+  result = containerType.(MapType).getValueType() or
+  result = containerType.(PointerType).getPointerType()
 }
 
 /**
@@ -43,17 +44,23 @@ private Type getElementType(Type container) {
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
-  exists(Type container |
+  exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = container
+    getElementType*(node.getType()) = containerType
   |
-    container instanceof ArrayType and
+    containerType instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
     or
-    c.(DataFlow::PointerContent).getPointerType() = container
+    containerType instanceof SliceType and
+    c instanceof DataFlow::ArrayContent
     or
-    container instanceof MapType and
+    containerType instanceof ChanType and
+    c instanceof DataFlow::CollectionContent
+    or
+    containerType instanceof MapType and
     c instanceof DataFlow::MapValueContent
+    or
+    c.(DataFlow::PointerContent).getPointerType() = containerType
   )
 }
 
