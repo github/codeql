@@ -241,3 +241,92 @@ void test_fgets(FILE *stream)
 	fgets(password, 128, stream); // BAD
 	fgets(password, 128, STDIN_STREAM); // GOOD: `STDIN_STREAM` is probably standard input [FALSE POSITIVE]
 }
+
+void encrypt_to_buffer(const char *input, char* output);
+void decrypt_to_buffer(const char *input, char* output);
+char *strcpy(char *s1, const char *s2);
+
+void test_crypt_more()
+{
+	{
+		char password1[256], password2[256];
+
+		recv(val(), password1, 256, val()); // GOOD: password is encrypted
+
+		decrypt_to_buffer(password1, password2); // proof that `password1` was in fact encrypted
+	}
+
+	{
+		char password1[256], password2[256];
+
+		encrypt_to_buffer(password1, password2); // proof that `password2` is in fact encrypted
+
+		send(val(), password2, strlen(password2), val()); // GOOD: password is encrypted
+	}
+
+	{
+		char data[256], password[256];
+
+		strcpy(data, password); // not proof of anything
+
+		send(val(), data, strlen(data), val()); // BAD: password is sent plaintext
+	}
+}
+
+bool cond();
+
+void target1(char *data)
+{
+	send(val(), data, strlen(data), val()); // GOOD: encrypted
+}
+
+void target2(char *data)
+{
+	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
+}
+
+void target3(char *data)
+{
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+}
+
+void target4(char *data)
+{
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+}
+
+void target5(char *data)
+{
+	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
+}
+
+void target6(char *data)
+{
+	send(val(), data, strlen(data), val()); // GOOD: not a password
+}
+
+void test_multiple_sources_source(char *password)
+{
+	if (cond())
+	{
+		encrypt_inplace(password);
+		target1(password);
+		target2(password);
+	} else {
+		target2(password);
+		target3(password);
+	}
+
+	if (cond())
+	{
+		char *data = password;
+
+		target4(data);
+		target5(data);
+	} else {
+		char *data = "harmless";
+
+		target5(data);
+		target6(data);
+	}
+}
