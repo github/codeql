@@ -2,8 +2,8 @@ import java
 import semmle.code.java.ControlFlowGraph
 
 predicate shouldBeDeadEnd(ControlFlowNode n) {
-  n instanceof BreakStmt and n.getFile().getExtension() = "kt" or // TODO
-  n instanceof ReturnStmt and n.getFile().getExtension() = "kt" or // TODO
+  n instanceof BreakStmt and n.getFile().isKotlinSourceFile() or // TODO
+  n instanceof ReturnStmt and n.getFile().isKotlinSourceFile() or // TODO
   n instanceof Interface or // TODO
   n instanceof Class or // TODO
   n instanceof Parameter or // TODO

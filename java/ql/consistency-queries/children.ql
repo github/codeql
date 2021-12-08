@@ -37,7 +37,7 @@ predicate gapInChildren(Element e, int i) {
   // TODO: Tighten this up:
   and not e instanceof ForStmt
   // Kotlin bug?
-  and not (e instanceof MethodAccess and e.getFile().getExtension() = "kt")
+  and not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile())
 }
 
 predicate lateFirstChild(Element e, int i) {

@@ -34,7 +34,7 @@ class Element extends @element, Top {
    * Elements pertaining to source files may include generated elements
    * not visible in source code, such as implicit default constructors.
    */
-  predicate fromSource() { this.getCompilationUnit().getExtension() = ["java", "kt"] }
+  predicate fromSource() { this.getCompilationUnit().isSourceFile() }
 
   /** Gets the compilation unit that this element belongs to. */
   CompilationUnit getCompilationUnit() { result = this.getFile() }

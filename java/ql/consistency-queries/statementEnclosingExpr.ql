@@ -35,9 +35,9 @@ predicate difference(Expr e) {
 predicate notSpecified(Expr e) {
   enclosingStmtOrOther(e) instanceof Stmt and not exists(e.getEnclosingStmt())
   // bug in Java?
-  and not e instanceof Annotation and e.getFile().getExtension() = "java"
+  and not e instanceof Annotation and e.getFile().isJavaSourceFile()
   // bug in Kotlin?
-  and not e instanceof TypeAccess and e.getFile().getExtension() = "kt"
+  and not e instanceof TypeAccess and e.getFile().isKotlinSourceFile()
 }
 
 predicate problem(Expr e, string s) {

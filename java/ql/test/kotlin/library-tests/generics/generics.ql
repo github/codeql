@@ -1,23 +1,23 @@
 import java
 
 query predicate genericType(GenericType t, TypeVariable tv, int i) {
-  t.getTypeParameter(i) = tv and t.getFile().getExtension() = "kt"
+  t.getTypeParameter(i) = tv and t.getFile().isKotlinSourceFile()
 }
 
 query predicate parameterizedType(ParameterizedType t, GenericType gt, int i, string ta) {
   t.getGenericType() = gt and
   t.getTypeArgument(i).toString() = ta and
-  t.getFile().getExtension() = "kt"
+  t.getFile().isKotlinSourceFile()
 }
 
 query predicate function(Callable c, string signature) {
   signature = c.getSignature() and
-  c.getFile().getExtension() = "kt"
+  c.getFile().isKotlinSourceFile()
 }
 
 query predicate genericFunction(GenericCallable c, RefType declType, TypeVariable tv, int i) {
   c.getTypeParameter(i) = tv and
-  c.getFile().getExtension() = "kt" and
+  c.getFile().isKotlinSourceFile() and
   c.getDeclaringType() = declType
 }
 
