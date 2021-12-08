@@ -397,6 +397,12 @@ open class KotlinFileExtractor(
             it.upperBound(pluginContext)
         }
 
+        val sourceDeclaration =
+            if (typeSubstitutionMap != null)
+                useFunction(f)
+            else
+                id
+
         if (f.symbol is IrConstructorSymbol) {
             val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
             val shortName = when {
@@ -405,12 +411,12 @@ open class KotlinFileExtractor(
                 else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
             }
             @Suppress("UNCHECKED_CAST")
-            tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", unitType.javaResult.id, unitType.kotlinResult.id, parentId, id)
+            tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", unitType.javaResult.id, unitType.kotlinResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
         } else {
             val returnType = useType(substReturnType, TypeContext.RETURN)
             val shortName = getFunctionShortName(f)
             @Suppress("UNCHECKED_CAST")
-            tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, id)
+            tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, sourceDeclaration as Label<DbMethod>)
             // TODO: fix `sourceId`. It doesn't always match the method ID.
         }
 

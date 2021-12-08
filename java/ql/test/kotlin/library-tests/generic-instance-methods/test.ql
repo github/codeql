@@ -16,12 +16,14 @@ query predicate calls(MethodAccess ma, Callable caller, RefType callerType, Call
 
 }
 
-query predicate constructors(RefType t, Constructor c, string signature, string paramType, string returnType) {
+query predicate constructors(RefType t, Constructor c, string signature, string paramType, string returnType, RefType sourceDeclType, Constructor sourceDecl) {
   t.getSourceDeclaration().fromSource() and
   c.getDeclaringType() = t and
   signature = c.getSignature() and
   paramType = paramTypeIfPresent(c) and
-  returnType = c.getReturnType().toString()
+  returnType = c.getReturnType().toString() and
+  sourceDecl = c.getSourceDeclaration() and
+  sourceDeclType = sourceDecl.getDeclaringType()
 }
 
 query predicate constructorCalls(ConstructorCall cc, Constructor callee) {
@@ -33,6 +35,9 @@ query predicate refTypes(RefType rt) {
   rt.fromSource()
 }
 
-from RefType t, Method m
-where t.getSourceDeclaration().fromSource() and m.getDeclaringType() = t
-select t, m, m.getSignature(), paramTypeIfPresent(m), m.getReturnType().toString()
+from RefType t, Method m, Method sourceDecl, RefType sourceDeclType
+where t.getSourceDeclaration().fromSource() 
+and m.getDeclaringType() = t 
+and sourceDecl = m.getSourceDeclaration() 
+and sourceDeclType = sourceDecl.getDeclaringType()
+select t, m, m.getSignature(), paramTypeIfPresent(m), m.getReturnType().toString(), sourceDeclType, sourceDecl
