@@ -21,14 +21,14 @@ import semmle.code.cpp.commons.Alloc
  * See CWE-120/UnboundedWrite.ql for a summary of CWE-120 alert cases.
  */
 
-from BufferWrite bw, Expr dest, int destSize
+from BufferWrite bw, Expr dest, int destSize, BufferWriteEstimationReason reason
 where
   not bw.hasExplicitLimit() and // has no explicit size limit
   dest = bw.getDest() and
   destSize = getBufferSize(dest, _) and
   // we can deduce that too much data may be copied (even without
   // long '%f' conversions)
-  bw.getMaxDataLimited() > destSize
+  bw.getMaxDataLimitedWithReason(reason) > destSize
 select bw,
   "This '" + bw.getBWDesc() + "' operation requires " + bw.getMaxData() +
-    " bytes but the destination is only " + destSize + " bytes."
+    " bytes but the destination is only " + destSize + " bytes (" + reason.toString() + ")."
