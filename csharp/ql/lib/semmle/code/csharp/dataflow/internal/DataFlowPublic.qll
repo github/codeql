@@ -224,6 +224,16 @@ class FieldContent extends Content, TFieldContent {
   deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  private SyntheticField f;
+
+  SyntheticFieldContent() { this = TSyntheticFieldContent(f) }
+
+  SyntheticField getField() { result = f }
+
+  override string toString() { result = "synthetic " + f.toString() }
+}
+
 /** A reference to a property. */
 class PropertyContent extends Content, TPropertyContent {
   private Property p;

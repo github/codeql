@@ -29,6 +29,8 @@ DataFlowType getContentType(Content c) {
     or
     t = c.(PropertyContent).getProperty().getType()
     or
+    t = c.(SyntheticFieldContent).getField().getType()
+    or
     c instanceof ElementContent and
     t instanceof ObjectType // we don't know what the actual element type is
   )
