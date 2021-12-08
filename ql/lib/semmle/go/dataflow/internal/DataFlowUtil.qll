@@ -281,13 +281,21 @@ abstract class BarrierGuard extends Node {
       Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
       Node resNode, Node check, boolean outcome
     |
-      this.guardingFunction(f, inp, outp, p) and
-      c = f.getACall() and
-      nd = inp.getNode(c) and
-      localFlow(pragma[only_bind_into](outp.getNode(c)), resNode) and
+      this.guardingCall(f, inp, outp, p, c, nd, resNode) and
       p.checkOn(check, outcome, resNode) and
       guard.ensures(pragma[only_bind_into](check), outcome)
     )
+  }
+
+  pragma[noinline]
+  private predicate guardingCall(
+    Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c, Node nd,
+    Node resNode
+  ) {
+    this.guardingFunction(f, inp, outp, p) and
+    c = f.getACall() and
+    nd = inp.getNode(c) and
+    localFlow(pragma[only_bind_out](outp.getNode(c)), resNode)
   }
 
   /**
