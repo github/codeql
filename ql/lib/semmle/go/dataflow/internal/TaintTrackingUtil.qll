@@ -50,8 +50,7 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
     container instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
     or
-    container instanceof PointerType and
-    c instanceof DataFlow::PointerContent
+    c.(DataFlow::PointerContent).getPointerType() = container
     or
     container instanceof MapType and
     c instanceof DataFlow::MapValueContent
