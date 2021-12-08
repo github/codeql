@@ -14,7 +14,7 @@ private import semmle.javascript.security.dataflow.CommandInjectionCustomization
 abstract class HeuristicSource extends DataFlow::Node { }
 
 /**
- * An access to a password, viewed a source of remote flow.
+ * An access to a password, viewed as a source of remote flow.
  */
 private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
   RemoteFlowPassword() { isReadFrom(this, "(?is).*(password|passwd).*") }
@@ -51,4 +51,17 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
   }
 
   override string getSourceType() { result = "a response from a remote server" }
+}
+
+/**
+ * The data read from a database.
+ */
+class DatabaseAccessResultRemoteFlowSource extends HeuristicSource, RemoteFlowSource {
+  DatabaseAccessResultRemoteFlowSource() { exists(DatabaseAccess dba | this = dba.getAResult()) }
+
+  override string getSourceType() { result = "Database query result" }
+
+  override predicate isUserControlledObject() {
+    this.(DatabaseAccess).returnsUserControlledObject()
+  }
 }

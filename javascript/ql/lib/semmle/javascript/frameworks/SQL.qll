@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.Promises
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */
@@ -80,6 +81,8 @@ private module MySql {
         this = recv.getMember(["query", "execute"]).getACall()
       )
     }
+
+    override DataFlow::Node getAResult() { result = this.getCallback(_).getParameter(1) }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -177,6 +180,16 @@ private module Postgres {
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [client(), pool()].getMember("query").getACall() }
+
+    override DataFlow::Node getAResult() {
+      this.getNumArgument() = 2 and
+      result = this.getCallback(1).getParameter(1)
+      or
+      this.getNumArgument() = 1 and
+      result = this.getAMethodCall("then").getCallback(0).getParameter(0)
+      or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -322,6 +335,10 @@ private module Postgres {
       )
     }
 
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
     override DataFlow::Node getAQueryArgument() {
       result = this.getADirectQueryArgument()
       or
@@ -368,6 +385,11 @@ private module Sqlite {
       this = getAChainingQueryCall().getAnImmediateUse()
       or
       this = database().getMember("prepare").getACall()
+    }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(1).getParameter(1) or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
@@ -420,6 +442,11 @@ private module MsSql {
       mssql().getMember("query").getAUse() = DataFlow::valueNode(astNode.getTag())
     }
 
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.(DataFlow::SourceNode).getALocalUse(), result,
+        Promises::valueProp())
+    }
+
     override DataFlow::Node getAQueryArgument() {
       result = DataFlow::valueNode(astNode.getTemplate().getAnElement())
     }
@@ -428,6 +455,12 @@ private module MsSql {
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [mssql(), request()].getMember(["query", "batch"]).getACall() }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(1).getParameter(1)
+      or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -491,6 +524,31 @@ private module Sequelize {
     }
   }
 
+  /** Gets an import of the `sequelize` module or one that re-exports it. */
+  API::Node sequelize() { result = API::moduleImport(["sequelize", "sequelize-typescript"]) }
+
+  /** Gets an expression that creates an instance of the `Sequelize` class. */
+  API::Node instance() {
+    result = [sequelize(), sequelize().getMember("Sequelize")].getInstance()
+    or
+    result = API::Node::ofType(["sequelize", "sequelize-typescript"], ["Sequelize", "default"])
+  }
+
+  /** A call to `Sequelize.query`. */
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+    QueryCall() { this = instance().getMember("query").getACall() }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      result = this.getArgument(0)
+      or
+      result = this.getOptionArgument(0, "query")
+    }
+  }
+
   class SequelizeSink extends ModelInput::SinkModelCsv {
     override predicate row(string row) {
       row =
@@ -538,5 +596,147 @@ private module SpannerCsv {
           "@google-cloud/spanner;v1.SpannerClient;Member[executeSql,executeStreamingSql].Argument[0].Member[sql];sql-injection",
         ]
     }
+  }
+}
+
+/**
+ * Provides classes modeling the Google Cloud Spanner library.
+ */
+private module Spanner {
+  /**
+   * Gets a node that refers to the `Spanner` class
+   */
+  API::Node spanner() {
+    // older versions
+    result = API::moduleImport("@google-cloud/spanner")
+    or
+    // newer versions
+    result = API::moduleImport("@google-cloud/spanner").getMember("Spanner")
+  }
+
+  /**
+   * Gets a node that refers to an instance of the `Database` class.
+   */
+  API::Node database() {
+    result =
+      spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Database")
+  }
+
+  /**
+   * Gets a node that refers to an instance of the `v1.SpannerClient` class.
+   */
+  API::Node v1SpannerClient() {
+    result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "v1.SpannerClient")
+  }
+
+  /**
+   * Gets a node that refers to a transaction object.
+   */
+  API::Node transaction() {
+    result =
+      database()
+          .getMember(["runTransaction", "runTransactionAsync"])
+          .getParameter([0, 1])
+          .getParameter(1)
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Transaction")
+  }
+
+  /**
+   * Gets a node that refers to a snapshot object.
+   */
+  API::Node snapshot() {
+    result = database().getMember("getSnapshot").getParameter([0, 1]).getParameter(1)
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Snapshot")
+  }
+
+  /** Gets an API node referring to a `BatchTransaction` object. */
+  API::Node batchTransaction() {
+    result = database().getMember("batchTransaction").getReturn()
+    or
+    result = database().getMember("createBatchTransaction").getReturn().getPromised()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "BatchTransaction")
+  }
+
+  /**
+   * A call to a Spanner method that executes a SQL query.
+   */
+  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode { }
+
+  /**
+   * A SQL execution that takes the input directly in the first argument or in the `sql` option.
+   */
+  class SqlExecutionDirect extends SqlExecution {
+    SqlExecutionDirect() {
+      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
+      or
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
+      or
+      this = batchTransaction().getMember("createQueryPartitions").getACall()
+      or
+      this = snapshot().getMember(["run", "runStream"]).getACall()
+    }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+      or
+      this = [database(), transaction(), snapshot()].getMember("run").getACall() and
+      result = this.getCallback(_).getParameter(1)
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      result = this.getArgument(0)
+      or
+      result = this.getOptionArgument(0, "sql")
+    }
+  }
+
+  /**
+   * A SQL execution that takes an array of SQL strings or { sql: string } objects.
+   */
+  class SqlExecutionBatch extends SqlExecution, API::CallNode {
+    SqlExecutionBatch() { this = transaction().getMember("batchUpdate").getACall() }
+
+    override DataFlow::Node getAResult() {
+      none() // no results, batch update callbacks get only row counts.
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
+      // are tainted
+      result = this.getArgument(0)
+      or
+      result = this.getParameter(0).getUnknownMember().getMember("sql").getARhs()
+    }
+  }
+
+  /**
+   * A SQL execution that only takes the input in the `sql` option, and do not accept query strings
+   * directly.
+   */
+  class SqlExecutionWithOption extends SqlExecution, DataFlow::CallNode {
+    SqlExecutionWithOption() {
+      this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
+    }
+
+    override DataFlow::Node getAResult() {
+      this = v1SpannerClient().getMember("executeSql").getACall() and
+      result = this.getCallback(_).getParameter(1)
+    }
+
+    override DataFlow::Node getAQueryArgument() { result = this.getOptionArgument(0, "sql") }
+  }
+
+  /**
+   * An expression that is interpreted as a SQL string.
+   */
+  class QueryString extends SQL::SqlString {
+    QueryString() { this = any(SqlExecution se).getAQueryArgument().asExpr() }
   }
 }

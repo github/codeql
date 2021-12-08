@@ -84,6 +84,21 @@ abstract class FileNameSource extends DataFlow::Node { }
 abstract class DatabaseAccess extends DataFlow::Node {
   /** Gets an argument to this database access that is interpreted as a query. */
   abstract DataFlow::Node getAQueryArgument();
+
+  /** Gets a node to which a result of the access may flow. */
+  DataFlow::Node getAResult() {
+    none() // Overridden in subclass
+  }
+
+  /**
+   * Holds if the data returned can be a user-controlled object,
+   * such as a JSON object parsed from user-controlled data.
+   */
+  predicate returnsUserControlledObject() {
+    // NB: Most data bases support JSON data (some via plugins),
+    // which is why this has a default implementation.
+    any()
+  }
 }
 
 /**
