@@ -11,7 +11,7 @@ class Expr extends Expr_, AstNode {
   /** Gets a textual representation of this element. */
   cached
   override string toString() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     result = "Expression"
   }
 

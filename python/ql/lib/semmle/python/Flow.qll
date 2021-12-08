@@ -196,7 +196,7 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets the scope containing this flow node */
   cached
   Scope getScope() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     if this.getNode() instanceof Scope
     then
       /* Entry or exit node */
@@ -621,7 +621,7 @@ class UnaryExprNode extends ControlFlowNode {
 class DefinitionNode extends ControlFlowNode {
   cached
   DefinitionNode() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
     exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
@@ -689,7 +689,7 @@ class TupleNode extends SequenceNode {
   TupleNode() { toAst(this) instanceof Tuple }
 
   override ControlFlowNode getElement(int n) {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     exists(Tuple t | this.getNode() = t and result.getNode() = t.getElt(n)) and
     (
       result.getBasicBlock().dominates(this.getBasicBlock())
@@ -1009,14 +1009,14 @@ class BasicBlock extends @py_flow_node {
   /** Whether this basic block strictly dominates the other */
   cached
   predicate strictlyDominates(BasicBlock other) {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     other.getImmediateDominator+() = this
   }
 
   /** Whether this basic block dominates the other */
   cached
   predicate dominates(BasicBlock other) {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     this = other
     or
     this.strictlyDominates(other)
@@ -1024,7 +1024,7 @@ class BasicBlock extends @py_flow_node {
 
   cached
   BasicBlock getImmediateDominator() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     this.firstNode().getImmediateDominator().getBasicBlock() = result
   }
 

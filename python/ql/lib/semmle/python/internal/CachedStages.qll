@@ -31,11 +31,12 @@
  */
 module Stages {
   /**
-   * The `SSA` stage.
+   * The `AST` stage.
+   * Computes predicates based on the AST.
+   * These include SSA and basic-blocks.
    */
   cached
-  module SSA {
-    // TODO: This is more a "basic AST", not a "SSA" stage.
+  module AST {
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the Ast stage.

@@ -20,7 +20,7 @@ abstract class AstNode extends AstNode_ {
    */
   cached
   ControlFlowNode getAFlowNode() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     py_flow_bb_node(result, this, _, _)
   }
 
@@ -53,14 +53,14 @@ abstract class AstNode extends AstNode_ {
    */
   cached
   AstNode getParentNode() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     result.getAChildNode() = this
   }
 
   /** Whether this contains `inner` syntactically */
   cached
   predicate contains(AstNode inner) {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     this.getAChildNode+() = inner
   }
 
@@ -122,13 +122,13 @@ class Comprehension extends Comprehension_, AstNode {
   override string toString() { result = "Comprehension" }
 
   override Location getLocation() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     result = Comprehension_.super.getLocation()
   }
 
   pragma[nomagic]
   override AstNode getAChildNode() {
-    Stages::SSA::ref() and
+    Stages::AST::ref() and
     result = this.getASubExpression()
   }
 

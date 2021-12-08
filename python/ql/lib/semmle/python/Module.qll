@@ -224,7 +224,7 @@ private predicate transitively_imported_from_entry_point(File file) {
 
 cached
 string moduleNameFromFile(Container file) {
-  Stages::SSA::ref() and
+  Stages::AST::ref() and
   exists(string basename |
     basename = moduleNameFromBase(file) and
     legalShortName(basename)
