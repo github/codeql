@@ -28,16 +28,20 @@ predicate noneInferred(Expr e) {
 
 predicate difference(Expr e) {
   e.getEnclosingStmt() != enclosingStmtOrOther(e)
-  // bug in Java?:
+  // Java #167
   and not enclosingStmtOrOther(e) instanceof LocalVariableDeclStmt
 }
 
 predicate notSpecified(Expr e) {
   enclosingStmtOrOther(e) instanceof Stmt and not exists(e.getEnclosingStmt())
-  // bug in Java?
-  and not e instanceof Annotation and e.getFile().isJavaSourceFile()
-  // bug in Kotlin?
-  and not e instanceof TypeAccess and e.getFile().isKotlinSourceFile()
+  // Java #168
+  and not (e instanceof Annotation and e.getFile().isJavaSourceFile())
+  // TODO: Kotlin bug
+  and not (e instanceof ArrayCreationExpr and e.getFile().isKotlinSourceFile())
+  // TODO: Kotlin bug
+  and not (e instanceof VarAccess and e.getFile().isKotlinSourceFile())
+  // TODO: Kotlin bug
+  and not (e instanceof TypeAccess and e.getFile().isKotlinSourceFile())
 }
 
 predicate problem(Expr e, string s) {
@@ -50,7 +54,7 @@ predicate problem(Expr e, string s) {
 
 from Expr e, string s
 where problem(e, s)
-  and // bug in external deps?
+  and // TODO: bug in external deps?
       e.getCompilationUnit().fromSource()
 select e, s, e.getPrimaryQlClasses()
 

@@ -19,10 +19,9 @@ predicate gapInChildren(Element e, int i) {
          right = max(int r | exists(nthChildOf(e, r))) and
          i in [left .. right] and
          not exists(nthChildOf(e, i)))
-  // TODO: Tighten this up:
-  and not e instanceof Class
-  // TODO: Tighten this up:
-  and not e instanceof Interface
+  // Annotations are child 0 upwards, 'implements' are -2 downwards,
+  // and there may or may not be an 'extends' for child -1.
+  and not (e instanceof ClassOrInterface and i = -1)
   // A class instance creation expression has the type as child -3,
   // may or may not have a qualifier as child -2, and will never have
   // a child -1.
@@ -34,9 +33,13 @@ predicate gapInChildren(Element e, int i) {
   // Try statements have their 'finally' clause as child 2,
   // and that may or may not exist.
   and not (e instanceof TryStmt and i = -2)
-  // TODO: Tighten this up:
-  and not e instanceof ForStmt
-  // Kotlin bug?
+  // For statements may or may not declare a new variable (child 0), or
+  // have a condition (child 1).
+  and not (e instanceof ForStmt and i = [0, 1])
+  // TODO: Clarify situation with Kotlin and MethodAccess.
+  // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
+  // then arguments from 0).
+  // Can we also skip arguments, e.g. due to defaults for parameters?
   and not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile())
 }
 
@@ -54,8 +57,9 @@ predicate lateFirstChild(Element e, int i) {
   // There can only be one variable declared in these declarations,
   // so there will never be a child 2.
   and not (e instanceof LocalVariableDeclStmt and i = 1 and not exists(nthChildOf(e, 2)))
-  // TODO: Tighten this up:
-  and not e instanceof ForStmt
+  // For statements may or may not declare a new variable (child 0), or
+  // have a condition (child 1).
+  and not (e instanceof ForStmt and i = [1, 2])
 }
 
 from Element e, int i, string problem
