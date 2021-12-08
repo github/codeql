@@ -209,6 +209,9 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
     call.getCalleeName() = "next" and
     exists(DataFlow::FunctionNode f | call = f.getLastParameter().getACall()) and
     reason instanceof NextFunctionCallReason
+    or
+    call = DataFlow::globalVarRef("dojo").getAPropertyRead("require").getACall() and
+    reason instanceof DojoRequireReason
   )
   or
   (exists(Base64::Decode d | n = d.getInput()) or exists(Base64::Encode d | n = d.getInput())) and
