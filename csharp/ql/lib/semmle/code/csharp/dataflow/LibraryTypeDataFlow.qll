@@ -102,6 +102,11 @@ module AccessPath {
     result = singleton(any(FieldContent c | c.getField() = f.getUnboundDeclaration()))
   }
 
+  /** Gets a singleton synthetic field access path. */
+  AccessPath synthetic(SyntheticField f) {
+    result = singleton(any(SyntheticFieldContent c | c.getField() = f))
+  }
+
   /** Gets an access path representing a property inside a collection. */
   AccessPath properties(Property p) { result = TConsAccessPath(any(ElementContent c), property(p)) }
 }
@@ -1968,9 +1973,7 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     source = TCallableFlowSourceQualifier() and
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
-    sinkAp =
-      AccessPath::field(any(SystemRuntimeCompilerServicesTaskAwaiterStruct s)
-            .getUnderlyingTaskField())
+    sinkAp = AccessPath::synthetic(any(SyntheticTaskAwaiterUnderlyingTaskField s))
     or
     // var awaitable = task.ConfigureAwait(false);  // <-- new ConfiguredTaskAwaitable<>(task, false)
     //                                              //       m_configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, false)
@@ -1982,21 +1985,40 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     sourceAp = AccessPath::empty() and
     sink = TCallableFlowSinkReturn() and
     sinkAp =
-      AccessPath::cons(any(FieldContent fc |
-          fc.getField() =
-            any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t)
-                .getUnderlyingAwaiterField()
-        ),
-        AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
-          ).getUnderlyingTaskField()))
+      AccessPath::cons(any(SyntheticFieldContent sfc |
+          sfc.getField() instanceof SyntheticConfiguredTaskAwaiterField
+        ), AccessPath::synthetic(any(SyntheticConfiguredTaskAwaitableUnderlyingTaskField s)))
   }
 
   override predicate requiresAccessPath(Content head, AccessPath tail) {
-    head.(FieldContent).getField() =
-      any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t).getUnderlyingAwaiterField() and
-    tail =
-      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
-        ).getUnderlyingTaskField())
+    head.(SyntheticFieldContent).getField() instanceof SyntheticConfiguredTaskAwaiterField and
+    tail = AccessPath::synthetic(any(SyntheticConfiguredTaskAwaitableUnderlyingTaskField s))
+  }
+}
+
+abstract private class SyntheticTaskField extends SyntheticField {
+  bindingset[this]
+  SyntheticTaskField() { any() }
+
+  override Type getType() { result instanceof SystemThreadingTasksTaskTClass }
+}
+
+private class SyntheticTaskAwaiterUnderlyingTaskField extends SyntheticTaskField {
+  SyntheticTaskAwaiterUnderlyingTaskField() { this = "m_task_task_awaiter" }
+}
+
+private class SyntheticConfiguredTaskAwaitableUnderlyingTaskField extends SyntheticTaskField {
+  SyntheticConfiguredTaskAwaitableUnderlyingTaskField() {
+    this = "m_task_configured_task_awaitable"
+  }
+}
+
+private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
+  SyntheticConfiguredTaskAwaiterField() { this = "m_configuredTaskAwaiter" }
+
+  override Type getType() {
+    result instanceof
+      SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct
   }
 }
 
@@ -2012,9 +2034,7 @@ private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlow extends 
     // var result = awaiter.GetResult();
     c = this.getGetAwaiterMethod() and
     source = TCallableFlowSourceQualifier() and
-    sourceAp =
-      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct s)
-            .getUnderlyingAwaiterField()) and
+    sourceAp = AccessPath::synthetic(any(SyntheticConfiguredTaskAwaiterField s)) and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty() and
     preservesValue = true
@@ -2113,14 +2133,15 @@ class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
     c = this.getGetResultMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp =
-      AccessPath::cons(any(FieldContent fc | fc.getField() = this.getUnderlyingTaskField()),
-        AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
+      AccessPath::cons(any(SyntheticFieldContent sfc |
+          sfc.getField() instanceof SyntheticTaskAwaiterUnderlyingTaskField
+        ), AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty()
   }
 
   override predicate requiresAccessPath(Content head, AccessPath tail) {
-    head.(FieldContent).getField() = this.getUnderlyingTaskField() and
+    head.(SyntheticFieldContent).getField() instanceof SyntheticTaskAwaiterUnderlyingTaskField and
     tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
   }
 }
@@ -2139,14 +2160,16 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
     c = this.getGetResultMethod() and
     source = TCallableFlowSourceQualifier() and
     sourceAp =
-      AccessPath::cons(any(FieldContent fc | fc.getField() = this.getUnderlyingTaskField()),
-        AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
+      AccessPath::cons(any(SyntheticFieldContent sfc |
+          sfc.getField() instanceof SyntheticConfiguredTaskAwaitableUnderlyingTaskField
+        ), AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
     sink = TCallableFlowSinkReturn() and
     sinkAp = AccessPath::empty()
   }
 
   override predicate requiresAccessPath(Content head, AccessPath tail) {
-    head.(FieldContent).getField() = this.getUnderlyingTaskField() and
+    head.(SyntheticFieldContent).getField() instanceof
+      SyntheticConfiguredTaskAwaitableUnderlyingTaskField and
     tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
   }
 }
