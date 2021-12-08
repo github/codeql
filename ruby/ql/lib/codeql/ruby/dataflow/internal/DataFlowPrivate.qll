@@ -1,4 +1,5 @@
 private import ruby
+private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
 private import DataFlowPublic
@@ -278,6 +279,8 @@ predicate nodeIsHidden(Node n) {
   exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
     def instanceof Ssa::PhiNode
   )
+  or
+  isDesugarNode(n.(ExprNode).getExprNode().getExpr())
   or
   n instanceof SummaryNode
   or
