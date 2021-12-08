@@ -14,22 +14,26 @@ predicate duplicateChildren(Element e, int i) {
 }
 
 predicate gapInChildren(Element e, int i) {
-  exists(nthChildOf(e, i))
-  and not exists(nthChildOf(e, i - 1))
-  and exists(int j | j < i | exists(nthChildOf(e, j)))
+  exists(int left, int right |
+         left = min(int l | exists(nthChildOf(e, l))) and
+         right = max(int r | exists(nthChildOf(e, r))) and
+         i in [left .. right] and
+         not exists(nthChildOf(e, i)))
   // TODO: Tighten this up:
   and not e instanceof Class
   // TODO: Tighten this up:
   and not e instanceof Interface
-  // TODO: Tighten this up:
-  and not e instanceof ClassInstanceExpr
+  // A class instance creation expression has the type as child -3,
+  // may or may not have a qualifier as child -2, and will never have
+  // a child -1.
+  and not (e instanceof ClassInstanceExpr and i = [-2, -1])
   // Type access have annotations from -2 down, and type
   // arguments from 0 up, but may or may not have a qualifier
   // at -1.
   and not (e instanceof TypeAccess and i = -1)
   // Try statements have their 'finally' clause as child 2,
   // and that may or may not exist.
-  and (not e instanceof TryStmt and i = -2)
+  and not (e instanceof TryStmt and i = -2)
   // TODO: Tighten this up:
   and not e instanceof ForStmt
   // Kotlin bug?
@@ -58,5 +62,5 @@ from Element e, int i, string problem
 where problem = "duplicate" and duplicateChildren(e, i)
    or problem = "gap" and gapInChildren(e, i)
    or problem = "late" and lateFirstChild(e, i)
-select e, e.getPrimaryQlClasses(), i, problem, nthChildOf(e, i),
+select e, e.getPrimaryQlClasses(), i, problem,
        concat(int j | exists(nthChildOf(e, j)) | j.toString(), ", " order by j)
