@@ -375,7 +375,10 @@ module API {
      * `moduleImport("foo").getMember("bar")`
      */
     private TApiNode potential_import_star_base(Scope s) {
-      use(result, ImportStar::potentialImportStarBase(s))
+      exists(DataFlow::Node n |
+        n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
+        use(result, n)
+      )
     }
 
     /**
