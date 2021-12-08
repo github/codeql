@@ -29,7 +29,8 @@ newtype TFilteringReason =
   TArgumentToArrayReason() or
   TArgumentToBuiltinGlobalVarRefReason() or
   TConstantReceiverReason() or
-  TBuiltinCallNameReason()
+  TBuiltinCallNameReason() or
+  TDojoRequireReason()
 
 /** A reason why a particular endpoint was filtered out by the endpoint filters. */
 abstract class FilteringReason extends TFilteringReason {
@@ -193,4 +194,10 @@ class BuiltinCallNameReason extends NotASinkReason, TBuiltinCallNameReason {
   override string getDescription() { result = "BuiltinCallName" }
 
   override int getEncoding() { result = 27 }
+}
+
+class DojoRequireReason extends NotASinkReason, TDojoRequireReason {
+  override string getDescription() { result = "DojoRequire" }
+
+  override int getEncoding() { result = 28 }
 }
