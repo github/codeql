@@ -15,6 +15,13 @@ nodes
 | lib/lib.js:7:19:7:22 | name |
 | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:8:13:8:16 | name |
+| lib/lib.js:21:14:21:14 | x |
+| lib/lib.js:21:14:21:14 | x |
+| lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:27:6:27:19 | y |
+| lib/lib.js:27:10:27:19 | id("safe") |
+| lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:28:13:28:13 | y |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name |
 | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
@@ -186,6 +193,12 @@ edges
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
+| lib/lib.js:21:14:21:14 | x | lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:21:14:21:14 | x | lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:22:9:22:9 | x | lib/lib.js:27:10:27:19 | id("safe") |
+| lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:27:10:27:19 | id("safe") | lib/lib.js:27:6:27:19 | y |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
