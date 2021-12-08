@@ -18,11 +18,7 @@ abstract class AstNode extends AstNode_ {
    * NOTE: For some statements and other purely syntactic elements,
    * there may not be a `ControlFlowNode`
    */
-  cached
-  ControlFlowNode getAFlowNode() {
-    Stages::AST::ref() and
-    py_flow_bb_node(result, this, _, _)
-  }
+  ControlFlowNode getAFlowNode() { py_flow_bb_node(result, this, _, _) }
 
   /** Gets the location for this AST node */
   cached
@@ -58,11 +54,7 @@ abstract class AstNode extends AstNode_ {
   }
 
   /** Whether this contains `inner` syntactically */
-  cached
-  predicate contains(AstNode inner) {
-    Stages::AST::ref() and
-    this.getAChildNode+() = inner
-  }
+  predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
   pragma[noinline]
   private predicate containsInScope(AstNode inner, Scope scope) {

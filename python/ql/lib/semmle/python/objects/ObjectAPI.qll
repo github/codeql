@@ -10,7 +10,6 @@ private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
 /*
  * Use the term `ObjectSource` to refer to DB entity. Either a CFG node
@@ -264,9 +263,7 @@ module Value {
    * object of that name.
    * For example `Value::named("len")` is the `Value` representing the `len` built-in function.
    */
-  cached
   Value named(string name) {
-    Stages::DataFlow::ref() and
     exists(string modname, string attrname | name = modname + "." + attrname |
       result = Module::named(modname).attr(attrname)
     )

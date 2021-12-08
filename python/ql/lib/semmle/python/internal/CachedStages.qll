@@ -76,10 +76,6 @@ module Stages {
       or
       exists(any(AstExtended::AstNode n).getParentNode())
       or
-      any(AstExtended::AstNode n).contains(_)
-      or
-      exists(any(AstExtended::AstNode n).getAFlowNode())
-      or
       exists(any(PyFlow::BasicBlock b).getImmediateDominator())
       or
       any(PyFlow::BasicBlock b).strictlyDominates(_)
@@ -170,8 +166,6 @@ module Stages {
       exists(any(Flow::ControlFlowNode c).toString())
       or
       exists(any(ObjectInternal::ObjectInternal o).toString())
-      or
-      exists(any(ObjectAPI::Value::named(_)))
     }
   }
 
