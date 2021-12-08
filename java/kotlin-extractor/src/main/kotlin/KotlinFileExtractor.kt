@@ -763,7 +763,7 @@ open class KotlinFileExtractor(
             } else {
                 val dr = c.dispatchReceiver
 
-                // Returns true if type is C<T1, T2, ...> where C is declared `class <T1, T2, ...> C { ... }`
+                // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
                 fun isUnspecialised(type: IrSimpleType) =
                     type.classifier.owner is IrClass &&
                             (type.classifier.owner as IrClass).typeParameters.zip(type.arguments).all { paramAndArg ->
