@@ -75,6 +75,10 @@ module Stages {
       or
       exists(any(AstExtended::AstNode n).getAChildNode())
       or
+      exists(any(AstExtended::AstNode n).getParentNode())
+      or
+      any(AstExtended::AstNode n).contains(_)
+      or
       exists(any(PyFlow::BasicBlock b).getImmediateDominator())
       or
       any(PyFlow::BasicBlock b).strictlyDominates(_)

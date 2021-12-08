@@ -47,10 +47,18 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt() applied to the parent.
    */
-  AstNode getParentNode() { result.getAChildNode() = this }
+  cached
+  AstNode getParentNode() {
+    Stages::SSA::ref() and
+    result.getAChildNode() = this
+  }
 
   /** Whether this contains `inner` syntactically */
-  predicate contains(AstNode inner) { this.getAChildNode+() = inner }
+  cached
+  predicate contains(AstNode inner) {
+    Stages::SSA::ref() and
+    this.getAChildNode+() = inner
+  }
 
   pragma[noinline]
   private predicate containsInScope(AstNode inner, Scope scope) {
@@ -114,6 +122,7 @@ class Comprehension extends Comprehension_, AstNode {
     result = Comprehension_.super.getLocation()
   }
 
+  pragma[nomagic]
   override AstNode getAChildNode() {
     Stages::SSA::ref() and
     result = this.getASubExpression()
