@@ -44,10 +44,12 @@ private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::
 
 from
   MyBatisAnnotationSqlInjectionConfiguration cfg, DataFlow::PathNode source,
-  DataFlow::PathNode sink, IbatisSqlOperationAnnotation isoa
+  DataFlow::PathNode sink, IbatisSqlOperationAnnotation isoa, MethodAccess ma
 where
   cfg.hasFlowPath(source, sink) and
-  isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), _, isoa)
+  ma.getAnArgument() = sink.getNode().asExpr() and
+  myBatisSqlOperationAnnotationFromMethod(ma.getMethod(), isoa) and
+  isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, getAMybatisAnnotationSqlValue(isoa), _)
 select sink.getNode(), source, sink,
   "MyBatis annotation SQL injection might include code from $@ to $@.", source.getNode(),
   "this user input", isoa, "this SQL operation"

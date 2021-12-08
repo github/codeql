@@ -37,7 +37,10 @@ class MyBatisMapperXMLElement extends XMLElement {
  * An MyBatis Mapper sql operation element.
  */
 abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
-  abstract string getId();
+  /**
+   * Gets the value of the `id` attribute of MyBatis Mapper sql operation element.
+   */
+  string getId() { result = this.getAttribute("id").getValue() }
 
   /**
    * Gets the `<include>` element in a `MyBatisMapperSqlOperation`.
@@ -58,11 +61,6 @@ abstract class MyBatisMapperSqlOperation extends MyBatisMapperXMLElement {
  */
 class MyBatisMapperInsert extends MyBatisMapperSqlOperation {
   MyBatisMapperInsert() { this.getName() = "insert" }
-
-  /**
-   * Gets the value of the `id` attribute of this `<insert>`.
-   */
-  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
@@ -70,11 +68,6 @@ class MyBatisMapperInsert extends MyBatisMapperSqlOperation {
  */
 class MyBatisMapperUpdate extends MyBatisMapperSqlOperation {
   MyBatisMapperUpdate() { this.getName() = "update" }
-
-  /**
-   * Gets the value of the `id` attribute of this `<update>`.
-   */
-  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
@@ -82,11 +75,6 @@ class MyBatisMapperUpdate extends MyBatisMapperSqlOperation {
  */
 class MyBatisMapperDelete extends MyBatisMapperSqlOperation {
   MyBatisMapperDelete() { this.getName() = "delete" }
-
-  /**
-   * Gets the value of the `id` attribute of this `<delete>`.
-   */
-  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
@@ -94,15 +82,10 @@ class MyBatisMapperDelete extends MyBatisMapperSqlOperation {
  */
 class MyBatisMapperSelect extends MyBatisMapperSqlOperation {
   MyBatisMapperSelect() { this.getName() = "select" }
-
-  /**
-   * Gets the value of the `id` attribute of this `<select>`.
-   */
-  override string getId() { result = this.getAttribute("id").getValue() }
 }
 
 /**
- * A `<select>` element in a `MyBatisMapperXMLElement`.
+ * A `<sql>` element in a `MyBatisMapperXMLElement`.
  */
 class MyBatisMapperSql extends MyBatisMapperXMLElement {
   MyBatisMapperSql() { this.getName() = "sql" }
