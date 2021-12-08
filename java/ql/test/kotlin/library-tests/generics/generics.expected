@@ -79,11 +79,16 @@ function
 | generics.kt:36:1:40:1 | toString | toString() |
 | generics.kt:38:5:38:25 | m | m(java.lang.CharSequence,java.lang.CharSequence) |
 genericFunction
-| generics.kt:3:1:5:1 | f0 | generics.kt:3:6:3:6 | S | 0 |
-| generics.kt:7:1:9:1 | f1 | generics.kt:7:6:7:6 | S | 0 |
-| generics.kt:15:5:17:5 | f2 | generics.kt:15:10:15:10 | U | 0 |
-| generics.kt:21:5:21:23 | f4 | generics.kt:21:10:21:10 | P | 0 |
+| generics.kt:3:1:5:1 | f0 | generics.kt:0:0:0:0 | GenericsKt | generics.kt:3:6:3:6 | S | 0 |
+| generics.kt:7:1:9:1 | f1 | generics.kt:0:0:0:0 | GenericsKt | generics.kt:7:6:7:6 | S | 0 |
+| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1 | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<Integer,Integer> | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:15:5:17:5 | f2 | generics.kt:13:1:18:1 | C1<U,U> | generics.kt:15:10:15:10 | U | 0 |
+| generics.kt:21:5:21:23 | f4 | generics.kt:20:1:22:1 | C2 | generics.kt:21:10:21:10 | P | 0 |
 genericCall
+| generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
+| generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |
 | generics.kt:32:8:32:12 | f4(...) | generics.kt:21:10:21:10 | P | Integer |
 genericCtor
 | generics.kt:16:16:16:26 | new C1<U,U>(...) | 0 | U |

@@ -15,9 +15,10 @@ query predicate function(Callable c, string signature) {
   c.getFile().getExtension() = "kt"
 }
 
-query predicate genericFunction(GenericCallable c, TypeVariable tv, int i) {
+query predicate genericFunction(GenericCallable c, RefType declType, TypeVariable tv, int i) {
   c.getTypeParameter(i) = tv and
-  c.getFile().getExtension() = "kt"
+  c.getFile().getExtension() = "kt" and
+  c.getDeclaringType() = declType
 }
 
 query predicate genericCall(GenericCall c, TypeVariable tv, string t) {
