@@ -619,7 +619,9 @@ class UnaryExprNode extends ControlFlowNode {
  * and nodes implicitly assigned in class and function definitions and imports.
  */
 class DefinitionNode extends ControlFlowNode {
+  cached
   DefinitionNode() {
+    Stages::SSA::ref() and
     exists(Assign a | a.getATarget().getAFlowNode() = this)
     or
     exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
@@ -678,6 +680,7 @@ abstract class SequenceNode extends ControlFlowNode {
   ControlFlowNode getAnElement() { result = this.getElement(_) }
 
   /** Gets the control flow node for the nth element of this sequence */
+  cached
   abstract ControlFlowNode getElement(int n);
 }
 
@@ -686,6 +689,7 @@ class TupleNode extends SequenceNode {
   TupleNode() { toAst(this) instanceof Tuple }
 
   override ControlFlowNode getElement(int n) {
+    Stages::SSA::ref() and
     exists(Tuple t | this.getNode() = t and result.getNode() = t.getElt(n)) and
     (
       result.getBasicBlock().dominates(this.getBasicBlock())

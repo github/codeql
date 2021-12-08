@@ -86,6 +86,10 @@ module Stages {
       any(PyFlow::BasicBlock b).dominates(_)
       or
       exists(any(PyFlow::ControlFlowNode b).getScope())
+      or
+      exists(PyFlow::DefinitionNode b)
+      or
+      exists(any(PyFlow::SequenceNode n).getElement(_))
     }
   }
 
