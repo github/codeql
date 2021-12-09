@@ -2040,9 +2040,11 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
 
+/** A synthetic field. */
 abstract class SyntheticField extends string {
   bindingset[this]
   SyntheticField() { any() }
 
+  /** Gets the type of this synthetic field. */
   Type getType() { result instanceof ObjectType }
 }
