@@ -8,6 +8,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.DescriptorVisibility
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
@@ -93,6 +94,16 @@ open class KotlinFileExtractor(
         return id
     }
 
+    fun extractVisibility(elementForLocation: IrElement, id: Label<out DbModifiable>, v: DescriptorVisibility) {
+        when (v) {
+            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
+            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
+            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
+            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
+            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
+        }
+    }
+
     fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         when (c.modality) {
             Modality.FINAL -> addModifiers(id, "final")
@@ -101,13 +112,7 @@ open class KotlinFileExtractor(
             Modality.ABSTRACT -> addModifiers(id, "abstract")
             else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}", c)
         }
-        when (c.visibility) {
-            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
-            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
-            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
-            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
-            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class visibility: ${c.visibility}", c)
-        }
+        extractVisibility(c, id, c.visibility)
     }
 
     fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
@@ -451,6 +456,8 @@ open class KotlinFileExtractor(
                 logger.warnElement(Severity.ErrorSevere, "Type substitution should only be used to extract a function prototype, not the body", f)
             extractBody(body, id)
         }
+
+        extractVisibility(f, id, f.visibility)
 
         currentFunction = null
         return id

@@ -10,5 +10,11 @@ class Class {
         classMethod(a, 3)
         topLevelMethod(b, 4)
     }
+
+    public fun publicFun() {}
+    protected fun protectedFun() {}
+    private fun privateFun() {}
+    internal fun internalFun() {}
+    fun noExplicitVisibilityFun() {}
 }
 

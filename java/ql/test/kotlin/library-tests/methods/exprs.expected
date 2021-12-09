@@ -32,7 +32,7 @@
 | methods5.kt:10:13:10:18 | new (...) | ClassInstanceExpr |
 | methods5.kt:10:16:10:17 | 42 | IntegerLiteral |
 | methods5.kt:13:1:13:14 | <obinit>(...) | MethodAccess |
-| methods.kt:5:1:13:1 | <obinit>(...) | MethodAccess |
+| methods.kt:5:1:19:1 | <obinit>(...) | MethodAccess |
 | methods.kt:10:9:10:25 | classMethod(...) | MethodAccess |
 | methods.kt:10:9:10:25 | this | ThisAccess |
 | methods.kt:10:21:10:21 | a | VarAccess |
