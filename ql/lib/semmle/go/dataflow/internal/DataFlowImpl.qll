@@ -332,7 +332,7 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    simpleLocalFlowStepExt(n1, n2) and
+    simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config)
   )
   or
@@ -351,7 +351,8 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    pragma[only_bind_into](config)
+        .isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config)
   )
@@ -371,7 +372,7 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    jumpStepCached(n1, n2) and
+    jumpStepCached(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
@@ -384,7 +385,8 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    pragma[only_bind_into](config)
+        .isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
@@ -392,8 +394,12 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
 }
 
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
-  read(node1.asNode(), c, node2.asNode()) and
-  stepFilter(node1, node2, config)
+  exists(Node n1, Node n2 |
+    node1.asNode() = n1 and
+    node2.asNode() = n2 and
+    read(pragma[only_bind_into](n1), c, pragma[only_bind_into](n2)) and
+    stepFilter(node1, node2, config)
+  )
   or
   exists(Node n |
     node2.isImplicitReadNode(n, true) and
@@ -405,9 +411,13 @@ private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration conf
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  store(node1.asNode(), tc, node2.asNode(), contentType) and
-  read(_, tc.getContent(), _, config) and
-  stepFilter(node1, node2, config)
+  exists(Node n1, Node n2 |
+    node1.asNode() = n1 and
+    node2.asNode() = n2 and
+    store(pragma[only_bind_into](n1), tc, pragma[only_bind_into](n2), contentType) and
+    read(_, tc.getContent(), _, config) and
+    stepFilter(node1, node2, config)
+  )
 }
 
 pragma[nomagic]
