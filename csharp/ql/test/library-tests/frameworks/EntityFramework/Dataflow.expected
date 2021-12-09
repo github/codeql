@@ -84,6 +84,7 @@ edges
 | EntityFramework.cs:219:18:219:54 | call to method First<Address> [property Street] : String | EntityFramework.cs:219:18:219:61 | access to property Street |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:76:18:76:28 | access to local variable taintSource |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:77:35:77:45 | access to local variable taintSource : String |
+| EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:78:18:78:42 | (...) ... |
 | EntityFrameworkCore.cs:75:31:75:39 | "tainted" : String | EntityFrameworkCore.cs:78:32:78:42 | access to local variable taintSource : String |
 | EntityFrameworkCore.cs:77:18:77:46 | object creation of type RawSqlString : RawSqlString | EntityFrameworkCore.cs:77:18:77:46 | (...) ... |
 | EntityFrameworkCore.cs:77:35:77:45 | access to local variable taintSource : String | EntityFrameworkCore.cs:77:18:77:46 | object creation of type RawSqlString : RawSqlString |
