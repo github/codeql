@@ -81,7 +81,7 @@ class IbatisSqlOperationAnnotation extends Annotation {
   }
 
   /**
-   * Get the SQL statement string.
+   * Gets this annotation's SQL statement string.
    */
   string getSqlValue() {
     result = this.getAValue("value").(CompileTimeConstantExpr).getStringValue()
