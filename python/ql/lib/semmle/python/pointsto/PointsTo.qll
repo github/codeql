@@ -1312,7 +1312,7 @@ module InterProceduralPointsTo {
    * `var = ...; foo(); use(var)`
    * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
    */
-  pragma[noinline]
+  pragma[inline]
   predicate callsite_points_to(
     CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin
   ) {

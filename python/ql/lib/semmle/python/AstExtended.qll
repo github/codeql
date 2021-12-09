@@ -54,7 +54,6 @@ abstract class AstNode extends AstNode_ {
   }
 
   /** Whether this contains `inner` syntactically */
-  pragma[nomagic]
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
   pragma[noinline]

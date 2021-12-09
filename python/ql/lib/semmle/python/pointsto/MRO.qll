@@ -163,10 +163,15 @@ class ClassList extends TClassList {
   int firstIndex(ClassObjectInternal cls) { result = this.firstIndex(cls, 0) }
 
   /* Helper for firstIndex(cls), getting the first index of `cls` where result >= n */
+  pragma[noopt]
   private int firstIndex(ClassObjectInternal cls, int n) {
     this.getItem(n) = cls and result = n
     or
-    this.getItem(n) != cls and result = this.firstIndex(cls, n + 1)
+    exists(int next |
+      result = this.firstIndex(cls, next) and
+      next = n + 1
+    ) and
+    exists(ClassObjectInternal item | item = this.getItem(n) | item != cls)
   }
 
   /** Holds if the class at `n` is a duplicate of an earlier position. */
