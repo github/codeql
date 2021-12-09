@@ -2218,6 +2218,7 @@
 | System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[-1];ReturnValue;taint |
 | System.Web;HttpCookie;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Web;HttpCookie;false;get_Values;();;Argument[-1];ReturnValue;taint |
+| System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint |
