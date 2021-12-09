@@ -51,7 +51,7 @@ private string comment_or_docstring(File f, boolean before_code) {
     c.getLocation().getFile() = f and
     result = c.getText()
   |
-    if isBeforeCode(c, f) then before_code = true else before_code = false
+    if isBeforeCode(c, f) then before_code = false else before_code = true
   )
   or
   exists(Module m | m.getFile() = f |
