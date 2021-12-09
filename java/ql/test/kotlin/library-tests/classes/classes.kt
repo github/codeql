@@ -89,3 +89,20 @@ class Class1 {
         return object : Interface3<Int?> { }
     }
 }
+
+public class pulicClass {}
+private class privateClass {}
+internal class internalClass {}
+class noExplicitVisibilityClass {}
+
+class nestedClassVisibilities {
+    public class pulicNestedClass {}
+    protected class protectedNestedClass {}
+    private class privateNestedClass {}
+    internal class internalNestedClass {}
+    class noExplicitVisibilityNestedClass {}
+}
+
+sealed class sealedClass {}
+open class openClass {}
+

@@ -21,6 +21,18 @@
 | classes.kt:81:16:81:38 | new Interface1(...) { ... } | classes.kt:59:1:59:23 | Interface1 |
 | classes.kt:85:16:85:25 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:61:1:61:26 | Interface3<Integer> |
+| classes.kt:93:1:93:26 | pulicClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:94:1:94:29 | privateClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:95:1:95:31 | internalClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:96:1:96:34 | noExplicitVisibilityClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:98:1:104:1 | nestedClassVisibilities | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:99:5:99:36 | pulicNestedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:100:5:100:43 | protectedNestedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:101:5:101:39 | privateNestedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:102:5:102:41 | internalNestedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:103:5:103:44 | noExplicitVisibilityNestedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:106:1:106:27 | sealedClass | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:107:1:107:23 | openClass | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1 | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object |

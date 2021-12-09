@@ -707,8 +707,19 @@ class X {
         modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
 
     fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
-        if (c.modality == Modality.ABSTRACT) {
-            addModifiers(id, "abstract")
+        when (c.modality) {
+            Modality.FINAL -> addModifiers(id, "final")
+            Modality.SEALED -> addModifiers(id, "sealed")
+            Modality.OPEN -> { } // This is the default
+            Modality.ABSTRACT -> addModifiers(id, "abstract")
+            else -> logger.warn(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}")
+        }
+        when (c.visibility) {
+            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
+            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
+            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
+            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
+            else -> logger.warn(Severity.ErrorSevere, "Unexpected class visibility: ${c.visibility}")
         }
     }
 
