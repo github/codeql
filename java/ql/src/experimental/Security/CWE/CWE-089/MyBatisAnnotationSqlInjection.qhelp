@@ -7,7 +7,7 @@
 If the syntax <code>${param}</code> is used in those statements, and <code>param</code> is a parameter of the annotated method, attackers can exploit this to tamper with the SQL statements or execute arbitrary SQL commands.</p>
 </overview>
 
-<<recommendation>
+<recommendation>
 <p>
 When writing MyBatis mapping statements, use the syntax <code>#{xxx}</code> whenever possible. If the syntax <code>${xxx}</code> must be used, any parameters included in it should be sanitized to prevent SQL injection attacks.
 </p>
