@@ -19,6 +19,21 @@ import semmle.code.cpp.models.interfaces.FlowSource
 import DataFlow::PathGraph
 
 /**
+ * A DataFlow node corresponding to a variable or function call that
+ * might contain or return a password or other sensitive information.
+ */
+class SensitiveNode extends DataFlow::Node {
+  SensitiveNode() {
+    this.asExpr() = any(SensitiveVariable sv).getInitializer().getExpr() or
+    this.asExpr().(VariableAccess).getTarget() =
+      any(SensitiveVariable sv).(GlobalOrNamespaceVariable) or
+    this.asUninitialized() instanceof SensitiveVariable or
+    this.asParameter() instanceof SensitiveVariable or
+    this.asExpr().(FunctionCall).getTarget() instanceof SensitiveFunction
+  }
+}
+
+/**
  * A function call that sends or receives data over a network.
  *
  * note: functions such as `write` may be writing to a network source or a file. We could attempt to determine which, and sort results into `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In practice it usually isn't very important which query reports a result as long as its reported exactly once. See `checkSocket` to narrow this down somewhat.
@@ -129,23 +144,17 @@ class Encrypted extends Expr {
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+  override predicate isSource(DataFlow::Node source) { source instanceof SensitiveNode }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NetworkSendRecv nsr | nsr.checkSocket()).getDataExpr()
     or
     sink.asExpr() instanceof Encrypted
-    or
-    sink.asExpr() instanceof SensitiveExpr
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from pre-update to post-update of the source
     isSource(node1) and
-    node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1
-    or
-    // flow from pre-update to post-update of the sink (in case we can reach other sinks)
-    isSink(node1) and
     node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1
     or
     // flow through encryption functions to the return value (in case we can reach other sinks)
@@ -165,12 +174,6 @@ where
   not exists(DataFlow::Node encrypted |
     config.hasFlow(source.getNode(), encrypted) and
     encrypted.asExpr() instanceof Encrypted
-  ) and
-  // only use the 'first' sensitive expression
-  not exists(DataFlow::Node sensitive |
-    config.hasFlow(sensitive, source.getNode()) and
-    sensitive.asExpr() instanceof SensitiveExpr and
-    not source.getNode() = sensitive
   ) and
   // construct result
   if networkSendRecv instanceof NetworkSend

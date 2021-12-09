@@ -282,22 +282,22 @@ void target1(char *data)
 
 void target2(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
+	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password [NOT DETECTED]
 }
 
 void target3(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password [NOT DETECTED]
 }
 
 void target4(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password [NOT DETECTED]
 }
 
 void target5(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
+	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password [NOT DETECTED]
 }
 
 void target6(char *data)
