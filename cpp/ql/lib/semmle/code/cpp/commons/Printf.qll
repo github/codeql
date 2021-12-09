@@ -55,7 +55,8 @@ class ValueFlowAnalysis extends BufferWriteEstimationReason, TValueFlowAnalysis 
   override string toString() { result = "based on flow analysis of value bounds" }
 
   override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    other = TTypeBoundsAnalysis() and result = TTypeBoundsAnalysis() or
+    other = TTypeBoundsAnalysis() and result = TTypeBoundsAnalysis()
+    or
     other = TValueFlowAnalysis() and result = TValueFlowAnalysis()
   }
 }
@@ -1046,7 +1047,7 @@ class FormatLiteral extends Literal {
   /**
    * Gets the maximum length of the string that can be produced by the nth
    * conversion specifier of this format string, specifying the estimation reason;
-   * has no result if this cannot be determined. 
+   * has no result if this cannot be determined.
    */
   int getMaxConvertedLength(int n, BufferWriteEstimationReason reason) {
     exists(int len |
