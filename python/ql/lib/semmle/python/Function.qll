@@ -167,17 +167,19 @@ class Function extends Function_, Scope, AstNode {
 
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */
 class FunctionDef extends Assign {
+  FunctionExpr f;
+
   /* syntax: def name(...): ... */
   FunctionDef() {
     /* This is an artificial assignment the rhs of which is a (possibly decorated) FunctionExpr */
-    exists(FunctionExpr f | this.getValue() = f or this.getValue() = f.getADecoratorCall())
+    this.getValue() = f or this.getValue() = f.getADecoratorCall()
   }
 
   override string toString() { result = "FunctionDef" }
 
   /** Gets the function for this statement */
   Function getDefinedFunction() {
-    exists(FunctionExpr func | this.containsInScope(func) and result = func.getInnerScope())
+    result = f.getInnerScope() // XXX: This behaves very differently. But from inspecting the results of the previous version, that had every function in the same scope as the result.
   }
 
   override Stmt getLastStatement() { result = this.getDefinedFunction().getLastStatement() }
