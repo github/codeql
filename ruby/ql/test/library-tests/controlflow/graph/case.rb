@@ -91,3 +91,9 @@ def case_match_various value
     in (0 | "" | [] | {})
   end
 end
+
+def case_match_guard_no_else value
+  case value
+    in x if x == 5 then 6
+  end
+end

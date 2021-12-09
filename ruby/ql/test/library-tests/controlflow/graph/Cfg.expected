@@ -1010,7 +1010,7 @@ case.rb:
 #-----|  -> value
 
 #   69| case_match_various
-#-----|  -> exit case.rb (normal)
+#-----|  -> case_match_guard_no_else
 
 #   69| exit case_match_various
 
@@ -1310,6 +1310,51 @@ case.rb:
 #   91| { ..., ** }
 #-----| raise -> exit case_match_various (abnormal)
 #-----| match -> exit case_match_various (normal)
+
+#   95| enter case_match_guard_no_else
+#-----|  -> value
+
+#   95| case_match_guard_no_else
+#-----|  -> exit case.rb (normal)
+
+#   95| exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (abnormal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (normal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| value
+#-----|  -> case ...
+
+#   96| case ...
+#-----|  -> value
+
+#   96| value
+#-----|  -> in ... then ...
+
+#   97| in ... then ...
+#-----|  -> x
+
+#   97| x
+#-----| match -> x
+
+#   97| ... == ...
+#-----| true -> 6
+#-----| raise -> exit case_match_guard_no_else (abnormal)
+
+#   97| x
+#-----|  -> 5
+
+#   97| 5
+#-----|  -> ... == ...
+
+#   97| then ...
+#-----|  -> exit case_match_guard_no_else (normal)
+
+#   97| 6
+#-----|  -> then ...
 
 cfg.html.erb:
 #    5| enter cfg.html.erb
