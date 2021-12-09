@@ -412,6 +412,17 @@ class With extends With_ {
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
 }
 
+class Match extends Match_ {
+  /* syntax: match subject: */
+  override Expr getASubExpression() { result = this.getSubject() }
+
+  override Stmt getASubStatement() { result = this.getCase(_) }
+}
+
+class Case extends Case_ {
+  /* syntax: case pattern if guard: */
+}
+
 /** A plain text used in a template is wrapped in a TemplateWrite statement */
 class TemplateWrite extends TemplateWrite_ {
   override Expr getASubExpression() { result = this.getValue() }

@@ -32,4 +32,4 @@ def test_tuple():
     match (NONSOURCE, SOURCE):
         case x, y:
             SINK_F(x)
-            SINK(y) #$ MISSING: flow="SOURCE, l:-3 -> y"
+            SINK(y) #$ flow="SOURCE, l:-3 -> y"

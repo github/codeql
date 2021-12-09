@@ -227,6 +227,8 @@ module EssaFlow {
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
+    matchFlowStep(nodeFrom, nodeTo)
+    or
     // Overflow keyword argument
     exists(CallNode call, CallableValue callable |
       call = callable.getACall() and
@@ -1102,6 +1104,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
   or
+  matchUnpackingElementReadStep(nodeFrom, c, nodeTo)
+  or
   popReadStep(nodeFrom, c, nodeTo)
   or
   forReadStep(nodeFrom, c, nodeTo)
@@ -1530,6 +1534,48 @@ module IterableUnpacking {
 }
 
 import IterableUnpacking
+
+module MatchUnpacking {
+  predicate matchUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Match match, Expr subject, MatchSequencePattern target |
+      subject = match.getSubject() and
+      target = match.getCase(_).(Case).getPattern()
+    |
+      nodeFrom.asExpr() = subject and
+      nodeTo.asExpr() = target
+    )
+  }
+
+  predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchCapturePattern capture, Name var, Variable v |
+      capture.getVar() = var and
+      var = v.getAStore()
+    |
+      // var.getAFlowNode() = nodeFrom.asCfgNode() and
+      capture = nodeFrom.asExpr() and
+      nodeTo.asVar().getSourceVariable() = v
+    )
+  }
+
+  /** All flow steps associated with match. */
+  predicate matchFlowStep(Node nodeFrom, Node nodeTo) {
+    matchCaptureFlowStep(nodeFrom, nodeTo)
+    or
+    matchUnpackingTupleFlowStep(nodeFrom, nodeTo)
+  }
+
+  predicate matchUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(Case case, MatchSequencePattern seq, int index | seq = case.getPattern() |
+      nodeFrom.asExpr() = seq and
+      nodeTo.asExpr() = seq.getPattern(index) and
+      // element.getNode() = seq.getPattern(index) and
+      // nodeTo.asVar().getDefinition().(EssaNodeDefinition).getDefiningNode() = element and
+      c.(TupleElementContent).getIndex() = index
+    )
+  }
+}
+
+import MatchUnpacking
 
 /** Data flows from a sequence to a call to `pop` on the sequence. */
 predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {

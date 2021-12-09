@@ -726,6 +726,8 @@ class MatchCapturePattern extends MatchCapturePattern_ {
   Name getVar() { result = this.getVariable() }
 }
 
+class MatchSequencePattern extends MatchSequencePattern_ { }
+
 /* Expression Contexts */
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }
