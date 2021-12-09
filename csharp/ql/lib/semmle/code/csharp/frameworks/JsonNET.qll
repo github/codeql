@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** Definitions relating to the `Json.NET` package. */
 module JsonNET {
@@ -31,14 +32,8 @@ module JsonNET {
   }
 
   /** The class `Newtonsoft.Json.JsonConvert`. */
-  class JsonConvertClass extends JsonClass, LibraryTypeDataFlow {
+  class JsonConvertClass extends JsonClass {
     JsonConvertClass() { this.hasName("JsonConvert") }
-
-    /** Gets a `ToString` method. */
-    private Method getAToStringMethod() {
-      result = this.getAMethod("ToString") and
-      result.isStatic()
-    }
 
     /** Gets a `Deserialize` method. */
     Method getADeserializeMethod() {
@@ -51,39 +46,73 @@ module JsonNET {
       result = this.getAMethod() and
       result.getName().matches("Serialize%")
     }
+  }
 
-    private Method getAPopulateMethod() {
-      result = this.getAMethod() and
-      result.getName().matches("Populate%")
-    }
-
-    override predicate callableFlow(
-      CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-      boolean preservesValue
-    ) {
-      // ToString methods
-      c = this.getAToStringMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink instanceof CallableFlowSinkReturn
-      or
-      // Deserialize methods
-      c = this.getADeserializeMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink instanceof CallableFlowSinkReturn
-      or
-      // Serialize methods
-      c = this.getASerializeMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink instanceof CallableFlowSinkReturn
-      or
-      // Populate methods
-      c = this.getAPopulateMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
+  /** Data flow for `Newtonsoft.Json.JsonConvert`. */
+  private class JsonConvertClassFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json;JsonConvert;false;DeserializeAnonymousType<>;(System.String,T);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeAnonymousType<>;(System.String,T,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String,System.Type);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String,System.Type,Newtonsoft.Json.JsonConverter[]);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String,System.Type,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject<>;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject<>;(System.String,Newtonsoft.Json.JsonConverter[]);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeObject<>;(System.String,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXNode;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXNode;(System.String,System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXNode;(System.String,System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXNode;(System.String,System.String,System.Boolean,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXmlNode;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXmlNode;(System.String,System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXmlNode;(System.String,System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;DeserializeXmlNode;(System.String,System.String,System.Boolean,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;PopulateObject;(System.String,System.Object);;Argument[0];Argument[1];taint",
+          "Newtonsoft.Json;JsonConvert;false;PopulateObject;(System.String,System.Object,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];Argument[1];taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,Newtonsoft.Json.Formatting);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,Newtonsoft.Json.JsonConverter[]);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,System.Type,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeObject;(System.Object,System.Type,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXNode;(System.Xml.Linq.XObject);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXNode;(System.Xml.Linq.XObject,Newtonsoft.Json.Formatting);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXNode;(System.Xml.Linq.XObject,Newtonsoft.Json.Formatting,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXmlNode;(System.Xml.XmlNode);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXmlNode;(System.Xml.XmlNode,Newtonsoft.Json.Formatting);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;SerializeXmlNode;(System.Xml.XmlNode,Newtonsoft.Json.Formatting,System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Boolean);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Byte);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Char);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.DateTime);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.DateTime,Newtonsoft.Json.DateFormatHandling,Newtonsoft.Json.DateTimeZoneHandling);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.DateTimeOffset);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.DateTimeOffset,Newtonsoft.Json.DateFormatHandling);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Decimal);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Double);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Enum);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Guid);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Int16);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Int32);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Int64);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Object);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.SByte);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Single);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.String,System.Char);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.String,System.Char,Newtonsoft.Json.StringEscapeHandling);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.TimeSpan);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.UInt16);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.UInt32);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.UInt64);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonConvert;false;ToString;(System.Uri);;Argument[0];ReturnValue;taint",
+        ]
     }
   }
 
