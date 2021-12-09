@@ -23,7 +23,7 @@ module ImportStar {
   cached
   private predicate isDefinedLocally(Name n) {
     // Defined in an enclosing scope
-    scope_defines_name(n.getScope().getEnclosingScope*(), n.getId())
+    enclosing_scope_defines_name(n.getScope(), n.getId())
     or
     // Defined as a built-in
     n.getId() = Builtins::getBuiltinName()
@@ -35,10 +35,13 @@ module ImportStar {
     n.getId() in ["__name__", "__package__"]
   }
 
-  /** Holds if the name `name` is defined in the scope `s` */
   pragma[nomagic]
-  private predicate scope_defines_name(Scope s, string name) {
-    exists(LocalVariable v | v.getId() = name and v.getScope() = s)
+  private predicate enclosing_scope_defines_name(Scope s, string name) {
+    exists(LocalVariable v |
+      v.getId() = name and v.getScope() = s and not name = Builtins::getBuiltinName()
+    )
+    or
+    enclosing_scope_defines_name(s.getEnclosingScope(), name)
   }
 
   /** Holds if a global variable called `name` is assigned a value in the module `m`. */
