@@ -11,11 +11,3 @@ class SummaryModelTest extends SummaryModelCsv {
       ]
   }
 }
-
-class NotificationsTaintFlowConf extends DefaultTaintFlowConf {
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    super.allowImplicitRead(node, c)
-    or
-    allowIntentExtrasImplicitRead(node, c)
-  }
-}
