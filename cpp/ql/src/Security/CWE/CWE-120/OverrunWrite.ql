@@ -28,7 +28,7 @@ where
   destSize = getBufferSize(dest, _) and
   // we can deduce that too much data may be copied (even without
   // long '%f' conversions)
-  bw.getMaxDataLimitedWithReason(reason) > destSize
+  bw.getMaxDataLimited(reason) > destSize
 select bw,
   "This '" + bw.getBWDesc() + "' operation requires " + bw.getMaxData() +
     " bytes but the destination is only " + destSize + " bytes (" + reason.toString() + ")."

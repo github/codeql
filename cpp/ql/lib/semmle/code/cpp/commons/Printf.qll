@@ -20,17 +20,22 @@ class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
   }
 
   string toString() {
-    this = TTypeBoundsAnalysis() and result = "based on type bounds" or
+    this = TTypeBoundsAnalysis() and result = "based on type bounds"
+    or
     this = TValueFlowAnalysis() and result = "based on flow analysis of value bounds"
   }
 
   BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    (this = TTypeBoundsAnalysis() or other = TTypeBoundsAnalysis()) and result = TTypeBoundsAnalysis() or
-    (this = TValueFlowAnalysis() and other = TValueFlowAnalysis()) and result = TValueFlowAnalysis()
+    (this = TTypeBoundsAnalysis() or other = TTypeBoundsAnalysis()) and
+    result = TTypeBoundsAnalysis()
+    or
+    (this = TValueFlowAnalysis() and other = TValueFlowAnalysis()) and
+    result = TValueFlowAnalysis()
   }
 }
 
 BufferWriteEstimationReason typeBoundsAnalysis() { result = TTypeBoundsAnalysis() }
+
 BufferWriteEstimationReason valueFlowAnalysis() { result = TValueFlowAnalysis() }
 
 class PrintfFormatAttribute extends FormatAttribute {
@@ -1014,6 +1019,8 @@ class FormatLiteral extends Literal {
    * conversion specifier of this format string; has no result if this cannot
    * be determined.
    */
+  int getMaxConvertedLength(int n) { result = max(int l | l = getMaxConvertedLength(n, _) | l) }
+
   int getMaxConvertedLength(int n, BufferWriteEstimationReason reason) {
     exists(int len |
       (
@@ -1026,10 +1033,12 @@ class FormatLiteral extends Literal {
       ) and
       (
         this.getConversionChar(n) = "%" and
-        len = 1 and reason = TValueFlowAnalysis()
+        len = 1 and
+        reason = TValueFlowAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "c" and
-        len = 1 and reason = TValueFlowAnalysis() // e.g. 'a'
+        len = 1 and
+        reason = TValueFlowAnalysis() // e.g. 'a'
         or
         this.getConversionChar(n).toLowerCase() = "f" and
         exists(int dot, int afterdot |
@@ -1043,7 +1052,8 @@ class FormatLiteral extends Literal {
             afterdot = 6
           ) and
           len = 1 + 309 + dot + afterdot
-        ) and reason = TTypeBoundsAnalysis() // e.g. -1e308="-100000"...
+        ) and
+        reason = TTypeBoundsAnalysis() // e.g. -1e308="-100000"...
         or
         this.getConversionChar(n).toLowerCase() = "e" and
         exists(int dot, int afterdot |
@@ -1057,7 +1067,8 @@ class FormatLiteral extends Literal {
             afterdot = 6
           ) and
           len = 1 + 1 + dot + afterdot + 1 + 1 + 3
-        ) and reason = TTypeBoundsAnalysis() // -1e308="-1.000000e+308"
+        ) and
+        reason = TTypeBoundsAnalysis() // -1e308="-1.000000e+308"
         or
         this.getConversionChar(n).toLowerCase() = "g" and
         exists(int dot, int afterdot |
@@ -1080,77 +1091,79 @@ class FormatLiteral extends Literal {
           //       (e.g. 123456, 0.000123456 are just OK)
           //       so case %f can be at most P characters + 4 zeroes, sign, dot = P + 6
           len = (afterdot.maximum(1) + 6).maximum(1 + 1 + dot + afterdot + 1 + 1 + 3)
-        ) and reason = TTypeBoundsAnalysis() // (e.g. "-1.59203e-319")
+        ) and
+        reason = TTypeBoundsAnalysis() // (e.g. "-1.59203e-319")
         or
         this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
         exists(float typeBasedBound, float valueBasedBound |
-            // The first case handles length sub-specifiers
-            // Subtract one in the exponent because one bit is for the sign.
-            // Add 1 to account for the possible sign in the output.
-            typeBasedBound = 1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
-            // The second case uses range analysis to deduce a length that's shorter than the length
-            // of the number -2^31.
-            exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
-              arg = this.getUse().getConversionArgument(n) and
-              lower = lowerBound(arg.getFullyConverted()) and
-              upper = upperBound(arg.getFullyConverted()) and
-              typeLower = exprMinVal(arg.getFullyConverted()) and
-              typeUpper = exprMaxVal(arg.getFullyConverted()) 
-            |
-              valueBasedBound =
-                max(int cand |
-                  // Include the sign bit in the length if it can be negative
-                  (
-                    if lower < 0
-                    then cand = 1 + lengthInBase10(lower.abs())
-                    else cand = lengthInBase10(lower)
-                  )
-                  or
-                  (
-                    if upper < 0
-                    then cand = 1 + lengthInBase10(upper.abs())
-                    else cand = lengthInBase10(upper)
-                  )
-                ) and
-              (
-                if lower > typeLower or upper < typeUpper
-                then reason = TValueFlowAnalysis()
-                else reason = TTypeBoundsAnalysis()
-              )
-            ) and
-            len = valueBasedBound.minimum(typeBasedBound)
+          // The first case handles length sub-specifiers
+          // Subtract one in the exponent because one bit is for the sign.
+          // Add 1 to account for the possible sign in the output.
+          typeBasedBound =
+            1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
+          // The second case uses range analysis to deduce a length that's shorter than the length
+          // of the number -2^31.
+          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted()) and
+            typeLower = exprMinVal(arg.getFullyConverted()) and
+            typeUpper = exprMaxVal(arg.getFullyConverted())
+          |
+            valueBasedBound =
+              max(int cand |
+                // Include the sign bit in the length if it can be negative
+                (
+                  if lower < 0
+                  then cand = 1 + lengthInBase10(lower.abs())
+                  else cand = lengthInBase10(lower)
+                )
+                or
+                (
+                  if upper < 0
+                  then cand = 1 + lengthInBase10(upper.abs())
+                  else cand = lengthInBase10(upper)
+                )
+              ) and
+            (
+              if lower > typeLower or upper < typeUpper
+              then reason = TValueFlowAnalysis()
+              else reason = TTypeBoundsAnalysis()
+            )
+          ) and
+          len = valueBasedBound.minimum(typeBasedBound)
         )
         or
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
         exists(float typeBasedBound, float valueBasedBound |
-            // The first case handles length sub-specifiers
-            typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
-            // The second case uses range analysis to deduce a length that's shorter than
-            // the length of the number 2^31 - 1.
-            exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
-              arg = this.getUse().getConversionArgument(n) and
-              lower = lowerBound(arg.getFullyConverted()) and
-              upper = upperBound(arg.getFullyConverted()) and
-              typeLower = exprMinVal(arg.getFullyConverted()) and
-              typeUpper = exprMaxVal(arg.getFullyConverted()) 
-            |
-              valueBasedBound =
-                lengthInBase10(max(float cand |
+          // The first case handles length sub-specifiers
+          typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
+          // The second case uses range analysis to deduce a length that's shorter than
+          // the length of the number 2^31 - 1.
+          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted()) and
+            typeLower = exprMinVal(arg.getFullyConverted()) and
+            typeUpper = exprMaxVal(arg.getFullyConverted())
+          |
+            valueBasedBound =
+              lengthInBase10(max(float cand |
                   // If lower can be negative we use `(unsigned)-1` as the candidate value.
                   lower < 0 and
                   cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
                   or
                   cand = upper
                 )) and
-              (
-                if lower > typeLower or upper < typeUpper
-                then reason = TValueFlowAnalysis()
-                else reason = TTypeBoundsAnalysis()
-              )
-            ) and
-            len = valueBasedBound.minimum(typeBasedBound)
+            (
+              if lower > typeLower or upper < typeUpper
+              then reason = TValueFlowAnalysis()
+              else reason = TTypeBoundsAnalysis()
+            )
+          ) and
+          len = valueBasedBound.minimum(typeBasedBound)
         )
         or
         this.getConversionChar(n).toLowerCase() = "x" and
@@ -1170,7 +1183,8 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
-        ) and reason = TTypeBoundsAnalysis()
+        ) and
+        reason = TTypeBoundsAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "p" and
         exists(PointerType ptrType, int baseLen |
@@ -1179,7 +1193,8 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
-        ) and reason = TValueFlowAnalysis()
+        ) and
+        reason = TValueFlowAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "o" and
         // e.g. 2^32 - 1 = "37777777777"
@@ -1198,7 +1213,8 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 1 + baseLen else len = baseLen // "0"
           )
-        ) and reason = TTypeBoundsAnalysis()
+        ) and
+        reason = TTypeBoundsAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "s" and
         len =
@@ -1218,6 +1234,10 @@ class FormatLiteral extends Literal {
    * determining whether a buffer overflow is caused by long float to string
    * conversions.
    */
+  int getMaxConvertedLengthLimited(int n) {
+    result = max(int l | l = getMaxConvertedLengthLimited(n, _) | l)
+  }
+
   int getMaxConvertedLengthLimited(int n, BufferWriteEstimationReason reason) {
     if this.getConversionChar(n).toLowerCase() = "f"
     then result = this.getMaxConvertedLength(n, reason).minimum(8)
@@ -1269,7 +1289,7 @@ class FormatLiteral extends Literal {
         result =
           this.getConstantPart(n).length() + this.getMaxConvertedLength(n, headReason) +
             this.getMaxConvertedLengthAfter(n + 1, tailReason) and
-            reason = headReason.combineWith(tailReason)
+        reason = headReason.combineWith(tailReason)
       )
   }
 
@@ -1277,12 +1297,12 @@ class FormatLiteral extends Literal {
     if n = this.getNumConvSpec()
     then result = this.getConstantSuffix().length() + 1 and reason = TValueFlowAnalysis()
     else
-    exists(BufferWriteEstimationReason headReason, BufferWriteEstimationReason tailReason |
-      result =
-        this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n, headReason) +
-          this.getMaxConvertedLengthAfterLimited(n + 1, tailReason) and
-          reason = headReason.combineWith(tailReason)
-    )
+      exists(BufferWriteEstimationReason headReason, BufferWriteEstimationReason tailReason |
+        result =
+          this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n, headReason) +
+            this.getMaxConvertedLengthAfterLimited(n + 1, tailReason) and
+        reason = headReason.combineWith(tailReason)
+      )
   }
 
   /**
