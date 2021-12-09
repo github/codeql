@@ -13,9 +13,6 @@ private import CoreKnowledge as CoreKnowledge
 
 /** Provides a set of reasons why a given data flow node should be excluded as a sink candidate. */
 string getAReasonSinkExcluded(DataFlow::Node n) {
-  not flowsToArgumentOfLikelyExternalLibraryCall(n) and
-  result = "not an argument to a likely external library call"
-  or
   isArgumentToModeledFunction(n) and result = "argument to modeled function"
   or
   isArgumentToSinklessLibrary(n) and result = "argument to sinkless library"
