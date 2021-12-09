@@ -1330,27 +1330,6 @@ class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Collections.Generic.KeyValuePair`. */
-class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow,
-  SystemCollectionsGenericKeyValuePairStruct {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    exists(int i |
-      c.(Constructor).getDeclaringType() = this and
-      source = TCallableFlowSourceArg(i) and
-      sourceAp = AccessPath::empty() and
-      sink = TCallableFlowSinkReturn()
-    |
-      i = 0 and sinkAp = AccessPath::property(this.getKeyProperty())
-      or
-      i = 1 and sinkAp = AccessPath::property(this.getValueProperty())
-    )
-  }
-}
-
 /** Data flow for `System.[Value]Tuple<,...,>`. */
 class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
   SystemTupleFlow() {
