@@ -60,6 +60,17 @@ class SystemNetIPHostEntryClass extends SystemNetClass {
   Property getAliasesProperty() { result = this.getProperty("Aliases") }
 }
 
+/** Data flow for `System.Net.IPHostEntry`. */
+private class SystemNetIPHostEntryClassFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[-1];ReturnValue;taint",
+        "System.Net;IPHostEntry;false;get_HostName;();;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Net.Cookie` class. */
 class SystemNetCookieClass extends SystemNetClass {
   SystemNetCookieClass() { this.hasName("Cookie") }
