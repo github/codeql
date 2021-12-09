@@ -16,6 +16,16 @@ class C
 
   def private4
   end
+  
+  def self.public2
+  end
+  
+  private_class_method def self.private5
+  end
+  
+  def self.private6
+  end
+  private_class_method :private6
 end
 
 def private_on_main
