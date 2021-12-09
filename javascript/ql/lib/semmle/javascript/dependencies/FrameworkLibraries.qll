@@ -238,7 +238,7 @@ private class MarkerComment extends Comment {
    * with version number `version`.
    */
   predicate matchesFramework(FrameworkLibraryWithMarkerComment fl, string version) {
-    fl.getAMarkerCommentRegexWithoutPlaceholders().regexpCapture(this.getText(), 1) = version
+    this.getText().regexpCapture(fl.getAMarkerCommentRegexWithoutPlaceholders(), 1) = version
   }
 }
 
