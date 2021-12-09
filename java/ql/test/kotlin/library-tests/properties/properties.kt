@@ -32,6 +32,10 @@ abstract class properties(val constructorProp: Int, var mutableConstructorProp: 
     val useField = 14
             get() = field + 1
     lateinit var lateInitVar: String
+    private val privateProp = 15
+    protected val protectedProp = 16
+    public val publicProp = 17
+    internal val internalProp = 18
     fun useProps(): Int {
         return 0 +
             constructorProp +
@@ -52,6 +56,10 @@ abstract class properties(val constructorProp: Int, var mutableConstructorProp: 
             overrideGetter +
             overrideGetterUseField +
             useField +
+            privateProp +
+            protectedProp +
+            publicProp +
+            internalProp +
             constVal
     }
 }

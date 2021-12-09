@@ -469,6 +469,9 @@ open class KotlinFileExtractor(
         val type = useType(f.type)
         tw.writeFields(id, f.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
         tw.writeHasLocation(id, locId)
+
+        extractVisibility(f, id, f.visibility)
+
         return id
     }
 
@@ -509,6 +512,8 @@ open class KotlinFileExtractor(
             val fieldId = extractField(bf, parentId)
             tw.writeKtPropertyBackingFields(id, fieldId)
         }
+
+        extractVisibility(p, id, p.visibility)
     }
 
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {

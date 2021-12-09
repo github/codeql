@@ -687,7 +687,7 @@ class InstanceField extends Field {
 }
 
 /** A Kotlin property. */
-class Property extends Element, @kt_property {
+class Property extends Element, Modifiable, @kt_property {
   /** Gets the getter method for this property, if any. */
   Method getGetter() { ktPropertyGetters(this, result) }
 

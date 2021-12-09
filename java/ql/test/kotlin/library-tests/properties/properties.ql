@@ -44,5 +44,5 @@ MaybeElement backingField(Property p) {
 
 from Property p
 where p.fromSource()
-select p, getter(p), setter(p), backingField(p)
+select p, getter(p), setter(p), backingField(p), concat(string s | p.hasModifier(s) | s, ", ")
 

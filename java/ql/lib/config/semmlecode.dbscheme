@@ -960,7 +960,7 @@ javadocText(
 
 @modifiable = @member_modifiable| @param | @localvar ;
 
-@member_modifiable = @class | @interface | @method | @constructor | @field ;
+@member_modifiable = @class | @interface | @method | @constructor | @field | @kt_property;
 
 @member = @method | @constructor | @field | @reftype ;
 
