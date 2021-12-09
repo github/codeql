@@ -596,12 +596,13 @@ private MethodAccess callReturningSameType(Expr ref) {
 }
 
 private SrcRefType entrypointType() {
-  result =
-    pragma[only_bind_out](any(RemoteFlowSource s | s instanceof DataFlow::ExplicitParameterNode))
-        .getType()
-        .(RefType)
-        .getASubtype*()
-        .getSourceDeclaration() or
+  exists(RemoteFlowSource s, RefType t |
+    s instanceof DataFlow::ExplicitParameterNode and
+    t = pragma[only_bind_out](s).getType() and
+    not t instanceof TypeObject and
+    result = t.getASubtype*().getSourceDeclaration()
+  )
+  or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
 }
 
