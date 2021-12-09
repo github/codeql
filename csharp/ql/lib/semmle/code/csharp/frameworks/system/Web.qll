@@ -3,6 +3,7 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.collections.Specialized
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Web` namespace. */
 class SystemWebNamespace extends Namespace {
@@ -203,6 +204,17 @@ class SystemWebHttpCookie extends SystemWebClass {
 
   /** Gets the `Secure` property. */
   Property getSecureProperty() { result = this.getProperty("Secure") }
+}
+
+/** Data flow for `System.Web.HttpCookie`. */
+private class SystemWebHttpCookieFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Web;HttpCookie;false;get_Value;();;Argument[-1];ReturnValue;taint",
+        "System.Web;HttpCookie;false;get_Values;();;Argument[-1];ReturnValue;taint"
+      ]
+  }
 }
 
 /** The `System.Web.IHtmlString` class. */
