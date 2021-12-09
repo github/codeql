@@ -96,9 +96,14 @@ abstract class FrameworkLibraryWithMarkerComment extends FrameworkLibrary {
    * numbers.
    *
    * The first capture group of this regular expression should match
-   * the version number. Any occurrences of the string `<VERSION>` in
-   * the regular expression will be replaced by `versionRegex()` before
-   * matching.
+   * the version number.
+   *
+   * Subclasses should implement this predicate.
+   *
+   * Callers should avoid using this predicate directly,
+   * and instead use `getAMarkerCommentRegexWithoutPlaceholders()`,
+   * which will replace any occurrences of the string `<VERSION>` in
+   * the regular expression with `versionRegex()`.
    */
   abstract string getAMarkerCommentRegex();
 
