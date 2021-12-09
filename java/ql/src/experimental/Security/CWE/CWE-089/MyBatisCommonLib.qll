@@ -16,7 +16,7 @@ private predicate propertiesKey(DataFlow::Node prop, string key) {
   )
 }
 
-/** A data flow configuration tracing flow from ibatis obtaining the variable configuration object to setting the value of the variable. */
+/** A data flow configuration tracing flow from ibatis `Configuration.getVariables()` to a store into a `Properties` object. */
 private class PropertiesFlowConfig extends DataFlow2::Configuration {
   PropertiesFlowConfig() { this = "PropertiesFlowConfig" }
 
@@ -29,7 +29,7 @@ private class PropertiesFlowConfig extends DataFlow2::Configuration {
   override predicate isSink(DataFlow::Node sink) { propertiesKey(sink, _) }
 }
 
-/** Get the key value of Mybatis Configuration Variable. */
+/** Gets a `Properties` key that may map onto a Mybatis `Configuration` variable. */
 string getAMybatisConfigurationVariableKey() {
   exists(PropertiesFlowConfig conf, DataFlow::Node n |
     propertiesKey(n, result) and
@@ -74,7 +74,11 @@ string getAMybatisAnnotationSqlValue(IbatisSqlOperationAnnotation isoa) {
   result = isoa.getSqlValue().regexpFind("(#|\\$)\\{[^\\}]*\\}", _, _)
 }
 
-/** Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression. */
+/**
+ * Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression.
+ *
+ * This case currently assumes all `${...}` expressions are potentially dangerous when there is a non-`@Param` annotated, collection-typed parameter to `ma`.
+ */
 bindingset[unsafeExpression]
 predicate isMybatisCollectionTypeSqlInjection(
   DataFlow::Node node, MethodAccess ma, string unsafeExpression
@@ -100,7 +104,15 @@ predicate isMybatisCollectionTypeSqlInjection(
   )
 }
 
-/** Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression. */
+/**
+ * Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression.
+ *
+ * This accounts for:
+ * - arguments referred to by a name given in a `@Param` annotation,
+ * - arguments referred to by ordinal position, like `${param1}`
+ * - references to class instance fields
+ * - any `${}` expression where there is a single, non-`@Param`-annotated argument to `ma`.
+ */
 bindingset[unsafeExpression]
 predicate isMybatisXmlOrAnnotationSqlInjection(
   DataFlow::Node node, MethodAccess ma, string unsafeExpression
