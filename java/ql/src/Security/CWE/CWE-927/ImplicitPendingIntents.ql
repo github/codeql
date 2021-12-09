@@ -1,5 +1,5 @@
 /**
- * @name Use of implicit Pending Intents
+ * @name Use of implicit PendingIntents
  * @description Implicit and mutable PendingIntents being sent to an unspecified third party
  *              component may provide access to internal components of the application or cause
  *              other unintended effects.
@@ -7,7 +7,7 @@
  * @problem.severity error
  * @security-severity 8.2
  * @precision high
- * @id java/android/pending-intents
+ * @id java/android/implicit-pendingintents
  * @tags security
  *       external/cwe/cwe-927
  */
@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(ImplicitPendingIntentStartConf conf).hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "An implicit and mutable pending Intent is created $@ and sent to an unspecified third party.",
+  "An implicit and mutable PendingIntent is created $@ and sent to an unspecified third party.",
   source.getNode(), "here"

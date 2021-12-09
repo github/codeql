@@ -274,8 +274,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;setActions;;;ArrayElement of
-			// Argument[0];SyntheticField[android.app.Notification.action] of
-			// Argument[-1];taint"
+			// Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			Notification.Action[] in = (Notification.Action[]) new Notification.Action[] {
 					(Notification.Action) source()};
