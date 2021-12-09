@@ -19,4 +19,6 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(ImplicitPendingIntentStartConf conf).hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "something"
+select sink.getNode(), source, sink,
+  "An implicit and mutable pending Intent is created $@ and sent to an unspecified third party.",
+  source.getNode(), "here"

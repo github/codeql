@@ -12,7 +12,7 @@
   receiving application if they were not previously set. This means that a mutable <code>PendingIntent</code> that has 
   not defined a destination component (that is, an implicit <code>PendingIntent</code>) can be altered to execute an 
   arbitrary action with the privileges of the application that created it.</p>
-<p>If an implicit PendingIntent is obtainable by a malicious application by any of the following means:</p>
+<p>If an implicit <code>PendingIntent</code> is obtainable by a malicious application by any of the following means:</p>
 <ul>
   <li>It is wrapped and sent as an extra of another implicit Intent</li>
   <li>It is sent as the action of a Slide</li>
