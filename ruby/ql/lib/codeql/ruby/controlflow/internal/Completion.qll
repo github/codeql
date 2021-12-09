@@ -310,7 +310,7 @@ class MatchingCompletion extends ConditionalCompletion {
     this = TNestedCompletion(_, TMatchingCompletion(value), _)
   }
 
-  override SuccessorType getAMatchingSuccessorType() {
+  override ConditionalSuccessor getAMatchingSuccessorType() {
     this = TMatchingCompletion(result.(MatchingSuccessor).getValue())
   }
 
