@@ -28,6 +28,18 @@ class SystemNetWebUtility extends SystemNetClass {
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
 }
 
+/** Data flow for `System.Net.WebUtility`. */
+private class SystemNetWebUtilityFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
+        "System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Net.HttpListenerResponse` class. */
 class SystemNetHttpListenerResponseClass extends SystemNetClass {
   SystemNetHttpListenerResponseClass() { this.hasName("HttpListenerResponse") }

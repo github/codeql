@@ -1999,22 +1999,6 @@ class SystemWebHttpServerUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpS
   }
 }
 
-/** Data flow for `System.Net.WebUtility`. */
-class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      c = this.getAnHtmlEncodeMethod() or
-      c = this.getAnUrlEncodeMethod()
-    ) and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = false
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */
