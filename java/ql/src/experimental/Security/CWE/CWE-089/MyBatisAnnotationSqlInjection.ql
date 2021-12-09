@@ -53,7 +53,7 @@ where
   unsafeExpression = getAMybatisAnnotationSqlValue(isoa) and
   (
     isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression) or
-    isMybatisAnnotationCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression)
+    isMybatisCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression)
   )
 select sink.getNode(), source, sink,
   "MyBatis annotation SQL injection might include code from $@ to $@.", source.getNode(),

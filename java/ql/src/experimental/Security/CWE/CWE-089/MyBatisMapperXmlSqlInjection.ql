@@ -52,8 +52,10 @@ where
   myBatisMapperXMLElementFromMethod(ma.getMethod(), mmxe) and
   unsafeExpression = getAMybatisXmlSetValue(mmxe) and
   (
-    isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression) or
-    isMybatisXmlCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression, mmxe)
+    isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression)
+    or
+    mmxe instanceof MyBatisMapperForeach and
+    isMybatisCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression)
   )
 select sink.getNode(), source, sink,
   "MyBatis Mapper XML SQL injection might include code from $@ to $@.", source.getNode(),

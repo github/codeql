@@ -76,7 +76,7 @@ string getAMybatisAnnotationSqlValue(IbatisSqlOperationAnnotation isoa) {
 
 /** Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression. */
 bindingset[unsafeExpression]
-predicate isMybatisAnnotationCollectionTypeSqlInjection(
+predicate isMybatisCollectionTypeSqlInjection(
   DataFlow::Node node, MethodAccess ma, string unsafeExpression
 ) {
   not unsafeExpression.regexpMatch("\\$\\{" + getAMybatisConfigurationVariableKey() + "\\}") and
@@ -89,38 +89,6 @@ predicate isMybatisAnnotationCollectionTypeSqlInjection(
   //    Test test(Map map);
   // ```
   exists(int i |
-    not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
-    (
-      ma.getMethod().getParameterType(i) instanceof MapType or
-      ma.getMethod().getParameterType(i) instanceof ListType or
-      ma.getMethod().getParameterType(i) instanceof Array
-    ) and
-    unsafeExpression.matches("${%}") and
-    ma.getArgument(i) = node.asExpr()
-  )
-}
-
-/** Holds if `node` is an argument to `ma` that is vulnerable to SQL injection attacks if `unsafeExpression` occurs in a MyBatis SQL expression. */
-bindingset[unsafeExpression]
-predicate isMybatisXmlCollectionTypeSqlInjection(
-  DataFlow::Node node, MethodAccess ma, string unsafeExpression, MyBatisMapperXMLElement mmxe
-) {
-  not unsafeExpression.regexpMatch("\\$\\{" + getAMybatisConfigurationVariableKey() + "\\}") and
-  // The parameter type of the MyBatis method parameter is Map or List or Array.
-  // SQL injection vulnerability caused by improper use of this parameter.
-  // e.g.
-  //
-  // ```java
-  //    Test test(Map map);
-  //    <select id="test" resultMap="BaseResultMap">
-  //        select id,name from test where name in
-  //            <foreach collection="list" item="value" open="(" close=")" separator=",">
-  //              ${value}
-  //            </foreach>
-  //    </select>
-  // ```
-  exists(int i, MyBatisMapperForeach mbmf |
-    mbmf = mmxe and
     not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
     (
       ma.getMethod().getParameterType(i) instanceof MapType or
