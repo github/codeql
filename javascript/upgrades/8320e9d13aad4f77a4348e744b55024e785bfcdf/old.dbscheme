@@ -392,7 +392,7 @@ case @expr.kind of
 
 @exportspecifier = @named_export_specifier | @export_default_specifier | @export_namespace_specifier;
 
-@type_keyword_operand = @import_declaration | @export_declaration | @import_specifier;
+@import_or_export_declaration = @import_declaration | @export_declaration;
 
 @type_assertion = @as_type_assertion | @prefix_type_assertion;
 
@@ -541,7 +541,7 @@ has_public_keyword (int id: @property ref);
 has_private_keyword (int id: @property ref);
 has_protected_keyword (int id: @property ref);
 has_readonly_keyword (int id: @property ref);
-has_type_keyword (int id: @type_keyword_operand ref);
+has_type_keyword (int id: @import_or_export_declaration ref);
 is_optional_member (int id: @property ref);
 has_definite_assignment_assertion (int id: @field_or_vardeclarator ref);
 is_optional_parameter_declaration (unique int parameter: @pattern ref);

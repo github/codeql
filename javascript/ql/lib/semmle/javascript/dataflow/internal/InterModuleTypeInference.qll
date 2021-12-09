@@ -15,7 +15,11 @@ private import AbstractPropertiesImpl
 private class AnalyzedImportSpecifier extends AnalyzedVarDef, @import_specifier {
   ImportDeclaration id;
 
-  AnalyzedImportSpecifier() { this = id.getASpecifier() and exists(id.resolveImportedPath()) }
+  AnalyzedImportSpecifier() {
+    this = id.getASpecifier() and
+    exists(id.resolveImportedPath()) and
+    not this.(ImportSpecifier).isTypeOnly()
+  }
 
   override DataFlow::AnalyzedNode getRhs() { result.(AnalyzedImport).getImportSpecifier() = this }
 
@@ -135,10 +139,12 @@ private predicate incompleteExport(ES2015Module m, string y) {
  */
 private class AnalyzedImport extends AnalyzedPropertyRead, DataFlow::ValueNode {
   Module imported;
+  override ImportSpecifier astNode;
 
   AnalyzedImport() {
     exists(ImportDeclaration id |
       astNode = id.getASpecifier() and
+      not astNode.isTypeOnly() and
       imported = id.getImportedModule()
     )
   }
