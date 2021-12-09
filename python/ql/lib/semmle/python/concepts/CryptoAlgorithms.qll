@@ -13,7 +13,11 @@
  *
  * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
  */
-private module AlgorithmNames {
+module AlgorithmNames {
+  predicate isStrongBlockMode(string name) { name = ["CCM", "GCM"] }
+
+  predicate isWeakBlockMode(string name) { name = "ECB" }
+
   predicate isStrongHashingAlgorithm(string name) {
     name =
       [
@@ -31,14 +35,20 @@ private module AlgorithmNames {
   }
 
   predicate isStrongEncryptionAlgorithm(string name) {
-    name = ["AES", "AES128", "AES192", "AES256", "AES512", "RSA", "RABBIT", "BLOWFISH"]
+    name =
+      [
+        "AES", "AES128", "AES192", "AES256", "AES512", "AES-128", "AES-192", "AES-256", "AES-512",
+        "RSA", "RABBIT", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5", "CAMELLIA", "CAMELLIA128",
+        "CAMELLIA192", "CAMELLIA256", "CAMELLIA-128", "CAMELLIA-192", "CAMELLIA-256", "CHACHA",
+        "GOST", "GOST89"
+      ]
   }
 
   predicate isWeakEncryptionAlgorithm(string name) {
     name =
       [
-        "DES", "3DES", "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4", "RC4", "ARCFOUR",
-        "ARC5", "RC5"
+        "DES", "3DES", "DES3", "TRIPLEDES", "DESX", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4",
+        "RC4", "ARCFOUR", "ARC5", "RC5"
       ]
   }
 

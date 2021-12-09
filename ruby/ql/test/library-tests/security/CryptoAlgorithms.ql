@@ -12,7 +12,3 @@ query predicate strongEncryptionAlgorithms(EncryptionAlgorithm ea) { not ea.isWe
 query predicate weakPasswordHashingAlgorithms(PasswordHashingAlgorithm pha) { pha.isWeak() }
 
 query predicate strongPasswordHashingAlgorithms(PasswordHashingAlgorithm pha) { not pha.isWeak() }
-
-query predicate weakOpenSSLCipherAlgorithms(OpenSSLCipher c) { c.isWeak() }
-
-query predicate strongOpenSSLCipherAlgorithms(OpenSSLCipher c) { not c.isWeak() }
