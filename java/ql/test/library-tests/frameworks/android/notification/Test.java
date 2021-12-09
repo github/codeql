@@ -42,24 +42,21 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(Action);;SyntheticField[android.app.Notification.action]
-			// of Argument[0];SyntheticField[android.app.Notification.action] of Argument[-1];taint"
+			// "android.app;Notification$Action$Builder;true;Builder;(Action);;Argument[0];Argument[-1];taint"
 			Notification.Action.Builder out = null;
 			Notification.Action in = (Notification.Action) source();
 			out = new Notification.Action.Builder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(Icon,CharSequence,PendingIntent);;Argument[2];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Action$Builder;true;Builder;(Icon,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint"
 			Notification.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action.Builder((Icon) null, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint"
 			Notification.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action.Builder(0, (CharSequence) null, in);
@@ -98,8 +95,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;build;;;SyntheticField[android.app.Notification.action]
-			// of Argument[-1];SyntheticField[android.app.Notification.action] of ReturnValue;taint"
+			// "android.app;Notification$Action$Builder;true;build;;;Argument[-1];ReturnValue;taint"
 			Notification.Action out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.build();
@@ -149,24 +145,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint"
 			Notification.Action out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action(0, null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;(Action);;SyntheticField[android.app.Notification.action]
-			// of Argument[0];SyntheticField[android.app.Notification.action] of Argument[-1];taint"
+			// "android.app;Notification$Builder;true;addAction;(Action);;Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			Notification.Action in = (Notification.Action) source();
 			out.addAction(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.addAction(0, null, in);
@@ -224,8 +217,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;build;;;SyntheticField[android.app.Notification.action]
-			// of Argument[-1];SyntheticField[android.app.Notification.action] of ReturnValue;taint"
+			// "android.app;Notification$Builder;true;build;;;Argument[-1];ReturnValue;taint"
 			Notification out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.build();
@@ -247,8 +239,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;recoverBuilder;;;SyntheticField[android.app.Notification.action]
-			// of Argument[1];SyntheticField[android.app.Notification.action] of ReturnValue;taint"
+			// "android.app;Notification$Builder;true;recoverBuilder;;;Argument[1];ReturnValue;taint"
 			Notification.Builder out = null;
 			Notification in = (Notification) source();
 			out = Notification.Builder.recoverBuilder(null, in);
@@ -262,8 +253,8 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setActions;;;SyntheticField[android.app.Notification.action]
-			// of ArrayElement of Argument[0];SyntheticField[android.app.Notification.action] of
+			// "android.app;Notification$Builder;true;setActions;;;ArrayElement of
+			// Argument[0];SyntheticField[android.app.Notification.action] of
 			// Argument[-1];taint"
 			Notification.Builder out = null;
 			Notification.Action[] in = (Notification.Action[]) new Notification.Action[] {
@@ -349,8 +340,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[0];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setContentIntent(in);
@@ -399,8 +389,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[0];SyntheticField[android.app.Notification.action]
-			// of Argument[-1];taint"
+			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setDeleteIntent(in);
@@ -541,8 +530,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setPublicVersion;;;SyntheticField[android.app.Notification.action]
-			// of Argument[0];SyntheticField[android.app.Notification.action] of Argument[-1];taint"
+			// "android.app;Notification$Builder;true;setPublicVersion;;;Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			Notification in = (Notification) source();
 			out.setPublicVersion(in);

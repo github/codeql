@@ -16,9 +16,6 @@ class NotificationsTaintFlowConf extends DefaultTaintFlowConf {
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
     super.allowImplicitRead(node, c)
     or
-    isSink(node) and
-    c.(DataFlow::SyntheticFieldContent).getField() = "android.app.Notification.action"
-    or
     allowIntentExtrasImplicitRead(node, c)
   }
 }
