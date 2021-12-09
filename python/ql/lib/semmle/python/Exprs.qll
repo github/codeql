@@ -718,6 +718,14 @@ class FormattedValue extends FormattedValue_ {
   }
 }
 
+/* Pattern expressions for the match statement */
+class MatchCapturePattern extends MatchCapturePattern_ {
+  /* syntax: varname */
+  override Expr getASubExpression() { result = this.getVariable() }
+
+  Name getVar() { result = this.getVariable() }
+}
+
 /* Expression Contexts */
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }

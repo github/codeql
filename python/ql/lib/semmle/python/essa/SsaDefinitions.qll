@@ -40,6 +40,16 @@ module SsaSource {
     )
   }
 
+  cached
+  predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchCapturePattern capture, Name var |
+      capture.getVar() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
   /** Holds if `v` is defined by multiple assignment at `defn`. */
   cached
   predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
