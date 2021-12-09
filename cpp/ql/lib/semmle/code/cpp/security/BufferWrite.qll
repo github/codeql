@@ -79,8 +79,19 @@ abstract class BufferWrite extends Expr {
    */
   int getMaxDataLimited() { result = max(int d | d = getMaxDataLimited(_) | d) }
 
+  /**
+   * Gets an upper bound to the amount of data that's being written (if one
+   * can be found), specifying the reason for the estimation
+   */
   int getMaxData(BufferWriteEstimationReason reason) { none() }
 
+  /**
+   * Gets an upper bound to the amount of data that's being written (if one
+   * can be found), specifying the reason for the estimation, except that
+   * float to string conversions are assumed to be much smaller (8 bytes)
+   * than their true maximum length.  This can be helpful in determining the
+   * cause of a buffer overflow issue.
+   */
   int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxData(reason) }
 
   /**

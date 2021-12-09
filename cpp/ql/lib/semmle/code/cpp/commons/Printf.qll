@@ -1021,6 +1021,11 @@ class FormatLiteral extends Literal {
    */
   int getMaxConvertedLength(int n) { result = max(int l | l = getMaxConvertedLength(n, _) | l) }
 
+  /**
+   * Gets the maximum length of the string that can be produced by the nth
+   * conversion specifier of this format string, specifying the estimation reason;
+   * has no result if this cannot be determined. 
+   */
   int getMaxConvertedLength(int n, BufferWriteEstimationReason reason) {
     exists(int len |
       (
@@ -1238,6 +1243,13 @@ class FormatLiteral extends Literal {
     result = max(int l | l = getMaxConvertedLengthLimited(n, _) | l)
   }
 
+  /**
+   * Gets the maximum length of the string that can be produced by the nth
+   * conversion specifier of this format string, specifying the reason for the
+   * estimation, except that float to string conversions are assumed to be 8
+   * characters.  This is helpful for determining whether a buffer overflow is
+   * caused by long float to string conversions.
+   */
   int getMaxConvertedLengthLimited(int n, BufferWriteEstimationReason reason) {
     if this.getConversionChar(n).toLowerCase() = "f"
     then result = this.getMaxConvertedLength(n, reason).minimum(8)
@@ -1319,10 +1331,21 @@ class FormatLiteral extends Literal {
    */
   int getMaxConvertedLengthLimited() { result = this.getMaxConvertedLengthAfterLimited(0, _) }
 
+  /**
+   * Gets the maximum length of the string that can be produced by this format
+   * string, specifying the reason for the estimate. Has no result if no estimate
+   * can be found.
+   */
   int getMaxConvertedLengthWithReason(BufferWriteEstimationReason reason) {
     result = this.getMaxConvertedLengthAfter(0, reason)
   }
 
+  /**
+   * Gets the maximum length of the string that can be produced by this format
+   * string, specifying the reason for the estimate, except that float to string
+   * conversions are assumed to be 8 characters.  This is helpful for determining
+   * whether a buffer overflow is caused by long float to string conversions.
+   */
   int getMaxConvertedLengthLimitedWithReason(BufferWriteEstimationReason reason) {
     result = this.getMaxConvertedLengthAfterLimited(0, reason)
   }
