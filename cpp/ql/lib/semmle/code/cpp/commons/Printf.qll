@@ -16,39 +16,30 @@ private newtype TBufferWriteEstimationReason =
 /**
  * A reason for a specific buffer write size estimate
  */
-class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
-  BufferWriteEstimationReason() {
-    this = TTypeBoundsAnalysis() or
-    this = TValueFlowAnalysis()
-  }
-
+abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
   /**
    * Returns a human readable representation of this reason
    */
-  string toString() {
-    this = TTypeBoundsAnalysis() and result = "based on type bounds"
-    or
-    this = TValueFlowAnalysis() and result = "based on flow analysis of value bounds"
-  }
+  abstract string toString();
 
   /**
    * Combine estimate reasons. Used to give a reason for the size of a format string
    * conversion given reasons coming from its individual specifiers
    */
-  BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    (this = TTypeBoundsAnalysis() or other = TTypeBoundsAnalysis()) and
-    result = TTypeBoundsAnalysis()
-    or
-    (this = TValueFlowAnalysis() and other = TValueFlowAnalysis()) and
-    result = TValueFlowAnalysis()
-  }
+  abstract BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other);
 }
 
 /**
  * The estimation comes from rough bounds just based on the type (e.g.
  * `0 <= x < 2^32` for an unsigned 32 bit integer)
  */
-BufferWriteEstimationReason typeBoundsAnalysis() { result = TTypeBoundsAnalysis() }
+class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysis {
+  override string toString() { result = "based on type bounds" }
+
+  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    result = TTypeBoundsAnalysis() and other = other
+  }
+}
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis.
@@ -60,7 +51,14 @@ BufferWriteEstimationReason typeBoundsAnalysis() { result = TTypeBoundsAnalysis(
  * }
  * ```
  */
-BufferWriteEstimationReason valueFlowAnalysis() { result = TValueFlowAnalysis() }
+class ValueFlowAnalysis extends BufferWriteEstimationReason, TValueFlowAnalysis {
+  override string toString() { result = "based on flow analysis of value bounds" }
+
+  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    other = TTypeBoundsAnalysis() and result = TTypeBoundsAnalysis() or
+    other = TValueFlowAnalysis() and result = TValueFlowAnalysis()
+  }
+}
 
 class PrintfFormatAttribute extends FormatAttribute {
   PrintfFormatAttribute() { this.getArchetype() = ["printf", "__printf__"] }
@@ -1043,7 +1041,7 @@ class FormatLiteral extends Literal {
    * conversion specifier of this format string; has no result if this cannot
    * be determined.
    */
-  int getMaxConvertedLength(int n) { result = max(int l | l = getMaxConvertedLength(n, _) | l) }
+  int getMaxConvertedLength(int n) { result = max(getMaxConvertedLength(n, _)) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth
@@ -1263,9 +1261,7 @@ class FormatLiteral extends Literal {
    * determining whether a buffer overflow is caused by long float to string
    * conversions.
    */
-  int getMaxConvertedLengthLimited(int n) {
-    result = max(int l | l = getMaxConvertedLengthLimited(n, _) | l)
-  }
+  int getMaxConvertedLengthLimited(int n) { result = max(getMaxConvertedLengthLimited(n, _)) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth
