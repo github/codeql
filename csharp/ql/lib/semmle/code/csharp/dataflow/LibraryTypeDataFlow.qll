@@ -1330,24 +1330,6 @@ class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Net.Cookie`. */
-class SystemNetCookieFlow extends LibraryTypeDataFlow, SystemNetCookieClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    exists(Property p |
-      this.propertyFlow(p) and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      c = p.getGetter()
-    ) and
-    preservesValue = false
-  }
-
-  private predicate propertyFlow(Property p) { p = this.getValueProperty() }
-}
-
 /** Data flow for `System.Net.IPHostEntry`. */
 class SystemNetIPHostEntryFlow extends LibraryTypeDataFlow, SystemNetIPHostEntryClass {
   override predicate callableFlow(

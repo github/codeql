@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net` namespace. */
 class SystemNetNamespace extends Namespace {
@@ -65,4 +66,11 @@ class SystemNetCookieClass extends SystemNetClass {
 
   /** Gets the `Value` property. */
   Property getValueProperty() { result = this.getProperty("Value") }
+}
+
+/** Data flow for `System.Net.Cookie`. */
+private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = "System.Net;Cookie;false;get_Value;();;Argument[-1];ReturnValue;taint"
+  }
 }
