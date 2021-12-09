@@ -1,7 +1,7 @@
 | Test.kt:0:0:0:0 | TestKt | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | <Expr>; | ExprStmt | Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess |
 | Test.kt:3:1:80:1 | <obinit> | Method | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess | Test.kt:3:8:80:1 | Test | Constructor |
+| Test.kt:3:1:80:1 | <obinit>(...) | MethodAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | Test | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:1:80:1 | <Expr>; | ExprStmt |
 | Test.kt:3:1:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | <obinit> | Method |
