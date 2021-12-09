@@ -12,6 +12,8 @@
  * @tags experimental experimental/atm security
  */
 
+ // nop
+ 
 import javascript
 import ATM::ResultsInfo
 import DataFlow::PathGraph
