@@ -13,6 +13,9 @@ private newtype TBufferWriteEstimationReason =
   TTypeBoundsAnalysis() or
   TValueFlowAnalysis()
 
+/**
+ * A reason for a specific buffer write size estimate
+ */
 class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
   BufferWriteEstimationReason() {
     this = TTypeBoundsAnalysis() or
@@ -25,6 +28,10 @@ class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
     this = TValueFlowAnalysis() and result = "based on flow analysis of value bounds"
   }
 
+  /**
+   * Combine estimate reasons. Used to give a reason for the size of a format string
+   * conversion given reasons coming from its individual specifiers
+   */
   BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
     (this = TTypeBoundsAnalysis() or other = TTypeBoundsAnalysis()) and
     result = TTypeBoundsAnalysis()
@@ -34,8 +41,22 @@ class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
   }
 }
 
+/**
+ * The estimation comes from rough bounds just based on the type (e.g.
+ * `0 <= x < 2^32` for an unsigned 32 bit integer)
+ */
 BufferWriteEstimationReason typeBoundsAnalysis() { result = TTypeBoundsAnalysis() }
 
+/**
+ * The estimation comes from non trivial bounds found via actual flow analysis.
+ * For example
+ * ```
+ * unsigned u = x;
+ * if (u < 1000) {
+ *    //...  <- estimation done here based on u
+ * }
+ * ```
+ */
 BufferWriteEstimationReason valueFlowAnalysis() { result = TValueFlowAnalysis() }
 
 class PrintfFormatAttribute extends FormatAttribute {
