@@ -242,6 +242,9 @@ class Return extends Instruction, @cil_ret {
 class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
   override Expr getExpr() { result = this.getOperand(0) }
 
+  /** Gets the type of the exception being thrown. */
+  Type getExceptionType() { result = this.getOperandType(0) }
+
   override predicate canFlowNext() { none() }
 }
 

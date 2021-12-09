@@ -128,7 +128,12 @@ class ControlFlowNode extends @cil_controlflow_node {
   /** Gets the method containing this control flow node. */
   MethodImplementation getImplementation() { none() }
 
-  /** Gets the type of the item pushed onto the stack, if any. */
+  /**
+   * Gets the type of the item pushed onto the stack, if any.
+   *
+   * If called via `ControlFlowNode::getOperand(i).getType()`, consider using
+   * `ControlFlowNode::getOperandType(i)` instead.
+   */
   cached
   Type getType() { none() }
 
