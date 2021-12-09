@@ -330,3 +330,29 @@ void test_multiple_sources_source(char *password)
 		target6(data);
 	}
 }
+
+void test_loops()
+{
+	{
+		while (cond())
+		{
+			char password[256];
+
+			recv(val(), password, 256, val()); // BAD: not encrypted
+			
+			// ...
+		}
+	}
+
+	{
+		while (cond())
+		{
+			char password[256];
+
+			recv(val(), password, 256, val()); // GOOD: password is encrypted
+			decrypt_inplace(password); // proof that `password` was in fact encrypted
+			
+			// ...
+		}
+	}
+}
