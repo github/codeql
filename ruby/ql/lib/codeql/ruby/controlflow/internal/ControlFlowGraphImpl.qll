@@ -923,7 +923,8 @@ module Trees {
         c instanceof SimpleCompletion
         or
         this.hasDefaultValue() and
-        c.(MatchingCompletion).getValue() = true
+        c.(MatchingCompletion).getValue() = true and
+        c.isValidFor(this)
       )
     }
 
