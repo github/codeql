@@ -28,3 +28,23 @@ C.new.private4
 C.new.public
 
 private_on_main
+
+module D
+  private def private1
+  end
+
+  def public
+  end
+
+  def private2
+  end
+  private :private2
+
+  private
+
+  def private3
+  end
+
+  def private4
+  end
+end

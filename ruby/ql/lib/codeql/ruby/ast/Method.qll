@@ -49,7 +49,7 @@ private class Private extends MethodCall {
    * method named `name`.
    */
   pragma[noinline]
-  predicate isRef(ClassDeclaration c, string name) {
+  predicate isRef(Namespace c, string name) {
     this = c.getAStmt() and
     name = this.getMethod().(SymbolLiteral).getValueText()
   }
@@ -59,7 +59,7 @@ private class Private extends MethodCall {
    * and the call has no arguments.
    */
   pragma[noinline]
-  predicate hasNoArg(ClassDeclaration c, int i) {
+  predicate hasNoArg(Namespace c, int i) {
     this = c.getStmt(i) and
     not exists(this.getMethod())
   }
@@ -91,7 +91,7 @@ class Method extends MethodBase, TMethod {
   final predicate isSetter() { g.getName() instanceof Ruby::Setter }
 
   pragma[noinline]
-  private predicate isDeclaredIn(ClassDeclaration c, string name) {
+  private predicate isDeclaredIn(Namespace c, string name) {
     this = c.getAStmt() and
     name = this.getName()
   }
@@ -125,12 +125,12 @@ class Method extends MethodBase, TMethod {
   predicate isPrivate() {
     this = any(Private p).getMethod()
     or
-    exists(ClassDeclaration c, Private p, string name |
+    exists(Namespace c, Private p, string name |
       this.isDeclaredIn(c, name) and
       p.isRef(c, name)
     )
     or
-    exists(ClassDeclaration c, Private p, int i, int j |
+    exists(Namespace c, Private p, int i, int j |
       p.hasNoArg(c, i) and
       this = c.getStmt(j) and
       j > i

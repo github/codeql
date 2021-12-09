@@ -85,6 +85,9 @@ getTarget
 | private.rb:28:1:28:5 | call to new | calls.rb:99:5:99:16 | new |
 | private.rb:28:1:28:12 | call to public | private.rb:5:3:6:5 | public |
 | private.rb:30:1:30:15 | call to private_on_main | private.rb:21:1:22:3 | private_on_main |
+| private.rb:33:3:34:5 | call to private | calls.rb:94:5:94:20 | private |
+| private.rb:41:3:41:19 | call to private | calls.rb:94:5:94:20 | private |
+| private.rb:43:3:43:9 | call to private | calls.rb:94:5:94:20 | private |
 unresolvedCall
 | calls.rb:19:5:19:14 | call to instance_m |
 | calls.rb:20:5:20:19 | call to instance_m |
@@ -127,3 +130,7 @@ privateMethod
 | private.rb:14:3:15:5 | private3 |
 | private.rb:17:3:18:5 | private4 |
 | private.rb:21:1:22:3 | private_on_main |
+| private.rb:33:11:34:5 | private1 |
+| private.rb:39:3:40:5 | private2 |
+| private.rb:45:3:46:5 | private3 |
+| private.rb:48:3:49:5 | private4 |
