@@ -1330,25 +1330,6 @@ class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Web.UI.WebControls.TextBox`. */
-class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow,
-  SystemWebUIWebControlsTextBoxClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    exists(Property p |
-      this.propertyFlow(p) and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      c = p.getGetter()
-    ) and
-    preservesValue = false
-  }
-
-  private predicate propertyFlow(Property p) { p = this.getTextProperty() }
-}
-
 /** Data flow for `System.Collections.Generic.KeyValuePair`. */
 class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow,
   SystemCollectionsGenericKeyValuePairStruct {
