@@ -469,7 +469,9 @@ abstract class NestedCompletion extends Completion, TNestedCompletion {
   NestedCompletion() { this = TNestedCompletion(inner, outer, nestLevel) }
 
   /** Gets a completion that is compatible with the inner completion. */
-  abstract Completion getAnInnerCompatibleCompletion();
+  Completion getAnInnerCompatibleCompletion() {
+    result.getOuterCompletion() = this.getInnerCompletion()
+  }
 
   /** Gets the level of this nested completion. */
   final int getNestLevel() { result = nestLevel }
@@ -512,10 +514,6 @@ class NestedEnsureCompletion extends NestedCompletion {
 
   override Completion getOuterCompletion() { result = outer }
 
-  override Completion getAnInnerCompatibleCompletion() {
-    result.getOuterCompletion() = this.getInnerCompletion()
-  }
-
   override SuccessorType getAMatchingSuccessorType() { none() }
 }
 
@@ -545,10 +543,6 @@ class NestedMatchingCompletion extends NestedCompletion, MatchingCompletion {
   override BooleanCompletion getInnerCompletion() { result = inner }
 
   override MatchingCompletion getOuterCompletion() { result = outer }
-
-  override Completion getAnInnerCompatibleCompletion() {
-    result.getOuterCompletion() = this.getInnerCompletion()
-  }
 
   override BooleanSuccessor getAMatchingSuccessorType() {
     result.getValue() = this.getInnerCompletion().getValue()
