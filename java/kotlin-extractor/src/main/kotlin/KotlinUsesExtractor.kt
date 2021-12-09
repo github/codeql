@@ -706,23 +706,6 @@ class X {
     fun addModifiers(modifiable: Label<out DbModifiable>, vararg modifiers: String) =
         modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
 
-    fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
-        when (c.modality) {
-            Modality.FINAL -> addModifiers(id, "final")
-            Modality.SEALED -> addModifiers(id, "sealed")
-            Modality.OPEN -> { } // This is the default
-            Modality.ABSTRACT -> addModifiers(id, "abstract")
-            else -> logger.warn(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}")
-        }
-        when (c.visibility) {
-            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
-            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
-            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
-            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
-            else -> logger.warn(Severity.ErrorSevere, "Unexpected class visibility: ${c.visibility}")
-        }
-    }
-
     /**
      * Extracts the supertypes of class `c` with arguments `typeArgsQ`, or if `typeArgsQ` is null, the non-paramterised
      * version of `c`. `id` is the label of this class or class instantiation.

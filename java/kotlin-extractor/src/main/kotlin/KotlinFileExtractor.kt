@@ -8,6 +8,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
@@ -90,6 +91,23 @@ open class KotlinFileExtractor(
         // todo: add type bounds
 
         return id
+    }
+
+    fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
+        when (c.modality) {
+            Modality.FINAL -> addModifiers(id, "final")
+            Modality.SEALED -> addModifiers(id, "sealed")
+            Modality.OPEN -> { } // This is the default
+            Modality.ABSTRACT -> addModifiers(id, "abstract")
+            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}", c)
+        }
+        when (c.visibility) {
+            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
+            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
+            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
+            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
+            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class visibility: ${c.visibility}", c)
+        }
     }
 
     fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>): Label<out DbClassorinterface> {
