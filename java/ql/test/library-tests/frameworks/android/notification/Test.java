@@ -102,6 +102,16 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "android.app;Notification$Action$Builder;true;build;;;SyntheticField[android.content.Intent.extras]
+			// of Argument[-1];SyntheticField[android.content.Intent.extras] of ReturnValue;value"
+			Notification.Action out = null;
+			Notification.Action.Builder builder = null;
+			Bundle in = (Bundle) newWithMapValueDefault(source());
+			builder.addExtras(in);
+			out = builder.build();
+			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
+		}
+		{
 			// "android.app;Notification$Action$Builder;true;extend;;;Argument[-1];ReturnValue;value"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
@@ -222,6 +232,16 @@ public class Test {
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$Builder;true;build;;;SyntheticField[android.content.Intent.extras]
+			// of Argument[-1];Field[android.app.Notification.extras] of ReturnValue;value"
+			Notification out = null;
+			Notification.Builder builder = null;
+			Bundle in = (Bundle) newWithMapValueDefault(source());
+			builder.addExtras(in);
+			out = builder.build();
+			sink(getMapValueDefault(out.extras)); // $ hasValueFlow
 		}
 		{
 			// "android.app;Notification$Builder;true;extend;;;Argument[-1];ReturnValue;value"
