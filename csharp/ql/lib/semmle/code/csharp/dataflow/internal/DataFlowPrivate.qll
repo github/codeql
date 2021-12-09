@@ -759,7 +759,8 @@ private module Cached {
   newtype TContent =
     TFieldContent(Field f) { f.isUnboundDeclaration() } or
     TPropertyContent(Property p) { p.isUnboundDeclaration() } or
-    TElementContent()
+    TElementContent() or
+    TSyntheticFieldContent(SyntheticField f)
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
@@ -2037,4 +2038,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** A synthetic field. */
+abstract class SyntheticField extends string {
+  bindingset[this]
+  SyntheticField() { any() }
+
+  /** Gets the type of this synthetic field. */
+  Type getType() { result instanceof ObjectType }
 }

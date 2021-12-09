@@ -29,6 +29,8 @@ DataFlowType getContentType(Content c) {
     or
     t = c.(PropertyContent).getProperty().getType()
     or
+    t = c.(SyntheticFieldContent).getField().getType()
+    or
     c instanceof ElementContent and
     t instanceof ObjectType // we don't know what the actual element type is
   )
@@ -134,6 +136,11 @@ SummaryComponent interpretComponentSpecific(string c) {
     c.regexpCapture("Property\\[(.+)\\]", 1) = p.getQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
   )
+  or
+  exists(SyntheticField f |
+    c.regexpCapture("SyntheticField\\[(.+)\\]", 1) = f and
+    result = SummaryComponent::content(any(SyntheticFieldContent sfc | sfc.getField() = f))
+  )
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
@@ -143,6 +150,8 @@ private string getContentSpecificCsv(Content c) {
   exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
   or
   exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
+  or
+  exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */

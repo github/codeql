@@ -1566,6 +1566,8 @@
 | System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint |
 | System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Runtime.CompilerServices;ConditionalWeakTable<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_configured_task_awaitable] of Argument[-1];ReturnValue;value |
+| System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;SyntheticField[m_configuredTaskAwaiter] of Argument[-1];ReturnValue;value |
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
@@ -1575,6 +1577,7 @@
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_task_awaiter] of Argument[-1];ReturnValue;value |
 | System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Add;(System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[0];Element of Argument[-1];value |
 | System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2Collection);;Element of Argument[0];Element of Argument[-1];value |
 | System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2[]);;Element of Argument[0];Element of Argument[-1];value |
@@ -1760,6 +1763,7 @@
 | System.Threading.Tasks;Task;false;WhenAny<>;(System.Threading.Tasks.Task<TResult>,System.Threading.Tasks.Task<TResult>);;Property[System.Threading.Tasks.Task<>.Result] of Element of Argument[0];Element of Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
 | System.Threading.Tasks;Task;false;WhenAny<>;(System.Threading.Tasks.Task<TResult>,System.Threading.Tasks.Task<TResult>);;Property[System.Threading.Tasks.Task<>.Result] of Element of Argument[1];Element of Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
 | System.Threading.Tasks;Task;false;WhenAny<>;(System.Threading.Tasks.Task<TResult>[]);;Property[System.Threading.Tasks.Task<>.Result] of Element of Argument[0];Element of Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
+| System.Threading.Tasks;Task<>;false;ConfigureAwait;(System.Boolean);;Argument[-1];SyntheticField[m_task_configured_task_awaitable] of SyntheticField[m_configuredTaskAwaiter] of ReturnValue;value |
 | System.Threading.Tasks;Task<>;false;ContinueWith;(System.Action<System.Threading.Tasks.Task<>,System.Object>,System.Object);;Argument[1];Parameter[1] of Argument[0];value |
 | System.Threading.Tasks;Task<>;false;ContinueWith;(System.Action<System.Threading.Tasks.Task<>,System.Object>,System.Object);;Argument[-1];Parameter[0] of Argument[0];value |
 | System.Threading.Tasks;Task<>;false;ContinueWith;(System.Action<System.Threading.Tasks.Task<>,System.Object>,System.Object,System.Threading.CancellationToken);;Argument[1];Parameter[1] of Argument[0];value |
@@ -1800,6 +1804,7 @@
 | System.Threading.Tasks;Task<>;false;ContinueWith<>;(System.Func<System.Threading.Tasks.Task<>,TNewResult>,System.Threading.Tasks.TaskContinuationOptions);;ReturnValue of Argument[0];Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
 | System.Threading.Tasks;Task<>;false;ContinueWith<>;(System.Func<System.Threading.Tasks.Task<>,TNewResult>,System.Threading.Tasks.TaskScheduler);;Argument[-1];Parameter[0] of Argument[0];value |
 | System.Threading.Tasks;Task<>;false;ContinueWith<>;(System.Func<System.Threading.Tasks.Task<>,TNewResult>,System.Threading.Tasks.TaskScheduler);;ReturnValue of Argument[0];Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
+| System.Threading.Tasks;Task<>;false;GetAwaiter;();;Argument[-1];SyntheticField[m_task_task_awaiter] of ReturnValue;value |
 | System.Threading.Tasks;Task<>;false;Task;(System.Func<System.Object,TResult>,System.Object);;Argument[1];Parameter[0] of Argument[0];value |
 | System.Threading.Tasks;Task<>;false;Task;(System.Func<System.Object,TResult>,System.Object);;ReturnValue of Argument[0];Property[System.Threading.Tasks.Task<>.Result] of ReturnValue;value |
 | System.Threading.Tasks;Task<>;false;Task;(System.Func<System.Object,TResult>,System.Object,System.Threading.CancellationToken);;Argument[1];Parameter[0] of Argument[0];value |
