@@ -22,6 +22,9 @@ class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
     this = TValueFlowAnalysis()
   }
 
+  /**
+   * Returns a human readable representation of this reason
+   */
   string toString() {
     this = TTypeBoundsAnalysis() and result = "based on type bounds"
     or
