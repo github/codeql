@@ -203,6 +203,26 @@ class SystemWebHttpUtility extends SystemWebClass {
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
 }
 
+/** Data flow for `System.Web.HttpUtility`. */
+private class SystemWebHttpUtilityFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.Object);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[]);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpUtility;false;UrlEncode;(System.String,System.Text.Encoding);;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Web.HttpCookie` class. */
 class SystemWebHttpCookie extends SystemWebClass {
   SystemWebHttpCookie() { this.hasName("HttpCookie") }

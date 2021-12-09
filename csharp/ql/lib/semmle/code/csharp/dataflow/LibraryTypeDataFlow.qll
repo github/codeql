@@ -1965,24 +1965,6 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
   }
 }
 
-/** Data flow for `System.Web.HttpUtility`. */
-class SystemWebHttpUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpUtility {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      c = this.getAnHtmlAttributeEncodeMethod() or
-      c = this.getAnHtmlEncodeMethod() or
-      c = this.getAJavaScriptStringEncodeMethod() or
-      c = this.getAnUrlEncodeMethod()
-    ) and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = false
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */
