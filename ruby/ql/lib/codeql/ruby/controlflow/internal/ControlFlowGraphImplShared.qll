@@ -957,10 +957,31 @@ module Consistency {
     not split.hasEntry(pred, succ, c)
   }
 
+  private class SimpleSuccessorType extends SuccessorType {
+    SimpleSuccessorType() {
+      this = getAMatchingSuccessorType(any(Completion c | completionIsSimple(c)))
+    }
+  }
+
+  private class NormalSuccessorType extends SuccessorType {
+    NormalSuccessorType() {
+      this = getAMatchingSuccessorType(any(Completion c | completionIsNormal(c)))
+    }
+  }
+
   query predicate multipleSuccessors(Node node, SuccessorType t, Node successor) {
-    not node instanceof TEntryNode and
     strictcount(getASuccessor(node, t)) > 1 and
-    successor = getASuccessor(node, t)
+    successor = getASuccessor(node, t) and
+    // allow for functions with multiple bodies
+    not (t instanceof SimpleSuccessorType and node instanceof TEntryNode)
+  }
+
+  query predicate simpleAndNormalSuccessors(
+    Node node, NormalSuccessorType t1, SimpleSuccessorType t2, Node succ1, Node succ2
+  ) {
+    t1 != t2 and
+    succ1 = getASuccessor(node, t1) and
+    succ2 = getASuccessor(node, t2)
   }
 
   query predicate deadEnd(Node node) {
