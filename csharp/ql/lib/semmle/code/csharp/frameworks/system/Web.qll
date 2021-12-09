@@ -175,6 +175,17 @@ class SystemWebHttpServerUtility extends SystemWebClass {
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
 }
 
+/** Data flow for `System.Web.HttpServerUtility`. */
+private class SystemWebHttpServerUtilityFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Web.HttpUtility` class. */
 class SystemWebHttpUtility extends SystemWebClass {
   SystemWebHttpUtility() { this.hasName("HttpUtility") }
