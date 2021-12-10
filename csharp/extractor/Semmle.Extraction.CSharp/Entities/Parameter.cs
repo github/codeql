@@ -10,15 +10,13 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
-        protected IEntity Parent { get; set; }
+        protected IEntity? Parent { get; set; }
         protected Parameter Original { get; }
 
         protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
             : base(cx, init)
         {
-            Parent = parent
-                        ?? Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol)
-                        ?? throw new InternalError(Symbol, "Couldn't get parent of symbol.");
+            Parent = parent;
             Original = original ?? this;
         }
 
@@ -65,6 +63,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (Parent is null)
+                Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
+
+            if (Parent is null)
+                throw new InternalError(Symbol, "Couldn't get parent of symbol.");
+
             trapFile.WriteSubId(Parent);
             trapFile.Write('_');
             trapFile.Write(Ordinal);
@@ -95,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
 
             foreach (var l in Symbol.Locations)
                 trapFile.param_location(this, Context.CreateLocation(l));
@@ -228,11 +232,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
-            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this);
+            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent!, this);
             trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
-        protected override int Ordinal => ((Method)Parent).OriginalDefinition.Symbol.Parameters.Length;
+        protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;
 
         public override int GetHashCode()
         {
