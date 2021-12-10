@@ -68,22 +68,26 @@ abstract class BufferWrite extends Expr {
   /**
    * Gets an upper bound to the amount of data that's being written (if one
    * can be found).
+   * DEPRECATED: getMaxData\1 should be used and overridden instead
    */
-  int getMaxData() { result = max(getMaxData(_)) }
+  deprecated int getMaxData() { none() }
+
+  /**
+   * Gets an upper bound to the amount of data that's being written (if one
+   * can be found), specifying the reason for the estimation
+   */
+  int getMaxData(BufferWriteEstimationReason reason) {
+    reason instanceof NoSpecifiedEstimateReason and result = getMaxData()
+  }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
    * can be found), except that float to string conversions are assumed to be
    * much smaller (8 bytes) than their true maximum length.  This can be
    * helpful in determining the cause of a buffer overflow issue.
+   * DEPRECATED: getMaxDataLimited\1 should be used and overridden instead
    */
-  int getMaxDataLimited() { result = max(getMaxDataLimited(_)) }
-
-  /**
-   * Gets an upper bound to the amount of data that's being written (if one
-   * can be found), specifying the reason for the estimation
-   */
-  int getMaxData(BufferWriteEstimationReason reason) { none() }
+  deprecated int getMaxDataLimited() { result = getMaxData() }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
@@ -92,7 +96,9 @@ abstract class BufferWrite extends Expr {
    * than their true maximum length.  This can be helpful in determining the
    * cause of a buffer overflow issue.
    */
-  int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxData(reason) }
+  int getMaxDataLimited(BufferWriteEstimationReason reason) {
+    result = getMaxData(reason)
+  }
 
   /**
    * Gets the size of a single character of the type this
@@ -150,12 +156,16 @@ class StrCopyBW extends BufferWriteCall {
     result = this.getArgument(this.getParamSize()).getValue().toInt() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     // when result exists, it is an exact flow analysis
     reason instanceof ValueFlowAnalysis and
     result =
       this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
   }
+
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
 
 /**
@@ -190,11 +200,19 @@ class StrCatBW extends BufferWriteCall {
     result = this.getArgument(this.getParamSize()).getValue().toInt() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     // when result exists, it is an exact flow analysis
     reason instanceof ValueFlowAnalysis and
     result =
       this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
+  }
+
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = getMaxDataImpl(reason)
+  }
+
+  deprecated override int getMaxData() {
+    result = max(getMaxDataImpl(_))
   }
 }
 
@@ -252,19 +270,27 @@ class SprintfBW extends BufferWriteCall {
 
   override Expr getDest() { result = this.getArgument(f.getOutputParameterIndex(false)) }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
       fl = this.(FormattingFunctionCall).getFormat() and
       result = fl.getMaxConvertedLengthWithReason(reason) * this.getCharSize()
     )
   }
 
-  override int getMaxDataLimited(BufferWriteEstimationReason reason) {
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+
+  private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
       fl = this.(FormattingFunctionCall).getFormat() and
       result = fl.getMaxConvertedLengthLimitedWithReason(reason) * this.getCharSize()
     )
   }
+
+  override int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxDataLimitedImpl(reason) }
+
+  deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -355,19 +381,27 @@ class SnprintfBW extends BufferWriteCall {
     result = this.getArgument(this.getParamSize()).getValue().toInt() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
       fl = this.(FormattingFunctionCall).getFormat() and
       result = fl.getMaxConvertedLengthWithReason(reason) * this.getCharSize()
     )
   }
 
-  override int getMaxDataLimited(BufferWriteEstimationReason reason) {
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+
+  private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
       fl = this.(FormattingFunctionCall).getFormat() and
       result = fl.getMaxConvertedLengthLimitedWithReason(reason) * this.getCharSize()
     )
   }
+
+  override int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxDataLimitedImpl(reason) }
+
+  deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -455,7 +489,7 @@ class ScanfBW extends BufferWrite {
 
   override Expr getDest() { result = this }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     // when this returns, it is based on exact flow analysis
     reason instanceof ValueFlowAnalysis and
     exists(ScanfFunctionCall fc, ScanfFormatLiteral fl, int arg |
@@ -464,6 +498,12 @@ class ScanfBW extends BufferWrite {
       result = (fl.getMaxConvertedLength(arg - this.getParamArgs()) + 1) * this.getCharSize() // +1 is for the terminating null
     )
   }
+
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = getMaxDataImpl(reason)
+  }
+
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
 
   override string getBWDesc() {
     exists(FunctionCall fc |
@@ -495,10 +535,14 @@ class RealpathBW extends BufferWriteCall {
 
   override Expr getASource() { result = this.getArgument(0) }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
+  private int getMaxDataImpl(BufferWriteEstimationReason reason) {
     // although there may be some unknown invariants guaranteeing that a real path is shorter than PATH_MAX, we can consider providing less than PATH_MAX a problem with high precision
     reason instanceof ValueFlowAnalysis and
     result = path_max() and
     this = this // Suppress a compiler warning
   }
+
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
