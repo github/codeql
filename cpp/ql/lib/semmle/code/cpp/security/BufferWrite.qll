@@ -68,13 +68,13 @@ abstract class BufferWrite extends Expr {
   /**
    * Gets an upper bound to the amount of data that's being written (if one
    * can be found).
-   * DEPRECATED: getMaxData\1 should be used and overridden instead
+   * DEPRECATED: `getMaxData/1` should be used and overridden instead.
    */
   deprecated int getMaxData() { none() }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
-   * can be found), specifying the reason for the estimation
+   * can be found), specifying the reason for the estimation.
    */
   int getMaxData(BufferWriteEstimationReason reason) {
     reason instanceof NoSpecifiedEstimateReason and result = getMaxData()
@@ -85,7 +85,7 @@ abstract class BufferWrite extends Expr {
    * can be found), except that float to string conversions are assumed to be
    * much smaller (8 bytes) than their true maximum length.  This can be
    * helpful in determining the cause of a buffer overflow issue.
-   * DEPRECATED: getMaxDataLimited\1 should be used and overridden instead
+   * DEPRECATED: `getMaxDataLimited/1` should be used and overridden instead.
    */
   deprecated int getMaxDataLimited() { result = getMaxData() }
 

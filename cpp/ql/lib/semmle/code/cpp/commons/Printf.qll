@@ -15,22 +15,22 @@ private newtype TBufferWriteEstimationReason =
   TValueFlowAnalysis()
 
 /**
- * A reason for a specific buffer write size estimate
+ * A reason for a specific buffer write size estimate.
  */
 abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
   /**
-   * Returns the name of the concrete class
+   * Returns the name of the concrete class.
    */
   abstract string toString();
 
   /**
-   * Returns a human readable representation of this reason
+   * Returns a human readable representation of this reason.
    */
   abstract string getDescription();
 
   /**
    * Combine estimate reasons. Used to give a reason for the size of a format string
-   * conversion given reasons coming from its individual specifiers
+   * conversion given reasons coming from its individual specifiers.
    */
   abstract BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other);
 }
@@ -38,7 +38,7 @@ abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason 
 /**
  * No particular reason given. This is currently used for backward compatibility so that
  * classes derived from BufferWrite and overriding getMaxData\0 still work with the 
- * queries as intended
+ * queries as intended.
  */
 class NoSpecifiedEstimateReason extends BufferWriteEstimationReason, TNoSpecifiedEstimateReason {
   override string toString() { result = "NoSpecifiedEstimateReason" }
@@ -54,7 +54,7 @@ class NoSpecifiedEstimateReason extends BufferWriteEstimationReason, TNoSpecifie
 
 /**
  * The estimation comes from rough bounds just based on the type (e.g.
- * `0 <= x < 2^32` for an unsigned 32 bit integer)
+ * `0 <= x < 2^32` for an unsigned 32 bit integer).
  */
 class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysis {
   override string toString() { result = "TypeBoundsAnalysis" }
