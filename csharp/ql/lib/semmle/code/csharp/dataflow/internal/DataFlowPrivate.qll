@@ -1436,7 +1436,7 @@ private module OutNodes {
 import OutNodes
 
 /** A data-flow node used to model flow summaries. */
-private class SummaryNode extends NodeImpl, TSummaryNode {
+class SummaryNode extends NodeImpl, TSummaryNode {
   private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
@@ -1484,6 +1484,13 @@ class FieldOrProperty extends Assignable, Modifiable {
     result.(FieldContent).getField() = this.getUnboundDeclaration()
     or
     result.(PropertyContent).getProperty() = this.getUnboundDeclaration()
+  }
+
+  /** Gets the initializer of this field or property, if any. */
+  Expr getInitialier() {
+    result = this.(Field).getInitializer()
+    or
+    result = this.(Property).getInitializer()
   }
 }
 
