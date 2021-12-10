@@ -733,4 +733,37 @@ private module Redis {
       )
     }
   }
+
+  /**
+   * An access to a database through redis
+   */
+  class RedisDatabaseAccess extends DatabaseAccess {
+    RedisDatabaseAccess() { this = redis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+}
+
+/**
+ * Provides classes modeling the `ioredis` library.
+ *
+ * ```
+ * import Redis from 'ioredis'
+ * let client = new Redis(...)
+ * ```
+ */
+private module IoRedis {
+  /**
+   * Gets an `ioredis` client.
+   */
+  API::Node ioredis() { result = API::moduleImport("ioredis").getInstance() }
+
+  /**
+   * An access to a database through ioredis
+   */
+  class IoRedisDatabaseAccess extends DatabaseAccess {
+    IoRedisDatabaseAccess() { this = ioredis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
 }
