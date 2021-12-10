@@ -1,4 +1,5 @@
 name: codeql/csharp-upgrades
+groups: csharp
+version: 0.0.5-dev
 upgrades: .
-version: 0.0.2
 library: true

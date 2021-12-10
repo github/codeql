@@ -1,7 +1,8 @@
 name: codeql/javascript-all
-version: 0.0.3
+version: 0.0.5
+groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 library: true
 dependencies:
-    codeql/javascript-upgrades: 0.0.3
+    codeql/javascript-upgrades: 0.0.4
