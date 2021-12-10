@@ -988,4 +988,14 @@ module Consistency {
     not node instanceof TExitNode and
     not exists(getASuccessor(node, _))
   }
+
+  query predicate nonUniqueSplitKind(SplitImpl split, SplitKind sk) {
+    sk = split.getKind() and
+    strictcount(split.getKind()) > 1
+  }
+
+  query predicate nonUniqueListOrder(SplitKind sk, int ord) {
+    ord = sk.getListOrder() and
+    strictcount(sk.getListOrder()) > 1
+  }
 }
