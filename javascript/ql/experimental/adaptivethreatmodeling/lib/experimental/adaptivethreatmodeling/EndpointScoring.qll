@@ -95,7 +95,8 @@ module ModelScoring {
   }
 
   predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) =
-    scoreEndpoints(endpoints/1, requestedEndpointTypes/0, relevantTokenFeatures/3,
+    scoreEndpoints(endpoints/1, relevantTokenFeatures/3,
+      EndpointFeatures::getASupportedFeatureName/0, requestedEndpointTypes/0,
       getACompatibleModelChecksum/0)(endpoint, encodedEndpointType, score)
 }
 
