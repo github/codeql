@@ -263,7 +263,6 @@ module Value {
    * object of that name.
    * For example `Value::named("len")` is the `Value` representing the `len` built-in function.
    */
-  pragma[nomagic]
   Value named(string name) {
     exists(string modname, string attrname | name = modname + "." + attrname |
       result = Module::named(modname).attr(attrname)
