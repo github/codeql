@@ -205,4 +205,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
     exists(DataFlow::FunctionNode f | call = f.getLastParameter().getACall()) and
     reason instanceof NextFunctionCallReason
   )
+  or
+  (exists(Base64::Decode d | n = d.getInput()) or exists(Base64::Encode d | n = d.getInput())) and
+  reason instanceof Base64ManipulationReason
 }
