@@ -243,7 +243,9 @@ class LegacyTlsVersionFlag extends FlagKind {
   LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
 
   bindingset[result]
-  override string getAFlagName() { result.regexpMatch("(?i).*(old|intermediate|legacy).*") }
+  override string getAFlagName() {
+    result.toLowerCase().matches("%" + ["old", "intermediate", "legacy"] + "%")
+  }
 }
 
 /**

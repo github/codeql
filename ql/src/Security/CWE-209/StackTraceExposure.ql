@@ -26,7 +26,10 @@ class DebugModeFlag extends FlagKind {
 
   bindingset[result]
   override string getAFlagName() {
-    result.regexpMatch("(?i).*(trace|debug|devel|(enable|disable|print)stack).*")
+    result
+        .toLowerCase()
+        .matches("%" + ["trace", "debug", "devel", "enablestack", "disablestack", "printstack"] +
+            "%")
   }
 }
 

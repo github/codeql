@@ -22,7 +22,9 @@ class AllowedFlag extends FlagKind {
 
   bindingset[result]
   override string getAFlagName() {
-    result.regexpMatch("(?i).*(allow|match|check|debug|devel|insecure).*")
+    result
+        .toLowerCase()
+        .matches("%" + ["allow", "match", "check", "debug", "devel", "insecure"] + "%")
   }
 }
 

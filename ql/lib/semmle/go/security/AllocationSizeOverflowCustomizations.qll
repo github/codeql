@@ -49,7 +49,8 @@ module AllocationSizeOverflow {
   class MarshalingSource extends Source {
     MarshalingSource() {
       exists(MarshalingFunction marshal, DataFlow::CallNode call |
-        call = marshal.getACall() and
+        // Binding order tweak: start with marshalling function calls then work outwards:
+        pragma[only_bind_into](call) = marshal.getACall() and
         // rule out cases where we can tell that the result will always be small
         exists(FunctionInput inp | inp = marshal.getAnInput() | isBig(inp.getNode(call).asExpr())) and
         this = marshal.getOutput().getNode(call)
