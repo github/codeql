@@ -246,8 +246,6 @@ private module Cached {
         explicitAssignmentNode(g, _)
         or
         casePattern(g)
-        or
-        classReferencePattern(g)
       )
     } or
     TScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
@@ -293,8 +291,6 @@ private module Cached {
       explicitAssignmentNode(g, _)
       or
       casePattern(g)
-      or
-      classReferencePattern(g)
     } or
     TTokenMethodName(MethodName::Token g) { MethodName::range(g) } or
     TTokenSuperCall(Ruby::Super g) { vcall(g) } or

@@ -48,13 +48,7 @@ predicate casePattern(Ruby::AstNode node) {
   node = any(Ruby::KeywordPattern parent).getValue()
   or
   node = any(Ruby::ParenthesizedPattern parent).getChild()
-}
-
-/**
- * Holds if `node` is a class reference used in an
- * array, find, or hash pattern.
- */
-predicate classReferencePattern(Ruby::AstNode node) {
+  or
   node = any(Ruby::ArrayPattern p).getClass()
   or
   node = any(Ruby::FindPattern p).getClass()

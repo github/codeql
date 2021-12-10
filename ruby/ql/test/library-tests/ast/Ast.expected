@@ -864,6 +864,7 @@ control/cases.rb:
 #   67|       getPattern: [ArrayPattern] [ ..., * ]
 #   68|     getBranch: [InClause] in ... then ...
 #   68|       getPattern: [ArrayPattern] [ ..., * ]
+#   68|         getRestVariableAccess: [LocalVariableAccess] x
 #   68|         getSuffixElement: [IntegerLiteral] 3
 #   68|         getSuffixElement: [IntegerLiteral] 4
 #   69|     getBranch: [InClause] in ... then ...
