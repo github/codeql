@@ -691,7 +691,7 @@ private module Cached {
       not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
         AssignableDefinitions::ImplicitParameterDefinition
     } or
-    TExplicitParameterNode(DotNet::Parameter p) { p.isUnboundDeclaration() } or
+    TExplicitParameterNode(DotNet::Parameter p) { p = any(DataFlowCallable c).getAParameter() } or
     TInstanceParameterNode(Callable c) {
       c.isUnboundDeclaration() and not c.(Modifiable).isStatic()
     } or
