@@ -166,7 +166,7 @@ module JsonNET {
   }
 
   /** The class `NewtonSoft.Json.JsonSerializer`. */
-  class JsonSerializerClass extends JsonClass, LibraryTypeDataFlow {
+  class JsonSerializerClass extends JsonClass {
     JsonSerializerClass() { this.hasName("JsonSerializer") }
 
     /** Gets the method for `JsonSerializer.Serialize`. */
@@ -174,22 +174,21 @@ module JsonNET {
 
     /** Gets the method for `JsonSerializer.Deserialize`. */
     Method getDeserializeMethod() { result = this.getAMethod("Deserialize") }
+  }
 
-    override predicate callableFlow(
-      CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-      boolean preservesValue
-    ) {
-      // Serialize
-      c = this.getSerializeMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 1) and
-      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 0)
-      or
-      // Deserialize
-      c = this.getDeserializeMethod() and
-      preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink instanceof CallableFlowSinkReturn
+  /** Data flow for `NewtonSoft.Json.JSonSerializer`. */
+  private class JsonSerializerClassFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json;JsonSerializer;false;Deserialize;(Newtonsoft.Json.JsonReader);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonSerializer;false;Deserialize;(Newtonsoft.Json.JsonReader,System.Type);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonSerializer;false;Deserialize;(System.IO.TextReader,System.Type);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json;JsonSerializer;false;Serialize;(Newtonsoft.Json.JsonWriter,System.Object);;Argument[1];Argument[0];taint",
+          "Newtonsoft.Json;JsonSerializer;false;Serialize;(Newtonsoft.Json.JsonWriter,System.Object,System.Type);;Argument[1];Argument[0];taint",
+          "Newtonsoft.Json;JsonSerializer;false;Serialize;(System.IO.TextWriter,System.Object);;Argument[1];Argument[0];taint",
+          "Newtonsoft.Json;JsonSerializer;false;Serialize;(System.IO.TextWriter,System.Object,System.Type);;Argument[1];Argument[0];taint"
+        ]
     }
   }
 
