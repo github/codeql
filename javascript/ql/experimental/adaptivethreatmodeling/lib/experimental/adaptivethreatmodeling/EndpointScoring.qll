@@ -101,9 +101,9 @@ module ModelScoring {
   private int getARequestedEndpointType() { result = any(EndpointType type).getEncoding() }
 
   predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) =
-    scoreEndpoints(getARequestedEndpoint/0, getARequestedEndpointType/0,
-      EndpointFeatures::tokenFeatures/3, getACompatibleModelChecksum/0)(endpoint,
-      encodedEndpointType, score)
+    scoreEndpoints(getARequestedEndpoint/0, EndpointFeatures::tokenFeatures/3,
+      EndpointFeatures::getASupportedFeatureName/0, getARequestedEndpointType/0,
+      getACompatibleModelChecksum/0)(endpoint, encodedEndpointType, score)
 }
 
 /**

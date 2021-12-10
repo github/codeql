@@ -283,7 +283,7 @@ private module AccessPaths {
 }
 
 /** Get a name of a supported generic token-based feature. */
-private string getASupportedFeatureName() {
+string getASupportedFeatureName() {
   result =
     [
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
@@ -300,12 +300,5 @@ private string getASupportedFeatureName() {
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  (
-    if strictcount(getTokenFeature(endpoint, featureName)) = 1
-    then featureValue = getTokenFeature(endpoint, featureName)
-    else (
-      // Performance note: this is a Cartesian product between all endpoints and feature names.
-      featureValue = "" and featureName = getASupportedFeatureName()
-    )
-  )
+  featureValue = getTokenFeature(endpoint, featureName)
 }
