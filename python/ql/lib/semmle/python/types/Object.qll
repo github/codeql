@@ -75,9 +75,11 @@ class Object extends @py_object {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
+  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    Stages::DataFlow::ref() and
     this.hasOrigin() and
     this.getOrigin()
         .getLocation()
@@ -95,7 +97,9 @@ class Object extends @py_object {
   Builtin asBuiltin() { result = this }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
+    Stages::DataFlow::ref() and
     not this = undefinedVariable() and
     not this = unknownValue() and
     exists(ClassObject type | type.asBuiltin() = this.asBuiltin().getClass() |

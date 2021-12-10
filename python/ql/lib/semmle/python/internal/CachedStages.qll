@@ -140,6 +140,7 @@ module Stages {
     private import semmle.python.Flow as Flow
     private import semmle.python.objects.ObjectInternal as ObjectInternal
     private import semmle.python.objects.ObjectAPI as ObjectAPI
+    private import semmle.python.pointsto.PointsTo as PointsTo
 
     /**
      * DONT USE!
@@ -166,6 +167,8 @@ module Stages {
       exists(any(Flow::ControlFlowNode c).toString())
       or
       exists(any(ObjectInternal::ObjectInternal o).toString())
+      or
+      PointsTo::AttributePointsTo::variableAttributePointsTo(_, _, _, _, _)
     }
   }
 
