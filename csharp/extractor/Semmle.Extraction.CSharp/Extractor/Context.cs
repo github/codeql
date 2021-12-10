@@ -18,18 +18,26 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public SemanticModel GetModel(SyntaxNode node)
         {
-            // todo: when this context belongs to a SourceScope, the syntax tree can be retrieved from the scope, and
-            // the node parameter could be removed. Is there any case when we pass in a node that's not from the current
-            // tree?
-            if (cachedModel is null || node.SyntaxTree != cachedModel.SyntaxTree)
+            if (node.SyntaxTree == SourceTree)
             {
-                cachedModel = Compilation.GetSemanticModel(node.SyntaxTree);
+                if (cachedModelForTree is null)
+                {
+                    cachedModelForTree = Compilation.GetSemanticModel(node.SyntaxTree);
+                }
+
+                return cachedModelForTree;
             }
 
-            return cachedModel;
+            if (cachedModelForOtherTrees is null || node.SyntaxTree != cachedModelForOtherTrees.SyntaxTree)
+            {
+                cachedModelForOtherTrees = Compilation.GetSemanticModel(node.SyntaxTree);
+            }
+
+            return cachedModelForOtherTrees;
         }
 
-        private SemanticModel? cachedModel;
+        private SemanticModel? cachedModelForTree;
+        private SemanticModel? cachedModelForOtherTrees;
 
         /// <summary>
         /// The current compilation unit.
