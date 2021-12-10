@@ -157,6 +157,9 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
   any(LodashUnderscore::Member m).getACall().getAnArgument() = n and
   reason instanceof LodashUnderscoreArgumentReason
   or
+  any(JQuery::MethodCall m).getAnArgument() = n and
+  reason instanceof JQueryArgumentReason
+  or
   exists(ClientRequest r |
     r.getAnArgument() = n or n = r.getUrl() or n = r.getHost() or n = r.getADataNode()
   ) and

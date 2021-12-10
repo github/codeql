@@ -30,7 +30,8 @@ newtype TFilteringReason =
   TArgumentToBuiltinGlobalVarRefReason() or
   TConstantReceiverReason() or
   TBuiltinCallNameReason() or
-  TBase64ManipulationReason()
+  TBase64ManipulationReason() or
+  TJQueryArgumentReason()
 
 /** A reason why a particular endpoint was filtered out by the endpoint filters. */
 abstract class FilteringReason extends TFilteringReason {
@@ -200,4 +201,10 @@ class Base64ManipulationReason extends NotASinkReason, TBase64ManipulationReason
   override string getDescription() { result = "Base64Manipulation" }
 
   override int getEncoding() { result = 28 }
+}
+
+class JQueryArgumentReason extends NotASinkReason, TJQueryArgumentReason {
+  override string getDescription() { result = "JQueryArgument" }
+
+  override int getEncoding() { result = 29 }
 }
