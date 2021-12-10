@@ -710,25 +710,28 @@ private module Cached {
     TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
       cfn.getElement().(ObjectCreation).hasInitializer()
     } or
-    TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
-      exists(Argument a, Type t |
-        a = cfn.getElement() and
-        t = a.stripCasts().getType()
-      |
-        t instanceof RefType and
-        not t instanceof NullType
+    TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
+      exists(Expr e | e = cfn.getExpr() |
+        exists(Type t | t = e.(Argument).stripCasts().getType() |
+          t instanceof RefType and
+          not t instanceof NullType
+          or
+          t = any(TypeParameter tp | not tp.isValueType())
+        )
         or
-        t = any(TypeParameter tp | not tp.isValueType())
-      )
-      or
-      fieldOrPropertyStore(_, _, _, cfn.getElement(), true)
-      or
-      arrayStore(_, _, cfn.getElement(), true)
-      or
-      exists(TExprPostUpdateNode upd, FieldOrPropertyAccess fla |
-        upd = TExprPostUpdateNode(fla.getAControlFlowNode())
-      |
-        cfn.getElement() = fla.getQualifier()
+        fieldOrPropertyStore(_, _, _, e, true)
+        or
+        arrayStore(_, _, e, true)
+        or
+        // needed for reverse stores; e.g. `x.f1.f2 = y` induces
+        // a store step of `f1` into `x`
+        exists(TExprPostUpdateNode upd, Expr read |
+          upd = TExprPostUpdateNode(read.getAControlFlowNode())
+        |
+          fieldOrPropertyRead(e, _, read)
+          or
+          arrayRead(e, read)
+        )
       )
     } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
