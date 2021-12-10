@@ -6,7 +6,7 @@
 
 import javascript
 import CodeToFeatures
-import EndpointScoring
+private import EndpointScoring
 
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
@@ -269,6 +269,14 @@ private string getASupportedFeatureName() {
     ]
 }
 
+/** A configuration that defines which endpoints should be featurized. */
+abstract class FeaturizationConfig extends string {
+  bindingset[this]
+  FeaturizationConfig() { any() }
+
+  abstract DataFlow::Node getAnEndpointToFeaturize();
+}
+
 /**
  * Generic token-based features for ATM.
  *
@@ -276,7 +284,7 @@ private string getASupportedFeatureName() {
  * `featureValue` for the endpoint `endpoint`.
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  ModelScoring::endpoints(endpoint) and
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   (
     if strictcount(getTokenFeature(endpoint, featureName)) = 1
     then featureValue = getTokenFeature(endpoint, featureName)
