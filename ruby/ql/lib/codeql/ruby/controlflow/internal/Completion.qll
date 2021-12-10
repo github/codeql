@@ -107,11 +107,7 @@ abstract class Completion extends TCompletion {
     n = any(RescueModifierExpr parent).getBody() and
     this = [TSimpleCompletion().(TCompletion), TRaiseCompletion()]
     or
-    (
-      mayRaise(n)
-      or
-      n instanceof CaseMatch and not exists(n.(CaseExpr).getElseBranch())
-    ) and
+    mayRaise(n) and
     (
       this = TRaiseCompletion()
       or

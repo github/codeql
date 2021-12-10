@@ -378,35 +378,18 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseExpr {
+  private class CaseTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getValue(), last, c) and not exists(this.getABranch())
+    final override predicate first(AstNode first) {
+      first(this.getValue(), first)
       or
-      last(this.getABranch().(WhenExpr).getBody(), last, c)
-      or
-      exists(int i, ControlFlowTree lastBranch |
-        lastBranch = this.getBranch(i) and
-        not exists(this.getBranch(i + 1)) and
-        last(lastBranch, last, c)
-      )
+      not exists(this.getValue()) and first(this.getBranch(0), first)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      exists(AstNode next |
-        pred = this and
-        first(next, succ) and
-        c instanceof SimpleCompletion
-      |
-        next = this.getValue()
-        or
-        not exists(this.getValue()) and
-        next = this.getBranch(0)
-      )
-      or
       last(this.getValue(), pred, c) and
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
@@ -416,17 +399,31 @@ module Trees {
         first(this.getBranch(i + 1), succ) and
         c.(ConditionalCompletion).getValue() = false
       )
+      or
+      succ = this and
+      (
+        last(this.getValue(), pred, c) and not exists(this.getABranch())
+        or
+        last(this.getABranch().(WhenExpr).getBody(), pred, c)
+        or
+        exists(int i, ControlFlowTree lastBranch |
+          lastBranch = this.getBranch(i) and
+          not exists(this.getBranch(i + 1)) and
+          last(lastBranch, pred, c)
+        )
+      )
     }
   }
 
-  private class CaseMatchTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseMatch {
+  private class CaseMatchTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseMatch {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
 
+    final override predicate first(AstNode first) { first(this.getValue(), first) }
+
     final override predicate last(AstNode last, Completion c) {
-      last(this.getABranch(), last, c) and
-      not c.(MatchingCompletion).getValue() = false
+      super.last(last, c)
       or
       not exists(this.getElseBranch()) and
       exists(MatchingCompletion lc, Expr lastBranch |
@@ -439,10 +436,6 @@ module Trees {
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getValue(), succ) and
-      c instanceof SimpleCompletion
-      or
       last(this.getValue(), pred, c) and
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
@@ -451,6 +444,15 @@ module Trees {
         last(branch, pred, c) and
         first(this.getBranch(i + 1), succ) and
         c.(MatchingCompletion).getValue() = false
+      )
+      or
+      succ = this and
+      (
+        last(this.getABranch(), pred, c) and
+        not c.(MatchingCompletion).getValue() = false
+        or
+        last(this.getElseBranch(), pred, c) and
+        c instanceof NormalCompletion
       )
     }
   }
