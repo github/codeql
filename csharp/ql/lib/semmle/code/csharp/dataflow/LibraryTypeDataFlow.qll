@@ -21,7 +21,6 @@ private import semmle.code.csharp.dataflow.internal.DataFlowPublic
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 // import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.EntityFramework
-private import semmle.code.csharp.frameworks.JsonNET
 private import FlowSummary
 
 private newtype TAccessPath =

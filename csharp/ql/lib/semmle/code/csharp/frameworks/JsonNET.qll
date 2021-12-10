@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** Definitions relating to the `Json.NET` package. */
@@ -224,46 +223,39 @@ module JsonNET {
     LinqClass() { this.getDeclaringNamespace() instanceof LinqNamespace }
   }
 
-  /** The `NewtonSoft.Json.Linq.JObject` class. */
-  class JObjectClass extends LinqClass, LibraryTypeDataFlow {
-    JObjectClass() { this.hasName("JObject") }
-
-    override predicate callableFlow(
-      CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-      boolean preservesValue
-    ) {
-      // ToString method
-      c = this.getBaseClass().getBaseClass().getAMethod("ToString") and
-      source instanceof CallableFlowSourceQualifier and
-      sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
-      or
-      // Parse method
-      c = this.getParseMethod() and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
-      sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
-      or
-      // operator string
-      c =
-        any(Operator op |
-          op.getDeclaringType() = this.getABaseType*() and op.getReturnType() instanceof StringType
-        ) and
-      source.(CallableFlowSourceArg).getArgumentIndex() = 0 and
-      sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
-      or
-      // SelectToken method
-      c = this.getSelectTokenMethod() and
-      source instanceof CallableFlowSourceQualifier and
-      sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
+  /** Data flow for `Newtonsoft.Json.Linq.JToken`. */
+  private class JTokenClassFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[-1];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[-1];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[-1];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[-1];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[-1];ReturnValue;taint",
+        ]
     }
+  }
+
+  /** The `NewtonSoft.Json.Linq.JObject` class. */
+  class JObjectClass extends LinqClass {
+    JObjectClass() { this.hasName("JObject") }
 
     /** Gets the `Parse` method. */
     Method getParseMethod() { result = this.getAMethod("Parse") }
 
     /** Gets the `SelectToken` method. */
     Method getSelectTokenMethod() { result = this.getABaseType*().getAMethod("SelectToken") }
+  }
+
+  /** Data flow for `NewtonSoft.Json.Linq.JObject`. */
+  private class JObjectClassFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
+          "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String,Newtonsoft.Json.Linq.JsonLoadSettings);;Argument[0];ReturnValue;taint"
+        ]
+    }
   }
 }
