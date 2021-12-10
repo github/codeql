@@ -233,7 +233,7 @@ module JsonNET {
       boolean preservesValue
     ) {
       // ToString method
-      c = this.getAMethod("ToString") and
+      c = this.getBaseClass().getBaseClass().getAMethod("ToString") and
       source instanceof CallableFlowSourceQualifier and
       sink instanceof CallableFlowSinkReturn and
       preservesValue = false
