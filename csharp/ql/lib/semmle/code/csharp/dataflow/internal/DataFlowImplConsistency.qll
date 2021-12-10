@@ -18,10 +18,10 @@ module Consistency {
     /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
     predicate uniqueEnclosingCallableExclude(Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
+    /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
     predicate uniqueNodeLocationExclude(Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
+    /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
     predicate missingLocationExclude(Node n) { none() }
 
     /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
