@@ -598,6 +598,10 @@
 | exprs.kt:210:24:210:39 | valueOf(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
 | exprs.kt:210:33:210:37 | GREEN | exprs.kt:200:5:211:5 | x | StringLiteral |
 | exprs.kt:215:5:215:10 | TODO(...) | exprs.kt:214:1:216:1 | todo | MethodAccess |
+| exprs.kt:218:1:218:19 | <obinit>(...) | exprs.kt:218:1:218:19 | SomeClass1 | MethodAccess |
+| exprs.kt:220:5:220:29 | x | exprs.kt:219:1:221:1 | fnClassRef | LocalVariableDeclExpr |
+| exprs.kt:220:13:220:29 | SomeClass1 | exprs.kt:219:1:221:1 | fnClassRef | TypeAccess |
+| exprs.kt:220:13:220:29 | SomeClass1.class | exprs.kt:219:1:221:1 | fnClassRef | TypeLiteral |
 | file://:0:0:0:0 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
 | file://:0:0:0:0 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | file://:0:0:0:0 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |

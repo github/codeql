@@ -1791,6 +1791,23 @@ open class KotlinFileExtractor(
                 @Suppress("UNCHECKED_CAST")
                 tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idLambdaExpr)
             }
+            is IrClassReference -> {
+                val exprParent = parent.expr(e, callable)
+                val id = tw.getFreshIdLabel<DbTypeliteral>()
+                val locId = tw.getLocation(e)
+                val type = useType(e.type)
+                tw.writeExprs_typeliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+                val typeAccessType = useType(e.classType)
+                tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, id, 0)
+                tw.writeHasLocation(typeAccessId, locId)
+                tw.writeCallableEnclosingExpr(typeAccessId, callable)
+                tw.writeStatementEnclosingExpr(typeAccessId, exprParent.enclosingStmt)
+            }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }

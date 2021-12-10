@@ -214,3 +214,8 @@ class Class2 {
 fun todo() {
     TODO()
 }
+
+class SomeClass1 {}
+fun fnClassRef() {
+    val x = SomeClass1::class
+}
