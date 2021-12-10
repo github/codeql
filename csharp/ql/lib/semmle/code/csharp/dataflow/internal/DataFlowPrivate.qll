@@ -1780,6 +1780,10 @@ private class DataFlowNullType extends DataFlowType {
   }
 }
 
+private class DataFlowUnknownType extends DataFlowType {
+  DataFlowUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -1799,6 +1803,10 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 instanceof Gvn::TypeParameterGvnType
   or
   t2 instanceof Gvn::TypeParameterGvnType
+  or
+  t1 instanceof DataFlowUnknownType
+  or
+  t2 instanceof DataFlowUnknownType
 }
 
 /**
