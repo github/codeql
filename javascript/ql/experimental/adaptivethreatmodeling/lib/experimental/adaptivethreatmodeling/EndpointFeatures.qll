@@ -13,6 +13,7 @@ import EndpointScoring
  *
  * This is a single string containing a space-separated list of tokens.
  */
+pragma[inline]
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   // Features for endpoints that are contained within a function.
   exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
@@ -275,6 +276,7 @@ private string getASupportedFeatureName() {
  * This predicate holds if the generic token-based feature named `featureName` has the value
  * `featureValue` for the endpoint `endpoint`.
  */
+pragma[inline]
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   ModelScoring::endpoints(endpoint) and
   (
