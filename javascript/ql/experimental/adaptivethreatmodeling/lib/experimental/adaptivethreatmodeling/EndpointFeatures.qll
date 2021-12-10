@@ -6,7 +6,7 @@
 
 import javascript
 import CodeToFeatures
-import EndpointScoring
+private import EndpointScoring
 
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
@@ -267,6 +267,14 @@ string getASupportedFeatureName() {
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
       "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody"
     ]
+}
+
+/** A configuration that defines which endpoints should be featurized. */
+abstract class FeaturizationConfig extends string {
+  bindingset[this]
+  FeaturizationConfig() { any() }
+
+  abstract DataFlow::Node getAnEndpointToFeaturize();
 }
 
 /**
