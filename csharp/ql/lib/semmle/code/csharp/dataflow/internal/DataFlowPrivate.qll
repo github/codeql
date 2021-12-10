@@ -65,7 +65,9 @@ abstract class NodeImpl extends Node {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
-    result = this.getExpr().getEnclosingCallable()
+    result = this.getExpr().(CIL::Expr).getEnclosingCallable()
+    or
+    result = this.getControlFlowNodeImpl().getEnclosingCallable()
   }
 
   override DotNet::Type getTypeImpl() {
