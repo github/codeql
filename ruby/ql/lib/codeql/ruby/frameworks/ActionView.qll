@@ -66,6 +66,9 @@ class RawCall extends ActionViewContextCall {
 // A call to the `params` method within the context of a template.
 private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
 
+// A call to the `cookies` method within the context of a template.
+private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCall { }
+
 /**
  * A call to a `render` method that will populate the response body with the
  * rendered content.
