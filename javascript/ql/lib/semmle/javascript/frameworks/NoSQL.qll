@@ -618,14 +618,30 @@ private module Minimongo {
  * Provides classes modeling the MarsDB library.
  */
 private module MarsDB {
+  private class MarsDBAccess extends DatabaseAccess {
+    string method;
+
+    MarsDBAccess() {
+      this =
+        API::moduleImport("marsdb")
+            .getMember("Collection")
+            .getInstance()
+            .getMember(method)
+            .getACall()
+    }
+
+    string getMethod() { result = method }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+
   /** A call to a MarsDB query method. */
   private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
       exists(string m |
-        this =
-          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
+        this.(MarsDBAccess).getMethod() = m and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )

@@ -200,6 +200,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
     or
     call instanceof FileSystemAccess and reason instanceof FileSystemAccessReason
     or
+    // TODO database accesses are less well defined than database query sinks, so this may cover unmodeled sinks
     call instanceof DatabaseAccess and reason instanceof DatabaseAccessReason
     or
     call = DOM::domValueRef() and reason instanceof DOMReason
