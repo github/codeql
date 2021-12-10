@@ -96,9 +96,7 @@ abstract class BufferWrite extends Expr {
    * than their true maximum length.  This can be helpful in determining the
    * cause of a buffer overflow issue.
    */
-  int getMaxDataLimited(BufferWriteEstimationReason reason) {
-    result = getMaxData(reason)
-  }
+  int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxData(reason) }
 
   /**
    * Gets the size of a single character of the type this
@@ -207,13 +205,9 @@ class StrCatBW extends BufferWriteCall {
       this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
-    result = getMaxDataImpl(reason)
-  }
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() {
-    result = max(getMaxDataImpl(_))
-  }
+  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
 
 /**
@@ -288,7 +282,9 @@ class SprintfBW extends BufferWriteCall {
     )
   }
 
-  override int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxDataLimitedImpl(reason) }
+  override int getMaxDataLimited(BufferWriteEstimationReason reason) {
+    result = getMaxDataLimitedImpl(reason)
+  }
 
   deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
@@ -399,7 +395,9 @@ class SnprintfBW extends BufferWriteCall {
     )
   }
 
-  override int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxDataLimitedImpl(reason) }
+  override int getMaxDataLimited(BufferWriteEstimationReason reason) {
+    result = getMaxDataLimitedImpl(reason)
+  }
 
   deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
@@ -499,9 +497,7 @@ class ScanfBW extends BufferWrite {
     )
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) {
-    result = getMaxDataImpl(reason)
-  }
+  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
   deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
 
