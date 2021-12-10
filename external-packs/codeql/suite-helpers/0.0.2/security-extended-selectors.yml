@@ -1,0 +1,34 @@
+- description: Selectors for selecting the security-extended queries for a language
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - high
+    - very-high
+    tags contain:
+    - security
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - medium
+    problem.severity:
+    - error
+    - warning
+    tags contain:
+    - security
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
+- exclude:
+    deprecated: //
+- exclude:
+    query path: /^experimental\/.*/
+
