@@ -620,6 +620,7 @@ private predicate arrayRead(Expr e1, ArrayRead e2) { e1 = e2.getQualifier() }
 private Type getCSharpType(DotNet::Type t) {
   result = t
   or
+  not t instanceof Type and
   result.matchesHandle(t)
 }
 
