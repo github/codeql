@@ -92,14 +92,31 @@ abstract class FrameworkLibraryWithMarkerComment extends FrameworkLibrary {
 
   /**
    * Gets a regular expression that can be used to identify an instance of
-   * this framework library.
+   * this framework library, with `<VERSION>` as a placeholder for version
+   * numbers.
    *
    * The first capture group of this regular expression should match
-   * the version number. Any occurrences of the string `<VERSION>` in
-   * the regular expression are replaced by `versionRegex()` before
-   * matching.
+   * the version number.
+   *
+   * Subclasses should implement this predicate.
+   *
+   * Callers should avoid using this predicate directly,
+   * and instead use `getAMarkerCommentRegexWithoutPlaceholders()`,
+   * which will replace any occurrences of the string `<VERSION>` in
+   * the regular expression with `versionRegex()`.
    */
   abstract string getAMarkerCommentRegex();
+
+  /**
+   * Gets a regular expression that can be used to identify an instance of
+   * this framework library.
+   *
+   * The first capture group of this regular expression is intended to match
+   * the version number.
+   */
+  final string getAMarkerCommentRegexWithoutPlaceholders() {
+    result = this.getAMarkerCommentRegex().replaceAll("<VERSION>", versionRegex())
+  }
 }
 
 /**
@@ -182,18 +199,64 @@ class FrameworkLibraryInstanceWithMarkerComment extends FrameworkLibraryInstance
   override predicate info(FrameworkLibrary fl, string v) { matchMarkerComment(_, this, fl, v) }
 }
 
+/** A marker comment that indicates a framework library. */
+private class MarkerComment extends Comment {
+  MarkerComment() {
+    /*
+     * PERFORMANCE OPTIMISATION:
+     *
+     * Each framework library has a regular expression describing its marker comments.
+     * We want to find the set of marker comments and the framework regexes they match.
+     * In order to perform such regex matching, CodeQL needs to compute the
+     * Cartesian product of possible receiver strings and regexes first,
+     * containing `num_receivers * num_regexes` tuples.
+     *
+     * A straightforward attempt to match marker comments with individual
+     * framework regexes will compute the Cartesian product between
+     * the set of comments and the set of framework regexes.
+     * Total: `num_comments * num_frameworks` tuples.
+     *
+     * Instead, create a single regex that matches *all* frameworks.
+     * This is the regex union of the individual framework regexes
+     * i.e. `(regex_1)|(regex_2)|...|(regex_n)`
+     * This approach will compute the Cartesian product between
+     * the set of comments and the singleton set of this union regex.
+     * Total: `num_comments * 1` tuples.
+     *
+     * To identify the individual frameworks and extract the version number from capture groups,
+     * use the member predicate `matchesFramework` *after* this predicate has been computed.
+     */
+
+    exists(string unionRegex |
+      unionRegex =
+        concat(FrameworkLibraryWithMarkerComment fl |
+          |
+          "(" + fl.getAMarkerCommentRegexWithoutPlaceholders() + ")", "|"
+        )
+    |
+      this.getText().regexpMatch(unionRegex)
+    )
+  }
+
+  /**
+   * Holds if this marker comment indicates an instance of the framework `fl`
+   * with version number `version`.
+   */
+  predicate matchesFramework(FrameworkLibraryWithMarkerComment fl, string version) {
+    this.getText().regexpCapture(fl.getAMarkerCommentRegexWithoutPlaceholders(), 1) = version
+  }
+}
+
 /**
  * Holds if comment `c` in toplevel `tl` matches the marker comment of library
  * `fl` at `version`.
  */
 cached
 private predicate matchMarkerComment(
-  Comment c, TopLevel tl, FrameworkLibraryWithMarkerComment fl, string version
+  MarkerComment c, TopLevel tl, FrameworkLibraryWithMarkerComment fl, string version
 ) {
   c.getTopLevel() = tl and
-  exists(string r | r = fl.getAMarkerCommentRegex().replaceAll("<VERSION>", versionRegex()) |
-    version = c.getText().regexpCapture(r, 1)
-  )
+  c.matchesFramework(fl, version)
 }
 
 /**
