@@ -80,7 +80,9 @@ module Stages {
       or
       any(PyFlow::BasicBlock b).strictlyDominates(_)
       or
-      any(PyFlow::BasicBlock b).dominates(_)
+      any(PyFlow::BasicBlock b).strictlyReaches(_)
+      or
+      exists(any(PyFlow::BasicBlock b).getASuccessor())
       or
       exists(any(PyFlow::ControlFlowNode b).getScope())
       or

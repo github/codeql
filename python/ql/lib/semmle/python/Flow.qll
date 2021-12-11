@@ -1012,9 +1012,7 @@ class BasicBlock extends @py_flow_node {
   }
 
   /** Whether this basic block dominates the other */
-  cached
   predicate dominates(BasicBlock other) {
-    Stages::AST::ref() and
     this = other
     or
     this.strictlyDominates(other)
@@ -1060,7 +1058,11 @@ class BasicBlock extends @py_flow_node {
   }
 
   /** Gets a successor to this basic block */
-  BasicBlock getASuccessor() { result = this.getLastNode().getASuccessor().getBasicBlock() }
+  cached
+  BasicBlock getASuccessor() {
+    Stages::AST::ref() and
+    result = this.getLastNode().getASuccessor().getBasicBlock()
+  }
 
   /** Gets a predecessor to this basic block */
   BasicBlock getAPredecessor() { result.getASuccessor() = this }
@@ -1130,7 +1132,11 @@ class BasicBlock extends @py_flow_node {
   }
 
   /** Holds if this basic block strictly reaches the other. Is the start of other reachable from the end of this. */
-  predicate strictlyReaches(BasicBlock other) { this.getASuccessor+() = other }
+  cached
+  predicate strictlyReaches(BasicBlock other) {
+    Stages::AST::ref() and
+    this.getASuccessor+() = other
+  }
 
   /** Holds if this basic block reaches the other. Is the start of other reachable from the end of this. */
   predicate reaches(BasicBlock other) { this = other or this.strictlyReaches(other) }
