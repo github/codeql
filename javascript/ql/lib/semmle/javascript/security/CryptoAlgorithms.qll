@@ -14,10 +14,9 @@
  * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
  */
 module AlgorithmNames {
-  predicate isStrongBlockMode(string name) { name = ["CCM", "GCM"] }
-
-  predicate isWeakBlockMode(string name) { name = "ECB" }
-
+  /**
+   * Holds if `name` corresponds to a strong hashing algorithm.
+   */
   predicate isStrongHashingAlgorithm(string name) {
     name =
       [
@@ -26,6 +25,9 @@ module AlgorithmNames {
       ]
   }
 
+  /**
+   * Holds if `name` corresponds to a weak hashing algorithm.
+   */
   predicate isWeakHashingAlgorithm(string name) {
     name =
       [
@@ -34,16 +36,22 @@ module AlgorithmNames {
       ]
   }
 
+  /**
+   * Holds if `name` corresponds to a strong encryption algorithm.
+   */
   predicate isStrongEncryptionAlgorithm(string name) {
     name =
       [
         "AES", "AES128", "AES192", "AES256", "AES512", "AES-128", "AES-192", "AES-256", "AES-512",
-        "RSA", "RABBIT", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5", "CAMELLIA", "CAMELLIA128",
+        "ARIA", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5", "CAMELLIA", "CAMELLIA128",
         "CAMELLIA192", "CAMELLIA256", "CAMELLIA-128", "CAMELLIA-192", "CAMELLIA-256", "CHACHA",
-        "GOST", "GOST89"
+        "GOST", "GOST89", "IDEA", "RABBIT", "RSA", "SEED", "SM4"
       ]
   }
 
+  /**
+   * Holds if `name` corresponds to a weak encryption algorithm.
+   */
   predicate isWeakEncryptionAlgorithm(string name) {
     name =
       [
@@ -52,11 +60,27 @@ module AlgorithmNames {
       ]
   }
 
+  /**
+   * Holds if `name` corresponds to a strong password hashing algorithm.
+   */
   predicate isStrongPasswordHashingAlgorithm(string name) {
     name = ["ARGON2", "PBKDF2", "BCRYPT", "SCRYPT"]
   }
 
+  /**
+   * Holds if `name` corresponds to a weak password hashing algorithm.
+   */
   predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
+
+  /**
+   * Holds if `name` corresponds to a strong block cipher mode of operation.
+   */
+  predicate isStrongBlockMode(string name) { name = ["CBC", "CCM", "CFB", "CTR", "GCM", "OFB"] }
+
+  /**
+   * Holds if `name` corresponds to a weak block cipher mode of operation.
+   */
+  predicate isWeakBlockMode(string name) { name = "ECB" }
 }
 
 private import AlgorithmNames
