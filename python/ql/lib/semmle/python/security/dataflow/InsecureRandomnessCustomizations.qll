@@ -55,14 +55,14 @@ module InsecureRandomness {
   }
   
   /**
-   * A use in a function that heuristically deals with passwords.
+   * A use in a function that heuristically deals with unsafe random numbers or random strings.
    */
-  class PasswordFnSink extends Sink {
-    PasswordFnSink() {
-      exists(DataFlowCallable passwordFn |
-        passwordFn.getName().regexpMatch("(?i).*(gen(erate)?|salt|make|mk)Password.*")
+  class RandomFnSink extends Sink {
+    RandomFnSink() {
+      exists(DataFlowCallable randomFn |
+        randomFn.getName().regexpMatch("(?i).*(gen(erate)?|salt|make|mk).*")
       |
-        this.getEnclosingCallable() = passwordFn
+        this.getEnclosingCallable() = randomFn
       )
     }
   }
