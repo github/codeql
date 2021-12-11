@@ -55,6 +55,7 @@ strongEncryptionAlgorithms
 | AES-192 |
 | AES-256 |
 | AES-512 |
+| ARIA |
 | BF |
 | BLOWFISH |
 | CAMELLIA |
@@ -70,8 +71,11 @@ strongEncryptionAlgorithms
 | ECIES |
 | GOST |
 | GOST89 |
+| IDEA |
 | RABBIT |
 | RSA |
+| SEED |
+| SM4 |
 weakPasswordHashingAlgorithms
 | EVPKDF |
 strongPasswordHashingAlgorithms
