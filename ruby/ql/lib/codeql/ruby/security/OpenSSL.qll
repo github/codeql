@@ -1,6 +1,6 @@
 /**
  * Provides classes modeling parts of the Ruby `OpenSSL` library, which wraps
- * the OpenSSL C library.
+ * an underlying OpenSSL or LibreSSL C library.
  */
 
 private import CryptoAlgorithms::AlgorithmNames
@@ -61,6 +61,11 @@ string getSecureAlgorithmRegex() {
   result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
 }
 
+/**
+ * Names of known ciphers supported by the Ruby `OpenSSL` library, and
+ * classification into strong and weak ciphers. Cipher support in practice
+ * depends on the underlying `OpenSSL`/`LibreSSL` library.
+ */
 module Ciphers {
   /**
    * Holds if `name` is a known `OpenSSL::Cipher`. Supported ciphers depend on the
