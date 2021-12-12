@@ -65,6 +65,10 @@ TRUE
 "foo #{ "bar #{ 2 + 3 } baz" } qux" # interpolation containing string containing interpolation
 "foo #{ blah(); 1+9 }"      # multiple statements in interpolation
 
+
+
+
+
 # characters
 ?x
 ?\n
