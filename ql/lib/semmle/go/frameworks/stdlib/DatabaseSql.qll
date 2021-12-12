@@ -141,11 +141,11 @@ module DatabaseSql {
       (inp.isParameter(0) and outp.isReceiver())
       or
       // Prepare methods
-      this.hasQualifiedName("database/sql", ["Tx", "Db"], "Prepare") and
+      this.hasQualifiedName("database/sql", ["Tx", "DB"], "Prepare") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // PrepareContext methods
-      this.hasQualifiedName("database/sql", ["Tx", "Db", "Conn"], "PrepareContext") and
+      this.hasQualifiedName("database/sql", ["Tx", "DB", "Conn"], "PrepareContext") and
       (inp.isParameter(1) and outp.isResult(0))
     }
 
