@@ -54,13 +54,13 @@ class ActionControllerControllerClass extends ClassDeclaration {
 }
 
 /**
- * An instance method defined within an `ActionController` controller class.
+ * A public instance method defined within an `ActionController` controller class.
  * This may be the target of a route handler, if such a route is defined.
  */
 class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler::Range {
   private ActionControllerControllerClass controllerClass;
 
-  ActionControllerActionMethod() { this = controllerClass.getAMethod() }
+  ActionControllerActionMethod() { this = controllerClass.getAMethod() and not this.isPrivate() }
 
   /**
    * Establishes a mapping between a method within the file

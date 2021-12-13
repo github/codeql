@@ -2,7 +2,7 @@ actionControllerControllerClasses
 | ActiveRecordInjection.rb:27:1:58:3 | FooController |
 | ActiveRecordInjection.rb:60:1:90:3 | BarController |
 | ActiveRecordInjection.rb:92:1:96:3 | BazController |
-| app/controllers/foo/bars_controller.rb:3:1:25:3 | BarsController |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController |
 actionControllerActionMethods
 | ActiveRecordInjection.rb:32:3:57:5 | some_request_handler |
 | ActiveRecordInjection.rb:61:3:69:5 | some_other_request_handler |
@@ -57,8 +57,8 @@ redirectToCalls
 | app/controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
 actionControllerHelperMethods
 getAssociatedControllerClasses
-| app/controllers/foo/bars_controller.rb:3:1:25:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
-| app/controllers/foo/bars_controller.rb:3:1:25:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
 controllerTemplateFiles
-| app/controllers/foo/bars_controller.rb:3:1:25:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
-| app/controllers/foo/bars_controller.rb:3:1:25:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
