@@ -1,5 +1,5 @@
 * Introduction
-  As for any compiler / libary pair, only certain versions of the codeql compiler
+  As for any compiler and library pair, only certain versions of the CodeQL compiler
   will work with certain versions of the libary.  To ensure compatibility, the
   tools creating the db, the query writers (if any), and the query runners should
   all sync up on a particular version.
