@@ -12,7 +12,7 @@ private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.security.CryptoAlgorithms
+private import codeql.ruby.security.OpenSSL
 
 /**
  * A reference to either `Rails::Railtie`, `Rails::Engine`, or `Rails::Application`.
