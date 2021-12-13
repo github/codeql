@@ -475,3 +475,20 @@ class CryptographicOperationTest extends InlineExpectationsTest {
     )
   }
 }
+
+class HttpClientRequestTest extends InlineExpectationsTest {
+  HttpClientRequestTest() { this = "HttpClientRequestTest" }
+
+  override string getARelevantTag() { result = "clientRequestUrl" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req, DataFlow::Node url |
+      url = req.getUrl() and
+      location = url.getLocation() and
+      element = url.toString() and
+      value = prettyNodeForInlineTest(url) and
+      tag = "clientRequestUrl"
+    )
+  }
+}

@@ -812,6 +812,77 @@ module HTTP {
       }
     }
   }
+
+  /** Provides classes for modeling HTTP clients. */
+  module Client {
+    /**
+     * A method call that makes an outgoing HTTP request.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `Request::Range` instead.
+     */
+    class Request extends DataFlow::Node instanceof Request::Range {
+      /** Gets a node which returns the body of the response */
+      DataFlow::Node getResponseBody() { result = super.getResponseBody() }
+
+      /**
+       * Gets a node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getUrl() { result = super.getUrl() }
+
+      /** Gets a string that identifies the framework used for this request. */
+      string getFramework() { result = super.getFramework() }
+
+      /**
+       * Holds if this request is made using a mode that disables SSL/TLS
+       * certificate validation, where `disablingNode` represents the point at
+       * which the validation was disabled.
+       */
+      predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+        super.disablesCertificateValidation(disablingNode)
+      }
+    }
+
+    /** Provides a class for modeling new HTTP requests. */
+    module Request {
+      /**
+       * A method call that makes an outgoing HTTP request.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `Request` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets a node which returns the body of the response */
+        abstract DataFlow::Node getResponseBody();
+
+        /**
+         * Gets a node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getUrl();
+
+        /** Gets a string that identifies the framework used for this request. */
+        abstract string getFramework();
+
+        /**
+         * Holds if this request is made using a mode that disables SSL/TLS
+         * certificate validation, where `disablingNode` represents the point at
+         * which the validation was disabled.
+         */
+        abstract predicate disablesCertificateValidation(DataFlow::Node disablingNode);
+      }
+    }
+
+    /** The response body from an outgoing HTTP request, considered as a remote flow source */
+    private class RequestResponseBody extends RemoteFlowSource::Range, DataFlow::Node {
+      Request request;
+
+      RequestResponseBody() { this = request.getResponseBody() }
+
+      override string getSourceType() { result = request.getFramework() }
+    }
+  }
 }
 
 /**
