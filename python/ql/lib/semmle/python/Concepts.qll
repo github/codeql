@@ -880,7 +880,7 @@ module HTTP {
 
       RequestResponseBody() { this = request.getResponseBody() }
 
-      override string getSourceType() { result = request.getFramework() }
+      override string getSourceType() { result = request.getFramework() + " response body" }
     }
   }
 }
