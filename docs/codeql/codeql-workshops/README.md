@@ -76,7 +76,7 @@ expansion.  Primary focus should be on learning and explaining CodeQL and the
 content should cover at least these items:
 1. A high-level problem description
 2. The specific parts of the original source code to be analyzed 
-3. descriptions of the codeql predicates / classes developed
+3. Descriptions of the CodeQL predicates/classes developed
 4. a description of the final query
 
 
