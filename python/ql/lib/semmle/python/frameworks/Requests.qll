@@ -51,7 +51,7 @@ private module Requests {
       result = this.getArg(1)
     }
 
-    override DataFlow::Node getResponseBody() { none() }
+    override DataFlow::Node getResponse() { result = this }
 
     /** Gets the `verify` argument to this outgoing requests call. */
     DataFlow::Node getVerifyArg() { result = this.getArgByName("verify") }

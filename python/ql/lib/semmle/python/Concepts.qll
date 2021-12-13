@@ -822,8 +822,8 @@ module HTTP {
      * extend `Request::Range` instead.
      */
     class Request extends DataFlow::Node instanceof Request::Range {
-      /** Gets a node which returns the body of the response */
-      DataFlow::Node getResponseBody() { result = super.getResponseBody() }
+      /** Gets a node that provides the response to this request. */
+      DataFlow::Node getResponse() { result = super.getResponse() }
 
       /**
        * Gets a node that contributes to the URL of the request.
@@ -857,8 +857,8 @@ module HTTP {
        * extend `Request` instead.
        */
       abstract class Range extends DataFlow::Node {
-        /** Gets a node which returns the body of the response */
-        abstract DataFlow::Node getResponseBody();
+        /** Gets a node that provides the response to this request. */
+        abstract DataFlow::Node getResponse();
 
         /**
          * Gets a node that contributes to the URL of the request.
@@ -882,14 +882,19 @@ module HTTP {
       }
     }
 
-    /** The response body from an outgoing HTTP request, considered as a remote flow source */
-    private class RequestResponseBody extends RemoteFlowSource::Range, DataFlow::Node {
-      Request request;
-
-      RequestResponseBody() { this = request.getResponseBody() }
-
-      override string getSourceType() { result = request.getFramework() + " response body" }
+    /**
+     * Additional taint step from a client request with user-controlled URL to the response.
+     */
+    private class HttpClientRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        exists(Request req |
+          nodeFrom = req.getUrl() and
+          nodeTo = req.getResponse()
+        )
+      }
     }
+    // TODO: investigate whether we should treat responses to client requests as
+    // remote-flow-sources in general.
   }
 }
 
