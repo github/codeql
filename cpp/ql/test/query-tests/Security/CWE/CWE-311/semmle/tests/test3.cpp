@@ -292,12 +292,12 @@ void target3(char *data)
 
 void target4(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password [NOT DETECTED]
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
 }
 
 void target5(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password [NOT DETECTED]
+	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
 }
 
 void target6(char *data)
@@ -305,21 +305,21 @@ void target6(char *data)
 	send(val(), data, strlen(data), val()); // GOOD: not a password
 }
 
-void test_multiple_sources_source(char *password)
+void test_multiple_sources_source(char *password1, char *password2)
 {
 	if (cond())
 	{
-		encrypt_inplace(password);
-		target1(password);
-		target2(password);
+		encrypt_inplace(password1);
+		target1(password1);
+		target2(password1);
 	} else {
-		target2(password);
-		target3(password);
+		target2(password1);
+		target3(password1);
 	}
 
 	if (cond())
 	{
-		char *data = password;
+		char *data = password2;
 
 		target4(data);
 		target5(data);
