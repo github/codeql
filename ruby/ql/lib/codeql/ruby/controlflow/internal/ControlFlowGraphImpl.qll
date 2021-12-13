@@ -107,14 +107,8 @@ module Trees {
     }
   }
 
-  private class ArgumentListTree extends StandardTree, ArgumentList {
+  private class ArgumentListTree extends StandardPostOrderTree, ArgumentList {
     final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-
-    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
-    }
   }
 
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
@@ -983,6 +977,8 @@ module Trees {
     }
   }
 
+  private class ForwardedArgumentsTree extends LeafTree, ForwardedArguments { }
+
   private class ForwardParameterTree extends LeafTree, ForwardParameter { }
 
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
@@ -995,7 +991,7 @@ module Trees {
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
-  private class HereDocTree extends StandardPreOrderTree, HereDoc {
+  private class HereDocTree extends StandardPostOrderTree, HereDoc {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
@@ -1355,14 +1351,8 @@ module Trees {
     }
   }
 
-  private class StringConcatenationTree extends StandardTree, StringConcatenation {
+  private class StringConcatenationTree extends StandardPostOrderTree, StringConcatenation {
     final override ControlFlowTree getChildElement(int i) { result = this.getString(i) }
-
-    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
-    }
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree, StringlikeLiteral {
