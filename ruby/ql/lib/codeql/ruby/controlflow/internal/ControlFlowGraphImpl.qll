@@ -732,11 +732,14 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getVariableAccess() and i = 0 }
   }
 
-  private class InClauseTree extends PreOrderTree, InClause {
+  private class InClauseTree extends PostOrderTree, InClause {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getPattern() or
-      child = this.getCondition()
+      child = this.getCondition() or
+      child = this.getBody()
     }
+
+    final override predicate first(AstNode first) { first(this.getPattern(), first) }
 
     private predicate lastCondition(AstNode last, BooleanCompletion c, boolean flag) {
       last(this.getCondition(), last, c) and
@@ -748,51 +751,44 @@ module Trees {
     }
 
     final override predicate last(AstNode last, Completion c) {
+      super.last(last, c)
+      or
       last(this.getPattern(), last, c) and
       c.(MatchingCompletion).getValue() = false
       or
-      exists(BooleanCompletion bc, boolean flag, MatchingCompletion mc |
+      exists(BooleanCompletion bc, boolean flag |
+        bc.getValue() = flag.booleanNot() and
         lastCondition(last, bc, flag) and
         c =
           any(NestedMatchingCompletion nmc |
-            nmc.getInnerCompletion() = bc and nmc.getOuterCompletion() = mc
+            nmc.getInnerCompletion() = bc and nmc.getOuterCompletion().getValue() = false
           )
-      |
-        mc.getValue() = false and
-        bc.getValue() = flag.booleanNot()
-        or
-        not exists(this.getBody()) and
-        mc.getValue() = true and
-        bc.getValue() = flag
       )
-      or
-      last(this.getBody(), last, c)
-      or
-      not exists(this.getBody()) and
-      not exists(this.getCondition()) and
-      last(this.getPattern(), last, c)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getPattern(), succ) and
-      c instanceof SimpleCompletion
-      or
-      exists(Expr next |
-        last(this.getPattern(), pred, c) and
-        c.(MatchingCompletion).getValue() = true and
-        first(next, succ)
-      |
-        next = this.getCondition()
+      last(this.getPattern(), pred, c) and
+      not c.(MatchingCompletion).getValue() = false and
+      (
+        first(this.getCondition(), succ)
         or
-        not exists(this.getCondition()) and next = this.getBody()
+        not exists(this.getCondition()) and first(this.getBody(), succ)
+        or
+        not exists(this.getCondition()) and not exists(this.getBody()) and succ = this
       )
       or
       exists(boolean flag |
         lastCondition(pred, c, flag) and
-        c.(BooleanCompletion).getValue() = flag and
+        c.(BooleanCompletion).getValue() = flag
+      |
         first(this.getBody(), succ)
+        or
+        not exists(this.getBody()) and succ = this
       )
+      or
+      last(this.getBody(), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
     }
   }
 
