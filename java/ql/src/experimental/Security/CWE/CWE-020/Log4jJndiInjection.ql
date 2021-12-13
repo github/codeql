@@ -18,21 +18,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
-private class LoggingSummaryModels extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];ReturnValue;taint",
-        "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[1];ReturnValue;value",
-        "org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[1];ReturnValue;value",
-        "org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];ReturnValue;value",
-        "org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[1];ReturnValue;value",
-      ]
-  }
-}
 
 private class LoggingSinkModels extends SinkModelCsv {
   override predicate row(string row) {
@@ -143,15 +128,6 @@ private class LoggingSinkModels extends SinkModelCsv {
         "org.apache.logging.log4j;Logger;true;logMessage;(Level,Marker,String,StackTraceElement,Message,Throwable);;Argument[4];logging",
         "org.apache.logging.log4j;Logger;true;printf;(Level,Marker,String,Object[]);;Argument[2..3];logging",
         "org.apache.logging.log4j;Logger;true;printf;(Level,String,Object[]);;Argument[1..2];logging",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];logging",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];logging",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];logging",
-        "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];logging",
-        "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage);;Argument[0];logging",
-        "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[0..1];logging",
-        "org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[0..1];logging",
-        "org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];logging",
-        "org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[0..1];logging",
         // org.apache.logging.log4j.LogBuilder
         "org.apache.logging.log4j;LogBuilder;true;log;(CharSequence);;Argument[0];logging",
         "org.apache.logging.log4j;LogBuilder;true;log;(Message);;Argument[0];logging",
