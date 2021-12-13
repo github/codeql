@@ -59,7 +59,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
     or
     // class Bar < Foo
     exists(ActiveRecordModelClass other |
-      other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
+      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
     )
   }
 
@@ -101,7 +101,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
 
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveScopeExpr(this.getReceiver())
+    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
     or
     // e.g. Foo.joins(:bars).where(...)
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
