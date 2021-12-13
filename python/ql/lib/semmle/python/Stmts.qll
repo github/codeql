@@ -412,7 +412,7 @@ class With extends With_ {
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
 }
 
-class Match extends Match_ {
+class MatchStmt extends Match_ {
   /* syntax: match subject: */
   override Expr getASubExpression() { result = this.getSubject() }
 

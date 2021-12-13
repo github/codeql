@@ -1537,7 +1537,7 @@ import IterableUnpacking
 
 module MatchUnpacking {
   predicate matchUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(Match match, Expr subject, MatchSequencePattern target |
+    exists(MatchStmt match, Expr subject, MatchSequencePattern target |
       subject = match.getSubject() and
       target = match.getCase(_).(Case).getPattern()
     |
