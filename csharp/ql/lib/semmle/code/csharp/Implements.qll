@@ -4,7 +4,7 @@
  * Provides logic for determining interface member implementations.
  *
  * Do not use the predicates in this library directly; use the methods
- * of the class `Virtualizable` instead.
+ * of the class `Overridable` instead.
  */
 
 import csharp
@@ -35,7 +35,7 @@ private import Conversion
  * `implements(A.M, I.M, B)` and `implements(C.M, I.M, C)`.
  */
 cached
-predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
+predicate implements(Overridable m1, Overridable m2, ValueOrRefType t) {
   exists(Interface i |
     i = m2.getDeclaringType() and
     t.getABaseInterface+() = i and
@@ -66,7 +66,7 @@ predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
  * for type `C`, because `C.M()` conflicts.
  */
 pragma[nomagic]
-private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m, ValueOrRefType t) {
+private Overridable getAnImplementedInterfaceMemberForSubType(Overridable m, ValueOrRefType t) {
   result = getACompatibleInterfaceMember(m) and
   t = m.getDeclaringType()
   or
@@ -78,7 +78,7 @@ private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m,
 }
 
 pragma[noinline]
-private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtualizable m) {
+private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Overridable m) {
   m = getACompatibleInterfaceMember(t.getAMember())
 }
 
@@ -88,7 +88,7 @@ private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtu
  * the interface member is accessed.
  */
 pragma[nomagic]
-private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
+private Overridable getACompatibleInterfaceMember(Overridable m) {
   result = getACompatibleInterfaceMemberAux(m) and
   (
     // If there is both an implicit and an explicit compatible member
@@ -100,14 +100,14 @@ private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
 }
 
 pragma[nomagic]
-private Virtualizable getACompatibleExplicitInterfaceMember(Virtualizable m, ValueOrRefType declType) {
+private Overridable getACompatibleExplicitInterfaceMember(Overridable m, ValueOrRefType declType) {
   result = getACompatibleInterfaceMemberAux(m) and
   declType = m.getDeclaringType() and
   m.implementsExplicitInterface()
 }
 
 pragma[nomagic]
-private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m) {
+private Overridable getACompatibleInterfaceMemberAux(Overridable m) {
   result = getACompatibleInterfaceAccessor(m) or
   result = getACompatibleInterfaceIndexer(m) or
   result = getACompatibleInterfaceMethod(m)

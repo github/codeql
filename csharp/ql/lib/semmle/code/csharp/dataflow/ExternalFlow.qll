@@ -360,11 +360,7 @@ private class UnboundCallable extends Callable {
 
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.(Virtualizable).overridesOrImplementsOrEquals(c) or
-      this = c.(OverridableCallable).getAnUltimateImplementor() or
-      this = c.(OverridableCallable).getAnOverrider+()
-    |
-      this != c and
+      this.(OverridableCallable).overridesOrImplements(c) and
       that = c.getUnboundDeclaration()
     )
   }
