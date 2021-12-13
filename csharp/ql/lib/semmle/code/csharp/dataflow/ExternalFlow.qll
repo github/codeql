@@ -92,6 +92,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
   private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.system.Text
 }
 
 /**
@@ -262,7 +263,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
       msg = "Dubious member name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+,\\[\\]]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Attribute") and
