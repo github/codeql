@@ -53,6 +53,7 @@ where
       fctmp.getTarget().hasGlobalOrStdName("fopen") or
       fctmp.getTarget().hasGlobalOrStdName("open")
     ) and
+    not fctmp.getArgument(1).getValue().matches("r%") and
     fctmp.getNumberOfArguments() = 2 and
     not fctmp.getArgument(0).getValue() = "/dev/null" and
     fcsnd = fctmp
