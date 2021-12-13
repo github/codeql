@@ -77,7 +77,7 @@ content should cover at least these items:
 1. A high-level problem description
 2. The specific parts of the original source code to be analyzed 
 3. Descriptions of the CodeQL predicates/classes developed
-4. a description of the final query
+4. A description of the final query
 
 
 
