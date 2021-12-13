@@ -503,37 +503,6 @@ private module FrameworkDataFlowAdaptor {
   }
 }
 
-/** Data flow for `System.IO.StringReader`. */
-class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReaderClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      this.constructorFlow(source, sink, c)
-      or
-      this.methodFlow(source, sink, c)
-    ) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m.getDeclaringType() = this.getABaseType*() and
-    m.getName().matches("Read%") and
-    source = TCallableFlowSourceQualifier() and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
 /** Data flow for `System.Text.StringBuilder`. */
 class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringBuilderClass {
   override predicate clearsContent(

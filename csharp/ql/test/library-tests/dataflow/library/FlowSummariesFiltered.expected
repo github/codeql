@@ -14,12 +14,12 @@
 | Newtonsoft.Json.Linq;JConstructor;false;get_Item;(System.Object);;Element of Argument[-1];ReturnValue;value |
 | Newtonsoft.Json.Linq;JConstructor;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;false;Add;(Newtonsoft.Json.Linq.JToken);;Argument[0];Element of Argument[-1];value |
-| Newtonsoft.Json.Linq;JContainer;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;false;CopyTo;(Newtonsoft.Json.Linq.JToken[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | Newtonsoft.Json.Linq;JContainer;false;Insert;(System.Int32,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | Newtonsoft.Json.Linq;JContainer;false;set_Item;(System.Int32,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
@@ -148,6 +148,7 @@
 | System.Collections.Concurrent;ConcurrentQueue<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System.Collections.Concurrent;ConcurrentStack<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Collections.Concurrent;ConcurrentStack<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Collections.Concurrent;IProducerConsumerCollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Collections.Generic;Dictionary<,>+KeyCollection;false;Add;(TKey);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Generic;Dictionary<,>+KeyCollection;false;CopyTo;(TKey[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Collections.Generic;Dictionary<,>+KeyCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.Dictionary<,>+KeyCollection+Enumerator.Current] of ReturnValue;value |
@@ -184,13 +185,19 @@
 | System.Collections.Generic;HashSet<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Collections.Generic;HashSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.HashSet<>+Enumerator.Current] of ReturnValue;value |
 | System.Collections.Generic;HashSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Collections.Generic;ICollection<>;true;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Generic;ICollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
+| System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
 | System.Collections.Generic;IDictionary<,>;true;get_Item;(TKey);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value |
 | System.Collections.Generic;IDictionary<,>;true;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections.Generic;IDictionary<,>;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
+| System.Collections.Generic;IList<>;true;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System.Collections.Generic;IList<>;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Generic;IList<>;true;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Generic;ISet<>;true;Add;(T);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of ReturnValue;value |
 | System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of ReturnValue;value |
 | System.Collections.Generic;LinkedList<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
@@ -280,6 +287,10 @@
 | System.Collections.Generic;Stack<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.Stack<>+Enumerator.Current] of ReturnValue;value |
 | System.Collections.Generic;Stack<>;false;Peek;();;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Generic;Stack<>;false;Pop;();;Element of Argument[-1];ReturnValue;value |
+| System.Collections.Immutable;IImmutableDictionary<,>;true;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Element of Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;IImmutableList<>;true;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;IImmutableList<>;true;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;IImmutableSet<>;true;Add;(T);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;Add;(T);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(System.Collections.Immutable.ImmutableArray<>);;Element of Argument[0];Element of Argument[-1];value |
@@ -534,11 +545,17 @@
 | System.Collections;Hashtable;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections;Hashtable;false;set_Item;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections;Hashtable;false;set_Item;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
+| System.Collections;ICollection;true;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
+| System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
 | System.Collections;IDictionary;true;get_Item;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value |
 | System.Collections;IDictionary;true;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections;IDictionary;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
+| System.Collections;IEnumerable;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Collections;IList;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
+| System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Collections;IList;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Collections;Queue;false;Clone;();;Element of Argument[0];Element of ReturnValue;value |
@@ -578,6 +595,7 @@
 | System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value |
 | System.ComponentModel;EventDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Element of Argument[-1];ReturnValue;value |
 | System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Element of Argument[-1];value |
 | System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
@@ -643,6 +661,9 @@
 | System.Data.Common;DbParameterCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Data.Common;DbParameterCollection;false;set_Item;(System.String,System.Data.Common.DbParameter);;Argument[1];Element of Argument[-1];value |
 | System.Data.Common;DbParameterCollection;false;set_Item;(System.String,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.Data.Common;DbParameterCollection;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
+| System.Data.Common;DbParameterCollection;true;AddRange;(System.Array);;Element of Argument[0];Element of Argument[-1];value |
+| System.Data.Common;DbParameterCollection;true;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Data;ConstraintCollection;false;Add;(System.Data.Constraint);;Argument[0];Element of Argument[-1];value |
 | System.Data;ConstraintCollection;false;AddRange;(System.Data.Constraint[]);;Element of Argument[0];Element of Argument[-1];value |
 | System.Data;ConstraintCollection;false;CopyTo;(System.Data.Constraint[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
@@ -651,8 +672,8 @@
 | System.Data;DataColumnCollection;false;AddRange;(System.Data.DataColumn[]);;Element of Argument[0];Element of Argument[-1];value |
 | System.Data;DataColumnCollection;false;CopyTo;(System.Data.DataColumn[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Data;DataRelationCollection;false;Add;(System.Data.DataRelation);;Argument[0];Element of Argument[-1];value |
-| System.Data;DataRelationCollection;false;AddRange;(System.Data.DataRelation[]);;Element of Argument[0];Element of Argument[-1];value |
 | System.Data;DataRelationCollection;false;CopyTo;(System.Data.DataRelation[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Data;DataRelationCollection;true;AddRange;(System.Data.DataRelation[]);;Element of Argument[0];Element of Argument[-1];value |
 | System.Data;DataRowCollection;false;Add;(System.Data.DataRow);;Argument[0];Element of Argument[-1];value |
 | System.Data;DataRowCollection;false;Add;(System.Object[]);;Argument[0];Element of Argument[-1];value |
 | System.Data;DataRowCollection;false;CopyTo;(System.Data.DataRow[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
@@ -752,58 +773,17 @@
 | System.Dynamic;ExpandoObject;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Dynamic;ExpandoObject;false;set_Item;(System.String,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Dynamic;ExpandoObject;false;set_Item;(System.String,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
-| System.IO.Compression;BrotliStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;BrotliStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO.Compression;BrotliStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;BrotliStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO.Compression;DeflateStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;DeflateStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO.Compression;DeflateStream;false;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;DeflateStream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO.Compression;DeflateStream;false;DeflateStream;(System.IO.Stream,System.IO.Compression.CompressionLevel);;Argument[0];ReturnValue;taint |
 | System.IO.Compression;DeflateStream;false;DeflateStream;(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean);;Argument[0];ReturnValue;taint |
 | System.IO.Compression;DeflateStream;false;DeflateStream;(System.IO.Stream,System.IO.Compression.CompressionMode);;Argument[0];ReturnValue;taint |
 | System.IO.Compression;DeflateStream;false;DeflateStream;(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean);;Argument[0];ReturnValue;taint |
-| System.IO.Compression;DeflateStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;DeflateStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO.Compression;GZipStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;GZipStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO.Compression;GZipStream;false;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;GZipStream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;GZipStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.Compression;GZipStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
 | System.IO.Enumeration;FileSystemEnumerable<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
-| System.IO.IsolatedStorage;IsolatedStorageFileStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO.IsolatedStorage;IsolatedStorageFileStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO.IsolatedStorage;IsolatedStorageFileStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.IsolatedStorage;IsolatedStorageFileStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO.Pipes;PipeStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO.Pipes;PipeStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO.Pipes;PipeStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO.Pipes;PipeStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO;BufferedStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO;BufferedStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO;BufferedStream;false;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO;BufferedStream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO;BufferedStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO;BufferedStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO;FileStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO;FileStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO;FileStream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO;FileStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO;FileStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO;MemoryStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO;MemoryStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.IO;MemoryStream;false;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO;MemoryStream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO;MemoryStream;false;MemoryStream;(System.Byte[]);;Argument[0];ReturnValue;taint |
 | System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Argument[0];ReturnValue;taint |
 | System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
 | System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Argument[0];ReturnValue;taint |
 | System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Argument[0];ReturnValue;taint |
-| System.IO;MemoryStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO;MemoryStream;false;ToArray;();;Argument[-1];ReturnValue;taint |
-| System.IO;MemoryStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
 | System.IO;Path;false;Combine;(System.String,System.String);;Argument[0];ReturnValue;taint |
 | System.IO;Path;false;Combine;(System.String,System.String);;Argument[1];ReturnValue;taint |
 | System.IO;Path;false;Combine;(System.String,System.String,System.String);;Argument[0];ReturnValue;taint |
@@ -827,46 +807,34 @@
 | System.IO;Path;false;GetPathRoot;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint |
 | System.IO;Path;false;GetPathRoot;(System.String);;Argument[0];ReturnValue;taint |
 | System.IO;Path;false;GetRelativePath;(System.String,System.String);;Argument[1];ReturnValue;taint |
-| System.IO;Stream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.IO;Stream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
 | System.IO;Stream;false;CopyTo;(System.IO.Stream);;Argument[-1];Argument[0];taint |
-| System.IO;Stream;false;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
 | System.IO;Stream;false;CopyToAsync;(System.IO.Stream);;Argument[-1];Argument[0];taint |
 | System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[-1];Argument[0];taint |
-| System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
 | System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0];Argument[-1];taint |
-| System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.IO;StringReader;false;Read;();;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;Read;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;Read;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadBlock;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadLine;();;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadLineAsync;();;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadToEnd;();;Argument[-1];ReturnValue;taint |
-| System.IO;StringReader;false;ReadToEndAsync;();;Argument[-1];ReturnValue;taint |
+| System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
+| System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
+| System.IO;Stream;true;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint |
+| System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
+| System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[-1];Argument[0];taint |
+| System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
+| System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0];Argument[-1];taint |
+| System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
 | System.IO;StringReader;false;StringReader;(System.String);;Argument[0];ReturnValue;taint |
-| System.IO;TextReader;false;Read;();;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;Read;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;Read;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadBlock;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadLine;();;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadLineAsync;();;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadToEnd;();;Argument[-1];ReturnValue;taint |
-| System.IO;TextReader;false;ReadToEndAsync;();;Argument[-1];ReturnValue;taint |
-| System.IO;UnmanagedMemoryStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.IO;UnmanagedMemoryStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
+| System.IO;TextReader;true;Read;();;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;Read;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;Read;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadBlock;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadLine;();;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadLineAsync;();;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadToEnd;();;Argument[-1];ReturnValue;taint |
+| System.IO;TextReader;true;ReadToEndAsync;();;Argument[-1];ReturnValue;taint |
 | System.Linq;Enumerable;false;Aggregate<,,>;(System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>);;Argument[1];Parameter[0] of Argument[2];value |
 | System.Linq;Enumerable;false;Aggregate<,,>;(System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>);;Element of Argument[0];Parameter[1] of Argument[2];value |
 | System.Linq;Enumerable;false;Aggregate<,,>;(System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>);;ReturnValue of Argument[2];Parameter[0] of Argument[3];value |
@@ -1537,18 +1505,6 @@
 | System.Net.NetworkInformation;UnicastIPAddressInformationCollection;false;Add;(System.Net.NetworkInformation.UnicastIPAddressInformation);;Argument[0];Element of Argument[-1];value |
 | System.Net.NetworkInformation;UnicastIPAddressInformationCollection;false;CopyTo;(System.Net.NetworkInformation.UnicastIPAddressInformation[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Net.NetworkInformation;UnicastIPAddressInformationCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
-| System.Net.Security;NegotiateStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.Net.Security;NegotiateStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.Net.Security;NegotiateStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.Net.Security;NegotiateStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.Net.Security;SslStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.Net.Security;SslStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.Net.Security;SslStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.Net.Security;SslStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
-| System.Net.Sockets;NetworkStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.Net.Sockets;NetworkStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.Net.Sockets;NetworkStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.Net.Sockets;NetworkStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
 | System.Net;Cookie;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Net;CookieCollection;false;Add;(System.Net.Cookie);;Argument[0];Element of Argument[-1];value |
 | System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Element of Argument[-1];value |
@@ -1601,10 +1557,6 @@
 | System.Security.Cryptography;AsnEncodedDataCollection;false;Add;(System.Security.Cryptography.AsnEncodedData);;Argument[0];Element of Argument[-1];value |
 | System.Security.Cryptography;AsnEncodedDataCollection;false;CopyTo;(System.Security.Cryptography.AsnEncodedData[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Security.Cryptography;AsnEncodedDataCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Security.Cryptography.AsnEncodedDataEnumerator.Current] of ReturnValue;value |
-| System.Security.Cryptography;CryptoStream;false;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint |
-| System.Security.Cryptography;CryptoStream;false;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint |
-| System.Security.Cryptography;CryptoStream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint |
-| System.Security.Cryptography;CryptoStream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint |
 | System.Security.Cryptography;OidCollection;false;Add;(System.Security.Cryptography.Oid);;Argument[0];Element of Argument[-1];value |
 | System.Security.Cryptography;OidCollection;false;CopyTo;(System.Security.Cryptography.Oid[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Security.Cryptography;OidCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Security.Cryptography.OidEnumerator.Current] of ReturnValue;value |
@@ -1630,21 +1582,23 @@
 | System.Text.RegularExpressions;MatchCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Text.RegularExpressions;MatchCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Text.RegularExpressions;MatchCollection;false;set_Item;(System.Int32,System.Text.RegularExpressions.Match);;Argument[1];Element of Argument[-1];value |
-| System.Text;Encoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetBytes;(System.Char[]);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetBytes;(System.Char[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetBytes;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>);;Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetBytes;(System.String);;Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetBytes;(System.String,System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetChars;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetChars;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetChars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>);;Element of Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetString;(System.Byte*,System.Int32);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetString;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
-| System.Text;Encoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetString;(System.ReadOnlySpan<System.Byte>);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.Char[]);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.Char[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>);;Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.String);;Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetChars;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetChars;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetChars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetString;(System.Byte[]);;Element of Argument[0];ReturnValue;taint |
+| System.Text;Encoding;true;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Text;StringBuilder;false;Append;(System.Boolean);;Argument[-1];ReturnValue;value |
 | System.Text;StringBuilder;false;Append;(System.Byte);;Argument[-1];ReturnValue;value |
 | System.Text;StringBuilder;false;Append;(System.Char);;Argument[-1];ReturnValue;value |

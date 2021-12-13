@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.IO` namespace. */
 class SystemIONamespace extends Namespace {
@@ -41,9 +42,38 @@ class SystemIOPathClass extends SystemIOClass {
   SystemIOPathClass() { this.hasName("Path") }
 }
 
+/** Data flow for `System.IO.TextReader`. */
+private class SystemIOTextReaderFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.IO;TextReader;true;Read;();;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;Read;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;Read;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadBlock;(System.Span<System.Char>);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadLine;();;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadLineAsync;();;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadToEnd;();;Argument[-1];ReturnValue;taint",
+        "System.IO;TextReader;true;ReadToEndAsync;();;Argument[-1];ReturnValue;taint",
+      ]
+  }
+}
+
 /** The `System.IO.StringReader` class. */
 class SystemIOStringReaderClass extends SystemIOClass {
   SystemIOStringReaderClass() { this.hasName("StringReader") }
+}
+
+/** Data flow for `System.IO.StringReader` */
+private class SystemIOStringReaderFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = "System.IO;StringReader;false;StringReader;(System.String);;Argument[0];ReturnValue;taint"
+  }
 }
 
 /** The `System.IO.Stream` class. */

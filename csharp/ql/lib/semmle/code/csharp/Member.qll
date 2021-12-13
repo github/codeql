@@ -363,13 +363,21 @@ class Virtualizable extends Member, @virtualizable {
   predicate implements() { exists(this.getAnUltimateImplementee()) }
 
   /**
+   * Holds if this member overrides or implements (transitively)
+   * `that` member.
+   */
+  predicate overridesOrImplements(Virtualizable that) {
+    this.getOverridee+() = that or
+    this.getAnUltimateImplementee() = that
+  }
+
+  /**
    * Holds if this member overrides or implements (reflexively, transitively)
    * `that` member.
    */
   predicate overridesOrImplementsOrEquals(Virtualizable that) {
     this = that or
-    this.getOverridee+() = that or
-    this.getAnUltimateImplementee() = that
+    this.overridesOrImplements(that)
   }
 }
 
