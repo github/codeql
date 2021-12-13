@@ -480,7 +480,7 @@ class HttpClientRequestTest extends InlineExpectationsTest {
   HttpClientRequestTest() { this = "HttpClientRequestTest" }
 
   override string getARelevantTag() {
-    result in ["clientRequestUrl", "clientRequestDisablesCertValidation"]
+    result in ["clientRequestUrl", "clientRequestCertValidationDisabled"]
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -494,12 +494,12 @@ class HttpClientRequestTest extends InlineExpectationsTest {
     )
     or
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Client::Request req, DataFlow::Node disablingNode |
-      req.disablesCertificateValidation(disablingNode, _) and
-      location = disablingNode.getLocation() and
-      element = disablingNode.toString() and
-      value = prettyNodeForInlineTest(disablingNode) and
-      tag = "clientRequestDisablesCertValidation"
+    exists(HTTP::Client::Request req |
+      req.disablesCertificateValidation(_, _) and
+      location = req.getLocation() and
+      element = req.toString() and
+      value = "" and
+      tag = "clientRequestCertValidationDisabled"
     )
   }
 }
