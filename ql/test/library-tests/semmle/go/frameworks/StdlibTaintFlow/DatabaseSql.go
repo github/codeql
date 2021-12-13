@@ -44,6 +44,41 @@ func TaintStepTest_DatabaseSqlScannerScan_B0I0O0(sourceCQL interface{}) interfac
 	return intoScanner982
 }
 
+func TaintStepTest_DatabaseSqlTxPrepare(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	var tx sql.Tx
+	intoPrepareResult0, _ := tx.Prepare(fromString)
+	return intoPrepareResult0
+}
+
+func TaintStepTest_DatabaseSqlDBPrepare(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	var db sql.DB
+	intoPrepareResult0, _ := db.Prepare(fromString)
+	return intoPrepareResult0
+}
+
+func TaintStepTest_DatabaseSqlTxPrepareContext(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	var tx sql.Tx
+	intoPrepareResult0, _ := tx.PrepareContext(nil, fromString)
+	return intoPrepareResult0
+}
+
+func TaintStepTest_DatabaseSqlDBPrepareContext(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	var db sql.DB
+	intoPrepareResult0, _ := db.PrepareContext(nil, fromString)
+	return intoPrepareResult0
+}
+
+func TaintStepTest_DatabaseSqlConnPrepareContext(sourceCQL interface{}) interface{} {
+	fromString := sourceCQL.(string)
+	var conn sql.Conn
+	intoPrepareResult0, _ := conn.PrepareContext(nil, fromString)
+	return intoPrepareResult0
+}
+
 func RunAllTaints_DatabaseSql() {
 	{
 		source := newSource(0)
@@ -74,5 +109,30 @@ func RunAllTaints_DatabaseSql() {
 		source := newSource(5)
 		out := TaintStepTest_DatabaseSqlScannerScan_B0I0O0(source)
 		sink(5, out)
+	}
+	{
+		source := newSource(6)
+		out := TaintStepTest_DatabaseSqlTxPrepare(source)
+		sink(6, out)
+	}
+	{
+		source := newSource(7)
+		out := TaintStepTest_DatabaseSqlDBPrepare(source)
+		sink(7, out)
+	}
+	{
+		source := newSource(8)
+		out := TaintStepTest_DatabaseSqlTxPrepareContext(source)
+		sink(8, out)
+	}
+	{
+		source := newSource(9)
+		out := TaintStepTest_DatabaseSqlDBPrepareContext(source)
+		sink(9, out)
+	}
+	{
+		source := newSource(10)
+		out := TaintStepTest_DatabaseSqlConnPrepareContext(source)
+		sink(10, out)
 	}
 }
