@@ -20,15 +20,14 @@ From Log4j 2.15.0, this behavior has been disabled by default. Note that this qu
 This issue was remediated in Log4j v2.15.0. The Apache Logging Services team provides the following mitigation advice:
 </p>
 <p>
-In previous releases (>=2.10) this behavior can be mitigated by setting system property "log4j2.formatMsgNoLookups" to “true” 
-or by removing the JndiLookup class from the classpath (example: zip -q -d log4j-core-*.jar org/apache/logging/log4j/core/lookup/JndiLookup.class). 
-Java 8u121 protects against RCE by defaulting "com.sun.jndi.rmi.object.trustURLCodebase" and "com.sun.jndi.cosnaming.object.trustURLCodebase" to "false".
+In previous releases (>=2.10) this behavior can be mitigated by setting system property <code>log4j2.formatMsgNoLookups</code> to <code>true</code> 
+or by removing the <code>JndiLookup</code> class from the classpath (example: <code>zip -q -d log4j-core-*.jar org/apache/logging/log4j/core/lookup/JndiLookup.class</code>). 
 </p>
 <p>
 You can manually check for use of affected versions of Log4j by searching your project repository for Log4j use, which is often in a pom.xml file.
 </p>
 <p>
-Where possible, upgrade to Log4J version 2.15.0. If you are using Log4J v1 there is a migration guide available.
+Where possible, upgrade to Log4j version 2.15.0. If you are using Log4j v1 there is a migration guide available.
 </p>
 <p>
 Please note that Log4j v1 is End Of Life (EOL) and will not receive patches for this issue. Log4j v1 is also vulnerable to other RCE vectors and we
