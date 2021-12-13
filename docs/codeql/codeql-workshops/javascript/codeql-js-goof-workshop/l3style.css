@@ -1,0 +1,172 @@
+
+/* The sum of width and margin percentages must not exceed 100.*/
+div#toc {
+    /* Use a moving table of contents (scrolled away for long contents) */
+        /*
+         * float: left;
+         */
+    /* OR */
+    /* use a fixed-position toc */
+    position: fixed;
+    top:  0px;
+    left: 0px;
+
+    /* match toc, org-content, postamble */
+    width: 26%;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+div#org-content {
+    float: right;
+    width: 70%;
+    /* match toc, org-content, postamble */
+    margin-left: 28%;
+}
+
+div#postamble {
+    float: right;
+    width: 70%;
+    /* match toc, org-content, postamble */
+    margin-left: 28%;
+}
+
+
+p.author {
+    clear: both;
+    font-size: 1em;
+    margin-left: 25%;
+}
+
+p.date {
+    clear: both;
+    font-size: 1em;
+    margin-left: 25%;
+}
+
+#toc * {
+    font-size:1em;
+}
+
+#toc h3 {
+    font-weight:normal;
+    margin:1em 0 0 0;
+    padding: 4px 0;
+    border-bottom:1px solid #666;
+    text-transform:uppercase;
+}
+
+#toc ul, #toc li {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+#toc li {
+    display:inline;
+}
+
+#toc ul li a {
+    text-decoration:none;
+    display:block;
+    margin:0;
+    padding:4px 6px;
+    color:#990000;
+    border-bottom:1px solid #aaa;
+}
+
+#toc ul ul li a {
+    padding-left:18px;
+    color:#666;
+}
+
+#toc ul li a:hover {
+    background-color:#F6F6F6;
+}
+
+
+/* Description lists. */
+dt { 
+    font-style: bold;
+    background-color:#F6F6F6;
+}
+
+
+/* From org-mode page. */
+body {
+    font-family: avenir, helvetica, verdana, sans-serif;
+    font-size: 100%;
+    margin-top: 5%;
+    margin-bottom: 8%;
+    background: white; color: black;
+    margin-left: 3% !important; margin-right: 3% !important;
+}
+
+h1 { 
+   font-size: 2em;
+   color: #cc8c00;
+/*    padding-top: 5px; */
+   border-bottom: 2px solid #aaa;
+   width: 70%;
+    /* match toc, org-content, postamble */
+   margin-left: 28%;            /* Align with div#content */
+}
+
+h2 {
+   font-size: 1.5em;
+   /*
+    * padding-top: 1em;
+    */
+   border-bottom: 1px solid #ccc;
+}
+
+h3 {
+   font-size: 1.2em; 
+   padding-top: 0.5em;
+   border-bottom: 1px solid #eee;
+}
+
+.todo, .deadline { color: red; font-style: italic }
+.done { color: green; font-style: italic }
+.timestamp { color: grey }
+.timestamp-kwd { color: CadetBlue; }
+.tag { background-color:lightblue; font-weight:normal; }
+
+.target { background-color: lavender; }
+
+.menu {
+      color: #666;
+}
+
+.menu a:link { 
+      color: #888;
+}
+.menu a:active { 
+      color: #888;
+}
+.menu a:visited { 
+      color: #888;
+}
+
+img { align: center; }
+
+pre {
+	padding: 5pt;
+	font-family: andale mono, vera sans mono, monospace, courier ;
+	font-size: 0.8em;
+        background-color: #f0f0f0;
+}
+
+code {
+	font-family: andale mono, vera sans mono, monospace, courier ;
+	font-size: 0.8em;
+        background-color: #f0f0f0;
+}
+
+table { border-collapse: collapse; }
+
+td, th {
+	vertical-align: top;
+	border: 1pt solid #ADB9CC;
+}
+

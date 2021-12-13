@@ -1,0 +1,24 @@
+* README
+This workshop takes a slighly different approach for comprehensivenes and
+packaging.
+
+The content in [[./workshop.html]] contains all steps needed in setting up a query for
+a project, including installing the project itself, building the ql database, and
+running the project and identifying the error.
+Because the focus is on codeql, these steps are in appendices referenced as
+needed.
+
+For packaging, the =make-zipfile= script is set up to package the =workshop.html=
+file along with intermediate queries in one directory, and to put the pre-built ql
+database into a parallel directory within a single zip file.  For learners, this
+means extracting one zip file and getting a complete setup for query writing.
+
+Another idea that has come up is to include a third directory with the =ql/=
+library used for the project, to avoid ql setup issues and potential version
+problems. 
+
+The content is in [[./workshop.html]]
+
+If you are reading this from a git repository, see [[./workshop.org]]
+
+

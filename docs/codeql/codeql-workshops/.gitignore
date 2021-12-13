@@ -1,0 +1,6 @@
+# macOS indexing
+.DS_Store
+
+# compilation cache
+.cache/
+
