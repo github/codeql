@@ -1,11 +1,11 @@
 /**
- * @name Log4j JNDI Injection
+ * @name Log4j log injection and LDAP JNDI injection
  * @description Building Log4j log entries from user-controlled data may allow
  *              attackers to inject malicious code through JNDI lookups.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/log4j-jndi-injection
+ * @id java/log4j-injection
  * @tags security
  *       external/cwe/cwe-020
  *       external/cwe/cwe-074
@@ -168,7 +168,7 @@ private class LoggingSinkModels extends SinkModelCsv {
         "org.apache.logging.log4j;LogBuilder;true;log;(String,Object,Object,Object,Object,Object,Object,Object,Object);;Argument[0..8];logging",
         "org.apache.logging.log4j;LogBuilder;true;log;(String,Object,Object,Object,Object,Object,Object,Object,Object,Object);;Argument[0..9];logging",
         "org.apache.logging.log4j;LogBuilder;true;log;(String,Object,Object,Object,Object,Object,Object,Object,Object,Object,Object);;Argument[0..10];logging",
-        "org.apache.logging.log4j;LogBuilder;true;log;(String,Supplier);;Argument[0..1];logging",
+        "org.apache.logging.log4j;LogBuilder;true;log;(String,Supplier[]);;Argument[0..1];logging",
         "org.apache.logging.log4j;LogBuilder;true;log;(Supplier);;Argument[0];logging"
       ]
   }
