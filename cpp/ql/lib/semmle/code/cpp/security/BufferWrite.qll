@@ -68,9 +68,8 @@ abstract class BufferWrite extends Expr {
   /**
    * Gets an upper bound to the amount of data that's being written (if one
    * can be found).
-   * DEPRECATED: `getMaxData/1` should be used and overridden instead.
    */
-  deprecated int getMaxData() { none() }
+  int getMaxData() { none() }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
@@ -85,9 +84,8 @@ abstract class BufferWrite extends Expr {
    * can be found), except that float to string conversions are assumed to be
    * much smaller (8 bytes) than their true maximum length.  This can be
    * helpful in determining the cause of a buffer overflow issue.
-   * DEPRECATED: `getMaxDataLimited/1` should be used and overridden instead.
    */
-  deprecated int getMaxDataLimited() { result = getMaxData() }
+  int getMaxDataLimited() { result = getMaxData() }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
@@ -163,7 +161,7 @@ class StrCopyBW extends BufferWriteCall {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
 
 /**
@@ -207,7 +205,7 @@ class StrCatBW extends BufferWriteCall {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
 
 /**
@@ -273,7 +271,7 @@ class SprintfBW extends BufferWriteCall {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 
   private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
@@ -286,7 +284,7 @@ class SprintfBW extends BufferWriteCall {
     result = getMaxDataLimitedImpl(reason)
   }
 
-  deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
+  override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -386,7 +384,7 @@ class SnprintfBW extends BufferWriteCall {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 
   private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
@@ -399,7 +397,7 @@ class SnprintfBW extends BufferWriteCall {
     result = getMaxDataLimitedImpl(reason)
   }
 
-  deprecated override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
+  override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -499,7 +497,7 @@ class ScanfBW extends BufferWrite {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 
   override string getBWDesc() {
     exists(FunctionCall fc |
@@ -540,5 +538,5 @@ class RealpathBW extends BufferWriteCall {
 
   override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
 
-  deprecated override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(getMaxDataImpl(_)) }
 }
