@@ -1,5 +1,6 @@
 getModule
 | calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C |
 | calls.rb:51:1:55:3 | D |
 | calls.rb:77:1:80:3 | Integer |
 | calls.rb:82:1:84:3 | String |
@@ -55,9 +56,11 @@ getModule
 | modules.rb:115:1:118:3 | XX |
 | modules.rb:116:7:117:9 | XX::YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz |
-| private.rb:1:1:19:3 | C |
+| private.rb:1:1:29:3 | E |
+| private.rb:42:1:60:3 | F |
 getADeclaration
 | calls.rb:15:1:24:3 | M | calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C | calls.rb:29:1:44:3 | C |
 | calls.rb:51:1:55:3 | D | calls.rb:51:1:55:3 | D |
 | calls.rb:77:1:80:3 | Integer | calls.rb:77:1:80:3 | Integer |
 | calls.rb:82:1:84:3 | String | calls.rb:82:1:84:3 | String |
@@ -67,7 +70,7 @@ getADeclaration
 | calls.rb:97:1:100:3 | Object | calls.rb:97:1:100:3 | Object |
 | calls.rb:97:1:100:3 | Object | hello.rb:1:1:22:3 | hello.rb |
 | calls.rb:97:1:100:3 | Object | modules.rb:1:1:122:1 | modules.rb |
-| calls.rb:97:1:100:3 | Object | private.rb:1:1:30:15 | private.rb |
+| calls.rb:97:1:100:3 | Object | private.rb:1:1:60:3 | private.rb |
 | calls.rb:102:1:104:3 | Hash | calls.rb:102:1:104:3 | Hash |
 | calls.rb:106:1:117:3 | Array | calls.rb:106:1:117:3 | Array |
 | calls.rb:144:1:148:3 | S | calls.rb:144:1:148:3 | S |
@@ -109,10 +112,11 @@ getADeclaration
 | modules.rb:115:1:118:3 | XX | modules.rb:115:1:118:3 | XX |
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz | modules.rb:120:1:121:3 | Baz |
-| private.rb:1:1:19:3 | C | calls.rb:29:1:44:3 | C |
-| private.rb:1:1:19:3 | C | private.rb:1:1:19:3 | C |
+| private.rb:1:1:29:3 | E | private.rb:1:1:29:3 | E |
+| private.rb:42:1:60:3 | F | private.rb:42:1:60:3 | F |
 getSuperClass
-| calls.rb:51:1:55:3 | D | private.rb:1:1:19:3 | C |
+| calls.rb:29:1:44:3 | C | calls.rb:97:1:100:3 | Object |
+| calls.rb:51:1:55:3 | D | calls.rb:29:1:44:3 | C |
 | calls.rb:77:1:80:3 | Integer | file://:0:0:0:0 | Numeric |
 | calls.rb:82:1:84:3 | String | calls.rb:97:1:100:3 | Object |
 | calls.rb:90:1:95:3 | Module | calls.rb:97:1:100:3 | Object |
@@ -141,12 +145,12 @@ getSuperClass
 | modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar | calls.rb:97:1:100:3 | Object |
 | modules.rb:112:1:113:3 | YY | calls.rb:97:1:100:3 | Object |
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:112:1:113:3 | YY |
-| private.rb:1:1:19:3 | C | calls.rb:97:1:100:3 | Object |
+| private.rb:1:1:29:3 | E | calls.rb:97:1:100:3 | Object |
 getAPrependedModule
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
 getAnIncludedModule
+| calls.rb:29:1:44:3 | C | calls.rb:15:1:24:3 | M |
 | calls.rb:97:1:100:3 | Object | calls.rb:86:1:88:3 | Kernel |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:1:1:8:3 | EnglishWords |
 | modules.rb:88:1:93:3 | IncludeTest | modules.rb:63:1:81:3 | Test |
 | modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:63:1:81:3 | Test |
-| private.rb:1:1:19:3 | C | calls.rb:15:1:24:3 | M |

@@ -1,4 +1,4 @@
-class C
+class E
   private def private1
   end
 
@@ -31,15 +31,15 @@ end
 def private_on_main
 end
 
-C.new.private1
-C.new.private2
-C.new.private3
-C.new.private4
-C.new.public
+E.new.private1
+E.new.private2
+E.new.private3
+E.new.private4
+E.new.public
 
 private_on_main
 
-module D
+module F
   private def private1
   end
 

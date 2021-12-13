@@ -49,12 +49,10 @@ calls.rb:
 
 #   15| M
 
-private.rb:
-#    1| C
+#   29| C
 #-----| super -> Object
 #-----| include -> M
 
-calls.rb:
 #   51| D
 #-----| super -> C
 
@@ -110,6 +108,13 @@ modules.rb:
 
 #  115| XX
 
+private.rb:
+#    1| E
+#-----| super -> Object
+
+#   42| F
+
+modules.rb:
 #    5| Foo::Bar
 
 #   19| Foo::ClassInFoo
