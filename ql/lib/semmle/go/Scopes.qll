@@ -378,11 +378,7 @@ class Function extends ValueEntity, @functionobject {
   FuncDecl getFuncDecl() { none() }
 
   /** Holds if this function is variadic. */
-  predicate isVariadic() {
-    this.(BuiltinFunction).getName() = ["append", "make", "print", "println"]
-    or
-    this.(DeclaredFunction).getType().(SignatureType).isVariadic()
-  }
+  predicate isVariadic() { none() }
 
   /** Holds if this function has no observable side effects. */
   predicate mayHaveSideEffects() { none() }
@@ -574,15 +570,19 @@ class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
       body.getFile().hasBuildConstraints()
     )
   }
+
+  override predicate isVariadic() { this.getType().(SignatureType).isVariadic() }
 }
 
 /** A built-in function. */
 class BuiltinFunction extends Function, BuiltinEntity, @builtinfunctionobject {
-  override predicate mayHaveSideEffects() { builtinFunction(this.getName(), false, _, _) }
+  override predicate mayHaveSideEffects() { builtinFunction(this.getName(), false, _, _, _) }
 
-  override predicate mayPanic() { builtinFunction(this.getName(), _, true, _) }
+  override predicate mayPanic() { builtinFunction(this.getName(), _, true, _, _) }
 
-  override predicate mustPanic() { builtinFunction(this.getName(), _, _, true) }
+  override predicate mustPanic() { builtinFunction(this.getName(), _, _, true, _) }
+
+  override predicate isVariadic() { builtinFunction(this.getName(), _, _, _, true) }
 
   /**
    * Holds if this function is pure, that is, it has no observable side effects and
@@ -597,42 +597,45 @@ class Label extends Entity, @labelobject { }
 /**
  * Holds if `name` is a built-in function, where
  *
- *   - `isPure` is true if the function has no observable side effects, and false otherwise;
+ *   - `pure` is true if the function has no observable side effects, and false otherwise;
  *   - `mayPanic` is true if calling this function may cause a panic, and false otherwise;
- *   - `mustPanic` is ture if calling this function always causes a panic, and false otherwise.
+ *   - `mustPanic` is true if calling this function always causes a panic, and false otherwise;
+ *   - `variadic` is true if this function is variadic, and false otherwise.
  *
  * Allocating memory is not considered an observable side effect.
  */
-private predicate builtinFunction(string name, boolean isPure, boolean mayPanic, boolean mustPanic) {
-  name = "append" and isPure = false and mayPanic = false and mustPanic = false
+private predicate builtinFunction(
+  string name, boolean pure, boolean mayPanic, boolean mustPanic, boolean variadic
+) {
+  name = "append" and pure = false and mayPanic = false and mustPanic = false and variadic = true
   or
-  name = "cap" and isPure = true and mayPanic = false and mustPanic = false
+  name = "cap" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "close" and isPure = false and mayPanic = true and mustPanic = false
+  name = "close" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
-  name = "complex" and isPure = true and mayPanic = true and mustPanic = false
+  name = "complex" and pure = true and mayPanic = true and mustPanic = false and variadic = false
   or
-  name = "copy" and isPure = false and mayPanic = true and mustPanic = false
+  name = "copy" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
-  name = "delete" and isPure = false and mayPanic = false and mustPanic = false
+  name = "delete" and pure = false and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "imag" and isPure = true and mayPanic = false and mustPanic = false
+  name = "imag" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "len" and isPure = true and mayPanic = false and mustPanic = false
+  name = "len" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "make" and isPure = true and mayPanic = true and mustPanic = false
+  name = "make" and pure = true and mayPanic = true and mustPanic = false and variadic = true
   or
-  name = "new" and isPure = true and mayPanic = false and mustPanic = false
+  name = "new" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "panic" and isPure = false and mayPanic = true and mustPanic = true
+  name = "panic" and pure = false and mayPanic = true and mustPanic = true and variadic = false
   or
-  name = "print" and isPure = false and mayPanic = false and mustPanic = false
+  name = "print" and pure = false and mayPanic = false and mustPanic = false and variadic = true
   or
-  name = "println" and isPure = false and mayPanic = false and mustPanic = false
+  name = "println" and pure = false and mayPanic = false and mustPanic = false and variadic = true
   or
-  name = "real" and isPure = true and mayPanic = false and mustPanic = false
+  name = "real" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
-  name = "recover" and isPure = false and mayPanic = false and mustPanic = false
+  name = "recover" and pure = false and mayPanic = false and mustPanic = false and variadic = false
 }
 
 /** Provides helper predicates for working with built-in objects from the universe scope. */
