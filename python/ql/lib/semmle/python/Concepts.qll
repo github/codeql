@@ -837,10 +837,14 @@ module HTTP {
       /**
        * Holds if this request is made using a mode that disables SSL/TLS
        * certificate validation, where `disablingNode` represents the point at
-       * which the validation was disabled.
+       * which the validation was disabled, and `argumentOrigin` represents the origin
+       * of the argument that disabled the validation (which could be the same node as
+       * `disablingNode`).
        */
-      predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-        super.disablesCertificateValidation(disablingNode)
+      predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        super.disablesCertificateValidation(disablingNode, argumentOrigin)
       }
     }
 
@@ -868,9 +872,13 @@ module HTTP {
         /**
          * Holds if this request is made using a mode that disables SSL/TLS
          * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled.
+         * which the validation was disabled, and `argumentOrigin` represents the origin
+         * of the argument that disabled the validation (which could be the same node as
+         * `disablingNode`).
          */
-        abstract predicate disablesCertificateValidation(DataFlow::Node disablingNode);
+        abstract predicate disablesCertificateValidation(
+          DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+        );
       }
     }
 
