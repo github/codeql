@@ -258,36 +258,30 @@ predicate isRelevantFullPath(string package, string type, string path) {
 }
 
 /**
- * Holds if `path` or some suffix thereof is used with the `package,type` combination in some CSV row.
+ * A string that occurs as an access path (either identifying or input/output spec)
+ * which might be relevant for this database.
  */
-pragma[nomagic]
-predicate isRelevantPath(string package, string type, string path) {
-  exists(string fullPath |
-    isRelevantFullPath(package, type, fullPath) and
-    path = fullPath.prefix([0, fullPath.indexOf("."), fullPath.length()])
-  )
-}
-
-/** Holds if `path` has the form `basePath.token` where `token` is a single token. */
-bindingset[path]
-private predicate decomposePath(string path, string basePath, string token) {
-  token = max(int n | | path.splitAt(".", n) order by n) and
-  (
-    basePath = path.prefix(path.length() - token.length() - 1)
+class AccessPath extends string {
+  AccessPath() {
+    isRelevantFullPath(_, _, this)
     or
-    token = path and
-    basePath = ""
-  )
-}
+    exists(string package | isRelevantPackage(package) |
+      summaryModel(package, _, _, this, _, _) or
+      summaryModel(package, _, _, _, this, _)
+    )
+  }
 
-/**
- * Gets the result of appending `token` onto `path`.
- *
- * Only has a result for identifying access paths relevant for `package;type`.
- */
-private string appendToken(string package, string type, string path, string token) {
-  isRelevantPath(package, type, result) and
-  decomposePath(result, path, token)
+  /** Gets the `n`th token on the access path as a string. */
+  string getRawToken(int n) {
+    this != "" and // The empty path should have zero tokens, not a single empty token
+    result = this.splitAt(".", n)
+  }
+
+  /** Gets the `n`th token on the access path. */
+  AccessPathToken getToken(int n) { result = getRawToken(n) }
+
+  /** Gets the number of tokens on the path. */
+  int getNumToken() { result = count(int n | exists(getRawToken(n))) }
 }
 
 /**
@@ -344,36 +338,36 @@ private predicate invocationMatchesCallSiteFilter(API::InvokeNode invoke, Access
 }
 
 /**
- * Gets the API node identified by the given `(package, type, path)` tuple.
+ * Gets the API node identified by the first `n` tokens of `path` in the given `(package, type, path)` tuple.
  */
 pragma[nomagic]
-API::Node getNodeFromPath(string package, string type, string path) {
-  isRelevantPath(package, type, path) and
+API::Node getNodeFromPath(string package, string type, AccessPath path, int n) {
+  isRelevantFullPath(package, type, path) and
   (
     type = "" and
-    path = "" and
+    n = 0 and
     result = API::moduleImport(package)
     or
-    path = "" and
-    exists(string package2, string type2, string path2 |
+    n = 0 and
+    exists(string package2, string type2, AccessPath path2 |
       typeModel(package, type, package2, type2, path2) and
-      result = getNodeFromPath(package2, type2, path2)
+      result = getNodeFromPath(package2, type2, path2, path2.getNumToken())
     )
     or
     // Language-specific cases, such as handling of global variables
-    result = Impl::getExtraNodeFromPath(package, type, path)
+    result = Impl::getExtraNodeFromPath(package, type, path, n)
   )
   or
-  exists(string basePath, AccessPathToken token |
-    result = getSuccessorFromNode(getNodeFromPath(package, type, basePath), token) and
-    path = appendToken(package, type, basePath, token)
-  )
+  result = getSuccessorFromNode(getNodeFromPath(package, type, path, n - 1), path.getToken(n - 1))
   or
   // Similar to the other recursive case, but where the path may have stepped through one or more call-site filters
-  exists(string basePath, AccessPathToken token |
-    result = getSuccessorFromInvoke(getInvocationFromPath(package, type, basePath), token) and
-    path = appendToken(package, type, basePath, token)
-  )
+  result =
+    getSuccessorFromInvoke(getInvocationFromPath(package, type, path, n - 1), path.getToken(n - 1))
+}
+
+/** Gets the node identified by the given `(package, type, path)` tuple. */
+API::Node getNodeFromPath(string package, string type, AccessPath path) {
+  result = getNodeFromPath(package, type, path, path.getNumToken())
 }
 
 /**
@@ -381,14 +375,16 @@ API::Node getNodeFromPath(string package, string type, string path) {
  *
  * Unlike `getNodeFromPath`, the `path` may end with one or more call-site filters.
  */
-API::InvokeNode getInvocationFromPath(string package, string type, string path) {
-  result = getNodeFromPath(package, type, path).getAnInvocation()
+API::InvokeNode getInvocationFromPath(string package, string type, AccessPath path, int n) {
+  result = getNodeFromPath(package, type, path, n).getAnInvocation()
   or
-  exists(string basePath, AccessPathToken token |
-    result = getInvocationFromPath(package, type, basePath) and
-    path = appendToken(package, type, basePath, token) and
-    invocationMatchesCallSiteFilter(result, token)
-  )
+  result = getInvocationFromPath(package, type, path, n - 1) and
+  invocationMatchesCallSiteFilter(result, path.getToken(n - 1))
+}
+
+/** Gets an invocation identified by the given `(package, type, path)` tuple. */
+API::InvokeNode getInvocationFromPath(string package, string type, AccessPath path) {
+  result = getInvocationFromPath(package, type, path, path.getNumToken())
 }
 
 /**
@@ -396,72 +392,50 @@ API::InvokeNode getInvocationFromPath(string package, string type, string path) 
  * that resolves to `baseNode`.
  */
 private predicate resolvedSummaryBase(
-  API::InvokeNode baseNode, string input, string output, string kind
+  API::InvokeNode baseNode, AccessPath input, AccessPath output, string kind
 ) {
-  exists(string package, string type, string path |
+  exists(string package, string type, AccessPath path |
     summaryModel(package, type, path, input, output, kind) and
     baseNode = getInvocationFromPath(package, type, path)
   )
 }
 
 /**
- * Holds if `inputOrOutput` or some suffix thereof is used as the input or output part
- * of a summary edge using `base` as the base node.
+ * Holds if `path` is an input or output spec for a summary with the given `base` node.
  */
 pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, string inputOrOutput) {
-  exists(string baseIo | inputOrOutput = baseIo.prefix([0, baseIo.indexOf("."), baseIo.length()]) |
-    resolvedSummaryBase(base, baseIo, _, _) or
-    resolvedSummaryBase(base, _, baseIo, _)
-  )
+private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath path) {
+  resolvedSummaryBase(base, path, _, _)
+  or
+  resolvedSummaryBase(base, _, path, _)
 }
 
 /**
- * Gets the result of appending `token` onto `path`, if the resulting path is relevant for
- * a summary of `invoke`.
+ * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
  */
-private string appendToken(API::InvokeNode invoke, string path, string token) {
-  relevantInputOutputPath(invoke, result) and
-  decomposePath(result, path, token)
-}
-
-/**
- * Gets the API node for the given input/output path, evaluated relative to `baseNode`, which corresponds to `package,type,path`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, string path) {
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
   relevantInputOutputPath(baseNode, path) and
   (
-    result = getSuccessorFromInvoke(baseNode, path)
+    n = 1 and
+    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
     or
-    exists(string basePath, string token |
-      result = getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, basePath), token) and
-      path = appendToken(baseNode, basePath, token)
-    )
+    result =
+      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
   )
 }
 
 /**
- * Holds if `token` is a token used in an access path, that is,
- * either the `path`, `input`, or `output` part of a CSV row.
+ * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
  */
-private predicate isAccessPathToken(string token) {
-  exists(string path |
-    isRelevantFullPath(_, _, path)
-    or
-    exists(string package | isRelevantPackage(package) |
-      summaryModel(_, _, _, path, _, _) or
-      summaryModel(_, _, _, _, path, _)
-    )
-  |
-    token = path.splitAt(".")
-  )
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
+  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
 }
 
 /**
  * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
  */
 class AccessPathToken extends string {
-  AccessPathToken() { isAccessPathToken(this) }
+  AccessPathToken() { this = any(AccessPath path).getRawToken(_) }
 
   /** Gets the name of the token, such as `Member` from `Member[x]` */
   string getName() { result = this.regexpCapture("(.+?)(?:\\[.*?\\])?", 1) }
@@ -593,7 +567,7 @@ module ModelOutput {
    * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
    */
   predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-    exists(API::InvokeNode base, string input, string output |
+    exists(API::InvokeNode base, AccessPath input, AccessPath output |
       resolvedSummaryBase(base, input, output, kind) and
       pred = getNodeFromInputOutputPath(base, input) and
       succ = getNodeFromInputOutputPath(base, output)
@@ -605,7 +579,7 @@ module ModelOutput {
    * contributed by a CSV model.
    */
   API::Node getATypeNode(string package, string type) {
-    exists(string package2, string type2, string path |
+    exists(string package2, string type2, AccessPath path |
       typeModel(package, type, package2, type2, path) and
       result = getNodeFromPath(package2, type2, path)
     )

@@ -34,8 +34,9 @@ predicate isPackageUsed(string package) {
 
 /** Holds if `global` is a global variable referenced via a the `global` package in a CSV row. */
 private predicate isRelevantGlobal(string global) {
-  exists(AccessPathToken token |
-    isRelevantPath("global", "", token) and
+  exists(AccessPath path, AccessPathToken token |
+    isRelevantFullPath("global", "", path) and
+    token = path.getToken(0) and
     token.getName() = "Member" and
     global = token.getAnArgument()
   )
@@ -65,20 +66,21 @@ private API::Node getGlobalNode(string globalName) {
   result = any(GlobalApiEntryPoint e | e.getGlobal() = globalName).getNode()
 }
 
-/** Gets a JavaScript-specific interpretation of the given `(package, type, path)` tuple. */
-API::Node getExtraNodeFromPath(string package, string type, string path) {
+/** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
+bindingset[package, type, path]
+API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
   // Global variable accesses is via the 'global' package
-  exists(string globalName, AccessPathToken token |
-    result = getGlobalNode(globalName) and
+  exists(AccessPathToken token |
     package = getAPackageAlias("global") and
     type = "" and
-    path = token and
+    token = path.getToken(0) and
     token.getName() = "Member" and
-    token.getAnArgument() = globalName
+    result = getGlobalNode(token.getAnArgument()) and
+    n = 1
   )
   or
   // Access instance of a type based on type annotations
-  path = "" and
+  n = 0 and
   result = API::Node::ofType(getAPackageAlias(package), type)
 }
 
