@@ -190,8 +190,6 @@
 | System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
 | System.Collections.Generic;IList<>;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Generic;IList<>;true;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
-| System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;();;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of ReturnValue;value |
-| System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;();;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of ReturnValue;value |
 | System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of ReturnValue;value |
 | System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of ReturnValue;value |
 | System.Collections.Generic;LinkedList<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
@@ -1905,6 +1903,7 @@
 | System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[-1];ReturnValue;taint |
 | System.Web;HttpCookie;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Web;HttpCookie;false;get_Values;();;Argument[-1];ReturnValue;taint |
+| System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint |

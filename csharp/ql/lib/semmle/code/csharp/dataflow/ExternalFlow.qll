@@ -93,6 +93,10 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.Sql
   private import semmle.code.csharp.frameworks.EntityFramework
   private import semmle.code.csharp.frameworks.system.Text
+  private import semmle.code.csharp.frameworks.system.Net
+  private import semmle.code.csharp.frameworks.system.Web
+  private import semmle.code.csharp.frameworks.system.collections.Generic
+  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 }
 
 /**
