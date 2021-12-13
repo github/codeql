@@ -39,6 +39,36 @@ namespace Semmle.Extraction.CSharp
         private SemanticModel? cachedModelForTree;
         private SemanticModel? cachedModelForOtherTrees;
 
+        // The below is a workaround to the bug reported in https://github.com/dotnet/roslyn/issues/58226
+        // Lambda parameters that are equal according to `SymbolEqualityComparer.Default`, might have different
+        // hash-codes, and as a result might not be found in `symbolEntityCache` by hash-code lookup.
+        internal IParameterSymbol GetPossiblyCachedParameterSymbol(IParameterSymbol param)
+        {
+            if ((param.ContainingSymbol as IMethodSymbol)?.MethodKind != MethodKind.AnonymousFunction)
+            {
+                return param;
+            }
+
+            foreach (var sr in param.DeclaringSyntaxReferences)
+            {
+                var syntax = sr.GetSyntax();
+                if (lambdaParameterCache.TryGetValue(syntax, out var cached) &&
+                    SymbolEqualityComparer.Default.Equals(param, cached))
+                {
+                    return cached;
+                }
+            }
+
+            return param;
+        }
+
+        internal void CacheLambdaParameterSymbol(IParameterSymbol param, SyntaxNode syntax)
+        {
+            lambdaParameterCache[syntax] = param;
+        }
+
+        private readonly Dictionary<SyntaxNode, IParameterSymbol> lambdaParameterCache = new Dictionary<SyntaxNode, IParameterSymbol>();
+
         /// <summary>
         /// The current compilation unit.
         /// </summary>
