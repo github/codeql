@@ -56,7 +56,8 @@
 | Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[-1];ReturnValue;taint |
 | Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[-1];ReturnValue;taint |
 | Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[-1];ReturnValue;taint |
-| Newtonsoft.Json.Linq;JToken;false;explicit conversion;(Newtonsoft.Json.Linq.JToken);;Argument[0];ReturnValue;taint |
+| Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[-1];ReturnValue;taint |
+| Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[-1];ReturnValue;taint |
 | Newtonsoft.Json;JsonConvert;false;DeserializeAnonymousType<>;(System.String,T);;Argument[0];ReturnValue;taint |
 | Newtonsoft.Json;JsonConvert;false;DeserializeAnonymousType<>;(System.String,T,Newtonsoft.Json.JsonSerializerSettings);;Argument[0];ReturnValue;taint |
 | Newtonsoft.Json;JsonConvert;false;DeserializeObject;(System.String);;Argument[0];ReturnValue;taint |
