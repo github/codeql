@@ -17,6 +17,9 @@
 - We're going to use `hasQualifiedName` because it allows us to specify not just the name of the method but also the type and package.
 - This is useful as `getText` is not very specific. There may be many methods in the program called getText() so we want to be specific
 
+## VS Starter Workspace Notes
+- CodeQL scans siblings of the installation directory (and their subdirectories) for qlpack.yml files. The metadata in the file tells CodeQL how to compile queries, what libraries the pack depends on, and where to find query suite definitions.
+
 ```ql
 import java
 
@@ -86,6 +89,7 @@ select sink, "SQL Injection"
 ## Additional Taint Step 
 
 -By inspecting `String CheckName = username.getText().toString()` we can observe that the `toString()` is a method call on the return value of `getText()` which is an `Editable` type. Our current taint tracking analysis does not capture flow from the `Editable` object returned by `username.getText()` to `toString()`
+- https://developer.android.com/reference/android/widget/EditText
 - `.getQualifier` is saying the thing before the `toString()` dot
 - why don't we use `hasQualifierName` on the `toString()`. The reason is that `toString()` returns an `Object` type so the Qualifier name is `Object.toString()`
 - If we filter by qualifier name we will be adding flow for all `Object.toString()` and the result will be imprecise
@@ -116,6 +120,100 @@ from AndroidSQLInjection config, DataFlow::Node source, DataFlow::Node sink
 where config.hasFlow(source, sink)
 select sink, source, sink, "SQL Injection"
 ```
+
+- I need to import `DataFlow::PartialPathGraph`
+- I need to `  override int explorationLimit() { result = 5 }`
+-  I need to quick eval predicate
+-  I need to change to path-problem
+
+
+
+```
+///**
+// * @name SQL Injection in OWASP Security Shepard
+// * @kind path-problem
+// * @id java/sqlinjectionowasp
+// */
+//import java
+//import semmle.code.java.dataflow.TaintTracking
+//import DataFlow::PartialPathGraph
+//class AndroidSQLInjection extends TaintTracking::Configuration {
+//  AndroidSQLInjection() { this = "AndroidSQLInjection" }
+//  override predicate isSource(DataFlow::Node source) {
+//    exists(MethodAccess ma |
+//      ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+//      source.asExpr() = ma
+//    )
+//  }
+//  override int explorationLimit() { result = 5 }
+//  override predicate isSink(DataFlow::Node sink) {
+//    exists(MethodAccess ma |
+//      ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+//      ma.getArgument(0) = sink.asExpr()
+//    )
+//  }
+//}
+//from AndroidSQLInjection config, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
+//where config.hasPartialFlowRev(_, sink, config.explorationLimit())
+//select sink, source, sink, "hellow "
+////Source
+////String CheckName = userName.getText().toString();
+////from MethodAccess ma
+////where ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText")
+////select ma
+////Sink
+////db.rawQuery(query, null);
+////from MethodAccess ma, VarAccess arg
+////where
+////  ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+////  arg = ma.getArgument(0)
+////select ma, arg
+/**
+ * @kind path-problem
+ */
+
+import java
+import semmle.code.java.dataflow.TaintTracking
+import DataFlow::PartialPathGraph
+
+class AndroidSQLInjection extends TaintTracking::Configuration {
+  AndroidSQLInjection() { this = "AndroidSQLInjection" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("android.widget", "EditText", "getText") and
+      source.asExpr() = ma
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("net.sqlcipher.database", "SQLiteDatabase", "rawQuery") and
+      node.asExpr() = ma.getArgument(0)
+    )
+  }
+
+  override int explorationLimit() { result = 5 }
+  // String CheckName = username.getText().toString();
+  //                  \----methodAccess------------/
+  //                  \--- qualifier---/ \-method--/	
+  //  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  //    exists(MethodAccess ma |
+  //      ma.getQualifier().getType().hasName("Editable") and
+  //      ma.getMethod().hasName("toString") and
+  //      node1.asExpr() = ma.getQualifier() and
+  //      node2.asExpr() = ma
+  //    )
+  //  }
+}
+
+from AndroidSQLInjection config, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
+where config.hasPartialFlow(source, _, config.explorationLimit())
+select config
+```
+
+
+
 
 Note that this stops at the source -- so we start expanding there via
 ```codeql

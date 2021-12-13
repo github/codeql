@@ -33,8 +33,8 @@ In this challenge, we will use CodeQL to analyze the source code of Bootstrap, t
 To run CodeQL queries on Bootstrap offline, follow these steps:
 
 1. Install the Visual Studio Code IDE.
-1. Download and install the [CodeQL extension for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode.html). Full setup instructions are [here](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html).
-1. [Set up the starter workspace](https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html#using-the-starter-workspace).
+1. Download and install the [CodeQL extension for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/). Full setup instructions are [here](https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/).
+1. [Set up the starter workspace](https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/#starter-workspace).
     - **Important**: Don't forget to `git clone --recursive` or `git submodule update --init --remote`, so that you obtain the standard query libraries.
 1. Open the starter workspace: File > Open Workspace > Browse to `vscode-codeql-starter/vscode-codeql-starter.code-workspace`.
 1. Create an account on LGTM.com if you haven't already. You can log in via OAuth using your Google or GitHub account.
@@ -58,9 +58,9 @@ To run CodeQL queries on Bootstrap online, follow these steps:
 
 ## Documentation links
 If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:
-- [Learning CodeQL](https://help.semmle.com/QL/learn-ql)
-- [Learning CodeQL for JavaScript](https://help.semmle.com/QL/learn-ql/javascript/ql-for-javascript.html)
-- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
+- [Learning CodeQL](https://codeql.github.com/docs/codeql-overview/)
+- [Learning CodeQL for JavaScript](https://codeql.github.com/docs/codeql-language-guides/codeql-for-javascript/)
+- [Using the CodeQL extension for VS Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/)
 
 ## Challenge
 The challenge is split into several steps. You can write one query per step, or work with a single query that you refine at each step.
@@ -187,8 +187,8 @@ Consider creating a new query for these next few steps, or commenting out your e
     <details>
     <summary>Hint</summary>
 
-    - If we have an AST node, such as an `Expr`, then [`flow()`](https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/predicate.AST$AST$ValueNode$flow.0.html) will convert it into a __data flow node__, which we can use to reason about the flow of information to/from this expression.
-    - If we have a data flow node, then [`getALocalSource()`](https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$getALocalSource.0.html) will give us another data flow node in the same function whose value ends up in this node.
+    - If we have an AST node, such as an `Expr`, then [`flow()`](https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/predicate.AST$AST$ValueNode$flow.0.html) will convert it into a __data flow node__, which we can use to reason about the flow of information to/from this expression.
+    - If we have a data flow node, then [`getALocalSource()`](https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$getALocalSource.0.html) will give us another data flow node in the same function whose value ends up in this node.
     - If we have a data flow node, then `asExpr()` will turn it back into an AST expression, if possible.
     </details>
     <details>
