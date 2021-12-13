@@ -191,9 +191,9 @@ private VarAccess getOnlyAccess(FunctionDeclStmt fn, LocalVariable v) {
 }
 
 private VarAccess getOnlyAccessToFunctionExpr(FunctionExpr fn, LocalVariable v) {
-  exists( DeclStmt st |
-    fn = st.(DeclStmt).getADecl().getInit() and 
-    v = st.(DeclStmt).getADecl().getBindingPattern().getVariable() and
+  exists(VariableDeclarator decl |
+    fn = decl.getInit() and
+    v = decl.getBindingPattern().getVariable() and
     result = unique(VarAccess acc | acc = v.getAnAccess())
   )
 }
