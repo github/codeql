@@ -412,6 +412,7 @@ class With extends With_ {
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
 }
 
+/** A match statement */
 class MatchStmt extends Match_ {
   /* syntax: match subject: */
   override Expr getASubExpression() { result = this.getSubject() }
@@ -419,6 +420,7 @@ class MatchStmt extends Match_ {
   override Stmt getASubStatement() { result = this.getCase(_) }
 }
 
+/** A case statement */
 class Case extends Case_ {
   /* syntax: case pattern if guard: */
 }
