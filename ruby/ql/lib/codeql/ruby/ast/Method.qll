@@ -48,30 +48,37 @@ private class MethodModifier extends MethodCall {
   /** Gets the name of the method that this call applies to. */
   Expr getMethodArgument() { result = this.getArgument(0) }
 
-  /** Gets the method that this call applies to. */
-  MethodBase getMethod() {
-    result = this.getMethodArgument()
-    or
-    exists(Namespace n |
-      n.getAStmt() = this and
-      n.getAStmt() = result and
-      result.getName() = this.getMethodArgument().(StringlikeLiteral).getValueText()
-    )
+  /** Holds if this call modifies a method with name `name` in namespace `n`. */
+  predicate modifiesMethod(Namespace n, string name) {
+    this = n.getAStmt() and
+    [
+      this.getMethodArgument().(StringlikeLiteral).getValueText(),
+      this.getMethodArgument().(MethodBase).getName()
+    ] = name
   }
 }
 
 /** A call to `private` or `private_class_method`. */
 private class Private extends MethodModifier {
-  Private() { this.getMethodName() = "private" }
+  private Namespace namespace;
+  private int position;
 
-  /**
-   * Holds if this call happens at position `i` inside `c`,
-   * and the call has no arguments.
-   */
-  pragma[noinline]
-  predicate hasNoArg(Namespace c, int i) {
-    this = c.getStmt(i) and
-    not exists(this.getMethod())
+  Private() { this.getMethodName() = "private" and namespace.getStmt(position) = this }
+
+  override predicate modifiesMethod(Namespace n, string name) {
+    n = namespace and
+    (
+      // def foo
+      // ...
+      // private :foo
+      super.modifiesMethod(n, name)
+      or
+      // private
+      // ...
+      // def foo
+      not exists(this.getMethodArgument()) and
+      exists(MethodBase m, int i | n.getStmt(i) = m and m.getName() = name and i > position)
+    )
   }
 }
 
@@ -132,13 +139,7 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   override predicate isPrivate() {
-    this = any(Private p).getMethod()
-    or
-    exists(Namespace c, Private p, int i, int j |
-      p.hasNoArg(c, i) and
-      this = c.getStmt(j) and
-      j > i
-    )
+    any(Private p).modifiesMethod(this.getEnclosingModule(), this.getName())
     or
     // Top-level methods are private members of the Object class
     this.getEnclosingModule() instanceof Toplevel
@@ -203,7 +204,9 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * end
    * ```
    */
-  override predicate isPrivate() { this = any(PrivateClassMethod p).getMethod() }
+  override predicate isPrivate() {
+    any(PrivateClassMethod p).modifiesMethod(this.getEnclosingModule(), this.getName())
+  }
 }
 
 /**
