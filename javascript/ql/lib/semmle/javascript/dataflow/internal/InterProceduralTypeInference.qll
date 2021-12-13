@@ -203,19 +203,14 @@ class LocalFunction extends Function {
   DataFlow::Impl::ExplicitInvokeNode invk;
 
   LocalFunction() {
-    (
-      exists(LocalVariable v |
-        getOnlyAccess(this, v) = invk.getCalleeNode().asExpr() and
-        not exists(v.getAnAssignedExpr()) and
-        not exists(ExportDeclaration export | export.exportsAs(v, _))
-      )
-    or
-      exists(LocalVariable v |
-        getOnlyAccessToFunctionExpr(this, v) = invk.getCalleeNode().asExpr() and
-        not exists(ExportDeclaration export | export.exportsAs(v, _))
-      )
-    )
-    and
+    exists(LocalVariable v |
+      getOnlyAccess(this, v) = invk.getCalleeNode().asExpr() and
+      not exists(v.getAnAssignedExpr()) and
+      not exists(ExportDeclaration export | export.exportsAs(v, _))
+      or
+      getOnlyAccessToFunctionExpr(this, v) = invk.getCalleeNode().asExpr() and
+      not exists(ExportDeclaration export | export.exportsAs(v, _))
+    ) and
     // if the function is non-strict and its `arguments` object is accessed, we
     // also assume that there may be other calls (through `arguments.callee`)
     (isStrict() or not usesArgumentsObject())
