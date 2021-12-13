@@ -13,6 +13,7 @@ nodes
 | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | semmle.label | fileName |
 | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname : string | semmle.label | selection of Linkname : string |
 | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name : string | semmle.label | selection of Name : string |
+subpaths
 #select
 | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | symlink creation |
 | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | symlink creation |

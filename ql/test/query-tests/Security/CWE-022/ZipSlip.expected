@@ -51,6 +51,7 @@ nodes
 | tst.go:24:11:24:11 | implicit dereference : File | semmle.label | implicit dereference : File |
 | tst.go:24:11:24:11 | implicit read of field FileHeader : FileHeader | semmle.label | implicit read of field FileHeader : FileHeader |
 | tst.go:29:20:29:23 | path | semmle.label | path |
+subpaths
 #select
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |
 | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |

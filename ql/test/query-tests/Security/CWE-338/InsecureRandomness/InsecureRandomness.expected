@@ -18,6 +18,7 @@ nodes
 | sample.go:45:17:45:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:46:17:46:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:47:17:47:39 | call to Intn | semmle.label | call to Intn |
+subpaths
 #select
 | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | $@ generated with a cryptographically weak RNG is used in $@. | InsecureRandomness.go:12:18:12:40 | call to Intn | A random number | InsecureRandomness.go:12:18:12:40 | call to Intn | a password-related function |
 | sample.go:26:25:26:30 | call to Guid | sample.go:15:49:15:61 | call to Uint32 : uint32 | sample.go:26:25:26:30 | call to Guid | $@ generated with a cryptographically weak RNG is used in $@. | sample.go:15:49:15:61 | call to Uint32 | A random number | sample.go:26:25:26:30 | call to Guid | this cryptographic algorithm |

@@ -117,6 +117,7 @@ nodes
 | stdlib.go:192:23:192:28 | implicit dereference : URL | semmle.label | implicit dereference : URL |
 | stdlib.go:192:23:192:33 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:194:23:194:42 | call to EscapedPath | semmle.label | call to EscapedPath |
+subpaths
 #select
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form : Values | OpenUrlRedirect.go:10:23:10:42 | call to Get | Untrusted URL redirection due to $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
 | stdlib.go:15:30:15:35 | target | stdlib.go:13:13:13:18 | selection of Form : Values | stdlib.go:15:30:15:35 | target | Untrusted URL redirection due to $@. | stdlib.go:13:13:13:18 | selection of Form | user-provided value |

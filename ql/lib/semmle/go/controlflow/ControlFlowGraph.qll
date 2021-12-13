@@ -147,7 +147,7 @@ module ControlFlow {
     }
 
     /**
-     * Holds if this node sets the value of element `idx` on `base` (or its implicit dereference)
+     * Holds if this node sets the value of element `index` on `base` (or its implicit dereference)
      * to `rhs`.
      *
      * For example, for the assignment `xs[i] = v`, `base` is either the data-flow node

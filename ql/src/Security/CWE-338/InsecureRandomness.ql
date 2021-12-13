@@ -24,7 +24,7 @@ where
     sink =
       min(DataFlow::PathNode sink2, int line |
         cfg.hasFlowPath(_, sink2) and
-        sink2.getNode().getEnclosingCallable() = sink.getNode().getEnclosingCallable() and
+        sink2.getNode().getRoot() = sink.getNode().getRoot() and
         sink2.hasLocationInfo(_, line, _, _, _)
       |
         sink2 order by line

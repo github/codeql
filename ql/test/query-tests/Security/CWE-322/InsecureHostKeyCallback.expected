@@ -42,6 +42,7 @@ nodes
 | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback : signature type | semmle.label | potentiallySecureCallback : signature type |
 | InsecureHostKeyCallbackExample.go:118:35:118:61 | call to InsecureIgnoreHostKey : HostKeyCallback | semmle.label | call to InsecureIgnoreHostKey : HostKeyCallback |
 | InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback : signature type | semmle.label | potentiallySecureCallback : signature type |
+subpaths
 #select
 | InsecureHostKeyCallbackExample.go:15:20:18:5 | type conversion | InsecureHostKeyCallbackExample.go:16:4:18:4 | function literal : signature type | InsecureHostKeyCallbackExample.go:15:20:18:5 | type conversion | Configuring SSH ClientConfig with insecure HostKeyCallback implementation from $@. | InsecureHostKeyCallbackExample.go:16:4:18:4 | function literal | this source |
 | InsecureHostKeyCallbackExample.go:26:20:26:46 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:26:20:26:46 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:26:20:26:46 | call to InsecureIgnoreHostKey | Configuring SSH ClientConfig with insecure HostKeyCallback implementation from $@. | InsecureHostKeyCallbackExample.go:26:20:26:46 | call to InsecureIgnoreHostKey | this source |

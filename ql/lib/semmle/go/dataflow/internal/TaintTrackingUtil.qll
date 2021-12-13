@@ -3,6 +3,7 @@
  */
 
 private import go
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -23,7 +24,44 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink)
+  localAdditionalTaintStep(src, sink) or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+}
+
+private Type getElementType(Type containerType) {
+  result = containerType.(ArrayType).getElementType() or
+  result = containerType.(SliceType).getElementType() or
+  result = containerType.(ChanType).getElementType() or
+  result = containerType.(MapType).getValueType() or
+  result = containerType.(PointerType).getPointerType()
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(Type containerType |
+    node instanceof DataFlow::ArgumentNode and
+    getElementType*(node.getType()) = containerType
+  |
+    containerType instanceof ArrayType and
+    c instanceof DataFlow::ArrayContent
+    or
+    containerType instanceof SliceType and
+    c instanceof DataFlow::ArrayContent
+    or
+    containerType instanceof ChanType and
+    c instanceof DataFlow::CollectionContent
+    or
+    containerType instanceof MapType and
+    c instanceof DataFlow::MapValueContent
+    or
+    c.(DataFlow::PointerContent).getPointerType() = containerType
+  )
 }
 
 private newtype TUnit = TMkUnit()
@@ -61,7 +99,8 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
   any(FunctionModel fm).taintStep(pred, succ) or
-  any(AdditionalTaintStep a).step(pred, succ)
+  any(AdditionalTaintStep a).step(pred, succ) or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
 }
 
 /**

@@ -29,6 +29,7 @@ nodes
 | main.go:82:21:82:31 | call to Referer : string | semmle.label | call to Referer : string |
 | main.go:89:37:89:50 | untrustedInput | semmle.label | untrustedInput |
 | main.go:93:16:93:23 | content2 | semmle.label | content2 |
+subpaths
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header : Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |
 | main.go:31:57:31:78 | type conversion | main.go:29:21:29:31 | call to Referer : string | main.go:31:57:31:78 | type conversion | Email content may contain $@. | main.go:29:21:29:31 | call to Referer | untrusted input |

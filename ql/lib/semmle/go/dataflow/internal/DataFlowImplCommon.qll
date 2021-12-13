@@ -2,6 +2,42 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 import Cached
 
+module DataFlowImplCommonPublic {
+  private newtype TFlowFeature =
+    TFeatureHasSourceCallContext() or
+    TFeatureHasSinkCallContext() or
+    TFeatureEqualSourceSinkCallContext()
+
+  /** A flow configuration feature for use in `Configuration::getAFeature()`. */
+  class FlowFeature extends TFlowFeature {
+    string toString() { none() }
+  }
+
+  /**
+   * A flow configuration feature that implies that sources have some existing
+   * call context.
+   */
+  class FeatureHasSourceCallContext extends FlowFeature, TFeatureHasSourceCallContext {
+    override string toString() { result = "FeatureHasSourceCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that sinks have some existing
+   * call context.
+   */
+  class FeatureHasSinkCallContext extends FlowFeature, TFeatureHasSinkCallContext {
+    override string toString() { result = "FeatureHasSinkCallContext" }
+  }
+
+  /**
+   * A flow configuration feature that implies that source-sink pairs have some
+   * shared existing call context.
+   */
+  class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
+    override string toString() { result = "FeatureEqualSourceSinkCallContext" }
+  }
+}
+
 /**
  * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
  *
@@ -251,7 +287,7 @@ private module Cached {
   predicate forceCachingInSameStage() { any() }
 
   cached
-  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = n.getEnclosingCallable() }
+  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = nodeGetEnclosingCallable(n) }
 
   cached
   predicate callEnclosingCallable(DataFlowCall call, DataFlowCallable c) {
@@ -316,9 +352,7 @@ private module Cached {
   }
 
   cached
-  predicate parameterNode(Node n, DataFlowCallable c, int i) {
-    n.(ParameterNode).isParameterOf(c, i)
-  }
+  predicate parameterNode(Node p, DataFlowCallable c, int pos) { isParameterNode(p, c, pos) }
 
   cached
   predicate argumentNode(Node n, DataFlowCall call, int pos) {
@@ -724,7 +758,6 @@ private module Cached {
     Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
     storeStep(node1, c, node2) and
-    read(_, c, _) and
     contentType = getNodeDataFlowType(node1) and
     containerType = getNodeDataFlowType(node2)
     or
@@ -787,15 +820,23 @@ private module Cached {
   }
 
   /**
-   * Holds if the call context `call` either improves virtual dispatch in
-   * `callable` or if it allows us to prune unreachable nodes in `callable`.
+   * Holds if the call context `call` improves virtual dispatch in `callable`.
    */
   cached
-  predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+  predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
-    or
+  }
+
+  /**
+   * Holds if the call context `call` allows us to prune unreachable nodes in `callable`.
+   */
+  cached
+  predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
     exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCallCached(n, call))
   }
+
+  cached
+  predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
 
   cached
   newtype TCallContext =
@@ -845,6 +886,15 @@ private module Cached {
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+}
+
+/**
+ * Holds if the call context `call` either improves virtual dispatch in
+ * `callable` or if it allows us to prune unreachable nodes in `callable`.
+ */
+predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
+  recordDataFlowCallSiteDispatch(call, callable) or
+  recordDataFlowCallSiteUnreachable(call, callable)
 }
 
 /**
@@ -1118,6 +1168,44 @@ ReturnPosition getReturnPosition(ReturnNodeExt ret) {
   result = getReturnPosition0(ret, ret.getKind())
 }
 
+/**
+ * Checks whether `inner` can return to `call` in the call context `innercc`.
+ * Assumes a context of `inner = viableCallableExt(call)`.
+ */
+bindingset[innercc, inner, call]
+predicate checkCallContextReturn(CallContext innercc, DataFlowCallable inner, DataFlowCall call) {
+  innercc instanceof CallContextAny
+  or
+  exists(DataFlowCallable c0, DataFlowCall call0 |
+    callEnclosingCallable(call0, inner) and
+    innercc = TReturn(c0, call0) and
+    c0 = prunedViableImplInCallContextReverse(call0, call)
+  )
+}
+
+/**
+ * Checks whether `call` can resolve to `calltarget` in the call context `cc`.
+ * Assumes a context of `calltarget = viableCallableExt(call)`.
+ */
+bindingset[cc, call, calltarget]
+predicate checkCallContextCall(CallContext cc, DataFlowCall call, DataFlowCallable calltarget) {
+  exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
+    if reducedViableImplInCallContext(call, _, ctx)
+    then calltarget = prunedViableImplInCallContext(call, ctx)
+    else any()
+  )
+  or
+  cc instanceof CallContextSomeCall
+  or
+  cc instanceof CallContextAny
+  or
+  cc instanceof CallContextReturn
+}
+
+/**
+ * Resolves a return from `callable` in `cc` to `call`. This is equivalent to
+ * `callable = viableCallableExt(call) and checkCallContextReturn(cc, callable, call)`.
+ */
 bindingset[cc, callable]
 predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
   cc instanceof CallContextAny and callable = viableCallableExt(call)
@@ -1129,6 +1217,10 @@ predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall 
   )
 }
 
+/**
+ * Resolves a call from `call` in `cc` to `result`. This is equivalent to
+ * `result = viableCallableExt(call) and checkCallContextCall(cc, call, result)`.
+ */
 bindingset[call, cc]
 DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
   exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
@@ -1181,6 +1273,13 @@ class TypedContent extends MkTypedContent {
 
   /** Gets a textual representation of this content. */
   string toString() { result = c.toString() }
+
+  /**
+   * Holds if access paths with this `TypedContent` at their head always should
+   * be tracked at high precision. This disables adaptive access path precision
+   * for such access paths.
+   */
+  predicate forceHighPrecision() { forceHighPrecision(c) }
 }
 
 /**

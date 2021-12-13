@@ -371,7 +371,7 @@ class Function extends ValueEntity, @functionobject {
   DataFlow::CallNode getACall() {
     this = result.getTarget()
     or
-    this.(DeclaredFunction).getFuncDecl() = result.getACallee()
+    this = result.getACalleeIncludingExternals().asFunction()
   }
 
   /** Gets the declaration of this function, if any. */
@@ -589,6 +589,54 @@ class BuiltinFunction extends Function, BuiltinEntity, @builtinfunctionobject {
    * no non-determinism.
    */
   predicate isPure() { not this.mayHaveSideEffects() }
+}
+
+private newtype TCallable =
+  TFunctionCallable(Function f) or
+  TFuncLitCallable(FuncLit l)
+
+/**
+ * This is either a `Function` or a `FuncLit`, because of limitations of both
+ * `Function` and `FuncDef`:
+ *   - `Function` is an entity, and therefore does not include function literals, and
+ *   - `FuncDef` is an AST node, and so is not extracted for functions from external libraries.
+ */
+class Callable extends TCallable {
+  /** Gets a textual representation of this callable. */
+  string toString() { result = [this.asFunction().toString(), this.asFuncLit().toString()] }
+
+  /** Gets this callable as a function, if it is one. */
+  Function asFunction() { this = TFunctionCallable(result) }
+
+  /** Gets this callable as a function literal, if it is one. */
+  FuncLit asFuncLit() { this = TFuncLitCallable(result) }
+
+  /** Gets this function's definition, if it exists. */
+  FuncDef getFuncDef() { result = [this.asFuncLit().(FuncDef), this.asFunction().getFuncDecl()] }
+
+  /** Gets the type of this callable. */
+  SignatureType getType() {
+    result = this.asFunction().getType() or
+    result = this.asFuncLit().getType()
+  }
+
+  /** Gets the name of this callable. */
+  string getName() {
+    result = this.asFunction().getName() or
+    result = this.asFuncLit().getName()
+  }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `fp`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or
+    this.asFuncLit().hasLocationInfo(fp, sl, sc, el, ec)
+  }
 }
 
 /** A statement label. */

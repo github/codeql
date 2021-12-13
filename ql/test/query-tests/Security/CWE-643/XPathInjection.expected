@@ -83,6 +83,7 @@ nodes
 | tst.go:162:31:162:126 | ...+... | semmle.label | ...+... |
 | tst.go:171:21:171:116 | ...+... | semmle.label | ...+... |
 | tst.go:180:27:180:122 | ...+... | semmle.label | ...+... |
+subpaths
 #select
 | XPathInjection.go:16:29:16:91 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form : Values | XPathInjection.go:16:29:16:91 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:13:14:13:19 | selection of Form | A user-provided value |
 | tst.go:35:23:35:85 | ...+... | tst.go:32:14:32:19 | selection of Form : Values | tst.go:35:23:35:85 | ...+... | $@ flows here and is used in an XPath expression. | tst.go:32:14:32:19 | selection of Form | A user-provided value |
