@@ -10,6 +10,8 @@ private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.Stdlib
 
 /**
  * INTERNAL: Do not use.
@@ -82,5 +84,79 @@ private module Requests {
   /** Gets a back-reference to the verify argument `arg`. */
   private DataFlow::LocalSourceNode verifyArgBacktracker(DataFlow::Node arg) {
     result = verifyArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  // ---------------------------------------------------------------------------
+  // Response
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `requests.models.Response` class
+   *
+   * See https://docs.python-requests.org/en/latest/api/#requests.Response.
+   */
+  module Response {
+    /** Gets a reference to the `requests.models.Response` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("requests").getMember("models").getMember("Response")
+      or
+      result = API::moduleImport("requests").getMember("Response")
+    }
+
+    /**
+     * A source of instances of `requests.models.Response`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Response::instance()` to get references to instances of `requests.models.Response`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `requests.models.Response`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Return value from making a reuqest. */
+    private class RequestReturnValue extends InstanceSource, DataFlow::Node {
+      RequestReturnValue() { this = any(OutgoingRequestCall c).getResponse() }
+    }
+
+    /** Gets a reference to an instance of `requests.models.Response`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `requests.models.Response`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `requests.models.Response`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "requests.models.Response" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in ["text", "content", "raw", "links", "cookies", "headers"]
+      }
+
+      override string getMethodName() { result in ["json", "iter_content", "iter_lines"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /** An attribute read that is a file-like instance. */
+    private class FileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+      FileLikeInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "raw"
+      }
+    }
   }
 }

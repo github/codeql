@@ -13,34 +13,38 @@ def test_taint(): # $ requestHandler
     # user-controlled as well.
     resp = requests.get(url) # $ clientRequestUrl=url
 
+    requests.Response
+    requests.models.Response
+
     ensure_tainted(
         # see https://docs.python-requests.org/en/latest/api/#requests.Response
         resp, # $ tainted
-        resp.text, # $ MISSING: tainted
-        resp.content, # $ MISSING: tainted
-        resp.json(), # $ MISSING: tainted
+        resp.text, # $ tainted
+        resp.content, # $ tainted
+        resp.json(), # $ tainted
 
         # file-like
-        resp.raw, # $ MISSING: tainted
+        resp.raw, # $ tainted
+        resp.raw.read(), # $ tainted
 
-        resp.links, # $ MISSING: tainted
-        resp.links['key'], # $ MISSING: tainted
-        resp.links.get('key'), # $ MISSING: tainted
+        resp.links, # $ tainted
+        resp.links['key'], # $ tainted
+        resp.links.get('key'), # $ tainted
 
-        resp.cookies, # $ MISSING: tainted
-        resp.cookies['key'], # $ MISSING: tainted
-        resp.cookies.get('key'), # $ MISSING: tainted
+        resp.cookies, # $ tainted
+        resp.cookies['key'], # $ tainted
+        resp.cookies.get('key'), # $ tainted
 
-        resp.headers, # $ MISSING: tainted
-        resp.headers['key'], # $ MISSING: tainted
-        resp.headers.get('key'), # $ MISSING: tainted
+        resp.headers, # $ tainted
+        resp.headers['key'], # $ tainted
+        resp.headers.get('key'), # $ tainted
     )
 
     for content_chunk in resp.iter_content():
-        ensure_tainted(content_chunk)  # $ MISSING: tainted
+        ensure_tainted(content_chunk)  # $ tainted
 
     for line in resp.iter_lines():
-        ensure_tainted(line)  # $ MISSING: tainted
+        ensure_tainted(line)  # $ tainted
 
     # for now, we don't assume that the response to ANY outgoing request is a remote
     # flow source, since this could lead to FPs.
