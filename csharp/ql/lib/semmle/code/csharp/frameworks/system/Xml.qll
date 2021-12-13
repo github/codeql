@@ -3,6 +3,7 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.DataFlow3
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Xml` namespace. */
 class SystemXmlNamespace extends Namespace {
@@ -112,6 +113,17 @@ class SystemXmlXmlNamedNodeMapClass extends Class {
   Method getGetNamedItemMethod() {
     result = this.getAMethod() and
     result.hasName("GetNamedItem")
+  }
+}
+
+/** Data flow for `System.Xml.XmlNamedNodeMap`. */
+private class SystemXmlXmlNamedNodeMapClassFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String);;Argument[-1];ReturnValue;value",
+        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String,System.String);;Argument[-1];ReturnValue;value"
+      ]
   }
 }
 

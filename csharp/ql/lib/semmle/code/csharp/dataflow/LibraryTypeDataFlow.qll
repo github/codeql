@@ -1825,19 +1825,6 @@ class SystemXmlXmlNodeFlow extends LibraryTypeDataFlow, SystemXmlXmlNodeClass {
   }
 }
 
-/** Data flow for `System.Xml.XmlNamedNodeMap`. */
-class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlNamedNodeMapClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    c = this.getGetNamedItemMethod() and
-    source = TCallableFlowSourceQualifier() and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = true
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */
