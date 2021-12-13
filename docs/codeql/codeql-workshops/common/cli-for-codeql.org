@@ -1,7 +1,7 @@
 * Introduction
   As for any compiler and library pair, only certain versions of the CodeQL compiler
   will work with certain versions of the library.  To ensure compatibility, the
-  tools creating the db, the query writers (if any), and the query runners should
+  tools creating the database, the query writers (if any), and the query runners should
   all sync up on a particular version.
 
   In practice, this means installing a consistent set of command-line tools
