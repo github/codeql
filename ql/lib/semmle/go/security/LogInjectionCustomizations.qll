@@ -39,4 +39,23 @@ module LogInjection {
   class LoggerSink extends Sink {
     LoggerSink() { this = any(LoggerCall log).getAMessageComponent() }
   }
+
+  /**
+   * A call to `strings.Replace` or `strings.ReplaceAll`, considered as a sanitizer
+   * for unsafe quoting.
+   */
+  class ReplaceSanitizer extends Sanitizer {
+    ReplaceSanitizer() {
+      exists(string name, DataFlow::CallNode call |
+        this = call and
+        call.getTarget().hasQualifiedName("strings", name) and
+        call.getArgument(1).getStringValue().matches("%" + ["\r", "\n"] + "%")
+      |
+        name = "Replace" and
+        call.getArgument(3).getNumericValue() < 0
+        or
+        name = "ReplaceAll"
+      )
+    }
+  }
 }
