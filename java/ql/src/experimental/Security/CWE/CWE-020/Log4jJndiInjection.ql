@@ -18,7 +18,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
-
 private class LoggingSinkModels extends SinkModelCsv {
   override predicate row(string row) {
     row =
