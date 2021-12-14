@@ -112,6 +112,29 @@ class SystemIOStreamClass extends SystemIOClass {
   }
 }
 
+/** Data flow for `System.IO.Stream`. */
+private class SystemIOStreamFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.IO;Stream;false;CopyTo;(System.IO.Stream);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0];Argument[-1];taint",
+        "System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0];Argument[-1];taint",
+        "System.IO;Stream;true;CopyTo;(System.IO.Stream,System.Int32);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[-1];Argument[0];taint",
+        "System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0];Argument[-1];taint",
+        "System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[-1];taint"
+      ]
+  }
+}
+
 /** The `System.IO.MemoryStream` class. */
 class SystemIOMemoryStreamClass extends SystemIOClass {
   SystemIOMemoryStreamClass() { this.hasName("MemoryStream") }

@@ -1779,32 +1779,6 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   }
 }
 
-/** Data flow for `System.IO.Stream`. */
-class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      c = this.getAReadMethod().getAnOverrider*() and
-      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      sink = TCallableFlowSinkArg(0) and
-      source = TCallableFlowSourceQualifier()
-      or
-      c = this.getAWriteMethod().getAnOverrider*() and
-      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      source = TCallableFlowSourceArg(0) and
-      sink = TCallableFlowSinkQualifier()
-      or
-      c = any(Method m | m = this.getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
-      c.getParameter(0).getType() instanceof SystemIOStreamClass and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkArg(0)
-    ) and
-    preservesValue = false
-  }
-}
-
 /** Data flow for `System.IO.Compression.DeflateStream`. */
 class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
   SystemIOCompressionDeflateStream {
