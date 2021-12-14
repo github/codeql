@@ -33,31 +33,71 @@ class SensitiveNode extends DataFlow::Node {
   }
 }
 
+abstract class SendRecv extends Function {
+  /**
+   * Gets the expression for the socket or similar object used for sending or
+   * receiving data through the function call `call` (if any).
+   */
+  abstract Expr getSocketExpr(Call call);
+
+  /**
+   * Gets the expression for the buffer to be sent from / received into.
+   */
+  abstract Expr getDataExpr(Call call);
+}
+
+class Send extends SendRecv instanceof RemoteFlowSinkFunction {
+  override Expr getSocketExpr(Call call) {
+    call.getTarget() = this and
+    exists(FunctionInput input, int arg |
+      super.hasSocketInput(input) and
+      input.isParameter(arg) and
+      result = call.getArgument(arg)
+    )
+  }
+
+  override Expr getDataExpr(Call call) {
+    call.getTarget() = this and
+    exists(FunctionInput input, int arg |
+      super.hasRemoteFlowSink(input, _) and
+      input.isParameterDeref(arg) and
+      result = call.getArgument(arg)
+    )
+  }
+}
+
+class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
+  override Expr getSocketExpr(Call call) {
+    call.getTarget() = this and
+    exists(FunctionInput input, int arg |
+      super.hasSocketInput(input) and
+      input.isParameter(arg) and
+      result = call.getArgument(arg)
+    )
+  }
+
+  override Expr getDataExpr(Call call) {
+    call.getTarget() = this and
+    exists(FunctionOutput output, int arg |
+      super.hasRemoteFlowSource(output, _) and
+      output.isParameterDeref(arg) and
+      result = call.getArgument(arg)
+    )
+  }
+}
+
 /**
  * A function call that sends or receives data over a network.
  *
  * note: functions such as `write` may be writing to a network source or a file. We could attempt to determine which, and sort results into `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In practice it usually isn't very important which query reports a result as long as its reported exactly once. See `checkSocket` to narrow this down somewhat.
  */
 abstract class NetworkSendRecv extends FunctionCall {
-  /**
-   * Gets the expression for the socket or similar object used for sending or
-   * receiving data (if any).
-   */
-  abstract Expr getSocketExpr();
+  SendRecv target;
 
-  /**
-   * Gets the expression for the buffer to be sent from / received into.
-   */
-  abstract Expr getDataExpr();
-
-  /**
-   * Holds if the socket used by this call could be a true network socket (or
-   * if no socket is specified). A constant value is likely to indicate standard
-   * input, standard output or a similar non-network socket.
-   */
-  predicate checkSocket() {
+  NetworkSendRecv() {
+    this.getTarget() = target and
     not exists(GVN g |
-      g = globalValueNumber(getSocketExpr()) and
+      g = globalValueNumber(target.getSocketExpr(this)) and
       (
         // literal constant
         globalValueNumber(any(Literal l)) = g
@@ -70,56 +110,22 @@ abstract class NetworkSendRecv extends FunctionCall {
       )
     )
   }
+
+  final Expr getDataExpr() { result = target.getDataExpr(this) }
 }
 
 /**
  * A function call that sends data over a network.
  */
 class NetworkSend extends NetworkSendRecv {
-  RemoteFlowSinkFunction target;
-
-  NetworkSend() { target = this.getTarget() }
-
-  override Expr getSocketExpr() {
-    exists(FunctionInput input, int arg |
-      target.hasSocketInput(input) and
-      input.isParameter(arg) and
-      result = this.getArgument(arg)
-    )
-  }
-
-  override Expr getDataExpr() {
-    exists(FunctionInput input, int arg |
-      target.hasRemoteFlowSink(input, _) and
-      input.isParameterDeref(arg) and
-      result = this.getArgument(arg)
-    )
-  }
+  override Send target;
 }
 
 /**
  * A function call that receives data over a network.
  */
 class NetworkRecv extends NetworkSendRecv {
-  RemoteFlowSourceFunction target;
-
-  NetworkRecv() { target = this.getTarget() }
-
-  override Expr getSocketExpr() {
-    exists(FunctionInput input, int arg |
-      target.hasSocketInput(input) and
-      input.isParameter(arg) and
-      result = this.getArgument(arg)
-    )
-  }
-
-  override Expr getDataExpr() {
-    exists(FunctionOutput output, int arg |
-      target.hasRemoteFlowSource(output, _) and
-      output.isParameterDeref(arg) and
-      result = this.getArgument(arg)
-    )
-  }
+  override Recv target;
 }
 
 /**
@@ -147,7 +153,7 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof SensitiveNode }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NetworkSendRecv nsr | nsr.checkSocket()).getDataExpr()
+    sink.asExpr() = any(NetworkSendRecv nsr).getDataExpr()
     or
     sink.asExpr() instanceof Encrypted
   }
@@ -169,7 +175,6 @@ where
   // flow from sensitive -> network data
   config.hasFlowPath(source, sink) and
   sink.getNode().asExpr() = networkSendRecv.getDataExpr() and
-  networkSendRecv.checkSocket() and
   // no flow from sensitive -> evidence of encryption
   not exists(DataFlow::Node encrypted |
     config.hasFlow(source.getNode(), encrypted) and
