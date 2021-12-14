@@ -210,6 +210,10 @@ commands that you can specify for compiled languages.
 
 - C# project built using ``dotnet build``::
 
+     For C# projects using either `dotnet build` or `msbuild`, you should specify `/p:UseSharedCompilation=false`
+     in the build command. It is also a good idea to add `/t:rebuild` to ensure that all code will be built (code
+     that is not built will not be included in the CodeQL database):
+
      codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild' 
 
 - Go project built using the ``COEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
