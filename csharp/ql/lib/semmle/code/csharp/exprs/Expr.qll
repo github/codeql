@@ -996,7 +996,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
    */
   predicate targetIsOverridableOrImplementable() {
     not this.getQualifier() instanceof BaseAccess and
-    this.getQualifiedDeclaration().(Virtualizable).isOverridableOrImplementable()
+    this.getQualifiedDeclaration().(Overridable).isOverridableOrImplementable()
   }
 
   /** Holds if this expression has a conditional qualifier `?.` */
