@@ -7,7 +7,14 @@ private import internal.TreeSitter
 /** A parameter. */
 class Parameter extends AstNode, TParameter {
   /** Gets the callable that this parameter belongs to. */
-  final Callable getCallable() { result.getAParameter() = this }
+  final Callable getCallable() {
+    result.getAParameter() = this
+    or
+    exists(DestructuredParameter parent |
+      this = parent.getAnElement() and
+      result = parent.getCallable()
+    )
+  }
 
   /** Gets the zero-based position of this parameter. */
   final int getPosition() { this = any(Callable c).getParameter(result) }
