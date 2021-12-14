@@ -3,13 +3,34 @@
 Each CodeQL query pack or library pack has its own change log to track how that pack changes with each release. Any non-trivial, user-visible change to a query or library should add a change note to the affected pack. This document describes how to do that.
 
 ## Creating a change note
-To create a new change note for a pack, create a new markdown file in the `change-notes` directory of the pack (e.g., in `cpp/ql/src/change-notes` for the C++ standard query pack). The markdown file must be named `YYYY-MM-DD-id.md`, where `YYYY-MM-DD` is the date of the change, and `id` is a short string to help identify the change. For example, if you were adding a new integer overflow query to the C++ standard query pack, you might do so from a branch named `int-overflow-query`, with a change note file named `cpp/ql/src/change-notes/2021-12-14-int-overflow-query.md`. Here is an example change note file:
+To create a new change note for a pack, create a new markdown file in the `change-notes` directory of the pack (e.g., in `cpp/ql/src/change-notes` for the C++ standard query pack). The markdown file must be named `YYYY-MM-DD-id.md`, where `YYYY-MM-DD` is the date of the change, and `id` is a short string to help identify the change. For example, if you were adding a new integer overflow query to the C++ standard query pack, you might do so from a branch named `int-overflow-query`, with a change note file named `cpp/ql/src/change-notes/2021-12-14-int-overflow-query.md`. Here are a few example change note files:
 
 ```yaml
 ---
 category: newQuery
 ---
 * Added a new query, `cpp/integer-overflow`, to detect code that depends on the result of signed integer overflow.
+```
+
+```yaml
+---
+category: fix
+---
+* Fixed a performance issue where the `cpp/integer-overflow` query would time out on large databases.
+```
+
+```yaml
+---
+category: minorAnalysis
+---
+* Added taint flow model for `std::codecvt`.
+```
+
+```yaml
+---
+category: majorAnalysis
+---
+* Added taint flow model for `std::string`.
 ```
 
 ### Metadata
