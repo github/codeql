@@ -102,6 +102,42 @@ class SystemXmlXmlNodeClass extends Class {
   }
 }
 
+/** Data flow for `System.Xml.XmlNode`. */
+private class SystemXmlXmlNodeFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Xml;XmlNode;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.Xml;XmlNode;false;SelectNodes;(System.String);;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;false;SelectNodes;(System.String,System.Xml.XmlNamespaceManager);;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;false;SelectSingleNode;(System.String);;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;false;SelectSingleNode;(System.String,System.Xml.XmlNamespaceManager);;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_Attributes;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_BaseURI;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_ChildNodes;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_FirstChild;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_HasChildNodes;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_InnerText;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_InnerXml;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_IsReadOnly;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_LastChild;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_LocalName;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_Name;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_NamespaceURI;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_NextSibling;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_NodeType;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_OuterXml;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_OwnerDocument;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_ParentNode;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_Prefix;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_PreviousSibling;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_PreviousText;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_SchemaInfo;();;Argument[-1];ReturnValue;taint",
+        "System.Xml;XmlNode;true;get_Value;();;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Xml.XmlNamedNodeMap` class. */
 class SystemXmlXmlNamedNodeMapClass extends Class {
   SystemXmlXmlNamedNodeMapClass() {

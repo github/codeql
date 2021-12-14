@@ -2283,8 +2283,80 @@
 | System.Xml.Serialization;XmlSchemas;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value |
 | System.Xml.Serialization;XmlSchemas;false;set_Item;(System.Int32,System.Xml.Schema.XmlSchema);;Argument[1];Element of Argument[-1];value |
 | System.Xml.XPath;XPathNodeIterator;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Xml;XmlAttribute;false;get_BaseURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_NamespaceURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_OwnerDocument;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_Prefix;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_SchemaInfo;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlAttribute;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlAttributeCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Xml;XmlCDataSection;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCDataSection;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCDataSection;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCDataSection;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCDataSection;false;get_PreviousText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCharacterData;false;get_InnerText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlCharacterData;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlComment;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlComment;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlComment;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDeclaration;false;get_InnerText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDeclaration;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDeclaration;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDeclaration;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDeclaration;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_BaseURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_OwnerDocument;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;get_SchemaInfo;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_OwnerDocument;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentFragment;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentType;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentType;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentType;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocumentType;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_Attributes;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_InnerText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_NamespaceURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_NextSibling;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_OwnerDocument;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_Prefix;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlElement;false;get_SchemaInfo;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_BaseURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_InnerText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntity;false;get_OuterXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_BaseURI;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlEntityReference;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlLinkedNode;false;get_NextSibling;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlLinkedNode;false;get_PreviousSibling;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlNamedNodeMap;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String);;Argument[-1];ReturnValue;value |
 | System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String,System.String);;Argument[-1];ReturnValue;value |
@@ -2317,6 +2389,17 @@
 | System.Xml;XmlNode;true;get_SchemaInfo;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlNode;true;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlNodeList;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Xml;XmlNotation;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlNotation;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlNotation;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlNotation;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlNotation;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlNotation;false;get_OuterXml;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlProcessingInstruction;false;get_InnerText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlProcessingInstruction;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlProcessingInstruction;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlProcessingInstruction;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlProcessingInstruction;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlReader;false;Create;(System.IO.Stream);;Argument[0];ReturnValue;taint |
 | System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint |
 | System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint |
@@ -2329,6 +2412,24 @@
 | System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint |
 | System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint |
 | System.Xml;XmlReader;false;Create;(System.Xml.XmlReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_PreviousText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlSignificantWhitespace;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_PreviousText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlText;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_LocalName;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_Name;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_ParentNode;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_PreviousText;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlWhitespace;false;get_Value;();;Argument[-1];ReturnValue;taint |
 | System;Array;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
 | System;Array;false;AsReadOnly<>;(T[]);;Element of Argument[0];Element of ReturnValue;value |
 | System;Array;false;Clone;();;Element of Argument[0];Element of ReturnValue;value |

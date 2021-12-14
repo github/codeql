@@ -1803,28 +1803,6 @@ class SystemXmlXmlDocumentFlow extends LibraryTypeDataFlow, SystemXmlXmlDocument
   }
 }
 
-/** Data flow for `System.Xml.XmlNode`. */
-class SystemXmlXmlNodeFlow extends LibraryTypeDataFlow, SystemXmlXmlNodeClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      exists(Property p |
-        p = this.getAProperty() and
-        c = p.getGetter() and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn()
-      )
-      or
-      c = this.getASelectNodeMethod() and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn()
-    ) and
-    preservesValue = false
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */
