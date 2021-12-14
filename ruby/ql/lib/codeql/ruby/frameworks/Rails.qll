@@ -68,7 +68,7 @@ private class ConfigSourceNode extends DataFlow::LocalSourceNode {
       configCall = this.asExpr().getExpr()
     |
       configureCallNode = getAConfigureCallNode() and
-      block = configureCallNode.asExpr().getExpr().(MethodCall).getBlock() and
+      block = configureCallNode.getBlock().asExpr().getExpr() and
       configCall.getParent+() = block and
       configCall.getMethodName() = "config"
     )
