@@ -17,7 +17,8 @@
 
 <p>To fix this issue these changes should be made:</p>
 <ul>
-  <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, specifying a define or `sizeof(buffer)` as maximum length to copy. This will prevent the buffer overflow.</li>
+  <li>Control the size of the buffer by declaring it with a compile time constant</li>
+  <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, using the defined constant size of the buffer or `sizeof(buffer)` as maximum length to write. This will prevent the buffer overflow.</li>
   <li>Increasing the buffer size to account for the full range of `userId` and the terminating null character.</li>
 </ul>
 
