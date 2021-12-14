@@ -1,7 +1,7 @@
 /**
  * @name Potential Log4J LDAP JNDI injection (CVE-2021-44228)
  * @description Building Log4j log entries from user-controlled data may allow
- *              attackers to inject malicious code through JNDI lookups when 
+ *              attackers to inject malicious code through JNDI lookups when
  *              using Log4J versions vulnerable to CVE-2021-44228.
  * @kind path-problem
  * @problem.severity error
