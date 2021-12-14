@@ -357,9 +357,14 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-private class UnboundCallable extends Callable {
+/** An unbound callable. */
+class UnboundCallable extends Callable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
+  /**
+   * Holds if this unbound callable overrides or implements (transitively)
+   * `that` unbound callable.
+   */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
       this.(Virtualizable).overridesOrImplementsOrEquals(c) or
