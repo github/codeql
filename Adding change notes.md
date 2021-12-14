@@ -3,7 +3,7 @@
 Each CodeQL query pack or library pack has its own change log to track how that pack changes with each release. Any non-trivial, user-visible change to a query or library should add a change note to the affected pack. This document describes how to do that.
 
 ## Creating a change note
-To create a new change note for a pack, create a new markdown file in the `change-notes` directory of the pack (e.g., in `cpp/ql/src/change-notes` for the C++ standard query pack). The markdown file must be named `YYYY-MM-DD-id.md`, where `YYYY-MM-DD` is the date of the change, and `id` is a short string to help identify the change. Often, a good choice for the `id` portion of the filename is the name of the branch in which the changes were made. For example, if you were adding a new integer overflow query to the C++ standard query pack, you might do so from a branch named `int-overflow-query`, with a change note file named `cpp/ql/src/change-notes/2021-12-14-int-overflow-query.md`. Here is an example change note file:
+To create a new change note for a pack, create a new markdown file in the `change-notes` directory of the pack (e.g., in `cpp/ql/src/change-notes` for the C++ standard query pack). The markdown file must be named `YYYY-MM-DD-id.md`, where `YYYY-MM-DD` is the date of the change, and `id` is a short string to help identify the change. For example, if you were adding a new integer overflow query to the C++ standard query pack, you might do so from a branch named `int-overflow-query`, with a change note file named `cpp/ql/src/change-notes/2021-12-14-int-overflow-query.md`. Here is an example change note file:
 
 ```yaml
 ---
