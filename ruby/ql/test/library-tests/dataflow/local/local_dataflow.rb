@@ -74,5 +74,14 @@ def test_case x
   else
      x
   end
+
+  z = case source(1)
+  in 5 => b then sink(b) # $ hasTaintFlow=1
+  in a if a > 0 then sink(a) # $ hasTaintFlow=1
+  in [c, *d, e ] then [
+     sink(c), # $ hasTaintFlow=1
+     sink(d), # $ hasTaintFlow=1
+     sink(e)] # $ hasTaintFlow=1
+  end
 end
-    
+

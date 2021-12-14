@@ -30,6 +30,16 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
  */
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  // value of `case` expression into variables in patterns
+  exists(VariableWriteAccess varDef, CaseExpr case, InClause clause, CfgNode nodeToCfg |
+    clause = case.getABranch() and
+    varDef.getParent*() = clause.getPattern() and
+    nodeFrom.asExpr().getExpr() = case.getValue() and
+    nodeToCfg = nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() and
+    nodeToCfg = nodeFrom.asExpr().getASuccessor+() and
+    nodeToCfg.getNode() = varDef
+  )
+  or
   // operation involving `nodeFrom`
   exists(CfgNodes::ExprNodes::OperationCfgNode op |
     op = nodeTo.asExpr() and
