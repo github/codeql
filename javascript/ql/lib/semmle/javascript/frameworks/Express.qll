@@ -106,12 +106,12 @@ module Express {
    * require('express-limiter')(app, client)({ method: 'get', path: '/foo' });
    * ```
    */
-  private class RateLimiterRouteSetup extends Routing::RouteSetup::Range {
+  private class RateLimiterRouteSetup extends Routing::RouteSetup::Range, DataFlow::CallNode {
     DataFlow::CallNode limitCall;
 
     RateLimiterRouteSetup() {
       limitCall = DataFlow::moduleImport("express-limiter").getACall() and
-      exists(this.(DataFlow::CallNode).getOptionArgument(0, ["path", "method"])) and
+      exists(this.getOptionArgument(0, ["path", "method"])) and
       this = limitCall.getACall()
     }
 
