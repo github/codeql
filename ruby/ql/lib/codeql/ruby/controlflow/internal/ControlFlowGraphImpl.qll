@@ -246,7 +246,7 @@ module Trees {
       )
       or
       // Last element from any matching `rescue` block continues to the `ensure` block
-      this.getRescue(_).(RescueTree).lastMatch(result, c) and
+      last(this.getRescue(_), result, c) and
       ensurable = true
       or
       // If the last `rescue` block does not match, continue to the `ensure` block
@@ -1170,30 +1170,30 @@ module Trees {
     }
   }
 
-  private class RescueTree extends PreOrderTree, RescueClause {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnException() }
-
-    private Expr getLastException() {
-      exists(int i | result = this.getException(i) and not exists(this.getException(i + 1)))
+  private class RescueTree extends PostOrderTree, RescueClause {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getAnException() or
+      child = this.getBody()
     }
 
-    predicate lastMatch(AstNode last, Completion c) {
-      last(this.getBody(), last, c)
+    final override predicate first(AstNode first) {
+      first(this.getException(0), first)
       or
-      not exists(this.getBody()) and
+      not exists(this.getException(0)) and
       (
-        last(this.getVariableExpr(), last, c)
+        first(this.getVariableExpr(), first)
         or
         not exists(this.getVariableExpr()) and
         (
-          last(this.getAnException(), last, c) and
-          c.(MatchingCompletion).getValue() = true
+          first(this.getBody(), first)
           or
-          not exists(this.getAnException()) and
-          last = this and
-          c.isValidFor(this)
+          not exists(this.getBody()) and first = this
         )
       )
+    }
+
+    private Expr getLastException() {
+      exists(int i | result = this.getException(i) and not exists(this.getException(i + 1)))
     }
 
     predicate lastNoMatch(AstNode last, Completion c) {
@@ -1201,38 +1201,18 @@ module Trees {
       c.(MatchingCompletion).getValue() = false
     }
 
-    final override predicate last(AstNode last, Completion c) {
-      this.lastNoMatch(last, c)
-      or
-      this.lastMatch(last, c)
-    }
-
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      exists(AstNode next |
-        pred = this and
-        first(next, succ) and
-        c instanceof SimpleCompletion
-      |
-        next = this.getException(0)
-        or
-        not exists(this.getException(0)) and
-        (
-          next = this.getVariableExpr()
-          or
-          not exists(this.getVariableExpr()) and
-          next = this.getBody()
-        )
-      )
-      or
-      exists(AstNode next |
-        last(this.getAnException(), pred, c) and
-        first(next, succ) and
-        c.(MatchingCompletion).getValue() = true
-      |
-        next = this.getVariableExpr()
+      last(this.getAnException(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      (
+        first(this.getVariableExpr(), succ)
         or
         not exists(this.getVariableExpr()) and
-        next = this.getBody()
+        (
+          first(this.getBody(), succ)
+          or
+          not exists(this.getBody()) and succ = this
+        )
       )
       or
       exists(int i |
@@ -1242,8 +1222,16 @@ module Trees {
       )
       or
       last(this.getVariableExpr(), pred, c) and
-      first(this.getBody(), succ) and
-      c instanceof NormalCompletion
+      c instanceof NormalCompletion and
+      (
+        first(this.getBody(), succ)
+        or
+        not exists(this.getBody()) and succ = this
+      )
+      or
+      last(this.getBody(), pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
     }
   }
 

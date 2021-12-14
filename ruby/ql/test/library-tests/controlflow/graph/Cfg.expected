@@ -4914,7 +4914,7 @@ raise.rb:
 #-----| true -> self
 
 #   17| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   17| self
 #-----|  -> ExceptionA
@@ -4923,14 +4923,14 @@ raise.rb:
 #-----|  -> call to raise
 
 #   19| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   19| ExceptionA
 #-----| match -> self
 #-----| raise -> exit m2 (abnormal)
 
 #   19| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   20| call to puts
 #-----|  -> then ...
@@ -4972,7 +4972,7 @@ raise.rb:
 #-----| true -> self
 
 #   28| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> self
 
 #   28| self
 #-----|  -> ExceptionA
@@ -4984,7 +4984,7 @@ raise.rb:
 #-----|  -> self
 
 #   30| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   31| call to puts
 #-----|  -> then ...
@@ -5026,7 +5026,7 @@ raise.rb:
 #-----| true -> self
 
 #   39| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   39| self
 #-----|  -> ExceptionA
@@ -5035,13 +5035,13 @@ raise.rb:
 #-----|  -> call to raise
 
 #   41| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   41| e
 #-----|  -> self
 
 #   41| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   42| call to puts
 #-----|  -> then ...
@@ -5083,7 +5083,7 @@ raise.rb:
 #-----| true -> self
 
 #   50| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   50| self
 #-----|  -> ExceptionA
@@ -5092,10 +5092,10 @@ raise.rb:
 #-----|  -> call to raise
 
 #   52| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   52| e
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   54| call to puts
 #-----|  -> exit m5 (normal)
@@ -5131,7 +5131,7 @@ raise.rb:
 #-----| true -> self
 
 #   60| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   60| self
 #-----|  -> ExceptionA
@@ -5140,7 +5140,7 @@ raise.rb:
 #-----|  -> call to raise
 
 #   62| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   62| ExceptionA
 #-----| no-match -> ExceptionB
@@ -5154,7 +5154,7 @@ raise.rb:
 #-----|  -> self
 
 #   62| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   63| call to puts
 #-----|  -> then ...
@@ -5813,7 +5813,7 @@ raise.rb:
 #-----| true -> self
 
 #  131| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #  131| self
 #-----|  -> ExceptionA
@@ -5822,21 +5822,21 @@ raise.rb:
 #-----|  -> call to raise
 
 #  133| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #  133| ExceptionA
-#-----| no-match -> rescue ...
-#-----| match -> self
+#-----| match -> rescue ...
+#-----| no-match -> ExceptionB
 
 #  134| rescue ...
-#-----|  -> ExceptionB
+#-----|  -> self
 
 #  134| ExceptionB
 #-----| match -> self
 #-----| raise -> [ensure: raise] self
 
 #  134| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #  135| call to puts
 #-----|  -> then ...
