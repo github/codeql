@@ -1779,30 +1779,6 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   }
 }
 
-/** Data flow for `System.IO.MemoryStream`. */
-library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemoryStreamClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      this.constructorFlow(source, sink, c)
-      or
-      c = this.getToArrayMethod().getAnOverrider*() and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn()
-    ) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
 /** Data flow for `System.IO.Stream`. */
 class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
   override predicate callableFlow(

@@ -122,3 +122,17 @@ class SystemIOMemoryStreamClass extends SystemIOClass {
     result.hasName("ToArray")
   }
 }
+
+private class SystemIOMemoryStreamFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[]);;Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;ToArray;();;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
