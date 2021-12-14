@@ -1,5 +1,5 @@
 /**
- * @name Likely overrunning write based on non-trivial analysis of value ranges
+ * @name Likely overrunning write
  * @description Buffer write operations that do not control the length
  *              of data written may overflow
  * @kind problem
