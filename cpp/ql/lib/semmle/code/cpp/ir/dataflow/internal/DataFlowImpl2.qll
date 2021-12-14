@@ -351,8 +351,7 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    pragma[only_bind_into](config)
-        .isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config)
   )
@@ -385,8 +384,7 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    pragma[only_bind_into](config)
-        .isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
