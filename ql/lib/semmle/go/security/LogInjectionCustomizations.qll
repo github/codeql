@@ -42,7 +42,7 @@ module LogInjection {
 
   /**
    * A call to `strings.Replace` or `strings.ReplaceAll`, considered as a sanitizer
-   * for unsafe quoting.
+   * for log injection.
    */
   class ReplaceSanitizer extends Sanitizer {
     ReplaceSanitizer() {
