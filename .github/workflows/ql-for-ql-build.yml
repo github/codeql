@@ -1,16 +1,10 @@
-name: Build CodeQL for CodeQL
+name: Run CodeQL for CodeQL
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_call:
-    inputs:
-      os:
-        description: A JSON array string of (fixed) operating systems to build for, e.g. '["ubuntu-latest", "macos-latest", "windows-latest"]'
-        required: false
-        type: string
 
 env:
   CARGO_TERM_COLOR: always
@@ -43,18 +37,11 @@ jobs:
   extractors:
     strategy:
       fail-fast: false
-      matrix:
-        os: ${{ fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]') }}
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install GNU tar
-        if: runner.os == 'macOS'
-        run: |
-          brew install gnu-tar
-          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - uses: actions/cache@v2
         with:
           path: |
@@ -71,11 +58,10 @@ jobs:
       - name: Release build
         run: cd ql; cargo build --release
       - name: Generate dbscheme
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
-          name: extractor-${{ matrix.os }}
+          name: extractor-ubuntu-latest
           path: |
             ql/target/release/ql-extractor
             ql/target/release/ql-extractor.exe
@@ -94,34 +80,16 @@ jobs:
           name: query-pack-zip
           path: query-pack-zip
       - uses: actions/download-artifact@v2
-        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'ubuntu-latest') }}
         with:
           name: extractor-ubuntu-latest
           path: linux64
-      - uses: actions/download-artifact@v2
-        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'windows-latest') }}
-        with:
-         name: extractor-windows-latest
-         path: win64
-      - uses: actions/download-artifact@v2
-        if: ${{ contains(fromJson(inputs.os || '["ubuntu-latest", "macos-latest", "windows-latest"]'), 'macos-latest') }}
-        with:
-          name: extractor-macos-latest
-          path: osx64
       - run: |
           unzip query-pack-zip/*.zip -d pack
           cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats pack/
-          mkdir -p pack/tools/{linux64,osx64,win64}
+          mkdir -p pack/tools/linux64
           if [[ -f linux64/ql-extractor ]]; then
             cp linux64/ql-extractor pack/tools/linux64/extractor
             chmod +x pack/tools/linux64/extractor
-          fi
-          if [[ -f osx64/ql-extractor ]]; then
-            cp osx64/ql-extractor pack/tools/osx64/extractor
-            chmod +x pack/tools/osx64/extractor
-          fi
-          if [[ -f win64/ql-extractor.exe ]]; then
-            cp win64/ql-extractor.exe pack/tools/win64/extractor
           fi
           cd pack
           zip -rq ../codeql-ql.zip .
@@ -129,4 +97,56 @@ jobs:
         with:
           name: codeql-ql-pack
           path: codeql-ql.zip
+          retention-days: 1
+  analyze: 
+    runs-on: ubuntu-latest
+    
+    needs: 
+      - package
+    
+    steps: 
+      - name: Download pack
+        uses: actions/download-artifact@v2
+        with:
+          name: codeql-ql-pack
+          path: ${{ runner.temp }}/codeql-ql-pack-artifact
+
+      - name: Prepare pack
+        run: |
+          unzip "${PACK_ARTIFACT}/*.zip" -d "${PACK}"
+        env:
+          PACK_ARTIFACT: ${{ runner.temp }}/codeql-ql-pack-artifact
+          PACK: ${{ runner.temp }}/pack
+      - name: Hack codeql-action options
+        run: |
+          JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
+        env:
+          PACK: ${{ runner.temp }}/pack
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@esbena/ql
+        with:
+          languages: ql
+          db-location: ${{ runner.temp }}/db
+      - name: Print debug info
+        run: |
+          echo "Pack"
+          ls ${{ runner.temp }}/pack
+          echo "Tools"
+          ls ${{ runner.temp }}/pack/tools
+          echo "index-files"
+          cat ${{ runner.temp }}/pack/tools/index-files.sh
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@esbena/ql
+
+      - name: Upload db
+        uses: actions/upload-artifact@v2
+        with:
+          name: db
+          path: ${{ runner.temp }}/db
           retention-days: 1
