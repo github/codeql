@@ -36,8 +36,7 @@ class SystemXmlXmlDocumentClass extends Class {
   /** Gets the `Load` method. */
   Method getLoadMethod() {
     result = this.getAMethod() and
-    result.hasName("Load") and
-    result.isStatic()
+    result.hasName("Load")
   }
 }
 

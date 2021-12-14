@@ -2310,6 +2310,10 @@
 | System.Xml;XmlDeclaration;false;get_Name;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlDeclaration;false;get_NodeType;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlDeclaration;false;get_Value;();;Argument[-1];ReturnValue;taint |
+| System.Xml;XmlDocument;false;Load;(System.IO.Stream);;Argument[0];Argument[-1];taint |
+| System.Xml;XmlDocument;false;Load;(System.IO.TextReader);;Argument[0];Argument[-1];taint |
+| System.Xml;XmlDocument;false;Load;(System.String);;Argument[0];Argument[-1];taint |
+| System.Xml;XmlDocument;false;Load;(System.Xml.XmlReader);;Argument[0];Argument[-1];taint |
 | System.Xml;XmlDocument;false;get_BaseURI;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlDocument;false;get_InnerXml;();;Argument[-1];ReturnValue;taint |
 | System.Xml;XmlDocument;false;get_IsReadOnly;();;Argument[-1];ReturnValue;taint |
