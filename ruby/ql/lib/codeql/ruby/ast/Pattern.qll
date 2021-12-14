@@ -28,14 +28,12 @@ deprecated class Pattern extends AstNode {
   Variable getAVariable() { none() }
 }
 
-deprecated private class TVariablePattern = TVariableAccess or TSimpleParameter;
-
 /**
  * DEPRECATED
  *
  * A simple variable pattern.
  */
-deprecated class VariablePattern extends Pattern, LhsExpr, TVariablePattern {
+deprecated class VariablePattern extends Pattern, LhsExpr, TVariableAccess {
   override Variable getAVariable() { result = this.(VariableAccess).getVariable() }
 }
 

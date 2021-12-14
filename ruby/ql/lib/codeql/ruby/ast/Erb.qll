@@ -159,7 +159,7 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
    */
   Stmt getAChildStmt() {
     this.containsStmtStart(result) and
-    not this.containsStmtStart(result.getParent())
+    not this.containsStmtStart(parent*(result).getParent())
   }
 
   /**
@@ -181,6 +181,11 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
   override string toString() { result = "erb directive" }
 
   override string getAPrimaryQlClass() { result = "ErbDirective" }
+}
+
+private AstNode parent(AstNode n) {
+  result = n.getParent() and
+  not result instanceof Stmt
 }
 
 /**
