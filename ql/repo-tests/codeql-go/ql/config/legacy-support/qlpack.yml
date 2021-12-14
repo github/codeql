@@ -1,3 +1,0 @@
-name: legacy-libraries-go
-version: 0.0.0
-libraryPathDependencies: codeql-go

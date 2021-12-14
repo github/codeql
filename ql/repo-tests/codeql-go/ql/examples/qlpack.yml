@@ -1,4 +1,0 @@
-name: codeql/go-examples
-version: 0.0.2
-dependencies:
-    codeql/go-all: ^0.0.2

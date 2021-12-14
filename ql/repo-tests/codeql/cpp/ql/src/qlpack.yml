@@ -1,8 +1,0 @@
-name: codeql/cpp-queries
-version: 0.0.2
-dependencies:
-    codeql/cpp-all: "*"
-    codeql/suite-helpers: "*"
-suites: codeql-suites
-extractor: cpp
-defaultSuiteFile: codeql-suites/cpp-code-scanning.qls

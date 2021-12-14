@@ -1,9 +1,0 @@
-name: codeql/javascript-experimental-atm-queries
-language: javascript
-version: 0.0.0
-suites: codeql-suites
-defaultSuiteFile: codeql-suites/javascript-atm-code-scanning.qls
-dependencies:
-    codeql/javascript-experimental-atm-lib: "*"
-mlModels:
-- "resources/*.codeqlmodel"

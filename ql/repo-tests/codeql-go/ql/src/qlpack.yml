@@ -1,8 +1,0 @@
-name: codeql/go-queries
-version: 0.0.2
-suites: codeql-suites
-extractor: go
-defaultSuiteFile: codeql-suites/go-code-scanning.qls
-dependencies:
-  codeql/go-all: "*"
-  codeql/suite-helpers: "*"
