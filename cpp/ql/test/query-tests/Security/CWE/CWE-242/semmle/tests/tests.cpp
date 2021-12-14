@@ -363,3 +363,16 @@ void test6(unsigned unsigned_value, int value) {
 	sprintf(buffer4, "%d", (int)c); // BAD: e.g. -127 does not fit
 	sprintf(buffer5, "%d", (int)c); // GOOD: -127..128 fits
 }
+
+void test7() {
+    char buffer[2];
+
+	for (int i = 0; i <= 11; i++) {
+		if (0 <= i && i <= 9) {
+			sprintf(buffer, "%d", i - 0);  // GOOD, 0 <= i <= 9
+		}
+		if (1 <= i && i <= 10) {
+			sprintf(buffer, "%d", i - 1);  // GOOD, 0 <= i - 1 <= 9
+		}
+	}
+}
