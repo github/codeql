@@ -40,10 +40,12 @@ getTargetFile
 | views/ejs_sinks.ejs:24:13:24:53 | include ... Html }) | views/ejs_include1.ejs:0:0:0:0 | views/ejs_include1.ejs |
 xssSink
 | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
 | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
 | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
 | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
 | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
 | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
 | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
 | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |

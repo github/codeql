@@ -3,8 +3,8 @@ const express = require('express');
 const app = express();
 
 app.use((req, res, next) => {
-
-
+    res.locals.taintedInMiddleware = req.query.taintA;
+    next();
 });
 
 app.get('/fooA', (req, res) => {
