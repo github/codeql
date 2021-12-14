@@ -100,6 +100,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
   private import semmle.code.csharp.frameworks.system.Xml
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
 }
 
 /**
