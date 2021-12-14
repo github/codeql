@@ -1840,31 +1840,6 @@ class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlName
   }
 }
 
-/** Data flow for `System.IO.Path`. */
-class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    c = this.getAMethod("Combine") and
-    source = getFlowSourceArg(c, _, sourceAp) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty() and
-    preservesValue = false
-    or
-    exists(Parameter p |
-      c = this.getAMethod() and
-      c.getName().matches("Get%") and
-      p = c.getAParameter() and
-      p.hasName("path") and
-      source = getFlowSourceArg(c, p.getPosition(), sourceAp) and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty() and
-      preservesValue = false
-    )
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */

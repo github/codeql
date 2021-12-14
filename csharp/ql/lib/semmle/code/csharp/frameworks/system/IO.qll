@@ -42,6 +42,38 @@ class SystemIOPathClass extends SystemIOClass {
   SystemIOPathClass() { this.hasName("Path") }
 }
 
+/** Data flow for `System.IO.Path`. */
+private class SystemIOPathFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.IO;Path;false;Combine;(System.String,System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String);;Argument[1];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String);;Argument[1];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String);;Argument[2];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[1];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[2];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[3];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String[]);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetDirectoryName;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetDirectoryName;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetExtension;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetExtension;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileName;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileName;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileNameWithoutExtension;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileNameWithoutExtension;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFullPath;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFullPath;(System.String,System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetPathRoot;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetPathRoot;(System.String);;Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetRelativePath;(System.String,System.String);;Argument[1];ReturnValue;taint"
+      ]
+  }
+}
+
 /** Data flow for `System.IO.TextReader`. */
 private class SystemIOTextReaderFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
