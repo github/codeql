@@ -443,7 +443,7 @@ class NoRegExpMatchExpr extends BinaryOperation, TNoRegExpMatchExpr {
  */
 class Assignment extends Operation instanceof AssignmentImpl {
   /** Gets the left hand side of this assignment. */
-  final Pattern getLeftOperand() { result = super.getLeftOperandImpl() }
+  final LhsExpr getLeftOperand() { result = super.getLeftOperandImpl() }
 
   /** Gets the right hand side of this assignment. */
   final Expr getRightOperand() { result = super.getRightOperandImpl() }

@@ -692,7 +692,7 @@ class ForExpr extends Loop, TForExpr {
   final override StmtSequence getBody() { toGenerated(result) = g.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
-  final Pattern getPattern() { toGenerated(result) = g.getPattern() }
+  final LhsExpr getPattern() { toGenerated(result) = g.getPattern() }
 
   /**
    * Gets the value being iterated over. In the following example, the result
