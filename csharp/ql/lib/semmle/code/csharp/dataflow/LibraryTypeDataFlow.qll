@@ -6,8 +6,6 @@ import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
-private import semmle.code.csharp.frameworks.system.IO
-private import semmle.code.csharp.frameworks.system.io.Compression
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.frameworks.system.Text
@@ -1779,74 +1777,6 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   }
 }
 
-/** Data flow for `System.IO.MemoryStream`. */
-library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemoryStreamClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      this.constructorFlow(source, sink, c)
-      or
-      c = this.getToArrayMethod().getAnOverrider*() and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn()
-    ) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
-/** Data flow for `System.IO.Stream`. */
-class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      c = this.getAReadMethod().getAnOverrider*() and
-      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      sink = TCallableFlowSinkArg(0) and
-      source = TCallableFlowSourceQualifier()
-      or
-      c = this.getAWriteMethod().getAnOverrider*() and
-      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      source = TCallableFlowSourceArg(0) and
-      sink = TCallableFlowSinkQualifier()
-      or
-      c = any(Method m | m = this.getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
-      c.getParameter(0).getType() instanceof SystemIOStreamClass and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkArg(0)
-    ) and
-    preservesValue = false
-  }
-}
-
-/** Data flow for `System.IO.Compression.DeflateStream`. */
-class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
-  SystemIOCompressionDeflateStream {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    this.constructorFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
 /** Data flow for `System.Xml.XmlReader`. */
 class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClass {
   override predicate callableFlow(
@@ -1905,31 +1835,6 @@ class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlName
     source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn() and
     preservesValue = true
-  }
-}
-
-/** Data flow for `System.IO.Path`. */
-class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    c = this.getAMethod("Combine") and
-    source = getFlowSourceArg(c, _, sourceAp) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty() and
-    preservesValue = false
-    or
-    exists(Parameter p |
-      c = this.getAMethod() and
-      c.getName().matches("Get%") and
-      p = c.getAParameter() and
-      p.hasName("path") and
-      source = getFlowSourceArg(c, p.getPosition(), sourceAp) and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty() and
-      preservesValue = false
-    )
   }
 }
 

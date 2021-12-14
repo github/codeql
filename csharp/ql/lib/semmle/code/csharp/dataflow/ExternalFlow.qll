@@ -99,6 +99,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.web.ui.WebControls
   private import semmle.code.csharp.frameworks.JsonNET
   private import semmle.code.csharp.frameworks.system.IO
+  private import semmle.code.csharp.frameworks.system.io.Compression
 }
 
 /**
