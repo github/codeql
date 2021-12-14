@@ -1150,24 +1150,23 @@ module Trees {
 
   private class RedoStmtTree extends LeafTree, RedoStmt { }
 
-  private class RescueModifierTree extends PreOrderTree, RescueModifierExpr {
+  private class RescueModifierTree extends PostOrderTree, RescueModifierExpr {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getHandler() }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getBody(), last, c) and
-      not c instanceof RaiseCompletion
-      or
-      last(this.getHandler(), last, c)
-    }
+    final override predicate first(AstNode first) { first(this.getBody(), first) }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getBody(), succ) and
-      c instanceof SimpleCompletion
-      or
       last(this.getBody(), pred, c) and
-      c instanceof RaiseCompletion and
-      first(this.getHandler(), succ)
+      (
+        c instanceof RaiseCompletion and
+        first(this.getHandler(), succ)
+        or
+        not c instanceof RaiseCompletion and
+        succ = this
+      )
+      or
+      last(this.getHandler(), pred, c) and
+      succ = this
     }
   }
 
