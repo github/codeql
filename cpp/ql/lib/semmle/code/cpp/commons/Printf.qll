@@ -10,7 +10,7 @@ private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 private newtype TBufferWriteEstimationReason =
-  TNoSpecifiedEstimateReason() or
+  TUnspecifiedEstimateReason() or
   TTypeBoundsAnalysis() or
   TValueFlowAnalysis()
 
@@ -40,8 +40,8 @@ abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason 
  * classes derived from BufferWrite and overriding `getMaxData/0` still work with the
  * queries as intended.
  */
-class NoSpecifiedEstimateReason extends BufferWriteEstimationReason, TNoSpecifiedEstimateReason {
-  override string toString() { result = "NoSpecifiedEstimateReason" }
+class UnspecifiedEstimateReason extends BufferWriteEstimationReason, TUnspecifiedEstimateReason {
+  override string toString() { result = "UnspecifiedEstimateReason" }
 
   override string getDescription() { result = "no reason specified" }
 
@@ -62,7 +62,7 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
   override string getDescription() { result = "based on type bounds" }
 
   override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    other != TNoSpecifiedEstimateReason() and result = TTypeBoundsAnalysis()
+    other != TUnspecifiedEstimateReason() and result = TTypeBoundsAnalysis()
   }
 }
 
@@ -82,7 +82,7 @@ class ValueFlowAnalysis extends BufferWriteEstimationReason, TValueFlowAnalysis 
   override string getDescription() { result = "based on flow analysis of value bounds" }
 
   override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    other != TNoSpecifiedEstimateReason() and result = other
+    other != TUnspecifiedEstimateReason() and result = other
   }
 }
 
