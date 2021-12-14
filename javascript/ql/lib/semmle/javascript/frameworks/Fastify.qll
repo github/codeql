@@ -194,7 +194,7 @@ module Fastify {
     }
 
     override DataFlow::Node getChildNode(int n) {
-      result = getRawChild(rank[n + 1](int k | exists(getRawChild(k))))
+      result = rank[n + 1](DataFlow::Node child, int k | child = getRawChild(k) | child order by k)
     }
   }
 
