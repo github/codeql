@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy, and by analysing the bounds of the expressions involved it appears that certain inputs will cause a buffer overflow to occur in this case.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations.  <code>strncpy</code> should be used over <code>strcpy</code>, <code>snprintf</code> over <code>sprintf</code>, and in other cases 'n-variant' functions should be preferred.</p>
+
+</recommendation>
+<example>
+<sample src="OverrunWrite.c" />
+
+<p>In this example, the call to <code>sprintf</code> writes a message of 14 characters (including the terminating null) plus the length of the string conversion of `userId` into a buffer with space for just 17 characters. While `userId` is checked to occupy no more than 4 characters when converted, there is no space in the buffer for the terminating null character if `userId >= 1000`. In this case, the null character overflows the buffer resulting in undefined behavior.</p>
+
+<p>To fix this issue these changes should be made:</p>
+<ul>
+  <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, specifying a define or `sizeof(buffer)` as maximum length to copy. This will prevent the buffer overflow.</li>
+  <li>Increasing the buffer size to account for the full range of `userId` and the terminating null character.</li>
+</ul>
+
+</example>
+<references>
+
+<li>CERT C Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.</li>
+
+
+<!--  LocalWords:  preprocessor CWE STR
+ -->
+
+</references>
+</qhelp>
