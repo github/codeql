@@ -1779,24 +1779,6 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   }
 }
 
-/** Data flow for `System.IO.Compression.DeflateStream`. */
-class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
-  SystemIOCompressionDeflateStream {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    this.constructorFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = this.getAMember() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-  }
-}
-
 /** Data flow for `System.Xml.XmlReader`. */
 class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClass {
   override predicate callableFlow(
