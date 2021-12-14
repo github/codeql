@@ -13,13 +13,13 @@
 <example>
 <sample src="OverrunWrite.c" />
 
-<p>In this example, the call to <code>strcpy</code> copies a message of 14 characters (including the terminating null) into a buffer with space for just 10 characters.  As such, the last four characters overflow the buffer resulting in undefined behavior.</p>
+<p>In this example, the call to <code>sprintf</code> writes a message of 14 characters (including the terminating null) plus the length of the string conversion of `userId` into a buffer with space for just 18 characters.  As such, if `userId` is greater or equal to `10000`, the last characters overflow the buffer resulting in undefined behavior.</p>
 
-<p>To fix this issue three changes should be made:</p>
+<p>To fix this issue one of three changes should be made:</p>
 <ul>
-  <li>Control the size of the buffer using a preprocessor define.</li>
-  <li>Replace the call to <code>strcpy</code> with <code>strncpy</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
-  <li>Consider increasing the buffer size, say to 20 characters, so that the message is displayed correctly.</li>
+  <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, specifying a define or `sizeof(buffer)` as maximum length to copy. This will prevent the buffer overflow.</li>
+  <li>If `userId` is expected to be less than `10000`, then return or throw an error if `userId` is out of bounds.</li>
+  <li>Consider increasing the buffer size to at least 25 characters, so that the message is displayed correctly regardless of the value of `userId`.</li>
 </ul>
 
 </example>
