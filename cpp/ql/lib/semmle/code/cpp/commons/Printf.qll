@@ -37,7 +37,7 @@ abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason 
 
 /**
  * No particular reason given. This is currently used for backward compatibility so that
- * classes derived from BufferWrite and overriding getMaxData\0 still work with the
+ * classes derived from BufferWrite and overriding `getMaxData/0` still work with the
  * queries as intended.
  */
 class NoSpecifiedEstimateReason extends BufferWriteEstimationReason, TNoSpecifiedEstimateReason {
