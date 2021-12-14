@@ -63,7 +63,3 @@ When a new release of a pack is published, the pack's version number is advanced
 - Otherwise, if any change note has a SemVer effect of `minor version bump`, then the version number's minor component will be incremented (e.g., `1.4.5` -> `1.5.0`).
 - Otherwise, the version number's patch component will be incremented (e.g., `1.4.5` -> `1.4.6`).
 Thus, it is important to choose the correct category for each change note, so that users can rely on the pack's version number to indicate compatibility with previous versions of the pack.
-
-- 
-\e-notes` directory. The pack publishing process consolidates these individual change notes into the pack's `CHANGELOG.md` before publishing, removing the individual change note files in the process.
-
