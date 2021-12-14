@@ -1,10 +1,14 @@
-name: Run QL Tests
+name: Run CodeQL for CodeQL Tests
 
 on:
   push:
     branches: [main]
+    paths:
+      - ql/*
   pull_request:
     branches: [main]
+    paths:
+      - ql/*
 
 env:
   CARGO_TERM_COLOR: always
@@ -26,13 +30,13 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target
+            ql/target
           key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Extractor
-        run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
+        run: cd ql; env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
       - name: Run QL tests
-        run: codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/consistency-queries ql/test
+        run: codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}"/ql --consistency-queries ql/ql/consistency-queries ql/ql/test
       - name: Check QL formatting
-        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
+        run: find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
       - name: Check QL compilation
-        run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
+        run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/ql/src" "ql/ql/examples"

@@ -1,4 +1,4 @@
-name: "CodeQL with bleeding edge queries and extractor"
+name: "CodeQL for CodeQL analysis with bleeding edge queries and extractor"
 
 on:
   workflow_dispatch:
@@ -7,13 +7,11 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main ]
-  schedule:
-    - cron: '21 18 * * 5'
 
 jobs:
 
   build:
-    uses: github/codeql-ql/.github/workflows/build.yml@main
+    uses: github/codeql-ql/.github/workflows/ql-for-ql-build.yml@erik-krogh/publish-ql-for-ql # TODO: Change to `github/codeql`.
     with:
       os: '[ "ubuntu-latest" ]'
 
@@ -58,6 +56,14 @@ jobs:
       with:
         languages: ql
         db-location: ${{ runner.temp }}/db
+    - name: Print debug info
+      run: |
+        echo "Pack"
+        ls ${{ runner.temp }}/pack
+        echo "Tools"
+        ls ${{ runner.temp }}/pack/tools
+        echo "index-files"
+        cat ${{ runner.temp }}/pack/tools/index-files.sh
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@esbena/ql

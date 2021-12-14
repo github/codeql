@@ -1,4 +1,4 @@
-name: Build codeql-ql-pack
+name: Build CodeQL for CodeQL
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           languages: javascript # does not matter
       - name: Build query pack
         run: |
-          cd ql/src
+          cd ql/ql/src
           "${CODEQL}" pack create
           cd .codeql/pack/codeql/ql-all/0.0.0
           zip "${PACKZIP}" -r .
@@ -60,25 +60,25 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target
+            ql/target
           key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Check formatting
-        run: cargo fmt --all -- --check
+        run: cd ql; cargo fmt --all -- --check
       - name: Build
-        run: cargo build --verbose
+        run: cd ql; cargo build --verbose
       - name: Run tests
-        run: cargo test --verbose
+        run: cd ql; cargo test --verbose
       - name: Release build
-        run: cargo build --release
+        run: cd ql; cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: target/release/ql-generator --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/TreeSitter.qll
+        run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            target/release/ql-extractor
-            target/release/ql-extractor.exe
+            ql/target/release/ql-extractor
+            ql/target/release/ql-extractor.exe
           retention-days: 1
   package:
     runs-on: ubuntu-latest
@@ -110,7 +110,7 @@ jobs:
           path: osx64
       - run: |
           unzip query-pack-zip/*.zip -d pack
-          cp -r codeql-extractor.yml tools ql/src/ql.dbscheme.stats pack/
+          cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats pack/
           mkdir -p pack/tools/{linux64,osx64,win64}
           if [[ -f linux64/ql-extractor ]]; then
             cp linux64/ql-extractor pack/tools/linux64/extractor
