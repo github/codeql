@@ -84,8 +84,6 @@ private class CallAgainstConfig extends DataFlow::CallNode {
   CallAgainstConfig() { this.getReceiver() instanceof ConfigNode }
 
   MethodCall getCall() { result = this.asExpr().getExpr() }
-
-  Block getBlock() { result = this.getCall().getBlock() }
 }
 
 private class ActionControllerConfigNode extends DataFlow::Node {
