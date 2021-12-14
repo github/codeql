@@ -1790,19 +1790,6 @@ class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClas
   }
 }
 
-/** Data flow for `System.Xml.XmlDocument`. */
-class SystemXmlXmlDocumentFlow extends LibraryTypeDataFlow, SystemXmlXmlDocumentClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    c = this.getLoadMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkQualifier() and
-    preservesValue = false
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */

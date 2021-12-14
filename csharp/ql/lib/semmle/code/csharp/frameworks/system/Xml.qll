@@ -40,6 +40,19 @@ class SystemXmlXmlDocumentClass extends Class {
   }
 }
 
+/** Data flow for `System.Xml.XmlDocument`. */
+private class SystemXmlXmlDocumentFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Xml;XmlDocument;false;Load;(System.IO.Stream);;Argument[0];Argument[-1];taint",
+        "System.Xml;XmlDocument;false;Load;(System.IO.TextReader);;Argument[0];Argument[-1];taint",
+        "System.Xml;XmlDocument;false;Load;(System.String);;Argument[0];Argument[-1];taint",
+        "System.Xml;XmlDocument;false;Load;(System.Xml.XmlReader);;Argument[0];Argument[-1];taint"
+      ]
+  }
+}
+
 /** The `System.Xml.XmlReader` class. */
 class SystemXmlXmlReaderClass extends Class {
   SystemXmlXmlReaderClass() {
