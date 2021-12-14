@@ -68,7 +68,7 @@ private class ConfigSourceNode extends DataFlow::LocalSourceNode {
       configCall = this.asExpr().getExpr()
     |
       configureCallNode = getAConfigureCallNode() and
-      block = configureCallNode.asExpr().getExpr().(MethodCall).getBlock() and
+      block = configureCallNode.getBlock().asExpr().getExpr() and
       configCall.getParent+() = block and
       configCall.getMethodName() = "config"
     )
@@ -84,8 +84,6 @@ private class CallAgainstConfig extends DataFlow::CallNode {
   CallAgainstConfig() { this.getReceiver() instanceof ConfigNode }
 
   MethodCall getCall() { result = this.asExpr().getExpr() }
-
-  Block getBlock() { result = this.getCall().getBlock() }
 }
 
 private class ActionControllerConfigNode extends DataFlow::Node {
