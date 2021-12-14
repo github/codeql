@@ -542,25 +542,38 @@ class X {
         return this.visibility == DescriptorVisibilities.LOCAL
     }
 
-    private val generatedLocalFunctionTypeMapping: MutableMap<IrFunction, LocalFunctionLabels> = mutableMapOf()
+    private val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> = mutableMapOf()
 
-    data class LocalFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>)
+    /**
+     * Data class to hold labels generated for locally visible functions, such as
+     *  - local functions,
+     *  - lambdas, and
+     *  - wrappers around function references.
+     */
+    data class LocallyVisibleFunctionLabels(val type: TypeResults, val constructor: Label<DbConstructor>, val function: Label<DbMethod>, val constructorBlock: Label<DbBlock>)
 
-    fun getLocalFunctionLabels(f: IrFunction): LocalFunctionLabels {
+    /**
+     * Gets the labels for functions belonging to
+     *  - local functions, and
+     *  - lambdas.
+     */
+    fun getLocallyVisibleFunctionLabels(f: IrFunction): LocallyVisibleFunctionLabels {
         if (!f.isLocalFunction()){
             logger.warn(Severity.ErrorSevere, "Extracting a non-local function as a local one")
         }
 
-        var res = generatedLocalFunctionTypeMapping[f]
+        var res = locallyVisibleFunctionLabelMapping[f]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-            res = LocalFunctionLabels(
+            res = LocallyVisibleFunctionLabels(
                 TypeResults(javaResult, kotlinResult),
                 tw.getFreshIdLabel(),
-                tw.getFreshIdLabel())
-            generatedLocalFunctionTypeMapping[f] = res
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel()
+            )
+            locallyVisibleFunctionLabelMapping[f] = res
         }
 
         return res
@@ -576,7 +589,7 @@ class X {
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null): Label<out T> {
         if (f.isLocalFunction()) {
-            val ids = getLocalFunctionLabels(f)
+            val ids = getLocallyVisibleFunctionLabels(f)
             @Suppress("UNCHECKED_CAST")
             return ids.function as Label<out T>
         } else {
