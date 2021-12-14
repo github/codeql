@@ -51,7 +51,7 @@ Each change note must specifiy a `category` property in its metadata. This categ
 When a new release of a pack is published, the publishing process consolidates all of the change note files from that pack's `change-notes` directory into the pack's `CHANGELOG.md` file. The consolidation process does the following:
 
 - Strips all metadata from each change note.
-- Strips all leading an trailing blank lines from the description of each change note.
+- Strips all leading and trailing blank lines from the description of each change note.
 - Adds a newline at the end of the description of any change note that does not already end with a newline.
 - Groups change notes by category.
 - Adds a section to the changelog for each category that contains at least one change note. The section consists of a section heading followed by the contents of each change note in that category.
