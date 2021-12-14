@@ -404,39 +404,6 @@ FunctionPointer.cs:
 #   48|     14: [Class] B
 #-----|       3: (Base types)
 #   48|         0: [TypeMention] A
-GlobalStmt.cs:
-#    5| [Class] <Program>$
-#    5|   4: [Method] <Main>$
-#-----|     2: (Parameters)
-#    1|       0: [Parameter] args
-#    5|     4: [BlockStmt] {...}
-#    9|       0: [ExprStmt] ...;
-#    9|         0: [MethodCall] call to method WriteLine
-#    9|           -1: [TypeAccess] access to type Console
-#    9|             0: [TypeMention] Console
-#    9|           0: [StringLiteral] "1"
-#   10|       1: [ExprStmt] ...;
-#   10|         0: [MethodCall] call to method WriteLine
-#   10|           -1: [TypeAccess] access to type Console
-#   10|             0: [TypeMention] Console
-#   10|           0: [StringLiteral] "2"
-#   11|       2: [ExprStmt] ...;
-#   11|         0: [LocalFunctionCall] call to local function M
-#   11|           -1: [LocalFunctionAccess] access to local function M
-#   13|       3: [LocalFunctionStmt] M(...)
-#   13|         0: [LocalFunction] M
-#   14|           4: [BlockStmt] {...}
-#   17| [Class] Attr
-#-----|   3: (Base types)
-#   17|     0: [TypeMention] Attribute
-#   19|   5: [Method] M1
-#   19|     -1: [TypeMention] Void
-#   20|     4: [BlockStmt] {...}
-#   21|       0: [ExprStmt] ...;
-#   21|         0: [MethodCall] call to method WriteLine
-#   21|           -1: [TypeAccess] access to type Console
-#   21|             0: [TypeMention] Console
-#   21|           0: [StringLiteral] "3"
 InitOnlyProperty.cs:
 #    3| [Class] Base
 #    5|   5: [Property] Prop0
@@ -812,12 +779,12 @@ Record.cs:
 #    4| [Record] Person
 #    4|   11: [NEOperator] !=
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] r1
-#    4|       1: [Parameter] r2
+#    4|       0: [Parameter] left
+#    4|       1: [Parameter] right
 #    4|   12: [EQOperator] ==
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] r1
-#    4|       1: [Parameter] r2
+#    4|       0: [Parameter] left
+#    4|       1: [Parameter] right
 #    4|   13: [Property] EqualityContract
 #    4|     3: [Getter] get_EqualityContract
 #    6|   14: [Property] LastName
@@ -842,12 +809,12 @@ Record.cs:
 #   12| [Record] Teacher
 #   12|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   12|       0: [Parameter] r1
-#   12|       1: [Parameter] r2
+#   12|       0: [Parameter] left
+#   12|       1: [Parameter] right
 #   12|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   12|       0: [Parameter] r1
-#   12|       1: [Parameter] r2
+#   12|       0: [Parameter] left
+#   12|       1: [Parameter] right
 #   12|   14: [Property] EqualityContract
 #   12|     3: [Getter] get_EqualityContract
 #   14|   15: [Property] Subject
@@ -870,12 +837,12 @@ Record.cs:
 #   20| [Record] Student
 #   20|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   20|       0: [Parameter] r1
-#   20|       1: [Parameter] r2
+#   20|       0: [Parameter] left
+#   20|       1: [Parameter] right
 #   20|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   20|       0: [Parameter] r1
-#   20|       1: [Parameter] r2
+#   20|       0: [Parameter] left
+#   20|       1: [Parameter] right
 #   20|   14: [Property] EqualityContract
 #   20|     3: [Getter] get_EqualityContract
 #   22|   15: [Property] Level
@@ -898,12 +865,12 @@ Record.cs:
 #   27| [Record] Person1
 #   27|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   27|       0: [Parameter] r1
-#   27|       1: [Parameter] r2
+#   27|       0: [Parameter] left
+#   27|       1: [Parameter] right
 #   27|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   27|       0: [Parameter] r1
-#   27|       1: [Parameter] r2
+#   27|       0: [Parameter] left
+#   27|       1: [Parameter] right
 #   27|   14: [Property] EqualityContract
 #   27|     3: [Getter] get_EqualityContract
 #   27|   15: [InstanceConstructor] Person1
@@ -925,12 +892,12 @@ Record.cs:
 #   29| [Record] Teacher1
 #   29|   13: [NEOperator] !=
 #-----|     2: (Parameters)
-#   29|       0: [Parameter] r1
-#   29|       1: [Parameter] r2
+#   29|       0: [Parameter] left
+#   29|       1: [Parameter] right
 #   29|   14: [EQOperator] ==
 #-----|     2: (Parameters)
-#   29|       0: [Parameter] r1
-#   29|       1: [Parameter] r2
+#   29|       0: [Parameter] left
+#   29|       1: [Parameter] right
 #   29|   15: [Property] EqualityContract
 #   29|     3: [Getter] get_EqualityContract
 #   29|   16: [InstanceConstructor] Teacher1
@@ -949,12 +916,12 @@ Record.cs:
 #   32| [Record] Student1
 #   32|   13: [NEOperator] !=
 #-----|     2: (Parameters)
-#   32|       0: [Parameter] r1
-#   32|       1: [Parameter] r2
+#   32|       0: [Parameter] left
+#   32|       1: [Parameter] right
 #   32|   14: [EQOperator] ==
 #-----|     2: (Parameters)
-#   32|       0: [Parameter] r1
-#   32|       1: [Parameter] r2
+#   32|       0: [Parameter] left
+#   32|       1: [Parameter] right
 #   32|   15: [Property] EqualityContract
 #   32|     3: [Getter] get_EqualityContract
 #   32|   16: [InstanceConstructor] Student1
@@ -973,12 +940,12 @@ Record.cs:
 #   35| [Record] Pet
 #   35|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   35|       0: [Parameter] r1
-#   35|       1: [Parameter] r2
+#   35|       0: [Parameter] left
+#   35|       1: [Parameter] right
 #   35|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   35|       0: [Parameter] r1
-#   35|       1: [Parameter] r2
+#   35|       0: [Parameter] left
+#   35|       1: [Parameter] right
 #   35|   14: [Property] EqualityContract
 #   35|     3: [Getter] get_EqualityContract
 #   35|   15: [InstanceConstructor] Pet
@@ -999,12 +966,12 @@ Record.cs:
 #   41| [Record] Dog
 #   41|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   41|       0: [Parameter] r1
-#   41|       1: [Parameter] r2
+#   41|       0: [Parameter] left
+#   41|       1: [Parameter] right
 #   41|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   41|       0: [Parameter] r1
-#   41|       1: [Parameter] r2
+#   41|       0: [Parameter] left
+#   41|       1: [Parameter] right
 #   41|   14: [InstanceConstructor] Dog
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] Name
@@ -1038,12 +1005,12 @@ Record.cs:
 #   54| [Record] R1
 #   54|   12: [NEOperator] !=
 #-----|     2: (Parameters)
-#   54|       0: [Parameter] r1
-#   54|       1: [Parameter] r2
+#   54|       0: [Parameter] left
+#   54|       1: [Parameter] right
 #   54|   13: [EQOperator] ==
 #-----|     2: (Parameters)
-#   54|       0: [Parameter] r1
-#   54|       1: [Parameter] r2
+#   54|       0: [Parameter] left
+#   54|       1: [Parameter] right
 #   54|   14: [Property] EqualityContract
 #   54|     3: [Getter] get_EqualityContract
 #   54|   15: [InstanceConstructor] R1
@@ -1058,12 +1025,12 @@ Record.cs:
 #   56| [Record] R2
 #   56|   13: [NEOperator] !=
 #-----|     2: (Parameters)
-#   56|       0: [Parameter] r1
-#   56|       1: [Parameter] r2
+#   56|       0: [Parameter] left
+#   56|       1: [Parameter] right
 #   56|   14: [EQOperator] ==
 #-----|     2: (Parameters)
-#   56|       0: [Parameter] r1
-#   56|       1: [Parameter] r2
+#   56|       0: [Parameter] left
+#   56|       1: [Parameter] right
 #   56|   15: [Property] EqualityContract
 #   56|     3: [Getter] get_EqualityContract
 #   56|   16: [InstanceConstructor] R2
