@@ -13,7 +13,6 @@ private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
-private import semmle.code.csharp.frameworks.system.Xml
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowPublic
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
@@ -1774,19 +1773,6 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::empty()
     )
-  }
-}
-
-/** Data flow for `System.Xml.XmlReader`. */
-class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    c = this.getCreateMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = false
   }
 }
 

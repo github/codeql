@@ -68,6 +68,27 @@ class SystemXmlXmlReaderClass extends Class {
   }
 }
 
+/** Data flow for `System.Xml.XmlReader`. */
+private class SystemXmlXmlReaderFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
+        "System.Xml;XmlReader;false;Create;(System.Xml.XmlReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Xml.XmlReaderSettings` class. */
 class SystemXmlXmlReaderSettingsClass extends Class {
   SystemXmlXmlReaderSettingsClass() {
