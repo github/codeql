@@ -144,6 +144,8 @@ module Routing {
       // Leaf nodes that aren't functions are assumed to invoke their continuation
       not exists(getLastChild()) and
       not this instanceof RouteHandler
+      or
+      this instanceof MkRouter
     }
 
     /** Gets the parent of this node, provided that this node may invoke its continuation. */
