@@ -76,7 +76,11 @@ module Stages {
       or
       exists(any(AstExtended::AstNode n).getParentNode())
       or
+      exists(any(AstExtended::AstNode n).getAFlowNode())
+      or
       exists(any(PyFlow::BasicBlock b).getImmediateDominator())
+      or
+      exists(any(PyFlow::BasicBlock b).getScope())
       or
       any(PyFlow::BasicBlock b).strictlyDominates(_)
       or
@@ -141,7 +145,6 @@ module Stages {
     private import semmle.python.objects.TObject as TObject
     private import semmle.python.Flow as Flow
     private import semmle.python.objects.ObjectInternal as ObjectInternal
-    private import semmle.python.objects.ObjectAPI as ObjectAPI
     private import semmle.python.pointsto.PointsTo as PointsTo
 
     /**
