@@ -1391,30 +1391,6 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
   }
 }
 
-/** Data flow for `System.Runtime.CompilerServices.TaskAwaiter<>`. */
-class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
-  SystemRuntimeCompilerServicesTaskAwaiterStruct {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    c = this.getGetResultMethod() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp =
-      AccessPath::cons(any(SyntheticFieldContent sfc |
-          sfc.getField() instanceof SyntheticTaskAwaiterUnderlyingTaskField
-        ), AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty()
-  }
-
-  override predicate requiresAccessPath(Content head, AccessPath tail) {
-    head.(SyntheticFieldContent).getField() instanceof SyntheticTaskAwaiterUnderlyingTaskField and
-    tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
-  }
-}
-
 /** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter`. */
 class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlow extends LibraryTypeDataFlow,
   SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct {

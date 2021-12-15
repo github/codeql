@@ -30,6 +30,13 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
   Field getUnderlyingTaskField() { result = this.getAField() and result.hasName("m_task") }
 }
 
+private class SystemRuntimeCompilerServicesTaskAwaiterFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_task_awaiter] of Argument[-1];ReturnValue;value"
+  }
+}
+
 /** The `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>` struct. */
 class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct {
   SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct() {
