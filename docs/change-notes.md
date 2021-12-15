@@ -66,7 +66,7 @@ Each change note must specifiy a `category` property in its metadata. This categ
 | feature        | minor version bump | A new library API has been added. |
 | majorAnalysis  | minor version bump | An API has changed in a way that may affect the results produced by a query that consumes the API. |
 | minorAnalysis  | patch version bump | An API has changed in a way that may affect the results produced by a query that consumes the API, but only in scenarios that affect relatively few users. |
-| fix            | patch version bump | An API has been fixed in a way that is not likely to affect the resultss produced by a query that consumes the API. |
+| fix            | patch version bump | An API has been fixed in a way that is not likely to affect the results produced by a query that consumes the API. |
 
 ## How the final changelog is created
 When a new release of a pack is published, the publishing process consolidates all of the change note files from that pack's `change-notes` directory into the pack's `CHANGELOG.md` file. The consolidation process does the following:
