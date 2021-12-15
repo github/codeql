@@ -177,10 +177,6 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow from pre-update to post-update of the source
-    isSource(node1) and
-    node2.(DataFlow::PostUpdateNode).getPreUpdateNode() = node1
-    or
     // flow through encryption functions to the return value (in case we can reach other sinks)
     node2.asExpr().(Encrypted).(FunctionCall).getAnArgument() = node1.asExpr()
   }
