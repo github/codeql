@@ -19,7 +19,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ runner.temp }}/query-pack.zip
-          key: ${{ runner.os }}-queries-${{ hashFiles('**/*.ql*') }}
+          key: queries-${{ hashFiles('**/*.ql*') }}
       - name: Find codeql
         if: steps.cache-queries.outputs.cache-hit != 'true'
         id: find-codeql
@@ -140,21 +140,7 @@ jobs:
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
-      - name: Print debug info
-        run: |
-          echo "Pack"
-          ls ${{ runner.temp }}/pack
-          echo "Tools"
-          ls ${{ runner.temp }}/pack/tools
-          echo "index-files"
-          cat ${{ runner.temp }}/pack/tools/index-files.sh
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@esbena/ql
 
-      - name: Upload db
-        uses: actions/upload-artifact@v2
-        with:
-          name: db
-          path: ${{ runner.temp }}/db
-          retention-days: 1

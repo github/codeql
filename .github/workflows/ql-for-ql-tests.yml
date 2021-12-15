@@ -18,13 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Fetch CodeQL
-        run: | 
-          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-          unzip -q codeql-linux64.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@esbena/ql
+        with:
+          languages: javascript # does not matter
       - uses: actions/cache@v2
         with:
           path: |
@@ -33,10 +31,18 @@ jobs:
             ql/target
           key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Extractor
-        run: cd ql; env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
+        run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./create-extractor-pack.sh
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Run QL tests
-        run: codeql/codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}"/ql --consistency-queries ql/ql/consistency-queries ql/ql/test
+        run: "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}"/ql --consistency-queries ql/ql/consistency-queries ql/ql/test
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Check QL formatting
-        run: find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
+        run: find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Check QL compilation
-        run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/ql/src" "ql/ql/examples"
+        run: "${CODEQL}" query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/ql/src" "ql/ql/examples"
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
