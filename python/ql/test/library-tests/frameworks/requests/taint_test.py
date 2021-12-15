@@ -11,7 +11,7 @@ def test_taint(): # $ requestHandler
 
     # response from a request to a user-controlled URL should be considered
     # user-controlled as well.
-    resp = requests.get(url) # $ clientRequestUrl=url
+    resp = requests.get(url) # $ clientRequestUrlPart=url
 
     requests.Response
     requests.models.Response
@@ -50,5 +50,5 @@ def test_taint(): # $ requestHandler
     # flow source, since this could lead to FPs.
     # TODO: investigate whether we should consider this a remote flow source.
     trusted_url = "https://internal-api-that-i-trust.com"
-    resp = requests.get(trusted_url) # $ clientRequestUrl=trusted_url
+    resp = requests.get(trusted_url) # $ clientRequestUrlPart=trusted_url
     ensure__not_tainted(resp)

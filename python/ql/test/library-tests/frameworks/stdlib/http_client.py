@@ -11,35 +11,35 @@ if PY3:
 
 
 # NOTE: the URL may be relative to host, or may be full URL.
-conn = HTTPConnection("example.com") # $ clientRequestUrl="example.com"
-conn.request("GET", "/") # $ clientRequestUrl="/"
+conn = HTTPConnection("example.com") # $ clientRequestUrlPart="example.com"
+conn.request("GET", "/") # $ clientRequestUrlPart="/"
 url = "http://example.com/"
-conn.request("GET", url) # $ clientRequestUrl=url
+conn.request("GET", url) # $ clientRequestUrlPart=url
 
 # kwargs
-conn = HTTPConnection(host="example.com") # $ clientRequestUrl="example.com"
-conn.request(method="GET", url="/") # $ clientRequestUrl="/"
+conn = HTTPConnection(host="example.com") # $ clientRequestUrlPart="example.com"
+conn.request(method="GET", url="/") # $ clientRequestUrlPart="/"
 
 # using internal method... you shouldn't but you can
-conn._send_request("GET", "url", body=None, headers={}, encode_chunked=False) # $ clientRequestUrl="url"
+conn._send_request("GET", "url", body=None, headers={}, encode_chunked=False) # $ clientRequestUrlPart="url"
 
 # low level sending of request
-conn.putrequest("GET", "url") # $ clientRequestUrl="url"
+conn.putrequest("GET", "url") # $ clientRequestUrlPart="url"
 conn.putheader("X-Foo", "value")
 conn.endheaders(message_body=None)
 
 # HTTPS
-conn = HTTPSConnection("host") # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = HTTPSConnection("host") # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
 # six aliases
 import six
 
-conn = six.moves.http_client.HTTPConnection("host") # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = six.moves.http_client.HTTPConnection("host") # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
-conn = six.moves.http_client.HTTPSConnection("host") # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = six.moves.http_client.HTTPSConnection("host") # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
 # ==============================================================================
 # Certificate validation disabled
@@ -50,8 +50,8 @@ context = ssl._create_default_https_context()
 assert context.check_hostname == True
 assert context.verify_mode == ssl.CERT_REQUIRED
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
 # `_create_default_https_context` is currently just an alias for `create_default_context`
 # which creates a context for SERVER_AUTH purpose.
@@ -59,16 +59,16 @@ context = ssl.create_default_context()
 assert context.check_hostname == True
 assert context.verify_mode == ssl.CERT_REQUIRED
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
 # however, if you supply your own SSLContext, you need to set it manually
 context = ssl.SSLContext()
 assert context.check_hostname == False
 assert context.verify_mode == ssl.CERT_NONE
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url" MISSING: clientRequestCertValidationDisabled
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url" MISSING: clientRequestCertValidationDisabled
 
 # and if you misunderstood whether to use server/client in the purpose, you will also
 # get a context without hostname verification.
@@ -76,8 +76,8 @@ context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
 assert context.check_hostname == False
 assert context.verify_mode == ssl.CERT_NONE
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url" MISSING: clientRequestCertValidationDisabled
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url" MISSING: clientRequestCertValidationDisabled
 
 # NOTICE that current documentation says
 #
@@ -90,8 +90,8 @@ context = ssl.SSLContext()
 context.check_hostname = True
 assert context.verify_mode == ssl.CERT_REQUIRED
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url"
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url"
 
 # only setting verify_mode is not enough, since check_hostname is not enabled
 
@@ -99,8 +99,8 @@ context = ssl.SSLContext()
 context.verify_mode = ssl.CERT_REQUIRED
 assert context.check_hostname == False
 
-conn = HTTPSConnection("host", context=context) # $ clientRequestUrl="host"
-conn.request("GET", "url") # $ clientRequestUrl="url" MISSING: clientRequestCertValidationDisabled
+conn = HTTPSConnection("host", context=context) # $ clientRequestUrlPart="host"
+conn.request("GET", "url") # $ clientRequestUrlPart="url" MISSING: clientRequestCertValidationDisabled
 
 # ==============================================================================
 # taint test
@@ -112,8 +112,8 @@ def taint_test():
     host = request.args['host']
     url = request.args['url']
 
-    conn = HTTPConnection(host) # $ clientRequestUrl=host
-    conn.request("GET", url) # $ clientRequestUrl=url
+    conn = HTTPConnection(host) # $ clientRequestUrlPart=host
+    conn.request("GET", url) # $ clientRequestUrlPart=url
 
     resp = conn.getresponse()
 

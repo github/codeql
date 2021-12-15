@@ -43,7 +43,7 @@ private module Requests {
       )
     }
 
-    override DataFlow::Node getUrl() {
+    override DataFlow::Node getAUrlPart() {
       result = this.getArgByName("url")
       or
       not methodName = "request" and

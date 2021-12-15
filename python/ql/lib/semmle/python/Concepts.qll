@@ -829,7 +829,7 @@ module HTTP {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      DataFlow::Node getUrl() { result = super.getUrl() }
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
@@ -864,7 +864,7 @@ module HTTP {
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
-        abstract DataFlow::Node getUrl();
+        abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
@@ -888,7 +888,7 @@ module HTTP {
     private class HttpClientRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         exists(Request req |
-          nodeFrom = req.getUrl() and
+          nodeFrom = req.getAUrlPart() and
           nodeTo = req.getResponse()
         )
       }

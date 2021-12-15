@@ -2179,7 +2179,7 @@ private module StdlibPrivate {
           this.getObject().getALocalSource()
       }
 
-      override DataFlow::Node getUrl() {
+      override DataFlow::Node getAUrlPart() {
         result in [this.getArg(1), this.getArgByName("url")]
         or
         this.getObject() = instance(result)
