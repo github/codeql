@@ -62,6 +62,7 @@ calls.rb:
 
 #  150| A
 #-----|  -> S
+#-----|  -> B
 
 #  155| B
 #-----|  -> S
@@ -133,6 +134,14 @@ modules.rb:
 
 #   71| Test::Foo2::Foo2
 
+modules_rec.rb:
+#    1| B::A
+#-----|  -> Object
+
+#    4| A::B
+#-----|  -> Object
+
+modules.rb:
 #  108| MM::MM
 
 #   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar

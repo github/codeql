@@ -28,7 +28,9 @@ private class RailtieClassAccess extends ConstantReadAccess {
 private class RailtieClass extends ClassDeclaration {
   RailtieClass() {
     this.getSuperclassExpr() instanceof RailtieClassAccess or
-    exists(RailtieClass other | other.getModule() = resolveScopeExpr(this.getSuperclassExpr()))
+    exists(RailtieClass other |
+      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
+    )
   }
 }
 
@@ -39,7 +41,7 @@ private DataFlow::CallNode getAConfigureCallNode() {
   // `Rails::Application.configure`
   exists(ConstantReadAccess read, RailtieClass cls |
     read = result.getReceiver().asExpr().getExpr() and
-    resolveScopeExpr(read) = cls.getModule() and
+    resolveConstantReadAccess(read) = cls.getModule() and
     result.asExpr().getExpr().(MethodCall).getMethodName() = "configure"
   )
 }

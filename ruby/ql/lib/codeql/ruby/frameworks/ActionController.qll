@@ -43,7 +43,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
     or
     // class BarController < FooController
     exists(ActionControllerControllerClass other |
-      other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
+      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
     )
   }
 

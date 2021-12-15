@@ -400,7 +400,7 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
   t.start() and
   (
     // ConstantReadAccess to Module
-    resolveScopeExpr(result.asExpr().getExpr()) = tp
+    resolveConstantReadAccess(result.asExpr().getExpr()) = tp
     or
     // `self` reference to Module
     result = selfInModule(tp)

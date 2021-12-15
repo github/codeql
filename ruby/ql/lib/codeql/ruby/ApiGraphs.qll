@@ -244,7 +244,7 @@ module API {
       MkUse(DataFlow::Node nd) { isUse(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
-      TResolved(result) = resolveScopeExpr(read) and
+      TResolved(result) = resolveConstantReadAccess(read) and
       not result.matches("%::%")
     }
 
