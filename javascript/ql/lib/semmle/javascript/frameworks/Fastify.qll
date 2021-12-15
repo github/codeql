@@ -50,7 +50,14 @@ module Fastify {
     t.start() and
     result = server(creation).getAMethodCall("register").getArgument(0).getALocalSource()
     or
+    // Track through require('fastify-plugin')
+    result = pluginCallback(creation, t).(FastifyPluginCall).getArgument(0).getALocalSource()
+    or
     exists(DataFlow::TypeBackTracker t2 | result = pluginCallback(creation, t2).backtrack(t2, t))
+  }
+
+  private class FastifyPluginCall extends DataFlow::CallNode {
+    FastifyPluginCall() { this = DataFlow::moduleImport("fastify-plugin").getACall() }
   }
 
   /** Gets a data flow node being used as a Fastify plugin. */
@@ -198,18 +205,40 @@ module Fastify {
   }
 
   private class PluginRegistration extends Routing::RouteSetup::MethodCall {
-    ServerDefinition server;
+    PluginRegistration() { this = server().getAMethodCall("register") }
 
-    PluginRegistration() {
-      server.flowsTo(this.getReceiver().asExpr()) and
-      getMethodName() = "register"
+    private DataFlow::SourceNode pluginBody(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result = getArgument(0).getALocalSource()
+      or
+      // step through calls to require('fastify-plugin')
+      result = pluginBody(t).(FastifyPluginCall).getArgument(0).getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 | result = pluginBody(t2).backtrack(t2, t))
     }
+
+    /** Gets a functino flowing into the first argument. */
+    DataFlow::FunctionNode pluginBody() { result = pluginBody(DataFlow::TypeBackTracker::end()) }
 
     override HTTP::RequestMethodName getHttpMethod() {
       result = getOptionArgument(1, "method").getStringValue().toUpperCase()
     }
 
     override string getRelativePath() { result = getOptionArgument(1, "prefix").getStringValue() }
+
+    override DataFlow::Node getChildNode(int n) {
+      n = 0 and
+      (
+        // If we can see the plugin body, use its server parameter as the child to ensure
+        // plugins or routes installed in the plugin are ordered
+        result = pluginBody().getParameter(0)
+        or
+        // If we can't see the plugin body, just use the plugin expression so we can
+        // check if something is guarded by that plugin.
+        not exists(pluginBody()) and
+        result = getArgument(0)
+      )
+    }
   }
 
   /**
@@ -400,16 +429,6 @@ module Fastify {
       exists(PluginRegistration registration |
         this = registration.getArgument(0).getALocalSource() and
         result = registration.getOptionArgument(1, "secret")
-      )
-    }
-  }
-
-  private class RouteHandlerTracking extends Routing::RouteHandlerTrackingStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::CallNode call |
-        call = DataFlow::moduleImport("fastify-plugin") and
-        pred = call.getArgument(0) and
-        succ = call
       )
     }
   }
