@@ -698,15 +698,3 @@ void test_overflow() {
     out(y);
   }
 }
-
-void weird() {
-  int i;
-  for (i = 0; i <= 11; ++i) {
-    if (0 <= i && i <= 9) {
-      out(i);
-      int j;
-      j = i - 0;
-      out(j);
-    }
-  } 
-}
