@@ -145,6 +145,23 @@ private class NullOrEmptyCheckSanitizer extends DataFlow::Node {
   NullOrEmptyCheckSanitizer() { isNullOrEmptyCheck(this.asExpr()) }
 }
 
+/** Holds if `ma` is a virtual method call of Map::get or Object::toString. */
+predicate isVirtualMethod(MethodAccess ma, Expr expr) {
+  ma.getMethod().getDeclaringType() instanceof TypeObject and
+  ma.getMethod().hasName("toString") and
+  (expr = ma or expr = ma.getQualifier())
+  or
+  (
+    ma.getMethod().getDeclaringType().getASupertype*().hasQualifiedName("java.util", "Map") and
+    ma.getMethod().hasName(["get", "getOrDefault"])
+  ) and
+  (expr = ma or expr = ma.getAnArgument())
+}
+
+private class VirtualMethodSanitizer extends DataFlow::Node {
+  VirtualMethodSanitizer() { exists(MethodAccess ma | isVirtualMethod(ma, this.asExpr())) }
+}
+
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
 
@@ -166,7 +183,8 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     node instanceof UnsafeUrlForwardSanitizer or
     node instanceof PathMatchSanitizer or
     node instanceof StringOperationSanitizer or
-    node instanceof NullOrEmptyCheckSanitizer
+    node instanceof NullOrEmptyCheckSanitizer or
+    node instanceof VirtualMethodSanitizer
   }
 }
 
