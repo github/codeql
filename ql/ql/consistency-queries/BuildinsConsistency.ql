@@ -1,1 +1,1 @@
-import codeql_ql.ast.internal.Builtins::BuildinsConsistency
+import codeql_ql.ast.internal.Builtins::BuiltinsConsistency

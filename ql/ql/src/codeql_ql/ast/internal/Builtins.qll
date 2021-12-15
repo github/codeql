@@ -60,7 +60,7 @@ predicate isBuiltinMember(string qual, string ret, string name, string args) {
   )
 }
 
-module BuildinsConsistency {
+module BuiltinsConsistency {
   query predicate noBuildinParse(string sig) {
     isBuiltinMember(sig) and
     not exists(sig.regexpCapture("(\\w+) (\\w+)\\.(\\w+)\\(([\\w, ]*)\\)", _))

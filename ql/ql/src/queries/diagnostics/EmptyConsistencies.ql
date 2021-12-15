@@ -11,7 +11,7 @@
 import ql
 import codeql_ql.ast.internal.Predicate::PredConsistency as PredConsistency
 import codeql_ql.ast.internal.Type::TyConsistency as TypeConsistency
-import codeql_ql.ast.internal.Builtins::BuildinsConsistency as BuildinsConsistency
+import codeql_ql.ast.internal.Builtins::BuiltinsConsistency as BuiltinsConsistency
 import codeql_ql.ast.internal.Module::ModConsistency as ModConsistency
 import codeql_ql.ast.internal.Variable::VarConsistency as VarConsistency
 import codeql_ql.ast.internal.AstNodes::AstConsistency as AstConsistency
