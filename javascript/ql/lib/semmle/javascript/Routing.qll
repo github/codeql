@@ -285,7 +285,7 @@ module Routing {
     }
 
     /**
-     * Gets a node whose value can be accessed via the given access path on `n`th route handler input,
+     * Gets a node whose value can be accessed via the given access path on the `n`th route handler parameter,
      * from any route handler that follows after this one.
      *
      * For example, in the context of Express, the `app` object is available as `req.app`:
@@ -774,20 +774,16 @@ module Routing {
     /**
      * Gets the `i`th parameter of this route handler.
      *
-     * This is equivalent to `getParameter(i)` but returns a `RouteHandlerInput`.
-     *
-     * To find all references to this parameter, use `getInput(n).ref()`.
+     * To find all references to this parameter, use `getParameter(n).ref()`.
      */
-    final RouteHandlerInput getInput(int n) { result = function.getParameter(n) }
+    final RouteHandlerParameter getParameter(int n) { result = function.getParameter(n) }
 
     /**
      * Gets a parameter of this route handler.
      *
-     * This is equivalent to `getAParameter()` but returns a `RouteHandlerInput`.
-     *
-     * To find all references to a parameter, use `getAnInput().ref()`.
+     * To find all references to a parameter, use `getAParameter().ref()`.
      */
-    final RouteHandlerInput getAnInput() { result = function.getAParameter() }
+    final RouteHandlerParameter getAParameter() { result = function.getAParameter() }
 
     /** Gets the function implementing this route handler. */
     DataFlow::FunctionNode getFunction() { result = function }
@@ -802,11 +798,11 @@ module Routing {
      * if the default behavior is inadequate for that framework.
      */
     DataFlow::CallNode getAContinuationInvocation() {
-      result = getAnInput().ref().getAnInvocation() and
+      result = getAParameter().ref().getAnInvocation() and
       result.getNumArgument() = 0
       or
       result.(DataFlow::MethodCallNode).getMethodName() = "then" and
-      result.getArgument(0) = getAnInput().ref().getALocalUse()
+      result.getArgument(0) = getAParameter().ref().getALocalUse()
     }
   }
 
@@ -820,10 +816,10 @@ module Routing {
   /**
    * A parameter to a route handler function.
    */
-  class RouteHandlerInput extends DataFlow::ParameterNode {
-    RouteHandlerInput() { this = any(RouteHandler h).getFunction().getAParameter() }
+  class RouteHandlerParameter extends DataFlow::ParameterNode {
+    RouteHandlerParameter() { this = any(RouteHandler h).getFunction().getAParameter() }
 
-    /** Gets a data flow node referring to this route handler input. */
+    /** Gets a data flow node referring to this route handler parameter. */
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = this
@@ -831,7 +827,7 @@ module Routing {
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
 
-    /** Gets a data flow node referring to this route handler input. */
+    /** Gets a data flow node referring to this route handler parameter. */
     DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
 
     /**
@@ -840,7 +836,7 @@ module Routing {
     final RouteHandler getRouteHandler() { result.getFunction().getAParameter() = this }
 
     /**
-     * Gets a node that is stored in the given access path on this route handler input, either
+     * Gets a node that is stored in the given access path on this route handler parameter, either
      * during execution of this router handler, or in one of the preceding ones.
      */
     pragma[inline]
@@ -854,7 +850,7 @@ module Routing {
   }
 
   /**
-   * Gets a value that flows into the given access path of the `n`th route handler input at `base`.
+   * Gets a value that flows into the given access path of the `n`th route handler parameter of `base`.
    *
    * For example,
    * ```js
@@ -874,7 +870,7 @@ module Routing {
   private DataFlow::Node getAnAccessPathRhs(Node base, int n, string path) {
     // Assigned in the body of a route handler function, whi
     exists(RouteHandler handler | base = handler |
-      result = AccessPath::getAnAssignmentTo(handler.getInput(n).ref(), path) and
+      result = AccessPath::getAnAssignmentTo(handler.getParameter(n).ref(), path) and
       exists(handler.getAContinuationInvocation())
     )
     or
@@ -890,7 +886,7 @@ module Routing {
   }
 
   /**
-   * Gets a value that refers to the given access path of the `n`th route handler input at `base`
+   * Gets a value that refers to the given access path of the `n`th route handler parameter of `base`.
    *
    * For example,
    * ```js
@@ -902,7 +898,7 @@ module Routing {
    * of `handler2`.
    */
   private DataFlow::SourceNode getAnAccessPathRead(RouteHandler base, int n, string path) {
-    result = AccessPath::getAReferenceTo(base.getInput(n).ref(), path) and
+    result = AccessPath::getAReferenceTo(base.getParameter(n).ref(), path) and
     not AccessPath::DominatingPaths::hasDominatingWrite(result)
   }
 

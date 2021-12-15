@@ -1038,7 +1038,7 @@ module Express {
     override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
 
     override DataFlow::Node getTemplateParamForValue(string accessPath) {
-      result = res.(Routing::RouteHandlerInput).getValueFromAccessPath("locals." + accessPath)
+      result = res.(Routing::RouteHandlerParameter).getValueFromAccessPath("locals." + accessPath)
     }
 
     override DataFlow::SourceNode getOutput() { result = this.getCallback(2).getParameter(1) }

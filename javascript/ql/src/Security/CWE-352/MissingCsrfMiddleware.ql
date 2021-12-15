@@ -21,7 +21,7 @@ string cookieProperty() { result = "session" or result = "cookies" or result = "
  */
 predicate isRouteHandlerUsingCookies(Routing::RouteHandler handler) {
   exists(DataFlow::PropRef value |
-    value = handler.getAnInput().ref().getAPropertyRead(cookieProperty()).getAPropertyReference() and
+    value = handler.getAParameter().ref().getAPropertyRead(cookieProperty()).getAPropertyReference() and
     // Ignore accesses to values that are part of a CSRF or captcha check
     not value.getPropertyName().regexpMatch("(?i).*(csrf|xsrf|captcha).*") and
     // Ignore calls like `req.session.save()`
@@ -124,7 +124,7 @@ private Routing::RouteHandler getAHandlerSettingCsrfCookie() {
  * Or by the response parameter setting a CSRF related cookie.
  */
 predicate isCsrfProtectionRouteHandler(Routing::RouteHandler handler) {
-  handler.getAnInput() = nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTracker::end())
+  handler.getAParameter() = nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTracker::end())
   or
   handler = getAHandlerSettingCsrfCookie()
 }
