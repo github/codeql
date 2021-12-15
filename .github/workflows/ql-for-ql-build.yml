@@ -1,4 +1,4 @@
-name: Run CodeQL for CodeQL
+name: Run QL for QL
 
 on:
   push:

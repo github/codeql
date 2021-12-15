@@ -1,10 +1,12 @@
-# CodeQL for CodeQL
+# QL for QL
 
-CodeQL for CodeQL analyses QL code to find some common bug patterns.   
+QL for QL is a CodeQL analysis designed to find common bug patterns in QL code.  
 This analysis is mostly used as a PR check in [`github/codeql`](https://github.com/github/codeql).   
-CodeQL for CodeQL is experimental technology and not a supported product
+QL for QL is experimental technology and not a supported product. 
 
-Some setup is required to use CodeQL for CodeQL (see the below sections). 
+This directory contains the extractor, CodeQL libraries, and queries that power QL for QL.
+
+Some setup is required to use QL for QL (see the below sections). 
 
 ## Building the tools from source
 

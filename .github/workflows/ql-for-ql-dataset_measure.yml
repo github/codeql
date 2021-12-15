@@ -1,4 +1,4 @@
-name: Collect database stats for CodeQL for CodeQL
+name: Collect database stats for QL for QL
 
 on:
   push:
