@@ -3,10 +3,9 @@ package com.github.codeql
 import com.github.codeql.utils.substituteTypeArguments
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
+import org.jetbrains.kotlin.backend.jvm.codegen.isRawType
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
@@ -92,7 +91,9 @@ open class KotlinUsesExtractor(
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
 
-    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): UseClassInstanceResult {
+    // `typeArgs` can be null to describe a raw generic type.
+    // For non-generic types it will be zero-length list.
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
         }
@@ -143,7 +144,9 @@ open class KotlinUsesExtractor(
         externalClassExtractor.extractLater(c)
     }
 
-    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+    // `typeArgs` can be null to describe a raw generic type.
+    // For non-generic types it will be zero-length list.
+    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
         val classLabelResult = getClassLabel(c, typeArgs)
 
         var instanceSeenBefore = true
@@ -154,8 +157,8 @@ open class KotlinUsesExtractor(
             extractClassLaterIfExternal(c)
         })
 
-        if (typeArgs.isNotEmpty()) {
-            // If this is a generic type instantiation then it has no
+        if (typeArgs == null || typeArgs.isNotEmpty()) {
+            // If this is a generic type instantiation or a raw type then it has no
             // source entity, so we need to extract it here
             val extractorWithCSource by lazy { this.withSourceFileOfClass(c) }
 
@@ -202,9 +205,11 @@ open class KotlinUsesExtractor(
         return fakeKotlinTypeId
     }
 
-    fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>, hasQuestionMark: Boolean): TypeResults {
+    // `args` can be null to describe a raw generic type.
+    // For non-generic types it will be zero-length list.
+    fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
-            if (args.isNotEmpty()) {
+            if (args?.isNotEmpty() == true) {
                 logger.warn(Severity.ErrorHigh, "Anonymous class with unexpected type arguments")
             }
             if (hasQuestionMark) {
@@ -287,7 +292,7 @@ open class KotlinUsesExtractor(
                 dimensions,
                 componentTypeResults.javaResult.id)
 
-            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, arrayType.arguments)
+            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
@@ -431,7 +436,9 @@ class X {
                 val classifier: IrClassifierSymbol = s.classifier
                 val cls: IrClass = classifier.owner as IrClass
 
-                return useSimpleTypeClass(cls, s.arguments, s.hasQuestionMark)
+                val args = if (s.isRawType()) null else s.arguments
+
+                return useSimpleTypeClass(cls, args, s.hasQuestionMark)
             }
             s.classifier.owner is IrTypeParameter -> {
                 val javaResult = useTypeParameter(s.classifier.owner as IrTypeParameter)
@@ -629,10 +636,13 @@ class X {
         val classLabel: String, val shortName: String
     )
 
-    /*
-    This returns the `X` in c's label `@"class;X"`.
-    */
-    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
+    /**
+     * This returns the `X` in c's label `@"class;X"`.
+     *
+     * `typeArgs` can be null to describe a raw generic type.
+     * For non-generic types it will be zero-length list.
+     */
+    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val parent = c.parent
@@ -644,20 +654,24 @@ class X {
             if (pkg.isEmpty()) cls else "$pkg.$cls"
         }
 
-        val typeArgLabels = typeArgs.map { getTypeArgumentLabel(it) }
+        val typeArgLabels = typeArgs?.map { getTypeArgumentLabel(it) }
         val typeArgsShortName =
-            if(typeArgs.isEmpty())
+            if (typeArgLabels == null)
+                "<>"
+            else if(typeArgLabels.isEmpty())
                 ""
             else
                 typeArgLabels.joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
 
         return ClassLabelResults(
-            label + typeArgLabels.joinToString(separator = "") { ";{${it.id}}" },
+            label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
             cls + typeArgsShortName
         )
     }
 
-    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>): ClassLabelResults {
+    // `args` can be null to describe a raw generic type.
+    // For non-generic types it will be zero-length list.
+    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?): ClassLabelResults {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Label generation should not be requested for an anonymous class")
         }
@@ -706,26 +720,36 @@ class X {
     fun addModifiers(modifiable: Label<out DbModifiable>, vararg modifiers: String) =
         modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
 
-    /**
-     * Extracts the supertypes of class `c` with arguments `typeArgsQ`, or if `typeArgsQ` is null, the non-paramterised
-     * version of `c`. `id` is the label of this class or class instantiation.
-     *
-     * For example, for type `List` if `typeArgsQ` is non-null list `[String]` then we will extract the supertypes
-     * of `List<String>`, i.e. `Appendable<String>` etc, or if `typeArgsQ` is null we will extract `Appendable<E>`
-     * where `E` is the type variable declared as `List<E>`.
-     */
-    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, typeArgsQ: List<IrTypeArgument>? = null) {
-        extractClassSupertypes(c.superTypes, c.typeParameters, id, typeArgsQ)
+    sealed class ExtractSupertypesMode {
+        object Unbound : ExtractSupertypesMode()
+        object Raw : ExtractSupertypesMode()
+        data class Specialised(val typeArgs : List<IrTypeArgument>) : ExtractSupertypesMode()
     }
 
-    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, typeArgsQ: List<IrTypeArgument>? = null) {
+    /**
+     * Extracts the supertypes of class `c`, either the unbound version, raw version or a specialisation to particular
+     * type arguments, depending on the value of `mode`. `id` is the label of this class or class instantiation.
+     *
+     * For example, for type `List` if `mode` `Specialised([String])` then we will extract the supertypes
+     * of `List<String>`, i.e. `Appendable<String>` etc, or if `mode` is `Unbound` we will extract `Appendable<E>`
+     * where `E` is the type variable declared as `List<E>`. Finally if `mode` is `Raw` we will extract the raw type
+     * `Appendable`, represented in QL as `Appendable<>`.
+     */
+    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound) {
+        extractClassSupertypes(c.superTypes, c.typeParameters, id, mode)
+    }
+
+    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound) {
         // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
         // (For example, we can't have `class A<E> : E`, but can have `class A<E> : Comparable<E>`)
-        val subbedSupertypes = typeArgsQ?.let { typeArgs ->
-            superTypes.map {
-                it.substituteTypeArguments(typeParameters, typeArgs)
+        val subbedSupertypes = when(mode) {
+            is ExtractSupertypesMode.Specialised -> {
+                superTypes.map {
+                    it.substituteTypeArguments(typeParameters, mode.typeArgs)
+                }
             }
-        } ?: superTypes
+            else -> superTypes
+        }
 
         for(t in subbedSupertypes) {
             when(t) {
@@ -734,7 +758,7 @@ class X {
                         is IrClass -> {
                             val classifier: IrClassifierSymbol = t.classifier
                             val tcls: IrClass = classifier.owner as IrClass
-                            val l = useClassInstance(tcls, t.arguments).typeResult.id
+                            val l = useClassInstance(tcls, if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments).typeResult.id
                             tw.writeExtendsReftype(id, l)
                         }
                         else -> {

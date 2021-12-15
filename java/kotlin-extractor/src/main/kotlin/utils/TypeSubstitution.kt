@@ -1,12 +1,27 @@
 package com.github.codeql.utils
 
+import com.github.codeql.KotlinUsesExtractor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
+import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
+import org.jetbrains.kotlin.ir.builders.declarations.buildClass
+import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
+import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
+import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
+import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
+import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
+import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
+import org.jetbrains.kotlin.ir.util.constructedClassType
+import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
 
 fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: List<IrTypeArgument>) =
@@ -100,11 +115,61 @@ fun IrTypeArgument.lowerBound(context: IrPluginContext) =
         else -> context.irBuiltIns.nothingType
     }
 
-fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, topLevelMatchHandler: (IrTypeArgument) -> IrType): IrType =
+fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, useContext: KotlinUsesExtractor.TypeContext, pluginContext: IrPluginContext): IrType =
     substitutionMap?.let { substMap ->
         this.classifierOrNull?.let { typeClassifier ->
             substMap[typeClassifier]?.let {
-                topLevelMatchHandler(it)
+                when(useContext) {
+                    KotlinUsesExtractor.TypeContext.RETURN -> it.upperBound(pluginContext)
+                    else -> it.lowerBound(pluginContext)
+                }
             } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
         } ?: this
     } ?: this
+
+private object RawTypeAnnotation {
+    // Much of this is taken from JvmGeneratorExtensionsImpl.kt, which is not easily accessible in plugin context.
+    // The constants "kotlin.internal.ir" and "RawType" could be referred to symbolically, but they move package
+    // between different versions of the Kotlin compiler.
+    val annotationConstructor: IrConstructorCall by lazy {
+        val irInternalPackage = FqName("kotlin.internal.ir")
+        val parent = IrExternalPackageFragmentImpl(
+            DescriptorlessExternalPackageFragmentSymbol(),
+            irInternalPackage
+        )
+        val annoClass = IrFactoryImpl.buildClass {
+            kind = ClassKind.ANNOTATION_CLASS
+            name = irInternalPackage.child(Name.identifier("RawType")).shortName()
+        }.apply {
+            createImplicitParameterDeclarationWithWrappedDescriptor()
+            this.parent = parent
+            addConstructor {
+                isPrimary = true
+            }
+        }
+        val constructor = annoClass.constructors.single()
+        IrConstructorCallImpl.fromSymbolOwner(
+            constructor.constructedClassType,
+            constructor.symbol
+        )
+    }
+}
+
+fun IrType.toRawType(): IrType =
+    when(this) {
+        is IrSimpleType -> {
+            when(val owner = this.classifier.owner) {
+                is IrClass -> {
+                    if (this.arguments.isNotEmpty())
+                        this.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+                    else
+                        this
+                }
+                is IrTypeParameter -> owner.superTypes[0].toRawType()
+                else -> this
+            }
+        }
+        else -> this
+    }
+
+typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType

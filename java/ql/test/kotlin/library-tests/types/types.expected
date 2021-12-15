@@ -16,8 +16,8 @@
 | ? extends CharSequence | Wildcard |
 | ? extends Characteristics | Wildcard |
 | ? extends ChronoLocalDate | Wildcard |
+| ? extends Class<> | Wildcard |
 | ? extends Class<?> | Wildcard |
-| ? extends Class<Object> | Wildcard |
 | ? extends ClassDataSlot | Wildcard |
 | ? extends ClassTypeSignature | Wildcard |
 | ? extends CodeSigner | Wildcard |
@@ -172,8 +172,8 @@
 | Array<? extends Certificate> | Class, ParameterizedType |
 | Array<? extends CharSequence> | Class, ParameterizedType |
 | Array<? extends Characteristics> | Class, ParameterizedType |
+| Array<? extends Class<>> | Class, ParameterizedType |
 | Array<? extends Class<?>> | Class, ParameterizedType |
-| Array<? extends Class<Object>> | Class, ParameterizedType |
 | Array<? extends ClassDataSlot> | Class, ParameterizedType |
 | Array<? extends ClassTypeSignature> | Class, ParameterizedType |
 | Array<? extends CodeSigner> | Class, ParameterizedType |
@@ -252,8 +252,8 @@
 | Array<Characteristics> | Class, ParameterizedType |
 | Array<ChronoField> | Class, ParameterizedType |
 | Array<ChronoUnit> | Class, ParameterizedType |
+| Array<Class<>> | Class, ParameterizedType |
 | Array<Class<?>> | Class, ParameterizedType |
-| Array<Class<Object>> | Class, ParameterizedType |
 | Array<Class> | Class, ParameterizedType |
 | Array<ClassDataSlot> | Class, ParameterizedType |
 | Array<ClassTypeSignature> | Class, ParameterizedType |
@@ -510,6 +510,8 @@
 | ChronoZonedDateTime<LocalDate> | Interface, ParameterizedType |
 | Chronology | Interface |
 | Class | Class, GenericType, ParameterizedType |
+| Class<> | Class, RawType |
+| Class<>[] | Array |
 | Class<? extends Annotation> | Class, ParameterizedType |
 | Class<? extends BoundMethodHandle> | Class, ParameterizedType |
 | Class<? extends FileAttributeView> | Class, ParameterizedType |
@@ -531,8 +533,6 @@
 | Class<K> | Class, ParameterizedType |
 | Class<Long> | Class, ParameterizedType |
 | Class<NoSuchMemberException> | Class, ParameterizedType |
-| Class<Object> | Class, ParameterizedType |
-| Class<Object>[] | Array |
 | Class<S> | Class, ParameterizedType |
 | Class<Short> | Class, ParameterizedType |
 | Class<SpeciesData> | Class, ParameterizedType |
@@ -1584,6 +1584,7 @@
 | ReducedPrinterParser | Class |
 | ReentrantLock | Class |
 | Reference | Class, GenericType, ParameterizedType |
+| Reference<> | Class, RawType |
 | Reference<? extends T> | Class, ParameterizedType |
 | Reference<?> | Class, ParameterizedType |
 | Reference<Class<?>> | Class, ParameterizedType |
