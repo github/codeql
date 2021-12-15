@@ -321,9 +321,9 @@ private module Cached {
         TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or TCaseMatch or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
         TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
-        TDivExprReal or TDo or TDoBlock or TElementReference or TElse or TElsif or TEmptyStmt or
-        TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or
-        TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
+        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or TElse or
+        TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or
+        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or
@@ -342,8 +342,8 @@ private module Cached {
         TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
         TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
         TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
-        TToplevel or TTrueLiteral or TDestructuredParameter or TUnaryMinusExpr or TUnaryPlusExpr or
-        TUndefStmt or TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
+        TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
+        TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
         TVariableReferencePattern or TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =

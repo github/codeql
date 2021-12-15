@@ -140,7 +140,11 @@ class DestructuredLhsExpr extends LhsExpr, TDestructuredLhsExpr {
 
   override string toString() { result = "(..., ...)" }
 
-  override AstNode getAChild(string pred) { pred = "getElement" and result = this.getElement(_) }
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getElement" and result = this.getElement(_)
+  }
 }
 
 /** A sequence of expressions. */
@@ -213,7 +217,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
   override AstNode getAChild(string pred) {
-    result = StmtSequence.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getRescue" and result = this.getRescue(_)
     or
@@ -291,7 +295,7 @@ class Pair extends Expr, TPair {
 
   final override string toString() { result = "Pair" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getKey" and result = this.getKey()
@@ -360,7 +364,7 @@ class RescueClause extends Expr, TRescueClause {
 
   final override string toString() { result = "rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getException" and result = this.getException(_)
@@ -402,7 +406,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
 
   final override string toString() { result = "... rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getBody" and result = this.getBody()
@@ -463,7 +467,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
 
   final override string toString() { result = "\"...\" \"...\"" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getString" and result = this.getString(_)

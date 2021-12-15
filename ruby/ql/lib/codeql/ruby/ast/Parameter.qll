@@ -59,7 +59,11 @@ class DestructuredParameter extends Parameter, TDestructuredParameter {
 
   override string toString() { result = "(..., ...)" }
 
-  override AstNode getAChild(string pred) { pred = "getElement" and result = this.getElement(_) }
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getElement" and result = this.getElement(_)
+  }
 
   final override string getAPrimaryQlClass() { result = "DestructuredParameter" }
 }
