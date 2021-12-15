@@ -1,11 +1,15 @@
-/** Module for working with uses of the Trusted Types API. */
+/**
+ * Module for working with uses of the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
+ */
 
 private import javascript
 private import semmle.javascript.security.dataflow.Xss
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
-/** Module for working with uses of the Trusted Types API. */
+/**
+ * Module for working with uses of the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API).
+ */
 module TrustedTypes {
   private class TrustedTypesEntry extends API::EntryPoint {
     TrustedTypesEntry() { this = "TrustedTypesEntry" }
