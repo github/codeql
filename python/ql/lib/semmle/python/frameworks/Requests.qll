@@ -10,6 +10,7 @@ private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
 
@@ -53,8 +54,6 @@ private module Requests {
       result = this.getArg(1)
     }
 
-    override DataFlow::Node getResponse() { result = this }
-
     /** Gets the `verify` argument to this outgoing requests call. */
     DataFlow::Node getVerifyArg() { result = this.getArgByName("verify") }
 
@@ -68,6 +67,16 @@ private module Requests {
     }
 
     override string getFramework() { result = "requests" }
+  }
+
+  /**
+   * Extra taint propagation for outgoing requests calls,
+   * to ensure that responses to user-controlled URL are tainted.
+   */
+  private class OutgoingRequestCallTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom = nodeTo.(OutgoingRequestCall).getAUrlPart()
+    }
   }
 
   /** Gets a back-reference to the verify argument `arg`. */
@@ -120,7 +129,7 @@ private module Requests {
 
     /** Return value from making a reuqest. */
     private class RequestReturnValue extends InstanceSource, DataFlow::Node {
-      RequestReturnValue() { this = any(OutgoingRequestCall c).getResponse() }
+      RequestReturnValue() { this = any(OutgoingRequestCall c) }
     }
 
     /** Gets a reference to an instance of `requests.models.Response`. */

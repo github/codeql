@@ -2165,22 +2165,10 @@ private module StdlibPrivate {
     private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
       RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
 
-      override DataFlow::Node getResponse() {
-        // TODO: this does not seem like the right abstraction, to allow for nice path-explanations
-        //
-        // For nice path-explanation, we would like either
-        // 1: tainting instance
-        // 1a. host on object creation -> obj
-        // 1b. url on request call -> obj
-        // 2. obj -> obj.getresponse()
-        //
-        // For now, that's really all we use the `getResponse` predicate for.
-        result.(HttpConnectionGetResponseCall).getObject().getALocalSource() =
-          this.getObject().getALocalSource()
-      }
+      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
 
       override DataFlow::Node getAUrlPart() {
-        result in [this.getArg(1), this.getArgByName("url")]
+        result = this.getUrlArg()
         or
         this.getObject() = instance(result)
       }
@@ -2201,6 +2189,32 @@ private module StdlibPrivate {
     private class HttpConnectionGetResponseCall extends DataFlow::MethodCallNode,
       HTTPResponse::InstanceSource {
       HttpConnectionGetResponseCall() { this.calls(instance(_), "getresponse") }
+    }
+
+    /**
+     * Extra taint propagation for `http.client.HTTPConnection`,
+     * to ensure that responses to user-controlled URL are tainted.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // constructor
+        exists(InstanceSource instanceSource |
+          nodeFrom = instanceSource.getHostArgument() and
+          nodeTo = instanceSource
+        )
+        or
+        // a request method
+        exists(RequestCall call |
+          nodeFrom = call.getUrlArg() and
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = call.getObject()
+        )
+        or
+        // `getresponse` call
+        exists(HttpConnectionGetResponseCall call |
+          nodeFrom = call.getObject() and
+          nodeTo = call
+        )
+      }
     }
   }
 

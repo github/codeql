@@ -822,9 +822,6 @@ module HTTP {
      * extend `Request::Range` instead.
      */
     class Request extends DataFlow::Node instanceof Request::Range {
-      /** Gets a node that provides the response to this request. */
-      DataFlow::Node getResponse() { result = super.getResponse() }
-
       /**
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
@@ -857,9 +854,6 @@ module HTTP {
        * extend `Request` instead.
        */
       abstract class Range extends DataFlow::Node {
-        /** Gets a node that provides the response to this request. */
-        abstract DataFlow::Node getResponse();
-
         /**
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
@@ -879,18 +873,6 @@ module HTTP {
         abstract predicate disablesCertificateValidation(
           DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
         );
-      }
-    }
-
-    /**
-     * Additional taint step from a client request with user-controlled URL to the response.
-     */
-    private class HttpClientRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        exists(Request req |
-          nodeFrom = req.getAUrlPart() and
-          nodeTo = req.getResponse()
-        )
       }
     }
     // TODO: investigate whether we should treat responses to client requests as
