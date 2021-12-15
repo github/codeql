@@ -82,3 +82,9 @@ function errorHandler(req, res, next) {
   next(makeOAuthError(req, res));
 }
 express().use(errorHandler); // OK - does not perform authentication
+
+const fastifyApp = require('fastify')();
+
+fastifyApp.get('/foo', expensiveHandler1); // NOT OK
+fastifyApp.register(require('fastify-rate-limit'));
+fastifyApp.get('/bar', expensiveHandler1); // OK
