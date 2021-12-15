@@ -10,17 +10,21 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         public override Context Context => (Context)base.Context;
 
+        private readonly Extraction.Entities.Folder? parent;
+
         protected File(Context cx, string path)
             : base(cx, path)
         {
+            if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
+                parent = Extraction.Entities.Folder.Create(Context, dir);
         }
 
-        public override void Populate(TextWriter trapFile)
+        public sealed override void PopulateShared(Action<Action<TextWriter>> withTrapFile)
         {
-            trapFile.files(this, TransformedPath.Value);
+            withTrapFile(trapFile => trapFile.files(this, TransformedPath.Value));
 
-            if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
-                trapFile.containerparent(Extraction.Entities.Folder.Create(Context, dir), this);
+            if (parent is not null)
+                withTrapFile(trapFile => trapFile.containerparent(parent, this));
 
             var trees = Context.Compilation.SyntaxTrees.Where(t => t.FilePath == originalPath);
 
@@ -33,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n')
                         lineCounts.Total++;
 
-                    trapFile.numlines(this, lineCounts);
+                    withTrapFile(trapFile => trapFile.numlines(this, lineCounts));
                     Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
                 }
             }
@@ -52,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         encoding = sr.CurrentEncoding;
                     }
 
-                    trapFile.numlines(this, new LineCounts() { Total = lineCount, Code = 0, Comment = 0 });
+                    withTrapFile(trapFile => trapFile.numlines(this, new LineCounts() { Total = lineCount, Code = 0, Comment = 0 }));
                     Context.TrapWriter.Archive(originalPath, TransformedPath, encoding ?? System.Text.Encoding.Default);
                 }
                 catch (Exception exc)
@@ -61,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
+            withTrapFile(trapFile => trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0));
         }
 
         private bool IsPossiblyTextFile()

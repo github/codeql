@@ -28,7 +28,7 @@ namespace Semmle.Extraction
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }
 
-        public void DefineLabel(TextWriter trapFile, Extractor extractor)
+        public virtual void DefineLabel(TextWriter trapFile, Extractor extractor)
         {
             trapFile.WriteLabel(this);
             trapFile.Write("=");

@@ -1,16 +1,17 @@
+using System;
 using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    internal class GeneratedFile : File
+    internal sealed class GeneratedFile : File
     {
         private GeneratedFile(Context cx) : base(cx, "") { }
 
         public override bool NeedsPopulation => true;
 
-        public override void Populate(TextWriter trapFile)
+        public sealed override void PopulateShared(Action<Action<TextWriter>> withTrapFile)
         {
-            trapFile.files(this, "");
+            withTrapFile(trapFile => trapFile.files(this, ""));
         }
 
         public override void WriteId(EscapingTextWriter trapFile)

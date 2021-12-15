@@ -1,8 +1,9 @@
 using System;
+using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    public abstract class File : CachedEntity<string>
+    public abstract class File : CachedEntityShared<string>
     {
         protected File(Context cx, string path)
             : base(cx, path)
@@ -24,5 +25,10 @@ namespace Semmle.Extraction.Entities
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
+
+        public sealed override int GetHashCode() => 13 * TransformedPath.DatabaseId.GetHashCode();
+
+        public sealed override bool Equals(object? obj) =>
+            obj is File f && GetType() == f.GetType() && TransformedPath.DatabaseId == f.TransformedPath.DatabaseId;
     }
 }

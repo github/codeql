@@ -190,11 +190,17 @@ namespace Semmle.Extraction
             }
         }
 
-        protected Context(Extractor extractor, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(Extractor extractor, TrapWriter trapWriter, Action<ICachedEntityShared> registerSharedEntity, bool shouldAddAssemblyTrapPrefix = false)
         {
             Extractor = extractor;
             TrapWriter = trapWriter;
+            this.registerSharedEntity = registerSharedEntity;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
+        }
+
+        protected Context(Extractor extractor, TrapWriter trapWriter
+        , bool shouldAddAssemblyTrapPrefix = false) : this(extractor, trapWriter, registerSharedEntity: _ => { }, shouldAddAssemblyTrapPrefix)
+        {
         }
 
         private int currentRecursiveDepth = 0;
@@ -488,5 +494,9 @@ namespace Semmle.Extraction
 
         public virtual Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
             CreateLocation();
+
+        private readonly Action<ICachedEntityShared> registerSharedEntity;
+
+        public void RegisterSharedEntity(ICachedEntityShared file) => registerSharedEntity(file);
     }
 }

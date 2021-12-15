@@ -76,8 +76,8 @@ namespace Semmle.Extraction.CSharp
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
-        public Context(Extraction.Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
-            : base(e, trapWriter, addAssemblyTrapPrefix)
+        public Context(Extraction.Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, Action<ICachedEntityShared> registerSharedEntity, bool addAssemblyTrapPrefix)
+            : base(e, trapWriter, registerSharedEntity, addAssemblyTrapPrefix)
         {
             Compilation = c;
             this.scope = scope;

@@ -205,7 +205,7 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), registerSharedEntity: RegisterSharedEntity, addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
             }

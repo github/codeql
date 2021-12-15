@@ -37,6 +37,14 @@ namespace Semmle.Extraction.CSharp
 
         public PathTransformer PathTransformer { get; }
 
+        private readonly HashSet<Extraction.ICachedEntityShared> sharedEntities = new();
+
+        protected void RegisterSharedEntity(Extraction.ICachedEntityShared f)
+        {
+            lock (sharedEntities)
+                sharedEntities.Add(f);
+        }
+
         protected Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
         {
             Logger = logger;
@@ -153,7 +161,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), registerSharedEntity: RegisterSharedEntity, addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -206,7 +214,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), registerSharedEntity: RegisterSharedEntity, addAssemblyTrapPrefix);
                         // Ensure that the file itself is populated in case the source file is totally empty
                         var root = tree.GetRoot();
                         Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -270,9 +278,35 @@ namespace Semmle.Extraction.CSharp
         /// <param name="numberOfThreads">The number of threads to use.</param>
         public void PerformExtraction(int numberOfThreads)
         {
+            // First extract normal entities
             Parallel.Invoke(
                 new ParallelOptions { MaxDegreeOfParallelism = numberOfThreads },
                 extractionTasks.ToArray());
+
+            // Then extract shared entities into a single trap file
+            var transformedPath = PathTransformer.CreateFake("shared");
+            var projectLayout = layout!.LookupProjectOrDefault(transformedPath);
+            using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedPath, options!.TrapCompression, discardDuplicates: false);
+
+            foreach (var entity in sharedEntities)
+            {
+                // Make sure each shared entity gets a unique label
+                entity.Label = new Label(trapWriter.IdCounter++);
+            }
+
+            Action<Action<TextWriter>> withTrapFile = a =>
+            {
+                lock (trapWriter)
+                    a(trapWriter.Writer);
+            };
+
+            Parallel.Invoke(
+                new ParallelOptions { MaxDegreeOfParallelism = numberOfThreads },
+                sharedEntities.Select<Extraction.ICachedEntityShared, Action>(entity => () =>
+                {
+                    entity.DefineLabelShared(withTrapFile, extractor!);
+                    entity.PopulateShared(withTrapFile);
+                }).ToArray());
         }
 
         public virtual void Dispose()
