@@ -22,7 +22,7 @@ from
   Routing::Node useSite, ExpensiveRouteHandler r, string explanation, DataFlow::Node reference,
   string referenceLabel
 where
-  useSite = Routing::getNode(r).getAUseSite() and
+  useSite = Routing::getNode(r).getRouteInstallation() and
   r.explain(explanation, reference, referenceLabel) and
   not useSite.isGuardedByNode(any(RateLimitingMiddleware m).getRoutingNode())
 select useSite, "This route handler " + explanation + ", but is not rate-limited.", reference,

@@ -277,7 +277,7 @@ module Routing {
     }
 
     /** Gets a place where this route node is installed as a route handler. */
-    Node getAUseSite() {
+    Node getRouteInstallation() {
       result = getAUseSiteInRouteSetup()
       or
       not exists(getAUseSiteInRouteSetup()) and
