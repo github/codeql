@@ -14,12 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache queries
+        id: cache-queries
+        uses: actions/cache@v2
+        with:
+          path: ${{ runner.temp }}/query-pack.zip
+          key: ${{ runner.os }}-queries-${{ hashFiles('**/*.ql*') }}
       - name: Find codeql
+        if: steps.cache-queries.outputs.cache-hit != 'true'
         id: find-codeql
         uses: github/codeql-action/init@esbena/ql
         with:
           languages: javascript # does not matter
       - name: Build query pack
+        if: steps.cache-queries.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
           "${CODEQL}" pack create
