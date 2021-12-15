@@ -163,10 +163,73 @@ class OverridableCallable extends Callable, Overridable {
 }
 
 /** An overridable method. */
-deprecated class OverridableMethod extends Method, OverridableCallable { }
+class OverridableMethod extends Method, OverridableCallable {
+  override Method getAnOverrider() { result = Method.super.getAnOverrider() }
+
+  override Method getAnImplementor(ValueOrRefType t) { result = Method.super.getAnImplementor(t) }
+
+  override Method getAnUltimateImplementor() { result = Method.super.getAnUltimateImplementor() }
+
+  override Method getInherited(ValueOrRefType t) {
+    result = OverridableCallable.super.getInherited(t)
+  }
+
+  override Method getAnOverrider(ValueOrRefType t) {
+    result = OverridableCallable.super.getAnOverrider(t)
+  }
+}
 
 /** An overridable accessor. */
-deprecated class OverridableAccessor extends Accessor, OverridableCallable { }
+class OverridableAccessor extends Accessor, OverridableCallable {
+  override Accessor getAnOverrider() { overrides(result, this) }
+
+  override Accessor getAnImplementor(ValueOrRefType t) {
+    exists(Virtualizable implementor, int kind |
+      this.getAnImplementorAux(t, implementor, kind) and
+      result.getDeclaration() = implementor and
+      getAccessorKind(result) = kind
+    )
+  }
+
+  // predicate folding to get proper join order
+  private predicate getAnImplementorAux(ValueOrRefType t, Virtualizable implementor, int kind) {
+    exists(Virtualizable implementee |
+      implementee = this.getDeclaration() and
+      kind = getAccessorKind(this) and
+      implementor = implementee.getAnImplementor(t)
+    )
+  }
+
+  override Accessor getAnUltimateImplementor() {
+    exists(Virtualizable implementor, int kind |
+      this.getAnUltimateImplementorAux(implementor, kind) and
+      result.getDeclaration() = implementor and
+      getAccessorKind(result) = kind
+    )
+  }
+
+  // predicate folding to get proper join order
+  private predicate getAnUltimateImplementorAux(Virtualizable implementor, int kind) {
+    exists(Virtualizable implementee |
+      implementee = this.getDeclaration() and
+      kind = getAccessorKind(this) and
+      implementor = implementee.getAnUltimateImplementor()
+    )
+  }
+
+  override Accessor getInherited(ValueOrRefType t) {
+    result = OverridableCallable.super.getInherited(t)
+  }
+
+  override Accessor getAnOverrider(ValueOrRefType t) {
+    result = OverridableCallable.super.getAnOverrider(t)
+  }
+
+  private int getAccessorKind(Accessor a) {
+    accessors(a, result, _, _, _) or
+    event_accessors(a, -result, _, _, _)
+  }
+}
 
 /** An unbound type. */
 class UnboundDeclarationType extends Type {

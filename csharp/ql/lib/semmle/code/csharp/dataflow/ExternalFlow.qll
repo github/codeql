@@ -367,7 +367,9 @@ class UnboundCallable extends Callable {
    */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.(OverridableCallable).overridesOrImplements(c) and
+      this = c.(OverridableCallable).getAnUltimateImplementor() or
+      this = c.(OverridableCallable).getAnOverrider+()
+    |
       that = c.getUnboundDeclaration()
     )
   }
