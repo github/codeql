@@ -124,7 +124,7 @@ module Express {
   private class AppTree extends Routing::Node {
     AppTree() { this = Routing::getNode(appCreation()) }
 
-    override DataFlow::Node getValueAtAccessPath(int n, string path) {
+    override DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) {
       // req.app and res.app refer to the app object
       n = [0, 1] and
       path = "app" and

@@ -288,6 +288,9 @@ module Routing {
      * Gets a node whose value can be accessed via the given access path on the `n`th route handler parameter,
      * from any route handler that follows after this one.
      *
+     * This predicate may be overridden by framework models and only accounts for assignments made by the framework;
+     * not necessarily assignments that are explicit in the application code.
+     *
      * For example, in the context of Express, the `app` object is available as `req.app`:
      * ```js
      * app.get('/', (req, res) => {
@@ -296,10 +299,8 @@ module Routing {
      * ```
      * This can be modelled by mapping `(0, "app")` to the `app` data-flow node (`n=0` corresponds
      * to the `req` parameter).
-     *
-     * This predicate may be overridden by framework models.
      */
-    DataFlow::Node getValueAtAccessPath(int n, string path) { none() }
+    DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) { none() }
   }
 
   /** Holds if `pred` and `succ` are adjacent siblings. */
@@ -875,7 +876,9 @@ module Routing {
     )
     or
     // Implicit assignment contributed by framework model
-    exists(DataFlow::Node value, string path1 | value = base.getValueAtAccessPath(n, path1) |
+    exists(DataFlow::Node value, string path1 |
+      value = base.getValueImplicitlyStoredInAccessPath(n, path1)
+    |
       result = value and path = path1
       or
       exists(string path2 |
