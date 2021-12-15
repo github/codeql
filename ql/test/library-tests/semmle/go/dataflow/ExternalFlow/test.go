@@ -69,14 +69,14 @@ func simpleflow() {
 
 	var taint4 test.T
 	taint4.StepArgQual(src)
-	b.Sink1(taint4) // $ MISSING: hasTaintFlow="taint4" // because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(taint4) // $ hasTaintFlow="taint4"
 
 	taint5 := (src.(*test.T)).StepQualRes()
-	b.Sink1(taint5) // $ MISSING: hasTaintFlow="taint5" // because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(taint5) // $ hasTaintFlow="taint5"
 
 	var taint6 interface{}
 	(src.(*test.T)).StepQualArg(taint6)
-	b.Sink1(taint6) // $ MISSING: hasTaintFlow="taint6" // because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(taint6) // $ hasTaintFlow="taint6"
 
 	taint7 := test.StepArgResNoQual(src)
 	b.Sink1(taint7) // $ hasTaintFlow="taint7"
@@ -127,17 +127,17 @@ func simpleflow() {
 
 	c1 := test.C{""}
 	c1.Set(a.Src1().(string))
-	b.Sink1(c1.F) // $ MISSING: hasTaintFlow="selection of F" // currently fails because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(c1.F) // $ hasTaintFlow="selection of F"
 
 	c2 := test.C{a.Src1().(string)}
-	b.Sink1(c2.Get()) // $ MISSING: hasTaintFlow="call to Get" // currently fails because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(c2.Get()) // $ hasTaintFlow="call to Get"
 
 	c3 := test.C{""}
 	c3.Set(a.Src1().(string))
-	b.Sink1(c3.Get()) // $ MISSING: hasTaintFlow="call to Get" // currently fails because we don't allow flow through receiver arguments into calls to functions without bodies
+	b.Sink1(c3.Get()) // $ hasTaintFlow="call to Get"
 
 	c4 := test.C{""}
 	c4.Set(a.Src1().(string))
 	c4.Set("")
-	b.Sink1(c4.Get())
+	b.Sink1(c4.Get()) // $ SPURIOUS: hasTaintFlow="call to Get" // because we currently don't clear content
 }

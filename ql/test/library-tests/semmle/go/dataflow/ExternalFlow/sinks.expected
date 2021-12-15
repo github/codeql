@@ -1,6 +1,7 @@
 invalidModelRow
 #select
 | test.go:47:10:47:12 | arg | qltest |
+| test.go:48:2:48:13 | type assertion | qltest |
 | test.go:61:10:61:15 | taint1 | qltest |
 | test.go:64:10:64:15 | taint2 | qltest |
 | test.go:68:10:68:15 | taint3 | qltest |
