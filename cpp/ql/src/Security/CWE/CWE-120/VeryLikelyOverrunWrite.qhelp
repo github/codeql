@@ -11,7 +11,7 @@
 
 </recommendation>
 <example>
-<sample src="OverrunWrite.c" />
+<sample src="VeryLikelyOverrunWrite.c" />
 
 <p>In this example, the call to <code>sprintf</code> writes a message of 14 characters (including the terminating null) plus the length of the string conversion of `userId` into a buffer with space for just 17 characters. While `userId` is checked to occupy no more than 4 characters when converted, there is no space in the buffer for the terminating null character if `userId >= 1000`. In this case, the null character overflows the buffer resulting in undefined behavior.</p>
 
