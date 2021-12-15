@@ -37,5 +37,5 @@ struct Value0 {
 };
 
 void instantiation_with_pointless_comparison() {
-  constant_comparison<Value0, Value0>();
+  constant_comparison<Value0, Value0>(); // GOOD
 }
