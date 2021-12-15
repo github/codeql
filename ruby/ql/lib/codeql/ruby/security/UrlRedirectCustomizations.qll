@@ -62,7 +62,7 @@ module UrlRedirect {
         // redirection as browsers will not initiate them from clicking a link.
         method = this.asExpr().getExpr().getEnclosingMethod() and
         (
-          // If there's a Rails GET route to this handler, we can be certain that it is a candiate.
+          // If there's a Rails GET route to this handler, we can be certain that it is a candidate.
           method.(ActionControllerActionMethod).getARoute().getHTTPMethod() = "get"
           or
           // Otherwise, we have to rely on a heuristic to filter out invulnerable handlers.
