@@ -303,7 +303,7 @@ module Routing {
     DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) { none() }
   }
 
-  /** Holds if `pred` and `succ` are adjacent siblings. */
+  /** Holds if `pred` and `succ` are adjacent siblings and `succ` is installed after `pred`. */
   private predicate areSiblings(Node pred, Node succ) {
     exists(ValueNode::Range base, int n |
       pred = base.getChild(n) and
