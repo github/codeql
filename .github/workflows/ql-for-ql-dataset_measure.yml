@@ -48,7 +48,7 @@ jobs:
       - name: Create database
         run: |
           codeql/codeql database create \
-            --search-path "${{ github.workspace }}" \
+            --search-path "ql/" \
             --threads 4 \
             --language ql --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
