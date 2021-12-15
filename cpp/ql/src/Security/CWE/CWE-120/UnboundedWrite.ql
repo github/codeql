@@ -44,7 +44,7 @@ import TaintedWithPath
 
 predicate isUnboundedWrite(BufferWrite bw) {
   not bw.hasExplicitLimit() and // has no explicit size limit
-  not exists(bw.getMaxData()) // and we can't deduce an upper bound to the amount copied
+  not exists(bw.getMaxData(_)) // and we can't deduce an upper bound to the amount copied
 }
 
 /*

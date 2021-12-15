@@ -15,7 +15,7 @@ private import SuccessorTypes
  */
 class BasicBlock extends TBasicBlockStart {
   /** Gets the scope of this basic block. */
-  CfgScope getScope() { result = this.getAPredecessor().getScope() }
+  final CfgScope getScope() { result = this.getFirstNode().getScope() }
 
   /** Gets an immediate successor of this basic block, if any. */
   BasicBlock getASuccessor() { result = this.getASuccessor(_) }
@@ -322,8 +322,6 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNod
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
-
-  override CfgScope getScope() { this.getFirstNode() = TEntryNode(result) }
 }
 
 /**

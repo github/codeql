@@ -11,7 +11,7 @@ query predicate caseElseBranches(CaseExpr c, StmtSequence elseBranch) {
 query predicate caseNoElseBranches(CaseExpr c) { not exists(c.getElseBranch()) }
 
 query predicate caseWhenBranches(CaseExpr c, WhenExpr when, int pIndex, Expr p, StmtSequence body) {
-  when = c.getAWhenBranch() and
+  when = c.getABranch() and
   p = when.getPattern(pIndex) and
   body = when.getBody()
 }

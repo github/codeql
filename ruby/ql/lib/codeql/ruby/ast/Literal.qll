@@ -224,6 +224,40 @@ private class FalseLiteral extends BooleanLiteral, TFalseLiteral {
 }
 
 /**
+ * An `__ENCODING__` literal.
+ */
+class EncodingLiteral extends Literal, TEncoding {
+  final override string getAPrimaryQlClass() { result = "EncodingLiteral" }
+
+  final override string toString() { result = "__ENCODING__" }
+
+  // TODO: return the encoding defined by a magic encoding: comment, if any.
+  override string getValueText() { result = "UTF-8" }
+}
+
+/**
+ * A `__LINE__` literal.
+ */
+class LineLiteral extends Literal, TLine {
+  final override string getAPrimaryQlClass() { result = "LineLiteral" }
+
+  final override string toString() { result = "__LINE__" }
+
+  override string getValueText() { result = this.getLocation().getStartLine().toString() }
+}
+
+/**
+ * A `__FILE__` literal.
+ */
+class FileLiteral extends Literal, TFile {
+  final override string getAPrimaryQlClass() { result = "FileLiteral" }
+
+  final override string toString() { result = "__FILE__" }
+
+  override string getValueText() { result = this.getLocation().getFile().getAbsolutePath() }
+}
+
+/**
  * The base class for a component of a string: `StringTextComponent`,
  * `StringEscapeSequenceComponent`, or `StringInterpolationComponent`.
  */

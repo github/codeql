@@ -119,7 +119,7 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(int i, DataFlow::Content content) {
+  final override predicate clearsContent(ParameterPosition i, DataFlow::Content content) {
     sc.clearsContent(i, content)
   }
 }

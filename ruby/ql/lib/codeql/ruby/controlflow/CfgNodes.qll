@@ -67,7 +67,7 @@ class AstCfgNode extends CfgNode, TElementNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TElementNode(n, splits) }
+  AstCfgNode() { this = TElementNode(_, n, splits) }
 
   final override AstNode getNode() { result = n }
 

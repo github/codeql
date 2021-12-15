@@ -10,6 +10,10 @@ query predicate paramsCalls(ParamsCall c) { any() }
 
 query predicate paramsSources(ParamsSource src) { any() }
 
+query predicate cookiesCalls(CookiesCall c) { any() }
+
+query predicate cookiesSources(CookiesSource src) { any() }
+
 query predicate redirectToCalls(RedirectToCall c) { any() }
 
 query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { any() }

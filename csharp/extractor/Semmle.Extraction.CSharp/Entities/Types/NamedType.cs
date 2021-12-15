@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol.TypeKind == TypeKind.Error)
             {
+                UnknownType.Create(Context); // make sure this exists so we can use it in `TypeRef::getReferencedType`
                 Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (Symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    trapFile.nullable_underlying_type(this, Create(Context, Symbol.TypeArguments[0]).TypeRef);
+                    trapFile.nullable_underlying_type(this, TypeArguments[0].TypeRef);
                 }
                 else if (Symbol.IsReallyUnbound())
                 {
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         : Type.Create(Context, Symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
-                    for (var i = 0; i < Symbol.TypeArguments.Length; ++i)
+                    for (var i = 0; i < TypeArguments.Length; ++i)
                     {
                         trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }

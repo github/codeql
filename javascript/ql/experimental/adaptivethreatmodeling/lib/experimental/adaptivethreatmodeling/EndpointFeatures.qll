@@ -25,9 +25,8 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
   )
   or
-  exists(getACallBasedTokenFeatureComponent(endpoint, _, featureName)) and
   result =
-    concat(DataFlow::CallNode call, string component |
+    strictconcat(DataFlow::CallNode call, string component |
       component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
     |
       component, " "
@@ -110,12 +109,13 @@ private string getACallBasedTokenFeatureComponent(
 
 /** This module provides functionality for getting the function body feature associated with a particular entity. */
 module FunctionBodies {
-  /** Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`. */
-  private predicate bodyTokens(
-    DatabaseFeatures::Entity entity, DatabaseFeatures::AstNode node, string token
-  ) {
-    DatabaseFeatures::astNodes(entity, _, _, node, _) and
-    token = unique(string t | DatabaseFeatures::nodeAttributes(node, t))
+  /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
+  private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
+    exists(DatabaseFeatures::AstNode node |
+      DatabaseFeatures::astNodes(entity, _, _, node, _) and
+      token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
+      location = node.getLocation()
+    )
   }
 
   /**
@@ -127,23 +127,18 @@ module FunctionBodies {
     // If a function has more than 256 body subtokens, then featurize it as absent. This
     // approximates the behavior of the classifer on non-generic body features where large body
     // features are replaced by the absent token.
-    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) > 256
-    then result = ""
-    else
-      result =
-        concat(int i, string rankedToken |
-          rankedToken =
-            rank[i](DatabaseFeatures::AstNode node, string token, Location l |
-              bodyTokens(entity, node, token) and l = node.getLocation()
-            |
-              token
-              order by
-                l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-                l.getEndColumn(), token
-            )
-        |
-          rankedToken, " " order by i
-        )
+    //
+    // We count locations instead of tokens because tokens are often not unique.
+    strictcount(Location l | bodyTokens(entity, l, _)) <= 256 and
+    result =
+      strictconcat(string token, Location l |
+        bodyTokens(entity, l, token)
+      |
+        token, " "
+        order by
+          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn(), token
+      )
   }
 }
 
@@ -247,11 +242,12 @@ private module AccessPaths {
           else accessPath = previousAccessPath + " " + paramName
         )
         or
-        exists(string callbackName, string index |
+        exists(string callbackName, int index |
           node =
-            getNamedParameter(previousNode.getASuccessor("param " + index).getMember(callbackName),
-              paramName) and
-          index != "-1" and // ignore receiver
+            getNamedParameter(previousNode
+                  .getASuccessor(API::Label::parameter(index))
+                  .getMember(callbackName), paramName) and
+          index != -1 and // ignore receiver
           if includeStructuralInfo = true
           then
             accessPath =
@@ -280,10 +276,13 @@ private string getASupportedFeatureName() {
  * `featureValue` for the endpoint `endpoint`.
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  featureName = getASupportedFeatureName() and
+  ModelScoring::endpoints(endpoint) and
   (
-    featureValue = unique(string x | x = getTokenFeature(endpoint, featureName))
-    or
-    not exists(unique(string x | x = getTokenFeature(endpoint, featureName))) and featureValue = ""
+    if strictcount(getTokenFeature(endpoint, featureName)) = 1
+    then featureValue = getTokenFeature(endpoint, featureName)
+    else (
+      // Performance note: this is a Cartesian product between all endpoints and feature names.
+      featureValue = "" and featureName = getASupportedFeatureName()
+    )
   )
 }

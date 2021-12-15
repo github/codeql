@@ -1,11 +1,12 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:groovy,sink:header-splitting,sink:information-leak,sink:intent-start,sink:jexl,sink:jndi-injection,sink:ldap,sink:mvel,sink:ognl-injection,sink:open-url,sink:set-hostname-verifier,sink:sql,sink:url-open-stream,sink:url-redirect,sink:xpath,sink:xslt,sink:xss,source:contentprovider,source:remote,summary:taint,summary:value
-android.app,7,,,,,,,,7,,,,,,,,,,,,,,,,,
+android.app,7,,84,,,,,,7,,,,,,,,,,,,,,,,13,71
 android.content,24,27,96,,,,,,16,,,,,,,,8,,,,,,27,,31,65
 android.database,59,,30,,,,,,,,,,,,,,59,,,,,,,,30,
 android.net,,,60,,,,,,,,,,,,,,,,,,,,,,45,15
 android.os,,,122,,,,,,,,,,,,,,,,,,,,,,41,81
 android.util,,16,,,,,,,,,,,,,,,,,,,,,,16,,
 android.webkit,3,2,,,,,,,,,,,,,,,,,,,,3,,2,,
+androidx.slice,,5,88,,,,,,,,,,,,,,,,,,,,5,,27,61
 cn.hutool.core.codec,,,1,,,,,,,,,,,,,,,,,,,,,,1,
 com.esotericsoftware.kryo.io,,,1,,,,,,,,,,,,,,,,,,,,,,1,
 com.esotericsoftware.kryo5.io,,,1,,,,,,,,,,,,,,,,,,,,,,1,
@@ -94,9 +95,9 @@ play.mvc,,4,,,,,,,,,,,,,,,,,,,,,,4,,
 ratpack.core.form,,,3,,,,,,,,,,,,,,,,,,,,,,3,
 ratpack.core.handling,,6,4,,,,,,,,,,,,,,,,,,,,,6,4,
 ratpack.core.http,,10,10,,,,,,,,,,,,,,,,,,,,,10,10,
-ratpack.exec,,,26,,,,,,,,,,,,,,,,,,,,,,,26
+ratpack.exec,,,48,,,,,,,,,,,,,,,,,,,,,,,48
 ratpack.form,,,3,,,,,,,,,,,,,,,,,,,,,,3,
-ratpack.func,,,5,,,,,,,,,,,,,,,,,,,,,,,5
+ratpack.func,,,35,,,,,,,,,,,,,,,,,,,,,,,35
 ratpack.handling,,6,4,,,,,,,,,,,,,,,,,,,,,6,4,
 ratpack.http,,10,10,,,,,,,,,,,,,,,,,,,,,10,10,
-ratpack.util,,,5,,,,,,,,,,,,,,,,,,,,,,,5
+ratpack.util,,,35,,,,,,,,,,,,,,,,,,,,,,,35

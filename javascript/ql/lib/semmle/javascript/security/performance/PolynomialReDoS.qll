@@ -28,5 +28,15 @@ module PolynomialReDoS {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
+
+    override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+      super.hasFlowPath(source, sink) and
+      // require that there is a path without unmatched return steps
+      DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      DataFlow::localFieldStep(pred, succ)
+    }
   }
 }

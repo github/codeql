@@ -47,7 +47,7 @@ abstract class RequiresEncodingConfiguration extends TaintTracking2::Configurati
    * to be encoded.
    */
   predicate hasWrongEncoding(PathNode encodedValue, PathNode sink, string kind) {
-    hasFlowPath(encodedValue, sink) and
+    this.hasFlowPath(encodedValue, sink) and
     kind = this.getKind()
   }
 

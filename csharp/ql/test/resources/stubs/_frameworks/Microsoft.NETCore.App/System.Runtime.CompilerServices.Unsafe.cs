@@ -10,15 +10,15 @@ namespace System
             public static class Unsafe
             {
                 unsafe public static void* Add<T>(void* source, int elementOffset) => throw null;
-                public static T Add<T>(ref T source, int elementOffset) => throw null;
                 public static T Add<T>(ref T source, System.IntPtr elementOffset) => throw null;
+                public static T Add<T>(ref T source, int elementOffset) => throw null;
                 public static T AddByteOffset<T>(ref T source, System.IntPtr byteOffset) => throw null;
                 public static bool AreSame<T>(ref T left, ref T right) => throw null;
-                public static TTo As<TFrom, TTo>(ref TFrom source) => throw null;
                 public static T As<T>(object o) where T : class => throw null;
+                public static TTo As<TFrom, TTo>(ref TFrom source) => throw null;
                 unsafe public static void* AsPointer<T>(ref T value) => throw null;
-                unsafe public static T AsRef<T>(void* source) => throw null;
                 public static T AsRef<T>(T source) => throw null;
+                unsafe public static T AsRef<T>(void* source) => throw null;
                 public static System.IntPtr ByteOffset<T>(ref T origin, ref T target) => throw null;
                 unsafe public static void Copy<T>(void* destination, ref T source) => throw null;
                 unsafe public static void Copy<T>(ref T destination, void* source) => throw null;
@@ -40,8 +40,8 @@ namespace System
                 public static int SizeOf<T>() => throw null;
                 public static void SkipInit<T>(out T value) => throw null;
                 unsafe public static void* Subtract<T>(void* source, int elementOffset) => throw null;
-                public static T Subtract<T>(ref T source, int elementOffset) => throw null;
                 public static T Subtract<T>(ref T source, System.IntPtr elementOffset) => throw null;
+                public static T Subtract<T>(ref T source, int elementOffset) => throw null;
                 public static T SubtractByteOffset<T>(ref T source, System.IntPtr byteOffset) => throw null;
                 public static T Unbox<T>(object box) where T : struct => throw null;
                 unsafe public static void Write<T>(void* destination, T value) => throw null;

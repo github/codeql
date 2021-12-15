@@ -36,16 +36,16 @@ ioInstances
 | Files.rb:24:19:24:40 | call to open |
 | Files.rb:35:1:35:56 | ... = ... |
 | Files.rb:35:13:35:56 | call to open |
-fileReaders
+fileModuleReaders
 | Files.rb:7:13:7:32 | call to readlines |
 ioReaders
-| Files.rb:7:13:7:32 | call to readlines | File |
-| Files.rb:20:13:20:25 | call to read | IO |
-| Files.rb:29:12:29:29 | call to read | IO |
-| Files.rb:32:8:32:23 | call to read | IO |
-ioFileReaders
-| Files.rb:7:13:7:32 | call to readlines | File |
-| Files.rb:29:12:29:29 | call to read | IO |
+| Files.rb:20:13:20:25 | call to read |
+| Files.rb:29:12:29:29 | call to read |
+| Files.rb:32:8:32:23 | call to read |
+fileReaders
+| Files.rb:7:13:7:32 | call to readlines |
+| Files.rb:20:13:20:25 | call to read |
+| Files.rb:29:12:29:29 | call to read |
 fileModuleFilenameSources
 | Files.rb:10:6:10:18 | call to path |
 | Files.rb:11:6:11:21 | call to to_path |
@@ -53,6 +53,7 @@ fileUtilsFilenameSources
 | Files.rb:14:8:14:43 | call to makedirs |
 fileSystemReadAccesses
 | Files.rb:7:13:7:32 | call to readlines |
+| Files.rb:20:13:20:25 | call to read |
 | Files.rb:29:12:29:29 | call to read |
 fileNameSources
 | Files.rb:10:6:10:18 | call to path |

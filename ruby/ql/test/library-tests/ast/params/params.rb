@@ -68,3 +68,12 @@ end
 
 # Lambda containing optional parameters
 lambda_with_optional_params = -> (a, b = 1000, c = 20) { a+b+c }
+
+# Method containing nil hash-splat params
+def method_with_nil_splat(wibble, **nil)
+end
+
+# Block with nil hash-splat parameter
+array.each do |val, **nil|
+end
+

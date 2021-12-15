@@ -231,18 +231,18 @@ class DataFlowCallable extends TDataFlowCallable {
   Field asFieldScope() { this = TFieldScope(result) }
 
   RefType getDeclaringType() {
-    result = asCallable().getDeclaringType() or
-    result = asFieldScope().getDeclaringType()
+    result = this.asCallable().getDeclaringType() or
+    result = this.asFieldScope().getDeclaringType()
   }
 
   string toString() {
-    result = asCallable().toString() or
-    result = "Field scope: " + asFieldScope().toString()
+    result = this.asCallable().toString() or
+    result = "Field scope: " + this.asFieldScope().toString()
   }
 
   Location getLocation() {
-    result = asCallable().getLocation() or
-    result = asFieldScope().getLocation()
+    result = this.asCallable().getLocation() or
+    result = this.asFieldScope().getLocation()
   }
 }
 

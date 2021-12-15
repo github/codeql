@@ -14,12 +14,12 @@ namespace System
             public virtual System.Reflection.MethodBase GetMethod() => throw null;
             public virtual int GetNativeOffset() => throw null;
             public const int OFFSET_UNKNOWN = default;
-            public StackFrame(string fileName, int lineNumber, int colNumber) => throw null;
-            public StackFrame(string fileName, int lineNumber) => throw null;
-            public StackFrame(int skipFrames, bool needFileInfo) => throw null;
-            public StackFrame(int skipFrames) => throw null;
-            public StackFrame(bool needFileInfo) => throw null;
             public StackFrame() => throw null;
+            public StackFrame(bool needFileInfo) => throw null;
+            public StackFrame(int skipFrames) => throw null;
+            public StackFrame(int skipFrames, bool needFileInfo) => throw null;
+            public StackFrame(string fileName, int lineNumber) => throw null;
+            public StackFrame(string fileName, int lineNumber, int colNumber) => throw null;
             public override string ToString() => throw null;
         }
 
@@ -41,15 +41,15 @@ namespace System
             public virtual System.Diagnostics.StackFrame GetFrame(int index) => throw null;
             public virtual System.Diagnostics.StackFrame[] GetFrames() => throw null;
             public const int METHODS_TO_SKIP = default;
-            public StackTrace(int skipFrames, bool fNeedFileInfo) => throw null;
-            public StackTrace(int skipFrames) => throw null;
-            public StackTrace(bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e, int skipFrames, bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e, int skipFrames) => throw null;
-            public StackTrace(System.Exception e, bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e) => throw null;
-            public StackTrace(System.Diagnostics.StackFrame frame) => throw null;
             public StackTrace() => throw null;
+            public StackTrace(System.Exception e) => throw null;
+            public StackTrace(System.Exception e, bool fNeedFileInfo) => throw null;
+            public StackTrace(System.Exception e, int skipFrames) => throw null;
+            public StackTrace(System.Exception e, int skipFrames, bool fNeedFileInfo) => throw null;
+            public StackTrace(System.Diagnostics.StackFrame frame) => throw null;
+            public StackTrace(bool fNeedFileInfo) => throw null;
+            public StackTrace(int skipFrames) => throw null;
+            public StackTrace(int skipFrames, bool fNeedFileInfo) => throw null;
             public override string ToString() => throw null;
         }
 
@@ -118,8 +118,8 @@ namespace System
                 System.Diagnostics.SymbolStore.ISymbolDocument GetDocument(string url, System.Guid language, System.Guid languageVendor, System.Guid documentType);
                 System.Diagnostics.SymbolStore.ISymbolDocument[] GetDocuments();
                 System.Diagnostics.SymbolStore.ISymbolVariable[] GetGlobalVariables();
-                System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method, int version);
                 System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method);
+                System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method, int version);
                 System.Diagnostics.SymbolStore.ISymbolMethod GetMethodFromDocumentPosition(System.Diagnostics.SymbolStore.ISymbolDocument document, int line, int column);
                 System.Diagnostics.SymbolStore.ISymbolNamespace[] GetNamespaces();
                 System.Byte[] GetSymAttribute(System.Diagnostics.SymbolStore.SymbolToken parent, string name);
@@ -229,12 +229,12 @@ namespace System
             {
                 public static bool operator !=(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;
                 public static bool operator ==(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Diagnostics.SymbolStore.SymbolToken obj) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public int GetToken() => throw null;
-                public SymbolToken(int val) => throw null;
                 // Stub generator skipped constructor 
+                public SymbolToken(int val) => throw null;
             }
 
         }

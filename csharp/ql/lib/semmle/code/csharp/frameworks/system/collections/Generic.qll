@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Collections
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Collections.Generic` namespace. */
 class SystemCollectionsGenericNamespace extends Namespace {
@@ -120,6 +121,17 @@ class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGeneri
     result.getDeclaringType() = this and
     result.hasName("Value") and
     result.getType() = this.getTypeParameter(1)
+  }
+}
+
+/** Data flow for `System.Collections.Generic.KeyValuePair`. */
+private class SystemCollectionsGenericKeyValuePairStructFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of ReturnValue;value",
+        "System.Collections.Generic;KeyValuePair<,>;false;KeyValuePair;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of ReturnValue;value"
+      ]
   }
 }
 

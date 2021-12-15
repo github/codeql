@@ -1,4 +1,5 @@
 private import ruby
+private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
 private import DataFlowPublic
@@ -10,8 +11,13 @@ private import FlowSummaryImpl as FlowSummaryImpl
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, int pos) {
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
   p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
 }
 
 abstract class NodeImpl extends Node {
@@ -274,6 +280,8 @@ predicate nodeIsHidden(Node n) {
     def instanceof Ssa::PhiNode
   )
   or
+  isDesugarNode(n.(ExprNode).getExprNode().getExpr())
+  or
   n instanceof SummaryNode
   or
   n instanceof SummaryParameterNode
@@ -320,7 +328,9 @@ class ReturningStatementNode extends NodeImpl, TReturningNode {
 }
 
 private module ParameterNodes {
-  abstract class ParameterNodeImpl extends ParameterNode, NodeImpl {
+  abstract class ParameterNodeImpl extends NodeImpl {
+    abstract Parameter getParameter();
+
     abstract predicate isSourceParameterOf(Callable c, int i);
 
     predicate isParameterOf(DataFlowCallable c, int i) {
@@ -341,6 +351,10 @@ private module ParameterNodes {
 
     override predicate isSourceParameterOf(Callable c, int i) { c.getParameter(i) = parameter }
 
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      this.isSourceParameterOf(c.asCallable(), i)
+    }
+
     override CfgScope getCfgScope() { result = parameter.getCallable() }
 
     override Location getLocationImpl() { result = parameter.getLocation() }
@@ -359,7 +373,13 @@ private module ParameterNodes {
 
     final MethodBase getMethod() { result = method }
 
+    override Parameter getParameter() { none() }
+
     override predicate isSourceParameterOf(Callable c, int i) { method = c and i = -1 }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      this.isSourceParameterOf(c.asCallable(), i)
+    }
 
     override CfgScope getCfgScope() { result = method }
 
@@ -385,6 +405,10 @@ private module ParameterNodes {
 
     override predicate isSourceParameterOf(Callable c, int i) { c = method and i = -2 }
 
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      this.isSourceParameterOf(c.asCallable(), i)
+    }
+
     override CfgScope getCfgScope() { result = method }
 
     override Location getLocationImpl() {
@@ -406,6 +430,8 @@ private module ParameterNodes {
     private int pos;
 
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+
+    override Parameter getParameter() { none() }
 
     override predicate isSourceParameterOf(Callable c, int i) { none() }
 
@@ -442,7 +468,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this.sourceArgumentOf(call.asCall(), pos) }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 
   abstract predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos);
 
@@ -456,6 +482,10 @@ private module ArgumentNodes {
     Argument arg;
 
     ExplicitArgumentNode() { this.asExpr() = arg }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
       arg.isArgumentOf(call, pos)
@@ -472,6 +502,10 @@ private module ArgumentNodes {
     BlockArgumentNode() {
       this.asExpr().getExpr() instanceof BlockArgument or
       exists(CfgNodes::ExprNodes::CallCfgNode c | c.getBlock() = this.asExpr())
+    }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
     }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {

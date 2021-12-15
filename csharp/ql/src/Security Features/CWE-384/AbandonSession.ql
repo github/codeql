@@ -34,10 +34,10 @@ class SystemWebSessionStateHttpSessionStateClass extends Class {
   }
 
   /** Gets the `Abandon` method. */
-  Method getAbandonMethod() { result = getAMethod("Abandon") }
+  Method getAbandonMethod() { result = this.getAMethod("Abandon") }
 
   /** Gets the `Clear` method. */
-  Method getClearMethod() { result = getAMethod("Clear") }
+  Method getClearMethod() { result = this.getAMethod("Clear") }
 }
 
 /** A method that directly or indirectly clears `HttpSessionState`. */

@@ -881,6 +881,7 @@ module DataFlow {
 
     ImportSpecifierAsPropRead() {
       astNode = imprt.getASpecifier() and
+      not astNode.isTypeOnly() and
       exists(astNode.getImportedName())
     }
 

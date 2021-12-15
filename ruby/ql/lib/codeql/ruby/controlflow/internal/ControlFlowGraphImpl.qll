@@ -378,7 +378,7 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PreOrderTree, CaseExpr {
+  private class CaseTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -386,7 +386,7 @@ module Trees {
     final override predicate last(AstNode last, Completion c) {
       last(this.getValue(), last, c) and not exists(this.getABranch())
       or
-      last(this.getAWhenBranch().getBody(), last, c)
+      last(this.getABranch().(WhenExpr).getBody(), last, c)
       or
       exists(int i, ControlFlowTree lastBranch |
         lastBranch = this.getBranch(i) and
@@ -415,6 +415,387 @@ module Trees {
         last(branch.getLastPattern(), pred, c) and
         first(this.getBranch(i + 1), succ) and
         c.(ConditionalCompletion).getValue() = false
+      )
+    }
+  }
+
+  private class CaseMatchTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseMatch {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getValue() or child = this.getABranch()
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getABranch(), last, c) and
+      not c.(MatchingCompletion).getValue() = false
+      or
+      not exists(this.getElseBranch()) and
+      exists(MatchingCompletion lc, Expr lastBranch |
+        lastBranch = max(int i | | this.getBranch(i) order by i) and
+        lc.getValue() = false and
+        last(lastBranch, last, lc) and
+        c instanceof RaiseCompletion and
+        not c instanceof NestedCompletion
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getValue(), succ) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getValue(), pred, c) and
+      first(this.getBranch(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i, Expr branch | branch = this.getBranch(i) |
+        last(branch, pred, c) and
+        first(this.getBranch(i + 1), succ) and
+        c.(MatchingCompletion).getValue() = false
+      )
+    }
+  }
+
+  private class PatternVariableAccessTree extends LocalVariableAccessTree, LocalVariableWriteAccess,
+    CasePattern {
+    final override predicate last(AstNode last, Completion c) {
+      super.last(last, c) and
+      c.(MatchingCompletion).getValue() = true
+    }
+  }
+
+  private class ArrayPatternTree extends ControlFlowTree, ArrayPattern {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getClass() or
+      child = this.getPrefixElement(_) or
+      child = this.getRestVariableAccess() or
+      child = this.getSuffixElement(_)
+    }
+
+    final override predicate first(AstNode first) {
+      first(this.getClass(), first)
+      or
+      not exists(this.getClass()) and first = this
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      c.(MatchingCompletion).getValue() = false and
+      (
+        last = this and
+        c.isValidFor(this)
+        or
+        exists(AstNode node |
+          node = this.getClass() or
+          node = this.getPrefixElement(_) or
+          node = this.getSuffixElement(_)
+        |
+          last(node, last, c)
+        )
+      )
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last = this and
+      c.isValidFor(this) and
+      not exists(this.getPrefixElement(_)) and
+      not exists(this.getRestVariableAccess())
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last(max(int i | | this.getPrefixElement(i) order by i), last, c) and
+      not exists(this.getRestVariableAccess())
+      or
+      last(this.getRestVariableAccess(), last, c) and
+      not exists(this.getSuffixElement(_))
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last(max(int i | | this.getSuffixElement(i) order by i), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getClass(), pred, c) and
+      succ = this and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getPrefixElement(0)
+        or
+        not exists(this.getPrefixElement(_)) and
+        next = this.getRestVariableAccess()
+      )
+      or
+      last(max(int i | | this.getPrefixElement(i) order by i), pred, c) and
+      first(this.getRestVariableAccess(), succ) and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(int i |
+        last(this.getPrefixElement(i), pred, c) and
+        first(this.getPrefixElement(i + 1), succ) and
+        c.(MatchingCompletion).getValue() = true
+      )
+      or
+      last(this.getRestVariableAccess(), pred, c) and
+      first(this.getSuffixElement(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i |
+        last(this.getSuffixElement(i), pred, c) and
+        first(this.getSuffixElement(i + 1), succ) and
+        c.(MatchingCompletion).getValue() = true
+      )
+    }
+  }
+
+  private class FindPatternTree extends ControlFlowTree, FindPattern {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getClass() or
+      child = this.getPrefixVariableAccess() or
+      child = this.getElement(_) or
+      child = this.getSuffixVariableAccess()
+    }
+
+    final override predicate first(AstNode first) {
+      first(this.getClass(), first)
+      or
+      not exists(this.getClass()) and first = this
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getSuffixVariableAccess(), last, c)
+      or
+      last(max(int i | | this.getElement(i) order by i), last, c) and
+      not exists(this.getSuffixVariableAccess())
+      or
+      c.(MatchingCompletion).getValue() = false and
+      (
+        last = this and
+        c.isValidFor(this)
+        or
+        exists(AstNode node | node = this.getClass() or node = this.getElement(_) |
+          last(node, last, c)
+        )
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getClass(), pred, c) and
+      succ = this and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getPrefixVariableAccess()
+        or
+        not exists(this.getPrefixVariableAccess()) and
+        next = this.getElement(0)
+      )
+      or
+      last(this.getPrefixVariableAccess(), pred, c) and
+      first(this.getElement(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      c.(MatchingCompletion).getValue() = true and
+      exists(int i |
+        last(this.getElement(i), pred, c) and
+        first(this.getElement(i + 1), succ)
+      )
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last(max(int i | | this.getElement(i) order by i), pred, c) and
+      first(this.getSuffixVariableAccess(), succ)
+    }
+  }
+
+  private class HashPatternTree extends ControlFlowTree, HashPattern {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getClass() or
+      child = this.getValue(_) or
+      child = this.getRestVariableAccess()
+    }
+
+    final override predicate first(AstNode first) {
+      first(this.getClass(), first)
+      or
+      not exists(this.getClass()) and first = this
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      c.(MatchingCompletion).getValue() = false and
+      (
+        last = this and
+        c.isValidFor(this)
+        or
+        exists(AstNode node |
+          node = this.getClass() or
+          node = this.getValue(_)
+        |
+          last(node, last, c)
+        )
+      )
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last = this and
+      not exists(this.getValue(_)) and
+      not exists(this.getRestVariableAccess())
+      or
+      c.(MatchingCompletion).getValue() = true and
+      last(max(int i | | this.getValue(i) order by i), last, c) and
+      not exists(this.getRestVariableAccess())
+      or
+      last(this.getRestVariableAccess(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getClass(), pred, c) and
+      succ = this and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(AstNode next |
+        pred = this and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getValue(0)
+        or
+        not exists(this.getValue(_)) and
+        next = this.getRestVariableAccess()
+      )
+      or
+      last(max(int i | | this.getValue(i) order by i), pred, c) and
+      first(this.getRestVariableAccess(), succ) and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(int i |
+        last(this.getValue(i), pred, c) and
+        first(this.getValue(i + 1), succ) and
+        c.(MatchingCompletion).getValue() = true
+      )
+    }
+  }
+
+  private class LineLiteralTree extends LeafTree, LineLiteral { }
+
+  private class FileLiteralTree extends LeafTree, FileLiteral { }
+
+  private class EncodingLiteralTree extends LeafTree, EncodingLiteral { }
+
+  private class AlternativePatternTree extends PreOrderTree, AlternativePattern {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnAlternative() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getAnAlternative(), last, c) and
+      c.(MatchingCompletion).getValue() = true
+      or
+      last(max(int i | | this.getAlternative(i) order by i), last, c) and
+      c.(MatchingCompletion).getValue() = false
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getAlternative(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i |
+        last(this.getAlternative(i), pred, c) and
+        first(this.getAlternative(i + 1), succ) and
+        c.(MatchingCompletion).getValue() = false
+      )
+    }
+  }
+
+  private class AsPatternTree extends PreOrderTree, AsPattern {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getPattern() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getPattern(), last, c) and
+      c.(MatchingCompletion).getValue() = false
+      or
+      last(this.getVariableAccess(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(), succ) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getPattern(), pred, c) and
+      first(this.getVariableAccess(), succ) and
+      c.(MatchingCompletion).getValue() = true
+    }
+  }
+
+  private class ParenthesizedPatternTree extends StandardPreOrderTree, ParenthesizedPattern {
+    override ControlFlowTree getChildElement(int i) { result = this.getPattern() and i = 0 }
+  }
+
+  private class VariableReferencePatternTree extends StandardPreOrderTree, VariableReferencePattern {
+    override ControlFlowTree getChildElement(int i) { result = this.getVariableAccess() and i = 0 }
+  }
+
+  private class InClauseTree extends PreOrderTree, InClause {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getPattern() or
+      child = this.getCondition()
+    }
+
+    private predicate lastCondition(AstNode last, BooleanCompletion c, boolean flag) {
+      last(this.getCondition(), last, c) and
+      (
+        flag = true and this.hasIfCondition()
+        or
+        flag = false and this.hasUnlessCondition()
+      )
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getPattern(), last, c) and
+      c.(MatchingCompletion).getValue() = false
+      or
+      exists(BooleanCompletion bc, boolean flag, MatchingCompletion mc |
+        lastCondition(last, bc, flag) and
+        c =
+          any(NestedMatchingCompletion nmc |
+            nmc.getInnerCompletion() = bc and nmc.getOuterCompletion() = mc
+          )
+      |
+        mc.getValue() = false and
+        bc.getValue() = flag.booleanNot()
+        or
+        not exists(this.getBody()) and
+        mc.getValue() = true and
+        bc.getValue() = flag
+      )
+      or
+      last(this.getBody(), last, c)
+      or
+      not exists(this.getBody()) and
+      not exists(this.getCondition()) and
+      last(this.getPattern(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(Expr next |
+        last(this.getPattern(), pred, c) and
+        c.(MatchingCompletion).getValue() = true and
+        first(next, succ)
+      |
+        next = this.getCondition()
+        or
+        not exists(this.getCondition()) and next = this.getBody()
+      )
+      or
+      exists(boolean flag |
+        lastCondition(pred, c, flag) and
+        c.(BooleanCompletion).getValue() = flag and
+        first(this.getBody(), succ)
       )
     }
   }
@@ -542,7 +923,8 @@ module Trees {
         c instanceof SimpleCompletion
         or
         this.hasDefaultValue() and
-        c.(MatchingCompletion).getValue() = true
+        c.(MatchingCompletion).getValue() = true and
+        c.isValidFor(this)
       )
     }
 
@@ -602,6 +984,8 @@ module Trees {
   private class HashLiteralTree extends StandardPostOrderTree, HashLiteral {
     final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
+
+  private class HashSplatNilParameterTree extends LeafTree, HashSplatNilParameter { }
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
@@ -930,7 +1314,13 @@ module Trees {
   class StmtSequenceTree extends PostOrderTree, StmtSequence {
     override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
 
-    override predicate first(AstNode first) { first(this.getStmt(0), first) }
+    override predicate first(AstNode first) {
+      // If this sequence contains any statements, go to the first one.
+      first(this.getStmt(0), first)
+      or
+      // Otherwise, treat this node as a leaf node.
+      not exists(this.getStmt(0)) and first = this
+    }
 
     /** Gets the `i`th child in the body of this body statement. */
     AstNode getBodyChild(int i, boolean rescuable) {

@@ -79,6 +79,8 @@ private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
   private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.Notifications
+  private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp

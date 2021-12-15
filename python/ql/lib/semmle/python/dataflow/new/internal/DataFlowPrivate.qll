@@ -2,12 +2,34 @@ private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { exists(any(DataFlowCallable c).getParameter(this)) }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { exists(any(DataFlowCall c).getArg(this)) }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
+}
 
 //--------
 // Data flow graph
@@ -927,7 +949,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 private predicate module_export(Module m, string name, CfgNode defn) {
   exists(EssaVariable v |
     v.getName() = name and
-    v.getAUse() = m.getANormalExit()
+    v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
   |
     defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
     or

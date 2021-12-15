@@ -1,5 +1,5 @@
 name: codeql/java-tests
-version: 0.0.2
+groups: [java, test]
 dependencies:
     codeql/java-all: "*"
     codeql/java-queries: "*"

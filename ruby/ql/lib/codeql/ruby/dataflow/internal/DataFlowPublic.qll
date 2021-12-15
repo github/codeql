@@ -61,6 +61,12 @@ class CallNode extends LocalSourceNode {
 
   /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
   string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
+
+  /** Gets the number of arguments of this call. */
+  int getNumberOfArguments() { result = node.getNumberOfArguments() }
+
+  /** Gets the block of this call. */
+  Node getBlock() { result.asExpr() = node.getBlock() }
 }
 
 /**
@@ -83,9 +89,9 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode {
+class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter getParameter() { none() }
+  final Parameter getParameter() { result = super.getParameter() }
 }
 
 /**
