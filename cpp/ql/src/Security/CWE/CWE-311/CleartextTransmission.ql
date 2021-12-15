@@ -33,6 +33,9 @@ class SensitiveNode extends DataFlow::Node {
   }
 }
 
+/**
+ * A function that sends or receives data over a network.
+ */
 abstract class SendRecv extends Function {
   /**
    * Gets the expression for the socket or similar object used for sending or
@@ -41,11 +44,15 @@ abstract class SendRecv extends Function {
   abstract Expr getSocketExpr(Call call);
 
   /**
-   * Gets the expression for the buffer to be sent from / received into.
+   * Gets the expression for the buffer to be sent from / received into through
+   * the function call `call`.
    */
   abstract Expr getDataExpr(Call call);
 }
 
+/**
+ * A function that sends data over a network.
+ */
 class Send extends SendRecv instanceof RemoteFlowSinkFunction {
   override Expr getSocketExpr(Call call) {
     call.getTarget() = this and
@@ -66,6 +73,9 @@ class Send extends SendRecv instanceof RemoteFlowSinkFunction {
   }
 }
 
+/**
+ * A function that receives data over a network.
+ */
 class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
   override Expr getSocketExpr(Call call) {
     call.getTarget() = this and
@@ -89,18 +99,21 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
 /**
  * A function call that sends or receives data over a network.
  *
- * note: functions such as `write` may be writing to a network source or a
- * file. We could attempt to determine which, and sort results into
+ * note: function calls such as `write` may be writing to a network source
+ * or a file. We could attempt to determine which, and sort results into
  * `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In
  * practice it usually isn't very important which query reports a result as
- * long as its reported exactly once. See `checkSocket` to narrow this down
- * somewhat.
+ * long as its reported exactly once.
+ *
+ * We do exclude function calls that specify a constant socket, which is
+ * likely to mean standard input, standard output or a similar channel.
  */
 abstract class NetworkSendRecv extends FunctionCall {
   SendRecv target;
 
   NetworkSendRecv() {
     this.getTarget() = target and
+    // exclude calls based on the socket...
     not exists(GVN g |
       g = globalValueNumber(target.getSocketExpr(this)) and
       (
