@@ -78,7 +78,6 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-private import semmle.code.csharp.dispatch.OverridableCallable
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -367,7 +366,7 @@ class UnboundCallable extends Callable {
    */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.(OverridableCallable).overridesOrImplements(c) and
+      this.(Overridable).overridesOrImplements(c) and
       that = c.getUnboundDeclaration()
     )
   }
