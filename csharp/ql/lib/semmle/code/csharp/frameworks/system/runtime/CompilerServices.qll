@@ -73,3 +73,11 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
   /** Gets the field that stores the underlying task. */
   Field getUnderlyingTaskField() { result = this.getAField() and result.hasName("m_task") }
 }
+
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter`. */
+private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_configured_task_awaitable] of Argument[-1];ReturnValue;value"
+  }
+}
