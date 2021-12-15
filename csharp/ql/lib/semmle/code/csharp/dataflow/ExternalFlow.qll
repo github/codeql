@@ -100,6 +100,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.JsonNET
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
+  private import semmle.code.csharp.frameworks.system.Xml
 }
 
 /**
@@ -356,9 +357,14 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-private class UnboundCallable extends Callable {
+/** An unbound callable. */
+class UnboundCallable extends Callable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
+  /**
+   * Holds if this unbound callable overrides or implements (transitively)
+   * `that` unbound callable.
+   */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
       this.(OverridableCallable).overridesOrImplements(c) and

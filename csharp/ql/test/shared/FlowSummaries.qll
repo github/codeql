@@ -20,9 +20,11 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
   predicate isBaseCallableOrPrototype() {
     this.getDeclaringType() instanceof Interface
     or
-    this.(Modifiable).isAbstract()
-    or
-    this.getDeclaringType().(Modifiable).isAbstract() and this.(Virtualizable).isVirtual()
+    exists(Modifiable m | m = [this.(Modifiable), this.(Accessor).getDeclaration()] |
+      m.isAbstract()
+      or
+      this.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+    )
   }
 
   /** Gets a string representing, whether the summary should apply for all overrides of this. */
