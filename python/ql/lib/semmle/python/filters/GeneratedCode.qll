@@ -33,7 +33,7 @@ class GenericGeneratedFile extends GeneratedFile {
 }
 
 pragma[nomagic]
-int minStmtLine(File file) {
+private int minStmtLine(File file) {
   result =
     min(int line |
       line = any(Stmt s | s.getLocation().getFile() = file).getLocation().getStartLine()
@@ -41,7 +41,7 @@ int minStmtLine(File file) {
 }
 
 pragma[nomagic]
-predicate isBeforeCode(Comment c, File f) {
+private predicate isBeforeCode(Comment c, File f) {
   f = c.getLocation().getFile() and
   minStmtLine(f) < c.getLocation().getStartLine()
 }
