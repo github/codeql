@@ -89,7 +89,12 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
 /**
  * A function call that sends or receives data over a network.
  *
- * note: functions such as `write` may be writing to a network source or a file. We could attempt to determine which, and sort results into `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In practice it usually isn't very important which query reports a result as long as its reported exactly once. See `checkSocket` to narrow this down somewhat.
+ * note: functions such as `write` may be writing to a network source or a
+ * file. We could attempt to determine which, and sort results into
+ * `cpp/cleartext-transmission` and perhaps `cpp/cleartext-storage-file`. In
+ * practice it usually isn't very important which query reports a result as
+ * long as its reported exactly once. See `checkSocket` to narrow this down
+ * somewhat.
  */
 abstract class NetworkSendRecv extends FunctionCall {
   SendRecv target;
