@@ -1,7 +1,7 @@
 /**
- * @name Android Fragment injection
- * @description Instantiating an Android Fragment from a user-provided value
- *              may lead to Fragment injection.
+ * @name Android fragment injection
+ * @description Instantiating an Android fragment from a user-provided value
+ *              may allow a malicious application to bypass access controls,  exposing the application to unintended effects.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8

@@ -1,4 +1,4 @@
-/** Provides classes and predicates related to Android Fragments. */
+/** Provides classes and predicates to track Android fragments. */
 
 import java
 

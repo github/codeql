@@ -1,7 +1,8 @@
 /**
- * @name Android Fragment injection in PreferenceActivity
- * @description An insecure implementation of the isValidFragment method
- *              of the PreferenceActivity class may lead to Fragment injection.
+ * @name Android fragment injection in PreferenceActivity
+ * @description An insecure implementation of the 'isValidFragment' method
+ *              of the 'PreferenceActivity' class may allow a malicious application to bypass access controls,
+ *              exposing the application to unintended effects.
  * @kind problem
  * @problem.severity error
  * @security-severity 9.8

@@ -7,7 +7,7 @@ import semmle.code.java.security.FragmentInjection
 
 /**
  * A taint-tracking configuration for unsafe user input
- * that is used to create Android Fragments dinamically.
+ * that is used to create Android fragments dynamically.
  */
 class FragmentInjectionTaintConf extends TaintTracking::Configuration {
   FragmentInjectionTaintConf() { this = "FragmentInjectionTaintConf" }

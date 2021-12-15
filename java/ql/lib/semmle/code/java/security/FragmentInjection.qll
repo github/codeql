@@ -35,7 +35,7 @@ class IsValidFragmentMethod extends Method {
 
 /**
  * A sink for Fragment injection vulnerabilities,
- * that is, method calls that dynamically add Fragments to Activities.
+ * that is, method calls that dynamically add fragments to activities.
  */
 abstract class FragmentInjectionSink extends DataFlow::Node { }
 
