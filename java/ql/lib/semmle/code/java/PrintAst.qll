@@ -68,9 +68,12 @@ private predicate isNotNeeded(Element el) {
     el.(ExprOrStmt).getEnclosingCallable() = c
   |
     el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
+    not c.getFile().isKotlinSourceFile() // Koltin constructor bodies have the same location as the constructor
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
+  or
+  exists(Callable c | el = c and c.getSourceDeclaration() != c)
   or
   isNotNeeded(el.(Expr).getParent*().(Annotation).getAnnotatedElement())
   or
@@ -114,6 +117,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
+  TWhenBranchNode(WhenBranch wb) { shouldPrint(wb.getWhenExpr(), _) } or
   TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
@@ -298,7 +302,8 @@ final class ClassInstanceExprNode extends ExprStmtNode {
     result = super.getChild(childIndex)
     or
     childIndex = -4 and
-    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass() and
+    not result.getElement() instanceof LocalClassOrInterface // Kotlin anonymous classes are extracted as local classes too.
   }
 }
 
@@ -334,6 +339,18 @@ final class ForStmtNode extends ExprStmtNode {
     or
     childIndex = 0 and
     result.(ForInitNode).getForStmt() = element
+  }
+}
+
+/**
+ * A node representing a `WhenExpr`.
+ */
+final class WhenExprNode extends ExprStmtNode {
+  WhenExprNode() { element instanceof WhenExpr }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex >= 0 and
+    result.(WhenBranchNode).getWhenBranch() = element.(WhenExpr).getBranch(childIndex)
   }
 }
 
@@ -554,6 +571,30 @@ final class ForInitNode extends PrintAstNode, TForInitNode {
 }
 
 /**
+ * A node representing the synthetic node of a `when` expression branch.
+ */
+final class WhenBranchNode extends PrintAstNode, TWhenBranchNode {
+  WhenBranch wb;
+
+  WhenBranchNode() { this = TWhenBranchNode(wb) }
+
+  override string toString() { result = "(branch)" }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement().(Expr).isNthChildOf(wb, childIndex)
+    or
+    childIndex = 1 and
+    result.getElement().(Stmt).isNthChildOf(wb, childIndex)
+  }
+
+  /**
+   * Gets the underlying `WhenBranch`.
+   */
+  WhenBranch getWhenBranch() { result = wb }
+}
+
+/**
  * A synthetic node holding a `LocalVariableDeclExpr` and its type access.
  */
 final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
@@ -681,7 +722,7 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
 final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   GenericCallable c;
 
-  GenericCallableNode() { this = TGenericCallableNode(c) }
+  GenericCallableNode() { this = TGenericCallableNode(c) and not isNotNeeded(c) }
 
   override string toString() { result = "(Generic Parameters)" }
 

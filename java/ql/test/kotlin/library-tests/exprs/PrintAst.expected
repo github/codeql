@@ -1,0 +1,1423 @@
+exprs.kt:
+#    0| [CompilationUnit] exprs
+#    0|   1: [Class] ExprsKt
+#    4|     1: [Method] topLevelMethod
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] x
+#    4|         1: [Parameter] y
+#    5|         2: [Parameter] byx
+#    5|         3: [Parameter] byy
+#    6|         4: [Parameter] sx
+#    6|         5: [Parameter] sy
+#    7|         6: [Parameter] lx
+#    7|         7: [Parameter] ly
+#    8|         8: [Parameter] dx
+#    8|         9: [Parameter] dy
+#    9|         10: [Parameter] fx
+#    9|         11: [Parameter] fy
+#   10|       5: [BlockStmt] { ... }
+#   11|         0: [LocalVariableDeclStmt] var ...;
+#   11|           1: [LocalVariableDeclExpr] i1
+#   11|             0: [IntegerLiteral] 1
+#   12|         1: [LocalVariableDeclStmt] var ...;
+#   12|           1: [LocalVariableDeclExpr] i2
+#   12|             0: [AddExpr] ... + ...
+#   12|               0: [VarAccess] x
+#   12|               1: [VarAccess] y
+#   13|         2: [LocalVariableDeclStmt] var ...;
+#   13|           1: [LocalVariableDeclExpr] i3
+#   13|             0: [SubExpr] ... - ...
+#   13|               0: [VarAccess] x
+#   13|               1: [VarAccess] y
+#   14|         3: [LocalVariableDeclStmt] var ...;
+#   14|           1: [LocalVariableDeclExpr] i4
+#   14|             0: [DivExpr] ... / ...
+#   14|               0: [VarAccess] x
+#   14|               1: [VarAccess] y
+#   15|         4: [LocalVariableDeclStmt] var ...;
+#   15|           1: [LocalVariableDeclExpr] i5
+#   15|             0: [RemExpr] ... % ...
+#   15|               0: [VarAccess] x
+#   15|               1: [VarAccess] y
+#   16|         5: [LocalVariableDeclStmt] var ...;
+#   16|           1: [LocalVariableDeclExpr] i6
+#   16|             0: [MethodAccess] shl(...)
+#   16|               -1: [VarAccess] x
+#   16|               0: [VarAccess] y
+#   17|         6: [LocalVariableDeclStmt] var ...;
+#   17|           1: [LocalVariableDeclExpr] i7
+#   17|             0: [MethodAccess] shr(...)
+#   17|               -1: [VarAccess] x
+#   17|               0: [VarAccess] y
+#   18|         7: [LocalVariableDeclStmt] var ...;
+#   18|           1: [LocalVariableDeclExpr] i8
+#   18|             0: [MethodAccess] ushr(...)
+#   18|               -1: [VarAccess] x
+#   18|               0: [VarAccess] y
+#   19|         8: [LocalVariableDeclStmt] var ...;
+#   19|           1: [LocalVariableDeclExpr] i9
+#   19|             0: [MethodAccess] and(...)
+#   19|               -1: [VarAccess] x
+#   19|               0: [VarAccess] y
+#   20|         9: [LocalVariableDeclStmt] var ...;
+#   20|           1: [LocalVariableDeclExpr] i10
+#   20|             0: [MethodAccess] or(...)
+#   20|               -1: [VarAccess] x
+#   20|               0: [VarAccess] y
+#   21|         10: [LocalVariableDeclStmt] var ...;
+#   21|           1: [LocalVariableDeclExpr] i11
+#   21|             0: [MethodAccess] xor(...)
+#   21|               -1: [VarAccess] x
+#   21|               0: [VarAccess] y
+#   22|         11: [LocalVariableDeclStmt] var ...;
+#   22|           1: [LocalVariableDeclExpr] i12
+#   22|             0: [MethodAccess] inv(...)
+#   22|               -1: [VarAccess] x
+#   23|         12: [LocalVariableDeclStmt] var ...;
+#   23|           1: [LocalVariableDeclExpr] i13
+#   23|             0: [EQExpr] ... == ...
+#   23|               0: [VarAccess] x
+#   23|               1: [VarAccess] y
+#   24|         13: [LocalVariableDeclStmt] var ...;
+#   24|           1: [LocalVariableDeclExpr] i14
+#   24|             0: [NEExpr] ... != ...
+#   24|               0: [VarAccess] x
+#   24|               1: [VarAccess] y
+#   25|         14: [LocalVariableDeclStmt] var ...;
+#   25|           1: [LocalVariableDeclExpr] i15
+#   25|             0: [LTExpr] ... < ...
+#   25|               0: [VarAccess] x
+#   25|               1: [VarAccess] y
+#   26|         15: [LocalVariableDeclStmt] var ...;
+#   26|           1: [LocalVariableDeclExpr] i16
+#   26|             0: [LEExpr] ... <= ...
+#   26|               0: [VarAccess] x
+#   26|               1: [VarAccess] y
+#   27|         16: [LocalVariableDeclStmt] var ...;
+#   27|           1: [LocalVariableDeclExpr] i17
+#   27|             0: [GTExpr] ... > ...
+#   27|               0: [VarAccess] x
+#   27|               1: [VarAccess] y
+#   28|         17: [LocalVariableDeclStmt] var ...;
+#   28|           1: [LocalVariableDeclExpr] i18
+#   28|             0: [GEExpr] ... >= ...
+#   28|               0: [VarAccess] x
+#   28|               1: [VarAccess] y
+#   29|         18: [LocalVariableDeclStmt] var ...;
+#   29|           1: [LocalVariableDeclExpr] i19
+#   29|             0: [EQExpr] ... == ...
+#   29|               0: [VarAccess] x
+#   29|               1: [VarAccess] y
+#   30|         19: [LocalVariableDeclStmt] var ...;
+#   30|           1: [LocalVariableDeclExpr] i20
+#   30|             0: [NEExpr] ... != ...
+#   30|               0: [VarAccess] x
+#   30|               1: [VarAccess] y
+#   31|         20: [LocalVariableDeclStmt] var ...;
+#   31|           1: [LocalVariableDeclExpr] i21
+#   31|             0: [MethodAccess] contains(...)
+#   31|               -1: [MethodAccess] rangeTo(...)
+#   31|                 -1: [VarAccess] x
+#   31|                 0: [VarAccess] y
+#   31|               0: [VarAccess] x
+#   32|         21: [LocalVariableDeclStmt] var ...;
+#   32|           1: [LocalVariableDeclExpr] i22
+#   32|             0: [MethodAccess] not(...)
+#   32|               -1: [MethodAccess] contains(...)
+#   32|                 -1: [MethodAccess] rangeTo(...)
+#   32|                   -1: [VarAccess] x
+#   32|                   0: [VarAccess] y
+#   32|                 0: [VarAccess] x
+#   34|         22: [LocalVariableDeclStmt] var ...;
+#   34|           1: [LocalVariableDeclExpr] by1
+#   34|             0: [DoubleLiteral] 1.0
+#   35|         23: [LocalVariableDeclStmt] var ...;
+#   35|           1: [LocalVariableDeclExpr] by2
+#   35|             0: [AddExpr] ... + ...
+#   35|               0: [VarAccess] byx
+#   35|               1: [VarAccess] byy
+#   36|         24: [LocalVariableDeclStmt] var ...;
+#   36|           1: [LocalVariableDeclExpr] by3
+#   36|             0: [SubExpr] ... - ...
+#   36|               0: [VarAccess] byx
+#   36|               1: [VarAccess] byy
+#   37|         25: [LocalVariableDeclStmt] var ...;
+#   37|           1: [LocalVariableDeclExpr] by4
+#   37|             0: [DivExpr] ... / ...
+#   37|               0: [VarAccess] byx
+#   37|               1: [VarAccess] byy
+#   38|         26: [LocalVariableDeclStmt] var ...;
+#   38|           1: [LocalVariableDeclExpr] by5
+#   38|             0: [RemExpr] ... % ...
+#   38|               0: [VarAccess] byx
+#   38|               1: [VarAccess] byy
+#   39|         27: [LocalVariableDeclStmt] var ...;
+#   39|           1: [LocalVariableDeclExpr] by6
+#   39|             0: [EQExpr] ... == ...
+#   39|               0: [MethodAccess] toInt(...)
+#   39|                 -1: [VarAccess] byx
+#   39|               1: [MethodAccess] toInt(...)
+#   39|                 -1: [VarAccess] byy
+#   40|         28: [LocalVariableDeclStmt] var ...;
+#   40|           1: [LocalVariableDeclExpr] by7
+#   40|             0: [NEExpr] ... != ...
+#   40|               0: [MethodAccess] toInt(...)
+#   40|                 -1: [VarAccess] byx
+#   40|               1: [MethodAccess] toInt(...)
+#   40|                 -1: [VarAccess] byy
+#   41|         29: [LocalVariableDeclStmt] var ...;
+#   41|           1: [LocalVariableDeclExpr] by8
+#   41|             0: [LTExpr] ... < ...
+#   41|               0: [MethodAccess] toInt(...)
+#   41|                 -1: [VarAccess] byx
+#   41|               1: [MethodAccess] toInt(...)
+#   41|                 -1: [VarAccess] byy
+#   42|         30: [LocalVariableDeclStmt] var ...;
+#   42|           1: [LocalVariableDeclExpr] by9
+#   42|             0: [LEExpr] ... <= ...
+#   42|               0: [MethodAccess] toInt(...)
+#   42|                 -1: [VarAccess] byx
+#   42|               1: [MethodAccess] toInt(...)
+#   42|                 -1: [VarAccess] byy
+#   43|         31: [LocalVariableDeclStmt] var ...;
+#   43|           1: [LocalVariableDeclExpr] by10
+#   43|             0: [GTExpr] ... > ...
+#   43|               0: [MethodAccess] toInt(...)
+#   43|                 -1: [VarAccess] byx
+#   43|               1: [MethodAccess] toInt(...)
+#   43|                 -1: [VarAccess] byy
+#   44|         32: [LocalVariableDeclStmt] var ...;
+#   44|           1: [LocalVariableDeclExpr] by11
+#   44|             0: [GEExpr] ... >= ...
+#   44|               0: [MethodAccess] toInt(...)
+#   44|                 -1: [VarAccess] byx
+#   44|               1: [MethodAccess] toInt(...)
+#   44|                 -1: [VarAccess] byy
+#   45|         33: [LocalVariableDeclStmt] var ...;
+#   45|           1: [LocalVariableDeclExpr] by12
+#   45|             0: [EQExpr] ... == ...
+#   45|               0: [VarAccess] byx
+#   45|               1: [VarAccess] byy
+#   46|         34: [LocalVariableDeclStmt] var ...;
+#   46|           1: [LocalVariableDeclExpr] by13
+#   46|             0: [NEExpr] ... != ...
+#   46|               0: [VarAccess] byx
+#   46|               1: [VarAccess] byy
+#   48|         35: [LocalVariableDeclStmt] var ...;
+#   48|           1: [LocalVariableDeclExpr] s1
+#   48|             0: [DoubleLiteral] 1.0
+#   49|         36: [LocalVariableDeclStmt] var ...;
+#   49|           1: [LocalVariableDeclExpr] s2
+#   49|             0: [AddExpr] ... + ...
+#   49|               0: [VarAccess] sx
+#   49|               1: [VarAccess] sy
+#   50|         37: [LocalVariableDeclStmt] var ...;
+#   50|           1: [LocalVariableDeclExpr] s3
+#   50|             0: [SubExpr] ... - ...
+#   50|               0: [VarAccess] sx
+#   50|               1: [VarAccess] sy
+#   51|         38: [LocalVariableDeclStmt] var ...;
+#   51|           1: [LocalVariableDeclExpr] s4
+#   51|             0: [DivExpr] ... / ...
+#   51|               0: [VarAccess] sx
+#   51|               1: [VarAccess] sy
+#   52|         39: [LocalVariableDeclStmt] var ...;
+#   52|           1: [LocalVariableDeclExpr] s5
+#   52|             0: [RemExpr] ... % ...
+#   52|               0: [VarAccess] sx
+#   52|               1: [VarAccess] sy
+#   53|         40: [LocalVariableDeclStmt] var ...;
+#   53|           1: [LocalVariableDeclExpr] s6
+#   53|             0: [EQExpr] ... == ...
+#   53|               0: [MethodAccess] toInt(...)
+#   53|                 -1: [VarAccess] sx
+#   53|               1: [MethodAccess] toInt(...)
+#   53|                 -1: [VarAccess] sy
+#   54|         41: [LocalVariableDeclStmt] var ...;
+#   54|           1: [LocalVariableDeclExpr] s7
+#   54|             0: [NEExpr] ... != ...
+#   54|               0: [MethodAccess] toInt(...)
+#   54|                 -1: [VarAccess] sx
+#   54|               1: [MethodAccess] toInt(...)
+#   54|                 -1: [VarAccess] sy
+#   55|         42: [LocalVariableDeclStmt] var ...;
+#   55|           1: [LocalVariableDeclExpr] s8
+#   55|             0: [LTExpr] ... < ...
+#   55|               0: [MethodAccess] toInt(...)
+#   55|                 -1: [VarAccess] sx
+#   55|               1: [MethodAccess] toInt(...)
+#   55|                 -1: [VarAccess] sy
+#   56|         43: [LocalVariableDeclStmt] var ...;
+#   56|           1: [LocalVariableDeclExpr] s9
+#   56|             0: [LEExpr] ... <= ...
+#   56|               0: [MethodAccess] toInt(...)
+#   56|                 -1: [VarAccess] sx
+#   56|               1: [MethodAccess] toInt(...)
+#   56|                 -1: [VarAccess] sy
+#   57|         44: [LocalVariableDeclStmt] var ...;
+#   57|           1: [LocalVariableDeclExpr] s10
+#   57|             0: [GTExpr] ... > ...
+#   57|               0: [MethodAccess] toInt(...)
+#   57|                 -1: [VarAccess] sx
+#   57|               1: [MethodAccess] toInt(...)
+#   57|                 -1: [VarAccess] sy
+#   58|         45: [LocalVariableDeclStmt] var ...;
+#   58|           1: [LocalVariableDeclExpr] s11
+#   58|             0: [GEExpr] ... >= ...
+#   58|               0: [MethodAccess] toInt(...)
+#   58|                 -1: [VarAccess] sx
+#   58|               1: [MethodAccess] toInt(...)
+#   58|                 -1: [VarAccess] sy
+#   59|         46: [LocalVariableDeclStmt] var ...;
+#   59|           1: [LocalVariableDeclExpr] s12
+#   59|             0: [EQExpr] ... == ...
+#   59|               0: [VarAccess] sx
+#   59|               1: [VarAccess] sy
+#   60|         47: [LocalVariableDeclStmt] var ...;
+#   60|           1: [LocalVariableDeclExpr] s13
+#   60|             0: [NEExpr] ... != ...
+#   60|               0: [VarAccess] sx
+#   60|               1: [VarAccess] sy
+#   62|         48: [LocalVariableDeclStmt] var ...;
+#   62|           1: [LocalVariableDeclExpr] l1
+#   62|             0: [DoubleLiteral] 1.0
+#   63|         49: [LocalVariableDeclStmt] var ...;
+#   63|           1: [LocalVariableDeclExpr] l2
+#   63|             0: [AddExpr] ... + ...
+#   63|               0: [VarAccess] lx
+#   63|               1: [VarAccess] ly
+#   64|         50: [LocalVariableDeclStmt] var ...;
+#   64|           1: [LocalVariableDeclExpr] l3
+#   64|             0: [SubExpr] ... - ...
+#   64|               0: [VarAccess] lx
+#   64|               1: [VarAccess] ly
+#   65|         51: [LocalVariableDeclStmt] var ...;
+#   65|           1: [LocalVariableDeclExpr] l4
+#   65|             0: [DivExpr] ... / ...
+#   65|               0: [VarAccess] lx
+#   65|               1: [VarAccess] ly
+#   66|         52: [LocalVariableDeclStmt] var ...;
+#   66|           1: [LocalVariableDeclExpr] l5
+#   66|             0: [RemExpr] ... % ...
+#   66|               0: [VarAccess] lx
+#   66|               1: [VarAccess] ly
+#   67|         53: [LocalVariableDeclStmt] var ...;
+#   67|           1: [LocalVariableDeclExpr] l6
+#   67|             0: [MethodAccess] shl(...)
+#   67|               -1: [VarAccess] lx
+#   67|               0: [VarAccess] y
+#   68|         54: [LocalVariableDeclStmt] var ...;
+#   68|           1: [LocalVariableDeclExpr] l7
+#   68|             0: [MethodAccess] shr(...)
+#   68|               -1: [VarAccess] lx
+#   68|               0: [VarAccess] y
+#   69|         55: [LocalVariableDeclStmt] var ...;
+#   69|           1: [LocalVariableDeclExpr] l8
+#   69|             0: [MethodAccess] ushr(...)
+#   69|               -1: [VarAccess] lx
+#   69|               0: [VarAccess] y
+#   70|         56: [LocalVariableDeclStmt] var ...;
+#   70|           1: [LocalVariableDeclExpr] l9
+#   70|             0: [MethodAccess] and(...)
+#   70|               -1: [VarAccess] lx
+#   70|               0: [VarAccess] ly
+#   71|         57: [LocalVariableDeclStmt] var ...;
+#   71|           1: [LocalVariableDeclExpr] l10
+#   71|             0: [MethodAccess] or(...)
+#   71|               -1: [VarAccess] lx
+#   71|               0: [VarAccess] ly
+#   72|         58: [LocalVariableDeclStmt] var ...;
+#   72|           1: [LocalVariableDeclExpr] l11
+#   72|             0: [MethodAccess] xor(...)
+#   72|               -1: [VarAccess] lx
+#   72|               0: [VarAccess] ly
+#   73|         59: [LocalVariableDeclStmt] var ...;
+#   73|           1: [LocalVariableDeclExpr] l12
+#   73|             0: [MethodAccess] inv(...)
+#   73|               -1: [VarAccess] lx
+#   74|         60: [LocalVariableDeclStmt] var ...;
+#   74|           1: [LocalVariableDeclExpr] l13
+#   74|             0: [EQExpr] ... == ...
+#   74|               0: [VarAccess] lx
+#   74|               1: [VarAccess] ly
+#   75|         61: [LocalVariableDeclStmt] var ...;
+#   75|           1: [LocalVariableDeclExpr] l14
+#   75|             0: [NEExpr] ... != ...
+#   75|               0: [VarAccess] lx
+#   75|               1: [VarAccess] ly
+#   76|         62: [LocalVariableDeclStmt] var ...;
+#   76|           1: [LocalVariableDeclExpr] l15
+#   76|             0: [LTExpr] ... < ...
+#   76|               0: [VarAccess] lx
+#   76|               1: [VarAccess] ly
+#   77|         63: [LocalVariableDeclStmt] var ...;
+#   77|           1: [LocalVariableDeclExpr] l16
+#   77|             0: [LEExpr] ... <= ...
+#   77|               0: [VarAccess] lx
+#   77|               1: [VarAccess] ly
+#   78|         64: [LocalVariableDeclStmt] var ...;
+#   78|           1: [LocalVariableDeclExpr] l17
+#   78|             0: [GTExpr] ... > ...
+#   78|               0: [VarAccess] lx
+#   78|               1: [VarAccess] ly
+#   79|         65: [LocalVariableDeclStmt] var ...;
+#   79|           1: [LocalVariableDeclExpr] l18
+#   79|             0: [GEExpr] ... >= ...
+#   79|               0: [VarAccess] lx
+#   79|               1: [VarAccess] ly
+#   80|         66: [LocalVariableDeclStmt] var ...;
+#   80|           1: [LocalVariableDeclExpr] l19
+#   80|             0: [EQExpr] ... == ...
+#   80|               0: [VarAccess] lx
+#   80|               1: [VarAccess] ly
+#   81|         67: [LocalVariableDeclStmt] var ...;
+#   81|           1: [LocalVariableDeclExpr] l20
+#   81|             0: [NEExpr] ... != ...
+#   81|               0: [VarAccess] lx
+#   81|               1: [VarAccess] ly
+#   83|         68: [LocalVariableDeclStmt] var ...;
+#   83|           1: [LocalVariableDeclExpr] d1
+#   83|             0: [DoubleLiteral] 1.0
+#   84|         69: [LocalVariableDeclStmt] var ...;
+#   84|           1: [LocalVariableDeclExpr] d2
+#   84|             0: [AddExpr] ... + ...
+#   84|               0: [VarAccess] dx
+#   84|               1: [VarAccess] dy
+#   85|         70: [LocalVariableDeclStmt] var ...;
+#   85|           1: [LocalVariableDeclExpr] d3
+#   85|             0: [SubExpr] ... - ...
+#   85|               0: [VarAccess] dx
+#   85|               1: [VarAccess] dy
+#   86|         71: [LocalVariableDeclStmt] var ...;
+#   86|           1: [LocalVariableDeclExpr] d4
+#   86|             0: [DivExpr] ... / ...
+#   86|               0: [VarAccess] dx
+#   86|               1: [VarAccess] dy
+#   87|         72: [LocalVariableDeclStmt] var ...;
+#   87|           1: [LocalVariableDeclExpr] d5
+#   87|             0: [RemExpr] ... % ...
+#   87|               0: [VarAccess] dx
+#   87|               1: [VarAccess] dy
+#   88|         73: [LocalVariableDeclStmt] var ...;
+#   88|           1: [LocalVariableDeclExpr] d6
+#   88|             0: [EQExpr] ... == ...
+#   88|               0: [VarAccess] dx
+#   88|               1: [VarAccess] dy
+#   89|         74: [LocalVariableDeclStmt] var ...;
+#   89|           1: [LocalVariableDeclExpr] d7
+#   89|             0: [NEExpr] ... != ...
+#   89|               0: [VarAccess] dx
+#   89|               1: [VarAccess] dy
+#   90|         75: [LocalVariableDeclStmt] var ...;
+#   90|           1: [LocalVariableDeclExpr] d8
+#   90|             0: [LTExpr] ... < ...
+#   90|               0: [VarAccess] dx
+#   90|               1: [VarAccess] dy
+#   91|         76: [LocalVariableDeclStmt] var ...;
+#   91|           1: [LocalVariableDeclExpr] d9
+#   91|             0: [LEExpr] ... <= ...
+#   91|               0: [VarAccess] dx
+#   91|               1: [VarAccess] dy
+#   92|         77: [LocalVariableDeclStmt] var ...;
+#   92|           1: [LocalVariableDeclExpr] d10
+#   92|             0: [GTExpr] ... > ...
+#   92|               0: [VarAccess] dx
+#   92|               1: [VarAccess] dy
+#   93|         78: [LocalVariableDeclStmt] var ...;
+#   93|           1: [LocalVariableDeclExpr] d11
+#   93|             0: [GEExpr] ... >= ...
+#   93|               0: [VarAccess] dx
+#   93|               1: [VarAccess] dy
+#   94|         79: [LocalVariableDeclStmt] var ...;
+#   94|           1: [LocalVariableDeclExpr] d12
+#   94|             0: [EQExpr] ... == ...
+#   94|               0: [VarAccess] dx
+#   94|               1: [VarAccess] dy
+#   95|         80: [LocalVariableDeclStmt] var ...;
+#   95|           1: [LocalVariableDeclExpr] d13
+#   95|             0: [NEExpr] ... != ...
+#   95|               0: [VarAccess] dx
+#   95|               1: [VarAccess] dy
+#   97|         81: [LocalVariableDeclStmt] var ...;
+#   97|           1: [LocalVariableDeclExpr] f1
+#   97|             0: [DoubleLiteral] 1.0
+#   98|         82: [LocalVariableDeclStmt] var ...;
+#   98|           1: [LocalVariableDeclExpr] f2
+#   98|             0: [AddExpr] ... + ...
+#   98|               0: [VarAccess] fx
+#   98|               1: [VarAccess] fy
+#   99|         83: [LocalVariableDeclStmt] var ...;
+#   99|           1: [LocalVariableDeclExpr] f3
+#   99|             0: [SubExpr] ... - ...
+#   99|               0: [VarAccess] fx
+#   99|               1: [VarAccess] fy
+#  100|         84: [LocalVariableDeclStmt] var ...;
+#  100|           1: [LocalVariableDeclExpr] f4
+#  100|             0: [DivExpr] ... / ...
+#  100|               0: [VarAccess] fx
+#  100|               1: [VarAccess] fy
+#  101|         85: [LocalVariableDeclStmt] var ...;
+#  101|           1: [LocalVariableDeclExpr] f5
+#  101|             0: [RemExpr] ... % ...
+#  101|               0: [VarAccess] fx
+#  101|               1: [VarAccess] fy
+#  102|         86: [LocalVariableDeclStmt] var ...;
+#  102|           1: [LocalVariableDeclExpr] f6
+#  102|             0: [EQExpr] ... == ...
+#  102|               0: [VarAccess] fx
+#  102|               1: [VarAccess] fy
+#  103|         87: [LocalVariableDeclStmt] var ...;
+#  103|           1: [LocalVariableDeclExpr] f7
+#  103|             0: [NEExpr] ... != ...
+#  103|               0: [VarAccess] fx
+#  103|               1: [VarAccess] fy
+#  104|         88: [LocalVariableDeclStmt] var ...;
+#  104|           1: [LocalVariableDeclExpr] f8
+#  104|             0: [LTExpr] ... < ...
+#  104|               0: [VarAccess] fx
+#  104|               1: [VarAccess] fy
+#  105|         89: [LocalVariableDeclStmt] var ...;
+#  105|           1: [LocalVariableDeclExpr] f9
+#  105|             0: [LEExpr] ... <= ...
+#  105|               0: [VarAccess] fx
+#  105|               1: [VarAccess] fy
+#  106|         90: [LocalVariableDeclStmt] var ...;
+#  106|           1: [LocalVariableDeclExpr] f10
+#  106|             0: [GTExpr] ... > ...
+#  106|               0: [VarAccess] fx
+#  106|               1: [VarAccess] fy
+#  107|         91: [LocalVariableDeclStmt] var ...;
+#  107|           1: [LocalVariableDeclExpr] f11
+#  107|             0: [GEExpr] ... >= ...
+#  107|               0: [VarAccess] fx
+#  107|               1: [VarAccess] fy
+#  108|         92: [LocalVariableDeclStmt] var ...;
+#  108|           1: [LocalVariableDeclExpr] f12
+#  108|             0: [EQExpr] ... == ...
+#  108|               0: [VarAccess] fx
+#  108|               1: [VarAccess] fy
+#  109|         93: [LocalVariableDeclStmt] var ...;
+#  109|           1: [LocalVariableDeclExpr] f13
+#  109|             0: [NEExpr] ... != ...
+#  109|               0: [VarAccess] fx
+#  109|               1: [VarAccess] fy
+#  111|         94: [LocalVariableDeclStmt] var ...;
+#  111|           1: [LocalVariableDeclExpr] b1
+#  111|             0: [BooleanLiteral] true
+#  112|         95: [LocalVariableDeclStmt] var ...;
+#  112|           1: [LocalVariableDeclExpr] b2
+#  112|             0: [BooleanLiteral] false
+#  113|         96: [LocalVariableDeclStmt] var ...;
+#  113|           1: [LocalVariableDeclExpr] b3
+#  113|             0: [WhenExpr] when ...
+#-----|               0: (branch)
+#  113|                 0: [VarAccess] b1
+#  113|                 1: [ExprStmt] <Expr>;
+#  113|                   0: [VarAccess] b2
+#-----|               1: (branch)
+#  113|                 0: [BooleanLiteral] true
+#  113|                 1: [ExprStmt] <Expr>;
+#  113|                   0: [BooleanLiteral] false
+#  114|         97: [LocalVariableDeclStmt] var ...;
+#  114|           1: [LocalVariableDeclExpr] b4
+#  114|             0: [WhenExpr] when ...
+#-----|               0: (branch)
+#  114|                 0: [VarAccess] b1
+#  114|                 1: [ExprStmt] <Expr>;
+#  114|                   0: [BooleanLiteral] true
+#-----|               1: (branch)
+#  114|                 0: [BooleanLiteral] true
+#  114|                 1: [ExprStmt] <Expr>;
+#  114|                   0: [VarAccess] b2
+#  115|         98: [LocalVariableDeclStmt] var ...;
+#  115|           1: [LocalVariableDeclExpr] b5
+#  115|             0: [MethodAccess] not(...)
+#  115|               -1: [VarAccess] b1
+#  117|         99: [LocalVariableDeclStmt] var ...;
+#  117|           1: [LocalVariableDeclExpr] c
+#  117|             0: [CharacterLiteral] x
+#  118|         100: [LocalVariableDeclStmt] var ...;
+#  118|           1: [LocalVariableDeclExpr] str
+#  118|             0: [StringLiteral] string lit
+#  119|         101: [LocalVariableDeclStmt] var ...;
+#  119|           1: [LocalVariableDeclExpr] strWithQuote
+#  119|             0: [StringLiteral] string " lit
+#  120|         102: [LocalVariableDeclStmt] var ...;
+#  120|           1: [LocalVariableDeclExpr] b6
+#  120|             0: [InstanceOfExpr] ...instanceof...
+#  120|               0: [VarAccess] i1
+#  120|               1: [TypeAccess] int
+#  121|         103: [LocalVariableDeclStmt] var ...;
+#  121|           1: [LocalVariableDeclExpr] b7
+#  121|             0: [NotInstanceOfExpr] ... !is ...
+#  121|               0: [VarAccess] i1
+#  121|               1: [TypeAccess] int
+#  122|         104: [LocalVariableDeclStmt] var ...;
+#  122|           1: [LocalVariableDeclExpr] b8
+#  122|             0: [CastExpr] (...)...
+#  122|               0: [TypeAccess] boolean
+#  122|               1: [VarAccess] b7
+#  123|         105: [LocalVariableDeclStmt] var ...;
+#  123|           1: [LocalVariableDeclExpr] str1
+#  123|             0: [StringLiteral] string lit
+#  124|         106: [LocalVariableDeclStmt] var ...;
+#  124|           1: [LocalVariableDeclExpr] str2
+#  124|             0: [StringLiteral] string lit
+#  125|         107: [LocalVariableDeclStmt] var ...;
+#  125|           1: [LocalVariableDeclExpr] str3
+#  125|             0: [NullLiteral] null
+#  126|         108: [LocalVariableDeclStmt] var ...;
+#  126|           1: [LocalVariableDeclExpr] str4
+#  126|             0: [StringTemplateExpr] "..."
+#  126|               0: [StringLiteral] foo 
+#  126|               1: [VarAccess] str1
+#  126|               2: [StringLiteral]  bar 
+#  126|               3: [VarAccess] str2
+#  126|               4: [StringLiteral]  baz
+#  127|         109: [LocalVariableDeclStmt] var ...;
+#  127|           1: [LocalVariableDeclExpr] str5
+#  127|             0: [StringTemplateExpr] "..."
+#  127|               0: [StringLiteral] foo 
+#  127|               1: [AddExpr] ... + ...
+#  127|                 0: [VarAccess] str1
+#  127|                 1: [VarAccess] str2
+#  127|               2: [StringLiteral]  bar 
+#  127|               3: [MethodAccess] plus(...)
+#  127|                 0: [VarAccess] str2
+#  127|                 1: [VarAccess] str1
+#  127|               4: [StringLiteral]  baz
+#  128|         110: [LocalVariableDeclStmt] var ...;
+#  128|           1: [LocalVariableDeclExpr] str6
+#  128|             0: [AddExpr] ... + ...
+#  128|               0: [VarAccess] str1
+#  128|               1: [VarAccess] str2
+#  130|         111: [LocalVariableDeclStmt] var ...;
+#  130|           1: [LocalVariableDeclExpr] variable
+#  130|             0: [IntegerLiteral] 10
+#  131|         112: [WhileStmt] while (...)
+#  131|           0: [GTExpr] ... > ...
+#  131|             0: [VarAccess] variable
+#  131|             1: [IntegerLiteral] 0
+#  131|           1: [BlockStmt] { ... }
+#  132|             0: [ExprStmt] <Expr>;
+#  132|               0: [CastExpr] (...)...
+#  132|                 0: [TypeAccess] Unit
+#  132|                 1: [StmtExpr] <Stmt>
+#  132|                   0: [BlockStmt] { ... }
+#  132|                     0: [LocalVariableDeclStmt] var ...;
+#  132|                       1: [LocalVariableDeclExpr] tmp0
+#  132|                         0: [VarAccess] variable
+#  132|                     1: [ExprStmt] <Expr>;
+#  132|                       0: [AssignExpr] ...=...
+#  132|                         0: [VarAccess] variable
+#  132|                         1: [MethodAccess] dec(...)
+#  132|                           -1: [VarAccess] tmp0
+#  132|                     2: [ExprStmt] <Expr>;
+#  132|                       0: [VarAccess] tmp0
+#  135|         113: [ReturnStmt] return ...
+#  135|           0: [AddExpr] ... + ...
+#  135|             0: [IntegerLiteral] 123
+#  135|             1: [IntegerLiteral] 456
+#  138|     2: [Method] getClass
+#  138|       5: [BlockStmt] { ... }
+#  139|         0: [LocalVariableDeclStmt] var ...;
+#  139|           1: [LocalVariableDeclExpr] d
+#  139|             0: [ClassExpr] ::class
+#  139|               0: [BooleanLiteral] true
+#  150|     3: [Method] typeTests
+#-----|       4: (Parameters)
+#  150|         0: [Parameter] x
+#  150|         1: [Parameter] y
+#  150|       5: [BlockStmt] { ... }
+#  151|         0: [ExprStmt] <Expr>;
+#  151|           0: [WhenExpr] when ...
+#-----|             0: (branch)
+#  151|               0: [InstanceOfExpr] ...instanceof...
+#  151|                 0: [VarAccess] x
+#  151|                 1: [TypeAccess] Subclass1
+#  151|               1: [BlockStmt] { ... }
+#  152|                 0: [LocalVariableDeclStmt] var ...;
+#  152|                   1: [LocalVariableDeclExpr] x1
+#  152|                     0: [CastExpr] (...)...
+#  152|                       0: [TypeAccess] Subclass1
+#  152|                       1: [VarAccess] x
+#  154|         1: [LocalVariableDeclStmt] var ...;
+#  154|           1: [LocalVariableDeclExpr] y1
+#  154|             0: [WhenExpr] when ...
+#-----|               0: (branch)
+#  154|                 0: [InstanceOfExpr] ...instanceof...
+#  154|                   0: [VarAccess] x
+#  154|                   1: [TypeAccess] Subclass1
+#  154|                 1: [ExprStmt] <Expr>;
+#  154|                   0: [CastExpr] (...)...
+#  154|                     0: [TypeAccess] Subclass1
+#  154|                     1: [StmtExpr] <Stmt>
+#  154|                       0: [BlockStmt] { ... }
+#  154|                         0: [ExprStmt] <Expr>;
+#  154|                           0: [VarAccess] x
+#-----|               1: (branch)
+#  154|                 0: [BooleanLiteral] true
+#  154|                 1: [BlockStmt] { ... }
+#  154|                   0: [ExprStmt] <Expr>;
+#  154|                     0: [VarAccess] y
+#  155|         2: [LocalVariableDeclStmt] var ...;
+#  155|           1: [LocalVariableDeclExpr] q
+#  155|             0: [IntegerLiteral] 1
+#  156|         3: [ExprStmt] <Expr>;
+#  156|           0: [WhenExpr] when ...
+#-----|             0: (branch)
+#  156|               0: [InstanceOfExpr] ...instanceof...
+#  156|                 0: [VarAccess] x
+#  156|                 1: [TypeAccess] Subclass1
+#  156|               1: [BlockStmt] { ... }
+#  156|                 0: [ExprStmt] <Expr>;
+#  156|                   0: [AssignExpr] ...=...
+#  156|                     0: [VarAccess] q
+#  156|                     1: [IntegerLiteral] 2
+#-----|             1: (branch)
+#  156|               0: [BooleanLiteral] true
+#  156|               1: [BlockStmt] { ... }
+#  156|                 0: [ExprStmt] <Expr>;
+#  156|                   0: [AssignExpr] ...=...
+#  156|                     0: [VarAccess] q
+#  156|                     1: [IntegerLiteral] 3
+#  159|     4: [Method] foo
+#-----|       4: (Parameters)
+#  159|         0: [Parameter] p
+#  159|       5: [BlockStmt] { ... }
+#  160|         0: [LocalVariableDeclStmt] var ...;
+#  160|           1: [LocalVariableDeclExpr] r
+#  160|             0: [MethodAccess] getBounds(...)
+#  160|               -1: [VarAccess] p
+#  161|         1: [ExprStmt] <Expr>;
+#  161|           0: [WhenExpr] when ...
+#-----|             0: (branch)
+#  161|               0: [NEExpr] ... != ...
+#  161|                 0: [VarAccess] r
+#  161|                 1: [NullLiteral] null
+#  161|               1: [BlockStmt] { ... }
+#  162|                 0: [LocalVariableDeclStmt] var ...;
+#  162|                   1: [LocalVariableDeclExpr] r2
+#  162|                     0: [CastExpr] (...)...
+#  162|                       0: [TypeAccess] Rectangle
+#  162|                       1: [VarAccess] r
+#  163|                 1: [LocalVariableDeclStmt] var ...;
+#  163|                   1: [LocalVariableDeclExpr] height
+#  163|                     0: [VarAccess] height
+#  164|                 2: [ExprStmt] <Expr>;
+#  164|                   0: [AssignExpr] ...=...
+#  164|                     0: [VarAccess] height
+#  164|                     1: [IntegerLiteral] 3
+#  178|     5: [Method] enums
+#  178|       5: [BlockStmt] { ... }
+#  179|         0: [LocalVariableDeclStmt] var ...;
+#  179|           1: [LocalVariableDeclExpr] south
+#  179|             0: [VarAccess] SOUTH
+#  180|         1: [LocalVariableDeclStmt] var ...;
+#  180|           1: [LocalVariableDeclExpr] green
+#  180|             0: [VarAccess] GREEN
+#  195|     6: [Method] notNullAssertion
+#-----|       4: (Parameters)
+#  195|         0: [Parameter] x
+#  195|       5: [BlockStmt] { ... }
+#  196|         0: [LocalVariableDeclStmt] var ...;
+#  196|           1: [LocalVariableDeclExpr] y
+#  196|             0: [NotNullExpr] ...!!
+#  196|               0: [VarAccess] x
+#  214|     7: [Method] todo
+#  214|       5: [BlockStmt] { ... }
+#  215|         0: [ExprStmt] <Expr>;
+#  215|           0: [MethodAccess] TODO(...)
+#  215|             -1: [TypeAccess] StandardKt
+#  219|     8: [Method] fnClassRef
+#  219|       5: [BlockStmt] { ... }
+#  220|         0: [LocalVariableDeclStmt] var ...;
+#  220|           1: [LocalVariableDeclExpr] x
+#  220|             0: [TypeLiteral] SomeClass1.class
+#  220|               0: [TypeAccess] SomeClass1
+#  142|   2: [Class] C
+#  142|     1: [Constructor] C
+#-----|       4: (Parameters)
+#  142|         0: [Parameter] n
+#  142|       5: [BlockStmt] { ... }
+#  142|         0: [SuperConstructorInvocationStmt] super(...)
+#  142|         1: [ExprStmt] <Expr>;
+#  142|           0: [MethodAccess] <obinit>(...)
+#  142|     3: [Method] getN
+#  142|       5: [BlockStmt] { ... }
+#  142|         0: [ReturnStmt] return ...
+#  142|           0: [VarAccess] n
+#  142|     3: [FieldDeclaration] int n;
+#  143|     5: [Method] foo
+#  143|       5: [BlockStmt] { ... }
+#  143|         0: [ReturnStmt] return ...
+#  143|           0: [ClassInstanceExpr] new C(...)
+#  143|             -3: [TypeAccess] C
+#  143|             0: [IntegerLiteral] 42
+#  146|   3: [Class] Root
+#  146|     2: [Constructor] Root
+#  146|       5: [BlockStmt] { ... }
+#  146|         0: [SuperConstructorInvocationStmt] super(...)
+#  146|         1: [ExprStmt] <Expr>;
+#  146|           0: [MethodAccess] <obinit>(...)
+#  147|   4: [Class] Subclass1
+#  147|     1: [Constructor] Subclass1
+#  147|       5: [BlockStmt] { ... }
+#  147|         0: [SuperConstructorInvocationStmt] super(...)
+#  147|         1: [ExprStmt] <Expr>;
+#  147|           0: [MethodAccess] <obinit>(...)
+#  148|   5: [Class] Subclass2
+#  148|     1: [Constructor] Subclass2
+#  148|       5: [BlockStmt] { ... }
+#  148|         0: [SuperConstructorInvocationStmt] super(...)
+#  148|         1: [ExprStmt] <Expr>;
+#  148|           0: [MethodAccess] <obinit>(...)
+#  168|   6: [Class] Direction
+#    0|     1: [Method] values
+#    0|     1: [Method] valueOf
+#-----|       4: (Parameters)
+#    0|         0: [Parameter] value
+#  168|     4: [Constructor] Direction
+#  168|       5: [BlockStmt] { ... }
+#  168|         0: [ExprStmt] <Expr>;
+#  168|           0: [ClassInstanceExpr] new Enum(...)
+#  168|             -3: [TypeAccess] Unit
+#  168|               0: [TypeAccess] Direction
+#  168|         1: [ExprStmt] <Expr>;
+#  168|           0: [MethodAccess] <obinit>(...)
+#  168|     4: [Method] getName
+#  168|     4: [Method] getOrdinal
+#  172|   7: [Class] Color
+#    0|     1: [Method] values
+#    0|     1: [Method] valueOf
+#-----|       4: (Parameters)
+#    0|         0: [Parameter] value
+#  172|     4: [Constructor] Color
+#-----|       4: (Parameters)
+#  172|         0: [Parameter] rgb
+#  172|       5: [BlockStmt] { ... }
+#  172|         0: [ExprStmt] <Expr>;
+#  172|           0: [ClassInstanceExpr] new Enum(...)
+#  172|             -3: [TypeAccess] Unit
+#  172|               0: [TypeAccess] Color
+#  172|         1: [ExprStmt] <Expr>;
+#  172|           0: [MethodAccess] <obinit>(...)
+#  172|     4: [Method] getName
+#  172|     4: [Method] getOrdinal
+#  172|     7: [Method] getRgb
+#  172|       5: [BlockStmt] { ... }
+#  172|         0: [ReturnStmt] return ...
+#  172|           0: [VarAccess] rgb
+#  172|     7: [FieldDeclaration] int rgb;
+#  183|   8: [Interface] Interface1
+#  185|   9: [Class] Class1
+#  185|     1: [Constructor] Class1
+#  185|       5: [BlockStmt] { ... }
+#  185|         0: [SuperConstructorInvocationStmt] super(...)
+#  185|         1: [ExprStmt] <Expr>;
+#  185|           0: [MethodAccess] <obinit>(...)
+#  186|     3: [Method] getA1
+#  186|       5: [BlockStmt] { ... }
+#  186|         0: [ReturnStmt] return ...
+#  186|           0: [VarAccess] a1
+#  186|     3: [FieldDeclaration] int a1;
+#  186|       0: [IntegerLiteral] 1
+#  187|     5: [Method] getObject
+#  187|       5: [BlockStmt] { ... }
+#  188|         0: [LocalVariableDeclStmt] var ...;
+#  188|           1: [LocalVariableDeclExpr] a2
+#  188|             0: [IntegerLiteral] 2
+#  189|         1: [ReturnStmt] return ...
+#  189|           0: [StmtExpr] <Stmt>
+#  189|             0: [BlockStmt] { ... }
+#  189|               0: [LocalTypeDeclStmt] class ...
+#  189|                 0: [AnonymousClass,LocalClass] new Interface1(...) { ... }
+#  189|                   1: [Constructor] 
+#  189|                     5: [BlockStmt] { ... }
+#  189|                       0: [SuperConstructorInvocationStmt] super(...)
+#  189|                       1: [ExprStmt] <Expr>;
+#  189|                         0: [MethodAccess] <obinit>(...)
+#  190|                   3: [Method] getA3
+#  190|                     5: [BlockStmt] { ... }
+#  190|                       0: [ReturnStmt] return ...
+#  190|                         0: [VarAccess] a3
+#  190|                   3: [FieldDeclaration] String a3;
+#  190|                     0: [MethodAccess] toString(...)
+#  190|                       -1: [AddExpr] ... + ...
+#  190|                         0: [MethodAccess] getA1(...)
+#  190|                           -1: [ThisAccess] this
+#  190|                         1: [VarAccess] a2
+#  189|               1: [ExprStmt] <Expr>;
+#  189|                 0: [ClassInstanceExpr] new (...)
+#  189|                   -3: [TypeAccess] Interface1
+#  199|   10: [Class] Class2
+#  199|     1: [Constructor] Class2
+#  199|       5: [BlockStmt] { ... }
+#  199|         0: [SuperConstructorInvocationStmt] super(...)
+#  199|         1: [ExprStmt] <Expr>;
+#  199|           0: [MethodAccess] <obinit>(...)
+#  200|     3: [Method] x
+#-----|       4: (Parameters)
+#  200|         0: [Parameter] aa
+#  200|         1: [Parameter] s
+#  200|       5: [BlockStmt] { ... }
+#  202|         0: [LocalVariableDeclStmt] var ...;
+#  202|           1: [LocalVariableDeclExpr] a
+#  202|             0: [MethodAccess] toString(...)
+#  202|               0: [VarAccess] aa
+#  203|         1: [LocalVariableDeclStmt] var ...;
+#  203|           1: [LocalVariableDeclExpr] b0
+#  203|             0: [MethodAccess] plus(...)
+#  203|               0: [VarAccess] s
+#  203|               1: [IntegerLiteral] 5
+#  204|         2: [LocalVariableDeclStmt] var ...;
+#  204|           1: [LocalVariableDeclExpr] b1
+#  204|             0: [MethodAccess] plus(...)
+#  204|               0: [VarAccess] s
+#  204|               1: [IntegerLiteral] 5
+#  205|         3: [LocalVariableDeclStmt] var ...;
+#  205|           1: [LocalVariableDeclExpr] b2
+#  205|             0: [MethodAccess] plus(...)
+#  205|               -1: [NotNullExpr] ...!!
+#  205|                 0: [VarAccess] s
+#  205|               0: [IntegerLiteral] 5
+#  206|         4: [LocalVariableDeclStmt] var ...;
+#  206|           1: [LocalVariableDeclExpr] b3
+#  206|             0: [AddExpr] ... + ...
+#  206|               0: [NotNullExpr] ...!!
+#  206|                 0: [VarAccess] s
+#  206|               1: [IntegerLiteral] 5
+#  207|         5: [LocalVariableDeclStmt] var ...;
+#  207|           1: [LocalVariableDeclExpr] c0
+#  207|             0: [MethodAccess] values(...)
+#  207|               -1: [TypeAccess] Color
+#  208|         6: [LocalVariableDeclStmt] var ...;
+#  208|           1: [LocalVariableDeclExpr] c1
+#  208|             0: [MethodAccess] values(...)
+#  208|               -1: [TypeAccess] Color
+#  209|         7: [LocalVariableDeclStmt] var ...;
+#  209|           1: [LocalVariableDeclExpr] d0
+#  209|             0: [MethodAccess] valueOf(...)
+#  209|               -1: [TypeAccess] Color
+#  209|               0: [StringLiteral] GREEN
+#  210|         8: [LocalVariableDeclStmt] var ...;
+#  210|           1: [LocalVariableDeclExpr] d1
+#  210|             0: [MethodAccess] valueOf(...)
+#  210|               -1: [TypeAccess] Color
+#  210|               0: [StringLiteral] GREEN
+#  218|   11: [Class] SomeClass1
+#  218|     1: [Constructor] SomeClass1
+#  218|       5: [BlockStmt] { ... }
+#  218|         0: [SuperConstructorInvocationStmt] super(...)
+#  218|         1: [ExprStmt] <Expr>;
+#  218|           0: [MethodAccess] <obinit>(...)
+funcExprs.kt:
+#    0| [CompilationUnit] funcExprs
+#    0|   1: [Class] FuncExprsKt
+#    1|     1: [Method] functionExpression0a
+#-----|       4: (Parameters)
+#    1|         0: [Parameter] f
+#    1|       5: [BlockStmt] { ... }
+#    2|     2: [Method] functionExpression0b
+#-----|       4: (Parameters)
+#    2|         0: [Parameter] f
+#    2|       5: [BlockStmt] { ... }
+#    3|     3: [Method] functionExpression0c
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] f
+#    3|       5: [BlockStmt] { ... }
+#    4|     4: [Method] functionExpression1a
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] x
+#    4|         1: [Parameter] f
+#    4|       5: [BlockStmt] { ... }
+#    5|     5: [Method] functionExpression1b
+#-----|       4: (Parameters)
+#    5|         0: [Parameter] x
+#    5|         1: [Parameter] f
+#    5|       5: [BlockStmt] { ... }
+#    6|     6: [Method] functionExpression2
+#-----|       4: (Parameters)
+#    6|         0: [Parameter] x
+#    6|         1: [Parameter] f
+#    6|       5: [BlockStmt] { ... }
+#    7|     7: [Method] functionExpression3
+#-----|       4: (Parameters)
+#    7|         0: [Parameter] x
+#    7|         1: [Parameter] f
+#    7|       5: [BlockStmt] { ... }
+#    8|     8: [Method] functionExpression4
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] x
+#    8|         1: [Parameter] f
+#    8|       5: [BlockStmt] { ... }
+#   10|     9: [Method] functionExpression22
+#-----|       4: (Parameters)
+#   10|         0: [Parameter] x
+#   10|         1: [Parameter] f
+#   10|       5: [BlockStmt] { ... }
+#   11|     10: [Method] functionExpression23
+#-----|       4: (Parameters)
+#   11|         0: [Parameter] x
+#   11|         1: [Parameter] f
+#   11|       5: [BlockStmt] { ... }
+#   13|     11: [Method] call
+#   13|       5: [BlockStmt] { ... }
+#   14|         0: [ExprStmt] <Expr>;
+#   14|           0: [MethodAccess] functionExpression0a(...)
+#   14|             0: [LambdaExpr] ...->...
+#   14|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
+#   14|                 1: [Constructor] 
+#   14|                   5: [BlockStmt] { ... }
+#   14|                     0: [SuperConstructorInvocationStmt] super(...)
+#   14|                 1: [Method] invoke
+#   14|                   5: [BlockStmt] { ... }
+#   14|                     0: [ReturnStmt] return ...
+#   14|                       0: [IntegerLiteral] 5
+#   14|               -3: [TypeAccess] Function0<Integer>
+#   15|         1: [ExprStmt] <Expr>;
+#   15|           0: [MethodAccess] functionExpression0b(...)
+#   15|             0: [LambdaExpr] ...->...
+#   15|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
+#   15|                 1: [Constructor] 
+#   15|                   5: [BlockStmt] { ... }
+#   15|                     0: [SuperConstructorInvocationStmt] super(...)
+#   15|                 1: [Method] invoke
+#   15|                   5: [BlockStmt] { ... }
+#   15|                     0: [ReturnStmt] return ...
+#   15|                       0: [IntegerLiteral] 5
+#   15|               -3: [TypeAccess] Function0<Object>
+#   16|         2: [ExprStmt] <Expr>;
+#   16|           0: [MethodAccess] functionExpression0c(...)
+#   16|             0: [LambdaExpr] ...->...
+#   16|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
+#   16|                 1: [Constructor] 
+#   16|                   5: [BlockStmt] { ... }
+#   16|                     0: [SuperConstructorInvocationStmt] super(...)
+#   16|                 1: [Method] invoke
+#   16|                   5: [BlockStmt] { ... }
+#   16|                     0: [ReturnStmt] return ...
+#   16|                       0: [IntegerLiteral] 5
+#   16|               -3: [TypeAccess] Function0<Object>
+#   17|         3: [ExprStmt] <Expr>;
+#   17|           0: [MethodAccess] functionExpression1a(...)
+#   17|             0: [IntegerLiteral] 5
+#   17|             1: [LambdaExpr] ...->...
+#   17|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
+#   17|                 1: [Constructor] 
+#   17|                   5: [BlockStmt] { ... }
+#   17|                     0: [SuperConstructorInvocationStmt] super(...)
+#   17|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   17|                     0: [Parameter] a
+#   17|                   5: [BlockStmt] { ... }
+#   17|                     0: [ReturnStmt] return ...
+#   17|                       0: [IntegerLiteral] 5
+#   17|               -3: [TypeAccess] Function1<Integer,Integer>
+#   18|         4: [ExprStmt] <Expr>;
+#   18|           0: [MethodAccess] functionExpression1a(...)
+#   18|             0: [IntegerLiteral] 5
+#   18|             1: [LambdaExpr] ...->...
+#   18|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
+#   18|                 1: [Constructor] 
+#   18|                   5: [BlockStmt] { ... }
+#   18|                     0: [SuperConstructorInvocationStmt] super(...)
+#   18|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   18|                     0: [Parameter] it
+#   18|                   5: [BlockStmt] { ... }
+#   18|                     0: [ReturnStmt] return ...
+#   18|                       0: [VarAccess] it
+#   18|               -3: [TypeAccess] Function1<Integer,Integer>
+#   19|         5: [ExprStmt] <Expr>;
+#   19|           0: [MethodAccess] functionExpression1a(...)
+#   19|             0: [IntegerLiteral] 5
+#   19|             1: [LambdaExpr] ...->...
+#   19|               -4: [AnonymousClass] new Function1<Integer,Integer>(...) { ... }
+#   19|                 1: [Constructor] 
+#   19|                   5: [BlockStmt] { ... }
+#   19|                     0: [SuperConstructorInvocationStmt] super(...)
+#   19|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   19|                     0: [Parameter] $noName_0
+#   19|                   5: [BlockStmt] { ... }
+#   19|                     0: [ReturnStmt] return ...
+#   19|                       0: [IntegerLiteral] 5
+#   19|               -3: [TypeAccess] Function1<Integer,Integer>
+#   20|         6: [ExprStmt] <Expr>;
+#   20|           0: [MethodAccess] functionExpression1a(...)
+#   20|             0: [IntegerLiteral] 5
+#   20|             1: [ClassInstanceExpr] new MyLambda(...)
+#   20|               -3: [TypeAccess] MyLambda
+#   21|         7: [ExprStmt] <Expr>;
+#   21|           0: [MethodAccess] functionExpression1b(...)
+#   21|             0: [IntegerLiteral] 5
+#   21|             1: [LambdaExpr] ...->...
+#   21|               -4: [AnonymousClass] new Function1<Object,Object>(...) { ... }
+#   21|                 1: [Constructor] 
+#   21|                   5: [BlockStmt] { ... }
+#   21|                     0: [SuperConstructorInvocationStmt] super(...)
+#   21|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   21|                     0: [Parameter] a
+#   21|                   5: [BlockStmt] { ... }
+#   21|                     0: [ReturnStmt] return ...
+#   21|                       0: [VarAccess] a
+#   21|               -3: [TypeAccess] Function1<Object,Object>
+#   22|         8: [ExprStmt] <Expr>;
+#   22|           0: [MethodAccess] functionExpression2(...)
+#   22|             0: [IntegerLiteral] 5
+#   22|             1: [LambdaExpr] ...->...
+#   22|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
+#   22|                 1: [Constructor] 
+#   22|                   5: [BlockStmt] { ... }
+#   22|                     0: [SuperConstructorInvocationStmt] super(...)
+#   22|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   22|                     0: [Parameter] $noName_0
+#   22|                     1: [Parameter] $noName_1
+#   22|                   5: [BlockStmt] { ... }
+#   22|                     0: [ReturnStmt] return ...
+#   22|                       0: [IntegerLiteral] 5
+#   22|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   23|         9: [ExprStmt] <Expr>;
+#   23|           0: [MethodAccess] functionExpression2(...)
+#   23|             0: [IntegerLiteral] 5
+#   23|             1: [LambdaExpr] ...->...
+#   23|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
+#   23|                 1: [Constructor] 
+#   23|                   5: [BlockStmt] { ... }
+#   23|                     0: [SuperConstructorInvocationStmt] super(...)
+#   23|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   23|                     0: [Parameter] $noName_0
+#   23|                     1: [Parameter] $noName_1
+#   23|                   5: [BlockStmt] { ... }
+#   23|                     0: [ReturnStmt] return ...
+#   23|                       0: [IntegerLiteral] 5
+#   23|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   24|         10: [ExprStmt] <Expr>;
+#   24|           0: [MethodAccess] functionExpression3(...)
+#   24|             0: [IntegerLiteral] 5
+#   24|             1: [LambdaExpr] ...->...
+#   24|               -4: [AnonymousClass] new Function2<Integer,Integer,Integer>(...) { ... }
+#   24|                 1: [Constructor] 
+#   24|                   5: [BlockStmt] { ... }
+#   24|                     0: [SuperConstructorInvocationStmt] super(...)
+#   24|                 1: [ExtensionMethod] invoke
+#-----|                   4: (Parameters)
+#   24|                     0: [Parameter] $this$functionExpression3
+#   24|                     1: [Parameter] a
+#   24|                   5: [BlockStmt] { ... }
+#   24|                     0: [ReturnStmt] return ...
+#   24|                       0: [AddExpr] ... + ...
+#   24|                         0: [ThisAccess] this
+#   24|                         1: [VarAccess] a
+#   24|               -3: [TypeAccess] Function2<Integer,Integer,Integer>
+#   25|         11: [ExprStmt] <Expr>;
+#   25|           0: [MethodAccess] functionExpression4(...)
+#   25|             0: [IntegerLiteral] 5
+#   25|             1: [LambdaExpr] ...->...
+#   25|               -4: [AnonymousClass] new Function1<Integer,Function1<Integer,Double>>(...) { ... }
+#   25|                 1: [Constructor] 
+#   25|                   5: [BlockStmt] { ... }
+#   25|                     0: [SuperConstructorInvocationStmt] super(...)
+#   25|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   25|                     0: [Parameter] a
+#   25|                   5: [BlockStmt] { ... }
+#   25|                     0: [ReturnStmt] return ...
+#   25|                       0: [LambdaExpr] ...->...
+#   25|                         -4: [AnonymousClass] new Function1<Integer,Double>(...) { ... }
+#   25|                           1: [Constructor] 
+#   25|                             5: [BlockStmt] { ... }
+#   25|                               0: [SuperConstructorInvocationStmt] super(...)
+#   25|                           1: [Method] invoke
+#-----|                             4: (Parameters)
+#   25|                               0: [Parameter] b
+#   25|                             5: [BlockStmt] { ... }
+#   25|                               0: [ReturnStmt] return ...
+#   25|                                 0: [DoubleLiteral] 5.0
+#   25|                         -3: [TypeAccess] Function1<Integer,Double>
+#   25|               -3: [TypeAccess] Function1<Integer,Function1<Integer,Double>>
+#   27|         12: [ExprStmt] <Expr>;
+#   27|           0: [MethodAccess] functionExpression22(...)
+#   27|             0: [IntegerLiteral] 5
+#   27|             1: [LambdaExpr] ...->...
+#   27|               -4: [AnonymousClass] new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... }
+#   27|                 1: [Constructor] 
+#   27|                   5: [BlockStmt] { ... }
+#   27|                     0: [SuperConstructorInvocationStmt] super(...)
+#   27|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   27|                     0: [Parameter] a0
+#   27|                     1: [Parameter] a1
+#   27|                     2: [Parameter] a2
+#   27|                     3: [Parameter] a3
+#   27|                     4: [Parameter] a4
+#   27|                     5: [Parameter] a5
+#   27|                     6: [Parameter] a6
+#   27|                     7: [Parameter] a7
+#   27|                     8: [Parameter] a8
+#   27|                     9: [Parameter] a9
+#   27|                     10: [Parameter] a10
+#   27|                     11: [Parameter] a11
+#   27|                     12: [Parameter] a12
+#   27|                     13: [Parameter] a13
+#   27|                     14: [Parameter] a14
+#   27|                     15: [Parameter] a15
+#   27|                     16: [Parameter] a16
+#   27|                     17: [Parameter] a17
+#   27|                     18: [Parameter] a18
+#   27|                     19: [Parameter] a19
+#   27|                     20: [Parameter] a20
+#   27|                     21: [Parameter] a21
+#   27|                   5: [BlockStmt] { ... }
+#   27|                     0: [ExprStmt] <Expr>;
+#   27|                       0: [CastExpr] (...)...
+#   27|                         0: [TypeAccess] Unit
+#   27|                         1: [IntegerLiteral] 5
+#   27|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
+#   28|         13: [ExprStmt] <Expr>;
+#   28|           0: [MethodAccess] functionExpression23(...)
+#   28|             0: [IntegerLiteral] 5
+#   28|             1: [LambdaExpr] ...->...
+#   28|               -4: [AnonymousClass] new FunctionN<String>(...) { ... }
+#   28|                 1: [Constructor] 
+#   28|                   5: [BlockStmt] { ... }
+#   28|                     0: [SuperConstructorInvocationStmt] super(...)
+#   28|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   28|                     0: [Parameter] a0
+#   28|                     1: [Parameter] a1
+#   28|                     2: [Parameter] a2
+#   28|                     3: [Parameter] a3
+#   28|                     4: [Parameter] a4
+#   28|                     5: [Parameter] a5
+#   28|                     6: [Parameter] a6
+#   28|                     7: [Parameter] a7
+#   28|                     8: [Parameter] a8
+#   28|                     9: [Parameter] a9
+#   28|                     10: [Parameter] a10
+#   28|                     11: [Parameter] a11
+#   28|                     12: [Parameter] a12
+#   28|                     13: [Parameter] a13
+#   28|                     14: [Parameter] a14
+#   28|                     15: [Parameter] a15
+#   28|                     16: [Parameter] a16
+#   28|                     17: [Parameter] a17
+#   28|                     18: [Parameter] a18
+#   28|                     19: [Parameter] a19
+#   28|                     20: [Parameter] a20
+#   28|                     21: [Parameter] a21
+#   28|                     22: [Parameter] a22
+#   28|                   5: [BlockStmt] { ... }
+#   28|                     0: [ReturnStmt] return ...
+#   28|                       0: [StringLiteral] 
+#   28|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   28|                     0: [Parameter] args
+#   28|                   5: [BlockStmt] { ... }
+#   28|                     0: [ReturnStmt] return ...
+#   28|                       0: [MethodAccess] invoke(...)
+#   28|                         -1: [ThisAccess] this
+#   28|                         0: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             0: [IntegerLiteral] 0
+#   28|                         1: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             1: [IntegerLiteral] 1
+#   28|                         2: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             2: [IntegerLiteral] 2
+#   28|                         3: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             3: [IntegerLiteral] 3
+#   28|                         4: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             4: [IntegerLiteral] 4
+#   28|                         5: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             5: [IntegerLiteral] 5
+#   28|                         6: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             6: [IntegerLiteral] 6
+#   28|                         7: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             7: [IntegerLiteral] 7
+#   28|                         8: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             8: [IntegerLiteral] 8
+#   28|                         9: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             9: [IntegerLiteral] 9
+#   28|                         10: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             10: [IntegerLiteral] 10
+#   28|                         11: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             11: [IntegerLiteral] 11
+#   28|                         12: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             12: [IntegerLiteral] 12
+#   28|                         13: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             13: [IntegerLiteral] 13
+#   28|                         14: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             14: [IntegerLiteral] 14
+#   28|                         15: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             15: [IntegerLiteral] 15
+#   28|                         16: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             16: [IntegerLiteral] 16
+#   28|                         17: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             17: [IntegerLiteral] 17
+#   28|                         18: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             18: [IntegerLiteral] 18
+#   28|                         19: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             19: [IntegerLiteral] 19
+#   28|                         20: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             20: [IntegerLiteral] 20
+#   28|                         21: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             21: [IntegerLiteral] 21
+#   28|                         22: [CastExpr] (...)...
+#   28|                           0: [TypeAccess] int
+#   28|                           1: [MethodAccess] get(...)
+#   28|                             -1: [VarAccess] args
+#   28|                             22: [IntegerLiteral] 22
+#   28|               -3: [TypeAccess] FunctionN<String>
+#   31|   2: [Class] MyLambda
+#   31|     1: [Constructor] MyLambda
+#   31|       5: [BlockStmt] { ... }
+#   31|         0: [SuperConstructorInvocationStmt] super(...)
+#   31|         1: [ExprStmt] <Expr>;
+#   31|           0: [MethodAccess] <obinit>(...)
+#   32|     3: [Method] invoke
+#-----|       4: (Parameters)
+#   32|         0: [Parameter] x
+#   32|       5: [BlockStmt] { ... }
+#   32|         0: [ReturnStmt] return ...
+#   32|           0: [IntegerLiteral] 5
+localFunctionCalls.kt:
+#    0| [CompilationUnit] localFunctionCalls
+#    0|   1: [Class] LocalFunctionCallsKt
+#    3|     1: [Method] x
+#    3|       5: [BlockStmt] { ... }
+#    4|         0: [LocalVariableDeclStmt] var ...;
+#    4|           1: [LocalVariableDeclExpr] x
+#    4|             0: [IntegerLiteral] 5
+#    5|         1: [LocalTypeDeclStmt] class ...
+#    5|           0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#    5|             1: [Constructor] 
+#    5|               5: [BlockStmt] { ... }
+#    5|                 0: [SuperConstructorInvocationStmt] super(...)
+#    5|             1: [Method] a
+#-----|               2: (Generic Parameters)
+#    5|                 0: [TypeVariable] T
+#-----|               4: (Parameters)
+#    5|                 0: [Parameter] i
+#    5|               5: [BlockStmt] { ... }
+#    5|                 0: [ReturnStmt] return ...
+#    5|                   0: [AddExpr] ... + ...
+#    5|                     0: [VarAccess] i
+#    5|                     1: [VarAccess] x
+#    6|         2: [ExprStmt] <Expr>;
+#    6|           0: [AssignExpr] ...=...
+#    6|             0: [VarAccess] x
+#    6|             1: [IntegerLiteral] 6
+#    7|         3: [ExprStmt] <Expr>;
+#    7|           0: [CastExpr] (...)...
+#    7|             0: [TypeAccess] Unit
+#    7|             1: [MethodAccess] a(...)
+#    7|               -2: [TypeAccess] String
+#    7|               -1: [ClassInstanceExpr] new (...)
+#    7|                 -3: [TypeAccess] Object
+#    7|               0: [IntegerLiteral] 42
+#    8|         4: [ExprStmt] <Expr>;
+#    8|           0: [AssignExpr] ...=...
+#    8|             0: [VarAccess] x
+#    8|             1: [IntegerLiteral] 7
+#    9|         5: [LocalTypeDeclStmt] class ...
+#    9|           0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#    9|             1: [Constructor] 
+#    9|               5: [BlockStmt] { ... }
+#    9|                 0: [SuperConstructorInvocationStmt] super(...)
+#    9|             1: [ExtensionMethod] f1
+#-----|               2: (Generic Parameters)
+#    9|                 0: [TypeVariable] T1
+#-----|               4: (Parameters)
+#    9|                 0: [Parameter] <this>
+#    9|                 1: [Parameter] i
+#    9|               5: [BlockStmt] { ... }
+#    9|                 0: [ReturnStmt] return ...
+#    9|                   0: [IntegerLiteral] 5
+#   10|         6: [ExprStmt] <Expr>;
+#   10|           0: [CastExpr] (...)...
+#   10|             0: [TypeAccess] Unit
+#   10|             1: [MethodAccess] f1(...)
+#   10|               -2: [TypeAccess] Integer
+#   10|               -1: [ClassInstanceExpr] new (...)
+#   10|                 -3: [TypeAccess] Object
+#   10|               0: [ClassInstanceExpr] new C1<Integer>(...)
+#   10|                 -3: [TypeAccess] C1<Integer>
+#   10|                   0: [TypeAccess] Integer
+#   10|               1: [IntegerLiteral] 42
+#   13|   2: [Class,GenericType,ParameterizedType] C1
+#-----|     -2: (Generic Parameters)
+#   13|       0: [TypeVariable] T
+#   13|     1: [Constructor] C1
+#   13|       5: [BlockStmt] { ... }
+#   13|         0: [SuperConstructorInvocationStmt] super(...)
+#   13|         1: [ExprStmt] <Expr>;
+#   13|           0: [MethodAccess] <obinit>(...)
