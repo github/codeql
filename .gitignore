@@ -1,8 +1,0 @@
-ql/target
-ql/extractor-pack
-.vscode/launch.json
-.cache
-ql/ql/test/**/*.testproj
-ql/ql/test/**/*.actual
-ql/ql/test/**/CONSISTENCY
-ql/work
