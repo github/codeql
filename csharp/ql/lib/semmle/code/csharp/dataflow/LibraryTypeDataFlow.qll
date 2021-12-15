@@ -1391,25 +1391,6 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
   }
 }
 
-/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>`. */
-private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlow extends LibraryTypeDataFlow,
-  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    // var awaitable = task.ConfigureAwait(false);
-    // var awaiter = awaitable.GetAwaiter();  // <-- awaitable.m_configuredTaskAwaiter
-    // var result = awaiter.GetResult();
-    c = this.getGetAwaiterMethod() and
-    source = TCallableFlowSourceQualifier() and
-    sourceAp = AccessPath::synthetic(any(SyntheticConfiguredTaskAwaiterField s)) and
-    sink = TCallableFlowSinkReturn() and
-    sinkAp = AccessPath::empty() and
-    preservesValue = true
-  }
-}
-
 /** Data flow for `System.Runtime.CompilerServices.TaskAwaiter<>`. */
 class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
   SystemRuntimeCompilerServicesTaskAwaiterStruct {

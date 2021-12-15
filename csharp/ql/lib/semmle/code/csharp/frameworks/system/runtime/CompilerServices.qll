@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Runtime
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Runtime.CompilerServices` namespace. */
 class SystemRuntimeCompilerServicesNamespace extends Namespace {
@@ -41,6 +42,14 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends System
   /** Gets the field that stores the underlying awaiter. */
   Field getUnderlyingAwaiterField() {
     result = this.getAField() and result.hasName("m_configuredTaskAwaiter")
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>`. */
+private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;SyntheticField[m_configuredTaskAwaiter] of Argument[-1];ReturnValue;value"
   }
 }
 
