@@ -291,3 +291,10 @@ function withForLoop() {
         sink(req.taint); // NOT OK
     });
 }
+
+function routeHandlersInProps() {
+    let routes = require('./routes');
+    const app = express();
+    app.use(routes.first);
+    app.get('/', routes.second);
+}
