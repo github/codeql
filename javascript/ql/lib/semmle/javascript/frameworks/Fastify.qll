@@ -132,9 +132,8 @@ module Fastify {
     string methodName;
 
     RouteSetup() {
-      this.getMethodName() = methodName and
-      methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"] and
-      server.flowsTo(this.getReceiver())
+      this = server(server.flow()).getAMethodCall(methodName).asExpr() and
+      methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"]
     }
 
     override DataFlow::SourceNode getARouteHandler() {
