@@ -49,6 +49,7 @@ private class MethodModifier extends MethodCall {
   Expr getMethodArgument() { result = this.getArgument(0) }
 
   /** Holds if this call modifies a method with name `name` in namespace `n`. */
+  pragma[noinline]
   predicate modifiesMethod(Namespace n, string name) {
     this = n.getAStmt() and
     [
@@ -139,7 +140,10 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   override predicate isPrivate() {
-    any(Private p).modifiesMethod(this.getEnclosingModule(), this.getName())
+    exists(Namespace n, string name |
+      any(Private p).modifiesMethod(n, name) and
+      isDeclaredIn(this, n, name)
+    )
     or
     // Top-level methods are private members of the Object class
     this.getEnclosingModule() instanceof Toplevel
@@ -150,6 +154,14 @@ class Method extends MethodBase, TMethod {
   }
 
   final override string toString() { result = this.getName() }
+}
+
+/**
+ * Holds if the method `m` has name `name` and is declared in namespace `n`.
+ */
+pragma[noinline]
+private predicate isDeclaredIn(MethodBase m, Namespace n, string name) {
+  n = m.getEnclosingModule() and name = m.getName()
 }
 
 /** A singleton method. */
@@ -205,7 +217,10 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * ```
    */
   override predicate isPrivate() {
-    any(PrivateClassMethod p).modifiesMethod(this.getEnclosingModule(), this.getName())
+    exists(Namespace n, string name |
+      any(PrivateClassMethod p).modifiesMethod(n, name) and
+      isDeclaredIn(this, n, name)
+    )
   }
 }
 
