@@ -713,11 +713,7 @@ module Public {
         or
         exists(c.(MethodCallNode).getTarget().getBody())
         or
-        exists(string package, string type, string name |
-          c.(MethodCallNode).getTarget().hasQualifiedName(package, type, name)
-        |
-          exists(interpretElement(package, type, _, name, "", _))
-        )
+        hasExternalSpecification(c.(DataFlow::MethodCallNode).getTarget())
       )
     }
 
