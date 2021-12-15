@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A formatting expression, that is an expression of the format <code>fmt % arguments</code> must have the correct number of
+arguments on the right hand side of the expression. Otherwise, a <code>TypeError</code> will be raised.
+    
+</p>
+
+</overview>
+<recommendation>
+<p>Change the format to match the arguments and ensure that the right hand argument always has the correct number of elements.
+
+</p></recommendation>
+<example>
+<p>In the following example the right hand side of the formatting operation can be of length 2, which does not match the format string.</p>
+<sample src="WrongNumberArgumentsForFormat.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a> </li>
+
+</references>
+</qhelp>

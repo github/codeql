@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Checking the function argument after calling the function itself. This situation looks suspicious and requires the attention of the developer. It may be necessary to add validation before calling the function</p>
+
+
+</overview>
+<recommendation>
+
+<p>We recommend checking before calling the function.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and fixed use of function argument validation.</p>
+<sample src="LateCheckOfFunctionArgument.c" />
+
+</example>
+<references>
+
+<li>
+  CWE Common Weakness Enumeration:
+  <a href="https://cwe.mitre.org/data/definitions/20.html"> CWE-20: Improper Input Validation</a>.
+</li>
+
+</references>
+</qhelp>

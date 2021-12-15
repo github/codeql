@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> A module is imported (using the <code>import</code> statement) but that module
+is never used. This creates a dependency that does not need to exist and makes the code
+more difficult to read.
+</p>
+
+</overview>
+<recommendation>
+<p>Delete the import statement.</p>
+
+</recommendation>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#import">import statement</a>.</li>
+
+</references>
+</qhelp>

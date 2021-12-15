@@ -1,0 +1,3 @@
+| RedundantToStringCall.cs:7:27:7:38 | call to method ToString | Redundant call to 'ToString'. |
+| RedundantToStringCall.cs:10:37:10:48 | call to method ToString | Redundant call to 'ToString'. |
+| RedundantToStringCallBad.cs:7:45:7:56 | call to method ToString | Redundant call to 'ToString'. |

@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An <code>if</code> statement where both branches do nothing but return or write to a variable can be 
+better expressed using the ternary <code>?</code> operator.
+</p><p>
+
+</p><p>
+Use of the ternary operator enhances readability in two ways:</p>
+<ul>
+<li>
+It focuses the reader's attention on the intent of the code (to return or write) rather than the
+testing of a condition.</li>
+<li>
+It is more concise, reducing the amount of code that needs to be read.</li>
+<li>
+You can initialize a variable conditionally on the line on which it is declared, rather than 
+assigning to it after initialization. This ensures that you initialize the variable as you intended.</li>
+</ul>
+
+</overview>
+<recommendation>
+<p>Consider using a ternary operator in this situation.</p>
+
+</recommendation>
+<example>
+<p>The following code includes two examples of <code>if</code> statements, <code>myAbs1</code> and 
+<code>1</code>, which can be simplified using the ternary operator. <code>myAbs2</code> and <code>s2</code> 
+show how the statements can be improved.</p>
+<sample src="MissedTernaryOpportunity.java" />
+</example>
+</qhelp>

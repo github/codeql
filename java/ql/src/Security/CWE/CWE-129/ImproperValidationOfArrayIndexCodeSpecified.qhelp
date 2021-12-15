@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a hard-coded or randomly provided value as the index to an array access can cause that array
+ access to throw an <code>ArrayIndexOutOfBoundsException</code> if the value is outside the bounds of
+ that array.</p>
+
+<p>This problem occurs when a literal value, or a value generated using the <code>Random</code>, is
+ used as an index for an array access operation. If one or more of the range of values produced by
+ the random operation, or the fixed value of the literal, is outside the bounds of the array then
+ this can cause an <code>ArrayIndexOutOfBoundsException</code>.</p>
+</overview>
+<recommendation>
+<p>
+If the index is a literal value, then the literal value may need to be modified to specify an index that is
+ guaranteed to lie within the bounds of the array. Alternatively, the literal value may represent a default
+ value that was never intended to be used in the array access, in which case the logic should be modified to
+ ensure the default value is never used.
+</p>
+<p>
+For indices that flow from randomly generated values, either the random operation should be modified to generate
+ a value that is guaranteed to be within the bounds of the array, or the array access should be protected by
+ suitable conditional checks that verify the index is smaller than the length and larger than or equal to zero.
+</p>
+</recommendation>
+<example>
+<p>The following program searches through an array to find the index at which some search text matches:</p>
+<sample src="ImproperValidationOfArrayIndexCodeSpecified.java" />
+<p>
+If the search text is not found, <code>foundProductID</code> is set to the default value - specified as
+ <code>-1</code>. In the first access, <code>foundProductID</code> is used without checking whether the
+ index is <code>-1</code>. This code can therefore throw a <code>ArrayIndexOutOfBoundsException</code> if
+ the search text is not found.
+</p>
+<p>
+In the second case, the array access is protected by a conditional that verifies the index is greater than
+ or equal to zero. This ensures that an <code>ArrayIndexOutOfBoundsException</code> cannot be thrown.
+ </p>
+</example>
+
+<references>
+
+<li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.</li>
+
+</references>
+</qhelp>

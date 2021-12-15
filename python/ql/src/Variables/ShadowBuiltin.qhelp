@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a local variable is defined with the same name as a built-in type or function, the local
+variable "shadows" or "hides" the built-in object. This can lead to
+confusion as a reader of the code may expect the variable to refer to a built-in object.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Change the name of the local variable so that it no longer matches the name of a built-in object.
+</p>
+
+</recommendation>
+<example>
+<sample src="ShadowBuiltin.py" />
+
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html">Built-in Functions</a>,
+                            <a href="http://docs.python.org/2/library/stdtypes.html">Built-in Types</a>.</li>
+
+</references>
+</qhelp>

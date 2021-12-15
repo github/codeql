@@ -1,0 +1,52 @@
+edges
+| test.py:7:14:7:20 | ControlFlowNode for request | test.py:7:14:7:25 | ControlFlowNode for Attribute |
+| test.py:7:14:7:25 | ControlFlowNode for Attribute | test.py:8:21:8:26 | ControlFlowNode for target |
+| test.py:30:17:30:23 | ControlFlowNode for request | test.py:30:17:30:28 | ControlFlowNode for Attribute |
+| test.py:30:17:30:28 | ControlFlowNode for Attribute | test.py:32:21:32:24 | ControlFlowNode for safe |
+| test.py:37:17:37:23 | ControlFlowNode for request | test.py:37:17:37:28 | ControlFlowNode for Attribute |
+| test.py:37:17:37:28 | ControlFlowNode for Attribute | test.py:39:21:39:24 | ControlFlowNode for safe |
+| test.py:44:17:44:23 | ControlFlowNode for request | test.py:44:17:44:28 | ControlFlowNode for Attribute |
+| test.py:44:17:44:28 | ControlFlowNode for Attribute | test.py:46:21:46:24 | ControlFlowNode for safe |
+| test.py:60:17:60:23 | ControlFlowNode for request | test.py:60:17:60:28 | ControlFlowNode for Attribute |
+| test.py:60:17:60:28 | ControlFlowNode for Attribute | test.py:62:21:62:26 | ControlFlowNode for unsafe |
+| test.py:67:17:67:23 | ControlFlowNode for request | test.py:67:17:67:28 | ControlFlowNode for Attribute |
+| test.py:67:17:67:28 | ControlFlowNode for Attribute | test.py:69:21:69:26 | ControlFlowNode for unsafe |
+| test.py:74:17:74:23 | ControlFlowNode for request | test.py:74:17:74:28 | ControlFlowNode for Attribute |
+| test.py:74:17:74:28 | ControlFlowNode for Attribute | test.py:76:21:76:26 | ControlFlowNode for unsafe |
+| test.py:81:17:81:23 | ControlFlowNode for request | test.py:81:17:81:28 | ControlFlowNode for Attribute |
+| test.py:81:17:81:28 | ControlFlowNode for Attribute | test.py:83:21:83:26 | ControlFlowNode for unsafe |
+nodes
+| test.py:7:14:7:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:7:14:7:25 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:8:21:8:26 | ControlFlowNode for target | semmle.label | ControlFlowNode for target |
+| test.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:30:17:30:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:32:21:32:24 | ControlFlowNode for safe | semmle.label | ControlFlowNode for safe |
+| test.py:37:17:37:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:37:17:37:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:39:21:39:24 | ControlFlowNode for safe | semmle.label | ControlFlowNode for safe |
+| test.py:44:17:44:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:44:17:44:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:46:21:46:24 | ControlFlowNode for safe | semmle.label | ControlFlowNode for safe |
+| test.py:60:17:60:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:60:17:60:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:62:21:62:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+| test.py:67:17:67:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:67:17:67:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:69:21:69:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+| test.py:74:17:74:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:74:17:74:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:76:21:76:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+| test.py:81:17:81:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:81:17:81:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:83:21:83:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+subpaths
+#select
+| test.py:8:21:8:26 | ControlFlowNode for target | test.py:7:14:7:20 | ControlFlowNode for request | test.py:8:21:8:26 | ControlFlowNode for target | Untrusted URL redirection due to $@. | test.py:7:14:7:20 | ControlFlowNode for request | A user-provided value |
+| test.py:32:21:32:24 | ControlFlowNode for safe | test.py:30:17:30:23 | ControlFlowNode for request | test.py:32:21:32:24 | ControlFlowNode for safe | Untrusted URL redirection due to $@. | test.py:30:17:30:23 | ControlFlowNode for request | A user-provided value |
+| test.py:39:21:39:24 | ControlFlowNode for safe | test.py:37:17:37:23 | ControlFlowNode for request | test.py:39:21:39:24 | ControlFlowNode for safe | Untrusted URL redirection due to $@. | test.py:37:17:37:23 | ControlFlowNode for request | A user-provided value |
+| test.py:46:21:46:24 | ControlFlowNode for safe | test.py:44:17:44:23 | ControlFlowNode for request | test.py:46:21:46:24 | ControlFlowNode for safe | Untrusted URL redirection due to $@. | test.py:44:17:44:23 | ControlFlowNode for request | A user-provided value |
+| test.py:62:21:62:26 | ControlFlowNode for unsafe | test.py:60:17:60:23 | ControlFlowNode for request | test.py:62:21:62:26 | ControlFlowNode for unsafe | Untrusted URL redirection due to $@. | test.py:60:17:60:23 | ControlFlowNode for request | A user-provided value |
+| test.py:69:21:69:26 | ControlFlowNode for unsafe | test.py:67:17:67:23 | ControlFlowNode for request | test.py:69:21:69:26 | ControlFlowNode for unsafe | Untrusted URL redirection due to $@. | test.py:67:17:67:23 | ControlFlowNode for request | A user-provided value |
+| test.py:76:21:76:26 | ControlFlowNode for unsafe | test.py:74:17:74:23 | ControlFlowNode for request | test.py:76:21:76:26 | ControlFlowNode for unsafe | Untrusted URL redirection due to $@. | test.py:74:17:74:23 | ControlFlowNode for request | A user-provided value |
+| test.py:83:21:83:26 | ControlFlowNode for unsafe | test.py:81:17:81:23 | ControlFlowNode for request | test.py:83:21:83:26 | ControlFlowNode for unsafe | Untrusted URL redirection due to $@. | test.py:81:17:81:23 | ControlFlowNode for request | A user-provided value |

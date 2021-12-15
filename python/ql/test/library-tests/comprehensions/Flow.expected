@@ -1,0 +1,48 @@
+| 0 | Entry node for Module test | 3 | ControlFlowNode for range |
+| 2 | ControlFlowNode for .0 | 2 | ControlFlowNode for .0 |
+| 2 | ControlFlowNode for .0 | 2 | ControlFlowNode for For |
+| 2 | ControlFlowNode for BinaryExpr | 2 | ControlFlowNode for Yield |
+| 2 | ControlFlowNode for For | 2 | ControlFlowNode for For |
+| 2 | ControlFlowNode for For | 2 | Exit node for Function listcomp |
+| 2 | ControlFlowNode for For | 3 | ControlFlowNode for i |
+| 2 | ControlFlowNode for For | 4 | ControlFlowNode for j |
+| 2 | ControlFlowNode for ListComp | 8 | ControlFlowNode for seq |
+| 2 | ControlFlowNode for Yield | 2 | ControlFlowNode for For |
+| 2 | ControlFlowNode for i | 2 | ControlFlowNode for j |
+| 2 | ControlFlowNode for j | 2 | ControlFlowNode for BinaryExpr |
+| 2 | Entry node for Function listcomp | 2 | ControlFlowNode for .0 |
+| 3 | ControlFlowNode for IntegerLiteral | 3 | ControlFlowNode for range() |
+| 3 | ControlFlowNode for i | 4 | ControlFlowNode for range |
+| 3 | ControlFlowNode for range | 3 | ControlFlowNode for IntegerLiteral |
+| 3 | ControlFlowNode for range() | 2 | ControlFlowNode for ListComp |
+| 4 | ControlFlowNode for IntegerLiteral | 4 | ControlFlowNode for range() |
+| 4 | ControlFlowNode for j | 2 | ControlFlowNode for i |
+| 4 | ControlFlowNode for range | 4 | ControlFlowNode for IntegerLiteral |
+| 4 | ControlFlowNode for range() | 2 | ControlFlowNode for For |
+| 7 | ControlFlowNode for .0 | 7 | ControlFlowNode for .0 |
+| 7 | ControlFlowNode for .0 | 7 | ControlFlowNode for For |
+| 7 | ControlFlowNode for For | 7 | Exit node for Function setcomp |
+| 7 | ControlFlowNode for For | 8 | ControlFlowNode for x |
+| 7 | ControlFlowNode for SetComp | 14 | ControlFlowNode for mapping |
+| 7 | Entry node for Function setcomp | 7 | ControlFlowNode for .0 |
+| 8 | ControlFlowNode for BinaryExpr | 8 | ControlFlowNode for Yield |
+| 8 | ControlFlowNode for Yield | 7 | ControlFlowNode for For |
+| 8 | ControlFlowNode for seq | 7 | ControlFlowNode for SetComp |
+| 8 | ControlFlowNode for x | 8 | ControlFlowNode for BinaryExpr |
+| 8 | ControlFlowNode for x | 8 | ControlFlowNode for x |
+| 11 | ControlFlowNode for .0 | 11 | ControlFlowNode for .0 |
+| 11 | ControlFlowNode for .0 | 11 | ControlFlowNode for For |
+| 11 | ControlFlowNode for DictComp | 0 | Exit node for Module test |
+| 11 | ControlFlowNode for For | 11 | Exit node for Function dictcomp |
+| 11 | ControlFlowNode for For | 13 | ControlFlowNode for Tuple |
+| 11 | Entry node for Function dictcomp | 11 | ControlFlowNode for .0 |
+| 12 | ControlFlowNode for Attribute | 12 | ControlFlowNode for Tuple |
+| 12 | ControlFlowNode for Tuple | 12 | ControlFlowNode for Yield |
+| 12 | ControlFlowNode for Yield | 11 | ControlFlowNode for For |
+| 12 | ControlFlowNode for y | 12 | ControlFlowNode for Attribute |
+| 12 | ControlFlowNode for z | 12 | ControlFlowNode for z() |
+| 12 | ControlFlowNode for z() | 12 | ControlFlowNode for y |
+| 13 | ControlFlowNode for Tuple | 13 | ControlFlowNode for y |
+| 13 | ControlFlowNode for y | 13 | ControlFlowNode for z |
+| 13 | ControlFlowNode for z | 12 | ControlFlowNode for z |
+| 14 | ControlFlowNode for mapping | 11 | ControlFlowNode for DictComp |

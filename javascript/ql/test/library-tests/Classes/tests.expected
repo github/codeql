@@ -1,0 +1,314 @@
+test_FieldInits
+| dataflow.js:5:3:5:17 | #priv = source; | dataflow.js:5:11:5:16 | source |
+| fields.js:3:3:3:8 | y = 42 | fields.js:3:7:3:8 | 42 |
+| privateFields.js:2:2:2:15 | #privDecl = 3; | privateFields.js:2:14:2:14 | 3 |
+| privateFields.js:3:2:3:12 | #if = "if"; | privateFields.js:3:8:3:11 | "if" |
+| privateFields.js:21:2:21:22 | ["#publ ... "] = 6; | privateFields.js:21:21:21:21 | 6 |
+| staticInitializer.js:2:3:2:15 | static x = 1; | staticInitializer.js:2:14:2:14 | 1 |
+test_ComputedMethods
+| tst.js:3:3:3:56 | ["const ... r. */ } |
+| tst.js:13:3:13:10 | [m]() {} |
+test_StaticMethods
+| points.js:15:3:17:3 | static  ... t";\\n  } |
+| points.js:30:3:32:3 | static  ... t";\\n  } |
+| privateFields.js:36:3:38:3 | static  ... bj;\\n  } |
+| staticConstructor.js:2:3:2:59 | static  ... tor"; } |
+| staticInitializer.js:12:3:14:3 | static  ...  5;\\n  } |
+test_ClassDefinition_getSuperClass
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:20:29:20:33 | Point |
+| tst.js:6:1:8:1 | class B ... t); }\\n} | tst.js:6:17:6:17 | A |
+test_ClassNodeStaticMethod
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | className | points.js:15:19:17:3 | () {\\n   ... t";\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | className | points.js:30:19:32:3 | () {\\n   ... t";\\n  } |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | isC | privateFields.js:36:13:38:3 | (obj) { ... bj;\\n  } |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | constructor | staticConstructor.js:2:21:2:59 | () { re ... tor"; } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | bar | staticInitializer.js:12:13:14:3 | () {\\n   ...  5;\\n  } |
+test_ClassDefinitions
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} |
+| tst.js:6:1:8:1 | class B ... t); }\\n} |
+| tst.js:11:1:14:1 | class C ... () {}\\n} |
+test_AccessorMethods
+| points.js:7:3:9:3 | get dis ... y);\\n  } |
+| privateFields.js:34:3:34:18 | get #getter() {} |
+test_Fields
+| dataflow.js:5:3:5:17 | #priv = source; | dataflow.js:5:3:5:7 | #priv |
+| fields.js:2:3:2:4 | x; | fields.js:2:3:2:3 | x |
+| fields.js:3:3:3:8 | y = 42 | fields.js:3:3:3:3 | y |
+| privateFields.js:2:2:2:15 | #privDecl = 3; | privateFields.js:2:2:2:10 | #privDecl |
+| privateFields.js:3:2:3:12 | #if = "if"; | privateFields.js:3:2:3:4 | #if |
+| privateFields.js:19:2:19:13 | #privSecond; | privateFields.js:19:2:19:12 | #privSecond |
+| privateFields.js:21:2:21:22 | ["#publ ... "] = 6; | privateFields.js:21:3:21:16 | "#publicField" |
+| privateFields.js:30:3:30:9 | #brand; | privateFields.js:30:3:30:8 | #brand |
+| staticInitializer.js:2:3:2:15 | static x = 1; | staticInitializer.js:2:10:2:10 | x |
+test_ClassDefinition_getName
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | Foo |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | C |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | Point |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | ColouredPoint |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | Foo |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | C |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | MyClass |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | MyClass |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | A |
+| tst.js:6:1:8:1 | class B ... t); }\\n} | B |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | C |
+test_MethodDefinitions
+| dataflow.js:4:12:4:11 | constructor() {} | dataflow.js:4:12:4:11 | constructor | dataflow.js:4:12:4:11 | () {} | dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} |
+| dataflow.js:6:3:8:3 | getPriv ... iv;\\n\\t\\t} | dataflow.js:6:3:6:9 | getPriv | dataflow.js:6:10:8:3 | () {\\n\\t\\t ... iv;\\n\\t\\t} | dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} |
+| dataflow.js:10:3:12:3 | getFals ... .  \\n\\t\\t} | dataflow.js:10:3:10:17 | getFalsePrivate | dataflow.js:10:18:12:3 | () {\\n\\t\\t ... .  \\n\\t\\t} | dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} |
+| fields.js:1:9:1:8 | constructor() {} | fields.js:1:9:1:8 | constructor | fields.js:1:9:1:8 | () {} | fields.js:1:1:4:1 | class C ...  = 42\\n} |
+| points.js:2:3:5:3 | constru ...  y;\\n  } | points.js:2:3:2:13 | constructor | points.js:2:14:5:3 | (x, y)  ...  y;\\n  } | points.js:1:1:18:1 | class P ... ;\\n  }\\n} |
+| points.js:7:3:9:3 | get dis ... y);\\n  } | points.js:7:7:7:10 | dist | points.js:7:11:9:3 | () {\\n   ... y);\\n  } | points.js:1:1:18:1 | class P ... ;\\n  }\\n} |
+| points.js:11:3:13:3 | toStrin ... )";\\n  } | points.js:11:3:11:10 | toString | points.js:11:11:13:3 | () {\\n   ... )";\\n  } | points.js:1:1:18:1 | class P ... ;\\n  }\\n} |
+| points.js:15:3:17:3 | static  ... t";\\n  } | points.js:15:10:15:18 | className | points.js:15:19:17:3 | () {\\n   ... t";\\n  } | points.js:1:1:18:1 | class P ... ;\\n  }\\n} |
+| points.js:21:3:24:3 | constru ...  c;\\n  } | points.js:21:3:21:13 | constructor | points.js:21:14:24:3 | (x, y,  ...  c;\\n  } | points.js:20:1:33:1 | class C ... ;\\n  }\\n} |
+| points.js:26:3:28:3 | toStrin ... ur;\\n  } | points.js:26:3:26:10 | toString | points.js:26:11:28:3 | () {\\n   ... ur;\\n  } | points.js:20:1:33:1 | class C ... ;\\n  }\\n} |
+| points.js:30:3:32:3 | static  ... t";\\n  } | points.js:30:10:30:18 | className | points.js:30:19:32:3 | () {\\n   ... t";\\n  } | points.js:20:1:33:1 | class C ... ;\\n  }\\n} |
+| privateFields.js:1:11:1:10 | constructor() {} | privateFields.js:1:11:1:10 | constructor | privateFields.js:1:11:1:10 | () {} | privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:4:2:8:2 | reads() ... #if;\\n\\t} | privateFields.js:4:2:4:6 | reads | privateFields.js:4:7:8:2 | () {\\n\\t\\t ... #if;\\n\\t} | privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:10:2:12:2 | equals( ... ecl;\\n\\t} | privateFields.js:10:2:10:7 | equals | privateFields.js:10:8:12:2 | (o) {\\n\\t ... ecl;\\n\\t} | privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:14:2:17:2 | writes( ... = 5;\\n\\t} | privateFields.js:14:2:14:7 | writes | privateFields.js:14:8:17:2 | () {\\n\\t\\t ... = 5;\\n\\t} | privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:23:2:26:2 | calls() ... l();\\n\\t} | privateFields.js:23:2:23:6 | calls | privateFields.js:23:7:26:2 | () {\\n\\t\\t ... l();\\n\\t} | privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} |
+| privateFields.js:29:9:29:8 | constructor() {} | privateFields.js:29:9:29:8 | constructor | privateFields.js:29:9:29:8 | () {} | privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} |
+| privateFields.js:32:3:32:14 | #method() {} | privateFields.js:32:3:32:9 | #method | privateFields.js:32:10:32:14 | () {} | privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} |
+| privateFields.js:34:3:34:18 | get #getter() {} | privateFields.js:34:7:34:13 | #getter | privateFields.js:34:14:34:18 | () {} | privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} |
+| privateFields.js:36:3:38:3 | static  ... bj;\\n  } | privateFields.js:36:10:36:12 | isC | privateFields.js:36:13:38:3 | (obj) { ... bj;\\n  } | privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} |
+| staticConstructor.js:1:15:1:14 | constructor() {} | staticConstructor.js:1:15:1:14 | constructor | staticConstructor.js:1:15:1:14 | () {} | staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} |
+| staticConstructor.js:2:3:2:59 | static  ... tor"; } | staticConstructor.js:2:10:2:20 | constructor | staticConstructor.js:2:21:2:59 | () { re ... tor"; } | staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} |
+| staticInitializer.js:3:3:5:3 | constru ...  2;\\n  } | staticInitializer.js:3:3:3:13 | constructor | staticInitializer.js:3:14:5:3 | () {\\n   ...  2;\\n  } | staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} |
+| staticInitializer.js:9:3:11:3 | foo() { ...  4;\\n  } | staticInitializer.js:9:3:9:5 | foo | staticInitializer.js:9:6:11:3 | () {\\n   ...  4;\\n  } | staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} |
+| staticInitializer.js:12:3:14:3 | static  ...  5;\\n  } | staticInitializer.js:12:10:12:12 | bar | staticInitializer.js:12:13:14:3 | () {\\n   ...  5;\\n  } | staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} |
+| tst.js:2:3:2:50 | "constr ... r. */ } | tst.js:2:3:2:15 | "constructor" | tst.js:2:16:2:50 | () { /* ... r. */ } | tst.js:1:9:4:1 | class { ...  */ }\\n} |
+| tst.js:3:3:3:56 | ["const ... r. */ } | tst.js:3:4:3:16 | "constructor" | tst.js:3:18:3:56 | () { /* ... r. */ } | tst.js:1:9:4:1 | class { ...  */ }\\n} |
+| tst.js:7:3:7:38 | constru ... get); } | tst.js:7:3:7:13 | constructor | tst.js:7:14:7:38 | () { su ... get); } | tst.js:6:1:8:1 | class B ... t); }\\n} |
+| tst.js:11:9:11:8 | constructor() {} | tst.js:11:9:11:8 | constructor | tst.js:11:9:11:8 | () {} | tst.js:11:1:14:1 | class C ... () {}\\n} |
+| tst.js:12:3:12:8 | m() {} | tst.js:12:3:12:3 | m | tst.js:12:4:12:8 | () {} | tst.js:11:1:14:1 | class C ... () {}\\n} |
+| tst.js:13:3:13:10 | [m]() {} | tst.js:13:4:13:4 | m | tst.js:13:6:13:10 | () {} | tst.js:11:1:14:1 | class C ... () {}\\n} |
+test_getAMember
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:4:12:4:11 | constructor() {} |
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:5:3:5:17 | #priv = source; |
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:6:3:8:3 | getPriv ... iv;\\n\\t\\t} |
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:10:3:12:3 | getFals ... .  \\n\\t\\t} |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:1:9:1:8 | constructor() {} |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:2:3:2:4 | x; |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:3:3:3:8 | y = 42 |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:2:3:5:3 | constru ...  y;\\n  } |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:7:3:9:3 | get dis ... y);\\n  } |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:11:3:13:3 | toStrin ... )";\\n  } |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:15:3:17:3 | static  ... t";\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:21:3:24:3 | constru ...  c;\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:26:3:28:3 | toStrin ... ur;\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:30:3:32:3 | static  ... t";\\n  } |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:1:11:1:10 | constructor() {} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:2:2:2:15 | #privDecl = 3; |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:3:2:3:12 | #if = "if"; |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:4:2:8:2 | reads() ... #if;\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:10:2:12:2 | equals( ... ecl;\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:14:2:17:2 | writes( ... = 5;\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:19:2:19:13 | #privSecond; |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:21:2:21:22 | ["#publ ... "] = 6; |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:23:2:26:2 | calls() ... l();\\n\\t} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:29:9:29:8 | constructor() {} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:30:3:30:9 | #brand; |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:32:3:32:14 | #method() {} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:34:3:34:18 | get #getter() {} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:36:3:38:3 | static  ... bj;\\n  } |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | staticConstructor.js:1:15:1:14 | constructor() {} |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | staticConstructor.js:2:3:2:59 | static  ... tor"; } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:2:3:2:15 | static x = 1; |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:3:3:5:3 | constru ...  2;\\n  } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:6:10:8:3 | {\\n    M ...  3;\\n  } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:9:3:11:3 | foo() { ...  4;\\n  } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:12:3:14:3 | static  ...  5;\\n  } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:15:10:17:3 | {\\n    t ...  6;\\n  } |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | tst.js:2:3:2:50 | "constr ... r. */ } |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | tst.js:3:3:3:56 | ["const ... r. */ } |
+| tst.js:6:1:8:1 | class B ... t); }\\n} | tst.js:7:3:7:38 | constru ... get); } |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | tst.js:11:9:11:8 | constructor() {} |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | tst.js:12:3:12:8 | m() {} |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | tst.js:13:3:13:10 | [m]() {} |
+test_MethodNames
+| dataflow.js:4:12:4:11 | constructor() {} | constructor |
+| dataflow.js:6:3:8:3 | getPriv ... iv;\\n\\t\\t} | getPriv |
+| dataflow.js:10:3:12:3 | getFals ... .  \\n\\t\\t} | getFalsePrivate |
+| fields.js:1:9:1:8 | constructor() {} | constructor |
+| points.js:2:3:5:3 | constru ...  y;\\n  } | constructor |
+| points.js:7:3:9:3 | get dis ... y);\\n  } | dist |
+| points.js:11:3:13:3 | toStrin ... )";\\n  } | toString |
+| points.js:15:3:17:3 | static  ... t";\\n  } | className |
+| points.js:21:3:24:3 | constru ...  c;\\n  } | constructor |
+| points.js:26:3:28:3 | toStrin ... ur;\\n  } | toString |
+| points.js:30:3:32:3 | static  ... t";\\n  } | className |
+| privateFields.js:1:11:1:10 | constructor() {} | constructor |
+| privateFields.js:4:2:8:2 | reads() ... #if;\\n\\t} | reads |
+| privateFields.js:10:2:12:2 | equals( ... ecl;\\n\\t} | equals |
+| privateFields.js:14:2:17:2 | writes( ... = 5;\\n\\t} | writes |
+| privateFields.js:23:2:26:2 | calls() ... l();\\n\\t} | calls |
+| privateFields.js:29:9:29:8 | constructor() {} | constructor |
+| privateFields.js:32:3:32:14 | #method() {} | #method |
+| privateFields.js:34:3:34:18 | get #getter() {} | #getter |
+| privateFields.js:36:3:38:3 | static  ... bj;\\n  } | isC |
+| staticConstructor.js:1:15:1:14 | constructor() {} | constructor |
+| staticConstructor.js:2:3:2:59 | static  ... tor"; } | constructor |
+| staticInitializer.js:3:3:5:3 | constru ...  2;\\n  } | constructor |
+| staticInitializer.js:9:3:11:3 | foo() { ...  4;\\n  } | foo |
+| staticInitializer.js:12:3:14:3 | static  ...  5;\\n  } | bar |
+| tst.js:2:3:2:50 | "constr ... r. */ } | constructor |
+| tst.js:3:3:3:56 | ["const ... r. */ } | constructor |
+| tst.js:7:3:7:38 | constru ... get); } | constructor |
+| tst.js:11:9:11:8 | constructor() {} | constructor |
+| tst.js:12:3:12:8 | m() {} | m |
+test_NewTargetExpr
+| tst.js:7:25:7:34 | new.target |
+test_SuperExpr
+| points.js:22:5:22:9 | super |
+| points.js:27:12:27:16 | super |
+| tst.js:7:19:7:23 | super |
+test_SyntheticConstructors
+| dataflow.js:4:12:4:11 | constructor() {} |
+| fields.js:1:9:1:8 | constructor() {} |
+| privateFields.js:1:11:1:10 | constructor() {} |
+| privateFields.js:29:9:29:8 | constructor() {} |
+| staticConstructor.js:1:15:1:14 | constructor() {} |
+| tst.js:11:9:11:8 | constructor() {} |
+test_ConstructorDefinitions
+| dataflow.js:4:12:4:11 | constructor() {} |
+| fields.js:1:9:1:8 | constructor() {} |
+| points.js:2:3:5:3 | constru ...  y;\\n  } |
+| points.js:21:3:24:3 | constru ...  c;\\n  } |
+| privateFields.js:1:11:1:10 | constructor() {} |
+| privateFields.js:29:9:29:8 | constructor() {} |
+| staticConstructor.js:1:15:1:14 | constructor() {} |
+| staticInitializer.js:3:3:5:3 | constru ...  2;\\n  } |
+| tst.js:2:3:2:50 | "constr ... r. */ } |
+| tst.js:7:3:7:38 | constru ... get); } |
+| tst.js:11:9:11:8 | constructor() {} |
+test_ClassNodeConstructor
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:4:12:4:11 | () {} |
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:1:9:1:8 | () {} |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:2:14:5:3 | (x, y)  ...  y;\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:21:14:24:3 | (x, y,  ...  c;\\n  } |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | privateFields.js:1:11:1:10 | () {} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | privateFields.js:29:9:29:8 | () {} |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | staticConstructor.js:1:15:1:14 | () {} |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:3:14:5:3 | () {\\n   ...  2;\\n  } |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | tst.js:2:16:2:50 | () { /* ... r. */ } |
+| tst.js:6:1:8:1 | class B ... t); }\\n} | tst.js:7:14:7:38 | () { su ... get); } |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | tst.js:11:9:11:8 | () {} |
+test_ClassNodeInstanceMethod
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | getFalsePrivate | dataflow.js:10:18:12:3 | () {\\n\\t\\t ... .  \\n\\t\\t} |
+| dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | getPriv | dataflow.js:6:10:8:3 | () {\\n\\t\\t ... iv;\\n\\t\\t} |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | toString | points.js:11:11:13:3 | () {\\n   ... )";\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | toString | points.js:26:11:28:3 | () {\\n   ... ur;\\n  } |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | calls | privateFields.js:23:7:26:2 | () {\\n\\t\\t ... l();\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | equals | privateFields.js:10:8:12:2 | (o) {\\n\\t ... ecl;\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | reads | privateFields.js:4:7:8:2 | () {\\n\\t\\t ... #if;\\n\\t} |
+| privateFields.js:1:1:27:1 | class F ... );\\n\\t}\\n} | writes | privateFields.js:14:8:17:2 | () {\\n\\t\\t ... = 5;\\n\\t} |
+| privateFields.js:29:1:39:1 | class C ... ;\\n  }\\n} | #method | privateFields.js:32:10:32:14 | () {} |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | foo | staticInitializer.js:9:6:11:3 | () {\\n   ...  4;\\n  } |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | constructor | tst.js:3:18:3:56 | () { /* ... r. */ } |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | m | tst.js:12:4:12:8 | () {} |
+getAccessModifier
+| dataflow.js:4:12:4:11 | constructor() {} | dataflow.js:4:12:4:11 | constructor | Public |
+| dataflow.js:5:3:5:17 | #priv = source; | dataflow.js:5:3:5:7 | #priv | Private |
+| dataflow.js:6:3:8:3 | getPriv ... iv;\\n\\t\\t} | dataflow.js:6:3:6:9 | getPriv | Public |
+| dataflow.js:7:11:7:20 | this.#priv | dataflow.js:7:16:7:20 | #priv | Private |
+| dataflow.js:10:3:12:3 | getFals ... .  \\n\\t\\t} | dataflow.js:10:3:10:17 | getFalsePrivate | Public |
+| dataflow.js:11:11:11:23 | this["#priv"] | dataflow.js:11:16:11:22 | "#priv" | Public |
+| dataflow.js:14:7:14:23 | new Foo().getPriv | dataflow.js:14:17:14:23 | getPriv | Public |
+| dataflow.js:16:7:16:31 | new Foo ... Private | dataflow.js:16:17:16:31 | getFalsePrivate | Public |
+| fields.js:1:9:1:8 | constructor() {} | fields.js:1:9:1:8 | constructor | Public |
+| fields.js:3:3:3:8 | y = 42 | fields.js:3:3:3:3 | y | Public |
+| points.js:2:3:5:3 | constru ...  y;\\n  } | points.js:2:3:2:13 | constructor | Public |
+| points.js:3:5:3:10 | this.x | points.js:3:10:3:10 | x | Public |
+| points.js:4:5:4:10 | this.y | points.js:4:10:4:10 | y | Public |
+| points.js:7:3:9:3 | get dis ... y);\\n  } | points.js:7:7:7:10 | dist | Public |
+| points.js:8:12:8:20 | Math.sqrt | points.js:8:17:8:20 | sqrt | Public |
+| points.js:8:22:8:27 | this.x | points.js:8:27:8:27 | x | Public |
+| points.js:8:29:8:34 | this.x | points.js:8:34:8:34 | x | Public |
+| points.js:8:36:8:41 | this.y | points.js:8:41:8:41 | y | Public |
+| points.js:8:43:8:48 | this.y | points.js:8:48:8:48 | y | Public |
+| points.js:11:3:13:3 | toStrin ... )";\\n  } | points.js:11:3:11:10 | toString | Public |
+| points.js:12:18:12:23 | this.x | points.js:12:23:12:23 | x | Public |
+| points.js:12:34:12:39 | this.y | points.js:12:39:12:39 | y | Public |
+| points.js:15:3:17:3 | static  ... t";\\n  } | points.js:15:10:15:18 | className | Public |
+| points.js:21:3:24:3 | constru ...  c;\\n  } | points.js:21:3:21:13 | constructor | Public |
+| points.js:23:5:23:15 | this.colour | points.js:23:10:23:15 | colour | Public |
+| points.js:26:3:28:3 | toStrin ... ur;\\n  } | points.js:26:3:26:10 | toString | Public |
+| points.js:27:12:27:25 | super.toString | points.js:27:18:27:25 | toString | Public |
+| points.js:27:40:27:50 | this.colour | points.js:27:45:27:50 | colour | Public |
+| points.js:30:3:32:3 | static  ... t";\\n  } | points.js:30:10:30:18 | className | Public |
+| privateFields.js:1:11:1:10 | constructor() {} | privateFields.js:1:11:1:10 | constructor | Public |
+| privateFields.js:2:2:2:15 | #privDecl = 3; | privateFields.js:2:2:2:10 | #privDecl | Private |
+| privateFields.js:3:2:3:12 | #if = "if"; | privateFields.js:3:2:3:4 | #if | Private |
+| privateFields.js:4:2:8:2 | reads() ... #if;\\n\\t} | privateFields.js:4:2:4:6 | reads | Public |
+| privateFields.js:5:13:5:25 | this.#privUse | privateFields.js:5:18:5:25 | #privUse | Private |
+| privateFields.js:6:13:6:35 | this["# ... puted"] | privateFields.js:6:18:6:34 | "#publicComputed" | Public |
+| privateFields.js:7:13:7:20 | this.#if | privateFields.js:7:18:7:20 | #if | Private |
+| privateFields.js:10:2:12:2 | equals( ... ecl;\\n\\t} | privateFields.js:10:2:10:7 | equals | Public |
+| privateFields.js:11:10:11:23 | this.#privDecl | privateFields.js:11:15:11:23 | #privDecl | Private |
+| privateFields.js:11:29:11:39 | o.#privDecl | privateFields.js:11:31:11:39 | #privDecl | Private |
+| privateFields.js:14:2:17:2 | writes( ... = 5;\\n\\t} | privateFields.js:14:2:14:7 | writes | Public |
+| privateFields.js:15:3:15:16 | this.#privDecl | privateFields.js:15:8:15:16 | #privDecl | Private |
+| privateFields.js:16:3:16:17 | this["#public"] | privateFields.js:16:8:16:16 | "#public" | Public |
+| privateFields.js:21:2:21:22 | ["#publ ... "] = 6; | privateFields.js:21:3:21:16 | "#publicField" | Public |
+| privateFields.js:23:2:26:2 | calls() ... l();\\n\\t} | privateFields.js:23:2:23:6 | calls | Public |
+| privateFields.js:24:3:24:16 | this.#privDecl | privateFields.js:24:8:24:16 | #privDecl | Private |
+| privateFields.js:25:7:25:20 | this.#privDecl | privateFields.js:25:12:25:20 | #privDecl | Private |
+| privateFields.js:29:9:29:8 | constructor() {} | privateFields.js:29:9:29:8 | constructor | Public |
+| privateFields.js:32:3:32:14 | #method() {} | privateFields.js:32:3:32:9 | #method | Private |
+| privateFields.js:34:3:34:18 | get #getter() {} | privateFields.js:34:7:34:13 | #getter | Private |
+| privateFields.js:36:3:38:3 | static  ... bj;\\n  } | privateFields.js:36:10:36:12 | isC | Public |
+| staticConstructor.js:1:15:1:14 | constructor() {} | staticConstructor.js:1:15:1:14 | constructor | Public |
+| staticConstructor.js:2:3:2:59 | static  ... tor"; } | staticConstructor.js:2:10:2:20 | constructor | Public |
+| staticConstructor.js:4:1:4:11 | console.log | staticConstructor.js:4:9:4:11 | log | Public |
+| staticConstructor.js:4:13:4:31 | MyClass.constructor | staticConstructor.js:4:21:4:31 | constructor | Public |
+| staticInitializer.js:2:3:2:15 | static x = 1; | staticInitializer.js:2:10:2:10 | x | Public |
+| staticInitializer.js:3:3:5:3 | constru ...  2;\\n  } | staticInitializer.js:3:3:3:13 | constructor | Public |
+| staticInitializer.js:4:5:4:10 | this.y | staticInitializer.js:4:10:4:10 | y | Public |
+| staticInitializer.js:7:5:7:13 | MyClass.z | staticInitializer.js:7:13:7:13 | z | Public |
+| staticInitializer.js:9:3:11:3 | foo() { ...  4;\\n  } | staticInitializer.js:9:3:9:5 | foo | Public |
+| staticInitializer.js:10:5:10:10 | this.t | staticInitializer.js:10:10:10:10 | t | Public |
+| staticInitializer.js:12:3:14:3 | static  ...  5;\\n  } | staticInitializer.js:12:10:12:12 | bar | Public |
+| staticInitializer.js:13:5:13:10 | this.u | staticInitializer.js:13:10:13:10 | u | Public |
+| staticInitializer.js:16:5:16:10 | this.v | staticInitializer.js:16:10:16:10 | v | Public |
+| tst.js:2:3:2:50 | "constr ... r. */ } | tst.js:2:3:2:15 | "constructor" | Public |
+| tst.js:3:3:3:56 | ["const ... r. */ } | tst.js:3:4:3:16 | "constructor" | Public |
+| tst.js:7:3:7:38 | constru ... get); } | tst.js:7:3:7:13 | constructor | Public |
+| tst.js:11:9:11:8 | constructor() {} | tst.js:11:9:11:8 | constructor | Public |
+| tst.js:12:3:12:8 | m() {} | tst.js:12:3:12:3 | m | Public |
+| tst.js:13:3:13:10 | [m]() {} | tst.js:13:4:13:4 | m | Public |
+| tst.js:17:3:17:20 | m() { return 42; } | tst.js:17:3:17:3 | m | Public |
+dataflow
+| dataflow.js:2:15:2:22 | "source" | dataflow.js:14:7:14:25 | new Foo().getPriv() |
+| dataflow.js:2:15:2:22 | "source" | dataflow.js:16:7:16:33 | new Foo ... ivate() |
+staticInitializer
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:6:10:8:3 | {\\n    M ...  3;\\n  } |
+| staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:15:10:17:3 | {\\n    t ...  6;\\n  } |
+privateIdentifier
+| dataflow.js:5:3:5:7 | #priv |
+| dataflow.js:7:16:7:20 | #priv |
+| privateFields.js:2:2:2:10 | #privDecl |
+| privateFields.js:3:2:3:4 | #if |
+| privateFields.js:5:18:5:25 | #privUse |
+| privateFields.js:7:18:7:20 | #if |
+| privateFields.js:11:15:11:23 | #privDecl |
+| privateFields.js:11:31:11:39 | #privDecl |
+| privateFields.js:15:8:15:16 | #privDecl |
+| privateFields.js:19:2:19:12 | #privSecond |
+| privateFields.js:24:8:24:16 | #privDecl |
+| privateFields.js:25:12:25:20 | #privDecl |
+| privateFields.js:30:3:30:8 | #brand |
+| privateFields.js:32:3:32:9 | #method |
+| privateFields.js:34:7:34:13 | #getter |
+| privateFields.js:37:12:37:17 | #brand |
+| privateFields.js:37:29:37:35 | #method |
+| privateFields.js:37:47:37:53 | #getter |

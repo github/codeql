@@ -1,0 +1,2 @@
+| NonAssignedFields.cs:87:9:87:22 | BadNonAssigned | The field 'BadNonAssigned' is never explicitly assigned a value, yet it is read $@. | NonAssignedFields.cs:109:20:109:33 | access to field BadNonAssigned | here |
+| NonAssignedFields.cs:88:12:88:26 | BadAssignedNull | The field 'BadAssignedNull' is never explicitly assigned a value, yet it is read $@. | NonAssignedFields.cs:113:13:113:27 | access to field BadAssignedNull | here |

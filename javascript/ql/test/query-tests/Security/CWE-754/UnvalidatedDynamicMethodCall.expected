@@ -1,0 +1,178 @@
+nodes
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev |
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev |
+| UnsafeDynamicMethodAccess.js:6:9:6:37 | message |
+| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) |
+| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
+| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data |
+| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:9:15:15 | message |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action |
+| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| tst.js:6:39:6:40 | ev |
+| tst.js:6:39:6:40 | ev |
+| tst.js:7:9:7:39 | name |
+| tst.js:7:16:7:34 | JSON.parse(ev.data) |
+| tst.js:7:16:7:39 | JSON.pa ... a).name |
+| tst.js:7:27:7:28 | ev |
+| tst.js:7:27:7:33 | ev.data |
+| tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:9:9:9:10 | ev |
+| tst.js:9:9:9:15 | ev.data |
+| tst.js:11:5:11:13 | obj[name] |
+| tst.js:11:5:11:13 | obj[name] |
+| tst.js:11:5:11:13 | obj[name] |
+| tst.js:11:9:11:12 | name |
+| tst.js:17:9:17:22 | fn |
+| tst.js:17:9:17:22 | fn |
+| tst.js:17:14:17:22 | obj[name] |
+| tst.js:17:14:17:22 | obj[name] |
+| tst.js:17:18:17:21 | name |
+| tst.js:18:5:18:6 | fn |
+| tst.js:18:5:18:6 | fn |
+| tst.js:18:5:18:6 | fn |
+| tst.js:20:7:20:8 | fn |
+| tst.js:20:7:20:8 | fn |
+| tst.js:21:7:21:15 | obj[name] |
+| tst.js:21:7:21:15 | obj[name] |
+| tst.js:21:7:21:15 | obj[name] |
+| tst.js:21:11:21:14 | name |
+| tst.js:22:11:22:12 | fn |
+| tst.js:22:11:22:12 | fn |
+| tst.js:26:7:26:15 | obj[name] |
+| tst.js:26:7:26:15 | obj[name] |
+| tst.js:26:7:26:15 | obj[name] |
+| tst.js:26:11:26:14 | name |
+| tst.js:28:7:28:15 | obj[name] |
+| tst.js:28:7:28:15 | obj[name] |
+| tst.js:28:11:28:14 | name |
+| tst.js:34:9:34:24 | key |
+| tst.js:34:15:34:24 | "$" + name |
+| tst.js:34:21:34:24 | name |
+| tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:9:35:11 | key |
+| tst.js:37:7:37:14 | obj[key] |
+| tst.js:37:7:37:14 | obj[key] |
+| tst.js:37:11:37:13 | key |
+| tst.js:47:39:47:40 | ev |
+| tst.js:47:39:47:40 | ev |
+| tst.js:48:9:48:39 | name |
+| tst.js:48:16:48:34 | JSON.parse(ev.data) |
+| tst.js:48:16:48:39 | JSON.pa ... a).name |
+| tst.js:48:27:48:28 | ev |
+| tst.js:48:27:48:33 | ev.data |
+| tst.js:49:9:49:23 | fn |
+| tst.js:49:14:49:23 | obj2[name] |
+| tst.js:49:19:49:22 | name |
+| tst.js:50:5:50:6 | fn |
+| tst.js:50:5:50:6 | fn |
+edges
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
+| UnsafeDynamicMethodAccess.js:6:9:6:37 | message | UnsafeDynamicMethodAccess.js:15:9:15:15 | message |
+| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) | UnsafeDynamicMethodAccess.js:6:9:6:37 | message |
+| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev | UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data |
+| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data | UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) |
+| UnsafeDynamicMethodAccess.js:15:9:15:15 | message | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
+| tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
+| tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
+| tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev |
+| tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev |
+| tst.js:7:9:7:39 | name | tst.js:11:9:11:12 | name |
+| tst.js:7:9:7:39 | name | tst.js:17:18:17:21 | name |
+| tst.js:7:9:7:39 | name | tst.js:21:11:21:14 | name |
+| tst.js:7:9:7:39 | name | tst.js:26:11:26:14 | name |
+| tst.js:7:9:7:39 | name | tst.js:28:11:28:14 | name |
+| tst.js:7:9:7:39 | name | tst.js:34:21:34:24 | name |
+| tst.js:7:16:7:34 | JSON.parse(ev.data) | tst.js:7:16:7:39 | JSON.pa ... a).name |
+| tst.js:7:16:7:39 | JSON.pa ... a).name | tst.js:7:9:7:39 | name |
+| tst.js:7:27:7:28 | ev | tst.js:7:27:7:33 | ev.data |
+| tst.js:7:27:7:33 | ev.data | tst.js:7:16:7:34 | JSON.parse(ev.data) |
+| tst.js:9:9:9:10 | ev | tst.js:9:9:9:15 | ev.data |
+| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
+| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
+| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
+| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
+| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn |
+| tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn |
+| tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
+| tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
+| tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
+| tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
+| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
+| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
+| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
+| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
+| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
+| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
+| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
+| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
+| tst.js:34:9:34:24 | key | tst.js:35:9:35:11 | key |
+| tst.js:34:9:34:24 | key | tst.js:37:11:37:13 | key |
+| tst.js:34:15:34:24 | "$" + name | tst.js:34:9:34:24 | key |
+| tst.js:34:21:34:24 | name | tst.js:34:15:34:24 | "$" + name |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
+| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] |
+| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] |
+| tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
+| tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
+| tst.js:48:9:48:39 | name | tst.js:49:19:49:22 | name |
+| tst.js:48:16:48:34 | JSON.parse(ev.data) | tst.js:48:16:48:39 | JSON.pa ... a).name |
+| tst.js:48:16:48:39 | JSON.pa ... a).name | tst.js:48:9:48:39 | name |
+| tst.js:48:27:48:28 | ev | tst.js:48:27:48:33 | ev.data |
+| tst.js:48:27:48:33 | ev.data | tst.js:48:16:48:34 | JSON.parse(ev.data) |
+| tst.js:49:9:49:23 | fn | tst.js:50:5:50:6 | fn |
+| tst.js:49:9:49:23 | fn | tst.js:50:5:50:6 | fn |
+| tst.js:49:14:49:23 | obj2[name] | tst.js:49:9:49:23 | fn |
+| tst.js:49:19:49:22 | name | tst.js:49:14:49:23 | obj2[name] |
+#select
+| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | user-controlled |
+| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | user-controlled |
+| tst.js:9:5:9:16 | obj[ev.data] | tst.js:6:39:6:40 | ev | tst.js:9:5:9:16 | obj[ev.data] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:11:5:11:13 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:11:5:11:13 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:18:5:18:6 | fn | tst.js:6:39:6:40 | ev | tst.js:18:5:18:6 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:20:7:20:8 | fn | tst.js:6:39:6:40 | ev | tst.js:20:7:20:8 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:21:7:21:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:21:7:21:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:22:11:22:12 | fn | tst.js:6:39:6:40 | ev | tst.js:22:11:22:12 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:26:7:26:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:26:7:26:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:28:7:28:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:28:7:28:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:35:5:35:12 | obj[key] | tst.js:6:39:6:40 | ev | tst.js:35:5:35:12 | obj[key] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:37:7:37:14 | obj[key] | tst.js:6:39:6:40 | ev | tst.js:37:7:37:14 | obj[key] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:50:5:50:6 | fn | tst.js:47:39:47:40 | ev | tst.js:50:5:50:6 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:47:39:47:40 | ev | user-controlled |

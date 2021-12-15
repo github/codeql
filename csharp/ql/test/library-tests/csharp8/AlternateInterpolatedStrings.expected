@@ -1,0 +1,6 @@
+inserts
+| AlternateInterpolatedStrings.cs:5:17:5:26 | $"..." | 1 | AlternateInterpolatedStrings.cs:5:23:5:24 | 12 |
+| AlternateInterpolatedStrings.cs:6:17:6:26 | $"..." | 1 | AlternateInterpolatedStrings.cs:6:23:6:24 | 12 |
+text
+| AlternateInterpolatedStrings.cs:5:17:5:26 | $"..." | 0 | AlternateInterpolatedStrings.cs:5:20:5:21 | "C:" |
+| AlternateInterpolatedStrings.cs:6:17:6:26 | $"..." | 0 | AlternateInterpolatedStrings.cs:6:20:6:21 | "C:" |

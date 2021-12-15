@@ -1,0 +1,5 @@
+name: codeql/python-upgrades
+groups: python
+upgrades: .
+library: true
+version: 0.0.5-dev

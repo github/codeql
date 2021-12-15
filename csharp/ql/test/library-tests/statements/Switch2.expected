@@ -1,0 +1,11 @@
+| statements.cs:68:21:68:30 | MainSwitch | statements.cs:73:17:73:23 | case ...: | 73 |
+| statements.cs:68:21:68:30 | MainSwitch | statements.cs:76:17:76:23 | case ...: | 76 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:89:17:89:29 | case ...: | 89 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:91:17:91:27 | case ...: | 91 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:93:17:93:29 | case ...: | 93 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:95:17:95:30 | case ...: | 95 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:97:17:97:28 | case ...: | 97 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:99:17:99:31 | case ...: | 99 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:101:17:101:28 | case ...: | 101 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:103:17:103:28 | case ...: | 103 |
+| statements.cs:85:20:85:31 | StringSwitch | statements.cs:104:17:104:29 | case ...: | 104 |

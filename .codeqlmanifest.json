@@ -1,0 +1,23 @@
+{
+    "provide": [
+        "*/ql/src/qlpack.yml",
+        "*/ql/lib/qlpack.yml",
+        "*/ql/test/qlpack.yml",
+        "*/ql/examples/qlpack.yml",
+        "*/upgrades/qlpack.yml",
+        "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
+        "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml",
+        "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",
+        "misc/legacy-support/*/qlpack.yml",
+        "misc/suite-helpers/qlpack.yml",
+        "ruby/extractor-pack/codeql-extractor.yml",
+        "ruby/ql/consistency-queries/qlpack.yml"
+    ],
+    "versionPolicies": {
+      "default": {
+        "requireChangeNotes": true,
+        "committedPrereleaseSuffix": "dev",
+        "committedVersion": "nextPatchRelease"
+      }
+    }
+}

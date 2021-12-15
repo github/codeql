@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns:qlpath xmlns:ns="https://semmle.com/schemas/qlpath">
+    <librarypath/>
+    <dbscheme>/semmlecode-javascript-queries/semmlecode.javascript.dbscheme</dbscheme>
+</ns:qlpath>

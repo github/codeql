@@ -1,0 +1,44 @@
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | fp_offset |  |  |  |
+| file://:0:0:0:0 | gp_offset |  |  |  |
+| file://:0:0:0:0 | overflow_arg_area |  |  |  |
+| file://:0:0:0:0 | reg_save_area |  |  |  |
+| variables.cpp:2:13:2:13 | pi | variables.cpp:25:12:25:16 | T |  |
+| variables.cpp:2:13:2:13 | pi | variables.cpp:25:12:25:16, variables.cpp:37:16:37:24 | float |  |
+| variables.cpp:2:13:2:13 | pi | variables.cpp:25:12:25:16, variables.cpp:38:16:38:22 | int |  |
+| variables.cpp:2:16:2:16 | pi |  | T | TemplateVariable |
+| variables.cpp:5:23:5:37 | pi |  | const char * |  |
+| variables.cpp:8:13:8:13 | multi_arg | variables.cpp:33:19:33:33 | S, T |  |
+| variables.cpp:8:13:8:13 | multi_arg | variables.cpp:33:19:33:33 | float, char |  |
+| variables.cpp:8:13:8:13 | multi_arg | variables.cpp:33:19:33:33 | short, long |  |
+| variables.cpp:8:13:8:13 | multi_arg | variables.cpp:40:23:40:60 | unsigned int, unsigned char |  |
+| variables.cpp:8:13:8:13 | multi_arg | variables.cpp:41:23:41:42 | int, char |  |
+| variables.cpp:8:23:8:23 | multi_arg |  | S, T | TemplateVariable |
+| variables.cpp:11:3:11:3 | mutable_val | variables.cpp:26:3:26:16 | T |  |
+| variables.cpp:11:3:11:3 | mutable_val | variables.cpp:26:3:26:16 | float |  |
+| variables.cpp:11:3:11:3 | mutable_val | variables.cpp:26:3:26:16, variables.cpp:43:3:43:18 | int |  |
+| variables.cpp:11:3:11:3 | mutable_val | variables.cpp:44:3:44:19 | long |  |
+| variables.cpp:11:15:11:15 | mutable_val |  | T | TemplateVariable |
+| variables.cpp:19:3:19:10 | bar |  | T | TemplateVariable |
+| variables.cpp:19:8:19:8 | bar | variables.cpp:27:3:27:13 | T |  |
+| variables.cpp:19:8:19:8 | bar | variables.cpp:27:3:27:13 | float |  |
+| variables.cpp:19:8:19:8 | bar | variables.cpp:27:3:27:13 | int |  |
+| variables.cpp:19:8:19:8 | bar | variables.cpp:46:3:46:17 | short |  |
+| variables.cpp:19:8:19:8 | bar | variables.cpp:47:3:47:18 | double |  |
+| variables.cpp:21:5:21:15 | no_template | variables.cpp:28:3:28:13, variables.cpp:28:3:28:13, variables.cpp:28:3:28:13, variables.cpp:49:3:49:13 |  |  |
+| variables.cpp:24:27:24:29 | val | variables.cpp:26:20:26:22, variables.cpp:27:17:27:19 |  |  |
+| variables.cpp:24:27:24:29 | val | variables.cpp:26:20:26:22, variables.cpp:27:17:27:19 |  |  |
+| variables.cpp:24:27:24:29 | val | variables.cpp:26:20:26:22, variables.cpp:27:17:27:19 |  |  |
+| variables.cpp:25:5:25:8 | pi_t |  |  |  |
+| variables.cpp:25:5:25:8 | pi_t |  |  |  |
+| variables.cpp:25:5:25:8 | pi_t |  |  |  |
+| variables.cpp:33:5:33:15 | multi_arg_s |  |  |  |
+| variables.cpp:33:5:33:15 | multi_arg_s |  |  |  |
+| variables.cpp:33:5:33:15 | multi_arg_s |  |  |  |
+| variables.cpp:37:9:37:12 | pi_f |  |  |  |
+| variables.cpp:38:9:38:12 | pi_i |  |  |  |
+| variables.cpp:40:9:40:19 | multi_arg_a |  |  |  |
+| variables.cpp:41:9:41:19 | multi_arg_b |  |  |  |

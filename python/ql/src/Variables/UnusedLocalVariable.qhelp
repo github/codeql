@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> A local variable is defined (by an assignment) but never used.
+</p>
+
+<include src="UnusedVariableNaming.inc.qhelp" />
+<include src="UnusedTuple.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>If the variable is included for documentation purposes or is otherwise intentionally unused, then change its name to indicate that it is unused,
+otherwise delete the assignment (taking care not to delete right hand side if it has side effects).</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>random_no</code> variable is never read but its assignment 
+has a side effect. Because of this it is important to remove only the left hand side of the 
+assignment in line 10.</p>
+<sample src="UnusedLocalVariable.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2/reference/simple_stmts.html#assignment-statements">Assignment statements</a>.</li>
+
+</references>
+</qhelp>

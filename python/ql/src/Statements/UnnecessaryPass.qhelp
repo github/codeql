@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A <code>pass</code> statement is only necessary when it is the only statement in a block (the
+list of statements forming part of a compound statement). This is because the purpose of the <code>
+pass</code> statement is to allow empty blocks where they would otherwise be syntactically invalid.
+If the block already contains other statements then the <code>pass</code> statement is unnecessary.</p>
+
+</overview>
+<recommendation>
+<p>Remove the <code>pass</code> statement.</p>
+
+</recommendation>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2/tutorial/controlflow.html#pass-statements">pass</a>.</li>
+
+</references>
+</qhelp>

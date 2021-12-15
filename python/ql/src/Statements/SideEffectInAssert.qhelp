@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>All code defined in assert statements is ignored when optimization is
+requested, that is, the program is run with the <code>-O</code> flag.
+If an assert statement has any side-effects then the behavior of
+the program changes when optimization is requested.</p>
+
+</overview>
+<recommendation>
+
+<p>Move all expressions with side-effects out of assert statements.</p>
+
+</recommendation>
+<example>
+<p>
+In the example, the exit code from <code>subprocess.call()</code> is checked against 0, but the entire
+expression is called from within an <code>assert</code> statement. If the code is ever run, then the
+not only the assertion itself, but also the external call, will be discarded. It is better to save the result
+of <code>subprocess.call()</code> to a temporary variable, and to assert that variable to be 0.
+</p>
+
+<sample src="SideEffectInAssert.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#assert">The assert statement</a>.</li>
+<li>TutorialsPoint, Python Programming: <a href="http://www.tutorialspoint.com/python/assertions_in_python.htm">Assertions in Python</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,9 @@
+| tst.js:8:1:8:44 | app.get ... es) {}) | RouteSetupAndRouterAndRouteHandlerPoI: $@ $@ | tst.js:4:11:4:19 | express() | router | tst.js:8:23:8:43 | functio ... res) {} | routehandler |
+| tst.js:8:23:8:43 | functio ... res) {} | RouteHandlerAndSetupPoI: $@ | tst.js:8:1:8:44 | app.get ... es) {}) | setup | tst.js:8:23:8:43 | functio ... res) {} | irrelevant |
+| tst.js:8:23:8:43 | functio ... res) {} | RouteHandlerPoI | tst.js:8:23:8:43 | functio ... res) {} | irrelevant | tst.js:8:23:8:43 | functio ... res) {} | irrelevant |
+| tst.js:10:10:10:30 | functio ... res) {} | RouteHandlerAndSetupPoI: $@ | tst.js:11:1:11:31 | app.get ... h", rh) | setup | tst.js:10:10:10:30 | functio ... res) {} | irrelevant |
+| tst.js:10:10:10:30 | functio ... res) {} | RouteHandlerPoI | tst.js:10:10:10:30 | functio ... res) {} | irrelevant | tst.js:10:10:10:30 | functio ... res) {} | irrelevant |
+| tst.js:11:1:11:31 | app.get ... h", rh) | RouteSetupAndRouterAndRouteHandlerPoI: $@ $@ | tst.js:4:11:4:19 | express() | router | tst.js:10:10:10:30 | functio ... res) {} | routehandler |
+| tst.js:15:1:19:2 | app.get ... .x);\\n}) | RouteSetupAndRouterAndRouteHandlerPoI: $@ $@ | tst.js:4:11:4:19 | express() | router | tst.js:15:23:19:1 | functio ... y.x);\\n} | routehandler |
+| tst.js:15:23:19:1 | functio ... y.x);\\n} | RouteHandlerAndSetupPoI: $@ | tst.js:15:1:19:2 | app.get ... .x);\\n}) | setup | tst.js:15:23:19:1 | functio ... y.x);\\n} | irrelevant |
+| tst.js:15:23:19:1 | functio ... y.x);\\n} | RouteHandlerPoI | tst.js:15:23:19:1 | functio ... y.x);\\n} | irrelevant | tst.js:15:23:19:1 | functio ... y.x);\\n} | irrelevant |

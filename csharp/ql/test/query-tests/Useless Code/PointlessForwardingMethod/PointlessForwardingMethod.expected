@@ -1,0 +1,2 @@
+| PointlessForwardingMethod.cs:11:17:11:17 | f | This method is a forwarder for $@, which is not called independently - the methods can be merged. | PointlessForwardingMethod.cs:8:17:8:17 | f | f |
+| PointlessForwardingMethod.cs:41:10:41:13 | i<> | This method is a forwarder for $@, which is not called independently - the methods can be merged. | PointlessForwardingMethod.cs:38:10:38:13 | i<> | i<> |

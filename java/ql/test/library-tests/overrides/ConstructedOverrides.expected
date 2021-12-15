@@ -1,0 +1,25 @@
+| ConstructedOverrides.java:2:14:2:33 | ConstructedOverrides | <obinit>() |
+| ConstructedOverrides.java:2:14:2:33 | ConstructedOverrides | ConstructedOverrides() |
+| ConstructedOverrides.java:2:14:2:33 | ConstructedOverrides | indirectUse(S) |
+| ConstructedOverrides.java:10:7:10:11 | Super | Super() |
+| ConstructedOverrides.java:10:7:10:11 | Super | unused(T) |
+| ConstructedOverrides.java:10:7:10:11 | Super | unusedGeneric(U, T) |
+| ConstructedOverrides.java:10:7:10:11 | Super | used(T) |
+| ConstructedOverrides.java:10:7:10:11 | Super | usedGeneric(U, T) |
+| ConstructedOverrides.java:17:7:17:9 | Sub | Sub() |
+| ConstructedOverrides.java:17:7:17:9 | Sub | unused(String) |
+| ConstructedOverrides.java:17:7:17:9 | Sub | used(String) |
+| ConstructedOverrides.java:17:7:17:9 | Sub | usedGeneric(U, String) |
+| ConstructedOverrides.java:23:7:23:10 | Sub2 | Sub2() |
+| ConstructedOverrides.java:23:7:23:10 | Sub2 | unusedGeneric(V, String) |
+| ConstructedOverrides.java:23:7:23:10 | Sub2 | usedGeneric(V, String) |
+| Super.class:0:0:0:0 | Super<S> | Super<S>() |
+| Super.class:0:0:0:0 | Super<S> | unused(S) |
+| Super.class:0:0:0:0 | Super<S> | unusedGeneric(U, S) |
+| Super.class:0:0:0:0 | Super<S> | used(S) |
+| Super.class:0:0:0:0 | Super<S> | usedGeneric(U, S) |
+| Super.class:0:0:0:0 | Super<String> | Super<String>() |
+| Super.class:0:0:0:0 | Super<String> | unused(String) |
+| Super.class:0:0:0:0 | Super<String> | unusedGeneric(U, String) |
+| Super.class:0:0:0:0 | Super<String> | used(String) |
+| Super.class:0:0:0:0 | Super<String> | usedGeneric(U, String) |

@@ -1,0 +1,1 @@
+| test.cpp:13:3:13:9 | ... = ... | This assignment expression slices from type $@ to $@ | test.cpp:6:8:6:13 | Point3 | Point3 | test.cpp:1:8:1:13 | Point2 | Point2 |

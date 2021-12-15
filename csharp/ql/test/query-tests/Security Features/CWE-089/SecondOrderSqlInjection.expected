@@ -1,0 +1,8 @@
+edges
+| SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString : String | SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... |
+nodes
+| SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... | semmle.label | ... + ... |
+| SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString : String | semmle.label | call to method GetString : String |
+subpaths
+#select
+| SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... | SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString : String | SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... | $@ flows to here and is used in an SQL query. | SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString | Stored user-provided value |

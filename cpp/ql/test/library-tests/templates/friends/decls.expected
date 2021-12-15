@@ -1,0 +1,35 @@
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | C<char>'s friend |
+| file://:0:0:0:0 | C<int>'s friend |
+| file://:0:0:0:0 | auto |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |
+| friends.cpp:2:19:2:21 | TTT |
+| friends.cpp:4:19:4:21 | TTT |
+| friends.cpp:4:29:4:29 | f |
+| friends.cpp:4:31:4:36 | (unnamed parameter 0) |
+| friends.cpp:4:31:4:36 | (unnamed parameter 0) |
+| friends.cpp:4:31:4:36 | (unnamed parameter 0) |
+| friends.cpp:6:19:6:21 | TTT |
+| friends.cpp:7:9:7:9 | C<TTT> |
+| friends.cpp:7:9:7:9 | C<TTT> |
+| friends.cpp:7:9:7:9 | C<char> |
+| friends.cpp:7:9:7:9 | C<int> |
+| friends.cpp:7:9:7:9 | operator= |
+| friends.cpp:7:9:7:9 | operator= |
+| friends.cpp:7:9:7:9 | operator= |
+| friends.cpp:7:9:7:9 | operator= |
+| friends.cpp:9:17:9:17 | f |
+| friends.cpp:9:17:9:19 | C<TTT>'s friend |
+| friends.cpp:9:21:9:26 | (unnamed parameter 0) |
+| friends.cpp:12:17:12:17 | f |
+| friends.cpp:13:17:13:17 | f |

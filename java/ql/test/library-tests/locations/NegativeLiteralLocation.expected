@@ -1,0 +1,2 @@
+| locations/A.java:7:21:7:23 | -... | locations/A.java:7:22:7:23 | 42 |
+| locations/A.java:9:12:9:14 | -... | locations/A.java:9:13:9:14 | 23 |

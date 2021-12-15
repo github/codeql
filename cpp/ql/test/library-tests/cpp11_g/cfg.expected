@@ -1,0 +1,77 @@
+| choose_second | 24 | 1 | { ... } | 24 | return ... |
+| choose_second | 24 | 2 | return ... | 24 | choose_second |
+| choose_second | 27 | 1 | { ... } | 28 | return ... |
+| choose_second | 28 | 2 | return ... | 25 | choose_second |
+| count_args_1 prototype instantiation | 11 | 1 | { ... } | 12 | return ... |
+| count_args_1 prototype instantiation | 12 | 2 | return ... | 12 | sizeof...(...) |
+| count_args_1 prototype instantiation | 12 | 3 | sizeof...(...) | 11 | count_args_1 |
+| count_args_1<> | 11 | 1 | { ... } | 12 | return ... |
+| count_args_1<> | 12 | 2 | return ... | 12 | 0 |
+| count_args_1<> | 12 | 3 | 0 | 11 | count_args_1 |
+| count_args_2 prototype instantiation | 15 | 1 | { ... } | 16 | return ... |
+| count_args_2 prototype instantiation | 16 | 2 | return ... | 16 | a |
+| count_args_2 prototype instantiation | 16 | 3 | a | 16 | sizeof...(...) |
+| count_args_2 prototype instantiation | 16 | 4 | sizeof...(...) | 15 | count_args_2 |
+| count_args_2<int,double> | 15 | 1 | { ... } | 16 | return ... |
+| count_args_2<int,double> | 16 | 2 | return ... | 16 | 2 |
+| count_args_2<int,double> | 16 | 3 | 2 | 15 | count_args_2 |
+| make_val_from_one prototype instantiation | 1 | 1 | { ... } | 2 | declaration |
+| make_val_from_one prototype instantiation | 2 | 2 | declaration | 2 | initializer for val |
+| make_val_from_one prototype instantiation | 2 | 3 | initializer for val | 2 | 1 |
+| make_val_from_one prototype instantiation | 2 | 4 | 1 | 2 | ({...}) |
+| make_val_from_one prototype instantiation | 2 | 5 | ({...}) | 2 | call to unknown function |
+| make_val_from_one prototype instantiation | 2 | 6 | call to unknown function | 3 | return ... |
+| make_val_from_one prototype instantiation | 3 | 7 | return ... | 3 | val |
+| make_val_from_one prototype instantiation | 3 | 8 | val | 1 | make_val_from_one |
+| make_val_from_one<int> | 1 | 1 | { ... } | 2 | declaration |
+| make_val_from_one<int> | 2 | 2 | declaration | 2 | initializer for val |
+| make_val_from_one<int> | 2 | 3 | initializer for val | 2 | 1 |
+| make_val_from_one<int> | 2 | 4 | 1 | 3 | return ... |
+| make_val_from_one<int> | 3 | 5 | return ... | 3 | val |
+| make_val_from_one<int> | 3 | 6 | val | 1 | make_val_from_one |
+| make_val_from_three_and_four prototype instantiation | 6 | 1 | { ... } | 7 | declaration |
+| make_val_from_three_and_four prototype instantiation | 7 | 2 | declaration | 7 | initializer for val |
+| make_val_from_three_and_four prototype instantiation | 7 | 3 | initializer for val | 7 | 3 |
+| make_val_from_three_and_four prototype instantiation | 7 | 4 | 3 | 7 | 4 |
+| make_val_from_three_and_four prototype instantiation | 7 | 5 | 4 | 7 | ({...}) |
+| make_val_from_three_and_four prototype instantiation | 7 | 6 | ({...}) | 7 | call to unknown function |
+| make_val_from_three_and_four prototype instantiation | 7 | 7 | call to unknown function | 8 | return ... |
+| make_val_from_three_and_four prototype instantiation | 8 | 8 | return ... | 8 | val |
+| make_val_from_three_and_four prototype instantiation | 8 | 9 | val | 6 | make_val_from_three_and_four |
+| make_val_from_three_and_four<choose_second> | 6 | 1 | { ... } | 7 | declaration |
+| make_val_from_three_and_four<choose_second> | 7 | 2 | declaration | 7 | initializer for val |
+| make_val_from_three_and_four<choose_second> | 7 | 3 | initializer for val | 7 | 3 |
+| make_val_from_three_and_four<choose_second> | 7 | 4 | 3 | 7 | 4 |
+| make_val_from_three_and_four<choose_second> | 7 | 5 | 4 | 7 | call to choose_second |
+| make_val_from_three_and_four<choose_second> | 7 | 6 | call to choose_second | 8 | return ... |
+| make_val_from_three_and_four<choose_second> | 8 | 7 | return ... | 8 | val |
+| make_val_from_three_and_four<choose_second> | 8 | 8 | val | 6 | make_val_from_three_and_four |
+| make_val_from_three_and_four<int_pair> | 6 | 1 | { ... } | 7 | declaration |
+| make_val_from_three_and_four<int_pair> | 7 | 2 | declaration | 7 | initializer for val |
+| make_val_from_three_and_four<int_pair> | 7 | 3 | initializer for val | 7 | 3 |
+| make_val_from_three_and_four<int_pair> | 7 | 4 | 3 | 7 | 4 |
+| make_val_from_three_and_four<int_pair> | 7 | 5 | 4 | 7 | {...} |
+| make_val_from_three_and_four<int_pair> | 7 | 6 | {...} | 8 | return ... |
+| make_val_from_three_and_four<int_pair> | 8 | 7 | return ... | 8 | val |
+| make_val_from_three_and_four<int_pair> | 8 | 8 | val | 6 | make_val_from_three_and_four |
+| numbers | 33 | 1 | { ... } | 34 | declaration |
+| numbers | 34 | 2 | declaration | 34 | initializer for zero |
+| numbers | 34 | 3 | initializer for zero | 34 | call to count_args_1 |
+| numbers | 34 | 4 | call to count_args_1 | 35 | declaration |
+| numbers | 35 | 5 | declaration | 35 | initializer for one |
+| numbers | 35 | 6 | initializer for one | 35 | call to make_val_from_one |
+| numbers | 35 | 7 | call to make_val_from_one | 36 | declaration |
+| numbers | 36 | 8 | declaration | 36 | initializer for two |
+| numbers | 36 | 9 | initializer for two | 36 | 1 |
+| numbers | 36 | 10 | 1 | 36 | 1.0 |
+| numbers | 36 | 11 | 1.0 | 36 | call to count_args_2 |
+| numbers | 36 | 12 | call to count_args_2 | 37 | declaration |
+| numbers | 37 | 13 | declaration | 37 | initializer for three |
+| numbers | 37 | 14 | initializer for three | 37 | call to make_val_from_three_and_four |
+| numbers | 37 | 15 | call to make_val_from_three_and_four | 37 | first |
+| numbers | 37 | 16 | first | 38 | declaration |
+| numbers | 38 | 17 | declaration | 38 | initializer for four |
+| numbers | 38 | 18 | initializer for four | 38 | call to make_val_from_three_and_four |
+| numbers | 38 | 19 | call to make_val_from_three_and_four | 38 | value |
+| numbers | 38 | 20 | value | 39 | return ... |
+| numbers | 39 | 21 | return ... | 33 | numbers |

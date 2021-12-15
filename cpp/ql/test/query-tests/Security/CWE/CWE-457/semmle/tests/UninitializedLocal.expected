@@ -1,0 +1,16 @@
+| test.cpp:12:6:12:8 | foo | The variable $@ may not be initialized here. | test.cpp:11:6:11:8 | foo | foo |
+| test.cpp:30:6:30:8 | foo | The variable $@ may not be initialized here. | test.cpp:26:6:26:8 | foo | foo |
+| test.cpp:46:6:46:8 | foo | The variable $@ may not be initialized here. | test.cpp:42:6:42:8 | foo | foo |
+| test.cpp:55:7:55:9 | foo | The variable $@ may not be initialized here. | test.cpp:50:6:50:8 | foo | foo |
+| test.cpp:67:7:67:9 | foo | The variable $@ may not be initialized here. | test.cpp:61:6:61:8 | foo | foo |
+| test.cpp:92:6:92:8 | foo | The variable $@ may not be initialized here. | test.cpp:82:6:82:8 | foo | foo |
+| test.cpp:113:6:113:8 | foo | The variable $@ may not be initialized here. | test.cpp:111:6:111:8 | foo | foo |
+| test.cpp:132:9:132:9 | j | The variable $@ may not be initialized here. | test.cpp:126:6:126:6 | j | j |
+| test.cpp:219:3:219:3 | x | The variable $@ may not be initialized here. | test.cpp:218:7:218:7 | x | x |
+| test.cpp:243:13:243:13 | i | The variable $@ may not be initialized here. | test.cpp:241:6:241:6 | i | i |
+| test.cpp:329:9:329:11 | val | The variable $@ may not be initialized here. | test.cpp:321:6:321:8 | val | val |
+| test.cpp:336:10:336:10 | a | The variable $@ may not be initialized here. | test.cpp:333:7:333:7 | a | a |
+| test.cpp:369:10:369:10 | a | The variable $@ may not be initialized here. | test.cpp:358:7:358:7 | a | a |
+| test.cpp:378:9:378:11 | val | The variable $@ may not be initialized here. | test.cpp:359:6:359:8 | val | val |
+| test.cpp:417:10:417:10 | j | The variable $@ may not be initialized here. | test.cpp:414:9:414:9 | j | j |
+| test.cpp:436:9:436:9 | j | The variable $@ may not be initialized here. | test.cpp:431:9:431:9 | j | j |

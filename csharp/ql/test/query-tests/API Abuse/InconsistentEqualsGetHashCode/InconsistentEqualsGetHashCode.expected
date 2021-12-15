@@ -1,0 +1,3 @@
+| InconsistentEqualsGetHashCode.cs:3:7:3:29 | ClassMissingGetHashCode | Class 'ClassMissingGetHashCode' overrides $@, but not GetHashCode(). | InconsistentEqualsGetHashCode.cs:5:26:5:31 | Equals | Equals |
+| InconsistentEqualsGetHashCode.cs:16:7:16:24 | ClassMissingEquals | Class 'ClassMissingEquals' overrides $@, but not Equals(object). | InconsistentEqualsGetHashCode.cs:23:25:23:35 | GetHashCode | GetHashCode |
+| InconsistentEqualsGetHashCodeBad.cs:3:7:3:9 | Bad | Class 'Bad' overrides $@, but not GetHashCode(). | InconsistentEqualsGetHashCodeBad.cs:9:26:9:31 | Equals | Equals |

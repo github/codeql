@@ -1,0 +1,17 @@
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:19:18:19:51 | call to method ToString |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:22:18:22:30 | access to local variable taintedObject |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:23:18:23:38 | (...) ... |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:25:18:25:59 | call to method SerializeObject |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:26:18:26:49 | access to indexer |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:27:18:27:46 | access to array element |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:30:18:30:39 | (...) ... |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:35:18:35:47 | (...) ... |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:42:18:42:24 | access to local variable jobject |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:43:18:43:29 | access to indexer |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:44:18:44:34 | access to indexer |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:45:18:45:42 | call to operator explicit conversion |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:46:18:46:35 | call to method ToString |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:49:18:49:50 | call to method First<JToken> |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:50:18:50:46 | call to method First<JToken> |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:51:18:51:51 | call to method First<JToken> |
+| Json.cs:16:24:16:32 | "tainted" | Json.cs:52:18:52:61 | call to method SelectToken |

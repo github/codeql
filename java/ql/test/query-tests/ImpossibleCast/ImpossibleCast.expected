@@ -1,0 +1,2 @@
+| impossible_cast/A.java:6:17:6:58 | (...)... | Impossible downcast: the cast from Object[] to String[] will always fail with a ClassCastException. |
+| impossible_cast/A.java:7:24:7:56 | (...)... | Impossible downcast: the cast from Serializable[] to Object[][] will always fail with a ClassCastException. |

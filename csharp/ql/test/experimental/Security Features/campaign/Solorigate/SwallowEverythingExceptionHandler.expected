@@ -1,0 +1,3 @@
+| test.cs:34:3:37:3 | catch {...} | Empty Swallow Everything Exception. |
+| test.cs:288:3:289:4 | catch {...} | Empty Swallow Everything Exception. |
+| test.cs:294:3:297:3 | catch (...) {...} | Empty Swallow Everything Exception. |

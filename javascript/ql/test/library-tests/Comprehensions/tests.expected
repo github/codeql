@@ -1,0 +1,63 @@
+comprehensionBlock
+| comprehensions.js:2:2:2:20 | for (year of years) | comprehensions.js:2:15:2:19 | years | comprehensions.js:2:7:2:10 | year |
+| comprehensions.js:4:2:4:19 | for (i of numbers) | comprehensions.js:4:12:4:18 | numbers | comprehensions.js:4:7:4:7 | i |
+| comprehensions.js:4:21:4:38 | for (j of letters) | comprehensions.js:4:31:4:37 | letters | comprehensions.js:4:26:4:26 | j |
+| comprehensions.js:5:2:5:19 | for (i of numbers) | comprehensions.js:5:12:5:18 | numbers | comprehensions.js:5:7:5:7 | i |
+| comprehensions.js:5:21:5:38 | for (j of letters) | comprehensions.js:5:31:5:37 | letters | comprehensions.js:5:26:5:26 | j |
+| comprehensions.js:7:2:7:20 | for (year of years) | comprehensions.js:7:15:7:19 | years | comprehensions.js:7:7:7:10 | year |
+| comprehensions.js:9:2:9:19 | for (i of numbers) | comprehensions.js:9:12:9:18 | numbers | comprehensions.js:9:7:9:7 | i |
+| comprehensions.js:9:21:9:38 | for (j of letters) | comprehensions.js:9:31:9:37 | letters | comprehensions.js:9:26:9:26 | j |
+| comprehensions.js:10:2:10:19 | for (i of numbers) | comprehensions.js:10:12:10:18 | numbers | comprehensions.js:10:7:10:7 | i |
+| comprehensions.js:10:21:10:38 | for (j of letters) | comprehensions.js:10:31:10:37 | letters | comprehensions.js:10:26:10:26 | j |
+comprehensionExpr
+| comprehensions.js:2:1:2:43 | [for (y ... ) year] | 1 | 1 | comprehensions.js:2:39:2:42 | year |
+| comprehensions.js:4:1:4:43 | [for (i ... s) i+j] | 2 | 0 | comprehensions.js:4:40:4:42 | i+j |
+| comprehensions.js:5:1:5:52 | [for (i ... j) i+j] | 2 | 1 | comprehensions.js:5:49:5:51 | i+j |
+| comprehensions.js:7:1:7:43 | (for (y ... ) year) | 1 | 1 | comprehensions.js:7:39:7:42 | year |
+| comprehensions.js:9:1:9:43 | (for (i ... s) i+j) | 2 | 0 | comprehensions.js:9:40:9:42 | i+j |
+| comprehensions.js:10:1:10:52 | (for (i ... j) i+j) | 2 | 1 | comprehensions.js:10:49:10:51 | i+j |
+getBlock
+| comprehensions.js:2:1:2:43 | [for (y ... ) year] | 0 | comprehensions.js:2:2:2:20 | for (year of years) |
+| comprehensions.js:4:1:4:43 | [for (i ... s) i+j] | 0 | comprehensions.js:4:2:4:19 | for (i of numbers) |
+| comprehensions.js:4:1:4:43 | [for (i ... s) i+j] | 1 | comprehensions.js:4:21:4:38 | for (j of letters) |
+| comprehensions.js:5:1:5:52 | [for (i ... j) i+j] | 0 | comprehensions.js:5:2:5:19 | for (i of numbers) |
+| comprehensions.js:5:1:5:52 | [for (i ... j) i+j] | 1 | comprehensions.js:5:21:5:38 | for (j of letters) |
+| comprehensions.js:7:1:7:43 | (for (y ... ) year) | 0 | comprehensions.js:7:2:7:20 | for (year of years) |
+| comprehensions.js:9:1:9:43 | (for (i ... s) i+j) | 0 | comprehensions.js:9:2:9:19 | for (i of numbers) |
+| comprehensions.js:9:1:9:43 | (for (i ... s) i+j) | 1 | comprehensions.js:9:21:9:38 | for (j of letters) |
+| comprehensions.js:10:1:10:52 | (for (i ... j) i+j) | 0 | comprehensions.js:10:2:10:19 | for (i of numbers) |
+| comprehensions.js:10:1:10:52 | (for (i ... j) i+j) | 1 | comprehensions.js:10:21:10:38 | for (j of letters) |
+getFilter
+| comprehensions.js:2:1:2:43 | [for (y ... ) year] | 0 | comprehensions.js:2:26:2:36 | year > 2000 |
+| comprehensions.js:5:1:5:52 | [for (i ... j) i+j] | 0 | comprehensions.js:5:44:5:46 | i<j |
+| comprehensions.js:7:1:7:43 | (for (y ... ) year) | 0 | comprehensions.js:7:26:7:36 | year > 2000 |
+| comprehensions.js:10:1:10:52 | (for (i ... j) i+j) | 0 | comprehensions.js:10:44:10:46 | i<j |
+varDecls
+| comprehensions.js:2:15:2:19 | years | comprehensions.js:1:11:1:15 | years |
+| comprehensions.js:2:26:2:29 | year | comprehensions.js:2:7:2:10 | year |
+| comprehensions.js:2:39:2:42 | year | comprehensions.js:2:7:2:10 | year |
+| comprehensions.js:3:1:3:4 | year | comprehensions.js:1:5:1:8 | year |
+| comprehensions.js:4:12:4:18 | numbers | comprehensions.js:1:24:1:30 | numbers |
+| comprehensions.js:4:31:4:37 | letters | comprehensions.js:1:33:1:39 | letters |
+| comprehensions.js:4:40:4:40 | i | comprehensions.js:4:7:4:7 | i |
+| comprehensions.js:4:42:4:42 | j | comprehensions.js:4:26:4:26 | j |
+| comprehensions.js:5:12:5:18 | numbers | comprehensions.js:1:24:1:30 | numbers |
+| comprehensions.js:5:31:5:37 | letters | comprehensions.js:1:33:1:39 | letters |
+| comprehensions.js:5:44:5:44 | i | comprehensions.js:5:7:5:7 | i |
+| comprehensions.js:5:46:5:46 | j | comprehensions.js:5:26:5:26 | j |
+| comprehensions.js:5:49:5:49 | i | comprehensions.js:5:7:5:7 | i |
+| comprehensions.js:5:51:5:51 | j | comprehensions.js:5:26:5:26 | j |
+| comprehensions.js:7:15:7:19 | years | comprehensions.js:1:11:1:15 | years |
+| comprehensions.js:7:26:7:29 | year | comprehensions.js:7:7:7:10 | year |
+| comprehensions.js:7:39:7:42 | year | comprehensions.js:7:7:7:10 | year |
+| comprehensions.js:8:1:8:4 | year | comprehensions.js:1:5:1:8 | year |
+| comprehensions.js:9:12:9:18 | numbers | comprehensions.js:1:24:1:30 | numbers |
+| comprehensions.js:9:31:9:37 | letters | comprehensions.js:1:33:1:39 | letters |
+| comprehensions.js:9:40:9:40 | i | comprehensions.js:9:7:9:7 | i |
+| comprehensions.js:9:42:9:42 | j | comprehensions.js:9:26:9:26 | j |
+| comprehensions.js:10:12:10:18 | numbers | comprehensions.js:1:24:1:30 | numbers |
+| comprehensions.js:10:31:10:37 | letters | comprehensions.js:1:33:1:39 | letters |
+| comprehensions.js:10:44:10:44 | i | comprehensions.js:10:7:10:7 | i |
+| comprehensions.js:10:46:10:46 | j | comprehensions.js:10:26:10:26 | j |
+| comprehensions.js:10:49:10:49 | i | comprehensions.js:10:7:10:7 | i |
+| comprehensions.js:10:51:10:51 | j | comprehensions.js:10:26:10:26 | j |

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When accessing an array element, one must ensure that the index is less than
+the length of the array. Using an index that is greater than or equal to the
+array length causes an <code>ArrayIndexOutOfBoundsException</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that the index is less than the array length.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example causes an <code>ArrayIndexOutOfBoundsException</code> in
+the final loop iteration.
+</p>
+<sample src="ArrayIndexOutOfBoundsBad.java" />
+<p>
+The condition should be changed as follows to correctly guard the array access.
+</p>
+<sample src="ArrayIndexOutOfBoundsGood.java" />
+
+</example>
+
+<references>
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.
+</li>
+
+</references>
+
+</qhelp>

@@ -1,0 +1,17 @@
+| code/h_classes.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/h_classes.py:10:1:10:9 | ControlFlowNode for type() |
+| code/h_classes.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/h_classes.py:15:5:15:13 | ControlFlowNode for type() |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:16:16:16:18 | ControlFlowNode for cls |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:24:13:24:22 | ControlFlowNode for Attribute() |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:25:16:25:16 | ControlFlowNode for a |
+| code/l_calls.py:33:5:33:23 | ControlFlowNode for FunctionExpr | code/l_calls.py:39:1:39:3 | ControlFlowNode for Attribute |
+| code/l_calls.py:48:5:48:30 | ControlFlowNode for FunctionExpr | code/l_calls.py:53:1:53:3 | ControlFlowNode for Attribute |
+| code/q_super.py:10:18:10:21 | ControlFlowNode for self | code/q_super.py:4:22:4:25 | ControlFlowNode for self |
+| code/q_super.py:26:14:26:17 | ControlFlowNode for self | code/q_super.py:22:32:22:35 | ControlFlowNode for self |
+| code/q_super.py:31:14:31:17 | ControlFlowNode for self | code/q_super.py:22:32:22:35 | ControlFlowNode for self |
+| code/q_super.py:37:14:37:17 | ControlFlowNode for self | code/q_super.py:22:32:22:35 | ControlFlowNode for self |
+| code/q_super.py:37:14:37:17 | ControlFlowNode for self | code/q_super.py:27:32:27:35 | ControlFlowNode for self |
+| code/q_super.py:48:5:48:17 | ControlFlowNode for ClassExpr | code/q_super.py:51:25:51:29 | ControlFlowNode for Attribute |
+| code/q_super.py:63:5:63:17 | ControlFlowNode for ClassExpr | code/q_super.py:66:19:66:23 | ControlFlowNode for Attribute |
+| code/r_regressions.py:46:1:46:14 | ControlFlowNode for FunctionExpr | code/r_regressions.py:52:9:52:12 | ControlFlowNode for fail |
+| code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:6:1:6:9 | ControlFlowNode for type() |
+| code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:13:5:13:13 | ControlFlowNode for type() |

@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Trying to control thread interaction by periodically calling <code>Thread.sleep</code> within a 
+loop while waiting for a condition to be satisfied is less effective than waiting for a notification. 
+This is because the waiting thread may either sleep for an unnecessarily long time or wake up too
+frequently. This approach may also result in race conditions and, therefore, incorrect code.
+</p>
+
+<p>
+Trying to control thread interaction by repeatedly checking a synchronized data structure without 
+calling <code>Thread.sleep</code> or waiting for a notification may waste a lot of system resources 
+and cause noticeable performance problems.
+</p>
+
+</overview>
+<recommendation>
+
+<p>See if communication between threads can be improved by using either of the following solutions:</p>
+
+<ul>
+    <li>The <code>java.util.concurrent</code> library, preferably</li>
+    <li>The <code>Object.wait</code> and <code>Object.notifyAll</code> methods</li> 
+</ul>
+
+<p>
+If following one of these recommendations is not feasible, ensure that race conditions cannot occur 
+and precise timing is not required for program correctness.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>Receiver</code> thread sleeps for an unnecessarily long time
+(up to five seconds) until it has received the message.</p>
+
+<sample src="BusyWait.java" />
+
+<p>In the following modification of the above example, the <code>Receiver</code> thread uses the 
+recommended approach of waiting for a notification that the 
+message has been sent. This means that the thread can respond immediately instead of sleeping.</p>
+
+<sample src="BusyWaitGood.java" />
+
+</example>
+<references>
+
+
+    <li>J. Bloch, <em>Effective Java (second edition)</em>, Item 72. Addison-Wesley, 2008.</li>
+    <li>Java API Specification:
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()">Object.wait()</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notifyAll()">Object.notifyAll()</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/package-summary.html">java.util.concurrent</a>.</li>
+    <li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html">Guarded Blocks</a>,
+    <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html">High Level Concurrency Objects</a>.</li>
+
+
+</references>
+</qhelp>

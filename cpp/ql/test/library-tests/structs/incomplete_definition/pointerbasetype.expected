@@ -1,0 +1,6 @@
+| a.h:5:8:5:13 | cheese | y.cpp:4:8:4:10 | Foo | 3 |
+| x.cpp:3:6:3:10 | bar_x | a.h:4:8:4:10 | Bar | 3 |
+| x.cpp:19:6:19:10 | foo_x | y.cpp:4:8:4:10 | Foo | 3 |
+| x.cpp:23:5:23:17 | templateField | x.cpp:6:10:6:12 | Foo | 3 |
+| x.cpp:23:5:23:17 | templateField | x.cpp:12:9:12:11 | Foo | 4 |
+| x.cpp:26:18:26:29 | template_foo | x.cpp:22:7:22:14 | Template<Foo *> | 0 |

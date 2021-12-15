@@ -1,0 +1,21 @@
+| test.py:1:6:1:11 | test.py:1 | ControlFlowNode for ImportExpr | import | ../../lib/typing.py:0:0:0:0 | Module typing |
+| test.py:1:6:1:11 | test.py:1 | ControlFlowNode for ImportExpr | import | ../../lib/typing.py:0:0:0:0 | Module typing |
+| test.py:1:20:1:27 | test.py:1 | ControlFlowNode for ImportMember | import | ../../lib/typing.py:18:12:18:32 | _Optional() |
+| test.py:1:30:1:32 | test.py:1 | ControlFlowNode for ImportMember | import | ../../lib/typing.py:23:1:23:23 | class Set |
+| test.py:3:1:3:32 | test.py:3 | ControlFlowNode for FunctionExpr | import | test.py:3:1:3:32 | Function foo |
+| test.py:3:11:3:18 | test.py:3 | ControlFlowNode for Optional | import | ../../lib/typing.py:18:12:18:32 | _Optional() |
+| test.py:3:11:3:23 | test.py:3 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | _Optional()[builtin-class int] |
+| test.py:3:20:3:22 | test.py:3 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
+| test.py:3:29:3:31 | test.py:3 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
+| test.py:6:1:6:20 | test.py:6 | ControlFlowNode for FunctionExpr | import | test.py:6:1:6:20 | Function bar |
+| test.py:6:11:6:13 | test.py:6 | ControlFlowNode for set | import | file://:0:0:0:0 | builtin-class set |
+| test.py:6:17:6:19 | test.py:6 | ControlFlowNode for Set | import | ../../lib/typing.py:23:1:23:23 | class Set |
+| test.py:9:6:9:13 | test.py:9 | ControlFlowNode for Optional | import | ../../lib/typing.py:18:12:18:32 | _Optional() |
+| test.py:9:6:9:28 | test.py:9 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | _Optional()[Unknown value] |
+| test.py:9:15:9:22 | test.py:9 | ControlFlowNode for Optional | import | ../../lib/typing.py:18:12:18:32 | _Optional() |
+| test.py:9:15:9:27 | test.py:9 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | _Optional()[builtin-class int] |
+| test.py:9:24:9:26 | test.py:9 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
+| test.py:10:6:10:13 | test.py:10 | ControlFlowNode for Optional | import | ../../lib/typing.py:18:12:18:32 | _Optional() |
+| test.py:10:6:10:18 | test.py:10 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | _Optional()[builtin-class int] |
+| test.py:10:15:10:17 | test.py:10 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
+| test.py:10:20:10:22 | test.py:10 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |

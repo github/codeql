@@ -1,0 +1,1 @@
+| EmptyCatchBlock.cs:10:9:12:9 | catch (...) {...} | Poor error handling: empty catch block. |

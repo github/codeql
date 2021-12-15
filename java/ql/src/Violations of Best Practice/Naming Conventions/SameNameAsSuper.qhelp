@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A class that has the same name as its superclass may be confusing.</p>
+
+</overview>
+<recommendation>
+
+<p>Clarify the difference between the subclass and the superclass by
+using different names.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, it is not clear that the <code>attendees</code> field refers to the 
+inner class <code>Attendees</code> and not the class <code>com.company.util.Attendees</code>.</p>
+
+<sample src="SameNameAsSuper.java" />
+
+<p>To fix this, the inner class should be renamed.</p>
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, &sect;17.N4. Prentice 
+Hall, 2008.
+</li>
+
+
+
+</references>
+</qhelp>

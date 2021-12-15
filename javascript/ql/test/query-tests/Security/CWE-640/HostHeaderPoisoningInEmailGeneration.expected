@@ -1,0 +1,21 @@
+nodes
+| tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:17:84:17:91 | req.host |
+| tst.js:17:84:17:91 | req.host |
+| tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+| tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+| tst.js:18:78:18:85 | req.host |
+| tst.js:18:78:18:85 | req.host |
+edges
+| tst.js:17:84:17:91 | req.host | tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:17:84:17:91 | req.host | tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:17:84:17:91 | req.host | tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:17:84:17:91 | req.host | tst.js:17:11:17:113 | `Hi, lo ... token}` |
+| tst.js:18:78:18:85 | req.host | tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+| tst.js:18:78:18:85 | req.host | tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+| tst.js:18:78:18:85 | req.host | tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+| tst.js:18:78:18:85 | req.host | tst.js:18:11:18:127 | `Hi, lo ... reset.` |
+#select
+| tst.js:17:11:17:113 | `Hi, lo ... token}` | tst.js:17:84:17:91 | req.host | tst.js:17:11:17:113 | `Hi, lo ... token}` | Links in this email can be hijacked by poisoning the HTTP host header $@. | tst.js:17:84:17:91 | req.host | here |
+| tst.js:18:11:18:127 | `Hi, lo ... reset.` | tst.js:18:78:18:85 | req.host | tst.js:18:11:18:127 | `Hi, lo ... reset.` | Links in this email can be hijacked by poisoning the HTTP host header $@. | tst.js:18:78:18:85 | req.host | here |

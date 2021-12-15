@@ -1,0 +1,52 @@
+| 1 | ControlFlowNode for functools | Module functools | test.py:1 |
+| 3 | ControlFlowNode for annotate | Function annotate | test.py:3 |
+| 4 | ControlFlowNode for inner | Function inner | test.py:4 |
+| 5 | ControlFlowNode for func | Function func1 | test.py:23 |
+| 6 | ControlFlowNode for func | Function func1 | test.py:23 |
+| 7 | ControlFlowNode for inner | Function inner | test.py:4 |
+| 9 | ControlFlowNode for wraps1 | Function wraps1 | test.py:9 |
+| 10 | ControlFlowNode for args | args | test.py:10 |
+| 10 | ControlFlowNode for wrapper | Function wrapper | test.py:10 |
+| 11 | ControlFlowNode for args | args | test.py:10 |
+| 13 | ControlFlowNode for wrapper | Function wrapper | test.py:10 |
+| 15 | ControlFlowNode for wraps2 | Function wraps2 | test.py:15 |
+| 16 | ControlFlowNode for func | Function func3 | test.py:31 |
+| 16 | ControlFlowNode for functools | Module functools | test.py:1 |
+| 17 | ControlFlowNode for args | args | test.py:17 |
+| 17 | ControlFlowNode for wrapper | Attribute()() | test.py:16 |
+| 18 | ControlFlowNode for args | args | test.py:17 |
+| 20 | ControlFlowNode for wrapper | Attribute()() | test.py:16 |
+| 22 | ControlFlowNode for annotate | Function annotate | test.py:3 |
+| 23 | ControlFlowNode for func1 | Function func1 | test.py:23 |
+| 26 | ControlFlowNode for wraps1 | Function wraps1 | test.py:9 |
+| 27 | ControlFlowNode for func2 | Function wrapper | test.py:10 |
+| 30 | ControlFlowNode for wraps2 | Function wraps2 | test.py:15 |
+| 31 | ControlFlowNode for func3 | Attribute()() | test.py:16 |
+| 41 | ControlFlowNode for func1 | Function func1 | test.py:23 |
+| 42 | ControlFlowNode for func2 | Function wrapper | test.py:10 |
+| 43 | ControlFlowNode for func3 | Attribute()() | test.py:16 |
+| 48 | ControlFlowNode for None | NoneType None | test.py:48 |
+| 48 | ControlFlowNode for register | Function register | test.py:48 |
+| 49 | ControlFlowNode for decorator | Function decorator | test.py:49 |
+| 50 | ControlFlowNode for callable | Builtin-function callable | test.py:50 |
+| 50 | ControlFlowNode for func | Function baz | test.py:72 |
+| 50 | ControlFlowNode for func | Function foo | test.py:60 |
+| 51 | ControlFlowNode for ValueError | builtin-class ValueError | test.py:51 |
+| 52 | ControlFlowNode for func | Function baz | test.py:72 |
+| 52 | ControlFlowNode for func | Function foo | test.py:60 |
+| 54 | ControlFlowNode for callable | Builtin-function callable | test.py:54 |
+| 54 | ControlFlowNode for name | Function bar | test.py:66 |
+| 54 | ControlFlowNode for name | NoneType None | test.py:48 |
+| 54 | ControlFlowNode for name | int 17 | test.py:59 |
+| 55 | ControlFlowNode for decorator | Function decorator | test.py:49 |
+| 55 | ControlFlowNode for name | Function bar | test.py:66 |
+| 57 | ControlFlowNode for decorator | Function decorator | test.py:49 |
+| 59 | ControlFlowNode for register | Function register | test.py:48 |
+| 60 | ControlFlowNode for foo | Function foo | test.py:60 |
+| 63 | ControlFlowNode for foo | Function foo | test.py:60 |
+| 65 | ControlFlowNode for register | Function register | test.py:48 |
+| 66 | ControlFlowNode for bar | register() | test.py:65 |
+| 69 | ControlFlowNode for bar | register() | test.py:65 |
+| 71 | ControlFlowNode for register | Function register | test.py:48 |
+| 72 | ControlFlowNode for baz | Function baz | test.py:72 |
+| 75 | ControlFlowNode for baz | Function baz | test.py:72 |

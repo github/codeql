@@ -1,0 +1,7 @@
+| classes.js:4:1:4:10 | class C {} | Assignment to variable C, which is $@ constant. | classes.js:1:1:1:13 | const C = 45; | declared |
+| functions.js:4:10:4:10 | C | Assignment to variable C, which is $@ constant. | functions.js:1:1:1:13 | const C = 45; | declared |
+| tst.js:4:1:4:6 | x = 42 | Assignment to variable x, which is $@ constant. | tst.js:1:1:1:21 | const x ... y = 42; | declared |
+| tst.js:7:1:7:6 | y = 23 | Assignment to variable y, which is $@ constant. | tst.js:1:1:1:21 | const x ... y = 42; | declared |
+| tst.js:10:5:10:10 | y = -1 | Assignment to variable y, which is $@ constant. | tst.js:1:1:1:21 | const x ... y = 42; | declared |
+| tst.js:13:1:13:3 | ++x | Assignment to variable x, which is $@ constant. | tst.js:1:1:1:21 | const x ... y = 42; | declared |
+| tst.js:25:10:25:14 | [ c ] | Assignment to variable c, which is $@ constant. | tst.js:24:5:24:19 | const c = null; | declared |

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+AngularJS components can have a <code>$inject</code> property that
+specifies the dependencies to inject. You can assign this property
+multiple times, but doing so is confusing since later assignments
+overwrite earlier ones, and only the dependencies specified in the
+last assignment are actually injected.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Only specify dependencies once for each component.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows an AngularJS controller that has its dependencies specified twice.
+</p>
+
+<sample src="examples/RepeatedInjection.js"/>
+
+<p>
+This is problematic, since the second specification always overrides the first one.
+</p>
+
+<p>
+Instead, the dependencies should only be specified once:
+</p>
+
+<sample src="examples/RepeatedInjection-fixed.js"/>
+</example>
+
+<references>
+<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di">Dependency Injection</a>.</li>
+</references>
+</qhelp>

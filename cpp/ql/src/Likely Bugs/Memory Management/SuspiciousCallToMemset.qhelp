@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds calls to the standard library function <code>memset</code> where the third argument 
+(specifying the number of bytes to set) does not appear to correspond with the first argument (the buffer
+to be written).</p>
+
+<p>Usually, <code>memset</code> is employed to initialize dynamically allocated arrays or structs. 
+Since <code>memset</code> treats its first argument simply as an array of bytes, the third argument has to specify the size of the buffer <em>in bytes</em>. 
+For an array, the size is the number of elements of the array multiplied by the size of one of its elements; for a <code>struct</code>, the size is just the size of the struct type.</p>
+
+<p>If <code>memset</code> is invoked with a third argument that is not constant and looks like neither of these two cases, there might be a mistake. This could cause a buffer overflow which could in turn cause a segfault or corrupt the contents of other variables in memory.</p>
+
+</overview>
+<recommendation>
+<p>For structs the preferred way of computing the size is to use sizeof with the type as the argument. Dereferencing a pointer works but is more prone to mistakes. For arrays the best solution is to take the size of the array rather than the type, since the risk of forgetting to multiply with the number of elements is eliminated. Do not use memset to assign to scalars or pointers when a simple assignment would do.</p>
+
+</recommendation>
+<example><sample src="SuspiciousCallToMemset.cpp" />
+
+
+</example>
+<references>
+
+<li>
+  Cplusplus.comn: <a href="http://www.cplusplus.com/reference/clibrary/cstring/memset/">memset</a>
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/memset-wmemset">memset, wmemset</a>, <a href="https://docs.microsoft.com/en-us/cpp/cpp/sizeof-operator">sizeof Operator</a>
+</li>
+
+
+</references>
+</qhelp>

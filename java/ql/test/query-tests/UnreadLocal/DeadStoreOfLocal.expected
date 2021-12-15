@@ -1,0 +1,5 @@
+| A.java:34:9:34:18 | ...+=... | This assignment to param is useless: the value is always overwritten before it is read. |
+| A.java:37:9:37:11 | ++... | This assignment to x is useless: the value is always overwritten before it is read. |
+| A.java:40:14:40:16 | ++... | This assignment to y is useless: the value is always overwritten before it is read. |
+| A.java:55:13:55:17 | ...=... | This assignment to x is useless: the value is always overwritten before it is read. |
+| A.java:64:17:64:29 | ...=... | This assignment to valid is useless: the value is always overwritten before it is read. |

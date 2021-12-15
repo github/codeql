@@ -1,0 +1,10 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | (unnamed parameter 0) | false |
+| file://:0:0:0:0 | fp_offset | false |
+| file://:0:0:0:0 | gp_offset | false |
+| file://:0:0:0:0 | overflow_arg_area | false |
+| file://:0:0:0:0 | reg_save_area | false |
+| thread_local.cpp:3:20:3:30 | threadLocal | true |
+| thread_local.cpp:4:7:4:21 | not_threadLocal | false |
+| thread_local.cpp:5:27:5:43 | threadLocalStatic | true |
+| thread_local.cpp:6:27:6:43 | threadLocalExtern | true |

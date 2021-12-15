@@ -1,0 +1,2 @@
+| Test.java:16:5:16:17 | remove(...) | This call may fail when iterating over the collection created $@, since it does not support element removal. | Test.java:29:16:29:32 | asList(...) | here |
+| Test.java:16:5:16:17 | remove(...) | This call may fail when iterating over the collection created $@, since it does not support element removal. | Test.java:33:16:33:43 | singletonList(...) | here |

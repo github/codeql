@@ -1,0 +1,4 @@
+| 0 | arity2.c:1:7:1:9 | (unnamed parameter 0) | 1 | 3 |
+| 0 | incompatible_decl.c:2:9:2:13 | (unnamed parameter 0) | 1 | 3 |
+| 0 | main.c:2:9:2:13 | (unnamed parameter 0) | 1 | 3 |
+| 1 | arity2.c:1:12:1:14 | (unnamed parameter 1) | 1 | 1 |

@@ -1,0 +1,175 @@
+| pointsto | false | 0 | 0 | set: {operator=} |
+| pointsto | false | 1 | 1 | set: {(unnamed parameter 0)} |
+| pointsto | false | 2 | 2 | set: {operator=} |
+| pointsto | false | 3 | 3 | set: {(unnamed parameter 0)} |
+| pointsto | false | 4 | 4 | set: {gp_offset} |
+| pointsto | false | 5 | 5 | set: {fp_offset} |
+| pointsto | false | 6 | 6 | set: {overflow_arg_area} |
+| pointsto | false | 7 | 7 | set: {reg_save_area} |
+| pointsto | false | 8 | 8 | set: {MyStruct} |
+| pointsto | false | 9 | 9 | set: {test} |
+| pointsto | false | 10 | 10 | set: {cond} |
+| pointsto | false | 11 | 11 | set: {(bool)..., cond} |
+| pointsto | false | 12 | 12 | set: {p1, p1, p1} |
+| pointsto | false | 13 | 13 | set: {a, a} |
+| pointsto | false | 14 | 14 | set: {b, b} |
+| pointsto | false | 15 | 15 | set: {p2, p2} |
+| pointsto | false | 16 | 16 | set: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} |
+| pointsto | false | 17 | 17 | set: {c, c} |
+| pointsto | false | 18 | 18 | set: {pp1, pp1} |
+| pointsto | false | 19 | 19 | set: {d, d} |
+| pointsto | false | 20 | 20 | set: {pp2, pp2} |
+| pointsto | false | 21 | 21 | set: {use} |
+| pointsto | false | 22 | 22 | set: {a, b, c, d} |
+| pointsto | false | 23 | 23 | set: {& ..., & ..., ... = ..., ... = ..., p3} |
+| pointsto | false | 24 | 24 | set: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} |
+| pointsto | false | 25 | 25 | set: {v} |
+| pointsto | false | 26 | 26 | set: {operator=} |
+| pointsto | false | 27 | 27 | set: {(unnamed parameter 0)} |
+| pointsto | false | 28 | 28 | set: {operator=} |
+| pointsto | false | 29 | 29 | set: {(unnamed parameter 0)} |
+| pointsto | false | 30 | 30 | set: {data} |
+| pointsto | false | 31 | 31 | set: {(unsigned long)..., 10} |
+| pointsto | false | 82 | 82 | <no location>\noperator= |
+| pointsto | false | 86 | 86 | <no location>\n(unnamed parameter 0) |
+| pointsto | false | 87 | 87 | <no location>\noperator= |
+| pointsto | false | 89 | 89 | <no location>\n(unnamed parameter 0) |
+| pointsto | false | 90 | 90 | file://:0:0:0:0\ngp_offset |
+| pointsto | false | 92 | 92 | file://:0:0:0:0\nfp_offset |
+| pointsto | false | 94 | 94 | file://:0:0:0:0\noverflow_arg_area |
+| pointsto | false | 97 | 97 | file://:0:0:0:0\nreg_save_area |
+| pointsto | false | 148 | 148 | test.cpp:2:16:2:23\nMyStruct |
+| pointsto | false | 154 | 154 | test.cpp:12:6:12:9\ntest |
+| pointsto | false | 155 | 155 | test.cpp:12:15:12:18\ncond |
+| pointsto | false | 159 | 159 | test.cpp:14:6:14:9\ncond |
+| pointsto | false | 160 | 160 | test.cpp:14:6:14:9\n(bool)... |
+| pointsto | false | 162 | 162 | test.cpp:7:11:7:12\np1 |
+| pointsto | false | 165 | 165 | test.cpp:16:3:16:4\np1 |
+| pointsto | false | 166 | 166 | test.cpp:6:10:6:10\na |
+| pointsto | false | 167 | 167 | test.cpp:16:9:16:9\na |
+| pointsto | false | 168 | 168 | test.cpp:16:8:16:9\n& ... |
+| pointsto | false | 169 | 169 | test.cpp:16:3:16:9\n... = ... |
+| pointsto | false | 172 | 172 | test.cpp:18:3:18:4\np1 |
+| pointsto | false | 173 | 173 | test.cpp:6:13:6:13\nb |
+| pointsto | false | 174 | 174 | test.cpp:18:9:18:9\nb |
+| pointsto | false | 175 | 175 | test.cpp:18:8:18:9\n& ... |
+| pointsto | false | 176 | 176 | test.cpp:18:3:18:9\n... = ... |
+| pointsto | false | 179 | 179 | test.cpp:7:16:7:17\np2 |
+| pointsto | false | 180 | 180 | test.cpp:20:2:20:3\np2 |
+| pointsto | false | 181 | 181 | test.cpp:20:7:20:8\np1 |
+| pointsto | false | 182 | 182 | test.cpp:20:2:20:8\n... = ... |
+| pointsto | false | 184 | 184 | test.cpp:7:21:7:22\np3 |
+| pointsto | false | 185 | 185 | test.cpp:22:2:22:3\np3 |
+| pointsto | false | 186 | 186 | test.cpp:6:16:6:16\nc |
+| pointsto | false | 187 | 187 | test.cpp:22:8:22:8\nc |
+| pointsto | false | 188 | 188 | test.cpp:22:7:22:8\n& ... |
+| pointsto | false | 189 | 189 | test.cpp:22:2:22:8\n... = ... |
+| pointsto | false | 191 | 191 | test.cpp:8:12:8:14\npp1 |
+| pointsto | false | 194 | 194 | test.cpp:23:2:23:4\npp1 |
+| pointsto | false | 195 | 195 | test.cpp:23:9:23:10\np3 |
+| pointsto | false | 196 | 196 | test.cpp:23:8:23:10\n& ... |
+| pointsto | false | 197 | 197 | test.cpp:23:2:23:10\n... = ... |
+| pointsto | false | 199 | 199 | test.cpp:24:2:24:3\np3 |
+| pointsto | false | 200 | 200 | test.cpp:6:19:6:19\nd |
+| pointsto | false | 201 | 201 | test.cpp:24:8:24:8\nd |
+| pointsto | false | 202 | 202 | test.cpp:24:7:24:8\n& ... |
+| pointsto | false | 203 | 203 | test.cpp:24:2:24:8\n... = ... |
+| pointsto | false | 205 | 205 | test.cpp:8:19:8:21\npp2 |
+| pointsto | false | 206 | 206 | test.cpp:25:2:25:4\npp2 |
+| pointsto | false | 207 | 207 | test.cpp:25:9:25:10\np3 |
+| pointsto | false | 208 | 208 | test.cpp:25:8:25:10\n& ... |
+| pointsto | false | 209 | 209 | test.cpp:25:2:25:10\n... = ... |
+| pointsto | false | 211 | 211 | test.cpp:10:6:10:8\nuse |
+| pointsto | false | 215 | 215 | test.cpp:27:6:27:6\na |
+| pointsto | false | 216 | 216 | test.cpp:27:9:27:9\nb |
+| pointsto | false | 217 | 217 | test.cpp:27:12:27:12\nc |
+| pointsto | false | 218 | 218 | test.cpp:27:15:27:15\nd |
+| pointsto | false | 219 | 219 | test.cpp:27:18:27:19\np1 |
+| pointsto | false | 220 | 220 | test.cpp:27:22:27:23\np2 |
+| pointsto | false | 221 | 221 | test.cpp:27:26:27:27\np3 |
+| pointsto | false | 222 | 222 | test.cpp:27:30:27:32\npp1 |
+| pointsto | false | 223 | 223 | test.cpp:27:35:27:37\npp2 |
+| pointsto | false | 226 | 226 | test.cpp:10:19:10:19\nv |
+| pointsto | false | 227 | 227 | test.cpp:2:16:2:16\noperator= |
+| pointsto | false | 230 | 230 | file://:0:0:0:0\n(unnamed parameter 0) |
+| pointsto | false | 233 | 233 | test.cpp:2:16:2:16\noperator= |
+| pointsto | false | 236 | 236 | file://:0:0:0:0\n(unnamed parameter 0) |
+| pointsto | false | 240 | 240 | test.cpp:3:6:3:9\ndata |
+| pointsto | false | 243 | 243 | test.cpp:3:11:3:12\n10 |
+| pointsto | false | 244 | 244 | test.cpp:3:11:3:12\n(unsigned long)... |
+| pointsto | true | 0 | 82 | pt: {operator=} -> operator= |
+| pointsto | true | 1 | 86 | pt: {(unnamed parameter 0)} -> (unnamed parameter 0) |
+| pointsto | true | 2 | 87 | pt: {operator=} -> operator= |
+| pointsto | true | 3 | 89 | pt: {(unnamed parameter 0)} -> (unnamed parameter 0) |
+| pointsto | true | 4 | 90 | pt: {gp_offset} -> gp_offset |
+| pointsto | true | 5 | 92 | pt: {fp_offset} -> fp_offset |
+| pointsto | true | 6 | 94 | pt: {overflow_arg_area} -> overflow_arg_area |
+| pointsto | true | 7 | 97 | pt: {reg_save_area} -> reg_save_area |
+| pointsto | true | 8 | 148 | pt: {MyStruct} -> MyStruct |
+| pointsto | true | 9 | 154 | pt: {test} -> test |
+| pointsto | true | 10 | 155 | pt: {cond} -> cond |
+| pointsto | true | 11 | 159 | pt: {(bool)..., cond} -> cond |
+| pointsto | true | 11 | 160 | pt: {(bool)..., cond} -> (bool)... |
+| pointsto | true | 12 | 162 | pt: {p1, p1, p1} -> p1 |
+| pointsto | true | 12 | 165 | pt: {p1, p1, p1} -> p1 |
+| pointsto | true | 12 | 172 | pt: {p1, p1, p1} -> p1 |
+| pointsto | true | 13 | 8 | sf |
+| pointsto | true | 13 | 16 | sf |
+| pointsto | true | 13 | 166 | pt: {a, a} -> a |
+| pointsto | true | 13 | 167 | pt: {a, a} -> a |
+| pointsto | true | 14 | 8 | sf |
+| pointsto | true | 14 | 16 | sf |
+| pointsto | true | 14 | 173 | pt: {b, b} -> b |
+| pointsto | true | 14 | 174 | pt: {b, b} -> b |
+| pointsto | true | 15 | 179 | pt: {p2, p2} -> p2 |
+| pointsto | true | 15 | 180 | pt: {p2, p2} -> p2 |
+| pointsto | true | 16 | 168 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> & ... |
+| pointsto | true | 16 | 169 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> ... = ... |
+| pointsto | true | 16 | 175 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> & ... |
+| pointsto | true | 16 | 176 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> ... = ... |
+| pointsto | true | 16 | 181 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> p1 |
+| pointsto | true | 16 | 182 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> ... = ... |
+| pointsto | true | 16 | 219 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> p1 |
+| pointsto | true | 16 | 220 | pt: {& ..., & ..., ... = ..., ... = ..., ... = ..., p1, p1, p2} -> p2 |
+| pointsto | true | 17 | 8 | sf |
+| pointsto | true | 17 | 23 | sf |
+| pointsto | true | 17 | 186 | pt: {c, c} -> c |
+| pointsto | true | 17 | 187 | pt: {c, c} -> c |
+| pointsto | true | 18 | 191 | pt: {pp1, pp1} -> pp1 |
+| pointsto | true | 18 | 194 | pt: {pp1, pp1} -> pp1 |
+| pointsto | true | 19 | 8 | sf |
+| pointsto | true | 19 | 23 | sf |
+| pointsto | true | 19 | 200 | pt: {d, d} -> d |
+| pointsto | true | 19 | 201 | pt: {d, d} -> d |
+| pointsto | true | 20 | 205 | pt: {pp2, pp2} -> pp2 |
+| pointsto | true | 20 | 206 | pt: {pp2, pp2} -> pp2 |
+| pointsto | true | 21 | 211 | pt: {use} -> use |
+| pointsto | true | 22 | 215 | pt: {a, b, c, d} -> a |
+| pointsto | true | 22 | 216 | pt: {a, b, c, d} -> b |
+| pointsto | true | 22 | 217 | pt: {a, b, c, d} -> c |
+| pointsto | true | 22 | 218 | pt: {a, b, c, d} -> d |
+| pointsto | true | 23 | 188 | pt: {& ..., & ..., ... = ..., ... = ..., p3} -> & ... |
+| pointsto | true | 23 | 189 | pt: {& ..., & ..., ... = ..., ... = ..., p3} -> ... = ... |
+| pointsto | true | 23 | 202 | pt: {& ..., & ..., ... = ..., ... = ..., p3} -> & ... |
+| pointsto | true | 23 | 203 | pt: {& ..., & ..., ... = ..., ... = ..., p3} -> ... = ... |
+| pointsto | true | 23 | 221 | pt: {& ..., & ..., ... = ..., ... = ..., p3} -> p3 |
+| pointsto | true | 24 | 184 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> p3 |
+| pointsto | true | 24 | 185 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> p3 |
+| pointsto | true | 24 | 195 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> p3 |
+| pointsto | true | 24 | 196 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> & ... |
+| pointsto | true | 24 | 197 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> ... = ... |
+| pointsto | true | 24 | 199 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> p3 |
+| pointsto | true | 24 | 207 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> p3 |
+| pointsto | true | 24 | 208 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> & ... |
+| pointsto | true | 24 | 209 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> ... = ... |
+| pointsto | true | 24 | 222 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> pp1 |
+| pointsto | true | 24 | 223 | pt: {& ..., & ..., ... = ..., ... = ..., p3, p3, p3, p3, p3, pp1, pp2} -> pp2 |
+| pointsto | true | 25 | 8 | sf |
+| pointsto | true | 25 | 226 | pt: {v} -> v |
+| pointsto | true | 26 | 227 | pt: {operator=} -> operator= |
+| pointsto | true | 27 | 230 | pt: {(unnamed parameter 0)} -> (unnamed parameter 0) |
+| pointsto | true | 28 | 233 | pt: {operator=} -> operator= |
+| pointsto | true | 29 | 236 | pt: {(unnamed parameter 0)} -> (unnamed parameter 0) |
+| pointsto | true | 30 | 240 | pt: {data} -> data |
+| pointsto | true | 31 | 243 | pt: {(unsigned long)..., 10} -> 10 |
+| pointsto | true | 31 | 244 | pt: {(unsigned long)..., 10} -> (unsigned long)... |

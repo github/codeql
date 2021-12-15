@@ -1,0 +1,8 @@
+| generic.c:21:22:21:32 | int |
+| generic.c:22:22:22:32 | int |
+| generic.c:23:22:23:32 | string |
+| generic.c:24:22:24:32 | unknown |
+| generic.cpp:22:22:22:32 | int |
+| generic.cpp:23:22:23:32 | int |
+| generic.cpp:24:22:24:32 | string |
+| generic.cpp:25:22:25:32 | unknown |

@@ -1,0 +1,12 @@
+| visibility.c:1:5:1:9 | h_var | visibility.c:1:26:1:35 | visibility | visibility.c:1:37:1:44 | hidden |
+| visibility.c:2:5:2:9 | p_var | visibility.c:2:26:2:35 | visibility | visibility.c:2:37:2:47 | protected |
+| visibility.c:3:5:3:9 | i_var | visibility.c:3:26:3:35 | visibility | visibility.c:3:37:3:46 | internal |
+| visibility.c:4:5:4:9 | d_var | visibility.c:4:26:4:35 | visibility | visibility.c:4:37:4:45 | default |
+| visibility.c:6:47:6:52 | h_rout | visibility.c:6:16:6:25 | visibility | visibility.c:6:27:6:34 | hidden |
+| visibility.c:7:47:7:52 | p_rout | visibility.c:7:16:7:25 | visibility | visibility.c:7:27:7:37 | protected |
+| visibility.c:8:47:8:52 | i_rout | visibility.c:8:16:8:25 | visibility | visibility.c:8:27:8:36 | internal |
+| visibility.c:9:47:9:52 | d_rout | visibility.c:9:16:9:25 | visibility | visibility.c:9:27:9:35 | default |
+| visibility.c:11:49:11:54 | h_type | visibility.c:11:23:11:32 | visibility | visibility.c:11:34:11:41 | hidden |
+| visibility.c:12:49:12:54 | p_type | visibility.c:12:23:12:32 | visibility | visibility.c:12:34:12:44 | protected |
+| visibility.c:13:49:13:54 | i_type | visibility.c:13:23:13:32 | visibility | visibility.c:13:34:13:43 | internal |
+| visibility.c:14:49:14:54 | d_type | visibility.c:14:23:14:32 | visibility | visibility.c:14:34:14:42 | default |

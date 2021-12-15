@@ -1,0 +1,7 @@
+| "bar" in global scope |
+| C in module 'bar' |
+| Foo in global scope |
+| Foo in library-tests/TypeScript/RegressionTests/ExportEqualsExpr/tst.ts |
+| library-tests/TypeScript/RegressionTests/ExportEqualsExpr/tst.ts |
+| module 'bar' |
+| module 'foo' |

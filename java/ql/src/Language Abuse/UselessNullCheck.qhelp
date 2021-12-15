@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sometimes you can guarantee that a particular variable will never be null.
+For example when that variable has just been assigned a newly created
+object or is the exception caught by a <code>catch</code> clause.
+A null check on such a variable is misleading, and can potentially indicate a
+logic error.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not check a variable for null if a null value is clearly impossible.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example shows a null check on a newly created object. An object
+returned by <code>new</code> can never be null, so this check is superfluous.
+</p>
+<sample src="UselessNullCheckBad.java" />
+
+</example>
+
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.5">Creation of New Class Instances</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.20.1">Execution of try-catch</a>.
+</li>
+
+</references>
+
+</qhelp>

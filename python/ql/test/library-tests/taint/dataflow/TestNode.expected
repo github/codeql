@@ -1,0 +1,59 @@
+WARNING: Predicate getNode has been deprecated and may be removed in future (TestNode.ql:5,77-84)
+| Taint Data flow | test.py:3 | SOURCE |  |
+| Taint Data flow | test.py:6 | SOURCE |  |
+| Taint Data flow | test.py:7 | s |  |
+| Taint Data flow | test.py:10 | SOURCE |  |
+| Taint Data flow | test.py:12 | arg | p0 = Data flow |
+| Taint Data flow | test.py:13 | arg | p0 = Data flow |
+| Taint Data flow | test.py:16 | source() |  |
+| Taint Data flow | test.py:17 | t |  |
+| Taint Data flow | test.py:20 | SOURCE |  |
+| Taint Data flow | test.py:21 | t |  |
+| Taint Data flow | test.py:24 | source() |  |
+| Taint Data flow | test.py:25 | t |  |
+| Taint Data flow | test.py:31 | SOURCE |  |
+| Taint Data flow | test.py:37 | SOURCE |  |
+| Taint Data flow | test.py:41 | t |  |
+| Taint Data flow | test.py:44 | source() |  |
+| Taint Data flow | test.py:46 | arg | p0 = Data flow |
+| Taint Data flow | test.py:47 | arg | p0 = Data flow |
+| Taint Data flow | test.py:49 | arg | p1 = Data flow |
+| Taint Data flow | test.py:51 | arg | p1 = Data flow |
+| Taint Data flow | test.py:54 | source2() |  |
+| Taint Data flow | test.py:55 | t |  |
+| Taint Data flow | test.py:62 | SOURCE |  |
+| Taint Data flow | test.py:63 | t |  |
+| Taint Data flow | test.py:67 | SOURCE |  |
+| Taint Data flow | test.py:70 | t |  |
+| Taint Data flow | test.py:72 | arg | p0 = Data flow |
+| Taint Data flow | test.py:73 | arg | p0 = Data flow |
+| Taint Data flow | test.py:76 | SOURCE |  |
+| Taint Data flow | test.py:77 | hub() |  |
+| Taint Data flow | test.py:77 | t |  |
+| Taint Data flow | test.py:78 | t |  |
+| Taint Data flow | test.py:108 | SOURCE |  |
+| Taint Data flow | test.py:112 | t |  |
+| Taint Data flow | test.py:118 | SOURCE |  |
+| Taint Data flow | test.py:120 | t |  |
+| Taint Data flow | test.py:128 | SOURCE |  |
+| Taint Data flow | test.py:129 | t |  |
+| Taint Data flow | test.py:139 | SOURCE |  |
+| Taint Data flow | test.py:140 | t |  |
+| Taint Data flow | test.py:143 | SOURCE |  |
+| Taint Data flow | test.py:144 | s |  |
+| Taint Data flow | test.py:145 | s |  |
+| Taint Data flow | test.py:148 | SOURCE |  |
+| Taint Data flow | test.py:149 | SOURCE |  |
+| Taint Data flow | test.py:158 | SOURCE |  |
+| Taint Data flow | test.py:159 | t |  |
+| Taint Data flow | test.py:160 | t |  |
+| Taint Data flow | test.py:163 | t |  |
+| Taint Data flow | test.py:166 | t |  |
+| Taint [Data flow] | test.py:148 | List |  |
+| Taint [Data flow] | test.py:150 | l |  |
+| Taint [Data flow] | test.py:154 | l |  |
+| Taint [Data flow] | test.py:154 | list() |  |
+| Taint {Data flow} | test.py:149 | Dict |  |
+| Taint {Data flow} | test.py:151 | d |  |
+| Taint {Data flow} | test.py:155 | d |  |
+| Taint {Data flow} | test.py:155 | dict() |  |

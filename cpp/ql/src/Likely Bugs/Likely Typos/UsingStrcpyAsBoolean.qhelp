@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This query identifies calls to string copy functions used in conditions, either
+directly or as part of an equality operator or logical operator. The most
+common string copy functions always return their <code>destination</code>
+parameter and do not have a return value reserved to indicate an error.
+Therefore, such a function call always evaluates to true in a Boolean
+context.</p>
+
+<p>The string copy functions that the rule takes into consideration are:</p>
+<ul>
+  <li><code>strcpy</code></li>
+  <li><code>wcscpy</code></li>
+  <li><code>_mbscpy</code></li>
+  <li><code>strncpy</code></li>
+  <li><code>_strncpy_l</code></li>
+  <li><code>wcsncpy</code></li>
+  <li><code>_wcsncpy_l</code></li>
+  <li><code>_mbsncpy</code></li>
+  <li><code>_mbsncpy_l</code></li>
+</ul>
+
+<p>NOTE: It is highly recommended to consider using a more secure version of string manipulation functions such as as <code>strcpy_s</code>.</p>
+
+</overview>
+<recommendation>
+  <p>Check to ensure that the flagged expressions are not typos.</p>
+  <p>If a string comparison is intended, change the function to the appropriate string comparison function.</p>
+  <p>If a string copy is really intended, very likely a secure version of the string copy function such as <code>strcpy_s</code> was intended instead of the insecure version of the string copy function.</p>
+
+</recommendation>
+<example><sample src="UsingStrcpyAsBoolean.cpp" />
+</example>
+
+<references>
+<li>Microsoft Code Analysis for C/C++ Warnings: <a href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/ccf4h9w8(v=vs.110)">C6324</a></li>
+<li>Microsoft C library reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/strcpy-wcscpy-mbscpy">strcpy, wcscpy, _mbscpy</a></li>
+<li>US-CERT: <a href="https://www.us-cert.gov/bsi/articles/knowledge/coding-practices/strcpy_s-and-strcat_s">strcpy_s() and strcat_s()</a></li>
+
+</references>
+</qhelp>

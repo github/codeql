@@ -1,0 +1,3 @@
+| test.c:8:6:8:6 | (unnamed enum) | In an enumerator list, the = construct should not be used to explicitly initialize members other than the first, unless all items are explicitly initialized. |
+| test.c:16:6:16:6 | (unnamed enum) | In an enumerator list, the = construct should not be used to explicitly initialize members other than the first, unless all items are explicitly initialized. |
+| test.c:38:6:38:6 | (unnamed enum) | In an enumerator list, the = construct should not be used to explicitly initialize members other than the first, unless all items are explicitly initialized. |

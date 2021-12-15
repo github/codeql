@@ -1,0 +1,15 @@
+| Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) | Consistency.cs:25:29:25:29 | SSA def(c) |
+| Fields.cs:31:19:31:22 | f.xs | Fields.cs:30:13:30:28 | SSA qualifier def(f.xs) | Fields.cs:30:13:30:28 | SSA def(f) |
+| Fields.cs:31:19:31:22 | f.xs | Fields.cs:49:13:49:28 | SSA qualifier def(f.xs) | Fields.cs:49:13:49:28 | SSA def(f) |
+| Fields.cs:98:20:98:32 | f.Field.Field | Fields.cs:97:9:97:30 | SSA qualifier def(f.Field.Field) | Fields.cs:97:9:97:30 | SSA def(f.Field) |
+| Fields.cs:99:16:99:34 | f.Field.Field.Field | Fields.cs:97:9:97:30 | SSA qualifier def(f.Field.Field.Field) | Fields.cs:97:9:97:30 | SSA qualifier def(f.Field.Field) |
+| Fields.cs:100:16:100:40 | f.Field.Field.Field.Field | Fields.cs:97:9:97:30 | SSA qualifier def(f.Field.Field.Field.Field) | Fields.cs:97:9:97:30 | SSA qualifier def(f.Field.Field.Field) |
+| Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:109:10:109:10 | SSA qualifier def(this.Field.Field) | Fields.cs:109:10:109:10 | SSA entry def(this.Field) |
+| Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:109:10:109:10 | SSA qualifier def(this.Field.Field.xs) | Fields.cs:109:10:109:10 | SSA qualifier def(this.Field.Field) |
+| Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:114:9:114:22 | SSA qualifier def(this.Field.Field.xs) | Fields.cs:114:9:114:22 | SSA call def(this.Field.Field) |
+| OutRef.cs:19:32:19:38 | t.Field | OutRef.cs:18:13:18:28 | SSA qualifier def(t.Field) | OutRef.cs:18:13:18:28 | SSA def(t) |
+| Properties.cs:31:19:31:22 | f.xs | Properties.cs:30:13:30:32 | SSA qualifier def(f.xs) | Properties.cs:30:13:30:32 | SSA def(f) |
+| Properties.cs:31:19:31:22 | f.xs | Properties.cs:49:13:49:32 | SSA qualifier def(f.xs) | Properties.cs:49:13:49:32 | SSA def(f) |
+| Properties.cs:114:20:114:35 | this.Props.Props | Properties.cs:108:10:108:10 | SSA qualifier def(this.Props.Props) | Properties.cs:108:10:108:10 | SSA entry def(this.Props) |
+| Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:108:10:108:10 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:108:10:108:10 | SSA qualifier def(this.Props.Props) |
+| Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:113:9:113:22 | SSA call def(this.Props.Props) |

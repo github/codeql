@@ -1,0 +1,2 @@
+| tests2.cpp:27:12:27:12 | call to operator<< | This operation exposes system data from $@. | tests2.cpp:27:15:27:20 | call to getenv | call to getenv |
+| tests2.cpp:28:25:28:25 | call to operator<< | This operation exposes system data from $@. | tests2.cpp:28:28:28:33 | call to getenv | call to getenv |

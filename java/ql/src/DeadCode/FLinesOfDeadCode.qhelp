@@ -1,0 +1,17 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<include src="DeadCodeSummary.inc.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
+</overview>
+<recommendation>
+<p>
+Any code that is marked as dead should be reviewed and, if it is genuinely not used, deleted. You
+can see which classes, methods and fields contribute to this metric using the rules for Dead Code
+analysis.
+</p>
+</recommendation>
+<include src="DeadCodeReferences.inc.qhelp" />
+</qhelp>

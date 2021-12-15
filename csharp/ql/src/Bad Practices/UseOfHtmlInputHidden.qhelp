@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Data entered in hidden fields is cached in the same way as the rest of the page, and can be 
+accessed or replaced by attackers that have access to the browser's cache. You should not trust the 
+contents of hidden fields more than the contents of normal input fields.</p>
+
+</overview>
+<recommendation>
+<p>Ensure no sensitive information is stored in hidden fields.</p>
+
+</recommendation>
+<references>
+
+</references>
+</qhelp>

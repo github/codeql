@@ -1,0 +1,2 @@
+class RawSQL:
+    pass

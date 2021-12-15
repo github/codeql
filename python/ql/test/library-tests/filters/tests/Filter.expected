@@ -1,0 +1,6 @@
+| test.py:4:1:4:23 | Class MyTest |
+| test.py:6:5:6:21 | Function test_1 |
+| test.py:9:5:9:21 | Function test_2 |
+| test_foo.py:3:1:3:15 | Function test_foo |
+| unittest_test.py:3:1:3:33 | Class FooTest |
+| unittest_test.py:4:5:4:25 | Function test_valid |

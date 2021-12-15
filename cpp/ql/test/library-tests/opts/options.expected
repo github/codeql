@@ -1,0 +1,8 @@
+| main.cpp:3:6:3:10 | abort | exits |
+| main.cpp:5:7:5:11 | fgets | alwaysCheckReturnValue |
+| main.cpp:12:13:12:19 | call to Xstrdup | overrideReturnsNull |
+| main.cpp:13:13:13:19 | call to Xstrdup | overrideReturnsNull |
+| main.cpp:13:13:13:19 | call to Xstrdup | returnsNull |
+| main.cpp:19:3:19:13 | __assume(...) | exprExits |
+| main.cpp:30:2:30:22 | call to ignore_return_value | okToIgnoreReturnValue |
+| main.cpp:32:2:32:20 | call to myIgnoreReturnValue | okToIgnoreReturnValue |

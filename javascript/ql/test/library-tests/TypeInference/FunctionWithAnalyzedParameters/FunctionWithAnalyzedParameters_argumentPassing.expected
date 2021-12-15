@@ -1,0 +1,11 @@
+| tst.js:3:2:3:15 | function(x){x} | tst.js:3:11:3:11 | x | tst.js:3:18:3:22 | false |
+| tst.js:4:2:4:15 | function(x){x} | tst.js:4:11:4:11 | x | tst.js:4:18:4:21 | true |
+| tst.js:5:2:5:21 | function(x, y){x; y} | tst.js:5:11:5:11 | x | tst.js:5:24:5:27 | true |
+| tst.js:5:2:5:21 | function(x, y){x; y} | tst.js:5:14:5:14 | y | tst.js:5:30:5:34 | false |
+| tst.js:12:5:12:21 | function f3(x){x} | tst.js:12:17:12:17 | x | tst.js:13:8:13:12 | false |
+| tst.js:14:5:14:21 | function f4(x){x} | tst.js:14:17:14:17 | x | tst.js:15:8:15:11 | true |
+| tst.js:16:5:16:27 | functio ... ){x; y} | tst.js:16:17:16:17 | x | tst.js:17:8:17:11 | true |
+| tst.js:16:5:16:27 | functio ... ){x; y} | tst.js:16:20:16:20 | y | tst.js:17:14:17:18 | false |
+| tst.js:20:2:20:25 | functio ... ){x; y} | tst.js:20:11:20:11 | x | tst.js:20:28:20:31 | true |
+| tst.js:22:2:22:33 | functio ... callee} | tst.js:22:11:22:11 | x | tst.js:22:36:22:39 | true |
+| tst.js:23:2:23:47 | functio ... callee} | tst.js:23:11:23:11 | x | tst.js:23:50:23:53 | true |

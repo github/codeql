@@ -1,0 +1,24 @@
+| nested_functions.c:6:5:6:8 | main | (global namespace) | (global namespace) |
+| nested_functions.c:7:9:7:9 | i | NONE | (global namespace) |
+| nested_functions.c:7:12:7:12 | j | NONE | (global namespace) |
+| nested_functions.c:9:9:9:9 | g | (global namespace) | (global namespace) |
+| nested_functions.c:9:15:9:15 | x | NONE | (global namespace) |
+| nested_functions.c:22:6:22:6 | h | (global namespace) | (global namespace) |
+| nested_functions.c:23:11:23:11 | f | NONE | (global namespace) |
+| nested_functions.c:25:11:25:11 | g | (global namespace) | (global namespace) |
+| nested_functions.c:25:19:25:19 | x | NONE | (global namespace) |
+| nested_functions.c:32:6:32:8 | bad | (global namespace) | (global namespace) |
+| nested_functions.c:33:9:33:9 | i | NONE | (global namespace) |
+| nested_functions.c:35:9:35:9 | g | (global namespace) | (global namespace) |
+| nested_functions.c:39:6:39:8 | f_a | (global namespace) | (global namespace) |
+| nested_functions.c:44:8:44:10 | f_c | (global namespace) | (global namespace) |
+| nested_functions.c:52:6:52:8 | f_b | (global namespace) | (global namespace) |
+| nested_functions.cpp:2:7:2:7 | operator= | NONE | (global namespace) |
+| nested_functions.cpp:2:7:2:7 | operator= | NONE | (global namespace) |
+| nested_functions.cpp:2:7:2:13 | myClass | (global namespace) | (global namespace) |
+| nested_functions.cpp:5:7:5:14 | myMethod | NONE | (global namespace) |
+| nested_functions.cpp:6:8:6:23 | myNestedFunction | (global namespace) | (global namespace) |
+| nested_functions.cpp:23:7:23:9 | f_a | ns | ns |
+| nested_functions.cpp:28:9:28:11 | f_c | ns | ns |
+| nested_functions.cpp:30:9:30:11 | f_d | ns | ns |
+| nested_functions.cpp:36:7:36:9 | f_b | ns | ns |

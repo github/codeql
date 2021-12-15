@@ -1,0 +1,4 @@
+| tst.js:7:23:7:31 | undefined | Values of type undefined cannot be used as prototypes. |
+| tst.js:8:27:8:28 | 42 | Values of type number cannot be used as prototypes. |
+| tst.js:9:15:9:18 | true | Values of type boolean cannot be used as prototypes. |
+| tst.js:10:1:10:10 | "function" | Values of type string cannot be used as prototypes. |

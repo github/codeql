@@ -1,0 +1,14 @@
+| file://:0:0:0:0 | { ... } | lambda_cfg.cpp:12:24:12:24 | operator auto (*)(int, int)->int |
+| lambda_cfg.cpp:11:16:23:1 | { ... } | lambda_cfg.cpp:11:5:11:8 | main |
+| lambda_cfg.cpp:12:5:18:6 | declaration | lambda_cfg.cpp:11:5:11:8 | main |
+| lambda_cfg.cpp:12:21:12:21 | return ... | lambda_cfg.cpp:12:21:12:21 | (unnamed constructor) |
+| lambda_cfg.cpp:12:21:12:21 | { ... } | lambda_cfg.cpp:12:21:12:21 | (unnamed constructor) |
+| lambda_cfg.cpp:12:24:12:24 | return ... | lambda_cfg.cpp:12:24:12:24 | operator auto (*)(int, int)->int |
+| lambda_cfg.cpp:12:46:18:5 | { ... } | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:13:9:13:14 | declaration | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:14:9:14:49 | ExprStmt | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:15:9:15:18 | ExprStmt | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:16:9:16:42 | ExprStmt | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:17:9:17:17 | return ... | lambda_cfg.cpp:12:24:12:24 | operator() |
+| lambda_cfg.cpp:20:5:20:68 | ExprStmt | lambda_cfg.cpp:11:5:11:8 | main |
+| lambda_cfg.cpp:22:5:22:13 | return ... | lambda_cfg.cpp:11:5:11:8 | main |

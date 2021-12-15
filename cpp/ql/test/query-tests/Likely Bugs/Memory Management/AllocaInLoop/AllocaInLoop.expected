@@ -1,0 +1,18 @@
+| AllocaInLoop1.cpp:31:18:31:23 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:22:2:39:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:55:19:55:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:45:2:64:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:80:19:80:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:71:3:88:3 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:110:19:110:24 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1.cpp:109:2:113:13 | do (...) ... | do (...) ... |
+| AllocaInLoop1ms.cpp:28:18:28:24 | call to _alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:19:2:36:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1ms.cpp:52:19:52:26 | call to _malloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:42:2:63:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1ms.cpp:79:19:79:25 | call to _alloca | Stack allocation is inside a $@ loop. | AllocaInLoop1ms.cpp:70:3:87:3 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop2.c:39:30:39:35 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop2.c:29:5:48:19 | do (...) ... | do (...) ... |
+| AllocaInLoop3.cpp:45:23:45:28 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | AllocaInLoop3.cpp:43:2:49:19 | do (...) ... | do (...) ... |
+| BoundedLoop.cpp:25:5:25:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:24:3:26:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:38:5:38:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:37:3:39:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:55:5:55:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:54:3:59:3 | while (...) ... | while (...) ... |
+| BoundedLoop.cpp:64:5:64:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:63:3:68:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:73:5:73:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:72:3:74:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:97:5:97:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:96:3:98:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:105:5:105:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:104:3:106:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:138:5:138:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:137:3:139:3 | for(...;...;...) ... | for(...;...;...) ... |
+| BoundedLoop.cpp:176:5:176:10 | call to __builtin_alloca | Stack allocation is inside a $@ loop. | BoundedLoop.cpp:175:3:177:3 | for(...;...;...) ... | for(...;...;...) ... |

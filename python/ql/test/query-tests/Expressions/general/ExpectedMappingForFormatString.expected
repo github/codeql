@@ -1,0 +1,1 @@
+| str_fmt_test.py:5:26:5:26 | x | Right hand side of a % operator must be a mapping, not class $@. | file://:0:0:0:0 | builtin-class list | list |

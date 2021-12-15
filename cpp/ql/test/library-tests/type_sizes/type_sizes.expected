@@ -1,0 +1,94 @@
+| a.cpp:3:15:3:16 | id | 8 |
+| a.cpp:7:7:7:16 | ClassNoDef | <none> |
+| a.cpp:9:7:9:18 | ClassWithDef | 8 |
+| a.cpp:13:8:13:18 | StructNoDef | <none> |
+| a.cpp:14:8:14:20 | StructWithDef | 8 |
+| a.cpp:18:30:18:49 | TypeDefStructWithDef | 8 |
+| a.cpp:20:7:20:16 | UnionNoDef | <none> |
+| a.cpp:21:7:21:18 | UnionWithDef | 4 |
+| a.cpp:37:13:37:16 | v4si | 16 |
+| a.cpp:45:15:45:17 | SEL | 8 |
+| file://:0:0:0:0 | ..(&)(..) | 1 |
+| file://:0:0:0:0 | ..()(..) | <none> |
+| file://:0:0:0:0 | ..()(..) | <none> |
+| file://:0:0:0:0 | ..(*)(..) | 8 |
+| file://:0:0:0:0 | ..(^)(..) | 8 |
+| file://:0:0:0:0 | ClassWithDef & | 8 |
+| file://:0:0:0:0 | ClassWithDef && | 8 |
+| file://:0:0:0:0 | StructWithDef & | 8 |
+| file://:0:0:0:0 | StructWithDef && | 8 |
+| file://:0:0:0:0 | UnionWithDef & | 8 |
+| file://:0:0:0:0 | UnionWithDef && | 8 |
+| file://:0:0:0:0 | _Complex __float128 | 32 |
+| file://:0:0:0:0 | _Complex double | 16 |
+| file://:0:0:0:0 | _Complex float | 8 |
+| file://:0:0:0:0 | _Complex long double | 32 |
+| file://:0:0:0:0 | _Decimal32 | 4 |
+| file://:0:0:0:0 | _Decimal64 | 8 |
+| file://:0:0:0:0 | _Decimal128 | 16 |
+| file://:0:0:0:0 | _Float32 | 4 |
+| file://:0:0:0:0 | _Float32x | 8 |
+| file://:0:0:0:0 | _Float64 | 8 |
+| file://:0:0:0:0 | _Float64x | 16 |
+| file://:0:0:0:0 | _Float128 | 16 |
+| file://:0:0:0:0 | _Float128x | 16 |
+| file://:0:0:0:0 | _Imaginary double | 8 |
+| file://:0:0:0:0 | _Imaginary float | 4 |
+| file://:0:0:0:0 | _Imaginary long double | 16 |
+| file://:0:0:0:0 | __attribute((vector_size(16))) int | 16 |
+| file://:0:0:0:0 | __float128 | 16 |
+| file://:0:0:0:0 | __int128 | 16 |
+| file://:0:0:0:0 | __va_list_tag | 24 |
+| file://:0:0:0:0 | __va_list_tag & | 8 |
+| file://:0:0:0:0 | __va_list_tag && | 8 |
+| file://:0:0:0:0 | auto | <none> |
+| file://:0:0:0:0 | bool | 1 |
+| file://:0:0:0:0 | char | 1 |
+| file://:0:0:0:0 | char8_t | 1 |
+| file://:0:0:0:0 | char16_t | 2 |
+| file://:0:0:0:0 | char32_t | 4 |
+| file://:0:0:0:0 | char * | 8 |
+| file://:0:0:0:0 | char *const | 8 |
+| file://:0:0:0:0 | char[5] | 5 |
+| file://:0:0:0:0 | const ClassWithDef | 8 |
+| file://:0:0:0:0 | const ClassWithDef & | 8 |
+| file://:0:0:0:0 | const StructWithDef | 8 |
+| file://:0:0:0:0 | const StructWithDef & | 8 |
+| file://:0:0:0:0 | const UnionWithDef | 4 |
+| file://:0:0:0:0 | const UnionWithDef & | 8 |
+| file://:0:0:0:0 | const __va_list_tag | 24 |
+| file://:0:0:0:0 | const __va_list_tag & | 8 |
+| file://:0:0:0:0 | const char | 1 |
+| file://:0:0:0:0 | const char * | 8 |
+| file://:0:0:0:0 | const char *const | 8 |
+| file://:0:0:0:0 | const char[5] | 5 |
+| file://:0:0:0:0 | decltype(nullptr) | 8 |
+| file://:0:0:0:0 | double | 8 |
+| file://:0:0:0:0 | error | 1 |
+| file://:0:0:0:0 | float | 4 |
+| file://:0:0:0:0 | int | 4 |
+| file://:0:0:0:0 | int & | 8 |
+| file://:0:0:0:0 | int && | 8 |
+| file://:0:0:0:0 | int[3] | 12 |
+| file://:0:0:0:0 | int[3][4] | 48 |
+| file://:0:0:0:0 | int[4] | 16 |
+| file://:0:0:0:0 | long | 8 |
+| file://:0:0:0:0 | long double | 16 |
+| file://:0:0:0:0 | long long | 8 |
+| file://:0:0:0:0 | short | 2 |
+| file://:0:0:0:0 | signed __int128 | 16 |
+| file://:0:0:0:0 | signed char | 1 |
+| file://:0:0:0:0 | signed int | 4 |
+| file://:0:0:0:0 | signed long | 8 |
+| file://:0:0:0:0 | signed long long | 8 |
+| file://:0:0:0:0 | signed short | 2 |
+| file://:0:0:0:0 | unknown | 1 |
+| file://:0:0:0:0 | unsigned __int128 | 16 |
+| file://:0:0:0:0 | unsigned char | 1 |
+| file://:0:0:0:0 | unsigned int | 4 |
+| file://:0:0:0:0 | unsigned long | 8 |
+| file://:0:0:0:0 | unsigned long long | 8 |
+| file://:0:0:0:0 | unsigned short | 2 |
+| file://:0:0:0:0 | void | 0 |
+| file://:0:0:0:0 | void * | 8 |
+| file://:0:0:0:0 | wchar_t | 4 |

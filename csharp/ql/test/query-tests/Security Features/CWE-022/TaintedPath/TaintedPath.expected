@@ -1,0 +1,26 @@
+edges
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:12:50:12:53 | access to local variable path |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:17:51:17:54 | access to local variable path |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:25:30:25:33 | access to local variable path |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:31:30:31:33 | access to local variable path |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:36:25:36:31 | access to local variable badPath |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:38:49:38:55 | access to local variable badPath |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:51:26:51:29 | access to local variable path |
+nodes
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| TaintedPath.cs:12:50:12:53 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:17:51:17:54 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:25:30:25:33 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:31:30:31:33 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:36:25:36:31 | access to local variable badPath | semmle.label | access to local variable badPath |
+| TaintedPath.cs:38:49:38:55 | access to local variable badPath | semmle.label | access to local variable badPath |
+| TaintedPath.cs:51:26:51:29 | access to local variable path | semmle.label | access to local variable path |
+subpaths
+#select
+| TaintedPath.cs:12:50:12:53 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:12:50:12:53 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:17:51:17:54 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:17:51:17:54 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:25:30:25:33 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:25:30:25:33 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:31:30:31:33 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:31:30:31:33 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:36:25:36:31 | access to local variable badPath | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:36:25:36:31 | access to local variable badPath | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:38:49:38:55 | access to local variable badPath | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:38:49:38:55 | access to local variable badPath | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |
+| TaintedPath.cs:51:26:51:29 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:51:26:51:29 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:10:23:10:45 | access to property QueryString | User-provided value |

@@ -1,0 +1,80 @@
+nodes
+| example.js:9:37:9:38 | ev |
+| example.js:9:37:9:38 | ev |
+| example.js:10:9:10:37 | message |
+| example.js:10:19:10:37 | JSON.parse(ev.data) |
+| example.js:10:30:10:31 | ev |
+| example.js:10:30:10:36 | ev.data |
+| example.js:13:5:13:24 | window[message.name] |
+| example.js:13:5:13:24 | window[message.name] |
+| example.js:13:12:13:18 | message |
+| example.js:13:12:13:23 | message.name |
+| tst.js:3:37:3:38 | ev |
+| tst.js:3:37:3:38 | ev |
+| tst.js:4:9:4:37 | message |
+| tst.js:4:19:4:37 | JSON.parse(ev.data) |
+| tst.js:4:30:4:31 | ev |
+| tst.js:4:30:4:36 | ev.data |
+| tst.js:5:5:5:24 | window[message.name] |
+| tst.js:5:5:5:24 | window[message.name] |
+| tst.js:5:12:5:18 | message |
+| tst.js:5:12:5:23 | message.name |
+| tst.js:6:9:6:28 | window[message.name] |
+| tst.js:6:9:6:28 | window[message.name] |
+| tst.js:6:16:6:22 | message |
+| tst.js:6:16:6:27 | message.name |
+| tst.js:11:5:11:19 | f[message.name] |
+| tst.js:11:5:11:19 | f[message.name] |
+| tst.js:11:7:11:13 | message |
+| tst.js:11:7:11:18 | message.name |
+| tst.js:15:5:15:14 | window[ev] |
+| tst.js:15:5:15:14 | window[ev] |
+| tst.js:15:12:15:13 | ev |
+| tst.js:21:5:21:29 | window[ ... e.name] |
+| tst.js:21:5:21:29 | window[ ... e.name] |
+| tst.js:21:12:21:28 | '' + message.name |
+| tst.js:21:17:21:23 | message |
+| tst.js:21:17:21:28 | message.name |
+edges
+| example.js:9:37:9:38 | ev | example.js:10:30:10:31 | ev |
+| example.js:9:37:9:38 | ev | example.js:10:30:10:31 | ev |
+| example.js:10:9:10:37 | message | example.js:13:12:13:18 | message |
+| example.js:10:19:10:37 | JSON.parse(ev.data) | example.js:10:9:10:37 | message |
+| example.js:10:30:10:31 | ev | example.js:10:30:10:36 | ev.data |
+| example.js:10:30:10:36 | ev.data | example.js:10:19:10:37 | JSON.parse(ev.data) |
+| example.js:13:12:13:18 | message | example.js:13:12:13:23 | message.name |
+| example.js:13:12:13:23 | message.name | example.js:13:5:13:24 | window[message.name] |
+| example.js:13:12:13:23 | message.name | example.js:13:5:13:24 | window[message.name] |
+| tst.js:3:37:3:38 | ev | tst.js:4:30:4:31 | ev |
+| tst.js:3:37:3:38 | ev | tst.js:4:30:4:31 | ev |
+| tst.js:3:37:3:38 | ev | tst.js:15:12:15:13 | ev |
+| tst.js:3:37:3:38 | ev | tst.js:15:12:15:13 | ev |
+| tst.js:4:9:4:37 | message | tst.js:5:12:5:18 | message |
+| tst.js:4:9:4:37 | message | tst.js:6:16:6:22 | message |
+| tst.js:4:9:4:37 | message | tst.js:11:7:11:13 | message |
+| tst.js:4:9:4:37 | message | tst.js:21:17:21:23 | message |
+| tst.js:4:19:4:37 | JSON.parse(ev.data) | tst.js:4:9:4:37 | message |
+| tst.js:4:30:4:31 | ev | tst.js:4:30:4:36 | ev.data |
+| tst.js:4:30:4:36 | ev.data | tst.js:4:19:4:37 | JSON.parse(ev.data) |
+| tst.js:5:12:5:18 | message | tst.js:5:12:5:23 | message.name |
+| tst.js:5:12:5:23 | message.name | tst.js:5:5:5:24 | window[message.name] |
+| tst.js:5:12:5:23 | message.name | tst.js:5:5:5:24 | window[message.name] |
+| tst.js:6:16:6:22 | message | tst.js:6:16:6:27 | message.name |
+| tst.js:6:16:6:27 | message.name | tst.js:6:9:6:28 | window[message.name] |
+| tst.js:6:16:6:27 | message.name | tst.js:6:9:6:28 | window[message.name] |
+| tst.js:11:7:11:13 | message | tst.js:11:7:11:18 | message.name |
+| tst.js:11:7:11:18 | message.name | tst.js:11:5:11:19 | f[message.name] |
+| tst.js:11:7:11:18 | message.name | tst.js:11:5:11:19 | f[message.name] |
+| tst.js:15:12:15:13 | ev | tst.js:15:5:15:14 | window[ev] |
+| tst.js:15:12:15:13 | ev | tst.js:15:5:15:14 | window[ev] |
+| tst.js:21:12:21:28 | '' + message.name | tst.js:21:5:21:29 | window[ ... e.name] |
+| tst.js:21:12:21:28 | '' + message.name | tst.js:21:5:21:29 | window[ ... e.name] |
+| tst.js:21:17:21:23 | message | tst.js:21:17:21:28 | message.name |
+| tst.js:21:17:21:28 | message.name | tst.js:21:12:21:28 | '' + message.name |
+#select
+| example.js:13:5:13:24 | window[message.name] | example.js:9:37:9:38 | ev | example.js:13:5:13:24 | window[message.name] | Invocation of method derived from $@ may lead to remote code execution. | example.js:9:37:9:38 | ev | user-controlled value |
+| tst.js:5:5:5:24 | window[message.name] | tst.js:3:37:3:38 | ev | tst.js:5:5:5:24 | window[message.name] | Invocation of method derived from $@ may lead to remote code execution. | tst.js:3:37:3:38 | ev | user-controlled value |
+| tst.js:6:9:6:28 | window[message.name] | tst.js:3:37:3:38 | ev | tst.js:6:9:6:28 | window[message.name] | Invocation of method derived from $@ may lead to remote code execution. | tst.js:3:37:3:38 | ev | user-controlled value |
+| tst.js:11:5:11:19 | f[message.name] | tst.js:3:37:3:38 | ev | tst.js:11:5:11:19 | f[message.name] | Invocation of method derived from $@ may lead to remote code execution. | tst.js:3:37:3:38 | ev | user-controlled value |
+| tst.js:15:5:15:14 | window[ev] | tst.js:3:37:3:38 | ev | tst.js:15:5:15:14 | window[ev] | Invocation of method derived from $@ may lead to remote code execution. | tst.js:3:37:3:38 | ev | user-controlled value |
+| tst.js:21:5:21:29 | window[ ... e.name] | tst.js:3:37:3:38 | ev | tst.js:21:5:21:29 | window[ ... e.name] | Invocation of method derived from $@ may lead to remote code execution. | tst.js:3:37:3:38 | ev | user-controlled value |

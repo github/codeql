@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A database resource in the <code>java.sql</code> package that is opened
+but not closed may cause a resource leak and ultimately resource exhaustion.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the resource is always closed to avoid a resource leak. Note that, because of exceptions,
+it is safest to close a resource in a <code>finally</code> block.
+</p>
+
+<p>For Java 7 or later, the recommended way to close resources that implement <code>java.lang.AutoCloseable</code>
+is to declare them within a <code>try-with-resources</code> statement, so that they are closed implicitly.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the resources <code>stmt</code> and <code>rs</code> are opened but not closed.</p>
+
+<sample src="CloseSql.java" />
+
+<p>In the following example, the resources <code>stmt</code> and <code>rs</code> are
+declared within a <code>try-with-resources</code> block and are thus closed implicitly.</p>
+
+<sample src="CloseSqlGood.java" />
+
+<p>Note that the <code>Connection</code> that is passed into the method is a long-lived object
+that was created elsewhere and therefore need not be closed locally. It should instead be closed
+by the code that created it or by a server shutdown procedure, as appropriate.</p>
+
+</example>
+<references>
+
+
+<li>
+  IBM developerWorks: <a href="https://web.archive.org/web/20201109041839/http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>.
+</li>
+<li>
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,13 @@
+| Test.java:13:18:13:24 | tainted | Test.java:15:10:15:11 | x2 |
+| Test.java:13:18:13:24 | tainted | Test.java:18:10:18:11 | x3 |
+| Test.java:13:18:13:24 | tainted | Test.java:22:12:22:13 | x4 |
+| Test.java:13:18:13:24 | tainted | Test.java:27:10:27:11 | x5 |
+| Test.java:13:18:13:24 | tainted | Test.java:30:12:30:13 | x6 |
+| Test.java:13:18:13:24 | tainted | Test.java:35:12:35:15 | x8_v |
+| Test.java:13:18:13:24 | tainted | Test.java:42:12:42:14 | x10 |
+| Test.java:49:11:49:17 | tainted | Test.java:52:12:52:16 | x11_k |
+| Test.java:49:11:49:17 | tainted | Test.java:59:12:59:14 | x13 |
+| Test.java:49:20:49:26 | tainted | Test.java:53:12:53:16 | x12_v |
+| Test.java:49:20:49:26 | tainted | Test.java:60:12:60:14 | x14 |
+| Test.java:73:11:73:17 | tainted | Test.java:75:10:75:12 | x17 |
+| Test.java:73:11:73:17 | tainted | Test.java:78:12:78:14 | x18 |

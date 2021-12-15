@@ -1,0 +1,6 @@
+| nested.py:3:9:3:38 | For | Nested for statement uses loop variable 'repeated_var' of enclosing $@. | nested.py:2:5:2:34 | For | for statement |
+| nested.py:19:13:19:23 | For | Nested for statement uses loop variable 'x' of enclosing $@. | nested.py:17:5:17:15 | For | for statement |
+| nested.py:27:9:27:19 | For | Nested for statement uses loop variable 'x' of enclosing $@. | nested.py:25:5:25:15 | For | for statement |
+| nested.py:35:9:35:19 | For | Nested for statement uses loop variable 'x' of enclosing $@. | nested.py:32:5:32:15 | For | for statement |
+| nested.py:42:9:42:19 | For | Nested for statement uses loop variable 'x' of enclosing $@. | nested.py:41:5:41:15 | For | for statement |
+| nested.py:50:9:50:19 | For | Nested for statement uses loop variable 'x' of enclosing $@. | nested.py:48:5:48:15 | For | for statement |

@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Since <code>Equals</code> takes an <code>object</code>, it can be passed an argument that has an 
+arbitrary dynamic type: in particular, there is no guarantee that it is legal to cast the argument 
+to the type that declares the <code>Equals</code> method. Code that does such a cast without checking 
+the dynamic type of the argument first is therefore unsafe, and can break if an argument of 
+the wrong dynamic type is passed in.</p>
+
+</overview>
+<recommendation>
+<p>To fix the problem, test the dynamic type of the argument before performing such a cast.</p>
+
+</recommendation>
+<example>
+<p>This example demonstrates casting of <code>object</code> to <code>UncheckedCastInEquals</code>. 
+This can cause problems because if the object is not an <code>UncheckedCastInEquals</code> the 
+program crashes with an <code>InvalidCastException</code>.</p>
+<sample src="UncheckedCastInEquals.cs" />
+
+<p>A simple fix is to confirm the cast will succeed before performing it.</p>
+<sample src="UncheckedCastInEqualsFix.cs" />
+</example>
+</qhelp>

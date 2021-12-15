@@ -1,0 +1,6 @@
+| A.java:5:12:5:15 | this | A.java:5:12:5:19 | this.foo | A.java:2:7:2:9 | foo |
+| A.java:21:13:21:13 | a | A.java:21:13:21:22 | getFoo(...) | A.java:2:7:2:9 | foo |
+| A.java:23:9:23:9 | a | A.java:23:9:23:19 | aGetter(...) | A.java:2:7:2:9 | foo |
+| A.java:24:9:24:10 | a2 | A.java:24:9:24:23 | notAGetter(...) | A.java:2:7:2:9 | foo |
+| A.java:45:12:45:38 | maybeIdWrap(...) | A.java:45:12:45:42 | maybeIdWrap(...).foo | A.java:2:7:2:9 | foo |
+| A.java:49:12:49:38 | maybeIdWrap(...) | A.java:49:12:49:42 | maybeIdWrap(...).foo | A.java:2:7:2:9 | foo |

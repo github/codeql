@@ -1,0 +1,2 @@
+| tests2.cpp:34:4:34:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 33) |
+| tests2.cpp:52:4:52:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 51) |

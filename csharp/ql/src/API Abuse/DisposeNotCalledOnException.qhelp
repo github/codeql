@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+If an exception is thrown between the allocation of an <code>IDisposable</code> object and a
+<code>Dispose()</code> call on that object, and the <code>Dispose()</code> call is not within a
+<code>catch</code> or <code>finally</code> block, then the <code>Dispose()</code> call may not
+execute.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If possible, wrap the allocation of the object in a <code>using</code> block to automatically
+dispose of the object once the <code>using</code> block has completed.
+</p>
+<p>
+If this is not possible, ensure that <code>Dispose()</code> is called on the object. It is usually
+recommended to call <code>Dispose()</code> within a <code>finally</code> block, to ensure that the
+object is disposed of even if an exception is thrown.
+</p>
+
+</recommendation>
+<example>
+<p>
+In this example, an <code>SqlConnection</code> is created, then an SQL query is run using an
+<code>SqlCommand</code>. The objects are created and disposed of, but if an
+exception is thrown - for example, by the call to <code>ExecuteReader</code> - the method will
+terminate immediately and <code>Dispose()</code> will never be called on <code>cmd</code> and
+<code>conn</code>. In the case of the <code>SqlConnection</code>, this can result in unmanaged
+resources associated with the connection being retained, and possibly cause resource exhaustion
+when trying to create additional future connections.
+</p>
+<sample src="DisposeNotCalledOnExceptionBad.cs" />
+
+<p>
+In the revised example, a pair of <code>using</code> statements are used to ensure that both the
+connection and the command are disposed of after the statements have completed.
+</p>
+<sample src="DisposeNotCalledOnExceptionGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.idisposable.aspx">IDisposable Interface</a>.</li>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-statement">using Statement (C# Reference)</a>.</li>
+
+</references>
+</qhelp>

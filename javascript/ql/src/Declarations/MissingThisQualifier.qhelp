@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JavaScript methods can call other methods of the same class instance through the use of the <code>this</code> keyword.
+In other object-oriented languages such as Java, the use of the <code>this</code> keyword for such method calls is optional. It is however <em>not</em> optional in JavaScript.
+If the <code>this</code> keyword is left out, the call is a regular function call. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add the <code>this</code> keyword as the receiver of the call.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the call to <code>setAudioProperties</code> will call an undeclared global function, and <em>not</em> the method defined later in the class.
+</p>
+
+<sample src="examples/MissingThisQualifier1.js" />
+
+<p>
+The problem can be fixed by adding the <code>this</code> keyword to the call: <code>this.setAudioProperties()</code>.
+</p>
+
+</example>
+<references>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">Classes</a></li>
+</references>
+</qhelp>

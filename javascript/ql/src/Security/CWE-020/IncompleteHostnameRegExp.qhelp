@@ -1,0 +1,73 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted URLs is an important technique for
+			preventing attacks such as request forgeries and malicious
+			redirections. Often, this is done by checking that the host of a URL
+			is in a set of allowed hosts.
+
+		</p>
+
+		<p>
+
+			If a regular expression implements such a check, it is
+			easy to accidentally make the check too permissive by not escaping the
+			<code>.</code> meta-characters appropriately.
+
+			Even if the check is not used in a security-critical
+			context, the incomplete check may still cause undesirable behaviors
+			when it accidentally succeeds.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Escape all meta-characters appropriately when constructing
+			regular expressions for security checks, pay special attention to the
+			<code>.</code> meta-character.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code checks that a URL redirection
+			will reach the <code>example.com</code> domain, or one of its
+			subdomains.
+
+		</p>
+
+		<sample src="examples/IncompleteHostnameRegExp.js"/>
+
+		<p>
+
+			The check is however easy to bypass because the unescaped
+			<code>.</code> allows for any character before
+			<code>example.com</code>, effectively allowing the redirect to go to
+			an attacker-controlled domain such as <code>wwwXexample.com</code>.
+
+		</p>
+		<p>
+
+			Address this vulnerability by escaping <code>.</code>
+			appropriately: <code>let regex = /((www|beta)\.)?example\.com/</code>.
+
+		</p>
+
+	</example>
+
+	<references>
+		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Regular Expressions</a></li>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+	</references>
+</qhelp>

@@ -1,0 +1,3 @@
+# CWE-497 Exposure of System Data to an Unauthorized Control Sphere
++ semmlecode-cpp-queries/Security/CWE/CWE-497/ExposedSystemData.ql: /CWE/CWE-497
+    @name Exposure of system data to an unauthorized control sphere (CWE-497)

@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds return statements that return pointers to an object allocated on the stack. 
+The lifetime of a stack allocated memory location only lasts until the function returns, and 
+the contents of that memory become undefined after that. Clearly, using a pointer to stack 
+memory after the function has already returned will have undefined results. </p>
+
+</overview>
+<recommendation>
+<p>Use the functions of the <tt>malloc</tt> family to dynamically allocate memory on the heap for data that is used across function calls.</p>
+
+</recommendation>
+<example><sample src="ReturnStackAllocatedMemory.cpp" />
+
+
+
+
+
+</example>
+
+<references>
+</references>
+</qhelp>

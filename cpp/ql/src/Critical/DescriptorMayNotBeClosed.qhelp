@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This query looks at functions that return file or socket descriptors, but may return an error value before actually closing the resource.
+This can occur when an operation performed on the open descriptor fails, and the function returns with an error before it closes the open resource. An improperly handled error could cause the function to leak resource descriptors. Failing to close resources in the function that opened them also makes it more difficult to detect leaks.
+</p> 
+
+<include src="dataFlowWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>When an error occurs, ensure that the function frees all the resources it holds open.</p>
+</recommendation>
+
+<example>
+<p>In the example below, the <code>sockfd</code> socket may remain open if an error is triggered. 
+The code should be updated to ensure that the socket is always closed when when the function ends.
+</p>
+<sample src="DescriptorMayNotBeClosed.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/ERR57-CPP.+Do+not+leak+resources+when+handling+exceptions">ERR57-CPP. Do not leak resources when handling exceptions</a>.</li>
+</references>
+</qhelp>

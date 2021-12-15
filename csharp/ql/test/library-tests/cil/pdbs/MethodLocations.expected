@@ -1,0 +1,4 @@
+| System.Int32 EmbeddedPdb.Class1.Method() | C:/dev/projects/Sandbox/EmbeddedPdb/Class1.cs:6:3:6:4 | true |
+| System.Int32 EmbeddedPdb.Class1.Method() | EmbeddedPdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | false |
+| System.Int32 PortablePdb.Class1.Factorial(System.Int32) | C:/dev/projects/Sandbox/PortablePdb/Class1.cs:6:3:6:4 | true |
+| System.Int32 PortablePdb.Class1.Factorial(System.Int32) | PortablePdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | false |

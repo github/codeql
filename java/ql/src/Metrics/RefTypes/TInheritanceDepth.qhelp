@@ -1,0 +1,103 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the inheritance depth of a reference type (e.g. a class).
+</p>
+
+<p>
+Whilst inheritance provides an avenue for code reuse, overly-deep class
+hierarchies can become a maintenance headache. Classes that inherit from
+many other classes can be brittle and hard to understand, because they
+depend on all of the classes further up the hierarchy. Conversely, changes
+to classes nearer the root of the hierarchy become harder and harder
+to make without breaking the descendants. In extreme cases, where the
+design of the hierarchy is seriously inappropriate, the class at the top of
+the hierarchy can become a 'blob' class: a storage point for anything that
+might be needed by one of its descendants. This is a key indicator that some
+serious refactoring is needed.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+As with many metrics, a high inheritance depth should be seen as an indicator
+that something is amiss, but further investigation will be needed to clarify
+the cause of the problem. Here are two possibilities:
+</p>
+
+<ul>
+
+<li>
+A class and its superclass represent fundamentally the same abstraction.
+In this case, they should generally be merged together (see the 'Collapse
+Hierarchy' refactoring on pp.279-80 of [Fowler]). For example, suppose
+that in the following class hierarchy both A and C represent fundamentally
+the same thing, then they should be merged together as shown:
+
+<table>
+<tbody><tr>
+<td><img src="./TInheritanceDepth_MergeIntoSuperclassBefore.png" alt="Before" /></td>
+<td><img src="./TInheritanceDepth_MergeIntoSuperclassAfter.png" alt="After" /></td>
+</tr>
+<tr>
+<td>Before</td>
+<td>After</td>
+</tr>
+</tbody></table>
+</li>
+
+<li>
+<p>
+The class hierarchy is trying to represent variation in more than one
+dimension using single inheritance. This can lead to an unnecessarily
+deep class hierarchy with lots of code duplication. For example, consider
+the following:
+</p>
+
+<img src="./TInheritanceDepth_UseComponentsBefore.png" alt="Before" width="650" />
+
+<p>
+In languages that support it (such as C++), this situation could be modeled
+somewhat more effectively using multiple inheritance, but an altogether better
+approach is to use a component-based architecture (i.e. composition):
+</p>
+
+<img src="./TInheritanceDepth_UseComponentsAfter.png" alt="After" />
+
+<p>
+Using this method, each of the leaf classes in the above would be
+represented as the composition of a type, fuel and style component,
+e.g. a ColoredPetrolVan would have a Van type component, a Petrol
+fuel component and a Colored style component. Note how this
+effectively reduces both the height of the class hierarchy and the
+amount of code duplication that will be necessary.
+</p>
+
+<p>
+For readers who are interested in this sort of approach, a good reference is
+[West].
+</p>
+</li>
+
+</ul>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+M. West. <a href="http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy">Evolve Your Hierarchy</a>. Published online, 2007.
+</li>
+
+
+</references>
+</qhelp>

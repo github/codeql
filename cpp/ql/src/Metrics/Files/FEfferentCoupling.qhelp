@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of files that a particular file depends on. A file depends on another file if:</p>
+<ul>
+<li>It calls a function in that file</li>
+<li>It reads or writes a variable declared in that file</li>
+<li>It uses a type declared in that file</li>
+</ul>
+
+<p>The number of other files that a source-file depends on is a way of judging
+how cohesive it is. A source-file with a single well-defined purpose is likely
+to have fewer dependencies than a source-file where functions have been "thrown in"
+over time. The former is desirable, because files with a single well-defined
+purpose are more easily comprehended and maintained.</p>
+
+</overview>
+<recommendation>
+
+<p>Consider, breaking the file up into smaller ones. This could either be done by splitting up unrelated functionality, or extracting common operations into a library.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+
+</references>
+</qhelp>

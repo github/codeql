@@ -1,0 +1,9 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Redundant_code">Redundant code</a>.</li>
+<li>CERT Java Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/java/MSC56-J.+Detect+and+remove+superfluous+code+and+values">MSC56-J. Detect and remove superfluous code and values</a>.</li>
+</references>
+</qhelp>

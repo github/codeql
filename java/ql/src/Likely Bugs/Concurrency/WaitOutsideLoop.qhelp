@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling <code>Object.wait</code> outside of a loop may cause problems because the thread does
+not go back to sleep after a spurious wake-up call. This results in the program continuing before 
+the expected condition is met.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that <code>wait</code> is called within a loop that tests for the condition that the 
+thread is waiting for. This ensures that the program only proceeds to execute when the
+relevant condition is true. Note that the thread that calls <code>wait</code> on an object must be
+the owner of that object's monitor.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>obj.wait</code> is called within a <code>while</code> loop
+until the condition is true, at which point the program continues with the next statement after
+the loop:</p>
+
+<sample src="WaitOutsideLoop.java" />
+
+</example>
+<references>
+
+
+    <li>J. Bloch, <em>Effective Java (second edition)</em>, p. 276. Addison-Wesley, 2008.</li>
+    <li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()">Object.wait()</a>.</li>
+    <li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html">Guarded Blocks</a>.</li>
+
+
+</references>
+</qhelp>

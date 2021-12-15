@@ -1,0 +1,7 @@
+| LocalScopeVariableShadowsMember.cs:7:39:7:39 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:5:23:5:23 | f | C.f |
+| LocalScopeVariableShadowsMember.cs:13:17:13:17 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:5:23:5:23 | f | C.f |
+| LocalScopeVariableShadowsMember.cs:26:21:26:21 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:24:13:24:13 | f | S.f |
+| LocalScopeVariableShadowsMember.cs:32:17:32:17 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:24:13:24:13 | f | S.f |
+| LocalScopeVariableShadowsMember.cs:48:40:48:40 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:5:23:5:23 | f | C2.f |
+| LocalScopeVariableShadowsMember.cs:50:28:50:28 | f | Local scope variable 'f' shadows $@. | LocalScopeVariableShadowsMember.cs:5:23:5:23 | f | C2.f |
+| LocalScopeVariableShadowsMemberBad.cs:10:13:10:17 | title | Local scope variable 'title' shadows $@. | LocalScopeVariableShadowsMemberBad.cs:5:20:5:24 | title | Bad.title |

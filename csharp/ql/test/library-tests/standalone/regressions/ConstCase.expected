@@ -1,0 +1,3 @@
+| regressions.cs:14:13:14:37 | case ...: | regressions.cs:14:18:14:36 | access to property (unknown) |
+| regressions.cs:16:13:16:37 | case ...: | regressions.cs:16:18:16:36 | access to property (unknown) |
+| regressions.cs:18:13:18:23 | case ...: | regressions.cs:18:18:18:22 | Int32 x |

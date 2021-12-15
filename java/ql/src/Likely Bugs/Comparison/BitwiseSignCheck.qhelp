@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Checking whether the result of a bitwise operation is greater than zero may yield unexpected results. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>It is more robust to check whether the result of the bitwise operation is <i>non-zero</i>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the expression assigned to variable <code>bad</code> is <i>not</i> a robust way to check 
+that the <code>n</code>th bit of <code>x</code> is set. 
+With the given values of <code>x</code> (all bits are set) and <code>n</code>,
+the expression <code>x &amp; (1&lt;&lt;n)</code> has the value <code>-2147483648</code>, 
+and the variable <code>bad</code> is assigned <code>false</code>, 
+even though the 31st bit of <code>x</code> is, in fact, set.
+</p>
+
+<sample src="BitwiseSignCheck.java" />
+
+<p>In the following example, the expression assigned to variable <code>good</code> is a robust way to check that the 
+<code>n</code>th bit of <code>x</code> is set. With the given values of <code>x</code> and 
+<code>n</code>, the variable <code>good</code> is assigned <code>true</code>.</p>
+
+<sample src="BitwiseSignCheckGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.22.1">Integer Bitwise Operators &amp;, ^, and |</a>.
+</li>
+
+
+</references>
+</qhelp>

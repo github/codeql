@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Functions like the Node.js standard library function <code>util.format</code> accept a
+format string that is used to format the remaining arguments by providing inline format
+specifiers. If the format string contains unsanitized input from an untrusted source,
+then that string may contain unexpected format specifiers that cause garbled output.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Either sanitize the input before including it in the format string, or use a
+<code>%s</code> specifier in the format string, and pass the untrusted data as corresponding
+argument.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following program snippet logs information about an unauthorized access attempt. The
+log message includes the user name, and the user's IP address is passed as an additional
+argument to <code>console.log</code> to be appended to the message:
+</p>
+<sample src="examples/TaintedFormatStringBad.js"/>
+<p>
+However, if a malicious user provides <code>%d</code> as their user name, <code>console.log</code>
+will instead attempt to format the <code>ip</code> argument as a number. Since IP addresses are
+not valid numbers, the result of this conversion is <code>NaN</code>. The resulting log message
+will read "Unauthorized access attempt by NaN", missing all the information that it was trying to
+log in the first place.
+</p>
+<p>
+Instead, the user name should be included using the <code>%s</code> specifier:
+</p>
+<sample src="examples/TaintedFormatStringGood.js"/>
+</example>
+
+<references>
+<li>Node.js Documentation: <a href="https://nodejs.org/api/util.html#util_util_format_format_args">util.format</a>.</li>
+</references>
+</qhelp>

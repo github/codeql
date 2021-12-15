@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy.  An unexpectedly long input that reaches this code will cause the buffer to overflow.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations.  <code>strncpy</code> should be used over <code>strcpy</code>, <code>snprintf</code> over <code>sprintf</code> etc.  In general 'n-variant' functions should be preferred.</p>
+
+</recommendation>
+<example>
+<sample src="UnboundedWrite.c" />
+
+<p>In this example, the call to <code>sprintf</code> may overflow <code>buffer</code>.  This occurs if the argument <code>userName</code> is very long, such that the resulting string is more than the 80 characters allowed.</p>
+
+<p>To fix the problem the call to <code>sprintf</code> should be replaced with <code>snprintf</code>, specifying a maximum length of 80 characters.</p>
+
+</example>
+<references>
+
+<li>CERT C++ Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/cplusplus/STR50-CPP.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR50-CPP. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.</li>
+
+
+<!--  LocalWords:  CWE STR
+ -->
+
+</references>
+</qhelp>

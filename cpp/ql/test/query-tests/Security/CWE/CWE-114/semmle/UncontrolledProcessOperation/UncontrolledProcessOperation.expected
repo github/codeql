@@ -1,0 +1,160 @@
+edges
+| test.cpp:24:30:24:36 | *command | test.cpp:26:10:26:16 | command |
+| test.cpp:24:30:24:36 | *command | test.cpp:26:10:26:16 | command |
+| test.cpp:24:30:24:36 | *command | test.cpp:26:10:26:16 | command indirection |
+| test.cpp:24:30:24:36 | command | test.cpp:26:10:26:16 | command |
+| test.cpp:24:30:24:36 | command | test.cpp:26:10:26:16 | command |
+| test.cpp:24:30:24:36 | command | test.cpp:26:10:26:16 | command indirection |
+| test.cpp:29:30:29:36 | *command | test.cpp:31:10:31:16 | command |
+| test.cpp:29:30:29:36 | *command | test.cpp:31:10:31:16 | command |
+| test.cpp:29:30:29:36 | *command | test.cpp:31:10:31:16 | command indirection |
+| test.cpp:29:30:29:36 | command | test.cpp:31:10:31:16 | command |
+| test.cpp:29:30:29:36 | command | test.cpp:31:10:31:16 | command |
+| test.cpp:29:30:29:36 | command | test.cpp:31:10:31:16 | command indirection |
+| test.cpp:42:18:42:23 | call to getenv | test.cpp:42:18:42:34 | call to getenv |
+| test.cpp:42:18:42:23 | call to getenv | test.cpp:42:18:42:34 | call to getenv indirection |
+| test.cpp:42:18:42:34 | (const char *)... | test.cpp:42:18:42:34 | call to getenv |
+| test.cpp:42:18:42:34 | (const char *)... | test.cpp:42:18:42:34 | call to getenv indirection |
+| test.cpp:42:18:42:34 | call to getenv | test.cpp:24:30:24:36 | command |
+| test.cpp:42:18:42:34 | call to getenv indirection | test.cpp:24:30:24:36 | *command |
+| test.cpp:43:18:43:23 | call to getenv | test.cpp:43:18:43:34 | call to getenv |
+| test.cpp:43:18:43:23 | call to getenv | test.cpp:43:18:43:34 | call to getenv indirection |
+| test.cpp:43:18:43:34 | (const char *)... | test.cpp:43:18:43:34 | call to getenv |
+| test.cpp:43:18:43:34 | (const char *)... | test.cpp:43:18:43:34 | call to getenv indirection |
+| test.cpp:43:18:43:34 | call to getenv | test.cpp:29:30:29:36 | command |
+| test.cpp:43:18:43:34 | call to getenv indirection | test.cpp:29:30:29:36 | *command |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | (const char *)... |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer indirection |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | (const char *)... |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data indirection |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | (const char *)... |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | (reference dereference) |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref indirection |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | (const char *)... |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 indirection |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:62:10:62:15 | (const char *)... |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:62:10:62:15 | buffer indirection |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:63:10:63:13 | (const char *)... |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:63:10:63:13 | data indirection |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:64:10:64:16 | (const char *)... |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:64:10:64:16 | (reference dereference) |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:64:10:64:16 | dataref indirection |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:65:10:65:14 | (const char *)... |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | fgets output argument | test.cpp:65:10:65:14 | data2 indirection |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | (const char *)... |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer indirection |
+| test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | (const char *)... |
+| test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | buffer |
+| test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | buffer indirection |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | (const char *)... |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer indirection |
+| test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | (const char *)... |
+| test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | buffer |
+| test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | buffer indirection |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | (const char *)... |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer indirection |
+| test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | (const char *)... |
+| test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | buffer |
+| test.cpp:106:17:106:22 | recv output argument | test.cpp:107:15:107:20 | buffer indirection |
+subpaths
+nodes
+| test.cpp:24:30:24:36 | *command | semmle.label | *command |
+| test.cpp:24:30:24:36 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command indirection | semmle.label | command indirection |
+| test.cpp:26:10:26:16 | command indirection | semmle.label | command indirection |
+| test.cpp:29:30:29:36 | *command | semmle.label | *command |
+| test.cpp:29:30:29:36 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command indirection | semmle.label | command indirection |
+| test.cpp:31:10:31:16 | command indirection | semmle.label | command indirection |
+| test.cpp:42:18:42:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:42:18:42:34 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:42:18:42:34 | call to getenv | semmle.label | call to getenv |
+| test.cpp:42:18:42:34 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:43:18:43:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:43:18:43:34 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:43:18:43:34 | call to getenv | semmle.label | call to getenv |
+| test.cpp:43:18:43:34 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:56:12:56:17 | buffer | semmle.label | buffer |
+| test.cpp:56:12:56:17 | fgets output argument | semmle.label | fgets output argument |
+| test.cpp:62:10:62:15 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:62:10:62:15 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:62:10:62:15 | buffer | semmle.label | buffer |
+| test.cpp:62:10:62:15 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:62:10:62:15 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:63:10:63:13 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:63:10:63:13 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:63:10:63:13 | data | semmle.label | data |
+| test.cpp:63:10:63:13 | data | semmle.label | data |
+| test.cpp:63:10:63:13 | data | semmle.label | data |
+| test.cpp:63:10:63:13 | data indirection | semmle.label | data indirection |
+| test.cpp:63:10:63:13 | data indirection | semmle.label | data indirection |
+| test.cpp:64:10:64:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:64:10:64:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:64:10:64:16 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:64:10:64:16 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:64:10:64:16 | dataref | semmle.label | dataref |
+| test.cpp:64:10:64:16 | dataref | semmle.label | dataref |
+| test.cpp:64:10:64:16 | dataref | semmle.label | dataref |
+| test.cpp:64:10:64:16 | dataref indirection | semmle.label | dataref indirection |
+| test.cpp:64:10:64:16 | dataref indirection | semmle.label | dataref indirection |
+| test.cpp:65:10:65:14 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:65:10:65:14 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:65:10:65:14 | data2 | semmle.label | data2 |
+| test.cpp:65:10:65:14 | data2 | semmle.label | data2 |
+| test.cpp:65:10:65:14 | data2 | semmle.label | data2 |
+| test.cpp:65:10:65:14 | data2 indirection | semmle.label | data2 indirection |
+| test.cpp:65:10:65:14 | data2 indirection | semmle.label | data2 indirection |
+| test.cpp:76:12:76:17 | buffer | semmle.label | buffer |
+| test.cpp:76:12:76:17 | fgets output argument | semmle.label | fgets output argument |
+| test.cpp:78:10:78:15 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:78:10:78:15 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:78:10:78:15 | buffer | semmle.label | buffer |
+| test.cpp:78:10:78:15 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:78:10:78:15 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:98:17:98:22 | buffer | semmle.label | buffer |
+| test.cpp:98:17:98:22 | recv output argument | semmle.label | recv output argument |
+| test.cpp:99:15:99:20 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:99:15:99:20 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:99:15:99:20 | buffer | semmle.label | buffer |
+| test.cpp:99:15:99:20 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:99:15:99:20 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:106:17:106:22 | buffer | semmle.label | buffer |
+| test.cpp:106:17:106:22 | recv output argument | semmle.label | recv output argument |
+| test.cpp:107:15:107:20 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:107:15:107:20 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:107:15:107:20 | buffer | semmle.label | buffer |
+| test.cpp:107:15:107:20 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:107:15:107:20 | buffer indirection | semmle.label | buffer indirection |
+#select
+| test.cpp:26:10:26:16 | command | test.cpp:42:18:42:23 | call to getenv | test.cpp:26:10:26:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:42:18:42:23 | call to getenv | call to getenv |
+| test.cpp:31:10:31:16 | command | test.cpp:43:18:43:23 | call to getenv | test.cpp:31:10:31:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:43:18:43:23 | call to getenv | call to getenv |
+| test.cpp:62:10:62:15 | buffer | test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer | The value of this argument may come from $@ and is being passed to system | test.cpp:56:12:56:17 | buffer | buffer |
+| test.cpp:63:10:63:13 | data | test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data | The value of this argument may come from $@ and is being passed to system | test.cpp:56:12:56:17 | buffer | buffer |
+| test.cpp:64:10:64:16 | dataref | test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref | The value of this argument may come from $@ and is being passed to system | test.cpp:56:12:56:17 | buffer | buffer |
+| test.cpp:65:10:65:14 | data2 | test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 | The value of this argument may come from $@ and is being passed to system | test.cpp:56:12:56:17 | buffer | buffer |
+| test.cpp:78:10:78:15 | buffer | test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer | The value of this argument may come from $@ and is being passed to system | test.cpp:76:12:76:17 | buffer | buffer |
+| test.cpp:99:15:99:20 | buffer | test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer | The value of this argument may come from $@ and is being passed to LoadLibrary | test.cpp:98:17:98:22 | buffer | buffer |
+| test.cpp:107:15:107:20 | buffer | test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer | The value of this argument may come from $@ and is being passed to LoadLibrary | test.cpp:106:17:106:22 | buffer | buffer |

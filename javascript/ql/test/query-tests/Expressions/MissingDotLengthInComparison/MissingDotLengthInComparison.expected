@@ -1,0 +1,2 @@
+| MissingDotLengthInComparison.js:3:21:3:27 | i < bad | Missing .length in comparison, or erroneous $@. | MissingDotLengthInComparison.js:4:16:4:21 | bad[i] | index expression |
+| MissingDotLengthInComparison.js:20:21:20:30 | i < fruits | Missing .length in comparison, or erroneous $@. | MissingDotLengthInComparison.js:21:20:21:28 | fruits[i] | index expression |

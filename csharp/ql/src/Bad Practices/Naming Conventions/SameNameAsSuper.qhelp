@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule identifies a class that has the same name as a class it extends. This is likely to cause confusion.</p>
+
+</overview>
+<recommendation>
+<p>Change the name of the subclass to make it more clear what its purpose is. It is normally possible to express 
+how it is different to a superclass.</p>
+
+</recommendation>
+<example>
+<p>In this example references to ArrayList later on in the Players class could be confusing.</p>
+<sample src="SameNameAsSuper.cs" />
+
+</example>
+<section title="Fixing by Using a More Descriptive Name">
+<p>The example could be easily fixed by changing the <code>Players.ArrayList</code> class name to <code>Players.PlayerList</code>. 
+This is more descriptive and it avoids confusion with the <code>ArrayList</code> class from <code>Collections</code>.</p>
+
+</section>
+<references>
+
+  <li>Robert C. Martin, <em>Clean Code - A handbook of agile software craftsmanship</em>, &sect;17.N4. Prentice Hall, 2008.</li>
+
+</references>
+</qhelp>

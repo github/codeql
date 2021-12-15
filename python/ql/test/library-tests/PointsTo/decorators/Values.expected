@@ -1,0 +1,59 @@
+| test.py:5:9:5:12 | ControlFlowNode for func | runtime | Unknown value |
+| test.py:5:9:5:12 | ControlFlowNode for func | test.py:22 from import | Function func1 |
+| test.py:6:16:6:19 | ControlFlowNode for func | runtime | Unknown value |
+| test.py:6:16:6:19 | ControlFlowNode for func | test.py:22 from import | Function func1 |
+| test.py:7:12:7:16 | ControlFlowNode for inner | runtime | Function annotate.inner |
+| test.py:7:12:7:16 | ControlFlowNode for inner | test.py:22 from import | Function annotate.inner |
+| test.py:11:21:11:24 | ControlFlowNode for args | runtime | instance of tuple |
+| test.py:13:12:13:18 | ControlFlowNode for wrapper | runtime | Function wraps1.wrapper |
+| test.py:13:12:13:18 | ControlFlowNode for wrapper | test.py:26 from import | Function wraps1.wrapper |
+| test.py:16:6:16:14 | ControlFlowNode for functools | runtime | Module functools |
+| test.py:16:6:16:14 | ControlFlowNode for functools | test.py:30 from import | Module functools |
+| test.py:16:22:16:25 | ControlFlowNode for func | runtime | Unknown value |
+| test.py:16:22:16:25 | ControlFlowNode for func | test.py:30 from import | Function func3 |
+| test.py:18:21:18:24 | ControlFlowNode for args | runtime | instance of tuple |
+| test.py:20:12:20:18 | ControlFlowNode for wrapper | runtime | Decorated Function wraps2.wrapper |
+| test.py:20:12:20:18 | ControlFlowNode for wrapper | test.py:30 from import | Decorated Function wraps2.wrapper |
+| test.py:22:2:22:9 | ControlFlowNode for annotate | import | Function annotate |
+| test.py:26:2:26:7 | ControlFlowNode for wraps1 | import | Function wraps1 |
+| test.py:30:2:30:7 | ControlFlowNode for wraps2 | import | Function wraps2 |
+| test.py:41:1:41:5 | ControlFlowNode for func1 | import | Function func1 |
+| test.py:42:1:42:5 | ControlFlowNode for func2 | import | Function wraps1.wrapper |
+| test.py:43:1:43:5 | ControlFlowNode for func3 | import | Decorated Function wraps2.wrapper |
+| test.py:48:19:48:22 | ControlFlowNode for None | import | None |
+| test.py:50:16:50:23 | ControlFlowNode for callable | runtime | Builtin-function callable |
+| test.py:50:16:50:23 | ControlFlowNode for callable | test.py:55 from runtime | Builtin-function callable |
+| test.py:50:16:50:23 | ControlFlowNode for callable | test.py:59 from import | Builtin-function callable |
+| test.py:50:16:50:23 | ControlFlowNode for callable | test.py:71 from import | Builtin-function callable |
+| test.py:50:25:50:28 | ControlFlowNode for func | runtime | Unknown value |
+| test.py:50:25:50:28 | ControlFlowNode for func | test.py:55 from runtime | Unknown value |
+| test.py:50:25:50:28 | ControlFlowNode for func | test.py:59 from import | Function foo |
+| test.py:50:25:50:28 | ControlFlowNode for func | test.py:71 from import | Function baz |
+| test.py:51:19:51:28 | ControlFlowNode for ValueError | runtime | builtin-class ValueError |
+| test.py:51:19:51:28 | ControlFlowNode for ValueError | test.py:55 from runtime | builtin-class ValueError |
+| test.py:52:16:52:19 | ControlFlowNode for func | runtime | Unknown value |
+| test.py:52:16:52:19 | ControlFlowNode for func | test.py:55 from runtime | Unknown value |
+| test.py:52:16:52:19 | ControlFlowNode for func | test.py:59 from import | Function foo |
+| test.py:52:16:52:19 | ControlFlowNode for func | test.py:71 from import | Function baz |
+| test.py:54:8:54:15 | ControlFlowNode for callable | runtime | Builtin-function callable |
+| test.py:54:8:54:15 | ControlFlowNode for callable | test.py:59 from import | Builtin-function callable |
+| test.py:54:8:54:15 | ControlFlowNode for callable | test.py:65 from import | Builtin-function callable |
+| test.py:54:8:54:15 | ControlFlowNode for callable | test.py:71 from import | Builtin-function callable |
+| test.py:54:17:54:20 | ControlFlowNode for name | runtime | None |
+| test.py:54:17:54:20 | ControlFlowNode for name | runtime | Unknown value |
+| test.py:54:17:54:20 | ControlFlowNode for name | test.py:59 from import | int 17 |
+| test.py:54:17:54:20 | ControlFlowNode for name | test.py:65 from import | Function bar |
+| test.py:54:17:54:20 | ControlFlowNode for name | test.py:71 from import | None |
+| test.py:55:16:55:24 | ControlFlowNode for decorator | runtime | Function register.decorator |
+| test.py:55:16:55:24 | ControlFlowNode for decorator | test.py:65 from import | Function register.decorator |
+| test.py:55:26:55:29 | ControlFlowNode for name | runtime | Unknown value |
+| test.py:55:26:55:29 | ControlFlowNode for name | test.py:65 from import | Function bar |
+| test.py:57:16:57:24 | ControlFlowNode for decorator | runtime | Function register.decorator |
+| test.py:57:16:57:24 | ControlFlowNode for decorator | test.py:59 from import | Function register.decorator |
+| test.py:57:16:57:24 | ControlFlowNode for decorator | test.py:71 from import | Function register.decorator |
+| test.py:59:2:59:9 | ControlFlowNode for register | import | Function register |
+| test.py:63:1:63:3 | ControlFlowNode for foo | import | Function foo |
+| test.py:65:2:65:9 | ControlFlowNode for register | import | Function register |
+| test.py:69:1:69:3 | ControlFlowNode for bar | import | Decorated Function bar |
+| test.py:71:2:71:9 | ControlFlowNode for register | import | Function register |
+| test.py:75:1:75:3 | ControlFlowNode for baz | import | Function baz |

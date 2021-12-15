@@ -1,0 +1,9 @@
+| exprs_cast.cpp:8:16:8:16 | (unsigned long long)... | 2 | int | unsigned long long |  |
+| exprs_cast.cpp:21:12:21:30 | (char *)... | Foo McFoo | const char * | char * |  |
+| exprs_cast.cpp:22:13:22:21 | (long)... | 38 | int | long |  |
+| exprs_cast.cpp:23:14:23:26 | (char *)... | Barry McBar | const char * | char * |  |
+| exprs_cast.cpp:23:29:23:30 | (long)... | 99 | int | long |  |
+| exprs_cast.cpp:23:33:23:37 | (char *)... | Baz | const char * | char * |  |
+| exprs_cast.cpp:23:40:23:49 | (char *)... | Basildon | const char * | char * |  |
+| exprs_cast.cpp:23:66:23:69 | (long)... | 5678 | int | long |  |
+| exprs_cast.cpp:36:22:36:25 | (Foo)... | next | ExtendedFoo | Foo | struct |

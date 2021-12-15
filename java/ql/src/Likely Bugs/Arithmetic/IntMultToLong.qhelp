@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+An integer multiplication that is assigned
+to a variable of type <code>long</code> or returned from a method with 
+return type <code>long</code> may cause unexpected arithmetic overflow.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Casting to type <code>long</code> before multiplying reduces the risk of arithmetic overflow.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the multiplication expression assigned to <code>j</code> causes overflow and results 
+in the value <code>-1651507200</code> instead of <code>4000000000000000000</code>.</p>
+
+<sample src="IntMultToLong.java" />
+
+<p>In the following example, the assignment to <code>k</code> correctly avoids overflow by casting 
+one of the operands to type <code>long</code>.
+</p>
+
+<sample src="IntMultToLongGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 3. Addison-Wesley, 2005.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.17.1">Multiplication Operator</a>.
+</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>.</li>
+
+
+</references>
+</qhelp>

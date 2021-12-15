@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <code>finally</code> block that does not complete normally
+suppresses any exceptions that may have been thrown in the corresponding
+<code>try</code> block. This can happen if the <code>finally</code> block
+contains any <code>return</code> or <code>throw</code> statements, or if it
+contains any <code>break</code> or <code>continue</code> statements whose
+jump target lies outside of the <code>finally</code> block.
+</p>
+
+</overview>
+<recommendation>
+
+<p>To avoid suppressing exceptions that are thrown in a <code>try</code> block,
+design the code so that the corresponding <code>finally</code> block 
+always completes normally. Remove any of the following statements that 
+may cause it to terminate abnormally:
+</p>
+
+<ul>
+    <li><code>return</code></li>
+    <li><code>throw</code></li>
+    <li><code>break</code></li>
+    <li><code>continue</code></li>
+</ul>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 36. Addison-Wesley, 2005.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.20.2">Execution of try-finally and try-catch-finally</a>.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

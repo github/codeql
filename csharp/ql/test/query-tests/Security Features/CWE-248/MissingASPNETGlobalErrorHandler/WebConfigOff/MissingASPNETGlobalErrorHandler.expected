@@ -1,0 +1,1 @@
+| Web.config:4:5:5:20 | customErrors | 'customErrors' mode set to off in Web.config, and no 'Application_Error' handler specified in the global.asax file. |

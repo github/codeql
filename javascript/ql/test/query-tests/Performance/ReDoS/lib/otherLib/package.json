@@ -1,0 +1,8 @@
+{
+  "name": "my-other-lib",
+  "version": "0.0.7",
+  "main": "./js/src/index.js",
+  "scripts": {
+    "build": "tsc"
+  }
+}

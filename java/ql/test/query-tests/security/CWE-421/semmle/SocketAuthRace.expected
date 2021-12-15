@@ -1,0 +1,3 @@
+| Test.java:38:25:38:45 | accept(...) | This connection occurs after the authentication in $@, rather than authentication over the new connection. | Test.java:37:7:37:31 | isAuthenticated(...) | this condition |
+| Test.java:51:25:51:45 | accept(...) | This connection occurs after the authentication in $@, rather than authentication over the new connection. | Test.java:49:7:49:31 | isAuthenticated(...) | this condition |
+| Test.java:65:32:65:53 | accept(...) | This connection occurs after the authentication in $@, rather than authentication over the new connection. | Test.java:64:7:64:31 | isAuthenticated(...) | this condition |

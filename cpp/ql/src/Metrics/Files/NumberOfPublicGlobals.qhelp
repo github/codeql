@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of public global variables in a file.</p>
+
+<p>Global variables can cause several problems:</p>
+
+<ul>
+<li>lack of encapsulation, because state is exposed to the whole program, rather than a single module</li>
+<li>difficulty maintaining the software, because code using or manipulating the value of the global may be scattered across the software, so its hard to track them all down when making a change</li>
+<li>defects in multi-threading, because the code that uses globals is usually not thread-safe</li>
+</ul>
+
+</overview>
+
+<recommendation>
+
+<p>Make global variables local to a file, and provide functions for manipulating the
+value of the variable in a thread-safe way. If possible, make the variable an instance
+variable in a class or struct that is passed from function to function as necessary so
+that there is no global state.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://www.learncpp.com/cpp-tutorial/42-global-variables/">Global variables</a>
+</li>
+<li>
+  <a href="http://www-h.eng.cam.ac.uk/help/tpl/languages/C++/globals.html">C++: Global warning</a>
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/c/DCL19-C.+Minimize+the+scope+of+variables+and+functions">Minimize the scope of variables and functions</a>
+</li>
+
+
+</references>
+</qhelp>

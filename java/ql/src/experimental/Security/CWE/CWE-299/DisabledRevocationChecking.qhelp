@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Validating a certificate chain includes multiple steps. One of them is checking whether or not
+certificates in the chain have been revoked. A certificate may be revoked due to multiple reasons. 
+One of the reasons why the certificate authority (CA) may revoke a certificate is that its private key
+has been compromised. For example, the private key might have been stolen by an adversary.
+In this case, the adversary may be able to impersonate the owner of the private key.
+Therefore, trusting a revoked certificate may be dangerous.</p>
+
+<p>The Java Certification Path API provides a revocation checking mechanism 
+that supports both CRL and OCSP.
+Revocation checking happens while building and validating certificate chains.
+If at least one of the certificates is revoked, then an exception is thrown.
+This mechanism is enabled by default. However, it may be disabled
+by passing <code>false</code> to the <code>PKIXParameters.setRevocationEnabled()</code> method.
+If an application doesn't set a custom <code>PKIXRevocationChecker</code> 
+via <code>PKIXParameters.addCertPathChecker()</code> 
+or <code>PKIXParameters.setCertPathCheckers()</code> methods,
+then revocation checking is not going to happen.</p>
+
+</overview>
+<recommendation>
+
+<p>An application should not disable the default revocationg checking mechanism
+unless it provides a custom revocation checker.</p>
+
+</recommendation>
+<example>
+
+<p>The following example turns off revocation checking for validating a certificate chain.
+That should be avoided.</p>
+
+<sample src="NoRevocationChecking.java" />
+
+<p>The next example uses the default revocation checking mechanism.</p>
+
+<sample src="DefaultRevocationChecking.java" />
+
+<p>The third example turns off the default revocation mechanism. However, it registers another 
+revocation checker that uses OCSP to obtain revocation status of certificates.</p>
+
+<sample src="CustomRevocationChecking.java" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Public_key_certificate">Public key certificate</a>
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/certpath/CertPathProgGuide.html">Java PKI Programmer's Guide</a>
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertPathValidator.html">CertPathValidator</a>
+</li>
+
+</references>
+</qhelp>

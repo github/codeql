@@ -1,0 +1,2 @@
+| cstd_types.cpp:74:4:74:6 | _e0 | Enum, FixedWidthEnumType |
+| cstd_types.cpp:75:4:75:6 | _e1 | FixedWidthEnumType, ScopedEnum |

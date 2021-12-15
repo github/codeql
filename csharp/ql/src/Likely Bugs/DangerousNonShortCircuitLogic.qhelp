@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>|</code> and <code>&amp;</code> logical operators, known as non-short circuit 
+operators, should not be used. Using a non-short circuit operator reduces the efficiency of the 
+program, is potentially confusing and can even lead to the program crashing if the first operand 
+acts as a safety check for the second.</p>
+
+</overview>
+<recommendation>
+<p>If the non-short circuit operator is unintended then replace the operator with the short circuit 
+equivalent. Sometime a non-short circuit operator is required because the operands have side 
+effects. In this case it is more efficient to evaluate both operands separately and then use a 
+short circuit operator to combine the results.</p>
+
+</recommendation>
+<example>
+<p>This example will crash because both parts of the conditional expression will be evaluated even 
+if <code>a</code> is null.</p>
+<sample src="DangerousNonShortCircuitLogic.cs" />
+
+<p>The example is easily fixed by using the short circuit AND operator. The program produces no 
+output but does not crash, unlike the previous example.</p>
+<sample src="DangerousNonShortCircuitLogicFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/sbf85k1c(v=vs.71).aspx">&amp; Operator</a></li>
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/kxszd0kx(v=vs.71).aspx">| Operator</a></li>
+
+</references>
+</qhelp>

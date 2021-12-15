@@ -1,0 +1,4 @@
+| CapturesDisposable(MyType, MyType) | 1 |
+| DisposesParameter(IDisposable, IDisposable) | 1 |
+| System.Void DisposalTests.Class1.CapturesDisposable(DisposalTests.MyType,DisposalTests.MyType) | 1 |
+| System.Void DisposalTests.Class1.DisposesParameter(System.IDisposable,System.IDisposable) | 1 |

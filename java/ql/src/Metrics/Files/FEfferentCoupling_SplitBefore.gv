@@ -1,0 +1,16 @@
+digraph
+{
+	rankdir = "LR";
+	I1 -> F:y;
+	I2 -> F:x;
+	I3 -> F:z;
+	I4 -> F:y;
+	I5 -> F:x;
+	F [shape=Mrecord, label="<x> X|<y> Y|<z> Z"];
+	F:z -> O1;
+	F:y -> O2;
+	F:x -> O3;
+	F:y -> O4;
+	F:z -> O5;
+}
+

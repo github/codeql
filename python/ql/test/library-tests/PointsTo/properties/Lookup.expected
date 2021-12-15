@@ -1,0 +1,6 @@
+| class C | p | property p |
+| class D | __init__ | Function D.__init__ |
+| class D | q | property q |
+| class E | __init__ | Function D.__init__ |
+| class E | p | property p |
+| class E | q | property q |

@@ -1,0 +1,666 @@
+#10000=@"/jsdoc.js;sourcefile"
+files(#10000,"/jsdoc.js")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+#20002=*
+comments(#20002,2,#20001,"
+ * This is a constant.
+ * 
+ * @const x
+ ","/**\n *  ... t x\n */")
+#20003=@"loc,{#10000},1,1,5,3"
+locations_default(#20003,#10000,1,1,5,3)
+hasLocation(#20002,#20003)
+#20004=*
+comments(#20004,2,#20001," @class {Object} klass ","/** @cl ... lass */")
+#20005=@"loc,{#10000},6,1,6,28"
+locations_default(#20005,#10000,6,1,6,28)
+hasLocation(#20004,#20005)
+#20006=*
+comments(#20006,2,#20001," @deprecated ","/** @deprecated */")
+#20007=@"loc,{#10000},7,1,7,18"
+locations_default(#20007,#10000,7,1,7,18)
+hasLocation(#20006,#20007)
+#20008=*
+comments(#20008,2,#20001," @param {(int|bool)} x
+ *  @param {Array.<String, Number>} ys
+ *  @param {String[]} zs
+ *  @param {function(new:goog.ui.Menu, ?string=, number=): void} f
+ *  @param {...number} var_args
+ ","/** @pa ... rgs\n */")
+#20009=@"loc,{#10000},8,1,13,3"
+locations_default(#20009,#10000,8,1,13,3)
+hasLocation(#20008,#20009)
+#20010=*
+comments(#20010,2,#20001,"
+ * @param {Function(DOMNode)}
+ * @param {Function(DOMNode)} x
+ ","/**\n *  ... } x\n */")
+#20011=@"loc,{#10000},14,1,17,3"
+locations_default(#20011,#10000,14,1,17,3)
+hasLocation(#20010,#20011)
+#20012=*
+comments(#20012,2,#20001,"
+ * @{link a}
+ ","/**\n * @{link a}\n */")
+#20013=@"loc,{#10000},19,1,21,3"
+locations_default(#20013,#10000,19,1,21,3)
+hasLocation(#20012,#20013)
+#20014=*
+comments(#20014,2,#20001,"
+ * @typedef
+ * {a}
+ ","/**\n *  ... {a}\n */")
+#20015=@"loc,{#10000},23,1,26,3"
+locations_default(#20015,#10000,23,1,26,3)
+hasLocation(#20014,#20015)
+#20016=*
+comments(#20016,2,#20001,"
+ * [resize description]
+ * @param  {[type]} w [description]
+ * @param  {  } h [description]
+ * @return {[type]}   [description]
+ ","/**\n *  ... on]\n */")
+#20017=@"loc,{#10000},28,1,33,3"
+locations_default(#20017,#10000,28,1,33,3)
+hasLocation(#20016,#20017)
+#20018=*
+comments(#20018,2,#20001,"
+* @exports R
+*
+","/**\n* @ ...  R\n*\n*/")
+#20019=@"loc,{#10000},35,1,38,2"
+locations_default(#20019,#10000,35,1,38,2)
+hasLocation(#20018,#20019)
+#20020=*
+comments(#20020,2,#20001,"
+ * @typedef {{0: number}}
+ ","/**\n *  ... r}}\n */")
+#20021=@"loc,{#10000},40,1,42,3"
+locations_default(#20021,#10000,40,1,42,3)
+hasLocation(#20020,#20021)
+#20022=*
+lines(#20022,#20001,"/**","
+")
+#20023=@"loc,{#10000},1,1,1,3"
+locations_default(#20023,#10000,1,1,1,3)
+hasLocation(#20022,#20023)
+#20024=*
+lines(#20024,#20001," * This is a constant.","
+")
+#20025=@"loc,{#10000},2,1,2,22"
+locations_default(#20025,#10000,2,1,2,22)
+hasLocation(#20024,#20025)
+indentation(#10000,2," ",1)
+#20026=*
+lines(#20026,#20001," * ","
+")
+#20027=@"loc,{#10000},3,1,3,3"
+locations_default(#20027,#10000,3,1,3,3)
+hasLocation(#20026,#20027)
+indentation(#10000,3," ",1)
+#20028=*
+lines(#20028,#20001," * @const x","
+")
+#20029=@"loc,{#10000},4,1,4,11"
+locations_default(#20029,#10000,4,1,4,11)
+hasLocation(#20028,#20029)
+indentation(#10000,4," ",1)
+#20030=*
+lines(#20030,#20001," */","
+")
+#20031=@"loc,{#10000},5,1,5,3"
+locations_default(#20031,#10000,5,1,5,3)
+hasLocation(#20030,#20031)
+indentation(#10000,5," ",1)
+#20032=*
+lines(#20032,#20001,"/** @class {Object} klass */","
+")
+hasLocation(#20032,#20005)
+#20033=*
+lines(#20033,#20001,"/** @deprecated */","
+")
+hasLocation(#20033,#20007)
+#20034=*
+lines(#20034,#20001,"/** @param {(int|bool)} x","
+")
+#20035=@"loc,{#10000},8,1,8,25"
+locations_default(#20035,#10000,8,1,8,25)
+hasLocation(#20034,#20035)
+#20036=*
+lines(#20036,#20001," *  @param {Array.<String, Number>} ys","
+")
+#20037=@"loc,{#10000},9,1,9,38"
+locations_default(#20037,#10000,9,1,9,38)
+hasLocation(#20036,#20037)
+indentation(#10000,9," ",1)
+#20038=*
+lines(#20038,#20001," *  @param {String[]} zs","
+")
+#20039=@"loc,{#10000},10,1,10,24"
+locations_default(#20039,#10000,10,1,10,24)
+hasLocation(#20038,#20039)
+indentation(#10000,10," ",1)
+#20040=*
+lines(#20040,#20001," *  @param {function(new:goog.ui.Menu, ?string=, number=): void} f","
+")
+#20041=@"loc,{#10000},11,1,11,66"
+locations_default(#20041,#10000,11,1,11,66)
+hasLocation(#20040,#20041)
+indentation(#10000,11," ",1)
+#20042=*
+lines(#20042,#20001," *  @param {...number} var_args","
+")
+#20043=@"loc,{#10000},12,1,12,31"
+locations_default(#20043,#10000,12,1,12,31)
+hasLocation(#20042,#20043)
+indentation(#10000,12," ",1)
+#20044=*
+lines(#20044,#20001," */","
+")
+#20045=@"loc,{#10000},13,1,13,3"
+locations_default(#20045,#10000,13,1,13,3)
+hasLocation(#20044,#20045)
+indentation(#10000,13," ",1)
+#20046=*
+lines(#20046,#20001,"/**","
+")
+#20047=@"loc,{#10000},14,1,14,3"
+locations_default(#20047,#10000,14,1,14,3)
+hasLocation(#20046,#20047)
+#20048=*
+lines(#20048,#20001," * @param {Function(DOMNode)}","
+")
+#20049=@"loc,{#10000},15,1,15,29"
+locations_default(#20049,#10000,15,1,15,29)
+hasLocation(#20048,#20049)
+indentation(#10000,15," ",1)
+#20050=*
+lines(#20050,#20001," * @param {Function(DOMNode)} x","
+")
+#20051=@"loc,{#10000},16,1,16,31"
+locations_default(#20051,#10000,16,1,16,31)
+hasLocation(#20050,#20051)
+indentation(#10000,16," ",1)
+#20052=*
+lines(#20052,#20001," */","
+")
+#20053=@"loc,{#10000},17,1,17,3"
+locations_default(#20053,#10000,17,1,17,3)
+hasLocation(#20052,#20053)
+indentation(#10000,17," ",1)
+#20054=*
+lines(#20054,#20001,"","
+")
+#20055=@"loc,{#10000},18,1,18,0"
+locations_default(#20055,#10000,18,1,18,0)
+hasLocation(#20054,#20055)
+#20056=*
+lines(#20056,#20001,"/**","
+")
+#20057=@"loc,{#10000},19,1,19,3"
+locations_default(#20057,#10000,19,1,19,3)
+hasLocation(#20056,#20057)
+#20058=*
+lines(#20058,#20001," * @{link a}","
+")
+#20059=@"loc,{#10000},20,1,20,12"
+locations_default(#20059,#10000,20,1,20,12)
+hasLocation(#20058,#20059)
+indentation(#10000,20," ",1)
+#20060=*
+lines(#20060,#20001," */","
+")
+#20061=@"loc,{#10000},21,1,21,3"
+locations_default(#20061,#10000,21,1,21,3)
+hasLocation(#20060,#20061)
+indentation(#10000,21," ",1)
+#20062=*
+lines(#20062,#20001,"","
+")
+#20063=@"loc,{#10000},22,1,22,0"
+locations_default(#20063,#10000,22,1,22,0)
+hasLocation(#20062,#20063)
+#20064=*
+lines(#20064,#20001,"/**","
+")
+#20065=@"loc,{#10000},23,1,23,3"
+locations_default(#20065,#10000,23,1,23,3)
+hasLocation(#20064,#20065)
+#20066=*
+lines(#20066,#20001," * @typedef","
+")
+#20067=@"loc,{#10000},24,1,24,11"
+locations_default(#20067,#10000,24,1,24,11)
+hasLocation(#20066,#20067)
+indentation(#10000,24," ",1)
+#20068=*
+lines(#20068,#20001," * {a}","
+")
+#20069=@"loc,{#10000},25,1,25,6"
+locations_default(#20069,#10000,25,1,25,6)
+hasLocation(#20068,#20069)
+indentation(#10000,25," ",1)
+#20070=*
+lines(#20070,#20001," */","
+")
+#20071=@"loc,{#10000},26,1,26,3"
+locations_default(#20071,#10000,26,1,26,3)
+hasLocation(#20070,#20071)
+indentation(#10000,26," ",1)
+#20072=*
+lines(#20072,#20001,"","
+")
+#20073=@"loc,{#10000},27,1,27,0"
+locations_default(#20073,#10000,27,1,27,0)
+hasLocation(#20072,#20073)
+#20074=*
+lines(#20074,#20001,"/**","
+")
+#20075=@"loc,{#10000},28,1,28,3"
+locations_default(#20075,#10000,28,1,28,3)
+hasLocation(#20074,#20075)
+#20076=*
+lines(#20076,#20001," * [resize description]","
+")
+#20077=@"loc,{#10000},29,1,29,23"
+locations_default(#20077,#10000,29,1,29,23)
+hasLocation(#20076,#20077)
+indentation(#10000,29," ",1)
+#20078=*
+lines(#20078,#20001," * @param  {[type]} w [description]","
+")
+#20079=@"loc,{#10000},30,1,30,35"
+locations_default(#20079,#10000,30,1,30,35)
+hasLocation(#20078,#20079)
+indentation(#10000,30," ",1)
+#20080=*
+lines(#20080,#20001," * @param  {  } h [description]","
+")
+#20081=@"loc,{#10000},31,1,31,31"
+locations_default(#20081,#10000,31,1,31,31)
+hasLocation(#20080,#20081)
+indentation(#10000,31," ",1)
+#20082=*
+lines(#20082,#20001," * @return {[type]}   [description]","
+")
+#20083=@"loc,{#10000},32,1,32,35"
+locations_default(#20083,#10000,32,1,32,35)
+hasLocation(#20082,#20083)
+indentation(#10000,32," ",1)
+#20084=*
+lines(#20084,#20001," */","
+")
+#20085=@"loc,{#10000},33,1,33,3"
+locations_default(#20085,#10000,33,1,33,3)
+hasLocation(#20084,#20085)
+indentation(#10000,33," ",1)
+#20086=*
+lines(#20086,#20001,"","
+")
+#20087=@"loc,{#10000},34,1,34,0"
+locations_default(#20087,#10000,34,1,34,0)
+hasLocation(#20086,#20087)
+#20088=*
+lines(#20088,#20001,"/**","
+")
+#20089=@"loc,{#10000},35,1,35,3"
+locations_default(#20089,#10000,35,1,35,3)
+hasLocation(#20088,#20089)
+#20090=*
+lines(#20090,#20001,"* @exports R","
+")
+#20091=@"loc,{#10000},36,1,36,12"
+locations_default(#20091,#10000,36,1,36,12)
+hasLocation(#20090,#20091)
+#20092=*
+lines(#20092,#20001,"*","
+")
+#20093=@"loc,{#10000},37,1,37,1"
+locations_default(#20093,#10000,37,1,37,1)
+hasLocation(#20092,#20093)
+#20094=*
+lines(#20094,#20001,"*/","
+")
+#20095=@"loc,{#10000},38,1,38,2"
+locations_default(#20095,#10000,38,1,38,2)
+hasLocation(#20094,#20095)
+#20096=*
+lines(#20096,#20001,"","
+")
+#20097=@"loc,{#10000},39,1,39,0"
+locations_default(#20097,#10000,39,1,39,0)
+hasLocation(#20096,#20097)
+#20098=*
+lines(#20098,#20001,"/**","
+")
+#20099=@"loc,{#10000},40,1,40,3"
+locations_default(#20099,#10000,40,1,40,3)
+hasLocation(#20098,#20099)
+#20100=*
+lines(#20100,#20001," * @typedef {{0: number}}","
+")
+#20101=@"loc,{#10000},41,1,41,25"
+locations_default(#20101,#10000,41,1,41,25)
+hasLocation(#20100,#20101)
+indentation(#10000,41," ",1)
+#20102=*
+lines(#20102,#20001," */","
+")
+#20103=@"loc,{#10000},42,1,42,3"
+locations_default(#20103,#10000,42,1,42,3)
+hasLocation(#20102,#20103)
+indentation(#10000,42," ",1)
+numlines(#20001,42,0,37)
+#20104=*
+tokeninfo(#20104,0,#20001,0,"")
+#20105=@"loc,{#10000},43,1,43,0"
+locations_default(#20105,#10000,43,1,43,0)
+hasLocation(#20104,#20105)
+next_token(#20002,#20104)
+next_token(#20004,#20104)
+next_token(#20006,#20104)
+next_token(#20008,#20104)
+next_token(#20010,#20104)
+next_token(#20012,#20104)
+next_token(#20014,#20104)
+next_token(#20016,#20104)
+next_token(#20018,#20104)
+next_token(#20020,#20104)
+#20106=*
+jsdoc(#20106,"This is a constant.",#20002)
+hasLocation(#20106,#20003)
+#20107=*
+jsdoc_tags(#20107,"const",#20106,0,"@const")
+#20108=@"loc,{#10000},4,4,4,9"
+locations_default(#20108,#10000,4,4,4,9)
+hasLocation(#20107,#20108)
+jsdoc_tag_names(#20107,"x")
+#20109=*
+jsdoc(#20109,"",#20004)
+hasLocation(#20109,#20005)
+#20110=*
+jsdoc_tags(#20110,"class",#20109,0,"@class")
+#20111=@"loc,{#10000},6,5,6,10"
+locations_default(#20111,#10000,6,5,6,10)
+hasLocation(#20110,#20111)
+jsdoc_tag_names(#20110,"klass")
+#20112=*
+jsdoc_type_exprs(#20112,5,#20110,0,"Object")
+#20113=@"loc,{#10000},6,13,6,18"
+locations_default(#20113,#10000,6,13,6,18)
+hasLocation(#20112,#20113)
+#20114=*
+jsdoc(#20114,"",#20006)
+hasLocation(#20114,#20007)
+#20115=*
+jsdoc_tags(#20115,"deprecated",#20114,0,"@deprecated")
+#20116=@"loc,{#10000},7,5,7,15"
+locations_default(#20116,#10000,7,5,7,15)
+hasLocation(#20115,#20116)
+#20117=*
+jsdoc(#20117,"",#20008)
+hasLocation(#20117,#20009)
+#20118=*
+jsdoc_tags(#20118,"param",#20117,0,"@param")
+#20119=@"loc,{#10000},8,5,8,10"
+locations_default(#20119,#10000,8,5,8,10)
+hasLocation(#20118,#20119)
+jsdoc_tag_names(#20118,"x")
+#20120=*
+jsdoc_type_exprs(#20120,11,#20118,0,"(int|bool)")
+#20121=@"loc,{#10000},8,13,8,22"
+locations_default(#20121,#10000,8,13,8,22)
+hasLocation(#20120,#20121)
+#20122=*
+jsdoc_type_exprs(#20122,5,#20120,0,"int")
+#20123=@"loc,{#10000},8,14,8,16"
+locations_default(#20123,#10000,8,14,8,16)
+hasLocation(#20122,#20123)
+#20124=*
+jsdoc_type_exprs(#20124,5,#20120,1,"bool")
+#20125=@"loc,{#10000},8,18,8,21"
+locations_default(#20125,#10000,8,18,8,21)
+hasLocation(#20124,#20125)
+#20126=*
+jsdoc_tags(#20126,"param",#20117,1,"@param")
+#20127=@"loc,{#10000},9,5,9,10"
+locations_default(#20127,#10000,9,5,9,10)
+hasLocation(#20126,#20127)
+jsdoc_tag_names(#20126,"ys")
+#20128=*
+jsdoc_type_exprs(#20128,6,#20126,0,"Array.<String, Number>")
+#20129=@"loc,{#10000},9,13,9,34"
+locations_default(#20129,#10000,9,13,9,34)
+hasLocation(#20128,#20129)
+#20130=*
+jsdoc_type_exprs(#20130,5,#20128,-1,"Array")
+#20131=@"loc,{#10000},9,13,9,17"
+locations_default(#20131,#10000,9,13,9,17)
+hasLocation(#20130,#20131)
+#20132=*
+jsdoc_type_exprs(#20132,5,#20128,0,"String")
+#20133=@"loc,{#10000},9,20,9,25"
+locations_default(#20133,#10000,9,20,9,25)
+hasLocation(#20132,#20133)
+#20134=*
+jsdoc_type_exprs(#20134,5,#20128,1,"Number")
+#20135=@"loc,{#10000},9,28,9,33"
+locations_default(#20135,#10000,9,28,9,33)
+hasLocation(#20134,#20135)
+#20136=*
+jsdoc_tags(#20136,"param",#20117,2,"@param")
+#20137=@"loc,{#10000},10,5,10,10"
+locations_default(#20137,#10000,10,5,10,10)
+hasLocation(#20136,#20137)
+jsdoc_tag_names(#20136,"zs")
+#20138=*
+jsdoc_type_exprs(#20138,6,#20136,0,"Array.<String>")
+#20139=@"loc,{#10000},10,13,10,20"
+locations_default(#20139,#10000,10,13,10,20)
+hasLocation(#20138,#20139)
+#20140=*
+jsdoc_type_exprs(#20140,5,#20138,-1,"Array")
+hasLocation(#20140,#20139)
+#20141=*
+jsdoc_type_exprs(#20141,5,#20138,0,"String")
+#20142=@"loc,{#10000},10,13,10,18"
+locations_default(#20142,#10000,10,13,10,18)
+hasLocation(#20141,#20142)
+#20143=*
+jsdoc_tags(#20143,"param",#20117,3,"@param")
+#20144=@"loc,{#10000},11,5,11,10"
+locations_default(#20144,#10000,11,5,11,10)
+hasLocation(#20143,#20144)
+jsdoc_tag_names(#20143,"f")
+#20145=*
+jsdoc_type_exprs(#20145,12,#20143,0,"function (new: goog.ui.Menu, ?string=, number=): void")
+#20146=@"loc,{#10000},11,13,11,63"
+locations_default(#20146,#10000,11,13,11,63)
+hasLocation(#20145,#20146)
+#20147=*
+jsdoc_type_exprs(#20147,13,#20145,0,"?string=")
+#20148=@"loc,{#10000},11,40,11,47"
+locations_default(#20148,#10000,11,40,11,47)
+hasLocation(#20147,#20148)
+#20149=*
+jsdoc_type_exprs(#20149,7,#20147,0,"?string")
+#20150=@"loc,{#10000},11,40,11,46"
+locations_default(#20150,#10000,11,40,11,46)
+hasLocation(#20149,#20150)
+#20151=*
+jsdoc_type_exprs(#20151,5,#20149,0,"string")
+#20152=@"loc,{#10000},11,41,11,46"
+locations_default(#20152,#10000,11,41,11,46)
+hasLocation(#20151,#20152)
+jsdoc_prefix_qualifier(#20149)
+#20153=*
+jsdoc_type_exprs(#20153,13,#20145,1,"number=")
+#20154=@"loc,{#10000},11,50,11,56"
+locations_default(#20154,#10000,11,50,11,56)
+hasLocation(#20153,#20154)
+#20155=*
+jsdoc_type_exprs(#20155,5,#20153,0,"number")
+#20156=@"loc,{#10000},11,50,11,55"
+locations_default(#20156,#10000,11,50,11,55)
+hasLocation(#20155,#20156)
+#20157=*
+jsdoc_type_exprs(#20157,4,#20145,-1,"void")
+#20158=@"loc,{#10000},11,60,11,63"
+locations_default(#20158,#10000,11,60,11,63)
+hasLocation(#20157,#20158)
+#20159=*
+jsdoc_type_exprs(#20159,5,#20145,-2,"goog.ui.Menu")
+#20160=@"loc,{#10000},11,26,11,37"
+locations_default(#20160,#10000,11,26,11,37)
+hasLocation(#20159,#20160)
+jsdoc_has_new_parameter(#20145)
+#20161=*
+jsdoc_tags(#20161,"param",#20117,4,"@param")
+#20162=@"loc,{#10000},12,5,12,10"
+locations_default(#20162,#10000,12,5,12,10)
+hasLocation(#20161,#20162)
+jsdoc_tag_names(#20161,"var_args")
+#20163=*
+jsdoc_type_exprs(#20163,14,#20161,0,"...number")
+#20164=@"loc,{#10000},12,13,12,21"
+locations_default(#20164,#10000,12,13,12,21)
+hasLocation(#20163,#20164)
+#20165=*
+jsdoc_type_exprs(#20165,5,#20163,0,"number")
+#20166=@"loc,{#10000},12,16,12,21"
+locations_default(#20166,#10000,12,16,12,21)
+hasLocation(#20165,#20166)
+#20167=*
+jsdoc(#20167,"",#20010)
+hasLocation(#20167,#20011)
+#20168=*
+jsdoc_tags(#20168,"param",#20167,0,"@param")
+#20169=@"loc,{#10000},15,4,15,9"
+locations_default(#20169,#10000,15,4,15,9)
+hasLocation(#20168,#20169)
+#20170=*
+jsdoc_errors(#20170,#20168,"Missing or invalid tag name","Missing ... ag name")
+#20171=*
+jsdoc_tags(#20171,"param",#20167,1,"@param")
+#20172=@"loc,{#10000},16,4,16,9"
+locations_default(#20172,#10000,16,4,16,9)
+hasLocation(#20171,#20172)
+jsdoc_tag_names(#20171,"x")
+#20173=*
+jsdoc(#20173,"",#20012)
+hasLocation(#20173,#20013)
+#20174=*
+jsdoc_tags(#20174,"",#20173,0,"@")
+#20175=@"loc,{#10000},20,4,20,4"
+locations_default(#20175,#10000,20,4,20,4)
+hasLocation(#20174,#20175)
+jsdoc_tag_descriptions(#20174,"{link a}")
+#20176=*
+jsdoc_errors(#20176,#20174,"Missing or invalid title","Missing ... d title")
+#20177=*
+jsdoc(#20177,"",#20014)
+hasLocation(#20177,#20015)
+#20178=*
+jsdoc_tags(#20178,"typedef",#20177,0,"@typedef")
+#20179=@"loc,{#10000},24,4,24,11"
+locations_default(#20179,#10000,24,4,24,11)
+hasLocation(#20178,#20179)
+jsdoc_tag_descriptions(#20178,"{a}")
+#20180=*
+jsdoc_errors(#20180,#20178,"Missing or invalid tag type","Missing ... ag type")
+#20181=*
+jsdoc(#20181,"[resize description]",#20016)
+hasLocation(#20181,#20017)
+#20182=*
+jsdoc_tags(#20182,"param",#20181,0,"@param")
+#20183=@"loc,{#10000},30,4,30,9"
+locations_default(#20183,#10000,30,4,30,9)
+hasLocation(#20182,#20183)
+jsdoc_tag_descriptions(#20182,"[description]
+")
+jsdoc_tag_names(#20182,"w")
+#20184=*
+jsdoc_type_exprs(#20184,10,#20182,0,"[type]")
+#20185=@"loc,{#10000},30,13,30,18"
+locations_default(#20185,#10000,30,13,30,18)
+hasLocation(#20184,#20185)
+#20186=*
+jsdoc_type_exprs(#20186,5,#20184,0,"type")
+#20187=@"loc,{#10000},30,14,30,17"
+locations_default(#20187,#10000,30,14,30,17)
+hasLocation(#20186,#20187)
+#20188=*
+jsdoc_tags(#20188,"param",#20181,1,"@param")
+#20189=@"loc,{#10000},31,4,31,9"
+locations_default(#20189,#10000,31,4,31,9)
+hasLocation(#20188,#20189)
+jsdoc_tag_descriptions(#20188,"[description]
+")
+#20190=*
+jsdoc_tags(#20190,"return",#20181,2,"@return")
+#20191=@"loc,{#10000},32,4,32,10"
+locations_default(#20191,#10000,32,4,32,10)
+hasLocation(#20190,#20191)
+jsdoc_tag_descriptions(#20190,"[description]")
+#20192=*
+jsdoc_type_exprs(#20192,10,#20190,0,"[type]")
+#20193=@"loc,{#10000},32,13,32,18"
+locations_default(#20193,#10000,32,13,32,18)
+hasLocation(#20192,#20193)
+#20194=*
+jsdoc_type_exprs(#20194,5,#20192,0,"type")
+#20195=@"loc,{#10000},32,14,32,17"
+locations_default(#20195,#10000,32,14,32,17)
+hasLocation(#20194,#20195)
+#20196=*
+jsdoc(#20196,"",#20018)
+hasLocation(#20196,#20019)
+#20197=*
+jsdoc_tags(#20197,"exports",#20196,0,"@exports")
+#20198=@"loc,{#10000},36,3,36,10"
+locations_default(#20198,#10000,36,3,36,10)
+hasLocation(#20197,#20198)
+jsdoc_tag_descriptions(#20197,"R
+")
+#20199=*
+jsdoc(#20199,"",#20020)
+hasLocation(#20199,#20021)
+#20200=*
+jsdoc_tags(#20200,"typedef",#20199,0,"@typedef")
+#20201=@"loc,{#10000},41,4,41,11"
+locations_default(#20201,#10000,41,4,41,11)
+hasLocation(#20200,#20201)
+#20202=*
+jsdoc_type_exprs(#20202,9,#20200,0,"{0: number}")
+#20203=@"loc,{#10000},41,14,41,24"
+locations_default(#20203,#10000,41,14,41,24)
+hasLocation(#20202,#20203)
+jsdoc_record_field_name(#20202,0,"0")
+#20204=*
+jsdoc_type_exprs(#20204,5,#20202,0,"number")
+#20205=@"loc,{#10000},41,18,41,23"
+locations_default(#20205,#10000,41,18,41,23)
+hasLocation(#20204,#20205)
+toplevels(#20001,0)
+#20206=@"loc,{#10000},1,1,43,0"
+locations_default(#20206,#10000,1,1,43,0)
+hasLocation(#20001,#20206)
+#20207=*
+entry_cfg_node(#20207,#20001)
+#20208=@"loc,{#10000},1,1,1,0"
+locations_default(#20208,#10000,1,1,1,0)
+hasLocation(#20207,#20208)
+#20209=*
+exit_cfg_node(#20209,#20001)
+hasLocation(#20209,#20105)
+successor(#20207,#20209)
+numlines(#10000,42,0,37)
+filetype(#10000,"javascript")

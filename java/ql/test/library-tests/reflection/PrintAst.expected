@@ -1,0 +1,49 @@
+reflection/ReflectiveAccess.java:
+#    0| [CompilationUnit] ReflectiveAccess
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import Annotation
+#    5|   1: [Class] ReflectiveAccess
+#    6|     2: [Interface] TestAnnotation
+#   10|     3: [Class] TestClass
+#-----|       -3: (Annotations)
+#    9|         1: [Annotation] TestAnnotation
+#   13|     4: [Method] getAnnotation
+#-----|       2: (Generic Parameters)
+#   13|         0: [TypeVariable] A
+#   13|           0: [TypeAccess] Annotation
+#   13|       3: [TypeAccess] A
+#-----|       4: (Parameters)
+#   13|         0: [Parameter] classContainingAnnotation
+#   13|           0: [TypeAccess] Class<?>
+#   13|             0: [WildcardTypeAccess] ? ...
+#   13|         1: [Parameter] annotationClass
+#   13|           0: [TypeAccess] Class<A>
+#   13|             0: [TypeAccess] A
+#   13|       5: [BlockStmt] { ... }
+#   14|         0: [ReturnStmt] return ...
+#   14|           0: [MethodAccess] getAnnotation(...)
+#   14|             -1: [VarAccess] classContainingAnnotation
+#   14|             0: [VarAccess] annotationClass
+#   17|     5: [Method] main
+#   17|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   17|         0: [Parameter] args
+#   17|           0: [ArrayTypeAccess] ...[]
+#   17|             0: [TypeAccess] String
+#   17|       5: [BlockStmt] { ... }
+#   18|         0: [LocalVariableDeclStmt] var ...;
+#   18|           0: [TypeAccess] Class<?>
+#   18|             0: [WildcardTypeAccess] ? ...
+#   18|           1: [LocalVariableDeclExpr] testClass
+#   18|             0: [MethodAccess] forName(...)
+#   18|               -1: [TypeAccess] Class<>
+#   18|               0: [StringLiteral] "reflection.ReflectiveAccess$TestClass"
+#   20|         1: [ExprStmt] <Expr>;
+#   20|           0: [MethodAccess] newInstance(...)
+#   20|             -1: [VarAccess] testClass
+#   22|         2: [ExprStmt] <Expr>;
+#   22|           0: [MethodAccess] getAnnotation(...)
+#   22|             0: [TypeLiteral] TestClass.class
+#   22|               0: [TypeAccess] TestClass
+#   22|             1: [TypeLiteral] TestAnnotation.class
+#   22|               0: [TypeAccess] TestAnnotation

@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Specifying thread priorities using calls to <code>Thread.setPriority</code> 
+and <code>Thread.getPriority</code> is not portable 
+and may have adverse consequences such as starvation.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid setting thread priorities to control interactions between threads. 
+Using the default thread priority should be sufficient for most applications.
+</p>
+
+<p>However, if you need to enforce a specific synchronization order, use one of the following 
+alternatives:</p>
+
+<ul>
+    <li>Waiting for a notification using the <code>wait</code> and <code>notifyAll</code> methods</li>
+    <li>Using the <code>java.util.concurrent</code> library</li>
+</ul>
+
+<p>In some cases, calls to <code>Thread.sleep</code> may be appropriate to temporarily stop 
+execution (provided that there is no possibility for race conditions), but this is not generally 
+recommended.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 72. Addison-Wesley, 2008.
+</li>
+<li>
+  Inform IT:
+  <a href="http://www.informit.com/articles/article.aspx?p=26326&amp;seqNum=5">Adding Multithreading Capability to Your Java Applications</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,3 @@
+| parameter_names.py:17:5:17:24 | Function n_cmethod | Class methods or methods of a type deriving from type should have 'cls', rather than 'self', as their first parameter. |
+| parameter_names.py:22:5:22:21 | Function n_cmethod2 | Class methods or methods of a type deriving from type should have 'cls' as their first parameter. |
+| parameter_names.py:37:5:37:20 | Function c_method | Class methods or methods of a type deriving from type should have 'cls', rather than 'y', as their first parameter. |

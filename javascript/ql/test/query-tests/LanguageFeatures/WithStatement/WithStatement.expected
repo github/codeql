@@ -1,0 +1,1 @@
+| withStatement.js:2:3:2:14 | with (f ...  x;\\n  } | Do not use 'with'. |

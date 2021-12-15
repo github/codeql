@@ -1,0 +1,15 @@
+#10000=@"/array.json;sourcefile"
+files(#10000,"/array.json")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json(#20000,4,#10000,0,"[]")
+#20001=@"loc,{#10000},1,1,1,2"
+locations_default(#20001,#10000,1,1,1,2)
+json_locations(#20000,#20001)
+numlines(#10000,1,0,0)
+filetype(#10000,"json")

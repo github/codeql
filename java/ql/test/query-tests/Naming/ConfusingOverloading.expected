@@ -1,0 +1,1 @@
+| NamingTest.java:7:17:7:22 | equals | Method NamingTest.equals(..) could be confused with overloaded method $@, since dispatch depends on static types. | NamingTest.java:6:17:6:22 | equals | equals |

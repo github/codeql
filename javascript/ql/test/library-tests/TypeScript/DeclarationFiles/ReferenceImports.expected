@@ -1,0 +1,4 @@
+| client1.ts:1:1:1:40 | /// <re ... .ts" /> | path | framework1.d.ts |
+| client2.ts:1:1:1:36 | /// <re ... rk2" /> | types | framework2 |
+| declare-module-client2.ts:1:1:1:45 | /// <re ... d.ts"/> | path | ./declare-module.d.ts |
+| declare-module-client.ts:1:1:1:43 | /// <re ... d.ts"/> | path | declare-module.d.ts |

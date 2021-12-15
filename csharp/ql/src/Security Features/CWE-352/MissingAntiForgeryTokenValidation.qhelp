@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Web applications that use tokens to prevent cross-site request forgery
+(CSRF) should validate the tokens for all Http POST requests.</p>
+
+<p>Although login and authentication methods are not vulnerable to traditional
+CSRF attacks, they still need to be protected with a token or other mitigation.
+This because an unprotected login page can be used by an attacker to force a
+login using an account controlled by the attacker. Subsequent requests to the
+site are then made using this account, without the user being aware that this is
+the case. This can result in the user associating private information with the
+attacker-controlled account.</p>
+</overview>
+
+<recommendation>
+<p>The appropriate attribute should be added to this method to ensure the
+anti-forgery token is validated when this action method is called. If using the
+MVC-provided anti-forgery framework this will be the
+<code>[ValidateAntiForgeryToken]</code> attribute.
+</p>
+<p>Alternatively, you may consider including a global filter that applies token
+validation to all POST requests.</p>
+
+</recommendation>
+
+<example>
+<p>In the following example an ASP.NET MVC <code>Controller</code> is using the
+<code>[ValidateAntiForgeryToken]</code> attribute to mitigate against CSRF attacks.
+It has been applied correctly to the <code>UpdateDetails</code> method. However,
+this attribute has not been applied to the <code>Login</code> method. This should
+be fixed by adding this attribute.</p>
+<sample src="MissingAntiForgeryTokenValidation.cs" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-Site Request Forgery</a>.</li>
+<li>Microsoft Docs: <a href="https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages">XSRF/CSRF Prevention in ASP.NET MVC and Web Pages</a>.</li>
+</references>
+</qhelp>

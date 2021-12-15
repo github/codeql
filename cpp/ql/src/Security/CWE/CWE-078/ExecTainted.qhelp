@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The code passes user input as part of a call to <code>system</code>
+or <code>popen</code> without escaping special elements.  It generates
+a command line using <code>sprintf</code>, with the user-supplied data
+directly passed as a formatting argument. This leaves the code
+vulnerable to attack by command injection.</p>
+
+</overview>
+<recommendation>
+
+<p>Use a library routine to escape characters in the user-supplied
+string before passing it to a command shell.</p>
+
+</recommendation>
+<example>
+<p>The following example runs an external command in two ways. The
+first way uses <code>sprintf</code> to build a command directly out of
+a user-supplied argument. As such, it is vulnerable to command
+injection. The second way quotes the user-provided value before
+embedding it in the command; assuming
+the <code>encodeShellString</code> utility is correct, this code
+should be safe against command injection.</p>
+<sample src="ExecTainted.c" />
+
+</example>
+<references>
+
+<li>CERT C Coding Standard:
+<a href="https://www.securecoding.cert.org/confluence/display/c/STR02-C.+Sanitize+data+passed+to+complex+subsystems">STR02-C.
+Sanitize data passed to complex subsystems</a>.</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+
+
+<!--  LocalWords: CWE STR
+ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <em>magic string</em> is a string literal (for example, <code>"SELECT"</code>,
+<code>"127.0.0.1"</code>) that is used in the middle of a block of code without
+explanation. It is considered bad practice to use magic strings because:</p>
+
+<ul>
+<li>A string in isolation can be difficult for other programmers to understand.
+</li>
+<li>It can be difficult to update the code if the requirements change. For example, if the magic 
+string represents a protocol, changing the protocol means that you must change
+every occurrence of the protocol.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>Assign the magic string to a new named constant, and use this instead. This overcomes the two problems
+with magic strings:</p>
+
+<ul>
+<li>A named constant (such as <code>SMTP_HELO</code>) is more easily understood by other programmers.
+</li>
+<li>Using the same named constant in many places makes the code much easier to
+update if the requirements change, because you have to update the string in only one place.
+</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>The following example shows a magic string <code>username</code>. This should be replaced by a new
+named constant, as shown in the fixed version.</p>
+
+<sample src="MagicConstantsString.java" />
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, &sect;17.G25. Prentice Hall, 2008.
+</li>
+
+
+</references>
+</qhelp>

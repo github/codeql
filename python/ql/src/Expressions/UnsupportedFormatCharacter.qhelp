@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A format string, that is the string on the left hand side of an expression like <code>fmt % arguments</code>, must consist of legal conversion specifiers.
+Otherwise, a <code>ValueError</code> will be raised.
+
+</p>
+
+</overview>
+<recommendation>
+<p>Choose a legal conversion specifier.</p>
+
+</recommendation>
+<example>
+<p>In <code>format_as_tuple_incorrect</code>, "t" is not a legal conversion specifier.
+
+</p>
+<sample src="UnsupportedFormatCharacter.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a> </li>
+
+</references>
+</qhelp>

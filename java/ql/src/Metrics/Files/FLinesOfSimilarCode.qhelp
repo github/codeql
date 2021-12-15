@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A file that contains many lines that are similar to other code within the code base is
+problematic for the same reasons as a file that contains a lot of (exactly)
+duplicated code.
+</p>
+
+</overview>
+<include src="DuplicationProblems.inc.qhelp" />
+
+<recommendation>
+
+<p>
+Refactor similar code snippets by extracting common functionality into methods
+that can be reused across classes.
+</p>
+
+</recommendation>
+<references> 
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Duplicate_code">Duplicate code</a>.</li>
+<li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+
+
+</references>
+</qhelp>

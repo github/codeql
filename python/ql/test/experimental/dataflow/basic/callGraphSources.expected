@@ -1,0 +1,2 @@
+| test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:7:19:7:19 | ControlFlowNode for a |

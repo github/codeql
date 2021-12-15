@@ -1,0 +1,16 @@
+| __init__.py | 2 | ControlFlowNode for ImportExpr | Module sys | ControlFlowNode for ImportExpr |
+| __init__.py | 2 | ControlFlowNode for sys | Module sys | ControlFlowNode for ImportExpr |
+| __init__.py | 4 | ControlFlowNode for Compare | bool True | ControlFlowNode for Compare |
+| __init__.py | 4 | ControlFlowNode for sys | Module sys | ControlFlowNode for ImportExpr |
+| __init__.py | 5 | ControlFlowNode for ImportExpr | Module package.foo | ControlFlowNode for ImportExpr |
+| __init__.py | 5 | ControlFlowNode for ImportMember | class foo | ControlFlowNode for ClassExpr |
+| __init__.py | 5 | ControlFlowNode for foo | class foo | ControlFlowNode for ClassExpr |
+| foo.py | 2 | ControlFlowNode for ClassExpr | class foo | ControlFlowNode for ClassExpr |
+| foo.py | 2 | ControlFlowNode for foo | class foo | ControlFlowNode for ClassExpr |
+| foo.py | 2 | ControlFlowNode for object | builtin-class object | ControlFlowNode for object |
+| foo.py | 5 | ControlFlowNode for List | List | ControlFlowNode for List |
+| foo.py | 5 | ControlFlowNode for Str | str b'foo' | ControlFlowNode for Str |
+| foo.py | 5 | ControlFlowNode for __all__ | List | ControlFlowNode for List |
+| test.py | 2 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 2 | ControlFlowNode for ImportMember | class foo | ControlFlowNode for ClassExpr |
+| test.py | 2 | ControlFlowNode for myfoo | class foo | ControlFlowNode for ClassExpr |

@@ -1,0 +1,13 @@
+| test.cpp:7:3:7:6 | * ... | test.cpp:25:6:25:6 | i |
+| test.cpp:7:4:7:6 | ptr | test.cpp:25:6:25:6 | i |
+| test.cpp:17:3:17:6 | * ... | test.cpp:26:6:26:6 | j |
+| test.cpp:17:4:17:6 | ptr | test.cpp:26:6:26:6 | j |
+| test.cpp:23:22:23:38 | new | test.cpp:23:22:23:38 | new |
+| test.cpp:24:22:24:34 | (MyClassBase *)... | test.cpp:24:22:24:34 | new |
+| test.cpp:24:22:24:34 | new | test.cpp:24:22:24:34 | new |
+| test.cpp:28:2:28:5 | ptr1 | test.cpp:23:22:23:38 | new |
+| test.cpp:28:15:28:16 | & ... | test.cpp:25:6:25:6 | i |
+| test.cpp:28:16:28:16 | i | test.cpp:25:6:25:6 | i |
+| test.cpp:29:2:29:5 | ptr2 | test.cpp:24:22:24:34 | new |
+| test.cpp:29:15:29:16 | & ... | test.cpp:26:6:26:6 | j |
+| test.cpp:29:16:29:16 | j | test.cpp:26:6:26:6 | j |

@@ -1,0 +1,25 @@
+edges
+| HttpsUrlsTest.java:23:23:23:31 | "http://" : String | HttpsUrlsTest.java:24:21:24:56 | ... + ... : String |
+| HttpsUrlsTest.java:23:23:23:31 | "http://" : String | HttpsUrlsTest.java:28:50:28:50 | u |
+| HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | HttpsUrlsTest.java:28:50:28:50 | u |
+| HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL |
+| HttpsUrlsTest.java:36:23:36:28 | "http" : String | HttpsUrlsTest.java:41:50:41:50 | u |
+| HttpsUrlsTest.java:49:23:49:31 | "http://" : String | HttpsUrlsTest.java:55:50:55:50 | u |
+| HttpsUrlsTest.java:87:23:87:28 | "http" : String | HttpsUrlsTest.java:92:50:92:50 | u |
+nodes
+| HttpsUrlsTest.java:23:23:23:31 | "http://" : String | semmle.label | "http://" : String |
+| HttpsUrlsTest.java:24:13:24:57 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| HttpsUrlsTest.java:24:21:24:56 | ... + ... : String | semmle.label | ... + ... : String |
+| HttpsUrlsTest.java:28:50:28:50 | u | semmle.label | u |
+| HttpsUrlsTest.java:36:23:36:28 | "http" : String | semmle.label | "http" : String |
+| HttpsUrlsTest.java:41:50:41:50 | u | semmle.label | u |
+| HttpsUrlsTest.java:49:23:49:31 | "http://" : String | semmle.label | "http://" : String |
+| HttpsUrlsTest.java:55:50:55:50 | u | semmle.label | u |
+| HttpsUrlsTest.java:87:23:87:28 | "http" : String | semmle.label | "http" : String |
+| HttpsUrlsTest.java:92:50:92:50 | u | semmle.label | u |
+subpaths
+#select
+| HttpsUrlsTest.java:28:50:28:67 | openConnection(...) | HttpsUrlsTest.java:23:23:23:31 | "http://" : String | HttpsUrlsTest.java:28:50:28:50 | u | URL may have been constructed with HTTP protocol, using $@. | HttpsUrlsTest.java:23:23:23:31 | "http://" | this source |
+| HttpsUrlsTest.java:41:50:41:67 | openConnection(...) | HttpsUrlsTest.java:36:23:36:28 | "http" : String | HttpsUrlsTest.java:41:50:41:50 | u | URL may have been constructed with HTTP protocol, using $@. | HttpsUrlsTest.java:36:23:36:28 | "http" | this source |
+| HttpsUrlsTest.java:55:50:55:67 | openConnection(...) | HttpsUrlsTest.java:49:23:49:31 | "http://" : String | HttpsUrlsTest.java:55:50:55:50 | u | URL may have been constructed with HTTP protocol, using $@. | HttpsUrlsTest.java:49:23:49:31 | "http://" | this source |
+| HttpsUrlsTest.java:92:50:92:67 | openConnection(...) | HttpsUrlsTest.java:87:23:87:28 | "http" : String | HttpsUrlsTest.java:92:50:92:50 | u | URL may have been constructed with HTTP protocol, using $@. | HttpsUrlsTest.java:87:23:87:28 | "http" | this source |

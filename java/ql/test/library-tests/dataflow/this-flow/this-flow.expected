@@ -1,0 +1,28 @@
+| A.java:5:10:5:10 | parameter this |
+| A.java:6:5:6:12 | this <constr(this)> |
+| A.java:9:10:9:10 | parameter this |
+| A.java:10:5:10:12 | this <constr(this)> |
+| A.java:11:5:11:8 | this |
+| A.java:12:5:12:5 | this <.field> |
+| A.java:15:12:15:18 | parameter this |
+| A.java:16:12:16:15 | this |
+| A.java:19:12:19:22 | parameter this |
+| A.java:20:16:20:16 | this <.field> |
+| A.java:21:12:21:20 | getThis(...) |
+| A.java:21:12:21:20 | this <.method> |
+| A.java:25:11:25:17 | new A(...) |
+| A.java:25:11:25:17 | new A(...) [pre constructor] |
+| A.java:26:12:26:12 | a |
+| A.java:26:12:26:22 | getThis(...) |
+| A.java:26:12:26:36 | getThisWrap(...) |
+| A.java:27:11:27:17 | new C(...) |
+| A.java:27:11:27:17 | new C(...) [pre constructor] |
+| A.java:28:5:28:5 | c |
+| A.java:31:23:31:23 | parameter this |
+| A.java:31:23:31:23 | this <constr(this)> |
+| A.java:35:23:35:23 | parameter this |
+| A.java:35:23:35:23 | this <constr(this)> |
+| A.java:36:17:36:19 | parameter this |
+| A.java:37:7:37:12 | C.this |
+| A.java:38:7:38:11 | super |
+| A.java:39:7:39:13 | C.super |

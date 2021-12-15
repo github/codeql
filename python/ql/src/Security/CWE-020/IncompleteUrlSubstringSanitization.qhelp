@@ -1,0 +1,85 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <overview>
+        <p>
+
+            Sanitizing untrusted URLs is a common technique for
+            preventing attacks such as request forgeries and malicious
+            redirections. Usually, this is done by checking that the host of a URL
+            is in a set of allowed hosts.
+
+        </p>
+
+        <p>
+            However, treating the URL as a string and checking if one of the
+            allowed hosts is a substring of the URL is very prone to errors.
+            Malicious URLs can bypass such security checks by embedding one
+            of the allowed hosts in an unexpected location.
+
+        </p>
+
+        <p>
+
+            Even if the substring check is not used in a
+            security-critical context, the incomplete check may still cause
+            undesirable behaviors when the check succeeds accidentally.
+
+        </p>
+    </overview>
+
+    <recommendation>
+        <p>
+
+            Parse a URL before performing a check on its host value,
+            and ensure that the check handles arbitrary subdomain sequences
+            correctly.
+
+        </p>
+    </recommendation>
+
+    <example>
+
+        <p>
+
+            The following example code checks that a URL redirection
+            will reach the <code>example.com</code> domain.
+
+        </p>
+
+        <sample src="examples/IncompleteUrlSubstringSanitization.py"/>
+
+        <p>
+
+            The first two examples show unsafe checks that are easily bypassed.
+            In <code>unsafe1</code> the attacker can simply add 
+            <code>example.com</code> anywhere in the url. For example,
+            <code>http://evil-example.net/example.com</code>.
+        </p>
+        <p>
+            In <code>unsafe2</code> the attacker must use a hostname ending in
+            <code>example.com</code>, but that is easy to do.  For example,
+            <code>http://benign-looking-prefix-example.com</code>.
+
+        </p>
+
+        <p>
+
+            The second two examples show safe checks.
+            In <code>safe1</code>, an allowlist is used. Although fairly inflexible,
+            this is easy to get right and is most likely to be safe.
+        </p>
+        <p>
+            In <code>safe2</code>, <code>urlparse</code> is used to parse the URL,
+            then the hostname is checked to make sure it ends with <code>.example.com</code>.
+        </p>
+
+    </example>
+
+    <references>
+        <li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+        <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+    </references>
+</qhelp>

@@ -1,0 +1,13 @@
+| h.h:3:7:3:7 | C<T> | h.h:4:10:4:12 | fun | 0 |
+| h.h:3:7:3:7 | C<char> | h.h:3:7:3:7 | operator= | 0 |
+| h.h:3:7:3:7 | C<char> | h.h:3:7:3:7 | operator= | 0 |
+| h.h:3:7:3:7 | C<int> | h.h:3:7:3:7 | operator= | 0 |
+| h.h:3:7:3:7 | C<int> | h.h:3:7:3:7 | operator= | 0 |
+| h.h:8:7:8:7 | D<T> | h.h:10:10:10:12 | fun | 2 |
+| h.h:8:7:8:7 | D<int> | h.h:8:7:8:7 | operator= | 0 |
+| h.h:8:7:8:7 | D<int> | h.h:8:7:8:7 | operator= | 0 |
+| h.h:8:7:8:7 | D<int> | h.h:10:10:10:10 | fun | 2 |
+| h.h:14:7:14:7 | E<T> | h.h:16:10:16:12 | fun | 2 |
+| h.h:14:7:14:7 | E<int> | h.h:14:7:14:7 | operator= | 0 |
+| h.h:14:7:14:7 | E<int> | h.h:14:7:14:7 | operator= | 0 |
+| h.h:14:7:14:7 | E<int> | h.h:16:10:16:10 | fun | 2 |

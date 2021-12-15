@@ -1,0 +1,107 @@
+nestedtypes.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    8|   1: [Class] Base
+#   11|     5: [Struct] S
+#   13|     6: [Interface] I
+#   15|     7: [DelegateType] MyDelegate
+#-----|       2: (Parameters)
+#   15|         0: [Parameter] s
+#   15|           -1: [TypeMention] S
+#   17|     8: [Method] F
+#   17|       -1: [TypeMention] Void
+#   18|       4: [BlockStmt] {...}
+#   19|         0: [ExprStmt] ...;
+#   19|           0: [MethodCall] call to method WriteLine
+#   19|             -1: [TypeAccess] access to type Console
+#   19|               0: [TypeMention] Console
+#   19|             0: [StringLiteral] "Base.F"
+#   22|     9: [Class] C
+#   26|   2: [Class] Derived
+#-----|     3: (Base types)
+#   26|       0: [TypeMention] Base
+#   29|     5: [Class] Nested
+#   32|       5: [Method] G
+#   32|         -1: [TypeMention] Void
+#   33|         4: [BlockStmt] {...}
+#   34|           0: [LocalVariableDeclStmt] ... ...;
+#   34|             0: [LocalVariableDeclAndInitExpr] Derived d = ...
+#   34|               -1: [TypeMention] Derived
+#   34|               0: [LocalVariableAccess] access to local variable d
+#   34|               1: [ObjectCreation] object creation of type Derived
+#   34|                 0: [TypeMention] Derived
+#   35|           1: [ExprStmt] ...;
+#   35|             0: [MethodCall] call to method F
+#   35|               -1: [LocalVariableAccess] access to local variable d
+#   42|   3: [Class] Test
+#   45|     5: [Method] Main
+#   45|       -1: [TypeMention] Void
+#   46|       4: [BlockStmt] {...}
+#   47|         0: [LocalVariableDeclStmt] ... ...;
+#   47|           0: [LocalVariableDeclAndInitExpr] Nested n = ...
+#   47|             -1: [TypeMention] Nested
+#   47|               1: [TypeMention] Derived
+#   47|             0: [LocalVariableAccess] access to local variable n
+#   47|             1: [ObjectCreation] object creation of type Nested
+#   47|               0: [TypeMention] Nested
+#   47|                 1: [TypeMention] Derived
+#   48|         1: [ExprStmt] ...;
+#   48|           0: [MethodCall] call to method G
+#   48|             -1: [LocalVariableAccess] access to local variable n
+#   53|   4: [Class] Outer<>
+#-----|     1: (Type parameters)
+#   53|       0: [TypeParameter] T
+#   56|     5: [Class] Inner<>
+#-----|       1: (Type parameters)
+#   56|         0: [TypeParameter] U
+#   59|       5: [Method] F
+#   59|         -1: [TypeMention] Void
+#-----|         2: (Parameters)
+#   59|           0: [Parameter] t
+#   59|             -1: [TypeMention] T
+#   59|           1: [Parameter] u
+#   59|             -1: [TypeMention] U
+#   59|         4: [BlockStmt] {...}
+#   63|     7: [Method] F
+#   63|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   63|         0: [Parameter] t
+#   63|           -1: [TypeMention] T
+#   64|       4: [BlockStmt] {...}
+#   65|         0: [ExprStmt] ...;
+#   65|           0: [MethodCall] call to method F
+#   65|             -1: [TypeAccess] access to type Inner<String>
+#   65|               -2: [TypeMention] Inner<string>
+#   65|                 1: [TypeMention] string
+#   65|               -1: [TypeAccess] access to type Outer<>
+#   65|                 0: [TypeMention] Outer<T>
+#   65|                   1: [TypeMention] T
+#   65|             0: [ParameterAccess] access to parameter t
+#   65|             1: [StringLiteral] "abc"
+#   68|         1: [ExprStmt] ...;
+#   68|           0: [MethodCall] call to method F
+#   68|             -1: [TypeAccess] access to type Inner<String>
+#   68|               -2: [TypeMention] Inner<string>
+#   68|                 1: [TypeMention] string
+#   68|               -1: [TypeAccess] access to type Outer<Int32>
+#   68|                 0: [TypeMention] Outer<int>
+#   68|                   1: [TypeMention] int
+#   68|             0: [IntLiteral] 3
+#   68|             1: [StringLiteral] "abc"
+#   69|         2: [LocalVariableDeclStmt] ... ...;
+#   69|           0: [LocalVariableDeclAndInitExpr] Type type = ...
+#   69|             -1: [TypeMention] Type
+#   69|             0: [LocalVariableAccess] access to local variable type
+#   69|             1: [TypeofExpr] typeof(...)
+#   69|               0: [TypeAccess] access to type Inner<>
+#   69|                 0: [TypeMention] Inner<U>
+#   69|                   1: [TypeMention] Outer<T>
+#   69|                     1: [TypeMention] <unknown type>
+#   69|                   2: [TypeMention] <unknown type>
+#   74|   5: [Class] Outer2<>
+#-----|     1: (Type parameters)
+#   74|       0: [TypeParameter] T
+#   77|     5: [Class] Inner2<>
+#-----|       1: (Type parameters)
+#   77|         0: [TypeParameter] T
+#   80|       5: [Field] t
+#   80|         -1: [TypeMention] T

@@ -1,0 +1,2 @@
+| exprs_basic1.cpp:4:8:4:11 | name | name | exprs_basic1.cpp:3:8:3:10 | Foo | Foo | exprs_basic1.cpp:16:5:16:8 | name |
+| exprs_basic1.cpp:5:6:5:10 | count | count | exprs_basic1.cpp:3:8:3:10 | Foo | Foo | exprs_basic1.cpp:17:5:17:9 | count |

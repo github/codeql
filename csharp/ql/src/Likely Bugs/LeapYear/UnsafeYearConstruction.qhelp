@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>When creating a <code>System.DateTime</code> object by setting the year, month, and day in the constructor by performing an arithmetic operation on a different <code>DateTime</code> object, there is a risk that the date you are setting is invalid.</p>
+  <p>On a leap year, such code may throw an <code>ArgumentOutOfRangeException</code> with a message of <code>"Year, Month, and Day parameters describe an unrepresentable DateTime."</code></p>
+</overview>
+<recommendation>
+  <p>Creating a <code>System.DateTime</code> object based on a different <code>System.DateTime</code> object, use the appropriate methods to manipulate the date instead of arithmetic.</p>
+</recommendation>
+<example>
+  <p>In this example, we are incrementing/decrementing the current date by one year when creating a new <code>System.DateTime</code> object. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
+  <sample src="UnsafeYearConstructionBad.cs" />
+  <p>To fix this bug, we add/substract years to the current date by calling <code>AddYears</code> method on it.</p>
+  <sample src="UnsafeYearConstructionGood.cs" />
+</example>
+<references>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8">System.DateTime Struct</a>.
+  </li>
+</references>
+</qhelp>

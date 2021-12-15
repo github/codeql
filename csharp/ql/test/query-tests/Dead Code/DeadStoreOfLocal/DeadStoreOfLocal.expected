@@ -1,0 +1,22 @@
+| DeadStoreOfLocal.cs:12:13:12:20 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:12:13:12:13 | x | x |
+| DeadStoreOfLocal.cs:19:21:19:25 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:18:13:18:13 | x | x |
+| DeadStoreOfLocal.cs:44:13:44:20 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:44:13:44:13 | x | x |
+| DeadStoreOfLocal.cs:50:9:50:14 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:49:13:49:13 | x | x |
+| DeadStoreOfLocal.cs:56:9:56:11 | ...++ | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:55:13:55:13 | x | x |
+| DeadStoreOfLocal.cs:82:22:82:24 | String val | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:82:22:82:24 | val | val |
+| DeadStoreOfLocal.cs:101:13:101:37 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:94:40:94:44 | extra | extra |
+| DeadStoreOfLocal.cs:104:13:104:37 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:94:16:94:20 | info1 | info1 |
+| DeadStoreOfLocal.cs:142:26:142:27 | Exception ex | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:142:26:142:27 | ex | ex |
+| DeadStoreOfLocal.cs:246:17:246:24 | Int32 y = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:246:17:246:17 | y | y |
+| DeadStoreOfLocal.cs:261:17:261:21 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:261:17:261:17 | x | x |
+| DeadStoreOfLocal.cs:300:23:300:28 | Object v1 | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:300:27:300:28 | v1 | v1 |
+| DeadStoreOfLocal.cs:314:18:314:23 | Object v2 | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:314:22:314:23 | v2 | v2 |
+| DeadStoreOfLocal.cs:331:9:331:32 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:327:23:327:23 | b | b |
+| DeadStoreOfLocal.cs:372:13:372:20 | String s = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:372:13:372:13 | s | s |
+| DeadStoreOfLocal.cs:398:13:398:21 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:396:13:396:13 | s | s |
+| DeadStoreOfLocal.cs:472:20:472:76 | FileStream y = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:472:20:472:20 | y | y |
+| DeadStoreOfLocalBad.cs:7:13:7:48 | Boolean success = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocalBad.cs:7:13:7:19 | success | success |
+| DeadStoreOfLocalBad.cs:23:32:23:32 | FormatException e | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocalBad.cs:23:32:23:32 | e | e |
+| DeadStoreOfLocalBad.cs:32:22:32:22 | String s | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocalBad.cs:32:22:32:22 | s | s |
+| DeadStoreOfLocalBad.cs:39:18:39:22 | Int32 i | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocalBad.cs:39:22:39:22 | i | i |
+| DeadStoreOfLocalBad.cs:49:18:49:25 | String s | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocalBad.cs:49:25:49:25 | s | s |

@@ -1,0 +1,11 @@
+| arguments.cs:27:15:27:15 | 2 | y |
+| arguments.cs:30:30:30:31 | 10 | y |
+| arguments.cs:30:37:30:37 | 5 | x |
+| arguments.cs:37:18:37:18 | 1 | args |
+| arguments.cs:37:24:37:24 | 0 | o |
+| arguments.cs:39:18:39:21 | access to parameter args | args |
+| arguments.cs:39:27:39:27 | 0 | o |
+| arguments.cs:40:18:40:35 | array creation of type Int32[] | args |
+| arguments.cs:40:41:40:41 | 0 | o |
+| arguments.cs:68:28:68:29 | "" | y |
+| arguments.cs:68:36:68:36 | 0 | x |

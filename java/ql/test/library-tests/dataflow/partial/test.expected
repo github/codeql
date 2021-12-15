@@ -1,0 +1,21 @@
+edges
+| A.java:4:16:4:18 | this <constr(this)> [post update] [elem] | A.java:22:17:22:25 | new Box(...) [elem] |
+| A.java:12:5:12:5 | b [post update] [elem] | A.java:13:12:13:12 | b [elem] |
+| A.java:12:14:12:18 | src(...) : Object | A.java:12:5:12:5 | b [post update] [elem] |
+| A.java:12:14:12:18 | src(...) : Object | A.java:12:5:12:18 | ...=... : Object |
+| A.java:13:12:13:12 | b [elem] | A.java:17:13:17:16 | f1(...) [elem] |
+| A.java:17:13:17:16 | f1(...) [elem] | A.java:18:8:18:8 | b [elem] |
+| A.java:18:8:18:8 | b [elem] | A.java:21:11:21:15 | b [elem] |
+| A.java:22:17:22:25 | new Box(...) [elem] | A.java:23:13:23:17 | other [elem] |
+| A.java:23:13:23:17 | other [elem] | A.java:24:10:24:14 | other [elem] |
+| A.java:23:13:23:17 | other [post update] [elem] | A.java:24:10:24:14 | other [elem] |
+| A.java:24:10:24:14 | other [elem] | A.java:24:10:24:19 | other.elem |
+| A.java:28:5:28:5 | b [post update] [elem] | A.java:23:13:23:17 | other [post update] [elem] |
+| A.java:28:14:28:25 | new Object(...) | A.java:28:5:28:5 | b [post update] [elem] |
+#select
+| 0 | A.java:12:5:12:5 | b [post update] [elem] |
+| 0 | A.java:12:5:12:18 | ...=... : Object |
+| 0 | A.java:13:12:13:12 | b [elem] |
+| 1 | A.java:17:13:17:16 | f1(...) [elem] |
+| 1 | A.java:18:8:18:8 | b [elem] |
+| 2 | A.java:21:11:21:15 | b [elem] |

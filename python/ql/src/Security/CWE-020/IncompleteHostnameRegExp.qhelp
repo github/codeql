@@ -1,0 +1,69 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <overview>
+        <p>
+
+            Sanitizing untrusted URLs is a common technique for
+            preventing attacks such as request forgeries and malicious
+            redirections. Often, this is done by checking that the host of a URL
+            is in a set of allowed hosts.
+
+        </p>
+
+        <p>
+
+            If a regular expression implements such a check, it is
+            easy to accidentally make the check too permissive by not escaping the
+            <code>.</code> meta-characters appropriately.
+
+            Even if the check is not used in a security-critical
+            context, the incomplete check may still cause undesirable behaviors
+            when it accidentally succeeds.
+
+        </p>
+    </overview>
+
+    <recommendation>
+        <p>
+
+            Escape all meta-characters appropriately when constructing
+            regular expressions for security checks, pay special attention to the
+            <code>.</code> meta-character.
+
+        </p>
+    </recommendation>
+
+    <example>
+
+        <p>
+
+            The following example code checks that a URL redirection
+            will reach the <code>example.com</code> domain, or one of its
+            subdomains.
+
+        </p>
+
+        <sample src="examples/IncompleteHostnameRegExp.py"/>
+
+        <p>
+            The <code>unsafe</code> check is easy to bypass because the unescaped
+            <code>.</code> allows for any character before
+            <code>example.com</code>, effectively allowing the redirect to go to
+            an attacker-controlled domain such as <code>wwwXexample.com</code>.
+
+        </p>
+        <p>
+            The <code>safe</code> check closes this vulnerability by escaping the <code>.</code>
+            so that URLs of the form <code>wwwXexample.com</code> are rejected.
+        </p>
+
+    </example>
+
+    <references>
+        <li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+        <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+    </references>
+</qhelp>

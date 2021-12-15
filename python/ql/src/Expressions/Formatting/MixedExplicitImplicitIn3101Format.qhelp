@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A formatting expression, that is an expression of the form <code>the_format.format(args)</code> or <code>format(the_format, args)</code>,
+can use explicitly numbered fields, like <code>{1}</code>, or implicitly numbered fields, such as <code>{}</code>, but it cannot use both.
+Doing so will raise a <code>ValueError</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use either explicitly numbered fields or implicitly numbered fields, but be consistent.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example the formatting uses both implicit, <code>{}</code>, and explicit, <code>{1}</code>, numbering for fields, which is illegal.
+</p>
+<sample src="MixedExplicitImplicitIn3101Format.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+
+
+</references>
+</qhelp>

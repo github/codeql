@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>equals</code> and <code>hashCode</code> methods on arrays only consider object identity, not
+array contents, which is unlikely to be what is intended.
+</p>
+
+</overview>
+<recommendation>
+
+<p>To compare the lengths of the arrays and the corresponding pairs of elements in the arrays, use 
+one of the comparison methods from <code>java.util.Arrays</code>:</p>
+
+<ul>
+    <li>The method <code>Arrays.equals</code> performs a shallow comparison. That is, array elements 
+    are compared using <code>equals</code>.</li>
+    <li>The method <code>Arrays.deepEquals</code> performs a deep comparison, which is appropriate 
+    for comparisons of nested arrays.</li>
+</ul>
+
+<p>
+Similarly, <code>Arrays.hashCode</code> and <code>Arrays.deepHashCode</code> can be used to compute
+shallow and deep hash codes based on the hash codes of individual array elements.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the two arrays are first compared using the <code>Object.equals</code> method. 
+Because this checks only reference equality and the two arrays are different objects, <code>Object.equals</code>
+returns <code>false</code>. The two arrays are then compared using the <code>Arrays.equals</code> method.
+Because this compares the length and contents of the arrays, <code>Arrays.equals</code> returns 
+<code>true</code>. 
+</p>
+
+<sample src="EqualsArray.java" />
+
+</example>
+<references>
+    <li>Java API Specification:
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#equals(java.lang.Object[],java.lang.Object[])">Arrays.equals</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#deepEquals(java.lang.Object[],java.lang.Object[])">Arrays.deepEquals</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Objects.html#deepEquals(java.lang.Object,java.lang.Object)">Objects.deepEquals</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#hashCode(java.lang.Object[])">Arrays.hashCode</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#deepHashCode(java.lang.Object[])">Arrays.deepHashCode</a>,
+    <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#hashCode()">Object.hashCode</a>.</li>
+</references>
+</qhelp>

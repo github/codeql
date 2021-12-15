@@ -1,0 +1,21 @@
+| greaterThanTS.ts:2 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:3 | console . log ( x >>= 1 ) ;  |
+| greaterThanTS.ts:4 | console . log ( x >>>= 1 ) ;  |
+| greaterThanTS.ts:5 | console . log ( x >> 1 ) ;  |
+| greaterThanTS.ts:6 | console . log ( x >>> 1 ) ;  |
+| greaterThanTS.ts:8 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:9 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:10 | console . log ( x >= 1 ) ;  |
+| mixed.ts:2 | console . log ( x >= 1 ) ;  |
+| mixed.ts:3 | console . log ( `${ /r/g >= 1 }` ) ;  |
+| mixed.ts:4 | console . log ( /r/g ) ;  |
+| mixed.ts:5 | console . log ( `${ 1 }${ 1 }` ) ;  |
+| regexpTS.ts:2 | console . log ( /foo/g ) ;  |
+| regexpTS.ts:3 | console . log ( /foo/g ) ;  |
+| templateLiteralsJS.js:2 | console . log ( ` template~without~placeholders ` ) ;  |
+| templateLiteralsJS.js:3 | console . log ( ` template~with~placeholder~ ${ x } . ` ) ;  |
+| templateLiteralsTS.ts:2 | console . log ( `template~without~placeholders` ) ;  |
+| templateLiteralsTS.ts:3 | console . log ( `template~with~placeholder~${ x }.` ) ;  |
+| templateLiteralsTS.ts:4 | console . log ( `template~with~placeholder~${ x }.` ) ;  |
+| templateLiteralsTS.ts:5 | console . log ( `template~with~placeholder~${ x }.` ) ;  |
+| templateLiteralsTS.ts:6 | console . log ( `template~with~placeholder~${ x }.` ) ;  |

@@ -1,0 +1,15 @@
+| test.c:4:14:4:18 | ... < ... | Comparison between $@ of type char and $@ of wider type int. | test.c:3:7:3:7 | c | c | test.c:2:17:2:17 | x | x |
+| test.c:9:14:9:18 | ... > ... | Comparison between $@ of type char and $@ of wider type int. | test.c:8:7:8:7 | c | c | test.c:7:17:7:17 | x | x |
+| test.c:14:14:14:18 | ... < ... | Comparison between $@ of type short and $@ of wider type int. | test.c:13:8:13:8 | s | s | test.c:12:17:12:17 | x | x |
+| test.c:65:14:65:18 | ... < ... | Comparison between $@ of type short and $@ of wider type int. | test.c:64:8:64:8 | s | s | test.c:63:17:63:17 | x | x |
+| test.c:87:14:87:18 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:84:15:84:15 | x | x |
+| test.c:91:14:91:23 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type int. | test.c:83:16:83:16 | c | c | test.c:91:18:91:23 | 65280 | 65280 |
+| test.c:93:14:93:25 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type int. | test.c:83:16:83:16 | c | c | test.c:93:18:93:25 | 16711680 | 16711680 |
+| test.c:95:14:95:27 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:95:18:95:27 | 4278190080 | 4278190080 |
+| test.c:99:14:99:29 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:99:19:99:28 | ... & ... | ... & ... |
+| test.c:101:14:101:31 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:101:19:101:30 | ... & ... | ... & ... |
+| test.c:103:14:103:33 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:103:19:103:32 | ... & ... | ... & ... |
+| test.c:105:14:105:25 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:105:19:105:24 | ... >> ... | ... >> ... |
+| test.c:107:14:107:26 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:107:19:107:25 | ... >> ... | ... >> ... |
+| test.c:128:15:128:21 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:121:16:121:17 | uc | uc | test.c:123:19:123:20 | sz | sz |
+| test.c:139:15:139:21 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:121:16:121:17 | uc | uc | test.c:123:19:123:20 | sz | sz |

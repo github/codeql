@@ -1,0 +1,10 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<references>
+    <li>
+    M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.
+    </li>
+</references>
+</qhelp>

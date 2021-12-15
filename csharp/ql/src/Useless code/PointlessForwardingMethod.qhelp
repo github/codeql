@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a class contains two distinct methods of the same name such that:</p>
+<ul>
+  <li>one of them is only ever called from the other</li>
+  <li>and the calling method of the two only makes calls to the callee</li>
+  <li>and the calling method makes no other calls</li>
+</ul>  
+<p>then the calling method is no more than a forwarding method for the callee. 
+Forwarding methods are difficult to keep track of and can make public APIs more complicated.</p>
+
+</overview>
+<recommendation>
+<p>Merge the two methods.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>Print(string, string)</code> method is simply a forwarding method. 
+Since <code>Print(string)</code> is not called anywhere else it serves no purpose.</p>
+<sample src="PointlessForwardingMethod.cs" />
+
+<p>This example could be easily improved by merging the two Print methods like so:</p>
+<sample src="PointlessForwardingMethodFix.cs" />
+</example>
+</qhelp>

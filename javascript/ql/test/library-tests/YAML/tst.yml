@@ -1,0 +1,14 @@
+- "name": "Jim Knopf"
+  address: {
+    "street":,
+    "number": -1,
+    "country": "Lummerland"
+  }
+- name: Frau Mahlzahn
+  address:
+    street: |
+        Alte Strasse
+    number: 133
+    country: <
+        Kummerland
+- !include external.yml

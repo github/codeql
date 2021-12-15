@@ -1,0 +1,5 @@
+| ConstructedOverrides.java:17:7:17:9 | Sub | unused(String) | Super.class:0:0:0:0 | Super<String> | unused(String) |
+| ConstructedOverrides.java:17:7:17:9 | Sub | used(String) | Super.class:0:0:0:0 | Super<String> | used(String) |
+| ConstructedOverrides.java:17:7:17:9 | Sub | usedGeneric(U, String) | Super.class:0:0:0:0 | Super<String> | usedGeneric(U, String) |
+| ConstructedOverrides.java:23:7:23:10 | Sub2 | unusedGeneric(V, String) | Super.class:0:0:0:0 | Super<String> | unusedGeneric(U, String) |
+| ConstructedOverrides.java:23:7:23:10 | Sub2 | usedGeneric(V, String) | ConstructedOverrides.java:17:7:17:9 | Sub | usedGeneric(U, String) |

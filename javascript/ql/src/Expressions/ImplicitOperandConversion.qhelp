@@ -1,0 +1,82 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, most operators can be applied to operands of arbitrary types; at runtime,
+the operands will be implicitly converted to the appropriate type. For instance, the
+expression <code>p in obj</code> checks whether the object <code>obj</code> contains a property
+whose name equals the string that <code>p</code> evaluates to. If <code>p</code> does not
+evaluate to a string or <code>o</code> does not evaluate to an object, implicit conversions
+are performed before the check is carried out.
+</p>
+
+<p>
+In many cases, however, these implicit conversions result from a typo or a misunderstanding
+of operator precedence rules. Even if the conversions are intentional, relying on them makes
+the code hard to understand.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Inspect the expression carefully to check whether the operands have been mistyped,
+and correct them if this is the case. If the conversions are intentional, consider replacing them
+by explicit conversions to clarify the meaning of the code.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code intends to check whether object <code>obj</code> does not contain a
+property of the name stored in variable <code>member</code>:
+</p>
+
+<sample src="examples/ImplicitOperandConversion.js" />
+
+<p>
+However, this test is ineffective as written: the operator <code>!</code> binds more
+tightly than <code>in</code>, so it is applied first. Applying <code>!</code> to a
+non-empty string yields <code>false</code>, so the <code>in</code> operator actually
+ends up checking whether <code>obj</code> contains a property called <code>"false"</code>.
+</p>
+
+<p>
+To fix this, parentheses should be introduced as follows:
+</p>
+
+<sample src="examples/ImplicitOperandConversionGood.js" />
+
+<p>
+As an example of the intentional use of implicit conversions, consider the following
+function for comparing two numbers <code>x</code> and <code>y</code>. It returns
+<code>1</code> if <code>x>y</code>, <code>-1</code> if <code>x&lt;y</code>, and
+<code>0</code> if they are equal.
+</p>
+
+<sample src="examples/ImplicitOperandConversion2.js" />
+
+<p>
+It would be much clearer to write this out directly:
+</p>
+
+<sample src="examples/ImplicitOperandConversion2Good.js" />
+
+<p>
+At the very least, the Boolean comparison results should be explicitly converted to
+numbers:
+</p>
+
+<sample src="examples/ImplicitOperandConversion2Good2.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 9. ECMA, 2011.</li>
+
+</references>
+</qhelp>

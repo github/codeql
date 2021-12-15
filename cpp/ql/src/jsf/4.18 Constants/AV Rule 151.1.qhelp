@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="../jsfNote.inc.qhelp" />
+
+<p>
+This query highlights string literals that are assigned to a non-<code>const</code> variable. String literals
+should not be changed, since they are usually stored in the data section, and depending on the architecture, 
+writing to the data section will cause undefined behavior, such as memory corruption or memory write error.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Only assign string literals to <code>const</code> variables. In general, using <code>const</code> to indicate values
+that do not change is good practice, as it provides a compile-time check and when used on function parameters gives an 
+indication of the function's expected behavior.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 151.1.cpp" />
+
+
+
+</example>
+<references>
+
+<li>AV Rule 151.1, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li></references></qhelp>

@@ -1,0 +1,30 @@
+| copy_from_prototype.cpp:3:7:3:7 | a | a<int>::a(a<int> &&) -> void | copy_from_prototype.cpp:3:7:3:7 | a<int> | <no expr> |
+| copy_from_prototype.cpp:3:7:3:7 | a | a<int>::a(const a<int> &) -> void | copy_from_prototype.cpp:3:7:3:7 | a<int> | <no expr> |
+| copy_from_prototype.cpp:3:7:3:7 | operator= | a<int>::operator=(a<int> &&) -> a<int> & | copy_from_prototype.cpp:3:7:3:7 | a<int> | <no expr> |
+| copy_from_prototype.cpp:3:7:3:7 | operator= | a<int>::operator=(const a<int> &) -> a<int> & | copy_from_prototype.cpp:3:7:3:7 | a<int> | <no expr> |
+| copy_from_prototype.cpp:4:26:4:26 | a | a<<unnamed>>::a<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:3:7:3:7 | a<<unnamed>> | 123 |
+| copy_from_prototype.cpp:4:26:4:26 | a | a<int>::a<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:3:7:3:7 | a<int> | <no expr> |
+| copy_from_prototype.cpp:7:7:7:7 | b | b::b() -> void | copy_from_prototype.cpp:7:7:7:7 | b | <no expr> |
+| copy_from_prototype.cpp:7:7:7:7 | b | b::b(b &&) -> void | copy_from_prototype.cpp:7:7:7:7 | b | <no expr> |
+| copy_from_prototype.cpp:7:7:7:7 | b | b::b(const b &) -> void | copy_from_prototype.cpp:7:7:7:7 | b | <no expr> |
+| copy_from_prototype.cpp:7:7:7:7 | operator= | b::operator=(b &&) -> b & | copy_from_prototype.cpp:7:7:7:7 | b | <no expr> |
+| copy_from_prototype.cpp:7:7:7:7 | operator= | b::operator=(const b &) -> b & | copy_from_prototype.cpp:7:7:7:7 | b | <no expr> |
+| copy_from_prototype.cpp:13:7:13:7 | c | c<int>::c(c<int> &&) -> void | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
+| copy_from_prototype.cpp:13:7:13:7 | c | c<int>::c(const c<int> &) -> void | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
+| copy_from_prototype.cpp:13:7:13:7 | operator= | c<int>::operator=(c<int> &&) -> c<int> & | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
+| copy_from_prototype.cpp:13:7:13:7 | operator= | c<int>::operator=(const c<int> &) -> c<int> & | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
+| copy_from_prototype.cpp:14:26:14:26 | c | c<T>::c<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:13:7:13:7 | c<T> | X |
+| copy_from_prototype.cpp:14:26:14:26 | c | c<int>::c<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
+| copy_from_prototype.cpp:17:7:17:7 | d | d::d() -> void | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
+| copy_from_prototype.cpp:17:7:17:7 | d | d::d(const d &) -> void | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
+| copy_from_prototype.cpp:17:7:17:7 | d | d::d(d &&) -> void | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
+| copy_from_prototype.cpp:17:7:17:7 | operator= | d::operator=(const d &) -> d & | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
+| copy_from_prototype.cpp:17:7:17:7 | operator= | d::operator=(d &&) -> d & | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
+| copy_from_prototype.cpp:22:8:22:8 | e | e<int>::e(const e<int> &) -> void | copy_from_prototype.cpp:22:8:22:8 | e<int> | <no expr> |
+| copy_from_prototype.cpp:22:8:22:8 | e | e<int>::e(e<int> &&) -> void | copy_from_prototype.cpp:22:8:22:8 | e<int> | <no expr> |
+| copy_from_prototype.cpp:22:8:22:8 | operator= | e<int>::operator=(const e<int> &) -> e<int> & | copy_from_prototype.cpp:22:8:22:8 | e<int> | <no expr> |
+| copy_from_prototype.cpp:22:8:22:8 | operator= | e<int>::operator=(e<int> &&) -> e<int> & | copy_from_prototype.cpp:22:8:22:8 | e<int> | <no expr> |
+| copy_from_prototype.cpp:23:26:23:26 | e | e<T>::e<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:22:8:22:8 | e<T> | 456 |
+| copy_from_prototype.cpp:26:35:26:43 | e | e<int>::e<(unnamed template parameter)>() -> void | copy_from_prototype.cpp:22:8:22:8 | e<int> | 456 |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & | file://:0:0:0:0 | __va_list_tag | <none> |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & | file://:0:0:0:0 | __va_list_tag | <none> |

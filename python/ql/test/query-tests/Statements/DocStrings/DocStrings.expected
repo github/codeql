@@ -1,0 +1,4 @@
+| DocStrings.py:0:0:0:0 | Module DocStrings | Module DocStrings does not have a docstring |
+| DocStrings.py:40:1:40:13 | Class Not_OK | Class Not_OK does not have a docstring |
+| DocStrings.py:48:5:48:26 | Function meth_not_ok | Function meth_not_ok does not have a docstring |
+| DocStrings.py:53:1:53:17 | Function not_ok | Function not_ok does not have a docstring |

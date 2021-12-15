@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Empty interfaces are often used as a way of marking particular classes.</p>
+
+</overview>
+<recommendation>
+<p>In some languages, using a marker interface is a useful design pattern, but in C# it is better to 
+use custom attributes. Marker interfaces are always inherited and so they cannot be 
+applied to a single class without applying it to all subclasses. Custom attributes do 
+not have this limitation.</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>IsPrintable</code> interface has no defined methods and is simply 
+being used as a marker.</p>
+<sample src="EmptyInterfaceBad.cs" />
+
+<p>The following example is better because it uses attributes instead.</p>
+<sample src="EmptyInterfaceGood.cs" />
+
+</example>
+<references>
+
+  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Marker_interface_pattern">Marker interface pattern</a></li>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/attributes">Using Attributes in C#</a></li>
+
+
+</references>
+</qhelp>

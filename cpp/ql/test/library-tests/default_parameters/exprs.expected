@@ -1,0 +1,7 @@
+| test.cpp:2:25:2:26 | 10 |
+| test.cpp:3:5:3:5 | x |
+| test.cpp:3:5:3:9 | ... = ... |
+| test.cpp:3:9:3:9 | 3 |
+| test.cpp:7:5:7:14 | call to myFunction |
+| test.cpp:7:16:7:16 | 9 |
+| test.cpp:8:5:8:14 | call to myFunction |

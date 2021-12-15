@@ -1,0 +1,12 @@
+| HtmlNgAttributes.html:5:8:5:37 | ng-href=foo/{{INTERPOLATED}} | INTERPOLATED |
+| HtmlNgAttributes.html:6:8:6:30 | ng-form=VAR-FROM-FORM | VAR-FROM-FORM |
+| HtmlText.html:1:6:5:12 | \n  Some text\n  {{myExpr1}}\n  {{myExpr2}}\n  some text\n | myExpr1 |
+| HtmlText.html:1:6:5:12 | \n  Some text\n  {{myExpr1}}\n  {{myExpr2}}\n  some text\n | myExpr2 |
+| HtmlText.html:7:6:8:14 | \n  {{myExpr3}}\n | myExpr3 |
+| html-attributes.html:3:8:3:20 | a1={{VAR1}} | VAR1 |
+| html-attributes.html:4:8:4:31 | a2={{VAR2a}} {{VAR2b}} | VAR2a |
+| html-attributes.html:4:8:4:31 | a2={{VAR2a}} {{VAR2b}} | VAR2b |
+| template-fields.js:9:23:9:32 | '{{code}}' | code |
+| template-fields.js:14:23:14:85 | 'Name:  ... ast#}}' | #not-ast# |
+| template-fields.js:14:23:14:85 | 'Name:  ... ast#}}' | obj1.field1 |
+| template-fields.js:14:23:14:85 | 'Name:  ... ast#}}' | obj2.field2 |

@@ -1,0 +1,365 @@
+constrainedTypeParameterSubsumes
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:3:8:3:9 | S1 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:4:8:4:9 | S2 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:8:10:8:11 | T2 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:12:25:12:27 | T6d |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:10:9:11 | T3 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:7:10:12 | C4<C1<C0>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:7:10:12 | C4<T4> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:7:11:12 | C5<C2<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:7:11:12 | C5<T5> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:10:12:12 | T6a |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:20:12:22 | T6c |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:14:7:14:24 | ConstructSomeTypes |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:27:7:27:20 | Tuples<T8, T9> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<T10> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<int> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<string> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:12:10:12:12 | T6a |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:12:20:12:22 | T6c |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:3:8:3:9 | S1 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:4:8:4:9 | S2 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:8:10:8:11 | T2 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:12:25:12:27 | T6d |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
+constrainedTypeParameterSubsumptionImpliesUnification
+constrainedTypeParameterUnifiable
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:3:8:3:9 | S1 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:4:8:4:9 | S2 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:8:10:8:11 | T2 |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:12:25:12:27 | T6d |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:9:10:9:11 | T3 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:7:10:12 | C4<C1<C0>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:7:10:12 | C4<T4> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:7:11:12 | C5<C2<S1>> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:7:11:12 | C5<T5> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:10:12:12 | T6a |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:12:20:12:22 | T6c |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:14:7:14:24 | ConstructSomeTypes |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:27:7:27:20 | Tuples<T8, T9> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<T10> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<int> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<string> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:12:10:12:12 | T6a |
+| Unification.cs:10:10:10:11 | T4 | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:11:10:11:11 | T5 | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:10:10:10:11 | T4 |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:12:10:12:12 | T6a |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:12:10:12:12 | T6a | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:11:10:11:11 | T5 |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:12:15:12:17 | T6b |
+| Unification.cs:12:15:12:17 | T6b | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:12:20:12:22 | T6c | Unification.cs:12:20:12:22 | T6c |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:3:8:3:9 | S1 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:4:8:4:9 | S2 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:8:10:8:11 | T2 |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:12:25:12:27 | T6d |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
+subsumes
+| Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:7:7:7:12 | C1<S1> | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:7:7:7:12 | C1<S2> | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<T1> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<T2> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<C0> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<S1> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<S2> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<T6d> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:8:7:8:12 | C2<S1> | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:8:7:8:12 | C2<S2> | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:8:7:8:12 | C2<T2> | Unification.cs:8:7:8:12 | C2<S1> |
+| Unification.cs:8:7:8:12 | C2<T2> | Unification.cs:8:7:8:12 | C2<S2> |
+| Unification.cs:8:7:8:12 | C2<T2> | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:9:7:9:12 | C3<C1<S1>> | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:7:9:12 | C3<C2<S1>> | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:7:9:12 | C3<C2<S2>> | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<T3> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<T6b> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<C1<S1>> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<C2<S1>> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<C2<S2>> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<Tm> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:10:7:10:12 | C4<C1<C0>> | Unification.cs:10:7:10:12 | C4<C1<C0>> |
+| Unification.cs:10:7:10:12 | C4<T4> | Unification.cs:10:7:10:12 | C4<C1<C0>> |
+| Unification.cs:10:7:10:12 | C4<T4> | Unification.cs:10:7:10:12 | C4<T4> |
+| Unification.cs:11:7:11:12 | C5<C2<S1>> | Unification.cs:11:7:11:12 | C5<C2<S1>> |
+| Unification.cs:11:7:11:12 | C5<T5> | Unification.cs:11:7:11:12 | C5<C2<S1>> |
+| Unification.cs:11:7:11:12 | C5<T5> | Unification.cs:11:7:11:12 | C5<T5> |
+| Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> | Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> | Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> | Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> |
+| Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> | Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> |
+| Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> | Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> |
+| Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> |
+| Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:27:7:27:20 | Tuples<T8, T9> | Unification.cs:27:7:27:20 | Tuples<T8, T9> |
+| Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:30:12:30:24 | (string, int) | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:30:12:30:24 | (string, int) |
+| Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:36:7:36:17 | Nested<T10> | Unification.cs:36:7:36:17 | Nested<T10> |
+| Unification.cs:36:7:36:17 | Nested<T10> | Unification.cs:36:7:36:17 | Nested<int> |
+| Unification.cs:36:7:36:17 | Nested<T10> | Unification.cs:36:7:36:17 | Nested<string> |
+| Unification.cs:36:7:36:17 | Nested<int> | Unification.cs:36:7:36:17 | Nested<int> |
+| Unification.cs:36:7:36:17 | Nested<string> | Unification.cs:36:7:36:17 | Nested<string> |
+| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
+| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
+| Unification.cs:39:11:39:17 | Nested<System.String>+NestedB | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+subsumptionImpliesUnification
+unifiable
+| Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:7:7:7:12 | C1<S1> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<S1> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<S1> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:7:7:7:12 | C1<S2> | Unification.cs:7:7:7:12 | C1<T1> |
+| Unification.cs:7:7:7:12 | C1<S2> | Unification.cs:7:7:7:12 | C1<T2> |
+| Unification.cs:7:7:7:12 | C1<S2> | Unification.cs:7:7:7:12 | C1<T6d> |
+| Unification.cs:8:7:8:12 | C2<S1> | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:8:7:8:12 | C2<S2> | Unification.cs:8:7:8:12 | C2<T2> |
+| Unification.cs:9:7:9:12 | C3<C1<S1>> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<C1<S1>> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<C1<S1>> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:7:9:12 | C3<C2<S1>> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<C2<S1>> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<C2<S1>> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:9:7:9:12 | C3<C2<S2>> | Unification.cs:9:7:9:12 | C3<T3> |
+| Unification.cs:9:7:9:12 | C3<C2<S2>> | Unification.cs:9:7:9:12 | C3<T6b> |
+| Unification.cs:9:7:9:12 | C3<C2<S2>> | Unification.cs:9:7:9:12 | C3<Tm> |
+| Unification.cs:10:7:10:12 | C4<C1<C0>> | Unification.cs:10:7:10:12 | C4<T4> |
+| Unification.cs:11:7:11:12 | C5<C2<S1>> | Unification.cs:11:7:11:12 | C5<T5> |
+| Unification.cs:12:7:12:28 | C6<C1<S1>, C2<S1>, C3<C2<S1>>, S1> | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, C2<S2>, C3<C2<S2>>, S2> | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
+| Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:30:12:30:24 | (string, int) | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:30:12:30:24 | (string, int) | Unification.cs:31:12:31:23 | (string, T9) |
+| Unification.cs:30:12:30:24 | (string, int) | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:29:12:29:20 | (T8, int) |
+| Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:36:7:36:17 | Nested<int> | Unification.cs:36:7:36:17 | Nested<T10> |
+| Unification.cs:36:7:36:17 | Nested<string> | Unification.cs:36:7:36:17 | Nested<T10> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:39:11:39:17 | Nested<System.String>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |

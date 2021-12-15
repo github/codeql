@@ -1,0 +1,57 @@
+| __init__.py | 1 | ControlFlowNode for ImportExpr | Module package.module | ControlFlowNode for ImportExpr |
+| __init__.py | 2 | ControlFlowNode for ImportMember | Function module | ControlFlowNode for FunctionExpr |
+| __init__.py | 2 | ControlFlowNode for module | Function module | ControlFlowNode for FunctionExpr |
+| __init__.py | 4 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| __init__.py | 4 | ControlFlowNode for ImportMember | Module package.module2 | Entry node for Module package.module2 |
+| __init__.py | 4 | ControlFlowNode for module3 | Module package.module2 | Entry node for Module package.module2 |
+| __init__.py | 5 | ControlFlowNode for IntegerLiteral | int 7 | ControlFlowNode for IntegerLiteral |
+| __init__.py | 5 | ControlFlowNode for module2 | int 7 | ControlFlowNode for IntegerLiteral |
+| __init__.py | 6 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| __init__.py | 6 | ControlFlowNode for ImportMember | int 7 | ControlFlowNode for IntegerLiteral |
+| __init__.py | 6 | ControlFlowNode for module4 | int 7 | ControlFlowNode for IntegerLiteral |
+| __init__.py | 7 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| __init__.py | 7 | ControlFlowNode for ImportMember | Module package.module2 | Entry node for Module package.module2 |
+| __init__.py | 7 | ControlFlowNode for module5 | Module package.module2 | Entry node for Module package.module2 |
+| __init__.py | 8 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| __init__.py | 8 | ControlFlowNode for ImportMember | Module package.moduleX | Entry node for Module package.moduleX |
+| __init__.py | 8 | ControlFlowNode for moduleX | Module package.moduleX | Entry node for Module package.moduleX |
+| module2.py | 1 | ControlFlowNode for IntegerLiteral | int 0 | ControlFlowNode for IntegerLiteral |
+| module2.py | 1 | ControlFlowNode for x | int 0 | ControlFlowNode for IntegerLiteral |
+| module.py | 2 | ControlFlowNode for FunctionExpr | Function module | ControlFlowNode for FunctionExpr |
+| module.py | 2 | ControlFlowNode for module | Function module | ControlFlowNode for FunctionExpr |
+| moduleX.py | 1 | ControlFlowNode for ClassExpr | class Y | ControlFlowNode for ClassExpr |
+| moduleX.py | 1 | ControlFlowNode for Y | class Y | ControlFlowNode for ClassExpr |
+| moduleX.py | 1 | ControlFlowNode for object | builtin-class object | ControlFlowNode for object |
+| test.py | 1 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 2 | ControlFlowNode for ImportMember | Function module | ControlFlowNode for FunctionExpr |
+| test.py | 2 | ControlFlowNode for module | Function module | ControlFlowNode for FunctionExpr |
+| test.py | 4 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 5 | ControlFlowNode for ImportMember | Module package.x | Entry node for Module package.x |
+| test.py | 5 | ControlFlowNode for x | Module package.x | Entry node for Module package.x |
+| test.py | 8 | ControlFlowNode for C | class C | ControlFlowNode for ClassExpr |
+| test.py | 8 | ControlFlowNode for ClassExpr | class C | ControlFlowNode for ClassExpr |
+| test.py | 8 | ControlFlowNode for object | builtin-class object | ControlFlowNode for object |
+| test.py | 10 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 10 | ControlFlowNode for ImportMember | int 7 | ControlFlowNode for IntegerLiteral |
+| test.py | 10 | ControlFlowNode for module2 | int 7 | ControlFlowNode for IntegerLiteral |
+| test.py | 12 | ControlFlowNode for FunctionExpr | Function f | ControlFlowNode for FunctionExpr |
+| test.py | 12 | ControlFlowNode for f | Function f | ControlFlowNode for FunctionExpr |
+| test.py | 13 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 13 | ControlFlowNode for ImportMember | Module package.x | Entry node for Module package.x |
+| test.py | 13 | ControlFlowNode for x | Module package.x | Entry node for Module package.x |
+| test.py | 15 | ControlFlowNode for ImportExpr | Module package | ControlFlowNode for ImportExpr |
+| test.py | 15 | ControlFlowNode for ImportMember | Module package.moduleX | Entry node for Module package.moduleX |
+| test.py | 15 | ControlFlowNode for moduleX | Module package.moduleX | Entry node for Module package.moduleX |
+| test.py | 16 | ControlFlowNode for Attribute | class Y | ControlFlowNode for ClassExpr |
+| test.py | 16 | ControlFlowNode for moduleX | Module package.moduleX | Entry node for Module package.moduleX |
+| test.py | 19 | ControlFlowNode for ImportExpr | Module tty | ControlFlowNode for ImportExpr |
+| test.py | 19 | ControlFlowNode for tty | Module tty | ControlFlowNode for ImportExpr |
+| test.py | 22 | ControlFlowNode for Attribute | Builtin-function exc_info | ControlFlowNode for from sys import * |
+| test.py | 22 | ControlFlowNode for x | Module package.x | Entry node for Module package.x |
+| test.py | 24 | ControlFlowNode for IntegerLiteral | int 0 | ControlFlowNode for IntegerLiteral |
+| test.py | 24 | ControlFlowNode for argv | int 0 | ControlFlowNode for IntegerLiteral |
+| test.py | 27 | ControlFlowNode for ImportExpr | Module sys | ControlFlowNode for ImportExpr |
+| test.py | 31 | ControlFlowNode for argv | list object | ControlFlowNode for from sys import * |
+| test.py | 33 | ControlFlowNode for ImportExpr | Module socket | ControlFlowNode for ImportExpr |
+| test.py | 34 | ControlFlowNode for timeout | builtin-class socket.timeout | ControlFlowNode for from _socket import * |
+| x.py | 2 | ControlFlowNode for ImportExpr | Module sys | ControlFlowNode for ImportExpr |

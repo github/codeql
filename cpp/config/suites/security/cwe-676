@@ -1,0 +1,7 @@
+# CWE-676: Use of Potentially Dangerous Function
++ semmlecode-cpp-queries/Security/CWE/CWE-676/DangerousUseOfCin.ql: /CWE/CWE-676
+    @name Dangerous use of 'cin' (CWE-676)
++ semmlecode-cpp-queries/Security/CWE/CWE-676/PotentiallyDangerousFunction.ql: /CWE/CWE-676
+    @name Use of potentially dangerous function (CWE-676)
++ semmlecode-cpp-queries/Security/CWE/CWE-676/DangerousFunctionOverflow.ql: /CWE/CWE-676
+    @name Use of dangerous function (CWE-676)

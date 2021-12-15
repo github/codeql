@@ -1,0 +1,2 @@
+| IncorrectEqualsSignature.cs:6:17:6:22 | Equals | The $@ of this 'Equals(Incorrect)' method does not override 'Equals(object)'. | IncorrectEqualsSignature.cs:4:7:4:15 | Incorrect | declaring type |
+| IncorrectEqualsSignatureBad.cs:12:17:12:22 | Equals | The $@ of this 'Equals(Bad)' method does not override 'Equals(object)'. | IncorrectEqualsSignatureBad.cs:3:7:3:9 | Bad | declaring type |

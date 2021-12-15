@@ -1,0 +1,5 @@
+# CWE-170: Improper Null Termination
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/ImproperNullTermination.ql: /CWE/CWE-170
+    @name Potential improper null termination (CWE-170)
++ semmlecode-cpp-queries/Security/CWE/CWE-170/ImproperNullTerminationTainted.ql: /CWE/CWE-170
+    @name User-controlled data may not be null terminated (CWE-170)

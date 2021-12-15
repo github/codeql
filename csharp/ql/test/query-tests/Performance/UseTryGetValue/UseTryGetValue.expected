@@ -1,0 +1,15 @@
+| UseTryGetValue.cs:19:13:19:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:19:38:19:44 | access to indexer | indexer |
+| UseTryGetValue.cs:20:13:20:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:20:36:20:42 | access to indexer | indexer |
+| UseTryGetValue.cs:21:14:21:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:21:37:21:43 | access to indexer | indexer |
+| UseTryGetValue.cs:22:14:22:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:22:37:22:43 | access to indexer | indexer |
+| UseTryGetValue.cs:23:13:23:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:23:36:23:42 | access to indexer | indexer |
+| UseTryGetValue.cs:25:13:25:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:26:17:26:23 | access to indexer | indexer |
+| UseTryGetValue.cs:25:13:25:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:28:17:28:23 | access to indexer | indexer |
+| UseTryGetValue.cs:29:14:29:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:30:17:30:23 | access to indexer | indexer |
+| UseTryGetValue.cs:29:14:29:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:32:17:32:23 | access to indexer | indexer |
+| UseTryGetValue.cs:34:13:34:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:34:35:34:41 | access to indexer | indexer |
+| UseTryGetValue.cs:34:13:34:31 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:34:45:34:51 | access to indexer | indexer |
+| UseTryGetValue.cs:35:14:35:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:35:36:35:42 | access to indexer | indexer |
+| UseTryGetValue.cs:35:14:35:32 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:35:46:35:52 | access to indexer | indexer |
+| UseTryGetValue.cs:36:22:36:40 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:36:44:36:50 | access to indexer | indexer |
+| UseTryGetValue.cs:36:22:36:40 | call to method ContainsKey | Inefficient use of 'ContainsKey' and $@. | UseTryGetValue.cs:36:54:36:60 | access to indexer | indexer |

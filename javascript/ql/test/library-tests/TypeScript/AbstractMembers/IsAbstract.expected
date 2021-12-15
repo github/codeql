@@ -1,0 +1,4 @@
+| tst.ts:2:5:2:26 | abstrac ... tring); | Member f of class C is abstract |
+| tst.ts:3:5:3:26 | abstrac ... umber); | Member f of class C is abstract |
+| tst.ts:13:5:13:22 | interfaceMethod(); | Member interfaceMethod of interface I is abstract |
+| tst.ts:14:5:14:14 | x: number; | Member x of interface I is abstract |

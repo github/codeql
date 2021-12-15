@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The parameterless versions of <code>String.toUpperCase()</code> and <code>String.toLowerCase()</code> use the default locale of the Java Virtual Machine when
+transforming strings. This can cause unexpected behavior for certain locales. 
+</p>
+
+</overview>
+<recommendation>
+<p>Use the corresponding methods with explicit locale parameters to ensure that the results are consistent 
+across all locales. For example:</p>
+
+<p><code>System.out.println("I".toLowerCase(java.util.Locale.ENGLISH));</code></p>
+
+<p>prints <code>i</code>, regardless of the default locale.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the calls to the parameterless functions may return different strings 
+for different locales. For example, if the default locale is ENGLISH, the function <code>toLowerCase()</code>
+converts a capital <code>I</code> to <code>i</code>; if the default locale is TURKISH, the function 
+<code>toLowerCase()</code> converts a capital <code>I</code> to the Unicode Character "Latin small 
+letter dotless i" (U+0131).
+</p>
+
+<p>To ensure that an English string is returned, regardless of the default locale, the example shows 
+how to call <code>toLowerCase</code> and pass <code>locale.ENGLISH</code> as the argument. (This 
+assumes that the text is English. If the text is Turkish, you should pass 
+<code>locale.TURKISH</code> as the argument.)</p>
+
+<sample src="MissingLocaleArgument.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#toUpperCase()">String.toUpperCase()</a>.
+</li>
+
+
+</references>
+</qhelp>

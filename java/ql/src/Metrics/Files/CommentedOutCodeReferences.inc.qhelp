@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<references>
+
+<li>Mark Needham: <a href="http://www.markhneedham.com/blog/2009/01/17/the-danger-of-commenting-out-code/">The danger of commenting out code</a>.</li>
+<li>Los Techies: <a href="http://lostechies.com/rodpaddock/2010/12/29/commented-code-technical-debt">Commented Code == Technical Debt</a>.</li>
+<li>High Integrity C++ Coding Standard: <a href="http://www.codingstandard.com/rule/2-3-2-do-not-comment-out-code/">2.3.2 Do not comment out code</a>.</li>
+
+</references>
+</qhelp>

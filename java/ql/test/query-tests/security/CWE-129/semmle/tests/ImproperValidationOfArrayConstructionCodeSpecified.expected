@@ -1,0 +1,8 @@
+edges
+| Test.java:105:16:105:16 | 0 : Number | Test.java:107:27:107:30 | size |
+nodes
+| Test.java:105:16:105:16 | 0 : Number | semmle.label | 0 : Number |
+| Test.java:107:27:107:30 | size | semmle.label | size |
+subpaths
+#select
+| Test.java:110:30:110:30 | 0 | Test.java:105:16:105:16 | 0 : Number | Test.java:107:27:107:30 | size | The $@ is accessed here, but the array is initialized using $@ which may be zero. | Test.java:107:19:107:31 | new int[] | array | Test.java:105:16:105:16 | 0 | literal value 0 |

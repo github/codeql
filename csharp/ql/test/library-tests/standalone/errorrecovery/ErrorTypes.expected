@@ -1,0 +1,22 @@
+| errors.cs:16:19:16:20 | f1 | <unknown type> |
+| errors.cs:22:17:22:27 | unknownType | <unknown type> |
+| errors.cs:35:21:35:21 | p | Int32 |
+| errors.cs:41:16:41:17 | c1 | C1 |
+| errors.cs:50:12:50:13 | c1 | C1 |
+| errors.cs:51:12:51:13 | c2 | C2 |
+| errors.cs:53:31:53:31 | x | <unknown type> |
+| errors.cs:59:20:59:20 | x | Int32 |
+| errors.cs:72:28:72:29 | p1 | Int32 |
+| errors.cs:72:39:72:40 | p2 | String |
+| errors.cs:72:48:72:49 | p3 | Boolean |
+| errors.cs:72:64:72:65 | p4 | Boolean |
+| errors.cs:74:17:74:17 | x | Int32 |
+| errors.cs:75:17:75:17 | x | Int32 |
+| errors.cs:82:13:82:13 | F | Int32 |
+| errors.cs:89:13:89:13 | F | Int32 |
+| errors.cs:91:29:91:29 | a | Func<Int32,Int32,Int32> |
+| errors.cs:91:34:91:35 | x1 | Int32 |
+| errors.cs:91:38:91:39 | x2 | Int32 |
+| errors.cs:92:29:92:29 | a | Func<Int32,Int32,Int32> |
+| errors.cs:92:34:92:35 | y1 | Int32 |
+| errors.cs:92:38:92:39 | y2 | Int32 |

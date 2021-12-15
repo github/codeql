@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy, and it appears that certain inputs will cause a buffer overflow to occur in this case.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations.  <code>strncpy</code> should be used over <code>strcpy</code>, <code>snprintf</code> over <code>sprintf</code>, and in other cases 'n-variant' functions should be preferred.</p>
+
+</recommendation>
+<example>
+<sample src="OverrunWrite.c" />
+
+<p>In this example, the call to <code>strcpy</code> copies a message of 14 characters (including the terminating null) into a buffer with space for just 10 characters.  As such, the last four characters overflow the buffer resulting in undefined behavior.</p>
+
+<p>To fix this issue three changes should be made:</p>
+<ul>
+  <li>Control the size of the buffer using a preprocessor define.</li>
+  <li>Replace the call to <code>strcpy</code> with <code>strncpy</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
+  <li>Consider increasing the buffer size, say to 20 characters, so that the message is displayed correctly.</li>
+</ul>
+
+</example>
+<references>
+
+<li>CERT C Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.</li>
+
+
+<!--  LocalWords:  preprocessor CWE STR
+ -->
+
+</references>
+</qhelp>

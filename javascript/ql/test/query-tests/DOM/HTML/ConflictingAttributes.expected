@@ -1,0 +1,3 @@
+| ConflictingAttributes.html:1:4:1:27 | href=http://semmle.com | This attribute has the same name as $@ of the same element, but a different value. | ConflictingAttributes.html:1:29:1:53 | href=https://semmle.com | another attribute |
+| tst.js:6:4:6:27 | href="h ... le.com" | This attribute has the same name as $@ of the same element, but a different value. | tst.js:6:29:6:53 | href="h ... le.com" | another attribute |
+| tst.js:16:4:16:27 | href="h ... le.com" | This attribute has the same name as $@ of the same element, but a different value. | tst.js:16:29:16:46 | href={someValue()} | another attribute |

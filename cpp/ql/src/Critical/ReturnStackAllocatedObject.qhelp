@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This query finds return statements that return pointers to an object allocated on the stack. 
+The lifetime of a stack allocated memory location only lasts until the function returns, and 
+the contents of that memory become undefined after that. Clearly, using a pointer to stack 
+memory after the function has already returned will have undefined results.
+</p>
+
+<include src="pointsToWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>
+Do not return pointers to stack memory locations. Instead, create an output parameter, or create a heap-allocated
+buffer. You can then copy the contents of the stack-allocated memory to the heap-allocated buffer and return that location instead.
+</p>
+</recommendation>
+
+<example>
+<p>The example below the reference to <code>myRecord</code> is useful only while the containing function is running. 
+If you need to access the object outside this function, either create an output parameter with its value, or copy the object into 
+heap-allocated memory.
+</p>
+<sample src="ReturnStackAllocatedObject.cpp" />
+</example>
+
+<references>
+<li>cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
+<li>The craft of coding: <a href="https://craftofcoding.wordpress.com/2015/12/07/memory-in-c-the-stack-the-heap-and-static/">Memory in C - the stack, the heap, and static</a>.</li>
+</references>
+</qhelp>

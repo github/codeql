@@ -1,0 +1,82 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A mutual dependency exists when two types depend directly on each other.
+Mutual dependencies are caused by unwanted dependencies in one or both directions. There
+are many different kinds of dependency; here are a few examples of how an inter-type dependency
+from <code>T1</code> to <code>T2</code> can occur:
+</p>
+
+<ul>
+<li><code>T1</code> derives from a type involving <code>T2</code>, for example <code>T2</code> itself or <code>List&lt;T2&gt;</code>.</li>
+<li><code>T1</code> declares a field of a type involving <code>T2</code>.</li>
+<li><code>T1</code> declares a method whose return type involves <code>T2</code>.</li>
+<li>A method of <code>T1</code> declares a local variable whose type involves <code>T2</code>.</li>
+<li>A method of <code>T1</code> catches an exception of a type involving <code>T2</code>.</li>
+</ul>
+
+<p>
+Mutual dependencies prevent you from considering either entity in isolation,
+affecting readability and testability. For example, if types <code>T1</code> and <code>T2</code> depend on each other, then it is
+generally impossible to fully understand <code>T1</code> without understanding <code>T2</code>, and vice-versa. Moreover, neither
+type can be tested without the other being present. Whilst mocking can alleviate this latter problem
+to some extent, breaking the mutual dependency is a better solution. For example, suppose we could
+remove all of the dependencies from <code>T2</code> to <code>T1</code> - in that case, we would be able to test <code>T2</code> in isolation, and
+completely side-step the need to provide a <code>T1</code>, mocked or otherwise.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Breaking mutual dependencies involves finding ways of removing the unwanted individual dependencies that
+cause them. The way to do this depends on the kind of dependency in question, with some kinds (for example,
+dependencies caused by inheritance) being much harder to break than others. A full list of ways to
+break cycles is beyond the scope of this help topic, however, a few high-level techniques
+for breaking a dependency from <code>T1</code> to <code>T2</code> include:
+</p>
+
+<ul>
+<li>
+Introducing an interface that is implemented by <code>T2</code>. <code>T1</code>
+can then be refactored to use <code>T2</code> only via the interface, which breaks the cycle.
+</li>
+
+<li>
+Moving the depended-on code in <code>T2</code> to a third (possibly new) entity.
+<code>T1</code> can then depend on this third entity instead of on <code>T2</code>,
+breaking the cycle. <code>T2</code> is allowed to depend on the third entity as
+well, although it does not have to if there is no need.
+</li>
+
+<li>
+Merging <code>T1</code> and <code>T2</code> together (for example, if there was an artificial separation between two parts
+of the same concept). This is not a generally-applicable solution, but is sometimes the right thing to
+do. It has the effect of internalizing the cycle, which is sufficient to solve the problem.
+</li>
+</ul>
+
+<p>
+For more information on how to break
+unwanted dependencies, see the references (particularly [Lakos]).
+</p>
+
+</recommendation>
+<example>
+<p>In this example <code>BadModel</code> and <code>BadView</code> are mutually dependent.</p>
+<sample src="MutualDependencyBad.cs" />
+<p>The interface technique can be used to break the dependency between the model and the view. The <code>IModelListener</code> interface allows <code>BetterView</code> to interact with <code>BetterModel</code> without dependency.</p>
+<sample src="MutualDependencyGood.cs" /> 
+
+</example>
+<references>
+
+
+  <li>J. Lakos. <em>Large-Scale C++ Software Design</em>. Addison-Wesley, 1996.</li>
+  <li>M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+
+</references>
+</qhelp>

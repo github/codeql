@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Nested 'for' loops with the same iteration variable are hard to understand, since
+the inner loop affects the iteration variable of the outer loop. Sometimes this
+behavior is unintended and indicates a bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use different iteration variables in both loops.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In this example, the outer loop iterates <code>i</code> from 0 to 10. The inner
+loop initializes <code>j</code> to the value of <code>i</code>, and then iterates
+it down to 5. Hence, the outer loop will never terminate since the inner loop
+prevents its iteration variable from reaching 10. 
+</p>
+
+<sample src="examples/NestedLoopsSameVariable.js" />
+
+<p>
+Most likely, the loop condition <code>i&gt;5</code> of the inner loop is a typo for
+<code>j&gt;5</code>, and similarly the update expression <code>--i</code> should
+be <code>--j</code>:
+</p>
+
+<sample src="examples/NestedLoopsSameVariableGood.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 12.6.3. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

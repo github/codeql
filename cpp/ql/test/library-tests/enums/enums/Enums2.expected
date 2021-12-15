@@ -1,0 +1,5 @@
+| enums.cpp:14:14:14:16 | sat | Day |
+| enums.cpp:14:24:14:26 | sun | Day |
+| enums.ms.c:7:10:7:12 | one | numbers |
+| enums.ms.c:7:22:7:24 | one | numbers |
+| enums.ms.c:8:21:8:24 | zero | numbers |

@@ -1,0 +1,4 @@
+| capture.c:18:23:20:6 | ^ { ... } | capture.c:19:27:19:27 | x | capture.c:6:5:6:5 | x | capture.c:18:23:18:23 | <unnamed> |
+| capture.c:18:23:20:6 | ^ { ... } | capture.c:19:30:19:30 | y | capture.c:13:17:13:17 | y | capture.c:18:23:18:23 | <unnamed> |
+| capture.c:22:23:25:6 | ^ { ... } | capture.c:23:9:23:9 | x | capture.c:6:5:6:5 | x | capture.c:22:23:22:23 | <unnamed> |
+| capture.c:22:23:25:6 | ^ { ... } | capture.c:24:9:24:9 | y | capture.c:13:17:13:17 | y | capture.c:22:23:22:23 | <unnamed> |

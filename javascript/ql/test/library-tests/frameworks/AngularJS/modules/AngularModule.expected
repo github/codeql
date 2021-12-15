@@ -1,0 +1,4 @@
+| docsBindExample | tst.js:3:1:4:32 | angular ... e', []) |
+| m | tst.js:19:11:19:33 | angular ... m', []) |
+| myModule | module-refs.js:3:15:3:44 | angular ... e', []) |
+| someOtherModule | tst.js:9:1:9:60 | window. ... mple']) |

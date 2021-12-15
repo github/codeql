@@ -1,0 +1,6 @@
+| unions.cpp:4:8:4:12 | Entry | Struct |  | operator= |
+| unions.cpp:13:7:13:11 | Value | Struct, Union |  | operator= |
+| unions.cpp:19:8:19:22 | EntryWithMethod | Struct | Entry | EntryWithMethod, getAsInt, operator= |
+| unions.cpp:27:9:27:20 | MyLocalUnion | LocalUnion, Struct, Union |  | operator= |
+| unions.cpp:33:7:33:13 | MyClass |  |  | operator= |
+| unions.cpp:36:9:36:21 | MyNestedUnion | NestedUnion, Struct, Union |  | operator= |

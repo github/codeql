@@ -1,0 +1,32 @@
+edges
+| Test.java:93:8:93:24 | Integer.MAX_VALUE : Number | Test.java:96:8:96:8 | i |
+| Test.java:109:13:109:26 | Long.MIN_VALUE : Number | Test.java:111:13:111:13 | i |
+| Test.java:138:9:138:25 | Integer.MAX_VALUE : Number | Test.java:139:14:139:14 | i |
+| Test.java:144:12:144:28 | Integer.MAX_VALUE : Number | Test.java:147:14:147:14 | i |
+| Test.java:185:13:185:26 | Byte.MAX_VALUE : Number | Test.java:188:39:188:39 | b |
+| Test.java:192:14:192:28 | Short.MAX_VALUE : Number | Test.java:195:41:195:41 | s |
+| Test.java:199:12:199:28 | Integer.MAX_VALUE : Number | Test.java:202:37:202:37 | i |
+nodes
+| Test.java:93:8:93:24 | Integer.MAX_VALUE : Number | semmle.label | Integer.MAX_VALUE : Number |
+| Test.java:96:8:96:8 | i | semmle.label | i |
+| Test.java:109:13:109:26 | Long.MIN_VALUE : Number | semmle.label | Long.MIN_VALUE : Number |
+| Test.java:111:13:111:13 | i | semmle.label | i |
+| Test.java:138:9:138:25 | Integer.MAX_VALUE : Number | semmle.label | Integer.MAX_VALUE : Number |
+| Test.java:139:14:139:14 | i | semmle.label | i |
+| Test.java:144:12:144:28 | Integer.MAX_VALUE : Number | semmle.label | Integer.MAX_VALUE : Number |
+| Test.java:147:14:147:14 | i | semmle.label | i |
+| Test.java:185:13:185:26 | Byte.MAX_VALUE : Number | semmle.label | Byte.MAX_VALUE : Number |
+| Test.java:188:39:188:39 | b | semmle.label | b |
+| Test.java:192:14:192:28 | Short.MAX_VALUE : Number | semmle.label | Short.MAX_VALUE : Number |
+| Test.java:195:41:195:41 | s | semmle.label | s |
+| Test.java:199:12:199:28 | Integer.MAX_VALUE : Number | semmle.label | Integer.MAX_VALUE : Number |
+| Test.java:202:37:202:37 | i | semmle.label | i |
+subpaths
+#select
+| Test.java:96:8:96:12 | ... + ... | Test.java:93:8:93:24 | Integer.MAX_VALUE : Number | Test.java:96:8:96:8 | i | Variable i is assigned an extreme value $@, and may cause an overflow. | Test.java:93:8:93:24 | Integer.MAX_VALUE | MAX_VALUE |
+| Test.java:111:13:111:17 | ... - ... | Test.java:109:13:109:26 | Long.MIN_VALUE : Number | Test.java:111:13:111:13 | i | Variable i is assigned an extreme value $@, and may cause an underflow. | Test.java:109:13:109:26 | Long.MIN_VALUE | MIN_VALUE |
+| Test.java:139:14:139:18 | ... + ... | Test.java:138:9:138:25 | Integer.MAX_VALUE : Number | Test.java:139:14:139:14 | i | Variable i is assigned an extreme value $@, and may cause an overflow. | Test.java:138:9:138:25 | Integer.MAX_VALUE | MAX_VALUE |
+| Test.java:147:14:147:18 | ... + ... | Test.java:144:12:144:28 | Integer.MAX_VALUE : Number | Test.java:147:14:147:14 | i | Variable i is assigned an extreme value $@, and may cause an overflow. | Test.java:144:12:144:28 | Integer.MAX_VALUE | MAX_VALUE |
+| Test.java:188:39:188:43 | ... + ... | Test.java:185:13:185:26 | Byte.MAX_VALUE : Number | Test.java:188:39:188:39 | b | Variable b is assigned an extreme value $@, and may cause an overflow. | Test.java:185:13:185:26 | Byte.MAX_VALUE | MAX_VALUE |
+| Test.java:195:41:195:45 | ... + ... | Test.java:192:14:192:28 | Short.MAX_VALUE : Number | Test.java:195:41:195:41 | s | Variable s is assigned an extreme value $@, and may cause an overflow. | Test.java:192:14:192:28 | Short.MAX_VALUE | MAX_VALUE |
+| Test.java:202:37:202:42 | ... + ... | Test.java:199:12:199:28 | Integer.MAX_VALUE : Number | Test.java:202:37:202:37 | i | Variable i is assigned an extreme value $@, and may cause an overflow. | Test.java:199:12:199:28 | Integer.MAX_VALUE | MAX_VALUE |

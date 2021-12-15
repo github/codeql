@@ -1,0 +1,5 @@
+| tst.ts:4:5:4:21 | x.method("Hello") | tst.ts:15:3:17:3 | public  ... x);\\n  } |
+| tst.ts:9:17:9:33 | new AngryLogger() | tst.ts:20:34:20:33 | (...arg ... rgs); } |
+| tst.ts:10:5:10:49 | (newLog ... hello") | tst.ts:15:3:17:3 | public  ... x);\\n  } |
+| tst.ts:10:5:10:49 | (newLog ... hello") | tst.ts:21:3:23:3 | public  ... ");\\n  } |
+| tst.ts:20:34:20:33 | super(...args) | tst.ts:14:14:14:13 | () {} |

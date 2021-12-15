@@ -1,0 +1,193 @@
+nodes
+| ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:24:18:24:26 | val.error |
+| ajv.js:24:18:24:26 | val.error |
+| ajv.js:24:18:24:26 | val.error |
+| exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:9:11:9:13 | foo |
+| exception-xss.js:10:11:10:11 | e |
+| exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:15:9:15:11 | foo |
+| exception-xss.js:16:11:16:11 | e |
+| exception-xss.js:17:18:17:18 | e |
+| exception-xss.js:17:18:17:18 | e |
+| exception-xss.js:21:11:21:13 | foo |
+| exception-xss.js:21:11:21:21 | foo + "bar" |
+| exception-xss.js:22:11:22:11 | e |
+| exception-xss.js:23:18:23:18 | e |
+| exception-xss.js:23:18:23:18 | e |
+| exception-xss.js:33:11:33:22 | ["bar", foo] |
+| exception-xss.js:33:19:33:21 | foo |
+| exception-xss.js:34:11:34:11 | e |
+| exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
+| exception-xss.js:46:8:46:18 | "bar" + foo |
+| exception-xss.js:46:16:46:18 | foo |
+| exception-xss.js:47:11:47:11 | e |
+| exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:81:16:81:18 | foo |
+| exception-xss.js:82:11:82:11 | e |
+| exception-xss.js:83:18:83:18 | e |
+| exception-xss.js:83:18:83:18 | e |
+| exception-xss.js:89:11:89:13 | foo |
+| exception-xss.js:89:11:89:26 | foo.match(/foo/) |
+| exception-xss.js:90:11:90:11 | e |
+| exception-xss.js:91:18:91:18 | e |
+| exception-xss.js:91:18:91:18 | e |
+| exception-xss.js:95:11:95:22 | [foo, "bar"] |
+| exception-xss.js:95:12:95:14 | foo |
+| exception-xss.js:96:11:96:11 | e |
+| exception-xss.js:97:18:97:18 | e |
+| exception-xss.js:97:18:97:18 | e |
+| exception-xss.js:102:12:102:14 | foo |
+| exception-xss.js:106:11:106:11 | e |
+| exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:117:11:117:23 | req.params.id |
+| exception-xss.js:117:11:117:23 | req.params.id |
+| exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:119:12:119:28 | "Exception: " + e |
+| exception-xss.js:119:12:119:28 | "Exception: " + e |
+| exception-xss.js:119:28:119:28 | e |
+| exception-xss.js:125:45:125:68 | documen ... .search |
+| exception-xss.js:125:45:125:68 | documen ... .search |
+| exception-xss.js:128:11:128:52 | session ... ssion') |
+| exception-xss.js:129:11:129:11 | e |
+| exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:136:10:136:22 | req.params.id |
+| exception-xss.js:136:10:136:22 | req.params.id |
+| exception-xss.js:136:26:136:30 | error |
+| exception-xss.js:138:19:138:23 | error |
+| exception-xss.js:138:19:138:23 | error |
+| exception-xss.js:146:6:146:35 | foo |
+| exception-xss.js:146:12:146:35 | documen ... .search |
+| exception-xss.js:146:12:146:35 | documen ... .search |
+| exception-xss.js:148:33:148:35 | foo |
+| exception-xss.js:148:55:148:55 | e |
+| exception-xss.js:149:18:149:18 | e |
+| exception-xss.js:149:18:149:18 | e |
+| exception-xss.js:153:8:153:10 | foo |
+| exception-xss.js:154:11:154:11 | e |
+| exception-xss.js:155:18:155:18 | e |
+| exception-xss.js:155:18:155:18 | e |
+| exception-xss.js:174:25:174:43 | exceptional return of inner(foo, resolve) |
+| exception-xss.js:174:31:174:33 | foo |
+| exception-xss.js:174:53:174:53 | e |
+| exception-xss.js:175:18:175:18 | e |
+| exception-xss.js:175:18:175:18 | e |
+| exception-xss.js:180:10:180:22 | req.params.id |
+| exception-xss.js:180:10:180:22 | req.params.id |
+| exception-xss.js:180:26:180:30 | error |
+| exception-xss.js:182:19:182:23 | error |
+| exception-xss.js:182:19:182:23 | error |
+edges
+| ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:9:11:9:13 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:15:9:15:11 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:21:11:21:13 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:33:19:33:21 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:46:16:46:18 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:81:16:81:18 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:89:11:89:13 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:95:12:95:14 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:102:12:102:14 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:9:11:9:13 | foo | exception-xss.js:10:11:10:11 | e |
+| exception-xss.js:10:11:10:11 | e | exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:10:11:10:11 | e | exception-xss.js:11:18:11:18 | e |
+| exception-xss.js:15:3:15:12 | exceptional return of inner(foo) | exception-xss.js:16:11:16:11 | e |
+| exception-xss.js:15:9:15:11 | foo | exception-xss.js:15:3:15:12 | exceptional return of inner(foo) |
+| exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
+| exception-xss.js:16:11:16:11 | e | exception-xss.js:17:18:17:18 | e |
+| exception-xss.js:21:11:21:13 | foo | exception-xss.js:21:11:21:21 | foo + "bar" |
+| exception-xss.js:21:11:21:21 | foo + "bar" | exception-xss.js:22:11:22:11 | e |
+| exception-xss.js:22:11:22:11 | e | exception-xss.js:23:18:23:18 | e |
+| exception-xss.js:22:11:22:11 | e | exception-xss.js:23:18:23:18 | e |
+| exception-xss.js:33:11:33:22 | ["bar", foo] | exception-xss.js:34:11:34:11 | e |
+| exception-xss.js:33:19:33:21 | foo | exception-xss.js:33:11:33:22 | ["bar", foo] |
+| exception-xss.js:34:11:34:11 | e | exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:34:11:34:11 | e | exception-xss.js:35:18:35:18 | e |
+| exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) | exception-xss.js:47:11:47:11 | e |
+| exception-xss.js:46:8:46:18 | "bar" + foo | exception-xss.js:46:3:46:19 | exceptional return of deep("bar" + foo) |
+| exception-xss.js:46:16:46:18 | foo | exception-xss.js:46:8:46:18 | "bar" + foo |
+| exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:47:11:47:11 | e | exception-xss.js:48:18:48:18 | e |
+| exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) | exception-xss.js:82:11:82:11 | e |
+| exception-xss.js:81:16:81:18 | foo | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
+| exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
+| exception-xss.js:82:11:82:11 | e | exception-xss.js:83:18:83:18 | e |
+| exception-xss.js:89:11:89:13 | foo | exception-xss.js:89:11:89:26 | foo.match(/foo/) |
+| exception-xss.js:89:11:89:26 | foo.match(/foo/) | exception-xss.js:90:11:90:11 | e |
+| exception-xss.js:90:11:90:11 | e | exception-xss.js:91:18:91:18 | e |
+| exception-xss.js:90:11:90:11 | e | exception-xss.js:91:18:91:18 | e |
+| exception-xss.js:95:11:95:22 | [foo, "bar"] | exception-xss.js:96:11:96:11 | e |
+| exception-xss.js:95:12:95:14 | foo | exception-xss.js:95:11:95:22 | [foo, "bar"] |
+| exception-xss.js:96:11:96:11 | e | exception-xss.js:97:18:97:18 | e |
+| exception-xss.js:96:11:96:11 | e | exception-xss.js:97:18:97:18 | e |
+| exception-xss.js:102:12:102:14 | foo | exception-xss.js:106:11:106:11 | e |
+| exception-xss.js:106:11:106:11 | e | exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:106:11:106:11 | e | exception-xss.js:107:18:107:18 | e |
+| exception-xss.js:117:11:117:23 | req.params.id | exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:117:11:117:23 | req.params.id | exception-xss.js:118:11:118:11 | e |
+| exception-xss.js:118:11:118:11 | e | exception-xss.js:119:28:119:28 | e |
+| exception-xss.js:119:28:119:28 | e | exception-xss.js:119:12:119:28 | "Exception: " + e |
+| exception-xss.js:119:28:119:28 | e | exception-xss.js:119:12:119:28 | "Exception: " + e |
+| exception-xss.js:125:45:125:68 | documen ... .search | exception-xss.js:128:11:128:52 | session ... ssion') |
+| exception-xss.js:125:45:125:68 | documen ... .search | exception-xss.js:128:11:128:52 | session ... ssion') |
+| exception-xss.js:128:11:128:52 | session ... ssion') | exception-xss.js:129:11:129:11 | e |
+| exception-xss.js:129:11:129:11 | e | exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:129:11:129:11 | e | exception-xss.js:130:18:130:18 | e |
+| exception-xss.js:136:10:136:22 | req.params.id | exception-xss.js:136:26:136:30 | error |
+| exception-xss.js:136:10:136:22 | req.params.id | exception-xss.js:136:26:136:30 | error |
+| exception-xss.js:136:26:136:30 | error | exception-xss.js:138:19:138:23 | error |
+| exception-xss.js:136:26:136:30 | error | exception-xss.js:138:19:138:23 | error |
+| exception-xss.js:146:6:146:35 | foo | exception-xss.js:148:33:148:35 | foo |
+| exception-xss.js:146:6:146:35 | foo | exception-xss.js:153:8:153:10 | foo |
+| exception-xss.js:146:6:146:35 | foo | exception-xss.js:174:31:174:33 | foo |
+| exception-xss.js:146:12:146:35 | documen ... .search | exception-xss.js:146:6:146:35 | foo |
+| exception-xss.js:146:12:146:35 | documen ... .search | exception-xss.js:146:6:146:35 | foo |
+| exception-xss.js:148:33:148:35 | foo | exception-xss.js:148:55:148:55 | e |
+| exception-xss.js:148:55:148:55 | e | exception-xss.js:149:18:149:18 | e |
+| exception-xss.js:148:55:148:55 | e | exception-xss.js:149:18:149:18 | e |
+| exception-xss.js:153:8:153:10 | foo | exception-xss.js:154:11:154:11 | e |
+| exception-xss.js:154:11:154:11 | e | exception-xss.js:155:18:155:18 | e |
+| exception-xss.js:154:11:154:11 | e | exception-xss.js:155:18:155:18 | e |
+| exception-xss.js:174:25:174:43 | exceptional return of inner(foo, resolve) | exception-xss.js:174:53:174:53 | e |
+| exception-xss.js:174:31:174:33 | foo | exception-xss.js:174:25:174:43 | exceptional return of inner(foo, resolve) |
+| exception-xss.js:174:53:174:53 | e | exception-xss.js:175:18:175:18 | e |
+| exception-xss.js:174:53:174:53 | e | exception-xss.js:175:18:175:18 | e |
+| exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:180:26:180:30 | error |
+| exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:180:26:180:30 | error |
+| exception-xss.js:180:26:180:30 | error | exception-xss.js:182:19:182:23 | error |
+| exception-xss.js:180:26:180:30 | error | exception-xss.js:182:19:182:23 | error |
+#select
+| ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() | $@ is reinterpreted as HTML without escaping meta-characters. | ajv.js:11:18:11:33 | ajv.errorsText() | JSON schema validation error |
+| ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | $@ is reinterpreted as HTML without escaping meta-characters. | ajv.js:24:18:24:26 | val.error | JSON schema validation error |
+| exception-xss.js:11:18:11:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:11:18:11:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:17:18:17:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:17:18:17:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:23:18:23:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:23:18:23:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:35:18:35:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:35:18:35:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:48:18:48:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:48:18:48:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:83:18:83:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:83:18:83:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:91:18:91:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:91:18:91:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:97:18:97:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:97:18:97:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:107:18:107:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:107:18:107:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:119:12:119:28 | "Exception: " + e | exception-xss.js:117:11:117:23 | req.params.id | exception-xss.js:119:12:119:28 | "Exception: " + e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:117:11:117:23 | req.params.id | Exception text |
+| exception-xss.js:130:18:130:18 | e | exception-xss.js:125:45:125:68 | documen ... .search | exception-xss.js:130:18:130:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:125:45:125:68 | documen ... .search | Exception text |
+| exception-xss.js:138:19:138:23 | error | exception-xss.js:136:10:136:22 | req.params.id | exception-xss.js:138:19:138:23 | error | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:136:10:136:22 | req.params.id | Exception text |
+| exception-xss.js:149:18:149:18 | e | exception-xss.js:146:12:146:35 | documen ... .search | exception-xss.js:149:18:149:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:35 | documen ... .search | Exception text |
+| exception-xss.js:155:18:155:18 | e | exception-xss.js:146:12:146:35 | documen ... .search | exception-xss.js:155:18:155:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:35 | documen ... .search | Exception text |
+| exception-xss.js:175:18:175:18 | e | exception-xss.js:146:12:146:35 | documen ... .search | exception-xss.js:175:18:175:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:35 | documen ... .search | Exception text |
+| exception-xss.js:182:19:182:23 | error | exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:182:19:182:23 | error | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:180:10:180:22 | req.params.id | Exception text |

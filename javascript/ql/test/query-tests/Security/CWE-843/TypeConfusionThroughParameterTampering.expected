@@ -1,0 +1,77 @@
+nodes
+| tst.js:5:9:5:27 | foo |
+| tst.js:5:15:5:27 | req.query.foo |
+| tst.js:5:15:5:27 | req.query.foo |
+| tst.js:6:5:6:7 | foo |
+| tst.js:6:5:6:7 | foo |
+| tst.js:8:5:8:7 | foo |
+| tst.js:8:5:8:7 | foo |
+| tst.js:11:9:11:11 | foo |
+| tst.js:11:9:11:11 | foo |
+| tst.js:14:16:14:18 | bar |
+| tst.js:15:9:15:11 | bar |
+| tst.js:15:9:15:11 | bar |
+| tst.js:17:7:17:9 | foo |
+| tst.js:27:5:27:7 | foo |
+| tst.js:27:5:27:7 | foo |
+| tst.js:28:5:28:7 | foo |
+| tst.js:28:5:28:7 | foo |
+| tst.js:36:9:36:11 | foo |
+| tst.js:36:9:36:11 | foo |
+| tst.js:41:5:41:7 | foo |
+| tst.js:41:5:41:7 | foo |
+| tst.js:45:9:45:35 | foo |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo |
+| tst.js:46:5:46:7 | foo |
+| tst.js:46:5:46:7 | foo |
+| tst.js:77:25:77:38 | req.query.path |
+| tst.js:77:25:77:38 | req.query.path |
+| tst.js:80:23:80:23 | p |
+| tst.js:81:9:81:9 | p |
+| tst.js:81:9:81:9 | p |
+| tst.js:82:9:82:9 | p |
+| tst.js:82:9:82:9 | p |
+edges
+| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:6:5:6:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:8:5:8:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:11:9:11:11 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:11:9:11:11 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:17:7:17:9 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:27:5:27:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:28:5:28:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:28:5:28:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:36:9:36:11 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:36:9:36:11 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:41:5:41:7 | foo |
+| tst.js:5:9:5:27 | foo | tst.js:41:5:41:7 | foo |
+| tst.js:5:15:5:27 | req.query.foo | tst.js:5:9:5:27 | foo |
+| tst.js:5:15:5:27 | req.query.foo | tst.js:5:9:5:27 | foo |
+| tst.js:14:16:14:18 | bar | tst.js:15:9:15:11 | bar |
+| tst.js:14:16:14:18 | bar | tst.js:15:9:15:11 | bar |
+| tst.js:17:7:17:9 | foo | tst.js:14:16:14:18 | bar |
+| tst.js:45:9:45:35 | foo | tst.js:46:5:46:7 | foo |
+| tst.js:45:9:45:35 | foo | tst.js:46:5:46:7 | foo |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:45:9:45:35 | foo |
+| tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:45:9:45:35 | foo |
+| tst.js:77:25:77:38 | req.query.path | tst.js:80:23:80:23 | p |
+| tst.js:77:25:77:38 | req.query.path | tst.js:80:23:80:23 | p |
+| tst.js:80:23:80:23 | p | tst.js:81:9:81:9 | p |
+| tst.js:80:23:80:23 | p | tst.js:81:9:81:9 | p |
+| tst.js:80:23:80:23 | p | tst.js:82:9:82:9 | p |
+| tst.js:80:23:80:23 | p | tst.js:82:9:82:9 | p |
+#select
+| tst.js:6:5:6:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:6:5:6:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:8:5:8:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:8:5:8:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:11:9:11:11 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:11:9:11:11 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:15:9:15:11 | bar | tst.js:5:15:5:27 | req.query.foo | tst.js:15:9:15:11 | bar | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:27:5:27:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:27:5:27:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:28:5:28:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:28:5:28:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:36:9:36:11 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:36:9:36:11 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:41:5:41:7 | foo | tst.js:5:15:5:27 | req.query.foo | tst.js:41:5:41:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:5:15:5:27 | req.query.foo | this HTTP request parameter |
+| tst.js:46:5:46:7 | foo | tst.js:45:15:45:35 | ctx.req ... ery.foo | tst.js:46:5:46:7 | foo | Potential type confusion as $@ may be either an array or a string. | tst.js:45:15:45:35 | ctx.req ... ery.foo | this HTTP request parameter |
+| tst.js:81:9:81:9 | p | tst.js:77:25:77:38 | req.query.path | tst.js:81:9:81:9 | p | Potential type confusion as $@ may be either an array or a string. | tst.js:77:25:77:38 | req.query.path | this HTTP request parameter |
+| tst.js:82:9:82:9 | p | tst.js:77:25:77:38 | req.query.path | tst.js:82:9:82:9 | p | Potential type confusion as $@ may be either an array or a string. | tst.js:77:25:77:38 | req.query.path | this HTTP request parameter |

@@ -1,0 +1,9 @@
+| ODASA-6095-A.hpp:5:25:5:30 | mytype | MyTemplate<X>::mytype | NestedTypedefType, getBaseType() = MyTemplate<X>, member of MyTemplate<X> |
+| ODASA-6095-B.hpp:6:43:6:49 | mytype2 | MyTemplate2<X>::mytype2 | NestedTypedefType, getBaseType() = decltype(...), member of MyTemplate2<X> |
+| file://:0:0:0:0 | mytype | MyTemplate<char>::mytype | NestedTypedefType, getBaseType() = MyTemplate<char>, member of MyTemplate<char> |
+| file://:0:0:0:0 | mytype2 | MyTemplate2<char>::mytype2 | NestedTypedefType, getBaseType() = decltype(...), member of MyTemplate2<char> |
+| typedefs.cpp:3:15:3:19 | WIDTH | NS1::WIDTH | getBaseType() = int |
+| typedefs.cpp:16:21:16:25 | WIDTH | A::WIDTH | NestedTypedefType, getBaseType() = NS1::WIDTH, member of A |
+| typedefs.cpp:17:16:17:21 | WIDTH2 | A::WIDTH2 | NestedTypedefType, getBaseType() = A::WIDTH, member of A |
+| typedefs.cpp:20:16:20:21 | WIDTH3 | A::WIDTH3 | NestedTypedefType, getBaseType() = A::WIDTH, member of A |
+| typedefs.cpp:23:16:23:21 | WIDTH4 | A::WIDTH4 | NestedTypedefType, getBaseType() = A::WIDTH, member of A |

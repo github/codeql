@@ -1,0 +1,12 @@
+| test.py:18 | b | externally controlled string |
+| test.py:19 | BinaryExpr | [externally controlled string] |
+| test.py:19 | BinaryExpr | externally controlled string |
+| test.py:19 | Tuple | [externally controlled string] |
+| test.py:19 | b | externally controlled string |
+| test.py:22 | a | externally controlled string |
+| test.py:22 | b | externally controlled string |
+| test.py:23 | BinaryExpr | [externally controlled string] |
+| test.py:23 | BinaryExpr | externally controlled string |
+| test.py:23 | Tuple | [externally controlled string] |
+| test.py:23 | a | externally controlled string |
+| test.py:23 | b | externally controlled string |

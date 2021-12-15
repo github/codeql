@@ -1,0 +1,63 @@
+| tst.js:1:18:1:24 | require | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:2:16:2:22 | require | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:4:1:4:14 | (function(){}) | tst.js:4:2:4:13 | anonymous function |
+| tst.js:5:1:5:23 | (functi ... urn; }) | tst.js:5:2:5:22 | anonymous function |
+| tst.js:6:1:6:28 | (functi ... rue; }) | tst.js:6:2:6:27 | anonymous function |
+| tst.js:7:1:7:55 | (functi ... lse; }) | tst.js:7:2:7:54 | anonymous function |
+| tst.js:8:1:8:31 | (functi ... own; }) | tst.js:8:2:8:30 | anonymous function |
+| tst.js:11:5:11:6 | f1 | tst.js:10:5:10:19 | function f1 |
+| tst.js:14:5:14:6 | f2 | tst.js:13:5:13:19 | function f2 |
+| tst.js:15:5:15:6 | f2 | tst.js:13:5:13:19 | function f2 |
+| tst.js:18:5:18:9 | o1.f3 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:18:5:18:9 | o1.f3 | tst.js:17:20:17:34 | function f3 |
+| tst.js:23:5:23:6 | f4 | tst.js:20:5:22:5 | function f4 |
+| tst.js:23:5:23:8 | f4() | tst.js:21:16:21:30 | function f5 |
+| tst.js:30:5:30:6 | f6 | tst.js:25:5:29:5 | function f6 |
+| tst.js:30:5:30:8 | f6() | tst.js:26:16:28:9 | function f7 |
+| tst.js:30:5:30:10 | f6()() | tst.js:27:20:27:34 | function f8 |
+| tst.js:32:14:32:20 | unknown | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:33:5:33:6 | f9 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:36:5:36:7 | f10 | tst.js:35:24:35:36 | anonymous function |
+| tst.js:36:5:36:7 | f10 | tst.js:35:39:35:51 | anonymous function |
+| tst.js:39:5:39:7 | f11 | tst.js:38:24:38:48 | anonymous function |
+| tst.js:39:5:39:7 | f11 | tst.js:38:51:38:78 | anonymous function |
+| tst.js:41:39:41:45 | unknown | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:42:5:42:7 | f12 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:42:5:42:7 | f12 | tst.js:41:24:41:36 | anonymous function |
+| tst.js:45:5:45:7 | f13 | file://:0:0:0:0 | non-zero value |
+| tst.js:45:5:45:7 | f13 | tst.js:44:24:44:36 | anonymous function |
+| tst.js:48:5:48:7 | f14 | file://:0:0:0:0 | non-zero value |
+| tst.js:48:5:48:7 | f14 | tst.js:47:34:47:56 | anonymous function |
+| tst.js:48:5:48:7 | f14 | tst.js:47:59:47:86 | anonymous function |
+| tst.js:50:5:50:16 | someFunction | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:51:5:51:25 | someObj ... eMethod | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:51:5:51:25 | someObj ... eMethod | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:53:5:53:14 | someModule | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:53:5:53:14 | someModule | file://:0:0:0:0 | undefined |
+| tst.js:54:5:54:25 | someMod ... eMethod | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:54:5:54:25 | someMod ... eMethod | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:56:5:56:12 | myModule | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:56:5:56:12 | myModule | file://:0:0:0:0 | undefined |
+| tst.js:56:5:56:12 | myModule | myModule.js:1:1:4:0 | exports object of module myModule |
+| tst.js:56:5:56:12 | myModule | myModule.js:1:18:1:30 | anonymous function |
+| tst.js:57:5:57:22 | myModule.myMethod1 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:57:5:57:22 | myModule.myMethod1 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:58:5:58:22 | myModule.myMethod2 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:58:5:58:22 | myModule.myMethod2 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:58:5:58:34 | myModul ... Method3 | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:58:5:58:34 | myModul ... Method3 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:61:5:61:7 | f15 | file://:0:0:0:0 | undefined |
+| tst.js:61:5:61:7 | f15 | tst.js:60:24:60:36 | anonymous function |
+| tst.js:64:5:64:7 | f16 | tst.js:63:24:63:36 | anonymous function |
+| tst.js:64:5:64:7 | f16 | tst.js:63:39:63:40 | object literal |
+| tst.js:68:9:68:11 | f17 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:68:9:68:11 | f17 | tst.js:67:31:67:42 | anonymous function |
+| tst.js:73:9:73:11 | f18 | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:73:9:73:11 | f18 | tst.js:72:31:72:42 | anonymous function |
+| tst.js:77:5:77:7 | f19 | file://:0:0:0:0 | undefined |
+| tst.js:80:5:80:7 | f20 | file://:0:0:0:0 | undefined |
+| tst.js:80:5:80:7 | f20 | tst.js:79:24:79:25 | object literal |
+| tst.js:84:17:84:20 | getF | tst.js:83:20:83:31 | function getF |
+| tst.js:86:13:86:13 | f | file://:0:0:0:0 | undefined |
+| tst.js:89:17:89:20 | getG | tst.js:88:9:88:25 | function getG |
+| tst.js:91:13:91:13 | g | file://:0:0:0:0 | undefined |

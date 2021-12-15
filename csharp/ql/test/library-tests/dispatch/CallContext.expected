@@ -1,0 +1,25 @@
+getADynamicTargetInCallContext
+| TypeFlow.cs:33:9:33:18 | call to method Method | TypeFlow.cs:12:29:12:34 | Method | TypeFlow.cs:7:7:7:23 | call to method Run |
+| TypeFlow.cs:33:9:33:18 | call to method Method | TypeFlow.cs:17:30:17:35 | Method | TypeFlow.cs:7:7:7:23 | call to method Run |
+mayBenefitFromCallContext
+| TypeFlow.cs:33:9:33:18 | call to method Method |
+| ViableCallable.cs:12:9:12:28 | call to method M<Int32> |
+| ViableCallable.cs:14:9:14:15 | access to property Prop |
+| ViableCallable.cs:14:19:14:25 | access to property Prop |
+| ViableCallable.cs:16:9:16:23 | access to indexer |
+| ViableCallable.cs:16:27:16:41 | access to indexer |
+| ViableCallable.cs:18:9:18:16 | access to event Event |
+| ViableCallable.cs:19:9:19:16 | access to event Event |
+| ViableCallable.cs:22:9:22:30 | call to method M<Boolean> |
+| ViableCallable.cs:24:9:24:15 | access to property Prop |
+| ViableCallable.cs:24:19:24:25 | access to property Prop |
+| ViableCallable.cs:26:9:26:23 | access to indexer |
+| ViableCallable.cs:26:27:26:41 | access to indexer |
+| ViableCallable.cs:28:9:28:16 | access to event Event |
+| ViableCallable.cs:29:9:29:16 | access to event Event |
+| ViableCallable.cs:234:9:234:15 | call to method M<Int32> |
+| ViableCallable.cs:283:9:283:15 | call to method M<Int32> |
+| ViableCallable.cs:286:9:286:20 | call to method M<Int32> |
+| ViableCallable.cs:411:9:411:18 | call to method M<Int32> |
+| ViableCallable.cs:455:9:455:30 | call to method M2<T> |
+| ViableCallable.cs:461:9:461:30 | call to method M2<T> |

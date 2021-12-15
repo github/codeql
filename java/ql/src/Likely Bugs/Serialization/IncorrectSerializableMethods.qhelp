@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A serializable object that defines its own serialization protocol using the methods
+<code>readObject</code>, <code>readObjectNoData</code> or <code>writeObject</code> must use
+the signature that is expected by the Java serialization framework. Otherwise, the default
+serialization mechanism is used.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that the signatures of <code>readObject</code>, <code>readObjectNoData</code> and
+<code>writeObject</code> on serializable classes match these expected signatures:
+</p>
+
+<sample src="IncorrectSerializableMethodsSig.java" />
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>WrongNetRequest</code> defines <code>readObject</code>,
+<code>readObjectNoData</code> and <code>writeObject</code> using the wrong signatures. However,
+<code>NetRequest</code> defines them correctly.</p>
+
+<sample src="IncorrectSerializableMethods.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html">Serializable</a>.
+</li>
+<li>
+  Oracle Technology Network:
+  <a href="https://www.oracle.com/technical-resources/articles/java/serializationapi.html">Discover the secrets of the Java Serialization API</a>.
+</li>
+
+
+</references>
+</qhelp>

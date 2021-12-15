@@ -1,0 +1,32 @@
+| a.h:0:0:0:0 | a.h | 1 | 1 | 1 | 19 | IncludeNext | "a.h" | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 1 | 1 | 1 | 16 | PreprocessorIf | defined(FOO) | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 3 | 1 | 3 | 19 | PreprocessorElif | !defined(BAR) | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 4 | 1 | 4 | 11 | Macro | BAR |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 5 | 1 | 5 | 17 | Macro | BAR_val | 1 |
+| pp.cpp:0:0:0:0 | pp.cpp | 6 | 1 | 6 | 24 | Macro | BAR_fn() | BAR_val |
+| pp.cpp:0:0:0:0 | pp.cpp | 7 | 1 | 7 | 5 | PreprocessorElse | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 9 | 1 | 9 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 11 | 1 | 11 | 10 | PreprocessorUndef | BAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 13 | 1 | 13 | 63 | Macro | LOG(fmt,__VA_ARGS__...) | printf("Warning: %s", fmt, __VA__ARGS__) |
+| pp.cpp:0:0:0:0 | pp.cpp | 14 | 1 | 14 | 15 | Include | "pp.h" | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 16 | 1 | 16 | 5 | PreprocessorIf | 0 | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 17 | 1 | 17 | 5 | PreprocessorElse | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 18 | 1 | 18 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 20 | 1 | 20 | 5 | PreprocessorIf | 1 | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 21 | 1 | 21 | 5 | PreprocessorElse | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 22 | 1 | 22 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 24 | 1 | 24 | 13 | Import | "a.h" | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 30 | 2 | 30 | 32 | Macro | MACRO_FUNCTIONCONTEXT | 1 |
+| pp.cpp:0:0:0:0 | pp.cpp | 36 | 2 | 36 | 29 | Macro | MACRO_CLASSCONTEXT | 2 |
+| pp.cpp:0:0:0:0 | pp.cpp | 42 | 2 | 42 | 40 | Macro | MACRO_TEMPLATEFUNCTIONCONTEXT | 3 |
+| pp.cpp:0:0:0:0 | pp.cpp | 49 | 2 | 49 | 37 | Macro | MACRO_TEMPLATECLASSCONTEXT | 4 |
+| pp.cpp:0:0:0:0 | pp.cpp | 50 | 2 | 50 | 48 | Macro | MACRO_TEMPLATECLASSCONTEXT_REFERENCED | 5 |
+| pp.cpp:0:0:0:0 | pp.cpp | 54 | 3 | 54 | 39 | Macro | MACRO_TEMPLATEMETHODCONTEXT | 6 |
+| pp.cpp:0:0:0:0 | pp.cpp | 57 | 1 | 57 | 21 | PreprocessorIfdef | INSTANTIATION | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 59 | 1 | 59 | 6 | PreprocessorElse | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 60 | 3 | 60 | 21 | Macro | IN_TEMPLATE |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 61 | 1 | 61 | 7 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 69 | 1 | 69 | 21 | Macro | INSTANTIATION |  |
+| pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
+| pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33  "emerald_city.h" | N/A |
+| pp.h:0:0:0:0 | pp.h | 5 | 1 | 5 | 33 | PreprocessorWarning | "Not in Kansas any more" | N/A |

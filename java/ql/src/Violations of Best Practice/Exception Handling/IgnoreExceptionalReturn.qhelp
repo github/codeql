@@ -1,0 +1,88 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Many methods in the Java Development Kit (for examples, see the references below) 
+return status values (for example, as an <code>int</code>) to indicate 
+whether the method execution finished normally. They may return an 
+error code if the method did not finish normally.
+If the method result is not checked, exceptional method executions 
+may cause subsequent code to fail.
+</p>
+
+</overview>
+<recommendation>
+
+<p>You should insert additional code to check the return value and take appropriate action.</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example uses the <code>java.io.InputStream.read</code> method to 
+read 16 bytes from an input stream and store them in an array.
+However, <code>read</code> may not actually be able to read as many
+bytes as requested, for example because the stream is exhausted. 
+Therefore, the code should not simply rely on the array <code>b</code> being filled with 
+precisely 16 bytes from the input stream.
+Instead, the code should check the method's return value, which indicates the number of bytes actually read.</p>
+
+<sample src="IgnoreExceptionalReturn.java" />
+
+</example>
+<references>
+
+
+<li>
+    SEI CERT Oracle Coding Standard for Java: <a href="https://wiki.sei.cmu.edu/confluence/display/java/EXP00-J.+Do+not+ignore+values+returned+by+methods">
+        EXP00-J. Do not ignore values returned by methods</a>.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Queue.html#offer(E)">
+    java.util.Queue.offer</a>.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/BlockingQueue.html#offer(E,long,java.util.concurrent.TimeUnit)">
+    java.util.concurrent.BlockingQueue.offer</a>.
+</li>
+<li>
+  Java API Specification, java.util.concurrent.locks.Condition: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#await(long,java.util.concurrent.TimeUnit)">
+    await</a>, 
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#awaitUntil(java.util.Date)">
+    awaitUntil</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#awaitNanos(long)">
+    awaitNanos</a>.
+</li>
+<li>
+  Java API Specification, java.io.File: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#createNewFile()">
+    createNewFile</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#delete()">
+    delete</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#mkdir()">
+    mkdir</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#renameTo(java.io.File)">
+    renameTo</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setLastModified(long)">
+    setLastModified</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setReadOnly()">
+    setReadOnly</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setWritable(boolean)">
+    setWritable(boolean)</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setWritable(boolean,boolean)">
+    setWritable(boolean, boolean)</a>.
+</li>
+<li>
+  Java API Specification, java.io.InputStream: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#skip(long)">
+    skip</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#read(byte%5B%5D)">
+    read(byte[])</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#read(byte[],int,int)">
+    read(byte[], int, int)</a>.
+</li>
+
+
+</references>
+</qhelp>

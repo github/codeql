@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+  <p>
+    A common pattern for functions returning multiple arguments is to return a
+    single tuple containing said arguments. If the function has multiple return
+    points, care must be taken to ensure that the tuples returned have the same
+    length.
+  </p>
+</overview>
+<recommendation>
+
+  <p>Ensure that the function returns tuples of similar lengths.</p>
+
+</recommendation>
+<example>
+  <p>
+    In this example, the <code>sum_length_product1</code> function
+    simultaneously calculates the sum, length, and product of the values in the
+    given list. For empty lists, however, the returned tuple only contains the
+    sum and length of the list. In <code>sum_length_product2</code> this error
+    has been corrected.
+  </p>
+<sample src="ReturnConsistentTupleSizes.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function">Function definitions</a>.
+</li>
+
+
+</references>
+</qhelp>

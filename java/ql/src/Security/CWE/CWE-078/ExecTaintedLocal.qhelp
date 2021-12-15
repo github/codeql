@@ -1,0 +1,5 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<include src="ExecTainted.qhelp" /></qhelp>

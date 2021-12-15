@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is good practice to prefix the names of ASP.NET web controls with a shortened version of their type. 
+This makes the controls easier to find in Intellisense and also makes the purpose of the control more clear.</p>
+
+</overview>
+<recommendation>
+<p>Give controls an appropriate prefix to indicate their type (for example, <code>txt</code> for text boxes or <code>rad</code> for 
+radio buttons).</p>
+
+</recommendation>
+<references>
+
+  <li>MSDN, Visual Studio 6.0 Technical Articles, <a href="http://msdn.microsoft.com/en-us/library/aa260976(VS.60).aspx">Hungarian Notation</a>.</li>
+
+</references>
+</qhelp>

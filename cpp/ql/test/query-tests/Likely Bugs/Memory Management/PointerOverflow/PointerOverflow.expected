@@ -1,0 +1,4 @@
+| test.cpp:6:12:6:33 | ... < ... | Range check relying on pointer overflow. |
+| test.cpp:33:9:33:21 | ... < ... | Range check relying on pointer overflow. |
+| test.cpp:49:36:49:48 | ... < ... | Range check relying on pointer overflow. |
+| test.cpp:51:14:51:26 | ... < ... | Range check relying on pointer overflow. |

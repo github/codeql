@@ -1,0 +1,66 @@
+| es2015.js:1:1:63:32 | <toplevel> | 2015 | modules |
+| es2015.js:5:3:5:3 | x | 2015 | default function parameters |
+| es2015.js:6:6:6:9 | rest | 2015 | rest parameters |
+| es2015.js:9:10:9:21 | ...[1, 2, 3] | 2015 | spread (...) operator |
+| es2015.js:13:3:13:15 | __proto__: [] | 2015 | object literal extensions |
+| es2015.js:14:3:14:3 | x | 2015 | object literal extensions |
+| es2015.js:15:3:15:10 | foo() {} | 2015 | object literal extensions |
+| es2015.js:16:3:16:8 | [x]: x | 2015 | object literal extensions |
+| es2015.js:19:1:19:18 | for (var x of xs); | 2015 | for..of loops |
+| es2015.js:21:1:21:10 | 0b11001001 | 2015 | octal and binary literals |
+| es2015.js:22:1:22:6 | 0o2412 | 2015 | octal and binary literals |
+| es2015.js:24:1:24:10 | `template` | 2015 | template literals |
+| es2015.js:26:1:26:4 | /a/y | 2015 | RegExp "y" and "u" flags |
+| es2015.js:27:1:27:4 | /a/u | 2015 | RegExp "y" and "u" flags |
+| es2015.js:29:5:29:11 | [y] = o | 2015 | destructuring declarations |
+| es2015.js:30:1:30:7 | [y] = y | 2015 | destructuring assignment |
+| es2015.js:32:3:32:7 | {x:y} | 2015 | destructuring parameters |
+| es2015.js:35:1:35:11 | "\\u{1f63c}" | 2015 | Unicode code point escapes |
+| es2015.js:40:1:40:16 | const pi = 22/7; | 2015 | const |
+| es2015.js:41:1:41:12 | let z = x+1; | 2015 | let |
+| es2015.js:44:3:44:10 | x => x*2 | 2015 | arrow functions |
+| es2015.js:47:1:49:1 | class S ... x); }\\n} | 2015 | class |
+| es2015.js:51:1:55:1 | class S ... r\\n  }\\n} | 2015 | class |
+| es2015.js:53:5:53:9 | super | 2015 | super |
+| es2015.js:57:1:61:1 | functio ... arget\\n} | 2015 | generators |
+| es2015.js:58:3:58:10 | yield 42 | 2015 | generators |
+| es2015.js:59:3:59:12 | yield* gen | 2015 | generators |
+| es2015.js:60:3:60:12 | new.target | 2015 | new.target |
+| es2015.js:63:2:63:23 | class e ... uper {} | 2015 | class |
+| es2016.js:1:1:1:12 | x **= y ** z | 2016 | exponentiation operator |
+| es2016.js:1:7:1:12 | y ** z | 2016 | exponentiation operator |
+| es2017.js:1:1:3:1 | functio ... (0,);\\n} | 2017 | trailing function comma |
+| es2017.js:2:3:2:7 | f(0,) | 2017 | trailing function comma |
+| es2017.js:5:1:13:1 | async f ... rn v;\\n} | 2017 | async/await |
+| es2017.js:6:3:6:15 | let v = null; | 2015 | let |
+| es2017.js:8:5:10:5 | for(con ... ;\\n    } | 2015 | for..of loops |
+| es2017.js:8:9:8:15 | const x | 2015 | const |
+| es2017.js:9:11:9:23 | await h(x, y) | 2017 | async/await |
+| es2018.js:1:5:1:8 | `\\u` | 2015 | template literals |
+| es2018.js:1:6:1:7 | \\u | 2018 | revised template literal syntax |
+| es2018.js:2:1:2:18 | /\\k<ws>(?<ws>\\w+)/ | 2018 | named capture groups |
+| es2018.js:3:1:3:8 | /(?<=a)/ | 2018 | lookbehind assertions |
+| es2018.js:4:1:4:8 | /(?<!b)/ | 2018 | lookbehind assertions |
+| es2018.js:5:1:5:13 | /\\p{Number}/u | 2015 | RegExp "y" and "u" flags |
+| es2018.js:5:1:5:13 | /\\p{Number}/u | 2018 | Unicode property escapes |
+| es2018.js:6:1:6:19 | /\\P{Script=Greek}/u | 2015 | RegExp "y" and "u" flags |
+| es2018.js:6:1:6:19 | /\\P{Script=Greek}/u | 2018 | Unicode property escapes |
+| es2018.js:8:1:8:4 | /./s | 2018 | 's' regular expression flag |
+| es2018.js:10:1:10:21 | let { . ...  } = o; | 2015 | let |
+| es2018.js:10:5:10:16 | { ...props } | 2018 | rest properties |
+| es2018.js:10:5:10:20 | { ...props } = o | 2015 | destructuring declarations |
+| es2018.js:11:19:11:26 | ...props | 2018 | spread properties |
+| es2018.js:13:1:17:1 | async f ... ;\\n  }\\n} | 2017 | async/await |
+| es2018.js:14:3:16:3 | for awa ... e);\\n  } | 2015 | for..of loops |
+| es2018.js:14:3:16:3 | for awa ... e);\\n  } | 2018 | asynchronous iteration |
+| es2018.js:14:14:14:23 | const line | 2015 | const |
+| es2018.js:18:1:20:1 | async f ... / ...\\n} | 2015 | generators |
+| es2018.js:18:1:20:1 | async f ... / ...\\n} | 2017 | async/await |
+| es2018.js:18:1:20:1 | async f ... / ...\\n} | 2018 | asynchronous iteration |
+| es2018.js:22:1:25:1 | class C ... () {}\\n} | 2015 | class |
+| es2018.js:23:19:23:23 | () {} | 2015 | generators |
+| es2018.js:23:19:23:23 | () {} | 2017 | async/await |
+| es2018.js:23:19:23:23 | () {} | 2018 | asynchronous iteration |
+| es2018.js:24:32:24:36 | () {} | 2015 | generators |
+| es2018.js:24:32:24:36 | () {} | 2017 | async/await |
+| es2018.js:24:32:24:36 | () {} | 2018 | asynchronous iteration |

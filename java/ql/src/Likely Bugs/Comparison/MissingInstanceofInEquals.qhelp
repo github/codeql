@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An implementation of <code>equals</code> must be able to handle an argument of any type, to avoid
+failing casts.
+Therefore, the implementation should inspect the type of its argument to see if the argument can be safely cast to 
+the class in which the <code>equals</code> method is declared.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Usually, an implementation of <code>equals</code> should check 
+the type of its argument using <code>instanceof</code>,
+following the general pattern below.</p>
+
+<sample src="MissingInstanceofInEquals.java" />
+
+<p>Using <code>instanceof</code> in this way has the added benefit that it includes a guard against
+null pointer exceptions: if <code>obj</code> is <code>null</code>, the check fails and
+<code>false</code> is returned. Therefore, after the check, it is guaranteed that <code>obj</code> is not <code>null</code>,
+and its fields can be safely accessed.</p>
+
+<p>
+Whenever you use <code>instanceof</code> to check the type of the argument, you should declare
+the <code>equals</code> method <code>final</code>, so that subclasses are unable to cause a violation
+of the symmetry requirement of the <code>equals</code> contract by further overriding <code>equals</code>.
+</p>
+
+<p>
+If you want subclasses to redefine the notion of equality by overriding <code>equals</code>,
+use <code>getClass</code> instead of <code>instanceof</code> to check the type of the argument.
+However, note that the use of <code>getClass</code> prevents any equality relationship between
+instances of a class and its subclasses, even when no additional state is added in a subclass.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 8. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.20.2">Type Comparison Operator instanceof</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,8 @@
+| invalid1.js:3:5:3:18 | this.state.foo | Use `setState` instead of directly modifying component state. |
+| invalid2.js:3:5:3:26 | this.st ... on.name | Use `setState` instead of directly modifying component state. |
+| invalid3.js:3:5:3:32 | this.st ... e.first | Use `setState` instead of directly modifying component state. |
+| invalid4.js:3:5:3:32 | this.st ... e.first | Use `setState` instead of directly modifying component state. |
+| invalid4.js:4:5:4:31 | this.st ... me.last | Use `setState` instead of directly modifying component state. |
+| invalid5.js:6:5:6:32 | that.st ... e.first | Use `setState` instead of directly modifying component state. |
+| invalid6.js:5:30:5:45 | this.state.title | Use `setState` instead of directly modifying component state. |
+| invalid7.js:5:35:5:50 | this.state.title | Use `setState` instead of directly modifying component state. |

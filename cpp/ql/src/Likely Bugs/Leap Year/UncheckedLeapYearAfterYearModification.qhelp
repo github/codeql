@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <include src="LeapYear.inc.qhelp" />
+  
+<p>When performing arithmetic operations on a variable that represents a year, it is important to consider that the resulting value may not be a valid date.</p>
+<p>The typical example is doing simple year arithmetic (i.e. <code>date.year++</code>) without considering if the resulting value will be a valid date or not.</p>
+
+</overview>
+<recommendation>
+<p>When modifying a year field on a date structure, verify if the resulting year is a leap year.</p>
+
+</recommendation>
+<example>
+<p>In this example, we are adding 1 year to the current date. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
+<sample src="UncheckedLeapYearAfterYearModificationBad.c" />
+
+<p>To fix this bug, check the result for leap year.</p>
+<sample src="UncheckedLeapYearAfterYearModificationGood.c" />
+</example>
+
+<references>
+  <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
+  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
+  <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
+</references>
+</qhelp>

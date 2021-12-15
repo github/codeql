@@ -1,0 +1,67 @@
+| tst.js:206:2:206:24 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:206:2:206:24 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:206:2:206:24 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:207:2:207:26 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:207:2:207:26 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:208:2:208:26 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:208:2:208:26 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:209:2:209:40 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:209:2:209:40 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:209:2:209:40 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:210:2:210:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:210:2:210:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:211:2:211:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:211:2:211:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:212:2:212:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:212:2:212:58 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:215:6:215:24 | s.replace(/>/g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:215:6:215:24 | s.replace(/>/g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:215:6:215:24 | s.replace(/>/g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:216:2:216:93 | s().rep ... &#34;') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:217:2:217:93 | s().rep ... &#39;') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:223:2:223:107 | s().rep ... &amp;') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:244:9:244:33 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:244:9:244:33 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:245:9:245:33 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:245:9:245:33 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:246:9:246:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:250:9:250:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:251:9:251:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:253:21:253:45 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:253:21:253:45 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:254:32:254:56 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:254:32:254:56 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:255:26:255:50 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:255:26:255:50 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:256:15:256:39 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:256:15:256:39 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:261:10:261:81 | value.r ... '&gt;') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:261:10:261:81 | value.r ... '&gt;') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:270:61:270:85 | s().rep ... /g, '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:270:61:270:85 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:272:28:272:50 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:272:28:272:50 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:272:28:272:50 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:274:12:274:94 | s().val ... g , '') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:274:12:274:94 | s().val ... g , '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:274:12:274:94 | s().val ... g , '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:277:9:277:29 | arr2.re ... "/g,"") | This HTML sanitizer does not sanitize ampersands |
+| tst.js:277:9:277:29 | arr2.re ... "/g,"") | This HTML sanitizer does not sanitize single quotes |
+| tst.js:284:6:284:30 | x.repla ... quot;') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:294:7:294:31 | y.repla ... quot;') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:300:10:300:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:300:10:300:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:301:10:301:32 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:301:10:301:32 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:301:10:301:32 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:302:10:302:34 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:303:10:303:34 | s().rep ... /g, '') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:303:10:303:34 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:304:9:304:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:305:10:305:34 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |
+| tst.js:320:9:329:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |

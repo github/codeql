@@ -1,0 +1,42 @@
+regexpTest
+| tst.js:6:9:6:28 | /^[a-z]+$/.test(str) |
+| tst.js:7:9:7:36 | /^[a-z] ... != null |
+| tst.js:8:9:8:28 | /^[a-z]+$/.exec(str) |
+| tst.js:9:9:9:29 | str.mat ... -z]+$/) |
+| tst.js:10:9:10:29 | str.mat ... -z]+$") |
+| tst.js:12:9:12:24 | regexp.test(str) |
+| tst.js:13:9:13:32 | regexp. ... != null |
+| tst.js:14:9:14:24 | regexp.exec(str) |
+| tst.js:15:9:15:25 | str.match(regexp) |
+| tst.js:18:9:18:13 | match |
+| tst.js:19:10:19:14 | match |
+| tst.js:20:9:20:21 | match == null |
+| tst.js:21:9:21:21 | match != null |
+| tst.js:22:9:22:13 | match |
+| tst.js:25:23:25:27 | match |
+| tst.js:29:21:29:36 | regexp.test(str) |
+| tst.js:33:23:33:39 | str.match(regexp) |
+| tst.js:40:9:40:37 | regexp. ... defined |
+| tst.js:44:9:44:14 | match2 |
+| tst.js:45:10:45:15 | match2 |
+#select
+| tst.js:6:9:6:28 | /^[a-z]+$/.test(str) | tst.js:6:10:6:17 | ^[a-z]+$ | tst.js:6:9:6:18 | /^[a-z]+$/ | tst.js:6:25:6:27 | str | true |
+| tst.js:7:9:7:36 | /^[a-z] ... != null | tst.js:7:10:7:17 | ^[a-z]+$ | tst.js:7:9:7:18 | /^[a-z]+$/ | tst.js:7:25:7:27 | str | true |
+| tst.js:8:9:8:28 | /^[a-z]+$/.exec(str) | tst.js:8:10:8:17 | ^[a-z]+$ | tst.js:8:9:8:18 | /^[a-z]+$/ | tst.js:8:25:8:27 | str | true |
+| tst.js:9:9:9:29 | str.mat ... -z]+$/) | tst.js:9:20:9:27 | ^[a-z]+$ | tst.js:9:19:9:28 | /^[a-z]+$/ | tst.js:9:9:9:11 | str | true |
+| tst.js:10:9:10:29 | str.mat ... -z]+$") | tst.js:10:20:10:27 | ^[a-z]+$ | tst.js:10:19:10:28 | "^[a-z]+$" | tst.js:10:9:10:11 | str | true |
+| tst.js:12:9:12:24 | regexp.test(str) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:12:9:12:14 | regexp | tst.js:12:21:12:23 | str | true |
+| tst.js:13:9:13:32 | regexp. ... != null | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:13:9:13:14 | regexp | tst.js:13:21:13:23 | str | true |
+| tst.js:14:9:14:24 | regexp.exec(str) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:14:9:14:14 | regexp | tst.js:14:21:14:23 | str | true |
+| tst.js:15:9:15:25 | str.match(regexp) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:15:19:15:24 | regexp | tst.js:15:9:15:11 | str | true |
+| tst.js:18:9:18:13 | match | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
+| tst.js:19:10:19:14 | match | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
+| tst.js:20:9:20:21 | match == null | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | false |
+| tst.js:21:9:21:21 | match != null | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
+| tst.js:22:9:22:13 | match | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
+| tst.js:25:23:25:27 | match | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
+| tst.js:29:21:29:36 | regexp.test(str) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:29:21:29:26 | regexp | tst.js:29:33:29:35 | str | true |
+| tst.js:33:23:33:39 | str.match(regexp) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:33:33:33:38 | regexp | tst.js:33:23:33:25 | str | true |
+| tst.js:40:9:40:37 | regexp. ... defined | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:40:9:40:14 | regexp | tst.js:40:21:40:23 | str | false |
+| tst.js:44:9:44:14 | match2 | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:43:28:43:33 | regexp | tst.js:43:18:43:20 | str | true |
+| tst.js:45:10:45:15 | match2 | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:43:28:43:33 | regexp | tst.js:43:18:43:20 | str | true |

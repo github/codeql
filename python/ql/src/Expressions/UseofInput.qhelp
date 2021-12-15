@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In Python 2, a call to the <code>input()</code> function, <code>input(prompt)</code> is equivalent to <code>eval(raw_input(prompt))</code>. Evaluating user input without any checking can be a serious security flaw.</p>
+
+</overview>
+<recommendation>
+
+<p>Get user input with <code>raw_input(prompt)</code> and then validate that input before evaluating. If the expected input is a number or
+string, then <code>ast.literal_eval()</code> can always be used safely.</p>
+
+
+</recommendation>
+<references>
+
+  <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#input">input</a>,
+  <a href="http://docs.python.org/2/library/ast.html#ast.literal_eval">ast.literal_eval</a>.</li>
+  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Data_validation">Data validation</a>.</li>
+
+</references>
+</qhelp>

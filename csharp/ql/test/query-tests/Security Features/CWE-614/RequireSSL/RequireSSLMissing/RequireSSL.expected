@@ -1,0 +1,2 @@
+| Web.config:5:7:5:16 | forms | The 'requireSSL' attribute is not set to 'true'. |
+| Web.config:7:5:7:20 | httpCookies | The 'requireSSL' attribute is not set to 'true'. |

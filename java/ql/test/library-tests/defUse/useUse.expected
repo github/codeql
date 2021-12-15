@@ -1,0 +1,7 @@
+| Test.java:4:18:4:23 | w | 9 | 21 |
+| Test.java:4:18:4:23 | w | 17 | 21 |
+| Test.java:5:3:5:12 | int x | 11 | 23 |
+| Test.java:5:3:5:12 | int x | 11 | 33 |
+| Test.java:5:3:5:12 | int x | 23 | 33 |
+| Test.java:6:3:6:14 | long y | 13 | 20 |
+| Test.java:6:3:6:14 | long y | 30 | 37 |

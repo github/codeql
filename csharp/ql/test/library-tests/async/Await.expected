@@ -1,0 +1,5 @@
+| 24 | async.cs:24:26:24:59 | await ... | async.cs:24:32:24:59 | call to method ContentLengthAsync |
+| 32 | async.cs:32:34:32:62 | await ... | async.cs:32:40:32:62 | call to method ReadToEndAsync |
+| 42 | async.cs:42:46:42:70 | await ... | async.cs:42:52:42:70 | call to method OpenAsync |
+| 44 | async.cs:44:38:44:66 | await ... | async.cs:44:44:44:66 | call to method ReadToEndAsync |
+| 52 | async.cs:52:13:52:51 | await ... | async.cs:52:19:52:51 | call to method PrintContentLengthAsync |

@@ -1,0 +1,135 @@
+| file://:0:0:0:0 | fp_offset | unsigned int | getUnspecifiedType() | unsigned int |
+| file://:0:0:0:0 | gp_offset | unsigned int | getUnspecifiedType() | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | void * | PointerType |  |
+| file://:0:0:0:0 | overflow_arg_area | void * | VoidPointerType |  |
+| file://:0:0:0:0 | overflow_arg_area | void * | getBaseType() | void |
+| file://:0:0:0:0 | overflow_arg_area | void * | getUnspecifiedType() | void * |
+| file://:0:0:0:0 | reg_save_area | void * | PointerType |  |
+| file://:0:0:0:0 | reg_save_area | void * | VoidPointerType |  |
+| file://:0:0:0:0 | reg_save_area | void * | getBaseType() | void |
+| file://:0:0:0:0 | reg_save_area | void * | getUnspecifiedType() | void * |
+| pointertypes.c:2:6:2:6 | c | char | getUnspecifiedType() | char |
+| pointertypes.c:3:7:3:8 | cp | char * | CharPointerType |  |
+| pointertypes.c:3:7:3:8 | cp | char * | PointerType |  |
+| pointertypes.c:3:7:3:8 | cp | char * | getBaseType() | char |
+| pointertypes.c:3:7:3:8 | cp | char * | getUnspecifiedType() | char * |
+| pointertypes.c:5:12:5:13 | cc | const char | SpecifiedType |  |
+| pointertypes.c:5:12:5:13 | cc | const char | getASpecifier() | const |
+| pointertypes.c:5:12:5:13 | cc | const char | getBaseType() | char |
+| pointertypes.c:5:12:5:13 | cc | const char | getUnspecifiedType() | char |
+| pointertypes.c:5:12:5:13 | cc | const char | isConst() |  |
+| pointertypes.c:6:12:6:14 | cc2 | const char | SpecifiedType |  |
+| pointertypes.c:6:12:6:14 | cc2 | const char | getASpecifier() | const |
+| pointertypes.c:6:12:6:14 | cc2 | const char | getBaseType() | char |
+| pointertypes.c:6:12:6:14 | cc2 | const char | getUnspecifiedType() | char |
+| pointertypes.c:6:12:6:14 | cc2 | const char | isConst() |  |
+| pointertypes.c:7:13:7:15 | ccp | const char * | PointerType |  |
+| pointertypes.c:7:13:7:15 | ccp | const char * | getBaseType() | const char |
+| pointertypes.c:7:13:7:15 | ccp | const char * | getUnspecifiedType() | char * |
+| pointertypes.c:8:13:8:16 | ccp2 | const char * | PointerType |  |
+| pointertypes.c:8:13:8:16 | ccp2 | const char * | getBaseType() | const char |
+| pointertypes.c:8:13:8:16 | ccp2 | const char * | getUnspecifiedType() | char * |
+| pointertypes.c:9:14:9:17 | ccp3 | char *const | SpecifiedType |  |
+| pointertypes.c:9:14:9:17 | ccp3 | char *const | getASpecifier() | const |
+| pointertypes.c:9:14:9:17 | ccp3 | char *const | getBaseType() | char * |
+| pointertypes.c:9:14:9:17 | ccp3 | char *const | getUnspecifiedType() | char * |
+| pointertypes.c:9:14:9:17 | ccp3 | char *const | isConst() |  |
+| pointertypes.c:10:20:10:23 | ccp4 | const char *const | SpecifiedType |  |
+| pointertypes.c:10:20:10:23 | ccp4 | const char *const | getASpecifier() | const |
+| pointertypes.c:10:20:10:23 | ccp4 | const char *const | getBaseType() | const char * |
+| pointertypes.c:10:20:10:23 | ccp4 | const char *const | getUnspecifiedType() | char * |
+| pointertypes.c:10:20:10:23 | ccp4 | const char *const | isConst() |  |
+| pointertypes.c:12:15:12:16 | vc | volatile char | SpecifiedType |  |
+| pointertypes.c:12:15:12:16 | vc | volatile char | getASpecifier() | volatile |
+| pointertypes.c:12:15:12:16 | vc | volatile char | getBaseType() | char |
+| pointertypes.c:12:15:12:16 | vc | volatile char | getUnspecifiedType() | char |
+| pointertypes.c:12:15:12:16 | vc | volatile char | isVolatile() |  |
+| pointertypes.c:13:15:13:17 | vc2 | volatile char | SpecifiedType |  |
+| pointertypes.c:13:15:13:17 | vc2 | volatile char | getASpecifier() | volatile |
+| pointertypes.c:13:15:13:17 | vc2 | volatile char | getBaseType() | char |
+| pointertypes.c:13:15:13:17 | vc2 | volatile char | getUnspecifiedType() | char |
+| pointertypes.c:13:15:13:17 | vc2 | volatile char | isVolatile() |  |
+| pointertypes.c:14:16:14:18 | vcp | volatile char * | PointerType |  |
+| pointertypes.c:14:16:14:18 | vcp | volatile char * | getBaseType() | volatile char |
+| pointertypes.c:14:16:14:18 | vcp | volatile char * | getUnspecifiedType() | char * |
+| pointertypes.c:15:16:15:19 | vcp2 | volatile char * | PointerType |  |
+| pointertypes.c:15:16:15:19 | vcp2 | volatile char * | getBaseType() | volatile char |
+| pointertypes.c:15:16:15:19 | vcp2 | volatile char * | getUnspecifiedType() | char * |
+| pointertypes.c:16:17:16:20 | vcp3 | char *volatile | SpecifiedType |  |
+| pointertypes.c:16:17:16:20 | vcp3 | char *volatile | getASpecifier() | volatile |
+| pointertypes.c:16:17:16:20 | vcp3 | char *volatile | getBaseType() | char * |
+| pointertypes.c:16:17:16:20 | vcp3 | char *volatile | getUnspecifiedType() | char * |
+| pointertypes.c:16:17:16:20 | vcp3 | char *volatile | isVolatile() |  |
+| pointertypes.c:17:26:17:29 | vcp4 | volatile char *volatile | SpecifiedType |  |
+| pointertypes.c:17:26:17:29 | vcp4 | volatile char *volatile | getASpecifier() | volatile |
+| pointertypes.c:17:26:17:29 | vcp4 | volatile char *volatile | getBaseType() | volatile char * |
+| pointertypes.c:17:26:17:29 | vcp4 | volatile char *volatile | getUnspecifiedType() | char * |
+| pointertypes.c:17:26:17:29 | vcp4 | volatile char *volatile | isVolatile() |  |
+| pointertypes.c:19:17:19:19 | rcp | char *__restrict__ | SpecifiedType |  |
+| pointertypes.c:19:17:19:19 | rcp | char *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:19:17:19:19 | rcp | char *__restrict__ | getBaseType() | char * |
+| pointertypes.c:19:17:19:19 | rcp | char *__restrict__ | getUnspecifiedType() | char * |
+| pointertypes.c:20:20:20:23 | rcp2 | char *__restrict__ | SpecifiedType |  |
+| pointertypes.c:20:20:20:23 | rcp2 | char *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:20:20:20:23 | rcp2 | char *__restrict__ | getBaseType() | char * |
+| pointertypes.c:20:20:20:23 | rcp2 | char *__restrict__ | getUnspecifiedType() | char * |
+| pointertypes.c:22:7:22:8 | vp | void * | PointerType |  |
+| pointertypes.c:22:7:22:8 | vp | void * | VoidPointerType |  |
+| pointertypes.c:22:7:22:8 | vp | void * | getBaseType() | void |
+| pointertypes.c:22:7:22:8 | vp | void * | getUnspecifiedType() | void * |
+| pointertypes.c:24:13:24:15 | cvp | const void * | PointerType |  |
+| pointertypes.c:24:13:24:15 | cvp | const void * | getBaseType() | const void |
+| pointertypes.c:24:13:24:15 | cvp | const void * | getUnspecifiedType() | void * |
+| pointertypes.c:25:13:25:16 | cvp2 | const void * | PointerType |  |
+| pointertypes.c:25:13:25:16 | cvp2 | const void * | getBaseType() | const void |
+| pointertypes.c:25:13:25:16 | cvp2 | const void * | getUnspecifiedType() | void * |
+| pointertypes.c:26:14:26:17 | cvp3 | void *const | SpecifiedType |  |
+| pointertypes.c:26:14:26:17 | cvp3 | void *const | getASpecifier() | const |
+| pointertypes.c:26:14:26:17 | cvp3 | void *const | getBaseType() | void * |
+| pointertypes.c:26:14:26:17 | cvp3 | void *const | getUnspecifiedType() | void * |
+| pointertypes.c:26:14:26:17 | cvp3 | void *const | isConst() |  |
+| pointertypes.c:27:20:27:23 | cvp4 | const void *const | SpecifiedType |  |
+| pointertypes.c:27:20:27:23 | cvp4 | const void *const | getASpecifier() | const |
+| pointertypes.c:27:20:27:23 | cvp4 | const void *const | getBaseType() | const void * |
+| pointertypes.c:27:20:27:23 | cvp4 | const void *const | getUnspecifiedType() | void * |
+| pointertypes.c:27:20:27:23 | cvp4 | const void *const | isConst() |  |
+| pointertypes.c:29:16:29:19 | rvp1 | void *__restrict__ | SpecifiedType |  |
+| pointertypes.c:29:16:29:19 | rvp1 | void *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:29:16:29:19 | rvp1 | void *__restrict__ | getBaseType() | void * |
+| pointertypes.c:29:16:29:19 | rvp1 | void *__restrict__ | getUnspecifiedType() | void * |
+| pointertypes.c:30:20:30:23 | rvp2 | void *__restrict__ | SpecifiedType |  |
+| pointertypes.c:30:20:30:23 | rvp2 | void *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:30:20:30:23 | rvp2 | void *__restrict__ | getBaseType() | void * |
+| pointertypes.c:30:20:30:23 | rvp2 | void *__restrict__ | getUnspecifiedType() | void * |
+| pointertypes.c:32:17:32:19 | csp | const s * | PointerType |  |
+| pointertypes.c:32:17:32:19 | csp | const s * | getBaseType() | const s |
+| pointertypes.c:32:17:32:19 | csp | const s * | getUnspecifiedType() | s * |
+| pointertypes.c:33:17:33:20 | csp2 | const s * | PointerType |  |
+| pointertypes.c:33:17:33:20 | csp2 | const s * | getBaseType() | const s |
+| pointertypes.c:33:17:33:20 | csp2 | const s * | getUnspecifiedType() | s * |
+| pointertypes.c:34:18:34:21 | csp3 | s *const | SpecifiedType |  |
+| pointertypes.c:34:18:34:21 | csp3 | s *const | getASpecifier() | const |
+| pointertypes.c:34:18:34:21 | csp3 | s *const | getBaseType() | s * |
+| pointertypes.c:34:18:34:21 | csp3 | s *const | getUnspecifiedType() | s * |
+| pointertypes.c:34:18:34:21 | csp3 | s *const | isConst() |  |
+| pointertypes.c:35:24:35:27 | csp4 | const s *const | SpecifiedType |  |
+| pointertypes.c:35:24:35:27 | csp4 | const s *const | getASpecifier() | const |
+| pointertypes.c:35:24:35:27 | csp4 | const s *const | getBaseType() | const s * |
+| pointertypes.c:35:24:35:27 | csp4 | const s *const | getUnspecifiedType() | s * |
+| pointertypes.c:35:24:35:27 | csp4 | const s *const | isConst() |  |
+| pointertypes.c:37:20:37:23 | rsp1 | s *__restrict__ | SpecifiedType |  |
+| pointertypes.c:37:20:37:23 | rsp1 | s *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:37:20:37:23 | rsp1 | s *__restrict__ | getBaseType() | s * |
+| pointertypes.c:37:20:37:23 | rsp1 | s *__restrict__ | getUnspecifiedType() | s * |
+| pointertypes.c:38:24:38:27 | rsp2 | s *__restrict__ | SpecifiedType |  |
+| pointertypes.c:38:24:38:27 | rsp2 | s *__restrict__ | getASpecifier() | restrict |
+| pointertypes.c:38:24:38:27 | rsp2 | s *__restrict__ | getBaseType() | s * |
+| pointertypes.c:38:24:38:27 | rsp2 | s *__restrict__ | getUnspecifiedType() | s * |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | SpecifiedType |  |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | getASpecifier() | const |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | getASpecifier() | restrict |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | getASpecifier() | volatile |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | getBaseType() | char * |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | getUnspecifiedType() | char * |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | isConst() |  |
+| pointertypes.c:40:32:40:36 | cvrcp | char *const volatile __restrict__ | isVolatile() |  |

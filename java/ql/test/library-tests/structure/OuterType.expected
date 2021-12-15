@@ -1,0 +1,5 @@
+| structure/A.java:3:11:3:11 | I |
+| structure/A.java:5:14:5:14 | A |
+| structure/A.java:15:7:15:7 | B |
+| structure/A.java:20:7:20:7 | C |
+| structure/A.java:24:7:24:7 | D |

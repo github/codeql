@@ -1,0 +1,18 @@
+name: "csharp"
+display_name: "C#"
+version: 1.22.1
+column_kind: "utf16"
+extra_env_vars:
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
+  COR_ENABLE_PROFILING: "1"
+  COR_PROFILER: "{A3C70A64-7D41-4A94-A3F6-FD47D9259997}"
+  COR_PROFILER_PATH_64: "${env.CODEQL_EXTRACTOR_CSHARP_ROOT}/tools/${env.CODEQL_PLATFORM}/clrtracer64${env.CODEQL_PLATFORM_DLL_EXTENSION}"
+  CORECLR_ENABLE_PROFILING: "1"
+  CORECLR_PROFILER: "{A3C70A64-7D41-4A94-A3F6-FD47D9259997}"
+  CORECLR_PROFILER_PATH_64: "${env.CODEQL_EXTRACTOR_CSHARP_ROOT}/tools/${env.CODEQL_PLATFORM}/clrtracer64${env.CODEQL_PLATFORM_DLL_EXTENSION}"
+file_types:
+  - name: cs
+    display_name: C# sources
+    extensions:
+      - .cs
+legacy_qltest_extraction: true

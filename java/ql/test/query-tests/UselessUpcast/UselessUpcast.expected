@@ -1,0 +1,3 @@
+| Test2.java:8:12:8:20 | (...)... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | Test.java:4:7:4:9 | Sub | Sub | Test.java:3:7:3:11 | Super | Super |
+| Test.java:21:13:21:20 | (...)... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | Test.java:4:7:4:9 | Sub | Sub | Test.java:3:7:3:11 | Super | Super |
+| Test.java:25:7:25:14 | (...)... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | Test.java:4:7:4:9 | Sub | Sub | Test.java:3:7:3:11 | Super | Super |

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Directly writing user input (for example, an HTTP request parameter) to a webpage
+without properly sanitizing the input first, allows for a cross-site scripting vulnerability.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against cross-site scripting, consider escaping the input before writing user input to the page.
+The standard library provides escaping functions: <code>html.escape()</code> for Python 3.2 upwards
+or <code>cgi.escape()</code> older versions of Python.
+Most frameworks also provide their own escaping functions, for example <code>flask.escape()</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example is a minimal flask app which shows a safe and unsafe way to render the given name back to the page.
+The first view is unsafe as <code>first_name</code> is not escaped, leaving the page vulnerable to cross-site scripting attacks.
+The second view is safe as <code>first_name</code> is escaped, so it is not vulnerable to cross-site scripting attacks.
+</p>
+<sample src="examples/xss.py" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+Python Library Reference:
+<a href="https://docs.python.org/3/library/html.html#html.escape">html.escape()</a>.
+</li>
+</references>
+</qhelp>

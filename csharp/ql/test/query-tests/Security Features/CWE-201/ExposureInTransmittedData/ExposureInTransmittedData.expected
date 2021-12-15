@@ -1,0 +1,29 @@
+edges
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p |
+nodes
+| ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | semmle.label | access to local variable password |
+| ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | semmle.label | call to method ToString |
+| ExposureInTransmittedData.cs:22:32:22:41 | access to property Message | semmle.label | access to property Message |
+| ExposureInTransmittedData.cs:23:32:23:44 | call to method ToString | semmle.label | call to method ToString |
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | semmle.label | access to property Data : IDictionary |
+| ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | semmle.label | access to indexer |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | semmle.label | call to method GetField : String |
+| ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | semmle.label | access to local variable p |
+| ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | semmle.label | access to local variable p |
+| ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | semmle.label | ... + ... |
+| ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | semmle.label | access to local variable p |
+subpaths
+#select
+| ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | access to local variable password |
+| ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | call to method ToString |
+| ExposureInTransmittedData.cs:22:32:22:41 | access to property Message | ExposureInTransmittedData.cs:22:32:22:41 | access to property Message | ExposureInTransmittedData.cs:22:32:22:41 | access to property Message | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:22:32:22:41 | access to property Message | access to property Message |
+| ExposureInTransmittedData.cs:23:32:23:44 | call to method ToString | ExposureInTransmittedData.cs:23:32:23:44 | call to method ToString | ExposureInTransmittedData.cs:23:32:23:44 | call to method ToString | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:23:32:23:44 | call to method ToString | call to method ToString |
+| ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:24:32:24:38 | access to property Data | access to property Data : IDictionary |
+| ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | call to method GetField : String |
+| ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | call to method GetField : String |
+| ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | call to method GetField : String |
+| ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | call to method GetField : String |

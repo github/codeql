@@ -1,0 +1,14 @@
+edges
+| UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... |
+nodes
+| UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
+| UrlRedirect.java:36:25:36:89 | ... + ... | semmle.label | ... + ... |
+| UrlRedirect.java:36:58:36:89 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlRedirect.java:39:34:39:63 | getParameter(...) | semmle.label | getParameter(...) |
+| UrlRedirect.java:42:43:42:72 | getParameter(...) | semmle.label | getParameter(...) |
+subpaths
+#select
+| UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | Potentially untrusted URL redirection due to $@. | UrlRedirect.java:23:25:23:54 | getParameter(...) | user-provided value |
+| UrlRedirect.java:36:25:36:89 | ... + ... | UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... | Potentially untrusted URL redirection due to $@. | UrlRedirect.java:36:58:36:89 | getParameter(...) | user-provided value |
+| UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | Potentially untrusted URL redirection due to $@. | UrlRedirect.java:39:34:39:63 | getParameter(...) | user-provided value |
+| UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Potentially untrusted URL redirection due to $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |

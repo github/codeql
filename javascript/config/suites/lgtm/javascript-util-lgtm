@@ -1,0 +1,6 @@
++ semmlecode-javascript-queries/definitions.ql
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/AlertSuppression.ql
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/filters/ClassifyFiles.ql
+    @_namespace com.lgtm/javascript-queries

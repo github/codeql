@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Web sites that do not specify the <code>X-Frame-Options</code> HTTP header may be vulnerable to UI
+redress attacks ("clickjacking"). In these attacks, the vulnerable site is loaded in a frame on
+an attacker-controlled site which uses opaque or transparent layers to trick the user into
+unintentionally clicking a button or link on the vulnerable site.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Set the <code>X-Frame-Options</code> HTTP header to <code>DENY</code>, to instruct web browsers to
+block attempts to load the site in a frame. Alternatively, if framing is needed in certain
+circumstances, specify <code>SAMEORIGIN</code> or <code>ALLOW FROM: ...</code> to limit the ability
+to frame the site to pages from the same origin, or from an allowed whitelist of trusted domains.
+</p>
+<p>
+For ASP.NET web applications, the header may be specified either in the <code>Web.config</code>
+file, using the <code>&lt;customHeaders&gt;</code> tag, or within the source code of the
+application using the <code>HttpResponse.AddHeader</code> method. In general, prefer specifying the
+header in the <code>Web.config</code> file to ensure it is added to all requests. If adding it
+to the source code, ensure that it is added unconditionally to all requests. For example, add the
+header in the <code>Application_BeginRequest</code> method in the <code>global.asax</code> file.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows how to specify the <code>X-Frame-Options</code> header within the
+<code>Web.config</code> file for ASP.NET:
+</p>
+
+<sample src="Web.config" />
+
+<p>
+This next example shows how to specify the <code>X-Frame-Options</code> header within the
+<code>global.asax</code> file for ASP.NET application:
+</p>
+
+<sample src="MissingXFrameOptions.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html">Clickjacking Defense Cheat Sheet</a>.
+</li>
+<li>
+Mozilla:
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options</a>
+</li>
+
+</references>
+</qhelp>

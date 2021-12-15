@@ -1,0 +1,13 @@
+| my_auto_ptr.cpp:55:23:55:27 | new | This memory is never freed |
+| my_auto_ptr.cpp:57:25:57:29 | new | This memory is never freed |
+| my_auto_ptr.cpp:71:38:71:58 | new | This memory is never freed |
+| my_auto_ptr.cpp:80:12:80:18 | new | This memory is never freed |
+| my_auto_ptr.cpp:81:15:81:21 | new | This memory is never freed |
+| my_auto_ptr.cpp:82:9:82:15 | new | This memory is never freed |
+| test.cpp:26:18:26:23 | call to malloc | This memory is never freed |
+| test.cpp:42:18:42:23 | call to malloc | This memory is never freed |
+| test.cpp:73:18:73:23 | call to malloc | This memory is never freed |
+| test.cpp:89:18:89:23 | call to malloc | This memory is never freed |
+| test.cpp:156:3:156:26 | new | This memory is never freed |
+| test.cpp:157:3:157:26 | new[] | This memory is never freed |
+| test.cpp:169:14:169:19 | call to strdup | This memory is never freed |

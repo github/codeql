@@ -1,0 +1,6 @@
+| test.cpp:6:13:6:21 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |
+| test.cpp:13:13:13:21 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |
+| test.cpp:20:13:20:21 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |
+| test.cpp:31:13:31:21 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |
+| test.cpp:45:19:45:27 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |
+| test.cpp:58:13:58:21 | sizeof(<expr>) | This evaluates to the size of the pointer type, which may not be what you want. |

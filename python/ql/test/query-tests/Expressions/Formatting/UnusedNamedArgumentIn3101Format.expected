@@ -1,0 +1,11 @@
+| test.py:17:1:17:44 | Attribute() | Surplus named argument for string format. An argument named 'world' is provided, but it is not required by $@. | test.py:4:17:4:31 | Str | format "{name!r}, {0}" |
+| test.py:18:1:18:45 | format() | Surplus named argument for string format. An argument named 'world' is provided, but it is not required by $@. | test.py:9:17:9:31 | Str | format "{name!r}, {0}" |
+| test.py:20:1:20:49 | Attribute() | Surplus named argument for string format. An argument named 'world' is provided, but it is not required by $@. | test.py:4:17:4:31 | Str | format "{name!r}, {0}" |
+| test.py:21:1:21:50 | format() | Surplus named argument for string format. An argument named 'world' is provided, but it is not required by $@. | test.py:9:17:9:31 | Str | format "{name!r}, {0}" |
+| test.py:45:1:45:35 | format() | Surplus named argument for string format. An argument named 'z' is provided, but it is not required by $@. | test.py:37:14:37:18 | Str | any format used. |
+| test.py:45:1:45:35 | format() | Surplus named argument for string format. An argument named 'z' is provided, but it is not required by $@. | test.py:39:14:39:18 | Str | any format used. |
+| test.py:46:1:46:34 | Attribute() | Surplus named argument for string format. An argument named 'z' is provided, but it is not required by $@. | test.py:37:14:37:18 | Str | any format used. |
+| test.py:46:1:46:34 | Attribute() | Surplus named argument for string format. An argument named 'z' is provided, but it is not required by $@. | test.py:39:14:39:18 | Str | any format used. |
+| unknown_format_string.py:9:12:9:30 | Attribute() | Surplus named argument for string format. An argument named 'b' is provided, but it is not required by $@. | unknown_format_string.py:8:15:8:19 | Str | format "{a}" |
+| unknown_format_string.py:17:12:17:30 | Attribute() | Surplus named argument for string format. An argument named 'b' is provided, but it is not required by $@. | unknown_format_string.py:16:15:16:19 | Str | format "{a}" |
+| unknown_format_string.py:25:12:25:30 | Attribute() | Surplus named argument for string format. An argument named 'b' is provided, but it is not required by $@. | unknown_format_string.py:24:15:24:19 | Str | format "{a}" |

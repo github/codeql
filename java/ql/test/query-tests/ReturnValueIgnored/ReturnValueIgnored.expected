@@ -1,0 +1,2 @@
+| return_value_ignored/Test.java:41:3:41:14 | getI(...) | The result of the call is ignored, but 91% of calls to getI use the return value. |
+| return_value_ignored/Test.java:89:3:89:10 | trim(...) | The result of the call is ignored, but 91% of calls to trim use the return value. |

@@ -1,0 +1,5 @@
+| csharp6.cs:23:26:23:44 | nameof(...) | csharp6.cs:23:33:23:43 | access to type TestCSharp6 |
+| csharp6.cs:25:26:25:36 | nameof(...) | csharp6.cs:25:33:25:35 | access to local variable foo |
+| csharp6.cs:25:54:25:64 | nameof(...) | csharp6.cs:25:61:25:63 | access to local variable bar |
+| csharp6.cs:27:20:27:30 | nameof(...) | csharp6.cs:27:27:27:29 | access to local variable foo |
+| csharp6.cs:27:48:27:58 | nameof(...) | csharp6.cs:27:55:27:57 | access to local variable bar |

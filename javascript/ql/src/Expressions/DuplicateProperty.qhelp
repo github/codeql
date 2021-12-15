@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In ECMAScript 2015 and above, as well as ECMAScript 5 non-strict mode, an object literal may define the
+same property multiple times, with later definitions overwriting earlier ones. If all
+definitions assign the same value to the property, this will not to lead to problems at
+runtime, but it makes the code harder to read and maintain.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Eliminate the spurious redefinition.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the object literal passed to method <code>css</code> has two definitions
+of property <code>backgroundColor</code>, both setting it to value <code>"orange"</code>.
+</p>
+
+<sample src="examples/DuplicateProperty.js" />
+
+<p>
+The second definition is spurious and should be removed:
+</p>
+
+<sample src="examples/DuplicatePropertyGood.js" />
+
+</example>
+<references>
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Annex C. ECMA, 2011.</li>
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 6th Edition, Annex E. ECMA, 2015.</li>
+</references>
+</qhelp>

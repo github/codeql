@@ -1,0 +1,1 @@
+| tst.js:4:17:4:18 | \\2 | This back reference always matches the empty string, since it refers to $@, which is contained in $@. | tst.js:4:11:4:14 | (a+) | this capture group | tst.js:4:8:4:16 | (?!(a+)b) | a negative lookahead assertion |

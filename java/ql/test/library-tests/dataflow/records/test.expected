@@ -1,0 +1,9 @@
+| A.java:9:24:9:31 | source(...) | A.java:15:10:15:13 | p1.x |
+| A.java:9:24:9:31 | source(...) | A.java:23:10:23:12 | p1x |
+| A.java:10:38:10:45 | source(...) | A.java:18:10:18:13 | p2.y |
+| A.java:10:38:10:45 | source(...) | A.java:26:10:26:12 | p2y |
+| A.java:43:14:43:21 | source(...) | A.java:63:10:63:12 | r3f |
+| A.java:48:42:48:49 | source(...) | A.java:55:10:55:13 | r1.f |
+| A.java:48:42:48:49 | source(...) | A.java:61:10:61:12 | r1f |
+| A.java:49:54:49:61 | source(...) | A.java:56:10:56:13 | r2.f |
+| A.java:50:54:50:61 | source(...) | A.java:57:10:57:13 | r3.f |

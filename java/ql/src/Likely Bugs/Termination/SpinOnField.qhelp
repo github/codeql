@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Repeatedly reading a non-volatile field within the condition of an empty loop statement
+may result in an infinite loop,
+since a compiler optimization may move this field access out of the loop.
+</p>
+
+</overview>
+<example>
+
+<p>In the following example, the method <code>spin</code> repeatedly
+tests the field <code>done</code> in a loop. The method repeats the while-loop until the value
+of the field <code>done</code> is set by another thread.
+However, the compiler could optimize the code as shown in the second code snippet, because the field <code>done</code>
+is not marked as <code>volatile</code> and there are no statements in the body of the loop that could change the value
+of <code>done</code>.
+The optimized version of <code>spin</code> loops forever, even when another thread would set <code>done</code> to <code>true</code>.
+</p>
+
+<sample src="SpinOnField.java" />
+
+</example>
+<recommendation>
+
+<p>Ensure that access to this field is properly synchronized. Alternatively, avoid spinning on the field and
+instead use the <code>wait</code> and <code>notifyAll</code> methods or the <code>java.util.concurrent</code>
+library to communicate between threads.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html">Threads and Locks</a>.
+</li>
+
+
+</references>
+</qhelp>

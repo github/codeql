@@ -1,0 +1,3 @@
+| test.py:2:8:2:13 | ImportExpr | The rfc822 module was deprecated in version 2.3. Use email module instead. |
+| test.py:3:8:3:16 | ImportExpr | The posixfile module was deprecated in version 1.5. Use fcntl module instead. |
+| test.py:8:16:8:18 | ImportExpr | The md5 module was deprecated in version 2.5. Use hashlib module instead. |

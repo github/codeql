@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds expressions of pointer type which are (implicitly or explicitly) converted to an integer type of smaller size. 
+This results in truncation of the most significant bits of the larger integer type.</p>
+
+<p>Such conversions are highly non-portable, since the relative size of integer and pointer types may differ between architectures. 
+For example, while on a 32-bit architecture both type <code>int</code> and type <code>char*</code>  are four bytes wide, 
+the latter occupies eight bytes on a 64-bit machine.</p>
+
+</overview>
+<recommendation>
+<p>Avoid converting between pointer types and integer types.</p>
+
+</recommendation>
+<example><sample src="LossyPointerCast.cpp" />
+
+</example>
+<references>
+
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/type-conversions-and-type-safety-modern-cpp">Type Conversions and Type Safety</a>.
+</li>
+<li>
+  Cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/typecasting/">Type conversions</a>.
+</li>
+
+
+
+
+
+
+
+
+</references>
+</qhelp>

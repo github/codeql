@@ -1,0 +1,97 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Event adapters in Swing (and Abstract Window Toolkit) provide a convenient way for programmers to
+implement event listeners. However, care must be taken
+to get the names of the overridden methods right, or the event handlers will
+not be called.
+</p>
+
+</overview>
+<section title="In Depth">
+
+<p>
+The event listener interfaces in Swing (and Abstract Window Toolkit) have many
+methods. For example, <code>java.awt.event.MouseListener</code> is defined as
+follows:
+</p>
+
+<sample language="java">public interface MouseListener extends EventListener {
+    public abstract void mouseClicked(MouseEvent);
+    public abstract void mousePressed(MouseEvent);
+    public abstract void mouseReleased(MouseEvent);
+    public abstract void mouseEntered(MouseEvent);
+    public abstract void mouseExited(MouseEvent);
+}</sample>
+
+<p>
+The large number of methods can make such interfaces lengthy and
+tedious to implement, especially because it is rare that all of the
+methods need to be overridden. It is much more
+common that you need to override only one method, for example the <code>mouseClicked</code>
+event.
+</p>
+
+<p>
+For this reason, Swing supplies <em>adapter</em> classes
+that provide default, blank implementations of interface methods. An example
+is <code>MouseAdapter</code>, which provides default implementations
+for the methods in <code>MouseListener</code>, <code>MouseWheelListener</code>
+and <code>MouseMotionListener</code>. (Note that an adapter often implements
+multiple interfaces to avoid a large number of small adapter classes.) This
+makes it easy for programmers to implement just the methods they need from a
+given interface.</p>
+
+<p>
+Unfortunately, adapter classes are also a source of potential defects. Because the
+<code>@Override</code> annotation is not compulsory, it is very easy for programmers not to
+use it and then mistype the name of the method. This introduces a new
+method rather than implementing the relevant event handler.</p>
+
+</section>
+<recommendation>
+
+<p>
+Ensure that any overriding methods have exactly the same name as the overridden method.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the programmer has tried to implement the <code>mouseClicked</code>
+function but has misspelled the function name. This makes the function inoperable but the programmer 
+gets no warning about this from the compiler.</p>
+
+<sample src="BadlyOverriddenAdapter.java" />
+
+<p>
+In the following modified example, the function name is spelled correctly. It is also preceded by the
+<code>@Override</code> annotation, which will cause the compiler to display an error if there is 
+not a function of the same name to be overridden.</p>
+
+<sample src="BadlyOverriddenAdapterGood.java" />
+
+</example>
+<references>
+
+
+<li>
+D. Flanagan, <em>Java Foundation Classes in a Nutshell</em>, Chapter 26. O'Reilly, 1999.
+</li>
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Override.html">Annotation Type Override</a>.
+</li>
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html#eventAdapters">Event Adapters</a>.
+</li>
+
+
+</references>
+</qhelp>

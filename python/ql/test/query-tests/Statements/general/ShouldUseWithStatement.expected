@@ -1,0 +1,1 @@
+| test.py:168:9:168:17 | Attribute() | Instance of context-manager class $@ is closed in a finally block. Consider using 'with' statement. | test.py:151:1:151:17 | class CM | CM |

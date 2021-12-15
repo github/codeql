@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds code that converts the result of an integer multiplication to a larger type. 
+Since the conversion applies <i>after</i> the multiplication, arithmetic overflow may still occur.</p>
+
+<p>The rule flags every multiplication of two non-constant integer expressions that 
+is (explicitly or implicitly) converted to a larger integer type. The conversion is an indication that
+the expression would produce a result that would be too large to fit in the smaller integer type.</p>
+
+</overview>
+<recommendation>
+<p>Use a cast to ensure that the multiplication is done using the larger integer type to avoid overflow. </p>
+
+</recommendation>
+<example><sample src="IntMultToLong.cpp" />
+
+</example>
+<references>
+
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiplicative-operators-and-the-modulus-operator">Multiplicative Operators and the Modulus Operator</a>.
+</li>
+<li>
+  Cplusplus.com: <a href="http://www.cplusplus.com/articles/DE18T05o/">Integer overflow</a>.
+</li>
+
+
+
+
+</references>
+</qhelp>

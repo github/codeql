@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Passing an identity function to LINQ's <code>Select</code> method (either explicitly or 
+implicitly) yields a sequence that is the same as the one on which <code>Select</code> was called - 
+such a call is redundant.</p>
+
+</overview>
+<recommendation>
+<p>Remove the redundant select method call.</p>
+
+</recommendation>
+<example>
+<p>In this example the call to the <code>Select</code> method has no effect and can be removed.</p>
+<sample src="RedundantSelect.cs" />
+</example>
+</qhelp>

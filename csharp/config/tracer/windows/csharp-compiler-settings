@@ -1,0 +1,9 @@
+**\fakes*.exe:
+**\moles*.exe:
+  order compiler
+  trace no
+**\csc*.exe:
+  invoke ${env.SEMMLE_PLATFORM_TOOLS}\csharp\Semmle.Extraction.CSharp.Driver.exe
+  prepend --compiler
+  prepend "${compiler}"
+  prepend --cil

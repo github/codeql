@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of files that are directly included using <code>#include</code>.</p>
+
+<p>Files with lots of <code>#include</code> directives often either have too many
+responsibilities or not all of the directives are needed. In the former case, the
+file may be hard to comprehend and maintain; the latter causes build-times to be
+unnecessarily long.</p>
+
+</overview>
+
+<recommendation>
+
+<p>Split and/or refactor files with too many responsibilities, and remove any unnecessary
+<code>#include</code> directives.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+
+</references>
+</qhelp>

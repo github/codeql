@@ -1,0 +1,15 @@
+| src1.cpp:3:16:3:16 | A | 1 |
+| src1.cpp:4:7:4:20 | template_class<A> | 1 |
+| src1.cpp:4:7:4:20 | template_class<char> | 3 |
+| src2.cpp:3:16:3:16 | A | 1 |
+| src2.cpp:4:7:4:20 | template_class<A> | 1 |
+| src2.cpp:4:7:4:20 | template_class<char> | 3 |
+| src3.cpp:3:16:3:16 | B | 1 |
+| src3.cpp:4:7:4:20 | template_class<B> | 1 |
+| src3.cpp:4:7:4:20 | template_class<char> | 3 |
+| src4.cpp:4:7:4:20 | template_class<3> | 1 |
+| src4.cpp:4:7:4:20 | template_class<<unnamed>> | 1 |
+| src5.cpp:5:16:5:19 | elem | 1 |
+| src5.cpp:6:8:6:17 | my_istream<elem> | 1 |
+| src5.cpp:10:8:10:23 | my_istream<char> | 1 |
+| src5.fwd.hpp:6:17:6:20 | elem | 1 |

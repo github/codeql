@@ -1,0 +1,99 @@
+test_RouteSetup
+| src/test.js:6:1:9:2 | app.use ... o');\\n}) |
+| src/test.js:12:1:12:42 | app.use ... word')) |
+| src/test.js:17:1:17:21 | app.use ... dler()) |
+| src/test.js:19:1:19:28 | app.use ... res){}) |
+| src/test.js:19:1:20:29 | app.use ... res){}) |
+| src/test.js:24:1:26:2 | app.use ... '');\\n}) |
+| src/test.js:28:1:30:2 | app.use ... ar);\\n}) |
+| src/test.js:32:1:35:2 | app.use ... rl);\\n}) |
+test_RequestInputAccess
+| src/test.js:8:5:8:26 | req.coo ... ('foo') | cookie | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:33:15:33:21 | req.url | url | src/test.js:32:9:35:1 | functio ... url);\\n} |
+test_RouteHandler_getAResponseHeader
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | header1 | src/test.js:7:5:7:32 | res.set ... 1', '') |
+| src/test.js:24:9:26:1 | functio ...  '');\\n} | header2 | src/test.js:25:5:25:32 | res.set ... 2', '') |
+test_HeaderDefinition_defines
+| src/test.js:7:5:7:32 | res.set ... 1', '') | header1 |  |
+| src/test.js:25:5:25:32 | res.set ... 2', '') | header2 |  |
+test_ResponseExpr
+| src/test.js:6:32:6:34 | res | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:7:5:7:7 | res | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:15:27:15:29 | res | src/test.js:15:12:15:32 | functio ...  res){} |
+| src/test.js:19:22:19:24 | res | src/test.js:19:9:19:27 | function(req,res){} |
+| src/test.js:20:23:20:25 | res | src/test.js:20:10:20:28 | function(req,res){} |
+| src/test.js:24:31:24:33 | res | src/test.js:24:9:26:1 | functio ...  '');\\n} |
+| src/test.js:25:5:25:7 | res | src/test.js:24:9:26:1 | functio ...  '');\\n} |
+| src/test.js:28:42:28:44 | res | src/test.js:28:9:30:1 | functio ... bar);\\n} |
+| src/test.js:32:24:32:26 | res | src/test.js:32:9:35:1 | functio ... url);\\n} |
+| src/test.js:34:5:34:7 | res | src/test.js:32:9:35:1 | functio ... url);\\n} |
+test_HeaderDefinition
+| src/test.js:7:5:7:32 | res.set ... 1', '') | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:25:5:25:32 | res.set ... 2', '') | src/test.js:24:9:26:1 | functio ...  '');\\n} |
+test_RouteSetup_getServer
+| src/test.js:6:1:9:2 | app.use ... o');\\n}) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:12:1:12:42 | app.use ... word')) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:19:1:19:28 | app.use ... res){}) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:19:1:20:29 | app.use ... res){}) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:24:1:26:2 | app.use ... '');\\n}) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:28:1:30:2 | app.use ... ar);\\n}) | src/test.js:4:11:4:19 | connect() |
+| src/test.js:32:1:35:2 | app.use ... rl);\\n}) | src/test.js:4:11:4:19 | connect() |
+test_HeaderDefinition_getAHeaderName
+| src/test.js:7:5:7:32 | res.set ... 1', '') | header1 |
+| src/test.js:25:5:25:32 | res.set ... 2', '') | header2 |
+test_ServerDefinition
+| src/test.js:4:11:4:19 | connect() |
+test_RouteHandler_getAResponseExpr
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:6:32:6:34 | res |
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:7:5:7:7 | res |
+| src/test.js:15:12:15:32 | functio ...  res){} | src/test.js:15:27:15:29 | res |
+| src/test.js:19:9:19:27 | function(req,res){} | src/test.js:19:22:19:24 | res |
+| src/test.js:20:10:20:28 | function(req,res){} | src/test.js:20:23:20:25 | res |
+| src/test.js:24:9:26:1 | functio ...  '');\\n} | src/test.js:24:31:24:33 | res |
+| src/test.js:24:9:26:1 | functio ...  '');\\n} | src/test.js:25:5:25:7 | res |
+| src/test.js:28:9:30:1 | functio ... bar);\\n} | src/test.js:28:42:28:44 | res |
+| src/test.js:32:9:35:1 | functio ... url);\\n} | src/test.js:32:24:32:26 | res |
+| src/test.js:32:9:35:1 | functio ... url);\\n} | src/test.js:34:5:34:7 | res |
+test_RouteSetup_getARouteHandler
+| src/test.js:6:1:9:2 | app.use ... o');\\n}) | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:12:1:12:42 | app.use ... word')) | src/test.js:12:9:12:41 | basicAu ... sword') |
+| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:14:1:16:1 | return of function getHandler |
+| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:15:12:15:32 | functio ...  res){} |
+| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:17:9:17:20 | getHandler() |
+| src/test.js:19:1:19:28 | app.use ... res){}) | src/test.js:19:9:19:27 | function(req,res){} |
+| src/test.js:19:1:20:29 | app.use ... res){}) | src/test.js:20:10:20:28 | function(req,res){} |
+| src/test.js:24:1:26:2 | app.use ... '');\\n}) | src/test.js:24:9:26:1 | functio ...  '');\\n} |
+| src/test.js:28:1:30:2 | app.use ... ar);\\n}) | src/test.js:28:9:30:1 | functio ... bar);\\n} |
+| src/test.js:32:1:35:2 | app.use ... rl);\\n}) | src/test.js:32:9:35:1 | functio ... url);\\n} |
+test_RouteHandler
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:15:12:15:32 | functio ...  res){} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:19:9:19:27 | function(req,res){} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:20:10:20:28 | function(req,res){} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:24:9:26:1 | functio ...  '');\\n} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:28:9:30:1 | functio ... bar);\\n} | src/test.js:4:11:4:19 | connect() |
+| src/test.js:32:9:35:1 | functio ... url);\\n} | src/test.js:4:11:4:19 | connect() |
+test_RequestExpr
+| src/test.js:6:27:6:29 | req | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:8:5:8:7 | req | src/test.js:6:9:9:1 | functio ... oo');\\n} |
+| src/test.js:15:22:15:24 | req | src/test.js:15:12:15:32 | functio ...  res){} |
+| src/test.js:19:18:19:20 | req | src/test.js:19:9:19:27 | function(req,res){} |
+| src/test.js:20:19:20:21 | req | src/test.js:20:10:20:28 | function(req,res){} |
+| src/test.js:24:26:24:28 | req | src/test.js:24:9:26:1 | functio ...  '');\\n} |
+| src/test.js:28:19:28:39 | {url, q ... ookies} | src/test.js:28:9:30:1 | functio ... bar);\\n} |
+| src/test.js:32:19:32:21 | req | src/test.js:32:9:35:1 | functio ... url);\\n} |
+| src/test.js:33:15:33:17 | req | src/test.js:32:9:35:1 | functio ... url);\\n} |
+test_Credentials
+| src/test.js:12:19:12:28 | 'username' | user name |
+| src/test.js:12:31:12:40 | 'password' | password |
+test_RouteHandler_getARequestExpr
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:6:27:6:29 | req |
+| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:8:5:8:7 | req |
+| src/test.js:15:12:15:32 | functio ...  res){} | src/test.js:15:22:15:24 | req |
+| src/test.js:19:9:19:27 | function(req,res){} | src/test.js:19:18:19:20 | req |
+| src/test.js:20:10:20:28 | function(req,res){} | src/test.js:20:19:20:21 | req |
+| src/test.js:24:9:26:1 | functio ...  '');\\n} | src/test.js:24:26:24:28 | req |
+| src/test.js:28:9:30:1 | functio ... bar);\\n} | src/test.js:28:19:28:39 | {url, q ... ookies} |
+| src/test.js:32:9:35:1 | functio ... url);\\n} | src/test.js:32:19:32:21 | req |
+| src/test.js:32:9:35:1 | functio ... url);\\n} | src/test.js:33:15:33:17 | req |

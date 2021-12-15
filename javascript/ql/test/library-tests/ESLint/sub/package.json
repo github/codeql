@@ -1,0 +1,10 @@
+{
+    "name": "mypackage",
+    "version": "0.0.1",
+    "eslintConfig": {
+        "globals": {
+            "aWritableGlobal": true,
+            "aNonWritableGlobal": false
+        }
+    }
+}

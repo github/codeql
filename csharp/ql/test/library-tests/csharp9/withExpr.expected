@@ -1,0 +1,17 @@
+withExpr
+| Record.cs:75:18:75:47 | ... with { ... } | Person1 | Record.cs:75:18:75:19 | access to local variable p1 | Record.cs:75:26:75:47 | { ..., ... } | Person1.<Clone>$() |
+| Record.cs:76:18:76:81 | ... with { ... } | Teacher1 | Record.cs:76:18:76:29 | (...) ... | Record.cs:76:36:76:81 | { ..., ... } | Teacher1.<Clone>$() |
+| Record.cs:77:21:77:31 | ... with { ... } | Person1 | Record.cs:77:21:77:22 | access to local variable p1 | Record.cs:77:29:77:31 | { ..., ... } | Person1.<Clone>$() |
+| Record.cs:84:16:84:33 | ... with { ... } | R1 | Record.cs:84:16:84:16 | access to local variable b | Record.cs:84:23:84:33 | { ..., ... } | R1.<Clone>$() |
+withTarget
+| Record.cs:75:18:75:47 | ... with { ... } | Record.cs:27:1:27:57 | <Clone>$ | Record.cs:27:1:27:57 | Person1 |
+| Record.cs:76:18:76:81 | ... with { ... } | Record.cs:29:1:30:35 | <Clone>$ | Record.cs:29:1:30:35 | Teacher1 |
+| Record.cs:77:21:77:31 | ... with { ... } | Record.cs:27:1:27:57 | <Clone>$ | Record.cs:27:1:27:57 | Person1 |
+| Record.cs:84:16:84:33 | ... with { ... } | Record.cs:54:1:54:39 | <Clone>$ | Record.cs:54:1:54:39 | R1 |
+cloneOverrides
+| Person1.<Clone>$() | Student1.<Clone>$() |
+| Person1.<Clone>$() | Teacher1.<Clone>$() |
+| Person.<Clone>$() | Student.<Clone>$() |
+| Person.<Clone>$() | Teacher.<Clone>$() |
+| Pet.<Clone>$() | Dog.<Clone>$() |
+| R1.<Clone>$() | R2.<Clone>$() |

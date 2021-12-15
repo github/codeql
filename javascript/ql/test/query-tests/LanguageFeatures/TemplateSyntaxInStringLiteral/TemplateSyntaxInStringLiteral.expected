@@ -1,0 +1,5 @@
+| TemplateSyntaxInStringLiteral.js:5:17:5:44 | 'Could  ...  ${id}' | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:1:24:1:25 | id | id |
+| TemplateSyntaxInStringLiteral.js:17:15:17:40 | 'global ... alVar}' | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:14:5:14:13 | globalVar | globalVar |
+| TemplateSyntaxInStringLiteral.js:19:11:19:36 | 'global ... alVar}' | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:14:5:14:13 | globalVar | globalVar |
+| TemplateSyntaxInStringLiteral.js:28:15:28:21 | "${x} " | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:25:14:25:14 | x | x |
+| TemplateSyntaxInStringLiteral.js:42:17:42:57 | "Name:  ... oobar}" | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:37:11:37:16 | foobar | foobar |

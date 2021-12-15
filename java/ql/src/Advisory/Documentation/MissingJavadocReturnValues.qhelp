@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A public method that does not have a Javadoc tag for its return value
+makes an API more difficult to understand and maintain.</p>
+
+</overview>
+<recommendation>
+
+<p>The Javadoc comment for a method should include a Javadoc tag element that
+describes the return value.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a good Javadoc comment, which clearly explains the method's
+return value.</p>
+
+<sample src="MissingJavadocMethods.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 44.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html">How to Write Doc Comments for the Javadoc Tool</a>,
+  <a href="https://www.oracle.com/java/technologies/javase/api-specifications.html">Requirements for Writing Java API Specifications</a>.
+</li>
+
+
+</references>
+</qhelp>

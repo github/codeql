@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+When you use the Spring Framework, using setter injection instead of constructor injection is more flexible, particularly for Spring beans with a large number of optional properties.
+Constructor injection should be used only on required bean properties; using constructor injection on optional bean properties requires a large number of constructors
+to handle different combinations of properties.
+</p>
+
+<p>
+Although the generally accepted best practice is to use constructor injection for mandatory dependencies, and setter injection for optional dependencies,
+the <code>@Required</code> annotation allows you to forgo constructor injection completely. Using the <code>@Required</code> annotation
+on a setter method makes the framework check that a dependency is injected using that method.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use setter injection in bean configurations, marking required properties with the <code>@Required</code> annotation. It makes it easier to 
+accommodate a large number of optional properties, and makes the bean more flexible by allowing for re-injection of dependencies.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a bean that is defined using constructor injection. The bean 
+configuration is followed by the class definition.</p>
+
+<sample src="UseSetterInjection.xml" />
+
+<sample src="UseSetterInjection.java" />
+
+<p>The following example shows how the same bean can be defined using setter injection instead. Again, 
+the bean configuration is followed by the class definition.</p>
+
+<sample src="UseSetterInjectionGood.xml" />
+
+<sample src="UseSetterInjectionGood.java" />
+
+</example>
+<references>
+
+
+<li>
+Martin Fowler:
+<a href="https://martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection pattern</a>.
+</li>
+<li>
+ONJava:
+<a href="http://www.onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=3">Twelve Best Practices for Spring XML Configurations</a>. 
+</li>
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/beans.html#beans-constructor-injection">3.4.1.1 Constructor-based dependency injection</a>,
+<a href="https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/beans.html#beans-setter-injection">3.4.1.2 Setter-based dependency injection</a>.
+</li>
+<li>
+SpringSource:
+<a href="https://spring.io/blog/2007/07/11/setter-injection-versus-constructor-injection-and-the-use-of-required/">Setter injection versus constructor injection and the use of @Required</a>.
+</li>
+
+
+</references>
+</qhelp>

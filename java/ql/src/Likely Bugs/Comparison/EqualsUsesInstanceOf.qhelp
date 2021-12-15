@@ -1,0 +1,84 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Implementations of <code>equals</code> that use <code>instanceof</code>
+to check the type of their argument are likely to lead to non-symmetric definitions of
+<code>equals</code>, if they are further overridden in subclasses that add fields and
+redefine <code>equals</code>. A definition of the <code>equals</code> method should be
+reflexive, symmetric, and transitive, and a violation of the <code>equals</code> contract
+may lead to unexpected behavior.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Consider using one of the following options:</p>
+
+<ul>
+    <li>Check the type of the argument using <code>getClass</code> instead of <code>instanceof</code>.</li>
+    <li>Declare the class or the <code>equals</code> method <code>final</code>. This prevents the creation of subclasses that
+    would otherwise violate the <code>equals</code> contract.</li>
+    <li>Replace inheritance by composition. Instead of a class <code>B</code> extending a class
+    <code>A</code>, class <code>B</code> can declare a field of type <code>A</code> in addition to
+    any other fields.</li>
+</ul>
+
+<p>The first option has the disadvantage of violating the substitution principle
+of object-oriented languages, which says that an instance of a subclass of <code>A</code>
+can be provided whenever an instance of class <code>A</code> is required.</p>
+
+</recommendation>
+<example>
+
+<p>The first option is illustrated in the following example:
+</p>
+
+<sample src="EqualsUsesInstanceOf.java" />
+
+<p>
+Given the definitions in the example, <code>p.equals(q)</code> returns <code>true</code>
+whereas <code>q.equals(p)</code> returns <code>false</code>,
+which violates the symmetry requirement of the <code>equals</code> contract.
+</p>
+
+<p>
+Attempting to enforce symmetry by modifying the <code>BadPointExt.equals</code> method to ignore
+the field <code>s</code> when its parameter is an instance of type <code>BadPoint</code>
+results in violating the transitivity requirement of the <code>equals</code> contract.
+</p>
+
+<p>
+The classes <code>GoodPoint</code> and <code>GoodPointExt</code> avoid violating the <code>equals</code> contract by
+using <code>getClass</code> rather than <code>instanceof</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Items 8 and 16. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.20.2">Type Comparison Operator instanceof</a>.
+</li>
+<li>
+    Artima Developer:
+    <a href="https://www.artima.com/lejava/articles/equality.html">How to Write an Equality Method in Java</a>.
+</li>
+<li>JavaSolutions, April 2002:
+<a href="http://www.angelikalanger.com/Articles/JavaSolutions/SecretsOfEquals/Equals.html">Secrets of equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

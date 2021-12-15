@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The caret character <code>^</code> in a regular expression only matches at the beginning of the input, or
+(for multi-line regular expressions) at the beginning of a line. If it is preceded by a pattern
+that must match a non-empty sequence of (non-newline) input characters, it cannot possibly match,
+rendering the entire regular expression unmatchable.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression to find and correct any typos.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression <code>/\[^.]*\.css/</code> cannot match any
+string, since it contains a caret assertion preceded by an escape sequence that matches an
+opening bracket.
+</p>
+
+<sample src="examples/UnmatchableCaret.js" />
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

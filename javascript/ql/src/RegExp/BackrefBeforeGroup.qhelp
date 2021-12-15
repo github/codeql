@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Back references can be used to refer back to the result of a previously matched capture group.
+It is syntactically legal to refer to a capture group that has not finished matching yet, but
+such a back reference always matches the empty string and is not very useful.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the back reference if it is useless, or update it to refer to the right capture group.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the back reference <code>\2</code> comes before the capture group
+<code>(.*)</code> it refers to. (Note that the first group is non-capturing.)
+</p>
+
+<sample src="examples/BackrefBeforeGroup.js" />
+
+<p>
+Forward references like this can arise if a regular expression is updated inconsistently. In
+this example, for instance, the first group may initially have been capturing so the back reference
+referred to the group <code>(\[*|\{*])</code>. This group, however, is now the first capturing
+group, so the back reference should be updated to <code>\1</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

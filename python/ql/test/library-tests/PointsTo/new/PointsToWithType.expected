@@ -1,0 +1,853 @@
+| a_simple.py:2 | ControlFlowNode for FloatLiteral | float 1.0 | builtin-class float | 2 |
+| a_simple.py:2 | ControlFlowNode for f1 | float 1.0 | builtin-class float | 2 |
+| a_simple.py:3 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 3 |
+| a_simple.py:4 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type | 4 |
+| a_simple.py:5 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 5 |
+| a_simple.py:5 | ControlFlowNode for i1 | int 0 | builtin-class int | 5 |
+| a_simple.py:6 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 6 |
+| a_simple.py:6 | ControlFlowNode for s | Tuple | builtin-class tuple | 6 |
+| a_simple.py:8 | ControlFlowNode for FunctionExpr | Function func | builtin-class function | 8 |
+| a_simple.py:8 | ControlFlowNode for func | Function func | builtin-class function | 8 |
+| a_simple.py:11 | ControlFlowNode for C | class C | builtin-class type | 11 |
+| a_simple.py:11 | ControlFlowNode for ClassExpr | class C | builtin-class type | 11 |
+| a_simple.py:11 | ControlFlowNode for object | builtin-class object | builtin-class type | 11 |
+| a_simple.py:14 | ControlFlowNode for FunctionExpr | Function vararg_kwarg | builtin-class function | 14 |
+| a_simple.py:14 | ControlFlowNode for d | d | builtin-class dict | 14 |
+| a_simple.py:14 | ControlFlowNode for t | t | builtin-class tuple | 14 |
+| a_simple.py:14 | ControlFlowNode for vararg_kwarg | Function vararg_kwarg | builtin-class function | 14 |
+| a_simple.py:15 | ControlFlowNode for t | t | builtin-class tuple | 14 |
+| a_simple.py:16 | ControlFlowNode for d | d | builtin-class dict | 14 |
+| a_simple.py:18 | ControlFlowNode for FunctionExpr | Function multi_loop | builtin-class function | 18 |
+| a_simple.py:18 | ControlFlowNode for multi_loop | Function multi_loop | builtin-class function | 18 |
+| a_simple.py:19 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 19 |
+| a_simple.py:19 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 19 |
+| a_simple.py:23 | ControlFlowNode for FunctionExpr | Function with_definition | builtin-class function | 23 |
+| a_simple.py:23 | ControlFlowNode for with_definition | Function with_definition | builtin-class function | 23 |
+| a_simple.py:27 | ControlFlowNode for FunctionExpr | Function multi_loop_in_try | builtin-class function | 27 |
+| a_simple.py:27 | ControlFlowNode for multi_loop_in_try | Function multi_loop_in_try | builtin-class function | 27 |
+| a_simple.py:31 | ControlFlowNode for KeyError | builtin-class KeyError | builtin-class type | 31 |
+| a_simple.py:34 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 34 |
+| a_simple.py:34 | ControlFlowNode for args | args | builtin-class tuple | 34 |
+| a_simple.py:34 | ControlFlowNode for f | Function f | builtin-class function | 34 |
+| a_simple.py:34 | ControlFlowNode for kwargs | kwargs | builtin-class dict | 34 |
+| a_simple.py:35 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 35 |
+| a_simple.py:35 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 35 |
+| a_simple.py:35 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 35 |
+| a_simple.py:35 | ControlFlowNode for args | args | builtin-class tuple | 34 |
+| a_simple.py:36 | ControlFlowNode for Str | 'x' | builtin-class str | 36 |
+| a_simple.py:36 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 36 |
+| a_simple.py:36 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 36 |
+| a_simple.py:36 | ControlFlowNode for kwargs | kwargs | builtin-class dict | 34 |
+| a_simple.py:38 | ControlFlowNode for FunctionExpr | Function multi_assign_and_packing | builtin-class function | 38 |
+| a_simple.py:38 | ControlFlowNode for Str | 'b' | builtin-class str | 38 |
+| a_simple.py:38 | ControlFlowNode for Str | 'c' | builtin-class str | 38 |
+| a_simple.py:38 | ControlFlowNode for multi_assign_and_packing | Function multi_assign_and_packing | builtin-class function | 38 |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 39 |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 39 |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 39 |
+| a_simple.py:39 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 39 |
+| a_simple.py:39 | ControlFlowNode for t | Tuple | builtin-class tuple | 39 |
+| a_simple.py:40 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 40 |
+| a_simple.py:40 | ControlFlowNode for b | 'b' | builtin-class str | 38 |
+| a_simple.py:40 | ControlFlowNode for c | 'c' | builtin-class str | 38 |
+| a_simple.py:40 | ControlFlowNode for w | Tuple | builtin-class tuple | 40 |
+| a_simple.py:41 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 39 |
+| a_simple.py:41 | ControlFlowNode for t | Tuple | builtin-class tuple | 39 |
+| a_simple.py:42 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 40 |
+| a_simple.py:42 | ControlFlowNode for w | Tuple | builtin-class tuple | 40 |
+| a_simple.py:43 | ControlFlowNode for p | int 1 | builtin-class int | 41 |
+| a_simple.py:44 | ControlFlowNode for q | int 2 | builtin-class int | 41 |
+| a_simple.py:45 | ControlFlowNode for r | int 3 | builtin-class int | 41 |
+| a_simple.py:47 | ControlFlowNode for y | 'b' | builtin-class str | 42 |
+| a_simple.py:48 | ControlFlowNode for z | 'c' | builtin-class str | 42 |
+| a_simple.py:49 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 49 |
+| a_simple.py:49 | ControlFlowNode for b | 'b' | builtin-class str | 38 |
+| a_simple.py:49 | ControlFlowNode for c | 'c' | builtin-class str | 38 |
+| a_simple.py:49 | ControlFlowNode for h | 'b' | builtin-class str | 38 |
+| a_simple.py:49 | ControlFlowNode for i | 'c' | builtin-class str | 38 |
+| a_simple.py:51 | ControlFlowNode for h | 'b' | builtin-class str | 38 |
+| a_simple.py:52 | ControlFlowNode for i | 'c' | builtin-class str | 38 |
+| a_simple.py:53 | ControlFlowNode for BinaryExpr | BinaryExpr | builtin-class tuple | 53 |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 53 |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 53 |
+| a_simple.py:53 | ControlFlowNode for Tuple | BinaryExpr | builtin-class tuple | 53 |
+| a_simple.py:53 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 53 |
+| b_condition.py:4 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 4 |
+| b_condition.py:4 | ControlFlowNode for f | Function f | builtin-class function | 4 |
+| b_condition.py:5 | ControlFlowNode for IfExp | NoneType None | builtin-class NoneType | 5 |
+| b_condition.py:5 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 5 |
+| b_condition.py:5 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 5 |
+| b_condition.py:7 | ControlFlowNode for Compare | bool False | builtin-class bool | 7 |
+| b_condition.py:7 | ControlFlowNode for Compare | bool True | builtin-class bool | 7 |
+| b_condition.py:7 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 7 |
+| b_condition.py:7 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 5 |
+| b_condition.py:8 | ControlFlowNode for IntegerLiteral | int 7 | builtin-class int | 8 |
+| b_condition.py:8 | ControlFlowNode for x | int 7 | builtin-class int | 8 |
+| b_condition.py:9 | ControlFlowNode for x | int 7 | builtin-class int | 8 |
+| b_condition.py:11 | ControlFlowNode for IfExp | NoneType None | builtin-class NoneType | 11 |
+| b_condition.py:11 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 11 |
+| b_condition.py:11 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 11 |
+| b_condition.py:13 | ControlFlowNode for Compare | bool False | builtin-class bool | 13 |
+| b_condition.py:13 | ControlFlowNode for Compare | bool True | builtin-class bool | 13 |
+| b_condition.py:13 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 13 |
+| b_condition.py:13 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 11 |
+| b_condition.py:14 | ControlFlowNode for IntegerLiteral | int 7 | builtin-class int | 14 |
+| b_condition.py:14 | ControlFlowNode for x | int 7 | builtin-class int | 14 |
+| b_condition.py:15 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 11 |
+| b_condition.py:15 | ControlFlowNode for x | int 7 | builtin-class int | 14 |
+| b_condition.py:17 | ControlFlowNode for IfExp | NoneType None | builtin-class NoneType | 17 |
+| b_condition.py:17 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 17 |
+| b_condition.py:17 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 17 |
+| b_condition.py:19 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 19 |
+| b_condition.py:19 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 19 |
+| b_condition.py:19 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 17 |
+| b_condition.py:20 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 20 |
+| b_condition.py:20 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 20 |
+| b_condition.py:21 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 20 |
+| b_condition.py:23 | ControlFlowNode for IfExp | NoneType None | builtin-class NoneType | 23 |
+| b_condition.py:23 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 23 |
+| b_condition.py:23 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 23 |
+| b_condition.py:25 | ControlFlowNode for IfExp | int 1 | builtin-class int | 25 |
+| b_condition.py:25 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 25 |
+| b_condition.py:25 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 23 |
+| b_condition.py:25 | ControlFlowNode for x | int 1 | builtin-class int | 25 |
+| b_condition.py:26 | ControlFlowNode for x | int 1 | builtin-class int | 25 |
+| b_condition.py:28 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 28 |
+| b_condition.py:28 | ControlFlowNode for x | int 1 | builtin-class int | 28 |
+| b_condition.py:29 | ControlFlowNode for x | int 1 | builtin-class int | 25 |
+| b_condition.py:29 | ControlFlowNode for x | int 1 | builtin-class int | 28 |
+| b_condition.py:31 | ControlFlowNode for IfExp | int 1 | builtin-class int | 31 |
+| b_condition.py:31 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 31 |
+| b_condition.py:31 | ControlFlowNode for x | int 1 | builtin-class int | 31 |
+| b_condition.py:32 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 32 |
+| b_condition.py:32 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 32 |
+| b_condition.py:32 | ControlFlowNode for x | int 1 | builtin-class int | 31 |
+| b_condition.py:33 | ControlFlowNode for IntegerLiteral | int 7 | builtin-class int | 33 |
+| b_condition.py:33 | ControlFlowNode for x | int 7 | builtin-class int | 33 |
+| b_condition.py:34 | ControlFlowNode for x | int 1 | builtin-class int | 31 |
+| b_condition.py:34 | ControlFlowNode for x | int 7 | builtin-class int | 33 |
+| b_condition.py:36 | ControlFlowNode for int | builtin-class int | builtin-class type | 36 |
+| b_condition.py:36 | ControlFlowNode for isinstance | Builtin-function isinstance | builtin-class builtin_function_or_method | 36 |
+| b_condition.py:36 | ControlFlowNode for isinstance() | bool False | builtin-class bool | 36 |
+| b_condition.py:36 | ControlFlowNode for isinstance() | bool True | builtin-class bool | 36 |
+| b_condition.py:36 | ControlFlowNode for x | int 1 | builtin-class int | 31 |
+| b_condition.py:36 | ControlFlowNode for x | int 7 | builtin-class int | 33 |
+| b_condition.py:37 | ControlFlowNode for x | int 1 | builtin-class int | 31 |
+| b_condition.py:37 | ControlFlowNode for x | int 7 | builtin-class int | 33 |
+| b_condition.py:41 | ControlFlowNode for Attribute | int 1 | builtin-class int | 41 |
+| b_condition.py:41 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 41 |
+| b_condition.py:42 | ControlFlowNode for Compare | bool False | builtin-class bool | 42 |
+| b_condition.py:42 | ControlFlowNode for Compare | bool True | builtin-class bool | 42 |
+| b_condition.py:42 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 42 |
+| b_condition.py:43 | ControlFlowNode for Attribute | int 1 | builtin-class int | 41 |
+| b_condition.py:50 | ControlFlowNode for FunctionExpr | Function g | builtin-class function | 50 |
+| b_condition.py:50 | ControlFlowNode for g | Function g | builtin-class function | 50 |
+| b_condition.py:55 | ControlFlowNode for FunctionExpr | Function loop | builtin-class function | 55 |
+| b_condition.py:55 | ControlFlowNode for loop | Function loop | builtin-class function | 55 |
+| b_condition.py:61 | ControlFlowNode for FunctionExpr | Function double_attr_check | builtin-class function | 61 |
+| b_condition.py:61 | ControlFlowNode for double_attr_check | Function double_attr_check | builtin-class function | 61 |
+| b_condition.py:62 | ControlFlowNode for Compare | bool False | builtin-class bool | 62 |
+| b_condition.py:62 | ControlFlowNode for Compare | bool True | builtin-class bool | 62 |
+| b_condition.py:62 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 62 |
+| b_condition.py:65 | ControlFlowNode for Compare | bool False | builtin-class bool | 65 |
+| b_condition.py:65 | ControlFlowNode for Compare | bool True | builtin-class bool | 65 |
+| b_condition.py:65 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 65 |
+| b_condition.py:66 | ControlFlowNode for Compare | bool False | builtin-class bool | 66 |
+| b_condition.py:66 | ControlFlowNode for Compare | bool True | builtin-class bool | 66 |
+| b_condition.py:69 | ControlFlowNode for FunctionExpr | Function h | builtin-class function | 69 |
+| b_condition.py:69 | ControlFlowNode for h | Function h | builtin-class function | 69 |
+| b_condition.py:70 | ControlFlowNode for IfExp | bool True | builtin-class bool | 70 |
+| b_condition.py:70 | ControlFlowNode for True | bool True | builtin-class bool | 70 |
+| b_condition.py:70 | ControlFlowNode for b | bool True | builtin-class bool | 70 |
+| b_condition.py:71 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 71 |
+| b_condition.py:71 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 71 |
+| b_condition.py:71 | ControlFlowNode for b | bool True | builtin-class bool | 70 |
+| b_condition.py:72 | ControlFlowNode for IntegerLiteral | int 7 | builtin-class int | 72 |
+| b_condition.py:72 | ControlFlowNode for b | int 7 | builtin-class int | 72 |
+| b_condition.py:73 | ControlFlowNode for b | bool True | builtin-class bool | 70 |
+| b_condition.py:73 | ControlFlowNode for b | int 7 | builtin-class int | 72 |
+| b_condition.py:75 | ControlFlowNode for FunctionExpr | Function k | builtin-class function | 75 |
+| b_condition.py:75 | ControlFlowNode for k | Function k | builtin-class function | 75 |
+| b_condition.py:76 | ControlFlowNode for t | builtin-class type | builtin-class type | 76 |
+| b_condition.py:76 | ControlFlowNode for type | builtin-class type | builtin-class type | 76 |
+| b_condition.py:77 | ControlFlowNode for Compare | bool True | builtin-class bool | 77 |
+| b_condition.py:77 | ControlFlowNode for object | builtin-class object | builtin-class type | 77 |
+| b_condition.py:77 | ControlFlowNode for t | builtin-class type | builtin-class type | 76 |
+| b_condition.py:78 | ControlFlowNode for object | builtin-class object | builtin-class type | 78 |
+| b_condition.py:78 | ControlFlowNode for t | builtin-class object | builtin-class type | 78 |
+| b_condition.py:79 | ControlFlowNode for t | builtin-class object | builtin-class type | 78 |
+| b_condition.py:81 | ControlFlowNode for FunctionExpr | Function odasa6261 | builtin-class function | 81 |
+| b_condition.py:81 | ControlFlowNode for True | bool True | builtin-class bool | 81 |
+| b_condition.py:81 | ControlFlowNode for odasa6261 | Function odasa6261 | builtin-class function | 81 |
+| b_condition.py:82 | ControlFlowNode for callable | Builtin-function callable | builtin-class builtin_function_or_method | 82 |
+| b_condition.py:82 | ControlFlowNode for callable() | bool False | builtin-class bool | 82 |
+| b_condition.py:82 | ControlFlowNode for callable() | bool True | builtin-class bool | 82 |
+| b_condition.py:82 | ControlFlowNode for foo | bool True | builtin-class bool | 81 |
+| b_condition.py:83 | ControlFlowNode for FunctionExpr | Function bar | builtin-class function | 83 |
+| b_condition.py:83 | ControlFlowNode for bar | Function bar | builtin-class function | 83 |
+| b_condition.py:87 | ControlFlowNode for FunctionExpr | Function split_bool1 | builtin-class function | 87 |
+| b_condition.py:87 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:87 | ControlFlowNode for split_bool1 | Function split_bool1 | builtin-class function | 87 |
+| b_condition.py:88 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:88 | ControlFlowNode for y | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:90 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 90 |
+| b_condition.py:90 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 90 |
+| b_condition.py:90 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:90 | ControlFlowNode for y | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:92 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:93 | ControlFlowNode for y | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:96 | ControlFlowNode for y | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:97 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 87 |
+| b_condition.py:101 | ControlFlowNode for FunctionExpr | Function not_or_not | builtin-class function | 101 |
+| b_condition.py:101 | ControlFlowNode for a | a | builtin-class tuple | 101 |
+| b_condition.py:101 | ControlFlowNode for not_or_not | Function not_or_not | builtin-class function | 101 |
+| b_condition.py:102 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 102 |
+| b_condition.py:102 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 102 |
+| b_condition.py:102 | ControlFlowNode for a | a | builtin-class tuple | 101 |
+| b_condition.py:102 | ControlFlowNode for isinstance | Builtin-function isinstance | builtin-class builtin_function_or_method | 102 |
+| b_condition.py:102 | ControlFlowNode for isinstance() | bool True | builtin-class bool | 102 |
+| b_condition.py:102 | ControlFlowNode for list | builtin-class list | builtin-class type | 102 |
+| b_condition.py:102 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type | 102 |
+| b_condition.py:104 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 104 |
+| b_condition.py:104 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 104 |
+| b_condition.py:104 | ControlFlowNode for a | a | builtin-class tuple | 101 |
+| b_condition.py:105 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 105 |
+| b_condition.py:105 | ControlFlowNode for UnaryExpr | bool False | builtin-class bool | 105 |
+| b_condition.py:105 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 105 |
+| b_condition.py:105 | ControlFlowNode for a | a | builtin-class tuple | 101 |
+| b_condition.py:106 | ControlFlowNode for Exception | builtin-class Exception | builtin-class type | 106 |
+| b_condition.py:106 | ControlFlowNode for Exception() | Exception() | builtin-class Exception | 106 |
+| b_condition.py:107 | ControlFlowNode for Str | 'Hello' | builtin-class str | 107 |
+| b_condition.py:109 | ControlFlowNode for FunctionExpr | Function method_check | builtin-class function | 109 |
+| b_condition.py:109 | ControlFlowNode for method_check | Function method_check | builtin-class function | 109 |
+| d_globals.py:2 | ControlFlowNode for FunctionExpr | Function j | builtin-class function | 2 |
+| d_globals.py:2 | ControlFlowNode for j | Function j | builtin-class function | 2 |
+| d_globals.py:3 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 3 |
+| d_globals.py:3 | ControlFlowNode for dict | int 7 | builtin-class int | 5 |
+| d_globals.py:3 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type | 7 |
+| d_globals.py:4 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 4 |
+| d_globals.py:5 | ControlFlowNode for IntegerLiteral | int 7 | builtin-class int | 5 |
+| d_globals.py:5 | ControlFlowNode for dict | int 7 | builtin-class int | 5 |
+| d_globals.py:6 | ControlFlowNode for dict | int 7 | builtin-class int | 5 |
+| d_globals.py:7 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type | 7 |
+| d_globals.py:8 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type | 7 |
+| d_globals.py:14 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 14 |
+| d_globals.py:14 | ControlFlowNode for g1 | NoneType None | builtin-class NoneType | 14 |
+| d_globals.py:16 | ControlFlowNode for FunctionExpr | Function assign_global | builtin-class function | 16 |
+| d_globals.py:16 | ControlFlowNode for assign_global | Function assign_global | builtin-class function | 16 |
+| d_globals.py:18 | ControlFlowNode for IntegerLiteral | int 101 | builtin-class int | 18 |
+| d_globals.py:18 | ControlFlowNode for g1 | int 101 | builtin-class int | 18 |
+| d_globals.py:19 | ControlFlowNode for g1 | int 101 | builtin-class int | 18 |
+| d_globals.py:23 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 23 |
+| d_globals.py:23 | ControlFlowNode for g2 | NoneType None | builtin-class NoneType | 23 |
+| d_globals.py:25 | ControlFlowNode for FunctionExpr | Function init | builtin-class function | 25 |
+| d_globals.py:25 | ControlFlowNode for init | Function init | builtin-class function | 25 |
+| d_globals.py:27 | ControlFlowNode for IntegerLiteral | int 102 | builtin-class int | 27 |
+| d_globals.py:27 | ControlFlowNode for g2 | int 102 | builtin-class int | 27 |
+| d_globals.py:29 | ControlFlowNode for init | Function init | builtin-class function | 25 |
+| d_globals.py:29 | ControlFlowNode for init() | NoneType None | builtin-class NoneType | 25 |
+| d_globals.py:30 | ControlFlowNode for g2 | int 102 | builtin-class int | 27 |
+| d_globals.py:33 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 33 |
+| d_globals.py:33 | ControlFlowNode for g3 | NoneType None | builtin-class NoneType | 33 |
+| d_globals.py:35 | ControlFlowNode for ClassExpr | class Ugly | builtin-class type | 35 |
+| d_globals.py:35 | ControlFlowNode for Ugly | class Ugly | builtin-class type | 35 |
+| d_globals.py:35 | ControlFlowNode for object | builtin-class object | builtin-class type | 35 |
+| d_globals.py:37 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 37 |
+| d_globals.py:37 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 37 |
+| d_globals.py:39 | ControlFlowNode for IntegerLiteral | int 103 | builtin-class int | 39 |
+| d_globals.py:39 | ControlFlowNode for g3 | int 103 | builtin-class int | 39 |
+| d_globals.py:41 | ControlFlowNode for FunctionExpr | Function meth | builtin-class function | 41 |
+| d_globals.py:41 | ControlFlowNode for meth | Function meth | builtin-class function | 41 |
+| d_globals.py:42 | ControlFlowNode for g3 | int 103 | builtin-class int | 39 |
+| d_globals.py:45 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 45 |
+| d_globals.py:45 | ControlFlowNode for x | int 0 | builtin-class int | 45 |
+| d_globals.py:46 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 46 |
+| d_globals.py:46 | ControlFlowNode for x | int 1 | builtin-class int | 46 |
+| d_globals.py:47 | ControlFlowNode for x | int 1 | builtin-class int | 46 |
+| d_globals.py:49 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 49 |
+| d_globals.py:49 | ControlFlowNode for x | int 3 | builtin-class int | 49 |
+| d_globals.py:52 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 52 |
+| d_globals.py:52 | ControlFlowNode for y | int 1 | builtin-class int | 52 |
+| d_globals.py:54 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 54 |
+| d_globals.py:54 | ControlFlowNode for y | int 2 | builtin-class int | 54 |
+| d_globals.py:59 | ControlFlowNode for y | int 1 | builtin-class int | 52 |
+| d_globals.py:59 | ControlFlowNode for y | int 2 | builtin-class int | 54 |
+| d_globals.py:62 | ControlFlowNode for ClassExpr | class X | builtin-class type | 62 |
+| d_globals.py:62 | ControlFlowNode for X | class X | builtin-class type | 62 |
+| d_globals.py:62 | ControlFlowNode for object | builtin-class object | builtin-class type | 62 |
+| d_globals.py:63 | ControlFlowNode for y | int 1 | builtin-class int | 52 |
+| d_globals.py:63 | ControlFlowNode for y | int 2 | builtin-class int | 54 |
+| d_globals.py:66 | ControlFlowNode for g3 | NoneType None | builtin-class NoneType | 33 |
+| d_globals.py:68 | ControlFlowNode for type | builtin-class type | builtin-class type | 68 |
+| d_globals.py:70 | ControlFlowNode for FunctionExpr | Function k | builtin-class function | 70 |
+| d_globals.py:70 | ControlFlowNode for k | Function k | builtin-class function | 70 |
+| d_globals.py:71 | ControlFlowNode for type | builtin-class type | builtin-class type | 71 |
+| d_globals.py:73 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 73 |
+| d_globals.py:73 | ControlFlowNode for g4 | NoneType None | builtin-class NoneType | 73 |
+| d_globals.py:75 | ControlFlowNode for FunctionExpr | Function get_g4 | builtin-class function | 75 |
+| d_globals.py:75 | ControlFlowNode for get_g4 | Function get_g4 | builtin-class function | 75 |
+| d_globals.py:76 | ControlFlowNode for UnaryExpr | bool True | builtin-class bool | 76 |
+| d_globals.py:76 | ControlFlowNode for g4 | NoneType None | builtin-class NoneType | 73 |
+| d_globals.py:77 | ControlFlowNode for set_g4 | Function set_g4 | builtin-class function | 80 |
+| d_globals.py:77 | ControlFlowNode for set_g4() | NoneType None | builtin-class NoneType | 80 |
+| d_globals.py:78 | ControlFlowNode for g4 | bool False | builtin-class bool | 85 |
+| d_globals.py:80 | ControlFlowNode for FunctionExpr | Function set_g4 | builtin-class function | 80 |
+| d_globals.py:80 | ControlFlowNode for set_g4 | Function set_g4 | builtin-class function | 80 |
+| d_globals.py:81 | ControlFlowNode for set_g4_indirect | Function set_g4_indirect | builtin-class function | 83 |
+| d_globals.py:81 | ControlFlowNode for set_g4_indirect() | NoneType None | builtin-class NoneType | 83 |
+| d_globals.py:83 | ControlFlowNode for FunctionExpr | Function set_g4_indirect | builtin-class function | 83 |
+| d_globals.py:83 | ControlFlowNode for set_g4_indirect | Function set_g4_indirect | builtin-class function | 83 |
+| d_globals.py:85 | ControlFlowNode for False | bool False | builtin-class bool | 85 |
+| d_globals.py:85 | ControlFlowNode for g4 | bool False | builtin-class bool | 85 |
+| d_globals.py:87 | ControlFlowNode for ClassExpr | class modinit | builtin-class type | 87 |
+| d_globals.py:87 | ControlFlowNode for modinit | class modinit | builtin-class type | 87 |
+| d_globals.py:87 | ControlFlowNode for object | builtin-class object | builtin-class type | 87 |
+| d_globals.py:90 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 90 |
+| d_globals.py:90 | ControlFlowNode for z | int 0 | builtin-class int | 90 |
+| d_globals.py:95 | ControlFlowNode for FunctionExpr | Function outer | builtin-class function | 95 |
+| d_globals.py:95 | ControlFlowNode for outer | Function outer | builtin-class function | 95 |
+| d_globals.py:96 | ControlFlowNode for FunctionExpr | Function inner | builtin-class function | 96 |
+| d_globals.py:96 | ControlFlowNode for inner | Function inner | builtin-class function | 96 |
+| d_globals.py:98 | ControlFlowNode for IntegerLiteral | int 100 | builtin-class int | 98 |
+| d_globals.py:98 | ControlFlowNode for glob | int 100 | builtin-class int | 98 |
+| d_globals.py:99 | ControlFlowNode for glob | int 100 | builtin-class int | 98 |
+| d_globals.py:101 | ControlFlowNode for FunctionExpr | Function otherInner | builtin-class function | 101 |
+| d_globals.py:101 | ControlFlowNode for otherInner | Function otherInner | builtin-class function | 101 |
+| d_globals.py:104 | ControlFlowNode for inner | Function inner | builtin-class function | 96 |
+| d_globals.py:104 | ControlFlowNode for inner() | int 100 | builtin-class int | 98 |
+| d_globals.py:107 | ControlFlowNode for FunctionExpr | Function redefine | builtin-class function | 107 |
+| d_globals.py:107 | ControlFlowNode for redefine | Function redefine | builtin-class function | 107 |
+| d_globals.py:110 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 110 |
+| d_globals.py:110 | ControlFlowNode for z | int 1 | builtin-class int | 110 |
+| d_globals.py:111 | ControlFlowNode for z | int 1 | builtin-class int | 110 |
+| d_globals.py:113 | ControlFlowNode for IntegerLiteral | int 50 | builtin-class int | 113 |
+| d_globals.py:113 | ControlFlowNode for glob | int 50 | builtin-class int | 113 |
+| d_globals.py:114 | ControlFlowNode for glob | int 50 | builtin-class int | 113 |
+| d_globals.py:118 | ControlFlowNode for ClassExpr | class D | builtin-class type | 118 |
+| d_globals.py:118 | ControlFlowNode for D | class D | builtin-class type | 118 |
+| d_globals.py:118 | ControlFlowNode for object | builtin-class object | builtin-class type | 118 |
+| d_globals.py:120 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 120 |
+| d_globals.py:120 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 120 |
+| d_globals.py:123 | ControlFlowNode for FunctionExpr | Function foo | builtin-class function | 123 |
+| d_globals.py:123 | ControlFlowNode for foo | Function foo | builtin-class function | 123 |
+| d_globals.py:124 | ControlFlowNode for dict | int 7 | builtin-class int | 5 |
+| d_globals.py:126 | ControlFlowNode for FunctionExpr | Function use_list_attribute | builtin-class function | 126 |
+| d_globals.py:126 | ControlFlowNode for use_list_attribute | Function use_list_attribute | builtin-class function | 126 |
+| d_globals.py:127 | ControlFlowNode for List | List | builtin-class list | 127 |
+| d_globals.py:127 | ControlFlowNode for l | List | builtin-class list | 127 |
+| d_globals.py:128 | ControlFlowNode for Attribute | Builtin-method append | builtin-class method_descriptor | 128 |
+| d_globals.py:128 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 128 |
+| d_globals.py:128 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 128 |
+| d_globals.py:128 | ControlFlowNode for l | List | builtin-class list | 127 |
+| d_globals.py:128 | ControlFlowNode for list | builtin-class list | builtin-class type | 128 |
+| d_globals.py:129 | ControlFlowNode for l | List | builtin-class list | 127 |
+| e_temporal.py:2 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | 2 |
+| e_temporal.py:2 | ControlFlowNode for sys | Module sys | builtin-class module | 2 |
+| e_temporal.py:4 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 4 |
+| e_temporal.py:4 | ControlFlowNode for f | Function f | builtin-class function | 4 |
+| e_temporal.py:5 | ControlFlowNode for Attribute | list object | builtin-class list | 5 |
+| e_temporal.py:5 | ControlFlowNode for Compare | bool False | builtin-class bool | 5 |
+| e_temporal.py:5 | ControlFlowNode for Compare | bool True | builtin-class bool | 5 |
+| e_temporal.py:5 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 5 |
+| e_temporal.py:5 | ControlFlowNode for len | Builtin-function len | builtin-class builtin_function_or_method | 5 |
+| e_temporal.py:5 | ControlFlowNode for len() | len() | builtin-class int | 5 |
+| e_temporal.py:5 | ControlFlowNode for sys | Module sys | builtin-class module | 2 |
+| e_temporal.py:7 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 7 |
+| e_temporal.py:9 | ControlFlowNode for FunctionExpr | Function g | builtin-class function | 9 |
+| e_temporal.py:9 | ControlFlowNode for g | Function g | builtin-class function | 9 |
+| e_temporal.py:10 | ControlFlowNode for arg | int 1 | builtin-class int | 7 |
+| e_temporal.py:12 | ControlFlowNode for f | Function f | builtin-class function | 4 |
+| e_temporal.py:12 | ControlFlowNode for f() | int 1 | builtin-class int | 7 |
+| e_temporal.py:12 | ControlFlowNode for g | Function g | builtin-class function | 9 |
+| e_temporal.py:12 | ControlFlowNode for g() | int 1 | builtin-class int | 7 |
+| e_temporal.py:12 | ControlFlowNode for x | int 1 | builtin-class int | 7 |
+| g_class_init.py:3 | ControlFlowNode for C | class C | builtin-class type | 3 |
+| g_class_init.py:3 | ControlFlowNode for ClassExpr | class C | builtin-class type | 3 |
+| g_class_init.py:3 | ControlFlowNode for object | builtin-class object | builtin-class type | 3 |
+| g_class_init.py:5 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 5 |
+| g_class_init.py:5 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 5 |
+| g_class_init.py:6 | ControlFlowNode for Attribute | Attribute | builtin-class method | 6 |
+| g_class_init.py:6 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 9 |
+| g_class_init.py:6 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:7 | ControlFlowNode for Attribute | int 1 | builtin-class int | 7 |
+| g_class_init.py:7 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 7 |
+| g_class_init.py:7 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:9 | ControlFlowNode for FunctionExpr | Function _init | builtin-class function | 9 |
+| g_class_init.py:9 | ControlFlowNode for _init | Function _init | builtin-class function | 9 |
+| g_class_init.py:10 | ControlFlowNode for Attribute | int 2 | builtin-class int | 10 |
+| g_class_init.py:10 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 10 |
+| g_class_init.py:10 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:11 | ControlFlowNode for Attribute | Attribute | builtin-class method | 11 |
+| g_class_init.py:11 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 13 |
+| g_class_init.py:11 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:13 | ControlFlowNode for FunctionExpr | Function _init2 | builtin-class function | 13 |
+| g_class_init.py:13 | ControlFlowNode for _init2 | Function _init2 | builtin-class function | 13 |
+| g_class_init.py:14 | ControlFlowNode for Attribute | int 3 | builtin-class int | 14 |
+| g_class_init.py:14 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 14 |
+| g_class_init.py:14 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:16 | ControlFlowNode for FunctionExpr | Function method | builtin-class function | 16 |
+| g_class_init.py:16 | ControlFlowNode for method | Function method | builtin-class function | 16 |
+| g_class_init.py:17 | ControlFlowNode for self | self | class C | 16 |
+| g_class_init.py:18 | ControlFlowNode for int | builtin-class int | builtin-class type | 18 |
+| g_class_init.py:18 | ControlFlowNode for isinstance | Builtin-function isinstance | builtin-class builtin_function_or_method | 18 |
+| g_class_init.py:18 | ControlFlowNode for isinstance() | bool False | builtin-class bool | 18 |
+| g_class_init.py:18 | ControlFlowNode for isinstance() | bool True | builtin-class bool | 18 |
+| g_class_init.py:18 | ControlFlowNode for self | self | class C | 16 |
+| g_class_init.py:19 | ControlFlowNode for self | self | class C | 16 |
+| g_class_init.py:20 | ControlFlowNode for self | self | class C | 16 |
+| g_class_init.py:24 | ControlFlowNode for ClassExpr | class Oddities | builtin-class type | 24 |
+| g_class_init.py:24 | ControlFlowNode for Oddities | class Oddities | builtin-class type | 24 |
+| g_class_init.py:24 | ControlFlowNode for object | builtin-class object | builtin-class type | 24 |
+| g_class_init.py:26 | ControlFlowNode for int | builtin-class int | builtin-class type | 26 |
+| g_class_init.py:27 | ControlFlowNode for float | builtin-class float | builtin-class type | 27 |
+| g_class_init.py:28 | ControlFlowNode for l | Builtin-function len | builtin-class builtin_function_or_method | 28 |
+| g_class_init.py:28 | ControlFlowNode for len | Builtin-function len | builtin-class builtin_function_or_method | 28 |
+| g_class_init.py:29 | ControlFlowNode for h | Builtin-function hash | builtin-class builtin_function_or_method | 29 |
+| g_class_init.py:29 | ControlFlowNode for hash | Builtin-function hash | builtin-class builtin_function_or_method | 29 |
+| g_class_init.py:32 | ControlFlowNode for ClassExpr | class D | builtin-class type | 32 |
+| g_class_init.py:32 | ControlFlowNode for D | class D | builtin-class type | 32 |
+| g_class_init.py:32 | ControlFlowNode for object | builtin-class object | builtin-class type | 32 |
+| g_class_init.py:34 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 34 |
+| g_class_init.py:34 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 34 |
+| g_class_init.py:35 | ControlFlowNode for D | class D | builtin-class type | 32 |
+| g_class_init.py:35 | ControlFlowNode for self | self | class D | 34 |
+| g_class_init.py:35 | ControlFlowNode for super | builtin-class super | builtin-class type | 35 |
+| g_class_init.py:35 | ControlFlowNode for super() | super() | builtin-class super | 35 |
+| g_class_init.py:36 | ControlFlowNode for Attribute | super().__init__ | builtin-class method | 36 |
+| g_class_init.py:36 | ControlFlowNode for D | class D | builtin-class type | 32 |
+| g_class_init.py:36 | ControlFlowNode for self | self | class D | 34 |
+| g_class_init.py:36 | ControlFlowNode for super | builtin-class super | builtin-class type | 36 |
+| g_class_init.py:36 | ControlFlowNode for super() | super() | builtin-class super | 36 |
+| g_class_init.py:42 | ControlFlowNode for Str | 'v2' | builtin-class str | 42 |
+| g_class_init.py:42 | ControlFlowNode for V2 | 'v2' | builtin-class str | 42 |
+| g_class_init.py:43 | ControlFlowNode for Str | 'v3' | builtin-class str | 43 |
+| g_class_init.py:43 | ControlFlowNode for V3 | 'v3' | builtin-class str | 43 |
+| g_class_init.py:45 | ControlFlowNode for ClassExpr | class E | builtin-class type | 45 |
+| g_class_init.py:45 | ControlFlowNode for E | class E | builtin-class type | 45 |
+| g_class_init.py:45 | ControlFlowNode for object | builtin-class object | builtin-class type | 45 |
+| g_class_init.py:46 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 46 |
+| g_class_init.py:46 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 46 |
+| g_class_init.py:48 | ControlFlowNode for Attribute | 'v2' | builtin-class str | 42 |
+| g_class_init.py:48 | ControlFlowNode for V2 | 'v2' | builtin-class str | 42 |
+| g_class_init.py:48 | ControlFlowNode for self | self | class E | 46 |
+| g_class_init.py:50 | ControlFlowNode for Attribute | 'v3' | builtin-class str | 43 |
+| g_class_init.py:50 | ControlFlowNode for V3 | 'v3' | builtin-class str | 43 |
+| g_class_init.py:50 | ControlFlowNode for self | self | class E | 46 |
+| g_class_init.py:52 | ControlFlowNode for FunctionExpr | Function meth | builtin-class function | 52 |
+| g_class_init.py:52 | ControlFlowNode for meth | Function meth | builtin-class function | 52 |
+| g_class_init.py:53 | ControlFlowNode for Compare | bool False | builtin-class bool | 53 |
+| g_class_init.py:53 | ControlFlowNode for Compare | bool True | builtin-class bool | 53 |
+| g_class_init.py:53 | ControlFlowNode for V2 | 'v2' | builtin-class str | 42 |
+| g_class_init.py:53 | ControlFlowNode for self | self | class E | 52 |
+| h_classes.py:1 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | 1 |
+| h_classes.py:1 | ControlFlowNode for sys | Module sys | builtin-class module | 1 |
+| h_classes.py:3 | ControlFlowNode for C | class C | builtin-class type | 3 |
+| h_classes.py:3 | ControlFlowNode for ClassExpr | class C | builtin-class type | 3 |
+| h_classes.py:3 | ControlFlowNode for object | builtin-class object | builtin-class type | 3 |
+| h_classes.py:5 | ControlFlowNode for Str | 'C_x' | builtin-class str | 5 |
+| h_classes.py:5 | ControlFlowNode for x | 'C_x' | builtin-class str | 5 |
+| h_classes.py:7 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 7 |
+| h_classes.py:7 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 7 |
+| h_classes.py:8 | ControlFlowNode for Attribute | 'c_y' | builtin-class str | 8 |
+| h_classes.py:8 | ControlFlowNode for Str | 'c_y' | builtin-class str | 8 |
+| h_classes.py:8 | ControlFlowNode for self | self | class C | 7 |
+| h_classes.py:10 | ControlFlowNode for C | class C | builtin-class type | 3 |
+| h_classes.py:10 | ControlFlowNode for C() | C() | class C | 10 |
+| h_classes.py:10 | ControlFlowNode for type | builtin-class type | builtin-class type | 10 |
+| h_classes.py:10 | ControlFlowNode for type() | class C | builtin-class type | 3 |
+| h_classes.py:11 | ControlFlowNode for sys | Module sys | builtin-class module | 1 |
+| h_classes.py:11 | ControlFlowNode for type | builtin-class type | builtin-class type | 11 |
+| h_classes.py:11 | ControlFlowNode for type() | builtin-class module | builtin-class type | 11 |
+| h_classes.py:12 | ControlFlowNode for Dict | Dict | builtin-class dict | 12 |
+| h_classes.py:12 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 12 |
+| h_classes.py:12 | ControlFlowNode for object | builtin-class object | builtin-class type | 12 |
+| h_classes.py:12 | ControlFlowNode for type | builtin-class type | builtin-class type | 12 |
+| h_classes.py:12 | ControlFlowNode for type() | type() | builtin-class type | 12 |
+| h_classes.py:14 | ControlFlowNode for FunctionExpr | Function k | builtin-class function | 14 |
+| h_classes.py:14 | ControlFlowNode for k | Function k | builtin-class function | 14 |
+| h_classes.py:15 | ControlFlowNode for C | class C | builtin-class type | 3 |
+| h_classes.py:15 | ControlFlowNode for C() | C() | class C | 15 |
+| h_classes.py:15 | ControlFlowNode for type | builtin-class type | builtin-class type | 15 |
+| h_classes.py:15 | ControlFlowNode for type() | class C | builtin-class type | 3 |
+| h_classes.py:16 | ControlFlowNode for sys | Module sys | builtin-class module | 1 |
+| h_classes.py:16 | ControlFlowNode for type | builtin-class type | builtin-class type | 16 |
+| h_classes.py:16 | ControlFlowNode for type() | builtin-class module | builtin-class type | 16 |
+| h_classes.py:17 | ControlFlowNode for type | builtin-class type | builtin-class type | 17 |
+| h_classes.py:17 | ControlFlowNode for type() | *UNKNOWN TYPE* | *UNKNOWN TYPE* | 17 |
+| h_classes.py:18 | ControlFlowNode for Dict | Dict | builtin-class dict | 18 |
+| h_classes.py:18 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 18 |
+| h_classes.py:18 | ControlFlowNode for object | builtin-class object | builtin-class type | 18 |
+| h_classes.py:18 | ControlFlowNode for type | builtin-class type | builtin-class type | 18 |
+| h_classes.py:18 | ControlFlowNode for type() | type() | builtin-class type | 18 |
+| h_classes.py:23 | ControlFlowNode for Base | class Base | builtin-class type | 23 |
+| h_classes.py:23 | ControlFlowNode for ClassExpr | class Base | builtin-class type | 23 |
+| h_classes.py:23 | ControlFlowNode for object | builtin-class object | builtin-class type | 23 |
+| h_classes.py:25 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 25 |
+| h_classes.py:25 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 25 |
+| h_classes.py:26 | ControlFlowNode for Compare | bool False | builtin-class bool | 26 |
+| h_classes.py:26 | ControlFlowNode for Compare | bool True | builtin-class bool | 26 |
+| h_classes.py:26 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 26 |
+| h_classes.py:27 | ControlFlowNode for Attribute | class Derived1 | builtin-class type | 33 |
+| h_classes.py:27 | ControlFlowNode for Derived1 | class Derived1 | builtin-class type | 33 |
+| h_classes.py:27 | ControlFlowNode for self | self | class Base | 25 |
+| h_classes.py:28 | ControlFlowNode for Compare | bool False | builtin-class bool | 28 |
+| h_classes.py:28 | ControlFlowNode for Compare | bool True | builtin-class bool | 28 |
+| h_classes.py:28 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 28 |
+| h_classes.py:29 | ControlFlowNode for Attribute | class Derived2 | builtin-class type | 36 |
+| h_classes.py:29 | ControlFlowNode for Derived2 | class Derived2 | builtin-class type | 36 |
+| h_classes.py:29 | ControlFlowNode for self | self | class Base | 25 |
+| h_classes.py:31 | ControlFlowNode for Attribute | class Derived3 | builtin-class type | 39 |
+| h_classes.py:31 | ControlFlowNode for Derived3 | class Derived3 | builtin-class type | 39 |
+| h_classes.py:31 | ControlFlowNode for self | self | class Base | 25 |
+| h_classes.py:33 | ControlFlowNode for Base | class Base | builtin-class type | 23 |
+| h_classes.py:33 | ControlFlowNode for ClassExpr | class Derived1 | builtin-class type | 33 |
+| h_classes.py:33 | ControlFlowNode for Derived1 | class Derived1 | builtin-class type | 33 |
+| h_classes.py:36 | ControlFlowNode for Base | class Base | builtin-class type | 23 |
+| h_classes.py:36 | ControlFlowNode for ClassExpr | class Derived2 | builtin-class type | 36 |
+| h_classes.py:36 | ControlFlowNode for Derived2 | class Derived2 | builtin-class type | 36 |
+| h_classes.py:39 | ControlFlowNode for Base | class Base | builtin-class type | 23 |
+| h_classes.py:39 | ControlFlowNode for ClassExpr | class Derived3 | builtin-class type | 39 |
+| h_classes.py:39 | ControlFlowNode for Derived3 | class Derived3 | builtin-class type | 39 |
+| h_classes.py:42 | ControlFlowNode for Base | class Base | builtin-class type | 23 |
+| h_classes.py:42 | ControlFlowNode for Base() | Base() | *UNKNOWN TYPE* | 42 |
+| h_classes.py:42 | ControlFlowNode for thing | Base() | *UNKNOWN TYPE* | 42 |
+| h_classes.py:45 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 45 |
+| h_classes.py:45 | ControlFlowNode for f | Function f | builtin-class function | 45 |
+| h_classes.py:48 | ControlFlowNode for ClassExpr | class D | builtin-class type | 48 |
+| h_classes.py:48 | ControlFlowNode for D | class D | builtin-class type | 48 |
+| h_classes.py:48 | ControlFlowNode for object | builtin-class object | builtin-class type | 48 |
+| h_classes.py:50 | ControlFlowNode for f | Function f | builtin-class function | 45 |
+| h_classes.py:50 | ControlFlowNode for m | Function f | builtin-class function | 45 |
+| h_classes.py:52 | ControlFlowNode for FunctionExpr | Function n | builtin-class function | 52 |
+| h_classes.py:52 | ControlFlowNode for n | Function n | builtin-class function | 52 |
+| h_classes.py:55 | ControlFlowNode for int | builtin-class int | builtin-class type | 55 |
+| h_classes.py:55 | ControlFlowNode for int() | int() | builtin-class int | 55 |
+| h_classes.py:56 | ControlFlowNode for Str | '' | builtin-class str | 56 |
+| h_classes.py:56 | ControlFlowNode for type | builtin-class type | builtin-class type | 56 |
+| h_classes.py:56 | ControlFlowNode for type() | builtin-class str | builtin-class type | 56 |
+| h_classes.py:56 | ControlFlowNode for type()() | type()() | builtin-class str | 56 |
+| h_classes.py:57 | ControlFlowNode for list | builtin-class list | builtin-class type | 57 |
+| h_classes.py:57 | ControlFlowNode for list() | list() | builtin-class list | 57 |
+| h_classes.py:58 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 58 |
+| h_classes.py:58 | ControlFlowNode for dict() | dict() | builtin-class dict | 58 |
+| h_classes.py:59 | ControlFlowNode for Str | 'hi' | builtin-class str | 59 |
+| h_classes.py:59 | ControlFlowNode for bool | builtin-class bool | builtin-class type | 59 |
+| h_classes.py:59 | ControlFlowNode for bool() | bool True | builtin-class bool | 59 |
+| h_classes.py:60 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 60 |
+| h_classes.py:60 | ControlFlowNode for bool | builtin-class bool | builtin-class type | 60 |
+| h_classes.py:60 | ControlFlowNode for bool() | bool False | builtin-class bool | 60 |
+| i_imports.py:3 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 3 |
+| i_imports.py:3 | ControlFlowNode for a | int 1 | builtin-class int | 3 |
+| i_imports.py:4 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 4 |
+| i_imports.py:4 | ControlFlowNode for b | int 2 | builtin-class int | 4 |
+| i_imports.py:5 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 5 |
+| i_imports.py:5 | ControlFlowNode for c | int 3 | builtin-class int | 5 |
+| i_imports.py:7 | ControlFlowNode for ImportExpr | Module code.xyz | builtin-class module | 7 |
+| i_imports.py:8 | ControlFlowNode for ImportExpr | Module code | builtin-class module | 8 |
+| i_imports.py:8 | ControlFlowNode for ImportMember | Module code.xyz | builtin-class module | 0 |
+| i_imports.py:8 | ControlFlowNode for xyz | Module code.xyz | builtin-class module | 0 |
+| i_imports.py:9 | ControlFlowNode for Attribute | float 1.0 | builtin-class float | 2 |
+| i_imports.py:9 | ControlFlowNode for xyz | Module code.xyz | builtin-class module | 0 |
+| i_imports.py:10 | ControlFlowNode for z | float 3.0 | builtin-class float | 4 |
+| i_imports.py:11 | ControlFlowNode for a | int 1 | builtin-class int | 3 |
+| i_imports.py:13 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | 13 |
+| i_imports.py:13 | ControlFlowNode for ImportMember | list object | builtin-class list | 13 |
+| i_imports.py:13 | ControlFlowNode for argv | list object | builtin-class list | 13 |
+| i_imports.py:15 | ControlFlowNode for argv | list object | builtin-class list | 13 |
+| i_imports.py:17 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | 17 |
+| i_imports.py:17 | ControlFlowNode for sys | Module sys | builtin-class module | 17 |
+| i_imports.py:18 | ControlFlowNode for Attribute | list object | builtin-class list | 18 |
+| i_imports.py:18 | ControlFlowNode for sys | Module sys | builtin-class module | 17 |
+| i_imports.py:23 | ControlFlowNode for ImportExpr | Module code | builtin-class module | 23 |
+| i_imports.py:23 | ControlFlowNode for code | Module code | builtin-class module | 23 |
+| i_imports.py:24 | ControlFlowNode for Attribute | Module code.package | builtin-class module | 0 |
+| i_imports.py:24 | ControlFlowNode for Attribute | Module code.package.x | builtin-class module | 0 |
+| i_imports.py:24 | ControlFlowNode for code | Module code | builtin-class module | 23 |
+| i_imports.py:27 | ControlFlowNode for ImportExpr | Module code.test_package | builtin-class module | 27 |
+| i_imports.py:29 | ControlFlowNode for ImportExpr | Module _io | builtin-class module | 29 |
+| i_imports.py:29 | ControlFlowNode for _io | Module _io | builtin-class module | 29 |
+| i_imports.py:30 | ControlFlowNode for Attribute | builtin-class _io.StringIO | builtin-class type | 30 |
+| i_imports.py:30 | ControlFlowNode for StringIO | builtin-class _io.StringIO | builtin-class type | 30 |
+| i_imports.py:30 | ControlFlowNode for _io | Module _io | builtin-class module | 29 |
+| i_imports.py:31 | ControlFlowNode for Attribute | builtin-class _io.BytesIO | builtin-class type | 31 |
+| i_imports.py:31 | ControlFlowNode for BytesIO | builtin-class _io.BytesIO | builtin-class type | 31 |
+| i_imports.py:31 | ControlFlowNode for _io | Module _io | builtin-class module | 29 |
+| i_imports.py:33 | ControlFlowNode for ImportExpr | Module io | builtin-class module | 33 |
+| i_imports.py:33 | ControlFlowNode for io | Module io | builtin-class module | 33 |
+| i_imports.py:34 | ControlFlowNode for Attribute | builtin-class _io.StringIO | builtin-class type | 55 |
+| i_imports.py:34 | ControlFlowNode for StringIO | builtin-class _io.StringIO | builtin-class type | 55 |
+| i_imports.py:34 | ControlFlowNode for io | Module io | builtin-class module | 33 |
+| i_imports.py:35 | ControlFlowNode for Attribute | builtin-class _io.BytesIO | builtin-class type | 55 |
+| i_imports.py:35 | ControlFlowNode for BytesIO | builtin-class _io.BytesIO | builtin-class type | 55 |
+| i_imports.py:35 | ControlFlowNode for io | Module io | builtin-class module | 33 |
+| i_imports.py:37 | ControlFlowNode for ImportExpr | Module code | builtin-class module | 37 |
+| i_imports.py:37 | ControlFlowNode for code | Module code | builtin-class module | 37 |
+| i_imports.py:38 | ControlFlowNode for Attribute | Function f2 | builtin-class function | 24 |
+| i_imports.py:38 | ControlFlowNode for Attribute | Module code.n_nesting | builtin-class module | 0 |
+| i_imports.py:38 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 24 |
+| i_imports.py:38 | ControlFlowNode for code | Module code | builtin-class module | 37 |
+| j_convoluted_imports.py:2 | ControlFlowNode for ImportExpr | Module code.package | builtin-class module | 2 |
+| j_convoluted_imports.py:3 | ControlFlowNode for ImportMember | Function module | builtin-class function | 2 |
+| j_convoluted_imports.py:3 | ControlFlowNode for module | Function module | builtin-class function | 2 |
+| j_convoluted_imports.py:5 | ControlFlowNode for ImportExpr | Module code.package | builtin-class module | 5 |
+| j_convoluted_imports.py:6 | ControlFlowNode for ImportMember | Module code.package.x | builtin-class module | 0 |
+| j_convoluted_imports.py:6 | ControlFlowNode for x | Module code.package.x | builtin-class module | 0 |
+| j_convoluted_imports.py:9 | ControlFlowNode for C | class C | builtin-class type | 9 |
+| j_convoluted_imports.py:9 | ControlFlowNode for ClassExpr | class C | builtin-class type | 9 |
+| j_convoluted_imports.py:9 | ControlFlowNode for object | builtin-class object | builtin-class type | 9 |
+| j_convoluted_imports.py:11 | ControlFlowNode for ImportExpr | Module code.package | builtin-class module | 11 |
+| j_convoluted_imports.py:11 | ControlFlowNode for ImportMember | int 7 | builtin-class int | 5 |
+| j_convoluted_imports.py:11 | ControlFlowNode for module2 | int 7 | builtin-class int | 5 |
+| j_convoluted_imports.py:13 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 13 |
+| j_convoluted_imports.py:13 | ControlFlowNode for f | Function f | builtin-class function | 13 |
+| j_convoluted_imports.py:14 | ControlFlowNode for ImportExpr | Module code.package | builtin-class module | 14 |
+| j_convoluted_imports.py:14 | ControlFlowNode for ImportMember | Module code.package.x | builtin-class module | 0 |
+| j_convoluted_imports.py:14 | ControlFlowNode for x | Module code.package.x | builtin-class module | 0 |
+| j_convoluted_imports.py:16 | ControlFlowNode for ImportExpr | Module code.package | builtin-class module | 16 |
+| j_convoluted_imports.py:16 | ControlFlowNode for ImportMember | Module code.package.moduleX | builtin-class module | 0 |
+| j_convoluted_imports.py:16 | ControlFlowNode for moduleX | Module code.package.moduleX | builtin-class module | 0 |
+| j_convoluted_imports.py:17 | ControlFlowNode for Attribute | class Y | builtin-class type | 1 |
+| j_convoluted_imports.py:17 | ControlFlowNode for moduleX | Module code.package.moduleX | builtin-class module | 0 |
+| j_convoluted_imports.py:20 | ControlFlowNode for ImportExpr | Module code.test_package.module1 | builtin-class module | 20 |
+| j_convoluted_imports.py:22 | ControlFlowNode for ImportExpr | Module code.test_package.module2 | builtin-class module | 22 |
+| j_convoluted_imports.py:23 | ControlFlowNode for p | int 1 | builtin-class int | 3 |
+| j_convoluted_imports.py:24 | ControlFlowNode for q | int 2 | builtin-class int | 4 |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | Dict | builtin-class dict | 5 |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | int 3 | builtin-class int | 5 |
+| k_getsetattr.py:4 | ControlFlowNode for C | class C | builtin-class type | 4 |
+| k_getsetattr.py:4 | ControlFlowNode for ClassExpr | class C | builtin-class type | 4 |
+| k_getsetattr.py:4 | ControlFlowNode for object | builtin-class object | builtin-class type | 4 |
+| k_getsetattr.py:6 | ControlFlowNode for FunctionExpr | Function meth1 | builtin-class function | 6 |
+| k_getsetattr.py:6 | ControlFlowNode for meth1 | Function meth1 | builtin-class function | 6 |
+| k_getsetattr.py:7 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 7 |
+| k_getsetattr.py:7 | ControlFlowNode for Str | 'a' | builtin-class str | 7 |
+| k_getsetattr.py:7 | ControlFlowNode for self | self | class C | 6 |
+| k_getsetattr.py:7 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:7 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 7 |
+| k_getsetattr.py:7 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 7 |
+| k_getsetattr.py:8 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 8 |
+| k_getsetattr.py:8 | ControlFlowNode for Str | 'b' | builtin-class str | 8 |
+| k_getsetattr.py:8 | ControlFlowNode for self | self | class C | 6 |
+| k_getsetattr.py:8 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:8 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 8 |
+| k_getsetattr.py:8 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 8 |
+| k_getsetattr.py:9 | ControlFlowNode for Str | 'a' | builtin-class str | 9 |
+| k_getsetattr.py:9 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 9 |
+| k_getsetattr.py:9 | ControlFlowNode for getattr() | int 0 | builtin-class int | 7 |
+| k_getsetattr.py:9 | ControlFlowNode for self | self | class C | 6 |
+| k_getsetattr.py:9 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:10 | ControlFlowNode for Str | 'c' | builtin-class str | 10 |
+| k_getsetattr.py:10 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 10 |
+| k_getsetattr.py:10 | ControlFlowNode for getattr() | int 2 | builtin-class int | 14 |
+| k_getsetattr.py:10 | ControlFlowNode for self | self | class C | 6 |
+| k_getsetattr.py:10 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:12 | ControlFlowNode for FunctionExpr | Function meth2 | builtin-class function | 12 |
+| k_getsetattr.py:12 | ControlFlowNode for meth2 | Function meth2 | builtin-class function | 12 |
+| k_getsetattr.py:13 | ControlFlowNode for FloatLiteral | float 7.0 | builtin-class float | 13 |
+| k_getsetattr.py:13 | ControlFlowNode for Str | 'a' | builtin-class str | 13 |
+| k_getsetattr.py:13 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:13 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 13 |
+| k_getsetattr.py:13 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 13 |
+| k_getsetattr.py:14 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 14 |
+| k_getsetattr.py:14 | ControlFlowNode for Str | 'c' | builtin-class str | 14 |
+| k_getsetattr.py:14 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:14 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 14 |
+| k_getsetattr.py:14 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 14 |
+| k_getsetattr.py:15 | ControlFlowNode for Attribute | Attribute | builtin-class method | 15 |
+| k_getsetattr.py:15 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 6 |
+| k_getsetattr.py:15 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:16 | ControlFlowNode for Str | 'a' | builtin-class str | 16 |
+| k_getsetattr.py:16 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 16 |
+| k_getsetattr.py:16 | ControlFlowNode for getattr() | int 0 | builtin-class int | 7 |
+| k_getsetattr.py:16 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:17 | ControlFlowNode for Str | 'b' | builtin-class str | 17 |
+| k_getsetattr.py:17 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 17 |
+| k_getsetattr.py:17 | ControlFlowNode for getattr() | int 1 | builtin-class int | 8 |
+| k_getsetattr.py:17 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:18 | ControlFlowNode for Str | 'c' | builtin-class str | 18 |
+| k_getsetattr.py:18 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 18 |
+| k_getsetattr.py:18 | ControlFlowNode for getattr() | int 2 | builtin-class int | 14 |
+| k_getsetattr.py:18 | ControlFlowNode for self | self | class C | 12 |
+| k_getsetattr.py:21 | ControlFlowNode for FunctionExpr | Function k | builtin-class function | 21 |
+| k_getsetattr.py:21 | ControlFlowNode for k | Function k | builtin-class function | 21 |
+| k_getsetattr.py:22 | ControlFlowNode for C | class C | builtin-class type | 4 |
+| k_getsetattr.py:22 | ControlFlowNode for C() | C() | class C | 22 |
+| k_getsetattr.py:22 | ControlFlowNode for c1 | C() | class C | 22 |
+| k_getsetattr.py:23 | ControlFlowNode for C | class C | builtin-class type | 4 |
+| k_getsetattr.py:23 | ControlFlowNode for C() | C() | class C | 23 |
+| k_getsetattr.py:23 | ControlFlowNode for c2 | C() | class C | 23 |
+| k_getsetattr.py:24 | ControlFlowNode for C | class C | builtin-class type | 4 |
+| k_getsetattr.py:24 | ControlFlowNode for C() | C() | class C | 24 |
+| k_getsetattr.py:24 | ControlFlowNode for c3 | C() | class C | 24 |
+| k_getsetattr.py:25 | ControlFlowNode for Attribute | int 10 | builtin-class int | 25 |
+| k_getsetattr.py:25 | ControlFlowNode for IntegerLiteral | int 10 | builtin-class int | 25 |
+| k_getsetattr.py:25 | ControlFlowNode for c1 | C() | class C | 22 |
+| k_getsetattr.py:27 | ControlFlowNode for Attribute | int 20 | builtin-class int | 27 |
+| k_getsetattr.py:27 | ControlFlowNode for IntegerLiteral | int 20 | builtin-class int | 27 |
+| k_getsetattr.py:27 | ControlFlowNode for c2 | C() | class C | 23 |
+| k_getsetattr.py:28 | ControlFlowNode for Attribute | int 10 | builtin-class int | 25 |
+| k_getsetattr.py:28 | ControlFlowNode for c1 | C() | class C | 22 |
+| k_getsetattr.py:29 | ControlFlowNode for Attribute | int 20 | builtin-class int | 27 |
+| k_getsetattr.py:29 | ControlFlowNode for c2 | C() | class C | 23 |
+| k_getsetattr.py:30 | ControlFlowNode for c3 | C() | class C | 24 |
+| k_getsetattr.py:31 | ControlFlowNode for Attribute | int 30 | builtin-class int | 31 |
+| k_getsetattr.py:31 | ControlFlowNode for IntegerLiteral | int 30 | builtin-class int | 31 |
+| k_getsetattr.py:31 | ControlFlowNode for c3 | C() | class C | 24 |
+| l_calls.py:3 | ControlFlowNode for FunctionExpr | Function foo | builtin-class function | 3 |
+| l_calls.py:3 | ControlFlowNode for List | List | builtin-class list | 3 |
+| l_calls.py:3 | ControlFlowNode for foo | Function foo | builtin-class function | 3 |
+| l_calls.py:4 | ControlFlowNode for Attribute | Attribute | builtin-class method | 4 |
+| l_calls.py:4 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 4 |
+| l_calls.py:4 | ControlFlowNode for Str | 'x' | builtin-class str | 4 |
+| l_calls.py:4 | ControlFlowNode for x | List | builtin-class list | 3 |
+| l_calls.py:6 | ControlFlowNode for FunctionExpr | Function bar | builtin-class function | 6 |
+| l_calls.py:6 | ControlFlowNode for List | List | builtin-class list | 6 |
+| l_calls.py:6 | ControlFlowNode for bar | Function bar | builtin-class function | 6 |
+| l_calls.py:7 | ControlFlowNode for len | Builtin-function len | builtin-class builtin_function_or_method | 7 |
+| l_calls.py:7 | ControlFlowNode for len() | len() | builtin-class int | 7 |
+| l_calls.py:7 | ControlFlowNode for x | List | builtin-class list | 6 |
+| l_calls.py:9 | ControlFlowNode for foo | Function foo | builtin-class function | 3 |
+| l_calls.py:9 | ControlFlowNode for foo() | NoneType None | builtin-class NoneType | 4 |
+| l_calls.py:10 | ControlFlowNode for bar | Function bar | builtin-class function | 6 |
+| l_calls.py:10 | ControlFlowNode for bar() | len() | builtin-class int | 7 |
+| l_calls.py:12 | ControlFlowNode for ClassExpr | class Owner | builtin-class type | 12 |
+| l_calls.py:12 | ControlFlowNode for Owner | class Owner | builtin-class type | 12 |
+| l_calls.py:12 | ControlFlowNode for object | builtin-class object | builtin-class type | 12 |
+| l_calls.py:14 | ControlFlowNode for classmethod | builtin-class classmethod | builtin-class type | 14 |
+| l_calls.py:14 | ControlFlowNode for classmethod() | classmethod() | builtin-class classmethod | 14 |
+| l_calls.py:15 | ControlFlowNode for FunctionExpr | Function cm | builtin-class function | 15 |
+| l_calls.py:15 | ControlFlowNode for cm | classmethod() | builtin-class classmethod | 14 |
+| l_calls.py:16 | ControlFlowNode for cls | class Owner | builtin-class type | 12 |
+| l_calls.py:18 | ControlFlowNode for classmethod | builtin-class classmethod | builtin-class type | 18 |
+| l_calls.py:18 | ControlFlowNode for classmethod() | classmethod() | builtin-class classmethod | 18 |
+| l_calls.py:19 | ControlFlowNode for FunctionExpr | Function cm2 | builtin-class function | 19 |
+| l_calls.py:19 | ControlFlowNode for cm2 | classmethod() | builtin-class classmethod | 18 |
+| l_calls.py:20 | ControlFlowNode for arg | int 1 | builtin-class int | 25 |
+| l_calls.py:23 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 23 |
+| l_calls.py:23 | ControlFlowNode for m | Function m | builtin-class function | 23 |
+| l_calls.py:24 | ControlFlowNode for Attribute | Attribute | builtin-class method | 24 |
+| l_calls.py:24 | ControlFlowNode for Attribute() | class Owner | builtin-class type | 12 |
+| l_calls.py:24 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 24 |
+| l_calls.py:24 | ControlFlowNode for a | class Owner | builtin-class type | 12 |
+| l_calls.py:24 | ControlFlowNode for self | self | class Owner | 23 |
+| l_calls.py:25 | ControlFlowNode for Attribute | Attribute | builtin-class method | 25 |
+| l_calls.py:25 | ControlFlowNode for Attribute() | int 1 | builtin-class int | 25 |
+| l_calls.py:25 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 25 |
+| l_calls.py:25 | ControlFlowNode for a | class Owner | builtin-class type | 12 |
+| l_calls.py:29 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 29 |
+| l_calls.py:29 | ControlFlowNode for args | args | builtin-class tuple | 29 |
+| l_calls.py:29 | ControlFlowNode for f | Function f | builtin-class function | 29 |
+| l_calls.py:30 | ControlFlowNode for args | args | builtin-class tuple | 29 |
+| l_calls.py:32 | ControlFlowNode for ClassExpr | class E | builtin-class type | 32 |
+| l_calls.py:32 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:32 | ControlFlowNode for object | builtin-class object | builtin-class type | 32 |
+| l_calls.py:33 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 33 |
+| l_calls.py:33 | ControlFlowNode for args | args | builtin-class tuple | 33 |
+| l_calls.py:33 | ControlFlowNode for m | Function m | builtin-class function | 33 |
+| l_calls.py:34 | ControlFlowNode for self | E() | class E | 38 |
+| l_calls.py:34 | ControlFlowNode for self | int 3 | builtin-class int | 39 |
+| l_calls.py:34 | ControlFlowNode for self | self | class E | 33 |
+| l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for f | Function f | builtin-class function | 29 |
+| l_calls.py:37 | ControlFlowNode for f() | args | builtin-class tuple | 29 |
+| l_calls.py:38 | ControlFlowNode for Attribute | Attribute | builtin-class method | 38 |
+| l_calls.py:38 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 |
+| l_calls.py:38 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:38 | ControlFlowNode for E() | E() | class E | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 38 |
+| l_calls.py:39 | ControlFlowNode for Attribute | Function m | builtin-class function | 33 |
+| l_calls.py:39 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 |
+| l_calls.py:39 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 39 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 39 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 39 |
+| l_calls.py:41 | ControlFlowNode for Str | 'a' | builtin-class str | 41 |
+| l_calls.py:41 | ControlFlowNode for Str | 'b' | builtin-class str | 41 |
+| l_calls.py:41 | ControlFlowNode for Str | 'c' | builtin-class str | 41 |
+| l_calls.py:41 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 41 |
+| l_calls.py:41 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:42 | ControlFlowNode for f | Function f | builtin-class function | 29 |
+| l_calls.py:42 | ControlFlowNode for f() | args | builtin-class tuple | 29 |
+| l_calls.py:42 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:44 | ControlFlowNode for FunctionExpr | Function g | builtin-class function | 44 |
+| l_calls.py:44 | ControlFlowNode for g | Function g | builtin-class function | 44 |
+| l_calls.py:45 | ControlFlowNode for a | 'a' | builtin-class str | 51 |
+| l_calls.py:47 | ControlFlowNode for ClassExpr | class F | builtin-class type | 47 |
+| l_calls.py:47 | ControlFlowNode for F | class F | builtin-class type | 47 |
+| l_calls.py:47 | ControlFlowNode for object | builtin-class object | builtin-class type | 47 |
+| l_calls.py:48 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 48 |
+| l_calls.py:48 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 48 |
+| l_calls.py:48 | ControlFlowNode for m | Function m | builtin-class function | 48 |
+| l_calls.py:49 | ControlFlowNode for x | 'a' | builtin-class str | 52 |
+| l_calls.py:49 | ControlFlowNode for x | 'b' | builtin-class str | 53 |
+| l_calls.py:51 | ControlFlowNode for g | Function g | builtin-class function | 44 |
+| l_calls.py:51 | ControlFlowNode for g() | 'a' | builtin-class str | 51 |
+| l_calls.py:51 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:52 | ControlFlowNode for Attribute | Attribute | builtin-class method | 52 |
+| l_calls.py:52 | ControlFlowNode for Attribute() | 'a' | builtin-class str | 52 |
+| l_calls.py:52 | ControlFlowNode for F | class F | builtin-class type | 47 |
+| l_calls.py:52 | ControlFlowNode for F() | F() | class F | 52 |
+| l_calls.py:52 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:53 | ControlFlowNode for Attribute | Function m | builtin-class function | 48 |
+| l_calls.py:53 | ControlFlowNode for Attribute() | 'b' | builtin-class str | 53 |
+| l_calls.py:53 | ControlFlowNode for F | class F | builtin-class type | 47 |
+| l_calls.py:53 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:58 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:58 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:58 | ControlFlowNode for int | builtin-class int | builtin-class type | 58 |
+| l_calls.py:59 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 59 |
+| l_calls.py:59 | ControlFlowNode for Attribute() | Attribute() | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for b | Attribute() | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for int | builtin-class int | builtin-class type | 59 |
+| l_calls.py:62 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 62 |
+| l_calls.py:62 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
+| l_calls.py:62 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 62 |
+| l_calls.py:63 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 63 |
+| l_calls.py:63 | ControlFlowNode for Dict | Dict | builtin-class dict | 63 |
+| l_calls.py:63 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 63 |
+| l_calls.py:63 | ControlFlowNode for Str | 'foo' | builtin-class str | 63 |
+| l_calls.py:63 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 63 |
+| l_calls.py:64 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:64 | ControlFlowNode for b | Attribute() | builtin-class int | 59 |
+| l_calls.py:64 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
+| s_scopes.py:4 | ControlFlowNode for True | bool True | builtin-class bool | 4 |
+| s_scopes.py:4 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
+| s_scopes.py:7 | ControlFlowNode for C2 | class C2 | builtin-class type | 7 |
+| s_scopes.py:7 | ControlFlowNode for ClassExpr | class C2 | builtin-class type | 7 |
+| s_scopes.py:7 | ControlFlowNode for object | builtin-class object | builtin-class type | 7 |
+| s_scopes.py:9 | ControlFlowNode for i1 | builtin-class int | builtin-class type | 9 |
+| s_scopes.py:9 | ControlFlowNode for int | builtin-class int | builtin-class type | 9 |
+| s_scopes.py:10 | ControlFlowNode for f1 | bool True | builtin-class bool | 4 |
+| s_scopes.py:10 | ControlFlowNode for f1 | builtin-class float | builtin-class type | 10 |
+| s_scopes.py:10 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
+| s_scopes.py:10 | ControlFlowNode for float | builtin-class float | builtin-class type | 10 |
+| s_scopes.py:12 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 12 |
+| s_scopes.py:12 | ControlFlowNode for int | int 0 | builtin-class int | 12 |
+| s_scopes.py:15 | ControlFlowNode for FloatLiteral | float 1.0 | builtin-class float | 15 |
+| s_scopes.py:15 | ControlFlowNode for str | float 1.0 | builtin-class float | 15 |
+| s_scopes.py:17 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 17 |
+| s_scopes.py:17 | ControlFlowNode for float | NoneType None | builtin-class NoneType | 17 |
+| s_scopes.py:18 | ControlFlowNode for i2 | int 0 | builtin-class int | 12 |
+| s_scopes.py:18 | ControlFlowNode for int | int 0 | builtin-class int | 12 |
+| s_scopes.py:19 | ControlFlowNode for s | builtin-class str | builtin-class type | 19 |
+| s_scopes.py:19 | ControlFlowNode for s | float 1.0 | builtin-class float | 15 |
+| s_scopes.py:19 | ControlFlowNode for str | builtin-class str | builtin-class type | 19 |
+| s_scopes.py:19 | ControlFlowNode for str | float 1.0 | builtin-class float | 15 |
+| s_scopes.py:20 | ControlFlowNode for f2 | NoneType None | builtin-class NoneType | 17 |
+| s_scopes.py:20 | ControlFlowNode for f2 | bool True | builtin-class bool | 4 |
+| s_scopes.py:20 | ControlFlowNode for f2 | builtin-class float | builtin-class type | 20 |
+| s_scopes.py:20 | ControlFlowNode for float | NoneType None | builtin-class NoneType | 17 |
+| s_scopes.py:20 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
+| s_scopes.py:20 | ControlFlowNode for float | builtin-class float | builtin-class type | 20 |
+| s_scopes.py:23 | ControlFlowNode for i | builtin-class int | builtin-class type | 23 |
+| s_scopes.py:23 | ControlFlowNode for int | builtin-class int | builtin-class type | 23 |
+| s_scopes.py:24 | ControlFlowNode for f | bool True | builtin-class bool | 4 |
+| s_scopes.py:24 | ControlFlowNode for f | builtin-class float | builtin-class type | 24 |
+| s_scopes.py:24 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
+| s_scopes.py:24 | ControlFlowNode for float | builtin-class float | builtin-class type | 24 |

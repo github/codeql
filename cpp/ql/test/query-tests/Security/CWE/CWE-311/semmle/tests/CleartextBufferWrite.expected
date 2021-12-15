@@ -1,0 +1,18 @@
+edges
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input indirection |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input indirection |
+subpaths
+nodes
+| test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:58:25:58:29 | input | semmle.label | input |
+| test.cpp:58:25:58:29 | input | semmle.label | input |
+| test.cpp:58:25:58:29 | input | semmle.label | input |
+| test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
+| test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
+#select
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input | This write into buffer 'passwd' may contain unencrypted data from $@ | test.cpp:54:17:54:20 | argv | user input (argv) |

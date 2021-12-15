@@ -1,0 +1,5 @@
+| MissingDisposeCall.cs:23:25:23:31 | Dispose | This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@. | MissingDisposeCall.cs:21:8:21:13 | Field2 | Field2 |
+| MissingDisposeCall.cs:34:26:34:32 | Dispose | This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@. | MissingDisposeCall.cs:32:8:32:13 | Field2 | Field2 |
+| MissingDisposeCall.cs:52:26:52:32 | Dispose | This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@. | MissingDisposeCall.cs:50:8:50:13 | Field2 | Field2 |
+| MissingDisposeCall.cs:67:29:67:35 | Dispose | This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@. | MissingDisposeCall.cs:65:8:65:13 | Field2 | Field2 |
+| MissingDisposeCallBad.cs:9:17:9:23 | Dispose | This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@. | MissingDisposeCallBad.cs:7:24:7:30 | stream2 | stream2 |

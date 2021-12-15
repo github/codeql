@@ -1,0 +1,16 @@
+| 37 | class ExceptionB |
+| 50 | class ExceptionB |
+| 59 | class ExceptionB |
+| 68 | class ExceptionB |
+| 82 | builtin-class KeyError |
+| 88 | builtin-class IndexError |
+| 94 | builtin-class AttributeError |
+| 100 | class ExceptionA |
+| 115 | builtin-class IndexError |
+| 121 | builtin-class KeyError |
+| 181 | class ExceptionA |
+| 191 | class A |
+| 197 | class ExceptionA |
+| 197 | class ExceptionB |
+| 201 | builtin-class KeyError |
+| 201 | class ExceptionC |

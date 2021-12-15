@@ -1,0 +1,9 @@
++ semmlecode-cpp-queries/Best Practices/Exceptions/AccidentalRethrow.ql: /Critical/Critical_Correctness/Exceptions
++ semmlecode-cpp-queries/Best Practices/Exceptions/CatchingByValue.ql: /Critical/Critical_Correctness/Exceptions
++ semmlecode-cpp-queries/Best Practices/Exceptions/LeakyCatch.ql: /Critical/Critical_Correctness/Exceptions
++ semmlecode-cpp-queries/Best Practices/Exceptions/ThrowingPointers.ql: /Critical/Critical_Correctness/Exceptions
++ semmlecode-cpp-queries/Likely Bugs/OO/ThrowInDestructor.ql: /Critical/Critical_Readability/Safe Language/C++
++ semmlecode-cpp-queries/jsf/4.10 Classes/AV Rule 95.ql: /Critical/Critical_Readability/JSF # Redefined default parameter
+
+@import ../c/code-review
+

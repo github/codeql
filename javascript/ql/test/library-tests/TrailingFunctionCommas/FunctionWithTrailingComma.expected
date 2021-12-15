@@ -1,0 +1,9 @@
+| tst.js:12:1:12:18 | function g2(x,) {} |
+| tst.js:13:1:13:20 | function h2(x,y,) {} |
+| tst.js:21:2:21:16 | function(x,) {} |
+| tst.js:22:2:22:19 | function(x, y,) {} |
+| tst.js:23:2:23:19 | function g3(x,) {} |
+| tst.js:24:2:24:21 | function h3(x,y,) {} |
+| tst.js:27:1:27:9 | (x,) => x |
+| tst.js:29:1:29:11 | (x,y,) => x |
+| tst.js:33:1:33:23 | functio ... 42,) {} |

@@ -1,0 +1,43 @@
+checkResolution
+namespaceAccess
+| namespaceDecls.ts:27:9:27:9 | A |
+| namespaceDecls.ts:28:10:28:10 | A |
+| namespaceDecls.ts:28:10:28:12 | A.B |
+| namespaceDecls.ts:29:9:29:9 | B |
+| namespaceDecls.ts:30:9:30:9 | C |
+| namespaceDecls.ts:31:9:31:9 | D |
+| namespaceDecls.ts:32:9:32:9 | E |
+| namespaceDecls.ts:33:9:33:9 | F |
+| namespaceDecls.ts:34:9:34:9 | G |
+| namespaceDecls.ts:35:9:35:9 | H |
+| namespaceDecls.ts:36:9:36:9 | I |
+| typedecls.ts:22:16:22:16 | X |
+noDeclaration
+noLocalName
+| tst.ts:47:17:47:30 | UnresolvedType |
+| tst.ts:50:15:50:19 | Array |
+resolveNamespaceNames
+| A | namespaceDecls.ts:27:9:27:9 | A | namespaceDecls.ts:1:8:1:8 | A |
+| A | namespaceDecls.ts:28:10:28:10 | A | namespaceDecls.ts:1:8:1:8 | A |
+| B | namespaceDecls.ts:29:9:29:9 | B | namespaceDecls.ts:2:8:2:8 | B |
+| C | namespaceDecls.ts:30:9:30:9 | C | namespaceDecls.ts:3:9:3:9 | C |
+| D | namespaceDecls.ts:31:9:31:9 | D | namespaceDecls.ts:3:17:3:17 | D |
+| E | namespaceDecls.ts:32:9:32:9 | E | namespaceDecls.ts:4:13:4:13 | E |
+| Enum | exports.ts:16:5:16:8 | Enum | exports.ts:7:6:7:9 | Enum |
+| F | namespaceDecls.ts:33:9:33:9 | F | namespaceDecls.ts:9:11:9:11 | F |
+| G | namespaceDecls.ts:34:9:34:9 | G | namespaceDecls.ts:13:11:13:11 | G |
+| H | namespaceDecls.ts:35:9:35:9 | H | namespaceDecls.ts:18:19:18:19 | H |
+| I | namespaceDecls.ts:36:9:36:9 | I | namespaceDecls.ts:22:19:22:19 | I |
+| Imported | exports.ts:10:5:10:12 | Imported | exports.ts:1:10:1:17 | Imported |
+| InstantiatedNamespace | exports.ts:15:5:15:25 | Instant ... mespace | exports.ts:6:11:6:31 | Instant ... mespace |
+| UninstantiatedNamespace | exports.ts:14:5:14:27 | Uninsta ... mespace | exports.ts:5:11:5:33 | Uninsta ... mespace |
+| X | typedecls.ts:22:16:22:16 | X | typedecls.ts:1:9:1:9 | X |
+resolveTypeNames
+| A | namespaceDecls.ts:38:8:38:8 | A | namespaceDecls.ts:1:8:1:8 | A |
+| E | namespaceDecls.ts:39:8:39:8 | E | namespaceDecls.ts:4:13:4:13 | E |
+| E | typedecls.ts:25:8:25:8 | E | typedecls.ts:24:6:24:6 | E |
+| Enum | exports.ts:16:5:16:8 | Enum | exports.ts:7:6:7:9 | Enum |
+| Imported | exports.ts:10:5:10:12 | Imported | exports.ts:1:10:1:17 | Imported |
+| X | typedecls.ts:3:8:3:8 | X | typedecls.ts:1:9:1:9 | X |
+| X | typedecls.ts:27:10:27:10 | X | typedecls.ts:1:9:1:9 | X |
+| Y_alias | typedecls.ts:4:8:4:14 | Y_alias | typedecls.ts:1:17:1:23 | Y_alias |

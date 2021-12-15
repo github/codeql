@@ -1,0 +1,16 @@
+| return_int | false | 65 | 65 | return_int |
+| return_int | false | 70 | 70 | { ... } |
+| return_int | false | 72 | 72 | return ... |
+| return_int | false | 76 | 76 | 1 |
+| return_int | false | 77 | 77 | ; |
+| return_int | true | 70 | 72 |  |
+| return_int | true | 72 | 76 |  |
+| return_int | true | 76 | 65 |  |
+| return_int | true | 77 | 65 |  |
+| return_void | false | 54 | 54 | return_void |
+| return_void | false | 59 | 59 | { ... } |
+| return_void | false | 61 | 61 | return ... |
+| return_void | false | 63 | 63 | ; |
+| return_void | true | 59 | 61 |  |
+| return_void | true | 61 | 54 |  |
+| return_void | true | 63 | 54 |  |

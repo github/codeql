@@ -1,0 +1,4 @@
+| src/not_ruby.rb:5:25:5:26 | parse error | Extraction failed in src/not_ruby.rb with error parse error | 2 |
+| src/unsupported_feature.rb:2:1:2:4 | parse error | Extraction failed in src/unsupported_feature.rb with error parse error | 2 |
+| src/unsupported_feature.rb:3:7:3:7 | parse error | Extraction failed in src/unsupported_feature.rb with error parse error | 2 |
+| src/unsupported_feature.rb:3:14:3:14 | parse error | Extraction failed in src/unsupported_feature.rb with error parse error | 2 |

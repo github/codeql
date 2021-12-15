@@ -1,0 +1,10 @@
+| test.py:6:8:6:13 | Compare | Test is always true, because of $@ | test.py:4:8:4:12 | Compare | this condition |
+| test.py:8:8:8:13 | Compare | Test is always true, because of $@ | test.py:4:17:4:21 | Compare | this condition |
+| test.py:13:16:13:22 | Compare | Test is always false, because of $@ | test.py:11:12:11:17 | Compare | this condition |
+| test.py:15:14:15:18 | Compare | Test is always true, because of $@ | test.py:11:12:11:17 | Compare | this condition |
+| test.py:27:8:27:13 | Compare | Test is always true, because of $@ | test.py:25:8:25:12 | Compare | this condition |
+| test.py:30:12:30:18 | Compare | Test is always false, because of $@ | test.py:25:17:25:23 | Compare | this condition |
+| test.py:49:8:49:12 | Compare | Test is always false, because of $@ | test.py:47:8:47:50 | Compare | this condition |
+| test.py:73:14:73:26 | Compare | Test is always true, because of $@ | test.py:71:8:71:19 | Compare | this condition |
+| test.py:79:14:79:46 | Compare | Test is always true, because of $@ | test.py:77:8:77:19 | Compare | this condition |
+| test.py:85:10:85:42 | Compare | Test is always true, because of $@ | test.py:83:8:83:19 | Compare | this condition |

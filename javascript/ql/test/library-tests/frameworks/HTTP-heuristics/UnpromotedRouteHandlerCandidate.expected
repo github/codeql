@@ -1,0 +1,16 @@
+| src/hapi.js:1:1:1:30 | functio ... t, h){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/iterated-handlers.js:4:2:4:22 | functio ...  res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:7:19:7:38 | function(req, res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:8:12:10:5 | (req, res) {\\n\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:20:16:22:9 | (req, r ...       } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:27:16:29:9 | (req, r ...       } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:40:12:42:5 | (req, res) {\\n\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:50:12:52:5 | (req, res) {\\n\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/route-objects.js:56:12:58:5 | functio ... ;\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:46:1:46:23 | functio ... res) {} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:52:1:54:1 | functio ... req()\\n} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:56:1:58:1 | functio ... s) {\\n\\n} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:61:1:63:1 | functio ... turn;\\n} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:65:1:67:1 | functio ... rn x;\\n} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:70:5:72:5 | functio ... \\n\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
+| src/tst.js:109:16:111:9 | functio ...       } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |

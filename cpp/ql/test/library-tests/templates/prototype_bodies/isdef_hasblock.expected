@@ -1,0 +1,4 @@
+| f | defined | no block |
+| g | not defined | no block |
+| main | defined | has block |
+| operator= | not defined | no block |

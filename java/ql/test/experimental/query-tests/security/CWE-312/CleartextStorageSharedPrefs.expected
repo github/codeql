@@ -1,0 +1,1 @@
+| CleartextStorageSharedPrefs.java:19:3:19:17 | commit(...) | 'SharedPreferences' class $@ containing $@ is stored here. Data was added $@. | CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) | edit(...) | CleartextStorageSharedPrefs.java:18:32:18:39 | password | sensitive data | CleartextStorageSharedPrefs.java:18:32:18:39 | password | here |

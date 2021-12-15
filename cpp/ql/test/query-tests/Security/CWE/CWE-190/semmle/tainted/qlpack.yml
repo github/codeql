@@ -1,0 +1,8 @@
+# This directory has its own qlpack for reasons detailed in commit 2550788598010fa2117274607c9d58f64f997f34
+name: codeql/cpp-tests-cwe-190-tainted
+groups: [cpp, test]
+dependencies:
+  codeql/cpp-all: "*"
+  codeql/cpp-queries: "*"
+extractor: cpp
+tests: .

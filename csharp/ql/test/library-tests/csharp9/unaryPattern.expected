@@ -1,0 +1,4 @@
+| UnaryPattern.cs:8:14:8:20 | not ... | UnaryPattern.cs:8:18:8:20 | a |
+| UnaryPattern.cs:10:14:10:21 | not ... | UnaryPattern.cs:10:18:10:21 | null |
+| UnaryPattern.cs:12:14:12:41 | not ... | UnaryPattern.cs:12:18:12:41 | { ... } |
+| UnaryPattern.cs:18:13:18:17 | not ... | UnaryPattern.cs:18:17:18:17 | 1 |

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an object is used as a key in a dictionary or as a member of a set then it must be hashable,
+that is it must define a <code>__hash__</code> method. All built-in immutable types are hashable, but
+mutable ones are not. Common hashable types include all numbers, strings (both <code>unicode</code> and <code>bytes</code>)
+and <code>tuple</code>. Common unhashable types include <code>list</code>, <code>dict</code> and <code>set</code>.
+</p>
+
+<p>
+In order to store a key in a <code>dict</code> or <code>set</code> a hash value is needed. To determine this value the built-in
+function <code>hash()</code> is called which in turn calls the <code>__hash__</code> method on the object.
+If the object's class does not have the <code>__hash__</code> method, then a <code>TypeError</code> will be raised.
+</p>
+
+
+</overview>
+<recommendation>
+<p>Since this problem usually indicates a logical error, it is not possible to give a general recipe for fixing it.
+Mutable collections can be converted into immutable equivalents where appropriate. For example sets can be hashed by converting any instances
+of <code>set</code> into <code>frozenset</code> instances.
+</p>
+
+</recommendation>
+<example>
+<p><code>list</code>s are not hashable. In this example, an attempt is made to use a <code>list</code>
+as a key in a mapping which will fail with a <code>TypeError</code>.
+</p>
+
+<sample src="HashedButNoHash.py" />
+
+</example>
+<references>
+
+  <li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#hash">hash</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
+        <li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#mapping-types-dict">Mapping Types &mdash; dict</a>.</li>
+        <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#set-types-set-frozenset">Set Types &mdash; set, frozenset</a>.</li>
+
+</references>
+</qhelp>

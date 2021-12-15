@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+An unreachable statement almost always indicates missing code or a latent bug and should be examined
+carefully.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the surrounding code to determine why the statement has become unreachable. If it is no
+longer needed, remove the statement.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, a spurious semicolon after the <code>if</code> condition at line 2 makes
+the <code>return</code> statement on line 4 unreachable: the function will always execute the
+<code>return</code> statement on line 3 first, so it will never reach line 4.
+</p>
+
+<sample src="examples/UnreachableStatement.js" />
+
+<p>
+To correct this issue, remove the spurious semicolon:
+</p>
+
+<sample src="examples/UnreachableStatementGood.js" />
+
+</example>
+<references>
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Unreachable_code">Unreachable code</a>.</li>
+
+</references>
+</qhelp>

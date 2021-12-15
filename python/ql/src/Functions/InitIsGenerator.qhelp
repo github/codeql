@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__init__</code> method of a class is used to initialize new objects,
+not create them. As such, it should not return any value.
+By including a <code>yield</code> expression in the method turns it into a generator method.
+On calling it will return a generator resulting in a runtime error.</p>
+
+</overview>
+<recommendation>
+<p>The presence of a <code>yield</code> expression in an <code>__init__</code> method
+suggests a logical error, so it is not possible to suggest a general fix.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>__init__</code> method contains a yield expression. This is 
+not logical in the context of an initializer.</p>
+<sample src="InitIsGenerator.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,4 @@
+if (afraid()) {
+	scream();
+	runAway();
+}

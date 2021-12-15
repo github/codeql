@@ -1,0 +1,1 @@
+| property_old_style.py:8:6:8:13 | Property piosc | Property piosc will not work properly, as class OldStyle is an old-style class. |

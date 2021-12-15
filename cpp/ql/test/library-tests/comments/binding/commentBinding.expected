@@ -1,0 +1,11 @@
+| cb.h:2:1:2:9 | /* Foo */ | <none> |
+| cb.h:8:1:8:9 | /* Bar */ | <none> |
+| macros.c:2:1:2:16 | // On define MF1 | #define MF1 foo |
+| macros.c:6:1:6:16 | // On define MI1 | #define MI1 foo |
+| macros.c:11:5:11:21 | // On define MF2I | #define MF2I foo |
+| multi.c:2:1:2:19 | // Multi 1, 2 and 3 | declaration of multi1 |
+| multi.c:2:1:2:19 | // Multi 1, 2 and 3 | declaration of multi2 |
+| multi.c:2:1:2:19 | // Multi 1, 2 and 3 | declaration of multi3 |
+| multi.c:5:27:5:36 | // Multi 3 | declaration of multi3 |
+| templates.cpp:3:3:3:8 | // Foo | declaration of foo |
+| templates.cpp:7:3:7:8 | // Bar | definition of bar |

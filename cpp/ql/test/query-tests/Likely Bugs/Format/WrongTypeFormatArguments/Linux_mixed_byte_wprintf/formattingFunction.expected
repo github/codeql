@@ -1,0 +1,3 @@
+| tests.cpp:8:5:8:10 | printf | char | char | char16_t, wchar_t | char16_t, wchar_t |
+| tests.cpp:9:5:9:11 | wprintf | wchar_t | char | wchar_t | wchar_t |
+| tests.cpp:10:5:10:12 | swprintf | char16_t | char | char16_t | char16_t |

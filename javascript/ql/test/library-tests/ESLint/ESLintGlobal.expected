@@ -1,0 +1,12 @@
+| sub/.eslintrc.json:2:14:5:3 | {\\n      ... lse\\n  } | aNonWritableGlobal | false | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.json:2:14:5:3 | {\\n      ... lse\\n  } | aNonWritableGlobal | false | sub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.json:2:14:5:3 | {\\n      ... lse\\n  } | aWritableGlobal | true | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.json:2:14:5:3 | {\\n      ... lse\\n  } | aWritableGlobal | true | sub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.yml:3:5:6:0 | aWritab ... l: true | aNonWritableGlobal | false | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.yml:3:5:6:0 | aWritab ... l: true | aNonWritableGlobal | false | sub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.yml:3:5:6:0 | aWritab ... l: true | aWritableGlobal | true | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/.eslintrc.yml:3:5:6:0 | aWritab ... l: true | aWritableGlobal | true | sub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/package.json:5:20:8:9 | {\\n      ...       } | aNonWritableGlobal | false | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/package.json:5:20:8:9 | {\\n      ...       } | aNonWritableGlobal | false | sub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/package.json:5:20:8:9 | {\\n      ...       } | aWritableGlobal | true | sub/subsub/tst.js:1:1:1:15 | aWritableGlobal |
+| sub/package.json:5:20:8:9 | {\\n      ...       } | aWritableGlobal | true | sub/tst.js:1:1:1:15 | aWritableGlobal |

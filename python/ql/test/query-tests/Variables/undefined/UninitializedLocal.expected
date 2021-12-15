@@ -1,0 +1,14 @@
+| UninitializedLocal.py:13:16:13:17 | u2 | Local variable 'u2' may be used before it is initialized. |
+| UninitializedLocal.py:19:16:19:17 | u3 | Local variable 'u3' may be used before it is initialized. |
+| UninitializedLocal.py:37:12:37:13 | u4 | Local variable 'u4' may be used before it is initialized. |
+| UninitializedLocal.py:46:5:46:6 | u6 | Local variable 'u6' may be used before it is initialized. |
+| UninitializedLocal.py:69:5:69:6 | u8 | Local variable 'u8' may be used before it is initialized. |
+| UninitializedLocal.py:75:5:75:6 | u9 | Local variable 'u9' may be used before it is initialized. |
+| UninitializedLocal.py:85:5:85:7 | u11 | Local variable 'u11' may be used before it is initialized. |
+| UninitializedLocal.py:88:9:88:11 | u12 | Local variable 'u12' may be used before it is initialized. |
+| UninitializedLocal.py:119:16:119:18 | u14 | Local variable 'u14' may be used before it is initialized. |
+| UninitializedLocal.py:151:16:151:18 | u19 | Local variable 'u19' may be used before it is initialized. |
+| UninitializedLocal.py:163:7:163:7 | x | Local variable 'x' may be used before it is initialized. |
+| UninitializedLocal.py:176:16:176:16 | x | Local variable 'x' may be used before it is initialized. |
+| UninitializedLocal.py:178:16:178:16 | y | Local variable 'y' may be used before it is initialized. |
+| odasa3987.py:11:8:11:10 | var | Local variable 'var' may be used before it is initialized. |

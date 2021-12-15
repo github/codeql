@@ -1,0 +1,5 @@
+| java.io.PrintStream#println(Object) | 3 |
+| java.lang.Class#isAssignableFrom(Class) | 1 |
+| java.lang.String#length() | 1 |
+| java.time.Duration#ofMillis(long) | 1 |
+| java.util.concurrent.atomic.AtomicReference#set(Object) | 1 |

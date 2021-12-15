@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a resource descriptor is built using string concatenation, and the
+components of the concatenation include user input, a user may be able to
+hijack the resource which is loaded.
+</p>
+</overview>
+
+<recommendation>
+<p>If user input must be included in a resource descriptor, it should be escaped to
+avoid a malicious user providing special characters that change the meaning
+of the descriptor. If possible, use an existing library to either escape or construct the resource.
+</p>
+<p>
+For data connections within sub namespaces of <code>System.Data</code>, a connection builder class
+is provided. For example, a connection string which is to be passed to
+<code>System.Data.SqlClient.SqlConnection</code> can be constructed safely using an instance of
+<code>System.Data.SqlClient.SqlConnectionStringBuilder</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following examples, the code accepts a user name from the user, which it uses to create a
+connection string for an SQL database.</p>
+
+<p>The first example concatenates the unvalidated and unencoded user input directly
+into the connection string. A malicious user could provide special characters to change the meaning
+of the connection string, and connect to a completely different server.
+</p>
+
+<p>The second example uses the <code>SqlConnectionStringBuilder</code> to construct the connection
+string and therefore prevents a malicious user modifying the meaning of the connection string.</p>
+
+<sample src="ResourceInjection.cs" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Resource_Injection">Resource Injection</a>.</li>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms254947(v=vs.80).aspx">Building Connection Strings</a>.</li>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/89211k9b(VS.80).aspx">Securing Connection Strings</a>.</li>
+</references>
+</qhelp>

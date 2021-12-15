@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> Built-in C string functions such as <code>strcat</code> require that their
+input string arguments are null terminated. If the input string arguments are
+not null terminated, these functions will read/write beyond the length of the
+buffer containing the string, resulting in either buffer over-read or buffer
+overflow, respectively.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Review the code and consider whether the variable that holds the string should have
+an initializer or whether some path through the program fails to null terminate the
+string.
+</p>
+
+</recommendation>
+<example>
+<p>The destination variable <code>dest</code> used in the call to <code>strcat</code>
+does not (necessarily) contain a null terminator. Consequently, the call to <code>strcat</code>
+may result in a buffer overflow.
+</p>
+
+<sample src="ImproperNullTerminationBad.cpp" />
+
+<p>In the revised example, <code>dest</code> is properly null terminated before the
+the call to <code>strcat</code>.
+</p>
+
+<sample src="ImproperNullTerminationGood.cpp" />
+
+
+</example>
+<references>
+
+  <li>B. Chess and J. West, <em>Secure Programming with Static Analysis</em>, 6.2 Maintaining the Null Terminator. Addison-Wesley. 2007.</li>
+  <li>Linux Programmer's Manual: <a href="http://man7.org/linux/man-pages/man3/strncat.3.html">STRCAT(3)</a>.</li>
+
+</references>
+</qhelp>

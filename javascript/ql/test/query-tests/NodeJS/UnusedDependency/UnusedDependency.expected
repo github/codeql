@@ -1,0 +1,7 @@
+| src/package.json:13:16:13:18 | "*" | Unused dependency 'esprima'. |
+| src/package.json:17:28:17:34 | "3.3.0" | Unused dependency 'eslint-plugin-babel'. |
+| src/package.json:24:63:24:65 | "*" | Unused dependency 'not-really-used-in-install-script-because-of-substring'. |
+| src/package.json:28:28:28:30 | "*" | Unused dependency 'used-in-test-script'. |
+| src/package.json:29:30:29:32 | "*" | Unused dependency 'used-in-custom-script'. |
+| src/package.json:32:28:32:30 | "*" | Unused dependency 'used-in-mjs-require'. |
+| src/package.json:36:48:36:50 | "*" | Unused dependency 'used-in-dynamic-template-require-string'. |

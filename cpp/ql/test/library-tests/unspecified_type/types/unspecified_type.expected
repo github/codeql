@@ -1,0 +1,66 @@
+| file://:0:0:0:0 | ..()(..) | ..()(..) |
+| file://:0:0:0:0 | ..(*)(..) | ..(*)(..) |
+| file://:0:0:0:0 | Tmpl<T> | Tmpl<T> |
+| file://:0:0:0:0 | _Complex __float128 | _Complex __float128 |
+| file://:0:0:0:0 | _Complex double | _Complex double |
+| file://:0:0:0:0 | _Complex float | _Complex float |
+| file://:0:0:0:0 | _Complex long double | _Complex long double |
+| file://:0:0:0:0 | _Decimal32 | _Decimal32 |
+| file://:0:0:0:0 | _Decimal64 | _Decimal64 |
+| file://:0:0:0:0 | _Decimal128 | _Decimal128 |
+| file://:0:0:0:0 | _Float32 | _Float32 |
+| file://:0:0:0:0 | _Float32x | _Float32x |
+| file://:0:0:0:0 | _Float64 | _Float64 |
+| file://:0:0:0:0 | _Float64x | _Float64x |
+| file://:0:0:0:0 | _Float128 | _Float128 |
+| file://:0:0:0:0 | _Float128x | _Float128x |
+| file://:0:0:0:0 | _Imaginary double | _Imaginary double |
+| file://:0:0:0:0 | _Imaginary float | _Imaginary float |
+| file://:0:0:0:0 | _Imaginary long double | _Imaginary long double |
+| file://:0:0:0:0 | __float128 | __float128 |
+| file://:0:0:0:0 | __int128 | __int128 |
+| file://:0:0:0:0 | __va_list_tag & | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && | __va_list_tag && |
+| file://:0:0:0:0 | auto | auto |
+| file://:0:0:0:0 | bool | bool |
+| file://:0:0:0:0 | char | char |
+| file://:0:0:0:0 | char8_t | char8_t |
+| file://:0:0:0:0 | char16_t | char16_t |
+| file://:0:0:0:0 | char32_t | char32_t |
+| file://:0:0:0:0 | const __va_list_tag | __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & | __va_list_tag & |
+| file://:0:0:0:0 | decltype(nullptr) | decltype(nullptr) |
+| file://:0:0:0:0 | double | double |
+| file://:0:0:0:0 | error | error |
+| file://:0:0:0:0 | float | float |
+| file://:0:0:0:0 | int | int |
+| file://:0:0:0:0 | long | long |
+| file://:0:0:0:0 | long double | long double |
+| file://:0:0:0:0 | long long | long long |
+| file://:0:0:0:0 | short | short |
+| file://:0:0:0:0 | signed __int128 | signed __int128 |
+| file://:0:0:0:0 | signed char | signed char |
+| file://:0:0:0:0 | signed int | signed int |
+| file://:0:0:0:0 | signed long | signed long |
+| file://:0:0:0:0 | signed long long | signed long long |
+| file://:0:0:0:0 | signed short | signed short |
+| file://:0:0:0:0 | unknown | unknown |
+| file://:0:0:0:0 | unsigned __int128 | unsigned __int128 |
+| file://:0:0:0:0 | unsigned char | unsigned char |
+| file://:0:0:0:0 | unsigned int | unsigned int |
+| file://:0:0:0:0 | unsigned long | unsigned long |
+| file://:0:0:0:0 | unsigned long long | unsigned long long |
+| file://:0:0:0:0 | unsigned short | unsigned short |
+| file://:0:0:0:0 | void | void |
+| file://:0:0:0:0 | wchar_t | wchar_t |
+| types.cpp:16:19:16:20 | T3 | T3 |
+| types.cpp:21:19:21:20 | T4 | T4 |
+| types.cpp:30:19:30:21 | TX1 | TX1 |
+| types.cpp:31:7:31:9 | clX<TX1> | clX<TX1> |
+| types.cpp:32:17:32:19 | TX3 | int |
+| types.cpp:36:19:36:21 | TX2 | TX2 |
+| types.cpp:40:39:40:42 | Tmpl | Tmpl |
+| types.cpp:41:8:41:18 | TemplateSel<Tmpl> | TemplateSel<Tmpl> |
+| types.cpp:42:22:42:22 | T | T |
+| types.cpp:43:10:43:13 | Bind<T> | Bind<T> |
+| types.cpp:44:21:44:24 | type | Tmpl<T> |

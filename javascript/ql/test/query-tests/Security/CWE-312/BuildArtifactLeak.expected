@@ -1,0 +1,57 @@
+nodes
+| build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} |
+| build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} |
+| build-leaks.js:5:20:5:46 | JSON.st ... ss.env) |
+| build-leaks.js:5:35:5:45 | process.env |
+| build-leaks.js:5:35:5:45 | process.env |
+| build-leaks.js:13:11:19:10 | raw |
+| build-leaks.js:13:17:19:10 | Object. ...      }) |
+| build-leaks.js:14:18:14:20 | env |
+| build-leaks.js:15:24:15:34 | process.env |
+| build-leaks.js:15:24:15:34 | process.env |
+| build-leaks.js:16:20:16:22 | env |
+| build-leaks.js:21:11:26:5 | stringifed |
+| build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } |
+| build-leaks.js:22:24:25:14 | Object. ...  }, {}) |
+| build-leaks.js:22:49:22:51 | env |
+| build-leaks.js:23:39:23:41 | raw |
+| build-leaks.js:24:20:24:22 | env |
+| build-leaks.js:30:22:30:31 | stringifed |
+| build-leaks.js:34:26:34:57 | getEnv( ... ngified |
+| build-leaks.js:34:26:34:57 | getEnv( ... ngified |
+| build-leaks.js:40:9:40:60 | pw |
+| build-leaks.js:40:14:40:60 | url.par ... assword |
+| build-leaks.js:40:14:40:60 | url.par ... assword |
+| build-leaks.js:41:43:41:86 | { "proc ... y(pw) } |
+| build-leaks.js:41:43:41:86 | { "proc ... y(pw) } |
+| build-leaks.js:41:67:41:84 | JSON.stringify(pw) |
+| build-leaks.js:41:82:41:83 | pw |
+edges
+| build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} |
+| build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} |
+| build-leaks.js:5:35:5:45 | process.env | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) |
+| build-leaks.js:5:35:5:45 | process.env | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) |
+| build-leaks.js:13:11:19:10 | raw | build-leaks.js:23:39:23:41 | raw |
+| build-leaks.js:13:17:19:10 | Object. ...      }) | build-leaks.js:13:11:19:10 | raw |
+| build-leaks.js:14:18:14:20 | env | build-leaks.js:16:20:16:22 | env |
+| build-leaks.js:15:24:15:34 | process.env | build-leaks.js:14:18:14:20 | env |
+| build-leaks.js:15:24:15:34 | process.env | build-leaks.js:14:18:14:20 | env |
+| build-leaks.js:16:20:16:22 | env | build-leaks.js:13:17:19:10 | Object. ...      }) |
+| build-leaks.js:21:11:26:5 | stringifed | build-leaks.js:30:22:30:31 | stringifed |
+| build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } | build-leaks.js:21:11:26:5 | stringifed |
+| build-leaks.js:22:24:25:14 | Object. ...  }, {}) | build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } |
+| build-leaks.js:22:49:22:51 | env | build-leaks.js:24:20:24:22 | env |
+| build-leaks.js:23:39:23:41 | raw | build-leaks.js:22:49:22:51 | env |
+| build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |
+| build-leaks.js:30:22:30:31 | stringifed | build-leaks.js:34:26:34:57 | getEnv( ... ngified |
+| build-leaks.js:30:22:30:31 | stringifed | build-leaks.js:34:26:34:57 | getEnv( ... ngified |
+| build-leaks.js:40:9:40:60 | pw | build-leaks.js:41:82:41:83 | pw |
+| build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:40:9:40:60 | pw |
+| build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:40:9:40:60 | pw |
+| build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } |
+| build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } |
+| build-leaks.js:41:82:41:83 | pw | build-leaks.js:41:67:41:84 | JSON.stringify(pw) |
+#select
+| build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:5:35:5:45 | process.env | process environment |
+| build-leaks.js:34:26:34:57 | getEnv( ... ngified | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:34:26:34:57 | getEnv( ... ngified | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:15:24:15:34 | process.env | process environment |
+| build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:40:14:40:60 | url.par ... assword | an access to current_password |

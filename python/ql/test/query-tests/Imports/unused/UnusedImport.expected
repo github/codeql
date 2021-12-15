@@ -1,0 +1,7 @@
+| import_structure_1.py:5:1:5:28 | Import | Import of 'bar' is not used. |
+| import_structure_2.py:6:1:6:23 | Import | Import of 'bar' is not used. |
+| imports_test.py:2:1:2:23 | Import | Import of 'module2' is not used. |
+| imports_test.py:6:1:6:12 | Import | Import of 'cycle' is not used. |
+| imports_test.py:10:1:10:22 | Import | Import of 'top_level_cycle' is not used. |
+| imports_test.py:27:1:27:25 | Import | Import of 'func2' is not used. |
+| imports_test.py:34:1:34:14 | Import | Import of 'module2' is not used. |

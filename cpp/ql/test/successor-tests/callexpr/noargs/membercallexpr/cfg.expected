@@ -1,0 +1,11 @@
+| membercallexpr | membercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | membercallexpr.cpp:1:7:1:7 | membercallexpr.cpp:1:7:1:7 | membercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| membercallexpr | membercallexpr.cpp:1:7:1:7 | operator= | 1 | 1 | membercallexpr.cpp:1:7:1:7 | membercallexpr.cpp:1:7:1:7 | membercallexpr.cpp:1:7:1:7 | operator= | <none> |
+| membercallexpr | membercallexpr.cpp:3:8:3:8 | g | 3 | 1 | membercallexpr.cpp:3:8:3:8 | membercallexpr.cpp:3:8:3:8 | membercallexpr.cpp:3:8:3:8 | g | <none> |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 6 | 1 | membercallexpr.cpp:6:10:10:1 | membercallexpr.cpp:6:10:10:1 | membercallexpr.cpp:6:10:10:1 | { ... } | 7: declaration |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 7 | 2 | membercallexpr.cpp:7:2:7:6 | membercallexpr.cpp:7:2:7:6 | membercallexpr.cpp:7:2:7:6 | declaration | 8: ExprStmt |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 8 | 3 | membercallexpr.cpp:8:2:8:8 | membercallexpr.cpp:8:2:8:8 | membercallexpr.cpp:8:2:8:8 | ExprStmt | 8: c |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 8 | 4 | membercallexpr.cpp:8:2:8:2 | membercallexpr.cpp:8:2:8:2 | membercallexpr.cpp:8:2:8:2 | c | 8: call to g |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 8 | 5 | membercallexpr.cpp:8:5:8:5 | membercallexpr.cpp:8:5:8:5 | membercallexpr.cpp:8:5:8:5 | call to g | 9: ; |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 9 | 6 | membercallexpr.cpp:9:2:9:2 | membercallexpr.cpp:9:2:9:2 | membercallexpr.cpp:9:2:9:2 | ; | 10: return ... |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 10 | 7 | membercallexpr.cpp:10:1:10:1 | membercallexpr.cpp:10:1:10:1 | membercallexpr.cpp:10:1:10:1 | return ... | 10: f |
+| membercallexpr | membercallexpr.cpp:6:6:6:6 | f | 10 | 8 | membercallexpr.cpp:6:6:6:6 | membercallexpr.cpp:6:6:6:6 | membercallexpr.cpp:6:6:6:6 | f | <none> |

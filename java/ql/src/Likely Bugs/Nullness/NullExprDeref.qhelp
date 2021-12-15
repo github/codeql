@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Dereferencing a <code>null</code> value leads to a <code>NullPointerException</code>.
+</p>
+<p>
+An expression may be implicitly dereferenced if its type is a boxed primitive
+type, and it occurs in a context in which implicit unboxing occurs.
+</p>
+</overview>
+
+<recommendation>
+<p>Ensure that the expression does not have a <code>null</code> value when it is dereferenced.
+Use boxed types as appropriate to hold values that are potentially <code>null</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example implicit unboxing can cause a <code>NullPointerException</code> if <code>helper</code> is <code>null</code>.
+</p>
+<sample src="NullExprDeref.java" />
+<p>
+If the method is intended to return <code>null</code>, the return type should be changed to <code>Integer</code>.
+</p>
+</example>
+
+<references>
+
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">Autoboxing and Unboxing</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,3 @@
+| test.c:18:2:18:10 | call to expression | This call does not go through a const function pointer. |
+| test.c:19:2:19:10 | call to expression | This call does not go through a const function pointer. |
+| test.c:20:2:20:10 | call to expression | This call does not go through a const function pointer. |

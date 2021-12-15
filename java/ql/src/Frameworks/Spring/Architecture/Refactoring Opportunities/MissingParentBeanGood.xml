@@ -1,0 +1,24 @@
+<!--The 'baseService' bean contains common property definitions for services.-->
+<bean id="baseService" abstract="true">
+	<property name="transactionHelper">
+		<ref bean="transactionHelper"/>
+	</property>
+	<property name="dao">
+		<ref bean="dao"/>
+	</property>
+	<property name="registry">
+		<ref bean="basicRegistry"/>
+	</property>
+</bean>
+
+<bean id="shippingService" 
+		class="documentation.examples.spring.ShippingService"
+		parent="baseService">
+	<property name="shippingProvider" value="Federal Parcel Service"/>
+</bean>
+
+<bean id="orderService" 
+		class="documentation.examples.spring.OrderService"
+		parent="baseService">
+	<property name="orderReference" value="8675309"/>
+</bean>

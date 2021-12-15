@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When a function contains both explicit returns (<code>return value</code>) and implicit returns
+(where code falls off the end of a function) this often indicates that a return
+statement has been forgotten. It is best to return an explicit return value even when returning
+<code>None</code> because this makes it easier for other developers to read your code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Add an explicit return at the end of the function.</p>
+
+
+</recommendation>
+<example>
+<p>In the <code>check_state1</code> function, the developer probably did intend to use an implicit
+return value of <code>None</code> as this equates to <code>False</code>. However, the function in
+<code>check_state2</code> is easier to read.</p>
+
+<sample src="ConsistentReturns.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function">Function definitions</a>.
+</li>
+
+
+</references>
+</qhelp>

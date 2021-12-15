@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds copy assignment operators that deallocate memory but do not check for self assignment. 
+This could lead to accessing an already freed memory location.</p>
+
+<p>This rule is particularly important if the copy assignment operator puts the current object in an invalid state 
+before getting a new value from the object on the right hand side.</p>
+
+</overview>
+
+<recommendation>
+<p>Copy assignment operator should check for self-assignment.</p>
+</recommendation>
+
+<example>
+<p>This example shows a copy assignment operator that fails to check for self assignment. 
+The corrected version of the same operator is also included. 
+</p>
+<sample src="SelfAssignmentCheck.cpp" />
+</example>
+
+<references>
+<li>Standard C++ Foundation: <a href="https://isocpp.org/wiki/faq/assignment-operators">Assignment Operators</a></li>
+</references>
+</qhelp>

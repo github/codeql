@@ -1,0 +1,37 @@
+<html ng-app="app">
+  <!-- Adapted from https://github.com/hakanson/ng-owasp -->
+  <body>
+    <div ng-controller="BindingController as vm">
+      <table border="1">
+        <tr>
+          <td>expression</td>
+          <td>{{ vm.untrusted }}</td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>ng-bind</td>
+          <td><span ng-bind="vm.untrusted"></span></td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>w/ ng-non-bindable</td>
+          <td><span ng-non-bindable>{{ vm.untrusted }}</span></td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>w/ $sanitize</td>
+          <td>{{ vm.sanitized }}</td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>w/ ng-bind-html</td>
+          <td><span ng-bind-html="vm.untrusted"></span></td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>w/ $sanitize &amp; ng-bind-html</td>
+          <td><span ng-bind-html="vm.sanitized"></span></td> <!-- OK -->
+        </tr>
+        <tr>
+          <td>w/ $sce.trustAsHtml &amp; ng-bind-html</td>
+          <td><span ng-bind-html="vm.trusted"></span></td> <!-- NOT OK -->
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

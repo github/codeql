@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A property in a child bean that overrides a property with the same name in its parent and has the same contents
+is useless. This is because the bean inherits the property from its parent anyway.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If possible, remove the property in the child bean. 
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>registry</code> is defined in both the parent bean and the child
+bean. It should be removed from the child bean.</p>
+
+<sample src="UselessPropertyOverride.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-child-bean-definitions">3.7 Bean definition inheritance</a>.
+</li>
+
+
+</references>
+</qhelp>

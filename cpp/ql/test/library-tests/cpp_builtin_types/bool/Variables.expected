@@ -1,0 +1,8 @@
+| a-source.cpp:2:6:2:7 | b1 | file://:0:0:0:0 | bool |
+| c-source.c:4:6:4:7 | b2 | file://:0:0:0:0 | unsigned char |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && |
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * |

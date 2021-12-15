@@ -1,0 +1,61 @@
+diff --git a/test/driver.js b/test/driver.js
+index 06d5644..012184a 100644
+--- a/test/driver.js
++++ b/test/driver.js
+@@ -1,13 +1,53 @@
+ var tests = [];
++var ntests = 0;
++var fs = require("fs");
+ 
+ exports.test = function(code, ast, options) {
+-  tests.push({code: code, ast: ast, options: options});
++  var testName = "test" + (ntests++);
++  fs.writeFileSync(testName + ".js", code);
++  if (options && options.plugins && options.plugins.jsx)
++    fs.writeFileSync(testName + ".options.json", JSON.stringify(options.plugins.jsx, null, 2));
++  fs.writeFileSync(testName + ".ast", JSON.stringify(ast, function(k, v) {
++    if (v && typeof v === 'object') {
++      if (v.range) {
++        v.start = v.range[0];
++        v.end = v.range[1];
++        delete v.range;
++      }
++
++      if (typeof v.start === 'number') {
++        v.loc = v.loc || {};
++        v.loc.start = v.loc.start || {};
++        v.loc.start.offset = v.start;
++        delete v.start;
++      }
++
++      if (typeof v.end === 'number') {
++        v.loc = v.loc || {};
++        v.loc.end = v.loc.end || {};
++        v.loc.end.offset = v.end;
++        delete v.end;
++      }
++    }
++
++    if (v instanceof RegExp)
++      return v.toString();
++
++    return v;
++  }, 2));
++  //tests.push({code: code, ast: ast, options: options});
+ };
+ exports.testFail = function(code, message, options) {
+-  tests.push({code: code, error: message, options: options});
++  var testName = "test" + (ntests++);
++  fs.writeFileSync(testName + ".js", code);
++  if (options && options.plugins && options.plugins.jsx)
++    fs.writeFileSync(testName + ".options.json", JSON.stringify(options.plugins.jsx, null, 2));
++  fs.writeFileSync(testName + ".fail", message);
++//  tests.push({code: code, error: message, options: options});
+ };
+ exports.testAssert = function(code, assert, options) {
+-  tests.push({code: code, assert: assert, options: options});
++  throw new Error("Cannot handle tests with explicit assertions.");
++//  tests.push({code: code, assert: assert, options: options});
+ };
+ 
+ exports.runTests = function(config, callback) {

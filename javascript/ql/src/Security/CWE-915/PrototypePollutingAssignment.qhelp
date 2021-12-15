@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
+    Prototype pollution is a type of vulnerability in which an attacker is able to modify <code>Object.prototype</code>.
+    Since most objects inherit from the compromised <code>Object.prototype</code> object, the attacker can use this
+    to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
+  </p>
+
+  <p>
+    One way to cause prototype pollution is by modifying an object obtained via a user-controlled property name.
+    Most objects have a special <code>__proto__</code> property that refers to <code>Object.prototype</code>.
+    An attacker can abuse this special property to trick the application into performing unintended modifications
+    of <code>Object.prototype</code>.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Use an associative data structure that is resilient to untrusted key values, such as a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>.
+    In some cases, a prototype-less object created with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create(null)</a>
+    may be preferable.
+  </p>
+  <p>
+    Alternatively, restrict the computed property name so it can't clash with a built-in property, either by
+    prefixing it with a constant string, or by rejecting inputs that don't conform to the expected format.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    In the example below, the untrusted value <code>req.params.id</code> is used as the property name
+    <code>req.session.todos[id]</code>. If a malicious user passes in the ID value <code>__proto__</code>,
+    the variable <code>todo</code> will then refer to <code>Object.prototype</code>.
+    Finally, the modification of <code>todo</code> then allows the attacker to inject arbitrary properties
+    onto <code>Object.prototype</code>.
+  </p>
+
+  <sample src="examples/PrototypePollutingAssignment.js"/>
+
+  <p>
+    One way to fix this is to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a> objects to associate key/value pairs
+    instead of regular objects, as shown below:
+  </p>
+
+  <sample src="examples/PrototypePollutingAssignmentFixed.js"/>
+  
+</example>
+
+<references>
+  <li>MDN:
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">Object.prototype.__proto__</a>
+  </li>
+  <li>MDN:
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>
+  </li>
+</references>
+</qhelp>

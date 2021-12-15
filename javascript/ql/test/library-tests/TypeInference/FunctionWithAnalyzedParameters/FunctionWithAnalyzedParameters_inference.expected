@@ -1,0 +1,12 @@
+| tst.js:3:11:3:11 | x | file://:0:0:0:0 | false |
+| tst.js:4:11:4:11 | x | file://:0:0:0:0 | true |
+| tst.js:5:11:5:11 | x | file://:0:0:0:0 | true |
+| tst.js:5:14:5:14 | y | file://:0:0:0:0 | false |
+| tst.js:12:17:12:17 | x | file://:0:0:0:0 | false |
+| tst.js:14:17:14:17 | x | file://:0:0:0:0 | true |
+| tst.js:16:17:16:17 | x | file://:0:0:0:0 | true |
+| tst.js:16:20:16:20 | y | file://:0:0:0:0 | false |
+| tst.js:20:11:20:11 | x | file://:0:0:0:0 | true |
+| tst.js:22:11:22:11 | x | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:22:11:22:11 | x | file://:0:0:0:0 | true |
+| tst.js:23:11:23:11 | x | file://:0:0:0:0 | true |

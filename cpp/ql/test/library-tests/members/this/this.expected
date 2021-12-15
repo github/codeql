@@ -1,0 +1,48 @@
+thisExprType
+| test.cpp:11:5:11:5 | this | file://:0:0:0:0 | C * |
+| test.cpp:16:5:16:8 | this | file://:0:0:0:0 | C * |
+| test.cpp:21:12:21:12 | this | file://:0:0:0:0 | const C * |
+| test.cpp:26:12:26:12 | this | file://:0:0:0:0 | volatile C * |
+| test.cpp:31:12:31:12 | this | file://:0:0:0:0 | const volatile C * |
+| test.cpp:41:12:41:12 | this | file://:0:0:0:0 | const C * |
+| test.cpp:46:12:46:12 | this | file://:0:0:0:0 | C * |
+| test.cpp:66:5:66:5 | this | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:66:5:66:5 | this | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:71:5:71:8 | this | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:71:5:71:8 | this | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:76:12:76:12 | this | file://:0:0:0:0 | const InstantiatedTemplateClass<T> * |
+| test.cpp:76:12:76:12 | this | file://:0:0:0:0 | const InstantiatedTemplateClass<int> * |
+| test.cpp:81:12:81:12 | this | file://:0:0:0:0 | volatile InstantiatedTemplateClass<T> * |
+| test.cpp:81:12:81:12 | this | file://:0:0:0:0 | volatile InstantiatedTemplateClass<int> * |
+| test.cpp:86:12:86:12 | this | file://:0:0:0:0 | const volatile InstantiatedTemplateClass<T> * |
+| test.cpp:86:12:86:12 | this | file://:0:0:0:0 | const volatile InstantiatedTemplateClass<int> * |
+| test.cpp:96:12:96:12 | this | file://:0:0:0:0 | const InstantiatedTemplateClass<T> * |
+| test.cpp:96:12:96:12 | this | file://:0:0:0:0 | const InstantiatedTemplateClass<int> * |
+| test.cpp:101:12:101:12 | this | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:101:12:101:12 | this | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+#select
+| test.cpp:9:8:9:9 | f1 | file://:0:0:0:0 | C * |
+| test.cpp:14:8:14:9 | f2 | file://:0:0:0:0 | C * |
+| test.cpp:19:7:19:8 | f3 | file://:0:0:0:0 | const C * |
+| test.cpp:24:7:24:8 | f4 | file://:0:0:0:0 | volatile C * |
+| test.cpp:29:7:29:8 | f5 | file://:0:0:0:0 | const volatile C * |
+| test.cpp:34:8:34:9 | f6 | file://:0:0:0:0 | C * |
+| test.cpp:39:9:39:10 | f7 | file://:0:0:0:0 | const C * |
+| test.cpp:44:9:44:10 | f8 | file://:0:0:0:0 | C * |
+| test.cpp:53:8:53:8 | f | file://:0:0:0:0 | D * |
+| test.cpp:64:8:64:8 | f1 | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:64:8:64:9 | f1 | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:69:8:69:8 | f2 | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:69:8:69:9 | f2 | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:74:7:74:7 | f3 | file://:0:0:0:0 | const InstantiatedTemplateClass<int> * |
+| test.cpp:74:7:74:8 | f3 | file://:0:0:0:0 | const InstantiatedTemplateClass<T> * |
+| test.cpp:79:7:79:7 | f4 | file://:0:0:0:0 | volatile InstantiatedTemplateClass<int> * |
+| test.cpp:79:7:79:8 | f4 | file://:0:0:0:0 | volatile InstantiatedTemplateClass<T> * |
+| test.cpp:84:7:84:7 | f5 | file://:0:0:0:0 | const volatile InstantiatedTemplateClass<int> * |
+| test.cpp:84:7:84:8 | f5 | file://:0:0:0:0 | const volatile InstantiatedTemplateClass<T> * |
+| test.cpp:89:8:89:8 | f6 | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:89:8:89:9 | f6 | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |
+| test.cpp:94:9:94:9 | f7 | file://:0:0:0:0 | const InstantiatedTemplateClass<int> * |
+| test.cpp:94:9:94:10 | f7 | file://:0:0:0:0 | const InstantiatedTemplateClass<T> * |
+| test.cpp:99:9:99:9 | f8 | file://:0:0:0:0 | InstantiatedTemplateClass<int> * |
+| test.cpp:99:9:99:10 | f8 | file://:0:0:0:0 | InstantiatedTemplateClass<T> * |

@@ -1,0 +1,14 @@
++ odasa-csharp-metrics/Files/FLinesOfCode.ql: /Metrics/Size
+    @_namespace com.lgtm/csharp-queries
++ odasa-csharp-metrics/Files/FLinesOfComment.ql: /Metrics/Documentation
+    @_namespace com.lgtm/csharp-queries
++ odasa-csharp-metrics/Files/FLinesOfCommentedCode.ql: /Metrics/Documentation
+    @_namespace com.lgtm/csharp-queries
++ odasa-csharp-metrics/Files/FNumberOfTests.ql: /Metrics/Size
+    @_namespace com.lgtm/csharp-queries
+
++ semmlecode-csharp-queries/Metrics/Dependencies/ExternalDependencies.ql
+    @_namespace com.lgtm/csharp-queries
++ semmlecode-csharp-queries/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+    @_namespace com.lgtm/csharp-queries
+

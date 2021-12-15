@@ -1,0 +1,8 @@
+| UncheckedReturnValue.cs:29:9:29:31 | call to method Add | Result of call to 'Add' is ignored, but 90% of calls to this method have their result used. |
+| UncheckedReturnValue.cs:91:9:91:26 | call to method Read | Result of call to 'Read' is ignored, but should always be checked. |
+| UncheckedReturnValue.cs:92:9:92:20 | call to method ReadByte | Result of call to 'ReadByte' is ignored, but should always be checked. |
+| UncheckedReturnValue.cs:109:9:109:17 | call to method M1<Int32> | Result of call to 'M1<Int32>' is ignored, but 90% of calls to this method have their result used. |
+| UncheckedReturnValue.cs:130:9:130:21 | call to method M2<Decimal> | Result of call to 'M2<Decimal>' is ignored, but 90% of calls to this method have their result used. |
+| UncheckedReturnValue.cs:142:9:142:20 | call to method M3<C6> | Result of call to 'M3<C6>' is ignored, but 90% of calls to this method have their result used. |
+| UncheckedReturnValueBad.cs:29:9:29:20 | call to method DoPrint | Result of call to 'DoPrint' is ignored, but 90% of calls to this method have their result used. |
+| UncheckedReturnValueBad.cs:36:13:36:40 | call to method Read | Result of call to 'Read' is ignored, but should always be checked. |
