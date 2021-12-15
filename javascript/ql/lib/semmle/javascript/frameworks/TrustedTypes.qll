@@ -25,6 +25,7 @@ module TrustedTypes {
   class PolicyCreation extends API::CallNode {
     PolicyCreation() { this = trustedTypesObj().getMember("createPolicy").getACall() }
 
+    /** Gets the function passed as the given option. */
     DataFlow::FunctionNode getPolicyCallback(string method) {
       // Require local callback to avoid potential call/return mismatch in the uses below
       result = getOptionArgument(1, method).getALocalSource()
