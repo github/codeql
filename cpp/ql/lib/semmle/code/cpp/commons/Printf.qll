@@ -12,7 +12,16 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 private newtype TBufferWriteEstimationReason =
   TUnspecifiedEstimateReason() or
   TTypeBoundsAnalysis() or
+  TWidenedValueFlowAnalysis() or
   TValueFlowAnalysis()
+
+private predicate gradeToReason(int grade, TBufferWriteEstimationReason reason) {
+  // when combining reasons, lower grade takes precedence
+  grade = 0 and reason = TUnspecifiedEstimateReason() or
+  grade = 1 and reason = TTypeBoundsAnalysis() or
+  grade = 2 and reason = TWidenedValueFlowAnalysis() or
+  grade = 3 and reason = TValueFlowAnalysis()
+}
 
 /**
  * A reason for a specific buffer write size estimate.
@@ -32,7 +41,11 @@ abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason 
    * Combine estimate reasons. Used to give a reason for the size of a format string
    * conversion given reasons coming from its individual specifiers.
    */
-  abstract BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other);
+  BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    exists(int grade, int otherGrade | gradeToReason(grade, this) and gradeToReason(otherGrade, other) |
+           if otherGrade < grade then result = other else result = this
+    )
+  }
 }
 
 /**
@@ -44,12 +57,6 @@ class UnspecifiedEstimateReason extends BufferWriteEstimationReason, TUnspecifie
   override string toString() { result = "UnspecifiedEstimateReason" }
 
   override string getDescription() { result = "no reason specified" }
-
-  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    // this reason should not be used in format specifiers, so it should not be combined
-    // with other reasons
-    none()
-  }
 }
 
 /**
@@ -60,11 +67,25 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
   override string toString() { result = "TypeBoundsAnalysis" }
 
   override string getDescription() { result = "based on type bounds" }
-
-  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    other != TUnspecifiedEstimateReason() and result = TTypeBoundsAnalysis()
-  }
 }
+
+/**
+ * The estimation comes from non trivial bounds found via actual flow analysis,
+ * but a widening aproximation might have been used for variables in loops.
+ * For example
+ * ```
+ * for (int i = 0; i < 10; ++i) {
+ *    int j = i + i;
+ *    //...  <- estimation done here based on j
+ * }
+ * ```
+ */
+class WidenedValueFlowAnalysis extends BufferWriteEstimationReason, TWidenedValueFlowAnalysis {
+  override string toString() { result = "WidenedValueFlowAnalysis" }
+
+  override string getDescription() { result = "based on flow analysis of value bounds with a widening approximation" }
+}
+
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis.
@@ -80,10 +101,6 @@ class ValueFlowAnalysis extends BufferWriteEstimationReason, TValueFlowAnalysis 
   override string toString() { result = "ValueFlowAnalysis" }
 
   override string getDescription() { result = "based on flow analysis of value bounds" }
-
-  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    other != TUnspecifiedEstimateReason() and result = other
-  }
 }
 
 class PrintfFormatAttribute extends FormatAttribute {
@@ -359,6 +376,17 @@ private int lengthInBase10(float f) {
   result = f.log10().floor() + 1
 }
 
+private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Expr expr) {
+  // we consider the range analysis non trivial if it
+  // * constrained non-trivially both sides of a signed value, or
+  // * constrained non-trivially the positive side of an unsigned value
+  // expr should already be given as getFullyConverted
+  if upperBound(expr) < exprMaxVal(expr) and (exprMinVal(expr) >= 0 or lowerBound(expr) > exprMinVal(expr))
+  // next we check whether the estimate may have been widened
+  then if upperBoundMayBeWidened(expr) then result = TWidenedValueFlowAnalysis()
+                                       else result = TValueFlowAnalysis()
+  else result = TTypeBoundsAnalysis()
+}
 /**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
@@ -1158,11 +1186,9 @@ class FormatLiteral extends Literal {
           // The second case uses range analysis to deduce a length that's shorter than the length
           // of the number -2^31.
           exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
-            arg = this.getUse().getConversionArgument(n) and
-            lower = lowerBound(arg.getFullyConverted()) and
-            upper = upperBound(arg.getFullyConverted()) and
-            typeLower = exprMinVal(arg.getFullyConverted()) and
-            typeUpper = exprMaxVal(arg.getFullyConverted())
+            arg = this.getUse().getConversionArgument(n).getFullyConverted() and
+            lower = lowerBound(arg) and
+            upper = upperBound(arg)
           |
             valueBasedBound =
               max(int cand |
@@ -1179,11 +1205,7 @@ class FormatLiteral extends Literal {
                   else cand = lengthInBase10(upper)
                 )
               ) and
-            (
-              if lower > typeLower or upper < typeUpper
-              then reason = TValueFlowAnalysis()
-              else reason = TTypeBoundsAnalysis()
-            )
+            reason = getEstimationReasonForIntegralExpression(arg)
           ) and
           len = valueBasedBound.minimum(typeBasedBound)
         )
@@ -1196,11 +1218,11 @@ class FormatLiteral extends Literal {
           // The second case uses range analysis to deduce a length that's shorter than
           // the length of the number 2^31 - 1.
           exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
-            arg = this.getUse().getConversionArgument(n) and
-            lower = lowerBound(arg.getFullyConverted()) and
-            upper = upperBound(arg.getFullyConverted()) and
-            typeLower = exprMinVal(arg.getFullyConverted()) and
-            typeUpper = exprMaxVal(arg.getFullyConverted())
+            arg = this.getUse().getConversionArgument(n).getFullyConverted() and
+            lower = lowerBound(arg) and
+            upper = upperBound(arg) and
+            typeLower = exprMinVal(arg) and
+            typeUpper = exprMaxVal(arg)
           |
             valueBasedBound =
               lengthInBase10(max(float cand |
@@ -1210,11 +1232,7 @@ class FormatLiteral extends Literal {
                   or
                   cand = upper
                 )) and
-            (
-              if lower > typeLower or upper < typeUpper
-              then reason = TValueFlowAnalysis()
-              else reason = TTypeBoundsAnalysis()
-            )
+            reason = getEstimationReasonForIntegralExpression(arg)
           ) and
           len = valueBasedBound.minimum(typeBasedBound)
         )
