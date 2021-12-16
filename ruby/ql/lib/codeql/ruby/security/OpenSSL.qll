@@ -245,9 +245,10 @@ module Ciphers {
   string getCanonicalCipherName(string name) {
     isOpenSSLCipher(name) and
     (
-      if exists(string special | special = getSpecialCanonicalCipherName(name))
-      then result = getSpecialCanonicalCipherName(name)
-      else result = name.toUpperCase()
+      result = getSpecialCanonicalCipherName(name)
+      or
+      not exists(getSpecialCanonicalCipherName(name)) and
+      result = name.toUpperCase()
     )
   }
 
