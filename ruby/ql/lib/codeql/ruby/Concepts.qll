@@ -646,7 +646,7 @@ module Path {
 }
 
 /**
- * A data-flow node that may configure behaviour relating to cookie security.
+ * A data-flow node that may configure behavior relating to cookie security.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CookieSecurityConfigurationSetting::Range` instead.
