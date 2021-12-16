@@ -1957,6 +1957,14 @@
 | System.Text.RegularExpressions;MatchCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Text.RegularExpressions;MatchCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System.Text.RegularExpressions;MatchCollection;false;set_Item;(System.Int32,System.Text.RegularExpressions.Match);;Argument[1];Element of Argument[-1];value |
+| System.Text;ASCIIEncoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetBytes;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>);;Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetChars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System.Text;ASCIIEncoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetBytes;(System.String,System.Int32,System.Int32);;Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetString;(System.Byte*,System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Text;Encoding;false;GetString;(System.ReadOnlySpan<System.Byte>);;Element of Argument[0];ReturnValue;taint |
@@ -2056,6 +2064,32 @@
 | System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];Element of ReturnValue;value |
 | System.Text;StringBuilder;false;ToString;();;Element of Argument[-1];ReturnValue;taint |
 | System.Text;StringBuilder;false;ToString;(System.Int32,System.Int32);;Element of Argument[-1];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF7Encoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetBytes;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>);;Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetChars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF8Encoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UTF32Encoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint |
+| System.Text;UnicodeEncoding;false;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Threading.Tasks;Task;false;ContinueWith;(System.Action<System.Threading.Tasks.Task,System.Object>,System.Object);;Argument[1];Parameter[1] of Argument[0];value |
 | System.Threading.Tasks;Task;false;ContinueWith;(System.Action<System.Threading.Tasks.Task,System.Object>,System.Object,System.Threading.CancellationToken);;Argument[1];Parameter[1] of Argument[0];value |
 | System.Threading.Tasks;Task;false;ContinueWith;(System.Action<System.Threading.Tasks.Task,System.Object>,System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskContinuationOptions,System.Threading.Tasks.TaskScheduler);;Argument[1];Parameter[1] of Argument[0];value |

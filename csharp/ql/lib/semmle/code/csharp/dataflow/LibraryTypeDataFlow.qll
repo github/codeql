@@ -1391,29 +1391,6 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
   }
 }
 
-/** Data flow for `System.Text.Encoding`. */
-library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEncodingClass {
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = false and
-    c = this.getAMethod() and
-    exists(Method m | m.getAnOverrider*().getUnboundDeclaration() = c |
-      m = this.getGetBytesMethod() and
-      source = getFlowSourceArg(m, 0, sourceAp) and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty()
-      or
-      m = [this.getGetStringMethod(), this.getGetCharsMethod()] and
-      source = TCallableFlowSourceArg(0) and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty()
-    )
-  }
-}
-
 /**
  * Custom flow through `StringValues` library class.
  */

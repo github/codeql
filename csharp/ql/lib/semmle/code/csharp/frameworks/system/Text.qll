@@ -129,3 +129,29 @@ class SystemTextEncodingClass extends SystemTextClass {
   /** Gets the `GetChars` method. */
   Method getGetCharsMethod() { result = this.getAMethod("GetChars") }
 }
+
+/** Data flow for `System.Text.Encoding`. */
+private class SystemTextEncodingFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Text;Encoding;false;GetBytes;(System.String,System.Int32,System.Int32);;Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;false;GetString;(System.Byte*,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;false;GetString;(System.ReadOnlySpan<System.Byte>);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.Char[]);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.Char[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>);;Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetChars;(System.Byte*,System.Int32,System.Char*,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetChars;(System.Byte[]);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetChars;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetChars;(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetChars;(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetString;(System.Byte[]);;Element of Argument[0];ReturnValue;taint",
+        "System.Text;Encoding;true;GetString;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint",
+      ]
+  }
+}
