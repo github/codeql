@@ -9,12 +9,16 @@
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
+import semmle.python.Concepts
 
 /**
  * Provides a taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
  *
  * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
  * See `PartialServerSideRequestForgery` for a variant without this requirement.
+ *
+ * You should use the `partOfFullyControlledRequest` to only select results where all
+ * URL parts are fully controlled.
  */
 module FullServerSideRequestForgery {
   import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
@@ -39,6 +43,17 @@ module FullServerSideRequestForgery {
       guard instanceof SanitizerGuard
     }
   }
+}
+
+/**
+ * Holds if all URL parts of `request` is fully user controlled.
+ */
+predicate fullyControlledRequest(HTTP::Client::Request request) {
+  exists(FullServerSideRequestForgery::Configuration fullConfig |
+    forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
+      fullConfig.hasFlow(_, urlPart)
+    )
+  )
 }
 
 /**
