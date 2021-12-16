@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
             System.Text.Encoding? encoding = null;
 
             if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
-                parent = Extraction.Entities.Folder.Create(Context, dir);
+                parent = new Extraction.Entities.Folder(Context, dir);
 
             var trees = Context.Compilation.SyntaxTrees.Where(t => t.FilePath == originalPath);
 
