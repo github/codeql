@@ -92,7 +92,7 @@ module StringBreak {
       exists(string name, DataFlow::CallNode call |
         this = call and
         call.getTarget().hasQualifiedName("strings", name) and
-        call.getArgument(2).getStringValue().matches("%" + quote + "%")
+        call.getArgument(1).getStringValue().matches("%" + quote + "%")
       |
         name = "Replace" and
         call.getArgument(3).getNumericValue() < 0
