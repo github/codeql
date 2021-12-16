@@ -40,6 +40,12 @@ def full_ssrf_format():
     url = "https://{}/foo?key={}".format(user_input, query_val)
     requests.get(url) # NOT OK -- user has full control
 
+    url = "https://{x}".format(x=user_input)
+    requests.get(url) # NOT OK -- user has full control
+
+    url = "https://{1}".format(0, user_input)
+    requests.get(url) # NOT OK -- user has full control
+
 def full_ssrf_percent_format():
     user_input = request.args['untrusted_input']
     query_val = request.args['query_val']
