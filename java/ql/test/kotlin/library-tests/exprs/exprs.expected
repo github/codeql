@@ -480,6 +480,7 @@
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | getN | VarAccess |
+| exprs.kt:143:27:143:31 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
 | exprs.kt:143:27:143:31 | new C(...) | exprs.kt:143:5:143:33 | foo | ClassInstanceExpr |
 | exprs.kt:143:29:143:30 | 42 | exprs.kt:143:5:143:33 | foo | IntegerLiteral |
 | exprs.kt:146:1:146:18 | <obinit>(...) | exprs.kt:146:6:146:18 | Root | MethodAccess |
@@ -534,8 +535,12 @@
 | exprs.kt:164:9:164:17 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | <obinit>(...) | exprs.kt:168:6:170:1 | Direction | MethodAccess |
+| exprs.kt:168:1:170:1 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
+| exprs.kt:168:1:170:1 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
 | exprs.kt:168:1:170:1 | new Enum(...) | exprs.kt:168:6:170:1 | Direction | ClassInstanceExpr |
 | exprs.kt:172:1:176:1 | <obinit>(...) | exprs.kt:172:6:176:1 | Color | MethodAccess |
+| exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
+| exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
 | exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:1:176:1 | <obinit> | AssignExpr |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:1:176:1 | <obinit> | VarAccess |
@@ -554,6 +559,7 @@
 | exprs.kt:188:18:188:18 | 2 | exprs.kt:187:13:192:5 | getObject | IntegerLiteral |
 | exprs.kt:189:16:191:9 | <Stmt> | exprs.kt:187:13:192:5 | getObject | StmtExpr |
 | exprs.kt:189:16:191:9 | <obinit>(...) | exprs.kt:189:16:191:9 |  | MethodAccess |
+| exprs.kt:189:16:191:9 | Interface1 | exprs.kt:187:13:192:5 | getObject | TypeAccess |
 | exprs.kt:189:16:191:9 | new (...) | exprs.kt:187:13:192:5 | getObject | ClassInstanceExpr |
 | exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 | <obinit> | AssignExpr |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:189:16:191:9 | <obinit> | VarAccess |
@@ -603,87 +609,74 @@
 | exprs.kt:220:5:220:29 | x | exprs.kt:219:1:221:1 | fnClassRef | LocalVariableDeclExpr |
 | exprs.kt:220:13:220:29 | SomeClass1 | exprs.kt:219:1:221:1 | fnClassRef | TypeAccess |
 | exprs.kt:220:13:220:29 | SomeClass1.class | exprs.kt:219:1:221:1 | fnClassRef | TypeLiteral |
-| file://:0:0:0:0 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
-| file://:0:0:0:0 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| file://:0:0:0:0 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
-| file://:0:0:0:0 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
-| file://:0:0:0:0 | Function0<Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function0<Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function0<Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function1<Integer,Double> | funcExprs.kt:25:28:25:51 | invoke | TypeAccess |
-| file://:0:0:0:0 | Function1<Integer,Function1<Integer,Double>> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function1<Object,Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | FunctionN<String> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| file://:0:0:0:0 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| file://:0:0:0:0 | Interface1 | exprs.kt:187:13:192:5 | getObject | TypeAccess |
-| file://:0:0:0:0 | MyLambda | funcExprs.kt:13:1:29:1 | call | TypeAccess |
-| file://:0:0:0:0 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| file://:0:0:0:0 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | file://:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| file://:0:0:0:0 | String | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
-| file://:0:0:0:0 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
-| file://:0:0:0:0 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:14:5:14:33 | functionExpression0a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:14:26:14:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:14:26:14:33 | Function0<Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:14:31:14:31 | 5 | funcExprs.kt:14:26:14:33 | invoke | IntegerLiteral |
 | funcExprs.kt:15:5:15:33 | functionExpression0b(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:15:26:15:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:15:26:15:33 | Function0<Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:15:31:15:31 | 5 | funcExprs.kt:15:26:15:33 | invoke | IntegerLiteral |
 | funcExprs.kt:16:5:16:33 | functionExpression0c(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:16:26:16:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:16:26:16:33 | Function0<Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:16:31:16:31 | 5 | funcExprs.kt:16:26:16:33 | invoke | IntegerLiteral |
 | funcExprs.kt:17:5:17:38 | functionExpression1a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:17:26:17:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:17:29:17:38 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:17:29:17:38 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:17:36:17:36 | 5 | funcExprs.kt:17:29:17:38 | invoke | IntegerLiteral |
 | funcExprs.kt:18:5:18:34 | functionExpression1a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:18:26:18:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:18:29:18:34 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:18:29:18:34 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:18:31:18:32 | it | funcExprs.kt:18:29:18:34 | invoke | VarAccess |
 | funcExprs.kt:19:5:19:43 | functionExpression1a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:19:26:19:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:19:29:19:42 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:19:29:19:42 | Function1<Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:19:42:19:42 | 5 | funcExprs.kt:19:29:19:42 | invoke | IntegerLiteral |
 | funcExprs.kt:20:5:20:39 | functionExpression1a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:20:26:20:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
+| funcExprs.kt:20:29:20:38 | MyLambda | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:20:29:20:38 | new MyLambda(...) | funcExprs.kt:13:1:29:1 | call | ClassInstanceExpr |
 | funcExprs.kt:21:5:21:37 | functionExpression1b(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:21:26:21:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:21:29:21:37 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:21:29:21:37 | Function1<Object,Object> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:21:36:21:36 | a | funcExprs.kt:21:29:21:37 | invoke | VarAccess |
 | funcExprs.kt:22:5:22:51 | functionExpression2(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:22:25:22:25 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:22:28:22:50 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:22:28:22:50 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:22:50:22:50 | 5 | funcExprs.kt:22:28:22:50 | invoke | IntegerLiteral |
 | funcExprs.kt:23:5:23:40 | functionExpression2(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:23:25:23:25 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:23:28:23:40 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:23:28:23:40 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:23:38:23:38 | 5 | funcExprs.kt:23:28:23:40 | invoke | IntegerLiteral |
 | funcExprs.kt:24:5:24:44 | functionExpression3(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:24:25:24:25 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:24:28:24:44 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:24:28:24:44 | Function2<Integer,Integer,Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:24:35:24:38 | this | funcExprs.kt:24:28:24:44 | invoke | ThisAccess |
 | funcExprs.kt:24:35:24:42 | ... + ... | funcExprs.kt:24:28:24:44 | invoke | AddExpr |
 | funcExprs.kt:24:42:24:42 | a | funcExprs.kt:24:28:24:44 | invoke | VarAccess |
 | funcExprs.kt:25:5:25:51 | functionExpression4(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:25:25:25:25 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:25:28:25:51 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:25:28:25:51 | Function1<Integer,Function1<Integer,Double>> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:25:37:25:47 | ...->... | funcExprs.kt:25:28:25:51 | invoke | LambdaExpr |
+| funcExprs.kt:25:37:25:47 | Function1<Integer,Double> | funcExprs.kt:25:28:25:51 | invoke | TypeAccess |
 | funcExprs.kt:25:44:25:46 | 5.0 | funcExprs.kt:25:37:25:47 | invoke | DoubleLiteral |
 | funcExprs.kt:27:5:27:112 | functionExpression22(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:27:26:27:26 | 5 | funcExprs.kt:13:1:29:1 | call | IntegerLiteral |
 | funcExprs.kt:27:29:27:112 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:27:29:27:112 | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:27:111:27:111 | 5 | funcExprs.kt:27:29:27:112 | invoke | IntegerLiteral |
 | funcExprs.kt:27:111:27:111 | (...)... | funcExprs.kt:27:29:27:112 | invoke | CastExpr |
 | funcExprs.kt:27:111:27:111 | Unit | funcExprs.kt:27:29:27:112 | invoke | TypeAccess |
@@ -736,6 +729,7 @@
 | funcExprs.kt:28:29:28:117 | (...)... | funcExprs.kt:28:29:28:117 | invoke | CastExpr |
 | funcExprs.kt:28:29:28:117 | (...)... | funcExprs.kt:28:29:28:117 | invoke | CastExpr |
 | funcExprs.kt:28:29:28:117 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
+| funcExprs.kt:28:29:28:117 | FunctionN<String> | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | funcExprs.kt:28:29:28:117 | args | funcExprs.kt:28:29:28:117 | invoke | VarAccess |
 | funcExprs.kt:28:29:28:117 | args | funcExprs.kt:28:29:28:117 | invoke | VarAccess |
 | funcExprs.kt:28:29:28:117 | args | funcExprs.kt:28:29:28:117 | invoke | VarAccess |
@@ -819,6 +813,8 @@
 | localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
 | localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:7:5:7:17 | (...)... | localFunctionCalls.kt:3:1:11:1 | x | CastExpr |
+| localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
+| localFunctionCalls.kt:7:5:7:17 | String | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |
 | localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
@@ -827,8 +823,12 @@
 | localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
 | localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:9:34:9:34 | 5 | localFunctionCalls.kt:9:5:9:34 | f1 | IntegerLiteral |
+| localFunctionCalls.kt:10:5:10:13 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:5:10:13 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:15:10:20 | (...)... | localFunctionCalls.kt:3:1:11:1 | x | CastExpr |
+| localFunctionCalls.kt:10:15:10:20 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
+| localFunctionCalls.kt:10:15:10:20 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:15:10:20 | f1(...) | localFunctionCalls.kt:3:1:11:1 | x | MethodAccess |
 | localFunctionCalls.kt:10:15:10:20 | new (...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |

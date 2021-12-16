@@ -1,4 +1,3 @@
-| file://:0:0:0:0 | Exception | TypeAccess |
 | stmts.kt:3:5:6:5 | when ... | WhenExpr |
 | stmts.kt:3:8:3:8 | x | VarAccess |
 | stmts.kt:3:8:3:12 | ... > ... | GTExpr |
@@ -57,6 +56,7 @@
 | stmts.kt:28:11:28:11 | x | VarAccess |
 | stmts.kt:28:11:28:15 | ... > ... | GTExpr |
 | stmts.kt:28:15:28:15 | y | VarAccess |
+| stmts.kt:34:15:34:30 | Exception | TypeAccess |
 | stmts.kt:34:15:34:30 | new Exception(...) | ClassInstanceExpr |
 | stmts.kt:34:26:34:28 | Foo | StringLiteral |
 | stmts.kt:36:12:36:23 | Exception | TypeAccess |

@@ -838,12 +838,7 @@ open class KotlinFileExtractor(
                 @Suppress("UNCHECKED_CAST")
                 tw.writeIsAnonymClass(ids.type.javaResult.id as Label<DbClass>, idNewexpr)
 
-                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                val anyType = useType(pluginContext.irBuiltIns.anyType)
-                tw.writeExprs_unannotatedtypeaccess(typeAccessId, anyType.javaResult.id, anyType.kotlinResult.id, idNewexpr, -3)
-                tw.writeCallableEnclosingExpr(typeAccessId, callable)
-                tw.writeStatementEnclosingExpr(typeAccessId, enclosingStmt)
-
+                extractTypeAccess(pluginContext.irBuiltIns.anyType, callable, idNewexpr, -3, c, enclosingStmt)
             } else {
                 val dr = c.dispatchReceiver
 
@@ -1154,12 +1149,8 @@ open class KotlinFileExtractor(
                         logger.warnElement( Severity.ErrorSevere, "Expected to find one type argument in arrayOf call", c )
                     }
                 } else {
-                    val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
                     val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
-                    val elementTypeResult = useType(elementType)
-                    tw.writeExprs_unannotatedtypeaccess(argId, elementTypeResult.javaResult.id, elementTypeResult.kotlinResult.id, id, -1)
-                    tw.writeCallableEnclosingExpr(argId, callable)
-                    tw.writeStatementEnclosingExpr(argId, enclosingStmt)
+                    extractTypeAccess(elementType, callable, id, -1, c, enclosingStmt)
                 }
 
                 if (c.valueArgumentsCount == 1) {
@@ -1203,12 +1194,8 @@ open class KotlinFileExtractor(
     ) {
         for (argIdx in 0 until c.typeArgumentsCount) {
             val arg = c.getTypeArgument(argIdx)!!
-            val argType = useType(arg, TypeContext.GENERIC_ARGUMENT)
-            val argId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
             val mul = if (reverse) -1 else 1
-            tw.writeExprs_unannotatedtypeaccess(argId, argType.javaResult.id, argType.kotlinResult.id, id, argIdx * mul + startIndex)
-            tw.writeCallableEnclosingExpr(argId, callable)
-            tw.writeStatementEnclosingExpr(argId, enclosingStmt)
+            extractTypeAccess(arg, callable, id, argIdx * mul + startIndex, c, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
         }
     }
 
@@ -1265,10 +1252,7 @@ open class KotlinFileExtractor(
             type
         }
 
-        val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-        tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, id, -3)
-        tw.writeCallableEnclosingExpr(typeAccessId, callable)
-        tw.writeStatementEnclosingExpr(typeAccessId, enclosingStmt)
+        val typeAccessId = extractTypeAccess(typeAccessType, callable, id, -3, e, enclosingStmt)
 
         if (e.typeArgumentsCount > 0) {
             extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
@@ -1600,13 +1584,8 @@ open class KotlinFileExtractor(
                         }
                         is IrClass -> {
                             if (ownerParent.thisReceiver == owner) {
-                                val qualId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
                                 // TODO: Type arguments
-                                val qualType = useSimpleTypeClass(ownerParent, listOf(), false)
-                                tw.writeExprs_unannotatedtypeaccess(qualId, qualType.javaResult.id, qualType.kotlinResult.id, id, 0)
-                                tw.writeHasLocation(qualId, locId)
-                                tw.writeCallableEnclosingExpr(qualId, callable)
-                                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                                extractTypeAccess(ownerParent.typeWith(listOf()), locId, callable, id, 0, exprParent.enclosingStmt)
                             }
                         }
                         else -> {
@@ -1820,11 +1799,7 @@ open class KotlinFileExtractor(
                 tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
                 tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
-                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                val typeAccessType = useType(fnInterface)
-                tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, idLambdaExpr, -3)
-                tw.writeCallableEnclosingExpr(typeAccessId, callable)
-                tw.writeStatementEnclosingExpr(typeAccessId, exprParent.enclosingStmt)
+                extractTypeAccess(fnInterface, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
 
                 // todo: fix hard coded block body of lambda
                 tw.writeLambdaKind(idLambdaExpr, 1)
@@ -1842,12 +1817,7 @@ open class KotlinFileExtractor(
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-                val typeAccessType = useType(e.classType)
-                tw.writeExprs_unannotatedtypeaccess(typeAccessId, typeAccessType.javaResult.id, typeAccessType.kotlinResult.id, id, 0)
-                tw.writeHasLocation(typeAccessId, locId)
-                tw.writeCallableEnclosingExpr(typeAccessId, callable)
-                tw.writeStatementEnclosingExpr(typeAccessId, exprParent.enclosingStmt)
+                extractTypeAccess(e.classType, locId, callable, id, 0, exprParent.enclosingStmt)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
@@ -1968,20 +1938,28 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractTypeAccess(t: IrType, location: Label<DbLocation>, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
         // TODO: elementForLocation allows us to give some sort of
         // location, but a proper location for the type access will
         // require upstream changes
-        val type = useType(t)
         val id = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
         tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(id, location)
         tw.writeCallableEnclosingExpr(id, callable)
         tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        return id
     }
 
-    private fun extractTypeAccess(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>) {
-        extractTypeAccess(t, tw.getLocation(elementForLocation), callable, parent, idx,  enclosingStmt)
+    private fun extractTypeAccess(t: IrType, location: Label<DbLocation>, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        return extractTypeAccess(useType(t, typeContext), location, callable, parent, idx, enclosingStmt)
+    }
+
+    private fun extractTypeAccess(t: TypeResults, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
+        return extractTypeAccess(t, tw.getLocation(elementForLocation), callable, parent, idx, enclosingStmt)
+    }
+
+    private fun extractTypeAccess(t: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, elementForLocation: IrElement, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        return extractTypeAccess(useType(t, typeContext), callable, parent, idx, elementForLocation, enclosingStmt)
     }
 
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
