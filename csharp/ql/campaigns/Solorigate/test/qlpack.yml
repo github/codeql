@@ -1,0 +1,12 @@
+name: solorigate-tests
+groups:
+    - csharp
+    - solorigate
+    - test
+dependencies:
+  codeql/csharp-all: "*"
+  codeql/csharp-queries: "*"
+  codeql/solorigate-all: "*"
+  codeql/solorigate-queries: "*"
+extractor: csharp
+tests: .
