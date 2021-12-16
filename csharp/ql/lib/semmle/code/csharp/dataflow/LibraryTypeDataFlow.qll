@@ -243,22 +243,6 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
   }
 }
 
-private predicate isCollectionType(ValueOrRefType t) {
-  t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
-  not t instanceof StringType
-}
-
-/** Gets the flow source for argument `i` of callable `callable`. */
-private CallableFlowSourceArg getFlowSourceArg(
-  SourceDeclarationCallable callable, int i, AccessPath ap
-) {
-  i = result.getArgumentIndex() and
-  exists(Parameter p |
-    p = callable.getParameter(i) and
-    if isCollectionType(p.getType()) then ap = AccessPath::element() else ap = AccessPath::empty()
-  )
-}
-
 /** Gets the flow source for argument `i` of delegate `callable`. */
 private CallableFlowSourceDelegateArg getDelegateFlowSourceArg(
   SourceDeclarationCallable callable, int i
@@ -1290,76 +1274,6 @@ class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
       source instanceof CallableFlowSourceQualifier and
       sourceAp = AccessPath::properties(kvp.getValueProperty()) and
       sink instanceof CallableFlowSinkReturn and
-      sinkAp = AccessPath::empty()
-    )
-  }
-}
-
-/** Data flow for `System.[Value]Tuple<,...,>`. */
-class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
-  SystemTupleFlow() {
-    this.getNamespace() instanceof SystemNamespace and
-    this.getName().regexpMatch("(Value)?Tuple(<,*>)?")
-    or
-    this instanceof TupleType
-  }
-
-  private AccessPath getItemAccessPath(int i) {
-    result =
-      unique(AccessPath ap |
-        i in [1 .. count(this.getAMember())] and
-        ap in [
-            AccessPath::field(this.getField("Item" + i)),
-            AccessPath::property(this.getProperty("Item" + i))
-          ]
-      |
-        ap
-      )
-  }
-
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    (
-      exists(SystemTupleFlow t, int i |
-        source = getFlowSourceArg(c, i - 1, _) and
-        sourceAp = AccessPath::empty() and
-        sink = TCallableFlowSinkReturn() and
-        sinkAp = t.getItemAccessPath(i)
-      |
-        c.(Constructor).getDeclaringType() = this and
-        t = this
-        or
-        exists(ValueOrRefType namedType |
-          namedType = this or namedType = this.(TupleType).getUnderlyingType()
-        |
-          c = namedType.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
-          (
-            t = c.getReturnType().getUnboundDeclaration() or
-            t = c.getReturnType().(TupleType).getUnderlyingType().getUnboundDeclaration()
-          )
-        )
-      )
-      or
-      c =
-        any(ExtensionMethod m |
-          m.hasUndecoratedName("Deconstruct") and
-          this = m.getExtendedType().getUnboundDeclaration() and
-          exists(int i |
-            m.getParameter(i).isOut() and
-            source = getFlowSourceArg(c, 0, _) and
-            sourceAp = this.getItemAccessPath(i) and
-            sink = TCallableFlowSinkArg(i) and
-            sinkAp = AccessPath::empty()
-          )
-        )
-      or
-      c = this.getAnIndexer().getGetter() and
-      source = TCallableFlowSourceQualifier() and
-      sourceAp = this.getItemAccessPath(_) and
-      sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::empty()
     )
   }
