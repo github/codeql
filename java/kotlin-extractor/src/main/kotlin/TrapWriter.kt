@@ -245,14 +245,14 @@ class SourceFileTrapWriter (
             if (startOffset != endOffset) {
                 // TODO: Warn
             }
-            return unknownLocation
+            return getWholeFileLocation()
         }
 
         if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
             if (startOffset != endOffset) {
                 // TODO: Warn
             }
-            return unknownLocation
+            return getWholeFileLocation()
         }
 
         // If this is the location for a compiler-generated element, then it will
