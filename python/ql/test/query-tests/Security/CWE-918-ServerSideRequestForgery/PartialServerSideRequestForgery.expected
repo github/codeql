@@ -8,28 +8,42 @@ edges
 | full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:10:18:10:27 | ControlFlowNode for user_input |
 | full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:10:18:10:27 | ControlFlowNode for user_input |
 | full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:13:18:13:20 | ControlFlowNode for url |
+| full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:13:18:13:20 | ControlFlowNode for url |
 | full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:19:18:19:20 | ControlFlowNode for url |
+| full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:19:18:19:20 | ControlFlowNode for url |
+| full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:23:18:23:20 | ControlFlowNode for url |
 | full_partial_test.py:7:18:7:48 | ControlFlowNode for Subscript | full_partial_test.py:23:18:23:20 | ControlFlowNode for url |
 | full_partial_test.py:8:17:8:23 | ControlFlowNode for request | full_partial_test.py:8:17:8:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:8:17:8:28 | ControlFlowNode for Attribute | full_partial_test.py:8:17:8:41 | ControlFlowNode for Subscript |
 | full_partial_test.py:8:17:8:41 | ControlFlowNode for Subscript | full_partial_test.py:23:18:23:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute |
+| full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute |
 | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:31:17:31:23 | ControlFlowNode for request |
 | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:31:17:31:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript |
+| full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:35:18:35:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:35:18:35:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:38:18:38:20 | ControlFlowNode for url |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:38:18:38:20 | ControlFlowNode for url |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:41:18:41:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:41:18:41:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:44:18:44:20 | ControlFlowNode for url |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:44:18:44:20 | ControlFlowNode for url |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:47:18:47:20 | ControlFlowNode for url |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | full_partial_test.py:47:18:47:20 | ControlFlowNode for url |
 | full_partial_test.py:31:17:31:23 | ControlFlowNode for request | full_partial_test.py:31:17:31:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:31:17:31:28 | ControlFlowNode for Attribute | full_partial_test.py:31:17:31:41 | ControlFlowNode for Subscript |
 | full_partial_test.py:31:17:31:41 | ControlFlowNode for Subscript | full_partial_test.py:41:18:41:20 | ControlFlowNode for url |
 | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute |
+| full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute |
 | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:51:17:51:23 | ControlFlowNode for request |
 | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:51:17:51:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript |
+| full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript |
 | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | full_partial_test.py:55:18:55:20 | ControlFlowNode for url |
+| full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | full_partial_test.py:55:18:55:20 | ControlFlowNode for url |
+| full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | full_partial_test.py:58:18:58:20 | ControlFlowNode for url |
 | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | full_partial_test.py:58:18:58:20 | ControlFlowNode for url |
 | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | full_partial_test.py:60:38:60:58 | ControlFlowNode for Tuple |
 | full_partial_test.py:51:17:51:23 | ControlFlowNode for request | full_partial_test.py:51:17:51:28 | ControlFlowNode for Attribute |
@@ -37,11 +51,16 @@ edges
 | full_partial_test.py:51:17:51:41 | ControlFlowNode for Subscript | full_partial_test.py:60:38:60:58 | ControlFlowNode for Tuple |
 | full_partial_test.py:60:38:60:58 | ControlFlowNode for Tuple | full_partial_test.py:61:18:61:20 | ControlFlowNode for url |
 | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute |
+| full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute |
 | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:65:17:65:23 | ControlFlowNode for request |
 | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:65:17:65:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript |
+| full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript |
+| full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:69:18:69:20 | ControlFlowNode for url |
 | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:69:18:69:20 | ControlFlowNode for url |
 | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:72:18:72:20 | ControlFlowNode for url |
+| full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:72:18:72:20 | ControlFlowNode for url |
+| full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:75:18:75:20 | ControlFlowNode for url |
 | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | full_partial_test.py:75:18:75:20 | ControlFlowNode for url |
 | full_partial_test.py:65:17:65:23 | ControlFlowNode for request | full_partial_test.py:65:17:65:28 | ControlFlowNode for Attribute |
 | full_partial_test.py:65:17:65:28 | ControlFlowNode for Attribute | full_partial_test.py:65:17:65:41 | ControlFlowNode for Subscript |
@@ -115,37 +134,59 @@ nodes
 | full_partial_test.py:10:18:10:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 | full_partial_test.py:10:18:10:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 | full_partial_test.py:13:18:13:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:13:18:13:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:19:18:19:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:19:18:19:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:23:18:23:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:23:18:23:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:30:18:30:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:30:18:30:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:30:18:30:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:31:17:31:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:31:17:31:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | full_partial_test.py:31:17:31:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:35:18:35:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:35:18:35:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:38:18:38:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:38:18:38:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:41:18:41:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:41:18:41:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:44:18:44:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:44:18:44:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:47:18:47:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:47:18:47:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:50:18:50:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:50:18:50:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:50:18:50:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:51:17:51:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:51:17:51:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | full_partial_test.py:51:17:51:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:55:18:55:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:55:18:55:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:58:18:58:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:58:18:58:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:60:38:60:58 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
 | full_partial_test.py:61:18:61:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| full_partial_test.py:64:18:64:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:64:18:64:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:64:18:64:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:65:17:65:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:65:17:65:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | full_partial_test.py:65:17:65:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | full_partial_test.py:69:18:69:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:69:18:69:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:72:18:72:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:72:18:72:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| full_partial_test.py:75:18:75:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:75:18:75:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:79:18:79:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | full_partial_test.py:79:18:79:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -210,24 +251,8 @@ nodes
 | test_requests.py:8:18:8:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 subpaths
 #select
-| full_partial_test.py:13:5:13:21 | ControlFlowNode for Attribute() | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | full_partial_test.py:13:18:13:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:19:5:19:21 | ControlFlowNode for Attribute() | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | full_partial_test.py:19:18:19:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:23:5:23:21 | ControlFlowNode for Attribute() | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | full_partial_test.py:23:18:23:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:23:5:23:21 | ControlFlowNode for Attribute() | full_partial_test.py:8:17:8:23 | ControlFlowNode for request | full_partial_test.py:23:18:23:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:8:17:8:23 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:35:5:35:21 | ControlFlowNode for Attribute() | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:35:18:35:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:38:5:38:21 | ControlFlowNode for Attribute() | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:38:18:38:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:41:5:41:21 | ControlFlowNode for Attribute() | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:41:18:41:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:41:5:41:21 | ControlFlowNode for Attribute() | full_partial_test.py:31:17:31:23 | ControlFlowNode for request | full_partial_test.py:41:18:41:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:31:17:31:23 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:44:5:44:21 | ControlFlowNode for Attribute() | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:44:18:44:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:47:5:47:21 | ControlFlowNode for Attribute() | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | full_partial_test.py:47:18:47:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:55:5:55:21 | ControlFlowNode for Attribute() | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:55:18:55:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:58:5:58:21 | ControlFlowNode for Attribute() | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:58:18:58:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | a user-provided value |
 | full_partial_test.py:61:5:61:21 | ControlFlowNode for Attribute() | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | full_partial_test.py:61:18:61:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:50:18:50:24 | ControlFlowNode for request | a user-provided value |
 | full_partial_test.py:61:5:61:21 | ControlFlowNode for Attribute() | full_partial_test.py:51:17:51:23 | ControlFlowNode for request | full_partial_test.py:61:18:61:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:51:17:51:23 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:69:5:69:21 | ControlFlowNode for Attribute() | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:69:18:69:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:72:5:72:21 | ControlFlowNode for Attribute() | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:72:18:72:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:75:5:75:21 | ControlFlowNode for Attribute() | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | full_partial_test.py:75:18:75:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:64:18:64:24 | ControlFlowNode for request | a user-provided value |
-| full_partial_test.py:75:5:75:21 | ControlFlowNode for Attribute() | full_partial_test.py:65:17:65:23 | ControlFlowNode for request | full_partial_test.py:75:18:75:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:65:17:65:23 | ControlFlowNode for request | a user-provided value |
 | full_partial_test.py:82:5:82:21 | ControlFlowNode for Attribute() | full_partial_test.py:79:18:79:24 | ControlFlowNode for request | full_partial_test.py:82:18:82:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:79:18:79:24 | ControlFlowNode for request | a user-provided value |
 | full_partial_test.py:88:5:88:21 | ControlFlowNode for Attribute() | full_partial_test.py:85:18:85:24 | ControlFlowNode for request | full_partial_test.py:88:18:88:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:85:18:85:24 | ControlFlowNode for request | a user-provided value |
 | full_partial_test.py:94:5:94:21 | ControlFlowNode for Attribute() | full_partial_test.py:91:18:91:24 | ControlFlowNode for request | full_partial_test.py:94:18:94:20 | ControlFlowNode for url | Part of the URL of this request depends on $@. | full_partial_test.py:91:18:91:24 | ControlFlowNode for request | a user-provided value |

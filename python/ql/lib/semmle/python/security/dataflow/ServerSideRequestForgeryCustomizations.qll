@@ -83,29 +83,85 @@ module ServerSideRequestForgery {
   /**
    * A string construction (concat, format, f-string) where the left side is not
    * user-controlled.
+   *
+   * For all of these cases, we try to allow `http://` or `https://` on the left side
+   * since that will still allow full URL control.
    */
   class StringConstructioneAsFullUrlControlSanitizer extends FullUrlControlSanitizer {
     StringConstructioneAsFullUrlControlSanitizer() {
       // string concat
       exists(BinaryExprNode add |
         add.getOp() instanceof Add and
-        add.getRight() = this.asCfgNode()
+        add.getRight() = this.asCfgNode() and
+        not add.getLeft().getNode().(StrConst).getText().toLowerCase() in ["http://", "https://"]
       )
       or
       // % formatting
       exists(BinaryExprNode fmt |
         fmt.getOp() instanceof Mod and
-        fmt.getRight() = this.asCfgNode()
+        fmt.getRight() = this.asCfgNode() and
+        // detecting %-formatting is not super easy, so we simplify it to only handle
+        // when there is a **single** substitution going on.
+        not fmt.getLeft().getNode().(StrConst).getText().regexpMatch("^(?i)https?://%s[^%]*$")
       )
       or
       // arguments to a format call
-      exists(DataFlow::MethodCallNode call |
+      exists(DataFlow::MethodCallNode call, string httpPrefixRe |
+        httpPrefixRe = "^(?i)https?://(?:(\\{\\})|\\{([0-9]+)\\}|\\{([^0-9].*)\\}).*$"
+      |
         call.getMethodName() = "format" and
-        this in [call.getArg(_), call.getArgByName(_)]
+        (
+          if call.getObject().asExpr().(StrConst).getText().regexpMatch(httpPrefixRe)
+          then
+            exists(string text | text = call.getObject().asExpr().(StrConst).getText() |
+              // `http://{}...`
+              exists(text.regexpCapture(httpPrefixRe, 1)) and
+              this in [call.getArg(any(int i | i >= 1)), call.getArgByName(_)]
+              or
+              // `http://{123}...`
+              exists(int safeArgIndex | safeArgIndex = text.regexpCapture(httpPrefixRe, 2).toInt() |
+                this in [call.getArg(any(int i | i != safeArgIndex)), call.getArgByName(_)]
+              )
+              or
+              // `http://{abc}...`
+              exists(string safeArgName | safeArgName = text.regexpCapture(httpPrefixRe, 3) |
+                this in [call.getArg(_), call.getArgByName(any(string s | s != safeArgName))]
+              )
+            )
+          else this in [call.getArg(_), call.getArgByName(_)]
+        )
       )
       or
       // f-string
-      exists(Fstring fstring | fstring.getValue(any(int i | i > 0)) = this.asExpr())
+      exists(Fstring fstring |
+        if fstring.getValue(0).(StrConst).getText().toLowerCase() in ["http://", "https://"]
+        then fstring.getValue(any(int i | i >= 2)) = this.asExpr()
+        else fstring.getValue(any(int i | i >= 1)) = this.asExpr()
+      )
     }
   }
+}
+
+predicate debug(Location loc, DataFlow::MethodCallNode call, string text, DataFlow::Node safe) {
+  loc = call.getLocation() and
+  call.getMethodName() = "format" and
+  text = call.getObject().asExpr().(StrConst).getText() and
+  exists(string httpPrefixRe |
+    httpPrefixRe = "^(?i)https?://(?:(\\{\\})|\\{([0-9]+)\\}|\\{([^0-9].*)\\}).*$" and
+    text.regexpMatch(httpPrefixRe)
+  |
+    // `http://{123}...`
+    exists(int safeArgIndex | safeArgIndex = text.regexpCapture(httpPrefixRe, 2).toInt() |
+      safe = call.getArg(safeArgIndex)
+    )
+    or
+    // `http://{abc}...`
+    exists(string safeArgName | safeArgName = text.regexpCapture(httpPrefixRe, 3) |
+      safe = call.getArgByName(safeArgName)
+    )
+    or
+    // `http://{}...`
+    exists(text.regexpCapture(httpPrefixRe, 1)) and
+    safe = call.getArg(0)
+  )
 }
