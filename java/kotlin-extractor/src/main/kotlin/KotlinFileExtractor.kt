@@ -34,7 +34,13 @@ open class KotlinFileExtractor(
 
     fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
         when (declaration) {
-            is IrClass -> extractClassSource(declaration)
+            is IrClass -> {
+                if (isExternalDeclaration(declaration)) {
+                    extractExternalClassLater(declaration)
+                } else {
+                    extractClassSource(declaration)
+                }
+            }
             is IrFunction -> extractFunctionIfReal(declaration, parentId)
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
