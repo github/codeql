@@ -24,7 +24,12 @@ module ServerSideRequestForgery {
   /**
    * A data flow sink for "Server-side request forgery" vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /**
+     * Gets the request this sink belongs to.
+     */
+    abstract HTTP::Client::Request getRequest();
+  }
 
   /**
    * A sanitizer for "Server-side request forgery" vulnerabilities.
@@ -50,12 +55,24 @@ module ServerSideRequestForgery {
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestUrlAsSink extends Sink {
+    HTTP::Client::Request req;
+
     HttpRequestUrlAsSink() {
-      exists(HTTP::Client::Request req | req.getAUrlPart() = this) and
-      // Since we find sinks inside stdlib, we need to exclude them manually. See
-      // comment for command injection sinks for more details.
-      not this.getScope().getEnclosingModule().getName() in ["http.client", "httplib"]
+      req.getAUrlPart() = this and
+      // if we extract the stdlib code for HTTPConnection, we will also find calls that
+      // make requests within the HTTPConnection implementation -- for example the
+      // `request` method calls the `_send_request` method internally. So without this
+      // extra bit of code, we would give alerts within the HTTPConnection
+      // implementation as well, which is just annoying.
+      //
+      // Notice that we're excluding based on the request location, and not the URL part
+      // location, since the URL part would be in user code for the scenario above.
+      //
+      // See comment for command injection sinks for more details.
+      not req.getScope().getEnclosingModule().getName() in ["http.client", "httplib"]
     }
+
+    override HTTP::Client::Request getRequest() { result = req }
   }
 
   /**

@@ -16,7 +16,9 @@ import DataFlow::PathGraph
 
 from
   FullServerSideRequestForgery::Configuration config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "The full URL of this request depends on $@.",
-  source.getNode(), "a user-provided value"
+  DataFlow::PathNode sink, HTTP::Client::Request request
+where
+  request = sink.getNode().(FullServerSideRequestForgery::Sink).getRequest() and
+  config.hasFlowPath(source, sink)
+select request, source, sink, "The full URL of this request depends on $@.", source.getNode(),
+  "a user-provided value"
