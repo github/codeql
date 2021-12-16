@@ -30,6 +30,7 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
   Field getUnderlyingTaskField() { result = this.getAField() and result.hasName("m_task") }
 }
 
+/** Data flow for `System.Runtime.CompilerServices.TaskAwaiter<>`. */
 private class SystemRuntimeCompilerServicesTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
