@@ -54,7 +54,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
     // Defined outside the source archive
     not call.getTarget().fromSource() and
     // Not a call to a method which is overridden in source
-    not exists(Virtualizable m |
+    not exists(Overridable m |
       m.overridesOrImplementsOrEquals(call.getTarget().getUnboundDeclaration()) and
       m.fromSource()
     ) and

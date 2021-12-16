@@ -73,7 +73,7 @@ paramsInMethods
 | params.rb:4:1:5:3 | identifier_method_params | 0 | params.rb:4:30:4:32 | foo | SimpleParameter |
 | params.rb:4:1:5:3 | identifier_method_params | 1 | params.rb:4:35:4:37 | bar | SimpleParameter |
 | params.rb:4:1:5:3 | identifier_method_params | 2 | params.rb:4:40:4:42 | baz | SimpleParameter |
-| params.rb:17:1:18:3 | destructured_method_param | 0 | params.rb:17:31:17:39 | (..., ...) | TuplePatternParameter |
+| params.rb:17:1:18:3 | destructured_method_param | 0 | params.rb:17:31:17:39 | (..., ...) | DestructuredParameter |
 | params.rb:30:1:31:3 | method_with_splat | 0 | params.rb:30:23:30:28 | wibble | SimpleParameter |
 | params.rb:30:1:31:3 | method_with_splat | 1 | params.rb:30:31:30:36 | *splat | SplatParameter |
 | params.rb:30:1:31:3 | method_with_splat | 2 | params.rb:30:39:30:52 | **double_splat | HashSplatParameter |
@@ -90,7 +90,7 @@ paramsInMethods
 paramsInBlocks
 | params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
 | params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
-| params.rb:22:12:22:32 | { ... } | 0 | params.rb:22:15:22:20 | (..., ...) | TuplePatternParameter |
+| params.rb:22:12:22:32 | { ... } | 0 | params.rb:22:15:22:20 | (..., ...) | DestructuredParameter |
 | params.rb:34:12:35:3 | do ... end | 0 | params.rb:34:16:34:18 | val | SimpleParameter |
 | params.rb:34:12:35:3 | do ... end | 1 | params.rb:34:21:34:26 | *splat | SplatParameter |
 | params.rb:34:12:35:3 | do ... end | 2 | params.rb:34:29:34:42 | **double_splat | HashSplatParameter |
@@ -103,8 +103,8 @@ paramsInBlocks
 paramsInLambdas
 | params.rb:14:7:14:33 | -> { ... } | 0 | params.rb:14:11:14:13 | foo | SimpleParameter |
 | params.rb:14:7:14:33 | -> { ... } | 1 | params.rb:14:16:14:18 | bar | SimpleParameter |
-| params.rb:25:19:27:1 | -> { ... } | 0 | params.rb:25:23:25:37 | (..., ...) | TuplePatternParameter |
-| params.rb:25:19:27:1 | -> { ... } | 1 | params.rb:25:40:25:54 | (..., ...) | TuplePatternParameter |
+| params.rb:25:19:27:1 | -> { ... } | 0 | params.rb:25:23:25:37 | (..., ...) | DestructuredParameter |
+| params.rb:25:19:27:1 | -> { ... } | 1 | params.rb:25:40:25:54 | (..., ...) | DestructuredParameter |
 | params.rb:38:22:38:47 | -> { ... } | 0 | params.rb:38:26:38:26 | x | SimpleParameter |
 | params.rb:38:22:38:47 | -> { ... } | 1 | params.rb:38:29:38:33 | *blah | SplatParameter |
 | params.rb:38:22:38:47 | -> { ... } | 2 | params.rb:38:36:38:43 | **wibble | HashSplatParameter |
@@ -122,10 +122,10 @@ params
 | params.rb:9:20:9:24 | value | 1 | SimpleParameter |
 | params.rb:14:11:14:13 | foo | 0 | SimpleParameter |
 | params.rb:14:16:14:18 | bar | 1 | SimpleParameter |
-| params.rb:17:31:17:39 | (..., ...) | 0 | TuplePatternParameter |
-| params.rb:22:15:22:20 | (..., ...) | 0 | TuplePatternParameter |
-| params.rb:25:23:25:37 | (..., ...) | 0 | TuplePatternParameter |
-| params.rb:25:40:25:54 | (..., ...) | 1 | TuplePatternParameter |
+| params.rb:17:31:17:39 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:22:15:22:20 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:25:23:25:37 | (..., ...) | 0 | DestructuredParameter |
+| params.rb:25:40:25:54 | (..., ...) | 1 | DestructuredParameter |
 | params.rb:30:23:30:28 | wibble | 0 | SimpleParameter |
 | params.rb:30:31:30:36 | *splat | 1 | SplatParameter |
 | params.rb:30:39:30:52 | **double_splat | 2 | HashSplatParameter |

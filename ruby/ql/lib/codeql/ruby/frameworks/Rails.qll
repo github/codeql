@@ -28,7 +28,9 @@ private class RailtieClassAccess extends ConstantReadAccess {
 private class RailtieClass extends ClassDeclaration {
   RailtieClass() {
     this.getSuperclassExpr() instanceof RailtieClassAccess or
-    exists(RailtieClass other | other.getModule() = resolveScopeExpr(this.getSuperclassExpr()))
+    exists(RailtieClass other |
+      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
+    )
   }
 }
 
@@ -39,7 +41,7 @@ private DataFlow::CallNode getAConfigureCallNode() {
   // `Rails::Application.configure`
   exists(ConstantReadAccess read, RailtieClass cls |
     read = result.getReceiver().asExpr().getExpr() and
-    resolveScopeExpr(read) = cls.getModule() and
+    resolveConstantReadAccess(read) = cls.getModule() and
     result.asExpr().getExpr().(MethodCall).getMethodName() = "configure"
   )
 }
@@ -68,7 +70,7 @@ private class ConfigSourceNode extends DataFlow::LocalSourceNode {
       configCall = this.asExpr().getExpr()
     |
       configureCallNode = getAConfigureCallNode() and
-      block = configureCallNode.asExpr().getExpr().(MethodCall).getBlock() and
+      block = configureCallNode.getBlock().asExpr().getExpr() and
       configCall.getParent+() = block and
       configCall.getMethodName() = "config"
     )
@@ -84,8 +86,6 @@ private class CallAgainstConfig extends DataFlow::CallNode {
   CallAgainstConfig() { this.getReceiver() instanceof ConfigNode }
 
   MethodCall getCall() { result = this.asExpr().getExpr() }
-
-  Block getBlock() { result = this.getCall().getBlock() }
 }
 
 private class ActionControllerConfigNode extends DataFlow::Node {

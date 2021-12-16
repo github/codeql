@@ -82,7 +82,7 @@ module API {
      * constructor is the function represented by this node.
      *
      * For example, if this node represents a use of some class `A`, then there might be a node
-     * representing instances of `A`, typically corresponding to expressions `new A()` at the
+     * representing instances of `A`, typically corresponding to expressions `A.new` at the
      * source level.
      *
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
@@ -244,7 +244,7 @@ module API {
       MkUse(DataFlow::Node nd) { isUse(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
-      TResolved(result) = resolveScopeExpr(read) and
+      TResolved(result) = resolveConstantReadAccess(read) and
       not result.matches("%::%")
     }
 

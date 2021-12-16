@@ -245,7 +245,7 @@ calls/calls.rb:
 #  340|             getAnOperand/getRightOperand: [MethodCall] call to []
 #  340|               getArgument: [IntegerLiteral] 2
 #  340|               getReceiver: [LocalVariableAccess] __synth__0__1
-#  340|         getLeftOperand: [TuplePattern] (..., ...)
+#  340|         getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
 #  341|       getStmt: [MethodCall] call to foo
 #  341|         getReceiver: [Self, SelfVariableAccess] self
 #  341|         getArgument: [LocalVariableAccess] x
@@ -477,7 +477,7 @@ control/loops.rb:
 #   22|             getAnOperand/getRightOperand: [MethodCall] call to []
 #   22|               getArgument: [IntegerLiteral] 1
 #   22|               getReceiver: [LocalVariableAccess] __synth__0__1
-#   22|         getLeftOperand: [TuplePattern] (..., ...)
+#   22|         getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
 #   23|       getStmt: [AssignAddExpr] ... += ...
 #   23|         getDesugared: [AssignExpr] ... = ...
 #   23|           getAnOperand/getLeftOperand: [LocalVariableAccess] sum
@@ -518,7 +518,7 @@ control/loops.rb:
 #   28|             getAnOperand/getRightOperand: [MethodCall] call to []
 #   28|               getArgument: [IntegerLiteral] 1
 #   28|               getReceiver: [LocalVariableAccess] __synth__0__1
-#   28|         getLeftOperand: [TuplePattern] (..., ...)
+#   28|         getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
 #   29|       getStmt: [AssignAddExpr] ... += ...
 #   29|         getDesugared: [AssignExpr] ... = ...
 #   29|           getAnOperand/getLeftOperand: [LocalVariableAccess] sum

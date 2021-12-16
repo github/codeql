@@ -42,6 +42,7 @@ namespace System.Web
     {
         public void Transfer(string path) { }
         public string UrlEncode(string s) => null;
+        public string HtmlEncode(string s) => null;
     }
 
     public class HttpApplication : IHttpHandler

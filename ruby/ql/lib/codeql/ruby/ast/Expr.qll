@@ -66,6 +66,87 @@ class ArgumentList extends Expr, TArgumentList {
   }
 }
 
+private class LhsExpr_ =
+  TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
+      TDestructuredLhsExpr;
+
+/**
+ * A "left-hand-side" (LHS) expression. An `LhsExpr` can occur on the left-hand side of
+ * operator assignments (`AssignOperation`), on the left-hand side of assignments
+ * (`AssignExpr`), as patterns in for loops (`ForExpr`), and as exception variables
+ * in `rescue` clauses (`RescueClause`).
+ *
+ * An `LhsExpr` can be a simple variable, a constant, a call, or an element reference:
+ *
+ * ```rb
+ * var = 1
+ * var += 1
+ * E = 1
+ * foo.bar = 1
+ * foo[0] = 1
+ * rescue E => var
+ * ```
+ */
+class LhsExpr extends Expr, LhsExpr_ {
+  LhsExpr() { lhsExpr(this) }
+
+  /** Gets a variable used in (or introduced by) this LHS. */
+  Variable getAVariable() { result = this.(VariableAccess).getVariable() }
+}
+
+/**
+ * A "left-hand-side" (LHS) expression of a destructured assignment.
+ *
+ * Examples:
+ * ```rb
+ * a, self.b = value
+ * (a, b), c[3] = value
+ * a, b, *rest, c, d = value
+ * ```
+ */
+class DestructuredLhsExpr extends LhsExpr, TDestructuredLhsExpr {
+  override string getAPrimaryQlClass() { result = "DestructuredLhsExpr" }
+
+  private DestructuredLhsExprImpl getImpl() { result = toGenerated(this) }
+
+  private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
+
+  /** Gets the `i`th element in this destructured LHS. */
+  final Expr getElement(int i) {
+    exists(Ruby::AstNode c | c = this.getChild(i) |
+      toGenerated(result) = c.(Ruby::RestAssignment).getChild()
+      or
+      toGenerated(result) = c
+    )
+  }
+
+  /** Gets an element in this destructured LHS. */
+  final Expr getAnElement() { result = this.getElement(_) }
+
+  /**
+   * Gets the index of the element with the `*` marker on it, if it exists.
+   * In the example below the index is `2`.
+   * ```rb
+   * a, b, *rest, c, d = value
+   * ```
+   */
+  final int getRestIndex() { result = this.getImpl().getRestIndex() }
+
+  override Variable getAVariable() {
+    result = this.getElement(_).(VariableWriteAccess).getVariable()
+    or
+    result = this.getElement(_).(DestructuredLhsExpr).getAVariable()
+  }
+
+  override string toString() { result = "(..., ...)" }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getElement" and result = this.getElement(_)
+  }
+}
+
 /** A sequence of expressions. */
 class StmtSequence extends Expr, TStmtSequence {
   override string getAPrimaryQlClass() { result = "StmtSequence" }
@@ -136,7 +217,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
   override AstNode getAChild(string pred) {
-    result = StmtSequence.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getRescue" and result = this.getRescue(_)
     or
@@ -214,7 +295,7 @@ class Pair extends Expr, TPair {
 
   final override string toString() { result = "Pair" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getKey" and result = this.getKey()
@@ -283,7 +364,7 @@ class RescueClause extends Expr, TRescueClause {
 
   final override string toString() { result = "rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getException" and result = this.getException(_)
@@ -325,7 +406,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
 
   final override string toString() { result = "... rescue ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getBody" and result = this.getBody()
@@ -386,7 +467,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
 
   final override string toString() { result = "\"...\" \"...\"" }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getString" and result = this.getString(_)

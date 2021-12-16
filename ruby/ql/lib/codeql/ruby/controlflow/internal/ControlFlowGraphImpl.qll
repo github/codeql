@@ -935,6 +935,10 @@ module Trees {
     }
   }
 
+  private class DestructuredParameterTree extends StandardPostOrderTree, DestructuredParameter {
+    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
+  }
+
   private class DesugaredTree extends ControlFlowTree {
     ControlFlowTree desugared;
 
@@ -1379,10 +1383,6 @@ module Trees {
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       BodyStmtTree.super.succ(pred, succ, c)
     }
-  }
-
-  private class TuplePatternTree extends StandardPostOrderTree, TuplePattern {
-    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
   }
 
   private class UndefStmtTree extends StandardPreOrderTree, UndefStmt {

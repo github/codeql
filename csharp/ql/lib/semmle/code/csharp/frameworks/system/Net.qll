@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net` namespace. */
 class SystemNetNamespace extends Namespace {
@@ -25,6 +26,18 @@ class SystemNetWebUtility extends SystemNetClass {
 
   /** Gets an `UrlEncode` method. */
   Method getAnUrlEncodeMethod() { result = this.getAMethod("UrlEncode") }
+}
+
+/** Data flow for `System.Net.WebUtility`. */
+private class SystemNetWebUtilityFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
+        "System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
+        "System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint"
+      ]
+  }
 }
 
 /** The `System.Net.HttpListenerResponse` class. */
@@ -59,10 +72,28 @@ class SystemNetIPHostEntryClass extends SystemNetClass {
   Property getAliasesProperty() { result = this.getProperty("Aliases") }
 }
 
+/** Data flow for `System.Net.IPHostEntry`. */
+private class SystemNetIPHostEntryClassFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[-1];ReturnValue;taint",
+        "System.Net;IPHostEntry;false;get_HostName;();;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
 /** The `System.Net.Cookie` class. */
 class SystemNetCookieClass extends SystemNetClass {
   SystemNetCookieClass() { this.hasName("Cookie") }
 
   /** Gets the `Value` property. */
   Property getValueProperty() { result = this.getProperty("Value") }
+}
+
+/** Data flow for `System.Net.Cookie`. */
+private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row = "System.Net;Cookie;false;get_Value;();;Argument[-1];ReturnValue;taint"
+  }
 }

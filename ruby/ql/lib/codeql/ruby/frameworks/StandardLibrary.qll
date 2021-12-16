@@ -26,8 +26,6 @@ class KernelMethodCall extends DataFlow::CallNode {
       )
     )
   }
-
-  int getNumberOfArguments() { result = methodCall.getNumberOfArguments() }
 }
 
 /**

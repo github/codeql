@@ -136,7 +136,7 @@ class ConstantReadAccess extends ConstantAccess {
     this.hasGlobalScope() and
     result = lookupConst(TResolved("Object"), this.getName())
     or
-    result = lookupConst(resolveScopeExpr(this.getScopeExpr()), this.getName())
+    result = lookupConst(resolveConstantReadAccess(this.getScopeExpr()), this.getName())
   }
 
   override string getValueText() { result = this.getValue().getValueText() }

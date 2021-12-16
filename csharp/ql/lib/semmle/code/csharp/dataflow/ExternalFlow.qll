@@ -78,7 +78,6 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-private import semmle.code.csharp.dispatch.OverridableCallable
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -92,6 +91,17 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
   private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.system.Text
+  private import semmle.code.csharp.frameworks.system.Net
+  private import semmle.code.csharp.frameworks.system.Web
+  private import semmle.code.csharp.frameworks.system.collections.Generic
+  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
+  private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.system.IO
+  private import semmle.code.csharp.frameworks.system.io.Compression
+  private import semmle.code.csharp.frameworks.system.Xml
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
+  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
 }
 
 /**
@@ -262,7 +272,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
       msg = "Dubious member name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+,\\[\\]]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Attribute") and
@@ -348,16 +358,17 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-private class UnboundCallable extends Callable {
+/** An unbound callable. */
+class UnboundCallable extends Callable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
+  /**
+   * Holds if this unbound callable overrides or implements (transitively)
+   * `that` unbound callable.
+   */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.(Virtualizable).overridesOrImplementsOrEquals(c) or
-      this = c.(OverridableCallable).getAnUltimateImplementor() or
-      this = c.(OverridableCallable).getAnOverrider+()
-    |
-      this != c and
+      this.(Overridable).overridesOrImplements(c) and
       that = c.getUnboundDeclaration()
     )
   }

@@ -618,14 +618,30 @@ private module Minimongo {
  * Provides classes modeling the MarsDB library.
  */
 private module MarsDB {
+  private class MarsDBAccess extends DatabaseAccess {
+    string method;
+
+    MarsDBAccess() {
+      this =
+        API::moduleImport("marsdb")
+            .getMember("Collection")
+            .getInstance()
+            .getMember(method)
+            .getACall()
+    }
+
+    string getMethod() { result = method }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+
   /** A call to a MarsDB query method. */
   private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
       exists(string m |
-        this =
-          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
+        this.(MarsDBAccess).getMethod() = m and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
@@ -732,5 +748,38 @@ private module Redis {
         this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
       )
     }
+  }
+
+  /**
+   * An access to a database through redis
+   */
+  class RedisDatabaseAccess extends DatabaseAccess {
+    RedisDatabaseAccess() { this = redis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+}
+
+/**
+ * Provides classes modeling the `ioredis` library.
+ *
+ * ```
+ * import Redis from 'ioredis'
+ * let client = new Redis(...)
+ * ```
+ */
+private module IoRedis {
+  /**
+   * Gets an `ioredis` client.
+   */
+  API::Node ioredis() { result = API::moduleImport("ioredis").getInstance() }
+
+  /**
+   * An access to a database through ioredis
+   */
+  class IoRedisDatabaseAccess extends DatabaseAccess {
+    IoRedisDatabaseAccess() { this = ioredis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
   }
 }
