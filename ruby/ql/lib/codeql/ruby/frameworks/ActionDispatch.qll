@@ -796,20 +796,6 @@ module ActionDispatch {
   private string extractAction(string input) { result = input.regexpCapture("[^#]+#(.+)", 1) }
 
   /**
-   * A basic pluralizer for English strings.
-   * photo => photos
-   * story => stories
-   * TODO: remove?
-   */
-  bindingset[input]
-  private string pluralize(string input) {
-    exists(string prefix | prefix = input.regexpCapture("(.*)y", 1) | result = prefix + "ies")
-    or
-    not input.regexpMatch(".*y") and
-    result = input + "s"
-  }
-
-  /**
    * The inverse of `pluralize`
    * photos => photo
    * stories => story
