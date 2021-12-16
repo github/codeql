@@ -496,6 +496,16 @@ open class KotlinFileExtractor(
 
         extractVisibility(f, id, f.visibility)
 
+        if (!isExternalDeclaration(f)) {
+            val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
+            tw.writeFielddecls(fieldDeclarationId, parentId)
+            tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
+            tw.writeHasLocation(fieldDeclarationId, locId)
+
+            val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+            tw.writeExprs_unannotatedtypeaccess(typeAccessId, type.javaResult.id, type.kotlinResult.id, fieldDeclarationId, 0)
+        }
+
         return id
     }
 

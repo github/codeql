@@ -1,3 +1,25 @@
+fieldDeclarations
+| properties.kt:2:27:2:50 | int constructorProp; | properties.kt:2:27:2:50 | constructorProp | 0 |
+| properties.kt:2:53:2:83 | int mutableConstructorProp; | properties.kt:2:53:2:83 | mutableConstructorProp | 0 |
+| properties.kt:3:5:3:25 | int modifiableInt; | properties.kt:3:5:3:25 | modifiableInt | 0 |
+| properties.kt:4:5:4:24 | int immutableInt; | properties.kt:4:5:4:24 | immutableInt | 0 |
+| properties.kt:5:5:5:26 | int typedProp; | properties.kt:5:5:5:26 | typedProp | 0 |
+| properties.kt:7:5:7:30 | int initialisedInInit; | properties.kt:7:5:7:30 | initialisedInInit | 0 |
+| properties.kt:11:5:11:40 | int useConstructorArg; | properties.kt:11:5:11:40 | useConstructorArg | 0 |
+| properties.kt:19:5:20:15 | int defaultGetter; | properties.kt:19:5:20:15 | defaultGetter | 0 |
+| properties.kt:21:5:22:15 | int varDefaultGetter; | properties.kt:21:5:22:15 | varDefaultGetter | 0 |
+| properties.kt:23:5:24:15 | int varDefaultSetter; | properties.kt:23:5:24:15 | varDefaultSetter | 0 |
+| properties.kt:25:5:27:15 | int varDefaultGetterSetter; | properties.kt:25:5:27:15 | varDefaultGetterSetter | 0 |
+| properties.kt:28:5:29:22 | int overrideGetter; | properties.kt:28:5:29:22 | overrideGetter | 0 |
+| properties.kt:30:5:31:29 | int overrideGetterUseField; | properties.kt:30:5:31:29 | overrideGetterUseField | 0 |
+| properties.kt:32:5:33:29 | int useField; | properties.kt:32:5:33:29 | useField | 0 |
+| properties.kt:34:5:34:36 | String lateInitVar; | properties.kt:34:5:34:36 | lateInitVar | 0 |
+| properties.kt:35:5:35:32 | int privateProp; | properties.kt:35:5:35:32 | privateProp | 0 |
+| properties.kt:36:5:36:36 | int protectedProp; | properties.kt:36:5:36:36 | protectedProp | 0 |
+| properties.kt:37:5:37:30 | int publicProp; | properties.kt:37:5:37:30 | publicProp | 0 |
+| properties.kt:38:5:38:34 | int internalProp; | properties.kt:38:5:38:34 | internalProp | 0 |
+| properties.kt:67:1:67:23 | int constVal; | properties.kt:67:1:67:23 | constVal | 0 |
+#select
 | properties.kt:2:27:2:50 | constructorProp | properties.kt:2:27:2:50 | getConstructorProp | file://:0:0:0:0 | <none> | properties.kt:2:27:2:50 | constructorProp | public |
 | properties.kt:2:53:2:83 | mutableConstructorProp | properties.kt:2:53:2:83 | getMutableConstructorProp | properties.kt:2:53:2:83 | setMutableConstructorProp | properties.kt:2:53:2:83 | mutableConstructorProp | public |
 | properties.kt:3:5:3:25 | modifiableInt | properties.kt:3:5:3:25 | getModifiableInt | properties.kt:3:5:3:25 | setModifiableInt | properties.kt:3:5:3:25 | modifiableInt | public |

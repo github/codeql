@@ -626,9 +626,13 @@
 | file://:0:0:0:0 | MyLambda | funcExprs.kt:13:1:29:1 | call | TypeAccess |
 | file://:0:0:0:0 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | file://:0:0:0:0 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
+| file://:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | String | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | file://:0:0:0:0 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
 | file://:0:0:0:0 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
+| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | funcExprs.kt:14:5:14:33 | functionExpression0a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:14:26:14:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
