@@ -816,14 +816,14 @@ module HTTP {
   /** Provides classes for modeling HTTP clients. */
   module Client {
     /**
-     * A method call that makes an outgoing HTTP request.
+     * A data-flow node that makes an outgoing HTTP request.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
-     * extend `Request::Range` instead.
+     * extend `HTTP::Client::Request::Range` instead.
      */
     class Request extends DataFlow::Node instanceof Request::Range {
       /**
-       * Gets a node that contributes to the URL of the request.
+       * Gets a data-flow node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
       DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
@@ -848,14 +848,14 @@ module HTTP {
     /** Provides a class for modeling new HTTP requests. */
     module Request {
       /**
-       * A method call that makes an outgoing HTTP request.
+       * A data-flow node that makes an outgoing HTTP request.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
-       * extend `Request` instead.
+       * extend `HTTP::Client::Request` instead.
        */
       abstract class Range extends DataFlow::Node {
         /**
-         * Gets a node that contributes to the URL of the request.
+         * Gets a data-flow node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
         abstract DataFlow::Node getAUrlPart();
