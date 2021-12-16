@@ -102,6 +102,8 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.Xml
   private import semmle.code.csharp.frameworks.system.threading.Tasks
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.Linq
+  private import semmle.code.csharp.frameworks.system.Data
 }
 
 /**
