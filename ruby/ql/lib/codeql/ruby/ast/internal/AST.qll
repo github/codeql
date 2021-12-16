@@ -296,7 +296,7 @@ private module Cached {
     TTokenSuperCall(Ruby::Super g) { vcall(g) } or
     TToplevel(Ruby::Program g) or
     TTrueLiteral(Ruby::True g) or
-    TTuplePatternParameter(Ruby::DestructuredParameter g) or
+    TDestructuredParameter(Ruby::DestructuredParameter g) or
     TUnaryMinusExpr(Ruby::Unary g) { g instanceof @ruby_unary_minus } or
     TUnaryPlusExpr(Ruby::Unary g) { g instanceof @ruby_unary_plus } or
     TUndefStmt(Ruby::Undef g) or
@@ -321,9 +321,9 @@ private module Cached {
         TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or TCaseMatch or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
         TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
-        TDivExprReal or TDo or TDoBlock or TElementReference or TElse or TElsif or TEmptyStmt or
-        TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or
-        TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
+        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or TElse or
+        TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or
+        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or
@@ -342,8 +342,8 @@ private module Cached {
         TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
         TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
         TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
-        TToplevel or TTrueLiteral or TTuplePatternParameter or TUnaryMinusExpr or TUnaryPlusExpr or
-        TUndefStmt or TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
+        TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
+        TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
         TVariableReferencePattern or TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
@@ -502,7 +502,7 @@ private module Cached {
     n = TTokenSuperCall(result) or
     n = TToplevel(result) or
     n = TTrueLiteral(result) or
-    n = TTuplePatternParameter(result) or
+    n = TDestructuredParameter(result) or
     n = TUnaryMinusExpr(result) or
     n = TUnaryPlusExpr(result) or
     n = TUndefStmt(result) or
@@ -613,6 +613,15 @@ private module Cached {
     or
     result = toGenerated(n).getLocation()
   }
+
+  cached
+  predicate lhsExpr(AST::Expr e) {
+    explicitAssignmentNode(toGenerated(e), _)
+    or
+    implicitAssignmentNode(toGenerated(e))
+    or
+    e = getSynthChild(any(AST::AssignExpr ae), 0)
+  }
 }
 
 import Cached
@@ -645,11 +654,13 @@ class TLoop = TConditionalLoop or TForExpr;
 
 class TSelf = TSelfReal or TSelfSynth;
 
+class TDestructuredLhsExpr = TDestructuredLeftAssignment or TLeftAssignmentList;
+
 class TExpr =
   TSelf or TArgumentList or TInClause or TRescueClause or TRescueModifierExpr or TPair or
       TStringConcatenation or TCall or TBlockArgument or TConstantAccess or TControlExpr or
       TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or TOperation or
-      TSimpleParameter or TForwardArgument;
+      TSimpleParameter or TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
@@ -778,18 +789,20 @@ class TStmt =
 class TReturningStmt = TReturnStmt or TBreakStmt or TNextStmt;
 
 class TParameter =
-  TPatternParameter or TBlockParameter or THashSplatParameter or THashSplatNilParameter or
-      TKeywordParameter or TOptionalParameter or TSplatParameter or TForwardParameter;
+  TSimpleParameter or TDestructuredParameter or TBlockParameter or THashSplatParameter or
+      THashSplatNilParameter or TKeywordParameter or TOptionalParameter or TSplatParameter or
+      TForwardParameter;
 
 class TSimpleParameter = TSimpleParameterReal or TSimpleParameterSynth;
 
-class TPatternParameter = TSimpleParameter or TTuplePatternParameter;
+deprecated class TPatternParameter = TSimpleParameter or TDestructuredParameter;
 
 class TNamedParameter =
   TSimpleParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
       TOptionalParameter or TSplatParameter;
 
-class TTuplePattern = TTuplePatternParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
+deprecated class TTuplePattern =
+  TDestructuredParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TVariableAccess =
   TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or

@@ -13,13 +13,13 @@ query predicate conditionalLoops(
   cond = l.getCondition()
 }
 
-query predicate forExprs(ForExpr f, Pattern p, StmtSequence body, int i, Stmt bodyChild) {
+query predicate forExprs(ForExpr f, LhsExpr p, StmtSequence body, int i, Stmt bodyChild) {
   p = f.getPattern() and
   body = f.getBody() and
   bodyChild = body.getStmt(i)
 }
 
-query predicate forExprsTuplePatterns(ForExpr f, TuplePattern tp, int i, Pattern cp) {
+query predicate forExprsTuplePatterns(ForExpr f, DestructuredLhsExpr tp, int i, Expr cp) {
   tp = f.getPattern() and
   cp = tp.getElement(i)
 }

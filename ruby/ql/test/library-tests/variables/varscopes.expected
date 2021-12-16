@@ -32,7 +32,7 @@
 | nested_scopes.rb:22:9:24:11 | show_a2 |
 | nested_scopes.rb:27:7:29:9 | show |
 | nested_scopes.rb:30:7:33:9 | class << ... |
-| parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:1:9:5:3 | do ... end |
 | parameters.rb:7:1:13:3 | order_pizza |
 | parameters.rb:15:1:19:3 | print_map |
@@ -45,6 +45,7 @@
 | parameters.rb:45:1:47:3 | dup_underscore |
 | parameters.rb:49:1:51:3 | tuples |
 | parameters.rb:54:9:57:3 | do ... end |
+| parameters.rb:59:1:61:3 | tuples_nested |
 | scopes.rb:1:1:1:15 | a |
 | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:2:9:6:3 | do ... end |

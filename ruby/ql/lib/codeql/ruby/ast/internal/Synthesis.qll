@@ -636,36 +636,36 @@ private module AssignOperationDesugar {
   }
 }
 
-private module CompoundAssignDesugar {
-  /** An assignment where the left-hand side is a tuple pattern. */
-  private class TupleAssignExpr extends AssignExpr {
-    private TuplePattern tp;
+private module DestructuredAssignDesugar {
+  /** A destructured assignment. */
+  private class DestructuredAssignExpr extends AssignExpr {
+    private DestructuredLhsExpr lhs;
 
     pragma[nomagic]
-    TupleAssignExpr() { tp = this.getLeftOperand() }
+    DestructuredAssignExpr() { lhs = this.getLeftOperand() }
 
-    TuplePattern getTuplePattern() { result = tp }
+    DestructuredLhsExpr getLhs() { result = lhs }
 
     pragma[nomagic]
-    Pattern getElement(int i) { result = tp.getElement(i) }
+    Expr getElement(int i) { result = lhs.getElement(i) }
 
     pragma[nomagic]
     int getNumberOfElements() {
-      toGenerated(tp) = any(TuplePatternImpl impl | result = count(impl.getChildNode(_)))
+      toGenerated(lhs) = any(DestructuredLhsExprImpl impl | result = count(impl.getChildNode(_)))
     }
 
     pragma[nomagic]
     int getRestIndexOrNumberOfElements() {
-      result = tp.getRestIndex()
+      result = lhs.getRestIndex()
       or
-      toGenerated(tp) = any(TuplePatternImpl impl | not exists(impl.getRestIndex())) and
+      toGenerated(lhs) = any(DestructuredLhsExprImpl impl | not exists(impl.getRestIndex())) and
       result = this.getNumberOfElements()
     }
   }
 
   pragma[nomagic]
-  private predicate compoundAssignSynthesis(AstNode parent, int i, Child child) {
-    exists(TupleAssignExpr tae |
+  private predicate destructuredAssignSynthesis(AstNode parent, int i, Child child) {
+    exists(DestructuredAssignExpr tae |
       parent = tae and
       i = -1 and
       child = SynthChild(StmtSequenceKind())
@@ -689,8 +689,8 @@ private module CompoundAssignDesugar {
           child = childRef(tae.getRightOperand())
         )
         or
-        exists(Pattern p, int j, int restIndex |
-          p = tae.getElement(j) and
+        exists(AstNode elem, int j, int restIndex |
+          elem = tae.getElement(j) and
           restIndex = tae.getRestIndexOrNumberOfElements()
         |
           parent = seq and
@@ -700,7 +700,7 @@ private module CompoundAssignDesugar {
           exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1) |
             parent = assign and
             i = 0 and
-            child = childRef(p)
+            child = childRef(elem)
             or
             parent = assign and
             i = 1 and
@@ -756,26 +756,26 @@ private module CompoundAssignDesugar {
    * z = __synth__0[-1];
    * ```
    */
-  private class CompoundAssignSynthesis extends Synthesis {
+  private class DestructuredAssignSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
-      compoundAssignSynthesis(parent, i, child)
+      destructuredAssignSynthesis(parent, i, child)
     }
 
     final override predicate location(AstNode n, Location l) {
-      exists(TupleAssignExpr tae, StmtSequence seq | seq = tae.getDesugared() |
+      exists(DestructuredAssignExpr tae, StmtSequence seq | seq = tae.getDesugared() |
         n = seq.getStmt(0) and
         hasLocation(tae.getRightOperand(), l)
         or
-        exists(Pattern p, int j |
-          p = tae.getElement(j) and
+        exists(AstNode elem, int j |
+          elem = tae.getElement(j) and
           n = seq.getStmt(j + 1) and
-          hasLocation(p, l)
+          hasLocation(elem, l)
         )
       )
     }
 
     final override predicate localVariable(AstNode n, int i) {
-      n instanceof TupleAssignExpr and
+      n instanceof DestructuredAssignExpr and
       i = 0
     }
 
@@ -783,10 +783,6 @@ private module CompoundAssignDesugar {
       name = "[]" and
       setter = false and
       arity = 1
-    }
-
-    final override predicate excludeFromControlFlowTree(AstNode n) {
-      n = any(TupleAssignExpr tae).getTuplePattern()
     }
   }
 }
@@ -820,7 +816,7 @@ private module ArrayLiteralDesugar {
    * ::Array.[](1, 2, 3)
    * ```
    */
-  private class CompoundAssignSynthesis extends Synthesis {
+  private class ArrayLiteralSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       arrayLiteralSynthesis(parent, i, child)
     }
