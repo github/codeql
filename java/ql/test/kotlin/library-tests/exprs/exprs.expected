@@ -460,6 +460,7 @@
 | exprs.kt:131:12:131:23 | ... > ... | exprs.kt:4:1:136:1 | topLevelMethod | GTExpr |
 | exprs.kt:131:23:131:23 | 0 | exprs.kt:4:1:136:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:132:9:132:16 | ...=... | exprs.kt:4:1:136:1 | topLevelMethod | AssignExpr |
+| exprs.kt:132:9:132:16 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:18 | (...)... | exprs.kt:4:1:136:1 | topLevelMethod | CastExpr |
@@ -633,7 +634,6 @@
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| file://:0:0:0:0 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | funcExprs.kt:14:5:14:33 | functionExpression0a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:14:26:14:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
 | funcExprs.kt:14:31:14:31 | 5 | funcExprs.kt:14:26:14:33 | invoke | IntegerLiteral |

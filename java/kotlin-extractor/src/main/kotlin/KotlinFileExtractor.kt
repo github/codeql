@@ -605,9 +605,16 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun getVariableLocationProvider(v: IrVariable): IrElement {
+        if (v.origin == IrDeclarationOrigin.IR_TEMPORARY_VARIABLE) {
+            return v.initializer ?: v
+        }
+        return v
+    }
+
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-        val locId = tw.getLocation(v)
+        val locId = tw.getLocation(getVariableLocationProvider(v))
         tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
         tw.writeHasLocation(stmtId, locId)
         extractVariableExpr(v, callable, stmtId, 1, stmtId)
@@ -616,7 +623,7 @@ open class KotlinFileExtractor(
     fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         val varId = useVariable(v)
         val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-        val locId = tw.getLocation(v)
+        val locId = tw.getLocation(getVariableLocationProvider(v))
         val type = useType(v.type)
         tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, type.kotlinResult.id, exprId)
         tw.writeHasLocation(varId, locId)

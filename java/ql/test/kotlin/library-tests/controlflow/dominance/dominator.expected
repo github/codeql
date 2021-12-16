@@ -77,14 +77,16 @@
 | Test.kt:39:8:39:9 | 10 | Test.kt:39:4:39:4 | ...=... |
 | Test.kt:40:4:40:4 | ...=... | Test.kt:40:4:40:6 | <Expr>; |
 | Test.kt:40:4:40:4 | <Expr>; | Test.kt:40:4:40:6 | tmp0 |
-| Test.kt:40:4:40:4 | x | file://:0:0:0:0 | tmp0 |
+| Test.kt:40:4:40:4 | tmp0 | Test.kt:40:4:40:4 | <Expr>; |
+| Test.kt:40:4:40:4 | var ...; | Test.kt:40:4:40:4 | x |
+| Test.kt:40:4:40:4 | x | Test.kt:40:4:40:4 | tmp0 |
 | Test.kt:40:4:40:6 | <Expr>; | Test.kt:40:4:40:6 | <Stmt> |
 | Test.kt:40:4:40:6 | <Expr>; | Test.kt:40:4:40:6 | tmp0 |
 | Test.kt:40:4:40:6 | <Stmt> | Test.kt:40:4:40:6 | { ... } |
 | Test.kt:40:4:40:6 | dec(...) | Test.kt:40:4:40:4 | ...=... |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | (...)... |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | dec(...) |
-| Test.kt:40:4:40:6 | { ... } | file://:0:0:0:0 | var ...; |
+| Test.kt:40:4:40:6 | { ... } | Test.kt:40:4:40:4 | var ...; |
 | Test.kt:43:3:43:3 | ...=... | Test.kt:73:3:73:3 | <Expr>; |
 | Test.kt:43:3:43:3 | <Expr>; | Test.kt:43:3:43:3 | z |
 | Test.kt:43:3:43:3 | z | Test.kt:43:8:43:8 | y |
@@ -146,5 +148,3 @@
 | Test.kt:95:12:95:12 | c | Test.kt:95:5:95:12 | return ... |
 | Test.kt:97:3:97:10 | return ... | Test.kt:81:2:98:2 | test2 |
 | Test.kt:97:10:97:10 | b | Test.kt:97:3:97:10 | return ... |
-| file://:0:0:0:0 | tmp0 | Test.kt:40:4:40:4 | <Expr>; |
-| file://:0:0:0:0 | var ...; | Test.kt:40:4:40:4 | x |
