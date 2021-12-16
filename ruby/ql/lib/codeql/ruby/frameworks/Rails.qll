@@ -125,23 +125,11 @@ private module Settings {
     loc.getFile().getStem() = "test"
   }
 
-  private DataFlow::Node getTransitiveReceiver(DataFlow::CallNode c) {
-    exists(DataFlow::Node recv |
-      recv = c.getReceiver() and
-      (
-        result = recv
-        or
-        recv instanceof DataFlow::CallNode and
-        result = getTransitiveReceiver(recv)
-      )
-    )
-  }
-
   private class Setting extends DataFlow::CallNode {
     Setting() {
       // exclude some test configuration
       not isInTestConfiguration(this.getLocation()) and
-      getTransitiveReceiver(this) instanceof Config::Node
+      this.getReceiver+() instanceof Config::Node
     }
   }
 
