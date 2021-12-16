@@ -399,6 +399,7 @@ module Trees {
       )
       or
       succ = this and
+      c instanceof NormalCompletion and
       (
         last(this.getValue(), pred, c) and not exists(this.getABranch())
         or
@@ -442,12 +443,12 @@ module Trees {
       )
       or
       succ = this and
+      c instanceof NormalCompletion and
       (
         last(this.getABranch(), pred, c) and
         not c.(MatchingCompletion).getValue() = false
         or
-        last(this.getElseBranch(), pred, c) and
-        c instanceof NormalCompletion
+        last(this.getElseBranch(), pred, c)
       )
     }
   }
@@ -1166,6 +1167,7 @@ module Trees {
       )
       or
       last(this.getHandler(), pred, c) and
+      c instanceof NormalCompletion and
       succ = this
     }
   }
