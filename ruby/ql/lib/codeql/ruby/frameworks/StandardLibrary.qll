@@ -335,6 +335,18 @@ class ModuleEvalCallCodeExecution extends CodeExecution::Range, DataFlow::CallNo
   override DataFlow::Node getCode() { result = this.getArgument(0) }
 }
 
+/**
+ * A call to `Module#const_get`, which interprets its argument as a Ruby constant.
+ * Passing user input to this method may result in instantiation of arbitrary Ruby classes.
+ */
+class ModuleConstGetCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+  ModuleConstGetCallCodeExecution() {
+    this.asExpr().getExpr().(UnknownMethodCall).getMethodName() = "const_get"
+  }
+
+  override DataFlow::Node getCode() { result = this.getArgument(0) }
+}
+
 /** Flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
 class RegexpEscapeSummary extends SummarizedCallable {
   RegexpEscapeSummary() { this = "Regexp.escape" }
