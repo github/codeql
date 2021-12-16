@@ -14,18 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@esbena/ql
+        with:
+          languages: javascript # does not matter
+      - name: Get CodeQL version
+        id: get-codeql-version
+        run: |
+          echo "::set-output name=version::$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)"
+        shell: bash
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Cache queries
         id: cache-queries
         uses: actions/cache@v2
         with:
           path: ${{ runner.temp }}/query-pack.zip
-          key: queries-${{ hashFiles('**/*.ql*') }}
-      - name: Find codeql
-        if: steps.cache-queries.outputs.cache-hit != 'true'
-        id: find-codeql
-        uses: github/codeql-action/init@esbena/ql
-        with:
-          languages: javascript # does not matter
+          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
       - name: Build query pack
         if: steps.cache-queries.outputs.cache-hit != 'true'
         run: |
