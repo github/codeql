@@ -1,0 +1,2 @@
+| companion_objects.kt:9:5:9:11 | MyClassCompanion | VarAccess | companion_objects.kt:4:9:4:31 | funInCompanion |
+| companion_objects.kt:10:5:10:13 | new MyClass(...) | ClassInstanceExpr | companion_objects.kt:2:5:2:23 | funInClass |
