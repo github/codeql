@@ -17,6 +17,7 @@ def test_taint(): # $ requestHandler
     requests.models.Response
 
     ensure_tainted(
+        url, # $ tainted
         # see https://docs.python-requests.org/en/latest/api/#requests.Response
         resp, # $ tainted
         resp.text, # $ tainted
