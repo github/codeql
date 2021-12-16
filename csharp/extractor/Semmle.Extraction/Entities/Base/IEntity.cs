@@ -38,16 +38,6 @@ namespace Semmle.Extraction
         /// <param name="trapFile">The trapfile to write to.</param>
         void WriteQuotedId(EscapingTextWriter trapFile);
 
-        /// <summary>
-        /// The location for reporting purposes.
-        /// </summary>
-        Location? ReportingLocation { get; }
-
-        /// <summary>
-        /// How the entity handles .push and .pop.
-        /// </summary>
-        TrapStackBehaviour TrapStackBehaviour { get; }
-
         void DefineLabel(TextWriter trapFile, Extractor extractor);
     }
 }

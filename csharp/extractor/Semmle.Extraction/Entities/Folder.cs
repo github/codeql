@@ -5,12 +5,8 @@ namespace Semmle.Extraction.Entities
 {
     public sealed class Folder : CachedEntityShared<PathTransformer.ITransformedPath>
     {
-        private readonly Folder? parent;
-
         private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init)
         {
-            if (Symbol.ParentDirectory is PathTransformer.ITransformedPath p)
-                parent = Create(Context, p);
         }
 
         public override void DefineLabel(TextWriter trapFile, Extractor extractor)
@@ -19,11 +15,45 @@ namespace Semmle.Extraction.Entities
             // a label definition is never needed outside of the shared TRAP file
         }
 
-        public sealed override void PopulateShared(Action<Action<TextWriter>> withTrapFile)
+        public sealed override void Populate(TextWriter trapFile)
         {
-            withTrapFile(trapFile => trapFile.folders(this, Symbol.Value));
-            if (parent is not null)
-                withTrapFile(trapFile => trapFile.containerparent(parent, this));
+            Folder? parent = null;
+
+            if (Symbol.ParentDirectory is PathTransformer.ITransformedPath p)
+                parent = Create(Context, p);
+
+            // Register the entity for later population in the shared TRAP file
+            Context.RegisterSharedEntity(new Shared(Symbol, parent));
+        }
+
+        private sealed class Shared : EntityShared
+        {
+            private PathTransformer.ITransformedPath path;
+            private readonly Folder? parent;
+
+            public Shared(PathTransformer.ITransformedPath path, Folder? parent)
+            {
+                this.path = path;
+                this.parent = parent;
+            }
+
+            public sealed override void PopulateShared(ContextShared cx)
+            {
+                cx.WithTrapFile(trapFile => trapFile.folders(this, path.Value));
+                if (parent is not null)
+                    cx.WithTrapFile(trapFile => trapFile.containerparent(parent, this));
+            }
+
+            public sealed override void WriteId(EscapingTextWriter trapFile)
+            {
+                trapFile.Write(path.DatabaseId);
+                trapFile.Write(";folder");
+            }
+
+            public sealed override int GetHashCode() => 17 * path.DatabaseId.GetHashCode();
+
+            public sealed override bool Equals(object? obj) =>
+                obj is Shared s && path.DatabaseId == s.path.DatabaseId;
         }
 
         public override bool NeedsPopulation => true;

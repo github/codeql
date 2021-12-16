@@ -97,12 +97,6 @@ namespace Semmle.Extraction
         public string TrapFile { get; }
         private string tmpFile = "";     // The temporary file which is moved to trapFile once written.
 
-        public bool IsArchived(PathTransformer.ITransformedPath transformedPath)
-        {
-            var dest = NestPaths(logger, archive, transformedPath.Value);
-            return File.Exists(dest);
-        }
-
         /// <summary>
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
         /// of the source archive, depending on the length of its full path.

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Semmle.Extraction
 {
@@ -16,7 +17,7 @@ namespace Semmle.Extraction
     public class Context
     {
         /// <summary>
-        /// Access various extraction functions, e.g. logger, trap writer.
+        /// Access various extraction functions, e.g. logger.
         /// </summary>
         public Extractor Extractor { get; }
 
@@ -190,17 +191,12 @@ namespace Semmle.Extraction
             }
         }
 
-        protected Context(Extractor extractor, TrapWriter trapWriter, Action<ICachedEntityShared> registerSharedEntity, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(Extractor extractor, TrapWriter trapWriter, Action<EntityShared> registerSharedEntity, bool shouldAddAssemblyTrapPrefix = false)
         {
             Extractor = extractor;
             TrapWriter = trapWriter;
             this.registerSharedEntity = registerSharedEntity;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
-        }
-
-        protected Context(Extractor extractor, TrapWriter trapWriter
-        , bool shouldAddAssemblyTrapPrefix = false) : this(extractor, trapWriter, registerSharedEntity: _ => { }, shouldAddAssemblyTrapPrefix)
-        {
         }
 
         private int currentRecursiveDepth = 0;
@@ -324,7 +320,7 @@ namespace Semmle.Extraction
                 a();
         }
 
-        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
+        protected virtual bool IsEntityDuplicationGuarded(CachedEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
         {
             loc = null;
             return false;
@@ -495,8 +491,48 @@ namespace Semmle.Extraction
         public virtual Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
             CreateLocation();
 
-        private readonly Action<ICachedEntityShared> registerSharedEntity;
+        private readonly Action<EntityShared> registerSharedEntity;
 
-        public void RegisterSharedEntity(ICachedEntityShared file) => registerSharedEntity(file);
+        public void RegisterSharedEntity(EntityShared entity) => registerSharedEntity(entity);
+    }
+
+    /// <summary>
+    /// State that needs to be available throughout the extraction process
+    /// of a shared entity (`EntityShared`).
+    /// </summary>
+    public sealed class ContextShared
+    {
+        private readonly TrapWriter trapWriter;
+        private readonly Extractor extractor;
+
+        public ContextShared(TrapWriter trapWriter, Extractor extractor)
+        {
+            this.trapWriter = trapWriter;
+            this.extractor = extractor;
+        }
+
+        /// <summary>
+        /// Access various extraction functions, e.g. logger.
+        /// </summary>
+        public Extractor Extractor => extractor;
+
+        /// <summary>
+        /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
+        /// of the source archive, depending on the length of its full path.
+        /// </summary>
+        /// <param name="originalPath">The path to the input file.</param>
+        /// <param name="transformedPath">The transformed path to the input file.</param>
+        /// <param name="inputEncoding">The encoding used by the input file.</param>
+        public void Archive(string originalPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding) =>
+            trapWriter.Archive(originalPath, transformedPath, inputEncoding);
+
+        /// <summary>
+        /// Access the shared TRAP file in a thread-safe manner.
+        /// </summary>
+        public void WithTrapFile(Action<TextWriter> a)
+        {
+            lock (trapWriter)
+                a(trapWriter.Writer);
+        }
     }
 }

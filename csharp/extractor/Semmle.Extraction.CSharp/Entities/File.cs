@@ -10,21 +10,19 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         public override Context Context => (Context)base.Context;
 
-        private readonly Extraction.Entities.Folder? parent;
-
         protected File(Context cx, string path)
             : base(cx, path)
         {
-            if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
-                parent = Extraction.Entities.Folder.Create(Context, dir);
         }
 
-        public sealed override void PopulateShared(Action<Action<TextWriter>> withTrapFile)
+        public sealed override void Populate(TextWriter trapFile)
         {
-            withTrapFile(trapFile => trapFile.files(this, TransformedPath.Value));
+            Extraction.Entities.Folder? parent = null;
+            LineCounts? lineCounts = null;
+            System.Text.Encoding? encoding = null;
 
-            if (parent is not null)
-                withTrapFile(trapFile => trapFile.containerparent(parent, this));
+            if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
+                parent = Extraction.Entities.Folder.Create(Context, dir);
 
             var trees = Context.Compilation.SyntaxTrees.Where(t => t.FilePath == originalPath);
 
@@ -33,19 +31,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var text in trees.Select(tree => tree.GetText()))
                 {
                     var rawText = text.ToString() ?? "";
-                    var lineCounts = LineCounter.ComputeLineCounts(rawText);
+                    lineCounts = LineCounter.ComputeLineCounts(rawText);
                     if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n')
                         lineCounts.Total++;
-
-                    withTrapFile(trapFile => trapFile.numlines(this, lineCounts));
-                    Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    encoding = text.Encoding;
                 }
             }
             else if (IsPossiblyTextFile())
             {
                 try
                 {
-                    System.Text.Encoding encoding;
                     var lineCount = 0;
                     using (var sr = new StreamReader(originalPath, detectEncodingFromByteOrderMarks: true))
                     {
@@ -55,17 +50,61 @@ namespace Semmle.Extraction.CSharp.Entities
                         }
                         encoding = sr.CurrentEncoding;
                     }
-
-                    withTrapFile(trapFile => trapFile.numlines(this, new LineCounts() { Total = lineCount, Code = 0, Comment = 0 }));
-                    Context.TrapWriter.Archive(originalPath, TransformedPath, encoding ?? System.Text.Encoding.Default);
+                    lineCounts = new LineCounts() { Total = lineCount, Code = 0, Comment = 0 };
                 }
                 catch (Exception exc)
                 {
                     Context.ExtractionError($"Couldn't read file: {originalPath}. {exc.Message}", null, null, exc.StackTrace);
                 }
             }
+            
+            // Register the entity for later population in the shared TRAP file
+            Context.RegisterSharedEntity(new Shared(originalPath, TransformedPath, parent, lineCounts, encoding));
+        }
 
-            withTrapFile(trapFile => trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0));
+        private sealed class Shared : EntityShared
+        {
+            private readonly string originalPath;
+            private readonly PathTransformer.ITransformedPath path;
+            private readonly Extraction.Entities.Folder? parent;
+            private readonly LineCounts? lineCounts;
+            private readonly System.Text.Encoding encoding;
+
+            public Shared(string originalPath, PathTransformer.ITransformedPath path, Extraction.Entities.Folder? parent, LineCounts? lineCounts, System.Text.Encoding? encoding)
+            {
+                this.originalPath = originalPath;
+                this.path = path;
+                this.parent = parent;
+                this.lineCounts = lineCounts;
+                this.encoding = encoding ?? System.Text.Encoding.Default;
+            }
+
+            public sealed override void PopulateShared(ContextShared cx)
+            {
+                cx.WithTrapFile(trapFile => trapFile.files(this, path.Value));
+
+                if (parent is not null)
+                    cx.WithTrapFile(trapFile => trapFile.containerparent(parent, this));
+
+                if (lineCounts is not null)
+                {
+                    cx.WithTrapFile(trapFile => trapFile.numlines(this, lineCounts));
+                    cx.Archive(originalPath, path, encoding);
+                }
+
+                cx.WithTrapFile(trapFile => trapFile.file_extraction_mode(this, cx.Extractor.Standalone ? 1 : 0));
+            }
+
+            public override void WriteId(EscapingTextWriter trapFile)
+            {
+                trapFile.Write(path.DatabaseId);
+                trapFile.Write(";sourcefile");
+            }
+
+            public sealed override int GetHashCode() => 19 * path.DatabaseId.GetHashCode();
+
+            public sealed override bool Equals(object? obj) =>
+                obj is Shared s && path.DatabaseId == s.path.DatabaseId;
         }
 
         private bool IsPossiblyTextFile()

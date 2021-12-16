@@ -37,9 +37,9 @@ namespace Semmle.Extraction.CSharp
 
         public PathTransformer PathTransformer { get; }
 
-        private readonly HashSet<Extraction.ICachedEntityShared> sharedEntities = new();
+        private readonly HashSet<Extraction.EntityShared> sharedEntities = new();
 
-        protected void RegisterSharedEntity(Extraction.ICachedEntityShared f)
+        protected void RegisterSharedEntity(Extraction.EntityShared f)
         {
             lock (sharedEntities)
                 sharedEntities.Add(f);
@@ -294,18 +294,14 @@ namespace Semmle.Extraction.CSharp
                 entity.Label = new Label(trapWriter.IdCounter++);
             }
 
-            Action<Action<TextWriter>> withTrapFile = a =>
-            {
-                lock (trapWriter)
-                    a(trapWriter.Writer);
-            };
+            var cx = new ContextShared(trapWriter, extractor!);
 
             Parallel.Invoke(
                 new ParallelOptions { MaxDegreeOfParallelism = numberOfThreads },
-                sharedEntities.Select<Extraction.ICachedEntityShared, Action>(entity => () =>
+                sharedEntities.Select<Extraction.EntityShared, Action>(entity => () =>
                 {
-                    entity.DefineLabelShared(withTrapFile, extractor!);
-                    entity.PopulateShared(withTrapFile);
+                    entity.DefineLabelShared(cx);
+                    entity.PopulateShared(cx);
                 }).ToArray());
         }
 

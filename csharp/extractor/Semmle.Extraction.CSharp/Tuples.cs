@@ -731,7 +731,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("locations_mapped", l1, l2);
         }
 
-        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode)
+        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, EntityShared file, int mode)
         {
             trapFile.WriteTuple("file_extraction_mode", file, mode);
         }

@@ -18,12 +18,12 @@ namespace Semmle.Extraction
             trapFile.WriteTuple("extractor_messages", error, (int)severity, origin, errorMessage, entityText, location, stackTrace);
         }
 
-        public static void files(this System.IO.TextWriter trapFile, File file, string fullName)
+        public static void files(this System.IO.TextWriter trapFile, EntityShared file, string fullName)
         {
             trapFile.WriteTuple("files", file, fullName);
         }
 
-        internal static void folders(this System.IO.TextWriter trapFile, Folder folder, string path)
+        internal static void folders(this System.IO.TextWriter trapFile, EntityShared folder, string path)
         {
             trapFile.WriteTuple("folders", folder, path);
         }
