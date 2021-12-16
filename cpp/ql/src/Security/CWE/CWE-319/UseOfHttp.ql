@@ -28,6 +28,11 @@ class PrivateHostName extends string {
   }
 }
 
+pragma[nomagic]
+predicate privateHostNameFlowsToExpr(Expr e) {
+  TaintTracking::localExprTaint(any(StringLiteral p | p.getValue() instanceof PrivateHostName), e)
+}
+
 /**
  * A string containing an HTTP URL not in a private domain.
  */
@@ -38,11 +43,9 @@ class HttpStringLiteral extends StringLiteral {
       or
       exists(string tail |
         tail = s.regexpCapture("http://(.*)", 1) and not tail instanceof PrivateHostName
-      ) and
-      not TaintTracking::localExprTaint(any(StringLiteral p |
-          p.getValue() instanceof PrivateHostName
-        ), this.getParent*())
-    )
+      )
+    ) and
+    not privateHostNameFlowsToExpr(this.getParent*())
   }
 }
 
