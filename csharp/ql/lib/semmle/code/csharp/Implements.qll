@@ -36,6 +36,25 @@ private import Conversion
  */
 cached
 predicate implements(Overridable m1, Overridable m2, ValueOrRefType t) {
+  implementsVirtualizable(m1, m2, t)
+  or
+  exists(DeclarationWithAccessors d1, DeclarationWithAccessors d2, int kind |
+    implementsVirtualizable(d1, d2, t) and
+    hasAccessor(d1, m1, pragma[only_bind_into](kind)) and
+    hasAccessor(d2, m2, pragma[only_bind_into](kind))
+  )
+}
+
+pragma[noinline]
+private predicate hasAccessor(DeclarationWithAccessors d, Accessor a, int kind) {
+  a = d.getAnAccessor() and
+  (
+    accessors(a, kind, _, _, _) or
+    event_accessors(a, kind, _, _, _)
+  )
+}
+
+private predicate implementsVirtualizable(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
   exists(Interface i |
     i = m2.getDeclaringType() and
     t.getABaseInterface+() = i and
@@ -66,7 +85,7 @@ predicate implements(Overridable m1, Overridable m2, ValueOrRefType t) {
  * for type `C`, because `C.M()` conflicts.
  */
 pragma[nomagic]
-private Overridable getAnImplementedInterfaceMemberForSubType(Overridable m, ValueOrRefType t) {
+private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m, ValueOrRefType t) {
   result = getACompatibleInterfaceMember(m) and
   t = m.getDeclaringType()
   or
@@ -78,7 +97,7 @@ private Overridable getAnImplementedInterfaceMemberForSubType(Overridable m, Val
 }
 
 pragma[noinline]
-private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Overridable m) {
+private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtualizable m) {
   m = getACompatibleInterfaceMember(t.getAMember())
 }
 
@@ -88,7 +107,7 @@ private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Overr
  * the interface member is accessed.
  */
 pragma[nomagic]
-private Overridable getACompatibleInterfaceMember(Overridable m) {
+private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
   result = getACompatibleInterfaceMemberAux(m) and
   (
     // If there is both an implicit and an explicit compatible member
@@ -100,14 +119,14 @@ private Overridable getACompatibleInterfaceMember(Overridable m) {
 }
 
 pragma[nomagic]
-private Overridable getACompatibleExplicitInterfaceMember(Overridable m, ValueOrRefType declType) {
+private Virtualizable getACompatibleExplicitInterfaceMember(Virtualizable m, ValueOrRefType declType) {
   result = getACompatibleInterfaceMemberAux(m) and
   declType = m.getDeclaringType() and
   m.implementsExplicitInterface()
 }
 
 pragma[nomagic]
-private Overridable getACompatibleInterfaceMemberAux(Overridable m) {
+private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m) {
   result = getACompatibleInterfaceAccessor(m) or
   result = getACompatibleInterfaceIndexer(m) or
   result = getACompatibleInterfaceMethod(m)
