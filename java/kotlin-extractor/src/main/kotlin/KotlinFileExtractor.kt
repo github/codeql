@@ -864,6 +864,8 @@ open class KotlinFileExtractor(
 
                 if (dr != null) {
                     extractExpressionExpr(dr, callable, id, -1, enclosingStmt)
+                } else if(callTarget.isStaticMethodOfClass) {
+                    extractTypeAccess(callTarget.parentAsClass.toRawType(), callable, id, -1, c, enclosingStmt)
                 }
             }
 

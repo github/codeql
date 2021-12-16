@@ -172,4 +172,12 @@ fun IrType.toRawType(): IrType =
         else -> this
     }
 
+fun IrClass.toRawType(): IrType {
+    val result = this.typeWith(listOf())
+    return if (this.typeParameters.isNotEmpty())
+        result.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+    else
+        result
+}
+
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
