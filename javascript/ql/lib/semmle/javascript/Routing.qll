@@ -818,7 +818,9 @@ module Routing {
    * A parameter to a route handler function.
    */
   class RouteHandlerParameter extends DataFlow::ParameterNode {
-    RouteHandlerParameter() { this = any(RouteHandler h).getFunction().getAParameter() }
+    private RouteHandler handler;
+
+    RouteHandlerParameter() { this = handler.getFunction().getAParameter() }
 
     /** Gets a data flow node referring to this route handler parameter. */
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
@@ -834,7 +836,7 @@ module Routing {
     /**
      * Gets the corresponding route handler, that is, the function on which this is a parameter.
      */
-    final RouteHandler getRouteHandler() { result.getFunction().getAParameter() = this }
+    final RouteHandler getRouteHandler() { result = handler }
 
     /**
      * Gets a node that is stored in the given access path on this route handler parameter, either
@@ -842,7 +844,7 @@ module Routing {
      */
     pragma[inline]
     DataFlow::Node getValueFromAccessPath(string path) {
-      exists(RouteHandler handler, int i, Node predecessor |
+      exists(int i, Node predecessor |
         pragma[only_bind_out](this) = handler.getFunction().getParameter(i) and
         result = getAnAccessPathRhs(predecessor, i, path) and
         (handler.isGuardedByNode(predecessor) or predecessor = handler)
