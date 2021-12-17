@@ -29,19 +29,11 @@ module Fmt {
     Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
   }
 
-  /** A call to `Print`, `Fprint`, or similar. */
+  /** A call to `Print` or similar. */
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    int firstPrintedArg;
+    PrintCall() { this.getTarget() instanceof Printer }
 
-    PrintCall() {
-      this.getTarget() instanceof Printer and firstPrintedArg = 0
-      or
-      this.getTarget() instanceof Fprinter and firstPrintedArg = 1
-    }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getArgument(any(int i | i >= firstPrintedArg))
-    }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
   /** The `Fprint` function or one of its variants. */
