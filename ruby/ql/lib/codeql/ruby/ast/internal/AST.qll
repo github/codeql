@@ -657,10 +657,9 @@ class TSelf = TSelfReal or TSelfSynth;
 class TDestructuredLhsExpr = TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TExpr =
-  TSelf or TArgumentList or TInClause or TRescueClause or TRescueModifierExpr or TPair or
-      TStringConcatenation or TCall or TBlockArgument or TConstantAccess or TControlExpr or
-      TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or TOperation or
-      TForwardArgument or TDestructuredLhsExpr;
+  TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
+      TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
+      TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 

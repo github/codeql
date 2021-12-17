@@ -422,7 +422,7 @@ module Trees {
       super.last(last, c)
       or
       not exists(this.getElseBranch()) and
-      exists(MatchingCompletion lc, Expr lastBranch |
+      exists(MatchingCompletion lc, AstNode lastBranch |
         lastBranch = max(int i | | this.getBranch(i) order by i) and
         lc.getValue() = false and
         last(lastBranch, last, lc) and
@@ -436,7 +436,7 @@ module Trees {
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
       or
-      exists(int i, Expr branch | branch = this.getBranch(i) |
+      exists(int i, AstNode branch | branch = this.getBranch(i) |
         last(branch, pred, c) and
         first(this.getBranch(i + 1), succ) and
         c.(MatchingCompletion).getValue() = false

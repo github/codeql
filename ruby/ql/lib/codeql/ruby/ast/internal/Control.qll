@@ -5,7 +5,7 @@ private import codeql.ruby.ast.internal.AST
 abstract class CaseExprImpl extends ControlExpr, TCase {
   abstract Expr getValue();
 
-  abstract Expr getBranch(int n);
+  abstract AstNode getBranch(int n);
 }
 
 class CaseWhenExpr extends CaseExprImpl, TCaseExpr {
@@ -15,7 +15,7 @@ class CaseWhenExpr extends CaseExprImpl, TCaseExpr {
 
   final override Expr getValue() { toGenerated(result) = g.getValue() }
 
-  final override Expr getBranch(int n) {
+  final override AstNode getBranch(int n) {
     toGenerated(result) = g.getChild(n) or
     toGenerated(result) = g.getChild(n)
   }
@@ -28,7 +28,7 @@ class CaseMatch extends CaseExprImpl, TCaseMatch {
 
   final override Expr getValue() { toGenerated(result) = g.getValue() }
 
-  final override Expr getBranch(int n) {
+  final override AstNode getBranch(int n) {
     toGenerated(result) = g.getClauses(n)
     or
     n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()

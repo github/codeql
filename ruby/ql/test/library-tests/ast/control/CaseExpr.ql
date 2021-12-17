@@ -16,4 +16,4 @@ query predicate caseWhenBranches(CaseExpr c, WhenExpr when, int pIndex, Expr p, 
   body = when.getBody()
 }
 
-query predicate caseAllBranches(CaseExpr c, int n, Expr branch) { branch = c.getBranch(n) }
+query predicate caseAllBranches(CaseExpr c, int n, AstNode branch) { branch = c.getBranch(n) }

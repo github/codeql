@@ -364,13 +364,13 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
    * Gets the `n`th branch of this case expression, either a `WhenExpr`, an
    * `InClause`, or a `StmtSequence`.
    */
-  final Expr getBranch(int n) { result = super.getBranch(n) }
+  final AstNode getBranch(int n) { result = super.getBranch(n) }
 
   /**
    * Gets a branch of this case expression, either a `WhenExpr`, an
    * `InClause`, or a `StmtSequence`.
    */
-  final Expr getABranch() { result = this.getBranch(_) }
+  final AstNode getABranch() { result = this.getBranch(_) }
 
   /** Gets the `n`th `when` branch of this case expression. */
   deprecated final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
@@ -409,7 +409,7 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
  * end
  * ```
  */
-class WhenExpr extends Expr, TWhenExpr {
+class WhenExpr extends AstNode, TWhenExpr {
   private Ruby::When g;
 
   WhenExpr() { this = TWhenExpr(g) }
@@ -461,7 +461,7 @@ class WhenExpr extends Expr, TWhenExpr {
  * end
  * ```
  */
-class InClause extends Expr, TInClause {
+class InClause extends AstNode, TInClause {
   private Ruby::InClause g;
 
   InClause() { this = TInClause(g) }
