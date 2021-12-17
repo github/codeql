@@ -1350,6 +1350,10 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
+  private class StringComponentComponentTree extends LeafTree, StringComponent {
+    StringComponentComponentTree() { not this instanceof StringInterpolationComponent }
+  }
+
   private class ToplevelTree extends BodyStmtTree, Toplevel {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getBeginBlock(i) and rescuable = true
