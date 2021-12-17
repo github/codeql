@@ -171,6 +171,7 @@ Python built-in support
    Twisted, Web framework
    Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
+   requests, HTTP client
    dill, Serialization
    PyYAML, Serialization
    ruamel.yaml, Serialization
