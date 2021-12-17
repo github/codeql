@@ -141,27 +141,3 @@ module ServerSideRequestForgery {
     }
   }
 }
-
-predicate debug(Location loc, DataFlow::MethodCallNode call, string text, DataFlow::Node safe) {
-  loc = call.getLocation() and
-  call.getMethodName() = "format" and
-  text = call.getObject().asExpr().(StrConst).getText() and
-  exists(string httpPrefixRe |
-    httpPrefixRe = "^(?i)https?://(?:(\\{\\})|\\{([0-9]+)\\}|\\{([^0-9].*)\\}).*$" and
-    text.regexpMatch(httpPrefixRe)
-  |
-    // `http://{123}...`
-    exists(int safeArgIndex | safeArgIndex = text.regexpCapture(httpPrefixRe, 2).toInt() |
-      safe = call.getArg(safeArgIndex)
-    )
-    or
-    // `http://{abc}...`
-    exists(string safeArgName | safeArgName = text.regexpCapture(httpPrefixRe, 3) |
-      safe = call.getArgByName(safeArgName)
-    )
-    or
-    // `http://{}...`
-    exists(text.regexpCapture(httpPrefixRe, 1)) and
-    safe = call.getArg(0)
-  )
-}
