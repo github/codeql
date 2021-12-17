@@ -321,7 +321,8 @@ open class KotlinFileExtractor(
             }
 
             extractClassModifiers(c, id)
-            extractClassSupertypes(c, id)
+            val forceExtractSupertypeMembers = !isExternalDeclaration(c)
+            extractClassSupertypes(c, id, inReceiverContext = forceExtractSupertypeMembers)
 
             return id
         }

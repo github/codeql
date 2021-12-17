@@ -2,4 +2,5 @@
 | A.java:4:10:4:12 | foo | A.foo | foo(java.lang.Object) | A.java:4:10:4:12 | foo | A.foo |
 | B.java:4:17:4:19 | foo | B.foo | foo(java.lang.String) | B.java:4:17:4:19 | foo | B.foo |
 | W.kt:4:5:4:17 | foo | A.foo | foo(java.lang.Object) | W.kt:4:5:4:17 | foo | A.foo |
+| W.kt:4:5:4:17 | foo | A<String>.foo | foo(java.lang.String) | W.kt:4:5:4:17 | foo | A.foo |
 | W.kt:8:14:8:34 | foo | B.foo | foo(java.lang.String) | W.kt:8:14:8:34 | foo | B.foo |

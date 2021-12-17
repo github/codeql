@@ -260,6 +260,8 @@ open class KotlinUsesExtractor(
             }
 
             if (inReceiverContext && genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
+                val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
+                extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
                 extractorWithCSource.extractMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
             }
         }
@@ -913,12 +915,14 @@ class X {
      * of `List<String>`, i.e. `Appendable<String>` etc, or if `mode` is `Unbound` we will extract `Appendable<E>`
      * where `E` is the type variable declared as `List<E>`. Finally if `mode` is `Raw` we will extract the raw type
      * `Appendable`, represented in QL as `Appendable<>`.
+     *
+     * Argument `inReceiverContext` will be passed onto the `useClassInstance` invocation for each supertype.
      */
-    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound) {
-        extractClassSupertypes(c.superTypes, c.typeParameters, id, mode)
+    fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound, inReceiverContext: Boolean = false) {
+        extractClassSupertypes(c.superTypes, c.typeParameters, id, mode, inReceiverContext)
     }
 
-    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound) {
+    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound, inReceiverContext: Boolean = false) {
         // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
         // (For example, we can't have `class A<E> : E`, but can have `class A<E> : Comparable<E>`)
         val subbedSupertypes = when(mode) {
@@ -937,7 +941,8 @@ class X {
                         is IrClass -> {
                             val classifier: IrClassifierSymbol = t.classifier
                             val tcls: IrClass = classifier.owner as IrClass
-                            val l = useClassInstance(tcls, if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments).typeResult.id
+                            val typeArgs = if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments
+                            val l = useClassInstance(tcls, typeArgs, inReceiverContext).typeResult.id
                             tw.writeExtendsReftype(id, l)
                         }
                         else -> {
