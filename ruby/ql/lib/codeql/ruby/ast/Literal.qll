@@ -10,15 +10,7 @@ private import codeql.ruby.controlflow.CfgNodes
  *
  * This is the QL root class for all literals.
  */
-class Literal extends Expr, TLiteral {
-  /**
-   * Gets the source text for this literal, if this is a simple literal.
-   *
-   * For complex literals, such as arrays, hashes, and strings with
-   * interpolations, this predicate has no result.
-   */
-  override string getValueText() { none() }
-}
+class Literal extends Expr, TLiteral { }
 
 /**
  * A numeric literal, i.e. an integer, floating-point, rational, or complex
@@ -409,17 +401,6 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
     or
     this instanceof THereDoc and
     result = ""
-  }
-
-  override string getValueText() {
-    forall(StringComponent c | c = this.getComponent(_) |
-      not c instanceof StringInterpolationComponent
-    ) and
-    result =
-      concat(StringComponent c, int i | c = this.getComponent(i) | c.getValueText() order by i)
-    or
-    exists(this.getComponent(_)) and
-    result = this.getAControlFlowNode().(ExprNodes::StringlikeLiteralCfgNode).getValueText()
   }
 
   override string toString() {

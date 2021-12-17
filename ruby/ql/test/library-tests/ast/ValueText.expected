@@ -602,7 +602,6 @@
 | modules/modules.rb:55:8:55:30 | "module Foo::Bar again" | module Foo::Bar again |
 | modules/modules.rb:56:17:56:17 | 4 | 4 |
 | modules/toplevel.rb:1:6:1:12 | "world" | world |
-| modules/toplevel.rb:3:12:3:16 | "!!!" | !!! |
 | modules/toplevel.rb:5:14:5:20 | "hello" | hello |
 | operations/operations.rb:3:5:3:5 | 0 | 0 |
 | operations/operations.rb:4:5:4:5 | 0 | 0 |
