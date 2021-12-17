@@ -53,33 +53,6 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
     |
       component, " "
     )
-  or
-  // The access path of the function being called, both with and without structural info, if the
-  // function being called originates from an external API. For example, the endpoint here:
-  //
-  // ```js
-  // const mongoose = require('mongoose'),
-  //   User = mongoose.model('User', null);
-  // User.findOne(ENDPOINT);
-  // ```
-  //
-  // would have a callee access path with structural info of
-  // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
-  // path without structural info of `mongoose model findOne`.
-  //
-  // These features indicate that the callee comes from (reading the access path backwards) an
-  // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
-  // external library.
-  exists(AccessPaths::Boolean includeStructuralInfo |
-    featureName =
-      "calleeAccessPath" +
-        any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
-    result =
-      strictconcat(DataFlow::CallNode call, string component |
-        component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
-      |
-        component, " "
-      )
     or
     // The access path of the function being called, both with and without structural info, if the
     // function being called originates from an external API. For example, the endpoint here:
@@ -332,6 +305,6 @@ private string getASupportedFeatureName() {
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  ModelScoring::endpoints(endpoint) and
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   featureValue = getTokenFeature(endpoint, featureName)
 }
