@@ -77,6 +77,8 @@ jobs:
         with:
           name: extractor-ubuntu-latest
           path: |
+            ql/target/release/ql-autobuilder
+            ql/target/release/ql-autobuilder.exe
             ql/target/release/ql-extractor
             ql/target/release/ql-extractor.exe
           retention-days: 1
@@ -101,6 +103,10 @@ jobs:
           unzip query-pack-zip/*.zip -d pack
           cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats pack/
           mkdir -p pack/tools/linux64
+          if [[ -f linux64/ql-autobuilder ]]; then
+            cp linux64/ql-autobuilder pack/tools/linux64/autobuilder
+            chmod +x pack/tools/linux64/autobuilder
+          fi
           if [[ -f linux64/ql-extractor ]]; then
             cp linux64/ql-extractor pack/tools/linux64/extractor
             chmod +x pack/tools/linux64/extractor
@@ -112,13 +118,13 @@ jobs:
           name: codeql-ql-pack
           path: codeql-ql.zip
           retention-days: 1
-  analyze: 
+  analyze:
     runs-on: ubuntu-latest
-    
-    needs: 
+
+    needs:
       - package
-    
-    steps: 
+
+    steps:
       - name: Download pack
         uses: actions/download-artifact@v2
         with:
@@ -149,4 +155,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@esbena/ql
-

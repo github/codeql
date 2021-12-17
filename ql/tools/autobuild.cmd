@@ -1,12 +1,5 @@
 @echo off
 
-type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
-    --include-extension=.ql ^
-    --include-extension=.qll ^
-    --include-extension=.dbscheme ^
-    --include=**/qlpack.yml ^
-    --size-limit=5m ^
-    --language=ql ^
-    "%CODEQL_EXTRACTOR_QL_WIP_DATABASE%"
+type NUL && "%CODEQL_EXTRACTOR_QL_ROOT%\tools\%CODEQL_PLATFORM%\autobuilder"
 
 exit /b %ERRORLEVEL%
