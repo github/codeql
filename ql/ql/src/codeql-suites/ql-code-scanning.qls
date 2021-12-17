@@ -1,0 +1,18 @@
+- description: Standard Code Scanning queries for QL
+- queries: .
+- include:
+    kind:
+    - problem
+    - path-problem
+    - alert
+    - path-alert
+    precision:
+    - high
+    - very-high
+    problem.severity:
+    - error
+    - warning
+- exclude:
+    deprecated: //
+- exclude:
+    query path: /^experimental\/.*/
