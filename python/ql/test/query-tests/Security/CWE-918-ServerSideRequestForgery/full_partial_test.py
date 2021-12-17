@@ -22,9 +22,16 @@ def full_ssrf():
     url = "https://" + user_input + "/foo?key=" + query_val
     requests.get(url) # NOT OK -- user has full control
 
-# currently it's not possible to sanitize a step, so due to use-use flow, if we sanitize
-# a value that is used later on, it will NOT be tainted later on... so we need to make
-# separate tests for each of the vairant cases, so show that we handle all of them.
+# taint-steps are added as `fromNode -> toNode`, but when adding a sanitizer it's
+# currently only possible to so on either `fromNode` or `toNode` (either all edges in
+# and out, or just the edges in or out). The sanitizers for full URL control is applied
+# on the `fromNode`, since for `"https://{}/{}".format(user_input1, user_input2)` there
+# is still a valid taint-step for `user_input1` -- if we made `toNode` a sanitizer that
+# would also remove this flow that we actually want. When coupled with use-use flow,
+# this means that later uses of a sanitized value will no longer be tainted, so
+# `requests.get(user_input2)` would no longer give an alert. To overcome this problem,
+# we split these tests into multiple functions, so we do not get this use-use flow, and
+# therefore know we are able to see where the sanitizers are applied.
 
 def full_ssrf_format():
     user_input = request.args['untrusted_input']
