@@ -132,7 +132,7 @@ class StringComponentCfgNode extends AstCfgNode {
   string getValueText() { result = this.getNode().(StringComponent).getValueText() }
 }
 
-private Expr desugar(Expr n) {
+private AstNode desugar(AstNode n) {
   result = n.getDesugared()
   or
   not exists(n.getDesugared()) and
@@ -147,10 +147,10 @@ abstract private class ExprChildMapping extends Expr {
    * Holds if `child` is a (possibly nested) child of this expression
    * for which we would like to find a matching CFG child.
    */
-  abstract predicate relevantChild(Expr child);
+  abstract predicate relevantChild(AstNode child);
 
   pragma[nomagic]
-  private predicate reachesBasicBlock(Expr child, CfgNode cfn, BasicBlock bb) {
+  private predicate reachesBasicBlock(AstNode child, CfgNode cfn, BasicBlock bb) {
     this.relevantChild(child) and
     cfn = this.getAControlFlowNode() and
     bb.getANode() = cfn
@@ -170,16 +170,16 @@ abstract private class ExprChildMapping extends Expr {
    * The path never escapes the syntactic scope of this expression.
    */
   cached
-  predicate hasCfgChild(Expr child, CfgNode cfn, CfgNode cfnChild) {
+  predicate hasCfgChild(AstNode child, CfgNode cfn, CfgNode cfnChild) {
     this.reachesBasicBlock(child, cfn, cfnChild.getBasicBlock()) and
-    cfnChild = desugar(child).getAControlFlowNode()
+    cfnChild.getNode() = desugar(child)
   }
 }
 
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   private class LiteralChildMapping extends ExprChildMapping, Literal {
-    override predicate relevantChild(Expr e) { none() }
+    override predicate relevantChild(AstNode n) { none() }
   }
 
   /** A control-flow node that wraps an `ArrayLiteral` AST expression. */
@@ -192,7 +192,7 @@ module ExprNodes {
   }
 
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
-    override predicate relevantChild(Expr e) { e = this.getAnOperand() }
+    override predicate relevantChild(AstNode n) { n = this.getAnOperand() }
   }
 
   /** A control-flow node that wraps an `AssignExpr` AST expression. */
@@ -209,7 +209,7 @@ module ExprNodes {
   }
 
   private class OperationExprChildMapping extends ExprChildMapping, Operation {
-    override predicate relevantChild(Expr e) { e = this.getAnOperand() }
+    override predicate relevantChild(AstNode n) { n = this.getAnOperand() }
   }
 
   /** A control-flow node that wraps an `Operation` AST expression. */
@@ -292,7 +292,7 @@ module ExprNodes {
   }
 
   private class BlockArgumentChildMapping extends ExprChildMapping, BlockArgument {
-    override predicate relevantChild(Expr e) { e = this.getValue() }
+    override predicate relevantChild(AstNode n) { n = this.getValue() }
   }
 
   /** A control-flow node that wraps a `BlockArgument` AST expression. */
@@ -306,8 +306,8 @@ module ExprNodes {
   }
 
   private class CallExprChildMapping extends ExprChildMapping, Call {
-    override predicate relevantChild(Expr e) {
-      e = [this.getAnArgument(), this.(MethodCall).getReceiver(), this.(MethodCall).getBlock()]
+    override predicate relevantChild(AstNode n) {
+      n = [this.getAnArgument(), this.(MethodCall).getReceiver(), this.(MethodCall).getBlock()]
     }
   }
 
@@ -340,7 +340,7 @@ module ExprNodes {
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
-    override predicate relevantChild(Expr e) { e = this.getValue() }
+    override predicate relevantChild(AstNode e) { e = this.getValue() }
   }
 
   /** A control-flow node that wraps a `MethodCall` AST expression. */
@@ -361,7 +361,7 @@ module ExprNodes {
   }
 
   private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
-    override predicate relevantChild(Expr e) { e = this.getCondition() or e = this.getBranch(_) }
+    override predicate relevantChild(AstNode n) { n = [this.getCondition(), this.getBranch(_)] }
   }
 
   /** A control-flow node that wraps a `ConditionalExpr` AST expression. */
@@ -381,7 +381,7 @@ module ExprNodes {
   }
 
   private class ConstantAccessChildMapping extends ExprChildMapping, ConstantAccess {
-    override predicate relevantChild(Expr e) { e = this.getScopeExpr() }
+    override predicate relevantChild(AstNode n) { n = this.getScopeExpr() }
   }
 
   /** A control-flow node that wraps a `ConditionalExpr` AST expression. */
@@ -397,7 +397,7 @@ module ExprNodes {
   }
 
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
-    override predicate relevantChild(Expr e) { e = this.getLastStmt() }
+    override predicate relevantChild(AstNode n) { n = this.getLastStmt() }
   }
 
   /** A control-flow node that wraps a `StmtSequence` AST expression. */
@@ -411,7 +411,7 @@ module ExprNodes {
   }
 
   private class ForExprChildMapping extends ExprChildMapping, ForExpr {
-    override predicate relevantChild(Expr e) { e = this.getValue() }
+    override predicate relevantChild(AstNode n) { n = this.getValue() }
   }
 
   /** A control-flow node that wraps a `ForExpr` AST expression. */
@@ -430,7 +430,7 @@ module ExprNodes {
   }
 
   private class PairChildMapping extends ExprChildMapping, Pair {
-    override predicate relevantChild(Expr e) { e = this.getKey() or e = this.getValue() }
+    override predicate relevantChild(AstNode n) { n = [this.getKey(), this.getValue()] }
   }
 
   /** A control-flow node that wraps a `Pair` AST expression. */
@@ -475,7 +475,7 @@ module ExprNodes {
   }
 
   private class StringlikeLiteralChildMapping extends ExprChildMapping, StringlikeLiteral {
-    override predicate relevantChild(Expr e) { e = this.getComponent(_) }
+    override predicate relevantChild(AstNode n) { n = this.getComponent(_) }
   }
 
   /** A control-flow node that wraps a `StringlikeLiteral` AST expression. */
