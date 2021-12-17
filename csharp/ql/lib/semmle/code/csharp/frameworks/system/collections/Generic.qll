@@ -71,6 +71,14 @@ class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGen
   }
 }
 
+/** Data flow for `System.Collections.Generic.IEnumerable<T>`. */
+private class SystemCollectionsGenericEnumerableTFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Generic;IEnumerable<>;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
+  }
+}
+
 /** The `System.Collections.Generic.IEnumerator<T>` interface. */
 class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumeratorInterface() {
