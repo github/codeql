@@ -1110,8 +1110,8 @@ module Array {
     }
   }
 
-  private class InitializeCopySummary extends SimpleSummarizedCallable {
-    InitializeCopySummary() { this = "initialize_copy" }
+  private class ReplaceSummary extends SimpleSummarizedCallable {
+    ReplaceSummary() { this = "replace" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (

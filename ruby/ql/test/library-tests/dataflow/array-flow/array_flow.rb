@@ -14,7 +14,7 @@ def m1(i)
 end
 
 def m2(i)
-    a = Array.new(0, source(2.1))
+    a = Array.new(1, source(2.1))
     sink(a[0]) # $ hasValueFlow=2.1
     sink(a[i]) # $ hasValueFlow=2.1
 
@@ -344,10 +344,9 @@ end
 
 def m43
     a = [0, 1, 2, source(43)]
-    b = a.each_slice do |x|
+    a.each_slice(1) do |x|
         sink(x[0]) # $ hasValueFlow=43
     end
-    sink(b[3]) # $ hasValueFlow=43
 end
 
 def m44
@@ -412,6 +411,7 @@ def m50
     a = [0, 1, 2, source(50)]
     b = a.filter! do |x|
         sink(x) # $ hasValueFlow=50
+        x > 2
     end
     sink(b[0]) # $ hasValueFlow=50
 end
@@ -505,7 +505,7 @@ end
 
 def m61
     a = [0, 1, 2, source(61.1)]
-    a.initialize_copy([source(61.2)])
+    a.replace([source(61.2)])
     sink(a[0]) # $ hasValueFlow=61.2
 end
 
