@@ -547,14 +547,6 @@ private class SystemLinqParallelEnumerableFlowModelCsv extends ExternalFlow::Sum
   }
 }
 
-/** Data flow for `System.Linq.ParallelQuery<>`. */
-private class SystemLinqParallelQueryFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Linq;ParallelQuery<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
-  }
-}
-
 /** Data flow for `System.Linq.Queryable`. */
 private class SystemLinqQueryableFlowModelCsv extends ExternalFlow::SummaryModelCsv {
   override predicate row(string row) {
