@@ -56,22 +56,39 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Cache entire extractor
+        id: cache-extractor
+        uses: actions/cache@v2
+        with:
+          path: |
+            ql/target/release/ql-autobuilder
+            ql/target/release/ql-autobuilder.exe
+            ql/target/release/ql-extractor
+            ql/target/release/ql-extractor.exe
+          key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
+      - name: Cache cargo
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             ql/target
-          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Check formatting
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd ql; cargo fmt --all -- --check
       - name: Build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd ql; cargo build --verbose
       - name: Run tests
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd ql; cargo test --verbose
       - name: Release build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd ql; cargo build --release
       - name: Generate dbscheme
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
