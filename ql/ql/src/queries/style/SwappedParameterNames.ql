@@ -19,12 +19,31 @@ private predicate getAnOverridingParameter(
   parameter = pred.getParameter(index)
 }
 
-from ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index
-where
+pragma[noinline]
+private predicate getAnOverridingParameterWithDifferentNames(
+  ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index
+) {
   getAnOverridingParameter(pred, sup, parameter, index) and
-  sup.getParameter(index).getName() != pred.getParameter(index).getName() and
   exists(int other | other != index |
     sup.getParameter(other).getName() = pred.getParameter(index).getName()
   )
-select parameter, pred.getParameter(index).getName() + " was $@ in the super class.",
-  sup.getParameter(index), "named " + sup.getParameter(index).getName()
+}
+
+pragma[noinline]
+private predicate getAnOverridingParameterWithDifferentNames2(
+  ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index, string supName,
+  string predName
+) {
+  getAnOverridingParameterWithDifferentNames(pred, sup, parameter, index) and
+  supName = pragma[only_bind_out](pragma[only_bind_out](sup).getParameter(index)).getName() and
+  predName = pragma[only_bind_out](pragma[only_bind_out](pred).getParameter(index)).getName()
+}
+
+from
+  ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index, string supName,
+  string predName
+where
+  getAnOverridingParameterWithDifferentNames2(pred, sup, parameter, index, supName, predName) and
+  supName != predName
+select parameter, predName + " was $@ in the super class.", sup.getParameter(index),
+  "named " + supName
