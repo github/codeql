@@ -3,17 +3,18 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogBuilder;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.message.EntryMessage;
 import org.apache.logging.log4j.message.MapMessage;
 import org.apache.logging.log4j.message.StringMapMessage;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.util.MessageSupplier;
 import org.apache.logging.log4j.util.Supplier;
-import org.apache.logging.log4j.ThreadContext;
 
 public class Log4jJndiInjectionTest {
 
@@ -1110,6 +1111,15 @@ public class Log4jJndiInjectionTest {
             map.put("username", (String) source());
             mmsg.putAll(map);
             logger.error(mmsg);
+        }
+        {
+            CloseableThreadContext.put("username", (String) source());
+            CloseableThreadContext.put("safe", "safe").put("username", (String) source());
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("username", (String) source());
+            CloseableThreadContext.putAll(map);
+            CloseableThreadContext.put("safe", "safe").putAll(map);
+
         }
     }
 }
