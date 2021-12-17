@@ -154,7 +154,7 @@ library class SSAHelper extends int {
    */
   private predicate frontier_phi_node(StackVariable v, BasicBlock b) {
     exists(BasicBlock x |
-      dominanceFrontier(x, pragma[only_bind_into](b)) and ssa_defn_rec(pragma[only_bind_into](v), x)
+      dominanceFrontier(x, b) and ssa_defn_rec(pragma[only_bind_into](v), pragma[only_bind_into](x))
     ) and
     /* We can also eliminate those nodes where the variable is not live on any incoming edge */
     live_at_start_of_bb(pragma[only_bind_into](v), b)
