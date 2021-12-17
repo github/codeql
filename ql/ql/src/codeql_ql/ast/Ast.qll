@@ -673,7 +673,7 @@ class Module extends TModule, ModuleDeclaration {
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().(QL::ModuleName).getChild().getValue() }
+  override string getName() { result = mod.getName().getChild().getValue() }
 
   /**
    * Gets a member of the module.

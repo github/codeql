@@ -16,7 +16,7 @@ where
     pred.getParent().getName() = className and
     pred.getName() = "getAPrimaryQlClass" and
     constant = pred.getBody().(ComparisonFormula).getRightOperand() and
-    constant.(String).getValue() = constantName and
+    constant.getValue() = constantName and
     // might be "Foo::classname", detect by matching with a regexp
     not constantName.regexpMatch(".*\\b" + className + "$") and
     // ignore constants with "?" in them
