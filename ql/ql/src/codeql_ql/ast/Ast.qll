@@ -699,7 +699,7 @@ class Module extends TModule, ModuleDeclaration {
 }
 
 /**
- * Something that can be member of a module.
+ * A member of a module.
  */
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */

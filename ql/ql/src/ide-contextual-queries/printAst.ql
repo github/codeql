@@ -17,9 +17,7 @@ import codeql.IDEContextual
  */
 external string selectedSourceFile();
 
-/**
- * Overrides the configuration to print only nodes in the selected source file.
- */
+// Overrides the configuration to print only nodes in the selected source file.
 class Cfg extends PrintAstConfiguration {
   override predicate shouldPrintNode(AstNode n) {
     super.shouldPrintNode(n) and
