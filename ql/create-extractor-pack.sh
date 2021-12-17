@@ -20,3 +20,4 @@ mkdir -p extractor-pack
 cp -r codeql-extractor.yml tools ql/src/ql.dbscheme ql/src/ql.dbscheme.stats extractor-pack/
 mkdir -p extractor-pack/tools/${platform}
 cp target/release/ql-extractor extractor-pack/tools/${platform}/extractor
+cp target/release/ql-autobuilder extractor-pack/tools/${platform}/autobuilder

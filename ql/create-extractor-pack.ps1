@@ -11,3 +11,4 @@ cp codeql-extractor.yml, ql\src\ql.dbscheme, ql\src\ql.dbscheme.stats extractor-
 cp -Recurse tools extractor-pack
 mkdir extractor-pack\tools\win64 | Out-Null
 cp target\release\ql-extractor.exe extractor-pack\tools\win64\extractor.exe
+cp target\release\ql-autobuilder.exe extractor-pack\tools\win64\autobuilder.exe
