@@ -551,9 +551,11 @@ module Templating {
   private class MustacheStyleSyntax extends TemplateSyntax {
     MustacheStyleSyntax() { this = "mustache" }
 
-    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}" }
+    override string getRawInterpolationRegexp() {
+      result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}|\\{\\{&(.*?)\\}\\}"
+    }
 
-    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{](.*?)\\}\\}" }
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{&](.*?)\\}\\}" }
 
     override string getAFileExtension() { result = ["hbs", "njk"] }
 
