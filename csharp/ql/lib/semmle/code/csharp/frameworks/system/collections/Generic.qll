@@ -169,3 +169,81 @@ class SystemCollectionsGenericIDictionaryInterface extends SystemCollectionsGene
     this.getNumberOfTypeParameters() = 2
   }
 }
+
+/** Data flow for `System.Collections.Generic.IDictionary<,>`. */
+private class SystemCollectionsGenericIDictionaryFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Generic;IDictionary<,>;true;get_Item;(TKey);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;IDictionary<,>;true;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Generic;IDictionary<,>;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Generic.Dictionary<,>`. */
+private class SystemCollectionsGenericDictionaryFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;Dictionary<,>+KeyCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.Dictionary<,>+KeyCollection+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>+ValueCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.Dictionary<,>+ValueCollection+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Collections.Generic;Dictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;Dictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.Dictionary<,>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Generic;Dictionary<,>;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Generic.SortedDictionary<,>. */
+private class SystemCollectionsGenericSortedDictionaryFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;SortedDictionary<,>+KeyCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.SortedDictionary<,>+KeyCollection+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>+ValueCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.SortedDictionary<,>+ValueCollection+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Collections.Generic;SortedDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Generic;SortedDictionary<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.SortedDictionary<,>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;SortedDictionary;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;SortedDictionary;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;SortedDictionary;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;SortedDictionary;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Generic;SortedDictionary<,>;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Generic.SortedList<,>. */
+private class SystemCollectionsGenericSortedListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;SortedList<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Collections.Generic;SortedList<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Generic;SortedList<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;SortedList;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;SortedList;(System.Collections.Generic.IDictionary<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;SortedList;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;SortedList;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Generic;SortedList<,>;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+      ]
+  }
+}

@@ -2,6 +2,7 @@
 
 import semmle.code.csharp.Type
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Diagnostics` namespace. */
 class SystemDiagnosticsNamespace extends Namespace {
@@ -77,5 +78,19 @@ class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
 class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass extends SystemDiagnosticsCodeAnalysisClass {
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass() {
     this.hasName("DoesNotReturnIfAttribute")
+  }
+}
+
+/** Data flow for `System.Diagnostics.ActivityTagsCollection`. */
+private class SystemDiagnosticsActivityTagsCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
+        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
+        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Diagnostics;ActivityTagsCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Diagnostics.ActivityTagsCollection+Enumerator.Current] of ReturnValue;value",
+      ]
   }
 }

@@ -104,6 +104,16 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
   private import semmle.code.csharp.frameworks.system.Linq
   private import semmle.code.csharp.frameworks.system.Data
+  private import semmle.code.csharp.frameworks.system.collections.Specialized
+  private import semmle.code.csharp.frameworks.system.collections.Immutable
+  private import semmle.code.csharp.frameworks.system.collections.Concurrent
+  private import semmle.code.csharp.frameworks.system.collections.ObjectModel
+  private import semmle.code.csharp.frameworks.system.ComponentModel
+  private import semmle.code.csharp.frameworks.system.data.Common
+  private import semmle.code.csharp.frameworks.system.Diagnostics
+  private import semmle.code.csharp.frameworks.system.Dynamic
+  private import semmle.code.csharp.frameworks.system.net.Http
+  private import semmle.code.csharp.frameworks.system.Collections
 }
 
 /**
