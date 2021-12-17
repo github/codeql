@@ -152,17 +152,29 @@ module LocalFlow {
 /** An argument of a call (including qualifier arguments, excluding block arguments). */
 private class Argument extends CfgNodes::ExprCfgNode {
   private CfgNodes::ExprNodes::CallCfgNode call;
-  private int arg;
+  private ArgumentPosition arg;
 
   Argument() {
-    this = call.getArgument(arg) and
-    not this.getExpr() instanceof BlockArgument
+    exists(int i |
+      this = call.getArgument(i) and
+      not this.getExpr() instanceof BlockArgument and
+      not exists(this.getExpr().(Pair).getKey().getValueText()) and
+      arg.isPositional(i)
+    )
     or
-    this = call.getReceiver() and arg = -1
+    exists(CfgNodes::ExprNodes::PairCfgNode p |
+      p = call.getArgument(_) and
+      this = p.getValue() and
+      arg.isKeyword(p.getKey().getValueText())
+    )
+    or
+    this = call.getReceiver() and arg.isSelf()
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
-  predicate isArgumentOf(CfgNodes::ExprNodes::CallCfgNode c, int i) { c = call and i = arg }
+  predicate isArgumentOf(CfgNodes::ExprNodes::CallCfgNode c, ArgumentPosition pos) {
+    c = call and pos = arg
+  }
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -179,7 +191,11 @@ private module Cached {
       )
     } or
     TSsaDefinitionNode(Ssa::Definition def) or
-    TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
+    TNormalParameterNode(Parameter p) {
+      p instanceof SimpleParameter or
+      p instanceof OptionalParameter or
+      p instanceof KeywordParameter
+    } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n instanceof Argument } or
@@ -189,8 +205,8 @@ private module Cached {
     ) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
-    TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, int i) {
-      FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
+    TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     }
 
   class TParameterNode =
@@ -331,10 +347,10 @@ private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
 
-    abstract predicate isSourceParameterOf(Callable c, int i);
+    abstract predicate isSourceParameterOf(Callable c, ParameterPosition pos);
 
-    predicate isParameterOf(DataFlowCallable c, int i) {
-      this.isSourceParameterOf(c.asCallable(), i)
+    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.isSourceParameterOf(c.asCallable(), pos)
     }
   }
 
@@ -349,10 +365,22 @@ private module ParameterNodes {
 
     override Parameter getParameter() { result = parameter }
 
-    override predicate isSourceParameterOf(Callable c, int i) { c.getParameter(i) = parameter }
+    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      exists(int i | pos.isPositional(i) and c.getParameter(i) = parameter |
+        parameter instanceof SimpleParameter
+        or
+        parameter instanceof OptionalParameter
+      )
+      or
+      parameter =
+        any(KeywordParameter kp |
+          c.getAParameter() = kp and
+          pos.isKeyword(kp.getName())
+        )
+    }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      this.isSourceParameterOf(c.asCallable(), i)
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.isSourceParameterOf(c.asCallable(), pos)
     }
 
     override CfgScope getCfgScope() { result = parameter.getCallable() }
@@ -375,10 +403,12 @@ private module ParameterNodes {
 
     override Parameter getParameter() { none() }
 
-    override predicate isSourceParameterOf(Callable c, int i) { method = c and i = -1 }
+    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      method = c and pos.isSelf()
+    }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      this.isSourceParameterOf(c.asCallable(), i)
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.isSourceParameterOf(c.asCallable(), pos)
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -403,10 +433,12 @@ private module ParameterNodes {
       result = method.getAParameter() and result instanceof BlockParameter
     }
 
-    override predicate isSourceParameterOf(Callable c, int i) { c = method and i = -2 }
+    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      c = method and pos.isBlock()
+    }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      this.isSourceParameterOf(c.asCallable(), i)
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.isSourceParameterOf(c.asCallable(), pos)
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -427,15 +459,17 @@ private module ParameterNodes {
   /** A parameter for a library callable with a flow summary. */
   class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
     private FlowSummaryImpl::Public::SummarizedCallable sc;
-    private int pos;
+    private ParameterPosition pos_;
 
-    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
 
     override Parameter getParameter() { none() }
 
-    override predicate isSourceParameterOf(Callable c, int i) { none() }
+    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) { sc = c and i = pos }
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      sc = c and pos = pos_
+    }
 
     override CfgScope getCfgScope() { none() }
 
@@ -443,7 +477,7 @@ private module ParameterNodes {
 
     override EmptyLocation getLocationImpl() { any() }
 
-    override string toStringImpl() { result = "parameter " + pos + " of " + sc }
+    override string toStringImpl() { result = "parameter " + pos_ + " of " + sc }
   }
 }
 
@@ -468,9 +502,9 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  abstract predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos);
+  abstract predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -483,18 +517,18 @@ private module ArgumentNodes {
 
     ExplicitArgumentNode() { this.asExpr() = arg }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       arg.isArgumentOf(call, pos)
     }
   }
 
   /** A data-flow node that represents the `self` argument of a call. */
   class SelfArgumentNode extends ExplicitArgumentNode {
-    SelfArgumentNode() { arg.isArgumentOf(_, -1) }
+    SelfArgumentNode() { arg.isArgumentOf(_, any(ArgumentPosition pos | pos.isSelf())) }
   }
 
   /** A data-flow node that represents a block argument. */
@@ -504,12 +538,12 @@ private module ArgumentNodes {
       exists(CfgNodes::ExprNodes::CallCfgNode c | c.getBlock() = this.asExpr())
     }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) {
-      pos = -2 and
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      pos.isBlock() and
       (
         this.asExpr() = call.getBlock()
         or
@@ -525,9 +559,11 @@ private module ArgumentNodes {
   private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
     SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
 
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, int pos) { none() }
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      none()
+    }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
     }
   }
@@ -838,7 +874,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     )
   or
   receiver = call.(SummaryCall).getReceiver() and
-  if receiver.(ParameterNodeImpl).isParameterOf(_, -2)
+  if receiver.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pos | pos.isBlock()))
   then kind = TYieldCallKind()
   else kind = TLambdaCallKind()
 }

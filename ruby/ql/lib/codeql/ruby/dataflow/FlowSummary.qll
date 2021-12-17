@@ -23,10 +23,10 @@ module SummaryComponent {
   predicate content = SC::content/1;
 
   /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+  SummaryComponent qualifier() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 
   /** Gets a summary component that represents a block argument. */
-  SummaryComponent block() { result = argument(-2) }
+  SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
@@ -102,10 +102,10 @@ abstract class SummarizedCallable extends LibraryCallable {
 
   /**
    * Holds if values stored inside `content` are cleared on objects passed as
-   * the `i`th argument to this callable.
+   * arguments at position `pos` to this callable.
    */
   pragma[nomagic]
-  predicate clearsContent(int i, DataFlow::Content content) { none() }
+  predicate clearsContent(ParameterPosition pos, DataFlow::Content content) { none() }
 }
 
 private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
@@ -119,8 +119,8 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(ParameterPosition i, DataFlow::Content content) {
-    sc.clearsContent(i, content)
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    sc.clearsContent(pos, content)
   }
 }
 
