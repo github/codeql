@@ -136,10 +136,15 @@ private class Log4jLoggingSinkModels extends SinkModelCsv {
         "org.apache.logging.log4j;LogBuilder;true;log;(String,Object,Object,Object,Object,Object,Object,Object,Object,Object,Object);;Argument[0..10];log4j",
         "org.apache.logging.log4j;LogBuilder;true;log;(String,Supplier[]);;Argument[0..1];log4j",
         "org.apache.logging.log4j;LogBuilder;true;log;(Supplier);;Argument[0];log4j",
-        // org.apache.logging.log4j.ThreadContet
+        // org.apache.logging.log4j.ThreadContext
         "org.apache.logging.log4j;ThreadContext;false;put;;;Argument[1];log4j",
         "org.apache.logging.log4j;ThreadContext;false;putIfNull;;;Argument[1];log4j",
         "org.apache.logging.log4j;ThreadContext;false;putAll;;;Argument[0];log4j",
+        // org.apache.logging.log4j.CloseableThreadContext
+        "org.apache.logging.log4j;CloseableThreadContext;false;put;;;Argument[1];log4j",
+        "org.apache.logging.log4j;CloseableThreadContext;false;putAll;;;Argument[0];log4j",
+        "org.apache.logging.log4j;CloseableThreadContext$Instance;false;put;;;Argument[1];log4j",
+        "org.apache.logging.log4j;CloseableThreadContext$Instance;false;putAll;;;Argument[0];log4j",
       ]
   }
 }
