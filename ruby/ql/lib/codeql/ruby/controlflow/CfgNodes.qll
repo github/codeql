@@ -485,7 +485,7 @@ module ExprNodes {
     final override StringlikeLiteral getExpr() { result = super.getExpr() }
 
     /** Gets the `n`th component of this `StringlikeLiteral` */
-    StringComponentCfgNode getComponent(int n) { result.getNode() = e.getComponent(n) }
+    StringComponentCfgNode getComponent(int n) { e.hasCfgChild(e.getComponent(n), this, result) }
 
     /** Gets a component of this `StringlikeLiteral` */
     StringComponentCfgNode getAComponent() { result = this.getComponent(_) }
@@ -494,25 +494,12 @@ module ExprNodes {
     // if all interpolations have a known string value, we will get a result
     language[monotonicAggregates]
     override string getValueText() {
-      result = e.getValueText()
-      or
       result =
-        concat(StringComponent c, int i |
-          c = e.getComponent(i)
+        concat(StringComponentCfgNode c, int i |
+          c = this.getComponent(i)
         |
-          getComponentValueText(c) order by i
+          c.getValueText() order by i
         )
-    }
-
-    /**
-     * Get the `ValueText()` of a `StringComponent`.
-     * If the component has a CFG node, defer to that (in order to resolve variables in interpolations).
-     * Otherwise, defer to the AST node.
-     */
-    private string getComponentValueText(StringComponent c) {
-      exists(StringComponentCfgNode n | n.getNode() = c | result = n.getValueText())
-      or
-      not exists(StringComponentCfgNode n | n.getNode() = c) and result = c.getValueText()
     }
   }
 
