@@ -283,7 +283,7 @@ private module AccessPaths {
 }
 
 /** Get a name of a supported generic token-based feature. */
-private string getASupportedFeatureName() {
+string getASupportedFeatureName() {
   result =
     [
       "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
