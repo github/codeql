@@ -41,18 +41,12 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
       result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
     )
     or
-    // A feature containing natural language tokens from the function that encloses the endpoint in
-    // the order that they appear in the source code.
-    featureName = "enclosingFunctionBody" and
-    result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
-  )
-  or
-  result =
-    strictconcat(DataFlow::CallNode call, string component |
-      component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
-    |
-      component, " "
-    )
+    result =
+      strictconcat(DataFlow::CallNode call, string component |
+        component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
+      |
+        component, " "
+      )
     or
     // The access path of the function being called, both with and without structural info, if the
     // function being called originates from an external API. For example, the endpoint here:
