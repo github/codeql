@@ -7,6 +7,7 @@ on:
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
       - "!**/experimental/**"
+      - "!ql/**"
 
 jobs:
   check-change-note:
