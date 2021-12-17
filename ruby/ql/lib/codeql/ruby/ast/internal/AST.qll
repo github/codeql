@@ -660,7 +660,7 @@ class TExpr =
   TSelf or TArgumentList or TInClause or TRescueClause or TRescueModifierExpr or TPair or
       TStringConcatenation or TCall or TBlockArgument or TConstantAccess or TControlExpr or
       TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or TOperation or
-      TSimpleParameter or TForwardArgument or TDestructuredLhsExpr;
+      TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
