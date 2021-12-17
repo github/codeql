@@ -17,9 +17,12 @@ private newtype TBufferWriteEstimationReason =
 
 private predicate gradeToReason(int grade, TBufferWriteEstimationReason reason) {
   // when combining reasons, lower grade takes precedence
-  grade = 0 and reason = TUnspecifiedEstimateReason() or
-  grade = 1 and reason = TTypeBoundsAnalysis() or
-  grade = 2 and reason = TWidenedValueFlowAnalysis() or
+  grade = 0 and reason = TUnspecifiedEstimateReason()
+  or
+  grade = 1 and reason = TTypeBoundsAnalysis()
+  or
+  grade = 2 and reason = TWidenedValueFlowAnalysis()
+  or
   grade = 3 and reason = TValueFlowAnalysis()
 }
 
@@ -42,8 +45,10 @@ abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason 
    * conversion given reasons coming from its individual specifiers.
    */
   BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
-    exists(int grade, int otherGrade | gradeToReason(grade, this) and gradeToReason(otherGrade, other) |
-           if otherGrade < grade then result = other else result = this
+    exists(int grade, int otherGrade |
+      gradeToReason(grade, this) and gradeToReason(otherGrade, other)
+    |
+      if otherGrade < grade then result = other else result = this
     )
   }
 }
@@ -83,9 +88,10 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
 class WidenedValueFlowAnalysis extends BufferWriteEstimationReason, TWidenedValueFlowAnalysis {
   override string toString() { result = "WidenedValueFlowAnalysis" }
 
-  override string getDescription() { result = "based on flow analysis of value bounds with a widening approximation" }
+  override string getDescription() {
+    result = "based on flow analysis of value bounds with a widening approximation"
+  }
 }
-
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis.
@@ -381,12 +387,17 @@ private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Exp
   // * constrained non-trivially both sides of a signed value, or
   // * constrained non-trivially the positive side of an unsigned value
   // expr should already be given as getFullyConverted
-  if upperBound(expr) < exprMaxVal(expr) and (exprMinVal(expr) >= 0 or lowerBound(expr) > exprMinVal(expr))
-  // next we check whether the estimate may have been widened
-  then if upperBoundMayBeWidened(expr) then result = TWidenedValueFlowAnalysis()
-                                       else result = TValueFlowAnalysis()
+  if
+    upperBound(expr) < exprMaxVal(expr) and
+    (exprMinVal(expr) >= 0 or lowerBound(expr) > exprMinVal(expr))
+  then
+    // next we check whether the estimate may have been widened
+    if upperBoundMayBeWidened(expr)
+    then result = TWidenedValueFlowAnalysis()
+    else result = TValueFlowAnalysis()
   else result = TTypeBoundsAnalysis()
 }
+
 /**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
