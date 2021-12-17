@@ -87,8 +87,8 @@ module ServerSideRequestForgery {
    * For all of these cases, we try to allow `http://` or `https://` on the left side
    * since that will still allow full URL control.
    */
-  class StringConstructioneAsFullUrlControlSanitizer extends FullUrlControlSanitizer {
-    StringConstructioneAsFullUrlControlSanitizer() {
+  class StringConstructionAsFullUrlControlSanitizer extends FullUrlControlSanitizer {
+    StringConstructionAsFullUrlControlSanitizer() {
       // string concat
       exists(BinaryExprNode add |
         add.getOp() instanceof Add and
