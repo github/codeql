@@ -1185,7 +1185,7 @@ class FormatLiteral extends Literal {
             1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
           // The second case uses range analysis to deduce a length that's shorter than the length
           // of the number -2^31.
-          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+          exists(Expr arg, float lower, float upper |
             arg = this.getUse().getConversionArgument(n).getFullyConverted() and
             lower = lowerBound(arg) and
             upper = upperBound(arg)
@@ -1217,12 +1217,10 @@ class FormatLiteral extends Literal {
           typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
           // The second case uses range analysis to deduce a length that's shorter than
           // the length of the number 2^31 - 1.
-          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+          exists(Expr arg, float lower, float upper |
             arg = this.getUse().getConversionArgument(n).getFullyConverted() and
             lower = lowerBound(arg) and
-            upper = upperBound(arg) and
-            typeLower = exprMinVal(arg) and
-            typeUpper = exprMaxVal(arg)
+            upper = upperBound(arg)
           |
             valueBasedBound =
               lengthInBase10(max(float cand |
