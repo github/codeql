@@ -1491,13 +1491,6 @@ class FieldOrProperty extends Assignable, Modifiable {
     or
     result.(PropertyContent).getProperty() = this.getUnboundDeclaration()
   }
-
-  /** Gets the initializer of this field or property, if any. */
-  Expr getInitialier() {
-    result = this.(Field).getInitializer()
-    or
-    result = this.(Property).getInitializer()
-  }
 }
 
 private class InstanceFieldOrProperty extends FieldOrProperty {
