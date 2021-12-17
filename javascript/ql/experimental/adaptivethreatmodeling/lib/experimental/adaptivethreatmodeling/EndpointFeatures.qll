@@ -9,73 +9,56 @@ import CodeToFeatures
 import EndpointScoring
 
 /**
- * A configuration that defines which endpoints should be featurized.
- *
- * This is used as a performance optimization to ensure that we only featurize the endpoints we need
- * to featurize.
- */
-abstract class FeaturizationConfig extends string {
-  bindingset[this]
-  FeaturizationConfig() { any() }
-
-  abstract DataFlow::Node getAnEndpointToFeaturize();
-}
-
-/**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
  *
  * This is a single string containing a space-separated list of tokens.
  */
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
-  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  (
-    // Features for endpoints that are contained within a function.
-    exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
-      // The name of the function that encloses the endpoint.
-      featureName = "enclosingFunctionName" and result = entity.getName()
-      or
-      // A feature containing natural language tokens from the function that encloses the endpoint in
-      // the order that they appear in the source code.
-      featureName = "enclosingFunctionBody" and
-      result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
-    )
+  // Features for endpoints that are contained within a function.
+  exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
+    // The name of the function that encloses the endpoint.
+    featureName = "enclosingFunctionName" and result = entity.getName()
     or
+    // A feature containing natural language tokens from the function that encloses the endpoint in
+    // the order that they appear in the source code.
+    featureName = "enclosingFunctionBody" and
+    result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
+  )
+  or
+  result =
+    strictconcat(DataFlow::CallNode call, string component |
+      component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
+    |
+      component, " "
+    )
+  or
+  // The access path of the function being called, both with and without structural info, if the
+  // function being called originates from an external API. For example, the endpoint here:
+  //
+  // ```js
+  // const mongoose = require('mongoose'),
+  //   User = mongoose.model('User', null);
+  // User.findOne(ENDPOINT);
+  // ```
+  //
+  // would have a callee access path with structural info of
+  // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
+  // path without structural info of `mongoose model findOne`.
+  //
+  // These features indicate that the callee comes from (reading the access path backwards) an
+  // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
+  // external library.
+  exists(AccessPaths::Boolean includeStructuralInfo |
+    featureName =
+      "calleeAccessPath" +
+        any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
     result =
-      strictconcat(DataFlow::CallNode call, string component |
-        component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
+      concat(API::Node node, string accessPath |
+        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
+        AccessPaths::accessPaths(node, includeStructuralInfo, accessPath, _)
       |
-        component, " "
+        accessPath, " "
       )
-    or
-    // The access path of the function being called, both with and without structural info, if the
-    // function being called originates from an external API. For example, the endpoint here:
-    //
-    // ```js
-    // const mongoose = require('mongoose'),
-    //   User = mongoose.model('User', null);
-    // User.findOne(ENDPOINT);
-    // ```
-    //
-    // would have a callee access path with structural info of
-    // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
-    // path without structural info of `mongoose model findOne`.
-    //
-    // These features indicate that the callee comes from (reading the access path backwards) an
-    // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
-    // external library.
-    exists(AccessPaths::Boolean includeStructuralInfo |
-      featureName =
-        "calleeAccessPath" +
-          any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
-      result =
-        concat(API::Node node, string accessPath |
-          node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-          AccessPaths::accessPaths(node, includeStructuralInfo, accessPath, _)
-        |
-          accessPath, " "
-        )
-    )
   )
 }
 
@@ -94,8 +77,6 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
 private string getACallBasedTokenFeatureComponent(
   DataFlow::Node endpoint, DataFlow::CallNode call, string featureName
 ) {
-  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   // Features for endpoints that are an argument to a function call.
   endpoint = call.getAnArgument() and
   (
@@ -130,9 +111,6 @@ private string getACallBasedTokenFeatureComponent(
 module FunctionBodies {
   /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
   private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
-    // Performance optimization: Restrict the set of entities to those containing an endpoint to featurize.
-    entity =
-      getRepresentativeEntityForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
     exists(DatabaseFeatures::AstNode node |
       DatabaseFeatures::astNodes(entity, _, _, node, _) and
       token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
