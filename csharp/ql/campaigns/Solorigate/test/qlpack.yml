@@ -1,4 +1,4 @@
-name: solorigate-tests
+name: csharp-solorigate-tests
 groups:
     - csharp
     - solorigate

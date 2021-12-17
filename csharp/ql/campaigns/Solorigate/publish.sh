@@ -1,10 +1,9 @@
 #!/bin/sh
-
 set -e
 
 SOLORIGATE_ROOT="$(dirname $0)"
 WORKSPACE_ROOT="$SOLORIGATE_ROOT/../../../.."
-GROUPS="solorigate,-test"
+GRPS="solorigate,-test"
 
 if [ -z "$CODEQL_DIST" ]; then
   echo "CODEQL_DIST not set"
@@ -17,13 +16,13 @@ echo Testing solorigate queries
 
 cd "$WORKSPACE_ROOT"
 
-ech Preparing release
-"${CODEQL_DIST}/codeql" codeql pack release --groups $GROUPS
+echo Preparing release
+"${CODEQL_DIST}/codeql" pack release --groups $GRPS
 
 echo Publishing solorigate
-"${CODEQL_DIST}/codeql" pack publish --dry-run --groups $GROUPS
+"${CODEQL_DIST}/codeql" pack publish --groups $GRPS
 
 echo Bumping versions
-"${CODEQL_DIST}/codeql" pack post-release --groups $GROUPS
+"${CODEQL_DIST}/codeql" pack post-release --groups $GRPS
 
 echo Solorigate packs successfully published. Please commit and push the version changes.

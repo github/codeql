@@ -1,9 +1,9 @@
-name: codeql/solorigate-queries
-version: 1.0.0-dev
+name: codeql/csharp-solorigate-queries
+version: 1.0.2-dev
 groups:
     - csharp
     - solorigate
 defaultSuiteFile: codeql-suites/solorigate.qls
 dependencies:
     codeql/csharp-all: ~0.0.3
-    codeql/solorigate-all: ^1.0
+    codeql/csharp-solorigate-all: ^1.0
