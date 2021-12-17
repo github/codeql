@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Collections` namespace. */
 class SystemCollectionsNamespace extends Namespace {
@@ -34,6 +35,14 @@ class SystemCollectionsIComparerInterface extends SystemCollectionsInterface {
 /** The `System.Collections.IEnumerable` interface. */
 class SystemCollectionsIEnumerableInterface extends SystemCollectionsInterface {
   SystemCollectionsIEnumerableInterface() { this.hasName("IEnumerable") }
+}
+
+/** Data flow for `System.Collections.IEnumerable`. */
+private class SystemCollectionIEnumerableFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections;IEnumerable;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+  }
 }
 
 /** The `System.Collections.IEnumerator` interface. */
