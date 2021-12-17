@@ -178,7 +178,7 @@ module Raw {
 
   /**
    * Returns a generated name for the entity. This name is generated such that
-   * entities with the same names have similar behaviour.
+   * entities with the same names have similar behavior.
    */
   private string getApproximateNameForEntity(Entity entity) {
     count(raw::DataFlow::CallNode call, int index | entityUsedAsArgumentToCall(entity, call, index)) =

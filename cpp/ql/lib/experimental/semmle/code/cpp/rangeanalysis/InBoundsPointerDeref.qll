@@ -5,7 +5,7 @@
  * `Instruction` level), and then using the array length analysis and the range
  * analysis together to prove that some of these pointer dereferences are safe.
  *
- * The analysis is soundy, i.e. it is sound if no undefined behaviour is present
+ * The analysis is soundy, i.e. it is sound if no undefined behavior is present
  * in the program.
  * Furthermore, it crucially depends on the soundiness of the range analysis and
  * the array length analysis.
