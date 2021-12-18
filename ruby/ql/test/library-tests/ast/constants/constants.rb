@@ -40,3 +40,13 @@ puts ModuleA::ModuleB::MAX_SIZE
 
 puts GREETING
 puts ::GREETING
+
+module ModuleA::ModuleB
+  class ClassB < Base
+  end
+end
+
+module ModuleA
+  class ModuleB::ClassB < Base
+  end
+end

@@ -40,6 +40,16 @@ class ConstantAccess extends Expr, TConstantAccess {
    */
   predicate hasGlobalScope() { none() }
 
+  // gets the full name
+  string getFullName() {
+    exists(ConstantAccess ca | this.getScopeExpr() = ca |
+    result = ca.getFullName() + "::" + this.getName())
+    or
+    // TODO if the getScopeExpr is not a constant, try to figure out which constants it could be?
+    not exists(ConstantAccess ca | this.getScopeExpr() = ca) and
+    result = this.getName()
+  }
+
   override string toString() { result = this.getName() }
 
   override AstNode getAChild(string pred) {
@@ -188,12 +198,12 @@ class ConstantWriteAccess extends ConstantAccess {
   string getQualifiedName() {
     /* get the qualified name for the parent module, then append w */
     exists(ConstantWriteAccess parent | parent = this.getEnclosingModule() |
-      result = parent.getQualifiedName() + "::" + this.getName()
+      result = parent.getQualifiedName() + "::" + this.getFullName()
     )
     or
     /* base case - there's no parent module */
     not exists(ConstantWriteAccess parent | parent = this.getEnclosingModule()) and
-    result = this.getName()
+    result = this.getFullName()
   }
 }
 
