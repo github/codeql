@@ -65,6 +65,6 @@ constantWriteAccessQualifiedName
 | constants.rb:12:9:13:11 | ClassC | ModuleA::ModuleB::ClassC |
 | constants.rb:17:1:17:8 | GREETING | GREETING |
 | constants.rb:20:5:20:9 | Names | Names |
-| constants.rb:31:1:32:3 | ClassD | ClassD |
-| constants.rb:34:1:35:3 | ModuleC | ModuleC |
+| constants.rb:31:1:32:3 | ClassD | ModuleA::ClassD |
+| constants.rb:34:1:35:3 | ModuleC | ModuleA::ModuleC |
 | constants.rb:37:1:37:26 | MAX_SIZE | MAX_SIZE |
