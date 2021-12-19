@@ -51,6 +51,6 @@ private module Python_JWT {
 
     override DataFlow::Node getOptions() { none() }
 
-    override predicate verifiesSignature() { exists( | verifiesSignature = true) }
+    override predicate verifiesSignature() { verifiesSignature = true }
   }
 }
