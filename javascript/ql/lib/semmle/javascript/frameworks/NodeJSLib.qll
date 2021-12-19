@@ -474,17 +474,17 @@ module NodeJSLib {
    * that receives the data.
    *
    * We determine this by looking for an externs declaration for
-   * `fs.methodName` where the `i`th parameter's name is `data` or
+   * `fs.methodName` where the `i`th parameter's name (`paramName`) is `data` or
    * `buffer` or a `callback`.
    */
-  private predicate fsDataParam(string methodName, int i, string n) {
+  private predicate fsDataParam(string methodName, int i, string paramName) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p |
       decl.hasQualifiedName("fs", methodName) and
       f = decl.getInit() and
       p.getDocumentedParameter() = f.getParameter(i).getAVariable() and
-      n = p.getName().toLowerCase()
+      paramName = p.getName().toLowerCase()
     |
-      n = "data" or n = "buffer" or n = "callback"
+      paramName = ["data", "buffer", "callback"]
     )
   }
 

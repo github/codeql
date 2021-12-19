@@ -45,7 +45,7 @@ private predicate variableDefLookup(VarAccess va, AstNode def, string kind) {
 
 /**
  * Holds if variable access `va` is of kind `kind` and refers to the
- * variable declaration.
+ * variable declaration `decl`.
  *
  * For example, in the statement `var x = 42, y = x;`, the initializing
  * expression of `y` is a variable access `x` of kind `"V"` that refers to

@@ -16,14 +16,14 @@ import javascript
 /**
  * Holds if `assign` assigns the value of `nd` to `exportsVar`, which is an `exports` variable
  */
-predicate exportsAssign(Assignment assgn, Variable exportsVar, DataFlow::Node nd) {
+predicate exportsAssign(Assignment assign, Variable exportsVar, DataFlow::Node nd) {
   exists(NodeModule m |
     exportsVar = m.getScope().getVariable("exports") and
-    assgn.getLhs() = exportsVar.getAnAccess() and
-    nd = assgn.getRhs().flow()
+    assign.getLhs() = exportsVar.getAnAccess() and
+    nd = assign.getRhs().flow()
   )
   or
-  exportsAssign(assgn, exportsVar, nd.getASuccessor())
+  exportsAssign(assign, exportsVar, nd.getASuccessor())
 }
 
 /**

@@ -337,7 +337,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
 }
 
 /**
- * Holds if the given bulk export should not re-export `name` because there is an explicit export
+ * Holds if the given bulk export `reExport` should not re-export `name` because there is an explicit export
  * of that name in the same module.
  *
  * At compile time, shadowing works across declaration spaces.

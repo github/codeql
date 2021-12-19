@@ -84,7 +84,7 @@ class LiteralLengthExpr extends DotExpr {
 }
 
 /**
- * Holds if `length` is derived from the length of the given `indexOf`-operand.
+ * Holds if `length` is derived from the length of the given indexOf `operand`.
  */
 predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
   exists(IndexOfCall call | operand = call.getAnOperand() |
