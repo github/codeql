@@ -32,7 +32,7 @@ abstract class ReDoSConfiguration extends string {
 }
 
 /**
- * Holds if repeating `pump' starting at `state` is a candidate for causing backtracking.
+ * Holds if repeating `pump` starting at `state` is a candidate for causing backtracking.
  * No check whether a rejected suffix exists has been made.
  */
 private predicate isReDoSCandidate(State state, string pump) {
