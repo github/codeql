@@ -478,6 +478,25 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
 class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   IEnumerableFlow() { this.getABaseType*() instanceof SystemCollectionsIEnumerableInterface }
 
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    exists(string name, int arity |
+      arity = c.getNumberOfParameters() and
+      c = this.getAMethod() and
+      c.getUndecoratedName() = name
+    |
+      name = "Add" and
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::empty() and
+      sink instanceof CallableFlowSinkQualifier and
+      sinkAp = AccessPath::element()
+    )
+  }
+
   override predicate clearsContent(
     CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
