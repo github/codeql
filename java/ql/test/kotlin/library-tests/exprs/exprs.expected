@@ -476,6 +476,7 @@
 | exprs.kt:139:13:139:16 | true | exprs.kt:138:1:140:1 | getClass | BooleanLiteral |
 | exprs.kt:139:13:139:23 | ::class | exprs.kt:138:1:140:1 | getClass | ClassExpr |
 | exprs.kt:142:1:144:1 | <obinit>(...) | exprs.kt:142:1:144:1 | C | MethodAccess |
+| exprs.kt:142:9:142:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | getN | VarAccess |
 | exprs.kt:143:27:143:31 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
 | exprs.kt:143:27:143:31 | new C(...) | exprs.kt:143:5:143:33 | foo | ClassInstanceExpr |
@@ -539,6 +540,7 @@
 | exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
+| exprs.kt:172:18:172:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:18:172:29 | getRgb | VarAccess |
 | exprs.kt:179:5:179:31 | south | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:179:27:179:31 | SOUTH | exprs.kt:178:1:181:1 | enums | VarAccess |
@@ -548,6 +550,7 @@
 | exprs.kt:186:5:186:14 | ...=... | exprs.kt:185:1:193:1 | <obinit> | AssignExpr |
 | exprs.kt:186:5:186:14 | a1 | exprs.kt:185:1:193:1 | <obinit> | VarAccess |
 | exprs.kt:186:5:186:14 | a1 | exprs.kt:186:5:186:14 | getA1 | VarAccess |
+| exprs.kt:186:5:186:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:186:14:186:14 | 1 | exprs.kt:185:1:193:1 | <obinit> | IntegerLiteral |
 | exprs.kt:188:9:188:18 | a2 | exprs.kt:187:13:192:5 | getObject | LocalVariableDeclExpr |
 | exprs.kt:188:18:188:18 | 2 | exprs.kt:187:13:192:5 | getObject | IntegerLiteral |
@@ -556,6 +559,7 @@
 | exprs.kt:189:16:191:9 | Interface1 | exprs.kt:187:13:192:5 | getObject | TypeAccess |
 | exprs.kt:189:16:191:9 | new (...) | exprs.kt:187:13:192:5 | getObject | ClassInstanceExpr |
 | exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 | <obinit> | AssignExpr |
+| exprs.kt:190:13:190:49 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:189:16:191:9 | <obinit> | VarAccess |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:190:13:190:49 | getA3 | VarAccess |
 | exprs.kt:190:31:190:32 | getA1(...) | exprs.kt:189:16:191:9 | <obinit> | MethodAccess |
@@ -608,10 +612,6 @@
 | exprs.kt:220:5:220:29 | x | exprs.kt:219:1:221:1 | fnClassRef | LocalVariableDeclExpr |
 | exprs.kt:220:13:220:29 | SomeClass1 | exprs.kt:219:1:221:1 | fnClassRef | TypeAccess |
 | exprs.kt:220:13:220:29 | SomeClass1.class | exprs.kt:219:1:221:1 | fnClassRef | TypeLiteral |
-| file://:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| file://:0:0:0:0 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:14:5:14:33 | functionExpression0a(...) | funcExprs.kt:13:1:29:1 | call | MethodAccess |
 | funcExprs.kt:14:26:14:33 | ...->... | funcExprs.kt:13:1:29:1 | call | LambdaExpr |
 | funcExprs.kt:14:26:14:33 | Function0<Integer> | funcExprs.kt:13:1:29:1 | call | TypeAccess |

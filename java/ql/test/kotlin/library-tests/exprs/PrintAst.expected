@@ -748,6 +748,7 @@ exprs.kt:
 #  142|         0: [ReturnStmt] return ...
 #  142|           0: [VarAccess] n
 #  142|     3: [FieldDeclaration] int n;
+#  142|       -1: [TypeAccess] int
 #  143|     5: [Method] foo
 #  143|       5: [BlockStmt] { ... }
 #  143|         0: [ReturnStmt] return ...
@@ -809,6 +810,7 @@ exprs.kt:
 #  172|         0: [ReturnStmt] return ...
 #  172|           0: [VarAccess] rgb
 #  172|     7: [FieldDeclaration] int rgb;
+#  172|       -1: [TypeAccess] int
 #  183|   8: [Interface] Interface1
 #  185|   9: [Class] Class1
 #  185|     1: [Constructor] Class1
@@ -821,6 +823,7 @@ exprs.kt:
 #  186|         0: [ReturnStmt] return ...
 #  186|           0: [VarAccess] a1
 #  186|     3: [FieldDeclaration] int a1;
+#  186|       -1: [TypeAccess] int
 #  186|       0: [IntegerLiteral] 1
 #  187|     5: [Method] getObject
 #  187|       5: [BlockStmt] { ... }
@@ -842,6 +845,7 @@ exprs.kt:
 #  190|                       0: [ReturnStmt] return ...
 #  190|                         0: [VarAccess] a3
 #  190|                   3: [FieldDeclaration] String a3;
+#  190|                     -1: [TypeAccess] String
 #  190|                     0: [MethodAccess] toString(...)
 #  190|                       -1: [AddExpr] ... + ...
 #  190|                         0: [MethodAccess] getA1(...)

@@ -509,8 +509,7 @@ open class KotlinFileExtractor(
             tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
             tw.writeHasLocation(fieldDeclarationId, locId)
 
-            val typeAccessId = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
-            tw.writeExprs_unannotatedtypeaccess(typeAccessId, type.javaResult.id, type.kotlinResult.id, fieldDeclarationId, 0)
+            extractTypeAccess(type, locId, fieldDeclarationId, 0)
         }
 
         return id
@@ -1948,14 +1947,19 @@ open class KotlinFileExtractor(
     }
 
     private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>): Label<out DbExpr> {
+        val id = extractTypeAccess(type, location, parent, idx)
+        tw.writeCallableEnclosingExpr(id, callable)
+        tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        return id
+    }
+
+    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
         // TODO: elementForLocation allows us to give some sort of
         // location, but a proper location for the type access will
         // require upstream changes
         val id = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
         tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
         tw.writeHasLocation(id, location)
-        tw.writeCallableEnclosingExpr(id, callable)
-        tw.writeStatementEnclosingExpr(id, enclosingStmt)
         return id
     }
 
