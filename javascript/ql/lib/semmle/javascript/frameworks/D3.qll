@@ -1,9 +1,9 @@
-/** Provides classes and predicates modelling aspects of the `d3` library. */
+/** Provides classes and predicates modeling aspects of the `d3` library. */
 
 private import javascript
 private import semmle.javascript.security.dataflow.Xss
 
-/** Provides classes and predicates modelling aspects of the `d3` library. */
+/** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {
   /** The global variable `d3` as an entry point for API graphs. */
   private class D3GlobalEntry extends API::EntryPoint {

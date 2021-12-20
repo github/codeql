@@ -180,7 +180,7 @@ private module Internal {
 
   /**
    * Holds if the `i`th node of basic block `bb` may induce a pseudo-definition for
-   * modelling updates to captured variable `v`. Whether the definition is actually
+   * modeling updates to captured variable `v`. Whether the definition is actually
    * introduced depends on whether `v` is live at this point in the program.
    */
   private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {

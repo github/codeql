@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling common HTTP concepts.
+ * Provides classes for modeling common HTTP concepts.
  */
 
 import javascript

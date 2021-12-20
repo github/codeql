@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling common markdown parsers and generators.
+ * Provides classes for modeling common markdown parsers and generators.
  */
 
 import semmle.javascript.Unit
@@ -76,7 +76,7 @@ module Markdown {
   }
 
   /**
-   * Classes and predicates for modelling taint steps in `unified` and `remark`.
+   * Classes and predicates for modeling taint steps in `unified` and `remark`.
    */
   private module Unified {
     /**
@@ -148,7 +148,7 @@ module Markdown {
   }
 
   /**
-   * Classes and predicates for modelling taint steps the `markdown-it` library.
+   * Classes and predicates for modeling taint steps the `markdown-it` library.
    */
   private module MarkdownIt {
     /**

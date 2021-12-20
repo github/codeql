@@ -2293,7 +2293,7 @@ class BindingSet extends Annotation {
 }
 
 /**
- * Classes modelling YAML AST nodes.
+ * Classes modeling YAML AST nodes.
  */
 module YAML {
   /** A node in a YAML file */

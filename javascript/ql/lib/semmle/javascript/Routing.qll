@@ -67,7 +67,7 @@ module Routing {
   Node getRouteSetupNode(DataFlow::Node call) { result = MkRouteSetup(call) }
 
   /**
-   * A node in a routing tree modelling the composition of middleware functions and route handlers.
+   * A node in a routing tree modeling the composition of middleware functions and route handlers.
    *
    * More precisely, this is a node in a graph representing a set of possible routing trees, as the
    * concrete shape of the routing tree may be depend on branching control flow.
