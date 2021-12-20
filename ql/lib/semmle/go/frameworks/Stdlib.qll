@@ -174,11 +174,7 @@ module URL {
   class UrlGetter extends TaintTracking::FunctionModel, Method {
     UrlGetter() {
       exists(string m | hasQualifiedName("net/url", "URL", m) |
-        m = "EscapedPath" or
-        m = "Hostname" or
-        m = "Port" or
-        m = "Query" or
-        m = "RequestURI"
+        m = ["EscapedPath", "Hostname", "Port", "Query", "RequestURI"]
       )
     }
 

@@ -9,11 +9,7 @@ module IoIoutil {
   private class IoUtilFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     IoUtilFileSystemAccess() {
       exists(string fn | getTarget().hasQualifiedName("io/ioutil", fn) |
-        fn = "ReadDir" or
-        fn = "ReadFile" or
-        fn = "TempDir" or
-        fn = "TempFile" or
-        fn = "WriteFile"
+        fn = ["ReadDir", "ReadFile", "TempDir", "TempFile", "WriteFile"]
       )
     }
 

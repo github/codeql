@@ -143,15 +143,7 @@ module SQL {
           or
           exists(string tp, string m | f.(Method).hasQualifiedName(gopgorm(), tp, m) |
             tp = "Query" and
-            (
-              m = "ColumnExpr" or
-              m = "For" or
-              m = "Having" or
-              m = "Where" or
-              m = "WhereIn" or
-              m = "WhereInMulti" or
-              m = "WhereOr"
-            ) and
+            m = ["ColumnExpr", "For", "Having", "Where", "WhereIn", "WhereInMulti", "WhereOr"] and
             arg = 0
             or
             tp = "Query" and

@@ -20,60 +20,31 @@ import go
  */
 private module AlgorithmNames {
   predicate isStrongHashingAlgorithm(string name) {
-    name = "DSA" or
-    name = "ED25519" or
-    name = "ES256" or
-    name = "ECDSA256" or
-    name = "ES384" or
-    name = "ECDSA384" or
-    name = "ES512" or
-    name = "ECDSA512" or
-    name = "SHA2" or
-    name = "SHA224" or
-    name = "SHA256" or
-    name = "SHA384" or
-    name = "SHA512" or
-    name = "SHA3"
+    name =
+      [
+        "DSA", "ED25519", "SHA256", "SHA384", "SHA512", "SHA3", "ES256", "ECDSA256", "ES384",
+        "ECDSA384", "ES512", "ECDSA512", "SHA2", "SHA224"
+      ]
   }
 
   predicate isWeakHashingAlgorithm(string name) {
-    name = "HAVEL128" or
-    name = "MD2" or
-    name = "MD4" or
-    name = "MD5" or
-    name = "PANAMA" or
-    name = "RIPEMD" or
-    name = "RIPEMD128" or
-    name = "RIPEMD256" or
-    name = "RIPEMD320" or
-    name = "SHA0" or
-    name = "SHA1"
+    name =
+      [
+        "HAVEL128", "MD2", "SHA1", "MD4", "MD5", "PANAMA", "RIPEMD", "RIPEMD128", "RIPEMD256",
+        "RIPEMD320", "SHA0"
+      ]
   }
 
   predicate isStrongEncryptionAlgorithm(string name) {
-    name = "AES" or
-    name = "AES128" or
-    name = "AES192" or
-    name = "AES256" or
-    name = "AES512" or
-    name = "RSA" or
-    name = "RABBIT" or
-    name = "BLOWFISH"
+    name = ["AES", "AES128", "AES192", "AES256", "AES512", "RSA", "RABBIT", "BLOWFISH"]
   }
 
   predicate isWeakEncryptionAlgorithm(string name) {
-    name = "DES" or
-    name = "3DES" or
-    name = "TRIPLEDES" or
-    name = "TDEA" or
-    name = "TRIPLEDEA" or
-    name = "ARC2" or
-    name = "RC2" or
-    name = "ARC4" or
-    name = "RC4" or
-    name = "ARCFOUR" or
-    name = "ARC5" or
-    name = "RC5"
+    name =
+      [
+        "DES", "3DES", "ARC5", "RC5", "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4",
+        "RC4", "ARCFOUR"
+      ]
   }
 
   predicate isStrongPasswordHashingAlgorithm(string name) {
