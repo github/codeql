@@ -73,11 +73,6 @@ module AlgorithmNames {
   predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
 
   /**
-   * Holds if `name` corresponds to a strong block cipher mode of operation.
-   */
-  predicate isStrongBlockMode(string name) { name = ["CBC", "CCM", "CFB", "CTR", "GCM", "OFB"] }
-
-  /**
    * Holds if `name` corresponds to a weak block cipher mode of operation.
    */
   predicate isWeakBlockMode(string name) { name = "ECB" }
