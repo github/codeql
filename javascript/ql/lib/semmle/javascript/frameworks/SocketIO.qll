@@ -55,7 +55,7 @@ module SocketIO {
     /** Gets the namespace with the given path of this server. */
     NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
 
-    /** Gets a api node that may refer to the socket.io server created at `srv`. */
+    /** Gets a api node that may refer to a socket.io server. */
     private API::Node server() {
       result = node
       or
@@ -144,7 +144,7 @@ module SocketIO {
     override NamespaceObject getNamespace() { result = ns }
 
     /**
-     * Gets a data flow node that may refer to the socket.io namespace created at `ns`.
+     * Gets a data flow node that may refer a the socket.io namespace.
      */
     private API::Node namespace() {
       result = node

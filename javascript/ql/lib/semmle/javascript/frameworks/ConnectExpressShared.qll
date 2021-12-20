@@ -50,7 +50,7 @@ module ConnectExpressShared {
   }
 
   /**
-   * Holds if `fun` appears to match the given signature based on parameter naming.
+   * Holds if `function` appears to match the given signature based on parameter naming.
    */
   private predicate matchesSignature(Function function, RouteHandlerSignature sig) {
     function.getNumParameter() = sig.getArity() and

@@ -54,7 +54,7 @@ private predicate hasNamedExports(ES2015Module mod) {
 }
 
 /**
- * Holds if this module contains a `default` export.
+ * Holds if this module contains a default export.
  */
 private predicate hasDefaultExport(ES2015Module mod) {
   // export default foo;
