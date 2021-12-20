@@ -271,4 +271,26 @@ module JsonNET {
         ]
     }
   }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JArray` */
+  private class NewtonsoftJsonLinqJArrayFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JArray;false;get_Item;(System.Object);;Element of Argument[-1];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JArray;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value",
+        ]
+    }
+  }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JConstructor` */
+  private class NewtonsoftJsonLinqJConstructorFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Newtonsoft.Json.Linq;JConstructor;false;get_Item;(System.Object);;Element of Argument[-1];ReturnValue;value",
+          "Newtonsoft.Json.Linq;JConstructor;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value",
+        ]
+    }
+  }
 }

@@ -94,3 +94,20 @@ private class SystemDiagnosticsActivityTagsCollectionFlowModelCsv extends Summar
       ]
   }
 }
+
+/** Data flow for `System.Diagnostics.TraceListenerCollection`. */
+private class SystemDiagnosticsTraceListenerCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Diagnostics;TraceListenerCollection;false;Add;(System.Diagnostics.TraceListener);;Argument[0];Element of Argument[-1];value",
+        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListenerCollection);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListener[]);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Diagnostics;TraceListenerCollection;false;CopyTo;(System.Diagnostics.TraceListener[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Diagnostics;TraceListenerCollection;false;Insert;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Element of Argument[-1];value",
+        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.Diagnostics;TraceListenerCollection;false;set_Item;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}

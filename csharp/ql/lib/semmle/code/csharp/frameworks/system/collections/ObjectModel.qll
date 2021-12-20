@@ -18,3 +18,11 @@ private class SystemCollectionsObjectModelReadOnlyDictionaryFlowModelCsv extends
       ]
   }
 }
+
+/** Data flow for `System.Collections.ObjectModel.KeyedCollection<,>`. */
+private class SystemCollectionsObjectModelKeyedCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.ObjectModel;KeyedCollection<,>;false;get_Item;(TKey);;Element of Argument[-1];ReturnValue;value"
+  }
+}

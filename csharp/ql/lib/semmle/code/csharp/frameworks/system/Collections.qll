@@ -67,6 +67,19 @@ class SystemCollectionsIListInterface extends SystemCollectionsInterface {
   SystemCollectionsIListInterface() { this.hasName("IList") }
 }
 
+/** Data flow for `System.Collections.IList`. */
+private class SystemCollectionsIListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections;IList;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value",
+        "System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value",
+        "System.Collections;IList;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}
+
 /** The `System.Collections.IDictionary` interface. */
 class SystemCollectionsIDictionaryInterface extends SystemCollectionsInterface {
   SystemCollectionsIDictionaryInterface() { this.hasName("IDictionary") }
@@ -122,6 +135,25 @@ private class SystemCollectionsSortedListFlowModelCsv extends SummaryModelCsv {
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary,System.Collections.IComparer);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary,System.Collections.IComparer);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.ArrayList`. */
+private class SystemCollectionsArrayListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections;ArrayList;false;AddRange;(System.Collections.ICollection);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections;ArrayList;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;FixedSize;(System.Collections.ArrayList);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;FixedSize;(System.Collections.IList);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;GetEnumerator;(System.Int32,System.Int32);;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.Collections;ArrayList;false;GetRange;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;InsertRange;(System.Int32,System.Collections.ICollection);;Element of Argument[1];Element of Argument[-1];value",
+        "System.Collections;ArrayList;false;Repeat;(System.Object,System.Int32);;Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;ArrayList;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
       ]
   }
 }

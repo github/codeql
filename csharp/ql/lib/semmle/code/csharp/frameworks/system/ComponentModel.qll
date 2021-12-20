@@ -30,3 +30,29 @@ private class SystemComponentModelPropertyDescriptorCollectionFlowModelCsv exten
       ]
   }
 }
+
+/** Data flow for `System.ComponentModel.EventDescriptorCollection`. */
+private class SystemComponentModelEventDescriptorCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Element of Argument[-1];value",
+        "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Element of Argument[-1];ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Element of Argument[-1];value",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.ComponentModel.ListSortDescriptionCollection`. */
+private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}

@@ -624,56 +624,6 @@ class ICollectionFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Collections.[Generic.]IList` (and sub types). */
-class IListFlow extends LibraryTypeDataFlow, RefType {
-  IListFlow() {
-    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
-      i instanceof SystemCollectionsIListInterface
-      or
-      i instanceof SystemCollectionsGenericIListInterface
-    )
-  }
-
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    (
-      exists(string name, int arity |
-        name = c.getName() and
-        arity = c.getNumberOfParameters() and
-        c = this.getAMethod()
-      |
-        name = "Insert" and
-        arity = 2 and
-        source = TCallableFlowSourceArg(1) and
-        sourceAp = AccessPath::empty() and
-        sink instanceof CallableFlowSinkQualifier and
-        sinkAp = AccessPath::element()
-        or
-        name.regexpMatch("FixedSize|GetRange") and
-        source = TCallableFlowSourceArg(0) and
-        sourceAp = AccessPath::element() and
-        sink = TCallableFlowSinkReturn() and
-        sinkAp = AccessPath::element()
-      )
-      or
-      c = this.getAnIndexer().getSetter() and
-      source = TCallableFlowSourceArg(1) and
-      sourceAp = AccessPath::empty() and
-      sink instanceof CallableFlowSinkQualifier and
-      sinkAp = AccessPath::element()
-      or
-      c = this.getAnIndexer().getGetter() and
-      source instanceof CallableFlowSourceQualifier and
-      sourceAp = AccessPath::element() and
-      sink instanceof CallableFlowSinkReturn and
-      sinkAp = AccessPath::empty()
-    )
-  }
-}
-
 abstract private class SyntheticTaskField extends SyntheticField {
   bindingset[this]
   SyntheticTaskField() { any() }

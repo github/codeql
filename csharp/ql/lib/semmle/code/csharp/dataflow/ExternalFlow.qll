@@ -86,6 +86,7 @@ private import internal.FlowSummaryImplSpecific
 private module Frameworks {
   private import semmle.code.csharp.frameworks.EntityFramework
   private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.microsoft.VisualBasic
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
   private import semmle.code.csharp.frameworks.System
@@ -96,6 +97,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.collections.ObjectModel
   private import semmle.code.csharp.frameworks.system.collections.Specialized
   private import semmle.code.csharp.frameworks.system.ComponentModel
+  private import semmle.code.csharp.frameworks.system.componentmodel.Design
   private import semmle.code.csharp.frameworks.system.Data
   private import semmle.code.csharp.frameworks.system.data.Common
   private import semmle.code.csharp.frameworks.system.Diagnostics
@@ -106,11 +108,15 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
   private import semmle.code.csharp.frameworks.system.Text
+  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
   private import semmle.code.csharp.frameworks.system.threading.Tasks
   private import semmle.code.csharp.frameworks.system.Web
   private import semmle.code.csharp.frameworks.system.web.ui.WebControls
   private import semmle.code.csharp.frameworks.system.Xml
+  private import semmle.code.csharp.frameworks.system.xml.Schema
+  private import semmle.code.csharp.frameworks.system.xml.Serialization
   private import semmle.code.csharp.security.dataflow.flowsinks.Html
   private import semmle.code.csharp.security.dataflow.flowsources.Local
   private import semmle.code.csharp.security.dataflow.XSSSinks

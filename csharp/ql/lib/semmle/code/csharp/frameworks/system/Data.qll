@@ -97,3 +97,48 @@ private class SystemDataTypedTableBaseExtensionsFlowModelCsv extends SummaryMode
       ]
   }
 }
+
+/** Data flow for `System.Data.DataView`. */
+private class SystemDataDataViewFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Data;DataView;false;Find;(System.Object);;Element of Argument[-1];ReturnValue;value",
+        "System.Data;DataView;false;Find;(System.Object[]);;Element of Argument[-1];ReturnValue;value",
+        "System.Data;DataView;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Data.IColumnMappingCollection`. */
+private class SystemDataIColumnMappingCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Data;IColumnMappingCollection;true;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.Data;IColumnMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}
+
+/** Data flow for `System.Data.IDataParameterCollection`. */
+private class SystemDataIDataParameterCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Data;IDataParameterCollection;true;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.Data;IDataParameterCollection;true;set_Item;(System.String,System.Object);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}
+
+/** Data flow for `System.Data.ITableMappingCollection`. */
+private class SystemDataITableMappingCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Data;ITableMappingCollection;true;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.Data;ITableMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}

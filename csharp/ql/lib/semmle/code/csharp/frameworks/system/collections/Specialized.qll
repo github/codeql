@@ -35,3 +35,19 @@ private class SystemCollectionsSpecializedIOrderedDictionaryFlowModelCsv extends
       ]
   }
 }
+
+/** Data flow for `System.Collections.Specialized.StringCollection`. */
+private class SystemCollectionsSpecializedStringCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Specialized;StringCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Specialized;StringCollection;false;AddRange;(System.String[]);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Specialized;StringCollection;false;CopyTo;(System.String[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Collections.Specialized;StringCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Specialized.StringEnumerator.Current] of ReturnValue;value",
+        "System.Collections.Specialized;StringCollection;false;Insert;(System.Int32,System.String);;Argument[1];Element of Argument[-1];value",
+        "System.Collections.Specialized;StringCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Specialized;StringCollection;false;set_Item;(System.Int32,System.String);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}

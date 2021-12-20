@@ -33,7 +33,7 @@ class SystemCollectionsGenericUnboundGenericStruct extends UnboundGenericStruct 
   }
 }
 
-/** The `System.Collections.Generic.IComparer<T>` interface. */
+/** The `System.Collections.Generic.IComparer<>` interface. */
 class SystemCollectionsGenericIComparerTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIComparerTInterface() { this.hasName("IComparer<>") }
 
@@ -48,7 +48,7 @@ class SystemCollectionsGenericIComparerTInterface extends SystemCollectionsGener
   }
 }
 
-/** The `System.Collections.Generic.IEqualityComparer<T>` interface. */
+/** The `System.Collections.Generic.IEqualityComparer<>` interface. */
 class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEqualityComparerTInterface() { this.hasName("IEqualityComparer<>") }
 
@@ -63,7 +63,7 @@ class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollecti
   }
 }
 
-/** The `System.Collections.Generic.IEnumerable<T>` interface. */
+/** The `System.Collections.Generic.IEnumerable<>` interface. */
 class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumerableTInterface() {
     this.hasName("IEnumerable<>") and
@@ -71,7 +71,7 @@ class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGen
   }
 }
 
-/** Data flow for `System.Collections.Generic.IEnumerable<T>`. */
+/** Data flow for `System.Collections.Generic.IEnumerable<>`. */
 private class SystemCollectionsGenericEnumerableTFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -79,7 +79,7 @@ private class SystemCollectionsGenericEnumerableTFlowModelCsv extends SummaryMod
   }
 }
 
-/** The `System.Collections.Generic.IEnumerator<T>` interface. */
+/** The `System.Collections.Generic.IEnumerator<>` interface. */
 class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumeratorInterface() {
     this.hasName("IEnumerator<>") and
@@ -94,7 +94,7 @@ class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGene
   }
 }
 
-/** The `System.Collections.Generic.IList<T>` interface. */
+/** The `System.Collections.Generic.IList<>` interface. */
 class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIListTInterface() {
     this.hasName("IList<>") and
@@ -102,7 +102,19 @@ class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUn
   }
 }
 
-/** The `System.Collections.Generic.List<T>` class. */
+/** Data flow for `System.Collections.Generic.IList<>. */
+private class SystemCollectionsGenericIListTFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;IList<>;true;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value",
+        "System.Collections.Generic;IList<>;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;IList<>;true;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value",
+      ]
+  }
+}
+
+/** The `System.Collections.Generic.List<>` class. */
 class SystemCollectionsGenericListClass extends SystemCollectionsGenericUnboundGenericClass {
   SystemCollectionsGenericListClass() {
     this.hasName("List<>") and
@@ -110,7 +122,29 @@ class SystemCollectionsGenericListClass extends SystemCollectionsGenericUnboundG
   }
 }
 
-/** The `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
+/** Data flow for `System.Collections.Generic.List<>. */
+private class SystemCollectionsGenericListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;List<>;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Generic;List<>;false;AsReadOnly;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Generic;List<>;false;Find;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Generic;List<>;false;Find;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;List<>;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Generic;List<>;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;List<>;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Generic;List<>;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;List<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.List<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;List<>;false;GetRange;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Generic;List<>;false;InsertRange;(System.Int32,System.Collections.Generic.IEnumerable<T>);;Element of Argument[1];Element of Argument[-1];value",
+        "System.Collections.Generic;List<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Generic;List<>;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** The `System.Collections.Generic.KeyValuePair<,>` structure. */
 class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGenericUnboundGenericStruct {
   SystemCollectionsGenericKeyValuePairStruct() {
     this.hasName("KeyValuePair<,>") and
@@ -132,7 +166,7 @@ class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGeneri
   }
 }
 
-/** Data flow for `System.Collections.Generic.KeyValuePair`. */
+/** Data flow for `System.Collections.Generic.KeyValuePair<,>`. */
 private class SystemCollectionsGenericKeyValuePairStructFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -162,7 +196,7 @@ class SystemCollectionsGenericIListInterface extends SystemCollectionsGenericUnb
   SystemCollectionsGenericIListInterface() { this.hasName("IList<>") }
 }
 
-/** The `System.Collections.Generic.IDictionary<T>` interface. */
+/** The `System.Collections.Generic.IDictionary<>` interface. */
 class SystemCollectionsGenericIDictionaryInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIDictionaryInterface() {
     this.hasName("IDictionary<,>") and

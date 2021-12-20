@@ -362,8 +362,14 @@
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Collections.Immutable;ImmutableArray<>;false;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
+| System.Collections.Immutable;ImmutableArray<>;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
@@ -2556,6 +2562,9 @@
 | System;Array;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System;ArraySegment<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System;ArraySegment<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
+| System;ArraySegment<>;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint |
 | System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];Argument[1];taint |
 | System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];ReturnValue;taint |

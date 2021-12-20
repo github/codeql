@@ -57,3 +57,54 @@ private class SystemCollectionsImmutableImmutableSortedDictionaryFlowModelCsv ex
       ]
   }
 }
+
+/** Data flow for `System.Collections.Immutable.ImmutableList<>. */
+private class SystemCollectionsImmutableImmutableListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;Find;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;Find;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableList<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;GetRange;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;InsertRange;(System.Int32,System.Collections.Generic.IEnumerable<T>);;Element of Argument[1];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>+Builder;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;Add;(T);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>;false;Find;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>;false;Find;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>;false;FindAll;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];Parameter[0] of Argument[0];value",
+        "System.Collections.Immutable;ImmutableList<>;false;FindLast;(System.Predicate<T>);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableList<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;GetRange;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>;false;InsertRange;(System.Int32,System.Collections.Generic.IEnumerable<T>);;Element of Argument[1];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableList<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableList<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.ImmutableSortedSet<>. */
+private class SystemCollectionsImmutableImmutableSortedSetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Immutable;ImmutableSortedSet<>+Builder;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableSortedSet<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableSortedSet<>+Builder;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableSortedSet<>;false;Add;(T);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableSortedSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableSortedSet<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableSortedSet<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableSortedSet<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
