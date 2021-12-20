@@ -9,11 +9,11 @@ namespace Semmle.Extraction
     /// </summary>
     public class InternalError : Exception
     {
-        public InternalError(ISymbol symbol, string msg)
+        public InternalError(ISymbol? symbol, string msg)
         {
             Text = msg;
-            EntityText = symbol.ToString() ?? "";
-            Location = symbol.Locations.FirstOrDefault();
+            EntityText = symbol?.ToString() ?? "";
+            Location = symbol?.Locations.FirstOrDefault();
         }
 
         public InternalError(SyntaxNode node, string msg)

@@ -76,8 +76,8 @@ namespace Semmle.Extraction.CSharp
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
-        public Context(Extraction.Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
-            : base(e, trapWriter, addAssemblyTrapPrefix)
+        public Context(Extraction.Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, ContextShared contextShared, bool addAssemblyTrapPrefix)
+            : base(e, trapWriter, contextShared, addAssemblyTrapPrefix)
         {
             Compilation = c;
             this.scope = scope;
@@ -141,10 +141,10 @@ namespace Semmle.Extraction.CSharp
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
             var duplicationGuardKey = GetCurrentTagStackKey();
-            CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
+            CommentGenerator.AddElement(entity, duplicationGuardKey, l);
         }
 
-        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location? loc)
+        protected override bool IsEntityDuplicationGuarded(CachedEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location? loc)
         {
             if (CreateLocation(entity.ReportingLocation) is Entities.NonGeneratedSourceLocation l)
             {

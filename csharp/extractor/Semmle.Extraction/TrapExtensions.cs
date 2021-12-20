@@ -6,15 +6,11 @@ namespace Semmle.Extraction
 {
     public static class TrapExtensions
     {
-        public static void WriteLabel(this TextWriter trapFile, int value)
-        {
-            trapFile.Write('#');
-            trapFile.Write(value);
-        }
-
         public static void WriteLabel(this TextWriter trapFile, IEntity entity)
         {
-            trapFile.WriteLabel(entity.Label.Value);
+            var label = entity.GetLabelForWriter(trapFile);
+            trapFile.Write('#');
+            trapFile.Write(label.Value);
         }
 
         public static void WriteSeparator(this TextWriter trapFile, string separator, ref int index)
@@ -38,16 +34,9 @@ namespace Semmle.Extraction
 
         public static TextWriter WriteColumn(this TextWriter trapFile, IEntity entity)
         {
-            trapFile.WriteLabel(entity.Label.Value);
+            trapFile.WriteLabel(entity);
             return trapFile;
         }
-
-        public static TextWriter WriteColumn(this TextWriter trapFile, Label label)
-        {
-            trapFile.WriteLabel(label.Value);
-            return trapFile;
-        }
-
 
         public static TextWriter WriteColumn(this TextWriter trapFile, float f)
         {
@@ -68,8 +57,6 @@ namespace Semmle.Extraction
                     return trapFile.WriteColumn(s);
                 case IEntity e:
                     return trapFile.WriteColumn(e);
-                case Label l:
-                    return trapFile.WriteColumn(l);
                 case Enum _:
                     return trapFile.WriteColumn((int)o);
                 default:

@@ -22,7 +22,7 @@ namespace Semmle.Extraction.Entities
         }
 
         public static Folder Create(Context cx, PathTransformer.ITransformedPath folder) =>
-            FolderFactory.Instance.CreateEntity(cx, folder, folder);
+            FolderFactory.Instance.CreateEntity(cx, folder.DatabaseId, folder);
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
@@ -30,14 +30,9 @@ namespace Semmle.Extraction.Entities
         {
             public static FolderFactory Instance { get; } = new FolderFactory();
 
+            public sealed override bool IsShared(PathTransformer.ITransformedPath folder) => true;
+
             public override Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
-        }
-
-        public override int GetHashCode() => Symbol.GetHashCode();
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Folder folder && Equals(folder.Symbol, Symbol);
         }
     }
 }

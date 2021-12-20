@@ -33,7 +33,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NullTypeFactory Instance { get; } = new NullTypeFactory();
 
-            public override NullType Create(Context cx, ITypeSymbol? init) => new NullType(cx);
+            public sealed override bool IsShared(ITypeSymbol? _) => true;
+
+            public override NullType Create(Context cx, ITypeSymbol? _) => new NullType(cx);
         }
     }
 }

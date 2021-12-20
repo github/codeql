@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Semmle.Util.Logging;
@@ -20,11 +20,11 @@ namespace Semmle.Extraction.CIL.Driver
             Console.WriteLine("    path       A directory/dll/exe to analyze");
         }
 
-        private static void ExtractAssembly(Layout layout, string assemblyPath, ILogger logger, CommonOptions options)
+        private static void ExtractAssembly(Layout layout, string assemblyPath, ILogger logger, CommonOptions options, ContextShared contextShared)
         {
             var sw = new Stopwatch();
             sw.Start();
-            Analyser.ExtractCIL(layout, assemblyPath, logger, options, out _, out _);
+            Analyser.ExtractCIL(layout, assemblyPath, logger, options, contextShared, out _, out _);
             sw.Stop();
             logger.Log(Severity.Info, "  {0} ({1})", assemblyPath, sw.Elapsed);
         }
@@ -40,10 +40,11 @@ namespace Semmle.Extraction.CIL.Driver
             var options = new ExtractorOptions(args);
             var layout = new Layout();
             using var logger = new ConsoleLogger(options.Verbosity);
+            using var contextShared = ContextShared.Create(logger, layout, options.TrapCompression);
 
             var actions = options.AssembliesToExtract
                 .Select(asm => asm.Filename)
-                .Select<string, Action>(filename => () => ExtractAssembly(layout, filename, logger, options))
+                .Select<string, Action>(filename => () => ExtractAssembly(layout, filename, logger, options, contextShared))
                 .ToArray();
 
             foreach (var missingRef in options.MissingReferences)

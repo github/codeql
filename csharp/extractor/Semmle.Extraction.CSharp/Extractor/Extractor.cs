@@ -327,7 +327,7 @@ namespace Semmle.Extraction.CSharp
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
             Action<CSharpCompilation, CommonOptions> initializeAnalyser,
-            Action analyseCompilation,
+            Action<ContextShared> analyseCompilation,
             Action<Entities.PerformanceMetrics> logPerformance,
             Action postProcess)
         {
@@ -357,12 +357,13 @@ namespace Semmle.Extraction.CSharp
             var compilation = getCompilation(syntaxTrees, references);
 
             initializeAnalyser(compilation, options);
-            analyseCompilation();
-            analyser.AnalyseReferences();
+            using var contextShared = ContextShared.Create(analyser.Logger, analyser.Layout!, options.TrapCompression);
+            analyseCompilation(contextShared);
+            analyser.AnalyseReferences(contextShared);
 
             foreach (var tree in compilation.SyntaxTrees)
             {
-                analyser.AnalyseTree(tree);
+                analyser.AnalyseTree(tree, contextShared);
             }
 
             sw.Stop();
@@ -408,7 +409,7 @@ namespace Semmle.Extraction.CSharp
                 (analyser, syntaxTrees) => ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
                 (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
                 (compilation, options) => analyser.InitializeStandalone(compilation, options),
-                () => { },
+                _ => { },
                 _ => { },
                 () =>
                 {
@@ -463,7 +464,7 @@ namespace Semmle.Extraction.CSharp
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                () => analyser.AnalyseCompilation(),
+                contextShared => analyser.AnalyseCompilation(contextShared),
                 performance => analyser.LogPerformance(performance),
                 () => { });
         }

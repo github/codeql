@@ -1,4 +1,7 @@
+using System;
 using System.IO;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction
@@ -22,6 +25,23 @@ namespace Semmle.Extraction
         public abstract void Populate(TextWriter trapFile);
 
         public abstract bool NeedsPopulation { get; }
+
+        /// <summary>
+        /// A mapping from TRAP files to labels for this entity.
+        ///
+        /// This is only relevant if this (shared or non-shared) entity is referenced from the
+        /// shared TRAP file, or if this is a shared entity referenced from a non-shared TRAP file.
+        /// </summary>
+        public Dictionary<TextWriter, Label>? LabelMap;
+
+        public sealed override Label GetLabelForWriter(TextWriter trapFile)
+        {
+            // non-shared entity referenced in its own TRAP file
+            if (Label.Valid && Context.TrapWriter.Writer == trapFile)
+                return Label;
+
+            return Context.ContextShared.GetLabelForWriter(this, trapFile);
+        }
     }
 
     /// <summary>
@@ -37,28 +57,7 @@ namespace Semmle.Extraction
             this.Symbol = symbol;
         }
 
-        /// <summary>
-        /// For debugging.
-        /// </summary>
-        public string DebugContents
-        {
-            get
-            {
-                using var trap = new StringWriter();
-                Populate(trap);
-                return trap.ToString();
-            }
-        }
-
         public override bool NeedsPopulation { get; }
-
-        public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
-
-        public override bool Equals(object? obj)
-        {
-            var other = obj as CachedEntity<TSymbol>;
-            return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
-        }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }

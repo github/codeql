@@ -33,7 +33,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static UnknownTypeFactory Instance { get; } = new UnknownTypeFactory();
 
-            public override UnknownType Create(Context cx, ITypeSymbol? init) => new UnknownType(cx);
+            public sealed override bool IsShared(ITypeSymbol? _) => true;
+
+            public override UnknownType Create(Context cx, ITypeSymbol? _) => new UnknownType(cx);
         }
     }
 }

@@ -35,27 +35,9 @@ namespace Semmle.Extraction.CIL
                     foreach (var c in e.Contents)
                         c.Extract(this);
                 });
-#if DEBUG_LABELS
-                using var writer = new EscapingTextWriter();
-                e.WriteId(writer);
-                var id = writer.ToString();
-
-                if (debugLabels.TryGetValue(id, out var previousEntity))
-                {
-                    Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
-                }
-                else
-                {
-                    debugLabels.Add(id, e);
-                }
-#endif
             }
             return e;
         }
-
-#if DEBUG_LABELS
-        private readonly Dictionary<string, IExtractedEntity> debugLabels = new Dictionary<string, IExtractedEntity>();
-#endif
 
         public IExtractedEntity Create(Handle h)
         {

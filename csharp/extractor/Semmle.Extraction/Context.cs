@@ -3,6 +3,7 @@ using Semmle.Extraction.Entities;
 using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Semmle.Extraction
 {
     /// <summary>
     /// State that needs to be available throughout the extraction process.
-    /// There is one Context object per trap output file.
+    /// There is one `Context` object per trap output file.
     /// </summary>
     public class Context
     {
@@ -24,6 +25,11 @@ namespace Semmle.Extraction
         /// Access to the trap file.
         /// </summary>
         public TrapWriter TrapWriter { get; }
+
+        /// <summary>
+        /// Access to context shared across the whole compilation.
+        /// </summary>
+        public ContextShared ContextShared { get; }
 
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
@@ -39,7 +45,7 @@ namespace Semmle.Extraction
 
         private readonly Queue<IEntity> labelQueue = new();
 
-        protected void DefineLabel(IEntity entity)
+        public void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
@@ -64,29 +70,31 @@ namespace Semmle.Extraction
             }
         }
 
-#if DEBUG_LABELS
-        private void CheckEntityHasUniqueLabel(string id, CachedEntity entity)
-        {
-            if (idLabelCache.ContainsKey(id))
-            {
-                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), CreateLocation(entity.ReportingLocation), "", Severity.Warning));
-            }
-            else
-            {
-                idLabelCache[id] = entity;
-            }
-        }
-#endif
-
-        protected Label GetNewLabel() => new Label(GetNewId());
+        public Label GetNewLabel() => new Label(GetNewId());
 
         internal TEntity CreateEntity<TInit, TEntity>(CachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
-            where TEntity : CachedEntity =>
-                cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
+            where TEntity : CachedEntity
+        {
+            if (cacheKey is ISymbol s)
+            {
+                return factory.IsShared(init)
+                    ? CreateEntityShared(factory, s, init, ContextShared.SymbolEntityCacheShared)
+                    : CreateEntity(factory, s, init, symbolEntityCache);
+            }
+
+            return factory.IsShared(init)
+                ? CreateEntityShared(factory, cacheKey, init, ContextShared.ObjectEntityCacheShared)
+                : CreateEntity(factory, cacheKey, init, objectEntityCache);
+        }
 
         internal TEntity CreateEntityFromSymbol<TSymbol, TEntity>(CachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
             where TSymbol : ISymbol
-            where TEntity : CachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+            where TEntity : CachedEntity
+        {
+            return factory.IsShared(init)
+                ? CreateEntityShared(factory, init, init, ContextShared.SymbolEntityCacheShared)
+                : CreateEntity(factory, init, init, symbolEntityCache);
+        }
 
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache.
@@ -115,13 +123,43 @@ namespace Semmle.Extraction
                 if (entity.NeedsPopulation)
                     Populate(init as ISymbol, entity);
 
-#if DEBUG_LABELS
-                using var id = new EscapingTextWriter();
-                entity.WriteQuotedId(id);
-                CheckEntityHasUniqueLabel(id.ToString(), entity);
-#endif
-
                 return entity;
+            }
+        }
+
+        /// <summary>
+        /// Creates and populates a new entity, or returns the existing one from the shared cache.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="cacheKey">The key used for caching.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <param name="dictionary">The shared dictionary to use for caching.</param>
+        /// <returns>The new/existing entity.</returns>
+        private TEntity CreateEntityShared<TInit, TCacheKey, TEntity>(CachedEntityFactory<TInit, TEntity> factory, TCacheKey cacheKey, TInit init, Dictionary<TCacheKey, CachedEntity> dictionary)
+            where TCacheKey : notnull
+            where TEntity : CachedEntity
+        {
+            TEntity ret;
+            ISymbol? symbol;
+
+            lock (dictionary)
+            {
+                if (dictionary.TryGetValue(cacheKey, out var cached))
+                    return (TEntity)cached;
+
+                ret = factory.Create(this, init);
+                symbol = init as ISymbol;
+
+                if (ret.TrapStackBehaviour is not (TrapStackBehaviour.NoLabel or TrapStackBehaviour.OptionalLabel))
+                    throw new InternalError(symbol, "TagStack is not supported for shared entities");
+
+                dictionary[cacheKey] = ret;
+            }
+
+            using (StackGuard)
+            {
+                this.Try(null, symbol, () => ContextShared.WithWriter(trapFile => ret.Populate(trapFile)));
+                return ret;
             }
         }
 
@@ -135,10 +173,6 @@ namespace Semmle.Extraction
             entity.DefineFreshLabel(TrapWriter.Writer);
         }
 
-#if DEBUG_LABELS
-        private readonly Dictionary<string, CachedEntity> idLabelCache = new Dictionary<string, CachedEntity>();
-#endif
-
         private readonly IDictionary<object, CachedEntity> objectEntityCache = new Dictionary<object, CachedEntity>();
         private readonly IDictionary<ISymbol, CachedEntity> symbolEntityCache = new Dictionary<ISymbol, CachedEntity>(10000, SymbolEqualityComparer.Default);
 
@@ -147,7 +181,7 @@ namespace Semmle.Extraction
         /// The only reason for this is so that the call stack does not
         /// grow indefinitely, causing a potential stack overflow.
         /// </summary>
-        private readonly Queue<Action> populateQueue = new Queue<Action>();
+        public readonly LinkedList<Action> PopulateQueue = new();
 
         /// <summary>
         /// Enqueue the given action to be performed later.
@@ -160,11 +194,11 @@ namespace Semmle.Extraction
             {
                 // If we are currently executing with a duplication guard, then the same
                 // guard must be used for the deferred action
-                populateQueue.Enqueue(() => WithDuplicationGuard(key, a));
+                PopulateQueue.AddLast(() => WithDuplicationGuard(key, a));
             }
             else
             {
-                populateQueue.Enqueue(a);
+                PopulateQueue.AddLast(a);
             }
         }
 
@@ -173,11 +207,12 @@ namespace Semmle.Extraction
         /// </summary>
         public void PopulateAll()
         {
-            while (populateQueue.Any())
+            while (PopulateQueue.FirstOrDefault() is Action a)
             {
                 try
                 {
-                    populateQueue.Dequeue()();
+                    PopulateQueue.RemoveFirst();
+                    a();
                 }
                 catch (InternalError ex)
                 {
@@ -190,11 +225,13 @@ namespace Semmle.Extraction
             }
         }
 
-        protected Context(Extractor extractor, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(Extractor extractor, TrapWriter trapWriter, ContextShared contextShared, bool shouldAddAssemblyTrapPrefix = false)
         {
             Extractor = extractor;
             TrapWriter = trapWriter;
+            ContextShared = contextShared;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
+            ContextShared.RegisterContext(this);
         }
 
         private int currentRecursiveDepth = 0;
@@ -298,7 +335,7 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
+            Action a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
                 ? (() =>
                 {
                     var args = new object[TrapStackSuffix.Count + 2];
@@ -308,17 +345,17 @@ namespace Semmle.Extraction
                     {
                         args[i + 2] = TrapStackSuffix[i];
                     }
-                    WithDuplicationGuard(new Key(args), () => entity.Populate(TrapWriter.Writer));
+                    WithDuplicationGuard(new Key(TrapWriter.Writer, args), () => entity.Populate(TrapWriter.Writer));
                 })
-                : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
+                : () => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
 
             if (deferred)
-                populateQueue.Enqueue(a);
+                PopulateQueue.AddLast(a);
             else
                 a();
         }
 
-        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
+        protected virtual bool IsEntityDuplicationGuarded(CachedEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
         {
             loc = null;
             return false;

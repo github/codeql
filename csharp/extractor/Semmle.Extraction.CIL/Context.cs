@@ -24,8 +24,8 @@ namespace Semmle.Extraction.CIL
         }
         public PDB.IPdb? Pdb { get; }
 
-        public Context(Extractor extractor, TrapWriter trapWriter, string assemblyPath, bool extractPdbs)
-            : base(extractor, trapWriter)
+        public Context(Extractor extractor, TrapWriter trapWriter, string assemblyPath, bool extractPdbs, ContextShared contextShared)
+            : base(extractor, trapWriter, contextShared)
         {
             this.AssemblyPath = assemblyPath;
             stream = File.OpenRead(assemblyPath);

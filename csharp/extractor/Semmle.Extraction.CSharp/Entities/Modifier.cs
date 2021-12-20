@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.modifiers(Label, Symbol);
+            trapFile.modifiers(this, Symbol);
         }
 
         public static string AccessbilityModifier(Accessibility access)
@@ -139,8 +139,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ModifierFactory Instance { get; } = new ModifierFactory();
 
+            public sealed override bool IsShared(string path) => true;
+
             public override Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
+
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

@@ -49,5 +49,10 @@ namespace Semmle.Extraction
         TrapStackBehaviour TrapStackBehaviour { get; }
 
         void DefineLabel(TextWriter trapFile, Extractor extractor);
+
+        /// <summary>
+        /// Gets the label for this entity when used in the supplied TRAP file.
+        /// </summary>
+        Label GetLabelForWriter(TextWriter trapFile);
     }
 }

@@ -97,6 +97,12 @@ namespace Semmle.Extraction
         public ITransformedPath Transform(string path) => new TransformedPath(transform(path));
 
         /// <summary>
+        /// Returns a fake transformed path whose value is the supplied `path`.
+        /// This is useful for TRAP files that do not map to a real file.
+        /// </summary>
+        public static ITransformedPath CreateFake(string path) => new TransformedPath(path);
+
+        /// <summary>
         /// Default constructor reads parameters from the environment.
         /// </summary>
         public PathTransformer(IPathCache pathCache) :

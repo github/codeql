@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp
         {
             if (!init)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
-            this.layout = new Layout();
+            this.Layout = new Layout();
             this.options = options;
             this.compilation = compilation;
             this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
@@ -66,9 +66,9 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
         /// </summary>
-        public void AnalyseCompilation()
+        public void AnalyseCompilation(ContextShared contextShared)
         {
-            extractionTasks.Add(() => DoAnalyseCompilation());
+            extractionTasks.Add(() => DoAnalyseCompilation(contextShared));
         }
 
         /// <summary>
@@ -195,19 +195,20 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private void DoAnalyseCompilation()
+        private void DoAnalyseCompilation(ContextShared contextShared)
         {
             try
             {
                 var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
-                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                var projectLayout = Layout.LookupProjectOrDefault(transformedAssemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), contextShared, addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
+                cx.PopulateAll();
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

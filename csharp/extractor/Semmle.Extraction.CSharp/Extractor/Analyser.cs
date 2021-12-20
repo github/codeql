@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp
     {
         protected Extraction.Extractor? extractor;
         protected CSharpCompilation? compilation;
-        protected Layout? layout;
+        public Layout? Layout;
         protected CommonOptions? options;
 
         private readonly object progressMutex = new object();
@@ -51,9 +51,9 @@ namespace Semmle.Extraction.CSharp
         /// Perform an analysis on a source file/syntax tree.
         /// </summary>
         /// <param name="tree">Syntax tree to analyse.</param>
-        public void AnalyseTree(SyntaxTree tree)
+        public void AnalyseTree(SyntaxTree tree, ContextShared contextShared)
         {
-            extractionTasks.Add(() => DoExtractTree(tree));
+            extractionTasks.Add(() => DoExtractTree(tree, contextShared));
         }
 
 #nullable disable warnings
@@ -61,14 +61,14 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         ///     Enqueue all reference analysis tasks.
         /// </summary>
-        public void AnalyseReferences()
+        public void AnalyseReferences(ContextShared contextShared)
         {
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
                 // CIL first - it takes longer.
                 if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
-                extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
+                    extractionTasks.Add(() => DoExtractCIL(assembly, contextShared));
+                extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly, contextShared));
             }
         }
 
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp
         ///     extraction within the snapshot.
         /// </summary>
         /// <param name="r">The assembly to extract.</param>
-        private void DoAnalyseReferenceAssembly(PortableExecutableReference r)
+        private void DoAnalyseReferenceAssembly(PortableExecutableReference r, ContextShared contextShared)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp
 
                 var assemblyPath = r.FilePath!;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
-                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                var projectLayout = Layout.LookupProjectOrDefault(transformedAssemblyPath);
                 using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: true);
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
@@ -153,7 +153,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), contextShared, addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -174,16 +174,16 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private void DoExtractCIL(PortableExecutableReference r)
+        private void DoExtractCIL(PortableExecutableReference r, ContextShared contextShared)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            CIL.Analyser.ExtractCIL(layout, r.FilePath!, Logger, options, out var trapFile, out var extracted);
+            CIL.Analyser.ExtractCIL(Layout, r.FilePath!, Logger, options, contextShared, out var trapFile, out var extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
-        private void DoExtractTree(SyntaxTree tree)
+        private void DoExtractTree(SyntaxTree tree, ContextShared contextShared)
         {
             try
             {
@@ -192,7 +192,7 @@ namespace Semmle.Extraction.CSharp
                 var sourcePath = tree.FilePath;
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
-                var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
+                var projectLayout = Layout.LookupProjectOrNull(transformedSourcePath);
                 var excluded = projectLayout is null;
                 var trapPath = excluded ? "" : projectLayout!.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
                 var upToDate = false;
@@ -206,7 +206,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), contextShared, addAssemblyTrapPrefix);
                         // Ensure that the file itself is populated in case the source file is totally empty
                         var root = tree.GetRoot();
                         Entities.File.Create(cx, root.SyntaxTree.FilePath);

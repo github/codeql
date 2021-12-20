@@ -11,9 +11,9 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
         private readonly AttributeSyntax? attributeSyntax;
-        private readonly IEntity entity;
+        private readonly Entity entity;
 
-        private Attribute(Context cx, AttributeData attributeData, IEntity entity)
+        private Attribute(Context cx, AttributeData attributeData, Entity entity)
             : base(cx, attributeData)
         {
             this.attributeSyntax = attributeData.ApplicationSyntaxReference?.GetSyntax() as AttributeSyntax;
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
+        public static void ExtractAttributes(Context cx, ISymbol symbol, Entity entity)
         {
             foreach (var attribute in symbol.GetAttributes())
             {
@@ -133,17 +133,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity)
+        public static Attribute Create(Context cx, AttributeData attributeData, Entity entity)
         {
             var init = (attributeData, entity);
             return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
         }
 
-        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, Entity receiver), Attribute>
         {
             public static readonly AttributeFactory Instance = new AttributeFactory();
 
-            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+            public override Attribute Create(Context cx, (AttributeData attributeData, Entity receiver) init) =>
                 new Attribute(cx, init.attributeData, init.receiver);
         }
     }

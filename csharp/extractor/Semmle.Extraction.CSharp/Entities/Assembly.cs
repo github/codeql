@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override bool NeedsPopulation => true;
+        public override bool NeedsPopulation => Context.IsAssemblyScope;
 
         public override int GetHashCode() =>
             Symbol is null ? 91187354 : Symbol.GetHashCode();

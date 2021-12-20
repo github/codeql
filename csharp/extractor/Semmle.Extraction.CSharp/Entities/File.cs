@@ -34,7 +34,8 @@ namespace Semmle.Extraction.CSharp.Entities
                         lineCounts.Total++;
 
                     trapFile.numlines(this, lineCounts);
-                    Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    // no need to keep lock on shared TRAP writer
+                    Context.PopulateLater(() => Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default));
                 }
             }
             else if (IsPossiblyTextFile())
@@ -53,7 +54,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     }
 
                     trapFile.numlines(this, new LineCounts() { Total = lineCount, Code = 0, Comment = 0 });
-                    Context.TrapWriter.Archive(originalPath, TransformedPath, encoding ?? System.Text.Encoding.Default);
+                    // no need to keep lock on shared TRAP writer
+                    Context.PopulateLater(() => Context.TrapWriter.Archive(originalPath, TransformedPath, encoding ?? System.Text.Encoding.Default));
                 }
                 catch (Exception exc)
                 {
@@ -75,6 +77,8 @@ namespace Semmle.Extraction.CSharp.Entities
         private class FileFactory : CachedEntityFactory<string, File>
         {
             public static FileFactory Instance { get; } = new FileFactory();
+
+            public sealed override bool IsShared(string path) => true;
 
             public override File Create(Context cx, string init) => new File(cx, init);
         }
