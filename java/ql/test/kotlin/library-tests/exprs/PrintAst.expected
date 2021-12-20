@@ -703,10 +703,12 @@ exprs.kt:
 #  162|                       1: [VarAccess] r
 #  163|                 1: [LocalVariableDeclStmt] var ...;
 #  163|                   1: [LocalVariableDeclExpr] height
-#  163|                     0: [VarAccess] height
+#  163|                     0: [VarAccess] r2.height
+#  163|                       -1: [VarAccess] r2
 #  164|                 2: [ExprStmt] <Expr>;
 #  164|                   0: [AssignExpr] ...=...
-#  164|                     0: [VarAccess] height
+#  164|                     0: [VarAccess] r2.height
+#  164|                       -1: [VarAccess] r2
 #  164|                     1: [IntegerLiteral] 3
 #  178|     5: [Method] enums
 #  178|       5: [BlockStmt] { ... }
@@ -746,7 +748,8 @@ exprs.kt:
 #  142|     3: [Method] getN
 #  142|       5: [BlockStmt] { ... }
 #  142|         0: [ReturnStmt] return ...
-#  142|           0: [VarAccess] n
+#  142|           0: [VarAccess] this.n
+#  142|             -1: [ThisAccess] this
 #  142|     3: [FieldDeclaration] int n;
 #  142|       -1: [TypeAccess] int
 #  143|     5: [Method] foo
@@ -808,7 +811,8 @@ exprs.kt:
 #  172|     7: [Method] getRgb
 #  172|       5: [BlockStmt] { ... }
 #  172|         0: [ReturnStmt] return ...
-#  172|           0: [VarAccess] rgb
+#  172|           0: [VarAccess] this.rgb
+#  172|             -1: [ThisAccess] this
 #  172|     7: [FieldDeclaration] int rgb;
 #  172|       -1: [TypeAccess] int
 #  183|   8: [Interface] Interface1
@@ -821,7 +825,8 @@ exprs.kt:
 #  186|     3: [Method] getA1
 #  186|       5: [BlockStmt] { ... }
 #  186|         0: [ReturnStmt] return ...
-#  186|           0: [VarAccess] a1
+#  186|           0: [VarAccess] this.a1
+#  186|             -1: [ThisAccess] this
 #  186|     3: [FieldDeclaration] int a1;
 #  186|       -1: [TypeAccess] int
 #  186|       0: [IntegerLiteral] 1
@@ -843,7 +848,8 @@ exprs.kt:
 #  190|                   3: [Method] getA3
 #  190|                     5: [BlockStmt] { ... }
 #  190|                       0: [ReturnStmt] return ...
-#  190|                         0: [VarAccess] a3
+#  190|                         0: [VarAccess] this.a3
+#  190|                           -1: [ThisAccess] this
 #  190|                   3: [FieldDeclaration] String a3;
 #  190|                     -1: [TypeAccess] String
 #  190|                     0: [MethodAccess] toString(...)

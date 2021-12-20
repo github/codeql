@@ -20,6 +20,8 @@ parameterizedType
 | generics.kt:13:1:18:1 | C1<String,Integer> | generics.kt:13:1:18:1 | C1 | 1 | Integer |
 | generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 0 | String |
 | generics.kt:13:1:18:1 | C1<String,String> | generics.kt:13:1:18:1 | C1 | 1 | String |
+| generics.kt:13:1:18:1 | C1<T,W> | generics.kt:13:1:18:1 | C1 | 0 | T |
+| generics.kt:13:1:18:1 | C1<T,W> | generics.kt:13:1:18:1 | C1 | 1 | W |
 | generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 0 | U |
 | generics.kt:13:1:18:1 | C1<U,U> | generics.kt:13:1:18:1 | C1 | 1 | U |
 | generics.kt:36:1:40:1 | BoundedTest | generics.kt:36:1:40:1 | BoundedTest | 0 | T |

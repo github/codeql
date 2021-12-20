@@ -477,7 +477,8 @@
 | exprs.kt:139:13:139:23 | ::class | exprs.kt:138:1:140:1 | getClass | ClassExpr |
 | exprs.kt:142:1:144:1 | <obinit>(...) | exprs.kt:142:1:144:1 | C | MethodAccess |
 | exprs.kt:142:9:142:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | getN | VarAccess |
+| exprs.kt:142:9:142:18 | this | exprs.kt:142:9:142:18 | getN | ThisAccess |
+| exprs.kt:142:9:142:18 | this.n | exprs.kt:142:9:142:18 | getN | VarAccess |
 | exprs.kt:143:27:143:31 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
 | exprs.kt:143:27:143:31 | new C(...) | exprs.kt:143:5:143:33 | foo | ClassInstanceExpr |
 | exprs.kt:143:29:143:30 | 42 | exprs.kt:143:5:143:33 | foo | IntegerLiteral |
@@ -528,9 +529,11 @@
 | exprs.kt:162:29:162:29 | Rectangle | exprs.kt:159:1:166:1 | foo | TypeAccess |
 | exprs.kt:162:29:162:29 | r | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:163:9:163:30 | height | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
-| exprs.kt:163:25:163:30 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
+| exprs.kt:163:22:163:23 | r2 | exprs.kt:159:1:166:1 | foo | VarAccess |
+| exprs.kt:163:25:163:30 | r2.height | exprs.kt:159:1:166:1 | foo | VarAccess |
+| exprs.kt:164:9:164:10 | r2 | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:9:164:17 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
-| exprs.kt:164:9:164:17 | height | exprs.kt:159:1:166:1 | foo | VarAccess |
+| exprs.kt:164:9:164:17 | r2.height | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | <obinit>(...) | exprs.kt:168:6:170:1 | Direction | MethodAccess |
 | exprs.kt:168:1:170:1 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
@@ -541,7 +544,8 @@
 | exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
 | exprs.kt:172:18:172:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:172:18:172:29 | rgb | exprs.kt:172:18:172:29 | getRgb | VarAccess |
+| exprs.kt:172:18:172:29 | this | exprs.kt:172:18:172:29 | getRgb | ThisAccess |
+| exprs.kt:172:18:172:29 | this.rgb | exprs.kt:172:18:172:29 | getRgb | VarAccess |
 | exprs.kt:179:5:179:31 | south | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:179:27:179:31 | SOUTH | exprs.kt:178:1:181:1 | enums | VarAccess |
 | exprs.kt:180:5:180:27 | green | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
@@ -549,8 +553,9 @@
 | exprs.kt:185:1:193:1 | <obinit>(...) | exprs.kt:185:1:193:1 | Class1 | MethodAccess |
 | exprs.kt:186:5:186:14 | ...=... | exprs.kt:185:1:193:1 | <obinit> | AssignExpr |
 | exprs.kt:186:5:186:14 | a1 | exprs.kt:185:1:193:1 | <obinit> | VarAccess |
-| exprs.kt:186:5:186:14 | a1 | exprs.kt:186:5:186:14 | getA1 | VarAccess |
 | exprs.kt:186:5:186:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:186:5:186:14 | this | exprs.kt:186:5:186:14 | getA1 | ThisAccess |
+| exprs.kt:186:5:186:14 | this.a1 | exprs.kt:186:5:186:14 | getA1 | VarAccess |
 | exprs.kt:186:14:186:14 | 1 | exprs.kt:185:1:193:1 | <obinit> | IntegerLiteral |
 | exprs.kt:188:9:188:18 | a2 | exprs.kt:187:13:192:5 | getObject | LocalVariableDeclExpr |
 | exprs.kt:188:18:188:18 | 2 | exprs.kt:187:13:192:5 | getObject | IntegerLiteral |
@@ -561,7 +566,8 @@
 | exprs.kt:190:13:190:49 | ...=... | exprs.kt:189:16:191:9 | <obinit> | AssignExpr |
 | exprs.kt:190:13:190:49 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:190:13:190:49 | a3 | exprs.kt:189:16:191:9 | <obinit> | VarAccess |
-| exprs.kt:190:13:190:49 | a3 | exprs.kt:190:13:190:49 | getA3 | VarAccess |
+| exprs.kt:190:13:190:49 | this | exprs.kt:190:13:190:49 | getA3 | ThisAccess |
+| exprs.kt:190:13:190:49 | this.a3 | exprs.kt:190:13:190:49 | getA3 | VarAccess |
 | exprs.kt:190:31:190:32 | getA1(...) | exprs.kt:189:16:191:9 | <obinit> | MethodAccess |
 | exprs.kt:190:31:190:32 | this | exprs.kt:189:16:191:9 | <obinit> | ThisAccess |
 | exprs.kt:190:31:190:37 | ... + ... | exprs.kt:189:16:191:9 | <obinit> | AddExpr |

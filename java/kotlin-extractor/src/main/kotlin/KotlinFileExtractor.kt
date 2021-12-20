@@ -1632,6 +1632,11 @@ open class KotlinFileExtractor(
                 val vId = useField(owner)
                 tw.writeVariableBinding(id, vId)
                 tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                val receiver = e.receiver
+                if (receiver != null) {
+                    extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
+                }
             }
             is IrGetEnumValue -> {
                 val exprParent = parent.expr(e, callable)
@@ -1679,6 +1684,11 @@ open class KotlinFileExtractor(
                         val vId = useField(e.symbol.owner)
                         tw.writeVariableBinding(lhsId, vId)
                         extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
+
+                        val receiver = e.receiver
+                        if (receiver != null) {
+                            extractExpressionExpr(receiver, callable, lhsId, -1, exprParent.enclosingStmt)
+                        }
                     }
                     else -> {
                         logger.warnElement(Severity.ErrorSevere, "Unhandled IrSet* element.", e)
