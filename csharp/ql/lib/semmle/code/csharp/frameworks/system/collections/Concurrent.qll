@@ -20,3 +20,22 @@ private class SystemCollectionsConcurrentConcurrentDictionaryFlowModelCsv extend
       ]
   }
 }
+
+/** Data flow for `System.Collections.Concurrent.BlockingCollection<>`. */
+private class SystemCollectionsConcurrentBlockingCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Concurrent;BlockingCollection<>;false;Add;(T);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Concurrent;BlockingCollection<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Concurrent.IProducerConsumerCollection<>`. */
+private class SystemCollectionsConcurrentIProducerConsumerCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Concurrent;IProducerConsumerCollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}

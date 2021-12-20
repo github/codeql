@@ -363,6 +363,9 @@
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableArray<>;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Collections.Immutable;ImmutableArray<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>;false;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
@@ -2560,6 +2563,8 @@
 | System;Array;false;Reverse<>;(T[],System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value |
 | System;Array;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System;Array;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System;ArraySegment<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System;ArraySegment<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System;ArraySegment<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |

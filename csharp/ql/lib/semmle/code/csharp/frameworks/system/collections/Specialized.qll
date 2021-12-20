@@ -24,6 +24,17 @@ class SystemCollectionsSpecializedNameValueCollectionClass extends SystemCollect
   SystemCollectionsSpecializedNameValueCollectionClass() { this.hasName("NameValueCollection") }
 }
 
+/** Data flow for `System.Collections.Specialized.NameValueCollection`. */
+private class SystemCollectionsSpecializedNameValueCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Specialized;NameValueCollection;false;Add;(System.Collections.Specialized.NameValueCollection);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Specialized;NameValueCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+      ]
+  }
+}
+
 /** Data flow for `System.Collections.Specialized.IOrderedDictionary`. */
 private class SystemCollectionsSpecializedIOrderedDictionaryFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
@@ -33,6 +44,14 @@ private class SystemCollectionsSpecializedIOrderedDictionaryFlowModelCsv extends
         "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
         "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
       ]
+  }
+}
+
+/** Data flow for `System.Collections.Specialized.OrderedDictionary`. */
+private class SystemCollectionsSpecializedOrderedDictionaryFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Specialized;OrderedDictionary;false;AsReadOnly;();;Element of Argument[0];Element of ReturnValue;value"
   }
 }
 

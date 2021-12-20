@@ -62,6 +62,14 @@ class SystemCollectionsICollectionInterface extends SystemCollectionsInterface {
   SystemCollectionsICollectionInterface() { this.hasName("ICollection") }
 }
 
+/** Data flow for `System.Collections.ICollection`. */
+private class SystemCollectionsICollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections;ICollection;true;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}
+
 /** The `System.Collections.IList` interface. */
 class SystemCollectionsIListInterface extends SystemCollectionsInterface {
   SystemCollectionsIListInterface() { this.hasName("IList") }
@@ -154,6 +162,37 @@ private class SystemCollectionsArrayListFlowModelCsv extends SummaryModelCsv {
         "System.Collections;ArrayList;false;Repeat;(System.Object,System.Int32);;Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.BitArray`. */
+private class SystemCollectionsBitArrayFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections;BitArray;false;Clone;();;Element of Argument[0];Element of ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.Collections.Queue`. */
+private class SystemCollectionsQueueFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections;Queue;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;Queue;false;Peek;();;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Stack`. */
+private class SystemCollectionsStackFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections;Stack;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Collections;Stack;false;Peek;();;Element of Argument[-1];ReturnValue;value",
+        "System.Collections;Stack;false;Pop;();;Element of Argument[-1];ReturnValue;value",
       ]
   }
 }

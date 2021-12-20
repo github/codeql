@@ -111,3 +111,22 @@ private class SystemDiagnosticsTraceListenerCollectionFlowModelCsv extends Summa
       ]
   }
 }
+
+/** Data flow for `System.Diagnostics.ProcessModuleCollection`. */
+private class SystemDiagnosticsProcessModuleCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Diagnostics;ProcessModuleCollection;false;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}
+
+/** Data flow for `System.Diagnostics.ProcessThreadCollection`. */
+private class SystemDiagnosticsProcessThreadCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Element of Argument[-1];value",
+        "System.Diagnostics;ProcessThreadCollection;false;CopyTo;(System.Diagnostics.ProcessThread[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+      ]
+  }
+}

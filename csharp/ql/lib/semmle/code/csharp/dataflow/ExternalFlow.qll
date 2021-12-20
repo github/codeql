@@ -108,6 +108,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.security.Cryptography
   private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
   private import semmle.code.csharp.frameworks.system.Text
   private import semmle.code.csharp.frameworks.system.text.RegularExpressions

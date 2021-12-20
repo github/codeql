@@ -56,3 +56,13 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
       ]
   }
 }
+
+/** Data flow for `System.ComponentModel.ComponentCollection`. */
+private class SystemComponentModelComponentCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+      ]
+  }
+}

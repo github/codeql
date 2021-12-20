@@ -575,55 +575,6 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-/** Data flow for `System.Collections.[Generic.]ICollection` (and sub types). */
-class ICollectionFlow extends LibraryTypeDataFlow, RefType {
-  ICollectionFlow() {
-    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
-      i instanceof SystemCollectionsICollectionInterface
-      or
-      i instanceof SystemCollectionsGenericICollectionInterface
-    )
-  }
-
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    exists(string name, int arity |
-      name = c.getUndecoratedName() and
-      arity = c.getNumberOfParameters() and
-      c = this.getAMethod()
-    |
-      name = "CopyTo" and
-      arity = 2 and
-      source instanceof CallableFlowSourceQualifier and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkArg(0) and
-      sinkAp = AccessPath::element()
-      or
-      name.regexpMatch("AsReadOnly|Clone") and
-      source = TCallableFlowSourceArg(0) and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::element()
-      or
-      name.regexpMatch("Peek|Pop") and
-      source = TCallableFlowSourceQualifier() and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkReturn() and
-      sinkAp = AccessPath::empty()
-      or
-      name = "InsertRange" and
-      arity = 2 and
-      source = TCallableFlowSourceArg(1) and
-      sourceAp = AccessPath::element() and
-      sink = TCallableFlowSinkQualifier() and
-      sinkAp = AccessPath::element()
-    )
-  }
-}
-
 abstract private class SyntheticTaskField extends SyntheticField {
   bindingset[this]
   SyntheticTaskField() { any() }

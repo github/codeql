@@ -97,3 +97,11 @@ private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
     row = "System.Net;Cookie;false;get_Value;();;Argument[-1];ReturnValue;taint"
   }
 }
+
+/** Data flow for `System.Net.HttpListenerPrefixCollection`. */
+private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}

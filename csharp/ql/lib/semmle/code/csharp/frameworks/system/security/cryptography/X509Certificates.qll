@@ -63,3 +63,26 @@ private class SystemSecurityCryptographyX509CertificatesX509CertificateCollectio
       ]
   }
 }
+
+/** Data flow for `System.Security.Cryptography.X509Certificates.X509ClainElementCollection`. */
+private class SystemSecurityCryptographyX509CertificatesX509ClainElementCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509ChainElement[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Security.Cryptography.X509Certificates.X509ChainElementEnumerator.Current] of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Security.Cryptography.X509Certificates.X509ExtensionCollection`. */
+private class SystemSecurityCryptographyX509CertificatesX509ExtensionCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;Add;(System.Security.Cryptography.X509Certificates.X509Extension);;Argument[0];Element of Argument[-1];value",
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509Extension[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator.Current] of ReturnValue;value",
+      ]
+  }
+}
