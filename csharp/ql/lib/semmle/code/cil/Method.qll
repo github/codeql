@@ -89,7 +89,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override Location getLocation() { result = Element.super.getLocation() }
 
-  override Location getALocation() { cil_method_location(this.getUnboundDeclaration(), result) }
+  override Location getALocation() { cil_method_location(this.getUnboundMethod+(), result) }
 
   override MethodParameter getParameter(int n) {
     if this.isStatic()

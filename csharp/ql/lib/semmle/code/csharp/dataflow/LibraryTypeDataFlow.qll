@@ -585,7 +585,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 1, 1) and
           sinkAp = AccessPath::empty()
           or
-          source = TCallableFlowSourceDelegateArg(1) and
+          source = getDelegateFlowSourceArg(m, 1) and
           sourceAp = AccessPath::empty() and
           sink = TCallableFlowSinkReturn() and
           sinkAp = AccessPath::empty()
@@ -603,7 +603,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 2, 0) and
           sinkAp = AccessPath::empty()
           or
-          source = TCallableFlowSourceDelegateArg(2) and
+          source = getDelegateFlowSourceArg(m, 2) and
           sourceAp = AccessPath::empty() and
           sink = TCallableFlowSinkReturn() and
           sinkAp = AccessPath::empty()
@@ -621,12 +621,12 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 2, 0) and
           sinkAp = AccessPath::empty()
           or
-          source = TCallableFlowSourceDelegateArg(2) and
+          source = getDelegateFlowSourceArg(m, 2) and
           sourceAp = AccessPath::empty() and
           sink = getDelegateFlowSinkArg(m, 3, 0) and
           sinkAp = AccessPath::empty()
           or
-          source = TCallableFlowSourceDelegateArg(3) and
+          source = getDelegateFlowSourceArg(m, 3) and
           sourceAp = AccessPath::empty() and
           sink = TCallableFlowSinkReturn() and
           sinkAp = AccessPath::empty()
@@ -841,7 +841,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 4, 1) and
           sinkAp = AccessPath::empty()
           or
-          source = TCallableFlowSourceDelegateArg(4) and
+          source = getDelegateFlowSourceArg(m, 4) and
           sourceAp = AccessPath::empty() and
           sink = TCallableFlowSinkReturn() and
           sinkAp = AccessPath::element()
@@ -924,7 +924,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
         sink = getDelegateFlowSinkArg(m, 1, 0) and
         sinkAp = AccessPath::empty()
         or
-        source = TCallableFlowSourceDelegateArg(1) and
+        source = getDelegateFlowSourceArg(m, 1) and
         sourceAp = AccessPath::empty() and
         sink = TCallableFlowSinkReturn() and
         sinkAp = AccessPath::element()
@@ -943,12 +943,12 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
         sink = getDelegateFlowSinkArg(m, 2, 0) and
         sinkAp = AccessPath::empty()
         or
-        source = TCallableFlowSourceDelegateArg(1) and
+        source = getDelegateFlowSourceArg(m, 1) and
         sourceAp = AccessPath::element() and
         sink = getDelegateFlowSinkArg(m, 2, 1) and
         sinkAp = AccessPath::empty()
         or
-        source = TCallableFlowSourceDelegateArg(2) and
+        source = getDelegateFlowSourceArg(m, 2) and
         sourceAp = AccessPath::empty() and
         sink = TCallableFlowSinkReturn() and
         sinkAp = AccessPath::element()
