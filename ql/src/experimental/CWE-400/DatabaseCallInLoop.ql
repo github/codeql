@@ -47,10 +47,10 @@ predicate callGraphEdge(CallGraphNode pred, CallGraphNode succ) {
   pred.(CallExpr) = succ.(FuncDef).getACall().asExpr()
   or
   // Go from a function to an enclosed loop.
-  pred.(FuncDef) = succ.(LoopStmt).getEnclosingFunction()
+  pred = succ.(LoopStmt).getEnclosingFunction()
   or
   // Go from a function to an enclosed call.
-  pred.(FuncDef) = succ.(CallExpr).getEnclosingFunction()
+  pred = succ.(CallExpr).getEnclosingFunction()
 }
 
 query predicate edges(CallGraphNode pred, CallGraphNode succ) {

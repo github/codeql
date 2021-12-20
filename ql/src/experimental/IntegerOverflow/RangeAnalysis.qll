@@ -535,8 +535,7 @@ float getAnSsaLowerBound(SsaDefinition def) {
 predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
   //SSA definition coresponding to a `SimpleAssignStmt`
   exists(SimpleAssignStmt simpleAssign, int i |
-    nextDef.(SsaExplicitDefinition).getInstruction().(IR::AssignInstruction) =
-      IR::assignInstruction(simpleAssign, i) and
+    nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(simpleAssign, i) and
     ssaDependsOnExpr(prevDef, simpleAssign.getRhs())
   )
   or

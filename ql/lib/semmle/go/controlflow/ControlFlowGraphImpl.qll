@@ -652,7 +652,7 @@ module CFG {
 
     AtomicTree() {
       exists(Expr e |
-        e = this.(Expr) and
+        e = this and
         e.isConst() and
         nd = mkExprOrSkipNode(this)
       |

@@ -289,7 +289,7 @@ private predicate isPossibleInputNode(DataFlow::Node inputNode, FuncDef fd) {
 private ControlFlow::Node getANonTestPassingPredecessor(
   ControlFlow::Node succ, DataFlow::Node inputNode
 ) {
-  isPossibleInputNode(inputNode, succ.getRoot().(FuncDef)) and
+  isPossibleInputNode(inputNode, succ.getRoot()) and
   result = succ.getAPredecessor() and
   not exists(Expr testExpr, DataFlow::Node switchExprNode |
     flowsToSwitchExpression(inputNode, switchExprNode) and
@@ -301,7 +301,7 @@ private ControlFlow::Node getANonTestPassingPredecessor(
 private ControlFlow::Node getANonTestPassingReachingNodeRecursive(
   ControlFlow::Node n, DataFlow::Node inputNode
 ) {
-  isPossibleInputNode(inputNode, n.getRoot().(FuncDef)) and
+  isPossibleInputNode(inputNode, n.getRoot()) and
   (
     result = n or
     result =
@@ -328,7 +328,7 @@ private ControlFlow::Node getANonTestPassingReachingNodeBase(
 private predicate mustPassConstantCaseTestToReach(
   IR::ReturnInstruction ret, DataFlow::Node inputNode
 ) {
-  isPossibleInputNode(inputNode, ret.getRoot().(FuncDef)) and
+  isPossibleInputNode(inputNode, ret.getRoot()) and
   not exists(ControlFlow::Node entry | entry = ret.getRoot().getEntryNode() |
     entry = getANonTestPassingReachingNodeBase(ret, inputNode)
   )
