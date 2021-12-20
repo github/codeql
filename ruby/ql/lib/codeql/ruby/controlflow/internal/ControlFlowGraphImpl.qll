@@ -388,14 +388,10 @@ module Trees {
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
       or
-      exists(int i, WhenTree branch |
-        branch = this.getBranch(i) and
+      exists(int i, WhenTree branch | branch = this.getBranch(i) |
         last(branch.getLastPattern(), pred, c) and
+        first(this.getBranch(i + 1), succ) and
         c.(ConditionalCompletion).getValue() = false
-      |
-        first(this.getBranch(i + 1), succ)
-        or
-        not exists(this.getBranch(i + 1)) and succ = this
       )
       or
       succ = this and
@@ -403,9 +399,12 @@ module Trees {
       (
         last(this.getValue(), pred, c) and not exists(this.getABranch())
         or
-        exists(int i, ControlFlowTree branch |
-          branch = this.getBranch(i) and
-          last(branch, pred, c)
+        last(this.getABranch().(WhenExpr).getBody(), pred, c)
+        or
+        exists(int i, ControlFlowTree lastBranch |
+          lastBranch = this.getBranch(i) and
+          not exists(this.getBranch(i + 1)) and
+          last(lastBranch, pred, c)
         )
       )
     }
@@ -1371,13 +1370,8 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
-  private class WhenTree extends PostOrderTree, WhenExpr {
-    final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getAPattern() or
-      child = this.getBody()
-    }
-
-    final override predicate first(AstNode first) { first(this.getPattern(0), first) }
+  private class WhenTree extends PreOrderTree, WhenExpr {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
 
     final Expr getLastPattern() {
       exists(int i |
@@ -1386,7 +1380,18 @@ module Trees {
       )
     }
 
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getLastPattern(), last, c) and
+      c.(ConditionalCompletion).getValue() = false
+      or
+      last(this.getBody(), last, c)
+    }
+
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(0), succ) and
+      c instanceof SimpleCompletion
+      or
       exists(int i, Expr p, boolean b |
         p = this.getPattern(i) and
         last(p, pred, c) and
@@ -1398,15 +1403,6 @@ module Trees {
         b = false and
         first(this.getPattern(i + 1), succ)
       )
-      or
-      last(this.getBody(), pred, c) and
-      succ = this and
-      c instanceof NormalCompletion
-      or
-      not exists(this.getBody()) and
-      last(this.getLastPattern(), pred, c) and
-      succ = this and
-      c.(ConditionalCompletion).getValue() = true
     }
   }
 }
