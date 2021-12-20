@@ -169,13 +169,14 @@ jobs:
       - name: Create CodeQL config file
         run: |
           echo "paths:" > ${CONF}
-          echo "  - ${{ matrix.folder }}" >> ${CONF}
+          echo "  - ${FOLDER}" >> ${CONF}
           echo "paths-ignore:" >> ${CONF}
           echo "  - ql/ql/test" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
         env: 
           CONF: ./ql-for-ql-config.yml
+          FOLDER: ${{ matrix.folder }}
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@erik-krogh/ql
