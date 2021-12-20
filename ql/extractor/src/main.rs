@@ -127,6 +127,15 @@ fn main() -> std::io::Result<()> {
     lines
         .par_iter()
         .try_for_each(|line| {
+            // only consider files that end with .ql/.qll/.dbscheme/qlpack.yml
+            // TODO: This is a bad fix, wait for the post-merge discussion in https://github.com/github/codeql/pull/7444 to be resolved
+            if !line.ends_with(".ql")
+                && !line.ends_with(".qll")
+                && !line.ends_with(".dbscheme")
+                && !line.ends_with("qlpack.yml")
+            {
+                return Ok(());
+            }
             let path = PathBuf::from(line).canonicalize()?;
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let source = std::fs::read(&path)?;

@@ -105,7 +105,7 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
     (
       exists(Container c, Container parent |
         // should ideally look at `qlpack.yml` files
-        parent = imp.getLocation().getFile().getParentContainer+() and
+        parent = pragma[only_bind_out](imp.getLocation()).getFile().getParentContainer+() and
         exists(YAML::QLPack pack |
           pack.getFile().getParentContainer() = parent and
           c.getParentContainer() = pack.getADependency*().getFile().getParentContainer()
@@ -122,7 +122,8 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
         definesModule(container, q, m, _) and
         (
           exists(container.(Folder_).getFolder().getFile("qlpack.yml")) or
-          container.(Folder_).getFolder() = imp.getLocation().getFile().getParentContainer() or
+          container.(Folder_).getFolder() =
+            pragma[only_bind_out](imp.getLocation()).getFile().getParentContainer() or
           not container instanceof Folder_
         )
       )
@@ -194,7 +195,7 @@ private module Cached {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleExprHelper(me, enclosing, name) |
-      definesModule(enclosing.getEnclosing*(), name, m, _)
+      definesModule(enclosing, name, m, _)
     )
     or
     exists(FileOrModule mid |
@@ -205,7 +206,7 @@ private module Cached {
 
   pragma[noinline]
   private predicate resolveModuleExprHelper(ModuleExpr me, ContainerOrModule enclosing, string name) {
-    enclosing = getEnclosingModule(me) and
+    enclosing = getEnclosingModule(me).getEnclosing*() and
     name = me.getName()
   }
 }

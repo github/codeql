@@ -58,9 +58,9 @@ class AstNode extends TAstNode {
    */
   cached
   AstNode getAChild(string pred) {
-    pred = directMember("getAnAnnotation") and result = getAnAnnotation()
+    pred = directMember("getAnAnnotation") and result = this.getAnAnnotation()
     or
-    pred = directMember("getQLDoc") and result = getQLDoc()
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 
   /**
@@ -606,7 +606,7 @@ class FieldDecl extends TFieldDecl, AstNode {
   /** Holds if this field is annotated as overriding another field. */
   predicate isOverride() { this.hasAnnotation("override") }
 
-  string getName() { result = getVarDecl().getName() }
+  string getName() { result = this.getVarDecl().getName() }
 
   override QLDoc getQLDoc() { result = any(Class c).getQLDocFor(this) }
 }
@@ -673,7 +673,7 @@ class Module extends TModule, ModuleDeclaration {
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().(QL::ModuleName).getChild().getValue() }
+  override string getName() { result = mod.getName().getChild().getValue() }
 
   /**
    * Gets a member of the module.
@@ -699,7 +699,7 @@ class Module extends TModule, ModuleDeclaration {
 }
 
 /**
- * Something that can be member of a module.
+ * A member of a module.
  */
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
@@ -771,7 +771,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a field in this class.
    */
-  FieldDecl getAField() { result = getMember(_) }
+  FieldDecl getAField() { result = this.getMember(_) }
 
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
@@ -814,7 +814,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   }
 
   /** Holds if this class is abstract. */
-  predicate isAbstract() { hasAnnotation("abstract") }
+  predicate isAbstract() { this.hasAnnotation("abstract") }
 }
 
 /**
