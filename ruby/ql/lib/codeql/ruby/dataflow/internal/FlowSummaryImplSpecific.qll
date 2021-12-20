@@ -68,7 +68,7 @@ SummaryComponent interpretComponentSpecific(string c) {
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
-  sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isSelf())) and
+  sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isBlock())) and
   result = "BlockArgument"
 }
 
