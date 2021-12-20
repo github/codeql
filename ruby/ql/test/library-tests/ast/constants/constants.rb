@@ -50,3 +50,12 @@ module ModuleA
   class ModuleB::ClassB < Base
   end
 end
+
+module Mod1
+  module Mod3 end
+end
+
+module Mod4
+  include Mod1
+  module Mod3::Mod5 end
+end

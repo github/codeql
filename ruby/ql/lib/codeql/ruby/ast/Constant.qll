@@ -40,16 +40,6 @@ class ConstantAccess extends Expr, TConstantAccess {
    */
   predicate hasGlobalScope() { none() }
 
-  // gets the full name
-  string getFullName() {
-    exists(ConstantAccess ca | this.getScopeExpr() = ca |
-    result = ca.getFullName() + "::" + this.getName())
-    or
-    // TODO if the getScopeExpr is not a constant, try to figure out which constants it could be?
-    not exists(ConstantAccess ca | this.getScopeExpr() = ca) and
-    result = this.getName()
-  }
-
   override string toString() { result = this.getName() }
 
   override AstNode getAChild(string pred) {
@@ -194,16 +184,34 @@ class ConstantWriteAccess extends ConstantAccess {
    *
    * the constant `Baz` has the fully qualified name `Foo::Bar::Baz`, and
    * `CONST_A` has the fully qualified name `Foo::CONST_A`.
+   *
+   * Important note: This can return more than one value, because there are
+   * situations where there can be multiple possible "fully qualified" names.
+   * For example:
+   * ```
+   * module Mod4
+   *   include Mod1
+   *   module Mod3::Mod5 end
+   * end
+   * ```
+   * In the above snippet, `Mod5` has two valid fully qualified names it can be
+   * referred to by: `Mod1::Mod3::Mod5`, or `Mod4::Mod3::Mod5`.
+   *
+   * Another example has to do with the order in which module definitions are
+   * executed at runtime. Because of the way that ruby dynamically looks up
+   * constants up the namespace chain, the fully qualified name of a nested
+   * constant can be ambiguous from just statically looking at the AST.
    */
-  string getQualifiedName() {
-    /* get the qualified name for the parent module, then append w */
-    exists(ConstantWriteAccess parent | parent = this.getEnclosingModule() |
-      result = parent.getQualifiedName() + "::" + this.getFullName()
-    )
-    or
-    /* base case - there's no parent module */
-    not exists(ConstantWriteAccess parent | parent = this.getEnclosingModule()) and
-    result = this.getFullName()
+  string getAQualifiedName() {
+    result = resolveConstantWriteAccess(this)
+  }
+
+  /**
+   * gets a qualified name for this constant. Deprecated in favor of
+   * `getAQualifiedName` because this can return more than one value
+   */
+  deprecated string getQualifiedName() {
+    result = this.getAQualifiedName()
   }
 }
 
