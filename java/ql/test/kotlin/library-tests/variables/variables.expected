@@ -3,5 +3,5 @@
 | variables.kt:6:9:6:25 | int local | int | variables.kt:6:21:6:25 | ... + ... |
 | variables.kt:10:1:10:21 | topLevel | int | file://:0:0:0:0 | <none> |
 | variables.kt:16:11:16:18 | o | C1 | file://:0:0:0:0 | <none> |
-| variables.kt:16:11:16:18 | o | C1 | variables.kt:16:11:16:18 | o |
+| variables.kt:16:11:16:18 | o | C1 | file://:0:0:0:0 | <none> |
 | variables.kt:23:9:23:10 | <this> | C1 | file://:0:0:0:0 | <none> |

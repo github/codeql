@@ -371,12 +371,19 @@ open class KotlinFileExtractor(
                         continue
                     }
 
+                    val expr = initializer.expression
+
+                    if (expr is IrGetValue && expr.origin == IrStatementOrigin.INITIALIZE_PROPERTY_FROM_PARAMETER) {
+                        // TODO: this initialization should go into the default constructor
+                        continue
+                    }
+
                     val declLocId = tw.getLocation(decl)
                     val stmtId = tw.getFreshIdLabel<DbExprstmt>()
                     tw.writeStmts_exprstmt(stmtId, blockId, idx++, obinitId)
                     tw.writeHasLocation(stmtId, declLocId)
                     val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-                    val type = useType(initializer.expression.type)
+                    val type = useType(expr.type)
                     tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
                     tw.writeHasLocation(assignmentId, declLocId)
                     tw.writeCallableEnclosingExpr(assignmentId, obinitId)
@@ -391,7 +398,7 @@ open class KotlinFileExtractor(
                     val vId = useField(backingField)
                     tw.writeVariableBinding(lhsId, vId)
 
-                    extractExpressionExpr(initializer.expression, obinitId, assignmentId, 1, stmtId)
+                    extractExpressionExpr(expr, obinitId, assignmentId, 1, stmtId)
                 }
                 is IrAnonymousInitializer -> {
                     if (decl.isStatic) {

@@ -476,9 +476,6 @@
 | exprs.kt:139:13:139:16 | true | exprs.kt:138:1:140:1 | getClass | BooleanLiteral |
 | exprs.kt:139:13:139:23 | ::class | exprs.kt:138:1:140:1 | getClass | ClassExpr |
 | exprs.kt:142:1:144:1 | <obinit>(...) | exprs.kt:142:1:144:1 | C | MethodAccess |
-| exprs.kt:142:9:142:18 | ...=... | exprs.kt:142:1:144:1 | <obinit> | AssignExpr |
-| exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
-| exprs.kt:142:9:142:18 | n | exprs.kt:142:1:144:1 | <obinit> | VarAccess |
 | exprs.kt:142:9:142:18 | n | exprs.kt:142:9:142:18 | getN | VarAccess |
 | exprs.kt:143:27:143:31 | C | exprs.kt:143:5:143:33 | foo | TypeAccess |
 | exprs.kt:143:27:143:31 | new C(...) | exprs.kt:143:5:143:33 | foo | ClassInstanceExpr |
@@ -542,9 +539,6 @@
 | exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
-| exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:1:176:1 | <obinit> | AssignExpr |
-| exprs.kt:172:18:172:29 | rgb | exprs.kt:172:1:176:1 | <obinit> | VarAccess |
-| exprs.kt:172:18:172:29 | rgb | exprs.kt:172:1:176:1 | <obinit> | VarAccess |
 | exprs.kt:172:18:172:29 | rgb | exprs.kt:172:18:172:29 | getRgb | VarAccess |
 | exprs.kt:179:5:179:31 | south | exprs.kt:178:1:181:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:179:27:179:31 | SOUTH | exprs.kt:178:1:181:1 | enums | VarAccess |
