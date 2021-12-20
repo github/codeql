@@ -61,8 +61,22 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
 private class SystemComponentModelComponentCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
-      ]
+      "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}
+
+/** Data flow for `System.ComponentModel.AttributeCollection`. */
+private class SystemComponentModelAttributeCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.ComponentModel;AttributeCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.ComponentModel.IBindingList`. */
+private class SystemComponentModelIBindingListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Element of Argument[-1];ReturnValue;value"
   }
 }

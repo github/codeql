@@ -3,9 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
-private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.system.Text
 private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
@@ -238,14 +236,6 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
     // The uses of the `i`th argument are the actual sinks
     none()
   }
-}
-
-/** Gets the flow sink for the `j`th argument of the delegate at argument `i` of `callable`. */
-private CallableFlowSinkDelegateArg getDelegateFlowSinkArg(
-  SourceDeclarationCallable callable, int i, int j
-) {
-  result = TCallableFlowSinkDelegateArg(i, j) and
-  hasDelegateArgumentPosition2(callable, i, j)
 }
 
 /** A flow sink specification: parameter of a delegate argument. */
@@ -487,84 +477,6 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
 /** Data flow for `System.Collections.IEnumerable` (and sub types). */
 class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   IEnumerableFlow() { this.getABaseType*() instanceof SystemCollectionsIEnumerableInterface }
-
-  override predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    preservesValue = true and
-    (
-      c = this.getFind() and
-      sourceAp = AccessPath::element() and
-      sinkAp = AccessPath::empty() and
-      if c.(Method).isStatic()
-      then
-        source = TCallableFlowSourceArg(0) and
-        (
-          sink = TCallableFlowSinkReturn() or
-          sink = getDelegateFlowSinkArg(c, 1, 0)
-        )
-      else (
-        source = TCallableFlowSourceQualifier() and
-        (
-          sink = TCallableFlowSinkReturn() or
-          sink = getDelegateFlowSinkArg(c, 0, 0)
-        )
-      )
-      or
-      exists(string name, int arity |
-        arity = c.getNumberOfParameters() and
-        c = this.getAMethod() and
-        c.getUndecoratedName() = name
-      |
-        name = "Add" and
-        arity = 1 and
-        source = TCallableFlowSourceArg(0) and
-        sourceAp = AccessPath::empty() and
-        sink instanceof CallableFlowSinkQualifier and
-        sinkAp = AccessPath::element()
-        or
-        name = "AddRange" and
-        arity = 1 and
-        source = TCallableFlowSourceArg(0) and
-        sourceAp = AccessPath::element() and
-        sink = TCallableFlowSinkQualifier() and
-        sinkAp = AccessPath::element()
-        or
-        exists(Property current |
-          name = "GetEnumerator" and
-          source = TCallableFlowSourceQualifier() and
-          sourceAp = AccessPath::element() and
-          sink = TCallableFlowSinkReturn() and
-          sinkAp = AccessPath::property(current) and
-          current = c.getReturnType().(ValueOrRefType).getProperty("Current")
-        )
-        or
-        name = "Repeat" and
-        c.(Method).isStatic() and
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sourceAp = AccessPath::empty() and
-        sink = TCallableFlowSinkReturn() and
-        sinkAp = AccessPath::element()
-        or
-        name = "Reverse" and
-        source = TCallableFlowSourceArg(0) and
-        sourceAp = AccessPath::element() and
-        sink = TCallableFlowSinkReturn() and
-        sinkAp = AccessPath::element()
-      )
-    )
-  }
-
-  private SourceDeclarationMethod getFind() {
-    exists(string name |
-      name = result.getUndecoratedName() and
-      result.getDeclaringType() = this.getABaseType*()
-    |
-      name.regexpMatch("Find(All|Last)?")
-    )
-  }
 
   override predicate clearsContent(
     CallableFlowSource source, Content content, SourceDeclarationCallable callable

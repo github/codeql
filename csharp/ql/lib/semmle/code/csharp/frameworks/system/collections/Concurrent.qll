@@ -39,3 +39,11 @@ private class SystemCollectionsConcurrentIProducerConsumerCollectionFlowModelCsv
       "System.Collections.Concurrent;IProducerConsumerCollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
   }
 }
+
+/** Data flow for `System.Collections.Concurrent.ConcurrentBag<>`. */
+private class SystemCollectionsConcurrentConcurrentBagFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Element of Argument[-1];value"
+  }
+}

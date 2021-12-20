@@ -105,3 +105,19 @@ private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryM
       "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value"
   }
 }
+
+/** Data flow for `System.Net.CookieCollection`. */
+private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Element of Argument[-1];value"
+  }
+}
+
+/** Data flow for `System.Net.WebHeaderCollection`. */
+private class SystemNetWebHeaderCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value"
+  }
+}

@@ -28,3 +28,11 @@ private class SystemComponentModelDesignDesignerVerbCollectionFlowModelCsv exten
       ]
   }
 }
+
+/** Data flow for `System.ComponentModel.Design.DesignerCollection`. */
+private class SystemComponentModelDesignDesignerCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.ComponentModel.Design;DesignerCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+  }
+}

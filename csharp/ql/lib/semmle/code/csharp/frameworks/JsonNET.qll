@@ -293,4 +293,12 @@ module JsonNET {
         ]
     }
   }
+
+  /** Data flow for `Newtonsoft.JSon.Linq.JContainer` */
+  private class NewtonsoftJsonLinqJContainerFlowModelCsv extends SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        "Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value"
+    }
+  }
 }

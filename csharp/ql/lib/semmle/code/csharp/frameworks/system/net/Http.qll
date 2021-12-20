@@ -12,3 +12,19 @@ private class SystemNetHttpHttpRequestOptionsFlowModelCsv extends SummaryModelCs
       ]
   }
 }
+
+/** Data flow for `System.Net.Http.MultipartContent`. */
+private class SystemNetHttpMultipartContentFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net.Http;MultipartContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Element of Argument[-1];value"
+  }
+}
+
+/** Data flow for `System.Net.Http.MultipartFormDataContent`. */
+private class SystemNetHttpMultipartFormDataContentFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net.Http;MultipartFormDataContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Element of Argument[-1];value"
+  }
+}

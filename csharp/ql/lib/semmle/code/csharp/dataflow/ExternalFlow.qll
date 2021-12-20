@@ -105,6 +105,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.Linq
   private import semmle.code.csharp.frameworks.system.Net
   private import semmle.code.csharp.frameworks.system.net.Http
+  private import semmle.code.csharp.frameworks.system.net.Mail
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices

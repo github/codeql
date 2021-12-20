@@ -58,6 +58,17 @@ private class SystemCollectionsImmutableImmutableSortedDictionaryFlowModelCsv ex
   }
 }
 
+/** Data flow for `System.Collections.Immutable.IImmutableList<>. */
+private class SystemCollectionsImmutableIImmutableListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Immutable;IImmutableList<>;true;Add;(T);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;IImmutableList<>;true;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value",
+      ]
+  }
+}
+
 /** Data flow for `System.Collections.Immutable.ImmutableList<>. */
 private class SystemCollectionsImmutableImmutableListFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
@@ -106,5 +117,59 @@ private class SystemCollectionsImmutableImmutableSortedSetFlowModelCsv extends S
         "System.Collections.Immutable;ImmutableSortedSet<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
         "System.Collections.Immutable;ImmutableSortedSet<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
       ]
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.IImmutableSet<>. */
+private class SystemCollectionsImmutableIImmutableSetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Immutable;IImmutableSet<>;true;Add;(T);;Argument[0];Element of Argument[-1];value"
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.ImmutableArray<>. */
+private class SystemCollectionsImmutableImmutableArrayFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(System.Collections.Immutable.ImmutableArray<>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(System.Collections.Immutable.ImmutableArray<>+Builder);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange;(T[]);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange<>;(System.Collections.Immutable.ImmutableArray<TDerived>);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange<>;(System.Collections.Immutable.ImmutableArray<TDerived>+Builder);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;AddRange<>;(TDerived[]);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableArray<>+Builder;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.ImmutableHashSet<>. */
+private class SystemCollectionsImmutableImmutableHashSetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Immutable;ImmutableHashSet<>+Builder;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Immutable;ImmutableHashSet<>;false;Add;(T);;Argument[0];Element of Argument[-1];value",
+        "System.Collections.Immutable;ImmutableHashSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current] of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.ImmutableQueue<>. */
+private class SystemCollectionsImmutableImmutableQueueFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Immutable;ImmutableQueue<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableQueue<>+Enumerator.Current] of ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.Collections.Immutable.ImmutableStack<>. */
+private class SystemCollectionsImmutableImmutableStackFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Immutable;ImmutableStack<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Immutable.ImmutableStack<>+Enumerator.Current] of ReturnValue;value"
   }
 }

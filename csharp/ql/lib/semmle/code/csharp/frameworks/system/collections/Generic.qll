@@ -317,3 +317,42 @@ private class SystemCollectionsGenericStackFlowModelCsv extends SummaryModelCsv 
       ]
   }
 }
+
+/** Data flow for `System.Collections.Generic.HashSet<>. */
+private class SystemCollectionsGenericHashSetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Generic;HashSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.HashSet<>+Enumerator.Current] of ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.Collections.Generic.ISet<>. */
+private class SystemCollectionsGenericISetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Generic;ISet<>;true;Add;(T);;Argument[0];Element of Argument[-1];value"
+  }
+}
+
+/** Data flow for `System.Collections.Generic.LinkedList<>. */
+private class SystemCollectionsGenericLinkedListFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;LinkedList<>;false;Find;(T);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;LinkedList<>;false;FindLast;(T);;Element of Argument[-1];ReturnValue;value",
+        "System.Collections.Generic;LinkedList<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.LinkedList<>+Enumerator.Current] of ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Generic.SortedSet<>. */
+private class SystemCollectionsGenericSortedSetFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Collections.Generic;SortedSet<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.SortedSet<>+Enumerator.Current] of ReturnValue;value",
+        "System.Collections.Generic;SortedSet<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+      ]
+  }
+}
