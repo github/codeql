@@ -23,7 +23,7 @@ private newtype TCompletion =
   TRetryCompletion() or
   TRaiseCompletion() or // TODO: Add exception type?
   TExitCompletion() or
-  TNestedCompletion(Completion inner, Completion outer, int nestLevel) {
+  TNestedCompletion(TCompletion inner, TCompletion outer, int nestLevel) {
     inner = TBreakCompletion() and
     outer instanceof NonNestedNormalCompletion and
     nestLevel = 0
@@ -37,7 +37,7 @@ private newtype TCompletion =
   }
 
 pragma[noinline]
-private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
+private predicate nestedEnsureCompletion(TCompletion outer, int nestLevel) {
   (
     outer = TReturnCompletion()
     or
