@@ -5,7 +5,7 @@
 import go
 private import semmle.go.security.OpenUrlRedirectCustomizations
 
-/** Provides classes and methods modelling the Revel web framework. */
+/** Provides classes and methods modeling the Revel web framework. */
 module Revel {
   /** Gets the package name `github.com/revel/revel`. */
   string packagePath() { result = package(["github.com/revel", "github.com/robfig"], "revel") }

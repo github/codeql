@@ -60,7 +60,7 @@ module Protobuf {
   }
 
   /**
-   * Additional taint-flow step modelling flow from `MarshalInput.Message` to `MarshalOutput`,
+   * Additional taint-flow step modeling flow from `MarshalInput.Message` to `MarshalOutput`,
    * mediated by a `MarshalOptions.MarshalState` call.
    *
    * Note we can taint the whole `MarshalOutput` as it only has one field (`Buf`), and taint-

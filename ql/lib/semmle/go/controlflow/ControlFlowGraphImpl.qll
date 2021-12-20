@@ -489,7 +489,7 @@ module CFG {
     /**
      * A completion indicating that an expression was successfully evaluated to Boolean value `b`.
      *
-     * Note that many Boolean expressions are modelled as having completion `Done()` instead.
+     * Note that many Boolean expressions are modeled as having completion `Done()` instead.
      * Completion `Bool` is only used in contexts where the Boolean value can be determined.
      */
     Bool(boolean b) { b = true or b = false } or

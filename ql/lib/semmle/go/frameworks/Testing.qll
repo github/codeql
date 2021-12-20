@@ -87,7 +87,7 @@ module TestFile {
   }
 }
 
-/** Provides classes modelling Ginkgo. */
+/** Provides classes modeling Ginkgo. */
 module Ginkgo {
   /** Gets the package path `github.com/onsi/ginkgo`. */
   string packagePath() { result = package("github.com/onsi/ginkgo", "") }
