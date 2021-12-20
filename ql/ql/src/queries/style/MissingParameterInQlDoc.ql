@@ -42,34 +42,35 @@ private string getAMentionedNonParameter(Predicate p) {
   ) and
   result.regexpMatch("^[a-z]\\w+$") and
   not result.toLowerCase() = getAParameterName(p).toLowerCase() and
-  not result = ["true", "false", "NaN"] and // keywords
-  not result.regexpMatch("\\d+") and // numbers
+  not result = ["true", "false", "NaN", "this"] and // keywords
+  not result = getMentionedPredicates(p.getLocation().getFile()) and
+  // variables inside the predicate are also fine
+  not result = any(VarDecl var | var.getEnclosingPredicate() = p).getName()
+}
+
+/** Gets the names of all predicates that are mentioned in `file`. */
+pragma[noinline]
+private string getMentionedPredicates(File file) {
   // predicates get mentioned all the time, it's fine.
-  not result =
-    any(Predicate pred | pred.getLocation().getFile() = p.getLocation().getFile()).getName() and
-  // classes get mentioned all the time, it's fine.
-  not result =
-    any(TypeExpr t | t.getLocation().getFile() = p.getLocation().getFile())
-        .getResolvedType()
-        .getName()
+  result = any(Predicate pred | pred.getLocation().getFile() = file).getName() or
+  result = any(Call c | c.getLocation().getFile() = file).getTarget().getName()
 }
 
 /** Gets a parameter name from `p` that is not mentioned in the qldoc. */
 private string getAnUndocumentedParameter(Predicate p) {
   result = getAParameterName(p) and
   not result.toLowerCase() = getADocumentedParameter(p).toLowerCase() and
-  not result = ["config", "conf", "cfg"] // DataFlow configurations are often undocumented, and that's fine.
-}
-
-/** Holds if `p` has documented parameters, but `param` is undocumented */
-private predicate missingDocumentation(Predicate p, string param) {
-  param = getAnUndocumentedParameter(p) and
-  exists(getADocumentedParameter(p))
+  not result = ["config", "conf", "cfg"] and // DataFlow configurations are often undocumented, and that's fine.
+  not (
+    // "the given" often refers to the first parameter.
+    p.getQLDoc().getContents().regexpMatch("(?s).*\\bthe given\\b.*") and
+    result = p.getParameter(0).getName()
+  )
 }
 
 /** Gets the one string containing the undocumented parameters from `p` */
 private string getUndocumentedParameters(Predicate p) {
-  result = strictconcat(string param | missingDocumentation(p, param) | param, ", or ")
+  result = strictconcat(string param | param = getAnUndocumentedParameter(p) | param, ", or ")
 }
 
 /** Gets the parameter-like names mentioned in the QLDoc of `p` that are not parameters. */
@@ -78,6 +79,7 @@ private string getMentionedNonParameters(Predicate p) {
 }
 
 from Predicate p
+where not p.getLocation().getFile().getBaseName() = "Aliases.qll" // these are OK
 select p,
   "The QLDoc has no documentation for " + getUndocumentedParameters(p) + ", but the QLDoc mentions "
     + getMentionedNonParameters(p)
