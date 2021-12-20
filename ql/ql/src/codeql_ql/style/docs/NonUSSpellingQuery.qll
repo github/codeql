@@ -5,7 +5,7 @@ predicate non_us_word(string wrong, string right) {
     s =
       [
         "colour/color", "authorise/authorize", "analyse/analyze", "behaviour/behavior",
-        "modelling/modeling"
+        "modelling/modeling", "modelled/modeled"
       ]
   )
 }
