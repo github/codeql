@@ -297,7 +297,7 @@ module Routing {
      *   req.app; // alias for 'app'
      * })
      * ```
-     * This can be modelled by mapping `(0, "app")` to the `app` data-flow node (`n=0` corresponds
+     * This can be modeled by mapping `(0, "app")` to the `app` data-flow node (`n=0` corresponds
      * to the `req` parameter).
      */
     DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) { none() }
@@ -466,7 +466,7 @@ module Routing {
     }
 
     /**
-     * A node flowing into a use site, modelled as a child of the use site.
+     * A node flowing into a use site, modeled as a child of the use site.
      */
     private class UseSiteSource extends UseSite {
       UseSiteSource() { this = any(UseSite use).getSource() }
@@ -717,7 +717,7 @@ module Routing {
   /**
    * A call where a mutable router object escapes into a parameter or is returned from a function.
    *
-   * This is modelled as a route setup targeting the "local router" value and having
+   * This is modeled as a route setup targeting the "local router" value and having
    * the "target router" as its only child.
    *
    * For example,

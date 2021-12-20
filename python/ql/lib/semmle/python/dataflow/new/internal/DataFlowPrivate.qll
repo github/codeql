@@ -385,7 +385,7 @@ private Node update(Node node) {
  * ```python
  * f(0, 1, 2, a=3)
  * ```
- * will be modelled as
+ * will be modeled as
  * ```python
  * f(0, 1, [*t], [**d])
  * ```
@@ -398,7 +398,7 @@ private Node update(Node node) {
  * ```python
  * f(0, **{"y": 1, "a": 3})
  * ```
- * no tuple argument is synthesized. It is modelled as
+ * no tuple argument is synthesized. It is modeled as
  * ```python
  * f(0, [y=1], [**d])
  * ```

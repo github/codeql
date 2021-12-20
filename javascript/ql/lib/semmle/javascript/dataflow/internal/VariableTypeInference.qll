@@ -475,7 +475,7 @@ private newtype TAnalyzedGlobal =
   TAnalyzedGlocal(GlobalVariable gv, TopLevel tl) { useIn(gv, _, tl) and exists(defIn(gv, tl)) } or
   /**
    * A global variable that is used in at least one toplevel where it is not defined, and
-   * hence has to be modelled as a truly global variable.
+   * hence has to be modeled as a truly global variable.
    */
   TAnalyzedGenuineGlobal(GlobalVariable gv) {
     exists(TopLevel tl |
@@ -525,7 +525,7 @@ private class AnalyzedGlocal extends AnalyzedGlobal, TAnalyzedGlocal {
 
 /**
  * A global variable that is used in at least one toplevel where it is not defined, and
- * hence has to be modelled as a truly global variable.
+ * hence has to be modeled as a truly global variable.
  */
 private class AnalyzedGenuineGlobal extends AnalyzedGlobal, TAnalyzedGenuineGlobal {
   GlobalVariable gv;

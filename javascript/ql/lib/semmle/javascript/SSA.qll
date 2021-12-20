@@ -12,7 +12,7 @@
  *    affect `x`, while `yield` expressions in functions other than `f`
  *    still may affect it.
  *
- * This is modelled as follows.
+ * This is modeled as follows.
  *
  * Within each function `g` that accesses a variable `x` declared in an
  * enclosing function `f`, we introduce a pseudo-assignment to `x` called
