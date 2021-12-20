@@ -14,7 +14,7 @@ predicate non_us_word(string wrong, string right) {
   exists(string s |
     wrong = s.splitAt("/", 0) and
     right = s.splitAt("/", 1) and
-    s = ["colour/color", "authorise/authorize", "analyse/analyze"]
+    s = ["colour/color", "authorise/authorize", "analyse/analyze", "behaviour/behavior"]
   )
 }
 
