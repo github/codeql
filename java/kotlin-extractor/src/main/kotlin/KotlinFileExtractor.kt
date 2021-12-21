@@ -662,6 +662,8 @@ open class KotlinFileExtractor(
                 if (s.isLocalFunction()) {
                     val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
                     extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
+                    val ids = getLocallyVisibleFunctionLabels(s)
+                    tw.writeKtLocalFunction(ids.function)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }

@@ -2,3 +2,4 @@
 | classes.kt:118:9:123:9 | class ... | classes.kt:118:9:123:9 |  | classes.kt:117:5:124:5 | fn2 | classes.kt:109:1:136:1 | C1 |
 | classes.kt:119:13:121:13 | class ... | classes.kt:119:13:121:13 | Local2 | classes.kt:118:9:123:9 | localFn | classes.kt:109:1:136:1 | C1 |
 | classes.kt:129:17:131:17 | class ... | classes.kt:129:17:131:17 | Local3 | classes.kt:128:13:133:13 | fn | classes.kt:127:16:134:9 | new Object(...) { ... } |
+| local_anonymous.kt:25:9:25:27 | class ... | local_anonymous.kt:25:9:25:27 | LocalClass | local_anonymous.kt:24:5:27:5 | fn5 | local_anonymous.kt:3:1:28:1 | Class1 |

@@ -463,6 +463,9 @@ class Method extends Callable, @method {
     not this.getDeclaringType().isFinal()
   }
 
+  /** Holds if this method is a Kotlin local function. */
+  predicate isLocal() { ktLocalFunction(this) }
+
   override string getAPrimaryQlClass() { result = "Method" }
 }
 

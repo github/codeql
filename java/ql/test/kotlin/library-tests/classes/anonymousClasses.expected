@@ -6,3 +6,5 @@
 | classes.kt:85:16:85:25 | new Object(...) { ... } | classes.kt:85:16:85:25 | new (...) |  | classes.kt:85:16:85:25 | Object | classes.kt:85:16:85:25 | class ... |
 | classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:89:16:89:44 | new (...) |  | classes.kt:89:16:89:44 | Interface3<Integer> | classes.kt:89:16:89:44 | class ... |
 | classes.kt:127:16:134:9 | new Object(...) { ... } | classes.kt:127:16:134:9 | new (...) |  | classes.kt:127:16:134:9 | Object | classes.kt:127:16:134:9 | class ... |
+| local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | local_anonymous.kt:5:16:7:9 | new (...) |  | local_anonymous.kt:5:16:7:9 | Object | local_anonymous.kt:5:16:7:9 | class ... |
+| local_anonymous.kt:11:9:11:24 | new Object(...) { ... } | local_anonymous.kt:12:9:12:17 | new (...) |  | local_anonymous.kt:12:9:12:17 | Object | local_anonymous.kt:11:9:11:24 | class ... |
