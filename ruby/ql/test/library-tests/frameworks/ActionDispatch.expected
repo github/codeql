@@ -45,6 +45,6 @@ underscore
 | Foo::Bar::BazQuux | foo/bar/baz_quux |
 | FooBar | foo_bar |
 | FooBar::Baz | foo_bar/baz |
-| HTTPServerRequest | h_tT_p_server_request |
+| HTTPServerRequest | httpserver_request |
 | LotsOfCapitalLetters | lots_of_capital_letters |
 | invalid | invalid |

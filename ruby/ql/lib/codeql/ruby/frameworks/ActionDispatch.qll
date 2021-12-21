@@ -815,64 +815,34 @@ module ActionDispatch {
    * Convert a camel-case string to underscore case. Converts `::` to `/`.
    * This can be used to convert ActiveRecord controller names to a canonical form that matches the routes they handle.
    * Note: All-uppercase words like `CONSTANT` are not handled correctly.
-   * TODO: is there a more concise way to write this?
    */
-  bindingset[input]
-  string underscore(string input) {
+  bindingset[base]
+  string underscore(string base) {
+    base = "" and result = ""
+    or
     result =
-      decapitalize(input
-            .regexpReplaceAll("([^:])A", "$1_a")
-            .regexpReplaceAll("([^:])B", "$1_b")
-            .regexpReplaceAll("([^:])C", "$1_c")
-            .regexpReplaceAll("([^:])D", "$1_d")
-            .regexpReplaceAll("([^:])E", "$1_e")
-            .regexpReplaceAll("([^:])F", "$1_f")
-            .regexpReplaceAll("([^:])G", "$1_g")
-            .regexpReplaceAll("([^:])H", "$1_h")
-            .regexpReplaceAll("([^:])I", "$1_i")
-            .regexpReplaceAll("([^:])J", "$1_j")
-            .regexpReplaceAll("([^:])K", "$1_k")
-            .regexpReplaceAll("([^:])L", "$1_l")
-            .regexpReplaceAll("([^:])M", "$1_m")
-            .regexpReplaceAll("([^:])N", "$1_n")
-            .regexpReplaceAll("([^:])O", "$1_o")
-            .regexpReplaceAll("([^:])P", "$1_p")
-            .regexpReplaceAll("([^:])Q", "$1_q")
-            .regexpReplaceAll("([^:])R", "$1_r")
-            .regexpReplaceAll("([^:])S", "$1_s")
-            .regexpReplaceAll("([^:])T", "$1_t")
-            .regexpReplaceAll("([^:])U", "$1_u")
-            .regexpReplaceAll("([^:])V", "$1_v")
-            .regexpReplaceAll("([^:])W", "$1_w")
-            .regexpReplaceAll("([^:])X", "$1_x")
-            .regexpReplaceAll("([^:])Y", "$1_y")
-            .regexpReplaceAll("([^:])Z", "$1_z")
-            .regexpReplaceAll("::A", "/a")
-            .regexpReplaceAll("::B", "/b")
-            .regexpReplaceAll("::C", "/c")
-            .regexpReplaceAll("::D", "/d")
-            .regexpReplaceAll("::E", "/e")
-            .regexpReplaceAll("::F", "/f")
-            .regexpReplaceAll("::G", "/g")
-            .regexpReplaceAll("::H", "/h")
-            .regexpReplaceAll("::I", "/i")
-            .regexpReplaceAll("::J", "/j")
-            .regexpReplaceAll("::K", "/k")
-            .regexpReplaceAll("::L", "/l")
-            .regexpReplaceAll("::M", "/m")
-            .regexpReplaceAll("::N", "/n")
-            .regexpReplaceAll("::O", "/o")
-            .regexpReplaceAll("::P", "/p")
-            .regexpReplaceAll("::Q", "/q")
-            .regexpReplaceAll("::R", "/r")
-            .regexpReplaceAll("::S", "/s")
-            .regexpReplaceAll("::T", "/t")
-            .regexpReplaceAll("::U", "/u")
-            .regexpReplaceAll("::V", "/v")
-            .regexpReplaceAll("::W", "/w")
-            .regexpReplaceAll("::X", "/x")
-            .regexpReplaceAll("::Y", "/y")
-            .regexpReplaceAll("::Z", "/z"))
+      base.charAt(0).toLowerCase() +
+        // Walk along the string, keeping track of the previous character
+        // in order to determine if we've crossed a boundary.
+        // Boundaries are:
+        // - lower case to upper case: B in FooBar
+        // - entering a namespace: B in Foo::Bar
+        concat(int i, string prev, string char |
+          prev = base.charAt(i) and
+          char = base.charAt(i + 1)
+        |
+          any(string s |
+              char.regexpMatch("[A-Za-z0-9]") and
+              if prev = ":"
+              then s = "/" + char.toLowerCase()
+              else
+                if prev.isLowercase() and char.isUppercase()
+                then s = "_" + char.toLowerCase()
+                else s = char.toLowerCase()
+            )
+          order by
+            i
+        )
   }
 
   /**
