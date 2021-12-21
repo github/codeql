@@ -205,7 +205,7 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(StmtSequence parent | inBooleanContext(parent)).getLastStmt()
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     not exists(c.getValue()) and
     c.getABranch() = w and
     w.getPattern(_) = n
@@ -227,7 +227,7 @@ private predicate mustHaveMatchingCompletion(AstNode n) {
 private predicate inMatchingContext(AstNode n) {
   n = any(RescueClause r).getException(_)
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
     c.getABranch() = w and
     w.getPattern(_) = n

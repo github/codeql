@@ -134,7 +134,7 @@ module LocalFlow {
     |
       stmt = c.getElseBranch() or
       stmt = c.getABranch().(InClause).getBody() or
-      stmt = c.getABranch().(WhenExpr).getBody()
+      stmt = c.getABranch().(WhenClause).getBody()
     )
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |

@@ -8,10 +8,10 @@ abstract class CaseExprImpl extends ControlExpr, TCase {
   abstract AstNode getBranch(int n);
 }
 
-class CaseWhenExpr extends CaseExprImpl, TCaseExpr {
+class CaseWhenClause extends CaseExprImpl, TCaseExpr {
   private Ruby::Case g;
 
-  CaseWhenExpr() { this = TCaseExpr(g) }
+  CaseWhenClause() { this = TCaseExpr(g) }
 
   final override Expr getValue() { toGenerated(result) = g.getValue() }
 

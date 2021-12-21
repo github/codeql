@@ -399,7 +399,7 @@ module Trees {
       (
         last(this.getValue(), pred, c) and not exists(this.getABranch())
         or
-        last(this.getABranch().(WhenExpr).getBody(), pred, c)
+        last(this.getABranch().(WhenClause).getBody(), pred, c)
         or
         exists(int i, ControlFlowTree lastBranch |
           lastBranch = this.getBranch(i) and
@@ -1370,7 +1370,7 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
-  private class WhenTree extends PreOrderTree, WhenExpr {
+  private class WhenTree extends PreOrderTree, WhenClause {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
 
     final Expr getLastPattern() {
