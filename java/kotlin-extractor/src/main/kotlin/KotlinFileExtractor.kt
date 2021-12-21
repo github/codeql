@@ -201,13 +201,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extracLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         @Suppress("UNCHECKED_CAST")
         val id = extractClassSource(c) as Label<out DbClass>
-        extracLocalTypeDeclStmt(id, c, callable, parent, idx)
+        extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
-    private fun extracLocalTypeDeclStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractLocalTypeDeclStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val stmtId = tw.getFreshIdLabel<DbLocaltypedeclstmt>()
         tw.writeStmts_localtypedeclstmt(stmtId, parent, idx, callable)
         tw.writeIsLocalClassOrInterface(id, stmtId)
@@ -656,16 +656,12 @@ open class KotlinFileExtractor(
                 extractVariable(s, callable, parent, idx)
             }
             is IrClass -> {
-                if (s.isAnonymousObject) {
-                    extracLocalTypeDeclStmt(s, callable, parent, idx)
-                } else {
-                    logger.warnElement(Severity.ErrorSevere, "Found non anonymous IrClass as IrStatement: " + s.javaClass, s)
-                }
+                extractLocalTypeDeclStmt(s, callable, parent, idx)
             }
             is IrFunction -> {
                 if (s.isLocalFunction()) {
                     val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
-                    extracLocalTypeDeclStmt(classId, s, callable, parent, idx)
+                    extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }

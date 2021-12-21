@@ -106,3 +106,31 @@ class nestedClassVisibilities {
 sealed class sealedClass {}
 open class openClass {}
 
+class C1 {
+    fun fn1(p: Int) {
+        class Local1<T1> {
+            fun foo(p: Int) { }
+        }
+        Local1<Int>().foo(p)
+    }
+
+    fun fn2(p: Int) {
+        fun localFn() {
+            class Local2<T1> {
+                fun foo(p: Int) { }
+            }
+            Local2<Int>().foo(p)
+        }
+    }
+
+    fun fn3(p: Int): Any {
+        return object {
+            fun fn() {
+                class Local3<T1> {
+                    fun foo(p: Int) { }
+                }
+                Local3<Int>().foo(p)
+            }
+        }
+    }
+}

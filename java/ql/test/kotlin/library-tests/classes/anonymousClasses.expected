@@ -5,3 +5,4 @@
 | classes.kt:81:16:81:38 | new Interface1(...) { ... } | classes.kt:81:16:81:38 | new (...) |  | classes.kt:81:16:81:38 | Interface1 | classes.kt:81:16:81:38 | class ... |
 | classes.kt:85:16:85:25 | new Object(...) { ... } | classes.kt:85:16:85:25 | new (...) |  | classes.kt:85:16:85:25 | Object | classes.kt:85:16:85:25 | class ... |
 | classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | classes.kt:89:16:89:44 | new (...) |  | classes.kt:89:16:89:44 | Interface3<Integer> | classes.kt:89:16:89:44 | class ... |
+| classes.kt:127:16:134:9 | new Object(...) { ... } | classes.kt:127:16:134:9 | new (...) |  | classes.kt:127:16:134:9 | Object | classes.kt:127:16:134:9 | class ... |

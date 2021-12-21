@@ -658,13 +658,18 @@ class X {
     private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
-        val parent = c.parent
-        val label = if (parent is IrClass) {
-            // todo: fix this. Ugly string concat to handle nested class IDs.
-            // todo: Can the containing class have type arguments?
-            "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
-        } else {
-            if (pkg.isEmpty()) cls else "$pkg.$cls"
+        val label = when (val parent = c.parent) {
+            is IrClass -> {
+                // todo: fix this. Ugly string concat to handle nested class IDs.
+                // todo: Can the containing class have type arguments?
+                "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
+            }
+            is IrFunction -> {
+                "{${useFunction<DbMethod>(parent)}}.$cls"
+            }
+            else -> {
+                if (pkg.isEmpty()) cls else "$pkg.$cls"
+            }
         }
 
         val typeArgLabels = typeArgs?.map { getTypeArgumentLabel(it) }
