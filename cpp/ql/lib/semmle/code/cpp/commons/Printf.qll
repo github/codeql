@@ -1197,9 +1197,9 @@ class FormatLiteral extends Literal {
           // The second case uses range analysis to deduce a length that's shorter than the length
           // of the number -2^31.
           exists(Expr arg, float lower, float upper |
-            arg = this.getUse().getConversionArgument(n).getFullyConverted() and
-            lower = lowerBound(arg) and
-            upper = upperBound(arg)
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted())
           |
             valueBasedBound =
               max(int cand |
@@ -1216,6 +1216,8 @@ class FormatLiteral extends Literal {
                   else cand = lengthInBase10(upper)
                 )
               ) and
+            // we don't want to call this on `arg.getFullyConverted()` as we want
+            // to detect non-trivial range analysis without taking into account up-casting
             reason = getEstimationReasonForIntegralExpression(arg)
           ) and
           len = valueBasedBound.minimum(typeBasedBound)
@@ -1229,9 +1231,9 @@ class FormatLiteral extends Literal {
           // The second case uses range analysis to deduce a length that's shorter than
           // the length of the number 2^31 - 1.
           exists(Expr arg, float lower, float upper |
-            arg = this.getUse().getConversionArgument(n).getFullyConverted() and
-            lower = lowerBound(arg) and
-            upper = upperBound(arg)
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted())
           |
             valueBasedBound =
               lengthInBase10(max(float cand |
@@ -1241,6 +1243,8 @@ class FormatLiteral extends Literal {
                   or
                   cand = upper
                 )) and
+            // we don't want to call this on `arg.getFullyConverted()` as we want
+            // to detect non-trivial range analysis without taking into account up-casting
             reason = getEstimationReasonForIntegralExpression(arg)
           ) and
           len = valueBasedBound.minimum(typeBasedBound)
