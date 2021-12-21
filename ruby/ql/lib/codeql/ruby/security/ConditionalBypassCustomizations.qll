@@ -1,7 +1,6 @@
 /**
- * Provides default sources, sinks and sanitizers for reasoning about
- * bypass of sensitive action guards, as well as extension points for
- * adding your own.
+ * Provides default sources, sinks, and sanitizers for reasoning about bypass of
+ * sensitive action guards, as well as extension points for adding your own.
  */
 
 private import codeql.ruby.CFG
@@ -10,6 +9,10 @@ private import codeql.ruby.controlflow.BasicBlocks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.security.SensitiveActions
 
+/**
+ * Provides default sources, sinks, and sanitizers for reasoning about bypass of
+ * sensitive action guards, as well as extension points for adding your own.
+ */
 module ConditionalBypass {
   /**
    * A data flow source for bypass of sensitive action guards.
