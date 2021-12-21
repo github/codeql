@@ -90,7 +90,7 @@ module ActionDispatch {
      * The zeroth parent is this block, the first parent is the direct parent of this block, etc.
      */
     RouteBlock getParent(int n) {
-      if n = 0 then result = this else result = getParent().getParent(n - 1)
+      if n = 0 then result = this else result = this.getParent().getParent(n - 1)
     }
 
     /**
@@ -302,9 +302,9 @@ module ActionDispatch {
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
-    override string getPathComponent() { result = getNamespace() }
+    override string getPathComponent() { result = this.getNamespace() }
 
-    override string getControllerComponent() { result = getNamespace() }
+    override string getControllerComponent() { result = this.getNamespace() }
 
     private string getNamespace() { result = call.getArgument(0).getValueText() }
 
@@ -407,8 +407,8 @@ module ActionDispatch {
      */
     string getControllerComponent(int n) {
       if n = 0
-      then result = getLastControllerComponent()
-      else result = getParentBlock().getParent(n - 1).getControllerComponent()
+      then result = this.getLastControllerComponent()
+      else result = this.getParentBlock().getParent(n - 1).getControllerComponent()
     }
 
     /**
@@ -417,9 +417,9 @@ module ActionDispatch {
     string getController() {
       result =
         concat(int n |
-          getControllerComponent(n) != ""
+          this.getControllerComponent(n) != ""
         |
-          getControllerComponent(n), "/" order by n desc
+          this.getControllerComponent(n), "/" order by n desc
         )
     }
 
@@ -456,8 +456,8 @@ module ActionDispatch {
      */
     string getPathComponent(int n) {
       if n = 0
-      then result = getLastPathComponent()
-      else result = getParentBlock().getParent(n - 1).getPathComponent()
+      then result = this.getLastPathComponent()
+      else result = this.getParentBlock().getParent(n - 1).getPathComponent()
     }
 
     /**
@@ -466,10 +466,10 @@ module ActionDispatch {
     string getPath() {
       result =
         concat(int n |
-          getPathComponent(n) != ""
+          this.getPathComponent(n) != ""
         |
           // Strip leading and trailing slashes from each path component before combining
-          stripSlashes(getPathComponent(n)), "/" order by n desc
+          stripSlashes(this.getPathComponent(n)), "/" order by n desc
         )
     }
 
@@ -483,7 +483,7 @@ module ActionDispatch {
      * We don't currently make use of this, but it may be useful in future to more accurately
      * model the contents of the `params` hash.
      */
-    string getACapture() { result = getPathComponent(_).regexpFind(":[^:/]+", _, _) }
+    string getACapture() { result = this.getPathComponent(_).regexpFind(":[^:/]+", _, _) }
   }
 
   /**
@@ -805,7 +805,7 @@ module ActionDispatch {
   private string singularize(string input) {
     exists(string prefix | prefix = input.regexpCapture("(.*)ies", 1) | result = prefix + "y")
     or
-    not input.regexpMatch(".*ies") and
+    not input.matches("%ies") and
     exists(string prefix | prefix = input.regexpCapture("(.*)s", 1) | result = prefix)
     or
     not input.regexpMatch(".*(ies|s)") and result = input
