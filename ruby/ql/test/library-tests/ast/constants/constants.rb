@@ -29,9 +29,11 @@ def foo
 end
 
 class ModuleA::ClassD < ModuleA::ClassA
+  FOURTY_TWO = 42
 end
 
 module ModuleA::ModuleC
+  FOURTY_THREE = 43
 end
 
 ModuleA::ModuleB::MAX_SIZE = 1024
@@ -43,19 +45,30 @@ puts ::GREETING
 
 module ModuleA::ModuleB
   class ClassB < Base
+    FOURTY_FOUR = 44
   end
 end
 
 module ModuleA
+  FOURTY_FOUR = "fourty-four"
   class ModuleB::ClassB < Base
+    @@fourty_four = FOURTY_FOUR # refers to ::ModuleA::FOURTY_FOUR
+    FOURTY_FOUR = 44
+    @@fourty_four = FOURTY_FOUR # refers to ::ModuleA::ModuleB::ClassB::FOURTY_FOUR
   end
 end
 
 module Mod1
-  module Mod3 end
+  module Mod3
+    FOURTY_FIVE = 45
+  end
+  @@fourty_five = Mod3::FOURTY_FIVE
 end
 
 module Mod4
   include Mod1
-  module Mod3::Mod5 end
+  module Mod3::Mod5
+    FOURTY_SIX = 46
+  end
+  @@fourty_six = Mod3::FOURTY_SIX
 end

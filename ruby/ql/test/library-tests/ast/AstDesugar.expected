@@ -267,20 +267,12 @@ calls/calls.rb:
 #  340|             getArgument: [IntegerLiteral] 5
 #  340|             getArgument: [IntegerLiteral] 6
 control/cases.rb:
-#   91| [ArrayLiteral] %w(...)
-#   91|   getDesugared: [MethodCall] call to []
-#   91|     getReceiver: [ConstantReadAccess] Array
-#   91|     getArgument: [StringLiteral] "foo"
-#   91|       getComponent: [StringTextComponent] foo
-#   91|     getArgument: [StringLiteral] "bar"
-#   91|       getComponent: [StringTextComponent] bar
-#   92| [ArrayLiteral] %i(...)
-#   92|   getDesugared: [MethodCall] call to []
-#   92|     getReceiver: [ConstantReadAccess] Array
-#   92|     getArgument: [SymbolLiteral] :"foo"
-#   92|       getComponent: [StringTextComponent] foo
-#   92|     getArgument: [SymbolLiteral] :"bar"
-#   92|       getComponent: [StringTextComponent] bar
+#   79| [ArrayLiteral] [...]
+#   79|   getDesugared: [MethodCall] call to []
+#   79|     getReceiver: [ConstantReadAccess] Array
+#  108| [ArrayLiteral] [...]
+#  108|   getDesugared: [MethodCall] call to []
+#  108|     getReceiver: [ConstantReadAccess] Array
 constants/constants.rb:
 #   20| [ArrayLiteral] [...]
 #   20|   getDesugared: [MethodCall] call to []

@@ -9,8 +9,20 @@ callsWithNoArguments
 | break_ensure.rb:29:8:29:13 | call to nil? |
 | case.rb:2:8:2:9 | call to x1 |
 | case.rb:3:21:3:22 | call to x2 |
-| case.rb:88:8:88:9 | - ... |
-| case.rb:88:13:88:15 | + ... |
+| case.rb:28:10:28:28 | call to x |
+| case.rb:37:12:37:12 | call to a |
+| case.rb:37:15:37:15 | call to b |
+| case.rb:37:18:37:19 | * ... |
+| case.rb:37:19:37:19 | call to c |
+| case.rb:37:22:37:22 | call to d |
+| case.rb:37:25:37:25 | call to e |
+| case.rb:43:9:43:10 | * ... |
+| case.rb:43:10:43:10 | call to x |
+| case.rb:43:19:43:20 | * ... |
+| case.rb:43:20:43:20 | call to y |
+| case.rb:51:8:51:16 | call to Bar |
+| case.rb:65:12:65:12 | call to _ |
+| case.rb:91:18:91:19 | call to [] |
 | cfg.html.erb:12:24:12:24 | call to a |
 | cfg.html.erb:15:32:15:32 | call to a |
 | cfg.html.erb:16:32:16:32 | call to b |
@@ -82,15 +94,21 @@ positionalArguments
 | break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:51:14:51:14 | [ensure: raise] 0 |
 | case.rb:3:29:3:37 | call to puts | case.rb:3:34:3:37 | "x2" |
 | case.rb:4:17:4:24 | call to puts | case.rb:4:22:4:24 | "2" |
-| case.rb:14:13:14:18 | ... == ... | case.rb:14:18:14:18 | 5 |
-| case.rb:15:17:15:21 | ... < ... | case.rb:15:21:15:21 | 0 |
 | case.rb:28:14:28:25 | call to raise | case.rb:28:20:28:25 | "oops" |
-| case.rb:76:8:76:18 | call to [] | case.rb:76:11:76:13 | "foo" |
-| case.rb:76:8:76:18 | call to [] | case.rb:76:15:76:17 | "bar" |
-| case.rb:77:8:77:18 | call to [] | case.rb:77:11:77:13 | :"foo" |
-| case.rb:77:8:77:18 | call to [] | case.rb:77:15:77:17 | :"bar" |
-| case.rb:85:15:85:21 | ... == ... | case.rb:85:20:85:21 | 10 |
-| case.rb:97:13:97:18 | ... == ... | case.rb:97:18:97:18 | 5 |
+| case.rb:37:8:37:26 | call to Bar | case.rb:37:12:37:12 | call to a |
+| case.rb:37:8:37:26 | call to Bar | case.rb:37:15:37:15 | call to b |
+| case.rb:37:8:37:26 | call to Bar | case.rb:37:18:37:19 | * ... |
+| case.rb:37:8:37:26 | call to Bar | case.rb:37:22:37:22 | call to d |
+| case.rb:37:8:37:26 | call to Bar | case.rb:37:25:37:25 | call to e |
+| case.rb:43:8:43:21 | call to [] | case.rb:43:9:43:10 | * ... |
+| case.rb:43:8:43:21 | call to [] | case.rb:43:13:43:13 | 1 |
+| case.rb:43:8:43:21 | call to [] | case.rb:43:16:43:16 | 2 |
+| case.rb:43:8:43:21 | call to [] | case.rb:43:19:43:20 | * ... |
+| case.rb:65:8:65:12 | ... \| ... | case.rb:65:12:65:12 | call to _ |
+| case.rb:65:8:65:28 | ... \| ... | case.rb:65:16:65:28 | "unreachable" |
+| case.rb:91:9:91:14 | ... \| ... | case.rb:91:13:91:14 | "" |
+| case.rb:91:9:91:19 | ... \| ... | case.rb:91:18:91:19 | call to [] |
+| case.rb:91:9:91:24 | ... \| ... | case.rb:91:23:91:24 | {...} |
 | cfg.html.erb:6:9:6:58 | call to stylesheet_link_tag | cfg.html.erb:6:29:6:41 | "application" |
 | cfg.html.erb:6:9:6:58 | call to stylesheet_link_tag | cfg.html.erb:6:44:6:58 | Pair |
 | cfg.html.erb:12:11:12:33 | call to link_to | cfg.html.erb:12:19:12:21 | "A" |
