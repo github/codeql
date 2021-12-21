@@ -846,14 +846,6 @@ module ActionDispatch {
   }
 
   /**
-   * Convert the first character of the string to lowercase.
-   */
-  bindingset[input]
-  private string decapitalize(string input) {
-    result = input.charAt(0).toLowerCase() + input.suffix(1)
-  }
-
-  /**
    * Strip leading and trailing forward slashes from the string.
    */
   bindingset[input]
