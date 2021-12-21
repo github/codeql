@@ -525,10 +525,14 @@ class StringValuesFlow extends LibraryTypeDataFlow, Struct {
   ) {
     c.getDeclaringType() = this and
     (
-      source instanceof CallableFlowSourceArg or
-      source instanceof CallableFlowSourceQualifier
+      exists(Parameter p, int i |
+        p = c.getParameter(i) and
+        source = TCallableFlowSourceArg(i)
+      )
+      or
+      not c.(Method).isStatic() and source = TCallableFlowSourceQualifier()
     ) and
-    sink instanceof CallableFlowSinkReturn and
+    sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
 }
