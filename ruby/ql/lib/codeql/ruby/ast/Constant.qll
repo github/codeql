@@ -168,7 +168,7 @@ class ConstantWriteAccess extends ConstantAccess {
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
 
   /**
-   * Gets the fully qualified name for this constant, based on the context in
+   * Gets a fully qualified name for this constant, based on the context in
    * which it is defined.
    *
    *  For example, given

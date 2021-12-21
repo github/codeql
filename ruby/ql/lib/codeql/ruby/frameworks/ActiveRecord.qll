@@ -278,7 +278,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
   ActiveRecordModelFinderCall() {
     call = this.asExpr().getExpr() and
     recv = getUltimateReceiver(call) and
-    resolveConstant(recv) = cls.getQualifiedName() and
+    resolveConstant(recv) = cls.getAQualifiedName() and
     call.getMethodName() = finderMethodName()
   }
 
