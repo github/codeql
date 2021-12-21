@@ -207,7 +207,7 @@ class ConstantWriteAccess extends ConstantAccess {
   }
 
   /**
-   * gets a qualified name for this constant. Deprecated in favor of
+   * Gets a qualified name for this constant. Deprecated in favor of
    * `getAQualifiedName` because this can return more than one value
    */
   deprecated string getQualifiedName() {
