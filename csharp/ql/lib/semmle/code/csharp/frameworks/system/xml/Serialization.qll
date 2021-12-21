@@ -1,4 +1,4 @@
-/** Provides definitions related to the `System.Xml.Schema` namespace. */
+/** Provides definitions related to the `System.Xml.Serialization` namespace. */
 
 private import semmle.code.csharp.dataflow.ExternalFlow
 
