@@ -1,6 +1,8 @@
 var app = require('express')();
 app.set('view engine', 'hbs');
 
+app.use(require('body-parser').json());
+app.use(require('body-parser').urlencoded({ extended: false }));
 app.post('/path', function(req, res) {
     var bodyParameter = req.body.bodyParameter;
     var queryParameter = req.query.queryParameter;
@@ -26,3 +28,6 @@ function indirect(res, obj) {
 
     res.render("template", JSON.parse(str)); // NOT OK
 }
+
+let routes = require('./routes');
+app.post('/foo', routes.foo);

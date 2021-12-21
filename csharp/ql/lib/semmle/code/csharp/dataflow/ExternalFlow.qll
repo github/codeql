@@ -84,24 +84,44 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  private import semmle.code.csharp.security.dataflow.flowsources.Local
-  private import semmle.code.csharp.security.dataflow.flowsinks.Html
-  private import semmle.code.csharp.frameworks.System
-  private import semmle.code.csharp.security.dataflow.XSSSinks
+  private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.microsoft.VisualBasic
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
-  private import semmle.code.csharp.frameworks.EntityFramework
-  private import semmle.code.csharp.frameworks.system.Text
-  private import semmle.code.csharp.frameworks.system.Net
-  private import semmle.code.csharp.frameworks.system.Web
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.frameworks.system.Collections
+  private import semmle.code.csharp.frameworks.system.collections.Concurrent
   private import semmle.code.csharp.frameworks.system.collections.Generic
-  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
-  private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.system.collections.Immutable
+  private import semmle.code.csharp.frameworks.system.collections.ObjectModel
+  private import semmle.code.csharp.frameworks.system.collections.Specialized
+  private import semmle.code.csharp.frameworks.system.ComponentModel
+  private import semmle.code.csharp.frameworks.system.componentmodel.Design
+  private import semmle.code.csharp.frameworks.system.Data
+  private import semmle.code.csharp.frameworks.system.data.Common
+  private import semmle.code.csharp.frameworks.system.Diagnostics
+  private import semmle.code.csharp.frameworks.system.Dynamic
+  private import semmle.code.csharp.frameworks.system.Linq
+  private import semmle.code.csharp.frameworks.system.Net
+  private import semmle.code.csharp.frameworks.system.net.Http
+  private import semmle.code.csharp.frameworks.system.net.Mail
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
-  private import semmle.code.csharp.frameworks.system.Xml
-  private import semmle.code.csharp.frameworks.system.threading.Tasks
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.security.Cryptography
+  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
+  private import semmle.code.csharp.frameworks.system.Text
+  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
+  private import semmle.code.csharp.frameworks.system.Web
+  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
+  private import semmle.code.csharp.frameworks.system.Xml
+  private import semmle.code.csharp.frameworks.system.xml.Schema
+  private import semmle.code.csharp.frameworks.system.xml.Serialization
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.XSSSinks
 }
 
 /**

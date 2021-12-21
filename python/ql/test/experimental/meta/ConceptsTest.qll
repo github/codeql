@@ -475,3 +475,31 @@ class CryptographicOperationTest extends InlineExpectationsTest {
     )
   }
 }
+
+class HttpClientRequestTest extends InlineExpectationsTest {
+  HttpClientRequestTest() { this = "HttpClientRequestTest" }
+
+  override string getARelevantTag() {
+    result in ["clientRequestUrlPart", "clientRequestCertValidationDisabled"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req, DataFlow::Node url |
+      url = req.getAUrlPart() and
+      location = url.getLocation() and
+      element = url.toString() and
+      value = prettyNodeForInlineTest(url) and
+      tag = "clientRequestUrlPart"
+    )
+    or
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req |
+      req.disablesCertificateValidation(_, _) and
+      location = req.getLocation() and
+      element = req.toString() and
+      value = "" and
+      tag = "clientRequestCertValidationDisabled"
+    )
+  }
+}

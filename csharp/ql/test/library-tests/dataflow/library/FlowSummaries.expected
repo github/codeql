@@ -27,6 +27,8 @@
 | Newtonsoft.Json.Linq;JContainer;false;set_Item;(System.Int32,Newtonsoft.Json.Linq.JToken);;Argument[1];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
+| Newtonsoft.Json.Linq;JEnumerable<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| Newtonsoft.Json.Linq;JEnumerable<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0];Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
@@ -223,6 +225,7 @@
 | System.Collections.Generic;IDictionary<,>;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value |
 | System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections.Generic;IDictionary<,>;true;set_Item;(TKey,TValue);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
+| System.Collections.Generic;IEnumerable<>;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
 | System.Collections.Generic;IList<>;true;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System.Collections.Generic;IList<>;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Generic;IList<>;true;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
@@ -359,6 +362,18 @@
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System.Collections.Immutable;ImmutableArray<>+Builder;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Element of Argument[0];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Collections.Immutable;ImmutableArray<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Collections.Immutable;ImmutableArray<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Collections.Immutable;ImmutableArray<>;false;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
+| System.Collections.Immutable;ImmutableArray<>;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System.Collections.Immutable;ImmutableArray<>;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Argument[0];Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value |
 | System.Collections.Immutable;ImmutableDictionary<,>+Builder;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value |
@@ -1860,6 +1875,62 @@
 | System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint |
 | System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint |
 | System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint |
+| System.Reflection.Metadata;AssemblyFileHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;AssemblyFileHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;AssemblyReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;AssemblyReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;BlobBuilder+Blobs;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;BlobBuilder+Blobs;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;CustomAttributeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;CustomAttributeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;CustomDebugInformationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;CustomDebugInformationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;DeclarativeSecurityAttributeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;DeclarativeSecurityAttributeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;DocumentHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;DocumentHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;EventDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;EventDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ExportedTypeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ExportedTypeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;FieldDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;FieldDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;GenericParameterConstraintHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;GenericParameterConstraintHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;GenericParameterHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;GenericParameterHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ImportDefinitionCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ImportDefinitionCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ImportScopeCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ImportScopeCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;InterfaceImplementationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;InterfaceImplementationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalConstantHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalConstantHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalScopeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalScopeHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalVariableHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;LocalVariableHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ManifestResourceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ManifestResourceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MemberReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MemberReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodDebugInformationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodDebugInformationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodImplementationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;MethodImplementationHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ParameterHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;ParameterHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;PropertyDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;PropertyDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;SequencePointCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;SequencePointCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;TypeDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;TypeDefinitionHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Reflection.Metadata;TypeReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Reflection.Metadata;TypeReferenceHandleCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Resources;ResourceReader;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Resources;ResourceSet;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Runtime.CompilerServices;ConditionalWeakTable<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
@@ -1923,6 +1994,10 @@
 | System.Security.Cryptography;OidCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Security.Cryptography.OidEnumerator.Current] of ReturnValue;value |
 | System.Security;PermissionSet;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
 | System.Security;PermissionSet;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Text.Json;JsonElement+ArrayEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Text.Json;JsonElement+ArrayEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System.Text.Json;JsonElement+ObjectEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Text.Json;JsonElement+ObjectEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Text.RegularExpressions;CaptureCollection;false;Add;(System.Object);;Argument[0];Element of Argument[-1];value |
 | System.Text.RegularExpressions;CaptureCollection;false;Add;(System.Text.RegularExpressions.Capture);;Argument[0];Element of Argument[-1];value |
 | System.Text.RegularExpressions;CaptureCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value |
@@ -2064,6 +2139,8 @@
 | System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];Element of ReturnValue;value |
 | System.Text;StringBuilder;false;ToString;();;Element of Argument[-1];ReturnValue;taint |
 | System.Text;StringBuilder;false;ToString;(System.Int32,System.Int32);;Element of Argument[-1];ReturnValue;taint |
+| System.Text;StringRuneEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System.Text;StringRuneEnumerator;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
 | System.Text;UTF7Encoding;false;GetBytes;(System.Char*,System.Int32,System.Byte*,System.Int32);;Argument[0];ReturnValue;taint |
 | System.Text;UTF7Encoding;false;GetBytes;(System.Char[],System.Int32,System.Int32,System.Byte[],System.Int32);;Element of Argument[0];ReturnValue;taint |
 | System.Text;UTF7Encoding;false;GetBytes;(System.String,System.Int32,System.Int32,System.Byte[],System.Int32);;Argument[0];ReturnValue;taint |
@@ -2487,6 +2564,13 @@
 | System;Array;false;Reverse<>;(T[],System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value |
 | System;Array;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
 | System;Array;false;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value |
+| System;ArraySegment<>;false;Add;(T);;Argument[0];Element of Argument[-1];value |
+| System;ArraySegment<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value |
+| System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value |
+| System;ArraySegment<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value |
+| System;ArraySegment<>;false;Insert;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
+| System;ArraySegment<>;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value |
+| System;ArraySegment<>;false;set_Item;(System.Int32,T);;Argument[1];Element of Argument[-1];value |
 | System;Boolean;false;Parse;(System.String);;Argument[0];ReturnValue;taint |
 | System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];Argument[1];taint |
 | System;Boolean;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Boolean);;Element of Argument[0];ReturnValue;taint |

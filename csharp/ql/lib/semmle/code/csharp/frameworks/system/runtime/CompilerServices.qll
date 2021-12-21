@@ -30,6 +30,7 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
   Field getUnderlyingTaskField() { result = this.getAField() and result.hasName("m_task") }
 }
 
+/** Data flow for `System.Runtime.CompilerServices.TaskAwaiter<>`. */
 private class SystemRuntimeCompilerServicesTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -79,5 +80,16 @@ private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTas
   override predicate row(string row) {
     row =
       "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_configured_task_awaitable] of Argument[-1];ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>`. */
+private class SystemRuntimeCompilerServicesReadOnlyCollectionBuilderFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
+        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+      ]
   }
 }

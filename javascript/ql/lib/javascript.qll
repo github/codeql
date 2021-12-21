@@ -50,6 +50,7 @@ import semmle.javascript.Promises
 import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
+import semmle.javascript.Routing
 import semmle.javascript.SSA
 import semmle.javascript.StandardLibrary
 import semmle.javascript.Stmt

@@ -65,6 +65,28 @@ class SystemArrayClass extends SystemClass {
   Property getLengthProperty() { result = this.getProperty("Length") }
 }
 
+/** Data flow for `System.Array`. */
+private class SystemArrayFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Array;false;AsReadOnly<>;(T[]);;Element of Argument[0];Element of ReturnValue;value",
+        "System;Array;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
+        "System;Array;false;CopyTo;(System.Array,System.Int64);;Element of Argument[-1];Element of Argument[0];value",
+        "System;Array;false;Find<>;(T[],System.Predicate<T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
+        "System;Array;false;Find<>;(T[],System.Predicate<T>);;Element of Argument[0];ReturnValue;value",
+        "System;Array;false;FindAll<>;(T[],System.Predicate<T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
+        "System;Array;false;FindAll<>;(T[],System.Predicate<T>);;Element of Argument[0];ReturnValue;value",
+        "System;Array;false;FindLast<>;(T[],System.Predicate<T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
+        "System;Array;false;FindLast<>;(T[],System.Predicate<T>);;Element of Argument[0];ReturnValue;value",
+        "System;Array;false;Reverse;(System.Array);;Element of Argument[0];Element of ReturnValue;value",
+        "System;Array;false;Reverse;(System.Array,System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System;Array;false;Reverse<>;(T[]);;Element of Argument[0];Element of ReturnValue;value",
+        "System;Array;false;Reverse<>;(T[],System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+      ]
+  }
+}
+
 /** `System.Attribute` class. */
 class SystemAttributeClass extends SystemClass {
   SystemAttributeClass() { this.hasName("Attribute") }
