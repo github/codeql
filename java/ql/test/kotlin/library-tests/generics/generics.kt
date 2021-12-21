@@ -38,3 +38,26 @@ class BoundedTest<T : CharSequence, S : T> {
     fun m(s: S, t: T) { }
 
 }
+
+class Outer<T1, T2> {
+    inner class Inner1<T3, T4> {
+        fun fn1(t1: T1, t2: T2, t3: T3, t4: T4) {
+            val c = Inner1<Int, String>()
+        }
+    }
+
+    class Nested1<T3, T4> {
+        fun fn2(t3: T3, t4: T4) {
+            val c = Nested1<Int, String>()
+        }
+    }
+}
+
+class Class1<T1> {
+    fun <T2> fn1(t: T2) {
+        class Local<T3> {
+            fun <T4> fn2(t2: T2, t4: T4) {}
+        }
+        Local<Int>().fn2(t, "")
+    }
+}
