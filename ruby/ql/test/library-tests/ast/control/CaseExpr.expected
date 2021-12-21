@@ -1,12 +1,12 @@
 caseValues
 | cases.rb:8:1:15:3 | case ... | cases.rb:8:6:8:6 | a |
-| cases.rb:26:1:29:3 | case ... | cases.rb:27:13:27:16 | true |
-| cases.rb:31:1:37:3 | case ... | cases.rb:35:8:35:11 | true |
-| cases.rb:39:1:80:3 | case ... | cases.rb:79:6:79:7 | [...] |
-| cases.rb:86:1:109:3 | case ... | cases.rb:108:6:108:23 | ( ... ) |
-| cases.rb:113:1:121:3 | case ... | cases.rb:120:6:120:24 | call to Bar |
-| cases.rb:125:1:130:3 | case ... | cases.rb:129:6:129:19 | call to Foo |
-| cases.rb:134:1:142:3 | case ... | cases.rb:141:6:141:22 | call to Bar |
+| cases.rb:26:1:29:3 | case ... | cases.rb:26:6:26:9 | call to expr |
+| cases.rb:31:1:37:3 | case ... | cases.rb:31:6:31:9 | call to expr |
+| cases.rb:39:1:80:3 | case ... | cases.rb:39:6:39:9 | call to expr |
+| cases.rb:86:1:109:3 | case ... | cases.rb:86:6:86:9 | call to expr |
+| cases.rb:113:1:121:3 | case ... | cases.rb:113:6:113:9 | call to expr |
+| cases.rb:125:1:130:3 | case ... | cases.rb:125:6:125:9 | call to expr |
+| cases.rb:134:1:142:3 | case ... | cases.rb:134:6:134:9 | call to expr |
 caseNoValues
 | cases.rb:18:1:22:3 | case ... |
 caseElseBranches
@@ -34,5 +34,88 @@ caseAllBranches
 | cases.rb:18:1:22:3 | case ... | 0 | cases.rb:19:1:19:19 | when ... |
 | cases.rb:18:1:22:3 | case ... | 1 | cases.rb:20:1:20:19 | when ... |
 | cases.rb:18:1:22:3 | case ... | 2 | cases.rb:21:1:21:19 | when ... |
-| cases.rb:26:1:29:3 | case ... | 0 | cases.rb:28:3:28:12 | else ... |
-| cases.rb:31:1:37:3 | case ... | 0 | cases.rb:36:3:36:12 | else ... |
+| cases.rb:26:1:29:3 | case ... | 0 | cases.rb:27:3:27:16 | in ... then ... |
+| cases.rb:26:1:29:3 | case ... | 1 | cases.rb:28:3:28:12 | else ... |
+| cases.rb:31:1:37:3 | case ... | 0 | cases.rb:32:3:33:11 | in ... then ... |
+| cases.rb:31:1:37:3 | case ... | 1 | cases.rb:34:3:35:11 | in ... then ... |
+| cases.rb:31:1:37:3 | case ... | 2 | cases.rb:36:3:36:12 | else ... |
+| cases.rb:39:1:80:3 | case ... | 0 | cases.rb:40:3:40:6 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 1 | cases.rb:41:3:41:8 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 2 | cases.rb:42:3:42:10 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 3 | cases.rb:43:3:43:11 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 4 | cases.rb:44:3:44:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 5 | cases.rb:45:3:45:14 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 6 | cases.rb:46:3:46:16 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 7 | cases.rb:47:3:47:14 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 8 | cases.rb:48:3:48:7 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 9 | cases.rb:49:3:49:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 10 | cases.rb:50:3:50:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 11 | cases.rb:51:3:51:15 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 12 | cases.rb:52:3:52:8 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 13 | cases.rb:53:3:53:10 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 14 | cases.rb:54:3:54:11 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 15 | cases.rb:55:3:55:18 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 16 | cases.rb:56:3:56:21 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 17 | cases.rb:57:3:57:21 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 18 | cases.rb:58:3:58:11 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 19 | cases.rb:59:3:59:9 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 20 | cases.rb:60:3:60:10 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 21 | cases.rb:61:3:61:12 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 22 | cases.rb:62:3:62:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 23 | cases.rb:63:3:63:15 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 24 | cases.rb:64:3:64:16 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 25 | cases.rb:65:3:65:18 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 26 | cases.rb:66:3:66:16 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 27 | cases.rb:67:3:67:9 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 28 | cases.rb:68:3:68:16 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 29 | cases.rb:69:3:69:15 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 30 | cases.rb:70:3:70:17 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 31 | cases.rb:71:3:71:10 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 32 | cases.rb:72:3:72:12 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 33 | cases.rb:73:3:73:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 34 | cases.rb:74:3:74:20 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 35 | cases.rb:75:3:75:23 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 36 | cases.rb:76:3:76:23 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 37 | cases.rb:77:3:77:13 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 38 | cases.rb:78:3:78:8 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 39 | cases.rb:79:3:79:8 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 0 | cases.rb:87:3:87:6 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 1 | cases.rb:88:3:88:9 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 2 | cases.rb:89:3:89:8 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 3 | cases.rb:90:3:90:13 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 4 | cases.rb:91:3:91:16 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 5 | cases.rb:92:3:92:16 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 6 | cases.rb:93:3:93:17 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 7 | cases.rb:94:3:94:12 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 8 | cases.rb:95:3:95:10 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 9 | cases.rb:96:3:96:9 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 10 | cases.rb:97:3:97:11 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 11 | cases.rb:98:3:98:30 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 12 | cases.rb:99:3:99:8 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 13 | cases.rb:100:3:100:13 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 14 | cases.rb:101:3:101:15 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 15 | cases.rb:102:3:102:67 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 16 | cases.rb:103:3:103:21 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 17 | cases.rb:104:3:104:9 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 18 | cases.rb:105:3:105:15 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 19 | cases.rb:106:3:106:13 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 20 | cases.rb:107:3:107:11 | in ... then ... |
+| cases.rb:86:1:109:3 | case ... | 21 | cases.rb:108:3:108:23 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 0 | cases.rb:114:3:114:8 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 1 | cases.rb:115:3:115:9 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 2 | cases.rb:116:3:116:11 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 3 | cases.rb:117:3:117:16 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 4 | cases.rb:118:3:118:11 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 5 | cases.rb:119:3:119:12 | in ... then ... |
+| cases.rb:113:1:121:3 | case ... | 6 | cases.rb:120:3:120:25 | in ... then ... |
+| cases.rb:125:1:130:3 | case ... | 0 | cases.rb:126:3:126:15 | in ... then ... |
+| cases.rb:125:1:130:3 | case ... | 1 | cases.rb:127:3:127:20 | in ... then ... |
+| cases.rb:125:1:130:3 | case ... | 2 | cases.rb:128:3:128:23 | in ... then ... |
+| cases.rb:125:1:130:3 | case ... | 3 | cases.rb:129:3:129:20 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 0 | cases.rb:135:3:135:8 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 1 | cases.rb:136:3:136:10 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 2 | cases.rb:137:3:137:21 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 3 | cases.rb:138:3:138:33 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 4 | cases.rb:139:3:139:14 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 5 | cases.rb:140:3:140:15 | in ... then ... |
+| cases.rb:134:1:142:3 | case ... | 6 | cases.rb:141:3:141:23 | in ... then ... |

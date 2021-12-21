@@ -34,9 +34,7 @@ idParams
 | params.rb:70:38:70:38 | b | b |
 | params.rb:70:48:70:48 | c | c |
 | params.rb:73:27:73:32 | wibble | wibble |
-| params.rb:73:35:73:39 | **nil | nil |
 | params.rb:77:16:77:18 | val | val |
-| params.rb:77:21:77:25 | **nil | nil |
 blockParams
 | params.rb:46:28:46:33 | &block | block |
 | params.rb:62:29:62:34 | &block | block |
@@ -58,8 +56,6 @@ hashSplatParams
 | params.rb:30:39:30:52 | **double_splat | double_splat |
 | params.rb:34:29:34:42 | **double_splat | double_splat |
 | params.rb:38:36:38:43 | **wibble | wibble |
-| params.rb:73:35:73:39 | **nil | nil |
-| params.rb:77:21:77:25 | **nil | nil |
 keywordParams
 | params.rb:41:35:41:37 | foo | foo | (none) |
 | params.rb:41:41:41:43 | bar | bar | 7 |
@@ -90,7 +86,7 @@ paramsInMethods
 | params.rb:58:1:59:3 | method_with_optional_params | 2 | params.rb:58:49:58:52 | val3 | OptionalParameter |
 | params.rb:62:1:64:3 | use_block_with_optional | 0 | params.rb:62:29:62:34 | &block | BlockParameter |
 | params.rb:73:1:74:3 | method_with_nil_splat | 0 | params.rb:73:27:73:32 | wibble | SimpleParameter |
-| params.rb:73:1:74:3 | method_with_nil_splat | 1 | params.rb:73:35:73:39 | **nil | HashSplatParameter |
+| params.rb:73:1:74:3 | method_with_nil_splat | 1 | params.rb:73:35:73:39 | **nil | HashSplatNilParameter |
 paramsInBlocks
 | params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
 | params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
@@ -103,7 +99,7 @@ paramsInBlocks
 | params.rb:65:25:67:3 | do ... end | 0 | params.rb:65:29:65:32 | name | SimpleParameter |
 | params.rb:65:25:67:3 | do ... end | 1 | params.rb:65:35:65:37 | age | OptionalParameter |
 | params.rb:77:12:78:3 | do ... end | 0 | params.rb:77:16:77:18 | val | SimpleParameter |
-| params.rb:77:12:78:3 | do ... end | 1 | params.rb:77:21:77:25 | **nil | HashSplatParameter |
+| params.rb:77:12:78:3 | do ... end | 1 | params.rb:77:21:77:25 | **nil | HashSplatNilParameter |
 paramsInLambdas
 | params.rb:14:7:14:33 | -> { ... } | 0 | params.rb:14:11:14:13 | foo | SimpleParameter |
 | params.rb:14:7:14:33 | -> { ... } | 1 | params.rb:14:16:14:18 | bar | SimpleParameter |
@@ -158,6 +154,6 @@ params
 | params.rb:70:38:70:38 | b | 1 | OptionalParameter |
 | params.rb:70:48:70:48 | c | 2 | OptionalParameter |
 | params.rb:73:27:73:32 | wibble | 0 | SimpleParameter |
-| params.rb:73:35:73:39 | **nil | 1 | HashSplatParameter |
+| params.rb:73:35:73:39 | **nil | 1 | HashSplatNilParameter |
 | params.rb:77:16:77:18 | val | 0 | SimpleParameter |
-| params.rb:77:21:77:25 | **nil | 1 | HashSplatParameter |
+| params.rb:77:21:77:25 | **nil | 1 | HashSplatNilParameter |
