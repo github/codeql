@@ -1350,8 +1350,8 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
-  private class StringComponentComponentTree extends LeafTree, StringComponent {
-    StringComponentComponentTree() { not this instanceof StringInterpolationComponent }
+  private class StringComponentTree extends LeafTree, StringComponent {
+    StringComponentTree() { not this instanceof StringInterpolationComponent }
   }
 
   private class ToplevelTree extends BodyStmtTree, Toplevel {
