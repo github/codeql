@@ -107,11 +107,7 @@ abstract class Completion extends TCompletion {
     n = any(RescueModifierExpr parent).getBody() and
     this = [TSimpleCompletion().(TCompletion), TRaiseCompletion()]
     or
-    (
-      mayRaise(n)
-      or
-      n instanceof CaseMatch and not exists(n.(CaseExpr).getElseBranch())
-    ) and
+    mayRaise(n) and
     (
       this = TRaiseCompletion()
       or
@@ -209,7 +205,7 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(StmtSequence parent | inBooleanContext(parent)).getLastStmt()
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     not exists(c.getValue()) and
     c.getABranch() = w and
     w.getPattern(_) = n
@@ -231,7 +227,7 @@ private predicate mustHaveMatchingCompletion(AstNode n) {
 private predicate inMatchingContext(AstNode n) {
   n = any(RescueClause r).getException(_)
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
     c.getABranch() = w and
     w.getPattern(_) = n

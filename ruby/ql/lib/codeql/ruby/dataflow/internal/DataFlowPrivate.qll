@@ -126,7 +126,16 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
+    exists(CfgNode n, Stmt stmt, CaseExpr c |
+      c = nodeTo.asExpr().getExpr() and
+      n = nodeFrom.asExpr() and
+      n = nodeTo.asExpr().getAPredecessor() and
+      stmt = n.getNode()
+    |
+      stmt = c.getElseBranch() or
+      stmt = c.getABranch().(InClause).getBody() or
+      stmt = c.getABranch().(WhenClause).getBody()
+    )
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and

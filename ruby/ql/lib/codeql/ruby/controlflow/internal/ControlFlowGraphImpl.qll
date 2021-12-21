@@ -107,14 +107,8 @@ module Trees {
     }
   }
 
-  private class ArgumentListTree extends StandardTree, ArgumentList {
+  private class ArgumentListTree extends StandardPostOrderTree, ArgumentList {
     final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-
-    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
-    }
   }
 
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
@@ -252,7 +246,7 @@ module Trees {
       )
       or
       // Last element from any matching `rescue` block continues to the `ensure` block
-      this.getRescue(_).(RescueTree).lastMatch(result, c) and
+      last(this.getRescue(_), result, c) and
       ensurable = true
       or
       // If the last `rescue` block does not match, continue to the `ensure` block
@@ -378,35 +372,18 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseExpr {
+  private class CaseTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getValue(), last, c) and not exists(this.getABranch())
+    final override predicate first(AstNode first) {
+      first(this.getValue(), first)
       or
-      last(this.getABranch().(WhenExpr).getBody(), last, c)
-      or
-      exists(int i, ControlFlowTree lastBranch |
-        lastBranch = this.getBranch(i) and
-        not exists(this.getBranch(i + 1)) and
-        last(lastBranch, last, c)
-      )
+      not exists(this.getValue()) and first(this.getBranch(0), first)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      exists(AstNode next |
-        pred = this and
-        first(next, succ) and
-        c instanceof SimpleCompletion
-      |
-        next = this.getValue()
-        or
-        not exists(this.getValue()) and
-        next = this.getBranch(0)
-      )
-      or
       last(this.getValue(), pred, c) and
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
@@ -416,20 +393,35 @@ module Trees {
         first(this.getBranch(i + 1), succ) and
         c.(ConditionalCompletion).getValue() = false
       )
+      or
+      succ = this and
+      c instanceof NormalCompletion and
+      (
+        last(this.getValue(), pred, c) and not exists(this.getABranch())
+        or
+        last(this.getABranch().(WhenClause).getBody(), pred, c)
+        or
+        exists(int i, ControlFlowTree lastBranch |
+          lastBranch = this.getBranch(i) and
+          not exists(this.getBranch(i + 1)) and
+          last(lastBranch, pred, c)
+        )
+      )
     }
   }
 
-  private class CaseMatchTree extends PreOrderTree, CaseExpr, ASTInternal::TCaseMatch {
+  private class CaseMatchTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseMatch {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
 
+    final override predicate first(AstNode first) { first(this.getValue(), first) }
+
     final override predicate last(AstNode last, Completion c) {
-      last(this.getABranch(), last, c) and
-      not c.(MatchingCompletion).getValue() = false
+      super.last(last, c)
       or
       not exists(this.getElseBranch()) and
-      exists(MatchingCompletion lc, Expr lastBranch |
+      exists(MatchingCompletion lc, AstNode lastBranch |
         lastBranch = max(int i | | this.getBranch(i) order by i) and
         lc.getValue() = false and
         last(lastBranch, last, lc) and
@@ -439,18 +431,23 @@ module Trees {
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getValue(), succ) and
-      c instanceof SimpleCompletion
-      or
       last(this.getValue(), pred, c) and
       first(this.getBranch(0), succ) and
       c instanceof SimpleCompletion
       or
-      exists(int i, Expr branch | branch = this.getBranch(i) |
+      exists(int i, AstNode branch | branch = this.getBranch(i) |
         last(branch, pred, c) and
         first(this.getBranch(i + 1), succ) and
         c.(MatchingCompletion).getValue() = false
+      )
+      or
+      succ = this and
+      c instanceof NormalCompletion and
+      (
+        last(this.getABranch(), pred, c) and
+        not c.(MatchingCompletion).getValue() = false
+        or
+        last(this.getElseBranch(), pred, c)
       )
     }
   }
@@ -981,6 +978,8 @@ module Trees {
     }
   }
 
+  private class ForwardedArgumentsTree extends LeafTree, ForwardedArguments { }
+
   private class ForwardParameterTree extends LeafTree, ForwardParameter { }
 
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
@@ -993,7 +992,7 @@ module Trees {
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
-  private class HereDocTree extends StandardPreOrderTree, HereDoc {
+  private class HereDocTree extends StandardPostOrderTree, HereDoc {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
@@ -1155,51 +1154,51 @@ module Trees {
 
   private class RedoStmtTree extends LeafTree, RedoStmt { }
 
-  private class RescueModifierTree extends PreOrderTree, RescueModifierExpr {
+  private class RescueModifierTree extends PostOrderTree, RescueModifierExpr {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getHandler() }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getBody(), last, c) and
-      not c instanceof RaiseCompletion
-      or
-      last(this.getHandler(), last, c)
-    }
+    final override predicate first(AstNode first) { first(this.getBody(), first) }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getBody(), succ) and
-      c instanceof SimpleCompletion
-      or
       last(this.getBody(), pred, c) and
-      c instanceof RaiseCompletion and
-      first(this.getHandler(), succ)
+      (
+        c instanceof RaiseCompletion and
+        first(this.getHandler(), succ)
+        or
+        not c instanceof RaiseCompletion and
+        succ = this
+      )
+      or
+      last(this.getHandler(), pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
     }
   }
 
-  private class RescueTree extends PreOrderTree, RescueClause {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnException() }
-
-    private Expr getLastException() {
-      exists(int i | result = this.getException(i) and not exists(this.getException(i + 1)))
+  private class RescueTree extends PostOrderTree, RescueClause {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getAnException() or
+      child = this.getBody()
     }
 
-    predicate lastMatch(AstNode last, Completion c) {
-      last(this.getBody(), last, c)
+    final override predicate first(AstNode first) {
+      first(this.getException(0), first)
       or
-      not exists(this.getBody()) and
+      not exists(this.getException(0)) and
       (
-        last(this.getVariableExpr(), last, c)
+        first(this.getVariableExpr(), first)
         or
         not exists(this.getVariableExpr()) and
         (
-          last(this.getAnException(), last, c) and
-          c.(MatchingCompletion).getValue() = true
+          first(this.getBody(), first)
           or
-          not exists(this.getAnException()) and
-          last = this and
-          c.isValidFor(this)
+          not exists(this.getBody()) and first = this
         )
       )
+    }
+
+    private Expr getLastException() {
+      exists(int i | result = this.getException(i) and not exists(this.getException(i + 1)))
     }
 
     predicate lastNoMatch(AstNode last, Completion c) {
@@ -1207,38 +1206,18 @@ module Trees {
       c.(MatchingCompletion).getValue() = false
     }
 
-    final override predicate last(AstNode last, Completion c) {
-      this.lastNoMatch(last, c)
-      or
-      this.lastMatch(last, c)
-    }
-
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      exists(AstNode next |
-        pred = this and
-        first(next, succ) and
-        c instanceof SimpleCompletion
-      |
-        next = this.getException(0)
-        or
-        not exists(this.getException(0)) and
-        (
-          next = this.getVariableExpr()
-          or
-          not exists(this.getVariableExpr()) and
-          next = this.getBody()
-        )
-      )
-      or
-      exists(AstNode next |
-        last(this.getAnException(), pred, c) and
-        first(next, succ) and
-        c.(MatchingCompletion).getValue() = true
-      |
-        next = this.getVariableExpr()
+      last(this.getAnException(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      (
+        first(this.getVariableExpr(), succ)
         or
         not exists(this.getVariableExpr()) and
-        next = this.getBody()
+        (
+          first(this.getBody(), succ)
+          or
+          not exists(this.getBody()) and succ = this
+        )
       )
       or
       exists(int i |
@@ -1248,8 +1227,16 @@ module Trees {
       )
       or
       last(this.getVariableExpr(), pred, c) and
-      first(this.getBody(), succ) and
-      c instanceof NormalCompletion
+      c instanceof NormalCompletion and
+      (
+        first(this.getBody(), succ)
+        or
+        not exists(this.getBody()) and succ = this
+      )
+      or
+      last(this.getBody(), pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
     }
   }
 
@@ -1353,14 +1340,8 @@ module Trees {
     }
   }
 
-  private class StringConcatenationTree extends StandardTree, StringConcatenation {
+  private class StringConcatenationTree extends StandardPostOrderTree, StringConcatenation {
     final override ControlFlowTree getChildElement(int i) { result = this.getString(i) }
-
-    final override predicate first(AstNode first) { first(this.getFirstChildElement(), first) }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
-    }
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree, StringlikeLiteral {
@@ -1389,7 +1370,7 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
-  private class WhenTree extends PreOrderTree, WhenExpr {
+  private class WhenTree extends PreOrderTree, WhenClause {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
 
     final Expr getLastPattern() {

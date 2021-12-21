@@ -12,6 +12,7 @@ ret
 | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:51:3:51:15 | break |
 | local_dataflow.rb:52:3:52:10 | "normal" |
+| local_dataflow.rb:69:3:76:5 | ... = ... |
 arg
 | local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | -1 |
 | local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | 0 |

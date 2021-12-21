@@ -361,22 +361,22 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
   final Expr getValue() { result = super.getValue() }
 
   /**
-   * Gets the `n`th branch of this case expression, either a `WhenExpr`, an
+   * Gets the `n`th branch of this case expression, either a `WhenClause`, an
    * `InClause`, or a `StmtSequence`.
    */
-  final Expr getBranch(int n) { result = super.getBranch(n) }
+  final AstNode getBranch(int n) { result = super.getBranch(n) }
 
   /**
-   * Gets a branch of this case expression, either a `WhenExpr`, an
+   * Gets a branch of this case expression, either a `WhenClause`, an
    * `InClause`, or a `StmtSequence`.
    */
-  final Expr getABranch() { result = this.getBranch(_) }
+  final AstNode getABranch() { result = this.getBranch(_) }
 
   /** Gets the `n`th `when` branch of this case expression. */
-  deprecated final WhenExpr getWhenBranch(int n) { result = this.getBranch(n) }
+  deprecated final WhenClause getWhenBranch(int n) { result = this.getBranch(n) }
 
   /** Gets a `when` branch of this case expression. */
-  deprecated final WhenExpr getAWhenBranch() { result = this.getABranch() }
+  deprecated final WhenClause getAWhenBranch() { result = this.getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
   final StmtSequence getElseBranch() { result = this.getABranch() }
@@ -402,6 +402,11 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
 }
 
 /**
+ * DEPRECATED: Use `WhenClause` instead.
+ */
+deprecated class WhenExpr = WhenClause;
+
+/**
  * A `when` branch of a `case` expression.
  * ```rb
  * case
@@ -409,12 +414,12 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
  * end
  * ```
  */
-class WhenExpr extends Expr, TWhenExpr {
+class WhenClause extends AstNode, TWhenClause {
   private Ruby::When g;
 
-  WhenExpr() { this = TWhenExpr(g) }
+  WhenClause() { this = TWhenClause(g) }
 
-  final override string getAPrimaryQlClass() { result = "WhenExpr" }
+  final override string getAPrimaryQlClass() { result = "WhenClause" }
 
   /** Gets the body of this case-when expression. */
   final Stmt getBody() { toGenerated(result) = g.getBody() }
@@ -461,7 +466,7 @@ class WhenExpr extends Expr, TWhenExpr {
  * end
  * ```
  */
-class InClause extends Expr, TInClause {
+class InClause extends AstNode, TInClause {
   private Ruby::InClause g;
 
   InClause() { this = TInClause(g) }

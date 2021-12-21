@@ -191,6 +191,7 @@ positionalArguments
 | cfg.rb:191:3:191:10 | yield ... | cfg.rb:191:9:191:10 | 42 |
 | cfg.rb:194:16:194:21 | call to puts | cfg.rb:194:21:194:21 | x |
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:7:197:7 | b |
+| cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:10:197:12 | ... |
 | desugar.rb:2:5:2:6 | ... + ... | desugar.rb:2:8:2:8 | 1 |
 | desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:3:6:13 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:3:10:10 | ... = ... |

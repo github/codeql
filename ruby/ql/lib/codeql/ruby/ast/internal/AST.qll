@@ -305,7 +305,7 @@ private module Cached {
     TUntilExpr(Ruby::Until g) or
     TUntilModifierExpr(Ruby::UntilModifier g) or
     TVariableReferencePattern(Ruby::VariableReferencePattern g) or
-    TWhenExpr(Ruby::When g) or
+    TWhenClause(Ruby::When g) or
     TWhileExpr(Ruby::While g) or
     TWhileModifierExpr(Ruby::WhileModifier g) or
     TYieldCall(Ruby::Yield g)
@@ -344,7 +344,7 @@ private module Cached {
         TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
         TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
         TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
-        TVariableReferencePattern or TWhenExpr or TWhileExpr or TWhileModifierExpr or TYieldCall;
+        TVariableReferencePattern or TWhenClause or TWhileExpr or TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
@@ -511,7 +511,7 @@ private module Cached {
     n = TUntilExpr(result) or
     n = TUntilModifierExpr(result) or
     n = TVariableReferencePattern(result) or
-    n = TWhenExpr(result) or
+    n = TWhenClause(result) or
     n = TWhileExpr(result) or
     n = TWhileModifierExpr(result) or
     n = TYieldCall(result)
@@ -657,10 +657,9 @@ class TSelf = TSelfReal or TSelfSynth;
 class TDestructuredLhsExpr = TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TExpr =
-  TSelf or TArgumentList or TInClause or TRescueClause or TRescueModifierExpr or TPair or
-      TStringConcatenation or TCall or TBlockArgument or TConstantAccess or TControlExpr or
-      TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or TOperation or
-      TForwardArgument or TDestructuredLhsExpr;
+  TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
+      TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
+      TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
