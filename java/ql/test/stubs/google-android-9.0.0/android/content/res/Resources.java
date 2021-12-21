@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
+import android.content.res.loader.ResourcesLoader;
 import android.graphics.Movie;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,7 @@ public class Resources
     public boolean getBoolean(int p0){ return false; }
     public class Theme
     {
+        protected Theme() {}
         public Drawable getDrawable(int p0){ return null; }
         public Resources getResources(){ return null; }
         public TypedArray obtainStyledAttributes(AttributeSet p0, int[] p1, int p2, int p3){ return null; }
@@ -86,11 +88,13 @@ public class Resources
     public static Resources getSystem(){ return null; }
     public static int ID_NULL = 0;
     public static int getAttributeSetSourceResId(AttributeSet p0){ return 0; }
+    public void addLoaders(ResourcesLoader... p0){}
     public void getValue(String p0, TypedValue p1, boolean p2){}
     public void getValue(int p0, TypedValue p1, boolean p2){}
     public void getValueForDensity(int p0, int p1, TypedValue p2, boolean p3){}
     public void parseBundleExtra(String p0, AttributeSet p1, Bundle p2){}
     public void parseBundleExtras(XmlResourceParser p0, Bundle p1){}
+    public void removeLoaders(ResourcesLoader... p0){}
     public void updateConfiguration(Configuration p0, DisplayMetrics p1){}
     static public class NotFoundException extends RuntimeException
     {

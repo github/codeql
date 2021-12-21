@@ -22,6 +22,7 @@ public interface IBinder
     static int LIKE_TRANSACTION = 0;
     static int PING_TRANSACTION = 0;
     static int TWEET_TRANSACTION = 0;
+    static int getSuggestedMaxIpcSizeBytes(){ return 0; }
     static public interface DeathRecipient
     {
         void binderDied();

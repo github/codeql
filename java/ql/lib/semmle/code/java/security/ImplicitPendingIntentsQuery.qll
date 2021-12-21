@@ -111,7 +111,6 @@ private class PendingIntentFlag extends Field {
   PendingIntentFlag() {
     this.getDeclaringType() instanceof PendingIntent and
     this.isPublic() and
-    this.isFinal() and
     this.getName().matches("FLAG_%")
   }
 }

@@ -3,6 +3,7 @@
 package android.icu.util;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
@@ -56,6 +57,7 @@ public class ULocale implements Comparable<ULocale>, Serializable
     public boolean isRightToLeft(){ return false; }
     public int compareTo(ULocale p0){ return 0; }
     public int hashCode(){ return 0; }
+    public static Collection<ULocale> getAvailableLocalesByType(ULocale.AvailableType p0){ return null; }
     public static Iterator<String> getKeywords(String p0){ return null; }
     public static String canonicalize(String p0){ return null; }
     public static String getBaseName(String p0){ return null; }
@@ -130,6 +132,11 @@ public class ULocale implements Comparable<ULocale>, Serializable
     public static ULocale[] getAvailableLocales(){ return null; }
     public static char PRIVATE_USE_EXTENSION = '0';
     public static char UNICODE_LOCALE_EXTENSION = '0';
+    static public enum AvailableType
+    {
+        DEFAULT, ONLY_LEGACY_ALIASES, WITH_LEGACY_ALIASES;
+        private AvailableType() {}
+    }
     static public enum Category
     {
         DISPLAY, FORMAT;

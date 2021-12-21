@@ -2,7 +2,11 @@
 
 package android.os;
 
+import android.os.BaseBundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class PersistableBundle extends BaseBundle implements Cloneable, Parcelable
 {
@@ -16,7 +20,8 @@ public class PersistableBundle extends BaseBundle implements Cloneable, Parcelab
     public int describeContents(){ return 0; }
     public static Parcelable.Creator<PersistableBundle> CREATOR = null;
     public static PersistableBundle EMPTY = null;
+    public static PersistableBundle readFromStream(InputStream p0){ return null; }
     public void putPersistableBundle(String p0, PersistableBundle p1){}
     public void writeToParcel(Parcel p0, int p1){}
-    public static PersistableBundle readFromStream(InputStream inputStream){ return null; }
+    public void writeToStream(OutputStream p0){}
 }

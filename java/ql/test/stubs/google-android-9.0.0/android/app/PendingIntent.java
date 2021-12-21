@@ -1,23 +1,10 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from android.app.PendingIntent for testing purposes
 
 package android.app;
 
-import android.annotation.NonNull;
-import android.annotation.Nullable;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
@@ -25,190 +12,58 @@ import android.os.Parcelable;
 import android.os.UserHandle;
 import android.util.AndroidException;
 
-public final class PendingIntent implements Parcelable {
-  public @interface Flags {
-
-  }
-
-  public static final int FLAG_ONE_SHOT = 1 << 30;
-  public static final int FLAG_NO_CREATE = 1 << 29;
-  public static final int FLAG_CANCEL_CURRENT = 1 << 28;
-  public static final int FLAG_UPDATE_CURRENT = 1 << 27;
-  public static final int FLAG_IMMUTABLE = 1 << 26;
-
-  public static class CanceledException extends AndroidException {
-    public CanceledException() {}
-
-    public CanceledException(String name) {}
-
-    public CanceledException(Exception cause) {}
-
-  }
-
-  public interface OnFinished {
-    void onSendFinished(PendingIntent pendingIntent, Intent intent, int resultCode,
-        String resultData, Bundle resultExtras);
-
-  }
-
-  public interface OnMarshaledListener {
-    void onMarshaled(PendingIntent intent, Parcel parcel, int flags);
-  }
-
-  public static void setOnMarshaledListener(OnMarshaledListener listener) {}
-
-  public static PendingIntent getActivity(Context context, int requestCode, Intent intent,
-      @Flags int flags) {
-    return null;
-  }
-
-  public static PendingIntent getActivity(Context context, int requestCode, @NonNull Intent intent,
-      @Flags int flags, @Nullable Bundle options) {
-    return null;
-  }
-
-  public static PendingIntent getActivityAsUser(Context context, int requestCode,
-      @NonNull Intent intent, int flags, Bundle options, UserHandle user) {
-    return null;
-  }
-
-  public static PendingIntent getActivities(Context context, int requestCode,
-      @NonNull Intent[] intents, @Flags int flags) {
-    return null;
-  }
-
-  public static PendingIntent getActivities(Context context, int requestCode,
-      @NonNull Intent[] intents, @Flags int flags, @Nullable Bundle options) {
-    return null;
-  }
-
-  public static PendingIntent getActivitiesAsUser(Context context, int requestCode,
-      @NonNull Intent[] intents, int flags, Bundle options, UserHandle user) {
-    return null;
-  }
-
-  public static PendingIntent getBroadcast(Context context, int requestCode, Intent intent,
-      @Flags int flags) {
-    return null;
-  }
-
-  public static PendingIntent getBroadcastAsUser(Context context, int requestCode, Intent intent,
-      int flags, UserHandle userHandle) {
-    return null;
-  }
-
-  public static PendingIntent getService(Context context, int requestCode, @NonNull Intent intent,
-      @Flags int flags) {
-    return null;
-  }
-
-  public static PendingIntent getForegroundService(Context context, int requestCode,
-      @NonNull Intent intent, @Flags int flags) {
-    return null;
-  }
-
-  public void cancel() {}
-
-  public void send() throws CanceledException {}
-
-  public void send(int code) throws CanceledException {}
-
-  public void send(Context context, int code, @Nullable Intent intent) throws CanceledException {}
-
-  public void send(int code, @Nullable OnFinished onFinished, @Nullable Handler handler)
-      throws CanceledException {}
-
-  public void send(Context context, int code, @Nullable Intent intent,
-      @Nullable OnFinished onFinished, @Nullable Handler handler) throws CanceledException {}
-
-  public void send(Context context, int code, @Nullable Intent intent,
-      @Nullable OnFinished onFinished, @Nullable Handler handler,
-      @Nullable String requiredPermission) throws CanceledException {}
-
-  public void send(Context context, int code, @Nullable Intent intent,
-      @Nullable OnFinished onFinished, @Nullable Handler handler,
-      @Nullable String requiredPermission, @Nullable Bundle options) throws CanceledException {}
-
-  public int sendAndReturnResult(Context context, int code, @Nullable Intent intent,
-      @Nullable OnFinished onFinished, @Nullable Handler handler,
-      @Nullable String requiredPermission, @Nullable Bundle options) throws CanceledException {
-    return 0;
-  }
-
-  public String getTargetPackage() {
-    return null;
-  }
-
-  public String getCreatorPackage() {
-    return null;
-  }
-
-  public int getCreatorUid() {
-    return 0;
-  }
-
-  public void registerCancelListener(CancelListener cancelListener) {}
-
-  public void unregisterCancelListener(CancelListener cancelListener) {}
-
-  public UserHandle getCreatorUserHandle() {
-    return null;
-  }
-
-  public boolean isTargetedToPackage() {
-    return false;
-  }
-
-  public boolean isActivity() {
-    return false;
-  }
-
-  public boolean isForegroundService() {
-    return false;
-  }
-
-  public boolean isBroadcast() {
-    return false;
-  }
-
-  public Intent getIntent() {
-    return null;
-  }
-
-  public String getTag(String prefix) {
-    return null;
-  }
-
-  @Override
-  public boolean equals(Object otherObj) {
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return 0;
-  }
-
-  @Override
-  public String toString() {
-    return null;
-  }
-
-  public int describeContents() {
-    return 0;
-  }
-
-  public void writeToParcel(Parcel out, int flags) {}
-
-  public static void writePendingIntentOrNullToParcel(@Nullable PendingIntent sender,
-      @NonNull Parcel out) {}
-
-  public static PendingIntent readPendingIntentOrNullFromParcel(@NonNull Parcel in) {
-    return null;
-  }
-
-  public interface CancelListener {
-    void onCancelled(PendingIntent intent);
-
-  }
+public class PendingIntent implements Parcelable
+{
+    public IntentSender getIntentSender(){ return null; }
+    public String getCreatorPackage(){ return null; }
+    public String getTargetPackage(){ return null; }
+    public String toString(){ return null; }
+    public UserHandle getCreatorUserHandle(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public boolean isActivity(){ return false; }
+    public boolean isBroadcast(){ return false; }
+    public boolean isForegroundService(){ return false; }
+    public boolean isImmutable(){ return false; }
+    public boolean isService(){ return false; }
+    public int describeContents(){ return 0; }
+    public int getCreatorUid(){ return 0; }
+    public int hashCode(){ return 0; }
+    public static Parcelable.Creator<PendingIntent> CREATOR = null;
+    public static PendingIntent getActivities(Context p0, int p1, Intent[] p2, int p3){ return null; }
+    public static PendingIntent getActivities(Context p0, int p1, Intent[] p2, int p3, Bundle p4){ return null; }
+    public static PendingIntent getActivitiesAsUser(Context p0, int p1, Intent[] p3, int p4, Bundle p5, UserHandle p6) { return null; }
+    public static PendingIntent getActivity(Context p0, int p1, Intent p2, int p3){ return null; }
+    public static PendingIntent getActivity(Context p0, int p1, Intent p2, int p3, Bundle p4){ return null; }
+    public static PendingIntent getActivityAsUser(Context p0, int p1, Intent p2, int p3, Bundle p4, UserHandle p5) { return null; }
+    public static PendingIntent getBroadcast(Context p0, int p1, Intent p2, int p3){ return null; }
+    public static PendingIntent getBroadcastAsUser(Context p0, int p1, Intent p2, int p3, UserHandle p4) { return null; }
+    public static PendingIntent getForegroundService(Context p0, int p1, Intent p2, int p3){ return null; }
+    public static PendingIntent getService(Context p0, int p1, Intent p2, int p3){ return null; }
+    public static PendingIntent readPendingIntentOrNullFromParcel(Parcel p0){ return null; }
+    public static int FLAG_CANCEL_CURRENT = 0;
+    public static int FLAG_IMMUTABLE = 0;
+    public static int FLAG_MUTABLE = 0;
+    public static int FLAG_NO_CREATE = 0;
+    public static int FLAG_ONE_SHOT = 0;
+    public static int FLAG_UPDATE_CURRENT = 0;
+    public static void writePendingIntentOrNullToParcel(PendingIntent p0, Parcel p1){}
+    public void cancel(){}
+    public void send(){}
+    public void send(Context p0, int p1, Intent p2){}
+    public void send(Context p0, int p1, Intent p2, PendingIntent.OnFinished p3, Handler p4){}
+    public void send(Context p0, int p1, Intent p2, PendingIntent.OnFinished p3, Handler p4, String p5){}
+    public void send(Context p0, int p1, Intent p2, PendingIntent.OnFinished p3, Handler p4, String p5, Bundle p6){}
+    public void send(int p0){}
+    public void send(int p0, PendingIntent.OnFinished p1, Handler p2){}
+    public void writeToParcel(Parcel p0, int p1){}
+    static public class CanceledException extends AndroidException
+    {
+        public CanceledException(){}
+        public CanceledException(Exception p0){}
+        public CanceledException(String p0){}
+    }
+    static public interface OnFinished
+    {
+        void onSendFinished(PendingIntent p0, Intent p1, int p2, String p3, Bundle p4);
+    }
 }
