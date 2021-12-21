@@ -3,7 +3,7 @@
  * an underlying OpenSSL or LibreSSL C library.
  */
 
-private import CryptoAlgorithms::AlgorithmNames
+private import internal.CryptoAlgorithmNames
 
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {

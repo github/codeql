@@ -457,6 +457,11 @@
     "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll",
     "ruby/ql/lib/codeql/ruby/security/CryptoAlgorithms.qll"
   ],
+  "CryptoAlgorithmNames Python/JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/internal/CryptoAlgorithmNames.qll",
+    "python/ql/lib/semmle/python/concepts/internal/CryptoAlgorithmNames.qll",
+    "ruby/ql/lib/codeql/ruby/security/internal/CryptoAlgorithmNames.qll"
+  ],
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll"
