@@ -4,6 +4,7 @@
 
 import default
 import semmle.code.csharp.frameworks.system.Text
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Text.RegularExpressions` namespace. */
 class SystemTextRegularExpressionsNamespace extends Namespace {
@@ -80,5 +81,32 @@ class RegexOperation extends Call {
         // e.g. `private string r = new Regex(...); public void foo() { r.Match(...); }`
         call.getQualifier().(FieldAccess).getTarget().getInitializer() = this
       )
+  }
+}
+
+/** Data flow for `System.Text.RegularExpressions.CaptureCollection`. */
+private class SystemTextRegularExpressionsCaptureCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Text.RegularExpressions;CaptureCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value"
+  }
+}
+
+/** Data flow for `System.Text.RegularExpressions.GroupCollection`. */
+private class SystemTextRegularExpressionsGroupCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
+        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+      ]
+  }
+}
+
+/** Data flow for `System.Text.RegularExpressions.MatchCollection`. */
+private class SystemTextRegularExpressionsMatchCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Text.RegularExpressions;MatchCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value"
   }
 }

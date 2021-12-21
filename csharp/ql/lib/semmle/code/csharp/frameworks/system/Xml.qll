@@ -277,3 +277,11 @@ class XmlReaderSettingsInstance extends Expr {
     )
   }
 }
+
+/** Data flow for `System.Xml.XmlAttributeCollection`. */
+private class SystemXmlXmlAttributeCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+  }
+}
