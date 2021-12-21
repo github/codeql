@@ -34,6 +34,9 @@ public class ImplicitPendingIntentsTest {
             ctx.startService(fwdIntent); // Safe
             ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
 
+            fwdIntent.setComponent(null); // Not a sanitizer
+            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+
             fwdIntent.setPackage("a.safe.package"); // Sanitizer
             ctx.startActivity(fwdIntent); // Safe
         }
@@ -284,20 +287,6 @@ public class ImplicitPendingIntentsTest {
             Intent baseIntent = new Intent();
             mPendingIntent = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
             return true;
-        }
-
-        // Implementations needed for compilation
-
-        @Override
-        public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
-                CancellationSignal signal) throws RemoteException, FileNotFoundException {
-            return null;
-        }
-
-        @Override
-        public Bundle call(String authority, String method, String arg, Bundle extras)
-                throws RemoteException {
-            return null;
         }
     }
 }

@@ -99,6 +99,7 @@ class ExplicitIntent extends Expr {
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       m.hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
+      not exists(NullLiteral nullLiteral | DataFlow::localExprFlow(nullLiteral, ma.getAnArgument())) and
       ma.getQualifier() = this
     )
     or
