@@ -78,7 +78,7 @@
 | constants/constants.rb:36:18:36:19 | 43 | 43 |
 | constants/constants.rb:39:30:39:33 | 1024 | 1024 |
 | constants/constants.rb:41:6:41:31 | MAX_SIZE | 1024 |
-| constants/constants.rb:48:19:48:20 | 44 | 44 |
+| constants/constants.rb:48:18:48:19 | 41 | 41 |
 | constants/constants.rb:53:17:53:29 | "fourty-four" | fourty-four |
 | constants/constants.rb:55:21:55:31 | FOURTY_FOUR | 44 |
 | constants/constants.rb:55:21:55:31 | FOURTY_FOUR | fourty-four |

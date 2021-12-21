@@ -45,7 +45,7 @@ puts ::GREETING
 
 module ModuleA::ModuleB
   class ClassB < Base
-    FOURTY_FOUR = 44
+    FOURTY_ONE = 41
   end
 end
 

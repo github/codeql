@@ -1362,8 +1362,8 @@ constants/constants.rb:
 #   47|     getStmt: [ClassDeclaration] ClassB
 #   47|       getSuperclassExpr: [ConstantReadAccess] Base
 #   48|       getStmt: [AssignExpr] ... = ...
-#   48|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_FOUR
-#   48|         getAnOperand/getRightOperand: [IntegerLiteral] 44
+#   48|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_ONE
+#   48|         getAnOperand/getRightOperand: [IntegerLiteral] 41
 #   52|   getStmt: [ModuleDeclaration] ModuleA
 #   53|     getStmt: [AssignExpr] ... = ...
 #   53|       getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_FOUR

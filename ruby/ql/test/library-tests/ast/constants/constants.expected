@@ -40,7 +40,7 @@ constantAccess
 | constants.rb:46:8:46:14 | ModuleA | read | ModuleA | ConstantReadAccess |
 | constants.rb:47:3:49:5 | ClassB | write | ClassB | ClassDeclaration |
 | constants.rb:47:18:47:21 | Base | read | Base | ConstantReadAccess |
-| constants.rb:48:5:48:15 | FOURTY_FOUR | write | FOURTY_FOUR | ConstantAssignment |
+| constants.rb:48:5:48:14 | FOURTY_ONE | write | FOURTY_ONE | ConstantAssignment |
 | constants.rb:52:1:59:3 | ModuleA | write | ModuleA | ModuleDeclaration |
 | constants.rb:53:3:53:13 | FOURTY_FOUR | write | FOURTY_FOUR | ConstantAssignment |
 | constants.rb:54:3:58:5 | ClassB | write | ClassB | ClassDeclaration |
@@ -67,8 +67,8 @@ getConst
 | constants.rb:2:5:4:7 | ModuleA::ClassA | CONST_A | constants.rb:3:19:3:27 | "const_a" |
 | constants.rb:31:1:33:3 | ModuleA::ClassD | FOURTY_TWO | constants.rb:32:16:32:17 | 42 |
 | constants.rb:35:1:37:3 | ModuleA::ModuleC | FOURTY_THREE | constants.rb:36:18:36:19 | 43 |
-| constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_FOUR | constants.rb:48:19:48:20 | 44 |
 | constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_FOUR | constants.rb:56:19:56:20 | 44 |
+| constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_ONE | constants.rb:48:18:48:19 | 41 |
 | constants.rb:62:3:64:5 | Mod1::Mod3 | FOURTY_FIVE | constants.rb:63:19:63:20 | 45 |
 | constants.rb:70:3:72:5 | Mod1::Mod3::Mod5 | FOURTY_SIX | constants.rb:71:18:71:19 | 46 |
 | file://:0:0:0:0 | Object | GREETING | constants.rb:17:12:17:64 | ... + ... |
@@ -83,8 +83,8 @@ lookupConst
 | constants.rb:31:1:33:3 | ModuleA::ClassD | FOURTY_TWO | constants.rb:32:16:32:17 | 42 |
 | constants.rb:31:1:33:3 | ModuleA::ClassD | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:35:1:37:3 | ModuleA::ModuleC | FOURTY_THREE | constants.rb:36:18:36:19 | 43 |
-| constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_FOUR | constants.rb:48:19:48:20 | 44 |
 | constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_FOUR | constants.rb:56:19:56:20 | 44 |
+| constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | FOURTY_ONE | constants.rb:48:18:48:19 | 41 |
 | constants.rb:54:3:58:5 | ModuleA::ModuleB::ClassB | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:62:3:64:5 | Mod1::Mod3 | FOURTY_FIVE | constants.rb:63:19:63:20 | 45 |
 | constants.rb:70:3:72:5 | Mod1::Mod3::Mod5 | FOURTY_SIX | constants.rb:71:18:71:19 | 46 |
@@ -96,10 +96,8 @@ constantValue
 | constants.rb:41:6:41:31 | MAX_SIZE | constants.rb:39:30:39:33 | 1024 |
 | constants.rb:43:6:43:13 | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:44:6:44:15 | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| constants.rb:55:21:55:31 | FOURTY_FOUR | constants.rb:48:19:48:20 | 44 |
 | constants.rb:55:21:55:31 | FOURTY_FOUR | constants.rb:53:17:53:29 | "fourty-four" |
 | constants.rb:55:21:55:31 | FOURTY_FOUR | constants.rb:56:19:56:20 | 44 |
-| constants.rb:57:21:57:31 | FOURTY_FOUR | constants.rb:48:19:48:20 | 44 |
 | constants.rb:57:21:57:31 | FOURTY_FOUR | constants.rb:53:17:53:29 | "fourty-four" |
 | constants.rb:57:21:57:31 | FOURTY_FOUR | constants.rb:56:19:56:20 | 44 |
 | constants.rb:65:19:65:35 | FOURTY_FIVE | constants.rb:63:19:63:20 | 45 |
@@ -120,7 +118,7 @@ constantWriteAccessQualifiedName
 | constants.rb:39:1:39:26 | MAX_SIZE | ModuleA::ModuleB::MAX_SIZE |
 | constants.rb:46:1:50:3 | ModuleB | ModuleA::ModuleB |
 | constants.rb:47:3:49:5 | ClassB | ModuleA::ModuleB::ClassB |
-| constants.rb:48:5:48:15 | FOURTY_FOUR | ModuleA::ModuleB::ClassB::FOURTY_FOUR |
+| constants.rb:48:5:48:14 | FOURTY_ONE | ModuleA::ModuleB::ClassB::FOURTY_ONE |
 | constants.rb:52:1:59:3 | ModuleA | ModuleA |
 | constants.rb:53:3:53:13 | FOURTY_FOUR | ModuleA::FOURTY_FOUR |
 | constants.rb:54:3:58:5 | ClassB | ModuleA::ModuleB::ClassB |
