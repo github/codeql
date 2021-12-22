@@ -75,10 +75,9 @@ Element getAssignmentTarget(Expr e) {
 
 Element getCollectionAssignmentTarget(Expr e) {
   // Store into collection via method
-  exists(DataFlow::Node postNode, Expr nodeExp |
+  exists(DataFlowPrivate::PostUpdateNode postNode |
     FlowSummaryImpl::Private::Steps::summarySetterStep(DataFlow::exprNode(e), _, postNode) and
-    nodeExp = postNode.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() and
-    result.(Variable).getAnAccess() = nodeExp
+    result.(Variable).getAnAccess() = postNode.getPreUpdateNode().asExpr()
   )
   or
   // Array initializer
