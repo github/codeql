@@ -513,15 +513,18 @@ local_anonymous.kt:
 #   21|         0: [LocalVariableDeclStmt] var ...;
 #   21|           1: [LocalVariableDeclExpr] fnRef
 #   21|             0: [MemberRefExpr] ...::...
-#   21|               -4: [AnonymousClass] new Function0<Unit>(...) { ... }
+#   21|               -4: [AnonymousClass] new Function1<Class1,Unit>(...) { ... }
 #   21|                 1: [Constructor] 
 #   21|                   5: [BlockStmt] { ... }
 #   21|                     0: [SuperConstructorInvocationStmt] super(...)
 #   21|                 1: [Method] invoke
+#-----|                   4: (Parameters)
+#   21|                     0: [Parameter] a0
 #   21|                   5: [BlockStmt] { ... }
 #   21|                     0: [ReturnStmt] return ...
 #   21|                       0: [MethodAccess] fn3(...)
-#   21|               -3: [TypeAccess] Function0<Unit>
+#   21|                         -1: [VarAccess] a0
+#   21|               -3: [TypeAccess] Function1<Class1,Unit>
 #   24|     7: [Method] fn5
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [LocalTypeDeclStmt] class ...

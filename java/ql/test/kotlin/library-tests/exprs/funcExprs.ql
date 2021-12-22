@@ -12,3 +12,9 @@ query predicate lambdaExpr(LambdaExpr le, string body, Method m, string signatur
   signature = m.getSignature() and
   le.getAnonymousClass() = an
 }
+
+query predicate memberRefExprs(MemberRefExpr e, Method m, string signature, AnonymousClass an) {
+  e.asMethod() = m and
+  signature = m.getSignature() and
+  e.getAnonymousClass() = an
+}

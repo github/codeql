@@ -1893,20 +1893,15 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(functionReferenceExpr)
 
         val extensionParameter = target.owner.extensionReceiverParameter
-        val parameters =
-            if (extensionParameter != null &&
-                functionReferenceExpr.extensionReceiver == null) {
+        val dispatchParameter = target.owner.dispatchReceiverParameter
 
-                // No extension receiver argument is set, so we're creating a parameter for it in `invoke`
-                val l = mutableListOf(extensionParameter)
-                l.addAll(target.owner.valueParameters)
-                l
-            } else {
-                // Either not an extension method or one with extension receiver specified. In the latter case a constructor
-                // argument is created for the extension receiver expression and then passed as the 0th argument of the call
-                // to `target`.
-                target.owner.valueParameters
-            }
+        var parameters = LinkedList(target.owner.valueParameters)
+        if (extensionParameter != null && functionReferenceExpr.extensionReceiver == null) {
+            parameters.addFirst(extensionParameter)
+        }
+        if (dispatchParameter != null && functionReferenceExpr.dispatchReceiver == null) {
+            parameters.addFirst(dispatchParameter)
+        }
 
         val parameterTypes = parameters.map { it.type }
         val functionNTypeArguments = parameterTypes + target.owner.returnType
@@ -2010,7 +2005,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(retId, locId)
 
         // Call to target function:
-        val dispatchReceiverId: Int
+        val dispatchReceiverIdx: Int
         val callId: Label<out DbExpr>
         val callType = useType(target.owner.returnType)
         if (target is IrConstructorSymbol) {
@@ -2020,13 +2015,13 @@ open class KotlinFileExtractor(
             val typeAccessId = extractTypeAccess(callType, locId, funLabels.methodId, callId, -3, retId)
 
             extractTypeArguments(functionReferenceExpr, typeAccessId, funLabels.methodId, retId)
-            dispatchReceiverId = -2
+            dispatchReceiverIdx = -2
         } else {
             callId = tw.getFreshIdLabel<DbMethodaccess>()
             tw.writeExprs_methodaccess(callId, callType.javaResult.id, callType.kotlinResult.id, retId, 0)
 
             extractTypeArguments(functionReferenceExpr, callId, funLabels.methodId, retId, -2, true)
-            dispatchReceiverId = -1
+            dispatchReceiverIdx = -1
         }
 
         writeExpressionMetadataToTrapFile(callId, funLabels.methodId, retId)
@@ -2052,8 +2047,13 @@ open class KotlinFileExtractor(
             writeExpressionMetadataToTrapFile(thisId, funLabels.methodId, retId)
         }
 
+        val useFirstArgAsDispatch: Boolean
         if (dispatchReceiver != null) {
-            writeFieldAccessInInvokeBody(dispatchReceiver.type, dispatchReceiverId, dispatchFieldId!!)
+            writeFieldAccessInInvokeBody(dispatchReceiver.type, dispatchReceiverIdx, dispatchFieldId!!)
+
+            useFirstArgAsDispatch = false
+        } else {
+            useFirstArgAsDispatch = dispatchParameter != null
         }
 
         val extensionIdxOffset: Int
@@ -2065,10 +2065,16 @@ open class KotlinFileExtractor(
         }
 
         if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            addArgumentsToInvocationInInvokeNBody(parameters, funLabels, retId, callId, locId, { exp -> writeExpressionMetadataToTrapFile(exp, funLabels.methodId, retId) }, extensionIdxOffset)
+            addArgumentsToInvocationInInvokeNBody(parameters, funLabels, retId, callId, locId, { exp -> writeExpressionMetadataToTrapFile(exp, funLabels.methodId, retId) }, extensionIdxOffset, useFirstArgAsDispatch, dispatchReceiverIdx)
         } else {
+            val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
             for ((pIdx, p) in funLabels.parameters.withIndex()) {
-                writeVariableAccessInInvokeBody(p.second, pIdx + extensionIdxOffset, p.first)
+                val childIdx = if (pIdx == 0 && useFirstArgAsDispatch) {
+                    dispatchReceiverIdx
+                } else {
+                    pIdx + extensionIdxOffset - dispatchIdxOffset
+                }
+                writeVariableAccessInInvokeBody(p.second, childIdx, p.first)
             }
         }
 
@@ -2208,7 +2214,9 @@ open class KotlinFileExtractor(
         callId: Label<out DbExprparent>,
         locId: Label<DbLocation>,
         extractCommonExpr: (Label<out DbExpr>) -> Unit,
-        firstArgumentOffset: Int = 0
+        firstArgumentOffset: Int = 0,
+        useFirstArgAsDispatch: Boolean = false,
+        dispatchReceiverIdx: Int = -1
     ) {
         val intType = useType(pluginContext.irBuiltIns.intType)
         val argsParamType = pluginContext.irBuiltIns.arrayClass.typeWith(pluginContext.irBuiltIns.anyNType)
@@ -2220,13 +2228,22 @@ open class KotlinFileExtractor(
         @Suppress("UNCHECKED_CAST")
         val arrayIndexerFunctionId = useFunction<DbMethod>(arrayIndexerFunction as IrFunction)
 
+        val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
+
         for ((pIdx, p) in parameters.withIndex()) {
             // `args[i] as Ti` is generated below for each parameter
+
+            val childIdx =
+                if (pIdx == 0 && useFirstArgAsDispatch) {
+                    dispatchReceiverIdx
+                } else {
+                    pIdx + firstArgumentOffset - dispatchIdxOffset
+                }
 
             // cast
             val castId = tw.getFreshIdLabel<DbCastexpr>()
             val type = useType(p.type)
-            tw.writeExprs_castexpr(castId, type.javaResult.id, type.kotlinResult.id, callId, pIdx + firstArgumentOffset)
+            tw.writeExprs_castexpr(castId, type.javaResult.id, type.kotlinResult.id, callId, childIdx)
             extractCommonExpr(castId)
 
             // type access

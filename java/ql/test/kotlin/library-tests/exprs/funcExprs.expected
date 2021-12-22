@@ -1,14 +1,27 @@
-| funcExprs.kt:14:26:14:33 | ...->... | stmt body | funcExprs.kt:14:26:14:33 | invoke | invoke() | funcExprs.kt:14:26:14:33 | new Function0<Integer>(...) { ... } |
-| funcExprs.kt:15:26:15:33 | ...->... | stmt body | funcExprs.kt:15:26:15:33 | invoke | invoke() | funcExprs.kt:15:26:15:33 | new Function0<Object>(...) { ... } |
-| funcExprs.kt:16:26:16:33 | ...->... | stmt body | funcExprs.kt:16:26:16:33 | invoke | invoke() | funcExprs.kt:16:26:16:33 | new Function0<Object>(...) { ... } |
-| funcExprs.kt:17:29:17:38 | ...->... | stmt body | funcExprs.kt:17:29:17:38 | invoke | invoke(int) | funcExprs.kt:17:29:17:38 | new Function1<Integer,Integer>(...) { ... } |
-| funcExprs.kt:18:29:18:34 | ...->... | stmt body | funcExprs.kt:18:29:18:34 | invoke | invoke(int) | funcExprs.kt:18:29:18:34 | new Function1<Integer,Integer>(...) { ... } |
-| funcExprs.kt:19:29:19:42 | ...->... | stmt body | funcExprs.kt:19:29:19:42 | invoke | invoke(int) | funcExprs.kt:19:29:19:42 | new Function1<Integer,Integer>(...) { ... } |
-| funcExprs.kt:21:29:21:37 | ...->... | stmt body | funcExprs.kt:21:29:21:37 | invoke | invoke(java.lang.Object) | funcExprs.kt:21:29:21:37 | new Function1<Object,Object>(...) { ... } |
-| funcExprs.kt:22:28:22:50 | ...->... | stmt body | funcExprs.kt:22:28:22:50 | invoke | invoke(int,int) | funcExprs.kt:22:28:22:50 | new Function2<Integer,Integer,Integer>(...) { ... } |
-| funcExprs.kt:23:28:23:40 | ...->... | stmt body | funcExprs.kt:23:28:23:40 | invoke | invoke(int,int) | funcExprs.kt:23:28:23:40 | new Function2<Integer,Integer,Integer>(...) { ... } |
-| funcExprs.kt:24:28:24:44 | ...->... | stmt body | funcExprs.kt:24:28:24:44 | invoke | invoke(int,int) | funcExprs.kt:24:28:24:44 | new Function2<Integer,Integer,Integer>(...) { ... } |
-| funcExprs.kt:25:28:25:51 | ...->... | stmt body | funcExprs.kt:25:28:25:51 | invoke | invoke(int) | funcExprs.kt:25:28:25:51 | new Function1<Integer,Function1<Integer,Double>>(...) { ... } |
-| funcExprs.kt:25:37:25:47 | ...->... | stmt body | funcExprs.kt:25:37:25:47 | invoke | invoke(int) | funcExprs.kt:25:37:25:47 | new Function1<Integer,Double>(...) { ... } |
-| funcExprs.kt:27:29:27:112 | ...->... | stmt body | funcExprs.kt:27:29:27:112 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:27:29:27:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
-| funcExprs.kt:28:29:28:117 | ...->... | stmt body | funcExprs.kt:28:29:28:117 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:28:29:28:117 | new FunctionN<String>(...) { ... } |
+lambdaExpr
+| funcExprs.kt:16:26:16:33 | ...->... | stmt body | funcExprs.kt:16:26:16:33 | invoke | invoke() | funcExprs.kt:16:26:16:33 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:17:26:17:33 | ...->... | stmt body | funcExprs.kt:17:26:17:33 | invoke | invoke() | funcExprs.kt:17:26:17:33 | new Function0<Object>(...) { ... } |
+| funcExprs.kt:18:26:18:33 | ...->... | stmt body | funcExprs.kt:18:26:18:33 | invoke | invoke() | funcExprs.kt:18:26:18:33 | new Function0<Object>(...) { ... } |
+| funcExprs.kt:19:29:19:38 | ...->... | stmt body | funcExprs.kt:19:29:19:38 | invoke | invoke(int) | funcExprs.kt:19:29:19:38 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:20:29:20:34 | ...->... | stmt body | funcExprs.kt:20:29:20:34 | invoke | invoke(int) | funcExprs.kt:20:29:20:34 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:21:29:21:42 | ...->... | stmt body | funcExprs.kt:21:29:21:42 | invoke | invoke(int) | funcExprs.kt:21:29:21:42 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:23:29:23:37 | ...->... | stmt body | funcExprs.kt:23:29:23:37 | invoke | invoke(java.lang.Object) | funcExprs.kt:23:29:23:37 | new Function1<Object,Object>(...) { ... } |
+| funcExprs.kt:24:28:24:50 | ...->... | stmt body | funcExprs.kt:24:28:24:50 | invoke | invoke(int,int) | funcExprs.kt:24:28:24:50 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:25:28:25:40 | ...->... | stmt body | funcExprs.kt:25:28:25:40 | invoke | invoke(int,int) | funcExprs.kt:25:28:25:40 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:26:28:26:44 | ...->... | stmt body | funcExprs.kt:26:28:26:44 | invoke | invoke(int,int) | funcExprs.kt:26:28:26:44 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:27:28:27:51 | ...->... | stmt body | funcExprs.kt:27:28:27:51 | invoke | invoke(int) | funcExprs.kt:27:28:27:51 | new Function1<Integer,Function1<Integer,Double>>(...) { ... } |
+| funcExprs.kt:27:37:27:47 | ...->... | stmt body | funcExprs.kt:27:37:27:47 | invoke | invoke(int) | funcExprs.kt:27:37:27:47 | new Function1<Integer,Double>(...) { ... } |
+| funcExprs.kt:29:29:29:112 | ...->... | stmt body | funcExprs.kt:29:29:29:112 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:29:29:29:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
+| funcExprs.kt:30:29:30:117 | ...->... | stmt body | funcExprs.kt:30:29:30:117 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:30:29:30:117 | new FunctionN<String>(...) { ... } |
+memberRefExprs
+| funcExprs.kt:32:26:32:38 | ...::... | funcExprs.kt:32:26:32:38 | invoke | invoke() | funcExprs.kt:32:26:32:38 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:33:26:33:36 | ...::... | funcExprs.kt:33:26:33:36 | invoke | invoke() | funcExprs.kt:33:26:33:36 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:34:29:34:41 | ...::... | funcExprs.kt:34:29:34:41 | invoke | invoke(int) | funcExprs.kt:34:29:34:41 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:35:29:35:39 | ...::... | funcExprs.kt:35:29:35:39 | invoke | invoke(FuncRef,int) | funcExprs.kt:35:29:35:39 | new Function2<FuncRef,Integer,Integer>(...) { ... } |
+| funcExprs.kt:36:29:36:33 | ...::... | funcExprs.kt:36:29:36:33 | invoke | invoke(int) | funcExprs.kt:36:29:36:33 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:37:28:37:34 | ...::... | funcExprs.kt:37:28:37:34 | invoke | invoke(int,int) | funcExprs.kt:37:28:37:34 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:38:29:38:42 | ...::... | funcExprs.kt:38:29:38:42 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:38:29:38:42 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
+| funcExprs.kt:39:29:39:42 | ...::... | funcExprs.kt:39:29:39:42 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:39:29:39:42 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:40:30:40:41 | ...::... | funcExprs.kt:40:30:40:41 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:40:30:40:41 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:43:26:43:32 | ...::... | funcExprs.kt:43:26:43:32 | invoke | invoke() | funcExprs.kt:43:26:43:32 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:45:8:45:16 | ...::... | funcExprs.kt:45:8:45:16 | invoke | invoke() | funcExprs.kt:45:8:45:16 | new Function0<FuncRef>(...) { ... } |

@@ -40,7 +40,7 @@
 | local_anonymous.kt:11:9:11:24 | new Object(...) { ... } | <anonymous class> | final, public, static |
 | local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | <anonymous class> | final, public, static |
 | local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | <anonymous class> | final, public, static |
-| local_anonymous.kt:21:21:21:31 | new Function0<Unit>(...) { ... } | <anonymous class> | final, public, static |
+| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | <anonymous class> | final, public, static |
 | local_anonymous.kt:25:9:25:27 | LocalClass | LocalAnonymous.Class1$LocalClass | final |
 | superChain.kt:0:0:0:0 | SuperChainKt | SuperChainKt |  |
 | superChain.kt:1:1:1:33 | SuperChain1 | SuperChain1 | public |

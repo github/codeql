@@ -3,12 +3,14 @@ fun functionExpression0b(f: () -> Any?) { }
 fun functionExpression0c(f: () -> Any) { }
 fun functionExpression1a(x: Int, f: (Int) -> Int) { }
 fun functionExpression1b(x: Int, f: (Any?) -> Any?) { }
+fun functionExpression1c(x: Int, f: (FuncRef, Int) -> Int) { }
 fun functionExpression2(x: Int, f: (Int, Int) -> Int) { }
 fun functionExpression3(x: Int, f: Int.(Int) -> Int) { }
 fun functionExpression4(x: Int, f: (Int) -> ((Int) -> Double)) { }
 
 fun functionExpression22(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> Unit) {}
 fun functionExpression23(x: Int, f: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {}
+fun functionExpression23c(x: Int, f: (FuncRef, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) -> String) {}
 
 fun call() {
     functionExpression0a { -> 5 }
@@ -30,10 +32,12 @@ fun call() {
     functionExpression0a(FuncRef()::f0)
     functionExpression0a(FuncRef::f0)
     functionExpression1a(5, FuncRef()::f1)
+    functionExpression1c(5, FuncRef::f1)
     functionExpression1a(5, 3::f3)
     functionExpression3(5, Int::f3)
     functionExpression22(5, FuncRef()::f22)
     functionExpression23(5, FuncRef()::f23)
+    functionExpression23c(5, FuncRef::f23)
 
     fun local(): Int = 5
     functionExpression0a(::local)
