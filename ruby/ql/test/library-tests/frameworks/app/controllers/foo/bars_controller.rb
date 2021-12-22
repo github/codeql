@@ -22,4 +22,10 @@ class BarsController < ApplicationController
     dt = params[:text]
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
+  
+  private
+
+  def unreachable_action
+    render "show"
+  end
 end

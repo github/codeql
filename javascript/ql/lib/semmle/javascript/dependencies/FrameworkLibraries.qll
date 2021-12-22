@@ -299,12 +299,15 @@ private class JQuery extends FrameworkLibraryWithGenericURL {
 private predicate jQueryMarkerComment(Comment c, TopLevel tl, string version) {
   tl = c.getTopLevel() and
   exists(string txt | txt = c.getText() |
-    // more recent versions use this format
+    // More recent versions use this format:
+    // "(?s).*jQuery (?:JavaScript Library )?v(" + versionRegex() + ").*",
+    // Earlier versions used this format:
+    // "(?s).*jQuery (" + versionRegex() + ") - New Wave Javascript.*"
+    // For efficiency, construct a single regex that matches both,
+    // at the cost of being slightly more permissive.
     version =
-      txt.regexpCapture("(?s).*jQuery (?:JavaScript Library )?v(" + versionRegex() + ").*", 1)
-    or
-    // earlier versions used this format
-    version = txt.regexpCapture("(?s).*jQuery (" + versionRegex() + ") - New Wave Javascript.*", 1)
+      txt.regexpCapture("(?s).*jQuery (?:JavaScript Library )?v?(" + versionRegex() +
+          ")(?: - New Wave Javascript)?.*", 1)
     or
     // 1.0.0 and 1.0.1 have the same marker comment; we call them both "1.0"
     txt.matches("%jQuery - New Wave Javascript%") and version = "1.0"

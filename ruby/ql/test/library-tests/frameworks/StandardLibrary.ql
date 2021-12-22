@@ -30,3 +30,5 @@ query DataFlow::Node classEvalCallCodeExecutions(ClassEvalCallCodeExecution e) {
 query DataFlow::Node moduleEvalCallCodeExecutions(ModuleEvalCallCodeExecution e) {
   result = e.getCode()
 }
+
+query DataFlow::Node loggerLoggingCallInputs(LoggerLoggingCall c) { result = c.getAnInput() }

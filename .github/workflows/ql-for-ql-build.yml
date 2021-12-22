@@ -1,0 +1,192 @@
+name: Run QL for QL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  queries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find codeql
+        id: find-codeql
+        uses: github/codeql-action/init@erik-krogh/ql
+        with:
+          languages: javascript # does not matter
+      - name: Get CodeQL version
+        id: get-codeql-version
+        run: |
+          echo "::set-output name=version::$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)"
+        shell: bash
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Cache queries
+        id: cache-queries
+        uses: actions/cache@v2
+        with:
+          path: ${{ runner.temp }}/query-pack.zip
+          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
+      - name: Build query pack
+        if: steps.cache-queries.outputs.cache-hit != 'true'
+        run: |
+          cd ql/ql/src
+          "${CODEQL}" pack create
+          cd .codeql/pack/codeql/ql-all/0.0.0
+          zip "${PACKZIP}" -r .
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+          PACKZIP: ${{ runner.temp }}/query-pack.zip
+      - name: Upload query pack
+        uses: actions/upload-artifact@v2
+        with:
+          name: query-pack-zip
+          path: ${{ runner.temp }}/query-pack.zip
+
+  extractors:
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache entire extractor
+        id: cache-extractor
+        uses: actions/cache@v2
+        with:
+          path: |
+            ql/target/release/ql-autobuilder
+            ql/target/release/ql-autobuilder.exe
+            ql/target/release/ql-extractor
+            ql/target/release/ql-extractor.exe
+          key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
+      - name: Cache cargo
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ql/target
+          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+      - name: Check formatting
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        run: cd ql; cargo fmt --all -- --check
+      - name: Build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        run: cd ql; cargo build --verbose
+      - name: Run tests
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        run: cd ql; cargo test --verbose
+      - name: Release build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        run: cd ql; cargo build --release
+      - name: Generate dbscheme
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: |
+            ql/target/release/ql-autobuilder
+            ql/target/release/ql-autobuilder.exe
+            ql/target/release/ql-extractor
+            ql/target/release/ql-extractor.exe
+          retention-days: 1
+  package:
+    runs-on: ubuntu-latest
+
+    needs:
+      - extractors
+      - queries
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: query-pack-zip
+          path: query-pack-zip
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: linux64
+      - run: |
+          unzip query-pack-zip/*.zip -d pack
+          cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats pack/
+          mkdir -p pack/tools/linux64
+          if [[ -f linux64/ql-autobuilder ]]; then
+            cp linux64/ql-autobuilder pack/tools/linux64/autobuilder
+            chmod +x pack/tools/linux64/autobuilder
+          fi
+          if [[ -f linux64/ql-extractor ]]; then
+            cp linux64/ql-extractor pack/tools/linux64/extractor
+            chmod +x pack/tools/linux64/extractor
+          fi
+          cd pack
+          zip -rq ../codeql-ql.zip .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ql-pack
+          path: codeql-ql.zip
+          retention-days: 1
+  analyze:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: [cpp, csharp, java, javascript, python, ql, ruby]
+
+    needs:
+      - package
+
+    steps:
+      - name: Download pack
+        uses: actions/download-artifact@v2
+        with:
+          name: codeql-ql-pack
+          path: ${{ runner.temp }}/codeql-ql-pack-artifact
+
+      - name: Prepare pack
+        run: |
+          unzip "${PACK_ARTIFACT}/*.zip" -d "${PACK}"
+        env:
+          PACK_ARTIFACT: ${{ runner.temp }}/codeql-ql-pack-artifact
+          PACK: ${{ runner.temp }}/pack
+      - name: Hack codeql-action options
+        run: |
+          JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
+        env:
+          PACK: ${{ runner.temp }}/pack
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Create CodeQL config file
+        run: |
+          echo "paths:" > ${CONF}
+          echo "  - ${FOLDER}" >> ${CONF}
+          echo "paths-ignore:" >> ${CONF}
+          echo "  - ql/ql/test" >> ${CONF}
+          echo "Config file: "
+          cat ${CONF}
+        env: 
+          CONF: ./ql-for-ql-config.yml
+          FOLDER: ${{ matrix.folder }}
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@erik-krogh/ql
+        with:
+          languages: ql
+          db-location: ${{ runner.temp }}/db
+          config-file: ./ql-for-ql-config.yml
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@erik-krogh/ql
+        with: 
+          category: "ql-for-ql-${{ matrix.folder }}"
+

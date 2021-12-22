@@ -56,3 +56,23 @@ foo([1, 2, 3])
 
 def foo x
 end
+
+def test_case x
+  y = case x
+  when 1 then 3
+  when 2 then x
+  when 3
+     x
+  else
+    x
+  end
+  z = case x
+  in 1 then 4
+  in 2 then x
+  in 3
+      x
+  else
+     x
+  end
+end
+    

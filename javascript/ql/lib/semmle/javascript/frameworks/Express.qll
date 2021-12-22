@@ -75,6 +75,63 @@ module Express {
     result = "del"
   }
 
+  private class RouterRange extends Routing::Router::Range {
+    RouterDefinition def;
+
+    RouterRange() { this = def.flow() }
+
+    override DataFlow::SourceNode getAReference() { result = def.ref() }
+  }
+
+  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
+    RoutingTreeSetup() { asExpr() instanceof RouteSetup }
+
+    override string getRelativePath() {
+      not getMethodName() = "param" and // do not treat parameter name as a path
+      result = getArgument(0).getStringValue()
+    }
+
+    override HTTP::RequestMethodName getHttpMethod() { result.toLowerCase() = getMethodName() }
+  }
+
+  /**
+   * A route setup performed via `express-limiter`.
+   *
+   * `express-limiter` is unusual in that it can install the middleware on its own,
+   * rather than expecting the caller to install it with `app.use()` or similar.
+   *
+   * For example:
+   * ```js
+   * let app = express();
+   * require('express-limiter')(app, client)({ method: 'get', path: '/foo' });
+   * ```
+   */
+  private class RateLimiterRouteSetup extends Routing::RouteSetup::Range, DataFlow::CallNode {
+    DataFlow::CallNode limitCall;
+
+    RateLimiterRouteSetup() {
+      limitCall = DataFlow::moduleImport("express-limiter").getACall() and
+      exists(this.getOptionArgument(0, ["path", "method"])) and
+      this = limitCall.getACall()
+    }
+
+    override predicate isInstalledAt(Routing::Router::Range router, ControlFlowNode cfgNode) {
+      router.getAReference().getALocalUse() = limitCall.getArgument(0) and
+      cfgNode = asExpr()
+    }
+  }
+
+  private class AppTree extends Routing::Node {
+    AppTree() { this = Routing::getNode(appCreation()) }
+
+    override DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) {
+      // req.app and res.app refer to the app object
+      n = [0, 1] and
+      path = "app" and
+      this = Routing::getNode(result)
+    }
+  }
+
   /**
    * A call to an Express router method that sets up a route.
    */
@@ -556,10 +613,9 @@ module Express {
 
     override predicate isUserControlledObject() {
       kind = "body" and
-      exists(ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
-        expr.getBody() = request.getRouteHandler() and
-        bodyParser.producesUserControlledObjects() and
-        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      exists(ExpressLibraries::BodyParser bodyParser |
+        Routing::getNode(request.getRouteHandler()).isGuardedBy(bodyParser) and
+        bodyParser.producesUserControlledObjects()
       )
       or
       // If we can't find the middlewares for the route handler,
@@ -788,10 +844,13 @@ module Express {
       exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
+    /** Gets a data flow node referring to this router. */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+
     /**
      * Holds if `sink` may refer to this router.
      */
-    predicate flowsTo(Expr sink) { this.ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
+    predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
@@ -970,13 +1029,17 @@ module Express {
    */
   private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiation::Range,
     DataFlow::CallNode {
-    RenderCallAsTemplateInstantiation() {
-      this = any(ResponseSource res).ref().getAMethodCall("render")
-    }
+    ResponseSource res;
+
+    RenderCallAsTemplateInstantiation() { this = res.ref().getAMethodCall("render") }
 
     override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
     override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
+
+    override DataFlow::Node getTemplateParamForValue(string accessPath) {
+      result = res.(Routing::RouteHandlerParameter).getValueFromAccessPath("locals." + accessPath)
+    }
 
     override DataFlow::SourceNode getOutput() { result = this.getCallback(2).getParameter(1) }
   }

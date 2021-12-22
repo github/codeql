@@ -24,34 +24,25 @@ private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
  */
 private module MongoDB {
   /**
-   * Gets an access to `mongodb.MongoClient`.
+   * Gets an access to `mongodb.MongoClient` or a database.
+   *
+   * In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
+   * they were separated. To handle everything with a single model, we treat them as the same here.
    */
-  private API::Node getAMongoClient() {
+  private API::Node getAMongoClientOrDatabase() {
     result = API::moduleImport("mongodb").getMember("MongoClient")
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "db" // mongodb v2 provides a `Db` here
-  }
-
-  /** Gets an API-graph node that refers to a `connect` callback. */
-  private API::Node getAMongoDbCallback() {
-    result = getAMongoClient().getMember("connect").getLastParameter()
-  }
-
-  /**
-   * Gets an API-graph node that may refer to a MongoDB database connection.
-   */
-  private API::Node getAMongoDb() {
-    result = getAMongoClient().getMember("db").getReturn()
+    result = getAMongoClientOrDatabase().getMember("db").getReturn()
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "client" // mongodb v3 provides a `Mongoclient` here
+    result = getAMongoClientOrDatabase().getMember("connect").getLastParameter().getParameter(1)
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
   private API::Node getACollection() {
     // A collection resulting from calling `Db.collection(...)`.
-    exists(API::Node collection | collection = getAMongoDb().getMember("collection").getReturn() |
+    exists(API::Node collection |
+      collection = getAMongoClientOrDatabase().getMember("collection").getReturn()
+    |
       result = collection
       or
       result = collection.getParameter(1).getParameter(0)
@@ -618,14 +609,30 @@ private module Minimongo {
  * Provides classes modeling the MarsDB library.
  */
 private module MarsDB {
+  private class MarsDBAccess extends DatabaseAccess {
+    string method;
+
+    MarsDBAccess() {
+      this =
+        API::moduleImport("marsdb")
+            .getMember("Collection")
+            .getInstance()
+            .getMember(method)
+            .getACall()
+    }
+
+    string getMethod() { result = method }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+
   /** A call to a MarsDB query method. */
   private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
       exists(string m |
-        this =
-          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
+        this.(MarsDBAccess).getMethod() = m and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
@@ -732,5 +739,38 @@ private module Redis {
         this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
       )
     }
+  }
+
+  /**
+   * An access to a database through redis
+   */
+  class RedisDatabaseAccess extends DatabaseAccess {
+    RedisDatabaseAccess() { this = redis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+}
+
+/**
+ * Provides classes modeling the `ioredis` library.
+ *
+ * ```
+ * import Redis from 'ioredis'
+ * let client = new Redis(...)
+ * ```
+ */
+private module IoRedis {
+  /**
+   * Gets an `ioredis` client.
+   */
+  API::Node ioredis() { result = API::moduleImport("ioredis").getInstance() }
+
+  /**
+   * An access to a database through ioredis
+   */
+  class IoRedisDatabaseAccess extends DatabaseAccess {
+    IoRedisDatabaseAccess() { this = ioredis().getMember(_).getACall() }
+
+    override DataFlow::Node getAQueryArgument() { none() }
   }
 }

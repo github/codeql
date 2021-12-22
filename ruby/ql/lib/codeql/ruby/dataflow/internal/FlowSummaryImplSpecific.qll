@@ -12,7 +12,7 @@ private import FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 
 /** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
+ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
@@ -31,8 +31,8 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.
  */
-bindingset[t, i]
-DataFlowType getCallbackParameterType(DataFlowType t, int i) { any() }
+bindingset[t, pos]
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
@@ -63,12 +63,13 @@ SummaryComponent interpretComponentSpecific(string c) {
   result = FlowSummary::SummaryComponent::block()
   or
   c = "Argument[_]" and
-  result = FlowSummary::SummaryComponent::argument(any(int i | i >= 0))
+  result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
-  sc = TArgumentSummaryComponent(-2) and result = "BlockArgument"
+  sc = TArgumentSummaryComponent(any(ParameterPosition pos | pos.isBlock())) and
+  result = "BlockArgument"
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
@@ -127,21 +128,57 @@ private module UnusedSourceSinkInterpretation {
 
 import UnusedSourceSinkInterpretation
 
-bindingset[s]
-private int parsePosition(string s) {
-  result = s.regexpCapture("([-0-9]+)", 1).toInt()
-  or
-  exists(int n1, int n2 |
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
-    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
-    result in [n1 .. n2]
-  )
+module ParsePositions {
+  private import FlowSummaryImpl
+
+  private predicate isParamBody(string body) {
+    exists(string c |
+      Private::External::specSplit(_, c, _) and
+      body = c.regexpCapture("Parameter\\[([^\\]]*)\\]", 1)
+    )
+  }
+
+  private predicate isArgBody(string body) {
+    exists(string c |
+      Private::External::specSplit(_, c, _) and
+      body = c.regexpCapture("Argument\\[([^\\]]*)\\]", 1)
+    )
+  }
+
+  bindingset[s]
+  private int parsePosition(string s) {
+    result = s.regexpCapture("([-0-9]+)", 1).toInt()
+    or
+    exists(int n1, int n2 |
+      s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+      s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+      result in [n1 .. n2]
+    )
+  }
+
+  predicate isParsedParameterPosition(string c, int i) {
+    isParamBody(c) and
+    i = parsePosition(c)
+  }
+
+  predicate isParsedArgumentPosition(string c, int i) {
+    isArgBody(c) and
+    i = parsePosition(c)
+  }
 }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
-bindingset[s]
-ArgumentPosition parseParamBody(string s) { result = parsePosition(s) }
+ArgumentPosition parseParamBody(string s) {
+  exists(int i |
+    ParsePositions::isParsedParameterPosition(s, i) and
+    result.isPositional(i)
+  )
+}
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
-bindingset[s]
-ParameterPosition parseArgBody(string s) { result = parsePosition(s) }
+ParameterPosition parseArgBody(string s) {
+  exists(int i |
+    ParsePositions::isParsedArgumentPosition(s, i) and
+    result.isPositional(i)
+  )
+}

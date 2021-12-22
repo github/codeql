@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <recommendation>
+
+    <p>To guard against SSRF attacks you should avoid putting user-provided input directly
+      into a request URL. Instead, either maintain a list of authorized URLs on the server and choose
+      from that list based on the input provided, or perform proper validation of the input.
+    </p>
+
+  </recommendation>
+  <example>
+
+    <p>The following example shows code vulnerable to a full SSRF attack, because it
+    uses untrusted input (HTTP request parameter) directly to construct a URL. By using
+    <code>evil.com#</code> as the <code>target</code> value, the requested URL will be
+    <code>https://evil.com#.example.com/data/</code>. It also shows how to remedy the
+    problem by using the user input select a known fixed string.
+    </p>
+
+    <sample src="examples/ServerSideRequestForgery_full.py" />
+
+  </example>
+  <example>
+
+    <p>
+      The following example shows code vulnerable to a partial SSRF attack, because it
+      uses untrusted input (HTTP request parameter) directly to construct a URL. By
+      using <code>../transfer-funds-to/123?amount=456</code> as the
+      <code>user_id</code> value, the requested URL will be
+      <code>https://api.example.com/transfer-funds-to/123?amount=456</code>. It also
+      shows how to remedy the problem by validating the input.
+    </p>
+
+    <sample src="examples/ServerSideRequestForgery_partial.py" />
+
+  </example>
+  <references>
+    <li>
+      <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">OWASP SSRF article</a>
+    </li>
+    <li>
+      <a href="https://portswigger.net/web-security/ssrf">PortSwigger SSRF article</a>
+    </li>
+  </references>
+</qhelp>

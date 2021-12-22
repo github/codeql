@@ -338,7 +338,7 @@ module ExprNodes {
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
-    override predicate relevantChild(Expr e) { e = this.getValue() or e = this.getBranch(_) }
+    override predicate relevantChild(Expr e) { e = this.getValue() }
   }
 
   /** A control-flow node that wraps a `MethodCall` AST expression. */
@@ -356,11 +356,6 @@ module ExprNodes {
 
     /** Gets the expression being compared, if any. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
-
-    /**
-     * Gets the `n`th branch of this case expression.
-     */
-    final ExprCfgNode getBranch(int n) { e.hasCfgChild(e.getBranch(n), this, result) }
   }
 
   private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {

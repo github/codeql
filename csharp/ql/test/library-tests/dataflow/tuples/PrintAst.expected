@@ -284,12 +284,12 @@ Tuples.cs:
 #   85|   9: [Record] R1
 #   85|     12: [NEOperator] !=
 #-----|       2: (Parameters)
-#   85|         0: [Parameter] r1
-#   85|         1: [Parameter] r2
+#   85|         0: [Parameter] left
+#   85|         1: [Parameter] right
 #   85|     13: [EQOperator] ==
 #-----|       2: (Parameters)
-#   85|         0: [Parameter] r1
-#   85|         1: [Parameter] r2
+#   85|         0: [Parameter] left
+#   85|         1: [Parameter] right
 #   85|     14: [Property] EqualityContract
 #   85|       3: [Getter] get_EqualityContract
 #   85|     15: [InstanceConstructor] R1

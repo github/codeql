@@ -675,3 +675,32 @@ module CookieSecurityConfigurationSetting {
     abstract string getSecurityWarningMessage();
   }
 }
+
+/**
+ * A data-flow node that logs data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Logging::Range` instead.
+ */
+class Logging extends DataFlow::Node {
+  Logging::Range range;
+
+  Logging() { this = range }
+
+  /** Gets an input that is logged. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling new logging mechanisms. */
+module Logging {
+  /**
+   * A data-flow node that logs data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Logging` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is logged. */
+    abstract DataFlow::Node getAnInput();
+  }
+}

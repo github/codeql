@@ -227,7 +227,7 @@ private module Shared {
       isHelperMethod(helperMethod, name, template) and
       isMethodCall(helperMethodCall.getExpr(), name, template) and
       helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
-      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asExpr().getExpr()
+      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asParameter()
     )
   }
 

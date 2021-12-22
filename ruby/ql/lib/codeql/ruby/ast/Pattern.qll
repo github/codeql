@@ -6,8 +6,12 @@ private import internal.TreeSitter
 private import internal.Variable
 private import internal.Parameter
 
-/** A pattern. */
-class Pattern extends AstNode {
+/**
+ * DEPRECATED
+ *
+ * A pattern.
+ */
+deprecated class Pattern extends AstNode {
   Pattern() {
     explicitAssignmentNode(toGenerated(this), _)
     or
@@ -24,36 +28,18 @@ class Pattern extends AstNode {
   Variable getAVariable() { none() }
 }
 
-private class LhsExpr_ =
-  TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
-      TSimpleParameter;
-
 /**
- * A "left-hand-side" expression. An `LhsExpr` can occur on the left-hand side of
- * operator assignments (`AssignOperation`), in patterns (`Pattern`) on the left-hand side of
- * an assignment (`AssignExpr`) or for loop (`ForExpr`), and as the exception
- * variable of a `rescue` clause (`RescueClause`).
+ * DEPRECATED
  *
- * An `LhsExpr` can be a simple variable, a constant, a call, or an element reference:
- * ```rb
- * var = 1
- * var += 1
- * E = 1
- * foo.bar = 1
- * foo[0] = 1
- * rescue E => var
- * ```
+ * A simple variable pattern.
  */
-class LhsExpr extends Pattern, LhsExpr_, Expr {
+deprecated class VariablePattern extends Pattern, LhsExpr, TVariableAccess {
   override Variable getAVariable() { result = this.(VariableAccess).getVariable() }
 }
 
-private class TVariablePattern = TVariableAccess or TSimpleParameter;
-
-/** A simple variable pattern. */
-class VariablePattern extends Pattern, LhsExpr, TVariablePattern { }
-
 /**
+ * DEPRECATED
+ *
  * A tuple pattern.
  *
  * This includes both tuple patterns in parameters and assignments. Example patterns:
@@ -63,9 +49,7 @@ class VariablePattern extends Pattern, LhsExpr, TVariablePattern { }
  * a, b, *rest, c, d = value
  * ```
  */
-class TuplePattern extends Pattern, TTuplePattern {
-  override string getAPrimaryQlClass() { result = "TuplePattern" }
-
+deprecated class TuplePattern extends Pattern, TTuplePattern {
   private TuplePatternImpl getImpl() { result = toGenerated(this) }
 
   private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
@@ -92,10 +76,6 @@ class TuplePattern extends Pattern, TTuplePattern {
   final int getRestIndex() { result = this.getImpl().getRestIndex() }
 
   override Variable getAVariable() { result = this.getElement(_).getAVariable() }
-
-  override string toString() { result = "(..., ...)" }
-
-  override AstNode getAChild(string pred) { pred = "getElement" and result = this.getElement(_) }
 }
 
 private class TPatternNode =

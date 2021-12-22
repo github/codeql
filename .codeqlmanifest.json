@@ -11,7 +11,9 @@
         "misc/legacy-support/*/qlpack.yml",
         "misc/suite-helpers/qlpack.yml",
         "ruby/extractor-pack/codeql-extractor.yml",
-        "ruby/ql/consistency-queries/qlpack.yml"
+        "ruby/ql/consistency-queries/qlpack.yml",
+        "ql/ql/consistency-queries/qlpack.yml",
+        "ql/extractor-pack/codeql-extractor.yml"
     ],
     "versionPolicies": {
       "default": {

@@ -35,34 +35,57 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
     or
     result = BodyStmt.super.getAChild(pred)
   }
+
+  /** Holds if this method is private. */
+  predicate isPrivate() { none() }
 }
 
-/** A call to `private`. */
-private class Private extends MethodCall {
-  Private() { this.getMethodName() = "private" }
+/**
+ * A method call which modifies another method in some way.
+ * For example, `private :foo` makes the method `foo` private.
+ */
+private class MethodModifier extends MethodCall {
+  /** Gets the name of the method that this call applies to. */
+  Expr getMethodArgument() { result = this.getArgument(0) }
 
-  /** Gets the method that this `private` call applies to, if any */
-  Expr getMethod() { result = this.getArgument(0) }
-
-  /**
-   * Holds if this `private` call happens inside `c`, and refers to a
-   * method named `name`.
-   */
+  /** Holds if this call modifies a method with name `name` in namespace `n`. */
   pragma[noinline]
-  predicate isRef(ClassDeclaration c, string name) {
-    this = c.getAStmt() and
-    name = this.getMethod().(SymbolLiteral).getValueText()
+  predicate modifiesMethod(Namespace n, string name) {
+    this = n.getAStmt() and
+    [
+      this.getMethodArgument().(StringlikeLiteral).getValueText(),
+      this.getMethodArgument().(MethodBase).getName()
+    ] = name
   }
+}
 
-  /**
-   * Holds if this `private` call happens at position `i` inside `c`,
-   * and the call has no arguments.
-   */
-  pragma[noinline]
-  predicate hasNoArg(ClassDeclaration c, int i) {
-    this = c.getStmt(i) and
-    not exists(this.getMethod())
+/** A call to `private` or `private_class_method`. */
+private class Private extends MethodModifier {
+  private Namespace namespace;
+  private int position;
+
+  Private() { this.getMethodName() = "private" and namespace.getStmt(position) = this }
+
+  override predicate modifiesMethod(Namespace n, string name) {
+    n = namespace and
+    (
+      // def foo
+      // ...
+      // private :foo
+      super.modifiesMethod(n, name)
+      or
+      // private
+      // ...
+      // def foo
+      not exists(this.getMethodArgument()) and
+      exists(MethodBase m, int i | n.getStmt(i) = m and m.getName() = name and i > position)
+    )
   }
+}
+
+/** A call to `private_class_method`. */
+private class PrivateClassMethod extends MethodModifier {
+  PrivateClassMethod() { this.getMethodName() = "private_class_method" }
 }
 
 /** A normal method. */
@@ -90,12 +113,6 @@ class Method extends MethodBase, TMethod {
    */
   final predicate isSetter() { g.getName() instanceof Ruby::Setter }
 
-  pragma[noinline]
-  private predicate isDeclaredIn(ClassDeclaration c, string name) {
-    this = c.getAStmt() and
-    name = this.getName()
-  }
-
   /**
    * Holds if this method is private. All methods with the name prefix
    * `private` are private below:
@@ -122,18 +139,10 @@ class Method extends MethodBase, TMethod {
    * end
    * ```
    */
-  predicate isPrivate() {
-    this = any(Private p).getMethod()
-    or
-    exists(ClassDeclaration c, Private p, string name |
-      this.isDeclaredIn(c, name) and
-      p.isRef(c, name)
-    )
-    or
-    exists(ClassDeclaration c, Private p, int i, int j |
-      p.hasNoArg(c, i) and
-      this = c.getStmt(j) and
-      j > i
+  override predicate isPrivate() {
+    exists(Namespace n, string name |
+      any(Private p).modifiesMethod(n, name) and
+      isDeclaredIn(this, n, name)
     )
     or
     // Top-level methods are private members of the Object class
@@ -145,6 +154,14 @@ class Method extends MethodBase, TMethod {
   }
 
   final override string toString() { result = this.getName() }
+}
+
+/**
+ * Holds if the method `m` has name `name` and is declared in namespace `n`.
+ */
+pragma[noinline]
+private predicate isDeclaredIn(MethodBase m, Namespace n, string name) {
+  n = m.getEnclosingModule() and name = m.getName()
 }
 
 /** A singleton method. */
@@ -174,6 +191,36 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
     result = super.getAChild(pred)
     or
     pred = "getObject" and result = this.getObject()
+  }
+
+  /**
+   * Holds if this method is private. All methods with the name prefix
+   * `private` are private below:
+   *
+   * ```rb
+   * class C
+   *   private_class_method def self.private1
+   *   end
+   *
+   *   def self.public
+   *   end
+   *
+   *   def self.private2
+   *   end
+   *   private_class_method :private2
+   *
+   *   private # this has no effect on singleton methods
+   *
+   *   def self.public2
+   *   end
+   * end
+   * ```
+   */
+  override predicate isPrivate() {
+    exists(Namespace n, string name |
+      any(PrivateClassMethod p).modifiesMethod(n, name) and
+      isDeclaredIn(this, n, name)
+    )
   }
 }
 
