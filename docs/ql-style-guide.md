@@ -362,4 +362,4 @@ For more information about documenting the code that you contribute to this repo
 | *may/can* | This is a reasonable alternative, to be used with discretion. |
 | *must/always/do not* | Always adhere to this rule. |
 | *[quantifier/aggregation](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
-| *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |
+| *variable* | A parameter to a predicate, a field, a form variable, or a variable introduced by a *quantifier* or *aggregation*. |
