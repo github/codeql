@@ -513,30 +513,6 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
   }
 }
 
-/**
- * Custom flow through `StringValues` library class.
- */
-class StringValuesFlow extends LibraryTypeDataFlow, Struct {
-  StringValuesFlow() { this.hasQualifiedName("Microsoft.Extensions.Primitives", "StringValues") }
-
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    c.getDeclaringType() = this and
-    (
-      exists(Parameter p, int i |
-        p = c.getParameter(i) and
-        source = TCallableFlowSourceArg(i)
-      )
-      or
-      not c.(Method).isStatic() and source = TCallableFlowSourceQualifier()
-    ) and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = false
-  }
-}
-
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
   c = any(Record r).getAMember() and
   exists(string name |
