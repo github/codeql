@@ -40,12 +40,39 @@ class BDDTest extends Test, @call_expr {
 
 /**
  * Gets the test file for `f` with stem extension `stemExt`.
- * That is, a file named file named `<base>.<stemExt>.<ext>` in the
+ * That is, a file named `<base>.<stemExt>.<ext>` in the
  * same directory as `f` which is named `<base>.<ext>`.
  */
 bindingset[stemExt]
 File getTestFile(File f, string stemExt) {
   result = f.getParentContainer().getFile(f.getStem() + "." + stemExt + "." + f.getExtension())
+}
+
+/**
+ * Gets a test file for `f`.
+ * That is, a file named `<base>.<stemExt>.<ext>` in the
+ * same directory as `f`, where `f` is named `<base>.<ext>` and
+ * `<stemExt>` is a well-known test file identifier, such as `test` or `spec`.
+ */
+File getATestFile(File f) {
+  result = f.getParentContainer().getFile(getATestFileName(f))
+}
+
+/**
+ * Gets a name of a test file for `f`.
+ * That is, `<base>.<stemExt>.<ext>` where
+ * `f` is named `<base>.<ext>` and `<stemExt>` is
+ * a well-known test file identifier, such as `test` or `spec`.
+ */
+// Helper predicate factored out for performance.
+// This predicate is linear in the size of f, and forces
+// callers to join only once against f rather than two separate joins
+// when computing the stem and the extension.
+// This loses some flexibility because callers cannot specify
+// an arbitrary stemExt.
+pragma[nomagic]
+private string getATestFileName(File f) {
+  result = f.getStem() + "." + ["test", "spec"] + "." + f.getExtension()
 }
 
 /**
