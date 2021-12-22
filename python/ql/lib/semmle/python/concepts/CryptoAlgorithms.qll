@@ -1,7 +1,7 @@
 /**
  * Provides classes modeling cryptographic algorithms, separated into strong and weak variants.
  *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
+ * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
 private import internal.CryptoAlgorithmNames

@@ -5,7 +5,7 @@
  *
  * The names are inspired by the names used in real world crypto libraries.
  *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
+ * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
 /**
