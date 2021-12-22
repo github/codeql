@@ -202,17 +202,13 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
-  string getAQualifiedName() {
-    result = resolveConstantWriteAccess(this)
-  }
+  string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
 
   /**
    * Gets a qualified name for this constant. Deprecated in favor of
    * `getAQualifiedName` because this can return more than one value
    */
-  deprecated string getQualifiedName() {
-    result = this.getAQualifiedName()
-  }
+  deprecated string getQualifiedName() { result = this.getAQualifiedName() }
 }
 
 /**
