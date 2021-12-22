@@ -4,6 +4,7 @@ private import DataFlowPrivate
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 
 newtype TReturnKind =
@@ -230,6 +231,30 @@ private module Cached {
       result = yieldCall(call)
     )
   }
+
+  cached
+  newtype TArgumentPosition =
+    TSelfArgumentPosition() or
+    TBlockArgumentPosition() or
+    TPositionalArgumentPosition(int pos) {
+      exists(Call c | exists(c.getArgument(pos)))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
+    } or
+    TKeywordArgumentPosition(string name) { name = any(KeywordParameter kp).getName() }
+
+  cached
+  newtype TParameterPosition =
+    TSelfParameterPosition() or
+    TBlockParameterPosition() or
+    TPositionalParameterPosition(int pos) {
+      pos = any(Parameter p).getPosition()
+      or
+      pos in [0 .. 10] // TODO: remove once `Argument[_]` summaries are replaced with `Argument[i..]`
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+    } or
+    TKeywordParameterPosition(string name) { name = any(KeywordParameter kp).getName() }
 }
 
 import Cached
@@ -458,18 +483,66 @@ predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
   )
 }
 
-private int parameterPosition() { result in [-2 .. max([any(Parameter p).getPosition(), 10])] }
+/** A parameter position. */
+class ParameterPosition extends TParameterPosition {
+  /** Holds if this position represents a `self` parameter. */
+  predicate isSelf() { this = TSelfParameterPosition() }
 
-/** A parameter position represented by an integer. */
-class ParameterPosition extends int {
-  ParameterPosition() { this = parameterPosition() }
+  /** Holds if this position represents a block parameter. */
+  predicate isBlock() { this = TBlockParameterPosition() }
+
+  /** Holds if this position represents a positional parameter at position `pos`. */
+  predicate isPositional(int pos) { this = TPositionalParameterPosition(pos) }
+
+  /** Holds if this position represents a keyword parameter named `name`. */
+  predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
+
+  /** Gets a textual representation of this position. */
+  string toString() {
+    this.isSelf() and result = "self"
+    or
+    this.isBlock() and result = "block"
+    or
+    exists(int pos | this.isPositional(pos) and result = "position " + pos)
+    or
+    exists(string name | this.isKeyword(name) and result = "keyword " + name)
+  }
 }
 
-/** An argument position represented by an integer. */
-class ArgumentPosition extends int {
-  ArgumentPosition() { this = parameterPosition() }
+/** An argument position. */
+class ArgumentPosition extends TArgumentPosition {
+  /** Holds if this position represents a `self` argument. */
+  predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a block argument. */
+  predicate isBlock() { this = TBlockArgumentPosition() }
+
+  /** Holds if this position represents a positional argument at position `pos`. */
+  predicate isPositional(int pos) { this = TPositionalArgumentPosition(pos) }
+
+  /** Holds if this position represents a keyword argument named `name`. */
+  predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
+
+  /** Gets a textual representation of this position. */
+  string toString() {
+    this.isSelf() and result = "self"
+    or
+    this.isBlock() and result = "block"
+    or
+    exists(int pos | this.isPositional(pos) and result = "position " + pos)
+    or
+    exists(string name | this.isKeyword(name) and result = "keyword " + name)
+  }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isBlock() and apos.isBlock()
+  or
+  exists(int pos | ppos.isPositional(pos) and apos.isPositional(pos))
+  or
+  exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+}
