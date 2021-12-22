@@ -217,7 +217,7 @@ private class AnalyzedImplicitInit extends AnalyzedSsaDefinition, SsaImplicitIni
  */
 private class AnalyzedVariableCapture extends AnalyzedSsaDefinition, SsaVariableCapture {
   override AbstractValue getAnRhsValue() {
-    exists(LocalVariable v | v = getSourceVariable() |
+    exists(LocalVariable v | v = this.getSourceVariable() |
       result = v.(AnalyzedCapturedVariable).getALocalValue()
       or
       result = any(AnalyzedExplicitDefinition def | def.getSourceVariable() = v).getAnRhsValue()
