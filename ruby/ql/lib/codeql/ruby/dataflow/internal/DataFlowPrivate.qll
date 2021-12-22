@@ -379,10 +379,6 @@ private module ParameterNodes {
         )
     }
 
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.isSourceParameterOf(c.asCallable(), pos)
-    }
-
     override CfgScope getCfgScope() { result = parameter.getCallable() }
 
     override Location getLocationImpl() { result = parameter.getLocation() }
@@ -405,10 +401,6 @@ private module ParameterNodes {
 
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
       method = c and pos.isSelf()
-    }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.isSourceParameterOf(c.asCallable(), pos)
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -435,10 +427,6 @@ private module ParameterNodes {
 
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
       c = method and pos.isBlock()
-    }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.isSourceParameterOf(c.asCallable(), pos)
     }
 
     override CfgScope getCfgScope() { result = method }
