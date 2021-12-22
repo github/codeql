@@ -1,7 +1,7 @@
 import java
 
 // Stop external filepaths from appearing in the results
-class ClassLocation extends Class {
+class ClassOrInterfaceLocation extends ClassOrInterface {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(string fullPath |
            super.hasLocationInfo(fullPath, sl, sc, el, ec) |

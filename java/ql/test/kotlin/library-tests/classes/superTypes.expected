@@ -45,11 +45,11 @@
 | local_anonymous.kt:3:1:28:1 | Class1 | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:11:9:11:24 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
-| local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file:///usr/local/Cellar/kotlin/1.5.21/libexec/lib/kotlin-stdlib.jar/kotlin/jvm/functions/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
+| local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
 | local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
-| local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file:///usr/local/Cellar/kotlin/1.5.21/libexec/lib/kotlin-stdlib.jar/kotlin/jvm/functions/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
+| local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Integer,Integer,Integer> |
 | local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
-| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file:///usr/local/Cellar/kotlin/1.5.21/libexec/lib/kotlin-stdlib.jar/kotlin/jvm/functions/Function1.class:0:0:0:0 | Function1<Class1,Unit> |
+| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Class1,Unit> |
 | local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | local_anonymous.kt:25:9:25:27 | LocalClass | file://<external>/Object.class:0:0:0:0 | Object |
 | superChain.kt:1:1:1:33 | SuperChain1 | file://<external>/Object.class:0:0:0:0 | Object |
