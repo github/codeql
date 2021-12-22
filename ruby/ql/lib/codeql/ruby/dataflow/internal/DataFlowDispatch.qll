@@ -250,7 +250,7 @@ private module Cached {
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      exists(Call c | exists(c.getArgument(pos))) // TODO: remove once `Argument[_]` summaries are replaced with `Argument[i..]`
+      pos in [0 .. 10] // TODO: remove once `Argument[_]` summaries are replaced with `Argument[i..]`
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
