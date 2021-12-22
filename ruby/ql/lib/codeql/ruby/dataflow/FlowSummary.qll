@@ -23,8 +23,8 @@ module SummaryComponent {
 
   predicate content = SC::content/1;
 
-  /** Gets a summary component that represents a `self` argument. */
-  SummaryComponent self() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
+  /** Gets a summary component that represents a receiver. */
+  SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 
   /** Gets a summary component that represents a block argument. */
   SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
@@ -67,8 +67,8 @@ module SummaryComponentStack {
 
   predicate argument = SCS::argument/1;
 
-  /** Gets a singleton stack representing a `self` argument. */
-  SummaryComponentStack self() { result = singleton(SummaryComponent::self()) }
+  /** Gets a singleton stack representing a receiver. */
+  SummaryComponentStack receiver() { result = singleton(SummaryComponent::receiver()) }
 
   /** Gets a singleton stack representing a block argument. */
   SummaryComponentStack block() { result = singleton(SummaryComponent::block()) }

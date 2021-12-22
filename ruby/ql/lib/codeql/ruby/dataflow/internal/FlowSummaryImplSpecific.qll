@@ -60,8 +60,8 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
  */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
-  c = "Self" and
-  result = FlowSummary::SummaryComponent::self()
+  c = "Receiver" and
+  result = FlowSummary::SummaryComponent::receiver()
   or
   c = "BlockArgument" and
   result = FlowSummary::SummaryComponent::block()
