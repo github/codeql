@@ -16,15 +16,23 @@ import javascript
  */
 bindingset[regexp]
 predicate isReadFrom(DataFlow::Node read, string regexp) {
+  getAnAccessedName(read).regexpMatch(regexp)
+}
+
+/**
+ * Gets the "name" accessed by `read`. The "name" is one of:
+ * - the name of the read variable, if `read` is a variable read
+ * - the name of the read property, if `read` is a property read
+ * - the suffix of the getter-method name, if `read` is a getter invocation, for example "Number" in "getNumber"
+ */
+string getAnAccessedName(DataFlow::Node read) {
   exists(DataFlow::Node actualRead |
     actualRead = read.asExpr().getUnderlyingValue().(LogOrExpr).getAnOperand().flow() or // unfold `x || y` once
     actualRead = read
   |
-    exists(string name | name.regexpMatch(regexp) |
-      actualRead.asExpr().getUnderlyingValue().(VarAccess).getName() = name or
-      actualRead.(DataFlow::PropRead).getPropertyName() = name or
-      actualRead.(DataFlow::InvokeNode).getCalleeName() = "get" + name
-    )
+    actualRead.asExpr().getUnderlyingValue().(VarAccess).getName() = result or
+    actualRead.(DataFlow::PropRead).getPropertyName() = result or
+    actualRead.(DataFlow::InvokeNode).getCalleeName() = "get" + result
   )
 }
 

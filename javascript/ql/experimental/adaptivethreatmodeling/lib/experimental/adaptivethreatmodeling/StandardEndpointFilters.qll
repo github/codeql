@@ -53,7 +53,11 @@ predicate isSomeModeledArgument(DataFlow::Node n) {
 /**
  * Holds if `n` appears to be a numeric value.
  */
-predicate isNumeric(DataFlow::Node n) { isReadFrom(n, ".*index.*") }
+// Performance optimisation: This predicate operates on a large set of
+// starting nodes, so use binding hints to suggest computing that set last.
+predicate isNumeric(DataFlow::Node n) {
+  getAnAccessedName(pragma[only_bind_into](n)).regexpMatch(".*index.*")
+}
 
 /**
  * Holds if `n` is an argument to a library without sinks.
