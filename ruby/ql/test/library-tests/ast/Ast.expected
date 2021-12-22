@@ -1333,24 +1333,76 @@ constants/constants.rb:
 #   31|     getScopeExpr: [ConstantReadAccess] ModuleA
 #   31|     getSuperclassExpr: [ConstantReadAccess] ClassA
 #   31|       getScopeExpr: [ConstantReadAccess] ModuleA
-#   34|   getStmt: [ModuleDeclaration] ModuleC
-#   34|     getScopeExpr: [ConstantReadAccess] ModuleA
-#   37|   getStmt: [AssignExpr] ... = ...
-#   37|     getAnOperand/getLeftOperand: [ConstantAssignment] MAX_SIZE
-#   37|       getScopeExpr: [ConstantReadAccess] ModuleB
-#   37|         getScopeExpr: [ConstantReadAccess] ModuleA
-#   37|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
-#   39|   getStmt: [MethodCall] call to puts
-#   39|     getReceiver: [Self, SelfVariableAccess] self
-#   39|     getArgument: [ConstantReadAccess] MAX_SIZE
+#   32|     getStmt: [AssignExpr] ... = ...
+#   32|       getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_TWO
+#   32|       getAnOperand/getRightOperand: [IntegerLiteral] 42
+#   35|   getStmt: [ModuleDeclaration] ModuleC
+#   35|     getScopeExpr: [ConstantReadAccess] ModuleA
+#   36|     getStmt: [AssignExpr] ... = ...
+#   36|       getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_THREE
+#   36|       getAnOperand/getRightOperand: [IntegerLiteral] 43
+#   39|   getStmt: [AssignExpr] ... = ...
+#   39|     getAnOperand/getLeftOperand: [ConstantAssignment] MAX_SIZE
 #   39|       getScopeExpr: [ConstantReadAccess] ModuleB
 #   39|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   39|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
 #   41|   getStmt: [MethodCall] call to puts
 #   41|     getReceiver: [Self, SelfVariableAccess] self
-#   41|     getArgument: [ConstantReadAccess] GREETING
-#   42|   getStmt: [MethodCall] call to puts
-#   42|     getReceiver: [Self, SelfVariableAccess] self
-#   42|     getArgument: [ConstantReadAccess] GREETING
+#   41|     getArgument: [ConstantReadAccess] MAX_SIZE
+#   41|       getScopeExpr: [ConstantReadAccess] ModuleB
+#   41|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   43|   getStmt: [MethodCall] call to puts
+#   43|     getReceiver: [Self, SelfVariableAccess] self
+#   43|     getArgument: [ConstantReadAccess] GREETING
+#   44|   getStmt: [MethodCall] call to puts
+#   44|     getReceiver: [Self, SelfVariableAccess] self
+#   44|     getArgument: [ConstantReadAccess] GREETING
+#   46|   getStmt: [ModuleDeclaration] ModuleB
+#   46|     getScopeExpr: [ConstantReadAccess] ModuleA
+#   47|     getStmt: [ClassDeclaration] ClassB
+#   47|       getSuperclassExpr: [ConstantReadAccess] Base
+#   48|       getStmt: [AssignExpr] ... = ...
+#   48|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_ONE
+#   48|         getAnOperand/getRightOperand: [IntegerLiteral] 41
+#   52|   getStmt: [ModuleDeclaration] ModuleA
+#   53|     getStmt: [AssignExpr] ... = ...
+#   53|       getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_FOUR
+#   53|       getAnOperand/getRightOperand: [StringLiteral] "fourty-four"
+#   53|         getComponent: [StringTextComponent] fourty-four
+#   54|     getStmt: [ClassDeclaration] ClassB
+#   54|       getScopeExpr: [ConstantReadAccess] ModuleB
+#   54|       getSuperclassExpr: [ConstantReadAccess] Base
+#   55|       getStmt: [AssignExpr] ... = ...
+#   55|         getAnOperand/getLeftOperand: [ClassVariableAccess] @@fourty_four
+#   55|         getAnOperand/getRightOperand: [ConstantReadAccess] FOURTY_FOUR
+#   56|       getStmt: [AssignExpr] ... = ...
+#   56|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_FOUR
+#   56|         getAnOperand/getRightOperand: [IntegerLiteral] 44
+#   57|       getStmt: [AssignExpr] ... = ...
+#   57|         getAnOperand/getLeftOperand: [ClassVariableAccess] @@fourty_four
+#   57|         getAnOperand/getRightOperand: [ConstantReadAccess] FOURTY_FOUR
+#   61|   getStmt: [ModuleDeclaration] Mod1
+#   62|     getStmt: [ModuleDeclaration] Mod3
+#   63|       getStmt: [AssignExpr] ... = ...
+#   63|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_FIVE
+#   63|         getAnOperand/getRightOperand: [IntegerLiteral] 45
+#   65|     getStmt: [AssignExpr] ... = ...
+#   65|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@fourty_five
+#   65|       getAnOperand/getRightOperand: [ConstantReadAccess] FOURTY_FIVE
+#   65|         getScopeExpr: [ConstantReadAccess] Mod3
+#   68|   getStmt: [ModuleDeclaration] Mod4
+#   69|     getStmt: [MethodCall] call to include
+#   69|       getReceiver: [Self, SelfVariableAccess] self
+#   69|       getArgument: [ConstantReadAccess] Mod1
+#   70|     getStmt: [ModuleDeclaration] Mod5
+#   70|       getScopeExpr: [ConstantReadAccess] Mod3
+#   71|       getStmt: [AssignExpr] ... = ...
+#   71|         getAnOperand/getLeftOperand: [ConstantAssignment] FOURTY_SIX
+#   71|         getAnOperand/getRightOperand: [IntegerLiteral] 46
+#   73|     getStmt: [AssignExpr] ... = ...
+#   73|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@fourty_six
+#   73|       getAnOperand/getRightOperand: [ConstantReadAccess] FOURTY_SIX
+#   73|         getScopeExpr: [ConstantReadAccess] Mod3
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
