@@ -50,8 +50,12 @@ module CorsMisconfigurationForCredentials {
       |
         routeHandler.getAResponseHeader(_) = origin and
         routeHandler.getAResponseHeader(_) = credentials and
-        origin.definesExplicitly("access-control-allow-origin", this.asExpr()) and
-        credentials.definesExplicitly("access-control-allow-credentials", credentialsValue)
+        // Performance optimisation: start with the set of all route handlers
+        // rather than the set of all exprs.
+        pragma[only_bind_into](origin)
+            .definesExplicitly("access-control-allow-origin", this.asExpr()) and
+        pragma[only_bind_into](credentials)
+            .definesExplicitly("access-control-allow-credentials", credentialsValue)
       |
         credentialsValue.mayHaveBooleanValue(true) or
         credentialsValue.mayHaveStringValue("true")
