@@ -462,15 +462,15 @@ module AccessPath {
       ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
     ) {
       result =
-        rank[ranking](ControlFlowNode ref |
+        rank[ranking](ControlFlowNode ref, int i |
           ref = getAccessTo(root, path, _) and
-          ref.getBasicBlock() = bb and
+          ref = bb.getNode(i) and
           // Prunes the accesses where there does not exists a read and write within the same basicblock.
           // This could be more precise, but doing it like this avoids massive joins.
           hasRead(bb) and
           hasWrite(bb)
         |
-          ref order by any(int i | ref = bb.getNode(i))
+          ref order by i
         ) and
       result = getAccessTo(root, path, type)
     }
