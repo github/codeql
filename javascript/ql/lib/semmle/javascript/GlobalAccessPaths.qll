@@ -492,7 +492,7 @@ module AccessPath {
      */
     pragma[noinline]
     private predicate hasWrite(ReachableBasicBlock bb) {
-      bb = getAccessTo(_, _, AccessPathRead()).getBasicBlock()
+      bb = getAccessTo(_, _, AccessPathWrite()).getBasicBlock()
     }
 
     /**
