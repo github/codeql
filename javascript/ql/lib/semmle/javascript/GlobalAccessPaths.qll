@@ -565,9 +565,12 @@ module AccessPath {
       )
       or
       // across basic blocks.
-      exists(Root root, string path |
+      exists(Root root, string path, ReachableBasicBlock readBlock |
         read.asExpr() = getAccessTo(root, path, AccessPathRead()) and
-        getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
+        readBlock = read.getBasicBlock() and
+        // Performance optimisation: check that `read` is in a *reachable* basic block
+        // before looking for a dominating write block.
+        getAWriteBlock(root, path).strictlyDominates(pragma[only_bind_out](readBlock))
       )
     }
   }
