@@ -2,4 +2,4 @@ name: codeql/javascript-upgrades
 groups: javascript
 upgrades: .
 library: true
-version: 0.0.6
+version: 0.0.7-dev
