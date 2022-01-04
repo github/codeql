@@ -20,11 +20,6 @@ private newtype TAccessPath =
   TConsAccessPath(Content head, AccessPath tail) {
     tail = TNilAccessPath()
     or
-    exists(LibraryTypeDataFlow ltdf |
-      ltdf.requiresAccessPath(head, tail) and
-      tail.length() < accessPathLimit()
-    )
-    or
     tail = AccessPath::singleton(_) and
     head instanceof ElementContent
     or
@@ -296,15 +291,6 @@ abstract class LibraryTypeDataFlow extends Type {
   ) {
     none()
   }
-
-  /**
-   * Holds if the access path obtained by concatenating `head` onto `tail` is
-   * needed for a summary specified by `callableFlow()`.
-   *
-   * This predicate is needed for QL technical reasons only (the IPA type used
-   * to represent access paths needs to be bounded).
-   */
-  predicate requiresAccessPath(Content head, AccessPath tail) { none() }
 
   /**
    * Holds if values stored inside `content` are cleared on objects passed as
