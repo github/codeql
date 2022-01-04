@@ -6,11 +6,7 @@ import csharp
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.system.Text
-private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
-private import semmle.code.csharp.frameworks.system.threading.Tasks
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowPublic
-private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 // import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.EntityFramework
 private import FlowSummary
