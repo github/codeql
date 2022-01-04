@@ -98,11 +98,6 @@ private module FrameworkDataFlowAdaptor {
       result = TCallableFlowSourceArg(i) and
       input = SummaryComponentStack::argument(i)
     )
-    or
-    exists(int i | result = TCallableFlowSourceDelegateArg(i) |
-      input =
-        SummaryComponentStack::push(SummaryComponent::return(), SummaryComponentStack::argument(i))
-    )
   }
 
   private class FrameworkDataFlowAdaptor extends SummarizedCallable {
