@@ -1,3 +1,9 @@
+## 0.0.5
+
+### Minor Analysis Improvements
+
+* Fixed sanitization by calls to `strings.Replace` and `strings.ReplaceAll` in queries `go/log-injection` and `go/unsafe-quoting`.
+
 ## 0.0.4
 
 ### New Queries
