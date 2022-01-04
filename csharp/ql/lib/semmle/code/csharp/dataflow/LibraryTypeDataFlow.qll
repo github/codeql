@@ -263,36 +263,6 @@ abstract class LibraryTypeDataFlow extends Type {
   LibraryTypeDataFlow() { this = this.getUnboundDeclaration() }
 
   /**
-   * Holds if data may flow from `source` to `sink` when calling callable `c`.
-   *
-   * `preservesValue` indicates whether the value from `source` is preserved
-   * (possibly copied) to `sink`. For example, the value is preserved from `x`
-   * to `x.ToString()` when `x` is a `string`, but not from `x` to `x.ToLower()`.
-   */
-  pragma[nomagic]
-  predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    none()
-  }
-
-  /**
-   * Holds if data may flow from `source` to `sink` when calling callable `c`.
-   *
-   * `sourceAp` describes the contents of `source` that flows to `sink`
-   * (if any), and `sinkAp` describes the contents of `sink` that it
-   * flows to (if any).
-   */
-  pragma[nomagic]
-  predicate callableFlow(
-    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c, boolean preservesValue
-  ) {
-    none()
-  }
-
-  /**
    * Holds if values stored inside `content` are cleared on objects passed as
    * arguments of type `source` to calls that target `callable`.
    */
@@ -346,73 +316,26 @@ private module FrameworkDataFlowAdaptor {
   private class FrameworkDataFlowAdaptor extends SummarizedCallable {
     private LibraryTypeDataFlow ltdf;
 
-    FrameworkDataFlowAdaptor() {
-      ltdf.callableFlow(_, _, this, _) or
-      ltdf.callableFlow(_, _, _, _, this, _) or
-      ltdf.clearsContent(_, _, this)
-    }
+    FrameworkDataFlowAdaptor() { ltdf.clearsContent(_, _, this) }
 
     predicate input(
       CallableFlowSource source, AccessPath sourceAp, SummaryComponent head,
       SummaryComponentStack tail, int i
     ) {
-      ltdf.callableFlow(source, sourceAp, _, _, this, _) and
-      source = toCallableFlowSource(tail) and
-      head = SummaryComponent::content(sourceAp.getHead()) and
-      i = 0
-      or
-      exists(SummaryComponent tailHead, SummaryComponentStack tailTail |
-        this.input(source, sourceAp, tailHead, tailTail, i - 1) and
-        head = SummaryComponent::content(sourceAp.drop(i).getHead()) and
-        tail = SummaryComponentStack::push(tailHead, tailTail)
-      )
+      none()
     }
 
     predicate output(
       CallableFlowSink sink, AccessPath sinkAp, SummaryComponent head, SummaryComponentStack tail,
       int i
     ) {
-      ltdf.callableFlow(_, _, sink, sinkAp, this, _) and
-      sink = toCallableFlowSink(tail) and
-      head = SummaryComponent::content(sinkAp.getHead()) and
-      i = 0
-      or
-      exists(SummaryComponent tailHead, SummaryComponentStack tailTail |
-        this.output(sink, sinkAp, tailHead, tailTail, i - 1) and
-        head = SummaryComponent::content(sinkAp.drop(i).getHead()) and
-        tail = SummaryComponentStack::push(tailHead, tailTail)
-      )
+      none()
     }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      ltdf.callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), this,
-        preservesValue)
-      or
-      exists(
-        CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp
-      |
-        ltdf.callableFlow(source, sourceAp, sink, sinkAp, this, preservesValue) and
-        (
-          exists(SummaryComponent head, SummaryComponentStack tail |
-            this.input(source, sourceAp, head, tail, sourceAp.length() - 1) and
-            input = SummaryComponentStack::push(head, tail)
-          )
-          or
-          sourceAp.length() = 0 and
-          source = toCallableFlowSource(input)
-        ) and
-        (
-          exists(SummaryComponent head, SummaryComponentStack tail |
-            this.output(sink, sinkAp, head, tail, sinkAp.length() - 1) and
-            output = SummaryComponentStack::push(head, tail)
-          )
-          or
-          sinkAp.length() = 0 and
-          sink = toCallableFlowSink(output)
-        )
-      )
+      none()
     }
 
     override predicate clearsContent(ParameterPosition pos, Content content) {
