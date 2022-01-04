@@ -299,26 +299,6 @@ private module FrameworkDataFlowAdaptor {
 
     FrameworkDataFlowAdaptor() { ltdf.clearsContent(_, _, this) }
 
-    predicate input(
-      CallableFlowSource source, AccessPath sourceAp, SummaryComponent head,
-      SummaryComponentStack tail, int i
-    ) {
-      none()
-    }
-
-    predicate output(
-      CallableFlowSink sink, AccessPath sinkAp, SummaryComponent head, SummaryComponentStack tail,
-      int i
-    ) {
-      none()
-    }
-
-    override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-    ) {
-      none()
-    }
-
     override predicate clearsContent(ParameterPosition pos, Content content) {
       exists(SummaryComponentStack input |
         ltdf.clearsContent(toCallableFlowSource(input), content, this) and
@@ -340,12 +320,6 @@ private module FrameworkDataFlowAdaptor {
       exists(int i, int j | exists(TCallableFlowSinkDelegateArg(i, j)) |
         head = SummaryComponent::parameter(j) and
         this = SummaryComponentStack::singleton(SummaryComponent::argument(i))
-      )
-      or
-      exists(FrameworkDataFlowAdaptor adaptor |
-        adaptor.input(_, _, head, this, _)
-        or
-        adaptor.output(_, _, head, this, _)
       )
     }
 
