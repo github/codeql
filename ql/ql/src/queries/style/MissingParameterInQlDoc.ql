@@ -47,6 +47,8 @@ private string getAMentionedNonParameter(Predicate p) {
     ["true", "false", "NaN", "this", "forall", "exists", "null", "break", "return", "not"] and
   not result = any(Aggregate a).getKind() and // min, max, sum, count, etc.
   not result = getMentionedThings(p.getLocation().getFile()) and
+  not result = any(Annotation a).getName() and // private, final, etc.
+  not result = any(Annotation a).getArgs(_).getValue() and // noinline, etc.
   // variables inside the predicate are also fine
   not result = any(VarDecl var | var.getEnclosingPredicate() = p).getName()
 }
