@@ -126,47 +126,14 @@ private class ShellLike extends DataFlow::Node {
 }
 
 private string getASudoCommand() {
-  result = "sudo" or
-  result = "sudo_root" or
-  result = "su" or
-  result = "sudoedit" or
-  result = "doas" or
-  result = "access" or
-  result = "vsys" or
-  result = "userv" or
-  result = "sus" or
-  result = "super" or
-  result = "priv" or
-  result = "calife" or
-  result = "ssu" or
-  result = "su1" or
-  result = "op" or
-  result = "sudowin" or
-  result = "sudown" or
-  result = "chroot" or
-  result = "fakeroot" or
-  result = "fakeroot-sysv" or
-  result = "fakeroot-tcp" or
-  result = "fstab-decode" or
-  result = "jrunscript" or
-  result = "nohup" or
-  result = "parallel" or
-  result = "find" or
-  result = "pkexec" or
-  result = "sg" or
-  result = "sem" or
-  result = "runcon" or
-  result = "runuser" or
-  result = "stdbuf" or
-  result = "system" or
-  result = "timeout" or
-  result = "xargs" or
-  result = "time" or
-  result = "awk" or
-  result = "gawk" or
-  result = "mawk" or
-  result = "nawk" or
-  result = "git"
+  result =
+    [
+      "sudo", "sudo_root", "priv", "calife", "ssu", "su1", "op", "sudowin", "sudown", "chroot",
+      "fakeroot", "fakeroot-sysv", "su", "fakeroot-tcp", "fstab-decode", "jrunscript", "nohup",
+      "parallel", "find", "pkexec", "sg", "sem", "runcon", "sudoedit", "runuser", "stdbuf",
+      "system", "timeout", "xargs", "time", "awk", "gawk", "mawk", "nawk", "doas", "git", "access",
+      "vsys", "userv", "sus", "super"
+    ]
 }
 
 /**
@@ -213,31 +180,12 @@ private predicate isSudoOrSimilar(DataFlow::Node node) {
 }
 
 private string getAShellCommand() {
-  result = "bash" or
-  result = "sh" or
-  result = "sh.distrib" or
-  result = "rbash" or
-  result = "dash" or
-  result = "zsh" or
-  result = "csh" or
-  result = "tcsh" or
-  result = "fish" or
-  result = "pwsh" or
-  result = "elvish" or
-  result = "oh" or
-  result = "ion" or
-  result = "ksh" or
-  result = "rksh" or
-  result = "tksh" or
-  result = "mksh" or
-  result = "nu" or
-  result = "oksh" or
-  result = "osh" or
-  result = "shpp" or
-  result = "xiki" or
-  result = "xonsh" or
-  result = "yash" or
-  result = "env"
+  result =
+    [
+      "bash", "sh", "elvish", "oh", "ion", "ksh", "rksh", "tksh", "mksh", "nu", "oksh", "osh",
+      "sh.distrib", "shpp", "xiki", "xonsh", "yash", "env", "rbash", "dash", "zsh", "csh", "tcsh",
+      "fish", "pwsh"
+    ]
 }
 
 /**
@@ -252,12 +200,7 @@ private predicate isShell(DataFlow::Node node) {
 }
 
 private string getAnInterpreterName() {
-  result = "python" or
-  result = "php" or
-  result = "ruby" or
-  result = "perl" or
-  result = "node" or
-  result = "nodejs"
+  result = ["python", "php", "ruby", "perl", "node", "nodejs"]
 }
 
 /**

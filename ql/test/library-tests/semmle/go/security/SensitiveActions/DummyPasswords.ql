@@ -2,15 +2,11 @@ import go
 import semmle.go.security.SensitiveActions
 
 string getASamplePassword() {
-  result = "abcdefgh" or
-  result = "sOKY6ccizpmvF*32so%Q" or
-  result = "XXXXXXXX" or
-  result = "example_password" or
-  result = "change_me" or
-  result = "" or
-  result = "insert-auth-from-gui" or
-  result = "admin" or
-  result = "root"
+  result =
+    [
+      "abcdefgh", "sOKY6ccizpmvF*32so%Q", "XXXXXXXX", "example_password", "change_me", "",
+      "insert-auth-from-gui", "admin", "root"
+    ]
 }
 
 from string password, boolean isDummy

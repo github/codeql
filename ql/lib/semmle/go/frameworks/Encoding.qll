@@ -1,5 +1,5 @@
 /**
- * Provides classes modelling taint propagation through marshalling and encoding functions.
+ * Provides classes modeling taint propagation through marshalling and encoding functions.
  */
 
 import go

@@ -28,14 +28,8 @@ module NetHttp {
     DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName = "Body" or
-        fieldName = "GetBody" or
-        fieldName = "Form" or
-        fieldName = "PostForm" or
-        fieldName = "MultipartForm" or
-        fieldName = "Header" or
-        fieldName = "Trailer" or
-        fieldName = "URL"
+        fieldName =
+          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
       )
     }
   }
