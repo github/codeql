@@ -10,6 +10,8 @@
  *       security
  *       external/cwe/cwe-116
  *       external/cwe/cwe-020
+ *       external/cwe/cwe-185
+ *       external/cwe/cwe-186
  */
 
 import semmle.javascript.security.BadTagFilterQuery
