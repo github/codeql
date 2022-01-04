@@ -662,7 +662,7 @@ class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof Cooki
 /** Provides a class for modeling new cookie security setting APIs. */
 module CookieSecurityConfigurationSetting {
   /**
-   * A data-flow node that may configure behaviour relating to cookie security.
+   * A data-flow node that may configure behavior relating to cookie security.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `CookieSecurityConfigurationSetting` instead.
