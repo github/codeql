@@ -132,27 +132,3 @@ private module FrameworkDataFlowAdaptor {
     override predicate required(SummaryComponent c) { c = head }
   }
 }
-
-/** Data flow for `System.Text.StringBuilder`. */
-class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringBuilderClass {
-  override predicate clearsContent(
-    CallableFlowSource source, Content content, SourceDeclarationCallable callable
-  ) {
-    source = TCallableFlowSourceQualifier() and
-    callable = this.getAMethod("Clear") and
-    content instanceof ElementContent
-  }
-}
-
-/** Data flow for `System.Collections.IEnumerable` (and sub types). */
-class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
-  IEnumerableFlow() { this.getABaseType*() instanceof SystemCollectionsIEnumerableInterface }
-
-  override predicate clearsContent(
-    CallableFlowSource source, Content content, SourceDeclarationCallable callable
-  ) {
-    source = TCallableFlowSourceQualifier() and
-    callable = this.getAMethod("Clear") and
-    content instanceof ElementContent
-  }
-}
