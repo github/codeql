@@ -42,7 +42,8 @@ private string getAMentionedNonParameter(Predicate p) {
   ) and
   result.regexpMatch("^[a-z]\\w+$") and
   not result.toLowerCase() = getAParameterName(p).toLowerCase() and
-  not result = ["true", "false", "NaN", "this"] and // keywords
+  not result = ["true", "false", "NaN", "this", "forall", "exists", "null", "break", "return"] and // keywords
+  not result = any(Aggregate a).getKind() and // min, max, sum, count, etc.
   not result = getMentionedPredicates(p.getLocation().getFile()) and
   // variables inside the predicate are also fine
   not result = any(VarDecl var | var.getEnclosingPredicate() = p).getName()
