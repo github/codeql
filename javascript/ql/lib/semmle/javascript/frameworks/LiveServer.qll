@@ -1,5 +1,5 @@
 /**
- * Provides classes modelling the [live-server](https://npmjs.com/package/live-server) package.
+ * Provides classes modeling the [live-server](https://npmjs.com/package/live-server) package.
  */
 
 import javascript

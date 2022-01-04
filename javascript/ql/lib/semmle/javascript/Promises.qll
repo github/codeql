@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling promises and their data-flow.
+ * Provides classes for modeling promises and their data-flow.
  */
 
 import javascript

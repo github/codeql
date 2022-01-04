@@ -1,5 +1,5 @@
 /**
- * Provides a class for modelling expressions used to supply
+ * Provides a class for modeling expressions used to supply
  * credentials.
  */
 

@@ -352,7 +352,7 @@ module Express {
      * If the preceding handler's path cannot be determined, it is assumed to match.
      *
      * Note that this predicate is not complete: path globs such as `'*'` are not currently
-     * handled, and relative paths of subrouters are not modelled. In particular, if an outer
+     * handled, and relative paths of subrouters are not modeled. In particular, if an outer
      * router installs a route handler `r1` on a path that matches the path of a route handler
      * `r2` installed on a subrouter, `r1` will not be recognized as an ancestor of `r2`.
      */

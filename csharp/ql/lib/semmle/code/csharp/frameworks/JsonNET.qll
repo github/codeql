@@ -1,5 +1,5 @@
 /**
- * Classes for modelling Json.NET.
+ * Classes for modeling Json.NET.
  */
 
 import csharp

@@ -62,7 +62,7 @@ class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.
  * This is not quite a `JSON.stringify` call, as it e.g. does not wrap keys in double quotes.
- * It's therefore modelled as a taint-step rather than as a `JSON.stringify` call.
+ * It's therefore modeled as a taint-step rather than as a `JSON.stringify` call.
  */
 class PrettyJSONTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {

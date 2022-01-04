@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling property projection functions.
+ * Provides classes for modeling property projection functions.
  *
  * Subclass `PropertyProjection` to refine the behavior of the analysis on existing property projections.
  * Subclass `CustomPropertyProjection` to introduce new kinds of property projections.

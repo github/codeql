@@ -6,7 +6,7 @@ import javascript
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
- * Classes and predicates for modelling data-flow for generator functions.
+ * Classes and predicates for modeling data-flow for generator functions.
  */
 private module GeneratorDataFlow {
   private import DataFlow::PseudoProperties
