@@ -105,8 +105,8 @@ abstract class ATMConfig extends string {
    *
    * Specifies the default cut-off value that controls how many alerts are produced.
    * The cut-off value must be in the range [0,1].
-   * A cut-off value of 0 only produces alerts that are likely true-positives.
-   * A cut-off value of 1 produces all alerts including those that are likely false-positives.
+   * A cut-off value of >~0.5 only produces alerts that are likely true-positives.
+   * A cut-off value of 0 produces all alerts including those that are likely false-positives.
    */
-  float getScoreCutoff() { result = 0.0 }
+  float getScoreCutoff() { result = 0.65 }
 }
