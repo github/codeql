@@ -294,8 +294,12 @@ private module Cached {
   }
 
   cached
-  newtype TContent = TTodoContent() // stub
+  newtype TContent =
+    TKnownArrayElementContent(int i) { i in [0 .. 10] } or
+    TUnknownArrayElementContent()
 }
+
+class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
 
 import Cached
 
@@ -741,8 +745,6 @@ predicate readStep(Node node1, Content c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  storeStep(_, c, n)
-  or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
@@ -886,4 +888,6 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}

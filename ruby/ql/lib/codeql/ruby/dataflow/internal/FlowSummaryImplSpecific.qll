@@ -58,12 +58,33 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
  * This covers all the Ruby-specific components of a flow summary, and
  * is currently restricted to `"BlockArgument"`.
  */
+bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
+  c = "Receiver" and
+  result = FlowSummary::SummaryComponent::receiver()
+  or
   c = "BlockArgument" and
   result = FlowSummary::SummaryComponent::block()
   or
   c = "Argument[_]" and
   result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
+  or
+  c = "ArrayElement" and
+  result = FlowSummary::SummaryComponent::arrayElementAny()
+  or
+  c = "ArrayElement[?]" and
+  result = FlowSummary::SummaryComponent::arrayElementUnknown()
+  or
+  exists(int i |
+    c.regexpCapture("ArrayElement\\[([0-9]+)\\]", 1).toInt() = i and
+    result = FlowSummary::SummaryComponent::arrayElementKnown(i)
+  )
+  or
+  exists(int i1, int i2 |
+    c.regexpCapture("ArrayElement\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = i1 and
+    c.regexpCapture("ArrayElement\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = i2 and
+    result = FlowSummary::SummaryComponent::arrayElementKnown([i1 .. i2])
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */

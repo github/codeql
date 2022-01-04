@@ -1,9 +1,11 @@
 edges
-| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:6:10:6:13 | code |
-| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:18:20:18:23 | code |
-| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:21:21:21:24 | code |
+| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:3:12:3:24 | ...[...] :  |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:6:10:6:13 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:18:20:18:23 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:21:21:21:24 | code |
 nodes
 | CodeInjection.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | semmle.label | ...[...] :  |
 | CodeInjection.rb:6:10:6:13 | code | semmle.label | code |
 | CodeInjection.rb:9:10:9:15 | call to params | semmle.label | call to params |
 | CodeInjection.rb:18:20:18:23 | code | semmle.label | code |

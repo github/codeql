@@ -98,7 +98,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::Node getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
      * Gets a node representing a subclass of the class represented by this node.
