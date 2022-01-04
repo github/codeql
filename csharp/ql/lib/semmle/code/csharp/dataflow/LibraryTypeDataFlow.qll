@@ -473,32 +473,6 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
   }
 }
 
-abstract private class SyntheticTaskField extends SyntheticField {
-  bindingset[this]
-  SyntheticTaskField() { any() }
-
-  override Type getType() { result instanceof SystemThreadingTasksTaskTClass }
-}
-
-private class SyntheticTaskAwaiterUnderlyingTaskField extends SyntheticTaskField {
-  SyntheticTaskAwaiterUnderlyingTaskField() { this = "m_task_task_awaiter" }
-}
-
-private class SyntheticConfiguredTaskAwaitableUnderlyingTaskField extends SyntheticTaskField {
-  SyntheticConfiguredTaskAwaitableUnderlyingTaskField() {
-    this = "m_task_configured_task_awaitable"
-  }
-}
-
-private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
-  SyntheticConfiguredTaskAwaiterField() { this = "m_configuredTaskAwaiter" }
-
-  override Type getType() {
-    result instanceof
-      SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct
-  }
-}
-
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
   c = any(Record r).getAMember() and
   exists(string name |
