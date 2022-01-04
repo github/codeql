@@ -205,8 +205,8 @@ class EndpointScoringResults extends ScoringResults {
         exists(float sinkScore |
           ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(),
             sinkScore) and
-          // Include the endpoint if the query endpoint type scores higher than a fixed threshold of 0.65
-          sinkScore >= 0.65
+          // Include the endpoint if the query endpoint type scores higher than a fixed threshold
+          sinkScore >= getCfg().getScoreCutoff()
         )
       )
   }
