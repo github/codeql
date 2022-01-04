@@ -92,86 +92,6 @@ class CallableFlowSourceDelegateArg extends CallableFlowSource, TCallableFlowSou
   override Type getSourceType(Call c) { result = c.getArgument(i).getType() }
 }
 
-private newtype TCallableFlowSink =
-  TCallableFlowSinkQualifier() or
-  TCallableFlowSinkReturn() or
-  TCallableFlowSinkArg(int i) { exists(SourceDeclarationCallable c | exists(c.getParameter(i))) } or
-  TCallableFlowSinkDelegateArg(int i, int j) { hasDelegateArgumentPosition2(_, i, j) }
-
-/** A flow sink specification. */
-class CallableFlowSink extends TCallableFlowSink {
-  /** Gets a textual representation of this flow sink specification. */
-  string toString() { none() }
-
-  /** Gets the sink of flow for call `c`, if any. */
-  Expr getSink(Call c) { none() }
-}
-
-/** A flow sink specification: (method call) qualifier. */
-class CallableFlowSinkQualifier extends CallableFlowSink, TCallableFlowSinkQualifier {
-  override string toString() { result = "qualifier" }
-
-  override Expr getSink(Call c) { result = c.getChild(-1) }
-}
-
-/** A flow sink specification: return value. */
-class CallableFlowSinkReturn extends CallableFlowSink, TCallableFlowSinkReturn {
-  override string toString() { result = "return" }
-
-  override Expr getSink(Call c) { result = c }
-}
-
-/** A flow sink specification: (method call) argument. */
-class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
-  private int i;
-
-  CallableFlowSinkArg() { this = TCallableFlowSinkArg(i) }
-
-  /** Gets the index of this `out`/`ref` argument. */
-  int getArgumentIndex() { result = i }
-
-  /** Gets the `out`/`ref` argument of method call `mc` matching this specification. */
-  Expr getArgument(MethodCall mc) {
-    exists(Parameter p |
-      p = mc.getTarget().getParameter(i) and
-      p.isOutOrRef() and
-      result = mc.getArgumentForParameter(p)
-    )
-  }
-
-  override string toString() { result = "argument " + i }
-
-  override Expr getSink(Call c) {
-    // The uses of the `i`th argument are the actual sinks
-    none()
-  }
-}
-
-/** A flow sink specification: parameter of a delegate argument. */
-class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDelegateArg {
-  private int delegateIndex;
-  private int parameterIndex;
-
-  CallableFlowSinkDelegateArg() {
-    this = TCallableFlowSinkDelegateArg(delegateIndex, parameterIndex)
-  }
-
-  /** Gets the index of the delegate argument. */
-  int getDelegateIndex() { result = delegateIndex }
-
-  /** Gets the index of the delegate parameter. */
-  int getDelegateParameterIndex() { result = parameterIndex }
-
-  override string toString() {
-    result = "parameter " + parameterIndex + " of argument " + delegateIndex
-  }
-
-  override Expr getSink(Call c) {
-    // The uses of the `j`th parameter are the actual sinks
-    none()
-  }
-}
-
 /** A specification of data flow for a library (non-source code) type. */
 abstract class LibraryTypeDataFlow extends Type {
   LibraryTypeDataFlow() { this = this.getUnboundDeclaration() }
@@ -231,7 +151,7 @@ private module FrameworkDataFlowAdaptor {
         this = SummaryComponentStack::singleton(SummaryComponent::argument(i))
       )
       or
-      exists(int i, int j | exists(TCallableFlowSinkDelegateArg(i, j)) |
+      exists(int i, int j | hasDelegateArgumentPosition2(_, i, j) |
         head = SummaryComponent::parameter(j) and
         this = SummaryComponentStack::singleton(SummaryComponent::argument(i))
       )
