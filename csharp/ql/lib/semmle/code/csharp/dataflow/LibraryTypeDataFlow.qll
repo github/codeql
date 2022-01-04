@@ -294,25 +294,6 @@ private module FrameworkDataFlowAdaptor {
     )
   }
 
-  private CallableFlowSink toCallableFlowSink(SummaryComponentStack output) {
-    result = TCallableFlowSinkQualifier() and
-    output = SummaryComponentStack::qualifier()
-    or
-    result = TCallableFlowSinkReturn() and
-    output = SummaryComponentStack::return()
-    or
-    exists(int i |
-      result = TCallableFlowSinkArg(i) and
-      output = SummaryComponentStack::argument(i)
-    )
-    or
-    exists(int i, int j | result = TCallableFlowSinkDelegateArg(i, j) |
-      output =
-        SummaryComponentStack::push(SummaryComponent::parameter(j),
-          SummaryComponentStack::argument(i))
-    )
-  }
-
   private class FrameworkDataFlowAdaptor extends SummarizedCallable {
     private LibraryTypeDataFlow ltdf;
 
