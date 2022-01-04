@@ -44,22 +44,11 @@ private predicate hasDelegateArgumentPosition2(SourceDeclarationCallable c, int 
 class CallableFlowSource extends TCallableFlowSource {
   /** Gets a textual representation of this flow source specification. */
   string toString() { none() }
-
-  /** Gets the source of flow for call `c`, if any. */
-  Expr getSource(Call c) { none() }
-
-  /**
-   * Gets the type of the source for call `c`. Unlike `getSource()`, this
-   * is defined for all flow source specifications.
-   */
-  Type getSourceType(Call c) { result = this.getSource(c).getType() }
 }
 
 /** A flow source specification: (method call) qualifier. */
 class CallableFlowSourceQualifier extends CallableFlowSource, TCallableFlowSourceQualifier {
   override string toString() { result = "qualifier" }
-
-  override Expr getSource(Call c) { result = c.getChild(-1) }
 }
 
 /** A flow source specification: (method call) argument. */
@@ -68,12 +57,7 @@ class CallableFlowSourceArg extends CallableFlowSource, TCallableFlowSourceArg {
 
   CallableFlowSourceArg() { this = TCallableFlowSourceArg(i) }
 
-  /** Gets the index of this argument. */
-  int getArgumentIndex() { result = i }
-
   override string toString() { result = "argument " + i }
-
-  override Expr getSource(Call c) { result = c.getArgument(i) }
 }
 
 /** A flow source specification: output from delegate argument. */
@@ -82,14 +66,7 @@ class CallableFlowSourceDelegateArg extends CallableFlowSource, TCallableFlowSou
 
   CallableFlowSourceDelegateArg() { this = TCallableFlowSourceDelegateArg(i) }
 
-  /** Gets the index of this delegate argument. */
-  int getArgumentIndex() { result = i }
-
   override string toString() { result = "output from argument " + i }
-
-  override Expr getSource(Call c) { none() }
-
-  override Type getSourceType(Call c) { result = c.getArgument(i).getType() }
 }
 
 /** A specification of data flow for a library (non-source code) type. */
