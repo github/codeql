@@ -44,17 +44,18 @@ private string getAMentionedNonParameter(Predicate p) {
   not result.toLowerCase() = getAParameterName(p).toLowerCase() and
   not result = ["true", "false", "NaN", "this", "forall", "exists", "null", "break", "return"] and // keywords
   not result = any(Aggregate a).getKind() and // min, max, sum, count, etc.
-  not result = getMentionedPredicates(p.getLocation().getFile()) and
+  not result = getMentionedThings(p.getLocation().getFile()) and
   // variables inside the predicate are also fine
   not result = any(VarDecl var | var.getEnclosingPredicate() = p).getName()
 }
 
-/** Gets the names of all predicates that are mentioned in `file`. */
+/** Gets the names of all predicates and string constants that are mentioned in `file`. */
 pragma[noinline]
-private string getMentionedPredicates(File file) {
+private string getMentionedThings(File file) {
   // predicates get mentioned all the time, it's fine.
   result = any(Predicate pred | pred.getLocation().getFile() = file).getName() or
-  result = any(Call c | c.getLocation().getFile() = file).getTarget().getName()
+  result = any(Call c | c.getLocation().getFile() = file).getTarget().getName() or
+  result = any(String s | s.getLocation().getFile() = file).getValue()
 }
 
 /** Gets a parameter name from `p` that is not mentioned in the qldoc. */
