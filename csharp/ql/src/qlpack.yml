@@ -1,5 +1,5 @@
 name: codeql/csharp-queries
-version: 0.0.5-dev
+version: 0.0.6-dev
 groups: csharp
 suites: codeql-suites
 extractor: csharp

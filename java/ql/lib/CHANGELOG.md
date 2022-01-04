@@ -1,3 +1,10 @@
+## 0.0.5
+
+### Bug Fixes
+
+* `CharacterLiteral`'s `getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
+* The `RangeAnalysis` module now properly handles comparisons with Unicode surrogate character literals.
+
 ## 0.0.4
 
 ### Bug Fixes
