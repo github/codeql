@@ -6,7 +6,7 @@ groups:
 dependencies:
   codeql/csharp-all: "*"
   codeql/csharp-queries: "*"
-  codeql/solorigate-all: "*"
-  codeql/solorigate-queries: "*"
+  codeql/charp-solorigate-all: "*"
+  codeql/charp-solorigate-queries: "*"
 extractor: csharp
 tests: .
