@@ -61,7 +61,7 @@ private module RegexpMatching {
 
   /**
    * Gets a state the regular expression `reg` can be in after matching the `i`th char in `str`.
-   * The regular expression is modelled as a non-determistic finite automaton,
+   * The regular expression is modeled as a non-determistic finite automaton,
    * the regular expression can therefore be in multiple states after matching a character.
    *
    * It's a forward search to all possible states, and there is thus no guarantee that the state is on a path to an accepting state.

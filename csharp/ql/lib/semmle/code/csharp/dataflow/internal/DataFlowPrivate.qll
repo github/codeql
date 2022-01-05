@@ -65,7 +65,9 @@ abstract class NodeImpl extends Node {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
-    result = this.getExpr().getEnclosingCallable()
+    result = this.getExpr().(CIL::Expr).getEnclosingCallable()
+    or
+    result = this.getControlFlowNodeImpl().getEnclosingCallable()
   }
 
   override DotNet::Type getTypeImpl() {
@@ -618,6 +620,7 @@ private predicate arrayRead(Expr e1, ArrayRead e2) { e1 = e2.getQualifier() }
 private Type getCSharpType(DotNet::Type t) {
   result = t
   or
+  not t instanceof Type and
   result.matchesHandle(t)
 }
 
@@ -688,7 +691,7 @@ private module Cached {
       not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
         AssignableDefinitions::ImplicitParameterDefinition
     } or
-    TExplicitParameterNode(DotNet::Parameter p) { p.isUnboundDeclaration() } or
+    TExplicitParameterNode(DotNet::Parameter p) { p = any(DataFlowCallable c).getAParameter() } or
     TInstanceParameterNode(Callable c) {
       c.isUnboundDeclaration() and not c.(Modifiable).isStatic()
     } or
@@ -707,25 +710,28 @@ private module Cached {
     TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
       cfn.getElement().(ObjectCreation).hasInitializer()
     } or
-    TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
-      exists(Argument a, Type t |
-        a = cfn.getElement() and
-        t = a.stripCasts().getType()
-      |
-        t instanceof RefType and
-        not t instanceof NullType
+    TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
+      exists(Expr e | e = cfn.getExpr() |
+        exists(Type t | t = e.(Argument).stripCasts().getType() |
+          t instanceof RefType and
+          not t instanceof NullType
+          or
+          t = any(TypeParameter tp | not tp.isValueType())
+        )
         or
-        t = any(TypeParameter tp | not tp.isValueType())
-      )
-      or
-      fieldOrPropertyStore(_, _, _, cfn.getElement(), true)
-      or
-      arrayStore(_, _, cfn.getElement(), true)
-      or
-      exists(TExprPostUpdateNode upd, FieldOrPropertyAccess fla |
-        upd = TExprPostUpdateNode(fla.getAControlFlowNode())
-      |
-        cfn.getElement() = fla.getQualifier()
+        fieldOrPropertyStore(_, _, _, e, true)
+        or
+        arrayStore(_, _, e, true)
+        or
+        // needed for reverse stores; e.g. `x.f1.f2 = y` induces
+        // a store step of `f1` into `x`
+        exists(TExprPostUpdateNode upd, Expr read |
+          upd = TExprPostUpdateNode(read.getAControlFlowNode())
+        |
+          fieldOrPropertyRead(e, _, read)
+          or
+          arrayRead(e, read)
+        )
       )
     } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
@@ -759,7 +765,8 @@ private module Cached {
   newtype TContent =
     TFieldContent(Field f) { f.isUnboundDeclaration() } or
     TPropertyContent(Property p) { p.isUnboundDeclaration() } or
-    TElementContent()
+    TElementContent() or
+    TSyntheticFieldContent(SyntheticField f)
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
@@ -1435,7 +1442,7 @@ private module OutNodes {
 import OutNodes
 
 /** A data-flow node used to model flow summaries. */
-private class SummaryNode extends NodeImpl, TSummaryNode {
+class SummaryNode extends NodeImpl, TSummaryNode {
   private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
@@ -1779,6 +1786,10 @@ private class DataFlowNullType extends DataFlowType {
   }
 }
 
+private class DataFlowUnknownType extends DataFlowType {
+  DataFlowUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -1798,6 +1809,10 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 instanceof Gvn::TypeParameterGvnType
   or
   t2 instanceof Gvn::TypeParameterGvnType
+  or
+  t1 instanceof DataFlowUnknownType
+  or
+  t2 instanceof DataFlowUnknownType
 }
 
 /**
@@ -2037,4 +2052,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** A synthetic field. */
+abstract class SyntheticField extends string {
+  bindingset[this]
+  SyntheticField() { any() }
+
+  /** Gets the type of this synthetic field. */
+  Type getType() { result instanceof ObjectType }
 }

@@ -1,5 +1,5 @@
 /**
- * Provides a class for modelling sources of remote user input.
+ * Provides a class for modeling sources of remote user input.
  */
 
 import javascript

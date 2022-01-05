@@ -78,7 +78,7 @@ module Electron {
   }
 
   /**
-   * Provides classes and predicates for modelling Electron inter-process communication (IPC).
+   * Provides classes and predicates for modeling Electron inter-process communication (IPC).
    * The Electron IPC are EventEmitters, but they also expose a number of methods on top of the standard EventEmitter.
    */
   private module IPC {

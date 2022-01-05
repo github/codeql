@@ -288,7 +288,7 @@ module Redux {
     }
 
     /**
-     * A call to `reduce-reducers`, modelled as a reducer that dispatches to an arbitrary subreducer.
+     * A call to `reduce-reducers`, modeled as a reducer that dispatches to an arbitrary subreducer.
      *
      * In reality, this function chains together all of the reducers, but in practice it is only used
      * when the reducers handle a disjoint set of action types, which makes it behave as if it

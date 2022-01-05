@@ -1,5 +1,5 @@
 /**
- * Classes modelling EntityFramework and EntityFrameworkCore.
+ * Classes modeling EntityFramework and EntityFrameworkCore.
  */
 
 import csharp

@@ -20,7 +20,7 @@ private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.internal.CachedStages
 
 /**
- * Provides classes for modelling taint propagation.
+ * Provides classes for modeling taint propagation.
  */
 module TaintTracking {
   /**

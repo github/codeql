@@ -1,7 +1,7 @@
 /**
  * @name Missing `MessageEvent.origin` verification in `postMessage` handlers
  * @description Missing the `MessageEvent.origin` verification in `postMessage` handlers, allows any windows to send arbitrary data to the `MessageEvent` listener.
- * This could lead to unexpected behaviour, especially when `MessageEvent.data` is used in an unsafe way.
+ * This could lead to unexpected behavior, especially when `MessageEvent.data` is used in an unsafe way.
  * @kind problem
  * @problem.severity warning
  * @precision high

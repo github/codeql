@@ -1,4 +1,5 @@
 private import ruby
+private import DataFlowPrivate
 private import TaintTrackingPublic
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
@@ -34,8 +35,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
   nodeFrom.asExpr() =
     nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   or
-  // element reference from nodeFrom
-  nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ElementReferenceCfgNode).getReceiver()
-  or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+  or
+  // Although flow through arrays is modelled precisely using stores/reads, we still
+  // allow flow out of a _tainted_ array. This is needed in order to support taint-
+  // tracking configurations where the source is an array.
+  readStep(nodeFrom, any(DataFlow::Content::ArrayElementContent c), nodeTo)
 }

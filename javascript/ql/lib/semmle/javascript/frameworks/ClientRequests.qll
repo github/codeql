@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling the client-side of a URL request.
+ * Provides classes for modeling the client-side of a URL request.
  *
  * Subclass `ClientRequest` to refine the behavior of the analysis on existing client requests.
  * Subclass `ClientRequest::Range` to introduce new kinds of client requests.
@@ -325,7 +325,7 @@ module ClientRequest {
   }
 
   /**
-   * Classes for modelling the url request library `needle`.
+   * Classes for modeling the url request library `needle`.
    */
   private module Needle {
     /**
@@ -819,7 +819,7 @@ module ClientRequest {
   }
 
   /**
-   * Classes and predicates modelling the `apollo-client` library.
+   * Classes and predicates modeling the `apollo-client` library.
    */
   private module ApolloClient {
     /**

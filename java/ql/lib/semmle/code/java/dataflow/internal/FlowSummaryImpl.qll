@@ -736,10 +736,17 @@ module Private {
     }
 
     pragma[nomagic]
-    private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
-      exists(DataFlowCall call, ParameterPosition ppos, SummarizedCallable sc |
+    private ParamNode summaryArgParam0(DataFlowCall call, ArgNode arg) {
+      exists(ParameterPosition ppos, SummarizedCallable sc |
         argumentPositionMatch(call, arg, ppos) and
-        viableParam(call, sc, ppos, result) and
+        viableParam(call, sc, ppos, result)
+      )
+    }
+
+    pragma[nomagic]
+    private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
+      exists(DataFlowCall call |
+        result = summaryArgParam0(call, arg) and
         out = rk.getAnOutNode(call)
       )
     }

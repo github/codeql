@@ -295,7 +295,7 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * Classes and predicates for modelling `ClientRequest`s in JQuery.
+ * Classes and predicates for modeling `ClientRequest`s in JQuery.
  */
 private module JQueryClientRequest {
   /**

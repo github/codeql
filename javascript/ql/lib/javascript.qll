@@ -50,6 +50,7 @@ import semmle.javascript.Promises
 import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
+import semmle.javascript.Routing
 import semmle.javascript.SSA
 import semmle.javascript.StandardLibrary
 import semmle.javascript.Stmt
@@ -126,6 +127,7 @@ import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
+import semmle.javascript.frameworks.TrustedTypes
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.Vuex

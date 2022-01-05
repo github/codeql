@@ -25,7 +25,7 @@ module SQL {
 }
 
 /**
- * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
+ * Provides classes modeling the (API compatible) `mysql` and `mysql2` packages.
  */
 private module MySql {
   private string moduleName() { result = ["mysql", "mysql2", "mysql2/promise"] }
@@ -115,7 +115,7 @@ private module MySql {
 }
 
 /**
- * Provides classes modelling the PostgreSQL packages, such as `pg` and `pg-promise`.
+ * Provides classes modeling the PostgreSQL packages, such as `pg` and `pg-promise`.
  */
 private module Postgres {
   API::Node pg() {
@@ -332,7 +332,7 @@ private module Postgres {
 }
 
 /**
- * Provides classes modelling the `sqlite3` package.
+ * Provides classes modeling the `sqlite3` package.
  */
 private module Sqlite {
   /** Gets a reference to the `sqlite3` module. */
@@ -376,7 +376,7 @@ private module Sqlite {
 }
 
 /**
- * Provides classes modelling the `mssql` package.
+ * Provides classes modeling the `mssql` package.
  */
 private module MsSql {
   /** Gets a reference to the `mssql` module. */
@@ -471,7 +471,7 @@ private module MsSql {
 }
 
 /**
- * Provides classes modelling the `sequelize` package.
+ * Provides classes modeling the `sequelize` package.
  */
 private module Sequelize {
   /** Gets an import of the `sequelize` module or one that re-exports it. */
@@ -534,7 +534,7 @@ private module Sequelize {
 }
 
 /**
- * Provides classes modelling the Google Cloud Spanner library.
+ * Provides classes modeling the Google Cloud Spanner library.
  */
 private module Spanner {
   /**

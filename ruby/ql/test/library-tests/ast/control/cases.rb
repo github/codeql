@@ -65,7 +65,7 @@ case expr
   in [1, 2, 3, *] 
   in [1, *x, 3] 
   in [*] 
-  in [*, 3, 4] 
+  in [*x, 3, 4] 
   in [*, 3, *] 
   in [*a, 3, *b] 
   in {a:} 

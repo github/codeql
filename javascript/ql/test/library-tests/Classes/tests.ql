@@ -74,3 +74,5 @@ query predicate dataflow(DataFlow::Node pred, DataFlow::Node succ) {
 }
 
 query BlockStmt staticInitializer(ClassDefinition cd) { result = cd.getAStaticInitializerBlock() }
+
+query Identifier privateIdentifier() { result.getName().matches("#%") }

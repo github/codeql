@@ -145,7 +145,7 @@ private class FastGlobFileNameSource extends FileNameSource {
 }
 
 /**
- * Classes and predicates for modelling the `fstream` library (https://www.npmjs.com/package/fstream).
+ * Classes and predicates for modeling the `fstream` library (https://www.npmjs.com/package/fstream).
  */
 private module FStream {
   /**
@@ -242,7 +242,7 @@ private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, DataF
 }
 
 /**
- * Classes and predicates for modelling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
+ * Classes and predicates for modeling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
  */
 private module JSONFile {
   /**

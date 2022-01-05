@@ -486,13 +486,13 @@ break_ensure.rb:
 
 case.rb:
 #    1| enter if_in_case
-#-----|  -> case ...
+#-----|  -> self
 
 #    1| enter case.rb
 #-----|  -> if_in_case
 
 #    1| if_in_case
-#-----|  -> exit case.rb (normal)
+#-----|  -> case_match
 
 #    1| exit if_in_case
 
@@ -505,7 +505,7 @@ case.rb:
 #-----|  -> exit case.rb
 
 #    2| case ...
-#-----|  -> self
+#-----|  -> exit if_in_case (normal)
 
 #    2| call to x1
 #-----|  -> when ...
@@ -521,7 +521,7 @@ case.rb:
 #-----| match -> self
 
 #    3| then ...
-#-----|  -> exit if_in_case (normal)
+#-----|  -> case ...
 
 #    3| ( ... )
 #-----|  -> then ...
@@ -552,11 +552,11 @@ case.rb:
 #-----|  -> 2
 
 #    4| 2
+#-----| no-match -> case ...
 #-----| match -> self
-#-----| no-match -> exit if_in_case (normal)
 
 #    4| then ...
-#-----|  -> exit if_in_case (normal)
+#-----|  -> case ...
 
 #    4| call to puts
 #-----|  -> then ...
@@ -566,6 +566,795 @@ case.rb:
 
 #    4| "2"
 #-----|  -> call to puts
+
+#    8| enter case_match
+#-----|  -> value
+
+#    8| case_match
+#-----|  -> case_match_no_match
+
+#    8| exit case_match
+
+#    8| exit case_match (normal)
+#-----|  -> exit case_match
+
+#    8| value
+#-----|  -> value
+
+#    9| case ...
+#-----|  -> exit case_match (normal)
+
+#    9| value
+#-----|  -> in ... then ...
+
+#   10| in ... then ...
+#-----|  -> 0
+
+#   10| 0
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   11| in ... then ...
+#-----|  -> 1
+
+#   11| 1
+#-----| no-match -> in ... then ...
+#-----| match -> 3
+
+#   11| then ...
+#-----|  -> case ...
+
+#   11| 3
+#-----|  -> then ...
+
+#   12| in ... then ...
+#-----|  -> 2
+
+#   12| 2
+#-----| no-match -> in ... then ...
+#-----| match -> 4
+
+#   12| then ...
+#-----|  -> case ...
+
+#   13| 4
+#-----|  -> then ...
+
+#   14| in ... then ...
+#-----|  -> x
+
+#   14| x
+#-----| match -> x
+
+#   14| ... == ...
+#-----| false -> in ... then ...
+#-----| true -> 6
+
+#   14| x
+#-----|  -> 5
+
+#   14| 5
+#-----|  -> ... == ...
+
+#   14| then ...
+#-----|  -> case ...
+
+#   14| 6
+#-----|  -> then ...
+
+#   15| in ... then ...
+#-----|  -> x
+
+#   15| x
+#-----| match -> x
+
+#   15| ... < ...
+#-----| false -> 7
+#-----| true -> 8
+
+#   15| x
+#-----|  -> 0
+
+#   15| 0
+#-----|  -> ... < ...
+
+#   15| then ...
+#-----|  -> case ...
+
+#   15| 7
+#-----|  -> then ...
+
+#   16| else ...
+#-----|  -> case ...
+
+#   16| 8
+#-----|  -> else ...
+
+#   20| enter case_match_no_match
+#-----|  -> value
+
+#   20| case_match_no_match
+#-----|  -> case_match_raise
+
+#   20| exit case_match_no_match
+
+#   20| exit case_match_no_match (abnormal)
+#-----|  -> exit case_match_no_match
+
+#   20| exit case_match_no_match (normal)
+#-----|  -> exit case_match_no_match
+
+#   20| value
+#-----|  -> value
+
+#   21| case ...
+#-----|  -> exit case_match_no_match (normal)
+
+#   21| value
+#-----|  -> in ... then ...
+
+#   22| in ... then ...
+#-----|  -> 1
+
+#   22| 1
+#-----| match -> case ...
+#-----| raise -> exit case_match_no_match (abnormal)
+
+#   26| enter case_match_raise
+#-----|  -> value
+
+#   26| case_match_raise
+#-----|  -> case_match_array
+
+#   26| exit case_match_raise
+
+#   26| exit case_match_raise (abnormal)
+#-----|  -> exit case_match_raise
+
+#   26| exit case_match_raise (normal)
+#-----|  -> exit case_match_raise
+
+#   26| value
+#-----|  -> value
+
+#   27| case ...
+#-----|  -> exit case_match_raise (normal)
+
+#   27| value
+#-----|  -> in ... then ...
+
+#   28| in ... then ...
+#-----|  -> -> { ... }
+
+#   28| enter -> { ... }
+#-----|  -> x
+
+#   28| -> { ... }
+#-----| match -> case ...
+#-----| raise -> exit case_match_raise (abnormal)
+
+#   28| exit -> { ... }
+
+#   28| exit -> { ... } (abnormal)
+#-----|  -> exit -> { ... }
+
+#   28| x
+#-----|  -> self
+
+#   28| call to raise
+#-----| raise -> exit -> { ... } (abnormal)
+
+#   28| self
+#-----|  -> "oops"
+
+#   28| "oops"
+#-----|  -> call to raise
+
+#   32| enter case_match_array
+#-----|  -> value
+
+#   32| case_match_array
+#-----|  -> case_match_find
+
+#   32| exit case_match_array
+
+#   32| exit case_match_array (abnormal)
+#-----|  -> exit case_match_array
+
+#   32| exit case_match_array (normal)
+#-----|  -> exit case_match_array
+
+#   32| value
+#-----|  -> value
+
+#   33| case ...
+#-----|  -> exit case_match_array (normal)
+
+#   33| value
+#-----|  -> in ... then ...
+
+#   34| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   34| [ ..., * ]
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   35| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   35| [ ..., * ]
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   35| x
+#-----| match -> case ...
+
+#   36| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   36| [ ..., * ]
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   36| x
+#-----| match -> case ...
+
+#   37| in ... then ...
+#-----|  -> Bar
+
+#   37| [ ..., * ]
+#-----| match -> a
+#-----| raise -> exit case_match_array (abnormal)
+
+#   37| Bar
+#-----| match -> [ ..., * ]
+#-----| raise -> exit case_match_array (abnormal)
+
+#   37| a
+#-----| match -> b
+
+#   37| b
+#-----| match -> c
+
+#   37| c
+#-----|  -> d
+
+#   37| d
+#-----| match -> e
+
+#   37| e
+#-----| match -> case ...
+
+#   41| enter case_match_find
+#-----|  -> value
+
+#   41| case_match_find
+#-----|  -> case_match_hash
+
+#   41| exit case_match_find
+
+#   41| exit case_match_find (abnormal)
+#-----|  -> exit case_match_find
+
+#   41| exit case_match_find (normal)
+#-----|  -> exit case_match_find
+
+#   41| value
+#-----|  -> value
+
+#   42| case ...
+#-----|  -> exit case_match_find (normal)
+
+#   42| value
+#-----|  -> in ... then ...
+
+#   43| in ... then ...
+#-----|  -> [ *,...,* ]
+
+#   43| [ *,...,* ]
+#-----| match -> x
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| x
+#-----|  -> 1
+
+#   43| 1
+#-----| match -> 2
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| 2
+#-----| match -> y
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| y
+#-----|  -> case ...
+
+#   47| enter case_match_hash
+#-----|  -> value
+
+#   47| case_match_hash
+#-----|  -> case_match_variable
+
+#   47| exit case_match_hash
+
+#   47| exit case_match_hash (abnormal)
+#-----|  -> exit case_match_hash
+
+#   47| exit case_match_hash (normal)
+#-----|  -> exit case_match_hash
+
+#   47| value
+#-----|  -> value
+
+#   48| case ...
+#-----|  -> exit case_match_hash (normal)
+
+#   48| value
+#-----|  -> in ... then ...
+
+#   49| in ... then ...
+#-----|  -> Foo
+
+#   49| { ..., ** }
+#-----| no-match -> in ... then ...
+#-----| match -> 1
+
+#   49| Foo
+#-----|  -> Bar
+
+#   49| Bar
+#-----| match -> { ..., ** }
+#-----| no-match -> in ... then ...
+
+#   49| 1
+#-----| no-match -> in ... then ...
+#-----| match -> rest
+
+#   49| rest
+#-----|  -> case ...
+
+#   50| in ... then ...
+#-----|  -> Bar
+
+#   50| { ..., ** }
+#-----| no-match -> in ... then ...
+#-----| match -> 1
+
+#   50| Bar
+#-----| match -> { ..., ** }
+#-----| no-match -> in ... then ...
+
+#   50| 1
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   51| in ... then ...
+#-----|  -> Bar
+
+#   51| { ..., ** }
+#-----| match -> case ...
+#-----| raise -> exit case_match_hash (abnormal)
+
+#   51| Bar
+#-----| match -> { ..., ** }
+#-----| raise -> exit case_match_hash (abnormal)
+
+#   55| enter case_match_variable
+#-----|  -> value
+
+#   55| case_match_variable
+#-----|  -> case_match_underscore
+
+#   55| exit case_match_variable
+
+#   55| exit case_match_variable (normal)
+#-----|  -> exit case_match_variable
+
+#   55| value
+#-----|  -> value
+
+#   56| case ...
+#-----|  -> exit case_match_variable (normal)
+
+#   56| value
+#-----|  -> in ... then ...
+
+#   57| in ... then ...
+#-----|  -> 5
+
+#   57| 5
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   58| in ... then ...
+#-----|  -> var
+
+#   58| var
+#-----| match -> case ...
+
+#   63| enter case_match_underscore
+#-----|  -> value
+
+#   63| case_match_underscore
+#-----|  -> case_match_various
+
+#   63| exit case_match_underscore
+
+#   63| exit case_match_underscore (normal)
+#-----|  -> exit case_match_underscore
+
+#   63| value
+#-----|  -> value
+
+#   64| case ...
+#-----|  -> exit case_match_underscore (normal)
+
+#   64| value
+#-----|  -> in ... then ...
+
+#   65| in ... then ...
+#-----|  -> ... | ...
+
+#   65| ... | ...
+#-----|  -> 5
+
+#   65| 5
+#-----| match -> case ...
+#-----| no-match -> _
+
+#   65| _
+#-----| match -> case ...
+
+#   69| enter case_match_various
+#-----|  -> value
+
+#   69| case_match_various
+#-----|  -> case_match_guard_no_else
+
+#   69| exit case_match_various
+
+#   69| exit case_match_various (abnormal)
+#-----|  -> exit case_match_various
+
+#   69| exit case_match_various (normal)
+#-----|  -> exit case_match_various
+
+#   69| value
+#-----|  -> foo
+
+#   70| ... = ...
+#-----|  -> value
+
+#   70| foo
+#-----|  -> 42
+
+#   70| 42
+#-----|  -> ... = ...
+
+#   72| case ...
+#-----|  -> exit case_match_various (normal)
+
+#   72| value
+#-----|  -> in ... then ...
+
+#   73| in ... then ...
+#-----|  -> 5
+
+#   73| 5
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   74| in ... then ...
+#-----|  -> ^...
+
+#   74| ^...
+#-----|  -> foo
+
+#   74| foo
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   75| in ... then ...
+#-----|  -> "string"
+
+#   75| "string"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   76| in ... then ...
+#-----|  -> Array
+
+#   76| call to []
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   76| Array
+#-----|  -> "foo"
+
+#   76| "foo"
+#-----|  -> "bar"
+
+#   76| "bar"
+#-----|  -> call to []
+
+#   77| in ... then ...
+#-----|  -> Array
+
+#   77| call to []
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   77| Array
+#-----|  -> :"foo"
+
+#   77| :"foo"
+#-----|  -> :"bar"
+
+#   77| :"bar"
+#-----|  -> call to []
+
+#   78| in ... then ...
+#-----|  -> /.*abc[0-9]/
+
+#   78| /.*abc[0-9]/
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   79| in ... then ...
+#-----|  -> 5
+
+#   79| 5
+#-----|  -> 10
+
+#   79| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   79| 10
+#-----|  -> _ .. _
+
+#   80| in ... then ...
+#-----|  -> 10
+
+#   80| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   80| 10
+#-----|  -> _ .. _
+
+#   81| in ... then ...
+#-----|  -> 5
+
+#   81| 5
+#-----|  -> _ .. _
+
+#   81| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   82| in ... then ...
+#-----|  -> ... => ...
+
+#   82| ... => ...
+#-----|  -> 5
+
+#   82| 5
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   82| x
+#-----|  -> case ...
+
+#   83| in ... then ...
+#-----|  -> ... | ...
+
+#   83| ... | ...
+#-----|  -> 5
+
+#   83| 5
+#-----| match -> case ...
+#-----| no-match -> ^...
+
+#   83| ^...
+#-----|  -> foo
+
+#   83| foo
+#-----| match -> case ...
+#-----| no-match -> "string"
+
+#   83| "string"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   84| in ... then ...
+#-----|  -> Foo
+
+#   84| Bar
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   84| Foo
+#-----|  -> Bar
+
+#   85| in ... then ...
+#-----|  -> -> { ... }
+
+#   85| enter -> { ... }
+#-----|  -> x
+
+#   85| -> { ... }
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   85| exit -> { ... }
+
+#   85| exit -> { ... } (normal)
+#-----|  -> exit -> { ... }
+
+#   85| x
+#-----|  -> x
+
+#   85| ... == ...
+#-----|  -> exit -> { ... } (normal)
+
+#   85| x
+#-----|  -> 10
+
+#   85| 10
+#-----|  -> ... == ...
+
+#   86| in ... then ...
+#-----|  -> :foo
+
+#   86| :foo
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   87| in ... then ...
+#-----|  -> :"foo bar"
+
+#   87| :"foo bar"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   88| in ... then ...
+#-----|  -> ... | ...
+
+#   88| ... | ...
+#-----|  -> 5
+
+#   88| - ...
+#-----| match -> case ...
+#-----| no-match -> 10
+
+#   88| 5
+#-----|  -> - ...
+
+#   88| + ...
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   88| 10
+#-----|  -> + ...
+
+#   89| in ... then ...
+#-----|  -> ... | ...
+
+#   89| ... | ...
+#-----|  -> nil
+
+#   89| nil
+#-----| match -> case ...
+#-----| no-match -> self
+
+#   89| self
+#-----| match -> case ...
+#-----| no-match -> true
+
+#   89| true
+#-----| match -> case ...
+#-----| no-match -> false
+
+#   89| false
+#-----| match -> case ...
+#-----| no-match -> __LINE__
+
+#   89| __LINE__
+#-----| match -> case ...
+#-----| no-match -> __FILE__
+
+#   89| __FILE__
+#-----| match -> case ...
+#-----| no-match -> __ENCODING__
+
+#   89| __ENCODING__
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   90| in ... then ...
+#-----|  -> ( ... )
+
+#   90| ( ... )
+#-----|  -> 1
+
+#   90| 1
+#-----|  -> _ .. _
+
+#   90| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   91| in ... then ...
+#-----|  -> ( ... )
+
+#   91| ( ... )
+#-----|  -> ... | ...
+
+#   91| ... | ...
+#-----|  -> 0
+
+#   91| 0
+#-----| match -> case ...
+#-----| no-match -> ""
+
+#   91| ""
+#-----| no-match -> [ ..., * ]
+#-----| match -> case ...
+
+#   91| [ ..., * ]
+#-----| match -> case ...
+#-----| no-match -> { ..., ** }
+
+#   91| { ..., ** }
+#-----| match -> case ...
+#-----| raise -> exit case_match_various (abnormal)
+
+#   95| enter case_match_guard_no_else
+#-----|  -> value
+
+#   95| case_match_guard_no_else
+#-----|  -> exit case.rb (normal)
+
+#   95| exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (abnormal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (normal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| value
+#-----|  -> value
+
+#   96| case ...
+#-----|  -> exit case_match_guard_no_else (normal)
+
+#   96| value
+#-----|  -> in ... then ...
+
+#   97| in ... then ...
+#-----|  -> x
+
+#   97| x
+#-----| match -> x
+
+#   97| ... == ...
+#-----| true -> 6
+#-----| raise -> exit case_match_guard_no_else (abnormal)
+
+#   97| x
+#-----|  -> 5
+
+#   97| 5
+#-----|  -> ... == ...
+
+#   97| then ...
+#-----|  -> case ...
+
+#   97| 6
+#-----|  -> then ...
 
 cfg.html.erb:
 #    5| enter cfg.html.erb
@@ -914,7 +1703,7 @@ cfg.rb:
 #-----| false -> if ...
 
 #   39| call to puts
-#-----|  -> case ...
+#-----|  -> 10
 
 #   39| self
 #-----|  -> 42
@@ -923,7 +1712,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #   41| case ...
-#-----|  -> 10
+#-----|  -> when ...
 
 #   41| 10
 #-----|  -> when ...
@@ -987,7 +1776,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #   47| case ...
-#-----|  -> when ...
+#-----|  -> chained
 
 #   48| when ...
 #-----|  -> b
@@ -1003,7 +1792,7 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #   48| then ...
-#-----|  -> chained
+#-----|  -> case ...
 
 #   48| call to puts
 #-----|  -> then ...
@@ -1028,7 +1817,7 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #   49| ... > ...
-#-----| false -> chained
+#-----| false -> case ...
 #-----| true -> self
 
 #   49| b
@@ -1038,7 +1827,7 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #   49| then ...
-#-----|  -> chained
+#-----|  -> case ...
 
 #   49| call to puts
 #-----|  -> then ...
@@ -1058,6 +1847,9 @@ cfg.rb:
 #   52| "a"
 #-----|  -> chained
 
+#   52| "..." "..."
+#-----|  -> ... = ...
+
 #   52| "#{...}"
 #-----|  -> "string"
 
@@ -1068,7 +1860,7 @@ cfg.rb:
 #-----|  -> #{...}
 
 #   52| "string"
-#-----|  -> ... = ...
+#-----|  -> "..." "..."
 
 #   54| ... = ...
 #-----|  -> Silly
@@ -1152,11 +1944,11 @@ cfg.rb:
 #   62| call to []
 #-----|  -> * ...
 
-#   62| ...
-#-----|  -> ...
-
 #   62| 1
 #-----|  -> call to []
+
+#   62| ...
+#-----|  -> ...
 
 #   62| __synth__0
 #-----|  -> 1
@@ -1627,13 +2419,13 @@ cfg.rb:
 #-----|  -> b
 
 #  108| self
-#-----|  -> <<SQL
+#-----|  -> table
 
 #  108| ( ... )
 #-----|  -> call to puts
 
 #  108| <<SQL
-#-----|  -> table
+#-----|  -> ( ... )
 
 #  109| #{...}
 #-----|  -> type
@@ -1642,7 +2434,7 @@ cfg.rb:
 #-----|  -> #{...}
 
 #  110| #{...}
-#-----|  -> ( ... )
+#-----|  -> <<SQL
 
 #  110| type
 #-----|  -> #{...}
@@ -1852,23 +2644,23 @@ cfg.rb:
 #-----|  -> EmptyModule
 
 #  134| EmptyModule
-#-----|  -> ... rescue ...
+#-----|  -> 1
 
 #  136| ... / ...
+#-----|  -> ... rescue ...
 #-----| raise -> self
-#-----|  -> __synth__0
 
 #  136| 1
 #-----|  -> 0
 
 #  136| ... rescue ...
-#-----|  -> 1
+#-----|  -> __synth__0
 
 #  136| 0
 #-----|  -> ... / ...
 
 #  136| call to puts
-#-----|  -> __synth__0
+#-----|  -> ... rescue ...
 
 #  136| self
 #-----|  -> "div by zero"
@@ -1915,6 +2707,9 @@ cfg.rb:
 #  138| __synth__0
 #-----|  -> -1
 
+#  138| ..., ...
+#-----|  -> * ...
+
 #  138| 1
 #-----|  -> 2
 
@@ -1931,7 +2726,7 @@ cfg.rb:
 #-----|  -> 3
 
 #  138| 3
-#-----|  -> * ...
+#-----|  -> ..., ...
 
 #  140| M
 #-----|  -> Constant
@@ -2481,6 +3276,9 @@ cfg.rb:
 #-----|  -> b
 
 #  197| b
+#-----|  -> ...
+
+#  197| ...
 #-----|  -> call to bar
 
 desugar.rb:
@@ -2837,11 +3635,11 @@ desugar.rb:
 #   22| call to []
 #-----|  -> ... = ...
 
-#   22| ...
-#-----|  -> ...
-
 #   22| -1
 #-----|  -> call to []
+
+#   22| ...
+#-----|  -> ...
 
 #   22| __synth__0
 #-----|  -> -1
@@ -2917,11 +3715,11 @@ desugar.rb:
 #   26| call to []
 #-----|  -> * ...
 
-#   26| ...
-#-----|  -> ...
-
 #   26| 1
 #-----|  -> call to []
+
+#   26| ...
+#-----|  -> ...
 
 #   26| __synth__0
 #-----|  -> 1
@@ -4116,7 +4914,7 @@ raise.rb:
 #-----| true -> self
 
 #   17| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   17| self
 #-----|  -> ExceptionA
@@ -4125,14 +4923,14 @@ raise.rb:
 #-----|  -> call to raise
 
 #   19| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   19| ExceptionA
 #-----| match -> self
 #-----| raise -> exit m2 (abnormal)
 
 #   19| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   20| call to puts
 #-----|  -> then ...
@@ -4174,7 +4972,7 @@ raise.rb:
 #-----| true -> self
 
 #   28| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> self
 
 #   28| self
 #-----|  -> ExceptionA
@@ -4186,7 +4984,7 @@ raise.rb:
 #-----|  -> self
 
 #   30| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   31| call to puts
 #-----|  -> then ...
@@ -4228,7 +5026,7 @@ raise.rb:
 #-----| true -> self
 
 #   39| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   39| self
 #-----|  -> ExceptionA
@@ -4237,13 +5035,13 @@ raise.rb:
 #-----|  -> call to raise
 
 #   41| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   41| e
 #-----|  -> self
 
 #   41| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   42| call to puts
 #-----|  -> then ...
@@ -4285,7 +5083,7 @@ raise.rb:
 #-----| true -> self
 
 #   50| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   50| self
 #-----|  -> ExceptionA
@@ -4294,10 +5092,10 @@ raise.rb:
 #-----|  -> call to raise
 
 #   52| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   52| e
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   54| call to puts
 #-----|  -> exit m5 (normal)
@@ -4333,7 +5131,7 @@ raise.rb:
 #-----| true -> self
 
 #   60| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   60| self
 #-----|  -> ExceptionA
@@ -4342,7 +5140,7 @@ raise.rb:
 #-----|  -> call to raise
 
 #   62| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   62| ExceptionA
 #-----| no-match -> ExceptionB
@@ -4356,7 +5154,7 @@ raise.rb:
 #-----|  -> self
 
 #   62| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   63| call to puts
 #-----|  -> then ...
@@ -5015,7 +5813,7 @@ raise.rb:
 #-----| true -> self
 
 #  131| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #  131| self
 #-----|  -> ExceptionA
@@ -5024,21 +5822,21 @@ raise.rb:
 #-----|  -> call to raise
 
 #  133| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #  133| ExceptionA
-#-----| no-match -> rescue ...
-#-----| match -> self
+#-----| match -> rescue ...
+#-----| no-match -> ExceptionB
 
 #  134| rescue ...
-#-----|  -> ExceptionB
+#-----|  -> self
 
 #  134| ExceptionB
 #-----| match -> self
 #-----| raise -> [ensure: raise] self
 
 #  134| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #  135| call to puts
 #-----|  -> then ...

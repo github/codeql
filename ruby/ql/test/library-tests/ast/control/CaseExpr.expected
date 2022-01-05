@@ -67,7 +67,7 @@ caseAllBranches
 | cases.rb:39:1:80:3 | case ... | 25 | cases.rb:65:3:65:18 | in ... then ... |
 | cases.rb:39:1:80:3 | case ... | 26 | cases.rb:66:3:66:16 | in ... then ... |
 | cases.rb:39:1:80:3 | case ... | 27 | cases.rb:67:3:67:9 | in ... then ... |
-| cases.rb:39:1:80:3 | case ... | 28 | cases.rb:68:3:68:15 | in ... then ... |
+| cases.rb:39:1:80:3 | case ... | 28 | cases.rb:68:3:68:16 | in ... then ... |
 | cases.rb:39:1:80:3 | case ... | 29 | cases.rb:69:3:69:15 | in ... then ... |
 | cases.rb:39:1:80:3 | case ... | 30 | cases.rb:70:3:70:17 | in ... then ... |
 | cases.rb:39:1:80:3 | case ... | 31 | cases.rb:71:3:71:10 | in ... then ... |

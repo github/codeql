@@ -4,7 +4,8 @@ edges
 | UrlRedirect.rb:19:17:19:22 | call to params :  | UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash |
 | UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:24:17:24:37 | call to filter_params |
 | UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:56:21:56:32 | input_params :  |
-| UrlRedirect.rb:34:20:34:25 | call to params :  | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" |
+| UrlRedirect.rb:34:20:34:25 | call to params :  | UrlRedirect.rb:34:20:34:31 | ...[...] :  |
+| UrlRedirect.rb:34:20:34:31 | ...[...] :  | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" |
 | UrlRedirect.rb:56:21:56:32 | input_params :  | UrlRedirect.rb:57:5:57:29 | call to permit :  |
 nodes
 | UrlRedirect.rb:4:17:4:22 | call to params | semmle.label | call to params |
@@ -18,6 +19,7 @@ nodes
 | UrlRedirect.rb:24:31:24:36 | call to params :  | semmle.label | call to params :  |
 | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | semmle.label | "#{...}/foo" |
 | UrlRedirect.rb:34:20:34:25 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:34:20:34:31 | ...[...] :  | semmle.label | ...[...] :  |
 | UrlRedirect.rb:56:21:56:32 | input_params :  | semmle.label | input_params :  |
 | UrlRedirect.rb:57:5:57:29 | call to permit :  | semmle.label | call to permit :  |
 subpaths

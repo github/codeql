@@ -73,3 +73,29 @@ Ruby::AstNode getBodyStmtChild(TBodyStmt b, int i) {
   or
   result = any(Ruby::Begin g | b = TBeginExpr(g)).getChild(i)
 }
+
+abstract class DestructuredLhsExprImpl extends Ruby::AstNode {
+  abstract Ruby::AstNode getChildNode(int i);
+
+  final int getRestIndex() {
+    result = unique(int i | this.getChildNode(i) instanceof Ruby::RestAssignment)
+  }
+}
+
+class DestructuredLeftAssignmentImpl extends DestructuredLhsExprImpl,
+  Ruby::DestructuredLeftAssignment {
+  override Ruby::AstNode getChildNode(int i) { result = this.getChild(i) }
+}
+
+class LeftAssignmentListImpl extends DestructuredLhsExprImpl, Ruby::LeftAssignmentList {
+  override Ruby::AstNode getChildNode(int i) {
+    this =
+      any(Ruby::LeftAssignmentList lal |
+        if
+          strictcount(int j | exists(lal.getChild(j))) = 1 and
+          lal.getChild(0) instanceof Ruby::DestructuredLeftAssignment
+        then result = lal.getChild(0).(Ruby::DestructuredLeftAssignment).getChild(i)
+        else result = lal.getChild(i)
+      )
+  }
+}

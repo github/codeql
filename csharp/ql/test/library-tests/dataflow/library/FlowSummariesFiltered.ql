@@ -1,4 +1,5 @@
 import shared.FlowSummaries
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
   IncludeFilteredSummarizedCallable() { this instanceof SummarizedCallable }
@@ -13,9 +14,9 @@ class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
   ) {
     this.propagatesFlow(input, output, preservesValue) and
     not exists(IncludeSummarizedCallable rsc |
-      rsc.isAbstractOrInterface() and
-      this.(Virtualizable).overridesOrImplementsOrEquals(rsc) and
-      rsc.propagatesFlow(input, output, preservesValue)
+      rsc.isBaseCallableOrPrototype() and
+      rsc.propagatesFlow(input, output, preservesValue) and
+      this.(UnboundCallable).overridesOrImplementsUnbound(rsc)
     )
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling the Node.js standard library.
+ * Provides classes for modeling the Node.js standard library.
  */
 
 import javascript

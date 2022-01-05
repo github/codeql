@@ -50,6 +50,7 @@ private class StringSummaryCsv extends SummaryModelCsv {
         "java.lang;AbstractStringBuilder;true;insert;;;Argument[-1];ReturnValue;value",
         "java.lang;AbstractStringBuilder;true;replace;;;Argument[-1];ReturnValue;value",
         "java.lang;AbstractStringBuilder;true;replace;;;Argument[2];Argument[-1];taint",
+        "java.lang;AbstractStringBuilder;true;reverse;;;Argument[-1];ReturnValue;value",
         "java.lang;AbstractStringBuilder;true;toString;;;Argument[-1];ReturnValue;taint",
         "java.lang;StringBuffer;true;StringBuffer;(CharSequence);;Argument[0];Argument[-1];taint",
         "java.lang;StringBuffer;true;StringBuffer;(String);;Argument[0];Argument[-1];taint",

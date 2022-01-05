@@ -881,6 +881,7 @@ module DataFlow {
 
     ImportSpecifierAsPropRead() {
       astNode = imprt.getASpecifier() and
+      not astNode.isTypeOnly() and
       exists(astNode.getImportedName())
     }
 
@@ -1034,7 +1035,7 @@ module DataFlow {
    * Provides classes representing various kinds of calls.
    *
    * Subclass the classes in this module to introduce new kinds of calls. If you want to
-   * refine the behaviour of the analysis on existing kinds of calls, subclass `InvokeNode`
+   * refine the behavior of the analysis on existing kinds of calls, subclass `InvokeNode`
    * instead.
    */
   module Impl {

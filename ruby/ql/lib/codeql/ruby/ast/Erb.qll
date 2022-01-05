@@ -118,7 +118,7 @@ private class ErbDirectiveFile extends File {
 
   /** Gets a statement in this file. */
   pragma[nomagic]
-  Stmt getAStmt(int startLine, int startColumn) {
+  AstNode getAnAstNode(int startLine, int startColumn) {
     exists(Location loc |
       result.getLocation() = loc and
       loc.getFile() = this and
@@ -142,13 +142,13 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
     )
   }
 
-  private predicate containsStmtStart(Stmt s) {
+  private predicate containsAstNodeStart(AstNode s) {
     // `Toplevel` statements are not contained within individual directives,
     // though their start location may appear within a directive location
     not s instanceof Toplevel and
     exists(ErbDirectiveFile file, int startLine, int startColumn |
       this.spans(file, startLine) and
-      s = file.getAStmt(startLine, startColumn) and
+      s = file.getAnAstNode(startLine, startColumn) and
       locationIncludesPosition(this.getLocation(), startLine, startColumn)
     )
   }
@@ -158,8 +158,8 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
    * statement starting in this directive.
    */
   Stmt getAChildStmt() {
-    this.containsStmtStart(result) and
-    not this.containsStmtStart(result.getParent())
+    this.containsAstNodeStart(result) and
+    not this.containsAstNodeStart(result.getParent())
   }
 
   /**

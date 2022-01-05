@@ -2,6 +2,7 @@ private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -384,7 +385,7 @@ private Node update(Node node) {
  * ```python
  * f(0, 1, 2, a=3)
  * ```
- * will be modelled as
+ * will be modeled as
  * ```python
  * f(0, 1, [*t], [**d])
  * ```
@@ -397,7 +398,7 @@ private Node update(Node node) {
  * ```python
  * f(0, **{"y": 1, "a": 3})
  * ```
- * no tuple argument is synthesized. It is modelled as
+ * no tuple argument is synthesized. It is modeled as
  * ```python
  * f(0, [y=1], [**d])
  * ```
@@ -948,7 +949,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 private predicate module_export(Module m, string name, CfgNode defn) {
   exists(EssaVariable v |
     v.getName() = name and
-    v.getAUse() = m.getANormalExit()
+    v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
   |
     defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
     or

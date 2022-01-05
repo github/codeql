@@ -10,7 +10,16 @@
         "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",
         "misc/legacy-support/*/qlpack.yml",
         "misc/suite-helpers/qlpack.yml",
+        "ruby/extractor-pack/codeql-extractor.yml",
         "ruby/ql/consistency-queries/qlpack.yml",
-        "ruby/extractor-pack/codeql-extractor.yml"
-   ]
+        "ql/ql/consistency-queries/qlpack.yml",
+        "ql/extractor-pack/codeql-extractor.yml"
+    ],
+    "versionPolicies": {
+      "default": {
+        "requireChangeNotes": true,
+        "committedPrereleaseSuffix": "dev",
+        "committedVersion": "nextPatchRelease"
+      }
+    }
 }
