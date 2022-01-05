@@ -10,7 +10,6 @@ class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
 
 // import all instances below
 private module Summaries {
-  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
