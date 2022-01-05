@@ -152,15 +152,15 @@ private import ModelInput
  * does not preserve empty trailing substrings.
  */
 bindingset[result]
-private string padded(string s) { s = result + ";dummy" }
+private string inversePad(string s) { s = result + ";dummy" }
 
-private predicate sourceModel(string row) { any(SourceModelCsv s).row(padded(row)) }
+private predicate sourceModel(string row) { any(SourceModelCsv s).row(inversePad(row)) }
 
-private predicate sinkModel(string row) { any(SinkModelCsv s).row(padded(row)) }
+private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row)) }
 
-private predicate summaryModel(string row) { any(SummaryModelCsv s).row(padded(row)) }
+private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inversePad(row)) }
 
-private predicate typeModel(string row) { any(TypeModelCsv s).row(padded(row)) }
+private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
 
 /**
  * Replaces `..` with `-->` in order to simplify subsequent parsing.
