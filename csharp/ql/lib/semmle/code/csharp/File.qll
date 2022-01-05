@@ -197,29 +197,9 @@ class File extends Container, @file {
 
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
-  pragma[noinline]
-  private predicate hasStubHeaderComment() {
-    exists(CommentLine c |
-      c.getText() = "This file contains auto-generated code." and
-      c.getLocation().getFile() = this
-    )
-  }
-
-  pragma[noinline]
-  private predicate hasStubComment() {
-    exists(CommentLine c |
-      c.getText().regexpMatch("Generated from `.*` in `.*`") and
-      c.getLocation().getFile() = this
-    )
-  }
-
   /** Holds if this file is a QL test stub file. */
   pragma[noinline]
-  private predicate isStub() {
-    this.hasStubHeaderComment() and
-    this.hasStubComment() and
-    this.getAbsolutePath().matches("%resources/stubs/%")
-  }
+  private predicate isStub() { this.getAbsolutePath().matches("%resources/stubs/%") }
 
   /** Holds if this file contains source code. */
   final predicate fromSource() {
