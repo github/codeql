@@ -163,5 +163,5 @@ void guarded_test(unsigned p) {
   if (p >= data) {
     return;
   }
-  unsigned z = data - p; // GOOD [FALSE POSITIVE]
+  unsigned z = data - p; // GOOD
 }
