@@ -6,7 +6,7 @@
  * class Unit // a unit type
  * module API // the API graph module
  * predicate isPackageUsed(string package)
- * API::Node getExtraNodeFromPath(string package, string type, string path)
+ * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
  * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
  * API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token)
  * predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathToken token)
