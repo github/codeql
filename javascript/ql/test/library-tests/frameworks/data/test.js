@@ -76,4 +76,11 @@ function testSinks() {
   testlib.mySinkExceptLast(1, source(), 3, 4); // NOT OK
   testlib.mySinkExceptLast(1, 2, source(), 4); // NOT OK
   testlib.mySinkExceptLast(1, 2, 3, source()); // OK
+
+  testlib.mySinkIfArityTwo(source()); // OK
+  testlib.mySinkIfArityTwo(source(), 2); // NOT OK
+  testlib.mySinkIfArityTwo(1, source()); // OK
+  testlib.mySinkIfArityTwo(source(), 2, 3); // OK
+  testlib.mySinkIfArityTwo(1, source(), 3); // OK
+  testlib.mySinkIfArityTwo(1, 2, source()); // OK
 }
