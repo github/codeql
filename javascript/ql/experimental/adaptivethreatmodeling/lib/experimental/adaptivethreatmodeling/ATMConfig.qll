@@ -108,5 +108,5 @@ abstract class ATMConfig extends string {
    * A cut-off value of >~0.5 only produces alerts that are likely true-positives.
    * A cut-off value of 0 produces all alerts including those that are likely false-positives.
    */
-  float getScoreCutoff() { result = 0.0 }
+  float getScoreCutoff() { result = 0.65 }
 }
