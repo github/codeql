@@ -71,7 +71,7 @@ newtype CompilationExt =
   TBuildless() { extractionIsStandalone() }
 
 /** Gets the compilation that source file `f` belongs to. */
-CompilationExt getCompilation(SourceFile f) {
+CompilationExt getCompilation(File f) {
   exists(Compilation c |
     f = c.getAFileCompiled() and
     result = TCompilation(c)
