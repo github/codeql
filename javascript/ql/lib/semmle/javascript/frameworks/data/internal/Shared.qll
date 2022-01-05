@@ -437,14 +437,16 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
 class AccessPathToken extends string {
   AccessPathToken() { this = any(AccessPath path).getRawToken(_) }
 
+  private string getPart(int part) { result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part) }
+
   /** Gets the name of the token, such as `Member` from `Member[x]` */
-  string getName() { result = this.regexpCapture("(.+?)(?:\\[.*?\\])?", 1) }
+  string getName() { result = getPart(1) }
 
   /**
    * Gets the argument list, such as `1,2` from `Member[1,2]`,
    * or has no result if there are no arguments.
    */
-  string getArgumentList() { result = this.regexpCapture(".+?\\[(.*?)\\]", 1) }
+  string getArgumentList() { result = getPart(2) }
 
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getArgument(int n) { result = getArgumentList().splitAt(",", n) }
