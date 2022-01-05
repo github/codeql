@@ -364,7 +364,7 @@ module CsvValidation {
     exists(string row, string kind | sourceModel(row) |
       kind = row.splitAt(";", 7) and
       not kind = "local" and
-      msg = "Invalid kind \"" + kind + "\" in sink model."
+      msg = "Invalid kind \"" + kind + "\" in source model."
     )
   }
 }
