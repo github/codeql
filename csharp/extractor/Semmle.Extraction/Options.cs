@@ -37,12 +37,17 @@ namespace Semmle.Extraction
         /// <summary>
         /// Whether to extract PDB information.
         /// </summary>
-        public bool PDB { get; private set; } = false;
+        public bool PDB { get; set; } = false;
 
         /// <summary>
         /// Whether "fast extraction mode" has been enabled.
         /// </summary>
         public bool Fast { get; private set; } = false;
+
+        /// <summary>
+        /// Whether extraction is done using `codeql test run`.
+        /// </summary>
+        public bool QlTest { get; private set; } = false;
 
         /// <summary>
         /// The compression algorithm used for trap files.
@@ -70,6 +75,10 @@ namespace Semmle.Extraction
         {
             switch (flag)
             {
+                case "silent":
+                    if (value)
+                        Verbosity = Verbosity.Off;
+                    return true;
                 case "verbose":
                     Verbosity = value ? Verbosity.Debug : Verbosity.Error;
                     return true;
@@ -89,6 +98,9 @@ namespace Semmle.Extraction
                 case "fast":
                     CIL = !value;
                     Fast = value;
+                    return true;
+                case "qltest":
+                    QlTest = value;
                     return true;
                 case "brotli":
                     TrapCompression = value ? TrapWriter.CompressionMode.Brotli : TrapWriter.CompressionMode.Gzip;

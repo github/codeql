@@ -218,7 +218,12 @@ class File extends Container, @file {
    * A source file can come from a PDB and from regular extraction
    * in the same snapshot.
    */
-  predicate isPdbSourceFile() { file_extraction_mode(this, 2) }
+  predicate isPdbSourceFile() {
+    exists(int i |
+      file_extraction_mode(this, i) and
+      i.bitAnd(2) = 2
+    )
+  }
 }
 
 /**
@@ -228,5 +233,10 @@ class SourceFile extends File {
   SourceFile() { this.fromSource() }
 
   /** Holds if the file was extracted without building the source code. */
-  predicate extractedStandalone() { file_extraction_mode(this, 1) }
+  predicate extractedStandalone() {
+    exists(int i |
+      file_extraction_mode(this, i) and
+      i.bitAnd(1) = 1
+    )
+  }
 }
