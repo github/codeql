@@ -1,6 +1,6 @@
 /**
- * @name Supported sinks in external libraries
- * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
+ * @name Supported flow steps in external libraries
+ * @description A list of 3rd party APIs detected as flow steps. Excludes test and generated code.
  * @kind metric
  * @tags summary
  * @id java/telemetry/supported-external-api-taint
