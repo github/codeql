@@ -131,7 +131,8 @@ private module Settings {
     Setting() {
       // exclude some test configuration
       not isInTestConfiguration(this.getLocation()) and
-      this.getReceiver+() instanceof Config::Node
+      this.getReceiver+() instanceof Config::Node and
+      this.asExpr().getExpr() instanceof SetterMethodCall
     }
   }
 
