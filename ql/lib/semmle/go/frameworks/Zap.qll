@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.StringOps
 
 /**
  * Provides models of commonly used functions in the `go.uber.org/zap` package.
@@ -14,6 +15,28 @@ module Zap {
   /** Gets a suffix for a method on `zap.SugaredLogger`. */
   private string getSuffix() { result in ["", "f", "w"] }
 
+  private class ZapFunction extends Method {
+    ZapFunction() {
+      exists(string fn | fn in ["DPanic", "Debug", "Error", "Fatal", "Info", "Panic", "Warn"] |
+        this.hasQualifiedName(packagePath(), "Logger", fn)
+        or
+        this.hasQualifiedName(packagePath(), "SugaredLogger", fn + getSuffix())
+      )
+      or
+      this.hasQualifiedName(packagePath(), "Logger", ["Named", "With", "WithOptions"])
+      or
+      this.hasQualifiedName(packagePath(), "SugaredLogger", ["Named", "With"])
+    }
+  }
+
+  private class ZapFormatter extends StringOps::Formatting::Range instanceof ZapFunction {
+    ZapFormatter() { this.getName().matches("%f") }
+
+    override int getFormatStringIndex() { result = 0 }
+
+    override int getFirstFormattedParameterIndex() { result = 1 }
+  }
+
   /**
    * A call to a logger function in Zap.
    *
@@ -21,17 +44,7 @@ module Zap {
    * function is called are included.
    */
   private class ZapCall extends LoggerCall::Range, DataFlow::MethodCallNode {
-    ZapCall() {
-      exists(string fn | fn in ["DPanic", "Debug", "Error", "Fatal", "Info", "Panic", "Warn"] |
-        this.getTarget().hasQualifiedName(packagePath(), "Logger", fn)
-        or
-        this.getTarget().hasQualifiedName(packagePath(), "SugaredLogger", fn + getSuffix())
-      )
-      or
-      this.getTarget().hasQualifiedName(packagePath(), "Logger", ["Named", "With", "WithOptions"])
-      or
-      this.getTarget().hasQualifiedName(packagePath(), "SugaredLogger", ["Named", "With"])
-    }
+    ZapCall() { this = any(ZapFunction f).getACall() }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
