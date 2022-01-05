@@ -32,12 +32,12 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 	testFlag := req.URL.Query()["testFlag"][0]
 
 	{
-		fmt.Print(username)         // $ hasTaintFlow="username"
-		fmt.Printf(username)        // $ hasTaintFlow="username"
-		fmt.Println(username)       // $ hasTaintFlow="username"
-		fmt.Fprint(nil, username)   // $ hasTaintFlow="username"
-		fmt.Fprintf(nil, username)  // $ hasTaintFlow="username"
-		fmt.Fprintln(nil, username) // $ hasTaintFlow="username"
+		fmt.Print(username)       // $ hasTaintFlow="username"
+		fmt.Printf(username)      // $ hasTaintFlow="username"
+		fmt.Println(username)     // $ hasTaintFlow="username"
+		fmt.Fprint(nil, username) // Fprint functions are only loggers if they target stdout/stderr
+		fmt.Fprintf(nil, username)
+		fmt.Fprintln(nil, username)
 	}
 	// log
 	{
