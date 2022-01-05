@@ -542,7 +542,7 @@ private int getAnIntFromStringWithArity(string arg, int arity) {
 }
 
 /**
- * Module providing access  to the imported models in terms of API graph nodes.
+ * Module providing access to the imported models in terms of API graph nodes.
  */
 module ModelOutput {
   /**
