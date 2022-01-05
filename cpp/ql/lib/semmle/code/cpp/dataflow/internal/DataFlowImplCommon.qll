@@ -4,10 +4,7 @@ import Cached
 
 module DataFlowImplCommonPublic {
   /** A state value to track during data flow. */
-  abstract class FlowState extends string {
-    bindingset[this]
-    FlowState() { any() }
-  }
+  class FlowState = string;
 
   /**
    * The default state, which is used when the state is unspecified for a source
@@ -15,11 +12,6 @@ module DataFlowImplCommonPublic {
    */
   class FlowStateEmpty extends FlowState {
     FlowStateEmpty() { this = "" }
-  }
-
-  // Dummy value to avoid misoptimizations when FlowState has size 1.
-  private class FlowStateDummy extends FlowState {
-    FlowStateDummy() { this = "dummy" }
   }
 
   private newtype TFlowFeature =

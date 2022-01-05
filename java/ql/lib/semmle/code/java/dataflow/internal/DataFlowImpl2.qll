@@ -858,6 +858,7 @@ private module Stage1 {
   pragma[nomagic]
   predicate revFlow(NodeEx node, Configuration config) { revFlow(node, _, config) }
 
+  bindingset[node, state, config]
   predicate revFlow(
     NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
@@ -1110,6 +1111,8 @@ private module Stage2 {
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
 
+  bindingset[node1, state1, config]
+  bindingset[node2, state2, config]
   private predicate localStep(
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
     ApNil ap, Configuration config, LocalCc lcc
@@ -1145,6 +1148,7 @@ private module Stage2 {
   private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 
   /* Begin: Stage 2 logic. */
+  bindingset[node, state, config]
   private predicate flowCand(NodeEx node, FlowState state, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, state, _, _, apa, config)
   }
@@ -1907,6 +1911,7 @@ private module Stage3 {
   }
 
   /* Begin: Stage 3 logic. */
+  bindingset[node, state, config]
   private predicate flowCand(NodeEx node, FlowState state, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, state, _, _, apa, config)
   }
@@ -2732,6 +2737,7 @@ private module Stage4 {
   private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 
   /* Begin: Stage 4 logic. */
+  bindingset[node, state, config]
   private predicate flowCand(NodeEx node, FlowState state, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, state, _, _, apa, config)
   }
@@ -4452,13 +4458,22 @@ private module FlowExploration {
     }
   }
 
+  private predicate relevantState(FlowState state) {
+    sourceNode(_, state, _) or
+    sinkNode(_, state, _) or
+    additionalLocalStateStep(_, state, _, _, _) or
+    additionalLocalStateStep(_, _, _, state, _) or
+    additionalJumpStateStep(_, state, _, _, _) or
+    additionalJumpStateStep(_, _, _, state, _)
+  }
+
   private newtype TSummaryCtx1 =
     TSummaryCtx1None() or
     TSummaryCtx1Param(ParamNodeEx p)
 
   private newtype TSummaryCtx2 =
     TSummaryCtx2None() or
-    TSummaryCtx2Some(FlowState s)
+    TSummaryCtx2Some(FlowState s) { relevantState(s) }
 
   private newtype TSummaryCtx3 =
     TSummaryCtx3None() or
@@ -4470,7 +4485,7 @@ private module FlowExploration {
 
   private newtype TRevSummaryCtx2 =
     TRevSummaryCtx2None() or
-    TRevSummaryCtx2Some(FlowState s)
+    TRevSummaryCtx2Some(FlowState s) { relevantState(s) }
 
   private newtype TRevSummaryCtx3 =
     TRevSummaryCtx3None() or
