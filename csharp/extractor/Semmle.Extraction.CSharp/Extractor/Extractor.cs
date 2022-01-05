@@ -464,7 +464,7 @@ namespace Semmle.Extraction.CSharp
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
-                contextShared => analyser.AnalyseCompilation(contextShared),
+                analyser.AnalyseCompilation,
                 performance => analyser.LogPerformance(performance),
                 () => { });
         }

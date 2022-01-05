@@ -20,13 +20,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override int GetHashCode() => 987354;
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(NullType);
-        }
-
         public static Type Create(Context cx) => NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null);
 
         private class NullTypeFactory : CachedEntityFactory<ITypeSymbol?, NullType>

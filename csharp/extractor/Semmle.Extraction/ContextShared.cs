@@ -1,12 +1,8 @@
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
 using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction
 {
@@ -27,11 +23,11 @@ namespace Semmle.Extraction
 
         private bool writingLabel = false;
 
-        private readonly TrapWriter sharedTrapWriter;
+        private readonly TrapWriter trapWriterShared;
 
         private ContextShared(TrapWriter trapWriter)
         {
-            this.sharedTrapWriter = trapWriter;
+            trapWriterShared = trapWriter;
         }
 
         public static ContextShared Create(ILogger logger, Layout layout, TrapWriter.CompressionMode trapCompression)
@@ -41,22 +37,29 @@ namespace Semmle.Extraction
             return new ContextShared(projectLayout.CreateTrapWriter(logger, transformedPath, trapCompression, discardDuplicates: false));
         }
 
-        [ThreadStatic] private static Context? currentContext;
+        [ThreadStatic] private static Context? perThreadContext;
 
         /// <summary>
         /// Registers the context object used by the current thread.
         /// </summary>
         public static void RegisterContext(Context context)
         {
-            currentContext = context;
+            perThreadContext = context;
         }
+
+        private static LinkedList<Action> ThreadQueue => perThreadContext!.PopulateQueue;
 
         public Label GetLabelForWriter(CachedEntity entity, TextWriter trapFile)
         {
-            Label label;
-            bool isSharedTrapFile;
+            var isSharedTrapFile = trapFile == trapWriterShared.Writer;
 
-            lock (sharedTrapWriter)
+            // non-shared entity referenced in its own TRAP file
+            if (entity.Label.Valid && !isSharedTrapFile)
+                return entity.Label;
+
+            Label label;
+
+            lock (trapWriterShared)
             {
                 if (entity.LabelMap is null)
                     entity.LabelMap = new();
@@ -64,9 +67,7 @@ namespace Semmle.Extraction
                 if (entity.LabelMap.TryGetValue(trapFile, out var cached))
                     return cached;
 
-                isSharedTrapFile = trapFile == sharedTrapWriter.Writer;
-
-                var trapWriter = isSharedTrapFile ? sharedTrapWriter : currentContext!.TrapWriter;
+                var trapWriter = isSharedTrapFile ? trapWriterShared : perThreadContext!.TrapWriter;
 
                 label = new Label(trapWriter.IdCounter++);
 
@@ -76,31 +77,30 @@ namespace Semmle.Extraction
             if (isSharedTrapFile)
             {
                 // shared or non-shared entity referenced from shared TRAP file
-                currentContext!.PopulateQueue.AddFirst(() =>
-                    WithWriter(trapFile => entity.DefineLabel(trapFile, entity.Context.Extractor), true));
+                ThreadQueue.AddFirst(() => WithWriter(trapFile => entity.DefineLabel(trapFile, entity.Context.Extractor), true));
             }
             else
             {
                 // shared entity referenced from non-shared TRAP file
-                currentContext!.PopulateQueue.AddFirst(() => currentContext!.DefineLabel(entity));
+                ThreadQueue.AddFirst(() => perThreadContext!.DefineLabel(entity));
             }
             return label;
         }
 
         private void WithWriter(Action<TextWriter> a, bool writeLabel)
         {
-            lock (sharedTrapWriter)
+            lock (trapWriterShared)
             {
                 if (writingLabel)
                 {
-                    currentContext!.PopulateQueue.AddFirst(() => WithWriter(a, writeLabel));
+                    ThreadQueue.AddFirst(() => WithWriter(a, writeLabel));
                     return;
                 }
 
                 writingLabel = writeLabel;
                 try
                 {
-                    a(sharedTrapWriter.Writer);
+                    a(trapWriterShared.Writer);
                 }
                 finally
                 {
@@ -116,7 +116,7 @@ namespace Semmle.Extraction
 
         void IDisposable.Dispose()
         {
-            sharedTrapWriter.Dispose();
+            trapWriterShared.Dispose();
         }
     }
 }

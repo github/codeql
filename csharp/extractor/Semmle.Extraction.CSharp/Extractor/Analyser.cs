@@ -51,6 +51,7 @@ namespace Semmle.Extraction.CSharp
         /// Perform an analysis on a source file/syntax tree.
         /// </summary>
         /// <param name="tree">Syntax tree to analyse.</param>
+        /// <param name="tree">The context used for writing to the shared TRAP file.</param>
         public void AnalyseTree(SyntaxTree tree, ContextShared contextShared)
         {
             extractionTasks.Add(() => DoExtractTree(tree, contextShared));

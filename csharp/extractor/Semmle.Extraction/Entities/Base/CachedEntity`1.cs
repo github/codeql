@@ -34,14 +34,8 @@ namespace Semmle.Extraction
         /// </summary>
         public Dictionary<TextWriter, Label>? LabelMap;
 
-        public sealed override Label GetLabelForWriter(TextWriter trapFile)
-        {
-            // non-shared entity referenced in its own TRAP file
-            if (Label.Valid && Context.TrapWriter.Writer == trapFile)
-                return Label;
-
-            return Context.ContextShared.GetLabelForWriter(this, trapFile);
-        }
+        public sealed override Label GetLabelForWriter(TextWriter trapFile) =>
+            Context.ContextShared.GetLabelForWriter(this, trapFile);
     }
 
     /// <summary>
@@ -55,6 +49,19 @@ namespace Semmle.Extraction
         protected CachedEntity(Context context, TSymbol symbol) : base(context)
         {
             this.Symbol = symbol;
+        }
+
+        /// <summary>
+        /// For debugging.
+        /// </summary>
+        public string DebugContents
+        {
+            get
+            {
+                using var trap = new StringWriter();
+                Populate(trap);
+                return trap.ToString();
+            }
         }
 
         public override bool NeedsPopulation { get; }

@@ -207,21 +207,13 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("__arglist;type");
         }
 
-        public override int GetHashCode()
-        {
-            return 98735267;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(VarargsType);
-        }
-
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
         private class VarargsTypeFactory : CachedEntityFactory<string?, VarargsType>
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
+
+            public override bool IsShared(string? init) => true;
 
             public override VarargsType Create(Context cx, string? init) => new VarargsType(cx);
         }
@@ -243,16 +235,6 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;
-
-        public override int GetHashCode()
-        {
-            return 9873567;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is not null && obj.GetType() == typeof(VarargsParam);
-        }
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 

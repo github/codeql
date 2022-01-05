@@ -3,7 +3,6 @@ using Semmle.Extraction.Entities;
 using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -27,7 +26,8 @@ namespace Semmle.Extraction
         public TrapWriter TrapWriter { get; }
 
         /// <summary>
-        /// Access to context shared across the whole compilation.
+        /// The context used for writing to the shared TRAP file. This object is
+        /// shared by all threads.
         /// </summary>
         public ContextShared ContextShared { get; }
 
@@ -70,7 +70,22 @@ namespace Semmle.Extraction
             }
         }
 
-        public Label GetNewLabel() => new Label(GetNewId());
+#if DEBUG_LABELS
+        private void CheckEntityHasUniqueLabel(string id, CachedEntity entity)
+        {
+            if (idLabelCache.ContainsKey(id))
+            {
+                if (id != "*")
+                    this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), CreateLocation(entity.ReportingLocation), "", Severity.Warning));
+            }
+            else
+            {
+                idLabelCache[id] = entity;
+            }
+        }
+#endif
+
+        protected Label GetNewLabel() => new Label(GetNewId());
 
         internal TEntity CreateEntity<TInit, TEntity>(CachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
             where TEntity : CachedEntity
@@ -123,12 +138,18 @@ namespace Semmle.Extraction
                 if (entity.NeedsPopulation)
                     Populate(init as ISymbol, entity);
 
+#if DEBUG_LABELS
+                using var id = new EscapingTextWriter();
+                entity.WriteQuotedId(id);
+                CheckEntityHasUniqueLabel(id.ToString(), entity);
+#endif
+
                 return entity;
             }
         }
 
         /// <summary>
-        /// Creates and populates a new entity, or returns the existing one from the shared cache.
+        /// Creates and populates a new _shared_ entity, or returns the existing one from the shared cache.
         /// </summary>
         /// <param name="factory">The entity factory.</param>
         /// <param name="cacheKey">The key used for caching.</param>
@@ -173,6 +194,10 @@ namespace Semmle.Extraction
             entity.DefineFreshLabel(TrapWriter.Writer);
         }
 
+#if DEBUG_LABELS
+        private readonly Dictionary<string, CachedEntity> idLabelCache = new Dictionary<string, CachedEntity>();
+#endif
+
         private readonly IDictionary<object, CachedEntity> objectEntityCache = new Dictionary<object, CachedEntity>();
         private readonly IDictionary<ISymbol, CachedEntity> symbolEntityCache = new Dictionary<ISymbol, CachedEntity>(10000, SymbolEqualityComparer.Default);
 
@@ -207,12 +232,12 @@ namespace Semmle.Extraction
         /// </summary>
         public void PopulateAll()
         {
-            while (PopulateQueue.FirstOrDefault() is Action a)
+            while (PopulateQueue.First is LinkedListNode<Action> first)
             {
                 try
                 {
                     PopulateQueue.RemoveFirst();
-                    a();
+                    first.Value();
                 }
                 catch (InternalError ex)
                 {
