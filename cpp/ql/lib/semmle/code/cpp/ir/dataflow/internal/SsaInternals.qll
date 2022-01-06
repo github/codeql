@@ -64,7 +64,7 @@ private class DefOrUse extends TDefOrUse {
   /** Gets the block of this definition or use. */
   abstract IRBlock getBlock();
 
-  /** Holds if this definition or use has rank `rank` in block `block`. */
+  /** Holds if this definition or use has index `index` in block `block`. */
   final predicate hasIndexInBlock(IRBlock block, int index) {
     block.getInstruction(index) = toInstruction(this)
   }
