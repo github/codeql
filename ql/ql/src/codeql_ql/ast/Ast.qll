@@ -2460,6 +2460,9 @@ module YAML {
         name = entry.getListItem().getValue().getValue().trim() and
         version = "\"*\""
       )
+      or
+      name = getProperty("libraryPathDependencies") and
+      version = "\"*\""
     }
 
     /** Gets the database scheme of this qlpack */
