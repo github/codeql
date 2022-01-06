@@ -27,7 +27,7 @@ abstract class ArgumentNode extends OperandNode {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -42,7 +42,12 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    op = call.getArgumentOperand(pos.(Positional).getIndex())
+    or
+    op = call.getArgumentOperand(-1) and
+    pos instanceof ThisPosition
+  }
 
   override string toString() {
     exists(Expr unconverted |
@@ -71,9 +76,14 @@ private class SideEffectArgumentNode extends ArgumentNode {
 
   SideEffectArgumentNode() { op = read.getSideEffectOperand() }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
-    pos = getArgumentPosOfSideEffect(read.getIndex())
+    (
+      pos.(PositionalIndirection).getIndex() = read.getIndex()
+      or
+      pos instanceof ThisIndirectionPosition and
+      read.getIndex() = -1
+    )
   }
 
   override string toString() {

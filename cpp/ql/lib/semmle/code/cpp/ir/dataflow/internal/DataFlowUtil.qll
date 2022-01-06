@@ -11,6 +11,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
+private import DataFlowDispatch
 private import SsaInternals as Ssa
 
 cached
@@ -490,18 +491,52 @@ class ExprNode extends InstructionNode {
   override string toString() { result = this.asConvertedExpr().toString() }
 }
 
-/**
- * INTERNAL: do not use. Translates a parameter/argument index into a negative
- * number that denotes the index of its side effect (pointer indirection).
- */
-bindingset[index]
-int getArgumentPosOfSideEffect(int index) {
-  // -1 -> -2
-  //  0 -> -3
-  //  1 -> -4
-  // ...
-  result = -3 - index
+/** A parameter position represented by an integer. */
+class ParameterPosition = Position;
+
+/** An argument position represented by an integer. */
+class ArgumentPosition = Position;
+
+class Position extends TPosition {
+  abstract string toString();
 }
+
+class ThisPosition extends TThisPosition {
+  string toString() { result = "this" }
+}
+
+class ThisIndirectionPosition extends TThisIndirectionPosition {
+  string toString() { result = "this" }
+}
+
+class Positional extends TPositional {
+  int index;
+
+  Positional() { this = TPositional(index) }
+
+  string toString() { result = index.toString() }
+
+  int getIndex() {
+    result = index
+  }
+}
+
+class PositionalIndirection extends TPositionalIndirection {
+  int index;
+
+  PositionalIndirection() { this = TPositionalIndirection(index) }
+
+  string toString() { result = index.toString() }
+  int getIndex() {
+    result = index
+  }
+}
+
+newtype TPosition =
+  TThisPosition() or
+  TThisIndirectionPosition() or
+  TPositional(int index) { exists(any(Call c).getArgument(index)) } or
+  TPositionalIndirection(int index) { exists(any(Call c).getArgument(index)) }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
@@ -525,7 +560,7 @@ class ParameterNode extends InstructionNode {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int pos) { none() } // overridden by subclasses
+  predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
@@ -534,8 +569,8 @@ private class ExplicitParameterNode extends ParameterNode {
 
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(Function f, int pos) {
-    f.getParameter(pos) = instr.getParameter()
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(Positional).getIndex()) = instr.getParameter()
   }
 
   /** Gets the `Parameter` associated with this node. */
@@ -550,8 +585,8 @@ class ThisParameterNode extends ParameterNode {
 
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(Function f, int pos) {
-    pos = -1 and instr.getEnclosingFunction() = f
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    pos instanceof ThisPosition and instr.getEnclosingFunction() = f
   }
 
   override string toString() { result = "this" }
@@ -561,13 +596,17 @@ class ThisParameterNode extends ParameterNode {
 class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
-  override predicate isParameterOf(Function f, int pos) {
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
     exists(int index |
       instr.getEnclosingFunction() = f and
       instr.hasIndex(index)
     |
-      pos = getArgumentPosOfSideEffect(index)
+      pos.(PositionalIndirection).getIndex() = index
     )
+    or
+    instr.getEnclosingFunction() = f and
+    instr.hasIndex(-1) and
+    pos instanceof ThisIndirectionPosition
   }
 
   override string toString() { result = "*" + instr.getIRVariable().toString() }
