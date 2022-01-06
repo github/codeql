@@ -2993,19 +2993,12 @@ private module StdlibPrivate {
     }
   }
 
-  /**
-   * A call to the `shutil.copyfileobj` function.
-   *
-   * See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
-   */
+  // TODO: once we have flow summaries, model `shutil.copyfileobj` which copies the content between its' file-like arguments.
+  // See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
   private class ShutilCopyfileobjCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     ShutilCopyfileobjCall() { this = shutil().getMember("copyfileobj").getACall() }
 
-    override DataFlow::Node getAPathArgument() {
-      result in [
-          this.getArg(0), this.getArgByName("fsrc"), this.getArg(1), this.getArgByName("fdst")
-        ]
-    }
+    override DataFlow::Node getAPathArgument() { none() }
   }
 
   /**
