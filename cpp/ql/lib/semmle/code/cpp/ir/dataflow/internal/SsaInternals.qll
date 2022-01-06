@@ -51,16 +51,6 @@ private newtype TDefOrUse =
   TExplicitUse(Operand op) { isExplicitUse(op) } or
   TReturnParamIndirection(Operand op) { returnParameterIndirection(op, _) }
 
-pragma[nomagic]
-private int getRank(DefOrUse defOrUse, IRBlock block) {
-  defOrUse =
-    rank[result](int i, DefOrUse cand |
-      block.getInstruction(i) = toInstruction(cand)
-    |
-      cand order by i
-    )
-}
-
 private class DefOrUse extends TDefOrUse {
   /** Gets the instruction associated with this definition, if any. */
   Instruction asDef() { none() }
@@ -75,8 +65,9 @@ private class DefOrUse extends TDefOrUse {
   abstract IRBlock getBlock();
 
   /** Holds if this definition or use has rank `rank` in block `block`. */
-  cached
-  final predicate hasRankInBlock(IRBlock block, int rnk) { rnk = getRank(this, block) }
+  final predicate hasIndexInBlock(IRBlock block, int index) {
+    block.getInstruction(index) = toInstruction(this)
+  }
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
