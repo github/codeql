@@ -374,7 +374,7 @@ func main() {
 			log.Fatalf("Unable to create path transformer file: %s.", err.Error())
 		}
 		defer os.Remove(pt.Name())
-		_, err = pt.WriteString("#" + srcdir + "\n" + newdir + "//\n")
+		_, err = pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
 		if err != nil {
 			log.Fatalf("Unable to write path transformer file: %s.", err.Error())
 		}
