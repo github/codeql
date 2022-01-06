@@ -240,6 +240,10 @@ tempfile.mkdtemp(suffix="suffix", prefix="prefix", dir="dir") # $ getAPathArgume
 tempfile.TemporaryDirectory("suffix", "prefix", "dir") # $ getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
 tempfile.TemporaryDirectory(suffix="suffix", prefix="prefix", dir="dir") # $ getAPathArgument="suffix" getAPathArgument="prefix" getAPathArgument="dir"
 
+# ------------------------------------------------------------------------------
+# shutil
+# ------------------------------------------------------------------------------
+
 shutil.rmtree("path") # $ getAPathArgument="path"
 shutil.rmtree(path="path") # $ getAPathArgument="path"
 
