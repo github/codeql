@@ -3742,7 +3742,7 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
  */
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(b) }
+  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(a) and reach(b) }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
