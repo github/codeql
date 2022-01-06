@@ -278,10 +278,10 @@ class AccessPath extends string {
   }
 
   /** Gets the `n`th token on the access path. */
-  AccessPathToken getToken(int n) { result = getRawToken(n) }
+  AccessPathToken getToken(int n) { result = this.getRawToken(n) }
 
   /** Gets the number of tokens on the path. */
-  int getNumToken() { result = count(int n | exists(getRawToken(n))) }
+  int getNumToken() { result = count(int n | exists(this.getRawToken(n))) }
 }
 
 /**
@@ -437,25 +437,27 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
 class AccessPathToken extends string {
   AccessPathToken() { this = any(AccessPath path).getRawToken(_) }
 
-  private string getPart(int part) { result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part) }
+  private string getPart(int part) {
+    result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
+  }
 
   /** Gets the name of the token, such as `Member` from `Member[x]` */
-  string getName() { result = getPart(1) }
+  string getName() { result = this.getPart(1) }
 
   /**
    * Gets the argument list, such as `1,2` from `Member[1,2]`,
    * or has no result if there are no arguments.
    */
-  string getArgumentList() { result = getPart(2) }
+  string getArgumentList() { result = this.getPart(2) }
 
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = getArgumentList().splitAt(",", n) }
+  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n) }
 
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getAnArgument() { result = getArgument(_) }
+  string getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
-  int getNumArgument() { result = count(int n | exists(getArgument(n))) }
+  int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }
 }
 
 /**
