@@ -51,16 +51,6 @@ private newtype TDefOrUse =
   TExplicitUse(Operand op) { isExplicitUse(op) } or
   TReturnParamIndirection(Operand op) { returnParameterIndirection(op, _) }
 
-pragma[nomagic]
-private int getRank(DefOrUse defOrUse, IRBlock block) {
-  defOrUse =
-    rank[result](int i, DefOrUse cand |
-      block.getInstruction(i) = toInstruction(cand)
-    |
-      cand order by i
-    )
-}
-
 private class DefOrUse extends TDefOrUse {
   /** Gets the instruction associated with this definition, if any. */
   Instruction asDef() { none() }
@@ -74,9 +64,10 @@ private class DefOrUse extends TDefOrUse {
   /** Gets the block of this definition or use. */
   abstract IRBlock getBlock();
 
-  /** Holds if this definition or use has rank `rank` in block `block`. */
-  cached
-  final predicate hasRankInBlock(IRBlock block, int rnk) { rnk = getRank(this, block) }
+  /** Holds if this definition or use has index `index` in block `block`. */
+  final predicate hasIndexInBlock(IRBlock block, int index) {
+    block.getInstruction(index) = toInstruction(this)
+  }
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
@@ -313,8 +304,8 @@ cached
 private module Cached {
   private predicate defUseFlow(Node nodeFrom, Node nodeTo) {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, DefOrUse defOrUse, Use use |
-      defOrUse.hasRankInBlock(bb1, i1) and
-      use.hasRankInBlock(bb2, i2) and
+      defOrUse.hasIndexInBlock(bb1, i1) and
+      use.hasIndexInBlock(bb2, i2) and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
       nodeFrom.asInstruction() = toInstruction(defOrUse) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
@@ -326,9 +317,9 @@ private module Cached {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use |
       nodeFrom.isTerminal() and
       def.getInstruction() = nodeFrom.getStoreInstruction() and
-      def.hasRankInBlock(bb1, i1) and
+      def.hasIndexInBlock(bb1, i1) and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
-      use.hasRankInBlock(bb2, i2) and
+      use.hasIndexInBlock(bb2, i2) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
     or
@@ -359,8 +350,8 @@ private module Cached {
 
   private predicate fromReadNode(ReadNode nodeFrom, Node nodeTo) {
     exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Use use1, Use use2 |
-      use1.hasRankInBlock(bb1, i1) and
-      use2.hasRankInBlock(bb2, i2) and
+      use1.hasIndexInBlock(bb1, i1) and
+      use2.hasIndexInBlock(bb2, i2) and
       use1.getOperand().getDef() = nodeFrom.getInstruction() and
       adjacentDefRead(_, bb1, i1, bb2, i2) and
       flowOutOfAddressStep(use2.getOperand(), nodeTo)
@@ -371,7 +362,7 @@ private module Cached {
     exists(PhiNode phi, Use use, IRBlock block, int rnk |
       phi = nodeFrom.getPhiNode() and
       adjacentDefRead(phi, _, _, block, rnk) and
-      use.hasRankInBlock(block, rnk) and
+      use.hasIndexInBlock(block, rnk) and
       flowOutOfAddressStep(use.getOperand(), nodeTo)
     )
   }
@@ -379,7 +370,7 @@ private module Cached {
   private predicate toPhiNode(Node nodeFrom, SsaPhiNode nodeTo) {
     // Flow to phi nodes
     exists(Def def, IRBlock block, int rnk |
-      def.hasRankInBlock(block, rnk) and
+      def.hasIndexInBlock(block, rnk) and
       nodeTo.hasInputAtRankInBlock(block, rnk)
     |
       exists(StoreNodeInstr storeNode |
@@ -512,8 +503,8 @@ private module Cached {
     |
       store = def.getInstruction() and
       store.getSourceValueOperand() = operand and
-      def.hasRankInBlock(block1, rnk1) and
-      use.hasRankInBlock(block2, rnk2) and
+      def.hasIndexInBlock(block1, rnk1) and
+      use.hasIndexInBlock(block2, rnk2) and
       adjacentDefRead(_, block1, rnk1, block2, rnk2)
     |
       // The shared SSA library has determined that `use` is the next use of the operand
@@ -543,12 +534,12 @@ private module Cached {
     not operand = getSourceAddressOperand(_) and
     exists(Use use1, Use use2, IRBlock block1, int rnk1, IRBlock block2, int rnk2 |
       use1.getOperand() = operand and
-      use1.hasRankInBlock(block1, rnk1) and
+      use1.hasIndexInBlock(block1, rnk1) and
       // Don't flow to the next use if this use is part of a store operation that totally
       // overrides a variable.
       not explicitWrite(true, _, use1.getOperand().getDef()) and
       adjacentDefRead(_, block1, rnk1, block2, rnk2) and
-      use2.hasRankInBlock(block2, rnk2) and
+      use2.hasIndexInBlock(block2, rnk2) and
       flowOutOfAddressStep(use2.getOperand(), nodeTo)
     )
     or
@@ -620,7 +611,7 @@ import Cached
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
   DataFlowImplCommon::forceCachingInSameStage() and
   exists(Def def |
-    def.hasRankInBlock(bb, i) and
+    def.hasIndexInBlock(bb, i) and
     v = def.getSourceVariable() and
     (if def.isCertain() then certain = true else certain = false)
   )
@@ -632,7 +623,7 @@ predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
  */
 predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
   exists(Use use |
-    use.hasRankInBlock(bb, i) and
+    use.hasIndexInBlock(bb, i) and
     v = use.getSourceVariable() and
     certain = true
   )
