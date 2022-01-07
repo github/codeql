@@ -43,10 +43,7 @@ private class PrimaryArgumentNode extends ArgumentNode {
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    op = call.getArgumentOperand(pos.(Positional).getIndex())
-    or
-    op = call.getArgumentOperand(-1) and
-    pos instanceof ThisPosition
+    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
   }
 
   override string toString() {
@@ -79,10 +76,7 @@ private class SideEffectArgumentNode extends ArgumentNode {
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
     (
-      pos.(PositionalIndirection).getIndex() = read.getIndex()
-      or
-      pos instanceof ThisIndirectionPosition and
-      read.getIndex() = -1
+      pos.(IndirectionPosition).getIndex() = read.getIndex()
     )
   }
 

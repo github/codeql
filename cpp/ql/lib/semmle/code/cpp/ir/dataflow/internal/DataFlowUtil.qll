@@ -501,42 +501,41 @@ class Position extends TPosition {
   abstract string toString();
 }
 
-class ThisPosition extends TThisPosition {
-  string toString() { result = "this" }
-}
-
-class ThisIndirectionPosition extends TThisIndirectionPosition {
-  string toString() { result = "this" }
-}
-
-class Positional extends TPositional {
+class DirectPosition extends TDirectPosition {
   int index;
 
-  Positional() { this = TPositional(index) }
+  DirectPosition() { this = TDirectPosition(index) }
 
-  string toString() { result = index.toString() }
-
-  int getIndex() {
-    result = index
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
   }
+
+  int getIndex() { result = index }
 }
 
-class PositionalIndirection extends TPositionalIndirection {
+class IndirectionPosition extends TIndirectionPosition {
   int index;
 
-  PositionalIndirection() { this = TPositionalIndirection(index) }
+  IndirectionPosition() { this = TIndirectionPosition(index) }
 
-  string toString() { result = index.toString() }
-  int getIndex() {
-    result = index
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
   }
+
+  int getIndex() { result = index }
 }
 
 newtype TPosition =
-  TThisPosition() or
-  TThisIndirectionPosition() or
-  TPositional(int index) { exists(any(Call c).getArgument(index)) } or
-  TPositionalIndirection(int index) { exists(any(Call c).getArgument(index)) }
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index))} or
+  TIndirectionPosition(int index) { exists(any(CallInstruction c).getArgument(index)) }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
@@ -570,7 +569,7 @@ private class ExplicitParameterNode extends ParameterNode {
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(Function f, ParameterPosition pos) {
-    f.getParameter(pos.(Positional).getIndex()) = instr.getParameter()
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   /** Gets the `Parameter` associated with this node. */
@@ -586,7 +585,7 @@ class ThisParameterNode extends ParameterNode {
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(Function f, ParameterPosition pos) {
-    pos instanceof ThisPosition and instr.getEnclosingFunction() = f
+    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
   }
 
   override string toString() { result = "this" }
@@ -601,12 +600,8 @@ class ParameterIndirectionNode extends ParameterNode {
       instr.getEnclosingFunction() = f and
       instr.hasIndex(index)
     |
-      pos.(PositionalIndirection).getIndex() = index
+      pos.(IndirectionPosition).getIndex() = index
     )
-    or
-    instr.getEnclosingFunction() = f and
-    instr.hasIndex(-1) and
-    pos instanceof ThisIndirectionPosition
   }
 
   override string toString() { result = "*" + instr.getIRVariable().toString() }
