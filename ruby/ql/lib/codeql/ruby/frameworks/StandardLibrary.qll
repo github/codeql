@@ -624,8 +624,9 @@ module Array {
     }
   }
 
-  private class AppendSummary extends SummarizedCallable {
-    AppendSummary() { this = "<<" }
+  /** Flow summary for `Array#<<`. For `Array#append`, see `PushSummary`. */
+  private class AppendOperatorSummary extends SummarizedCallable {
+    AppendOperatorSummary() { this = "<<" }
 
     override LShiftExpr getACall() { any() }
 
@@ -980,7 +981,8 @@ module Array {
   }
 
   private class EachSummary extends SimpleSummarizedCallable {
-    EachSummary() { this = "each" }
+    // `each` and `reverse_each` are the same in terms of flow inputs/outputs.
+    EachSummary() { this = ["each", "reverse_each"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1175,39 +1177,34 @@ module Array {
  * Provides flow summaries for the `Enumerable` class.
  *
  * The summaries are ordered (and implemented) based on
- * https://ruby-doc.org/core-2.7.0/Enumerable.html.
+ * https://ruby-doc.org/core-3.1.0/Enumerable.html
  */
 module Enumerable {
-  private class AllSummary extends SimpleSummarizedCallable {
-    AllSummary() { this = "all?" }
+  private class ChunkSummary extends SimpleSummarizedCallable {
+    ChunkSummary() { this = "chunk" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
       output = "Parameter[0] of BlockArgument" and
       preservesValue = true
-      or
-      input = "ReturnValue of BlockArgument" and
-      output = "ReturnValue" and
-      preservesValue = false
     }
   }
 
-  private class AnySummary extends SimpleSummarizedCallable {
-    AnySummary() { this = "any?" }
+  private class ChunkWhileSummary extends SimpleSummarizedCallable {
+    ChunkWhileSummary() { this = "chunk_while" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = "Parameter[0] of BlockArgument" and
+      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument"] and
       preservesValue = true
-      or
-      input = "ReturnValue of BlockArgument" and
-      output = "ReturnValue" and
-      preservesValue = false
     }
   }
 
   private class CollectSummary extends SimpleSummarizedCallable {
-    CollectSummary() { this = ["collect", "collect!"] }
+    // `map` is an alias of `collect`.
+    // TODO: handle `map!` and `collect!` in the Array module. They were
+    // previously handled here, but they are not Enumerable methods.
+    CollectSummary() { this = ["collect", "map"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
@@ -1221,7 +1218,8 @@ module Enumerable {
   }
 
   private class CollectConcatSummary extends SimpleSummarizedCallable {
-    CollectConcatSummary() { this = "collect_concat" }
+    // `flat_map` is an alias of `collect_concat`.
+    CollectConcatSummary() { this = ["collect_concat", "flat_map"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
@@ -1255,7 +1253,8 @@ module Enumerable {
   }
 
   private class DetectSummary extends SimpleSummarizedCallable {
-    DetectSummary() { this = "detect" }
+    // `find` is an alias of `detect`.
+    DetectSummary() { this = ["detect", "find"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1408,36 +1407,13 @@ module Enumerable {
     }
   }
 
-  private class FilterSummary extends SimpleSummarizedCallable {
-    FilterSummary() { this = ["filter", "filter_map"] }
+  private class FilterMapSummary extends SimpleSummarizedCallable {
+    FilterMapSummary() { this = "filter_map" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
       output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
       preservesValue = true
-    }
-  }
-
-  private class FindSummary extends SimpleSummarizedCallable {
-    FindSummary() { this = "find" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      (
-        input = "ArrayElement of Receiver" and
-        output = ["Parameter[0] of BlockArgument", "ReturnValue"]
-        or
-        input = "ReturnValue of Argument[0]" and
-        output = "ReturnValue"
-      ) and
-      preservesValue = true
-    }
-  }
-
-  private class FindAllSummary extends SimpleSummarizedCallable {
-    FindAllSummary() { this = "find_all" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      any(FilterSummary f).propagatesFlowExt(input, output, preservesValue)
     }
   }
 
@@ -1513,21 +1489,6 @@ module Enumerable {
     }
   }
 
-  private class FlatMapSummary extends SimpleSummarizedCallable {
-    FlatMapSummary() { this = "flat_map" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      (
-        input = "ArrayElement of Receiver" and
-        output = "Parameter[0] of BlockArgument"
-        or
-        input = "ArrayElement of ReturnValue of BlockArgument" and
-        output = "ArrayElement[?] of ReturnValue"
-      ) and
-      preservesValue = true
-    }
-  }
-
   abstract private class GrepSummary extends SummarizedCallable {
     MethodCall mc;
 
@@ -1561,5 +1522,451 @@ module Enumerable {
       preservesValue = true
     }
   }
-  // TODO: Implement `group_by` when we have flow through hashes
+
+  private class GroupBySummary extends SimpleSummarizedCallable {
+    GroupBySummary() { this = "group_by" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // TODO: Add flow to return value once we have flow through hashes
+      input = "ArrayElement of Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+    }
+  }
+
+  abstract private class InjectSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    // `reduce` is an alias for `inject`.
+    bindingset[this]
+    InjectSummary() { mc.getMethodName() = ["inject", "reduce"] }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class InjectNoArgSummary extends InjectSummary {
+    InjectNoArgSummary() { this = "inject(no_arg)" and mc.getNumberOfArguments() = 0 }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // The no-argument variant of inject passes element 0 to the first block
+      // parameter (first iteration only). All other elements are passed to the
+      // second block parameter.
+      (
+        input = "ArrayElement[0] of Receiver" and
+        output = "Parameter[0] of BlockArgument"
+        or
+        exists(ArrayIndex i | i > 0 | input = "ArrayElement[" + i + "] of Receiver") and
+        output = "Parameter[1] of BlockArgument"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  private class InjectArgSummary extends InjectSummary {
+    InjectArgSummary() { this = "inject(arg)" and mc.getNumberOfArguments() > 0 }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        // The first argument of the call is passed to the first block parameter.
+        input = "Argument[0]" and
+        output = "Parameter[0] of BlockArgument"
+        or
+        // Each element in the receiver is passed to the second block parameter.
+        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver") and
+        output = "Parameter[1] of BlockArgument"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  abstract private class MinOrMaxBySummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    MinOrMaxBySummary() { mc.getMethodName() = ["min_by", "max_by"] }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class MinOrMaxByNoArgSummary extends MinOrMaxBySummary {
+    MinOrMaxByNoArgSummary() {
+      this = "min_or_max_by_no_arg" and
+      mc.getNumberOfArguments() = 0
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class MinOrMaxByArgSummary extends MinOrMaxBySummary {
+    MinOrMaxByArgSummary() {
+      this = "min_or_max_by_arg" and
+      mc.getNumberOfArguments() > 0
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class MinOrMaxSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    MinOrMaxSummary() { mc.getMethodName() = ["min", "max"] }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class MinOrMaxNoArgNoBlockSummary extends MinOrMaxSummary {
+    MinOrMaxNoArgNoBlockSummary() {
+      this = "min_or_max_no_arg_no_block" and
+      mc.getNumberOfArguments() = 0 and
+      not exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class MinOrMaxArgNoBlockSummary extends MinOrMaxSummary {
+    MinOrMaxArgNoBlockSummary() {
+      this = "min_or_max_arg_no_block" and
+      mc.getNumberOfArguments() > 0 and
+      not exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class MinOrMaxNoArgBlockSummary extends MinOrMaxSummary {
+    MinOrMaxNoArgBlockSummary() {
+      this = "min_or_max_no_arg_block" and
+      mc.getNumberOfArguments() = 0 and
+      exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument", "ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class MinOrMaxArgBlockSummary extends MinOrMaxSummary {
+    MinOrMaxArgBlockSummary() {
+      this = "min_or_max_arg_block" and
+      mc.getNumberOfArguments() > 0 and
+      exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class MinmaxSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    MinmaxSummary() { mc.getMethodName() = "minmax" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class MinmaxNoArgNoBlockSummary extends MinmaxSummary {
+    MinmaxNoArgNoBlockSummary() {
+      this = "minmax_no_block" and
+      not exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class MinmaxBlockSummary extends MinmaxSummary {
+    MinmaxBlockSummary() {
+      this = "minmax_block" and
+      exists(mc.getBlock())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+  }
+
+  private class MinmaxBySummary extends SimpleSummarizedCallable {
+    MinmaxBySummary() { this = "minmax_by" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class PartitionSummary extends SimpleSummarizedCallable {
+    PartitionSummary() { this = "partition" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        ["Parameter[0] of BlockArgument", "ArrayElement[?] of ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class QuerySummary extends SimpleSummarizedCallable {
+    QuerySummary() { this = ["all?", "any?", "none?", "one?"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+    }
+  }
+
+  private class RejectSummary extends SimpleSummarizedCallable {
+    RejectSummary() { this = "reject" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class SelectSummary extends SimpleSummarizedCallable {
+    // `find_all` and `filter` are aliases of `select`.
+    SelectSummary() { this = ["select", "find_all", "filter"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class SliceBeforeAfterSummary extends SimpleSummarizedCallable {
+    SliceBeforeAfterSummary() { this = ["slice_before", "slice_after"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+    }
+  }
+
+  private class SliceWhenSummary extends SimpleSummarizedCallable {
+    SliceWhenSummary() { this = "slice_when" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument"] and
+      preservesValue = true
+    }
+  }
+
+  private class SortSummary extends SimpleSummarizedCallable {
+    SortSummary() { this = "sort" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+  }
+
+  private class SortBySummary extends SimpleSummarizedCallable {
+    SortBySummary() { this = "sort_by" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class SumSummary extends SimpleSummarizedCallable {
+    SumSummary() { this = "sum" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+    }
+  }
+
+  abstract private class TakeSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    TakeSummary() { mc.getMethodName() = "take" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class TakeKnownSummary extends TakeSummary {
+    private int i;
+
+    TakeKnownSummary() {
+      this = "take(" + i + ")" and
+      i = mc.getArgument(0).getValueText().toInt()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex j | j < i |
+          input = "ArrayElement[" + j + "] of Receiver" and
+          output = "ArrayElement[" + j + "] of ReturnValue"
+        )
+      ) and
+      preservesValue = true
+    }
+  }
+
+  private class TakeUnknownSummary extends TakeSummary {
+    TakeUnknownSummary() {
+      this = "take(index)" and
+      not exists(mc.getArgument(0).getValueText().toInt())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // When the index is unknown, we can't know the size of the result, but we
+      // know that indices are preserved, so, as an approximation, we just treat
+      // it like the array is copied.
+      input = "Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class TakeWhileSummary extends SimpleSummarizedCallable {
+    TakeWhileSummary() { this = "take_while" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["Parameter[0] of BlockArgument"] and
+      preservesValue = true
+      or
+      // We can't know the size of the return value, but we know that indices
+      // are preserved, so, as an approximation, we just treat it like the array
+      // is copied.
+      input = "Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class ToASummary extends SimpleSummarizedCallable {
+    // `entries` is an alias of `to_a`.
+    ToASummary() { this = ["to_a", "entries"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class UniqSummary extends SimpleSummarizedCallable {
+    UniqSummary() { this = "uniq" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["ArrayElement[?] of ReturnValue", "Parameter[0] of BlockArgument"] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class ZipSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    ZipSummary() { mc.getMethodName() = "zip" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class ZipBlockSummary extends ZipSummary {
+    ZipBlockSummary() { this = "zip(block)" and exists(mc.getBlock()) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver" and
+        output = "ArrayElement[0] of Parameter[0] of BlockArgument"
+        or
+        exists(int j | j in [0 .. 5] |
+          input = "ArrayElement of Argument[" + j + "]" and
+          output = "ArrayElement[" + (j + 1) + "] of Parameter[0] of BlockArgument"
+        )
+      ) and
+      preservesValue = true
+    }
+  }
+
+  private class ZipNoBlockSummary extends ZipSummary {
+    ZipNoBlockSummary() { this = "zip(no_block)" and not exists(mc.getBlock()) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        // receiver[i] -> return_value[i][0]
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          output = "ArrayElement[0] of ArrayElement[" + i + "] of ReturnValue"
+        )
+        or
+        // receiver[?] -> return_value[0][?]
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[0] of ArrayElement[?] of ReturnValue"
+        or
+        // arg_j[i] -> return_value[i][j+1]
+        exists(ArrayIndex i, int j | j in [0 .. 5] |
+          input = "ArrayElement[" + i + "] of Argument[" + j + "]" and
+          output = "ArrayElement[" + (j + 1) + "] of ArrayElement[" + i + "] of ReturnValue"
+        )
+        or
+        // arg_j[?] -> return_value[?][j+1]
+        exists(int j | j in [0 .. 5] |
+          input = "ArrayElement[?] of Argument[" + j + "]" and
+          output = "ArrayElement[" + (j + 1) + "] of ArrayElement[?] of ReturnValue"
+        )
+      ) and
+      preservesValue = true
+    }
+  }
 }
