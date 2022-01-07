@@ -3729,7 +3729,7 @@ private predicate directReach(PathNode n) {
   n instanceof PathNodeSink or directReach(n.getASuccessor())
 }
 
-/** Holds if `n` can reach a sink or is used in a subpath. */
+/** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
 private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
 
 /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
@@ -3749,7 +3749,13 @@ module PathGraph {
     reach(n) and key = "semmle.label" and val = n.toString()
   }
 
-  query predicate subpaths = Subpaths::subpaths/4;
+  query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+    Subpaths::subpaths(arg, par, ret, out) and
+    reach(arg) and
+    reach(par) and
+    reach(ret) and
+    reach(out)
+  }
 }
 
 /**
@@ -4183,10 +4189,10 @@ private module Subpaths {
   }
 
   /**
-   * Holds if `n` can reach a return node in a summarized subpath.
+   * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
    */
   predicate retReach(PathNode n) {
-    subpaths(_, _, n, _)
+    exists(PathNodeMid out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
     or
     exists(PathNode mid |
       retReach(mid) and
