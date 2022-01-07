@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Threading
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Threading.Tasks` namespace. */
@@ -89,6 +90,23 @@ class SystemThreadingTasksTaskTClass extends SystemThreadingTasksUnboundGenericC
 
   /** Gets the `ConfigureAwait` method. */
   Method getConfigureAwaitMethod() { result = this.getAMethod("ConfigureAwait") }
+}
+
+abstract private class SyntheticTaskField extends SyntheticField {
+  bindingset[this]
+  SyntheticTaskField() { any() }
+
+  override Type getType() { result instanceof SystemThreadingTasksTaskTClass }
+}
+
+private class SyntheticTaskAwaiterUnderlyingTaskField extends SyntheticTaskField {
+  SyntheticTaskAwaiterUnderlyingTaskField() { this = "m_task_task_awaiter" }
+}
+
+private class SyntheticConfiguredTaskAwaitableUnderlyingTaskField extends SyntheticTaskField {
+  SyntheticConfiguredTaskAwaitableUnderlyingTaskField() {
+    this = "m_task_configured_task_awaitable"
+  }
 }
 
 /** Data flow for `System.Threading.Tasks.Task<>`. */
