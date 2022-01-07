@@ -7,6 +7,7 @@
  *   be counted as user written code.
  * @kind metric
  * @tags summary
+ *       lines-of-code
  * @id py/summary/lines-of-user-code
  */
 

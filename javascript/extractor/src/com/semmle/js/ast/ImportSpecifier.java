@@ -10,15 +10,25 @@ package com.semmle.js.ast;
  */
 public class ImportSpecifier extends Expression {
   private final Identifier imported, local;
+  private final boolean isTypeOnly;
 
   public ImportSpecifier(SourceLocation loc, Identifier imported, Identifier local) {
-    this("ImportSpecifier", loc, imported, local);
+    this(loc, imported, local, false);
+  }
+
+  public ImportSpecifier(SourceLocation loc, Identifier imported, Identifier local, boolean isTypeOnly) {
+    this("ImportSpecifier", loc, imported, local, isTypeOnly);
   }
 
   public ImportSpecifier(String type, SourceLocation loc, Identifier imported, Identifier local) {
+    this(type, loc, imported, local, false);
+  }
+
+  private ImportSpecifier(String type, SourceLocation loc, Identifier imported, Identifier local, boolean isTypeOnly) {
     super(type, loc);
     this.imported = imported;
     this.local = local == imported ? new NodeCopier().copy(local) : local;
+    this.isTypeOnly = isTypeOnly;
   }
 
   public Identifier getImported() {
@@ -32,5 +42,9 @@ public class ImportSpecifier extends Expression {
   @Override
   public <C, R> R accept(Visitor<C, R> v, C c) {
     return v.visit(this, c);
+  }
+
+  public boolean hasTypeKeyword() {
+    return isTypeOnly;
   }
 }

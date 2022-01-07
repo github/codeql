@@ -3,6 +3,7 @@
  * @description Credentials are hard-coded in a connection string in the source code of the application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id cs/hardcoded-connection-string-credentials
  * @tags security
@@ -13,13 +14,13 @@
 
 import csharp
 import semmle.code.csharp.frameworks.system.Data
-import semmle.code.csharp.security.dataflow.HardcodedCredentials
+import semmle.code.csharp.security.dataflow.HardcodedCredentialsQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
  * A string literal containing a username or password field.
  */
-class ConnectionStringPasswordOrUsername extends HardcodedCredentials::NonEmptyStringLiteral {
+class ConnectionStringPasswordOrUsername extends NonEmptyStringLiteral {
   ConnectionStringPasswordOrUsername() {
     this.getExpr().getValue().regexpMatch("(?i).*(Password|PWD|User Id|UID)=.+")
   }
@@ -40,9 +41,7 @@ class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configur
       any(SystemDataConnectionClass connection).getConnectionStringProperty().getAnAssignedValue()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof HardcodedCredentials::StringFormatSanitizer
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof StringFormatSanitizer }
 }
 
 from

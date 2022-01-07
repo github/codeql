@@ -17,6 +17,7 @@ import java
  * since package-protected fields are not inherited by classes in different
  * packages, but it's enough for the purposes of this check.
  */
+pragma[nomagic]
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or
@@ -127,7 +128,9 @@ predicate potentiallyStatic(InnerClass c) {
     forall(InnerClass superOfNested | superOfNested = nested.getASourceSupertype+() |
       potentiallyStatic(superOfNested)
     )
-  )
+  ) and
+  // JUnit Nested test classes are required to be non-static.
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
 }
 
 /**

@@ -1,0 +1,8 @@
+| cstd_types.cpp:31:8:31:9 | i8 | CTypedefType, FixedWidthIntegralType, Int8_t |
+| cstd_types.cpp:32:9:32:11 | i16 | CTypedefType, FixedWidthIntegralType, Int16_t |
+| cstd_types.cpp:33:9:33:11 | i32 | CTypedefType, FixedWidthIntegralType, Int32_t |
+| cstd_types.cpp:34:9:34:11 | i64 | CTypedefType, FixedWidthIntegralType, Int64_t |
+| cstd_types.cpp:35:9:35:11 | ui8 | CTypedefType, FixedWidthIntegralType, UInt8_t |
+| cstd_types.cpp:36:10:36:13 | ui16 | CTypedefType, FixedWidthIntegralType, UInt16_t |
+| cstd_types.cpp:37:10:37:13 | ui32 | CTypedefType, FixedWidthIntegralType, UInt32_t |
+| cstd_types.cpp:38:10:38:13 | ui64 | CTypedefType, FixedWidthIntegralType, UInt64_t |

@@ -5,6 +5,7 @@
  * @kind problem
  * @id cs/deserialized-delegate
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-502

@@ -13,7 +13,6 @@ class ClassMissingGetHashCode
     }
 }
 
-
 class ClassMissingEquals
 {
     public new bool Equals(object other)

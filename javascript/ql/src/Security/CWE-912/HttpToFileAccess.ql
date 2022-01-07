@@ -3,6 +3,7 @@
  * @description Writing network data directly to the file system allows arbitrary file upload and might indicate a backdoor.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.3
  * @precision medium
  * @id js/http-to-file-access
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.HttpToFileAccess::HttpToFileAccess
+import semmle.javascript.security.dataflow.HttpToFileAccessQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

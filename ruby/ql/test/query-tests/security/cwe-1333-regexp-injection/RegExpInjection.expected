@@ -1,0 +1,34 @@
+edges
+| RegExpInjection.rb:4:12:4:17 | call to params :  | RegExpInjection.rb:4:12:4:24 | ...[...] :  |
+| RegExpInjection.rb:4:12:4:24 | ...[...] :  | RegExpInjection.rb:5:13:5:21 | /#{...}/ |
+| RegExpInjection.rb:10:12:10:17 | call to params :  | RegExpInjection.rb:10:12:10:24 | ...[...] :  |
+| RegExpInjection.rb:10:12:10:24 | ...[...] :  | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ |
+| RegExpInjection.rb:16:12:16:17 | call to params :  | RegExpInjection.rb:16:12:16:24 | ...[...] :  |
+| RegExpInjection.rb:16:12:16:24 | ...[...] :  | RegExpInjection.rb:17:24:17:27 | name |
+| RegExpInjection.rb:22:12:22:17 | call to params :  | RegExpInjection.rb:22:12:22:24 | ...[...] :  |
+| RegExpInjection.rb:22:12:22:24 | ...[...] :  | RegExpInjection.rb:23:24:23:33 | ... + ... |
+| RegExpInjection.rb:54:12:54:17 | call to params :  | RegExpInjection.rb:54:12:54:24 | ...[...] :  |
+| RegExpInjection.rb:54:12:54:24 | ...[...] :  | RegExpInjection.rb:55:28:55:37 | ... + ... |
+nodes
+| RegExpInjection.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
+| RegExpInjection.rb:4:12:4:24 | ...[...] :  | semmle.label | ...[...] :  |
+| RegExpInjection.rb:5:13:5:21 | /#{...}/ | semmle.label | /#{...}/ |
+| RegExpInjection.rb:10:12:10:17 | call to params :  | semmle.label | call to params :  |
+| RegExpInjection.rb:10:12:10:24 | ...[...] :  | semmle.label | ...[...] :  |
+| RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | semmle.label | /foo#{...}bar/ |
+| RegExpInjection.rb:16:12:16:17 | call to params :  | semmle.label | call to params :  |
+| RegExpInjection.rb:16:12:16:24 | ...[...] :  | semmle.label | ...[...] :  |
+| RegExpInjection.rb:17:24:17:27 | name | semmle.label | name |
+| RegExpInjection.rb:22:12:22:17 | call to params :  | semmle.label | call to params :  |
+| RegExpInjection.rb:22:12:22:24 | ...[...] :  | semmle.label | ...[...] :  |
+| RegExpInjection.rb:23:24:23:33 | ... + ... | semmle.label | ... + ... |
+| RegExpInjection.rb:54:12:54:17 | call to params :  | semmle.label | call to params :  |
+| RegExpInjection.rb:54:12:54:24 | ...[...] :  | semmle.label | ...[...] :  |
+| RegExpInjection.rb:55:28:55:37 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| RegExpInjection.rb:5:13:5:21 | /#{...}/ | RegExpInjection.rb:4:12:4:17 | call to params :  | RegExpInjection.rb:5:13:5:21 | /#{...}/ | This regular expression is constructed from a $@. | RegExpInjection.rb:4:12:4:17 | call to params | user-provided value |
+| RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | RegExpInjection.rb:10:12:10:17 | call to params :  | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | This regular expression is constructed from a $@. | RegExpInjection.rb:10:12:10:17 | call to params | user-provided value |
+| RegExpInjection.rb:17:24:17:27 | name | RegExpInjection.rb:16:12:16:17 | call to params :  | RegExpInjection.rb:17:24:17:27 | name | This regular expression is constructed from a $@. | RegExpInjection.rb:16:12:16:17 | call to params | user-provided value |
+| RegExpInjection.rb:23:24:23:33 | ... + ... | RegExpInjection.rb:22:12:22:17 | call to params :  | RegExpInjection.rb:23:24:23:33 | ... + ... | This regular expression is constructed from a $@. | RegExpInjection.rb:22:12:22:17 | call to params | user-provided value |
+| RegExpInjection.rb:55:28:55:37 | ... + ... | RegExpInjection.rb:54:12:54:17 | call to params :  | RegExpInjection.rb:55:28:55:37 | ... + ... | This regular expression is constructed from a $@. | RegExpInjection.rb:54:12:54:17 | call to params | user-provided value |

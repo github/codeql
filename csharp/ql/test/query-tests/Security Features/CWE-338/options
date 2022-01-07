@@ -1,0 +1,2 @@
+semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll
+semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

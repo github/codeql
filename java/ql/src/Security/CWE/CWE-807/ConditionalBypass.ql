@@ -4,6 +4,7 @@
  *              passing through authentication systems.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision medium
  * @id java/user-controlled-bypass
  * @tags security
@@ -12,32 +13,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SensitiveActions
-import semmle.code.java.controlflow.Dominance
-import semmle.code.java.controlflow.Guards
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.ConditionalBypassQuery
 import DataFlow::PathGraph
-
-/**
- * Calls to a sensitive method that are controlled by a condition
- * on the given expression.
- */
-predicate conditionControlsMethod(MethodAccess m, Expr e) {
-  exists(ConditionBlock cb, SensitiveExecutionMethod def, boolean cond |
-    cb.controls(m.getBasicBlock(), cond) and
-    def = m.getMethod() and
-    not cb.controls(def.getAReference().getBasicBlock(), cond.booleanNot()) and
-    e = cb.getCondition()
-  )
-}
-
-class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
-  ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
-
-  override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
-}
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, Expr e,

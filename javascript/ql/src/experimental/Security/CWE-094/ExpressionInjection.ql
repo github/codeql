@@ -65,6 +65,12 @@ private predicate isExternalUserControlledCommit(string context) {
   context.regexpMatch("\\bgithub\\s*\\.\\s*head_ref\\b")
 }
 
+bindingset[context]
+private predicate isExternalUserControlledDiscussion(string context) {
+  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*title\\b") or
+  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*body\\b")
+}
+
 from Actions::Run run, string context, Actions::On on
 where
   run.getAReferencedExpression() = context and
@@ -87,6 +93,9 @@ where
     or
     exists(on.getNode("pull_request_target")) and
     isExternalUserControlledCommit(context)
+    or
+    (exists(on.getNode("discussion")) or exists(on.getNode("discussion_comment"))) and
+    isExternalUserControlledDiscussion(context)
   )
 select run,
   "Potential injection from the " + context +

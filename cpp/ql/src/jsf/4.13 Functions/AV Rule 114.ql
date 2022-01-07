@@ -63,6 +63,7 @@ where
   functionsMissingReturnStmt(f, blame) and
   reachable(blame) and
   not functionImperfectlyExtracted(f) and
+  not f.isFromUninstantiatedTemplate(_) and
   (blame = stmt or blame.(Expr).getEnclosingStmt() = stmt) and
   msg =
     "Function " + f.getName() + " should return a value of type " + f.getType().getName() +

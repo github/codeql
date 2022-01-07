@@ -104,7 +104,7 @@ def non_syntactic():
     _str = str
     ensure_tainted(
         meth(), # $ MISSING: tainted
-        _str(ts), # $ MISSING: tainted
+        _str(ts), # $ tainted
     )
 
 

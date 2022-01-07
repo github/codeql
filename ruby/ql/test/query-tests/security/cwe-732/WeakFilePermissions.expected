@@ -1,0 +1,31 @@
+edges
+| FilePermissions.rb:51:10:51:13 | 0777 :  | FilePermissions.rb:53:19:53:22 | perm |
+| FilePermissions.rb:51:10:51:13 | 0777 :  | FilePermissions.rb:56:19:56:23 | perm2 |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" :  | FilePermissions.rb:61:19:61:23 | perm2 |
+nodes
+| FilePermissions.rb:5:19:5:22 | 0222 | semmle.label | 0222 |
+| FilePermissions.rb:7:19:7:22 | 0622 | semmle.label | 0622 |
+| FilePermissions.rb:9:19:9:22 | 0755 | semmle.label | 0755 |
+| FilePermissions.rb:11:19:11:22 | 0777 | semmle.label | 0777 |
+| FilePermissions.rb:28:13:28:16 | 0755 | semmle.label | 0755 |
+| FilePermissions.rb:51:10:51:13 | 0777 :  | semmle.label | 0777 :  |
+| FilePermissions.rb:53:19:53:22 | perm | semmle.label | perm |
+| FilePermissions.rb:56:19:56:23 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" :  | semmle.label | "u=wrx,g=rwx,o=x" :  |
+| FilePermissions.rb:61:19:61:23 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | semmle.label | "u=rwx,o+r" |
+| FilePermissions.rb:67:19:67:24 | "a+rw" | semmle.label | "a+rw" |
+| FilePermissions.rb:72:21:72:24 | 0755 | semmle.label | 0755 |
+subpaths
+#select
+| FilePermissions.rb:5:19:5:22 | 0222 | FilePermissions.rb:5:19:5:22 | 0222 | FilePermissions.rb:5:19:5:22 | 0222 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:5:3:5:32 | call to chmod | call to chmod | FilePermissions.rb:5:19:5:22 | 0222 | 0222 |
+| FilePermissions.rb:7:19:7:22 | 0622 | FilePermissions.rb:7:19:7:22 | 0622 | FilePermissions.rb:7:19:7:22 | 0622 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:7:3:7:32 | call to chmod | call to chmod | FilePermissions.rb:7:19:7:22 | 0622 | 0622 |
+| FilePermissions.rb:9:19:9:22 | 0755 | FilePermissions.rb:9:19:9:22 | 0755 | FilePermissions.rb:9:19:9:22 | 0755 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:9:3:9:32 | call to chmod | call to chmod | FilePermissions.rb:9:19:9:22 | 0755 | 0755 |
+| FilePermissions.rb:11:19:11:22 | 0777 | FilePermissions.rb:11:19:11:22 | 0777 | FilePermissions.rb:11:19:11:22 | 0777 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:11:3:11:32 | call to chmod | call to chmod | FilePermissions.rb:11:19:11:22 | 0777 | 0777 |
+| FilePermissions.rb:28:13:28:16 | 0755 | FilePermissions.rb:28:13:28:16 | 0755 | FilePermissions.rb:28:13:28:16 | 0755 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:28:3:28:26 | call to chmod | call to chmod | FilePermissions.rb:28:13:28:16 | 0755 | 0755 |
+| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 :  | FilePermissions.rb:53:19:53:22 | perm | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:53:3:53:32 | call to chmod | call to chmod | FilePermissions.rb:51:10:51:13 | 0777 | 0777 |
+| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 :  | FilePermissions.rb:56:19:56:23 | perm2 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:56:3:56:33 | call to chmod | call to chmod | FilePermissions.rb:51:10:51:13 | 0777 | 0777 |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" :  | FilePermissions.rb:61:19:61:23 | perm2 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:61:3:61:33 | call to chmod | call to chmod | FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | "u=wrx,g=rwx,o=x" |
+| FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:63:3:63:39 | call to chmod | call to chmod | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | "u=rwx,o+r" |
+| FilePermissions.rb:67:19:67:24 | "a+rw" | FilePermissions.rb:67:19:67:24 | "a+rw" | FilePermissions.rb:67:19:67:24 | "a+rw" | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:67:3:67:34 | call to chmod | call to chmod | FilePermissions.rb:67:19:67:24 | "a+rw" | "a+rw" |
+| FilePermissions.rb:72:21:72:24 | 0755 | FilePermissions.rb:72:21:72:24 | 0755 | FilePermissions.rb:72:21:72:24 | 0755 | Overly permissive mask in $@ sets file to $@. | FilePermissions.rb:72:3:72:34 | call to chmod_R | call to chmod_R | FilePermissions.rb:72:21:72:24 | 0755 | 0755 |

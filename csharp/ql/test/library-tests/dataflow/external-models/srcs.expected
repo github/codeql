@@ -1,0 +1,17 @@
+invalidModelRow
+#select
+| Sources.cs:8:17:8:22 | call to method Src1 | local |
+| Sources.cs:9:17:9:24 | call to method Src1 | local |
+| Sources.cs:12:17:12:26 | call to method Src2 | local |
+| Sources.cs:13:17:13:26 | call to method Src3 | local |
+| Sources.cs:15:13:15:21 | [post] this access | local |
+| Sources.cs:15:20:15:20 | [post] access to local variable x | local |
+| Sources.cs:17:17:17:33 | call to method TaggedSrcMethod | local |
+| Sources.cs:18:17:18:30 | access to field TaggedSrcField | local |
+| Sources.cs:20:17:20:33 | call to method SrcTwoArg | local |
+| Sources.cs:24:14:24:20 | this | local |
+| Sources.cs:24:29:24:45 | taggedMethodParam | local |
+| Sources.cs:28:49:28:62 | taggedSrcParam | local |
+| Sources.cs:40:45:40:45 | p | local |
+| Sources.cs:47:50:47:50 | p | local |
+| Sources.cs:53:16:53:30 | this | local |

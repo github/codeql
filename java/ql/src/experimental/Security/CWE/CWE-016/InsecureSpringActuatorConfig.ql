@@ -3,9 +3,11 @@
  * @description Exposed Spring Boot Actuator through configuration files without declarative or procedural
  *              security enforcement leads to information leak or even remote code execution.
  * @kind problem
+ * @problem.severity error
+ * @precision high
  * @id java/insecure-spring-actuator-config
  * @tags security
- *       external/cwe-016
+ *       external/cwe/cwe-016
  */
 
 /*
@@ -56,10 +58,10 @@ class ManagementSecurityConfig extends ApplicationProperties {
   string getValue() { result = this.getValueElement().getValue().trim() }
 
   /** Holds if `management.security.enabled` is set to `false`. */
-  predicate hasSecurityDisabled() { getValue() = "false" }
+  predicate hasSecurityDisabled() { this.getValue() = "false" }
 
   /** Holds if `management.security.enabled` is set to `true`. */
-  predicate hasSecurityEnabled() { getValue() = "true" }
+  predicate hasSecurityEnabled() { this.getValue() = "true" }
 }
 
 /** The configuration property `management.endpoints.web.exposure.include`. */

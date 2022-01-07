@@ -102,13 +102,6 @@ namespace Microsoft.EntityFrameworkCore
     }
 }
 
-namespace System.ComponentModel.DataAnnotations.Schema
-{
-    class NotMappedAttribute : Attribute
-    {
-    }
-}
-
 namespace Microsoft.EntityFrameworkCore.Storage
 {
     interface IRawSqlCommandBuilder

@@ -16,5 +16,4 @@ For details of the CodeQL libraries, see `CodeQL standard libraries <https://cod
 .. toctree::
    :hidden:
 
-   notes-ql-users
    ql-training

@@ -29,7 +29,7 @@
 		<p>
 			The issue has been fixed in the example below by replacing the HTTP protocol with the HTTPS protocol.
 		</p>
-		<sample src="examples/insecure-download.js" />
+		<sample src="examples/secure-download.js" />
 	</example>
 
 	<references>

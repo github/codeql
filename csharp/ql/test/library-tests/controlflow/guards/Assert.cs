@@ -94,5 +94,3 @@ class AssertTests
         return b1 && !b2;
     }
 }
-
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

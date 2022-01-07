@@ -50,10 +50,10 @@ class Test {
         sink(StringUtils.deleteWhitespace(taint())); // $hasTaintFlow
         sink(StringUtils.difference(taint(), "rhs")); // $hasTaintFlow
         sink(StringUtils.difference("lhs", taint())); // $hasTaintFlow
-        sink(StringUtils.firstNonBlank(taint(), "second string")); // $hasTaintFlow
-        sink(StringUtils.firstNonBlank("first string", taint())); // $hasTaintFlow
-        sink(StringUtils.firstNonEmpty(taint(), "second string")); // $hasTaintFlow
-        sink(StringUtils.firstNonEmpty("first string", taint())); // $hasTaintFlow
+        sink(StringUtils.firstNonBlank(taint(), "second string")); // $hasValueFlow
+        sink(StringUtils.firstNonBlank("first string", taint())); // $hasValueFlow
+        sink(StringUtils.firstNonEmpty(taint(), "second string")); // $hasValueFlow
+        sink(StringUtils.firstNonEmpty("first string", taint())); // $hasValueFlow
         sink(StringUtils.getBytes(taint(), (Charset)null)); // $hasTaintFlow
         sink(StringUtils.getBytes(taint(), "some charset")); // $hasTaintFlow
         // GOOD: charset names are not a source of taint
@@ -216,12 +216,12 @@ class Test {
         sink(StringUtils.strip(taint())); // $hasTaintFlow
         sink(StringUtils.strip(taint(), "charstoremove")); // $hasTaintFlow
         sink(StringUtils.stripAccents(taint())); // $hasTaintFlow
-        sink(StringUtils.stripAll(new String[] { taint() }, "charstoremove")); // $hasTaintFlow
+        sink(StringUtils.stripAll(new String[] { taint() }, "charstoremove")[0]); // $hasTaintFlow
         sink(StringUtils.stripEnd(taint(), "charstoremove")); // $hasTaintFlow
         sink(StringUtils.stripStart(taint(), "charstoremove")); // $hasTaintFlow
         // GOOD (next 4 calls): stripped chars do not flow to the return value.
         sink(StringUtils.strip("original text", taint()));
-        sink(StringUtils.stripAll(new String[] { "original text" }, taint()));
+        sink(StringUtils.stripAll(new String[] { "original text" }, taint())[0]);
         sink(StringUtils.stripEnd("original text", taint()));
         sink(StringUtils.stripStart("original text", taint()));
         sink(StringUtils.stripToEmpty(taint())); // $hasTaintFlow

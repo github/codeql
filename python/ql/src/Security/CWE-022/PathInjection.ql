@@ -3,12 +3,12 @@
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @sub-severity high
  * @precision high
  * @id py/path-injection
  * @tags correctness
  *       security
- *       external/owasp/owasp-a1
  *       external/cwe/cwe-022
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036

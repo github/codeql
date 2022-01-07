@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.IO.FileSystem.dll /r:System.Runtime.Extensions.dll /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs
-
 using System;
 using System.IO;
 using System.Web;

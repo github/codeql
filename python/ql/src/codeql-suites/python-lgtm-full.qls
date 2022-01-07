@@ -1,7 +1,7 @@
 - description: Standard LGTM queries for Python, including ones not displayed by default
-- qlpack: codeql-python
+- queries: .
 - apply: lgtm-selectors.yml
-  from: codeql-suite-helpers
+  from: codeql/suite-helpers
 # These are only for IDE use.
 - exclude:
     tags contain:

@@ -1,0 +1,4 @@
+| Program.cs:25:27:25:31 | false | Cookie attribute 'HttpOnly' is not set to true. |
+| Program.cs:30:74:30:78 | false | Cookie attribute 'HttpOnly' is not set to true. |
+| Program.cs:50:27:50:27 | access to local variable v | Cookie attribute 'HttpOnly' is not set to true. |
+| Program.cs:56:74:56:74 | access to local variable v | Cookie attribute 'HttpOnly' is not set to true. |

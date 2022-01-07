@@ -3,6 +3,7 @@
  * @description Using a deprecated artifact repository may eventually give attackers access for a supply chain attack.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.5
  * @precision very-high
  * @id java/maven/dependency-upon-bintray
  * @tags security

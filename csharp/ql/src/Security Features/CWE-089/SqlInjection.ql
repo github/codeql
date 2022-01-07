@@ -4,6 +4,7 @@
  *              malicious SQL code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision high
  * @id cs/sql-injection
  * @tags security
@@ -11,8 +12,10 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
+import semmle.code.csharp.security.dataflow.SqlInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.Local
 
 string getSourceType(DataFlow::Node node) {
   result = node.(RemoteFlowSource).getSourceType()

@@ -5,6 +5,7 @@
  *              numeric errors such as overflows.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision very-high
  * @id java/implicit-cast-in-compound-assignment
  * @tags reliability
@@ -24,7 +25,7 @@ class DangerousAssignOpExpr extends AssignOp {
   }
 }
 
-predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t.(NumType)) }
+predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t) }
 
 from DangerousAssignOpExpr a, Expr e
 where

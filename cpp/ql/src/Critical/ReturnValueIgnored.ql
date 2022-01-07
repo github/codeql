@@ -1,6 +1,6 @@
 /**
  * @name Return value of a function is ignored
- * @description A call to a function ignores its return value, but more than 80% of the total number of calls to the function check the return value. Check the return value of functions consistently, especially for functions like 'fread' or the 'scanf' functions that return the status of the operation.
+ * @description A call to a function ignores its return value, but at least 90% of the total number of calls to the function check the return value. Check the return value of functions consistently, especially for functions like 'fread' or the 'scanf' functions that return the status of the operation.
  * @kind problem
  * @id cpp/return-value-ignored
  * @problem.severity recommendation

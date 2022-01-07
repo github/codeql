@@ -1,5 +1,3 @@
-//semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll /r:System.Runtime.Extensions.dll /r:System.Diagnostics.TraceSource.dll
-
 using System;
 using System.Diagnostics;
 using System.IO;

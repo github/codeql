@@ -28,7 +28,8 @@ edges
 | LdapInjection.java:147:76:147:109 | uBadSRDNAsync : String | LdapInjection.java:151:19:151:19 | s |
 | LdapInjection.java:155:31:155:70 | uBadFilterCreateNOT : String | LdapInjection.java:156:58:156:115 | createNOTFilter(...) |
 | LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | LdapInjection.java:161:58:161:107 | toString(...) |
-| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | LdapInjection.java:168:58:168:69 | toString(...) |
+| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | LdapInjection.java:168:58:168:58 | b : StringBuilder |
+| LdapInjection.java:168:58:168:58 | b : StringBuilder | LdapInjection.java:168:58:168:69 | toString(...) |
 | LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | LdapInjection.java:176:14:176:26 | duplicate(...) |
 | LdapInjection.java:180:32:180:80 | uBadROSearchRequestDuplicate : String | LdapInjection.java:184:14:184:26 | duplicate(...) |
 | LdapInjection.java:188:32:188:74 | uBadSearchRequestSetDN : String | LdapInjection.java:192:14:192:14 | s |
@@ -49,7 +50,8 @@ edges
 | LdapInjection.java:276:31:276:68 | sBadLdapQueryBase : String | LdapInjection.java:277:12:277:66 | base(...) |
 | LdapInjection.java:281:31:281:71 | sBadLdapQueryComplex : String | LdapInjection.java:282:24:282:98 | is(...) |
 | LdapInjection.java:286:31:286:69 | sBadFilterToString : String | LdapInjection.java:287:18:287:83 | toString(...) |
-| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | LdapInjection.java:294:18:294:29 | toString(...) |
+| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | LdapInjection.java:294:18:294:18 | s : StringBuffer |
+| LdapInjection.java:294:18:294:18 | s : StringBuffer | LdapInjection.java:294:18:294:29 | toString(...) |
 | LdapInjection.java:314:30:314:54 | aBad : String | LdapInjection.java:316:36:316:55 | ... + ... |
 | LdapInjection.java:314:57:314:83 | aBadDN : String | LdapInjection.java:316:14:316:33 | ... + ... |
 | LdapInjection.java:320:30:320:54 | aBad : String | LdapInjection.java:322:65:322:84 | ... + ... |
@@ -113,6 +115,7 @@ nodes
 | LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | semmle.label | uBadFilterCreateToString : String |
 | LdapInjection.java:161:58:161:107 | toString(...) | semmle.label | toString(...) |
 | LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | semmle.label | uBadFilterCreateToStringBuffer : String |
+| LdapInjection.java:168:58:168:58 | b : StringBuilder | semmle.label | b : StringBuilder |
 | LdapInjection.java:168:58:168:69 | toString(...) | semmle.label | toString(...) |
 | LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | semmle.label | uBadSearchRequestDuplicate : String |
 | LdapInjection.java:176:14:176:26 | duplicate(...) | semmle.label | duplicate(...) |
@@ -155,6 +158,7 @@ nodes
 | LdapInjection.java:286:31:286:69 | sBadFilterToString : String | semmle.label | sBadFilterToString : String |
 | LdapInjection.java:287:18:287:83 | toString(...) | semmle.label | toString(...) |
 | LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | semmle.label | sBadFilterEncode : String |
+| LdapInjection.java:294:18:294:18 | s : StringBuffer | semmle.label | s : StringBuffer |
 | LdapInjection.java:294:18:294:29 | toString(...) | semmle.label | toString(...) |
 | LdapInjection.java:314:30:314:54 | aBad : String | semmle.label | aBad : String |
 | LdapInjection.java:314:57:314:83 | aBadDN : String | semmle.label | aBadDN : String |
@@ -170,6 +174,7 @@ nodes
 | LdapInjection.java:338:14:338:14 | s | semmle.label | s |
 | LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | semmle.label | aBadDNSearchRequestGet : String |
 | LdapInjection.java:346:14:346:24 | getBase(...) | semmle.label | getBase(...) |
+subpaths
 #select
 | LdapInjection.java:47:16:47:35 | ... + ... | LdapInjection.java:45:55:45:81 | jBadDN : String | LdapInjection.java:47:16:47:35 | ... + ... | LDAP query might include code from $@. | LdapInjection.java:45:55:45:81 | jBadDN | this user input |
 | LdapInjection.java:47:38:47:57 | ... + ... | LdapInjection.java:45:28:45:52 | jBad : String | LdapInjection.java:47:38:47:57 | ... + ... | LDAP query might include code from $@. | LdapInjection.java:45:28:45:52 | jBad | this user input |

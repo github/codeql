@@ -108,7 +108,10 @@ namespace Semmle.BuildAnalyser
                         new[] { options.SolutionFile } :
                         sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
 
-                RestoreSolutions(solutions);
+                if (options.UseNuGet)
+                {
+                    RestoreSolutions(solutions);
+                }
                 dllDirNames.Add(packageDirectory.DirInfo.FullName);
                 assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
                 AnalyseSolutions(solutions);
@@ -289,7 +292,7 @@ namespace Semmle.BuildAnalyser
 
             try
             {
-                var csProj = new CsProjFile(project);
+                var csProj = new Extraction.CSharp.CsProjFile(project);
 
                 foreach (var @ref in csProj.References)
                 {
@@ -324,7 +327,16 @@ namespace Semmle.BuildAnalyser
 
         private void Restore(string projectOrSolution)
         {
-            var exit = DotNet.RestoreToDirectory(projectOrSolution, packageDirectory.DirInfo.FullName);
+            int exit;
+            try
+            {
+                exit = DotNet.RestoreToDirectory(projectOrSolution, packageDirectory.DirInfo.FullName);
+            }
+            catch (FileNotFoundException)
+            {
+                exit = 2;
+            }
+
             switch (exit)
             {
                 case 0:

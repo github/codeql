@@ -1,0 +1,1 @@
+| test.cpp:59:17:59:17 | call to operator>> | Use of 'cin' without specifying the length of the input may be dangerous. |

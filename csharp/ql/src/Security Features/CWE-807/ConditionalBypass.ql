@@ -4,6 +4,7 @@
  *              passing through authentication systems.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cs/user-controlled-bypass
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ConditionalBypass::UserControlledBypassOfSensitiveMethod
+import semmle.code.csharp.security.dataflow.ConditionalBypassQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

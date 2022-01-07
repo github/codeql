@@ -6,30 +6,40 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class NullableDirective : PreprocessorDirective<NullableDirectiveTriviaSyntax>
     {
-        public NullableDirective(Context cx, NullableDirectiveTriviaSyntax trivia)
+        private NullableDirective(Context cx, NullableDirectiveTriviaSyntax trivia)
             : base(cx, trivia)
         {
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            var setting = trivia.SettingToken.Kind() switch
+            var setting = Symbol.SettingToken.Kind() switch
             {
                 SyntaxKind.DisableKeyword => 0,
                 SyntaxKind.EnableKeyword => 1,
                 SyntaxKind.RestoreKeyword => 2,
-                _ => throw new InternalError(trivia, "Unhandled setting token kind")
+                _ => throw new InternalError(Symbol, "Unhandled setting token kind")
             };
 
-            var target = trivia.TargetToken.Kind() switch
+            var target = Symbol.TargetToken.Kind() switch
             {
                 SyntaxKind.None => 0,
                 SyntaxKind.AnnotationsKeyword => 1,
                 SyntaxKind.WarningsKeyword => 2,
-                _ => throw new InternalError(trivia, "Unhandled target token kind")
+                _ => throw new InternalError(Symbol, "Unhandled target token kind")
             };
 
             trapFile.directive_nullables(this, setting, target);
+        }
+
+        public static NullableDirective Create(Context cx, NullableDirectiveTriviaSyntax nullable) =>
+            NullableDirectiveFactory.Instance.CreateEntity(cx, nullable, nullable);
+
+        private class NullableDirectiveFactory : CachedEntityFactory<NullableDirectiveTriviaSyntax, NullableDirective>
+        {
+            public static NullableDirectiveFactory Instance { get; } = new NullableDirectiveFactory();
+
+            public override NullableDirective Create(Context cx, NullableDirectiveTriviaSyntax init) => new(cx, init);
         }
     }
 }

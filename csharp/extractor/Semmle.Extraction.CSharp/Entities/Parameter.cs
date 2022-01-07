@@ -27,20 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
             None, Ref, Out, Params, This, In
         }
 
-        protected virtual int Ordinal
-        {
-            get
-            {
-                // For some reason, methods of kind ReducedExtension
-                // omit the "this" parameter, so the parameters are
-                // actually numbered from 1.
-                // This is to be consistent from the original (unreduced) extension method.
-                var isReducedExtension =
-                    Symbol.ContainingSymbol is IMethodSymbol method &&
-                    method.MethodKind == MethodKind.ReducedExtension;
-                return Symbol.Ordinal + (isReducedExtension ? 1 : 0);
-            }
-        }
+        protected virtual int Ordinal => Symbol.Ordinal;
 
         private Kind ParamKind
         {
@@ -68,11 +55,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, (param, parent, original));
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null)
+        {
+            var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original));
+        }
 
-        public static Parameter Create(Context cx, IParameterSymbol param) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, (param, null, null));
+        public static Parameter Create(Context cx, IParameterSymbol param)
+        {
+            var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null));
+        }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
@@ -268,35 +261,6 @@ namespace Semmle.Extraction.CSharp.Entities
             public static VarargsParamFactory Instance { get; } = new VarargsParamFactory();
 
             public override VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
-        }
-    }
-
-    internal class ConstructedExtensionParameter : Parameter
-    {
-        private readonly ITypeSymbol constructedType;
-
-        private ConstructedExtensionParameter(Context cx, Method method, Parameter original)
-            : base(cx, original.Symbol, method, original)
-        {
-            constructedType = method.Symbol.ReceiverType!;
-        }
-
-        public override void Populate(TextWriter trapFile)
-        {
-            var typeKey = Type.Create(Context, constructedType);
-            trapFile.@params(this, Original.Symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent!, Original);
-            trapFile.param_location(this, Original.Location);
-        }
-
-        public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
-            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.Symbol), new SymbolEqualityWrapper(method.Symbol.ReceiverType!)), (method, parameter));
-
-        private class ExtensionParamFactory : CachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
-        {
-            public static ExtensionParamFactory Instance { get; } = new ExtensionParamFactory();
-
-            public override ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
-                new ConstructedExtensionParameter(cx, init.Item1, init.Item2);
         }
     }
 }

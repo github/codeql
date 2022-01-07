@@ -117,7 +117,7 @@ namespace Semmle.Extraction
             return s;
         }
 
-        private static string EncodeString(string s) => s.Replace("\"", "\"\"");
+        public static string EncodeString(string s) => s.Replace("\"", "\"\"");
 
         /// <summary>
         /// Output a string to the trap file, such that the encoded output does not exceed

@@ -349,4 +349,3 @@ public class Guards
             o.ToString(); // null guarded
     }
 }
-

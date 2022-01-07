@@ -8,17 +8,35 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly IfDirective start;
         private readonly int index;
 
-        public ElseDirective(Context cx, ElseDirectiveTriviaSyntax trivia, IfDirective start, int index)
-            : base(cx, trivia, populateFromBase: false)
+        private ElseDirective(Context cx, ElseDirectiveTriviaSyntax trivia, IfDirective start, int index)
+            : base(cx, trivia)
         {
             this.start = start;
             this.index = index;
-            TryPopulate();
+        }
+
+        public override void WriteId(EscapingTextWriter trapFile)
+        {
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.Write(Symbol.IsActive);
+            trapFile.Write(',');
+            trapFile.Write(Symbol.BranchTaken);
+            trapFile.Write(";trivia");
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            trapFile.directive_elses(this, trivia.BranchTaken, start, index);
+            trapFile.directive_elses(this, Symbol.BranchTaken, start, index);
+        }
+
+        public static ElseDirective Create(Context cx, ElseDirectiveTriviaSyntax @else, IfDirective start, int index) =>
+            ElseDirectiveFactory.Instance.CreateEntity(cx, @else, (@else, start, index));
+
+        private class ElseDirectiveFactory : CachedEntityFactory<(ElseDirectiveTriviaSyntax @else, IfDirective start, int index), ElseDirective>
+        {
+            public static ElseDirectiveFactory Instance { get; } = new ElseDirectiveFactory();
+
+            public override ElseDirective Create(Context cx, (ElseDirectiveTriviaSyntax @else, IfDirective start, int index) init) => new(cx, init.@else, init.start, init.index);
         }
     }
 }

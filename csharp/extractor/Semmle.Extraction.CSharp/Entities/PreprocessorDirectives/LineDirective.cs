@@ -7,34 +7,44 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class LineDirective : PreprocessorDirective<LineDirectiveTriviaSyntax>
     {
-        public LineDirective(Context cx, LineDirectiveTriviaSyntax trivia)
+        private LineDirective(Context cx, LineDirectiveTriviaSyntax trivia)
             : base(cx, trivia)
         {
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            var type = trivia.Line.Kind() switch
+            var type = Symbol.Line.Kind() switch
             {
                 SyntaxKind.DefaultKeyword => 0,
                 SyntaxKind.HiddenKeyword => 1,
                 SyntaxKind.NumericLiteralToken => 2,
-                _ => throw new InternalError(trivia, "Unhandled line token kind")
+                _ => throw new InternalError(Symbol, "Unhandled line token kind")
             };
 
             trapFile.directive_lines(this, type);
 
-            if (trivia.Line.IsKind(SyntaxKind.NumericLiteralToken))
+            if (Symbol.Line.IsKind(SyntaxKind.NumericLiteralToken))
             {
-                var value = (int)trivia.Line.Value!;
+                var value = (int)Symbol.Line.Value!;
                 trapFile.directive_line_value(this, value);
 
-                if (!string.IsNullOrWhiteSpace(trivia.File.ValueText))
+                if (!string.IsNullOrWhiteSpace(Symbol.File.ValueText))
                 {
-                    var file = File.Create(Context, trivia.File.ValueText);
+                    var file = File.Create(Context, Symbol.File.ValueText);
                     trapFile.directive_line_file(this, file);
                 }
             }
+        }
+
+        public static LineDirective Create(Context cx, LineDirectiveTriviaSyntax line) =>
+            LineDirectiveFactory.Instance.CreateEntity(cx, line, line);
+
+        private class LineDirectiveFactory : CachedEntityFactory<LineDirectiveTriviaSyntax, LineDirective>
+        {
+            public static LineDirectiveFactory Instance { get; } = new LineDirectiveFactory();
+
+            public override LineDirective Create(Context cx, LineDirectiveTriviaSyntax init) => new(cx, init);
         }
     }
 }

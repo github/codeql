@@ -3,6 +3,8 @@
  * @description Sensitive cookies without the 'HttpOnly' flag set leaves session cookies vulnerable to
  *              an XSS attack.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/sensitive-cookie-not-httponly
  * @tags security
  *       external/cwe/cwe-1004
@@ -74,12 +76,9 @@ class MatchesHttpOnlyConfiguration extends TaintTracking2::Configuration {
   }
 }
 
-/** A class descended from `javax.servlet.http.Cookie` or `javax/jakarta.ws.rs.core.Cookie`. */
+/** A class descended from `javax.servlet.http.Cookie`. */
 class CookieClass extends RefType {
-  CookieClass() {
-    this.getASupertype*()
-        .hasQualifiedName(["javax.servlet.http", "javax.ws.rs.core", "jakarta.ws.rs.core"], "Cookie")
-  }
+  CookieClass() { this.getASupertype*().hasQualifiedName("javax.servlet.http", "Cookie") }
 }
 
 /** Holds if `expr` is any boolean-typed expression other than literal `false`. */

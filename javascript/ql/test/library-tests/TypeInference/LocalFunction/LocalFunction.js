@@ -22,6 +22,10 @@
     function f6(){}
     g(f6);
     f6();
+
+    var f7 = function(){}
+    f7();
+    f7();
 })();
 (function types(){
     function f_zero() {
@@ -48,3 +52,9 @@ export default function bar() {
 
 }
 bar();
+
+var foo1 = function foo1(){
+
+}
+foo1();
+export {foo1};

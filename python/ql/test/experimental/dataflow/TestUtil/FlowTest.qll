@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 abstract class FlowTest extends InlineExpectationsTest {
   bindingset[this]
@@ -18,7 +18,7 @@ abstract class FlowTest extends InlineExpectationsTest {
       location = toNode.getLocation() and
       tag = this.flowTag() and
       value =
-        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + lineStr(fromNode, toNode) + " -> " +
+        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + this.lineStr(fromNode, toNode) + " -> " +
           prettyNode(toNode).replaceAll("\"", "'") + "\"" and
       element = toNode.toString()
     )

@@ -74,12 +74,6 @@ def f():
     change_foo()
     sink(foo) #$ use=moduleImport("danger").getMember("SOURCE")
 
-# Star imports
-
-from unknown import * #$ use=moduleImport("unknown")
-
-hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
-
 
 # Subclasses
 
@@ -122,14 +116,18 @@ def redefine_print():
     print = my_print
     print("these words")
 
-def local_redefine_range():
-    range = 5
-    return range
+def local_redefine_chr():
+    chr = 5
+    return chr
 
-def global_redefine_range():
-    global range
-    range = 6
-    return range #$ SPURIOUS: use=moduleImport("builtins").getMember("range")
+def global_redefine_chr():
+    global chr
+    chr = 6
+    return chr
+
+def what_is_chr_now():
+    # If global_redefine_chr has been run, then the following is _not_ a reference to the built-in chr
+    return chr(123) #$ MISSING: use=moduleImport("builtins").getMember("chr").getReturn()
 
 def obscured_print():
     p = print #$ use=moduleImport("builtins").getMember("print")

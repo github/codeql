@@ -1,0 +1,2 @@
+| Program.cs:7:9:7:49 | call to method Append | Cookie attribute 'HttpOnly' is not set to true. |
+| Program.cs:17:29:17:73 | object creation of type CookieOptions | Cookie attribute 'HttpOnly' is not set to true. |

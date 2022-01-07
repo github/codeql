@@ -4,6 +4,7 @@
  *              pose a security risk.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision low
  * @id cs/inappropriate-encoding
  * @tags security
@@ -15,9 +16,9 @@ import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.UI
-import semmle.code.csharp.security.dataflow.SqlInjection
+import semmle.code.csharp.security.dataflow.SqlInjectionQuery as SqlInjection
 import semmle.code.csharp.security.dataflow.flowsinks.Html
-import semmle.code.csharp.security.dataflow.UrlRedirect
+import semmle.code.csharp.security.dataflow.UrlRedirectQuery as UrlRedirect
 import semmle.code.csharp.security.Sanitizers
 import semmle.code.csharp.dataflow.DataFlow2::DataFlow2
 import semmle.code.csharp.dataflow.DataFlow2::DataFlow2::PathGraph
@@ -46,7 +47,7 @@ abstract class RequiresEncodingConfiguration extends TaintTracking2::Configurati
    * to be encoded.
    */
   predicate hasWrongEncoding(PathNode encodedValue, PathNode sink, string kind) {
-    hasFlowPath(encodedValue, sink) and
+    this.hasFlowPath(encodedValue, sink) and
     kind = this.getKind()
   }
 

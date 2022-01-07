@@ -894,4 +894,14 @@ public class NodeCopier implements Visitor<Void, INode> {
   public INode visit(XMLDotDotExpression nd, Void c) {
     return new XMLDotDotExpression(visit(nd.getLoc()), copy(nd.getLeft()), copy(nd.getRight()));
   }
+
+  @Override
+  public INode visit(GeneratedCodeExpr nd, Void c) {
+    return new GeneratedCodeExpr(visit(nd.getLoc()), nd.getOpeningDelimiter(), nd.getClosingDelimiter(), nd.getBody());
+  }
+
+  @Override
+  public INode visit(StaticInitializer nd, Void c) {
+    return new StaticInitializer(visit(nd.getLoc()), copy(nd.getValue()));
+  }
 }

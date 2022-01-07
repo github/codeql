@@ -5,13 +5,14 @@
  * @kind problem
  * @id cs/unsafe-deserialization
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision low
  * @tags security
  *       external/cwe/cwe-502
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
+import semmle.code.csharp.security.dataflow.UnsafeDeserializationQuery
 
 from Call deserializeCall, Sink sink
 where deserializeCall.getAnArgument() = sink.asExpr()

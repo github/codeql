@@ -4,6 +4,7 @@
  * @id py/insecure-protocol
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-327
@@ -26,37 +27,33 @@ class ProtocolConfiguration extends DataFlow::Node {
     unsafe_context_creation(this, _)
   }
 
-  AstNode getNode() { result = this.asCfgNode().(CallNode).getFunction().getNode() }
+  DataFlow::Node getNode() { result = this.(DataFlow::CallCfgNode).getFunction() }
 }
 
 // Helper for pretty printer `callName`.
 // This is a consequence of missing pretty priting.
 // We do not want to evaluate our bespoke pretty printer
-// for all `AstNode`s so we define a sub class of interesting ones.
-//
-// Note that AstNode is abstract and AstNode_ is a library class, so
-// we have to extend @py_ast_node.
-class Nameable extends @py_ast_node {
+// for all `DataFlow::Node`s so we define a sub class of interesting ones.
+class Nameable extends DataFlow::Node {
   Nameable() {
     this = any(ProtocolConfiguration pc).getNode()
     or
-    exists(Nameable attr | this = attr.(Attribute).getObject())
+    this = any(Nameable attr).(DataFlow::AttrRef).getObject()
   }
-
-  string toString() { result = "AstNode" }
 }
 
 string callName(Nameable call) {
-  result = call.(Name).getId()
+  result = call.asExpr().(Name).getId()
   or
-  exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
+  exists(DataFlow::AttrRef a | a = call |
+    result = callName(a.getObject()) + "." + a.getAttributeName()
+  )
 }
 
 string configName(ProtocolConfiguration protocolConfiguration) {
-  result =
-    "call to " + callName(protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode())
+  result = "call to " + callName(protocolConfiguration.(DataFlow::CallCfgNode).getFunction())
   or
-  not protocolConfiguration.asCfgNode() instanceof CallNode and
+  not protocolConfiguration instanceof DataFlow::CallCfgNode and
   not protocolConfiguration instanceof ContextCreation and
   result = "context modification"
 }

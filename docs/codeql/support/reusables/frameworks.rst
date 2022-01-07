@@ -1,7 +1,7 @@
 C and C++ built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -14,7 +14,7 @@ C and C++ built-in support
 C# built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -84,18 +84,22 @@ Go built-in support
 Java built-in support
 ==================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
 
    Name, Category
    Apache Commons Lang, Utility library
+   Apache Commons Collections, Data structure utility library
    Apache HTTP components, Network communicator
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
+   Jackson, Serialization
+   JSON-java, Serialization
    Java Persistence API (JPA), Database
+   JaxRS, Jakarta EE API specification
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
@@ -109,7 +113,7 @@ Java built-in support
 JavaScript and TypeScript built-in support
 =======================================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -119,17 +123,22 @@ JavaScript and TypeScript built-in support
    angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
+   EJS, templating language
    electron, Runtime environment
    express, Server
+   handlebars, templating language
    hapi, Server
+   hogan, templating language
    jquery, Utility library
    koa, Server
    lodash, Utility library
    mongodb, Database
    mssql, Database
+   mustache, templating language
    mysql, Database
    node, Runtime environment
    nest.js, Server
+   nunjucks, templating language
    postgres, Database
    ramda, Utility library
    react, HTML framework
@@ -139,6 +148,7 @@ JavaScript and TypeScript built-in support
    socket.io, Network communicator
    sqlite3, Database
    superagent, Network communicator
+   swig, templating language
    underscore, Utility library
    vue, HTML framework
 
@@ -152,17 +162,45 @@ Python built-in support
    :widths: auto
 
    Name, Category
+   aiohttp.web, Web framework
    Django, Web framework
+   djangorestframework, Web framework
+   FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
-   PyYAML, Serialization
+   Twisted, Web framework
+   Flask-Admin, Web framework
+   starlette, Asynchronous Server Gateway Interface (ASGI)
+   requests, HTTP client
    dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
+   simplejson, Serialization
+   toml, Serialization
+   ujson, Serialization
    fabric, Utility library
+   idna, Utility library
    invoke, Utility library
+   jmespath, Utility library
+   multidict, Utility library
+   pydantic, Utility library
+   yarl, Utility library
+   aioch, Database
+   aiomysql, Database
+   aiopg, Database
+   asyncpg, Database
+   clickhouse-driver, Database
    mysql-connector-python, Database
-   MySQLdb, Database
+   mysql-connector, Database
+   MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
+   Flask-SQLAlchemy, Database ORM
+   peewee, Database ORM
+   SQLAlchemy, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   rsa, Cryptography library
+   MarkupSafe, Escaping Library

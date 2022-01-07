@@ -8,7 +8,7 @@ class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "my.qltest;C;false;stepArgRes;(Object);;Argument[0];ReturnValue;taint",
         "my.qltest;C;false;stepArgArg;(Object,Object);;Argument[0];Argument[1];taint",
         "my.qltest;C;false;stepArgQual;(Object);;Argument[0];Argument[-1];taint",

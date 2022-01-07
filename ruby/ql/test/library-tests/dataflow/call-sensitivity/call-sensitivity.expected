@@ -1,0 +1,36 @@
+edges
+| call_sensitivity.rb:7:13:7:13 | x :  | call_sensitivity.rb:8:11:8:11 | x :  |
+| call_sensitivity.rb:8:11:8:11 | x :  | call_sensitivity.rb:15:20:15:20 | x :  |
+| call_sensitivity.rb:15:9:15:15 | "taint" :  | call_sensitivity.rb:7:13:7:13 | x :  |
+| call_sensitivity.rb:15:20:15:20 | x :  | call_sensitivity.rb:15:28:15:28 | x |
+| call_sensitivity.rb:17:27:17:27 | x :  | call_sensitivity.rb:18:17:18:17 | x :  |
+| call_sensitivity.rb:17:27:17:27 | x :  | call_sensitivity.rb:18:17:18:17 | x :  |
+| call_sensitivity.rb:18:17:18:17 | x :  | call_sensitivity.rb:27:17:27:17 | x :  |
+| call_sensitivity.rb:18:17:18:17 | x :  | call_sensitivity.rb:36:23:36:23 | x :  |
+| call_sensitivity.rb:27:17:27:17 | x :  | call_sensitivity.rb:27:27:27:27 | x |
+| call_sensitivity.rb:28:25:28:31 | "taint" :  | call_sensitivity.rb:17:27:17:27 | x :  |
+| call_sensitivity.rb:36:23:36:23 | x :  | call_sensitivity.rb:36:31:36:31 | x |
+| call_sensitivity.rb:37:25:37:31 | "taint" :  | call_sensitivity.rb:17:27:17:27 | x :  |
+nodes
+| call_sensitivity.rb:5:6:5:12 | "taint" | semmle.label | "taint" |
+| call_sensitivity.rb:7:13:7:13 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:8:11:8:11 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:15:9:15:15 | "taint" :  | semmle.label | "taint" :  |
+| call_sensitivity.rb:15:20:15:20 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:15:28:15:28 | x | semmle.label | x |
+| call_sensitivity.rb:17:27:17:27 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:17:27:17:27 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:18:17:18:17 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:18:17:18:17 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:27:17:27:17 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:27:27:27:27 | x | semmle.label | x |
+| call_sensitivity.rb:28:25:28:31 | "taint" :  | semmle.label | "taint" :  |
+| call_sensitivity.rb:36:23:36:23 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:36:31:36:31 | x | semmle.label | x |
+| call_sensitivity.rb:37:25:37:31 | "taint" :  | semmle.label | "taint" :  |
+subpaths
+#select
+| call_sensitivity.rb:5:6:5:12 | "taint" | call_sensitivity.rb:5:6:5:12 | "taint" | call_sensitivity.rb:5:6:5:12 | "taint" | $@ | call_sensitivity.rb:5:6:5:12 | "taint" | "taint" |
+| call_sensitivity.rb:15:28:15:28 | x | call_sensitivity.rb:15:9:15:15 | "taint" :  | call_sensitivity.rb:15:28:15:28 | x | $@ | call_sensitivity.rb:15:9:15:15 | "taint" :  | "taint" :  |
+| call_sensitivity.rb:27:27:27:27 | x | call_sensitivity.rb:28:25:28:31 | "taint" :  | call_sensitivity.rb:27:27:27:27 | x | $@ | call_sensitivity.rb:28:25:28:31 | "taint" :  | "taint" :  |
+| call_sensitivity.rb:36:31:36:31 | x | call_sensitivity.rb:37:25:37:31 | "taint" :  | call_sensitivity.rb:36:31:36:31 | x | $@ | call_sensitivity.rb:37:25:37:31 | "taint" :  | "taint" :  |

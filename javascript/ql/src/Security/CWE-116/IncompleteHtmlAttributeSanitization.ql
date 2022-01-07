@@ -5,6 +5,7 @@
  *              scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @precision high
  * @id js/incomplete-html-attribute-sanitization
  * @tags security
@@ -15,7 +16,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitization::IncompleteHtmlAttributeSanitization
+import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationQuery
 import semmle.javascript.security.IncompleteBlacklistSanitizer
 
 /**

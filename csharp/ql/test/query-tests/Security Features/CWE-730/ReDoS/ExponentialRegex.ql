@@ -1,4 +1,4 @@
 import csharp
-import semmle.code.csharp.security.dataflow.ReDoS
+import semmle.code.csharp.security.dataflow.ReDoSQuery
 
-select any(StringLiteral e | ReDoS::isExponentialRegex(e))
+select any(StringLiteral e | isExponentialRegex(e))

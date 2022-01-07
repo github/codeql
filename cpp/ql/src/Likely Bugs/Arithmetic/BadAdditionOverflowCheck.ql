@@ -6,6 +6,7 @@
  *              to a larger type.
  * @kind problem
  * @problem.severity error
+ * @security-severity 8.1
  * @precision very-high
  * @id cpp/bad-addition-overflow-check
  * @tags reliability

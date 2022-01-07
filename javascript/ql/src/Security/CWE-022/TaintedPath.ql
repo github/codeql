@@ -4,6 +4,7 @@
  *              unexpected resources.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id js/path-injection
  * @tags security
@@ -15,7 +16,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.TaintedPath::TaintedPath
+import semmle.javascript.security.dataflow.TaintedPathQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

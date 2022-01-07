@@ -1,7 +1,7 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.PrototypePollutingAssignment
+import semmle.javascript.security.dataflow.PrototypePollutingAssignmentQuery
 
-class Config extends ConsistencyConfiguration, PrototypePollutingAssignment::Configuration {
+class Config extends ConsistencyConfiguration, Configuration {
   override File getAFile() { any() }
 }

@@ -6,18 +6,18 @@ Test.java:
 #-----|       4: (Parameters)
 #    2|         0: [Parameter] s
 #    2|           0: [TypeAccess] String
-#    2|       5: [BlockStmt] stmt
-#    3|         0: [LocalVariableDeclStmt] stmt
+#    2|       5: [BlockStmt] { ... }
+#    3|         0: [LocalVariableDeclStmt] var ...;
 #    3|           0: [TypeAccess] int
 #    3|           1: [LocalVariableDeclExpr] x
 #    3|             0: [SwitchExpr] switch (...)
 #    3|               -1: [VarAccess] s
-#    4|               0: [ConstCase] stmt
+#    4|               0: [ConstCase] case ...
 #    4|                 -1: [IntegerLiteral] 1
 #    4|                 0: [StringLiteral] "a"
 #    4|                 1: [StringLiteral] "b"
-#    5|               1: [ConstCase] stmt
+#    5|               1: [ConstCase] case ...
 #    5|                 -1: [IntegerLiteral] 2
 #    5|                 0: [StringLiteral] "c"
-#    6|               2: [DefaultCase] stmt
+#    6|               2: [DefaultCase] default
 #    6|                 -1: [IntegerLiteral] 3

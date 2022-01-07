@@ -4,6 +4,7 @@
  *              attacker to access unexpected resources.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id cpp/path-injection
  * @tags security
@@ -25,12 +26,8 @@ import TaintedWithPath
 class FileFunction extends FunctionWithWrappers {
   FileFunction() {
     exists(string nme | this.hasGlobalName(nme) |
-      nme = "fopen" or
-      nme = "_fopen" or
-      nme = "_wfopen" or
-      nme = "open" or
-      nme = "_open" or
-      nme = "_wopen" or
+      nme = ["fopen", "_fopen", "_wfopen", "open", "_open", "_wopen"]
+      or
       // create file function on windows
       nme.matches("CreateFile%")
     )
@@ -39,10 +36,7 @@ class FileFunction extends FunctionWithWrappers {
     or
     // on any of the fstream classes, or filebuf
     exists(string nme | this.getDeclaringType().hasQualifiedName("std", nme) |
-      nme = "basic_fstream" or
-      nme = "basic_ifstream" or
-      nme = "basic_ofstream" or
-      nme = "basic_filebuf"
+      nme = ["basic_fstream", "basic_ifstream", "basic_ofstream", "basic_filebuf"]
     ) and
     // we look for either the open method or the constructor
     (this.getName() = "open" or this instanceof Constructor)

@@ -66,9 +66,9 @@ def argument_passing(
     b,
     /,
     c,
-    d=arg4,
+    d=arg4,  #$ arg4 func=argument_passing
     *,
-    e=arg5,
+    e=arg5,  #$ arg5 func=argument_passing
     f,
     **g,
 ):
@@ -120,7 +120,7 @@ def test_multiple_kw_args():
     with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 
-def with_default_arguments(a=arg1, b=arg2, c=arg3):  # Need a mechanism to test default arguments
+def with_default_arguments(a=arg1, b=arg2, c=arg3):  #$ arg1 arg2 arg3 func=with_default_arguments
     SINK1(a)
     SINK2(b)
     SINK3(c)

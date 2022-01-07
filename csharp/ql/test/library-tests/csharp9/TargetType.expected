@@ -2,7 +2,7 @@ conditional
 | TargetType.cs:16:19:18:18 | ... ? ... : ... | int? | int? | null |
 | TargetType.cs:20:19:22:18 | ... ? ... : ... | int? | int? | null |
 | TargetType.cs:24:19:26:24 | ... ? ... : ... | int? | int? | int? |
-| TargetType.cs:31:32:33:32 | ... ? ... : ... | IEnumerable<Int32> | List<Int32> | Int32[] |
+| TargetType.cs:31:32:33:32 | ... ? ... : ... | IEnumerable<int> | List<int> | Int32[] |
 | TargetType.cs:35:18:37:16 | ... ? ... : ... | int | int | int |
 implicitCasts
 | TargetType.cs:12:19:12:20 | (...) ... | int? | int |

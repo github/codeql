@@ -14,7 +14,7 @@ but not closed may cause a resource leak.
 
 <p>Ensure that the resource is always closed to avoid a resource leak. Note that, because of exceptions,
 it is safest to close a resource in a <code>finally</code> block. (However, this is unnecessary for
-subclasses of <code>StringReader</code> and <code>ByteArrayInputStream</code>.)
+subclasses of <code>CharArrayReader</code>, <code>StringReader</code> and <code>ByteArrayInputStream</code>.)
 </p>
 
 <p>For Java 7 or later, the recommended way to close resources that implement <code>java.lang.AutoCloseable</code>

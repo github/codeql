@@ -16,7 +16,7 @@ predicate part(Regex r, int start, int end, string kind) {
   or
   r.group(start, end) and not r.zeroWidthMatch(start, end) and kind = "non-empty group"
   or
-  r.qualifiedItem(start, end, _) and kind = "qualified"
+  r.qualifiedItem(start, end, _, _) and kind = "qualified"
 }
 
 from Regex r, int start, int end, string kind

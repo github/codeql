@@ -3,6 +3,7 @@
  * @description Instantiating a template using a user-controlled object is vulnerable to local file read and potential remote code execution.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.3
  * @precision high
  * @id js/template-object-injection
  * @tags security
@@ -12,7 +13,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.TemplateObjectInjection::TemplateObjectInjection
+import semmle.javascript.security.dataflow.TemplateObjectInjectionQuery
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)

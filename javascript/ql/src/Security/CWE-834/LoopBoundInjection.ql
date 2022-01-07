@@ -4,14 +4,16 @@
  *              property can cause indefinite looping.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834
+ *       external/cwe/cwe-730
  * @precision high
  */
 
 import javascript
-import semmle.javascript.security.dataflow.LoopBoundInjection::LoopBoundInjection
+import semmle.javascript.security.dataflow.LoopBoundInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink

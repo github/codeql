@@ -87,8 +87,6 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";compilation");
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override Location ReportingLocation => throw new NotImplementedException();
 
         public override bool NeedsPopulation => Context.IsAssemblyScope;

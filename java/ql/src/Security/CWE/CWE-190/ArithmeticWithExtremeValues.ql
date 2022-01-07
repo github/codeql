@@ -4,6 +4,7 @@
  *              is then used in an arithmetic expression, this may result in an overflow.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 8.6
  * @precision medium
  * @id java/extreme-value-arithmetic
  * @tags security
@@ -18,7 +19,7 @@ import ArithmeticCommon
 import DataFlow::PathGraph
 
 abstract class ExtremeValueField extends Field {
-  ExtremeValueField() { getType() instanceof IntegralType }
+  ExtremeValueField() { this.getType() instanceof IntegralType }
 }
 
 class MinValueField extends ExtremeValueField {
@@ -42,7 +43,7 @@ class MaxValueFlowConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+  override predicate isBarrierIn(DataFlow::Node n) { this.isSource(n) }
 
   override predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
@@ -56,7 +57,7 @@ class MinValueFlowConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+  override predicate isBarrierIn(DataFlow::Node n) { this.isSource(n) }
 
   override predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }

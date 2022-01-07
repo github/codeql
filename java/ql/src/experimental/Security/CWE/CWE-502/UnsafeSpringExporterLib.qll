@@ -5,5 +5,7 @@ import java
  */
 predicate isRemoteInvocationSerializingExporter(RefType type) {
   type.getASupertype*()
-      .hasQualifiedName("org.springframework.remoting.rmi", "RemoteInvocationSerializingExporter")
+      .hasQualifiedName("org.springframework.remoting.rmi",
+        ["RemoteInvocationSerializingExporter", "RmiBasedExporter"]) or
+  type.getASupertype*().hasQualifiedName("org.springframework.remoting.caucho", "HessianExporter")
 }

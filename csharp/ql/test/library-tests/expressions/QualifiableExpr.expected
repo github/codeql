@@ -2,8 +2,8 @@
 | MethodAccess.cs:9:13:9:14 | access to method M2 | MethodAccess.cs:9:13:9:14 | this access |
 | MethodAccess.cs:10:13:10:19 | access to method M2 | MethodAccess.cs:10:13:10:16 | this access |
 | MethodAccess.cs:12:13:12:27 | access to method M3 | MethodAccess.cs:12:13:12:24 | access to type MethodAccess |
-| Qualifiers.cs:7:21:7:35 | call to method Instance | Qualifiers.cs:7:21:7:35 | this access |
-| Qualifiers.cs:9:22:9:42 | call to method Instance | Qualifiers.cs:9:22:9:25 | this access |
+| Qualifiers.cs:7:21:7:35 | call to method Instance<Int32> | Qualifiers.cs:7:21:7:35 | this access |
+| Qualifiers.cs:9:22:9:42 | call to method Instance<Boolean> | Qualifiers.cs:9:22:9:25 | this access |
 | expressions.cs:45:20:45:20 | access to field f | expressions.cs:45:20:45:20 | this access |
 | expressions.cs:51:13:51:34 | access to field name | expressions.cs:51:13:51:29 | access to type Class |
 | expressions.cs:52:13:52:23 | call to method Foo | expressions.cs:52:13:52:17 | access to type Class |

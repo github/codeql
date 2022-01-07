@@ -1,0 +1,8 @@
+invalidModelRow
+#select
+| Sinks.cs:8:19:8:22 | access to local variable arg1 | code |
+| Sinks.cs:11:13:11:41 | this access | remote |
+| Sinks.cs:11:30:11:40 | access to local variable argToTagged | remote |
+| Sinks.cs:14:27:14:36 | access to local variable fieldWrite | sql |
+| Sinks.cs:20:20:20:22 | access to local variable res | xss |
+| Sinks.cs:27:20:27:25 | access to local variable resTag | html |

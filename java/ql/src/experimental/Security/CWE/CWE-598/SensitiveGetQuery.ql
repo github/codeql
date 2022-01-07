@@ -6,7 +6,7 @@
  * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
- *       external/cwe-598
+ *       external/cwe/cwe-598
  */
 
 import java
@@ -20,7 +20,7 @@ class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
       v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
-      not v.getName().regexpMatch("token.*") // exclude ^token.* since sensitive tokens are usually in the form of accessToken, authToken, ...
+      not v.getName().matches("token%") // exclude ^token.* since sensitive tokens are usually in the form of accessToken, authToken, ...
     )
   }
 }

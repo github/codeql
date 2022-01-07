@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -8,6 +9,13 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
+        private readonly List<IEntity> branchesTaken = new();
+
+        /// <summary>
+        /// Gets a list of `#if`, `#elif`, and `#else` entities where the branch
+        /// is taken.
+        /// </summary>
+        public IEnumerable<IEntity> BranchesTaken => branchesTaken;
 
         public DirectiveVisitor(Context cx) : base(SyntaxWalkerDepth.StructuredTrivia)
         {
@@ -16,49 +24,49 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitPragmaWarningDirectiveTrivia(PragmaWarningDirectiveTriviaSyntax node)
         {
-            new Entities.PragmaWarningDirective(cx, node);
+            Entities.PragmaWarningDirective.Create(cx, node);
         }
 
         public override void VisitPragmaChecksumDirectiveTrivia(PragmaChecksumDirectiveTriviaSyntax node)
         {
-            new Entities.PragmaChecksumDirective(cx, node);
+            Entities.PragmaChecksumDirective.Create(cx, node);
         }
 
         public override void VisitDefineDirectiveTrivia(DefineDirectiveTriviaSyntax node)
         {
-            new Entities.DefineDirective(cx, node);
+            Entities.DefineDirective.Create(cx, node);
         }
 
         public override void VisitUndefDirectiveTrivia(UndefDirectiveTriviaSyntax node)
         {
-            new Entities.UndefineDirective(cx, node);
+            Entities.UndefineDirective.Create(cx, node);
         }
 
         public override void VisitWarningDirectiveTrivia(WarningDirectiveTriviaSyntax node)
         {
-            new Entities.WarningDirective(cx, node);
+            Entities.WarningDirective.Create(cx, node);
         }
 
         public override void VisitErrorDirectiveTrivia(ErrorDirectiveTriviaSyntax node)
         {
-            new Entities.ErrorDirective(cx, node);
+            Entities.ErrorDirective.Create(cx, node);
         }
 
         public override void VisitNullableDirectiveTrivia(NullableDirectiveTriviaSyntax node)
         {
-            new Entities.NullableDirective(cx, node);
+            Entities.NullableDirective.Create(cx, node);
         }
 
         public override void VisitLineDirectiveTrivia(LineDirectiveTriviaSyntax node)
         {
-            new Entities.LineDirective(cx, node);
+            Entities.LineDirective.Create(cx, node);
         }
 
         private readonly Stack<Entities.RegionDirective> regionStarts = new Stack<Entities.RegionDirective>();
 
         public override void VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
         {
-            var region = new Entities.RegionDirective(cx, node);
+            var region = Entities.RegionDirective.Create(cx, node);
             regionStarts.Push(region);
         }
 
@@ -72,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = regionStarts.Pop();
-            new Entities.EndRegionDirective(cx, node, start);
+            Entities.EndRegionDirective.Create(cx, node, start);
         }
 
         private class IfDirectiveStackElement
@@ -91,8 +99,10 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
         {
-            var ifStart = new Entities.IfDirective(cx, node);
+            var ifStart = Entities.IfDirective.Create(cx, node);
             ifStarts.Push(new IfDirectiveStackElement(ifStart));
+            if (node.BranchTaken)
+                branchesTaken.Add(ifStart);
         }
 
         public override void VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
@@ -105,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Pop();
-            new Entities.EndIfDirective(cx, node, start.Entity);
+            Entities.EndIfDirective.Create(cx, node, start.Entity);
         }
 
         public override void VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
@@ -118,7 +128,9 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Peek();
-            new Entities.ElifDirective(cx, node, start.Entity, start.SiblingCount++);
+            var elIf = Entities.ElifDirective.Create(cx, node, start.Entity, start.SiblingCount++);
+            if (node.BranchTaken)
+                branchesTaken.Add(elIf);
         }
 
         public override void VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
@@ -131,7 +143,9 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Peek();
-            new Entities.ElseDirective(cx, node, start.Entity, start.SiblingCount++);
+            var @else = Entities.ElseDirective.Create(cx, node, start.Entity, start.SiblingCount++);
+            if (node.BranchTaken)
+                branchesTaken.Add(@else);
         }
     }
 }

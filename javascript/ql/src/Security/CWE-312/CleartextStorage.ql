@@ -4,6 +4,7 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id js/clear-text-storage-of-sensitive-data
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CleartextStorage::CleartextStorage
+import semmle.javascript.security.dataflow.CleartextStorageQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

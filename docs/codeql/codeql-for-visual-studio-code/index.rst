@@ -31,6 +31,9 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
   <testing-codeql-queries-in-visual-studio-code>`: You can run unit tests for
   CodeQL queries using the Visual Studio Code extension.
 
+- :doc:`Working with CodeQL packs in Visual Studio Code
+  <working-with-codeql-packs-in-visual-studio-code>`: You can view and edit CodeQL packs in Visual Studio Code.
+
 - :doc:`Customizing settings
   <customizing-settings>`: You can edit the settings for the 
   CodeQL extension to suit your needs.
@@ -51,6 +54,7 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
    exploring-the-structure-of-your-source-code
    exploring-data-flow-with-path-queries
    testing-codeql-queries-in-visual-studio-code
+   working-with-codeql-packs-in-visual-studio-code
    customizing-settings
    troubleshooting-codeql-for-visual-studio-code
    about-telemetry-in-codeql-for-visual-studio-code

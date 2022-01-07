@@ -4,6 +4,7 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id js/xpath-injection
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.XpathInjection::XpathInjection
+import semmle.javascript.security.dataflow.XpathInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

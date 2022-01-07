@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/lock-order-cycle
  * @problem.severity error
+ * @security-severity 5.0
  * @tags security
  *       external/cwe/cwe-764
  *       external/cwe/cwe-833

@@ -24,6 +24,8 @@
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
+| capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
@@ -41,6 +43,10 @@
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| factory-function.js:21:13:21:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:22:13:22:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:26:7:26:14 | source() | factory-function.js:16:14:16:16 | obj |
+| factory-function.js:27:7:27:14 | source() | factory-function.js:16:14:16:16 | obj |
 | getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
 | getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
 | getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |

@@ -78,7 +78,6 @@ public class C
         if (IsNotNull(o))
             o.ToString(); // GOOD
 
-
         if (!IsNull(o))
             o.ToString(); // GOOD
     }

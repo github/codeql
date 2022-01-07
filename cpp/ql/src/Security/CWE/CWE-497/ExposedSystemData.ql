@@ -5,6 +5,7 @@
  *              attack plan.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @precision medium
  * @id cpp/system-data-exposure
  * @tags security
@@ -30,15 +31,15 @@ abstract class SystemData extends Element {
    */
   Expr getAnExprIndirect() {
     // direct SystemData
-    result = getAnExpr() or
+    result = this.getAnExpr() or
     // flow via global or member variable (conservative approximation)
-    result = getAnAffectedVar().getAnAccess() or
+    result = this.getAnAffectedVar().getAnAccess() or
     // flow via stack variable
-    definitionUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, result, getAnExprIndirect()) or
+    definitionUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, result, this.getAnExprIndirect()) or
     // flow from assigned value to assignment expression
-    result.(AssignExpr).getRValue() = getAnExprIndirect()
+    result.(AssignExpr).getRValue() = this.getAnExprIndirect()
   }
 
   /**
@@ -102,12 +103,7 @@ private predicate posixSystemInfo(FunctionCall source, Element use) {
   //  - various filesystem parameters
   // int uname(struct utsname *buf)
   //  - OS name and version
-  (
-    source.getTarget().hasName("confstr") or
-    source.getTarget().hasName("statvfs") or
-    source.getTarget().hasName("fstatvfs") or
-    source.getTarget().hasName("uname")
-  ) and
+  source.getTarget().hasName(["confstr", "statvfs", "fstatvfs", "uname"]) and
   use = source.getArgument(1)
 }
 
@@ -127,14 +123,9 @@ private predicate posixPWInfo(FunctionCall source, Element use) {
   // struct group  *getgrnam(const char *name);
   // struct group  *getgrgid(gid_t);
   // struct group  *getgrent(void);
-  (
-    source.getTarget().hasName("getpwnam") or
-    source.getTarget().hasName("getpwuid") or
-    source.getTarget().hasName("getpwent") or
-    source.getTarget().hasName("getgrnam") or
-    source.getTarget().hasName("getgrgid") or
-    source.getTarget().hasName("getgrent")
-  ) and
+  source
+      .getTarget()
+      .hasName(["getpwnam", "getpwuid", "getpwent", "getgrnam", "getgrgid", "getgrent"]) and
   use = source
   or
   // int getpwnam_r(const char *name, struct passwd *pwd,
@@ -145,31 +136,15 @@ private predicate posixPWInfo(FunctionCall source, Element use) {
   //                char *buf, size_t buflen, struct group **result);
   // int getgrnam_r(const char *name, struct group *grp,
   //                char *buf, size_t buflen, struct group **result);
-  (
-    source.getTarget().hasName("getpwnam_r") or
-    source.getTarget().hasName("getpwuid_r") or
-    source.getTarget().hasName("getgrgid_r") or
-    source.getTarget().hasName("getgrnam_r")
-  ) and
-  (
-    use = source.getArgument(1) or
-    use = source.getArgument(2) or
-    use = source.getArgument(4)
-  )
+  source.getTarget().hasName(["getpwnam_r", "getpwuid_r", "getgrgid_r", "getgrnam_r"]) and
+  use = source.getArgument([1, 2, 4])
   or
   // int getpwent_r(struct passwd *pwd, char *buffer, size_t bufsize,
   //                struct passwd **result);
   // int getgrent_r(struct group *gbuf, char *buf,
   //                size_t buflen, struct group **gbufp);
-  (
-    source.getTarget().hasName("getpwent_r") or
-    source.getTarget().hasName("getgrent_r")
-  ) and
-  (
-    use = source.getArgument(0) or
-    use = source.getArgument(1) or
-    use = source.getArgument(3)
-  )
+  source.getTarget().hasName(["getpwent_r", "getgrent_r"]) and
+  use = source.getArgument([0, 1, 3])
 }
 
 /**
@@ -189,13 +164,11 @@ private predicate windowsSystemInfo(FunctionCall source, Element use) {
   // BOOL WINAPI GetVersionEx(_Inout_ LPOSVERSIONINFO lpVersionInfo);
   // void WINAPI GetSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
   // void WINAPI GetNativeSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
-  (
-    source.getTarget().hasGlobalName("GetVersionEx") or
-    source.getTarget().hasGlobalName("GetVersionExA") or
-    source.getTarget().hasGlobalName("GetVersionExW") or
-    source.getTarget().hasGlobalName("GetSystemInfo") or
-    source.getTarget().hasGlobalName("GetNativeSystemInfo")
-  ) and
+  source
+      .getTarget()
+      .hasGlobalName([
+          "GetVersionEx", "GetVersionExA", "GetVersionExW", "GetSystemInfo", "GetNativeSystemInfo"
+        ]) and
   use = source.getArgument(0)
 }
 
@@ -215,11 +188,11 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _In_  int    csidl,
   //   _In_  BOOL   fCreate
   // );
-  (
-    source.getTarget().hasGlobalName("SHGetSpecialFolderPath") or
-    source.getTarget().hasGlobalName("SHGetSpecialFolderPathA") or
-    source.getTarget().hasGlobalName("SHGetSpecialFolderPathW")
-  ) and
+  source
+      .getTarget()
+      .hasGlobalName([
+          "SHGetSpecialFolderPath", "SHGetSpecialFolderPathA", "SHGetSpecialFolderPathW"
+        ]) and
   use = source.getArgument(1)
   or
   // HRESULT SHGetKnownFolderPath(
@@ -238,11 +211,7 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _In_  DWORD  dwFlags,
   //   _Out_ LPTSTR pszPath
   // );
-  (
-    source.getTarget().hasGlobalName("SHGetFolderPath") or
-    source.getTarget().hasGlobalName("SHGetFolderPathA") or
-    source.getTarget().hasGlobalName("SHGetFolderPathW")
-  ) and
+  source.getTarget().hasGlobalName(["SHGetFolderPath", "SHGetFolderPathA", "SHGetFolderPathW"]) and
   use = source.getArgument(4)
   or
   // HRESULT SHGetFolderPathAndSubDir(
@@ -253,11 +222,11 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _In_  LPCTSTR pszSubDir,
   //   _Out_ LPTSTR  pszPath
   // );
-  (
-    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDir") or
-    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDirA") or
-    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDirW")
-  ) and
+  source
+      .getTarget()
+      .hasGlobalName([
+          "SHGetFolderPathAndSubDir", "SHGetFolderPathAndSubDirA", "SHGetFolderPathAndSubDirW"
+        ]) and
   use = source.getArgument(5)
 }
 
@@ -272,11 +241,7 @@ class WindowsFolderPath extends SystemData {
 }
 
 private predicate logonUser(FunctionCall source, VariableAccess use) {
-  (
-    source.getTarget().hasGlobalName("LogonUser") or
-    source.getTarget().hasGlobalName("LogonUserW") or
-    source.getTarget().hasGlobalName("LogonUserA")
-  ) and
+  source.getTarget().hasGlobalName(["LogonUser", "LogonUserW", "LogonUserA"]) and
   use = source.getAnArgument()
 }
 
@@ -296,11 +261,7 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Out_opt_   LPTSTR  lpValue,
   //   _Inout_opt_ PLONG   lpcbValue
   // );
-  (
-    source.getTarget().hasGlobalName("RegQueryValue") or
-    source.getTarget().hasGlobalName("RegQueryValueA") or
-    source.getTarget().hasGlobalName("RegQueryValueW")
-  ) and
+  source.getTarget().hasGlobalName(["RegQueryValue", "RegQueryValueA", "RegQueryValueW"]) and
   use = source.getArgument(2)
   or
   // LONG WINAPI RegQueryMultipleValues(
@@ -310,11 +271,11 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Out_opt_   LPTSTR  lpValueBuf,
   //   _Inout_opt_ LPDWORD ldwTotsize
   // );
-  (
-    source.getTarget().hasGlobalName("RegQueryMultipleValues") or
-    source.getTarget().hasGlobalName("RegQueryMultipleValuesA") or
-    source.getTarget().hasGlobalName("RegQueryMultipleValuesW")
-  ) and
+  source
+      .getTarget()
+      .hasGlobalName([
+          "RegQueryMultipleValues", "RegQueryMultipleValuesA", "RegQueryMultipleValuesW"
+        ]) and
   use = source.getArgument(3)
   or
   // LONG WINAPI RegQueryValueEx(
@@ -325,11 +286,7 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Out_opt_   LPBYTE  lpData,
   //   _Inout_opt_ LPDWORD lpcbData
   // );
-  (
-    source.getTarget().hasGlobalName("RegQueryValueEx") or
-    source.getTarget().hasGlobalName("RegQueryValueExA") or
-    source.getTarget().hasGlobalName("RegQueryValueExW")
-  ) and
+  source.getTarget().hasGlobalName(["RegQueryValueEx", "RegQueryValueExA", "RegQueryValueExW"]) and
   use = source.getArgument(4)
   or
   // LONG WINAPI RegGetValue(
@@ -341,11 +298,7 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Out_opt_   PVOID   pvData,
   //   _Inout_opt_ LPDWORD pcbData
   // );
-  (
-    source.getTarget().hasGlobalName("RegGetValue") or
-    source.getTarget().hasGlobalName("RegGetValueA") or
-    source.getTarget().hasGlobalName("RegGetValueW")
-  ) and
+  source.getTarget().hasGlobalName(["RegGetValue", "RegGetValueA", "RegGetValueW"]) and
   use = source.getArgument(5)
 }
 
@@ -371,10 +324,8 @@ abstract class DataOutput extends Element {
 /**
  * Data that is output via standard output or standard error.
  */
-class StandardOutput extends DataOutput {
-  StandardOutput() { this instanceof OutputWrite }
-
-  override Expr getASource() { result = this.(OutputWrite).getASource() }
+class StandardOutput extends DataOutput instanceof OutputWrite {
+  override Expr getASource() { result = OutputWrite.super.getASource() }
 }
 
 private predicate socketCallOrIndirect(FunctionCall call) {
@@ -407,12 +358,7 @@ private predicate socketOutput(FunctionCall call, Expr data) {
     //                const struct sockaddr *dest_addr, socklen_t addrlen);
     // ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
     // int write(int handle, void *buffer, int nbyte);
-    (
-      call.getTarget().hasGlobalName("send") or
-      call.getTarget().hasGlobalName("sendto") or
-      call.getTarget().hasGlobalName("sendmsg") or
-      call.getTarget().hasGlobalName("write")
-    ) and
+    call.getTarget().hasGlobalName(["send", "sendto", "sendmsg", "write"]) and
     data = call.getArgument(1) and
     socketFileDescriptor(call.getArgument(0))
   )
@@ -430,5 +376,5 @@ class SocketOutput extends DataOutput {
 from SystemData sd, DataOutput ow
 where
   sd.getAnExprIndirect() = ow.getASource() or
-  sd.getAnExprIndirect() = ow.getASource().(Expr).getAChild*()
+  sd.getAnExprIndirect() = ow.getASource().getAChild*()
 select ow, "This operation exposes system data from $@.", sd, sd.toString()

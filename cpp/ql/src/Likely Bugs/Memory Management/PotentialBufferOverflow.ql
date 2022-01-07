@@ -6,6 +6,7 @@
  * @kind problem
  * @id cpp/potential-buffer-overflow
  * @problem.severity warning
+ * @security-severity 10.0
  * @tags reliability
  *       security
  *       external/cwe/cwe-676

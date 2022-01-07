@@ -10,7 +10,7 @@
  */
 
 import javascript
-import UnusedVariable
+import Declarations.UnusedVariable
 
 /**
  * Holds if `v` is mentioned in a JSDoc comment in the same file, and that file
@@ -167,7 +167,7 @@ predicate whitelisted(UnusedLocal v) {
     vd.isAmbient()
   )
   or
-  exists(DirectEval eval |
+  exists(Expr eval | eval instanceof DirectEval or eval instanceof GeneratedCodeExpr |
     // eval nearby
     eval.getEnclosingFunction() = v.getADeclaration().getEnclosingFunction() and
     // ... but not on the RHS

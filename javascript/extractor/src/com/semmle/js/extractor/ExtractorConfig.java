@@ -82,8 +82,8 @@ public class ExtractorConfig {
     /** A CommonJS module that is not also an ES2015 module. */
     COMMONJS_MODULE,
 
-    /** An Angular template expression. */
-    ANGULAR_TEMPLATE,
+    /** A template expression, using a dialect similar to that of Angular. */
+    ANGULAR_STYLE_TEMPLATE,
 
     /** Automatically determined source type. */
     AUTO;
@@ -98,7 +98,7 @@ public class ExtractorConfig {
      */
     public Parser createParser(Options options, String input, int startPos) {
       switch (this) {
-      case ANGULAR_TEMPLATE:
+      case ANGULAR_STYLE_TEMPLATE:
         return new AngularExpressionParser(options, input, startPos);
       default:
         return new CustomParser(options, input, startPos);
@@ -118,7 +118,7 @@ public class ExtractorConfig {
      * variables are implicitly declared in its local scope. Implies {@link #hasLocalScope()}.
      */
     public boolean hasNoGlobalScope() {
-      return this == ANGULAR_TEMPLATE;
+      return this == ANGULAR_STYLE_TEMPLATE;
     }
 
     /** Returns true if this source is implicitly in strict mode. */

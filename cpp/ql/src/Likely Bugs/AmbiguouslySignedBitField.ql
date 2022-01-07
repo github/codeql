@@ -26,6 +26,8 @@ where
   // At least for C programs on Windows, BOOL is a common typedef for a type
   // representing BoolType.
   not bf.getType().hasName("BOOL") and
+  // GLib's gboolean is a typedef for a type representing BoolType.
+  not bf.getType().hasName("gboolean") and
   // If this is true, then there cannot be unsigned sign extension or overflow.
   not bf.getDeclaredNumBits() = bf.getType().getSize() * 8 and
   not bf.isAnonymous() and

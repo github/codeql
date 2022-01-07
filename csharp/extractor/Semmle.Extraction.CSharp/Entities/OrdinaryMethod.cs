@@ -15,14 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
 
-        public IMethodSymbol SourceDeclaration
-        {
-            get
-            {
-                var reducedFrom = Symbol.ReducedFrom ?? Symbol;
-                return reducedFrom.OriginalDefinition;
-            }
-        }
+        public IMethodSymbol SourceDeclaration => Symbol.OriginalDefinition;
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
 
@@ -53,7 +46,15 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractCompilerGenerated(trapFile);
         }
 
-        public static new OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+        public static new OrdinaryMethod Create(Context cx, IMethodSymbol method)
+        {
+            if (method.MethodKind == MethodKind.ReducedExtension)
+            {
+                cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
+            }
+
+            return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+        }
 
         private class OrdinaryMethodFactory : CachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {

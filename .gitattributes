@@ -48,3 +48,6 @@
 *.gif -text
 *.dll -text
 *.pdb -text
+
+java/ql/test/stubs/**/*.java linguist-generated=true
+java/ql/test/experimental/stubs/**/*.java linguist-generated=true

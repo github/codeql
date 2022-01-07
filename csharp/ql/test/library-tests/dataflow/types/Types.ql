@@ -15,7 +15,7 @@ class Conf extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
-      mc.getTarget().hasName("Sink") and
+      mc.getTarget().hasUndecoratedName("Sink") and
       mc.getAnArgument() = sink.asExpr()
     )
   }

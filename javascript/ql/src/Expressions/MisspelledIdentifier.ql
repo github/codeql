@@ -22,13 +22,13 @@ class IdentifierPart extends string {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(Identifier id, int start, Location l, int len |
-      occursIn(id, start, len) and l = id.getLocation()
+      this.occursIn(id, start, len) and l = id.getLocation()
     |
       filepath = l.getFile().getAbsolutePath() and
       startline = l.getStartLine() and
@@ -70,7 +70,7 @@ class WrongIdentifierPart extends IdentifierPart {
   string ppSuggestions() {
     exists(string cat |
       // first, concatenate with commas
-      cat = concat(getASuggestion(), ", ") and
+      cat = concat(this.getASuggestion(), ", ") and
       // then, replace last comma with "or"
       result = cat.regexpReplaceAll(", ([^,]++)$", " or $1")
     )

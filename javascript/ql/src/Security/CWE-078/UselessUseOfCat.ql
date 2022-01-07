@@ -3,11 +3,13 @@
  * @description Using the  `cat` process to read a file is unnecessarily complex, inefficient, unportable, and can lead to subtle bugs, or even security vulnerabilities.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.3
  * @precision high
  * @id js/unnecessary-use-of-cat
  * @tags correctness
  *       security
  *       maintainability
+ *       external/cwe/cwe-078
  */
 
 import javascript

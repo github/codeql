@@ -4,6 +4,7 @@
  *              as the third argument may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision medium
  * @id cpp/bad-strncpy-size
  * @tags reliability
@@ -42,23 +43,25 @@ predicate isSizePlus(Expr e, BufferSizeExpr baseSize, int plus) {
 
 predicate strncpyFunction(Function f, int argDest, int argSrc, int argLimit) {
   exists(string name | name = f.getName() |
-    (
-      name = "strcpy_s" or // strcpy_s(dst, max_amount, src)
-      name = "wcscpy_s" or // wcscpy_s(dst, max_amount, src)
-      name = "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
-    ) and
+    name =
+      [
+        "strcpy_s", // strcpy_s(dst, max_amount, src)
+        "wcscpy_s", // wcscpy_s(dst, max_amount, src)
+        "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
+      ] and
     argDest = 0 and
     argSrc = 2 and
     argLimit = 1
     or
-    (
-      name = "strncpy" or // strncpy(dst, src, max_amount)
-      name = "strncpy_l" or // strncpy_l(dst, src, max_amount, locale)
-      name = "wcsncpy" or // wcsncpy(dst, src, max_amount)
-      name = "_wcsncpy_l" or // _wcsncpy_l(dst, src, max_amount, locale)
-      name = "_mbsncpy" or // _mbsncpy(dst, src, max_amount)
-      name = "_mbsncpy_l" // _mbsncpy_l(dst, src, max_amount, locale)
-    ) and
+    name =
+      [
+        "strncpy", // strncpy(dst, src, max_amount)
+        "strncpy_l", // strncpy_l(dst, src, max_amount, locale)
+        "wcsncpy", // wcsncpy(dst, src, max_amount)
+        "_wcsncpy_l", // _wcsncpy_l(dst, src, max_amount, locale)
+        "_mbsncpy", // _mbsncpy(dst, src, max_amount)
+        "_mbsncpy_l" // _mbsncpy_l(dst, src, max_amount, locale)
+      ] and
     argDest = 0 and
     argSrc = 1 and
     argLimit = 2

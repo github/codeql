@@ -1,0 +1,13 @@
+| SinksXss.cs:11:36:11:42 | request | ServiceStack request parameter |
+| SinksXss.cs:16:37:16:43 | request | ServiceStack request parameter |
+| SinksXss.cs:23:39:23:41 | req | ServiceStack request parameter |
+| SinksXss.cs:25:36:25:38 | req | ServiceStack request parameter |
+| Sources.cs:11:34:11:40 | request | ServiceStack request parameter |
+| Sources.cs:12:36:12:42 | request | ServiceStack request parameter |
+| Sources.cs:13:36:13:42 | request | ServiceStack request parameter |
+| Sources.cs:14:36:14:42 | request | ServiceStack request parameter |
+| Sources.cs:15:36:15:42 | request | ServiceStack request parameter |
+| Sources.cs:22:37:22:43 | request | ServiceStack request parameter |
+| Sources.cs:23:48:23:54 | request | ServiceStack request parameter |
+| Sources.cs:30:40:30:46 | request | ServiceStack request parameter |
+| Sources.cs:35:36:35:42 | request | ServiceStack request parameter |

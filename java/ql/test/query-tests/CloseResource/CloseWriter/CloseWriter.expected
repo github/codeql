@@ -1,0 +1,3 @@
+| CloseWriter.java:17:42:17:71 | new FileWriter(...) | This FileWriter is not always closed on method exit. |
+| CloseWriter.java:22:22:22:53 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
+| CloseWriter.java:32:6:32:41 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |

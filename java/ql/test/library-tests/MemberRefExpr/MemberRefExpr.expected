@@ -1,0 +1,14 @@
+| Test.java:24:26:24:51 | ...::... | Inner<>.Inner<> | Test$Generic$Inner.class:0:0:0:0 | Inner<> |
+| Test.java:38:29:38:42 | ...::... | Object.toString | Test.java:1:7:1:10 | Test |
+| Test.java:39:29:39:42 | ...::... | Object.hashCode | Test.java:1:7:1:10 | Test |
+| Test.java:40:29:40:39 | ...::... | Object.clone | Test.java:1:7:1:10 | Test |
+| Test.java:41:40:41:64 | ...::... | Object.toString | Test$Generic.class:0:0:0:0 | Generic<String> |
+| Test.java:43:23:43:36 | ...::... | Object.toString | Test.java:1:7:1:10 | Test |
+| Test.java:44:23:44:36 | ...::... | Object.hashCode | Test.java:1:7:1:10 | Test |
+| Test.java:45:23:45:33 | ...::... | Object.clone | Test.java:1:7:1:10 | Test |
+| Test.java:48:22:48:35 | ...::... | Object.toString | Test.java:1:7:1:10 | Test |
+| Test.java:51:13:51:21 | ...::... | Test.Test | Test.java:1:7:1:10 | Test |
+| Test.java:52:13:52:32 | ...::... | Generic<String>.Generic<String> | Test$Generic.class:0:0:0:0 | Generic<String> |
+| Test.java:56:13:56:22 | ...::... |  | file://:0:0:0:0 | int[] |
+| Test.java:57:13:57:26 | ...::... |  | file://:0:0:0:0 | Generic<>[] |
+| Test.java:61:31:61:47 | ...::... | Test.doSomething | Test.java:1:7:1:10 | Test |

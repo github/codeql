@@ -30,7 +30,7 @@ dynamic.cs:
 #   11|               0: [IntLiteral] 42
 #   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Action<Int32> action = ...
-#   12|           -1: [TypeMention] Action<Int32>
+#   12|           -1: [TypeMention] Action<int>
 #   12|             1: [TypeMention] int
 #   12|           0: [LocalVariableAccess] access to local variable action
 #   12|           1: [LambdaExpr] (...) => ...
@@ -58,14 +58,14 @@ dynamic.cs:
 #   17|           0: [LocalVariableAccess] access to local variable d
 #   18|       6: [ExprStmt] ...;
 #   18|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
-#   18|           -1: [TypeMention] KeyValuePair<String, dynamic>
+#   18|           -1: [TypeMention] KeyValuePair<string, dynamic>
 #   18|             1: [TypeMention] string
 #   18|             2: [TypeMention] dynamic
 #   18|           0: [StringLiteral] ""
 #   18|           1: [LocalVariableAccess] access to local variable d
 #   19|       7: [ExprStmt] ...;
 #   19|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
-#   19|           -1: [TypeMention] KeyValuePair<String, dynamic>
+#   19|           -1: [TypeMention] KeyValuePair<string, dynamic>
 #   19|             1: [TypeMention] string
 #   19|             2: [TypeMention] dynamic
 #   19|           0: [StringLiteral] ""

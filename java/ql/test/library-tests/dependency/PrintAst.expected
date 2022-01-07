@@ -1,6 +1,6 @@
 dependency/A.java:
 #    0| [CompilationUnit] A
-#    3|   1: [Class] A
+#    3|   1: [Class,GenericType,ParameterizedType] A
 #-----|     -2: (Generic Parameters)
 #    3|       0: [TypeVariable] T
 #    6|   2: [Class] B
@@ -22,8 +22,8 @@ dependency/A.java:
 #   16|           0: [Parameter] f
 #   16|             0: [TypeAccess] A<F>
 #   16|               0: [TypeAccess] F
-#   16|         5: [BlockStmt] stmt
-#   17|           0: [ReturnStmt] stmt
+#   16|         5: [BlockStmt] { ... }
+#   17|           0: [ReturnStmt] return ...
 #   17|             0: [NullLiteral] null
 #   22|   5: [Class] F
 #   24|   6: [Class] G
@@ -38,8 +38,8 @@ dependency/A.java:
 #-----|       4: (Parameters)
 #   27|         0: [Parameter] t
 #   27|           0: [TypeAccess] T
-#   27|       5: [BlockStmt] stmt
-#   27|         0: [ReturnStmt] stmt
+#   27|       5: [BlockStmt] { ... }
+#   27|         0: [ReturnStmt] return ...
 #   27|           0: [VarAccess] t
 #   28|     3: [Method] test2
 #   28|       3: [TypeAccess] void
@@ -48,4 +48,4 @@ dependency/A.java:
 #   28|           0: [TypeAccess] Collection<? extends Number>
 #   28|             0: [WildcardTypeAccess] ? ...
 #   28|               0: [TypeAccess] Number
-#   28|       5: [BlockStmt] stmt
+#   28|       5: [BlockStmt] { ... }

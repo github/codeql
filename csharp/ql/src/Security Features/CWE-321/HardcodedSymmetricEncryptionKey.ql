@@ -4,7 +4,9 @@
  * @kind path-problem
  * @id cs/hard-coded-symmetric-encryption-key
  * @problem.severity error
+ * @security-severity 7.5
  * @tags security
+ *       external/cwe/cwe-321
  */
 
 /*

@@ -1,5 +1,0 @@
-| test.c:8:3:8:9 | call to strncat | Possible out-of-bounds write due to incorrect size argument. |
-| test.c:9:3:9:9 | call to strncat | Possible out-of-bounds write due to incorrect size argument. |
-| test.c:17:3:17:9 | call to strncat | Possible out-of-bounds write due to incorrect size argument. |
-| test.c:18:3:18:9 | call to strncat | Possible out-of-bounds write due to incorrect size argument. |
-| test.c:46:3:46:9 | call to strncat | Possible out-of-bounds write due to incorrect size argument. |

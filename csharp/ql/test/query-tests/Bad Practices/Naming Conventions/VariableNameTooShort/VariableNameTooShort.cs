@@ -14,5 +14,3 @@ class VariableNameTooShort
         Func<int, int> func = x /* BAD */ => x + 1;
     }
 }
-
-// semmle-extractor-options: /r:System.Linq.dll

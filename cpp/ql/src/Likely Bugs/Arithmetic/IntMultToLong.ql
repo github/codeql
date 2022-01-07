@@ -4,6 +4,7 @@
  *              be a sign that the result can overflow the type converted from.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision high
  * @id cpp/integer-multiplication-cast-to-long
  * @tags reliability
@@ -165,6 +166,7 @@ class VarAnalyzableExpr extends AnalyzableExpr, VariableAccess {
  * Holds if `t` is not an instance of `IntegralType`,
  * or if `me` cannot be proven to not overflow
  */
+pragma[inline]
 predicate overflows(MulExpr me, Type t) {
   t instanceof IntegralType
   implies

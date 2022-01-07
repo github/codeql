@@ -1,8 +1,0 @@
-edges
-| test_cryptography.py:5:17:5:30 | a password | test_cryptography.py:8:29:8:37 | a password |
-| test_cryptography.py:5:17:5:30 | a password | test_cryptography.py:8:29:8:37 | a password |
-| test_pycrypto.py:5:17:5:30 | a password | test_pycrypto.py:7:27:7:35 | a password |
-| test_pycrypto.py:5:17:5:30 | a password | test_pycrypto.py:7:27:7:35 | a password |
-#select
-| test_cryptography.py:8:29:8:37 | dangerous | test_cryptography.py:5:17:5:30 | a password | test_cryptography.py:8:29:8:37 | a password | $@ is used in a broken or weak cryptographic algorithm. | test_cryptography.py:5:17:5:30 | get_password() | Sensitive data |
-| test_pycrypto.py:7:27:7:35 | dangerous | test_pycrypto.py:5:17:5:30 | a password | test_pycrypto.py:7:27:7:35 | a password | $@ is used in a broken or weak cryptographic algorithm. | test_pycrypto.py:5:17:5:30 | get_password() | Sensitive data |

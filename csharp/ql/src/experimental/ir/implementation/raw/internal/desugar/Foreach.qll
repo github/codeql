@@ -359,9 +359,16 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -384,9 +391,16 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -409,9 +423,16 @@ private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {

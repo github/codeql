@@ -10,7 +10,7 @@ import semmle.code.cpp.commons.DateTime
  * Get the top-level `BinaryOperation` enclosing the expression e.
  */
 private BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
-  result = e.getEnclosingElement().(BinaryOperation)
+  result = e.getEnclosingElement()
   or
   result = getATopLevelBinaryOperationExpression(e.getEnclosingElement())
 }
@@ -156,8 +156,8 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
     //
     // https://aa.usno.navy.mil/faq/docs/calendars.php
     this.isUsedInMod4Operation() and
-    additionalModulusCheckForLeapYear(400) and
-    additionalModulusCheckForLeapYear(100)
+    this.additionalModulusCheckForLeapYear(400) and
+    this.additionalModulusCheckForLeapYear(100)
   }
 }
 
@@ -176,17 +176,17 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
 
   override predicate isUsedInCorrectLeapYearCheck() {
     this.isUsedInMod4Operation() and
-    additionalModulusCheckForLeapYear(400) and
-    additionalModulusCheckForLeapYear(100) and
+    this.additionalModulusCheckForLeapYear(400) and
+    this.additionalModulusCheckForLeapYear(100) and
     // tm_year represents years since 1900
     (
-      additionalAdditionOrSubstractionCheckForLeapYear(1900)
+      this.additionalAdditionOrSubstractionCheckForLeapYear(1900)
       or
       // some systems may use 2000 for 2-digit year conversions
-      additionalAdditionOrSubstractionCheckForLeapYear(2000)
+      this.additionalAdditionOrSubstractionCheckForLeapYear(2000)
       or
       // converting from/to Unix epoch
-      additionalAdditionOrSubstractionCheckForLeapYear(1970)
+      this.additionalAdditionOrSubstractionCheckForLeapYear(1970)
     )
   }
 }

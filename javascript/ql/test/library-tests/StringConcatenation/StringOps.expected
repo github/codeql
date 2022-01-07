@@ -41,6 +41,8 @@ concatenation
 | tst.js:49:10:49:20 | xs.join("") |
 | tst.js:53:10:53:34 | `one ${ ...  three` |
 | tst.js:61:10:61:34 | `first  ... } last` |
+| tst.js:77:15:77:37 | ["one", ... three"] |
+| tst.js:79:12:79:23 | array.join() |
 | tst.js:87:5:87:14 | x |
 | tst.js:87:5:87:14 | x += 'two' |
 | tst.js:89:3:89:14 | x |
@@ -126,6 +128,10 @@ concatenationOperand
 | tst.js:61:23:61:23 | x |
 | tst.js:61:27:61:27 | x |
 | tst.js:61:29:61:33 |  last |
+| tst.js:77:15:77:37 | ["one", ... three"] |
+| tst.js:77:16:77:20 | "one" |
+| tst.js:77:23:77:27 | "two" |
+| tst.js:77:30:77:36 | "three" |
 | tst.js:87:5:87:5 | x |
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
@@ -210,6 +216,9 @@ concatenationLeaf
 | tst.js:61:23:61:23 | x |
 | tst.js:61:27:61:27 | x |
 | tst.js:61:29:61:33 |  last |
+| tst.js:77:16:77:20 | "one" |
+| tst.js:77:23:77:27 | "two" |
+| tst.js:77:30:77:36 | "three" |
 | tst.js:87:5:87:5 | x |
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
@@ -334,6 +343,11 @@ concatenationNode
 | tst.js:61:23:61:23 | x |
 | tst.js:61:27:61:27 | x |
 | tst.js:61:29:61:33 |  last |
+| tst.js:77:15:77:37 | ["one", ... three"] |
+| tst.js:77:16:77:20 | "one" |
+| tst.js:77:23:77:27 | "two" |
+| tst.js:77:30:77:36 | "three" |
+| tst.js:79:12:79:23 | array.join() |
 | tst.js:87:5:87:5 | x |
 | tst.js:87:5:87:14 | x |
 | tst.js:87:5:87:14 | x += 'two' |
@@ -454,6 +468,10 @@ operand
 | tst.js:61:10:61:34 | `first  ... } last` | 2 | tst.js:61:23:61:23 | x |
 | tst.js:61:10:61:34 | `first  ... } last` | 3 | tst.js:61:27:61:27 | x |
 | tst.js:61:10:61:34 | `first  ... } last` | 4 | tst.js:61:29:61:33 |  last |
+| tst.js:77:15:77:37 | ["one", ... three"] | 0 | tst.js:77:16:77:20 | "one" |
+| tst.js:77:15:77:37 | ["one", ... three"] | 1 | tst.js:77:23:77:27 | "two" |
+| tst.js:77:15:77:37 | ["one", ... three"] | 2 | tst.js:77:30:77:36 | "three" |
+| tst.js:79:12:79:23 | array.join() | 0 | tst.js:77:15:77:37 | ["one", ... three"] |
 | tst.js:87:5:87:14 | x | 0 | tst.js:87:5:87:5 | x |
 | tst.js:87:5:87:14 | x | 1 | tst.js:87:10:87:14 | 'two' |
 | tst.js:87:5:87:14 | x += 'two' | 0 | tst.js:87:5:87:5 | x |
@@ -518,6 +536,8 @@ nextLeaf
 | tst.js:61:19:61:19 | x | tst.js:61:23:61:23 | x |
 | tst.js:61:23:61:23 | x | tst.js:61:27:61:27 | x |
 | tst.js:61:27:61:27 | x | tst.js:61:29:61:33 |  last |
+| tst.js:77:16:77:20 | "one" | tst.js:77:23:77:27 | "two" |
+| tst.js:77:23:77:27 | "two" | tst.js:77:30:77:36 | "three" |
 | tst.js:87:5:87:5 | x | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x | tst.js:89:8:89:14 | 'three' |
 | tst.js:95:7:95:7 | x | tst.js:95:16:95:20 | 'two' |

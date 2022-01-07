@@ -4,6 +4,7 @@
  *              on undefined behavior and may lead to memory corruption.
  * @kind problem
  * @problem.severity error
+ * @security-severity 2.1
  * @precision high
  * @id cpp/pointer-overflow-check
  * @tags reliability

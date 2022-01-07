@@ -3,6 +3,7 @@
  * @description Credentials are hard coded in the source code of the application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id py/hardcoded-credentials
  * @tags security
@@ -87,7 +88,7 @@ class CredentialSink extends TaintSink {
   CredentialSink() {
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
-      not name.suffix(name.length() - 4) = "file"
+      not name.matches("%file")
     |
       any(FunctionValue func).getNamedArgumentForCall(_, name) = this
       or

@@ -14,8 +14,8 @@ class ResolveGlobalCall extends Assertion {
   ResolveGlobalCall() { functionName = "resolveGlobal" }
 
   override string getViolation() {
-    not getVariable().isGlobal() and
-    result = getVariable().getName() + " should resolve to a global variable"
+    not this.getVariable().isGlobal() and
+    result = this.getVariable().getName() + " should resolve to a global variable"
   }
 }
 
@@ -23,8 +23,8 @@ class ResolveAmbientCall extends Assertion {
   ResolveAmbientCall() { functionName = "resolveAmbient" }
 
   override string getViolation() {
-    getVariable().isGlobal() and
-    result = getVariable().getName() + " should not resolve to a global"
+    this.getVariable().isGlobal() and
+    result = this.getVariable().getName() + " should not resolve to a global"
   }
 }
 

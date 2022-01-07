@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Windows.cs
-
 using System.Web;
 
 public class Person

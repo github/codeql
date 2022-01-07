@@ -4,6 +4,7 @@
  *              schema.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 4.3
  * @precision high
  * @id cs/xml/missing-validation
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.MissingXMLValidation::MissingXMLValidation
+import semmle.code.csharp.security.dataflow.MissingXMLValidationQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
