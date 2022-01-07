@@ -1264,7 +1264,12 @@ open class KotlinFileExtractor(
 
         val typeAccessId = extractTypeAccess(typeAccessType, callable, id, -3, e, enclosingStmt)
 
-        if (e.typeArgumentsCount > 0) {
+        if (e is IrConstructorCall) {
+            // Only extract type arguments relating to the constructed type, not the constructor itself:
+            e.getClassTypeArguments().forEachIndexed({ argIdx, argType ->
+                extractTypeAccess(argType!!, callable, typeAccessId, argIdx, e, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+            })
+        } else {
             extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
         }
     }

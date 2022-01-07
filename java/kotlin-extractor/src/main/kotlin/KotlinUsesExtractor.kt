@@ -91,9 +91,21 @@ open class KotlinUsesExtractor(
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
 
+    private fun removeOuterClassTypeArgs(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+        return argsIncludingOuterClasses?.let {
+            if (it.size > c.typeParameters.size)
+                it.take(c.typeParameters.size)
+            else
+                null
+        } ?: argsIncludingOuterClasses
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
+    fun useClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
+        // For all purposes ignore type arguments relating to outer classes.
+        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
+
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
         }
@@ -207,7 +219,7 @@ open class KotlinUsesExtractor(
 
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
+    fun useSimpleTypeClass(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             if (args?.isNotEmpty() == true) {
                 logger.warn(Severity.ErrorHigh, "Anonymous class with unexpected type arguments")
