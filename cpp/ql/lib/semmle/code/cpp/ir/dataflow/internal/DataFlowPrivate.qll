@@ -75,9 +75,7 @@ private class SideEffectArgumentNode extends ArgumentNode {
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
-    (
-      pos.(IndirectionPosition).getIndex() = read.getIndex()
-    )
+    pos.(IndirectionPosition).getIndex() = read.getIndex()
   }
 
   override string toString() {
@@ -93,6 +91,52 @@ private class SideEffectArgumentNode extends ArgumentNode {
     )
   }
 }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition = Position;
+
+/** An argument position represented by an integer. */
+class ArgumentPosition = Position;
+
+class Position extends TPosition {
+  abstract string toString();
+}
+
+class DirectPosition extends TDirectPosition {
+  int index;
+
+  DirectPosition() { this = TDirectPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+class IndirectionPosition extends TIndirectionPosition {
+  int index;
+
+  IndirectionPosition() { this = TIndirectionPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+newtype TPosition =
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index))} or
+  TIndirectionPosition(int index) { exists(ReadSideEffectInstruction instr | instr.getIndex() = index) }
 
 private newtype TReturnKind =
   TNormalReturnKind() or

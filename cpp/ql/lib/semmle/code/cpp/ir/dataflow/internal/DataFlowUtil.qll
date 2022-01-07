@@ -11,7 +11,6 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
-private import DataFlowDispatch
 private import SsaInternals as Ssa
 
 cached
@@ -490,52 +489,6 @@ class ExprNode extends InstructionNode {
 
   override string toString() { result = this.asConvertedExpr().toString() }
 }
-
-/** A parameter position represented by an integer. */
-class ParameterPosition = Position;
-
-/** An argument position represented by an integer. */
-class ArgumentPosition = Position;
-
-class Position extends TPosition {
-  abstract string toString();
-}
-
-class DirectPosition extends TDirectPosition {
-  int index;
-
-  DirectPosition() { this = TDirectPosition(index) }
-
-  string toString() {
-    index = -1 and
-    result = "this"
-    or
-    index != -1 and
-    result = index.toString()
-  }
-
-  int getIndex() { result = index }
-}
-
-class IndirectionPosition extends TIndirectionPosition {
-  int index;
-
-  IndirectionPosition() { this = TIndirectionPosition(index) }
-
-  string toString() {
-    index = -1 and
-    result = "this"
-    or
-    index != -1 and
-    result = index.toString()
-  }
-
-  int getIndex() { result = index }
-}
-
-newtype TPosition =
-  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index))} or
-  TIndirectionPosition(int index) { exists(any(CallInstruction c).getArgument(index)) }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
