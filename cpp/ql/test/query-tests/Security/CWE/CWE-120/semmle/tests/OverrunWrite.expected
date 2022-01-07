@@ -14,6 +14,13 @@
 | tests.c:120:3:120:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 1 bytes. |
 | tests.c:121:3:121:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 16 bytes. |
 | tests.c:136:2:136:8 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
+| tests.c:178:2:178:8 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
+| tests.c:179:2:179:8 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 3 bytes. |
+| tests.c:180:2:180:8 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 5 bytes. |
+| tests.c:182:3:182:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
+| tests.c:186:3:186:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
+| tests.c:189:3:189:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
+| tests.c:193:3:193:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 5 bytes. |
 | unions.c:26:2:26:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
 | unions.c:27:2:27:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 15 bytes. |
 | unions.c:27:2:27:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
