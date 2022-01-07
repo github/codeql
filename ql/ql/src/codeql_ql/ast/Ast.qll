@@ -2461,7 +2461,7 @@ module YAML {
         version = "\"*\""
       )
       or
-      name = getProperty("libraryPathDependencies") and
+      name = this.getProperty("libraryPathDependencies") and
       version = "\"*\""
     }
 
