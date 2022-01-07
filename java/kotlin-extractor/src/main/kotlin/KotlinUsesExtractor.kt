@@ -546,7 +546,8 @@ class X {
                             params
                         }
         val paramTypeIds = allParams.joinToString { "{${useType(erase(it.type)).javaResult.id}}" }
-        val returnTypeId = useType(erase(returnType)).javaResult.id
+        val labelReturnType = if (name == "<init>") pluginContext.irBuiltIns.unitType else erase(returnType)
+        val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
         return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
     }
 
