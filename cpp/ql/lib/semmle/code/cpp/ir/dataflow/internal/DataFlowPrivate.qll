@@ -135,8 +135,10 @@ class IndirectionPosition extends TIndirectionPosition {
 }
 
 newtype TPosition =
-  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index))} or
-  TIndirectionPosition(int index) { exists(ReadSideEffectInstruction instr | instr.getIndex() = index) }
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
+  TIndirectionPosition(int index) {
+    exists(ReadSideEffectInstruction instr | instr.getIndex() = index)
+  }
 
 private newtype TReturnKind =
   TNormalReturnKind() or
