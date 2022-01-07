@@ -124,7 +124,10 @@ open class KotlinFileExtractor(
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?): Label<out DbClassorinterface> {
+    fun extractClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
+        // For all purposes ignore type arguments relating to outer classes.
+        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
+
         if (typeArgs?.isEmpty() == true) {
             logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
@@ -169,6 +172,9 @@ open class KotlinFileExtractor(
 
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
+
+        // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
+        extractEnclosingClass(c, id, locId, argsIncludingOuterClasses?.drop(c.typeParameters.size) ?: listOf())
 
         return id
     }
@@ -242,37 +248,7 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
 
-        var parent: IrDeclarationParent? = c.parent
-        while (parent != null) {
-            if (parent is IrClass) {
-                val parentId =
-                    if (parent.isAnonymousObject) {
-                        @Suppress("UNCHECKED_CAST")
-                        useAnonymousClass(parent).javaResult.id as Label<out DbClass>
-                    } else {
-                        useClassInstance(parent, listOf()).typeResult.id
-                    }
-                tw.writeEnclInReftype(id, parentId)
-                if(c.isCompanion) {
-                    // If we are a companion then our parent has a
-                    //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
-                    // that we need to fabricate here
-                    val instance = useCompanionObjectClassInstance(c)
-                    if(instance != null) {
-                        val type = useSimpleTypeClass(c, emptyList(), false)
-                        tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
-                        tw.writeHasLocation(instance.id, locId)
-                        addModifiers(instance.id, "public", "static", "final")
-                        @Suppress("UNCHECKED_CAST")
-                        tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, id as Label<DbClass>)
-                    }
-                }
-
-                break
-            }
-
-            parent = (parent as? IrDeclaration)?.parent
-        }
+        extractEnclosingClass(c, id, locId, listOf())
 
         c.typeParameters.map { extractTypeParameter(it) }
         c.declarations.map { extractDeclaration(it, id) }
@@ -296,6 +272,40 @@ open class KotlinFileExtractor(
         extractClassSupertypes(c, id)
 
         return id
+    }
+
+    fun extractEnclosingClass(innerClass: IrClass, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>) {
+        var parent: IrDeclarationParent? = innerClass.parent
+        while (parent != null) {
+            if (parent is IrClass) {
+                val parentId =
+                    if (parent.isAnonymousObject) {
+                        @Suppress("UNCHECKED_CAST")
+                        useAnonymousClass(parent).javaResult.id as Label<out DbClass>
+                    } else {
+                        useClassInstance(parent, parentClassTypeArguments).typeResult.id
+                    }
+                tw.writeEnclInReftype(innerId, parentId)
+                if(innerClass.isCompanion) {
+                    // If we are a companion then our parent has a
+                    //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
+                    // that we need to fabricate here
+                    val instance = useCompanionObjectClassInstance(innerClass)
+                    if(instance != null) {
+                        val type = useSimpleTypeClass(innerClass, emptyList(), false)
+                        tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, innerId, instance.id)
+                        tw.writeHasLocation(instance.id, innerLocId)
+                        addModifiers(instance.id, "public", "static", "final")
+                        @Suppress("UNCHECKED_CAST")
+                        tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, innerId as Label<DbClass>)
+                    }
+                }
+
+                break
+            }
+
+            parent = (parent as? IrDeclaration)?.parent
+        }
     }
 
     data class FieldResult(val id: Label<DbField>, val name: String)

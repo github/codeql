@@ -91,7 +91,7 @@ open class KotlinUsesExtractor(
         return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
 
-    private fun removeOuterClassTypeArgs(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+    fun removeOuterClassTypeArgs(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         return argsIncludingOuterClasses?.let {
             if (it.size > c.typeParameters.size)
                 it.take(c.typeParameters.size)
@@ -102,10 +102,7 @@ open class KotlinUsesExtractor(
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun useClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
-        // For all purposes ignore type arguments relating to outer classes.
-        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
-
+    fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Unexpected access to anonymous class instance")
         }
@@ -158,7 +155,10 @@ open class KotlinUsesExtractor(
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun addClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+    fun addClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+        // For all purposes ignore type arguments relating to outer classes.
+        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
+
         val classLabelResult = getClassLabel(c, typeArgs)
 
         var instanceSeenBefore = true
@@ -175,7 +175,7 @@ open class KotlinUsesExtractor(
             val extractorWithCSource by lazy { this.withSourceFileOfClass(c) }
 
             if (!instanceSeenBefore) {
-                extractorWithCSource.extractClassInstance(c, typeArgs)
+                extractorWithCSource.extractClassInstance(c, argsIncludingOuterClasses)
             }
 
             if (inReceiverContext && genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
@@ -219,7 +219,7 @@ open class KotlinUsesExtractor(
 
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun useSimpleTypeClass(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
+    fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             if (args?.isNotEmpty() == true) {
                 logger.warn(Severity.ErrorHigh, "Anonymous class with unexpected type arguments")
