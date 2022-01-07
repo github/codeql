@@ -43,14 +43,14 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        private readonly Queue<IEntity> labelQueue = new();
+        public readonly Queue<IEntity> LabelQueue = new();
 
         public void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                labelQueue.Enqueue(entity);
+                LabelQueue.Enqueue(entity);
             }
             else
             {
@@ -62,10 +62,8 @@ namespace Semmle.Extraction
                 finally
                 {
                     writingLabel = false;
-                    if (labelQueue.Any())
-                    {
-                        DefineLabel(labelQueue.Dequeue());
-                    }
+                    if (LabelQueue.TryDequeue(out var next))
+                        DefineLabel(next);
                 }
             }
         }
@@ -177,6 +175,7 @@ namespace Semmle.Extraction
                 dictionary[cacheKey] = ret;
             }
 
+            ContextShared.DefineLabel(ret);
             using (StackGuard)
             {
                 this.Try(null, symbol, () => ContextShared.WithWriter(trapFile => ret.Populate(trapFile)));
@@ -206,7 +205,7 @@ namespace Semmle.Extraction
         /// The only reason for this is so that the call stack does not
         /// grow indefinitely, causing a potential stack overflow.
         /// </summary>
-        public readonly LinkedList<Action> PopulateQueue = new();
+        public readonly Queue<Action> PopulateQueue = new();
 
         /// <summary>
         /// Enqueue the given action to be performed later.
@@ -219,11 +218,11 @@ namespace Semmle.Extraction
             {
                 // If we are currently executing with a duplication guard, then the same
                 // guard must be used for the deferred action
-                PopulateQueue.AddLast(() => WithDuplicationGuard(key, a));
+                PopulateQueue.Enqueue(() => WithDuplicationGuard(key, a));
             }
             else
             {
-                PopulateQueue.AddLast(a);
+                PopulateQueue.Enqueue(a);
             }
         }
 
@@ -232,12 +231,19 @@ namespace Semmle.Extraction
         /// </summary>
         public void PopulateAll()
         {
-            while (PopulateQueue.First is LinkedListNode<Action> first)
+            void ProcessLabelQueue()
+            {
+                if (LabelQueue.TryDequeue(out var next))
+                    DefineLabel(next);
+            }
+
+            ProcessLabelQueue();
+
+            while (PopulateQueue.TryDequeue(out var next))
             {
                 try
                 {
-                    PopulateQueue.RemoveFirst();
-                    first.Value();
+                    next();
                 }
                 catch (InternalError ex)
                 {
@@ -247,6 +253,8 @@ namespace Semmle.Extraction
                 {
                     ExtractionError($"Uncaught exception. {ex.Message}", null, CreateLocation(), ex.StackTrace);
                 }
+
+                ProcessLabelQueue();
             }
         }
 
@@ -375,7 +383,7 @@ namespace Semmle.Extraction
                 : () => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
 
             if (deferred)
-                PopulateQueue.AddLast(a);
+                PopulateQueue.Enqueue(a);
             else
                 a();
         }

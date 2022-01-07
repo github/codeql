@@ -31,6 +31,10 @@ namespace Semmle.Extraction
         ///
         /// This is only relevant if this (shared or non-shared) entity is referenced from the
         /// shared TRAP file, or if this is a shared entity referenced from a non-shared TRAP file.
+        ///
+        /// Shared entities always use the label map and never the `Label` field. Non-shared
+        /// entities use the `Label` field for the label used in it's own TRAP file, while the
+        /// the label map is used if the entity is referenced from the shared TRAP file.
         /// </summary>
         public Dictionary<TextWriter, Label>? LabelMap;
 

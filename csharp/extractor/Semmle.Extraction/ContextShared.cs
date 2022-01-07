@@ -21,6 +21,8 @@ namespace Semmle.Extraction
 
         public readonly Dictionary<ISymbol, CachedEntity> SymbolEntityCacheShared = new(SymbolEqualityComparer.Default);
 
+        private readonly Queue<CachedEntity> labelQueue = new();
+
         private bool writingLabel = false;
 
         private readonly TrapWriter trapWriterShared;
@@ -37,17 +39,18 @@ namespace Semmle.Extraction
             return new ContextShared(projectLayout.CreateTrapWriter(logger, transformedPath, trapCompression, discardDuplicates: false));
         }
 
-        [ThreadStatic] private static Context? perThreadContext;
+        [ThreadStatic] private static Context? currentThreadContext;
 
         /// <summary>
         /// Registers the context object used by the current thread.
         /// </summary>
         public static void RegisterContext(Context context)
         {
-            perThreadContext = context;
+            currentThreadContext = context;
         }
 
-        private static LinkedList<Action> ThreadQueue => perThreadContext!.PopulateQueue;
+        public void DefineLabel(CachedEntity entity) =>
+            GetLabelForWriter(entity, trapWriterShared.Writer);
 
         public Label GetLabelForWriter(CachedEntity entity, TextWriter trapFile)
         {
@@ -67,7 +70,7 @@ namespace Semmle.Extraction
                 if (entity.LabelMap.TryGetValue(trapFile, out var cached))
                     return cached;
 
-                var trapWriter = isSharedTrapFile ? trapWriterShared : perThreadContext!.TrapWriter;
+                var trapWriter = isSharedTrapFile ? trapWriterShared : currentThreadContext!.TrapWriter;
 
                 label = new Label(trapWriter.IdCounter++);
 
@@ -77,34 +80,39 @@ namespace Semmle.Extraction
             if (isSharedTrapFile)
             {
                 // shared or non-shared entity referenced from shared TRAP file
-                ThreadQueue.AddFirst(() => WithWriter(trapFile => entity.DefineLabel(trapFile, entity.Context.Extractor), true));
+                WriteSharedLabel(entity);
             }
             else
             {
                 // shared entity referenced from non-shared TRAP file
-                ThreadQueue.AddFirst(() => perThreadContext!.DefineLabel(entity));
+                currentThreadContext!.LabelQueue.Enqueue(entity);
             }
             return label;
         }
 
-        private void WithWriter(Action<TextWriter> a, bool writeLabel)
+        /// <summary>
+        /// Writes the label for a shared entity to the shared TRAP file.
+        /// </summary>
+        private void WriteSharedLabel(CachedEntity entity)
         {
             lock (trapWriterShared)
             {
                 if (writingLabel)
                 {
-                    ThreadQueue.AddFirst(() => WithWriter(a, writeLabel));
+                    labelQueue.Enqueue(entity);
                     return;
                 }
 
-                writingLabel = writeLabel;
+                writingLabel = true;
                 try
                 {
-                    a(trapWriterShared.Writer);
+                    entity.DefineLabel(trapWriterShared.Writer, entity.Context.Extractor);
                 }
                 finally
                 {
                     writingLabel = false;
+                    if (labelQueue.TryDequeue(out var next))
+                        WriteSharedLabel(next);
                 }
             }
         }
@@ -112,7 +120,19 @@ namespace Semmle.Extraction
         /// <summary>
         /// Access the shared TRAP file in a thread-safe manner.
         /// </summary>
-        public void WithWriter(Action<TextWriter> a) => WithWriter(a, false);
+        public void WithWriter(Action<TextWriter> a)
+        {
+            lock (trapWriterShared)
+            {
+                if (writingLabel)
+                {
+                    currentThreadContext!.PopulateQueue.Enqueue(() => WithWriter(a));
+                    return;
+                }
+
+                a(trapWriterShared.Writer);
+            }
+        }
 
         void IDisposable.Dispose()
         {
