@@ -159,7 +159,7 @@ private class RecordConstructorFlowRequiredSummaryComponentStack extends Require
     exists(Property p |
       recordConstructorFlow(_, _, p) and
       head = SummaryComponent::property(p) and
-      this = SummaryComponentStack::singleton(SummaryComponent::return())
+      this = SummaryComponentStack::return()
     )
   }
 
