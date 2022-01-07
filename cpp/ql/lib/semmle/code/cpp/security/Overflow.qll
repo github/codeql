@@ -17,7 +17,7 @@ import semmle.code.cpp.controlflow.Guards
 predicate guardedAbs(Operation e, Expr use) {
   exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
-    exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), true))
+    exists(GuardCondition c | c.ensuresLt(fc, _, _, e.getBasicBlock(), true))
   )
 }
 
