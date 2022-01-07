@@ -1,0 +1,4 @@
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:2:14:2:39 | MyFileScopedNamespaceClass |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:4:29:4:35 | myField |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:5:19:5:24 | MyProp |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:6:17:6:24 | MyMethod |
