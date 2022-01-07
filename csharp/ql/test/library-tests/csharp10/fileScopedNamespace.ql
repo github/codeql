@@ -8,3 +8,5 @@ query predicate fileScopedNamespace(Namespace n, Member m) {
     m.getLocation().toString().matches("%FileScopedNamespace.cs%")
   )
 }
+
+query predicate namespaceDeclaration(NamespaceDeclaration nd, Namespace n) { n = nd.getNamespace() }
