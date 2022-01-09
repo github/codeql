@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 
 private class HostnameVerificationCall extends MethodAccess {
   HostnameVerificationCall() {
@@ -27,12 +27,14 @@ private class HostnameVerificationCall extends MethodAccess {
     not exists(
       DataFlow::Node source, DataFlow::Node sink, CheckFailedHostnameVerificationConfig config
     |
-      this = source.asExpr() and config.hasFlow(source, sink)
+      this = source.asExpr()
+    |
+      config.hasFlow(source, sink)
     )
   }
 }
 
-private class CheckFailedHostnameVerificationConfig extends DataFlow::Configuration {
+private class CheckFailedHostnameVerificationConfig extends TaintTracking::Configuration {
   CheckFailedHostnameVerificationConfig() { this = "CheckFailedHostnameVerificationConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -43,6 +45,7 @@ private class CheckFailedHostnameVerificationConfig extends DataFlow::Configurat
     exists(Guard guard, ThrowStmt throwStmt |
       guard.controls(throwStmt.getBasicBlock(), _) and
       (
+        guard = sink.asExpr() or
         guard.(EqualityTest).getAnOperand() = sink.asExpr() or
         guard.(HostnameVerificationCall) = sink.asExpr()
       )
