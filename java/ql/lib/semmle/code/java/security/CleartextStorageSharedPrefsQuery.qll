@@ -45,7 +45,7 @@ class SharedPreferencesEditorMethodAccess extends Storable, MethodAccess {
 }
 
 /**
- * Holds if `input` is not encrypted and is the second argument of a setter method
+ * Holds if `input` is the second argument of a setter method
  * called on `editor`, which is an instance of `SharedPreferences$Editor`
  * .
  */
@@ -53,7 +53,6 @@ private predicate sharedPreferencesInput(DataFlow::Node editor, Expr input) {
   exists(MethodAccess m |
     m.getMethod() instanceof PutSharedPreferenceMethod and
     input = m.getArgument(1) and
-    not exists(EncryptedValueFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(input))) and
     editor.asExpr() = m.getQualifier()
   )
 }
@@ -90,15 +89,4 @@ private class EncryptedSensitiveMethodAccess extends MethodAccess {
   EncryptedSensitiveMethodAccess() {
     this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%"])
   }
-}
-
-/** Flow configuration for encryption methods flowing to inputs of `SharedPreferences`. */
-private class EncryptedValueFlowConfig extends DataFlow4::Configuration {
-  EncryptedValueFlowConfig() { this = "SensitiveStorage::EncryptedValueFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof EncryptedSensitiveMethodAccess
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SharedPrefsCleartextStorageSink }
 }
