@@ -22,11 +22,13 @@ import semmle.code.cpp.dataflow.DataFlow
  *  Holds if `sub` is guarded by a condition which ensures that
  * `left >= right`.
  */
-pragma[noinline]
+pragma[nomagic]
 predicate isGuarded(SubExpr sub, Expr left, Expr right) {
-  exists(GuardCondition guard, int k |
-    guard.controls(sub.getBasicBlock(), _) and
-    guard.ensuresLt(left, right, k, sub.getBasicBlock(), false) and
+  exprIsSubLeftOrLess(pragma[only_bind_into](sub), _) and // Manual magic
+  exists(GuardCondition guard, int k, BasicBlock bb |
+    pragma[only_bind_into](bb) = sub.getBasicBlock() and
+    guard.controls(pragma[only_bind_into](bb), _) and
+    guard.ensuresLt(left, right, k, bb, false) and
     k >= 0
   )
 }
