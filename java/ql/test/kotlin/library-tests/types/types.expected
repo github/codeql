@@ -949,8 +949,6 @@
 | ExtendedOption[] | Array |
 | Extension | Class |
 | Factory | Class |
-| Factory<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
-| Factory<T,K,S> | Class, ParameterizedType |
 | FairSync | Class |
 | FakeKotlinClass | Class |
 | Field | Class |
@@ -1708,8 +1706,6 @@
 | SortedMap<String,Charset> | Interface, ParameterizedType |
 | Specializer | Class |
 | SpeciesData | Class |
-| SpeciesData<BoundMethodHandle,String,SpeciesData> | Class, ParameterizedType |
-| SpeciesData<T,K,S> | Class, ParameterizedType |
 | Spliterator | GenericType, Interface, ParameterizedType |
 | Spliterator<Double> | Interface, ParameterizedType |
 | Spliterator<E> | Interface, ParameterizedType |
