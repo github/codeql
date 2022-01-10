@@ -46,8 +46,7 @@ class SharedPreferencesEditorMethodAccess extends Storable, MethodAccess {
 
 /**
  * Holds if `input` is the second argument of a setter method
- * called on `editor`, which is an instance of `SharedPreferences$Editor`
- * .
+ * called on `editor`, which is an instance of `SharedPreferences$Editor`.
  */
 private predicate sharedPreferencesInput(DataFlow::Node editor, Expr input) {
   exists(MethodAccess m |
