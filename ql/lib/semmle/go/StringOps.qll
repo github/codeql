@@ -170,8 +170,7 @@ module StringOps {
   module Formatting {
     /**
      * Gets a regular expression for matching simple format-string components, including flags,
-     * width and precision specifiers, but not including `*` specifiers or explicit argument
-     * indices.
+     * width and precision specifiers, not including explicit argument indices.
      */
     pragma[noinline]
     private string getFormatComponentRegex() {
