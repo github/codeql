@@ -8,6 +8,10 @@ module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */
   abstract class SqlString extends Expr { }
 
+  private class SqlStringFromModel extends SqlString {
+    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").getARhs().asExpr() }
+  }
+
   /**
    * An expression that sanitizes a string to make it safe to embed into
    * a SQL command.
@@ -474,176 +478,65 @@ private module MsSql {
  * Provides classes modeling the `sequelize` package.
  */
 private module Sequelize {
-  /** Gets an import of the `sequelize` module or one that re-exports it. */
-  API::Node sequelize() { result = API::moduleImport(["sequelize", "sequelize-typescript"]) }
-
-  /** Gets an expression that creates an instance of the `Sequelize` class. */
-  API::Node instance() {
-    result = [sequelize(), sequelize().getMember("Sequelize")].getInstance()
-    or
-    result = API::Node::ofType(["sequelize", "sequelize-typescript"], ["Sequelize", "default"])
-  }
-
-  /** A call to `Sequelize.query`. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = instance().getMember("query").getACall() }
-
-    override DataFlow::Node getAQueryArgument() {
-      result = this.getArgument(0)
-      or
-      result = this.getOptionArgument(0, "query")
+  class SequelizeModel extends ModelInput::TypeModelCsv {
+    override predicate row(string row) {
+      // package1;type1;package2;type2;path
+      row =
+        [
+          "sequelize;;sequelize-typescript;;", //
+          "sequelize;Sequelize;sequelize;default;", //
+          "sequelize;Sequelize;sequelize;;Instance",
+          "sequelize;Sequelize;sequelize;;Member[Sequelize].Instance",
+        ]
     }
   }
 
-  /** An expression that is passed to `Sequelize.query` method and hence interpreted as SQL. */
-  class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
-      or
-      this = sequelize().getMember(["literal", "asIs"]).getParameter(0).getARhs().asExpr()
+  class SequelizeSink extends ModelInput::SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "sequelize;Sequelize;Member[query].Argument[0];sql-injection",
+          "sequelize;Sequelize;Member[query].Argument[0].Member[query];sql-injection",
+          "sequelize;;Member[literal,asIs].Argument[0];sql-injection",
+          "sequelize;;Argument[1];credentials[user name]",
+          "sequelize;;Argument[2];credentials[password]",
+          "sequelize;;Argument[0..].Member[username];credentials[user name]",
+          "sequelize;;Argument[0..].Member[password];credentials[password]"
+        ]
     }
-  }
-
-  /**
-   * An expression that is passed as user name or password when creating an instance of the
-   * `Sequelize` class.
-   */
-  class Credentials extends CredentialsExpr {
-    string kind;
-
-    Credentials() {
-      exists(NewExpr ne, string prop |
-        ne = sequelize().getAnInstantiation().asExpr() and
-        (
-          this = ne.getArgument(1) and prop = "username"
-          or
-          this = ne.getArgument(2) and prop = "password"
-          or
-          ne.hasOptionArgument(ne.getNumArgument() - 1, prop, this)
-        ) and
-        (
-          prop = "username" and kind = "user name"
-          or
-          prop = "password" and kind = prop
-        )
-      )
-    }
-
-    override string getCredentialsKind() { result = kind }
   }
 }
 
-/**
- * Provides classes modeling the Google Cloud Spanner library.
- */
-private module Spanner {
-  /**
-   * Gets a node that refers to the `Spanner` class
-   */
-  API::Node spanner() {
-    // older versions
-    result = API::moduleImport("@google-cloud/spanner")
-    or
-    // newer versions
-    result = API::moduleImport("@google-cloud/spanner").getMember("Spanner")
-  }
-
-  /**
-   * Gets a node that refers to an instance of the `Database` class.
-   */
-  API::Node database() {
-    result =
-      spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "Database")
-  }
-
-  /**
-   * Gets a node that refers to an instance of the `v1.SpannerClient` class.
-   */
-  API::Node v1SpannerClient() {
-    result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "v1.SpannerClient")
-  }
-
-  /**
-   * Gets a node that refers to a transaction object.
-   */
-  API::Node transaction() {
-    result =
-      database()
-          .getMember(["runTransaction", "runTransactionAsync"])
-          .getParameter([0, 1])
-          .getParameter(1)
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "Transaction")
-  }
-
-  /** Gets an API node referring to a `BatchTransaction` object. */
-  API::Node batchTransaction() {
-    result = database().getMember("batchTransaction").getReturn()
-    or
-    result = database().getMember("createBatchTransaction").getReturn().getPromised()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "BatchTransaction")
-  }
-
-  /**
-   * A call to a Spanner method that executes a SQL query.
-   */
-  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode { }
-
-  /**
-   * A SQL execution that takes the input directly in the first argument or in the `sql` option.
-   */
-  class SqlExecutionDirect extends SqlExecution {
-    SqlExecutionDirect() {
-      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
-      or
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
-      or
-      this = batchTransaction().getMember("createQueryPartitions").getACall()
-    }
-
-    override DataFlow::Node getAQueryArgument() {
-      result = this.getArgument(0)
-      or
-      result = this.getOptionArgument(0, "sql")
+private module SpannerCsv {
+  class SpannerTypes extends ModelInput::TypeModelCsv {
+    override predicate row(string row) {
+      // package1; type1; package2; type2; path
+      row =
+        [
+          "@google-cloud/spanner;;@google-cloud/spanner;;Member[Spanner]",
+          "@google-cloud/spanner;Database;@google-cloud/spanner;;ReturnValue.Member[instance].ReturnValue.Member[database].ReturnValue",
+          "@google-cloud/spanner;v1.SpannerClient;@google-cloud/spanner;;Member[v1].Member[SpannerClient].Instance",
+          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[runTransaction,runTransactionAsync].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[batchTransaction].ReturnValue",
+          "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[createBatchTransaction].ReturnValue.Awaited",
+          "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Database;Member[run,runPartitionedUpdate,runStream]",
+          "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Transaction;Member[run,runStream,runUpdate]",
+          "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;BatchTransaction;Member[createQueryPartitions]",
+        ]
     }
   }
 
-  /**
-   * A SQL execution that takes an array of SQL strings or { sql: string } objects.
-   */
-  class SqlExecutionBatch extends SqlExecution, API::CallNode {
-    SqlExecutionBatch() { this = transaction().getMember("batchUpdate").getACall() }
-
-    override DataFlow::Node getAQueryArgument() {
-      // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
-      // are tainted
-      result = this.getArgument(0)
-      or
-      result = this.getParameter(0).getUnknownMember().getMember("sql").getARhs()
+  class SpannerSinks extends ModelInput::SinkModelCsv {
+    override predicate row(string row) {
+      // package; type; path; kind
+      row =
+        [
+          "@google-cloud/spanner;~SqlExecutorDirect;Argument[0];sql-injection",
+          "@google-cloud/spanner;~SqlExecutorDirect;Argument[0].Member[sql];sql-injection",
+          "@google-cloud/spanner;Transaction;Member[batchUpdate].Argument[0];sql-injection",
+          "@google-cloud/spanner;Transaction;Member[batchUpdate].Argument[0].ArrayElement.Member[sql];sql-injection",
+          "@google-cloud/spanner;v1.SpannerClient;Member[executeSql,executeStreamingSql].Argument[0].Member[sql];sql-injection",
+        ]
     }
-  }
-
-  /**
-   * A SQL execution that only takes the input in the `sql` option, and do not accept query strings
-   * directly.
-   */
-  class SqlExecutionWithOption extends SqlExecution {
-    SqlExecutionWithOption() {
-      this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
-    }
-
-    override DataFlow::Node getAQueryArgument() { result = this.getOptionArgument(0, "sql") }
-  }
-
-  /**
-   * An expression that is interpreted as a SQL string.
-   */
-  class QueryString extends SQL::SqlString {
-    QueryString() { this = any(SqlExecution se).getAQueryArgument().asExpr() }
   }
 }
