@@ -3,10 +3,6 @@ import semmle.code.java.dataflow.DataFlow
 import TestUtilities.InlineExpectationsTest
 import DataFlow
 
-class TestState extends FlowState {
-  TestState() { src(_, this) or sink(_, this) or step(_, _, this, _) or step(_, _, _, this) }
-}
-
 predicate src(Node n, string s) {
   exists(MethodAccess ma |
     n.asExpr() = ma and
