@@ -281,19 +281,19 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
       or
       full_use.(AttrNode).getObject() = test.getInput().getAUse()
     |
-      clears_taint(full_use, test.getTest(), test.getSense())
+      this.clears_taint(full_use, test.getTest(), test.getSense())
     )
   }
 
   private predicate clears_taint(ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
-    test_equality_with_const(test, tainted, sense)
+    this.test_equality_with_const(test, tainted, sense)
     or
-    test_in_const_seq(test, tainted, sense)
+    this.test_in_const_seq(test, tainted, sense)
     or
     test.(UnaryExprNode).getNode().getOp() instanceof Not and
     exists(ControlFlowNode nested_test |
       nested_test = test.(UnaryExprNode).getOperand() and
-      clears_taint(tainted, nested_test, sense.booleanNot())
+      this.clears_taint(tainted, nested_test, sense.booleanNot())
     )
   }
 

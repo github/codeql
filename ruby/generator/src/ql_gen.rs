@@ -26,7 +26,7 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, ast_node_parent: &'a str) ->
         Some(String::from("Gets the location of this element.")),
         "getLocation",
         false,
-        Some(ql::Type::Normal("Location")),
+        Some(ql::Type::Normal("L::Location")),
     );
     let get_a_field_or_child = create_none_predicate(
         Some(String::from("Gets a field or child node of this node.")),
@@ -136,7 +136,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         qldoc: Some(String::from("Gets the location of this token.")),
         name: "getLocation",
         overridden: true,
-        return_type: Some(ql::Type::Normal("Location")),
+        return_type: Some(ql::Type::Normal("L::Location")),
         formal_parameters: vec![],
         body: create_get_field_expr_for_column_storage("result", tokeninfo, 2, tokeninfo_arity),
     };
@@ -236,7 +236,7 @@ fn create_get_location_predicate(def_table: &str, arity: usize) -> ql::Predicate
         qldoc: Some(String::from("Gets the location of this element.")),
         name: "getLocation",
         overridden: true,
-        return_type: Some(ql::Type::Normal("Location")),
+        return_type: Some(ql::Type::Normal("L::Location")),
         formal_parameters: vec![],
         // body of the form: foo_bar_def(_, _, ..., result)
         body: ql::Expression::Pred(

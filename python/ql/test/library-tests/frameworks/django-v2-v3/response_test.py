@@ -1,6 +1,7 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, JsonResponse, HttpResponseNotFound
 from django.views.generic import RedirectView
 import django.shortcuts
+import json
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 # FP reported in https://github.com/github/codeql-python-team/issues/38
@@ -12,6 +13,21 @@ def safe__json_response(request):
 def safe__manual_json_response(request):
     json_data = '{"json": "{}"}'.format(request.GET.get("foo"))
     return HttpResponse(json_data, content_type="application/json")  # $HttpResponse mimetype=application/json responseBody=json_data
+
+# reproduction of FP seen here:
+# Usage: https://github.com/edx/edx-platform/blob/d70ebe6343a1573c694d6cf68f92c1ad40b73d7d/lms/djangoapps/commerce/api/v0/views.py#L106
+# DetailResponse def: https://github.com/edx/edx-platform/blob/d70ebe6343a1573c694d6cf68f92c1ad40b73d7d/lms/djangoapps/commerce/http.py#L9
+# JsonResponse def: https://github.com/edx/edx-platform/blob/d70ebe6343a1573c694d6cf68f92c1ad40b73d7d/common/djangoapps/util/json_request.py#L60
+class MyJsonResponse(HttpResponse):
+    def __init__(self, data):
+        serialized = json.dumps(data).encode("utf-8") # $ encodeFormat=JSON encodeInput=data encodeOutput=json.dumps(..)
+        super().__init__(serialized, content_type="application/json")
+
+# Not an XSS sink, since the Content-Type is not "text/html"
+def safe__custom_json_response(request):
+    json_data = '{"json": "{}"}'.format(request.GET.get("foo"))
+    return MyJsonResponse(json_data)  # $HttpResponse responseBody=json_data SPURIOUS: mimetype=text/html MISSING: mimetype=application/json
+
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 def safe__manual_content_type(request):

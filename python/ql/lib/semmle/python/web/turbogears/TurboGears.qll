@@ -21,7 +21,7 @@ class TurboGearsControllerMethod extends Function {
 
   private ControlFlowNode templateName() { result = decorator.(CallNode).getArg(0) }
 
-  predicate isTemplated() { exists(templateName()) }
+  predicate isTemplated() { exists(this.templateName()) }
 
   Dict getValidationDict() {
     exists(Call call, Value dict |

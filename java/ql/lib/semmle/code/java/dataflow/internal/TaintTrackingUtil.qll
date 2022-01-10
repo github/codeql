@@ -11,6 +11,7 @@ private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -91,6 +92,8 @@ private module Cached {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+    or
+    entrypointFieldStep(src, sink)
   }
 
   /**
@@ -300,8 +303,8 @@ private predicate unsafeEscape(MethodAccess ma) {
   // Removing `<script>` tags using a string-replace method is
   // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
   exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getRepresentedString() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getRepresentedString() = ""
+    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
+    ma.getArgument(1).(StringLiteral).getValue() = ""
   )
 }
 
@@ -376,13 +379,6 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * `arg` is the index of the argument.
  */
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  exists(Method write |
-    method.overrides*(write) and
-    write.hasName("write") and
-    arg = 0 and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
-  )
-  or
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
 }
 
@@ -597,4 +593,20 @@ module StringBuilderVarModule {
 private MethodAccess callReturningSameType(Expr ref) {
   ref = result.getQualifier() and
   result.getMethod().getReturnType() = ref.getType()
+}
+
+private SrcRefType entrypointType() {
+  exists(RemoteFlowSource s, RefType t |
+    s instanceof DataFlow::ExplicitParameterNode and
+    t = pragma[only_bind_out](s).getType() and
+    not t instanceof TypeObject and
+    result = t.getASubtype*().getSourceDeclaration()
+  )
+  or
+  result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+}
+
+private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
+  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
+  src.getType().(RefType).getSourceDeclaration() = entrypointType()
 }

@@ -8092,23 +8092,23 @@ Initializers.cs:
 #    5| ... = ...
 #-----|  -> this access
 
+#    5| this access
+#-----|  -> access to field H
+
 #    5| ... = ...
 #-----|  -> this access
 
 #    5| this access
 #-----|  -> access to field H
 
-#    5| this access
-#-----|  -> access to field H
-
-#    5| ... + ...
-#-----|  -> ... = ...
-
 #    5| ... + ...
 #-----|  -> ... = ...
 
 #    5| access to field H
 #-----|  -> 1
+
+#    5| ... + ...
+#-----|  -> ... = ...
 
 #    5| access to field H
 #-----|  -> 1
@@ -8122,29 +8122,29 @@ Initializers.cs:
 #    6| access to property G
 #-----|  -> ... = ...
 
+#    6| this access
+#-----|  -> access to field H
+
 #    6| access to property G
 #-----|  -> ... = ...
 
 #    6| this access
 #-----|  -> access to field H
 
-#    6| this access
-#-----|  -> access to field H
-
 #    6| ... = ...
 #-----|  -> {...}
 
 #    6| ... = ...
 #-----|  -> {...}
-
-#    6| ... + ...
-#-----|  -> access to property G
 
 #    6| ... + ...
 #-----|  -> access to property G
 
 #    6| access to field H
 #-----|  -> 2
+
+#    6| ... + ...
+#-----|  -> access to property G
 
 #    6| access to field H
 #-----|  -> 2
@@ -8252,6 +8252,12 @@ Initializers.cs:
 #-----|  -> 1
 
 #   18| ... = ...
+#-----|  -> exit H (normal)
+
+#   18| exit H
+
+#   18| exit H (normal)
+#-----|  -> exit H
 
 #   18| 1
 #-----|  -> ... = ...
@@ -8285,11 +8291,11 @@ Initializers.cs:
 #   28| ... = ...
 #-----|  -> {...}
 
-#   28| ... = ...
-#-----|  -> {...}
-
 #   28| this access
 #-----|  -> 2
+
+#   28| ... = ...
+#-----|  -> {...}
 
 #   28| this access
 #-----|  -> 2
@@ -10293,11 +10299,11 @@ PartialImplementationB.cs:
 #    3| ... = ...
 #-----|  -> this access
 
-#    3| ... = ...
-#-----|  -> this access
-
 #    3| this access
 #-----|  -> 0
+
+#    3| ... = ...
+#-----|  -> this access
 
 #    3| this access
 #-----|  -> 0
@@ -10325,11 +10331,11 @@ PartialImplementationB.cs:
 #    5| access to property P
 #-----|  -> ... = ...
 
-#    5| access to property P
-#-----|  -> ... = ...
-
 #    5| this access
 #-----|  -> 0
+
+#    5| access to property P
+#-----|  -> ... = ...
 
 #    5| this access
 #-----|  -> 0
@@ -14449,3 +14455,40 @@ cflow.cs:
 
 #  300| ""
 #-----|  -> object creation of type NegationInConstructor
+
+#  306| enter get__getter
+#-----|  -> (...) => ...
+
+#  306| enter (...) => ...
+#-----|  -> {...}
+
+#  306| (...) => ...
+#-----|  -> exit get__getter (normal)
+
+#  306| exit get__getter
+
+#  306| exit (...) => ...
+
+#  306| exit get__getter (normal)
+#-----|  -> exit get__getter
+
+#  306| exit (...) => ... (normal)
+#-----|  -> exit (...) => ...
+
+#  307| {...}
+#-----|  -> ... ...;
+
+#  308| ... ...;
+#-----|  -> access to parameter o
+
+#  308| Object x = ...
+#-----|  -> access to local variable x
+
+#  308| access to parameter o
+#-----|  -> Object x = ...
+
+#  309| return ...;
+#-----| return -> exit (...) => ... (normal)
+
+#  309| access to local variable x
+#-----|  -> return ...;

@@ -175,7 +175,7 @@ newtype TObject =
     not count(instantiation.getAnArg()) = 1 and
     Types::getMro(metacls).contains(TType())
   } or
-  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analysed. */
+  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analyzed. */
   TSysVersionInfo() or
   /** Represents a module that is inferred to perhaps exist, but is not present in the database. */
   TAbsentModule(string name) { missing_imported_module(_, _, name) } or

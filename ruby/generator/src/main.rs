@@ -611,10 +611,10 @@ fn main() -> std::io::Result<()> {
     )?;
     ql::write(
         &mut ql_writer,
-        &[
-            ql::TopLevel::Import("codeql.files.FileSystem"),
-            ql::TopLevel::Import("codeql.Locations"),
-        ],
+        &[ql::TopLevel::Import(ql::Import {
+            module: "codeql.Locations",
+            alias: Some("L"),
+        })],
     )?;
 
     for language in languages {

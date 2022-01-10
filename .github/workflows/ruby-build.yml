@@ -3,16 +3,18 @@ name: "Ruby: Build"
 on:
   push:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   pull_request:
     paths:
-      - 'ruby/**'
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
     branches:
       - main
-      - 'rc/*'
+      - "rc/*"
   workflow_dispatch:
     inputs:
       tag:
@@ -100,16 +102,6 @@ jobs:
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
-      - name: Compile with previous CodeQL versions
-        run: |
-          for version in  $(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -3 | head -2); do
-            rm -f codeql-linux64.zip
-            gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$version"
-            rm -rf codeql; unzip -q codeql-linux64.zip
-            codeql/codeql query compile target/packs/*
-          done
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ruby-queries

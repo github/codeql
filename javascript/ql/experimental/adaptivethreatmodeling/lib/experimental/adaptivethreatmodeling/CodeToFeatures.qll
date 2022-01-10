@@ -119,10 +119,10 @@ module Raw {
 
     predicate isEntityNameNode(Entity entity) {
       exists(int index |
-        TAstNode(entity) = getParentNode() and
-        this = getParentNode().astNodeChild(index) and
+        TAstNode(entity) = this.getParentNode() and
+        this = this.getParentNode().astNodeChild(index) and
         // An entity name node must be the first child of the entity.
-        index = min(int otherIndex | exists(getParentNode().astNodeChild(otherIndex))) and
+        index = min(int otherIndex | exists(this.getParentNode().astNodeChild(otherIndex))) and
         entity.getName() = rawNode.(raw::VarDecl).getName()
       )
     }
@@ -178,7 +178,7 @@ module Raw {
 
   /**
    * Returns a generated name for the entity. This name is generated such that
-   * entities with the same names have similar behaviour.
+   * entities with the same names have similar behavior.
    */
   private string getApproximateNameForEntity(Entity entity) {
     count(raw::DataFlow::CallNode call, int index | entityUsedAsArgumentToCall(entity, call, index)) =
@@ -319,7 +319,7 @@ module Wrapped {
 
     AstNode getChild(int index) { result = injectedChild(enclosingEntity, rawNode, index) }
 
-    string toString() { result = getType() }
+    string toString() { result = this.getType() }
 
     Raw::Location getLocation() { result = rawNode.getLocation() }
   }
@@ -378,7 +378,7 @@ module DatabaseFeatures {
 
     override string getType() { result = "javascript function" }
 
-    override string toString() { result = "Entity: " + getName() }
+    override string toString() { result = "Entity: " + this.getName() }
 
     override Location getLocation() { result = entity.getLocation() }
 

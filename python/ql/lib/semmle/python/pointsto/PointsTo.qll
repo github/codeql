@@ -656,6 +656,7 @@ module PointsToInternal {
     builtin_not_in_outer_scope(def, context, value, origin)
   }
 
+  pragma[nomagic]
   private predicate undefined_variable(
     ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -674,6 +675,7 @@ module PointsToInternal {
     origin = def.getDefiningNode()
   }
 
+  pragma[nomagic]
   private predicate builtin_not_in_outer_scope(
     ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1195,14 +1197,20 @@ module InterProceduralPointsTo {
     ControlFlowNode argument, PointsToContext caller, ParameterDefinition param,
     PointsToContext callee
   ) {
+    PointsToInternal::pointsTo(argument, caller, _, _) and
     exists(CallNode call, Function func, int offset |
       callsite_calls_function(call, caller, func, callee, offset)
     |
       exists(string name |
         argument = call.getArgByName(name) and
-        param.getParameter() = func.getArgByName(name)
+        function_parameter_name(func, param, name)
       )
     )
+  }
+
+  pragma[nomagic]
+  private predicate function_parameter_name(Function func, ParameterDefinition param, string name) {
+    param.getParameter() = func.getArgByName(name)
   }
 
   /**
@@ -1326,13 +1334,13 @@ module InterProceduralPointsTo {
   predicate callsite_points_to(
     CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin
   ) {
-    exists(SsaSourceVariable srcvar | srcvar = def.getSourceVariable() |
+    exists(SsaSourceVariable srcvar | pragma[only_bind_into](srcvar) = def.getSourceVariable() |
       if srcvar instanceof EscapingAssignmentGlobalVariable
       then
         /* If global variable can be reassigned, we need to track it through calls */
         exists(EssaVariable var, Function func, PointsToContext callee |
           callsite_calls_function(def.getCall(), context, func, callee, _) and
-          var_at_exit(srcvar, func, var) and
+          var_at_exit(pragma[only_bind_into](srcvar), func, var) and
           PointsToInternal::variablePointsTo(var, callee, value, origin)
         )
         or

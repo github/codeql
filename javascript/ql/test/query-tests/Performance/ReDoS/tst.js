@@ -386,3 +386,20 @@ var bad92 = /([DE]|[de])*F/i;
 
 var bad93 = /(?<=^v?|\sv?)(a|aa)*$/; 
 var bad94 = /(a|aa)*$/;
+
+var bad95 = new RegExp(
+    "(a" + 
+    "|" + 
+    "aa)*" + 
+    "b$"
+);
+
+var bad96 = new RegExp("(" + 
+    "(c|cc)*|" + 
+    "(d|dd)*|" +
+    "(e|ee)*" +
+")f$");
+
+var bad97 = new RegExp(
+    "(g|gg" + 
+    ")*h$");

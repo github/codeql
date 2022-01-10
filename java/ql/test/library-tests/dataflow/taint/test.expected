@@ -3,6 +3,7 @@
 | A.java:33:23:33:29 | taint(...) | A.java:34:10:34:27 | toByteArray(...) |
 | A.java:46:27:46:33 | taint(...) | A.java:47:10:47:30 | toByteArray(...) |
 | A.java:55:58:55:64 | taint(...) | A.java:61:10:61:16 | dh.data |
+| A.java:78:19:78:25 | taint(...) | A.java:81:10:81:21 | filterOutput |
 | B.java:15:21:15:27 | taint(...) | B.java:18:10:18:16 | aaaargs |
 | B.java:15:21:15:27 | taint(...) | B.java:21:10:21:10 | s |
 | B.java:15:21:15:27 | taint(...) | B.java:24:10:24:15 | concat |
@@ -42,6 +43,7 @@
 | B.java:15:21:15:27 | taint(...) | B.java:157:10:157:46 | toFile(...) |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:8:12:8:14 | seq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:11:12:11:21 | seqFromSeq |
+| CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:14:12:14:24 | stringFromSeq |
 | MethodFlow.java:7:22:7:28 | taint(...) | MethodFlow.java:8:10:8:16 | tainted |
 | MethodFlow.java:9:31:9:37 | taint(...) | MethodFlow.java:10:10:10:17 | tainted2 |
 | MethodFlow.java:11:35:11:41 | taint(...) | MethodFlow.java:12:10:12:17 | tainted3 |

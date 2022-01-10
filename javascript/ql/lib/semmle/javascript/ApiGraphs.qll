@@ -11,6 +11,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -33,6 +34,7 @@ module API {
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
      */
+    pragma[inline]
     DataFlow::Node getAUse() {
       exists(DataFlow::SourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
@@ -55,14 +57,14 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a call to the function represented by this API component,
      * or a promisified version of the function.
      */
     CallNode getMaybePromisifiedCall() {
-      result = getACall()
+      result = this.getACall()
       or
       result = Impl::getAPromisifiedInvocation(this, _, _)
     }
@@ -70,12 +72,12 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+    NewNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
      */
-    InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
+    InvokeNode getAnInvocation() { result = this.getACall() or result = this.getAnInstantiation() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
@@ -97,7 +99,7 @@ module API {
      * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
      * of the API component represented by this node.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(getARhs()) }
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -105,23 +107,32 @@ module API {
      * For example, modules have an `exports` member representing their exports, and objects have
      * their properties as members.
      */
-    bindingset[m]
-    bindingset[result]
-    Node getMember(string m) { result = getASuccessor(Label::member(m)) }
+    cached
+    Node getMember(string m) {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::member(m))
+    }
 
     /**
      * Gets a node representing a member of this API component where the name of the member is
      * not known statically.
      */
-    Node getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
+    cached
+    Node getUnknownMember() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::unknownMember())
+    }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
+    cached
     Node getAMember() {
-      result = getASuccessor(Label::member(_)) or
-      result = getUnknownMember()
+      Stages::APIStage::ref() and
+      result = this.getMember(_)
+      or
+      result = this.getUnknownMember()
     }
 
     /**
@@ -135,7 +146,11 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
-    Node getInstance() { result = getASuccessor(Label::instance()) }
+    cached
+    Node getInstance() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::instance())
+    }
 
     /**
      * Gets a node representing the `i`th parameter of the function represented by this node.
@@ -143,16 +158,16 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
-    bindingset[i]
-    Node getParameter(int i) { result = getASuccessor(Label::parameter(i)) }
+    cached
+    Node getParameter(int i) {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::parameter(i))
+    }
 
     /**
      * Gets the number of parameters of the function represented by this node.
      */
-    int getNumParameter() {
-      result =
-        max(string s | exists(getASuccessor(Label::parameterByStringIndex(s))) | s.toInt()) + 1
-    }
+    int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
 
     /**
      * Gets a node representing the last parameter of the function represented by this node.
@@ -160,12 +175,16 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
-    Node getLastParameter() { result = getParameter(getNumParameter() - 1) }
+    Node getLastParameter() { result = this.getParameter(this.getNumParameter() - 1) }
 
     /**
      * Gets a node representing the receiver of the function represented by this node.
      */
-    Node getReceiver() { result = getASuccessor(Label::receiver()) }
+    cached
+    Node getReceiver() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::receiver())
+    }
 
     /**
      * Gets a node representing a parameter or the receiver of the function represented by this
@@ -175,9 +194,12 @@ module API {
      * there are multiple invocations of this API component.
      * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
+    cached
     Node getAParameter() {
-      result = getASuccessor(Label::parameterByStringIndex(_)) or
-      result = getReceiver()
+      Stages::APIStage::ref() and
+      result = this.getParameter(_)
+      or
+      result = this.getReceiver()
     }
 
     /**
@@ -186,48 +208,62 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getACall()` if there is a need to distingiush between individual calls.
      */
-    Node getReturn() { result = getASuccessor(Label::return()) }
+    cached
+    Node getReturn() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::return())
+    }
 
     /**
      * Gets a node representing the promised value wrapped in the `Promise` object represented by
      * this node.
      */
-    Node getPromised() { result = getASuccessor(Label::promised()) }
+    cached
+    Node getPromised() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::promised())
+    }
 
     /**
      * Gets a node representing the error wrapped in the `Promise` object represented by this node.
      */
-    Node getPromisedError() { result = getASuccessor(Label::promisedError()) }
+    cached
+    Node getPromisedError() {
+      Stages::APIStage::ref() and
+      result = this.getASuccessor(Label::promisedError())
+    }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
+    string getPath() {
+      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
+    }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one.
      */
-    Node getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /**
      * Holds if this node may take its value from `that` node.
@@ -256,9 +292,9 @@ module API {
      * parameters are zero.
      */
     predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+      this.getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(getInducingNode()) and
+      not exists(this.getInducingNode()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
@@ -281,9 +317,8 @@ module API {
       length = 0 and
       result = ""
       or
-      exists(Node pred, string lbl, string predpath |
+      exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        lbl != "" and
         predpath = pred.getAPath(length - 1) and
         exists(string space | if length = 1 then space = "" else space = " " |
           result = "(" + lbl + space + predpath + ")" and
@@ -305,12 +340,12 @@ module API {
 
   /** A node corresponding to a definition of an API component. */
   class Definition extends Node, Impl::TDef {
-    override string toString() { result = "def " + getPath() }
+    override string toString() { result = "def " + this.getPath() }
   }
 
   /** A node corresponding to the use of an API component. */
   class Use extends Node, Impl::TUse {
-    override string toString() { result = "use " + getPath() }
+    override string toString() { result = "use " + this.getPath() }
   }
 
   /** Gets the root node. */
@@ -348,6 +383,26 @@ module API {
 
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getARhs();
+
+    /** Gets an API-node for this entry point. */
+    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+  }
+
+  /**
+   * A class for contributing new steps for tracking uses of an API.
+   */
+  class AdditionalUseStep extends Unit {
+    /**
+     * Holds if use nodes should flow from `pred` to `succ`.
+     */
+    predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) { none() }
+  }
+
+  private module AdditionalUseStep {
+    pragma[nomagic]
+    predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+      any(AdditionalUseStep st).step(pred, succ)
+    }
   }
 
   /**
@@ -411,7 +466,7 @@ module API {
         any(Type t).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
-        trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
+        trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
 
     class TDef = MkModuleDef or TNonModuleDef;
@@ -431,27 +486,19 @@ module API {
       hasSemantics(imp)
     }
 
-    /** Gets the definition of module `m`. */
-    private Module importableModule(string m) {
-      exists(NPMPackage pkg, PackageJSON json |
-        json = pkg.getPackageJSON() and not json.isPrivate()
-      |
-        result = pkg.getMainModule() and
-        not result.isExterns() and
-        m = pkg.getPackageName()
-      )
-    }
-
     /**
      * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate rhs(TApiNode base, string lbl, DataFlow::Node rhs) {
+    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
-        rhs = lbl.(EntryPoint).getARhs()
+        exists(EntryPoint e |
+          lbl = Label::entryPoint(e) and
+          rhs = e.getARhs()
+        )
         or
         exists(string m, string prop |
           base = MkModuleExport(m) and
@@ -528,7 +575,7 @@ module API {
      */
     private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
       exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound |
-        use(base, use) and pred = trackUseNode(use, _, bound)
+        use(base, use) and pred = trackUseNode(use, _, bound, "")
       |
         arg = pred.getAnInvocation().getArgument(i - bound)
         or
@@ -557,36 +604,64 @@ module API {
     }
 
     /**
+     * Holds if `ref` is a read of a property described by `lbl` on `pred`, and
+     * `propDesc` is compatible with that property, meaning it is either the
+     * name of the property itself or the empty string.
+     */
+    pragma[noinline]
+    private predicate propertyRead(
+      DataFlow::SourceNode pred, string propDesc, Label::ApiLabel lbl, DataFlow::Node ref
+    ) {
+      ref = pred.getAPropertyRead() and
+      lbl = Label::memberFromRef(ref) and
+      (
+        lbl = Label::member(propDesc)
+        or
+        propDesc = ""
+      )
+      or
+      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
+      lbl = Label::promised() and
+      (propDesc = Promises::valueProp() or propDesc = "")
+      or
+      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
+      lbl = Label::promisedError() and
+      (propDesc = Promises::errorProp() or propDesc = "")
+    }
+
+    /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
       hasSemantics(ref) and
       (
         base = MkRoot() and
-        ref = lbl.(EntryPoint).getAUse()
+        exists(EntryPoint e |
+          lbl = Label::entryPoint(e) and
+          ref = e.getAUse()
+        )
         or
+        // property reads
+        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
+          use(base, src) and
+          pred = trackUseNode(src, false, 0, propDesc) and
+          propertyRead(pred, propDesc, lbl, ref) and
+          // `module.exports` is special: it is a use of a def-node, not a use-node,
+          // so we want to exclude it here
+          (base instanceof TNonModuleDef or base instanceof TUse)
+        )
+        or
+        // invocations
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
-          // `module.exports` is special: it is a use of a def-node, not a use-node,
-          // so we want to exclude it here
-          (base instanceof TNonModuleDef or base instanceof TUse) and
-          lbl = Label::memberFromRef(ref) and
-          ref = pred.getAPropertyRead()
-          or
           lbl = Label::instance() and
           ref = pred.getAnInstantiation()
           or
           lbl = Label::return() and
           ref = pred.getAnInvocation()
-          or
-          lbl = Label::promised() and
-          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp())
-          or
-          lbl = Label::promisedError() and
-          PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp())
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -653,63 +728,63 @@ module API {
       nd = MkUse(ref)
     }
 
-    /** Holds if module `m` exports `rhs`. */
-    private predicate exports(string m, DataFlow::Node rhs) {
-      exists(Module mod | mod = importableModule(m) |
-        rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
-        or
-        exports(m, "default", rhs)
-        or
-        exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
-          rhs = assgn.getExpression().flow()
-        )
-        or
-        rhs = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr().flow()
-      )
-    }
-
-    /** Holds if module `m` exports `rhs` under the name `prop`. */
-    private predicate exports(string m, string prop, DataFlow::Node rhs) {
-      exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
-        rhs = exp.getSourceNode(prop)
-        or
-        exists(Variable v |
-          exp.exportsAs(v, prop) and
-          rhs = v.getAnAssignedExpr().flow()
-        )
-      )
-    }
+    private import semmle.javascript.dataflow.TypeTracking
 
     /**
      * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
      *
-     * The flow from `nd` to that node may be inter-procedural. If `promisified` is `true`, the
-     * flow goes through a promisification, and `boundArgs` indicates how many arguments have been
-     * bound throughout the flow. (To ensure termination, we somewhat arbitrarily constrain the
-     * number of bound arguments to be at most ten.)
+     * The flow from `nd` to that node may be inter-procedural, and is further described by three
+     * flags:
+     *
+     *   - `promisified`: if true `true`, the flow goes through a promisification;
+     *   - `boundArgs`: for function values, tracks how many arguments have been bound throughout
+     *     the flow. To ensure termination, we somewhat arbitrarily constrain the number of bound
+     *     arguments to be at most ten.
+     *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
+     *     and not necessarily the entire object.
      */
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, DataFlow::TypeTracker t
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
+      DataFlow::TypeTracker t
     ) {
       t.start() and
       use(_, nd) and
       result = nd and
       promisified = false and
-      boundArgs = 0
+      boundArgs = 0 and
+      prop = ""
       or
       exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
+        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
+        prop = "" and
         result = promisify
       )
       or
       exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, t.continue()).flowsTo(pred) and
+        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
+        prop = "" and
         result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
         boundArgs in [0 .. 10]
       )
       or
-      t = useStep(nd, promisified, boundArgs, result)
+      exists(DataFlow::SourceNode mid |
+        mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
+        AdditionalUseStep::step(pragma[only_bind_out](mid), result)
+      )
+      or
+      exists(DataFlow::Node pred, string preprop |
+        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
+        promisified = false and
+        boundArgs = 0 and
+        SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
+      |
+        prop = preprop
+        or
+        preprop = ""
+      )
+      or
+      t = useStep(nd, promisified, boundArgs, prop, result)
     }
 
     private import semmle.javascript.dataflow.internal.StepSummary
@@ -723,19 +798,19 @@ module API {
      */
     pragma[noopt]
     private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, DataFlow::Node res
+      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
     ) {
       exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
-        prev = trackUseNode(nd, promisified, boundArgs, t) and
+        prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
         StepSummary::step(prev, res, summary) and
         result = t.append(summary)
       )
     }
 
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
     ) {
-      result = trackUseNode(nd, promisified, boundArgs, DataFlow::TypeTracker::end())
+      result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
     }
 
     /**
@@ -743,7 +818,7 @@ module API {
      */
     cached
     DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, false, 0)
+      result = trackUseNode(nd, false, 0, "")
     }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
@@ -816,10 +891,11 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
+    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
+      Stages::APIStage::ref() and
       exists(string m |
         pred = MkRoot() and
-        lbl = Label::mod(m)
+        lbl = Label::moduleLabel(m)
       |
         succ = MkModuleDef(m)
         or
@@ -893,8 +969,6 @@ module API {
     }
   }
 
-  import Label as EdgeLabel
-
   /**
    * An `InvokeNode` that is connected to the API graph.
    *
@@ -917,19 +991,20 @@ module API {
     pragma[nomagic]
     Node getParameter(int i) {
       result = callee.getParameter(i) and
-      result = getAParameterCandidate(i)
+      result = this.getAParameterCandidate(i)
     }
 
     /**
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
+    pragma[noinline]
     private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
-    Node getAParameter() { result = getParameter(_) }
+    Node getAParameter() { result = this.getParameter(_) }
 
     /** Gets the API node for the last parameter of this invocation. */
-    Node getLastParameter() { result = getParameter(getNumArgument() - 1) }
+    Node getLastParameter() { result = this.getParameter(this.getNumArgument() - 1) }
 
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
@@ -949,89 +1024,236 @@ module API {
 
   /** A `new` call connected to the API graph. */
   class NewNode extends InvokeNode, DataFlow::NewNode { }
+
+  /** Provides classes modeling the various edges (labels) in the API graph. */
+  module Label {
+    /** A label in the API-graph */
+    class ApiLabel extends TLabel {
+      /** Gets a string representation of this label. */
+      string toString() { result = "???" }
+    }
+
+    /** Gets the edge label for the module `m`. */
+    LabelModule moduleLabel(string m) { result.getMod() = m }
+
+    /** Gets the `member` edge label for member `m`. */
+    bindingset[m]
+    bindingset[result]
+    LabelMember member(string m) { result.getProperty() = m }
+
+    /** Gets the `member` edge label for the unknown member. */
+    LabelUnknownMember unknownMember() { any() }
+
+    /**
+     * Gets a property name referred to by the given dynamic property access,
+     * allowing one property flow step in the process (to allow flow through imports).
+     *
+     * This is to support code patterns where the property name is actually constant,
+     * but the property name has been factored into a library.
+     */
+    private string getAnIndirectPropName(DataFlow::PropRef ref) {
+      exists(DataFlow::Node pred |
+        FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
+        result = pred.getStringValue()
+      )
+    }
+
+    /**
+     * Gets unique result of `getAnIndirectPropName` if there is one.
+     */
+    private string getIndirectPropName(DataFlow::PropRef ref) {
+      result = unique(string s | s = getAnIndirectPropName(ref))
+    }
+
+    /** Gets the `member` edge label for the given property reference. */
+    ApiLabel memberFromRef(DataFlow::PropRef pr) {
+      exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
+        result = member(pn) and
+        // only consider properties with alphanumeric(-ish) names, excluding special properties
+        // and properties whose names look like they are meant to be internal
+        pn.regexpMatch("(?!prototype$|__)[\\w_$][\\w\\-.$]*")
+      )
+      or
+      not exists(pr.getPropertyName()) and
+      not exists(getIndirectPropName(pr)) and
+      result = unknownMember()
+    }
+
+    /** Gets the `instance` edge label. */
+    LabelInstance instance() { any() }
+
+    /**
+     * Gets the `parameter` edge label for the `i`th parameter.
+     *
+     * The receiver is considered to be parameter -1.
+     */
+    LabelParameter parameter(int i) { result.getIndex() = i }
+
+    /** Gets the `parameter` edge label for the receiver. */
+    LabelParameter receiver() { result = parameter(-1) }
+
+    /** Gets the `return` edge label. */
+    LabelReturn return() { any() }
+
+    /** Gets the `promised` edge label connecting a promise to its contained value. */
+    LabelPromised promised() { any() }
+
+    /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
+    LabelPromisedError promisedError() { any() }
+
+    /** Gets an entry-point label for the entry-point `e`. */
+    LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
+
+    private import LabelImpl
+
+    private module LabelImpl {
+      newtype TLabel =
+        MkLabelModule(string mod) {
+          exists(Impl::MkModuleExport(mod)) or
+          exists(Impl::MkModuleImport(mod))
+        } or
+        MkLabelInstance() or
+        MkLabelMember(string prop) {
+          exports(_, prop, _) or
+          exists(any(DataFlow::ClassNode c).getInstanceMethod(prop)) or
+          prop = "exports" or
+          prop = any(CanonicalName c).getName() or
+          prop = any(DataFlow::PropRef p).getPropertyName() or
+          exists(Impl::MkTypeUse(_, prop)) or
+          exists(any(Module m).getAnExportedValue(prop))
+        } or
+        MkLabelUnknownMember() or
+        MkLabelParameter(int i) {
+          i =
+            [-1 .. max(int args |
+                args = any(InvokeExpr invk).getNumArgument() or
+                args = any(Function f).getNumParameter()
+              )] or
+          i = [0 .. 10]
+        } or
+        MkLabelReturn() or
+        MkLabelPromised() or
+        MkLabelPromisedError() or
+        MkLabelEntryPoint(API::EntryPoint e)
+
+      /** A label for an entry-point. */
+      class LabelEntryPoint extends ApiLabel {
+        API::EntryPoint e;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(e) }
+
+        /** Gets the EntryPoint associated with this label. */
+        API::EntryPoint getEntryPoint() { result = e }
+
+        override string toString() { result = e }
+      }
+
+      /** A label that gets a promised value. */
+      class LabelPromised extends ApiLabel {
+        LabelPromised() { this = MkLabelPromised() }
+
+        override string toString() { result = "promised" }
+      }
+
+      /** A label that gets a rejected promise. */
+      class LabelPromisedError extends ApiLabel {
+        LabelPromisedError() { this = MkLabelPromisedError() }
+
+        override string toString() { result = "promisedError" }
+      }
+
+      /** A label that gets the return value of a function. */
+      class LabelReturn extends ApiLabel {
+        LabelReturn() { this = MkLabelReturn() }
+
+        override string toString() { result = "return" }
+      }
+
+      /** A label for a module. */
+      class LabelModule extends ApiLabel {
+        string mod;
+
+        LabelModule() { this = MkLabelModule(mod) }
+
+        /** Gets the module associated with this label. */
+        string getMod() { result = mod }
+
+        override string toString() { result = "module " + mod }
+      }
+
+      /** A label that gets an instance from a `new` call. */
+      class LabelInstance extends ApiLabel {
+        LabelInstance() { this = MkLabelInstance() }
+
+        override string toString() { result = "instance" }
+      }
+
+      /** A label for the member named `prop`. */
+      class LabelMember extends ApiLabel {
+        string prop;
+
+        LabelMember() { this = MkLabelMember(prop) }
+
+        /** Gets the property associated with this label. */
+        string getProperty() { result = prop }
+
+        override string toString() { result = "member " + prop }
+      }
+
+      /** A label for a member with an unknown name. */
+      class LabelUnknownMember extends ApiLabel {
+        LabelUnknownMember() { this = MkLabelUnknownMember() }
+
+        override string toString() { result = "member *" }
+      }
+
+      /** A label for parameter `i`. */
+      class LabelParameter extends ApiLabel {
+        int i;
+
+        LabelParameter() { this = MkLabelParameter(i) }
+
+        override string toString() { result = "parameter " + i }
+
+        /** Gets the index of the parameter for this label. */
+        int getIndex() { result = i }
+      }
+    }
+  }
 }
 
-private module Label {
-  /** Gets the edge label for the module `m`. */
-  bindingset[m]
-  bindingset[result]
-  string mod(string m) { result = "module " + m }
-
-  /** Gets the `member` edge label for member `m`. */
-  bindingset[m]
-  bindingset[result]
-  string member(string m) { result = "member " + m }
-
-  /** Gets the `member` edge label for the unknown member. */
-  string unknownMember() { result = "member *" }
-
-  /**
-   * Gets a property name referred to by the given dynamic property access,
-   * allowing one property flow step in the process (to allow flow through imports).
-   *
-   * This is to support code patterns where the property name is actually constant,
-   * but the property name has been factored into a library.
-   */
-  private string getAnIndirectPropName(DataFlow::PropRef ref) {
-    exists(DataFlow::Node pred |
-      FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
-      result = pred.getStringValue()
-    )
-  }
-
-  /**
-   * Gets unique result of `getAnIndirectPropName` if there is one.
-   */
-  private string getIndirectPropName(DataFlow::PropRef ref) {
-    result = unique(string s | s = getAnIndirectPropName(ref))
-  }
-
-  /** Gets the `member` edge label for the given property reference. */
-  string memberFromRef(DataFlow::PropRef pr) {
-    exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
-      result = member(pn) and
-      // only consider properties with alphanumeric(-ish) names, excluding special properties
-      // and properties whose names look like they are meant to be internal
-      pn.regexpMatch("(?!prototype$|__)[\\w_$][\\w\\-.$]*")
+/** Holds if module `m` exports `rhs`. */
+private predicate exports(string m, DataFlow::Node rhs) {
+  exists(Module mod | mod = importableModule(m) |
+    rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
+    or
+    exports(m, "default", rhs)
+    or
+    exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
+      rhs = assgn.getExpression().flow()
     )
     or
-    not exists(pr.getPropertyName()) and
-    not exists(getIndirectPropName(pr)) and
-    result = unknownMember()
-  }
+    rhs = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr().flow()
+  )
+}
 
-  /** Gets the `instance` edge label. */
-  string instance() { result = "instance" }
+/** Holds if module `m` exports `rhs` under the name `prop`. */
+private predicate exports(string m, string prop, DataFlow::Node rhs) {
+  exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
+    rhs = exp.getSourceNode(prop)
+    or
+    exists(Variable v |
+      exp.exportsAs(v, prop) and
+      rhs = v.getAnAssignedExpr().flow()
+    )
+  )
+}
 
-  /**
-   * Gets the `parameter` edge label for the parameter `s`.
-   *
-   * This is an internal helper predicate; use `parameter` instead.
-   */
-  bindingset[result]
-  bindingset[s]
-  string parameterByStringIndex(string s) {
-    result = "parameter " + s and
-    s.toInt() >= -1
-  }
-
-  /**
-   * Gets the `parameter` edge label for the `i`th parameter.
-   *
-   * The receiver is considered to be parameter -1.
-   */
-  bindingset[i]
-  string parameter(int i) { result = parameterByStringIndex(i.toString()) }
-
-  /** Gets the `parameter` edge label for the receiver. */
-  string receiver() { result = "parameter -1" }
-
-  /** Gets the `return` edge label. */
-  string return() { result = "return" }
-
-  /** Gets the `promised` edge label connecting a promise to its contained value. */
-  string promised() { result = "promised" }
-
-  /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
-  string promisedError() { result = "promisedError" }
+/** Gets the definition of module `m`. */
+private Module importableModule(string m) {
+  exists(NPMPackage pkg, PackageJSON json | json = pkg.getPackageJSON() and not json.isPrivate() |
+    result = pkg.getMainModule() and
+    not result.isExterns() and
+    m = pkg.getPackageName()
+  )
 }

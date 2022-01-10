@@ -1,0 +1,4 @@
+| p;Sources;true;readUrl;(URL);;ReturnValue;remote |
+| p;Sources;true;socketStream;();;ReturnValue;remote |
+| p;Sources;true;sourceToParameter;(InputStream[],List);;ArrayElement of Argument[0];remote |
+| p;Sources;true;sourceToParameter;(InputStream[],List);;Element of Argument[1];remote |

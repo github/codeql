@@ -13,11 +13,8 @@ private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
 
-/** Holds is `i` is a valid parameter position. */
-predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
-
 /** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
@@ -31,6 +28,8 @@ DataFlowType getContentType(Content c) {
     t = c.(FieldContent).getField().getType()
     or
     t = c.(PropertyContent).getProperty().getType()
+    or
+    t = c.(SyntheticFieldContent).getField().getType()
     or
     c instanceof ElementContent and
     t instanceof ObjectType // we don't know what the actual element type is
@@ -61,13 +60,14 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
 }
 
 /**
- * Gets the type of the `i`th parameter in a synthesized call that targets a
- * callback of type `t`.
+ * Gets the type of the parameter matching arguments at position `pos` in a
+ * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, int i) {
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
   exists(SystemLinqExpressions::DelegateExtType dt |
     t = Gvn::getGlobalValueNumber(dt) and
-    result = Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(i).getType())
+    result =
+      Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(pos.getPosition()).getType())
   )
 }
 
@@ -136,7 +136,40 @@ SummaryComponent interpretComponentSpecific(string c) {
     c.regexpCapture("Property\\[(.+)\\]", 1) = p.getQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
   )
+  or
+  exists(SyntheticField f |
+    c.regexpCapture("SyntheticField\\[(.+)\\]", 1) = f and
+    result = SummaryComponent::content(any(SyntheticFieldContent sfc | sfc.getField() = f))
+  )
 }
+
+/** Gets the textual representation of the content in the format used for flow summaries. */
+private string getContentSpecificCsv(Content c) {
+  c = TElementContent() and result = "Element"
+  or
+  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
+  or
+  exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
+  or
+  exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
+}
+
+/** Gets the textual representation of a summary component in the format used for flow summaries. */
+string getComponentSpecificCsv(SummaryComponent sc) {
+  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  or
+  exists(ReturnKind rk |
+    sc = TReturnSummaryComponent(rk) and
+    result = "ReturnValue[" + rk + "]" and
+    not rk instanceof NormalReturnKind
+  )
+}
+
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
+string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
 
 class SourceOrSinkElement = Element;
 
@@ -203,3 +236,22 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
     a.getUnboundDeclaration() = mid.asElement()
   )
 }
+
+bindingset[s]
+private int parsePosition(string s) {
+  result = s.regexpCapture("([-0-9]+)", 1).toInt()
+  or
+  exists(int n1, int n2 |
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 1).toInt() = n1 and
+    s.regexpCapture("([-0-9]+)\\.\\.([0-9]+)", 2).toInt() = n2 and
+    result in [n1 .. n2]
+  )
+}
+
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
+bindingset[s]
+ArgumentPosition parseParamBody(string s) { result.getPosition() = parsePosition(s) }
+
+/** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
+bindingset[s]
+ParameterPosition parseArgBody(string s) { result.getPosition() = parsePosition(s) }

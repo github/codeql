@@ -136,7 +136,7 @@ class ConstantReadAccess extends ConstantAccess {
     this.hasGlobalScope() and
     result = lookupConst(TResolved("Object"), this.getName())
     or
-    result = lookupConst(resolveScopeExpr(this.getScopeExpr()), this.getName())
+    result = lookupConst(resolveConstantReadAccess(this.getScopeExpr()), this.getName())
   }
 
   override string getValueText() { result = this.getValue().getValueText() }
@@ -168,7 +168,7 @@ class ConstantWriteAccess extends ConstantAccess {
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
 
   /**
-   * Gets the fully qualified name for this constant, based on the context in
+   * Gets a fully qualified name for this constant, based on the context in
    * which it is defined.
    *
    *  For example, given
@@ -184,17 +184,31 @@ class ConstantWriteAccess extends ConstantAccess {
    *
    * the constant `Baz` has the fully qualified name `Foo::Bar::Baz`, and
    * `CONST_A` has the fully qualified name `Foo::CONST_A`.
+   *
+   * Important note: This can return more than one value, because there are
+   * situations where there can be multiple possible "fully qualified" names.
+   * For example:
+   * ```
+   * module Mod4
+   *   include Mod1
+   *   module Mod3::Mod5 end
+   * end
+   * ```
+   * In the above snippet, `Mod5` has two valid fully qualified names it can be
+   * referred to by: `Mod1::Mod3::Mod5`, or `Mod4::Mod3::Mod5`.
+   *
+   * Another example has to do with the order in which module definitions are
+   * executed at runtime. Because of the way that ruby dynamically looks up
+   * constants up the namespace chain, the fully qualified name of a nested
+   * constant can be ambiguous from just statically looking at the AST.
    */
-  string getQualifiedName() {
-    /* get the qualified name for the parent module, then append w */
-    exists(ConstantWriteAccess parent | parent = this.getEnclosingModule() |
-      result = parent.getQualifiedName() + "::" + this.getName()
-    )
-    or
-    /* base case - there's no parent module */
-    not exists(ConstantWriteAccess parent | parent = this.getEnclosingModule()) and
-    result = this.getName()
-  }
+  string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
+
+  /**
+   * Gets a qualified name for this constant. Deprecated in favor of
+   * `getAQualifiedName` because this can return more than one value
+   */
+  deprecated string getQualifiedName() { result = this.getAQualifiedName() }
 }
 
 /**

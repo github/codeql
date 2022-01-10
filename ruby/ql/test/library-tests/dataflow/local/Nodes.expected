@@ -1,5 +1,9 @@
 ret
 | local_dataflow.rb:6:3:6:14 | ... = ... |
+| local_dataflow.rb:12:3:12:5 | call to p |
+| local_dataflow.rb:16:3:16:10 | break |
+| local_dataflow.rb:20:3:20:25 | if ... |
+| local_dataflow.rb:20:17:20:21 | break |
 | local_dataflow.rb:32:14:32:21 | "method" |
 | local_dataflow.rb:36:6:36:13 | return |
 | local_dataflow.rb:38:3:38:13 | "reachable" |
@@ -8,33 +12,40 @@ ret
 | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:51:3:51:15 | break |
 | local_dataflow.rb:52:3:52:10 | "normal" |
+| local_dataflow.rb:69:3:76:5 | ... = ... |
 arg
-| local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | -1 |
-| local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | 0 |
-| local_dataflow.rb:6:8:6:8 | a | local_dataflow.rb:6:10:6:11 | ... + ... | -1 |
-| local_dataflow.rb:6:13:6:13 | b | local_dataflow.rb:6:10:6:11 | ... + ... | 0 |
-| local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] | -1 |
-| local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | 0 |
-| local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | 1 |
-| local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | 2 |
-| local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | -1 |
-| local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | -1 |
-| local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | 0 |
-| local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | -1 |
-| local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... | 0 |
-| local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... | -1 |
-| local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... | 0 |
-| local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... | -1 |
-| local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... | 0 |
-| local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:49:1:53:3 | call to m | -1 |
-| local_dataflow.rb:49:3:53:3 | do ... end | local_dataflow.rb:49:1:53:3 | call to m | -2 |
-| local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... | -1 |
-| local_dataflow.rb:50:22:50:22 | 4 | local_dataflow.rb:50:18:50:22 | ... < ... | 0 |
-| local_dataflow.rb:51:20:51:20 | x | local_dataflow.rb:51:20:51:24 | ... < ... | -1 |
-| local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... | 0 |
-| local_dataflow.rb:55:1:55:14 | self | local_dataflow.rb:55:1:55:14 | call to foo | -1 |
-| local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] | -1 |
-| local_dataflow.rb:55:5:55:13 | call to [] | local_dataflow.rb:55:1:55:14 | call to foo | 0 |
-| local_dataflow.rb:55:6:55:6 | 1 | local_dataflow.rb:55:5:55:13 | call to [] | 0 |
-| local_dataflow.rb:55:9:55:9 | 2 | local_dataflow.rb:55:5:55:13 | call to [] | 1 |
-| local_dataflow.rb:55:12:55:12 | 3 | local_dataflow.rb:55:5:55:13 | call to [] | 2 |
+| local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | self |
+| local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | position 0 |
+| local_dataflow.rb:6:8:6:8 | a | local_dataflow.rb:6:10:6:11 | ... + ... | self |
+| local_dataflow.rb:6:13:6:13 | b | local_dataflow.rb:6:10:6:11 | ... + ... | position 0 |
+| local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] | self |
+| local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | position 0 |
+| local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
+| local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
+| local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
+| local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
+| local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
+| local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | self |
+| local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | position 0 |
+| local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | block |
+| local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | self |
+| local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | block |
+| local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | call to each | self |
+| local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | self |
+| local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... | position 0 |
+| local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... | self |
+| local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... | position 0 |
+| local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... | self |
+| local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... | position 0 |
+| local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:49:1:53:3 | call to m | self |
+| local_dataflow.rb:49:3:53:3 | do ... end | local_dataflow.rb:49:1:53:3 | call to m | block |
+| local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... | self |
+| local_dataflow.rb:50:22:50:22 | 4 | local_dataflow.rb:50:18:50:22 | ... < ... | position 0 |
+| local_dataflow.rb:51:20:51:20 | x | local_dataflow.rb:51:20:51:24 | ... < ... | self |
+| local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... | position 0 |
+| local_dataflow.rb:55:1:55:14 | self | local_dataflow.rb:55:1:55:14 | call to foo | self |
+| local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] | self |
+| local_dataflow.rb:55:5:55:13 | call to [] | local_dataflow.rb:55:1:55:14 | call to foo | position 0 |
+| local_dataflow.rb:55:6:55:6 | 1 | local_dataflow.rb:55:5:55:13 | call to [] | position 0 |
+| local_dataflow.rb:55:9:55:9 | 2 | local_dataflow.rb:55:5:55:13 | call to [] | position 1 |
+| local_dataflow.rb:55:12:55:12 | 3 | local_dataflow.rb:55:5:55:13 | call to [] | position 2 |

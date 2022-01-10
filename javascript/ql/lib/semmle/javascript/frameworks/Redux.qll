@@ -288,7 +288,7 @@ module Redux {
     }
 
     /**
-     * A call to `reduce-reducers`, modelled as a reducer that dispatches to an arbitrary subreducer.
+     * A call to `reduce-reducers`, modeled as a reducer that dispatches to an arbitrary subreducer.
      *
      * In reality, this function chains together all of the reducers, but in practice it is only used
      * when the reducers handle a disjoint set of action types, which makes it behave as if it
@@ -1111,9 +1111,7 @@ module Redux {
 
     /** A heuristic call to `connect`, recognized by it taking arguments named `mapStateToProps` and `mapDispatchToProps`. */
     private class HeuristicConnectFunction extends ConnectCall {
-      HeuristicConnectFunction() {
-        this = API::root().getASuccessor(any(HeuristicConnectEntryPoint e)).getACall()
-      }
+      HeuristicConnectFunction() { this = any(HeuristicConnectEntryPoint e).getNode().getACall() }
 
       override API::Node getMapStateToProps() {
         result = getAParameter() and

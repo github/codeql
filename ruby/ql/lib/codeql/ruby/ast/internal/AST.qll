@@ -2,6 +2,7 @@ import codeql.Locations
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Parameter
+private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.AST as AST
 private import Synthesis
@@ -30,6 +31,7 @@ private module Cached {
     TAddExprReal(Ruby::Binary g) { g instanceof @ruby_binary_plus } or
     TAddExprSynth(AST::AstNode parent, int i) { mkSynthChild(AddExprKind(), parent, i) } or
     TAliasStmt(Ruby::Alias g) or
+    TAlternativePattern(Ruby::AlternativePattern g) or
     TArgumentList(Ruby::AstNode g) {
       (
         g.getParent() instanceof Ruby::Break or
@@ -44,6 +46,7 @@ private module Cached {
         g instanceof Ruby::RightAssignmentList
       )
     } or
+    TArrayPattern(Ruby::ArrayPattern g) or
     TAssignAddExpr(Ruby::OperatorAssignment g) { g instanceof @ruby_operator_assignment_plusequal } or
     TAssignBitwiseAndExpr(Ruby::OperatorAssignment g) {
       g instanceof @ruby_operator_assignment_ampersandequal
@@ -77,6 +80,7 @@ private module Cached {
       g instanceof @ruby_operator_assignment_ranglerangleequal
     } or
     TAssignSubExpr(Ruby::OperatorAssignment g) { g instanceof @ruby_operator_assignment_minusequal } or
+    TAsPattern(Ruby::AsPattern g) or
     TBareStringLiteral(Ruby::BareString g) or
     TBareSymbolLiteral(Ruby::BareSymbol g) or
     TBeginBlock(Ruby::BeginBlock g) or
@@ -93,10 +97,12 @@ private module Cached {
     } or
     TBlockArgument(Ruby::BlockArgument g) or
     TBlockParameter(Ruby::BlockParameter g) or
-    TBraceBlock(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
+    TBraceBlockSynth(AST::AstNode parent, int i) { mkSynthChild(BraceBlockKind(), parent, i) } or
+    TBraceBlockReal(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
     TBreakStmt(Ruby::Break g) or
     TCaseEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequalequal } or
     TCaseExpr(Ruby::Case g) or
+    TCaseMatch(Ruby::CaseMatch g) or
     TCharacterLiteral(Ruby::Character g) or
     TClassDeclaration(Ruby::Class g) or
     TClassVariableAccessReal(Ruby::ClassVariable g, AST::ClassVariable v) {
@@ -123,15 +129,17 @@ private module Cached {
     TElse(Ruby::Else g) or
     TElsif(Ruby::Elsif g) or
     TEmptyStmt(Ruby::EmptyStatement g) or
+    TEncoding(Ruby::Encoding g) or
     TEndBlock(Ruby::EndBlock g) or
     TEnsure(Ruby::Ensure g) or
     TEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequal } or
     TExponentExprReal(Ruby::Binary g) { g instanceof @ruby_binary_starstar } or
     TExponentExprSynth(AST::AstNode parent, int i) { mkSynthChild(ExponentExprKind(), parent, i) } or
     TFalseLiteral(Ruby::False g) or
+    TFile(Ruby::File g) or
+    TFindPattern(Ruby::FindPattern g) or
     TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
     TForExpr(Ruby::For g) or
-    TForIn(Ruby::In g) or // TODO REMOVE
     TForwardParameter(Ruby::ForwardParameter g) or
     TForwardArgument(Ruby::ForwardArgument g) or
     TGEExpr(Ruby::Binary g) { g instanceof @ruby_binary_rangleequal } or
@@ -144,12 +152,17 @@ private module Cached {
     } or
     THashKeySymbolLiteral(Ruby::HashKeySymbol g) or
     THashLiteral(Ruby::Hash g) or
+    THashPattern(Ruby::HashPattern g) or
     THashSplatExpr(Ruby::HashSplatArgument g) or
-    THashSplatParameter(Ruby::HashSplatParameter g) or
+    THashSplatNilParameter(Ruby::HashSplatNil g) { not g.getParent() instanceof Ruby::HashPattern } or
+    THashSplatParameter(Ruby::HashSplatParameter g) {
+      not g.getParent() instanceof Ruby::HashPattern
+    } or
     THereDoc(Ruby::HeredocBeginning g) or
     TIdentifierMethodCall(Ruby::Identifier g) { isIdentifierMethodCall(g) } or
     TIf(Ruby::If g) or
     TIfModifierExpr(Ruby::IfModifier g) or
+    TInClause(Ruby::InClause g) or
     TInstanceVariableAccessReal(Ruby::InstanceVariable g, AST::InstanceVariable v) {
       InstanceVariableAccess::range(g, v)
     } or
@@ -166,8 +179,9 @@ private module Cached {
     TLShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(LShiftExprKind(), parent, i) } or
     TLTExpr(Ruby::Binary g) { g instanceof @ruby_binary_langle } or
     TLambda(Ruby::Lambda g) or
+    TLine(Ruby::Line g) or
     TLeftAssignmentList(Ruby::LeftAssignmentList g) or
-    TLocalVariableAccessReal(Ruby::Identifier g, AST::LocalVariable v) {
+    TLocalVariableAccessReal(Ruby::Identifier g, TLocalVariableReal v) {
       LocalVariableAccess::range(g, v)
     } or
     TLocalVariableAccessSynth(AST::AstNode parent, int i, AST::LocalVariable v) {
@@ -202,6 +216,7 @@ private module Cached {
     TOptionalParameter(Ruby::OptionalParameter g) or
     TPair(Ruby::Pair g) or
     TParenthesizedExpr(Ruby::ParenthesizedStatements g) or
+    TParenthesizedPattern(Ruby::ParenthesizedPattern g) or
     TRShiftExprReal(Ruby::Binary g) { g instanceof @ruby_binary_ranglerangle } or
     TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
     TRangeLiteralReal(Ruby::Range g) or
@@ -229,6 +244,8 @@ private module Cached {
         vcall(g)
         or
         explicitAssignmentNode(g, _)
+        or
+        casePattern(g)
       )
     } or
     TScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
@@ -238,14 +255,20 @@ private module Cached {
     TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
       mkSynthChild(SelfKind(v), parent, i)
     } or
-    TSimpleParameter(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterReal(Ruby::Identifier g) { g instanceof Parameter::Range } or
+    TSimpleParameterSynth(AST::AstNode parent, int i) {
+      mkSynthChild(SimpleParameterKind(), parent, i)
+    } or
     TSimpleSymbolLiteral(Ruby::SimpleSymbol g) or
     TSingletonClass(Ruby::SingletonClass g) or
     TSingletonMethod(Ruby::SingletonMethod g) or
     TSpaceshipExpr(Ruby::Binary g) { g instanceof @ruby_binary_langleequalrangle } or
     TSplatExprReal(Ruby::SplatArgument g) or
     TSplatExprSynth(AST::AstNode parent, int i) { mkSynthChild(SplatExprKind(), parent, i) } or
-    TSplatParameter(Ruby::SplatParameter g) or
+    TSplatParameter(Ruby::SplatParameter g) {
+      not g.getParent() instanceof Ruby::ArrayPattern and
+      not g.getParent() instanceof Ruby::FindPattern
+    } or
     TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Ruby::StringArray g) or
     TStringConcatenation(Ruby::ChainedString g) or
@@ -266,12 +289,14 @@ private module Cached {
       vcall(g)
       or
       explicitAssignmentNode(g, _)
+      or
+      casePattern(g)
     } or
     TTokenMethodName(MethodName::Token g) { MethodName::range(g) } or
     TTokenSuperCall(Ruby::Super g) { vcall(g) } or
     TToplevel(Ruby::Program g) or
     TTrueLiteral(Ruby::True g) or
-    TTuplePatternParameter(Ruby::DestructuredParameter g) or
+    TDestructuredParameter(Ruby::DestructuredParameter g) or
     TUnaryMinusExpr(Ruby::Unary g) { g instanceof @ruby_unary_minus } or
     TUnaryPlusExpr(Ruby::Unary g) { g instanceof @ruby_unary_plus } or
     TUndefStmt(Ruby::Undef g) or
@@ -279,10 +304,57 @@ private module Cached {
     TUnlessModifierExpr(Ruby::UnlessModifier g) or
     TUntilExpr(Ruby::Until g) or
     TUntilModifierExpr(Ruby::UntilModifier g) or
-    TWhenExpr(Ruby::When g) or
+    TVariableReferencePattern(Ruby::VariableReferencePattern g) or
+    TWhenClause(Ruby::When g) or
     TWhileExpr(Ruby::While g) or
     TWhileModifierExpr(Ruby::WhileModifier g) or
     TYieldCall(Ruby::Yield g)
+
+  class TAstNodeReal =
+    TAddExprReal or TAliasStmt or TAlternativePattern or TArgumentList or TArrayPattern or
+        TAsPattern or TAssignAddExpr or TAssignBitwiseAndExpr or TAssignBitwiseOrExpr or
+        TAssignBitwiseXorExpr or TAssignDivExpr or TAssignExponentExpr or TAssignExprReal or
+        TAssignLShiftExpr or TAssignLogicalAndExpr or TAssignLogicalOrExpr or TAssignModuloExpr or
+        TAssignMulExpr or TAssignRShiftExpr or TAssignSubExpr or TBareStringLiteral or
+        TBareSymbolLiteral or TBeginBlock or TBeginExpr or TBitwiseAndExprReal or
+        TBitwiseOrExprReal or TBitwiseXorExprReal or TBlockArgument or TBlockParameter or
+        TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or TCaseMatch or
+        TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
+        TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
+        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or TElse or
+        TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or
+        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
+        TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
+        THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
+        THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or
+        TIfModifierExpr or TInClause or TInstanceVariableAccessReal or TIntegerLiteralReal or
+        TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or TLambda or
+        TLeftAssignmentList or TLine or TLocalVariableAccessReal or TLogicalAndExprReal or
+        TLogicalOrExprReal or TMethod or TModuleDeclaration or TModuloExprReal or TMulExprReal or
+        TNEExpr or TNextStmt or TNilLiteral or TNoRegExpMatchExpr or TNotExpr or
+        TOptionalParameter or TPair or TParenthesizedExpr or TParenthesizedPattern or
+        TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
+        TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
+        TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
+        TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
+        TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
+        TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
+        TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
+        TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
+        TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
+        TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
+        TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
+        TVariableReferencePattern or TWhenClause or TWhileExpr or TWhileModifierExpr or TYieldCall;
+
+  class TAstNodeSynth =
+    TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
+        TBitwiseXorExprSynth or TBraceBlockSynth or TClassVariableAccessSynth or
+        TConstantReadAccessSynth or TDivExprSynth or TExponentExprSynth or
+        TGlobalVariableAccessSynth or TInstanceVariableAccessSynth or TIntegerLiteralSynth or
+        TLShiftExprSynth or TLocalVariableAccessSynth or TLogicalAndExprSynth or
+        TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or TMulExprSynth or
+        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
+        TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -290,10 +362,13 @@ private module Cached {
    * for any given generated node.
    */
   cached
-  Ruby::AstNode toGenerated(AST::AstNode n) {
+  Ruby::AstNode toGenerated(TAstNodeReal n) {
     n = TAddExprReal(result) or
     n = TAliasStmt(result) or
+    n = TAlternativePattern(result) or
     n = TArgumentList(result) or
+    n = TArrayPattern(result) or
+    n = TAsPattern(result) or
     n = TAssignAddExpr(result) or
     n = TAssignBitwiseAndExpr(result) or
     n = TAssignBitwiseOrExpr(result) or
@@ -301,9 +376,9 @@ private module Cached {
     n = TAssignDivExpr(result) or
     n = TAssignExponentExpr(result) or
     n = TAssignExprReal(result) or
-    n = TAssignLShiftExpr(result) or
     n = TAssignLogicalAndExpr(result) or
     n = TAssignLogicalOrExpr(result) or
+    n = TAssignLShiftExpr(result) or
     n = TAssignModuloExpr(result) or
     n = TAssignMulExpr(result) or
     n = TAssignRShiftExpr(result) or
@@ -317,10 +392,11 @@ private module Cached {
     n = TBitwiseXorExprReal(result) or
     n = TBlockArgument(result) or
     n = TBlockParameter(result) or
-    n = TBraceBlock(result) or
+    n = TBraceBlockReal(result) or
     n = TBreakStmt(result) or
     n = TCaseEqExpr(result) or
     n = TCaseExpr(result) or
+    n = TCaseMatch(result) or
     n = TCharacterLiteral(result) or
     n = TClassDeclaration(result) or
     n = TClassVariableAccessReal(result, _) or
@@ -330,44 +406,50 @@ private module Cached {
     n = TDelimitedSymbolLiteral(result) or
     n = TDestructuredLeftAssignment(result) or
     n = TDivExprReal(result) or
-    n = TDo(result) or
     n = TDoBlock(result) or
+    n = TDo(result) or
     n = TElementReference(result) or
     n = TElse(result) or
     n = TElsif(result) or
     n = TEmptyStmt(result) or
+    n = TEncoding(result) or
     n = TEndBlock(result) or
     n = TEnsure(result) or
     n = TEqExpr(result) or
     n = TExponentExprReal(result) or
     n = TFalseLiteral(result) or
+    n = TFile(result) or
+    n = TFindPattern(result) or
     n = TFloatLiteral(result) or
     n = TForExpr(result) or
-    n = TForIn(result) or // TODO REMOVE
     n = TForwardArgument(result) or
     n = TForwardParameter(result) or
     n = TGEExpr(result) or
-    n = TGTExpr(result) or
     n = TGlobalVariableAccessReal(result, _) or
+    n = TGTExpr(result) or
     n = THashKeySymbolLiteral(result) or
     n = THashLiteral(result) or
+    n = THashPattern(result) or
     n = THashSplatExpr(result) or
+    n = THashSplatNilParameter(result) or
     n = THashSplatParameter(result) or
     n = THereDoc(result) or
     n = TIdentifierMethodCall(result) or
-    n = TIf(result) or
     n = TIfModifierExpr(result) or
+    n = TIf(result) or
+    n = TInClause(result) or
     n = TInstanceVariableAccessReal(result, _) or
     n = TIntegerLiteralReal(result) or
     n = TKeywordParameter(result) or
-    n = TLEExpr(result) or
-    n = TLShiftExprReal(result) or
-    n = TLTExpr(result) or
     n = TLambda(result) or
+    n = TLEExpr(result) or
     n = TLeftAssignmentList(result) or
+    n = TLine(result) or
     n = TLocalVariableAccessReal(result, _) or
     n = TLogicalAndExprReal(result) or
     n = TLogicalOrExprReal(result) or
+    n = TLShiftExprReal(result) or
+    n = TLTExpr(result) or
     n = TMethod(result) or
     n = TModuleDeclaration(result) or
     n = TModuloExprReal(result) or
@@ -380,7 +462,7 @@ private module Cached {
     n = TOptionalParameter(result) or
     n = TPair(result) or
     n = TParenthesizedExpr(result) or
-    n = TRShiftExprReal(result) or
+    n = TParenthesizedPattern(result) or
     n = TRangeLiteralReal(result) or
     n = TRationalLiteral(result) or
     n = TRedoStmt(result) or
@@ -394,10 +476,11 @@ private module Cached {
     n = TRescueModifierExpr(result) or
     n = TRetryStmt(result) or
     n = TReturnStmt(result) or
+    n = TRShiftExprReal(result) or
     n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
     n = TSelfReal(result) or
-    n = TSimpleParameter(result) or
+    n = TSimpleParameterReal(result) or
     n = TSimpleSymbolLiteral(result) or
     n = TSingletonClass(result) or
     n = TSingletonMethod(result) or
@@ -419,7 +502,7 @@ private module Cached {
     n = TTokenSuperCall(result) or
     n = TToplevel(result) or
     n = TTrueLiteral(result) or
-    n = TTuplePatternParameter(result) or
+    n = TDestructuredParameter(result) or
     n = TUnaryMinusExpr(result) or
     n = TUnaryPlusExpr(result) or
     n = TUndefStmt(result) or
@@ -427,7 +510,8 @@ private module Cached {
     n = TUnlessModifierExpr(result) or
     n = TUntilExpr(result) or
     n = TUntilModifierExpr(result) or
-    n = TWhenExpr(result) or
+    n = TVariableReferencePattern(result) or
+    n = TWhenClause(result) or
     n = TWhileExpr(result) or
     n = TWhileModifierExpr(result) or
     n = TYieldCall(result)
@@ -445,6 +529,8 @@ private module Cached {
     result = TBitwiseOrExprSynth(parent, i)
     or
     result = TBitwiseXorExprSynth(parent, i)
+    or
+    result = TBraceBlockSynth(parent, i)
     or
     result = TClassVariableAccessSynth(parent, i, _)
     or
@@ -480,6 +566,8 @@ private module Cached {
     or
     result = TSelfSynth(parent, i, _)
     or
+    result = TSimpleParameterSynth(parent, i)
+    or
     result = TSplatExprSynth(parent, i)
     or
     result = TStmtSequenceSynth(parent, i)
@@ -495,7 +583,9 @@ private module Cached {
   predicate synthChild(AST::AstNode parent, int i, AST::AstNode child) {
     child = getSynthChild(parent, i)
     or
-    any(Synthesis s).child(parent, i, RealChild(child))
+    any(Synthesis s).child(parent, i, RealChildRef(child))
+    or
+    any(Synthesis s).child(parent, i, SynthChildRef(child))
   }
 
   /**
@@ -523,13 +613,24 @@ private module Cached {
     or
     result = toGenerated(n).getLocation()
   }
+
+  cached
+  predicate lhsExpr(AST::Expr e) {
+    explicitAssignmentNode(toGenerated(e), _)
+    or
+    implicitAssignmentNode(toGenerated(e))
+    or
+    e = getSynthChild(any(AST::AssignExpr ae), 0)
+  }
 }
 
 import Cached
 
-TAstNode fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
+TAstNodeReal fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
 
 class TCall = TMethodCall or TYieldCall;
+
+class TCase = TCaseExpr or TCaseMatch;
 
 class TMethodCall =
   TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
@@ -540,7 +641,7 @@ class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 class TConstantAccess =
   TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace or TConstantReadAccessSynth;
 
-class TControlExpr = TConditionalExpr or TCaseExpr or TLoop;
+class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatch or TLoop;
 
 class TConditionalExpr =
   TIfExpr or TUnlessExpr or TIfModifierExpr or TUnlessModifierExpr or TTernaryIfExpr;
@@ -553,11 +654,12 @@ class TLoop = TConditionalLoop or TForExpr;
 
 class TSelf = TSelfReal or TSelfSynth;
 
+class TDestructuredLhsExpr = TDestructuredLeftAssignment or TLeftAssignmentList;
+
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
-      TCall or TBlockArgument or TConstantAccess or TControlExpr or TWhenExpr or TLiteral or
-      TCallable or TVariableAccess or TStmtSequence or TOperation or TSimpleParameter or
-      TForwardArgument;
+      TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
+      TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
@@ -568,8 +670,9 @@ class TStmtSequence =
 class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
 
 class TLiteral =
-  TNumericLiteral or TNilLiteral or TBooleanLiteral or TStringlikeLiteral or TCharacterLiteral or
-      TArrayLiteral or THashLiteral or TRangeLiteral or TTokenMethodName;
+  TEncoding or TFile or TLine or TNumericLiteral or TNilLiteral or TBooleanLiteral or
+      TStringlikeLiteral or TCharacterLiteral or TArrayLiteral or THashLiteral or TRangeLiteral or
+      TTokenMethodName;
 
 class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or TComplexLiteral;
 
@@ -594,6 +697,8 @@ class TArrayLiteral = TRegularArrayLiteral or TStringArrayLiteral or TSymbolArra
 class TCallable = TMethodBase or TLambda or TBlock;
 
 class TMethodBase = TMethod or TSingletonMethod;
+
+class TBraceBlock = TBraceBlockReal or TBraceBlockSynth;
 
 class TBlock = TDoBlock or TBraceBlock;
 
@@ -683,16 +788,20 @@ class TStmt =
 class TReturningStmt = TReturnStmt or TBreakStmt or TNextStmt;
 
 class TParameter =
-  TPatternParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
-      TOptionalParameter or TSplatParameter or TForwardParameter;
+  TSimpleParameter or TDestructuredParameter or TBlockParameter or THashSplatParameter or
+      THashSplatNilParameter or TKeywordParameter or TOptionalParameter or TSplatParameter or
+      TForwardParameter;
 
-class TPatternParameter = TSimpleParameter or TTuplePatternParameter;
+class TSimpleParameter = TSimpleParameterReal or TSimpleParameterSynth;
+
+deprecated class TPatternParameter = TSimpleParameter or TDestructuredParameter;
 
 class TNamedParameter =
   TSimpleParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
       TOptionalParameter or TSplatParameter;
 
-class TTuplePattern = TTuplePatternParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
+deprecated class TTuplePattern =
+  TDestructuredParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TVariableAccess =
   TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or

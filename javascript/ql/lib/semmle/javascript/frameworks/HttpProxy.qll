@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modelling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
+ * Provides classes and predicates modeling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
  */
 private module HttpProxy {
   /**

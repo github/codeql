@@ -206,11 +206,11 @@ Tuples.cs:
 #   57|         4: [BreakStmt] break;
 #   58|         5: [CaseStmt] case ...:
 #   58|           0: [TupleExpr] (..., ...)
-#   58|             0: [LocalVariableDeclExpr] String a
+#   58|             0: [VariablePatternExpr] String a
 #   58|             1: [TupleExpr] (..., ...)
-#   58|               0: [LocalVariableDeclExpr] Int32 b
-#   58|               1: [LocalVariableDeclExpr] String c
-#   58|             2: [DiscardExpr] _
+#   58|               0: [VariablePatternExpr] Int32 b
+#   58|               1: [VariablePatternExpr] String c
+#   58|             2: [DiscardPatternExpr] _
 #   59|         6: [ExprStmt] ...;
 #   59|           0: [MethodCall] call to method Sink<String>
 #   59|             0: [LocalVariableAccess] access to local variable a
@@ -238,8 +238,8 @@ Tuples.cs:
 #   68|             2: [PositionalPatternExpr] ( ... )
 #   68|               0: [ConstantPatternExpr,StringLiteral] "taint source"
 #   68|               1: [TupleExpr] (..., ...)
-#   68|                 0: [LocalVariableDeclExpr] Int32 b
-#   68|                 1: [LocalVariableDeclExpr] String c
+#   68|                 0: [VariablePatternExpr] Int32 b
+#   68|                 1: [VariablePatternExpr] String c
 #   68|               2: [DiscardPatternExpr] _
 #   69|         1: [ExprStmt] ...;
 #   69|           0: [MethodCall] call to method Sink<String>
@@ -266,11 +266,11 @@ Tuples.cs:
 #   77|         0: [IsExpr] ... is ...
 #   77|           0: [LocalVariableAccess] access to local variable x
 #   77|           1: [TupleExpr] (..., ...)
-#   77|             0: [LocalVariableDeclExpr] String p
+#   77|             0: [VariablePatternExpr] String p
 #   77|             1: [TupleExpr] (..., ...)
-#   77|               0: [LocalVariableDeclExpr] Int32 q
-#   77|               1: [LocalVariableDeclExpr] String r
-#   77|             2: [DiscardExpr] _
+#   77|               0: [VariablePatternExpr] Int32 q
+#   77|               1: [VariablePatternExpr] String r
+#   77|             2: [DiscardPatternExpr] _
 #   78|         1: [BlockStmt] {...}
 #   79|           0: [ExprStmt] ...;
 #   79|             0: [MethodCall] call to method Sink<String>
@@ -284,12 +284,12 @@ Tuples.cs:
 #   85|   9: [Record] R1
 #   85|     12: [NEOperator] !=
 #-----|       2: (Parameters)
-#   85|         0: [Parameter] r1
-#   85|         1: [Parameter] r2
+#   85|         0: [Parameter] left
+#   85|         1: [Parameter] right
 #   85|     13: [EQOperator] ==
 #-----|       2: (Parameters)
-#   85|         0: [Parameter] r1
-#   85|         1: [Parameter] r2
+#   85|         0: [Parameter] left
+#   85|         1: [Parameter] right
 #   85|     14: [Property] EqualityContract
 #   85|       3: [Getter] get_EqualityContract
 #   85|     15: [InstanceConstructor] R1
@@ -339,8 +339,8 @@ Tuples.cs:
 #   96|         0: [LocalVariableAccess] access to local variable r
 #   98|         0: [CaseStmt] case ...:
 #   98|           0: [TupleExpr] (..., ...)
-#   98|             0: [LocalVariableDeclExpr] String x
-#   98|             1: [LocalVariableDeclExpr] Int32 y
+#   98|             0: [VariablePatternExpr] String x
+#   98|             1: [VariablePatternExpr] Int32 y
 #   99|         1: [ExprStmt] ...;
 #   99|           0: [MethodCall] call to method Sink<String>
 #   99|             0: [LocalVariableAccess] access to local variable x

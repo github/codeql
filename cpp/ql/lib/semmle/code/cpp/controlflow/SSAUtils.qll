@@ -153,9 +153,11 @@ library class SSAHelper extends int {
    * Modern Compiler Implementation by Andrew Appel.
    */
   private predicate frontier_phi_node(StackVariable v, BasicBlock b) {
-    exists(BasicBlock x | dominanceFrontier(x, b) and ssa_defn_rec(v, x)) and
+    exists(BasicBlock x |
+      dominanceFrontier(x, b) and ssa_defn_rec(pragma[only_bind_into](v), pragma[only_bind_into](x))
+    ) and
     /* We can also eliminate those nodes where the variable is not live on any incoming edge */
-    live_at_start_of_bb(v, b)
+    live_at_start_of_bb(pragma[only_bind_into](v), b)
   }
 
   private predicate ssa_defn_rec(StackVariable v, BasicBlock b) {
@@ -292,7 +294,7 @@ library class SSAHelper extends int {
    */
   cached
   string toString(ControlFlowNode node, StackVariable v) {
-    if phi_node(v, node.(BasicBlock))
+    if phi_node(v, node)
     then result = "SSA phi(" + v.getName() + ")"
     else (
       ssa_defn(v, node, _, _) and result = "SSA def(" + v.getName() + ")"

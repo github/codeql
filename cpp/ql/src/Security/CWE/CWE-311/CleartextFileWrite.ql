@@ -8,6 +8,7 @@
  * @precision high
  * @id cpp/cleartext-storage-file
  * @tags security
+ *       external/cwe/cwe-260
  *       external/cwe/cwe-313
  */
 

@@ -6,6 +6,85 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
+private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+
+private newtype TBufferWriteEstimationReason =
+  TNoSpecifiedEstimateReason() or
+  TTypeBoundsAnalysis() or
+  TValueFlowAnalysis()
+
+/**
+ * A reason for a specific buffer write size estimate.
+ */
+abstract class BufferWriteEstimationReason extends TBufferWriteEstimationReason {
+  /**
+   * Returns the name of the concrete class.
+   */
+  abstract string toString();
+
+  /**
+   * Returns a human readable representation of this reason.
+   */
+  abstract string getDescription();
+
+  /**
+   * Combine estimate reasons. Used to give a reason for the size of a format string
+   * conversion given reasons coming from its individual specifiers.
+   */
+  abstract BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other);
+}
+
+/**
+ * No particular reason given. This is currently used for backward compatibility so that
+ * classes derived from BufferWrite and overriding `getMaxData/0` still work with the
+ * queries as intended.
+ */
+class NoSpecifiedEstimateReason extends BufferWriteEstimationReason, TNoSpecifiedEstimateReason {
+  override string toString() { result = "NoSpecifiedEstimateReason" }
+
+  override string getDescription() { result = "no reason specified" }
+
+  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    // this reason should not be used in format specifiers, so it should not be combined
+    // with other reasons
+    none()
+  }
+}
+
+/**
+ * The estimation comes from rough bounds just based on the type (e.g.
+ * `0 <= x < 2^32` for an unsigned 32 bit integer).
+ */
+class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysis {
+  override string toString() { result = "TypeBoundsAnalysis" }
+
+  override string getDescription() { result = "based on type bounds" }
+
+  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    other != TNoSpecifiedEstimateReason() and result = TTypeBoundsAnalysis()
+  }
+}
+
+/**
+ * The estimation comes from non trivial bounds found via actual flow analysis.
+ * For example
+ * ```
+ * unsigned u = x;
+ * if (u < 1000) {
+ *    //...  <- estimation done here based on u
+ * }
+ * ```
+ */
+class ValueFlowAnalysis extends BufferWriteEstimationReason, TValueFlowAnalysis {
+  override string toString() { result = "ValueFlowAnalysis" }
+
+  override string getDescription() { result = "based on flow analysis of value bounds" }
+
+  override BufferWriteEstimationReason combineWith(BufferWriteEstimationReason other) {
+    other != TNoSpecifiedEstimateReason() and result = other
+  }
+}
 
 class PrintfFormatAttribute extends FormatAttribute {
   PrintfFormatAttribute() { this.getArchetype() = ["printf", "__printf__"] }
@@ -175,9 +254,7 @@ class FormattingFunctionCall extends Expr {
   /**
    * Gets the index at which the format string occurs in the argument list.
    */
-  int getFormatParameterIndex() {
-    result = this.getTarget().(FormattingFunction).getFormatParameterIndex()
-  }
+  int getFormatParameterIndex() { result = this.getTarget().getFormatParameterIndex() }
 
   /**
    * Gets the format expression used in this call.
@@ -191,7 +268,7 @@ class FormattingFunctionCall extends Expr {
     exists(int i |
       result = this.getArgument(i) and
       n >= 0 and
-      n = i - this.getTarget().(FormattingFunction).getFirstFormatArgumentIndex()
+      n = i - this.getTarget().getFirstFormatArgumentIndex()
     )
   }
 
@@ -251,7 +328,7 @@ class FormattingFunctionCall extends Expr {
   int getNumFormatArgument() {
     result = count(this.getFormatArgument(_)) and
     // format arguments must be known
-    exists(this.getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
+    exists(this.getTarget().getFirstFormatArgumentIndex())
   }
 
   /**
@@ -268,6 +345,18 @@ class FormattingFunctionCall extends Expr {
                 .(FormattingFunction)
                 .getOutputParameterIndex(isStream))
   }
+}
+
+/**
+ * Gets the number of digits required to represent the integer represented by `f`.
+ *
+ * `f` is assumed to be nonnegative.
+ */
+bindingset[f]
+private int lengthInBase10(float f) {
+  f = 0 and result = 1
+  or
+  result = f.log10().floor() + 1
 }
 
 /**
@@ -289,35 +378,27 @@ class FormatLiteral extends Literal {
    * a `char *` (either way, `%S` will have the opposite meaning).
    * DEPRECATED: Use getDefaultCharType() instead.
    */
-  deprecated predicate isWideCharDefault() {
-    this.getUse().getTarget().(FormattingFunction).isWideCharDefault()
-  }
+  deprecated predicate isWideCharDefault() { this.getUse().getTarget().isWideCharDefault() }
 
   /**
    * Gets the default character type expected for `%s` by this format literal.  Typically
    * `char` or `wchar_t`.
    */
-  Type getDefaultCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getDefaultCharType()
-  }
+  Type getDefaultCharType() { result = this.getUse().getTarget().getDefaultCharType() }
 
   /**
    * Gets the non-default character type expected for `%S` by this format literal.  Typically
    * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
    * which is correct for a particular function.
    */
-  Type getNonDefaultCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getNonDefaultCharType()
-  }
+  Type getNonDefaultCharType() { result = this.getUse().getTarget().getNonDefaultCharType() }
 
   /**
    * Gets the wide character type for this format literal.  This is usually `wchar_t`.  On some
    * snapshots there may be multiple results where we can't tell which is correct for a
    * particular function.
    */
-  Type getWideCharType() {
-    result = this.getUse().getTarget().(FormattingFunction).getWideCharType()
-  }
+  Type getWideCharType() { result = this.getUse().getTarget().getWideCharType() }
 
   /**
    * Holds if this `FormatLiteral` is in a context that supports
@@ -896,7 +977,7 @@ class FormatLiteral extends Literal {
     exists(string len, string conv |
       this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (len != "l" and len != "w" and len != "h") and
-      this.getUse().getTarget().(FormattingFunction).getFormatCharType().getSize() > 1 and // wide function
+      this.getUse().getTarget().getFormatCharType().getSize() > 1 and // wide function
       (
         conv = "c" and
         result = this.getNonDefaultCharType()
@@ -986,7 +1067,14 @@ class FormatLiteral extends Literal {
    * conversion specifier of this format string; has no result if this cannot
    * be determined.
    */
-  int getMaxConvertedLength(int n) {
+  int getMaxConvertedLength(int n) { result = max(getMaxConvertedLength(n, _)) }
+
+  /**
+   * Gets the maximum length of the string that can be produced by the nth
+   * conversion specifier of this format string, specifying the estimation reason;
+   * has no result if this cannot be determined.
+   */
+  int getMaxConvertedLength(int n, BufferWriteEstimationReason reason) {
     exists(int len |
       (
         (
@@ -998,10 +1086,12 @@ class FormatLiteral extends Literal {
       ) and
       (
         this.getConversionChar(n) = "%" and
-        len = 1
+        len = 1 and
+        reason = TValueFlowAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "c" and
-        len = 1 // e.g. 'a'
+        len = 1 and
+        reason = TValueFlowAnalysis() // e.g. 'a'
         or
         this.getConversionChar(n).toLowerCase() = "f" and
         exists(int dot, int afterdot |
@@ -1015,7 +1105,8 @@ class FormatLiteral extends Literal {
             afterdot = 6
           ) and
           len = 1 + 309 + dot + afterdot
-        ) // e.g. -1e308="-100000"...
+        ) and
+        reason = TTypeBoundsAnalysis() // e.g. -1e308="-100000"...
         or
         this.getConversionChar(n).toLowerCase() = "e" and
         exists(int dot, int afterdot |
@@ -1029,7 +1120,8 @@ class FormatLiteral extends Literal {
             afterdot = 6
           ) and
           len = 1 + 1 + dot + afterdot + 1 + 1 + 3
-        ) // -1e308="-1.000000e+308"
+        ) and
+        reason = TTypeBoundsAnalysis() // -1e308="-1.000000e+308"
         or
         this.getConversionChar(n).toLowerCase() = "g" and
         exists(int dot, int afterdot |
@@ -1052,42 +1144,79 @@ class FormatLiteral extends Literal {
           //       (e.g. 123456, 0.000123456 are just OK)
           //       so case %f can be at most P characters + 4 zeroes, sign, dot = P + 6
           len = (afterdot.maximum(1) + 6).maximum(1 + 1 + dot + afterdot + 1 + 1 + 3)
-        ) // (e.g. "-1.59203e-319")
+        ) and
+        reason = TTypeBoundsAnalysis() // (e.g. "-1.59203e-319")
         or
         this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = this.getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isSigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = 1 + ((sizeBits - 1) / 10.0.log2()).ceil()
-          // this calculation is as %u (below) only we take out the sign bit (- 1) and allow a whole
-          // character for it to be expressed as '-'.
+        exists(float typeBasedBound, float valueBasedBound |
+          // The first case handles length sub-specifiers
+          // Subtract one in the exponent because one bit is for the sign.
+          // Add 1 to account for the possible sign in the output.
+          typeBasedBound =
+            1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
+          // The second case uses range analysis to deduce a length that's shorter than the length
+          // of the number -2^31.
+          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted()) and
+            typeLower = exprMinVal(arg.getFullyConverted()) and
+            typeUpper = exprMaxVal(arg.getFullyConverted())
+          |
+            valueBasedBound =
+              max(int cand |
+                // Include the sign bit in the length if it can be negative
+                (
+                  if lower < 0
+                  then cand = 1 + lengthInBase10(lower.abs())
+                  else cand = lengthInBase10(lower)
+                )
+                or
+                (
+                  if upper < 0
+                  then cand = 1 + lengthInBase10(upper.abs())
+                  else cand = lengthInBase10(upper)
+                )
+              ) and
+            (
+              if lower > typeLower or upper < typeUpper
+              then reason = TValueFlowAnalysis()
+              else reason = TTypeBoundsAnalysis()
+            )
+          ) and
+          len = valueBasedBound.minimum(typeBasedBound)
         )
         or
         this.getConversionChar(n).toLowerCase() = "u" and
         // e.g. 2^32 - 1 = "4294967295"
-        exists(int sizeBits |
-          sizeBits =
-            min(int bits |
-              bits = this.getIntegralDisplayType(n).getSize() * 8
-              or
-              exists(IntegralType t |
-                t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
-              |
-                t.isUnsigned() and bits = t.getSize() * 8
-              )
-            ) and
-          len = (sizeBits / 10.0.log2()).ceil()
-          // convert the size from bits to decimal characters, and round up as you can't have
-          // fractional characters (10.0.log2() is the number of bits expressed per decimal character)
+        exists(float typeBasedBound, float valueBasedBound |
+          // The first case handles length sub-specifiers
+          typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
+          // The second case uses range analysis to deduce a length that's shorter than
+          // the length of the number 2^31 - 1.
+          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted()) and
+            typeLower = exprMinVal(arg.getFullyConverted()) and
+            typeUpper = exprMaxVal(arg.getFullyConverted())
+          |
+            valueBasedBound =
+              lengthInBase10(max(float cand |
+                  // If lower can be negative we use `(unsigned)-1` as the candidate value.
+                  lower < 0 and
+                  cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  or
+                  cand = upper
+                )) and
+            (
+              if lower > typeLower or upper < typeUpper
+              then reason = TValueFlowAnalysis()
+              else reason = TTypeBoundsAnalysis()
+            )
+          ) and
+          len = valueBasedBound.minimum(typeBasedBound)
         )
         or
         this.getConversionChar(n).toLowerCase() = "x" and
@@ -1107,7 +1236,8 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
-        )
+        ) and
+        reason = TTypeBoundsAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "p" and
         exists(PointerType ptrType, int baseLen |
@@ -1116,7 +1246,8 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
           )
-        )
+        ) and
+        reason = TValueFlowAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "o" and
         // e.g. 2^32 - 1 = "37777777777"
@@ -1135,14 +1266,16 @@ class FormatLiteral extends Literal {
           (
             if this.hasAlternateFlag(n) then len = 1 + baseLen else len = baseLen // "0"
           )
-        )
+        ) and
+        reason = TTypeBoundsAnalysis()
         or
         this.getConversionChar(n).toLowerCase() = "s" and
         len =
           min(int v |
             v = this.getPrecision(n) or
             v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
-          )
+          ) and
+        reason = TValueFlowAnalysis()
       )
     )
   }
@@ -1154,10 +1287,19 @@ class FormatLiteral extends Literal {
    * determining whether a buffer overflow is caused by long float to string
    * conversions.
    */
-  int getMaxConvertedLengthLimited(int n) {
+  int getMaxConvertedLengthLimited(int n) { result = max(getMaxConvertedLengthLimited(n, _)) }
+
+  /**
+   * Gets the maximum length of the string that can be produced by the nth
+   * conversion specifier of this format string, specifying the reason for the
+   * estimation, except that float to string conversions are assumed to be 8
+   * characters.  This is helpful for determining whether a buffer overflow is
+   * caused by long float to string conversions.
+   */
+  int getMaxConvertedLengthLimited(int n, BufferWriteEstimationReason reason) {
     if this.getConversionChar(n).toLowerCase() = "f"
-    then result = this.getMaxConvertedLength(n).minimum(8)
-    else result = this.getMaxConvertedLength(n)
+    then result = this.getMaxConvertedLength(n, reason).minimum(8)
+    else result = this.getMaxConvertedLength(n, reason)
   }
 
   /**
@@ -1197,29 +1339,35 @@ class FormatLiteral extends Literal {
     )
   }
 
-  private int getMaxConvertedLengthAfter(int n) {
+  private int getMaxConvertedLengthAfter(int n, BufferWriteEstimationReason reason) {
     if n = this.getNumConvSpec()
-    then result = this.getConstantSuffix().length() + 1
+    then result = this.getConstantSuffix().length() + 1 and reason = TValueFlowAnalysis()
     else
-      result =
-        this.getConstantPart(n).length() + this.getMaxConvertedLength(n) +
-          this.getMaxConvertedLengthAfter(n + 1)
+      exists(BufferWriteEstimationReason headReason, BufferWriteEstimationReason tailReason |
+        result =
+          this.getConstantPart(n).length() + this.getMaxConvertedLength(n, headReason) +
+            this.getMaxConvertedLengthAfter(n + 1, tailReason) and
+        reason = headReason.combineWith(tailReason)
+      )
   }
 
-  private int getMaxConvertedLengthAfterLimited(int n) {
+  private int getMaxConvertedLengthAfterLimited(int n, BufferWriteEstimationReason reason) {
     if n = this.getNumConvSpec()
-    then result = this.getConstantSuffix().length() + 1
+    then result = this.getConstantSuffix().length() + 1 and reason = TValueFlowAnalysis()
     else
-      result =
-        this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n) +
-          this.getMaxConvertedLengthAfterLimited(n + 1)
+      exists(BufferWriteEstimationReason headReason, BufferWriteEstimationReason tailReason |
+        result =
+          this.getConstantPart(n).length() + this.getMaxConvertedLengthLimited(n, headReason) +
+            this.getMaxConvertedLengthAfterLimited(n + 1, tailReason) and
+        reason = headReason.combineWith(tailReason)
+      )
   }
 
   /**
    * Gets the maximum length of the string that can be produced by this format
    * string.  Has no result if this cannot be determined.
    */
-  int getMaxConvertedLength() { result = this.getMaxConvertedLengthAfter(0) }
+  int getMaxConvertedLength() { result = this.getMaxConvertedLengthAfter(0, _) }
 
   /**
    * Gets the maximum length of the string that can be produced by this format
@@ -1227,5 +1375,24 @@ class FormatLiteral extends Literal {
    * characters.  This is helpful for determining whether a buffer overflow
    * is caused by long float to string conversions.
    */
-  int getMaxConvertedLengthLimited() { result = this.getMaxConvertedLengthAfterLimited(0) }
+  int getMaxConvertedLengthLimited() { result = this.getMaxConvertedLengthAfterLimited(0, _) }
+
+  /**
+   * Gets the maximum length of the string that can be produced by this format
+   * string, specifying the reason for the estimate. Has no result if no estimate
+   * can be found.
+   */
+  int getMaxConvertedLengthWithReason(BufferWriteEstimationReason reason) {
+    result = this.getMaxConvertedLengthAfter(0, reason)
+  }
+
+  /**
+   * Gets the maximum length of the string that can be produced by this format
+   * string, specifying the reason for the estimate, except that float to string
+   * conversions are assumed to be 8 characters.  This is helpful for determining
+   * whether a buffer overflow is caused by long float to string conversions.
+   */
+  int getMaxConvertedLengthLimitedWithReason(BufferWriteEstimationReason reason) {
+    result = this.getMaxConvertedLengthAfterLimited(0, reason)
+  }
 }

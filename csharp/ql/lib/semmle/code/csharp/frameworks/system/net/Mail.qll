@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Net
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net.Mail` namespace. */
 class SystemNetMailNamespace extends Namespace {
@@ -25,4 +26,12 @@ class SystemNetMailMailMessageClass extends SystemNetMailClass {
 
   /** Gets the `Subject` property. */
   Property getSubjectProperty() { result = this.getProperty("Subject") }
+}
+
+/** Data flow for `System.Net.Mail.MailAddressCollection`. */
+private class SystemNetMailMailAddressCollectionFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net.Mail;MailAddressCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value"
+  }
 }

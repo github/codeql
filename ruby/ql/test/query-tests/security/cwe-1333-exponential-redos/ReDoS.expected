@@ -91,3 +91,6 @@
 | tst.rb:362:11:362:31 | ((?:a{0,\|-)\|\\w\\{\\d,)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,'. |
 | tst.rb:363:11:363:34 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,2'. |
 | tst.rb:369:12:369:22 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.rb:375:11:375:27 | ([[:digit:]]\|\\d)+ | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of '0'. |
+| tst.rb:378:12:378:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.rb:379:12:379:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

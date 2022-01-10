@@ -56,7 +56,7 @@
 | nested_scopes.rb:30:7:33:9 | self |
 | nested_scopes.rb:31:11:31:11 | a |
 | nested_scopes.rb:40:1:40:1 | d |
-| parameters.rb:1:1:58:1 | self |
+| parameters.rb:1:1:62:1 | self |
 | parameters.rb:1:14:1:14 | x |
 | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:1:13:3 | self |
@@ -89,6 +89,10 @@
 | parameters.rb:49:15:49:15 | b |
 | parameters.rb:53:1:53:1 | x |
 | parameters.rb:54:14:54:14 | y |
+| parameters.rb:59:1:61:3 | self |
+| parameters.rb:59:20:59:20 | a |
+| parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:25:59:25 | c |
 | scopes.rb:1:1:1:15 | self |
 | scopes.rb:1:1:49:4 | self |
 | scopes.rb:2:14:2:14 | x |
@@ -123,6 +127,7 @@
 | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:1:30:3 | self |
 | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:20:33:20 | x |

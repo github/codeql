@@ -1,5 +1,5 @@
 /**
- * Classes modelling EntityFramework and EntityFrameworkCore.
+ * Classes modeling EntityFramework and EntityFrameworkCore.
  */
 
 import csharp
@@ -174,32 +174,34 @@ module EntityFramework {
     }
   }
 
-  private class RawSqlStringSummarizedCallable extends EFSummarizedCallable {
-    private SummaryComponentStack input_;
-    private SummaryComponentStack output_;
-    private boolean preservesValue_;
-
-    RawSqlStringSummarizedCallable() {
+  private class RawSqlStringConstructorSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConstructorSummarizedCallable() {
       exists(RawSqlStringStruct s |
         this = s.getAConstructor() and
-        input_ = SummaryComponentStack::argument(0) and
-        this.getNumberOfParameters() > 0 and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
-        or
-        this = s.getAConversionTo() and
-        input_ = SummaryComponentStack::argument(0) and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
+        this.getNumberOfParameters() > 0
       )
     }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      input = input_ and
-      output = output_ and
-      preservesValue = preservesValue_
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
+    }
+  }
+
+  private class RawSqlStringConversionSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConversionSummarizedCallable() {
+      exists(RawSqlStringStruct s | this = s.getAConversionTo())
+    }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
     }
   }
 

@@ -233,16 +233,21 @@ private module Internal {
   }
 
   pragma[noinline]
-  private predicate hasOverrider(OverridableCallable oc, Gvn::GvnType t) {
+  private predicate hasOverrider(Gvn::GvnType t, OverridableCallable oc) {
     exists(oc.getAnOverrider(any(ValueOrRefType t0 | Gvn::getGlobalValueNumber(t0) = t)))
   }
 
   pragma[noinline]
-  private predicate hasCallable(OverridableCallable source, Gvn::GvnType t, OverridableCallable c) {
+  private predicate hasCallable0(Gvn::GvnType t, OverridableCallable c, OverridableCallable source) {
     c.getUnboundDeclaration() = source and
     any(ValueOrRefType t0 | Gvn::getGlobalValueNumber(t0) = t).hasCallable(c) and
-    hasOverrider(c, t) and
     source = any(DispatchMethodOrAccessorCall call).getAStaticTargetExt()
+  }
+
+  pragma[noinline]
+  private predicate hasCallable(Gvn::GvnType t, OverridableCallable c, OverridableCallable source) {
+    hasCallable0(t, c, source) and
+    hasOverrider(t, c)
   }
 
   abstract private class DispatchMethodOrAccessorCall extends DispatchCallImpl {
@@ -260,7 +265,7 @@ private module Internal {
 
     pragma[noinline]
     private predicate hasSubsumedQualifierType(Gvn::GvnType t) {
-      hasOverrider(_, t) and
+      hasOverrider(t, _) and
       exists(Type t0 |
         t0 = getAPossibleType(this.getQualifier(), false) and
         not t0 instanceof TypeParameter
@@ -287,7 +292,7 @@ private module Internal {
     pragma[nomagic]
     predicate hasSubsumedQualifierTypeOverridden(Gvn::GvnType t, OverridableCallable c) {
       this.hasSubsumedQualifierType(t) and
-      hasCallable(any(OverridableCallable oc | oc = this.getAStaticTargetExt()), t, c)
+      hasCallable(t, c, any(OverridableCallable oc | oc = this.getAStaticTargetExt()))
     }
 
     /**
@@ -553,7 +558,7 @@ private module Internal {
 
     pragma[nomagic]
     private predicate contextArgHasSubsumedType(DispatchCall ctx, Gvn::GvnType t) {
-      hasOverrider(_, t) and
+      hasOverrider(t, _) and
       exists(Gvn::GvnType t0 | this.contextArgHasNonTypeParameterType(ctx, t0) |
         t = t0
         or

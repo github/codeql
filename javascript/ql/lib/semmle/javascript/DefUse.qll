@@ -42,7 +42,7 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
     lhs = i.getIdentifier() and rhs = i.getImportedEntity()
   )
   or
-  exists(ImportSpecifier i | def = i | lhs = i.getLocal() and rhs = i)
+  exists(ImportSpecifier i | def = i and not i.isTypeOnly() | lhs = i.getLocal() and rhs = i)
   or
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()

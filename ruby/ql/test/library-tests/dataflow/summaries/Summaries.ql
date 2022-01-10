@@ -13,6 +13,12 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
   Private::External::invalidSpecComponent(s, c)
 }
 
+query predicate invalidOutputSpecComponent(SummarizedCallable sc, string s, string c) {
+  sc.propagatesFlowExt(_, s, _) and
+  Private::External::specSplit(s, c, _) and
+  c = "ArrayElement" // not allowed in output specs; use `ArrayElement[?] instead
+}
+
 private class SummarizedCallableIdentity extends SummarizedCallable {
   SummarizedCallableIdentity() { this = "identity" }
 

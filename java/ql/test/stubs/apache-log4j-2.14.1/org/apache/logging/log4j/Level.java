@@ -1,96 +1,40 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
- * agreements. See the NOTICE file distributed with this work for additional information regarding
- * copyright ownership. The ASF licenses this file to You under the Apache license, Version 2.0 (the
- * "License"); you may not use this file except in compliance with the License. You may obtain a
- * copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the license for the specific language governing permissions and limitations under
- * the license.
- */
+// Generated automatically from org.apache.logging.log4j.Level for testing purposes
+
 package org.apache.logging.log4j;
 
 import java.io.Serializable;
+import org.apache.logging.log4j.spi.StandardLevel;
 
-public final class Level implements Comparable<Level>, Serializable {
-  public int intLevel() {
-    return 0;
-  }
-
-  public boolean isInRange(final Level minLevel, final Level maxLevel) {
-    return false;
-  }
-
-  public boolean isLessSpecificThan(final Level level) {
-    return false;
-  }
-
-  public boolean isMoreSpecificThan(final Level level) {
-    return false;
-  }
-
-  public Level clone() throws CloneNotSupportedException {
-    return null;
-  }
-
-  @Override
-  public int compareTo(final Level other) {
-    return 0;
-  }
-
-  @Override
-  public boolean equals(final Object other) {
-    return false;
-  }
-
-  public Class<Level> getDeclaringClass() {
-    return null;
-  }
-
-  @Override
-  public int hashCode() {
-    return 0;
-  }
-
-  public String name() {
-    return null;
-  }
-
-  @Override
-  public String toString() {
-    return null;
-  }
-
-  public static Level forName(final String name, final int intValue) {
-    return null;
-  }
-
-  public static Level getLevel(final String name) {
-    return null;
-  }
-
-  public static Level toLevel(final String sArg) {
-    return null;
-  }
-
-  public static Level toLevel(final String name, final Level defaultLevel) {
-    return null;
-  }
-
-  public static Level[] values() {
-    return null;
-  }
-
-  public static Level valueOf(final String name) {
-    return null;
-  }
-
-  public static <T extends Enum<T>> T valueOf(final Class<T> enumType, final String name) {
-    return null;
-  }
-
+public class Level implements Comparable<Level>, Serializable
+{
+    protected Level() {}
+    protected Object readResolve(){ return null; }
+    public Class<Level> getDeclaringClass(){ return null; }
+    public Level clone(){ return null; }
+    public StandardLevel getStandardLevel(){ return null; }
+    public String name(){ return null; }
+    public String toString(){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public boolean isInRange(Level p0, Level p1){ return false; }
+    public boolean isLessSpecificThan(Level p0){ return false; }
+    public boolean isMoreSpecificThan(Level p0){ return false; }
+    public int compareTo(Level p0){ return 0; }
+    public int hashCode(){ return 0; }
+    public int intLevel(){ return 0; }
+    public static <T extends Enum<T>> T valueOf(Class<T> p0, String p1){ return null; }
+    public static Level ALL = null;
+    public static Level DEBUG = null;
+    public static Level ERROR = null;
+    public static Level FATAL = null;
+    public static Level INFO = null;
+    public static Level OFF = null;
+    public static Level TRACE = null;
+    public static Level WARN = null;
+    public static Level forName(String p0, int p1){ return null; }
+    public static Level getLevel(String p0){ return null; }
+    public static Level toLevel(String p0){ return null; }
+    public static Level toLevel(String p0, Level p1){ return null; }
+    public static Level valueOf(String p0){ return null; }
+    public static Level[] values(){ return null; }
+    public static String CATEGORY = null;
 }

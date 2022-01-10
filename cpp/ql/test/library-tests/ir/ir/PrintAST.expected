@@ -11251,10 +11251,13 @@ ir.cpp:
 # 1444|           getExpr(): [FunctionCall] call to returnValue
 # 1444|               Type = [Struct] POD_Middle
 # 1444|               ValueCategory = prvalue
-# 1444|           getExpr().getFullyConverted(): [CStyleCast] (POD_Base)...
-# 1444|               Conversion = [BaseClassConversion] base class conversion
-# 1444|               Type = [Struct] POD_Base
-# 1444|               ValueCategory = prvalue
+#-----|           getExpr().getFullyConverted(): [CStyleCast] (POD_Base)...
+#-----|               Conversion = [BaseClassConversion] base class conversion
+#-----|               Type = [Struct] POD_Base
+#-----|               ValueCategory = prvalue(load)
+#-----|             getExpr(): [TemporaryObjectExpr] temporary object
+#-----|                 Type = [Struct] POD_Middle
+#-----|                 ValueCategory = xvalue
 # 1445|     getStmt(1): [ExprStmt] ExprStmt
 # 1445|       getExpr(): [AssignExpr] ... = ...
 # 1445|           Type = [Struct] POD_Base
@@ -11285,18 +11288,21 @@ ir.cpp:
 # 1446|         getVariable().getInitializer(): [Initializer] initializer for x
 # 1446|           getExpr(): [ValueFieldAccess] x
 # 1446|               Type = [IntType] int
-# 1446|               ValueCategory = prvalue
+# 1446|               ValueCategory = prvalue(load)
 # 1446|             getQualifier(): [FunctionCall] call to returnValue
 # 1446|                 Type = [Struct] POD_Derived
 # 1446|                 ValueCategory = prvalue
-# 1446|             getQualifier().getFullyConverted(): [CStyleCast] (POD_Base)...
-# 1446|                 Conversion = [BaseClassConversion] base class conversion
-# 1446|                 Type = [Struct] POD_Base
-# 1446|                 ValueCategory = prvalue
-# 1446|               getExpr(): [CStyleCast] (POD_Middle)...
-# 1446|                   Conversion = [BaseClassConversion] base class conversion
-# 1446|                   Type = [Struct] POD_Middle
-# 1446|                   ValueCategory = prvalue
+#-----|             getQualifier().getFullyConverted(): [CStyleCast] (POD_Base)...
+#-----|                 Conversion = [BaseClassConversion] base class conversion
+#-----|                 Type = [Struct] POD_Base
+#-----|                 ValueCategory = xvalue
+#-----|               getExpr(): [CStyleCast] (POD_Middle)...
+#-----|                   Conversion = [BaseClassConversion] base class conversion
+#-----|                   Type = [Struct] POD_Middle
+#-----|                   ValueCategory = xvalue
+#-----|                 getExpr(): [TemporaryObjectExpr] temporary object
+#-----|                     Type = [Struct] POD_Derived
+#-----|                     ValueCategory = xvalue
 # 1447|     getStmt(3): [DeclStmt] declaration
 # 1447|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
 # 1447|           Type = [FloatType] float
@@ -11307,17 +11313,24 @@ ir.cpp:
 # 1447|             getQualifier(): [FunctionCall] call to returnValue
 # 1447|                 Type = [Struct] POD_Derived
 # 1447|                 ValueCategory = prvalue
-# 1447|             getQualifier().getFullyConverted(): [CStyleCast] (const POD_Base)...
-# 1447|                 Conversion = [BaseClassConversion] base class conversion
-# 1447|                 Type = [SpecifiedType] const POD_Base
-# 1447|                 ValueCategory = prvalue
-# 1447|               getExpr(): [CStyleCast] (POD_Middle)...
-# 1447|                   Conversion = [BaseClassConversion] base class conversion
-# 1447|                   Type = [Struct] POD_Middle
-# 1447|                   ValueCategory = prvalue
-# 1447|                 getExpr(): [ParenthesisExpr] (...)
-# 1447|                     Type = [Struct] POD_Derived
-# 1447|                     ValueCategory = prvalue
+#-----|             getQualifier().getFullyConverted(): [CStyleCast] (const POD_Base)...
+#-----|                 Conversion = [GlvalueConversion] glvalue conversion
+#-----|                 Type = [SpecifiedType] const POD_Base
+#-----|                 ValueCategory = xvalue
+#-----|               getExpr(): [CStyleCast] (POD_Base)...
+#-----|                   Conversion = [BaseClassConversion] base class conversion
+#-----|                   Type = [Struct] POD_Base
+#-----|                   ValueCategory = xvalue
+#-----|                 getExpr(): [CStyleCast] (POD_Middle)...
+#-----|                     Conversion = [BaseClassConversion] base class conversion
+#-----|                     Type = [Struct] POD_Middle
+#-----|                     ValueCategory = xvalue
+#-----|                   getExpr(): [TemporaryObjectExpr] temporary object
+#-----|                       Type = [Struct] POD_Derived
+#-----|                       ValueCategory = xvalue
+# 1447|                     getExpr(): [ParenthesisExpr] (...)
+# 1447|                         Type = [Struct] POD_Derived
+# 1447|                         ValueCategory = prvalue
 # 1448|     getStmt(4): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)

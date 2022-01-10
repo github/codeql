@@ -10,6 +10,8 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /** Provides models for the Python standard library. */
@@ -167,6 +169,74 @@ module Stdlib {
       override string getAsyncMethodName() { none() }
     }
   }
+
+  /**
+   * Provides models for the `urllib.parse.SplitResult` class
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.SplitResult.
+   */
+  module SplitResult {
+    /** Gets a reference to the `urllib.parse.SplitResult` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("SplitResult")
+    }
+
+    /**
+     * A source of instances of `urllib.parse.SplitResult`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `SplitResult::instance()` to get references to instances of `urllib.parse.SplitResult`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `urllib.parse.SplitResult`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.SplitResult`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `urllib.parse.SplitResult`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "urllib.parse.SplitResult" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "netloc", "path", "query", "fragment", "username", "password", "hostname", "port"
+          ]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `urllib.parse.SplitResult`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // TODO
+        none()
+      }
+    }
+  }
 }
 
 /**
@@ -186,12 +256,609 @@ private module StdlibPrivate {
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    API::Node path() { result = os().getMember("path") }
+    API::Node path() {
+      result = os().getMember("path")
+      or
+      // although the following modules should not be used directly, they certainly can.
+      // Each one doesn't expose the full `os.path` API, so this is an overapproximation
+      // that made implementation easy. See
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/posixpath.py#L31-L38
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/ntpath.py#L26-L32
+      // - https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/genericpath.py#L9-L11
+      result = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+    }
 
     /** Provides models for the `os.path` module */
     module path {
       /** Gets a reference to the `os.path.join` function. */
       API::Node join() { result = path().getMember("join") }
+    }
+  }
+
+  /**
+   * Modeling of path related functions in the `os` module.
+   * Wrapped in QL module to make it easy to fold/unfold.
+   */
+  private module OsFileSystemAccessModeling {
+    /**
+     * A call to the `os.fsencode` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fsencode
+     */
+    private class OsFsencodeCall extends Encoding::Range, DataFlow::CallCfgNode {
+      OsFsencodeCall() { this = os().getMember("fsencode").getACall() }
+
+      override DataFlow::Node getAnInput() {
+        result in [this.getArg(0), this.getArgByName("filename")]
+      }
+
+      override DataFlow::Node getOutput() { result = this }
+
+      override string getFormat() { result = "filesystem" }
+    }
+
+    /**
+     * A call to the `os.fsdecode` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fsdecode
+     */
+    private class OsFsdecodeCall extends Decoding::Range, DataFlow::CallCfgNode {
+      OsFsdecodeCall() { this = os().getMember("fsdecode").getACall() }
+
+      override DataFlow::Node getAnInput() {
+        result in [this.getArg(0), this.getArgByName("filename")]
+      }
+
+      override DataFlow::Node getOutput() { result = this }
+
+      override string getFormat() { result = "filesystem" }
+
+      override predicate mayExecuteInput() { none() }
+    }
+
+    /**
+     * Additional taint step from a call to the `os.fspath` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fspath
+     */
+    private class OsFspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        exists(DataFlow::CallCfgNode call |
+          call = os().getMember("fspath").getACall() and
+          nodeFrom in [call.getArg(0), call.getArgByName("path")] and
+          nodeTo = call
+        )
+      }
+    }
+
+    /**
+     * A call to the `os.open` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.open
+     */
+    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsOpenCall() { this = os().getMember("open").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.access` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.access
+     */
+    private class OsAccessCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsAccessCall() { this = os().getMember("access").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chdir
+     */
+    private class OsChdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChdirCall() { this = os().getMember("chdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chflags` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chflags
+     */
+    private class OsChflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChflagsCall() { this = os().getMember("chflags").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chmod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chmod
+     */
+    private class OsChmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChmodCall() { this = os().getMember("chmod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chown` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chown
+     */
+    private class OsChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChownCall() { this = os().getMember("chown").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.chroot` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.chroot
+     */
+    private class OsChrootCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsChrootCall() { this = os().getMember("chroot").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchflags` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchflags
+     */
+    private class OsLchflagsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchflagsCall() { this = os().getMember("lchflags").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchmod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchmod
+     */
+    private class OsLchmodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchmodCall() { this = os().getMember("lchmod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lchown` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lchown
+     */
+    private class OsLchownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLchownCall() { this = os().getMember("lchown").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.link` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.link
+     */
+    private class OsLinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLinkCall() { this = os().getMember("link").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.listdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.listdir
+     */
+    private class OsListdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsListdirCall() { this = os().getMember("listdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.lstat` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.lstat
+     */
+    private class OsLstatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsLstatCall() { this = os().getMember("lstat").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.mkdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mkdir
+     */
+    private class OsMkdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMkdirCall() { this = os().getMember("mkdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.makedirs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.makedirs
+     */
+    private class OsMakedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMakedirsCall() { this = os().getMember("makedirs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("name")]
+      }
+    }
+
+    /**
+     * A call to the `os.mkfifo` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mkfifo
+     */
+    private class OsMkfifoCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMkfifoCall() { this = os().getMember("mkfifo").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.mknod` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.mknod
+     */
+    private class OsMknodCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsMknodCall() { this = os().getMember("mknod").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.pathconf` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.pathconf
+     */
+    private class OsPathconfCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsPathconfCall() { this = os().getMember("pathconf").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.readlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.readlink
+     */
+    private class OsReadlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsReadlinkCall() { this = os().getMember("readlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.remove` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.remove
+     */
+    private class OsRemoveCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemoveCall() { this = os().getMember("remove").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.removedirs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.removedirs
+     */
+    private class OsRemovedirsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemovedirsCall() { this = os().getMember("removedirs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("name")]
+      }
+    }
+
+    /**
+     * A call to the `os.rename` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.rename
+     */
+    private class OsRenameCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRenameCall() { this = os().getMember("rename").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.renames` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.renames
+     */
+    private class OsRenamesCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRenamesCall() { this = os().getMember("renames").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("old"), this.getArg(1), this.getArgByName("new")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.replace` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.replace
+     */
+    private class OsReplaceCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsReplaceCall() { this = os().getMember("replace").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.rmdir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.rmdir
+     */
+    private class OsRmdirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRmdirCall() { this = os().getMember("rmdir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.scandir` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.scandir
+     */
+    private class OsScandirCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsScandirCall() { this = os().getMember("scandir").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.stat` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.stat
+     */
+    private class OsStatCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStatCall() { this = os().getMember("stat").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.statvfs` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.statvfs
+     */
+    private class OsStatvfsCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStatvfsCall() { this = os().getMember("statvfs").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.symlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.symlink
+     */
+    private class OsSymlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsSymlinkCall() { this = os().getMember("symlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [
+            this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")
+          ]
+      }
+    }
+
+    /**
+     * A call to the `os.truncate` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.truncate
+     */
+    private class OsTruncateCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsTruncateCall() { this = os().getMember("truncate").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.unlink` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.unlink
+     */
+    private class OsUnlinkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsUnlinkCall() { this = os().getMember("unlink").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.utime` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.utime
+     */
+    private class OsUtimeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsUtimeCall() { this = os().getMember("utime").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.walk` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.walk
+     */
+    private class OsWalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsWalkCall() { this = os().getMember("walk").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("top")]
+      }
+    }
+
+    /**
+     * A call to the `os.fwalk` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.fwalk
+     */
+    private class OsFwalkCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsFwalkCall() { this = os().getMember("fwalk").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("top")]
+      }
+    }
+
+    /**
+     * A call to the `os.getxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.getxattr
+     */
+    private class OsGetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsGetxattrCall() { this = os().getMember("getxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.listxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.listxattr
+     */
+    private class OsListxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsListxattrCall() { this = os().getMember("listxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.removexattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.removexattr
+     */
+    private class OsRemovexattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsRemovexattrCall() { this = os().getMember("removexattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.setxattr` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.setxattr
+     */
+    private class OsSetxattrCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsSetxattrCall() { this = os().getMember("setxattr").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.add_dll_directory` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.add_dll_directory
+     */
+    private class OsAdd_dll_directoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsAdd_dll_directoryCall() { this = os().getMember("add_dll_directory").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
+    }
+
+    /**
+     * A call to the `os.startfile` function.
+     *
+     * See https://docs.python.org/3/library/os.html#os.startfile
+     */
+    private class OsStartfileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+      OsStartfileCall() { this = os().getMember("startfile").getACall() }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("path")]
+      }
     }
   }
 
@@ -215,20 +882,26 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/os.path.html#os.path.realpath
    */
   private class OsPathProbingCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    string name;
+
     OsPathProbingCall() {
-      this =
-        os::path()
-            .getMember([
-                // these check if the file exists
-                "exists", "lexists", "isfile", "isdir", "islink", "ismount",
-                // these raise errors if the file does not exist
-                "getatime", "getmtime", "getctime", "getsize"
-              ])
-            .getACall()
+      name in [
+          // these check if the file exists
+          "exists", "lexists", "isfile", "isdir", "islink", "ismount",
+          // these raise errors if the file does not exist
+          "getatime", "getmtime", "getctime", "getsize"
+        ] and
+      this = os::path().getMember(name).getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
+      not name = "isdir" and
       result in [this.getArg(0), this.getArgByName("path")]
+      or
+      // although the Python docs say the parameter is called `path`, the implementation
+      // actually uses `s`.
+      name = "isdir" and
+      result in [this.getArg(0), this.getArgByName("s")]
     }
   }
 
@@ -358,7 +1031,8 @@ private module StdlibPrivate {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsExecCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
@@ -367,13 +1041,16 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getCommand() { result = this.getArg(0) }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /**
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsSpawnCall() {
       exists(string name |
         name in [
@@ -383,17 +1060,28 @@ private module StdlibPrivate {
       )
     }
 
-    override DataFlow::Node getCommand() { result = this.getArg(1) }
+    override DataFlow::Node getCommand() {
+      result = this.getArg(1)
+      or
+      // `file` keyword argument only valid for the `v` variants, but this
+      // over-approximation is not hurting anyone, and is easy to implement.
+      result = this.getArgByName("file")
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /**
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
-    override DataFlow::Node getCommand() { result = this.getArg(0) }
+    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("path")] }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -784,7 +1472,7 @@ private module StdlibPrivate {
     Base64EncodeCall() {
       name in [
           "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-          "encodestring", "a85encode", "b85encode", "encodebytes"
+          "encodestring", "a85encode", "b85encode", "encodebytes", "b32hexencode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -799,7 +1487,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32encode" and result = "Base32"
+      name in ["b32encode", "b32hexencode"] and result = "Base32"
       or
       name = "b16encode" and result = "Base16"
       or
@@ -816,7 +1504,7 @@ private module StdlibPrivate {
     Base64DecodeCall() {
       name in [
           "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-          "decodestring", "a85decode", "b85decode", "decodebytes"
+          "decodestring", "a85decode", "b85decode", "decodebytes", "b32hexdecode"
         ] and
       this = base64().getMember(name).getACall()
     }
@@ -833,7 +1521,7 @@ private module StdlibPrivate {
         ] and
       result = "Base64"
       or
-      name = "b32decode" and result = "Base32"
+      name in ["b32decode", "b32hexdecode"] and result = "Base32"
       or
       name = "b16decode" and result = "Base16"
       or
@@ -1249,6 +1937,356 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // wsgiref.simple_server
+  // ---------------------------------------------------------------------------
+  /** Provides models for the `wsgiref.simple_server` module. */
+  private module WsgirefSimpleServer {
+    class WsgiServerSubclass extends Class, SelfRefMixin {
+      WsgiServerSubclass() {
+        this.getABase() =
+          API::moduleImport("wsgiref")
+              .getMember("simple_server")
+              .getMember("WSGIServer")
+              .getASubclass*()
+              .getAUse()
+              .asExpr()
+      }
+    }
+
+    /**
+     * A function that was passed to the `set_app` method of a
+     * `wsgiref.simple_server.WSGIServer` instance.
+     *
+     * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIServer.set_app
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L137
+     * for how a request is processed and given to an application.
+     */
+    class WsgirefSimpleServerApplication extends HTTP::Server::RequestHandler::Range {
+      WsgirefSimpleServerApplication() {
+        exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
+          (
+            setAppCall =
+              API::moduleImport("wsgiref")
+                  .getMember("simple_server")
+                  .getMember("WSGIServer")
+                  .getASubclass*()
+                  .getReturn()
+                  .getMember("set_app")
+                  .getACall()
+            or
+            setAppCall
+                .(DataFlow::MethodCallNode)
+                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app")
+          ) and
+          appArg in [setAppCall.getArg(0), setAppCall.getArgByName("application")]
+        |
+          appArg = poorMansFunctionTracker(this)
+        )
+      }
+
+      override Parameter getARoutedParameter() { none() }
+
+      override string getFramework() { result = "Stdlib: wsgiref.simple_server application" }
+    }
+
+    /**
+     * The parameter of a `WsgirefSimpleServerApplication` that takes the WSGI environment
+     * when processing a request.
+     *
+     * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
+     */
+    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WSGIEnvirontParameter() {
+        exists(WsgirefSimpleServerApplication func |
+          if func.isMethod()
+          then this.getParameter() = func.getArg(1)
+          else this.getParameter() = func.getArg(0)
+        )
+      }
+
+      override string getSourceType() {
+        result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
+      }
+    }
+
+    /**
+     * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
+     * takes the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    private DataFlow::TypeTrackingNode startResponse(DataFlow::TypeTracker t) {
+      t.start() and
+      exists(WsgirefSimpleServerApplication func |
+        if func.isMethod()
+        then result.(DataFlow::ParameterNode).getParameter() = func.getArg(2)
+        else result.(DataFlow::ParameterNode).getParameter() = func.getArg(1)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = startResponse(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
+     * takes the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    DataFlow::Node startResponse() { startResponse(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Gets a reference to the `write` function (that will write data to the response),
+     * which is the return value from calling the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    private DataFlow::TypeTrackingNode writeFunction(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::CallCfgNode).getFunction() = startResponse()
+      or
+      exists(DataFlow::TypeTracker t2 | result = writeFunction(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the `write` function (that will write data to the response),
+     * which is the return value from calling the `start_response` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L225-L252
+     */
+    DataFlow::Node writeFunction() { writeFunction(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * A call to the `write` function.
+     *
+     * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L276
+     */
+    class WsgirefSimpleServerApplicationWriteCall extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CallCfgNode {
+      WsgirefSimpleServerApplicationWriteCall() { this.getFunction() = writeFunction() }
+
+      override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { none() }
+    }
+
+    /**
+     * A return from a `WsgirefSimpleServerApplication`, which is included in the response body.
+     */
+    class WsgirefSimpleServerApplicationReturn extends HTTP::Server::HttpResponse::Range,
+      DataFlow::CfgNode {
+      WsgirefSimpleServerApplicationReturn() {
+        exists(WsgirefSimpleServerApplication requestHandler |
+          node = requestHandler.getAReturnValueFlowNode()
+        )
+      }
+
+      override DataFlow::Node getBody() { result = this }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+      override string getMimetypeDefault() { none() }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // http.client (Python 3)
+  // httplib (Python 2)
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `http.client.HTTPConnection` and `HTTPSConnection` classes
+   *
+   * See
+   * - https://docs.python.org/3.10/library/http.client.html#http.client.HTTPConnection
+   * - https://docs.python.org/3.10/library/http.client.html#http.client.HTTPSConnection
+   * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPConnection
+   * - https://docs.python.org/2.7/library/httplib.html#httplib.HTTPSConnection
+   */
+  module HTTPConnection {
+    /** Gets a reference to the `http.client.HTTPConnection` class. */
+    private API::Node classRef() {
+      exists(string className | className in ["HTTPConnection", "HTTPSConnection"] |
+        // Python 3
+        result = API::moduleImport("http").getMember("client").getMember(className)
+        or
+        // Python 2
+        result = API::moduleImport("httplib").getMember(className)
+        or
+        result =
+          API::moduleImport("six").getMember("moves").getMember("http_client").getMember(className)
+      )
+    }
+
+    /**
+     * A source of instances of `http.client.HTTPConnection`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPConnection::instance()` to get references to instances of `http.client.HTTPConnection`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode {
+      /** Gets the argument that specified the host, if any. */
+      abstract DataFlow::Node getHostArgument();
+    }
+
+    /** A direct instantiation of `http.client.HTTPConnection`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      override DataFlow::Node getHostArgument() {
+        result in [this.getArg(0), this.getArgByName("host")]
+      }
+    }
+
+    /**
+     * Gets a reference to an instance of `http.client.HTTPConnection`,
+     * that was instantiated with host argument `hostArg`.
+     */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, DataFlow::Node hostArg) {
+      t.start() and
+      hostArg = result.(InstanceSource).getHostArgument()
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2, hostArg).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to an instance of `http.client.HTTPConnection`,
+     * that was instantiated with host argument `hostArg`.
+     */
+    DataFlow::Node instance(DataFlow::Node hostArg) {
+      instance(DataFlow::TypeTracker::end(), hostArg).flowsTo(result)
+    }
+
+    /** A method call on a HTTPConnection that sends off a request */
+    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
+      RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
+
+      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
+
+      override DataFlow::Node getAUrlPart() {
+        result = this.getUrlArg()
+        or
+        this.getObject() = instance(result)
+      }
+
+      override string getFramework() { result = "http.client.HTTP[S]Connection" }
+
+      override predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        // TODO: Proper alerting of insecure verification settings on SSLContext.
+        // Because that is not restricted to HTTP[S]Connection usage, we need something
+        // more general, and I would like to tackle that in future PR.
+        none()
+      }
+    }
+
+    /** A call to the `getresponse` method. */
+    private class HttpConnectionGetResponseCall extends DataFlow::MethodCallNode,
+      HTTPResponse::InstanceSource {
+      HttpConnectionGetResponseCall() { this.calls(instance(_), "getresponse") }
+    }
+
+    /**
+     * Extra taint propagation for `http.client.HTTPConnection`,
+     * to ensure that responses to user-controlled URL are tainted.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // constructor
+        exists(InstanceSource instanceSource |
+          nodeFrom = instanceSource.getHostArgument() and
+          nodeTo = instanceSource
+        )
+        or
+        // a request method
+        exists(RequestCall call |
+          nodeFrom = call.getUrlArg() and
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = call.getObject()
+        )
+        or
+        // `getresponse` call
+        exists(HttpConnectionGetResponseCall call |
+          nodeFrom = call.getObject() and
+          nodeTo = call
+        )
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `http.client.HTTPResponse` class
+   *
+   * See
+   * - https://docs.python.org/3.10/library/http.client.html#httpresponse-objects
+   * - https://docs.python.org/3/library/http.client.html#http.client.HTTPResponse.
+   */
+  module HTTPResponse {
+    /** Gets a reference to the `http.client.HTTPResponse` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("http").getMember("client").getMember("HTTPResponse")
+    }
+
+    /**
+     * A source of instances of `http.client.HTTPResponse`, extend this class to model new instances.
+     *
+     * A `http.client.HTTPResponse` is itself a file-like object.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `HTTPResponse::instance()` to get references to instances of `http.client.HTTPResponse`.
+     */
+    abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource,
+      DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `http.client.HTTPResponse`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `http.client.HTTPResponse`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `http.client.HTTPResponse`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "http.client.HTTPResponse" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["headers", "msg", "reason", "url"] }
+
+      override string getMethodName() { result in ["getheader", "getheaders", "info", "geturl",] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /** An attribute read that is a HTTPMessage instance. */
+    private class HTTPMessageInstances extends Stdlib::HTTPMessage::InstanceSource {
+      HTTPMessageInstances() {
+        this.(DataFlow::AttrRead).accesses(instance(), ["headers", "msg"])
+        or
+        this.(DataFlow::MethodCallNode).calls(instance(), "info")
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // sqlite3
   // ---------------------------------------------------------------------------
   /**
@@ -1384,7 +2422,7 @@ private module StdlibPrivate {
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
           "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
-          "unlink", "link_to", "write_bytes", "write_text"
+          "unlink", "link_to", "write_bytes", "write_text", "hardlink_to"
         ] and
       pathlibPath().flowsTo(fileAccess.getObject()) and
       fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
@@ -1466,15 +2504,36 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // hashlib
   // ---------------------------------------------------------------------------
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::TypeTrackingNode hashlibNewCallNameBacktracker(
+    DataFlow::TypeBackTracker t, DataFlow::Node arg
+  ) {
+    t.start() and
+    hashlibNewCallImpl(_, arg) and
+    result = arg.getALocalSource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = hashlibNewCallNameBacktracker(t2, arg).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a back-reference to the hashname argument `arg` that was used in a call to `hashlib.new`. */
+  private DataFlow::LocalSourceNode hashlibNewCallNameBacktracker(DataFlow::Node arg) {
+    result = hashlibNewCallNameBacktracker(DataFlow::TypeBackTracker::end(), arg)
+  }
+
+  /** Holds when `call` is a call to `hashlib.new` with `nameArg` as the first argument. */
+  private predicate hashlibNewCallImpl(DataFlow::CallCfgNode call, DataFlow::Node nameArg) {
+    call = API::moduleImport("hashlib").getMember("new").getACall() and
+    nameArg in [call.getArg(0), call.getArgByName("name")]
+  }
+
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-    exists(DataFlow::Node nameArg |
-      result = API::moduleImport("hashlib").getMember("new").getACall() and
-      nameArg in [result.getArg(0), result.getArgByName("name")] and
-      exists(StrConst str |
-        nameArg.getALocalSource() = DataFlow::exprNode(str) and
-        algorithmName = str.getText()
-      )
+    exists(DataFlow::Node origin, DataFlow::Node nameArg |
+      origin = hashlibNewCallNameBacktracker(nameArg) and
+      algorithmName = origin.asExpr().(StrConst).getText() and
+      hashlibNewCallImpl(result, nameArg)
     )
   }
 
@@ -1748,6 +2807,140 @@ private module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getRegexKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // urllib
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `urllib.parse.urlsplit`
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.urlsplit
+   */
+  class UrllibParseUrlsplitCall extends Stdlib::SplitResult::InstanceSource, DataFlow::CallCfgNode {
+    UrllibParseUrlsplitCall() {
+      this = API::moduleImport("urllib").getMember("parse").getMember("urlsplit").getACall()
+    }
+
+    /** Gets the argument that specifies the URL. */
+    DataFlow::Node getUrl() { result in [this.getArg(0), this.getArgByName("url")] }
+  }
+
+  /** Extra taint-step such that the result of `urllib.parse.urlsplit(tainted_string)` is tainted. */
+  private class UrllibParseUrlsplitCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeTo.(UrllibParseUrlsplitCall).getUrl() = nodeFrom
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // tempfile
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `tempfile.mkstemp`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp
+   */
+  private class TempfileMkstempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileMkstempCall() { this = API::moduleImport("tempfile").getMember("mkstemp").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.NamedTemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+   */
+  private class TempfileNamedTemporaryFileCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileNamedTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("NamedTemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(4), this.getArgByName("suffix"), this.getArg(5), this.getArgByName("prefix"),
+          this.getArg(6), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.TemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryFile
+   */
+  private class TempfileTemporaryFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("TemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(4), this.getArgByName("suffix"), this.getArg(5), this.getArgByName("prefix"),
+          this.getArg(6), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.SpooledTemporaryFile`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.SpooledTemporaryFile
+   */
+  private class TempfileSpooledTemporaryFileCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileSpooledTemporaryFileCall() {
+      this = API::moduleImport("tempfile").getMember("SpooledTemporaryFile").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(5), this.getArgByName("suffix"), this.getArg(6), this.getArgByName("prefix"),
+          this.getArg(7), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.mkdtemp`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp
+   */
+  private class TempfileMkdtempCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    TempfileMkdtempCall() { this = API::moduleImport("tempfile").getMember("mkdtemp").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
+  }
+
+  /**
+   * A call to `tempfile.TemporaryDirectory`.
+   *
+   * See https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryDirectory
+   */
+  private class TempfileTemporaryDirectoryCall extends FileSystemAccess::Range,
+    DataFlow::CallCfgNode {
+    TempfileTemporaryDirectoryCall() {
+      this = API::moduleImport("tempfile").getMember("TemporaryDirectory").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [
+          this.getArg(0), this.getArgByName("suffix"), this.getArg(1), this.getArgByName("prefix"),
+          this.getArg(2), this.getArgByName("dir")
+        ]
+    }
   }
 }
 

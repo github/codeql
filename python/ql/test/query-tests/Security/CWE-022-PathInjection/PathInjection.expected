@@ -21,18 +21,24 @@ edges
 | path_injection.py:64:13:64:63 | ControlFlowNode for Attribute() | path_injection.py:65:14:65:18 | ControlFlowNode for npath |
 | path_injection.py:71:16:71:22 | ControlFlowNode for request | path_injection.py:71:16:71:27 | ControlFlowNode for Attribute |
 | path_injection.py:71:16:71:27 | ControlFlowNode for Attribute | path_injection.py:72:13:72:63 | ControlFlowNode for Attribute() |
-| path_injection.py:78:20:78:25 | ControlFlowNode for foo_id | path_injection.py:81:14:81:17 | ControlFlowNode for path |
-| path_injection.py:85:20:85:22 | ControlFlowNode for foo | path_injection.py:89:14:89:17 | ControlFlowNode for path |
-| path_injection.py:94:16:94:22 | ControlFlowNode for request | path_injection.py:94:16:94:27 | ControlFlowNode for Attribute |
-| path_injection.py:94:16:94:27 | ControlFlowNode for Attribute | path_injection.py:100:14:100:17 | ControlFlowNode for path |
-| path_injection.py:105:16:105:22 | ControlFlowNode for request | path_injection.py:105:16:105:27 | ControlFlowNode for Attribute |
-| path_injection.py:105:16:105:27 | ControlFlowNode for Attribute | path_injection.py:111:14:111:17 | ControlFlowNode for path |
-| path_injection.py:116:16:116:22 | ControlFlowNode for request | path_injection.py:116:16:116:27 | ControlFlowNode for Attribute |
-| path_injection.py:116:16:116:27 | ControlFlowNode for Attribute | path_injection.py:119:14:119:22 | ControlFlowNode for sanitized |
-| path_injection.py:125:16:125:22 | ControlFlowNode for request | path_injection.py:125:16:125:27 | ControlFlowNode for Attribute |
-| path_injection.py:125:16:125:22 | ControlFlowNode for request | path_injection.py:125:16:125:27 | ControlFlowNode for Attribute |
-| path_injection.py:125:16:125:27 | ControlFlowNode for Attribute | path_injection.py:127:30:127:51 | ControlFlowNode for Attribute() |
-| path_injection.py:125:16:125:27 | ControlFlowNode for Attribute | path_injection.py:129:14:129:17 | ControlFlowNode for path |
+| path_injection.py:84:16:84:22 | ControlFlowNode for request | path_injection.py:84:16:84:27 | ControlFlowNode for Attribute |
+| path_injection.py:84:16:84:22 | ControlFlowNode for request | path_injection.py:84:16:84:27 | ControlFlowNode for Attribute |
+| path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | path_injection.py:86:8:86:44 | ControlFlowNode for Attribute() |
+| path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path |
+| path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | path_injection.py:94:14:94:17 | ControlFlowNode for path |
+| path_injection.py:98:20:98:22 | ControlFlowNode for foo | path_injection.py:102:14:102:17 | ControlFlowNode for path |
+| path_injection.py:107:16:107:22 | ControlFlowNode for request | path_injection.py:107:16:107:27 | ControlFlowNode for Attribute |
+| path_injection.py:107:16:107:27 | ControlFlowNode for Attribute | path_injection.py:113:14:113:17 | ControlFlowNode for path |
+| path_injection.py:118:16:118:22 | ControlFlowNode for request | path_injection.py:118:16:118:27 | ControlFlowNode for Attribute |
+| path_injection.py:118:16:118:27 | ControlFlowNode for Attribute | path_injection.py:124:14:124:17 | ControlFlowNode for path |
+| path_injection.py:129:16:129:22 | ControlFlowNode for request | path_injection.py:129:16:129:27 | ControlFlowNode for Attribute |
+| path_injection.py:129:16:129:27 | ControlFlowNode for Attribute | path_injection.py:132:14:132:22 | ControlFlowNode for sanitized |
+| path_injection.py:138:16:138:22 | ControlFlowNode for request | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute |
+| path_injection.py:138:16:138:22 | ControlFlowNode for request | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute |
+| path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | path_injection.py:140:30:140:51 | ControlFlowNode for Attribute() |
+| path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | path_injection.py:142:14:142:17 | ControlFlowNode for path |
+| path_injection.py:149:16:149:22 | ControlFlowNode for request | path_injection.py:149:16:149:27 | ControlFlowNode for Attribute |
+| path_injection.py:149:16:149:27 | ControlFlowNode for Attribute | path_injection.py:152:18:152:21 | ControlFlowNode for path |
 | test.py:9:12:9:18 | ControlFlowNode for request | test.py:9:12:9:23 | ControlFlowNode for Attribute |
 | test.py:9:12:9:18 | ControlFlowNode for request | test.py:9:12:9:23 | ControlFlowNode for Attribute |
 | test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:9:12:9:39 | ControlFlowNode for Attribute() |
@@ -101,25 +107,34 @@ nodes
 | path_injection.py:71:16:71:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | path_injection.py:71:16:71:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | path_injection.py:72:13:72:63 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| path_injection.py:78:20:78:25 | ControlFlowNode for foo_id | semmle.label | ControlFlowNode for foo_id |
-| path_injection.py:81:14:81:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
-| path_injection.py:85:20:85:22 | ControlFlowNode for foo | semmle.label | ControlFlowNode for foo |
-| path_injection.py:89:14:89:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
-| path_injection.py:94:16:94:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| path_injection.py:94:16:94:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| path_injection.py:100:14:100:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
-| path_injection.py:105:16:105:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| path_injection.py:105:16:105:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| path_injection.py:111:14:111:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
-| path_injection.py:116:16:116:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| path_injection.py:116:16:116:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| path_injection.py:119:14:119:22 | ControlFlowNode for sanitized | semmle.label | ControlFlowNode for sanitized |
-| path_injection.py:125:16:125:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| path_injection.py:125:16:125:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| path_injection.py:125:16:125:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| path_injection.py:125:16:125:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| path_injection.py:127:30:127:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| path_injection.py:129:14:129:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:84:16:84:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:84:16:84:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:86:8:86:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path | semmle.label | ControlFlowNode for possibly_unsafe_path |
+| path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | semmle.label | ControlFlowNode for foo_id |
+| path_injection.py:94:14:94:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:98:20:98:22 | ControlFlowNode for foo | semmle.label | ControlFlowNode for foo |
+| path_injection.py:102:14:102:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:107:16:107:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:107:16:107:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:113:14:113:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:118:16:118:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:118:16:118:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:124:14:124:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:129:16:129:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:129:16:129:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:132:14:132:22 | ControlFlowNode for sanitized | semmle.label | ControlFlowNode for sanitized |
+| path_injection.py:138:16:138:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:138:16:138:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:140:30:140:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:142:14:142:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:149:16:149:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| path_injection.py:149:16:149:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:152:18:152:21 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
 | test.py:9:12:9:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:9:12:9:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -164,12 +179,14 @@ nodes
 | path_injection.py:31:14:31:18 | ControlFlowNode for npath | path_injection.py:27:16:27:22 | ControlFlowNode for request | path_injection.py:31:14:31:18 | ControlFlowNode for npath | This path depends on $@. | path_injection.py:27:16:27:22 | ControlFlowNode for request | a user-provided value |
 | path_injection.py:48:14:48:18 | ControlFlowNode for npath | path_injection.py:46:16:46:22 | ControlFlowNode for request | path_injection.py:48:14:48:18 | ControlFlowNode for npath | This path depends on $@. | path_injection.py:46:16:46:22 | ControlFlowNode for request | a user-provided value |
 | path_injection.py:65:14:65:18 | ControlFlowNode for npath | path_injection.py:63:16:63:22 | ControlFlowNode for request | path_injection.py:65:14:65:18 | ControlFlowNode for npath | This path depends on $@. | path_injection.py:63:16:63:22 | ControlFlowNode for request | a user-provided value |
-| path_injection.py:81:14:81:17 | ControlFlowNode for path | path_injection.py:78:20:78:25 | ControlFlowNode for foo_id | path_injection.py:81:14:81:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:78:20:78:25 | ControlFlowNode for foo_id | a user-provided value |
-| path_injection.py:89:14:89:17 | ControlFlowNode for path | path_injection.py:85:20:85:22 | ControlFlowNode for foo | path_injection.py:89:14:89:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:85:20:85:22 | ControlFlowNode for foo | a user-provided value |
-| path_injection.py:100:14:100:17 | ControlFlowNode for path | path_injection.py:94:16:94:22 | ControlFlowNode for request | path_injection.py:100:14:100:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:94:16:94:22 | ControlFlowNode for request | a user-provided value |
-| path_injection.py:111:14:111:17 | ControlFlowNode for path | path_injection.py:105:16:105:22 | ControlFlowNode for request | path_injection.py:111:14:111:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:105:16:105:22 | ControlFlowNode for request | a user-provided value |
-| path_injection.py:119:14:119:22 | ControlFlowNode for sanitized | path_injection.py:116:16:116:22 | ControlFlowNode for request | path_injection.py:119:14:119:22 | ControlFlowNode for sanitized | This path depends on $@. | path_injection.py:116:16:116:22 | ControlFlowNode for request | a user-provided value |
-| path_injection.py:129:14:129:17 | ControlFlowNode for path | path_injection.py:125:16:125:22 | ControlFlowNode for request | path_injection.py:129:14:129:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:125:16:125:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path | path_injection.py:84:16:84:22 | ControlFlowNode for request | path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path | This path depends on $@. | path_injection.py:84:16:84:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:94:14:94:17 | ControlFlowNode for path | path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | path_injection.py:94:14:94:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | a user-provided value |
+| path_injection.py:102:14:102:17 | ControlFlowNode for path | path_injection.py:98:20:98:22 | ControlFlowNode for foo | path_injection.py:102:14:102:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:98:20:98:22 | ControlFlowNode for foo | a user-provided value |
+| path_injection.py:113:14:113:17 | ControlFlowNode for path | path_injection.py:107:16:107:22 | ControlFlowNode for request | path_injection.py:113:14:113:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:107:16:107:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:124:14:124:17 | ControlFlowNode for path | path_injection.py:118:16:118:22 | ControlFlowNode for request | path_injection.py:124:14:124:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:118:16:118:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:132:14:132:22 | ControlFlowNode for sanitized | path_injection.py:129:16:129:22 | ControlFlowNode for request | path_injection.py:132:14:132:22 | ControlFlowNode for sanitized | This path depends on $@. | path_injection.py:129:16:129:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:142:14:142:17 | ControlFlowNode for path | path_injection.py:138:16:138:22 | ControlFlowNode for request | path_injection.py:142:14:142:17 | ControlFlowNode for path | This path depends on $@. | path_injection.py:138:16:138:22 | ControlFlowNode for request | a user-provided value |
+| path_injection.py:152:18:152:21 | ControlFlowNode for path | path_injection.py:149:16:149:22 | ControlFlowNode for request | path_injection.py:152:18:152:21 | ControlFlowNode for path | This path depends on $@. | path_injection.py:149:16:149:22 | ControlFlowNode for request | a user-provided value |
 | test.py:19:10:19:10 | ControlFlowNode for x | test.py:9:12:9:18 | ControlFlowNode for request | test.py:19:10:19:10 | ControlFlowNode for x | This path depends on $@. | test.py:9:12:9:18 | ControlFlowNode for request | a user-provided value |
 | test.py:26:10:26:10 | ControlFlowNode for y | test.py:9:12:9:18 | ControlFlowNode for request | test.py:26:10:26:10 | ControlFlowNode for y | This path depends on $@. | test.py:9:12:9:18 | ControlFlowNode for request | a user-provided value |
 | test.py:33:14:33:14 | ControlFlowNode for x | test.py:9:12:9:18 | ControlFlowNode for request | test.py:33:14:33:14 | ControlFlowNode for x | This path depends on $@. | test.py:9:12:9:18 | ControlFlowNode for request | a user-provided value |

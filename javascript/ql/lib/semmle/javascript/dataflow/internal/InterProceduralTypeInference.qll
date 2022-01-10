@@ -190,6 +190,14 @@ private VarAccess getOnlyAccess(FunctionDeclStmt fn, LocalVariable v) {
   result = unique(VarAccess acc | acc = v.getAnAccess())
 }
 
+private VarAccess getOnlyAccessToFunctionExpr(FunctionExpr fn, LocalVariable v) {
+  exists(VariableDeclarator decl |
+    fn = decl.getInit() and
+    v = decl.getBindingPattern().getVariable() and
+    result = unique(VarAccess acc | acc = v.getAnAccess())
+  )
+}
+
 /** A function that only is used locally, making it amenable to type inference. */
 class LocalFunction extends Function {
   DataFlow::Impl::ExplicitInvokeNode invk;
@@ -198,6 +206,9 @@ class LocalFunction extends Function {
     exists(LocalVariable v |
       getOnlyAccess(this, v) = invk.getCalleeNode().asExpr() and
       not exists(v.getAnAssignedExpr()) and
+      not exists(ExportDeclaration export | export.exportsAs(v, _))
+      or
+      getOnlyAccessToFunctionExpr(this, v) = invk.getCalleeNode().asExpr() and
       not exists(ExportDeclaration export | export.exportsAs(v, _))
     ) and
     // if the function is non-strict and its `arguments` object is accessed, we

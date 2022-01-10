@@ -13,17 +13,10 @@ private class DataFlowCallAdjusted extends TDataFlowCall {
   }
 }
 
-private class NodeAdjusted extends TNode {
-  string toString() { result = this.(DataFlow::Node).toString() }
-
-  Location getLocation() {
-    exists(Location l |
-      l = this.(DataFlow::Node).getLocation() and
-      if l instanceof SourceLocation then result = l else result instanceof EmptyLocation
-    )
-  }
+private class SourceNode extends DataFlow::Node {
+  SourceNode() { this.getLocation().getFile().fromSource() }
 }
 
-from DataFlowCallAdjusted call, NodeAdjusted n, ReturnKind kind
+from DataFlowCallAdjusted call, SourceNode n, ReturnKind kind
 where n = getAnOutNode(call, kind)
 select call, kind, n

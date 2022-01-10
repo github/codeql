@@ -67,14 +67,14 @@ class AstCfgNode extends CfgNode, TElementNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TElementNode(n, splits) }
+  AstCfgNode() { this = TElementNode(_, n, splits) }
 
   final override AstNode getNode() { result = n }
 
   override Location getLocation() { result = n.getLocation() }
 
   final override string toString() {
-    exists(string s | s = n.(AstNode).toString() |
+    exists(string s | s = n.toString() |
       result = "[" + this.getSplitsString() + "] " + s
       or
       not exists(this.getSplitsString()) and result = s
@@ -108,6 +108,7 @@ class ExprCfgNode extends AstCfgNode {
   }
 
   /** Gets the textual (constant) value of this expression, if any. */
+  cached
   string getValueText() { result = this.getSource().getValueText() }
 }
 
@@ -247,7 +248,18 @@ module ExprNodes {
           result = (left.toFloat() + right.toFloat()).toString()
           or
           not (exists(left.toFloat()) and exists(right.toFloat())) and
-          result = left + right
+          exists(int l, int r, int limit |
+            l = left.length() and
+            r = right.length() and
+            limit = 10000
+          |
+            if l > limit
+            then result = left.prefix(limit) + "..."
+            else
+              if l + r > limit
+              then result = left + right.prefix(limit - l) + "..."
+              else result = left + right
+          )
         )
         or
         op = "-" and
@@ -308,7 +320,11 @@ module ExprNodes {
 
     /** Gets the the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
-      e.hasCfgChild(e.getKeywordArgument(keyword), this, result)
+      exists(PairCfgNode n |
+        e.hasCfgChild(e.getAnArgument(), this, n) and
+        n.getKey().getExpr().(SymbolLiteral).getValueText() = keyword and
+        result = n.getValue()
+      )
     }
 
     /** Gets the number of arguments of this call. */
@@ -322,7 +338,7 @@ module ExprNodes {
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
-    override predicate relevantChild(Expr e) { e = this.getValue() or e = this.getBranch(_) }
+    override predicate relevantChild(Expr e) { e = this.getValue() }
   }
 
   /** A control-flow node that wraps a `MethodCall` AST expression. */
@@ -340,11 +356,6 @@ module ExprNodes {
 
     /** Gets the expression being compared, if any. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
-
-    /**
-     * Gets the `n`th branch of this case expression.
-     */
-    final ExprCfgNode getBranch(int n) { e.hasCfgChild(e.getBranch(n), this, result) }
   }
 
   private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
@@ -412,6 +423,27 @@ module ExprNodes {
   /** A control-flow node that wraps a `ParenthesizedExpr` AST expression. */
   class ParenthesizedExprCfgNode extends StmtSequenceCfgNode {
     ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
+  }
+
+  private class PairChildMapping extends ExprChildMapping, Pair {
+    override predicate relevantChild(Expr e) { e = this.getKey() or e = this.getValue() }
+  }
+
+  /** A control-flow node that wraps a `Pair` AST expression. */
+  class PairCfgNode extends ExprCfgNode {
+    override PairChildMapping e;
+
+    final override Pair getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /**
+     * Gets the key expression of this pair.
+     */
+    final ExprCfgNode getKey() { e.hasCfgChild(e.getKey(), this, result) }
+
+    /**
+     * Gets the value expression of this pair.
+     */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
   }
 
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */

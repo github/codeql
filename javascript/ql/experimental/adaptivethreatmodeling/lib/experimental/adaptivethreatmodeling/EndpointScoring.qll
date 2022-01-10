@@ -11,7 +11,7 @@ import EndpointFeatures as EndpointFeatures
 import EndpointTypes
 
 private string getACompatibleModelChecksum() {
-  adaptiveThreatModelingModels(result, "javascript", _, "atm-endpoint-scoring")
+  availableMlModels(result, "javascript", _, "atm-endpoint-scoring")
 }
 
 /**
@@ -54,7 +54,7 @@ DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpo
     // Use the largest entity smaller than the AST node limit, resolving ties using the entity that
     // appears first in the source archive.
     result =
-      rank[1](DatabaseFeatures::Entity entity, int numAstNodes, Location l |
+      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
         entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
         numAstNodes = getNumAstNodesInEntity(entity) and
         numAstNodes <= getMaxNumAstNodes() and
@@ -68,7 +68,7 @@ DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpo
     // Use the smallest entity, resolving ties using the entity that
     // appears first in the source archive.
     result =
-      rank[1](DatabaseFeatures::Entity entity, int numAstNodes, Location l |
+      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
         entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
         numAstNodes = getNumAstNodesInEntity(entity) and
         l = entity.getLocation()
@@ -80,23 +80,30 @@ DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpo
 }
 
 module ModelScoring {
-  predicate endpoints(DataFlow::Node endpoint) {
-    getCfg().isEffectiveSource(endpoint) or
-    getCfg().isEffectiveSink(endpoint)
+  /**
+   * A featurization config that only featurizes new candidate endpoints that are part of a flow
+   * path.
+   */
+  class RelevantFeaturizationConfig extends EndpointFeatures::FeaturizationConfig {
+    RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
+
+    override DataFlow::Node getAnEndpointToFeaturize() {
+      getCfg().isEffectiveSource(result) and any(DataFlow::Configuration cfg).hasFlow(result, _)
+      or
+      getCfg().isEffectiveSink(result) and any(DataFlow::Configuration cfg).hasFlow(_, result)
+    }
   }
 
-  private int requestedEndpointTypes() { result = any(EndpointType type).getEncoding() }
-
-  private predicate relevantTokenFeatures(
-    DataFlow::Node endpoint, string featureName, string featureValue
-  ) {
-    endpoints(endpoint) and
-    EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)
+  DataFlow::Node getARequestedEndpoint() {
+    result = any(EndpointFeatures::FeaturizationConfig cfg).getAnEndpointToFeaturize()
   }
+
+  private int getARequestedEndpointType() { result = any(EndpointType type).getEncoding() }
 
   predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) =
-    scoreEndpoints(endpoints/1, requestedEndpointTypes/0, relevantTokenFeatures/3,
-      getACompatibleModelChecksum/0)(endpoint, encodedEndpointType, score)
+    scoreEndpoints(getARequestedEndpoint/0, getARequestedEndpointType/0,
+      EndpointFeatures::tokenFeatures/3, getACompatibleModelChecksum/0)(endpoint,
+      encodedEndpointType, score)
 }
 
 /**
@@ -212,7 +219,9 @@ class EndpointScoringResults extends ScoringResults {
 }
 
 module Debugging {
-  query predicate hopInputEndpoints = ModelScoring::endpoints/1;
+  query predicate hopInputEndpoints(DataFlow::Node endpoint) {
+    endpoint = ModelScoring::getARequestedEndpoint()
+  }
 
   query predicate endpointScores = ModelScoring::endpointScores/3;
 

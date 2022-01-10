@@ -9,8 +9,8 @@ namespace System
             // Generated from `System.ComponentModel.DataAnnotations.AssociatedMetadataTypeTypeDescriptionProvider` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssociatedMetadataTypeTypeDescriptionProvider : System.ComponentModel.TypeDescriptionProvider
             {
-                public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type, System.Type associatedMetadataType) => throw null;
                 public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type) => throw null;
+                public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type, System.Type associatedMetadataType) => throw null;
                 public override System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType, object instance) => throw null;
             }
 
@@ -87,8 +87,8 @@ namespace System
             {
                 public string CustomDataType { get => throw null; }
                 public System.ComponentModel.DataAnnotations.DataType DataType { get => throw null; }
-                public DataTypeAttribute(string customDataType) => throw null;
                 public DataTypeAttribute(System.ComponentModel.DataAnnotations.DataType dataType) => throw null;
+                public DataTypeAttribute(string customDataType) => throw null;
                 public System.ComponentModel.DataAnnotations.DisplayFormatAttribute DisplayFormat { get => throw null; set => throw null; }
                 public virtual string GetDataTypeName() => throw null;
                 public override bool IsValid(object value) => throw null;
@@ -121,9 +121,9 @@ namespace System
             public class DisplayColumnAttribute : System.Attribute
             {
                 public string DisplayColumn { get => throw null; }
-                public DisplayColumnAttribute(string displayColumn, string sortColumn, bool sortDescending) => throw null;
-                public DisplayColumnAttribute(string displayColumn, string sortColumn) => throw null;
                 public DisplayColumnAttribute(string displayColumn) => throw null;
+                public DisplayColumnAttribute(string displayColumn, string sortColumn) => throw null;
+                public DisplayColumnAttribute(string displayColumn, string sortColumn, bool sortDescending) => throw null;
                 public string SortColumn { get => throw null; }
                 public bool SortDescending { get => throw null; }
             }
@@ -179,9 +179,9 @@ namespace System
                 public System.Collections.Generic.IDictionary<string, object> ControlParameters { get => throw null; }
                 public override bool Equals(object obj) => throw null;
                 public string FilterUIHint { get => throw null; }
-                public FilterUIHintAttribute(string filterUIHint, string presentationLayer, params object[] controlParameters) => throw null;
-                public FilterUIHintAttribute(string filterUIHint, string presentationLayer) => throw null;
                 public FilterUIHintAttribute(string filterUIHint) => throw null;
+                public FilterUIHintAttribute(string filterUIHint, string presentationLayer) => throw null;
+                public FilterUIHintAttribute(string filterUIHint, string presentationLayer, params object[] controlParameters) => throw null;
                 public override int GetHashCode() => throw null;
                 public string PresentationLayer { get => throw null; }
             }
@@ -204,8 +204,8 @@ namespace System
                 public override string FormatErrorMessage(string name) => throw null;
                 public override bool IsValid(object value) => throw null;
                 public int Length { get => throw null; }
-                public MaxLengthAttribute(int length) => throw null;
                 public MaxLengthAttribute() => throw null;
+                public MaxLengthAttribute(int length) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.MetadataTypeAttribute` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -241,9 +241,9 @@ namespace System
                 public object Minimum { get => throw null; }
                 public System.Type OperandType { get => throw null; }
                 public bool ParseLimitsInInvariantCulture { get => throw null; set => throw null; }
-                public RangeAttribute(int minimum, int maximum) => throw null;
-                public RangeAttribute(double minimum, double maximum) => throw null;
                 public RangeAttribute(System.Type type, string minimum, string maximum) => throw null;
+                public RangeAttribute(double minimum, double maximum) => throw null;
+                public RangeAttribute(int minimum, int maximum) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.RegularExpressionAttribute` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -295,9 +295,9 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public string PresentationLayer { get => throw null; }
                 public string UIHint { get => throw null; }
-                public UIHintAttribute(string uiHint, string presentationLayer, params object[] controlParameters) => throw null;
-                public UIHintAttribute(string uiHint, string presentationLayer) => throw null;
                 public UIHintAttribute(string uiHint) => throw null;
+                public UIHintAttribute(string uiHint, string presentationLayer) => throw null;
+                public UIHintAttribute(string uiHint, string presentationLayer, params object[] controlParameters) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.UrlAttribute` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -319,11 +319,11 @@ namespace System
                 public virtual bool IsValid(object value) => throw null;
                 protected virtual System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext) => throw null;
                 public virtual bool RequiresValidationContext { get => throw null; }
-                public void Validate(object value, string name) => throw null;
                 public void Validate(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext) => throw null;
-                protected ValidationAttribute(string errorMessage) => throw null;
-                protected ValidationAttribute(System.Func<string> errorMessageAccessor) => throw null;
+                public void Validate(object value, string name) => throw null;
                 protected ValidationAttribute() => throw null;
+                protected ValidationAttribute(System.Func<string> errorMessageAccessor) => throw null;
+                protected ValidationAttribute(string errorMessage) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.ValidationContext` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -336,21 +336,21 @@ namespace System
                 public string MemberName { get => throw null; set => throw null; }
                 public object ObjectInstance { get => throw null; }
                 public System.Type ObjectType { get => throw null; }
-                public ValidationContext(object instance, System.IServiceProvider serviceProvider, System.Collections.Generic.IDictionary<object, object> items) => throw null;
-                public ValidationContext(object instance, System.Collections.Generic.IDictionary<object, object> items) => throw null;
                 public ValidationContext(object instance) => throw null;
+                public ValidationContext(object instance, System.Collections.Generic.IDictionary<object, object> items) => throw null;
+                public ValidationContext(object instance, System.IServiceProvider serviceProvider, System.Collections.Generic.IDictionary<object, object> items) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.ValidationException` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValidationException : System.Exception
             {
                 public System.ComponentModel.DataAnnotations.ValidationAttribute ValidationAttribute { get => throw null; }
-                public ValidationException(string message, System.Exception innerException) => throw null;
-                public ValidationException(string message) => throw null;
-                public ValidationException(string errorMessage, System.ComponentModel.DataAnnotations.ValidationAttribute validatingAttribute, object value) => throw null;
-                public ValidationException(System.ComponentModel.DataAnnotations.ValidationResult validationResult, System.ComponentModel.DataAnnotations.ValidationAttribute validatingAttribute, object value) => throw null;
                 public ValidationException() => throw null;
                 protected ValidationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public ValidationException(System.ComponentModel.DataAnnotations.ValidationResult validationResult, System.ComponentModel.DataAnnotations.ValidationAttribute validatingAttribute, object value) => throw null;
+                public ValidationException(string message) => throw null;
+                public ValidationException(string message, System.Exception innerException) => throw null;
+                public ValidationException(string errorMessage, System.ComponentModel.DataAnnotations.ValidationAttribute validatingAttribute, object value) => throw null;
                 public System.ComponentModel.DataAnnotations.ValidationResult ValidationResult { get => throw null; }
                 public object Value { get => throw null; }
             }
@@ -362,20 +362,20 @@ namespace System
                 public System.Collections.Generic.IEnumerable<string> MemberNames { get => throw null; }
                 public static System.ComponentModel.DataAnnotations.ValidationResult Success;
                 public override string ToString() => throw null;
-                public ValidationResult(string errorMessage, System.Collections.Generic.IEnumerable<string> memberNames) => throw null;
-                public ValidationResult(string errorMessage) => throw null;
                 protected ValidationResult(System.ComponentModel.DataAnnotations.ValidationResult validationResult) => throw null;
+                public ValidationResult(string errorMessage) => throw null;
+                public ValidationResult(string errorMessage, System.Collections.Generic.IEnumerable<string> memberNames) => throw null;
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.Validator` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Validator
             {
-                public static bool TryValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults, bool validateAllProperties) => throw null;
                 public static bool TryValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults) => throw null;
+                public static bool TryValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults, bool validateAllProperties) => throw null;
                 public static bool TryValidateProperty(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults) => throw null;
                 public static bool TryValidateValue(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.ICollection<System.ComponentModel.DataAnnotations.ValidationResult> validationResults, System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationAttribute> validationAttributes) => throw null;
-                public static void ValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, bool validateAllProperties) => throw null;
                 public static void ValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext) => throw null;
+                public static void ValidateObject(object instance, System.ComponentModel.DataAnnotations.ValidationContext validationContext, bool validateAllProperties) => throw null;
                 public static void ValidateProperty(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext) => throw null;
                 public static void ValidateValue(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext, System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationAttribute> validationAttributes) => throw null;
             }
@@ -385,8 +385,8 @@ namespace System
                 // Generated from `System.ComponentModel.DataAnnotations.Schema.ColumnAttribute` in `System.ComponentModel.Annotations, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ColumnAttribute : System.Attribute
                 {
-                    public ColumnAttribute(string name) => throw null;
                     public ColumnAttribute() => throw null;
+                    public ColumnAttribute(string name) => throw null;
                     public string Name { get => throw null; }
                     public int Order { get => throw null; set => throw null; }
                     public string TypeName { get => throw null; set => throw null; }

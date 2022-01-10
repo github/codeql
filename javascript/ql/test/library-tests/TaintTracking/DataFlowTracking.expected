@@ -43,6 +43,10 @@
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| factory-function.js:21:13:21:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:22:13:22:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:26:7:26:14 | source() | factory-function.js:16:14:16:16 | obj |
+| factory-function.js:27:7:27:14 | source() | factory-function.js:16:14:16:16 | obj |
 | getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
 | getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
 | getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |

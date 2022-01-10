@@ -25,8 +25,6 @@ class Node extends TNode {
   // TODO: cache
   final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
-  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.(NodeImpl).getCfgScope()) }
-
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -47,19 +45,28 @@ class Node extends TNode {
 }
 
 /** A data-flow node corresponding to a call in the control-flow graph. */
-class CallNode extends LocalSourceNode {
+class CallNode extends LocalSourceNode, ExprNode {
   private CfgNodes::ExprNodes::CallCfgNode node;
 
-  CallNode() { node = this.asExpr() }
+  CallNode() { node = this.getExprNode() }
 
   /** Gets the data-flow node corresponding to the receiver of the call corresponding to this data-flow node */
-  Node getReceiver() { result.asExpr() = node.getReceiver() }
+  ExprNode getReceiver() { result.getExprNode() = node.getReceiver() }
 
   /** Gets the data-flow node corresponding to the `n`th argument of the call corresponding to this data-flow node */
-  Node getArgument(int n) { result.asExpr() = node.getArgument(n) }
+  ExprNode getArgument(int n) { result.getExprNode() = node.getArgument(n) }
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
-  Node getKeywordArgument(string name) { result.asExpr() = node.getKeywordArgument(name) }
+  ExprNode getKeywordArgument(string name) { result.getExprNode() = node.getKeywordArgument(name) }
+
+  /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
+  string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
+
+  /** Gets the number of arguments of this call. */
+  int getNumberOfArguments() { result = node.getNumberOfArguments() }
+
+  /** Gets the block of this call. */
+  Node getBlock() { result.asExpr() = node.getBlock() }
 }
 
 /**
@@ -82,15 +89,9 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode {
+class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter getParameter() { none() }
-
-  /**
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
+  final Parameter getParameter() { result = super.getParameter() }
 }
 
 /**
@@ -110,6 +111,14 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 predicate hasLocalSource(Node sink, Node source) {
@@ -152,16 +161,38 @@ predicate localExprFlow(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
   localFlow(exprNode(e1), exprNode(e2))
 }
 
-/**
- * A reference contained in an object. This is either a field, a property,
- * or an element in a collection.
- */
+/** A reference contained in an object. */
 class Content extends TContent {
   /** Gets a textual representation of this content. */
   string toString() { none() }
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
+}
+
+/** Provides different sub classes of `Content`. */
+module Content {
+  /** An element in an array. */
+  class ArrayElementContent extends Content, TArrayElementContent { }
+
+  /** An element in an array at a known index. */
+  class KnownArrayElementContent extends ArrayElementContent, TKnownArrayElementContent {
+    private int i;
+
+    KnownArrayElementContent() { this = TKnownArrayElementContent(i) }
+
+    /** Gets the index in the array. */
+    int getIndex() { result = i }
+
+    override string toString() { result = "array element " + i }
+  }
+
+  /** An element in an array at an unknown index. */
+  class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
+    UnknownArrayElementContent() { this = TUnknownArrayElementContent() }
+
+    override string toString() { result = "array element" }
+  }
 }
 
 /**

@@ -6,7 +6,20 @@
 
 import javascript
 import CodeToFeatures
-import EndpointScoring
+private import EndpointScoring
+
+/**
+ * A configuration that defines which endpoints should be featurized.
+ *
+ * This is used as a performance optimization to ensure that we only featurize the endpoints we need
+ * to featurize.
+ */
+abstract class FeaturizationConfig extends string {
+  bindingset[this]
+  FeaturizationConfig() { any() }
+
+  abstract DataFlow::Node getAnEndpointToFeaturize();
+}
 
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
@@ -14,52 +27,55 @@ import EndpointScoring
  * This is a single string containing a space-separated list of tokens.
  */
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
-  // Features for endpoints that are contained within a function.
-  exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
-    // The name of the function that encloses the endpoint.
-    featureName = "enclosingFunctionName" and result = entity.getName()
-    or
-    // A feature containing natural language tokens from the function that encloses the endpoint in
-    // the order that they appear in the source code.
-    featureName = "enclosingFunctionBody" and
-    result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
-  )
-  or
-  exists(getACallBasedTokenFeatureComponent(endpoint, _, featureName)) and
-  result =
-    concat(DataFlow::CallNode call, string component |
-      component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
-    |
-      component, " "
+  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
+  (
+    // Features for endpoints that are contained within a function.
+    exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
+      // The name of the function that encloses the endpoint.
+      featureName = "enclosingFunctionName" and result = entity.getName()
+      or
+      // A feature containing natural language tokens from the function that encloses the endpoint in
+      // the order that they appear in the source code.
+      featureName = "enclosingFunctionBody" and
+      result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
     )
-  or
-  // The access path of the function being called, both with and without structural info, if the
-  // function being called originates from an external API. For example, the endpoint here:
-  //
-  // ```js
-  // const mongoose = require('mongoose'),
-  //   User = mongoose.model('User', null);
-  // User.findOne(ENDPOINT);
-  // ```
-  //
-  // would have a callee access path with structural info of
-  // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
-  // path without structural info of `mongoose model findOne`.
-  //
-  // These features indicate that the callee comes from (reading the access path backwards) an
-  // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
-  // external library.
-  exists(AccessPaths::Boolean includeStructuralInfo |
-    featureName =
-      "calleeAccessPath" +
-        any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
+    or
     result =
-      concat(API::Node node, string accessPath |
-        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-        accessPath = AccessPaths::getAccessPath(node, includeStructuralInfo)
+      strictconcat(DataFlow::CallNode call, string component |
+        component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
       |
-        accessPath, " "
+        component, " "
       )
+    or
+    // The access path of the function being called, both with and without structural info, if the
+    // function being called originates from an external API. For example, the endpoint here:
+    //
+    // ```js
+    // const mongoose = require('mongoose'),
+    //   User = mongoose.model('User', null);
+    // User.findOne(ENDPOINT);
+    // ```
+    //
+    // would have a callee access path with structural info of
+    // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
+    // path without structural info of `mongoose model findOne`.
+    //
+    // These features indicate that the callee comes from (reading the access path backwards) an
+    // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
+    // external library.
+    exists(AccessPaths::Boolean includeStructuralInfo |
+      featureName =
+        "calleeAccessPath" +
+          any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
+      result =
+        concat(API::Node node, string accessPath |
+          node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
+          AccessPaths::accessPaths(node, includeStructuralInfo, accessPath, _)
+        |
+          accessPath, " "
+        )
+    )
   )
 }
 
@@ -78,6 +94,8 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
 private string getACallBasedTokenFeatureComponent(
   DataFlow::Node endpoint, DataFlow::CallNode call, string featureName
 ) {
+  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   // Features for endpoints that are an argument to a function call.
   endpoint = call.getAnArgument() and
   (
@@ -102,18 +120,24 @@ private string getACallBasedTokenFeatureComponent(
     //
     // would have a callee API name of `mongoose`.
     featureName = "calleeApiName" and
-    result = getAnApiName(call)
+    exists(API::Node apiNode |
+      AccessPaths::accessPaths(apiNode, false, _, result) and call = apiNode.getInducingNode()
+    )
   )
 }
 
 /** This module provides functionality for getting the function body feature associated with a particular entity. */
 module FunctionBodies {
-  /** Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`. */
-  private predicate bodyTokens(
-    DatabaseFeatures::Entity entity, DatabaseFeatures::AstNode node, string token
-  ) {
-    DatabaseFeatures::astNodes(entity, _, _, node, _) and
-    token = unique(string t | DatabaseFeatures::nodeAttributes(node, t))
+  /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
+  private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
+    // Performance optimization: Restrict the set of entities to those containing an endpoint to featurize.
+    entity =
+      getRepresentativeEntityForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
+    exists(DatabaseFeatures::AstNode node |
+      DatabaseFeatures::astNodes(entity, _, _, node, _) and
+      token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
+      location = node.getLocation()
+    )
   }
 
   /**
@@ -125,34 +149,19 @@ module FunctionBodies {
     // If a function has more than 256 body subtokens, then featurize it as absent. This
     // approximates the behavior of the classifer on non-generic body features where large body
     // features are replaced by the absent token.
-    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) > 256
-    then result = ""
-    else
-      result =
-        concat(int i, string rankedToken |
-          rankedToken =
-            rank[i](DatabaseFeatures::AstNode node, string token, Location l |
-              bodyTokens(entity, node, token) and l = node.getLocation()
-            |
-              token
-              order by
-                l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-                l.getEndColumn(), token
-            )
-        |
-          rankedToken, " " order by i
-        )
+    //
+    // We count locations instead of tokens because tokens are often not unique.
+    strictcount(Location l | bodyTokens(entity, l, _)) <= 256 and
+    result =
+      strictconcat(string token, Location l |
+        bodyTokens(entity, l, token)
+      |
+        token, " "
+        order by
+          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn(), token
+      )
   }
-}
-
-/**
- * Returns a name of the API that a node originates from, if the node originates from an API.
- *
- * This predicate may have multiple results if the node corresponds to multiple nodes in the API graph forest.
- */
-pragma[inline]
-private string getAnApiName(DataFlow::Node node) {
-  API::moduleImport(result).getASuccessor*().getInducingNode() = node
 }
 
 /**
@@ -200,65 +209,73 @@ private module AccessPaths {
   }
 
   /** Get the access path for the node. This includes structural information like `member`, `param`, and `functionalarg` if `includeStructuralInfo` is true. */
-  string getAccessPath(API::Node node, Boolean includeStructuralInfo) {
-    node = API::moduleImport(result)
+  predicate accessPaths(
+    API::Node node, Boolean includeStructuralInfo, string accessPath, string apiName
+  ) {
+    //node = API::moduleImport(result)
+    node = API::moduleImport(apiName) and accessPath = apiName
     or
-    exists(API::Node base, string baseName |
-      base.getDepth() < node.getDepth() and baseName = getAccessPath(base, includeStructuralInfo)
+    exists(API::Node previousNode, string previousAccessPath |
+      previousNode.getDepth() < node.getDepth() and
+      accessPaths(previousNode, includeStructuralInfo, previousAccessPath, apiName)
     |
       // e.g. `new X`, `X()`
-      node = [base.getInstance(), base.getReturn()] and
+      node = [previousNode.getInstance(), previousNode.getReturn()] and
       if includeStructuralInfo = true
-      then result = baseName + " instanceorreturn"
-      else result = baseName
+      then accessPath = previousAccessPath + " instanceorreturn"
+      else accessPath = previousAccessPath
       or
       // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is non-numeric and is known at analysis
       // time.
       exists(string member |
-        node = base.getMember(member) and
-        not node = base.getUnknownMember() and
+        node = previousNode.getMember(member) and
+        not node = previousNode.getUnknownMember() and
         not isNumericString(member) and
-        not (member = "default" and base = API::moduleImport(_)) and
+        not (member = "default" and previousNode = API::moduleImport(_)) and
         not member = "then" // use the 'promised' edges for .then callbacks
       |
         if includeStructuralInfo = true
-        then result = baseName + " member " + member
-        else result = baseName + " " + member
+        then accessPath = previousAccessPath + " member " + member
+        else accessPath = previousAccessPath + " " + member
       )
       or
       // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is numeric or not known at analysis time.
       (
-        node = base.getUnknownMember() or
-        node = base.getMember(any(string s | isNumericString(s)))
+        node = previousNode.getUnknownMember() or
+        node = previousNode.getMember(any(string s | isNumericString(s)))
       ) and
-      if includeStructuralInfo = true then result = baseName + " member" else result = baseName
+      if includeStructuralInfo = true
+      then accessPath = previousAccessPath + " member"
+      else accessPath = previousAccessPath
       or
       // e.g. `x.then(y => ...)`
-      node = base.getPromised() and
-      result = baseName
+      node = previousNode.getPromised() and
+      accessPath = previousAccessPath
       or
       // e.g. `x.y((a, b) => ...)`
       // Name callback parameters after their name in the source code.
       // For example, the `res` parameter in `express.get('/foo', (req, res) => {...})` will be
       // named `express member get functionalarg param res`.
       exists(string paramName |
-        node = getNamedParameter(base.getAParameter(), paramName) and
+        node = getNamedParameter(previousNode.getAParameter(), paramName) and
         (
           if includeStructuralInfo = true
-          then result = baseName + " functionalarg param " + paramName
-          else result = baseName + " " + paramName
+          then accessPath = previousAccessPath + " functionalarg param " + paramName
+          else accessPath = previousAccessPath + " " + paramName
         )
         or
-        exists(string callbackName, string index |
+        exists(string callbackName, int index |
           node =
-            getNamedParameter(base.getASuccessor("param " + index).getMember(callbackName),
-              paramName) and
-          index != "-1" and // ignore receiver
+            getNamedParameter(previousNode
+                  .getASuccessor(API::Label::parameter(index))
+                  .getMember(callbackName), paramName) and
+          index != -1 and // ignore receiver
           if includeStructuralInfo = true
           then
-            result =
-              baseName + " functionalarg " + index + " " + callbackName + " param " + paramName
-          else result = baseName + " " + index + " " + callbackName + " " + paramName
+            accessPath =
+              previousAccessPath + " functionalarg " + index + " " + callbackName + " param " +
+                paramName
+          else accessPath = previousAccessPath + " " + index + " " + callbackName + " " + paramName
         )
       )
     )
@@ -281,10 +298,14 @@ private string getASupportedFeatureName() {
  * `featureValue` for the endpoint `endpoint`.
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  featureName = getASupportedFeatureName() and
+  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   (
-    featureValue = unique(string x | x = getTokenFeature(endpoint, featureName))
-    or
-    not exists(unique(string x | x = getTokenFeature(endpoint, featureName))) and featureValue = ""
+    if strictcount(getTokenFeature(endpoint, featureName)) = 1
+    then featureValue = getTokenFeature(endpoint, featureName)
+    else (
+      // Performance note: this is a Cartesian product between all endpoints and feature names.
+      featureValue = "" and featureName = getASupportedFeatureName()
+    )
   )
 }

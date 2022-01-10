@@ -98,10 +98,11 @@ var passport = require('passport');
     app.use(cookieParser())
     app.use(passport.authorize({ session: true }))
 
-    function checkToken(req) {
+    function checkToken(req, res, next) {
         if (req.headers.xsrfToken !== req.session.xsrfToken) {
             throw new Error("Halt and catch fire!")
         }
+        next();
     }
 
     function setCsrfToken(req, response, next) {

@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling promises and their data-flow.
+ * Provides classes for modeling promises and their data-flow.
  */
 
 import javascript
@@ -13,14 +13,14 @@ abstract class PromiseDefinition extends DataFlow::SourceNode {
   abstract DataFlow::FunctionNode getExecutor();
 
   /** Gets the `resolve` parameter of the executor function. */
-  DataFlow::ParameterNode getResolveParameter() { result = getExecutor().getParameter(0) }
+  DataFlow::ParameterNode getResolveParameter() { result = this.getExecutor().getParameter(0) }
 
   /** Gets the `reject` parameter of the executor function. */
-  DataFlow::ParameterNode getRejectParameter() { result = getExecutor().getParameter(1) }
+  DataFlow::ParameterNode getRejectParameter() { result = this.getExecutor().getParameter(1) }
 
   /** Gets the `i`th callback handler installed by method `m`. */
   private DataFlow::FunctionNode getAHandler(string m, int i) {
-    result = getAMethodCall(m).getCallback(i)
+    result = this.getAMethodCall(m).getCallback(i)
   }
 
   /**
@@ -28,8 +28,8 @@ abstract class PromiseDefinition extends DataFlow::SourceNode {
    * `then` handlers and `finally` handlers.
    */
   DataFlow::FunctionNode getAResolveHandler() {
-    result = getAHandler("then", 0) or
-    result = getAFinallyHandler()
+    result = this.getAHandler("then", 0) or
+    result = this.getAFinallyHandler()
   }
 
   /**
@@ -37,20 +37,20 @@ abstract class PromiseDefinition extends DataFlow::SourceNode {
    * `then` handlers, `catch` handlers and `finally` handlers.
    */
   DataFlow::FunctionNode getARejectHandler() {
-    result = getAHandler("then", 1) or
-    result = getACatchHandler() or
-    result = getAFinallyHandler()
+    result = this.getAHandler("then", 1) or
+    result = this.getACatchHandler() or
+    result = this.getAFinallyHandler()
   }
 
   /**
    * Gets a `catch` handler of this promise.
    */
-  DataFlow::FunctionNode getACatchHandler() { result = getAHandler("catch", 0) }
+  DataFlow::FunctionNode getACatchHandler() { result = this.getAHandler("catch", 0) }
 
   /**
    * Gets a `finally` handler of this promise.
    */
-  DataFlow::FunctionNode getAFinallyHandler() { result = getAHandler("finally", 0) }
+  DataFlow::FunctionNode getAFinallyHandler() { result = this.getAHandler("finally", 0) }
 }
 
 /** Holds if the `i`th callback handler is installed by method `m`. */
@@ -115,7 +115,7 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::InvokeNode {
   ES2015PromiseDefinition() { this = getAPromiseObject().getAnInvocation() }
 
-  override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+  override DataFlow::FunctionNode getExecutor() { result = this.getCallback(0) }
 }
 
 /**
@@ -149,7 +149,7 @@ abstract class PromiseAllCreation extends PromiseCreationCall {
 class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
   ResolvedES2015PromiseDefinition() { this = getAPromiseObject().getAMemberCall("resolve") }
 
-  override DataFlow::Node getValue() { result = getArgument(0) }
+  override DataFlow::Node getValue() { result = this.getArgument(0) }
 }
 
 /**
@@ -165,7 +165,7 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   }
 
   override DataFlow::Node getValue() {
-    result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+    result = this.getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
   }
 }
 
@@ -175,7 +175,7 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
 class ES2015PromiseAllDefinition extends AggregateES2015PromiseDefinition, PromiseAllCreation {
   ES2015PromiseAllDefinition() { this.getCalleeName() = "all" }
 
-  override DataFlow::Node getArrayNode() { result = getArgument(0) }
+  override DataFlow::Node getArrayNode() { result = this.getArgument(0) }
 }
 
 /**
@@ -425,6 +425,14 @@ module PromiseFlow {
       prop = errorProp() and
       pred = call.getCallback(0).getAReturn()
     )
+    or
+    // return from `async` function
+    exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+      // ordinary return
+      prop = valueProp() and
+      pred = f.getAReturn() and
+      succ = f.getReturnNode()
+    )
   }
 }
 
@@ -548,7 +556,7 @@ module Bluebird {
   private class BluebirdPromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
     BluebirdPromiseDefinition() { this = bluebird().getAnInstantiation() }
 
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+    override DataFlow::FunctionNode getExecutor() { result = this.getCallback(0) }
   }
 
   /**
@@ -557,7 +565,7 @@ module Bluebird {
   class ResolvedBluebidPromiseDefinition extends ResolvedPromiseDefinition {
     ResolvedBluebidPromiseDefinition() { this = bluebird().getAMemberCall("resolve") }
 
-    override DataFlow::Node getValue() { result = getArgument(0) }
+    override DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 
   /**
@@ -569,7 +577,7 @@ module Bluebird {
     }
 
     override DataFlow::Node getValue() {
-      result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+      result = this.getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
     }
   }
 
@@ -579,7 +587,7 @@ module Bluebird {
   class BluebirdPromiseAllDefinition extends AggregateBluebirdPromiseDefinition, PromiseAllCreation {
     BluebirdPromiseAllDefinition() { this.getCalleeName() = "all" }
 
-    override DataFlow::Node getArrayNode() { result = getArgument(0) }
+    override DataFlow::Node getArrayNode() { result = this.getArgument(0) }
   }
 
   /**
@@ -593,7 +601,7 @@ module Bluebird {
     BluebirdCoroutineDefinition {
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
       boundArgs = 0 and
-      callback = getArgument(0) and
+      callback = this.getArgument(0) and
       result = this
     }
   }
@@ -609,7 +617,7 @@ module Q {
   private class QPromiseDefinition extends PromiseDefinition, DataFlow::CallNode {
     QPromiseDefinition() { this = DataFlow::moduleMember(["q", "kew"], "Promise").getACall() }
 
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+    override DataFlow::FunctionNode getExecutor() { result = this.getCallback(0) }
   }
 }
 
@@ -620,7 +628,7 @@ private module ClosurePromise {
   private class ClosurePromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
     ClosurePromiseDefinition() { this = Closure::moduleImport("goog.Promise").getACall() }
 
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+    override DataFlow::FunctionNode getExecutor() { result = this.getCallback(0) }
   }
 
   /**
@@ -632,7 +640,7 @@ private module ClosurePromise {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }
 
-    override DataFlow::Node getValue() { result = getArgument(0) }
+    override DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 
   /**

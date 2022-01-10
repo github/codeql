@@ -199,9 +199,9 @@ module Opcodes {
     override string getOpcodeName() { result = "neg" }
 
     override NumericType getType() {
-      result = this.getOperand().getType()
+      result = this.getOperandType(0)
       or
-      this.getOperand().getType() instanceof Enum and result instanceof IntType
+      this.getOperandType(0) instanceof Enum and result instanceof IntType
     }
   }
 
@@ -260,7 +260,7 @@ module Opcodes {
 
     override int getPushCount() { result = 2 } // This is the only instruction that pushes 2 items
 
-    override Type getType() { result = this.getOperand(0).getType() }
+    override Type getType() { result = this.getOperandType(0) }
   }
 
   /** A `ret` instruction. */
@@ -887,7 +887,7 @@ module Opcodes {
   class Ldelem_ref extends ReadArrayElement, @cil_ldelem_ref {
     override string getOpcodeName() { result = "ldelem.ref" }
 
-    override Type getType() { result = this.getArray().getType() }
+    override Type getType() { result = this.getOperandType(1) }
   }
 
   /** An `ldelema` instruction. */

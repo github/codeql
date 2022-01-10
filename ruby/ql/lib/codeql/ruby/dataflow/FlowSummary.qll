@@ -4,6 +4,7 @@ import ruby
 import codeql.ruby.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
+private import internal.DataFlowPrivate
 
 // import all instances below
 private module Summaries {
@@ -22,11 +23,33 @@ module SummaryComponent {
 
   predicate content = SC::content/1;
 
-  /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+  /** Gets a summary component that represents a receiver. */
+  SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 
   /** Gets a summary component that represents a block argument. */
-  SummaryComponent block() { result = argument(-2) }
+  SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
+
+  /** Gets a summary component that represents an element in an array at an unknown index. */
+  SummaryComponent arrayElementUnknown() { result = SC::content(TUnknownArrayElementContent()) }
+
+  /** Gets a summary component that represents an element in an array at a known index. */
+  bindingset[i]
+  SummaryComponent arrayElementKnown(int i) {
+    result = SC::content(TKnownArrayElementContent(i))
+    or
+    // `i` may be out of range
+    not exists(TKnownArrayElementContent(i)) and
+    result = arrayElementUnknown()
+  }
+
+  /**
+   * Gets a summary component that represents an element in an array at either an unknown
+   * index or known index. This predicate should never be used in the output specification
+   * of a flow summary; use `arrayElementUnknown()` instead.
+   */
+  SummaryComponent arrayElementAny() {
+    result in [arrayElementUnknown(), SC::content(TKnownArrayElementContent(_))]
+  }
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
@@ -44,8 +67,8 @@ module SummaryComponentStack {
 
   predicate argument = SCS::argument/1;
 
-  /** Gets a singleton stack representing a qualifier. */
-  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
+  /** Gets a singleton stack representing a receiver. */
+  SummaryComponentStack receiver() { result = singleton(SummaryComponent::receiver()) }
 
   /** Gets a singleton stack representing a block argument. */
   SummaryComponentStack block() { result = singleton(SummaryComponent::block()) }
@@ -102,10 +125,21 @@ abstract class SummarizedCallable extends LibraryCallable {
 
   /**
    * Holds if values stored inside `content` are cleared on objects passed as
-   * the `i`th argument to this callable.
+   * arguments at position `pos` to this callable.
    */
   pragma[nomagic]
-  predicate clearsContent(int i, DataFlow::Content content) { none() }
+  predicate clearsContent(ParameterPosition pos, DataFlow::Content content) { none() }
+}
+
+/**
+ * A callable with a flow summary, identified by a unique string, where all
+ * calls to a method with the same name are considered relevant.
+ */
+abstract class SimpleSummarizedCallable extends SummarizedCallable {
+  bindingset[this]
+  SimpleSummarizedCallable() { any() }
+
+  final override MethodCall getACall() { result.getMethodName() = this }
 }
 
 private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
@@ -119,8 +153,8 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(int i, DataFlow::Content content) {
-    sc.clearsContent(i, content)
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    sc.clearsContent(pos, content)
   }
 }
 

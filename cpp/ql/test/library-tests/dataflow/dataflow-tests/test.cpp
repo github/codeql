@@ -100,14 +100,14 @@ void local_references(int &source1, int clean1) {
     int t = source();
     int &ref = t;
     t = clean1;
-    sink(ref); // $ SPURIOUS: ast
+    sink(ref); // $ SPURIOUS: ast,ir
   }
 
   {
     int t = clean1;
     int &ref = t;
     t = source();
-    sink(ref); // $ ir MISSING: ast
+    sink(ref); // $ MISSING: ast,ir
   }
 }
 
@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   int taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast MISSING: ir
+    sink(globalVar); // $ ast,ir
   }
 }
 
@@ -355,21 +355,21 @@ namespace FlowThroughGlobals {
 class FlowThroughFields {
   int field = 0;
 
-  int taintField() {
+  void taintField() {
     field = source();
   }
 
-  int f() {
+  void f() {
     sink(field); // tainted or clean? Not sure.
     taintField();
-    sink(field); // $ ast MISSING: ir
-  }
-
-  int calledAfterTaint() {
     sink(field); // $ ast,ir
   }
 
-  int taintAndCall() {
+  void calledAfterTaint() {
+    sink(field); // $ ast,ir
+  }
+
+  void taintAndCall() {
     field = source();
     calledAfterTaint();
     sink(field); // $ ast,ir

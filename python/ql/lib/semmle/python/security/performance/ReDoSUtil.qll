@@ -140,9 +140,9 @@ class RegExpRoot extends RegExpTerm {
     // there is at least one repetition
     getRoot(any(InfiniteRepetitionQuantifier q)) = this and
     // is actually used as a RegExp
-    isUsedAsRegExp() and
+    this.isUsedAsRegExp() and
     // not excluded for library specific reasons
-    not isExcluded(getRootTerm().getParent())
+    not isExcluded(this.getRootTerm().getParent())
   }
 }
 
@@ -218,7 +218,7 @@ private newtype TInputSymbol =
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
-      recc instanceof RegExpCharacterClassEscape
+      isEscapeClass(recc, _)
     )
   } or
   /** An input symbol representing all characters matched by `.`. */
@@ -302,7 +302,7 @@ abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character matched by this character class.
    */
-  string choose() { result = getARelevantChar() and matches(result) }
+  string choose() { result = this.getARelevantChar() and this.matches(result) }
 }
 
 /**
@@ -340,13 +340,13 @@ private module CharacterClasses {
         char <= hi
       )
       or
-      exists(RegExpCharacterClassEscape escape | escape = child |
-        escape.getValue() = escape.getValue().toLowerCase() and
-        classEscapeMatches(escape.getValue(), char)
+      exists(string charClass | isEscapeClass(child, charClass) |
+        charClass.toLowerCase() = charClass and
+        classEscapeMatches(charClass, char)
         or
         char = getARelevantChar() and
-        escape.getValue() = escape.getValue().toUpperCase() and
-        not classEscapeMatches(escape.getValue().toLowerCase(), char)
+        charClass.toUpperCase() = charClass and
+        not classEscapeMatches(charClass, char)
       )
     )
   }
@@ -409,10 +409,10 @@ private module CharacterClasses {
       or
       child.(RegExpCharacterRange).isRange(_, result)
       or
-      exists(RegExpCharacterClassEscape escape | child = escape |
-        result = min(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+      exists(string charClass | isEscapeClass(child, charClass) |
+        result = min(string s | classEscapeMatches(charClass.toLowerCase(), s))
         or
-        result = max(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+        result = max(string s | classEscapeMatches(charClass.toLowerCase(), s))
       )
     )
   }
@@ -466,33 +466,36 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \d, \s, and \w.
    */
   private class PositiveCharacterClassEscape extends CharacterClass {
-    RegExpCharacterClassEscape cc;
+    RegExpTerm cc;
+    string charClass;
 
     PositiveCharacterClassEscape() {
-      this = getCanonicalCharClass(cc) and cc.getValue() = ["d", "s", "w"]
+      isEscapeClass(cc, charClass) and
+      this = getCanonicalCharClass(cc) and
+      charClass = ["d", "s", "w"]
     }
 
     override string getARelevantChar() {
-      cc.getValue() = "d" and
+      charClass = "d" and
       result = ["0", "9"]
       or
-      cc.getValue() = "s" and
+      charClass = "s" and
       result = " "
       or
-      cc.getValue() = "w" and
+      charClass = "w" and
       result = ["a", "Z", "_", "0", "9"]
     }
 
-    override predicate matches(string char) { classEscapeMatches(cc.getValue(), char) }
+    override predicate matches(string char) { classEscapeMatches(charClass, char) }
 
     override string choose() {
-      cc.getValue() = "d" and
+      charClass = "d" and
       result = "9"
       or
-      cc.getValue() = "s" and
+      charClass = "s" and
       result = " "
       or
-      cc.getValue() = "w" and
+      charClass = "w" and
       result = "a"
     }
   }
@@ -501,26 +504,29 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \D, \S, and \W.
    */
   private class NegativeCharacterClassEscape extends CharacterClass {
-    RegExpCharacterClassEscape cc;
+    RegExpTerm cc;
+    string charClass;
 
     NegativeCharacterClassEscape() {
-      this = getCanonicalCharClass(cc) and cc.getValue() = ["D", "S", "W"]
+      isEscapeClass(cc, charClass) and
+      this = getCanonicalCharClass(cc) and
+      charClass = ["D", "S", "W"]
     }
 
     override string getARelevantChar() {
-      cc.getValue() = "D" and
+      charClass = "D" and
       result = ["a", "Z", "!"]
       or
-      cc.getValue() = "S" and
+      charClass = "S" and
       result = ["a", "9", "!"]
       or
-      cc.getValue() = "W" and
+      charClass = "W" and
       result = [" ", "!"]
     }
 
     bindingset[char]
     override predicate matches(string char) {
-      not classEscapeMatches(cc.getValue().toLowerCase(), char)
+      not classEscapeMatches(charClass.toLowerCase(), char)
     }
   }
 }
@@ -542,7 +548,7 @@ private State before(RegExpTerm t) { result = Match(t, 0) }
 /**
  * Gets a state the NFA may be in after matching `t`.
  */
-private State after(RegExpTerm t) {
+State after(RegExpTerm t) {
   exists(RegExpAlt alt | t = alt.getAChild() | result = after(alt))
   or
   exists(RegExpSequence seq, int i | t = seq.getChild(i) |
@@ -599,7 +605,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     q2 = after(cc)
   )
   or
-  exists(RegExpCharacterClassEscape cc |
+  exists(RegExpTerm cc | isEscapeClass(cc, _) |
     q1 = before(cc) and
     lbl = CharClass(cc.getRawValue() + "|" + getCanonicalizationFlags(cc.getRootTerm())) and
     q2 = after(cc)
@@ -671,7 +677,7 @@ RegExpRoot getRoot(RegExpTerm term) {
 /**
  * A state in the NFA.
  */
-private newtype TState =
+newtype TState =
   /**
    * A state representing that the NFA is about to match a term.
    * `i` is used to index into multi-char literals.
@@ -802,28 +808,25 @@ InputSymbol getAnInputSymbolMatching(string char) {
 }
 
 /**
+ * Holds if `state` is a start state.
+ */
+predicate isStartState(State state) {
+  state = mkMatch(any(RegExpRoot r))
+  or
+  exists(RegExpCaret car | state = after(car))
+}
+
+/**
  * Predicates for constructing a prefix string that leads to a given state.
  */
 private module PrefixConstruction {
-  /**
-   * Holds if `state` starts the string matched by the regular expression.
-   */
-  private predicate isStartState(State state) {
-    state instanceof StateInPumpableRegexp and
-    (
-      state = Match(any(RegExpRoot r), _)
-      or
-      exists(RegExpCaret car | state = after(car))
-    )
-  }
-
   /**
    * Holds if `state` is the textually last start state for the regular expression.
    */
   private predicate lastStartState(State state) {
     exists(RegExpRoot root |
       state =
-        max(State s, Location l |
+        max(StateInPumpableRegexp s, Location l |
           isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
         |
           s

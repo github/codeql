@@ -67,5 +67,4 @@ extractor:	$(FILES) $(BIN_FILES)
 	cp target/release/ruby-autobuilder$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/autobuilder$(EXE)
 
 test: extractor dbscheme
-	codeql pack install ql/test
-	codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path . --consistency-queries ql/consistency-queries ql/test
+	codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path extractor-pack --consistency-queries ql/consistency-queries ql/test

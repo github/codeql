@@ -26,7 +26,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   override Location getLocation() { hasLocation(this, result) }
 
   override File getFile() {
-    result = getLocation().getFile() // Specialized for performance reasons
+    result = this.getLocation().getFile() // Specialized for performance reasons
   }
 
   /** Gets the first token belonging to this element. */
@@ -76,7 +76,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the toplevel syntactic unit to which this element belongs. */
   cached
-  TopLevel getTopLevel() { Stages::Ast::ref() and result = getParent().getTopLevel() }
+  TopLevel getTopLevel() { Stages::Ast::ref() and result = this.getParent().getTopLevel() }
 
   /**
    * Gets the `i`th child node of this node.
@@ -85,10 +85,10 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
    * change between versions of the extractor.
    */
   ASTNode getChild(int i) {
-    result = getChildExpr(i) or
-    result = getChildStmt(i) or
+    result = this.getChildExpr(i) or
+    result = this.getChildStmt(i) or
     properties(result, this, i, _, _) or
-    result = getChildTypeExpr(i)
+    result = this.getChildTypeExpr(i)
   }
 
   /** Gets the `i`th child statement of this node. */
@@ -101,22 +101,22 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   TypeExpr getChildTypeExpr(int i) { typeexprs(result, _, this, i, _) }
 
   /** Gets a child node of this node. */
-  ASTNode getAChild() { result = getChild(_) }
+  ASTNode getAChild() { result = this.getChild(_) }
 
   /** Gets a child expression of this node. */
-  Expr getAChildExpr() { result = getChildExpr(_) }
+  Expr getAChildExpr() { result = this.getChildExpr(_) }
 
   /** Gets a child statement of this node. */
-  Stmt getAChildStmt() { result = getChildStmt(_) }
+  Stmt getAChildStmt() { result = this.getChildStmt(_) }
 
   /** Gets the number of child nodes of this node. */
-  int getNumChild() { result = count(getAChild()) }
+  int getNumChild() { result = count(this.getAChild()) }
 
   /** Gets the number of child expressions of this node. */
-  int getNumChildExpr() { result = count(getAChildExpr()) }
+  int getNumChildExpr() { result = count(this.getAChildExpr()) }
 
   /** Gets the number of child statements of this node. */
-  int getNumChildStmt() { result = count(getAChildStmt()) }
+  int getNumChildStmt() { result = count(this.getAChildStmt()) }
 
   /** Gets the parent node of this node, if any. */
   cached
@@ -126,7 +126,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   ControlFlowNode getFirstControlFlowNode() { result = this }
 
   /** Holds if this syntactic entity belongs to an externs file. */
-  predicate inExternsFile() { getTopLevel().isExterns() }
+  predicate inExternsFile() { this.getTopLevel().isExterns() }
 
   /**
    * Holds if this is an ambient node that is not a `TypeExpr` and is not inside a `.d.ts` file
@@ -137,9 +137,9 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   cached
   private predicate isAmbientInternal() {
     Stages::Ast::ref() and
-    getParent().isAmbientInternal()
+    this.getParent().isAmbientInternal()
     or
-    not isAmbientTopLevel(getTopLevel()) and
+    not isAmbientTopLevel(this.getTopLevel()) and
     (
       this instanceof ExternalModuleDeclaration
       or
@@ -176,9 +176,9 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
    */
   pragma[inline]
   predicate isAmbient() {
-    isAmbientInternal()
+    this.isAmbientInternal()
     or
-    isAmbientTopLevel(getTopLevel())
+    isAmbientTopLevel(this.getTopLevel())
     or
     this instanceof TypeExpr
   }
@@ -207,13 +207,15 @@ private predicate isAmbientTopLevel(TopLevel tl) {
  */
 class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is minified. */
+  cached
   predicate isMinified() {
+    Stages::Ast::ref() and
     // file name contains 'min' (not as part of a longer word)
-    getFile().getBaseName().regexpMatch(".*[^-._]*[-._]min([-._].*)?\\.\\w+")
+    this.getFile().getBaseName().regexpMatch(".*[^-._]*[-._]min([-._].*)?\\.\\w+")
     or
     exists(int numstmt | numstmt = strictcount(Stmt s | s.getTopLevel() = this) |
       // there are more than two statements per line on average
-      numstmt.(float) / getNumberOfLines() > 2 and
+      numstmt.(float) / this.getNumberOfLines() > 2 and
       // and there are at least ten statements overall
       numstmt >= 10
     )
@@ -247,9 +249,9 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Gets the number of lines containing comments in this toplevel. */
   int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
-  override predicate isStrict() { getAStmt() instanceof StrictModeDecl }
+  override predicate isStrict() { this.getAStmt() instanceof StrictModeDecl }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getEntry() }
+  override ControlFlowNode getFirstControlFlowNode() { result = this.getEntry() }
 
   override string toString() { result = "<toplevel>" }
 }
@@ -346,7 +348,7 @@ class JavaScriptURL extends @javascript_url, CodeInAttribute { }
  * </pre>
  */
 class Externs extends TopLevel {
-  Externs() { isExterns() }
+  Externs() { this.isExterns() }
 }
 
 /**
@@ -391,7 +393,7 @@ class StmtContainer extends @stmt_container, ASTNode {
   StmtContainer getFunctionBoundary() {
     if this instanceof Function or this instanceof TopLevel
     then result = this
-    else result = getEnclosingContainer().getFunctionBoundary()
+    else result = this.getEnclosingContainer().getFunctionBoundary()
   }
 
   /** Gets a statement that belongs to this container. */
@@ -425,19 +427,19 @@ class StmtContainer extends @stmt_container, ASTNode {
    *
    * Empty toplevels do not have a start node.
    */
-  ConcreteControlFlowNode getStart() { successor(getEntry(), result) }
+  ConcreteControlFlowNode getStart() { successor(this.getEntry(), result) }
 
   /**
    * Gets the entry basic block of this function, that is, the basic block
    * containing the entry node of its CFG.
    */
-  EntryBasicBlock getEntryBB() { result = getEntry() }
+  EntryBasicBlock getEntryBB() { result = this.getEntry() }
 
   /**
    * Gets the start basic block of this function, that is, the basic block
    * containing the start node of its CFG.
    */
-  BasicBlock getStartBB() { result.getANode() = getStart() }
+  BasicBlock getStartBB() { result.getANode() = this.getStart() }
 
   /** Gets the scope induced by this toplevel or function, if any. */
   Scope getScope() { scopenodes(this, result) }
@@ -447,7 +449,7 @@ class StmtContainer extends @stmt_container, ASTNode {
    *
    * See Annex C of the ECMAScript language specification.
    */
-  predicate isStrict() { getEnclosingContainer().isStrict() }
+  predicate isStrict() { this.getEnclosingContainer().isStrict() }
 }
 
 /**

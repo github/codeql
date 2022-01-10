@@ -3,6 +3,7 @@ private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter
+private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.internal.Synthesis
 
@@ -28,6 +29,16 @@ predicate explicitAssignmentNode(Ruby::AstNode n, Ruby::AstNode assignment) {
 
 /** Holds if `n` is inside an implicit assignment. */
 predicate implicitAssignmentNode(Ruby::AstNode n) {
+  casePattern(n) and n instanceof Ruby::Identifier
+  or
+  n = any(Ruby::AsPattern p).getName()
+  or
+  n = any(Ruby::ArrayPattern parent).getChild(_).(Ruby::SplatParameter).getName()
+  or
+  n = any(Ruby::FindPattern parent).getChild(_).(Ruby::SplatParameter).getName()
+  or
+  n = any(Ruby::HashPattern parent).getChild(_).(Ruby::HashSplatParameter).getName()
+  or
   n = any(Ruby::ExceptionVariable ev).getChild()
   or
   n = any(Ruby::For for).getPattern()
@@ -176,6 +187,8 @@ private module Cached {
     i = any(Ruby::Call x).getReceiver()
     or
     i = any(Ruby::Case x).getValue()
+    or
+    i = any(Ruby::CaseMatch x).getValue()
     or
     i = any(Ruby::Class x).getChild(_)
     or
@@ -327,7 +340,7 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    toGenerated(access.getVariable().getDeclaringScope()) != scopeOf(toGenerated(access))
+    access.getVariable().getDeclaringScope() != access.getCfgScope()
   }
 
   cached
@@ -495,14 +508,13 @@ abstract class VariableAccessImpl extends Expr, TVariableAccess {
 }
 
 module LocalVariableAccess {
-  predicate range(Ruby::Identifier id, LocalVariable v) {
+  predicate range(Ruby::Identifier id, TLocalVariableReal v) {
     access(id, v) and
     (
-      explicitWriteAccess(id, _)
-      or
-      implicitWriteAccess(id)
-      or
-      vcall(id)
+      explicitWriteAccess(id, _) or
+      implicitWriteAccess(id) or
+      vcall(id) or
+      id = any(Ruby::VariableReferencePattern vr).getName()
     )
   }
 }
@@ -524,7 +536,7 @@ private class LocalVariableAccessReal extends LocalVariableAccessImpl, TLocalVar
   final override string toString() { result = g.getValue() }
 }
 
-private class LocalVariableAccessSynth extends LocalVariableAccessImpl, TLocalVariableAccessSynth {
+class LocalVariableAccessSynth extends LocalVariableAccessImpl, TLocalVariableAccessSynth {
   private LocalVariable v;
 
   LocalVariableAccessSynth() { this = TLocalVariableAccessSynth(_, _, v) }

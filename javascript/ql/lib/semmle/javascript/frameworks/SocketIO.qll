@@ -45,7 +45,7 @@ module SocketIO {
     NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
 
     /** Gets the default namespace of this server. */
-    override NamespaceObject getNamespace() { result = getDefaultNamespace() }
+    override NamespaceObject getNamespace() { result = this.getDefaultNamespace() }
 
     /** Gets the namespace with the given path of this server. */
     NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
@@ -56,7 +56,7 @@ module SocketIO {
     private DataFlow::SourceNode server(DataFlow::TypeTracker t) {
       result = this and t.start()
       or
-      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = server(t2) |
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = this.server(t2) |
         result = pred.track(t2, t)
         or
         // invocation of a chainable method
@@ -81,7 +81,7 @@ module SocketIO {
       )
     }
 
-    override DataFlow::SourceNode ref() { result = server(DataFlow::TypeTracker::end()) }
+    override DataFlow::SourceNode ref() { result = this.server(DataFlow::TypeTracker::end()) }
 
     /**
      * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
@@ -149,7 +149,7 @@ module SocketIO {
     private DataFlow::SourceNode namespace(DataFlow::TypeTracker t) {
       t.start() and result = this
       or
-      exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = namespace(t2) |
+      exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = this.namespace(t2) |
         result = pred.track(t2, t)
         or
         // invocation of a chainable method
@@ -168,7 +168,7 @@ module SocketIO {
       )
     }
 
-    override DataFlow::SourceNode ref() { result = namespace(DataFlow::TypeTracker::end()) }
+    override DataFlow::SourceNode ref() { result = this.namespace(DataFlow::TypeTracker::end()) }
   }
 
   /** A data flow node that may produce a namespace object. */
@@ -204,7 +204,7 @@ module SocketIO {
     private DataFlow::SourceNode socket(DataFlow::TypeTracker t) {
       result = this and t.start()
       or
-      exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = socket(t2) |
+      exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = this.socket(t2) |
         result = pred.track(t2, t)
         or
         // invocation of a chainable method
@@ -239,7 +239,7 @@ module SocketIO {
       )
     }
 
-    override DataFlow::SourceNode ref() { result = socket(DataFlow::TypeTracker::end()) }
+    override DataFlow::SourceNode ref() { result = this.socket(DataFlow::TypeTracker::end()) }
   }
 
   /** A data flow node that may produce a socket object. */
@@ -264,12 +264,12 @@ module SocketIO {
     SocketObject getSocket() { result = emitter }
 
     /** Gets the callback that handles data received from a client. */
-    DataFlow::FunctionNode getListener() { result = getCallback(1) }
+    DataFlow::FunctionNode getListener() { result = this.getCallback(1) }
 
     /** Gets the `i`th parameter through which data is received from a client. */
     override DataFlow::SourceNode getReceivedItem(int i) {
       exists(DataFlow::FunctionNode cb |
-        cb = getListener() and
+        cb = this.getListener() and
         result = cb.getParameter(i) and
         // exclude last parameter if it looks like a callback
         not (result = cb.getLastParameter() and exists(result.getAnInvocation()))
@@ -279,7 +279,7 @@ module SocketIO {
     override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
     /** Gets a parameter through which data is received from a client. */
-    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
+    DataFlow::SourceNode getAReceivedItem() { result = this.getReceivedItem(_) }
 
     /** Gets a client-side node that may be sending the data received here. */
     SendNode getASender() { result.getAReceiver() = this }
@@ -288,7 +288,7 @@ module SocketIO {
     ReceiveCallback getAck() { result.getReceiveNode() = this }
 
     /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = getChannel() }
+    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /** An acknowledgment callback when receiving a message. */
@@ -355,29 +355,31 @@ module SocketIO {
 
     /** Gets the event name associated with the data, if it can be determined. */
     override string getChannel() {
-      if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
+      if firstDataIndex = 1
+      then this.getArgument(0).mayHaveStringValue(result)
+      else result = "message"
     }
 
     /** Gets the `i`th argument through which data is sent to the client. */
     override DataFlow::Node getSentItem(int i) {
-      result = getArgument(i + firstDataIndex) and
+      result = this.getArgument(i + firstDataIndex) and
       i >= 0 and
       (
         // exclude last argument if it looks like a callback
-        result != getLastArgument() or not exists(SendCallback c | c.getSendNode() = this)
+        result != this.getLastArgument() or not exists(SendCallback c | c.getSendNode() = this)
       )
     }
 
     /** Gets a client-side node that may be receiving the data sent here. */
     override SocketIOClient::ReceiveNode getAReceiver() {
-      result.getSocket().getATargetNamespace() = getNamespace()
+      result.getSocket().getATargetNamespace() = this.getNamespace()
     }
 
     /** Gets the acknowledgment callback, if any. */
     SendCallback getAck() { result.getSendNode() = this }
 
     /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = getChannel() }
+    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /** A socket.io namespace, identified by its server and its path. */
@@ -453,10 +455,10 @@ module SocketIOClient {
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     /** Gets the path of the namespace this socket belongs to, if it can be determined. */
     string getNamespacePath() {
@@ -488,22 +490,22 @@ module SocketIOClient {
     SocketIO::ServerObject getATargetServer() {
       getPackage(result) = getPackage(this) and
       (
-        not exists(getNamespacePath()) or
-        exists(result.getNamespace(getNamespacePath()))
+        not exists(this.getNamespacePath()) or
+        exists(result.getNamespace(this.getNamespacePath()))
       )
     }
 
     /** Gets a namespace this socket may be communicating with. */
     SocketIO::NamespaceObject getATargetNamespace() {
-      result = getATargetServer().getNamespace(getNamespacePath())
+      result = this.getATargetServer().getNamespace(this.getNamespacePath())
       or
       // if the namespace of this socket cannot be determined, overapproximate
-      not exists(getNamespacePath()) and
-      result = getATargetServer().getNamespace(_)
+      not exists(this.getNamespacePath()) and
+      result = this.getATargetServer().getNamespace(_)
     }
 
     /** Gets a server-side socket this client-side socket may be communicating with. */
-    SocketIO::SocketObject getATargetSocket() { result.getNamespace() = getATargetNamespace() }
+    SocketIO::SocketObject getATargetSocket() { result.getNamespace() = this.getATargetNamespace() }
   }
 
   /** A data flow node that may produce a socket object. */
@@ -547,36 +549,38 @@ module SocketIOClient {
     SocketObject getSocket() { result = emitter }
 
     /** Gets the event name associated with the data, if it can be determined. */
-    override string getChannel() { getArgument(0).mayHaveStringValue(result) }
+    override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
     private DataFlow::SourceNode getListener(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getArgument(1).getALocalSource()
+      result = this.getArgument(1).getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getListener(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = this.getListener(t2).backtrack(t2, t))
     }
 
     /** Gets the callback that handles data received from the server. */
-    DataFlow::FunctionNode getListener() { result = getListener(DataFlow::TypeBackTracker::end()) }
+    DataFlow::FunctionNode getListener() {
+      result = this.getListener(DataFlow::TypeBackTracker::end())
+    }
 
     /** Gets the `i`th parameter through which data is received from the server. */
     override DataFlow::SourceNode getReceivedItem(int i) {
-      exists(DataFlow::FunctionNode cb | cb = getListener() and result = cb.getParameter(i) |
+      exists(DataFlow::FunctionNode cb | cb = this.getListener() and result = cb.getParameter(i) |
         // exclude the last parameter if it looks like a callback
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
     }
 
     /** Gets a data flow node representing data received from the server. */
-    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
+    DataFlow::SourceNode getAReceivedItem() { result = this.getReceivedItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() { result.(ReceiveCallback).getReceiveNode() = this }
 
     /** Gets a server-side node that may be sending the data received here. */
     SocketIO::SendNode getASender() {
-      result.getNamespace() = getSocket().getATargetNamespace() and
-      not result.getChannel() != getChannel()
+      result.getNamespace() = this.getSocket().getATargetNamespace() and
+      not result.getChannel() != this.getChannel()
     }
   }
 
@@ -634,32 +638,34 @@ module SocketIOClient {
 
     /** Gets the event name associated with the data, if it can be determined. */
     override string getChannel() {
-      if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
+      if firstDataIndex = 1
+      then this.getArgument(0).mayHaveStringValue(result)
+      else result = "message"
     }
 
     /** Gets the `i`th argument through which data is sent to the server. */
     override DataFlow::Node getSentItem(int i) {
-      result = getArgument(i + firstDataIndex) and
+      result = this.getArgument(i + firstDataIndex) and
       i >= 0 and
       (
         // exclude last argument if it looks like a callback
-        result != getLastArgument() or not exists(SendCallback c | c.getSendNode() = this)
+        result != this.getLastArgument() or not exists(SendCallback c | c.getSendNode() = this)
       )
     }
 
     /** Gets a data flow node representing data sent to the client. */
-    DataFlow::Node getASentItem() { result = getSentItem(_) }
+    DataFlow::Node getASentItem() { result = this.getSentItem(_) }
 
     /** Gets a server-side node that may be receiving the data sent here. */
     override SocketIO::ReceiveNode getAReceiver() {
-      result.getSocket().getNamespace() = getSocket().getATargetNamespace()
+      result.getSocket().getNamespace() = this.getSocket().getATargetNamespace()
     }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() { result.(SendCallback).getSendNode() = this }
 
     /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = getChannel() }
+    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /**

@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision high
+ * @precision medium
  * @id rb/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -85,7 +85,7 @@ private string getACredentialRegExp() {
 bindingset[name]
 private predicate maybeCredentialName(string name) {
   name.regexpMatch(getACredentialRegExp()) and
-  not name.suffix(name.length() - 4) = "file"
+  not name.matches("%file")
 }
 
 // Positional parameter

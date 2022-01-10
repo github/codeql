@@ -1,49 +1,228 @@
 edges
-| test3.cpp:68:21:68:29 | password1 | test3.cpp:70:15:70:17 | ptr |
-| test3.cpp:75:15:75:22 | password | test3.cpp:77:15:77:17 | ptr |
-| test3.cpp:106:20:106:25 | buffer | test3.cpp:108:14:108:19 | buffer |
-| test3.cpp:111:28:111:33 | buffer | test3.cpp:113:9:113:14 | buffer |
-| test3.cpp:120:9:120:23 | global_password | test3.cpp:138:16:138:29 | call to get_global_str |
-| test3.cpp:128:11:128:18 | password | test3.cpp:106:20:106:25 | buffer |
-| test3.cpp:132:21:132:22 | call to id | test3.cpp:134:15:134:17 | ptr |
-| test3.cpp:132:24:132:32 | password1 | test3.cpp:111:28:111:33 | buffer |
-| test3.cpp:132:24:132:32 | password1 | test3.cpp:132:21:132:22 | call to id |
-| test3.cpp:138:16:138:29 | call to get_global_str | test3.cpp:140:15:140:18 | data |
-| test3.cpp:151:19:151:26 | password | test3.cpp:153:15:153:20 | buffer |
+| test3.cpp:17:28:17:36 | password1 | test3.cpp:22:15:22:23 | password1 |
+| test3.cpp:17:51:17:59 | password2 | test3.cpp:26:15:26:23 | password2 |
+| test3.cpp:45:8:45:15 | password | test3.cpp:47:15:47:22 | password |
+| test3.cpp:53:8:53:15 | password | test3.cpp:55:15:55:22 | password |
+| test3.cpp:71:32:71:40 | password1 | test3.cpp:76:15:76:17 | ptr |
+| test3.cpp:80:8:80:15 | password | test3.cpp:83:15:83:17 | ptr |
+| test3.cpp:98:8:98:15 | password | test3.cpp:101:12:101:19 | password |
+| test3.cpp:112:20:112:25 | buffer | test3.cpp:114:14:114:19 | buffer |
+| test3.cpp:117:28:117:33 | buffer | test3.cpp:119:9:119:14 | buffer |
+| test3.cpp:126:9:126:23 | global_password | test3.cpp:144:16:144:29 | call to get_global_str |
+| test3.cpp:129:39:129:47 | password1 | test3.cpp:138:24:138:32 | password1 |
+| test3.cpp:132:8:132:15 | password | test3.cpp:134:11:134:18 | password |
+| test3.cpp:134:11:134:18 | password | test3.cpp:112:20:112:25 | buffer |
+| test3.cpp:138:21:138:22 | call to id | test3.cpp:140:15:140:17 | ptr |
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer |
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:138:21:138:22 | call to id |
+| test3.cpp:144:16:144:29 | call to get_global_str | test3.cpp:146:15:146:18 | data |
+| test3.cpp:152:29:152:36 | password | test3.cpp:159:15:159:20 | buffer |
+| test3.cpp:171:8:171:15 | password | test3.cpp:173:15:173:22 | password |
+| test3.cpp:171:8:171:15 | password | test3.cpp:175:3:175:17 | call to decrypt_inplace |
+| test3.cpp:171:8:171:15 | password | test3.cpp:175:19:175:26 | password |
+| test3.cpp:179:8:179:15 | password | test3.cpp:181:15:181:22 | password |
+| test3.cpp:179:8:179:15 | password | test3.cpp:184:3:184:17 | call to decrypt_inplace |
+| test3.cpp:179:8:179:15 | password | test3.cpp:184:19:184:26 | password |
+| test3.cpp:188:8:188:15 | password | test3.cpp:191:15:191:22 | password |
+| test3.cpp:188:8:188:15 | password | test3.cpp:193:18:193:28 | call to rtn_decrypt |
+| test3.cpp:188:8:188:15 | password | test3.cpp:193:30:193:37 | password |
+| test3.cpp:197:8:197:15 | password | test3.cpp:199:3:199:17 | call to encrypt_inplace |
+| test3.cpp:197:8:197:15 | password | test3.cpp:199:19:199:26 | password |
+| test3.cpp:197:8:197:15 | password | test3.cpp:201:15:201:22 | password |
+| test3.cpp:205:8:205:15 | password | test3.cpp:207:3:207:17 | call to encrypt_inplace |
+| test3.cpp:205:8:205:15 | password | test3.cpp:207:19:207:26 | password |
+| test3.cpp:205:8:205:15 | password | test3.cpp:210:15:210:22 | password |
+| test3.cpp:214:8:214:15 | password | test3.cpp:217:18:217:28 | call to rtn_encrypt |
+| test3.cpp:214:8:214:15 | password | test3.cpp:217:18:217:28 | call to rtn_encrypt |
+| test3.cpp:214:8:214:15 | password | test3.cpp:217:30:217:37 | password |
+| test3.cpp:214:8:214:15 | password | test3.cpp:219:15:219:26 | password_ptr |
+| test3.cpp:217:18:217:28 | call to rtn_encrypt | test3.cpp:219:15:219:26 | password_ptr |
+| test3.cpp:225:34:225:41 | password | test3.cpp:227:22:227:29 | password |
+| test3.cpp:225:34:225:41 | password | test3.cpp:228:26:228:33 | password |
+| test3.cpp:239:7:239:14 | password | test3.cpp:241:8:241:15 | password |
+| test3.cpp:239:7:239:14 | password | test3.cpp:242:8:242:15 | password |
+| test3.cpp:252:8:252:16 | password1 | test3.cpp:254:15:254:23 | password1 |
+| test3.cpp:252:8:252:16 | password1 | test3.cpp:256:3:256:19 | call to decrypt_to_buffer |
+| test3.cpp:252:8:252:16 | password1 | test3.cpp:256:21:256:29 | password1 |
+| test3.cpp:252:24:252:32 | password2 | test3.cpp:256:3:256:19 | call to decrypt_to_buffer |
+| test3.cpp:252:24:252:32 | password2 | test3.cpp:256:32:256:40 | password2 |
+| test3.cpp:260:8:260:16 | password1 | test3.cpp:262:3:262:19 | call to encrypt_to_buffer |
+| test3.cpp:260:8:260:16 | password1 | test3.cpp:262:21:262:29 | password1 |
+| test3.cpp:260:24:260:32 | password2 | test3.cpp:262:3:262:19 | call to encrypt_to_buffer |
+| test3.cpp:260:24:260:32 | password2 | test3.cpp:262:32:262:40 | password2 |
+| test3.cpp:260:24:260:32 | password2 | test3.cpp:264:15:264:23 | password2 |
+| test3.cpp:268:19:268:26 | password | test3.cpp:272:15:272:18 | data |
+| test3.cpp:278:20:278:23 | data | test3.cpp:278:20:278:23 | data |
+| test3.cpp:278:20:278:23 | data | test3.cpp:280:14:280:17 | data |
+| test3.cpp:283:20:283:23 | data | test3.cpp:283:20:283:23 | data |
+| test3.cpp:283:20:283:23 | data | test3.cpp:285:14:285:17 | data |
+| test3.cpp:288:20:288:23 | data | test3.cpp:290:14:290:17 | data |
+| test3.cpp:293:20:293:23 | data | test3.cpp:293:20:293:23 | data |
+| test3.cpp:293:20:293:23 | data | test3.cpp:295:14:295:17 | data |
+| test3.cpp:298:20:298:23 | data | test3.cpp:300:14:300:17 | data |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:312:3:312:17 | call to encrypt_inplace |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:312:19:312:27 | password1 |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:313:11:313:19 | password1 |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:314:11:314:19 | password1 |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:316:11:316:19 | password1 |
+| test3.cpp:308:41:308:49 | password1 | test3.cpp:317:11:317:19 | password1 |
+| test3.cpp:308:58:308:66 | password2 | test3.cpp:324:11:324:14 | data |
+| test3.cpp:308:58:308:66 | password2 | test3.cpp:325:11:325:14 | data |
+| test3.cpp:313:11:313:19 | password1 | test3.cpp:278:20:278:23 | data |
+| test3.cpp:313:11:313:19 | password1 | test3.cpp:313:11:313:19 | ref arg password1 |
+| test3.cpp:313:11:313:19 | ref arg password1 | test3.cpp:314:11:314:19 | password1 |
+| test3.cpp:314:11:314:19 | password1 | test3.cpp:283:20:283:23 | data |
+| test3.cpp:316:11:316:19 | password1 | test3.cpp:283:20:283:23 | data |
+| test3.cpp:316:11:316:19 | password1 | test3.cpp:316:11:316:19 | ref arg password1 |
+| test3.cpp:316:11:316:19 | ref arg password1 | test3.cpp:317:11:317:19 | password1 |
+| test3.cpp:317:11:317:19 | password1 | test3.cpp:288:20:288:23 | data |
+| test3.cpp:324:11:324:14 | data | test3.cpp:293:20:293:23 | data |
+| test3.cpp:324:11:324:14 | data | test3.cpp:324:11:324:14 | ref arg data |
+| test3.cpp:324:11:324:14 | ref arg data | test3.cpp:325:11:325:14 | data |
+| test3.cpp:325:11:325:14 | data | test3.cpp:298:20:298:23 | data |
+| test3.cpp:339:9:339:16 | password | test3.cpp:341:16:341:23 | password |
+| test3.cpp:350:9:350:16 | password | test3.cpp:352:16:352:23 | password |
+| test3.cpp:350:9:350:16 | password | test3.cpp:353:4:353:18 | call to decrypt_inplace |
+| test3.cpp:350:9:350:16 | password | test3.cpp:353:20:353:27 | password |
+| test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:21:48:27 | call to encrypt |
+| test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:29:48:39 | thePassword |
+| test.cpp:66:23:66:43 | cleartext password! | test.cpp:76:21:76:27 | call to encrypt |
+| test.cpp:66:23:66:43 | cleartext password! | test.cpp:76:29:76:39 | thePassword |
 nodes
-| test3.cpp:20:15:20:23 | password1 | semmle.label | password1 |
-| test3.cpp:24:15:24:23 | password2 | semmle.label | password2 |
-| test3.cpp:41:15:41:22 | password | semmle.label | password |
-| test3.cpp:49:15:49:22 | password | semmle.label | password |
-| test3.cpp:68:21:68:29 | password1 | semmle.label | password1 |
-| test3.cpp:70:15:70:17 | ptr | semmle.label | ptr |
-| test3.cpp:75:15:75:22 | password | semmle.label | password |
-| test3.cpp:77:15:77:17 | ptr | semmle.label | ptr |
-| test3.cpp:95:12:95:19 | password | semmle.label | password |
-| test3.cpp:106:20:106:25 | buffer | semmle.label | buffer |
-| test3.cpp:108:14:108:19 | buffer | semmle.label | buffer |
-| test3.cpp:111:28:111:33 | buffer | semmle.label | buffer |
-| test3.cpp:113:9:113:14 | buffer | semmle.label | buffer |
-| test3.cpp:120:9:120:23 | global_password | semmle.label | global_password |
-| test3.cpp:128:11:128:18 | password | semmle.label | password |
-| test3.cpp:132:21:132:22 | call to id | semmle.label | call to id |
-| test3.cpp:132:24:132:32 | password1 | semmle.label | password1 |
-| test3.cpp:134:15:134:17 | ptr | semmle.label | ptr |
-| test3.cpp:138:16:138:29 | call to get_global_str | semmle.label | call to get_global_str |
-| test3.cpp:140:15:140:18 | data | semmle.label | data |
-| test3.cpp:151:19:151:26 | password | semmle.label | password |
-| test3.cpp:153:15:153:20 | buffer | semmle.label | buffer |
+| test3.cpp:17:28:17:36 | password1 | semmle.label | password1 |
+| test3.cpp:17:51:17:59 | password2 | semmle.label | password2 |
+| test3.cpp:22:15:22:23 | password1 | semmle.label | password1 |
+| test3.cpp:26:15:26:23 | password2 | semmle.label | password2 |
+| test3.cpp:45:8:45:15 | password | semmle.label | password |
+| test3.cpp:47:15:47:22 | password | semmle.label | password |
+| test3.cpp:53:8:53:15 | password | semmle.label | password |
+| test3.cpp:55:15:55:22 | password | semmle.label | password |
+| test3.cpp:71:32:71:40 | password1 | semmle.label | password1 |
+| test3.cpp:76:15:76:17 | ptr | semmle.label | ptr |
+| test3.cpp:80:8:80:15 | password | semmle.label | password |
+| test3.cpp:83:15:83:17 | ptr | semmle.label | ptr |
+| test3.cpp:98:8:98:15 | password | semmle.label | password |
+| test3.cpp:101:12:101:19 | password | semmle.label | password |
+| test3.cpp:112:20:112:25 | buffer | semmle.label | buffer |
+| test3.cpp:114:14:114:19 | buffer | semmle.label | buffer |
+| test3.cpp:117:28:117:33 | buffer | semmle.label | buffer |
+| test3.cpp:119:9:119:14 | buffer | semmle.label | buffer |
+| test3.cpp:126:9:126:23 | global_password | semmle.label | global_password |
+| test3.cpp:129:39:129:47 | password1 | semmle.label | password1 |
+| test3.cpp:132:8:132:15 | password | semmle.label | password |
+| test3.cpp:134:11:134:18 | password | semmle.label | password |
+| test3.cpp:138:21:138:22 | call to id | semmle.label | call to id |
+| test3.cpp:138:24:138:32 | password1 | semmle.label | password1 |
+| test3.cpp:140:15:140:17 | ptr | semmle.label | ptr |
+| test3.cpp:144:16:144:29 | call to get_global_str | semmle.label | call to get_global_str |
+| test3.cpp:146:15:146:18 | data | semmle.label | data |
+| test3.cpp:152:29:152:36 | password | semmle.label | password |
+| test3.cpp:159:15:159:20 | buffer | semmle.label | buffer |
+| test3.cpp:171:8:171:15 | password | semmle.label | password |
+| test3.cpp:173:15:173:22 | password | semmle.label | password |
+| test3.cpp:175:3:175:17 | call to decrypt_inplace | semmle.label | call to decrypt_inplace |
+| test3.cpp:175:19:175:26 | password | semmle.label | password |
+| test3.cpp:179:8:179:15 | password | semmle.label | password |
+| test3.cpp:181:15:181:22 | password | semmle.label | password |
+| test3.cpp:184:3:184:17 | call to decrypt_inplace | semmle.label | call to decrypt_inplace |
+| test3.cpp:184:19:184:26 | password | semmle.label | password |
+| test3.cpp:188:8:188:15 | password | semmle.label | password |
+| test3.cpp:191:15:191:22 | password | semmle.label | password |
+| test3.cpp:193:18:193:28 | call to rtn_decrypt | semmle.label | call to rtn_decrypt |
+| test3.cpp:193:30:193:37 | password | semmle.label | password |
+| test3.cpp:197:8:197:15 | password | semmle.label | password |
+| test3.cpp:199:3:199:17 | call to encrypt_inplace | semmle.label | call to encrypt_inplace |
+| test3.cpp:199:19:199:26 | password | semmle.label | password |
+| test3.cpp:201:15:201:22 | password | semmle.label | password |
+| test3.cpp:205:8:205:15 | password | semmle.label | password |
+| test3.cpp:207:3:207:17 | call to encrypt_inplace | semmle.label | call to encrypt_inplace |
+| test3.cpp:207:19:207:26 | password | semmle.label | password |
+| test3.cpp:210:15:210:22 | password | semmle.label | password |
+| test3.cpp:214:8:214:15 | password | semmle.label | password |
+| test3.cpp:217:18:217:28 | call to rtn_encrypt | semmle.label | call to rtn_encrypt |
+| test3.cpp:217:18:217:28 | call to rtn_encrypt | semmle.label | call to rtn_encrypt |
+| test3.cpp:217:30:217:37 | password | semmle.label | password |
+| test3.cpp:219:15:219:26 | password_ptr | semmle.label | password_ptr |
+| test3.cpp:225:34:225:41 | password | semmle.label | password |
+| test3.cpp:227:22:227:29 | password | semmle.label | password |
+| test3.cpp:228:26:228:33 | password | semmle.label | password |
+| test3.cpp:239:7:239:14 | password | semmle.label | password |
+| test3.cpp:241:8:241:15 | password | semmle.label | password |
+| test3.cpp:242:8:242:15 | password | semmle.label | password |
+| test3.cpp:252:8:252:16 | password1 | semmle.label | password1 |
+| test3.cpp:252:24:252:32 | password2 | semmle.label | password2 |
+| test3.cpp:254:15:254:23 | password1 | semmle.label | password1 |
+| test3.cpp:256:3:256:19 | call to decrypt_to_buffer | semmle.label | call to decrypt_to_buffer |
+| test3.cpp:256:21:256:29 | password1 | semmle.label | password1 |
+| test3.cpp:256:32:256:40 | password2 | semmle.label | password2 |
+| test3.cpp:260:8:260:16 | password1 | semmle.label | password1 |
+| test3.cpp:260:24:260:32 | password2 | semmle.label | password2 |
+| test3.cpp:262:3:262:19 | call to encrypt_to_buffer | semmle.label | call to encrypt_to_buffer |
+| test3.cpp:262:21:262:29 | password1 | semmle.label | password1 |
+| test3.cpp:262:32:262:40 | password2 | semmle.label | password2 |
+| test3.cpp:264:15:264:23 | password2 | semmle.label | password2 |
+| test3.cpp:268:19:268:26 | password | semmle.label | password |
+| test3.cpp:272:15:272:18 | data | semmle.label | data |
+| test3.cpp:278:20:278:23 | data | semmle.label | data |
+| test3.cpp:278:20:278:23 | data | semmle.label | data |
+| test3.cpp:280:14:280:17 | data | semmle.label | data |
+| test3.cpp:283:20:283:23 | data | semmle.label | data |
+| test3.cpp:283:20:283:23 | data | semmle.label | data |
+| test3.cpp:285:14:285:17 | data | semmle.label | data |
+| test3.cpp:288:20:288:23 | data | semmle.label | data |
+| test3.cpp:290:14:290:17 | data | semmle.label | data |
+| test3.cpp:293:20:293:23 | data | semmle.label | data |
+| test3.cpp:293:20:293:23 | data | semmle.label | data |
+| test3.cpp:295:14:295:17 | data | semmle.label | data |
+| test3.cpp:298:20:298:23 | data | semmle.label | data |
+| test3.cpp:300:14:300:17 | data | semmle.label | data |
+| test3.cpp:308:41:308:49 | password1 | semmle.label | password1 |
+| test3.cpp:308:58:308:66 | password2 | semmle.label | password2 |
+| test3.cpp:312:3:312:17 | call to encrypt_inplace | semmle.label | call to encrypt_inplace |
+| test3.cpp:312:19:312:27 | password1 | semmle.label | password1 |
+| test3.cpp:313:11:313:19 | password1 | semmle.label | password1 |
+| test3.cpp:313:11:313:19 | ref arg password1 | semmle.label | ref arg password1 |
+| test3.cpp:314:11:314:19 | password1 | semmle.label | password1 |
+| test3.cpp:316:11:316:19 | password1 | semmle.label | password1 |
+| test3.cpp:316:11:316:19 | ref arg password1 | semmle.label | ref arg password1 |
+| test3.cpp:317:11:317:19 | password1 | semmle.label | password1 |
+| test3.cpp:324:11:324:14 | data | semmle.label | data |
+| test3.cpp:324:11:324:14 | ref arg data | semmle.label | ref arg data |
+| test3.cpp:325:11:325:14 | data | semmle.label | data |
+| test3.cpp:339:9:339:16 | password | semmle.label | password |
+| test3.cpp:341:16:341:23 | password | semmle.label | password |
+| test3.cpp:350:9:350:16 | password | semmle.label | password |
+| test3.cpp:352:16:352:23 | password | semmle.label | password |
+| test3.cpp:353:4:353:18 | call to decrypt_inplace | semmle.label | call to decrypt_inplace |
+| test3.cpp:353:20:353:27 | password | semmle.label | password |
+| test.cpp:41:23:41:43 | cleartext password! | semmle.label | cleartext password! |
+| test.cpp:48:21:48:27 | call to encrypt | semmle.label | call to encrypt |
+| test.cpp:48:29:48:39 | thePassword | semmle.label | thePassword |
+| test.cpp:66:23:66:43 | cleartext password! | semmle.label | cleartext password! |
+| test.cpp:76:21:76:27 | call to encrypt | semmle.label | call to encrypt |
+| test.cpp:76:29:76:39 | thePassword | semmle.label | thePassword |
 subpaths
-| test3.cpp:132:24:132:32 | password1 | test3.cpp:111:28:111:33 | buffer | test3.cpp:113:9:113:14 | buffer | test3.cpp:132:21:132:22 | call to id |
+| test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer | test3.cpp:119:9:119:14 | buffer | test3.cpp:138:21:138:22 | call to id |
+| test3.cpp:313:11:313:19 | password1 | test3.cpp:278:20:278:23 | data | test3.cpp:278:20:278:23 | data | test3.cpp:313:11:313:19 | ref arg password1 |
+| test3.cpp:316:11:316:19 | password1 | test3.cpp:283:20:283:23 | data | test3.cpp:283:20:283:23 | data | test3.cpp:316:11:316:19 | ref arg password1 |
+| test3.cpp:324:11:324:14 | data | test3.cpp:293:20:293:23 | data | test3.cpp:293:20:293:23 | data | test3.cpp:324:11:324:14 | ref arg data |
 #select
-| test3.cpp:20:3:20:6 | call to send | test3.cpp:20:15:20:23 | password1 | test3.cpp:20:15:20:23 | password1 | This operation transmits 'password1', which may contain unencrypted sensitive data from $@ | test3.cpp:20:15:20:23 | password1 | password1 |
-| test3.cpp:24:3:24:6 | call to send | test3.cpp:24:15:24:23 | password2 | test3.cpp:24:15:24:23 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@ | test3.cpp:24:15:24:23 | password2 | password2 |
-| test3.cpp:41:3:41:6 | call to recv | test3.cpp:41:15:41:22 | password | test3.cpp:41:15:41:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:41:15:41:22 | password | password |
-| test3.cpp:49:3:49:6 | call to recv | test3.cpp:49:15:49:22 | password | test3.cpp:49:15:49:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:49:15:49:22 | password | password |
-| test3.cpp:70:3:70:6 | call to send | test3.cpp:68:21:68:29 | password1 | test3.cpp:70:15:70:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:68:21:68:29 | password1 | password1 |
-| test3.cpp:77:3:77:6 | call to recv | test3.cpp:75:15:75:22 | password | test3.cpp:77:15:77:17 | ptr | This operation receives into 'ptr', which may put unencrypted sensitive data into $@ | test3.cpp:75:15:75:22 | password | password |
-| test3.cpp:95:3:95:6 | call to read | test3.cpp:95:12:95:19 | password | test3.cpp:95:12:95:19 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:95:12:95:19 | password | password |
-| test3.cpp:108:2:108:5 | call to recv | test3.cpp:128:11:128:18 | password | test3.cpp:108:14:108:19 | buffer | This operation receives into 'buffer', which may put unencrypted sensitive data into $@ | test3.cpp:128:11:128:18 | password | password |
-| test3.cpp:134:3:134:6 | call to send | test3.cpp:132:24:132:32 | password1 | test3.cpp:134:15:134:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:132:24:132:32 | password1 | password1 |
-| test3.cpp:140:3:140:6 | call to send | test3.cpp:120:9:120:23 | global_password | test3.cpp:140:15:140:18 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:120:9:120:23 | global_password | global_password |
-| test3.cpp:153:3:153:6 | call to send | test3.cpp:151:19:151:26 | password | test3.cpp:153:15:153:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:151:19:151:26 | password | password |
+| test3.cpp:22:3:22:6 | call to send | test3.cpp:17:28:17:36 | password1 | test3.cpp:22:15:22:23 | password1 | This operation transmits 'password1', which may contain unencrypted sensitive data from $@ | test3.cpp:17:28:17:36 | password1 | password1 |
+| test3.cpp:26:3:26:6 | call to send | test3.cpp:17:51:17:59 | password2 | test3.cpp:26:15:26:23 | password2 | This operation transmits 'password2', which may contain unencrypted sensitive data from $@ | test3.cpp:17:51:17:59 | password2 | password2 |
+| test3.cpp:47:3:47:6 | call to recv | test3.cpp:45:8:45:15 | password | test3.cpp:47:15:47:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:45:8:45:15 | password | password |
+| test3.cpp:55:3:55:6 | call to recv | test3.cpp:53:8:53:15 | password | test3.cpp:55:15:55:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:53:8:53:15 | password | password |
+| test3.cpp:76:3:76:6 | call to send | test3.cpp:71:32:71:40 | password1 | test3.cpp:76:15:76:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:71:32:71:40 | password1 | password1 |
+| test3.cpp:83:3:83:6 | call to recv | test3.cpp:80:8:80:15 | password | test3.cpp:83:15:83:17 | ptr | This operation receives into 'ptr', which may put unencrypted sensitive data into $@ | test3.cpp:80:8:80:15 | password | password |
+| test3.cpp:101:3:101:6 | call to read | test3.cpp:98:8:98:15 | password | test3.cpp:101:12:101:19 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:98:8:98:15 | password | password |
+| test3.cpp:114:2:114:5 | call to recv | test3.cpp:132:8:132:15 | password | test3.cpp:114:14:114:19 | buffer | This operation receives into 'buffer', which may put unencrypted sensitive data into $@ | test3.cpp:132:8:132:15 | password | password |
+| test3.cpp:140:3:140:6 | call to send | test3.cpp:129:39:129:47 | password1 | test3.cpp:140:15:140:17 | ptr | This operation transmits 'ptr', which may contain unencrypted sensitive data from $@ | test3.cpp:129:39:129:47 | password1 | password1 |
+| test3.cpp:146:3:146:6 | call to send | test3.cpp:126:9:126:23 | global_password | test3.cpp:146:15:146:18 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:126:9:126:23 | global_password | global_password |
+| test3.cpp:159:3:159:6 | call to send | test3.cpp:152:29:152:36 | password | test3.cpp:159:15:159:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:152:29:152:36 | password | password |
+| test3.cpp:227:2:227:5 | call to send | test3.cpp:225:34:225:41 | password | test3.cpp:227:22:227:29 | password | This operation transmits 'password', which may contain unencrypted sensitive data from $@ | test3.cpp:225:34:225:41 | password | password |
+| test3.cpp:228:2:228:5 | call to send | test3.cpp:225:34:225:41 | password | test3.cpp:228:26:228:33 | password | This operation transmits 'password', which may contain unencrypted sensitive data from $@ | test3.cpp:225:34:225:41 | password | password |
+| test3.cpp:241:2:241:6 | call to fgets | test3.cpp:239:7:239:14 | password | test3.cpp:241:8:241:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:239:7:239:14 | password | password |
+| test3.cpp:242:2:242:6 | call to fgets | test3.cpp:239:7:239:14 | password | test3.cpp:242:8:242:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:239:7:239:14 | password | password |
+| test3.cpp:272:3:272:6 | call to send | test3.cpp:268:19:268:26 | password | test3.cpp:272:15:272:18 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:268:19:268:26 | password | password |
+| test3.cpp:295:2:295:5 | call to send | test3.cpp:308:58:308:66 | password2 | test3.cpp:295:14:295:17 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:308:58:308:66 | password2 | password2 |
+| test3.cpp:300:2:300:5 | call to send | test3.cpp:308:58:308:66 | password2 | test3.cpp:300:14:300:17 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:308:58:308:66 | password2 | password2 |
+| test3.cpp:341:4:341:7 | call to recv | test3.cpp:339:9:339:16 | password | test3.cpp:341:16:341:23 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:339:9:339:16 | password | password |

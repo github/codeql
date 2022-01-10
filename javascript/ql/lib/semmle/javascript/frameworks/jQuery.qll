@@ -122,9 +122,9 @@ deprecated class JQueryMethodCall extends CallExpr {
  * A call to `jQuery.parseXML`.
  */
 private class JQueryParseXmlCall extends XML::ParserInvocation {
-  JQueryParseXmlCall() { flow().(JQuery::MethodCall).getMethodName() = "parseXML" }
+  JQueryParseXmlCall() { this.flow().(JQuery::MethodCall).getMethodName() = "parseXML" }
 
-  override Expr getSourceArgument() { result = getArgument(0) }
+  override Expr getSourceArgument() { result = this.getArgument(0) }
 
   override predicate resolvesEntities(XML::EntityKind kind) { kind = XML::InternalEntity() }
 }
@@ -139,7 +139,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @call_e
   JQueryDomElementDefinition() {
     this = call and
     call = jquery().getACall().asExpr() and
-    exists(string s | s = call.getArgument(0).(Expr).getStringValue() |
+    exists(string s | s = call.getArgument(0).getStringValue() |
       // match an opening angle bracket followed by a tag name, followed by arbitrary
       // text and a closing angle bracket, potentially with whitespace in between
       tagName = s.regexpCapture("\\s*<\\s*(\\w+)\\b[^>]*>\\s*", 1).toLowerCase()
@@ -295,7 +295,7 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * Classes and predicates for modelling `ClientRequest`s in JQuery.
+ * Classes and predicates for modeling `ClientRequest`s in JQuery.
  */
 private module JQueryClientRequest {
   /**
@@ -305,35 +305,35 @@ private module JQueryClientRequest {
     JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) and not exists(getOptionArgument(0, _))
+      result = this.getArgument(0) and not exists(this.getOptionArgument(0, _))
       or
-      result = getOptionArgument([0 .. 1], "url")
+      result = this.getOptionArgument([0 .. 1], "url")
     }
 
     override DataFlow::Node getHost() { none() }
 
-    override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+    override DataFlow::Node getADataNode() { result = this.getOptionArgument([0 .. 1], "data") }
 
     private string getResponseType() {
-      getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
+      this.getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       (
-        responseType = getResponseType()
+        responseType = this.getResponseType()
         or
-        not exists(getResponseType()) and responseType = ""
+        not exists(this.getResponseType()) and responseType = ""
       ) and
       promise = false and
       (
         result =
-          getOptionArgument([0 .. 1], "success")
+          this.getOptionArgument([0 .. 1], "success")
               .getALocalSource()
               .(DataFlow::FunctionNode)
               .getParameter(0)
         or
         result =
-          getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
+          getAResponseNodeFromAnXHRObject(this.getOptionArgument([0 .. 1],
               any(string method | method = "error" or method = "complete"))
                 .getALocalSource()
                 .(DataFlow::FunctionNode)
@@ -397,20 +397,20 @@ private module JQueryClientRequest {
       this = JQuery::objectRef().getAMethodCall(name)
     }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() {
-      result = getArgument(1) and
+      result = this.getArgument(1) and
       not name = "getScript" and // doesn't have a data-node.
       not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
     }
 
     private string getResponseType() {
       (name = "get" or name = "post") and
-      getLastArgument().mayHaveStringValue(result) and
-      getNumArgument() > 1
+      this.getLastArgument().mayHaveStringValue(result) and
+      this.getNumArgument() > 1
       or
       name = "getJSON" and result = "json"
       or
@@ -420,14 +420,15 @@ private module JQueryClientRequest {
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       (
-        responseType = getResponseType()
+        responseType = this.getResponseType()
         or
-        not exists(getResponseType()) and responseType = ""
+        not exists(this.getResponseType()) and responseType = ""
       ) and
       promise = false and
       (
         // one of the two last arguments
-        result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+        result =
+          this.getCallback([this.getNumArgument() - 2 .. this.getNumArgument() - 1]).getParameter(0)
         or
         result = getAnAjaxCallbackDataNode(this)
       )
@@ -513,9 +514,9 @@ module JQuery {
       DefaultRange() {
         this.asExpr() instanceof JQueryObjectInternal
         or
-        hasUnderlyingType("JQuery")
+        this.hasUnderlyingType("JQuery")
         or
-        hasUnderlyingType("jQuery")
+        this.hasUnderlyingType("jQuery")
       }
     }
 
@@ -593,11 +594,11 @@ module JQuery {
     predicate interpretsArgumentAsHtml(DataFlow::Node node) {
       // some methods interpret all their arguments as (potential) HTML
       JQuery::isMethodArgumentInterpretedAsHtml(name) and
-      node = getAnArgument()
+      node = this.getAnArgument()
       or
       // for `$, it's only the first one
       name = "$" and
-      node = getArgument(0)
+      node = this.getArgument(0)
     }
 
     /**
@@ -610,11 +611,11 @@ module JQuery {
     predicate interpretsArgumentAsSelector(DataFlow::Node node) {
       // some methods interpret all their arguments as (potential) selectors
       JQuery::isMethodArgumentInterpretedAsSelector(name) and
-      node = getAnArgument()
+      node = this.getAnArgument()
       or
       // for `$, it's only the first one
       name = "$" and
-      node = getArgument(0)
+      node = this.getArgument(0)
     }
   }
 
