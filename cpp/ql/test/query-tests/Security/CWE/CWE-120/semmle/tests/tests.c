@@ -175,11 +175,11 @@ void tesHexBounds(int x) {
 	char buffer3[3];
 	char buffer5[5];
 
-	sprintf(buffer2, "%x", 1);  // GOOD [FALSE POSITIVE]
-	sprintf(buffer3, "%x", 16); // GOOD [FALSE POSITIVE]
-	sprintf(buffer5, "%x", (unsigned short)x); // GOOD: bounded by conversion [FALSE POSITIVE]
+	sprintf(buffer2, "%x", 1);  // GOOD
+	sprintf(buffer3, "%x", 16); // GOOD
+	sprintf(buffer5, "%x", (unsigned short)x); // GOOD: bounded by conversion
 	if (x < 16 && x > 0) {
-		sprintf(buffer2, "%x", x); // GOOD: bounded by check [FALSE POSITIVE]
+		sprintf(buffer2, "%x", x); // GOOD: bounded by check
 	}
 
 	if (x < 16) {
@@ -190,6 +190,6 @@ void tesHexBounds(int x) {
 	}
 
 	if(x < 0x10000 && x > 0) {
-		sprintf(buffer5, "%x", x); // GOOD: bounded by check [FALSE POSITIVE]
+		sprintf(buffer5, "%x", x); // GOOD: bounded by check
 	}
 }
