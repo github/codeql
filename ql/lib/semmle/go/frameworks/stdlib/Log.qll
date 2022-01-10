@@ -17,8 +17,8 @@ module Log {
     }
   }
 
-  private class ZapFormatter extends StringOps::Formatting::Range instanceof LogFunction {
-    ZapFormatter() { this.getName().matches("%f") }
+  private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
+    LogFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = 0 }
 
