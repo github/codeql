@@ -38,47 +38,56 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
  * `sub.getLeftOperand()`.
  */
 predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
-  n.asExpr() = sub.getLeftOperand()
-  or
-  exists(DataFlow::Node other |
-    // dataflow
-    exprIsSubLeftOrLess(sub, other) and
-    (
-      DataFlow::localFlowStep(n, other) or
-      DataFlow::localFlowStep(other, n)
+  interestingSubExpr(sub, _) and // Manual magic
+  (
+    n.asExpr() = sub.getLeftOperand()
+    or
+    exists(DataFlow::Node other |
+      // dataflow
+      exprIsSubLeftOrLess(sub, other) and
+      (
+        DataFlow::localFlowStep(n, other) or
+        DataFlow::localFlowStep(other, n)
+      )
     )
-  )
-  or
-  exists(DataFlow::Node other |
-    // guard constraining `sub`
-    exprIsSubLeftOrLess(sub, other) and
-    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
-  )
-  or
-  exists(DataFlow::Node other, float p, float q |
-    // linear access of `other`
-    exprIsSubLeftOrLess(sub, other) and
-    linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
-    p <= 1 and
-    q <= 0
-  )
-  or
-  exists(DataFlow::Node other, float p, float q |
-    // linear access of `n`
-    exprIsSubLeftOrLess(sub, other) and
-    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
-    p >= 1 and
-    q >= 0
+    or
+    exists(DataFlow::Node other |
+      // guard constraining `sub`
+      exprIsSubLeftOrLess(sub, other) and
+      isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
+    )
+    or
+    exists(DataFlow::Node other, float p, float q |
+      // linear access of `other`
+      exprIsSubLeftOrLess(sub, other) and
+      linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
+      p <= 1 and
+      q <= 0
+    )
+    or
+    exists(DataFlow::Node other, float p, float q |
+      // linear access of `n`
+      exprIsSubLeftOrLess(sub, other) and
+      linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
+      p >= 1 and
+      q >= 0
+    )
   )
 }
 
-from RelationalOperation ro, SubExpr sub
-where
-  not isFromMacroDefinition(ro) and
+predicate interestingSubExpr(SubExpr sub, RelationalOperation ro) {
   not isFromMacroDefinition(sub) and
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
-  not exprIsSubLeftOrLess(sub, DataFlow::exprNode(sub.getRightOperand())) // generally catches false positives where there's a relation between the left and right operands
+  // generally catches false positives involving constants
+  exprMightOverflowNegatively(sub.getFullyConverted())
+}
+
+from RelationalOperation ro, SubExpr sub
+where
+  interestingSubExpr(sub, ro) and
+  not isFromMacroDefinition(ro) and
+  // generally catches false positives where there's a relation between the left and right operands
+  not exprIsSubLeftOrLess(sub, DataFlow::exprNode(sub.getRightOperand()))
 select ro, "Unsigned subtraction can never be negative."
