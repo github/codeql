@@ -371,6 +371,9 @@ namespace Semmle.Extraction.CSharp
         internal static void using_static_directives(this TextWriter trapFile, UsingDirective @using, Type type) =>
             trapFile.WriteTuple("using_static_directives", @using, type);
 
+        internal static void using_global(this TextWriter trapFile, UsingDirective @using) =>
+            trapFile.WriteTuple("using_global", @using);
+
         internal static void preprocessor_directive_location<TDirective>(this TextWriter trapFile,
             PreprocessorDirective<TDirective> directive, Location location)
             where TDirective : DirectiveTriviaSyntax =>
