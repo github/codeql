@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision high
+ * @precision medium
  * @id java/log-injection
  * @tags security
  *       external/cwe/cwe-117
