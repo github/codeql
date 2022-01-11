@@ -17,6 +17,7 @@ jobs:
   model-diff:
     name: Model Difference
     runs-on: ubuntu-latest
+    if: github.repository == 'github/codeql'
     strategy:
       matrix:
         # large
@@ -27,6 +28,7 @@ jobs:
     steps:
       - name: Clone self (github/codeql) for baseline
         uses: actions/checkout@v2
+        if: github.event.pull_request
         with:
           path: codeql-baseline
           ref: ${{ github.base_ref }}
@@ -37,15 +39,17 @@ jobs:
           ref: ${{ github.ref }}
       - uses: ./codeql-baseline/.github/actions/fetch-codeql
       - name: Download database
+        env:
+          SLUG: ${{ matrix.slug }}
         run: |
           set -x
           mkdir lib-dbs
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${matrix.slugs}} | jq .id`
-          curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o $SHORTNAME.zip
-          unzip -q -d $SHORTNAME-db $SHORTNAME.zip
-          mkdir lib-dbs/$SHORTNAME/
-          mv $SHORTNAME-db/`ls -1 $SHORTNAME-db`/* lib-dbs/$SHORTNAME/
+          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${SLUG}} | jq .id`
+          curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o "$SHORTNAME.zip"
+          unzip -q -d $"SHORTNAME-db" "$SHORTNAME.zip"
+          mkdir "lib-dbs/$SHORTNAME/"
+          mv "$SHORTNAME-db/"`ls -1 "$SHORTNAME-db"`/* "lib-dbs/$SHORTNAME/"
       - name: Generate Models (Baseline and HEAD)
         run: |
           set -x
@@ -68,7 +72,7 @@ jobs:
             ls -1 "$d"
 
             analyzeDatabaseWithCheckout "baseline" $d
-            if [[ "$s1" != "$s2" ]]
+            if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]
             then
               analyzeDatabaseWithCheckout "head" $d
             fi
@@ -77,21 +81,17 @@ jobs:
         run: |
           npm install -g diff2html-cli
       - name: Generate Model Diff
+        if: github.event.pull_request
         run: |
           set -x
-          if [[ "$s1" == "$s2" ]]
-          then
-            echo "Skipping diff generation as github.base_ref and github.ref are the same"
-          else
-            MODELS=`pwd`/tmp-models
-            ls -1 tmp-models/
-            for m in $MODELS/*_baseline.qll ; do
-              t="${m/baseline/"head"}"
-              basename=`basename $m`
-              name="diff_${basename/_baseline.qll/""}"
-              (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
-            done
-          fi
+          MODELS=`pwd`/tmp-models
+          ls -1 tmp-models/
+          for m in $MODELS/*_baseline.qll ; do
+            t="${m/baseline/"head"}"
+            basename=`basename $m`
+            name="diff_${basename/_baseline.qll/""}"
+            (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
+          done
       - uses: actions/upload-artifact@v2
         with:
           name: models
