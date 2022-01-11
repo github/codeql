@@ -27,7 +27,7 @@ abstract class ArgumentNode extends OperandNode {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -42,7 +42,9 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+  }
 
   override string toString() {
     exists(Expr unconverted |
@@ -71,9 +73,9 @@ private class SideEffectArgumentNode extends ArgumentNode {
 
   SideEffectArgumentNode() { op = read.getSideEffectOperand() }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
-    pos = getArgumentPosOfSideEffect(read.getIndex())
+    pos.(IndirectionPosition).getIndex() = read.getIndex()
   }
 
   override string toString() {
@@ -89,6 +91,54 @@ private class SideEffectArgumentNode extends ArgumentNode {
     )
   }
 }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition = Position;
+
+/** An argument position represented by an integer. */
+class ArgumentPosition = Position;
+
+class Position extends TPosition {
+  abstract string toString();
+}
+
+class DirectPosition extends TDirectPosition {
+  int index;
+
+  DirectPosition() { this = TDirectPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+class IndirectionPosition extends TIndirectionPosition {
+  int index;
+
+  IndirectionPosition() { this = TIndirectionPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+newtype TPosition =
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
+  TIndirectionPosition(int index) {
+    exists(ReadSideEffectInstruction instr | instr.getIndex() = index)
+  }
 
 private newtype TReturnKind =
   TNormalReturnKind() or

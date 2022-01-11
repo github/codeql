@@ -3,6 +3,7 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.FlowSummary
 
 /** The `System.Collections` namespace. */
 class SystemCollectionsNamespace extends Namespace {
@@ -42,6 +43,20 @@ private class SystemCollectionIEnumerableFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       "System.Collections;IEnumerable;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+  }
+}
+
+/** Clear content for Clear methods in all subtypes of `System.Collections.IEnumerable`. */
+private class SystemCollectionsIEnumerableClearFlow extends SummarizedCallable {
+  SystemCollectionsIEnumerableClearFlow() {
+    this.getDeclaringType().(RefType).getABaseType*() instanceof
+      SystemCollectionsIEnumerableInterface and
+    this.hasName("Clear")
+  }
+
+  override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    pos.getPosition() = -1 and
+    content instanceof DataFlow::ElementContent
   }
 }
 

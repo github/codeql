@@ -905,7 +905,7 @@ class Interface extends ClassOrInterface, @interface {
 /** A class or interface. */
 class ClassOrInterface extends RefType, @classorinterface {
   /** Holds if this class or interface is local. */
-  predicate isLocal() { isLocalClassOrInterface(this, _) }
+  predicate isLocal() { isLocalClassOrInterface(this.getSourceDeclaration(), _) }
 
   /** Holds if this class or interface is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {

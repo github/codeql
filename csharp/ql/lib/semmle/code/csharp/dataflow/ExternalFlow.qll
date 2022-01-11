@@ -86,6 +86,7 @@ private import internal.FlowSummaryImplSpecific
 private module Frameworks {
   private import semmle.code.csharp.frameworks.EntityFramework
   private import semmle.code.csharp.frameworks.JsonNET
+  private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
   private import semmle.code.csharp.frameworks.microsoft.VisualBasic
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
@@ -347,6 +348,24 @@ module CsvValidation {
         not b = ["true", "false"] and
         msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
       )
+    )
+    or
+    exists(string row, string kind | summaryModel(row) |
+      kind = row.splitAt(";", 8) and
+      not kind = ["taint", "value"] and
+      msg = "Invalid kind \"" + kind + "\" in summary model."
+    )
+    or
+    exists(string row, string kind | sinkModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind = ["code", "sql", "xss", "remote", "html"] and
+      msg = "Invalid kind \"" + kind + "\" in sink model."
+    )
+    or
+    exists(string row, string kind | sourceModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind = "local" and
+      msg = "Invalid kind \"" + kind + "\" in source model."
     )
   }
 }

@@ -1,0 +1,2 @@
+| Test$1GenericLocal.class:0:0:0:0 | GenericLocal<Integer> |
+| Test.java:5:11:5:22 | GenericLocal |

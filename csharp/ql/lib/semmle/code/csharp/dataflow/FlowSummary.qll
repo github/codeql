@@ -10,7 +10,6 @@ class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
 
 // import all instances below
 private module Summaries {
-  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
@@ -111,6 +110,29 @@ module SummaryComponentStack {
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
+private predicate recordConstructorFlow(Constructor c, int i, Property p) {
+  c = any(Record r).getAMember() and
+  exists(string name |
+    c.getParameter(i).getName() = name and
+    c.getDeclaringType().getAMember(name) = p
+  )
+}
+
+private class RecordConstructorFlow extends SummarizedCallable {
+  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    exists(int i, Property p |
+      recordConstructorFlow(this, i, p) and
+      input = SummaryComponentStack::argument(i) and
+      output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
+      preservesValue = true
+    )
+  }
+}
+
 private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
   SummarizedCallableDefaultClearsContent() {
     this instanceof Impl::Public::SummarizedCallable or none()
@@ -129,3 +151,17 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+  private SummaryComponent head;
+
+  RecordConstructorFlowRequiredSummaryComponentStack() {
+    exists(Property p |
+      recordConstructorFlow(_, _, p) and
+      head = SummaryComponent::property(p) and
+      this = SummaryComponentStack::return()
+    )
+  }
+
+  override predicate required(SummaryComponent c) { c = head }
+}

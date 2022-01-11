@@ -8,7 +8,7 @@ import semmle.python.essa.Definitions
 
 /** An (enhanced) SSA variable derived from `SsaSourceVariable`. */
 class EssaVariable extends TEssaDefinition {
-  /** Gets the (unique) definition of this  variable. */
+  /** Gets the (unique) definition of this variable. */
   EssaDefinition getDefinition() { this = result }
 
   /**

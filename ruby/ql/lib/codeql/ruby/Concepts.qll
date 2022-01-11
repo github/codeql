@@ -646,6 +646,37 @@ module Path {
 }
 
 /**
+ * A data-flow node that may configure behavior relating to cookie security.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CookieSecurityConfigurationSetting::Range` instead.
+ */
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
+  /**
+   * Gets a description of how this cookie setting may weaken application security.
+   * This predicate has no results if the setting is considered to be safe.
+   */
+  string getSecurityWarningMessage() { result = super.getSecurityWarningMessage() }
+}
+
+/** Provides a class for modeling new cookie security setting APIs. */
+module CookieSecurityConfigurationSetting {
+  /**
+   * A data-flow node that may configure behavior relating to cookie security.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CookieSecurityConfigurationSetting` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a description of how this cookie setting may weaken application security.
+     * This predicate has no results if the setting is considered to be safe.
+     */
+    abstract string getSecurityWarningMessage();
+  }
+}
+
+/**
  * A data-flow node that logs data.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
