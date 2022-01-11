@@ -26,18 +26,18 @@ jobs:
         # ["FasterXML/jackson-core", "FasterXML/jackson-databind", "google/gson", "JodaOrg/joda-time"
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
-      - name: Clone self (github/codeql) for baseline
+      - name: Clone self (github/codeql) for prhead
         uses: actions/checkout@v2
         if: github.event.pull_request
         with:
-          path: codeql-baseline
+          path: codeql-prhead
           ref: ${{ github.base_ref }}
-      - name: Clone self (github/codeql) with new generator
+      - name: Clone self (github/codeql) with main
         uses: actions/checkout@v2
         with:
           path: codeql-head
           ref: ${{ github.ref }}
-      - uses: ./codeql-baseline/.github/actions/fetch-codeql
+      - uses: ./codeql-head/.github/actions/fetch-codeql
       - name: Download database
         env:
           SLUG: ${{ matrix.slug }}
@@ -45,17 +45,16 @@ jobs:
           set -x
           mkdir lib-dbs
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
-          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${SLUG}} | jq .id`
+          projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${SLUG} | jq .id`
           curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o "$SHORTNAME.zip"
-          unzip -q -d $"SHORTNAME-db" "$SHORTNAME.zip"
+          unzip -q -d "$SHORTNAME-db" "$SHORTNAME.zip"
           mkdir "lib-dbs/$SHORTNAME/"
           mv "$SHORTNAME-db/"`ls -1 "$SHORTNAME-db"`/* "lib-dbs/$SHORTNAME/"
-      - name: Generate Models (Baseline and HEAD)
+      - name: Generate Models (PR and HEAD)
         run: |
           set -x
           mkdir tmp-models
           MODELS=`pwd`/tmp-models
-          MODE="baseline"
           DATABASES=`pwd`/lib-dbs
 
           analyzeDatabaseWithCheckout() {
@@ -71,10 +70,10 @@ jobs:
           for d in $DATABASES/*/ ; do
             ls -1 "$d"
 
-            analyzeDatabaseWithCheckout "baseline" $d
+            analyzeDatabaseWithCheckout "head" $d
             if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]
             then
-              analyzeDatabaseWithCheckout "head" $d
+              analyzeDatabaseWithCheckout "prhead" $d
             fi
           done
       - name: Install diff2html
@@ -86,10 +85,10 @@ jobs:
           set -x
           MODELS=`pwd`/tmp-models
           ls -1 tmp-models/
-          for m in $MODELS/*_baseline.qll ; do
-            t="${m/baseline/"head"}"
+          for m in $MODELS/*_prhead.qll ; do
+            t="${m/prhead/"head"}"
             basename=`basename $m`
-            name="diff_${basename/_baseline.qll/""}"
+            name="diff_${basename/_prhead.qll/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
       - uses: actions/upload-artifact@v2
