@@ -15,22 +15,6 @@ external predicate availableMlModels(
 ATMConfig getCfg() { any() }
 
 /**
- * This module provides functionality that takes an endpoint and provides an function that encloses
- * that endpoint.
- */
-module EndpointToFunction {
-  private import CodeToFeatures
-
-  /**
-   * Get a function containing the endpoint that is suitable for featurization. In general,
-   * this associates an endpoint to multiple functions, since there may be more than one multiple entities to a single endpoint.
-   */
-  Function getAFunctionForEndpoint(DataFlow::Node endpoint) {
-    result = endpoint.getContainer().getEnclosingContainer*()
-  }
-}
-
-/**
  * Scoring information produced by a scoring model.
  *
  * Scoring models include embedding models and endpoint scoring models.

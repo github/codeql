@@ -5,80 +5,13 @@
  */
 
 private import javascript
-import BaseScoring
-import CodeToFeatures
-import EndpointFeatures as EndpointFeatures
-import EndpointTypes
+private import BaseScoring
+private import EndpointFeatures as EndpointFeatures
+private import FeaturizationConfig
+private import EndpointTypes
 
 private string getACompatibleModelChecksum() {
   availableMlModels(result, "javascript", _, "atm-endpoint-scoring")
-}
-
-/**
- * The maximum number of AST nodes an function containing an endpoint should have before we should
- * choose a smaller function to represent the endpoint.
- *
- * This is intended to represent a balance in terms of the amount of context we provide to the
- * model: we don't want the function to be too small, because then it doesn't contain very much
- * context and miss useful information, but also we don't want it to be too large, because then
- * there's likely to be a lot of irrelevant or very loosely related context.
- */
-private int getMaxNumAstNodes() { result = 1024 }
-
-/**
- * Returns the number of AST nodes contained within the specified function.
- */
-private int getNumAstNodesInFunction(Function function) {
-  // Restrict the values `function` can take on
-  function = EndpointToFunction::getAFunctionForEndpoint(_) and
-  result = count(EndpointFeatures::FunctionBodies::getAnASTNodeToFeaturize(function))
-}
-
-/**
- * Get the enclosing function for an endpoint.
- * 
- * This is used to compute the `enclosingFunctionBody` and `enclosingFunctionName` features.
- *
- * We try to use the largest function containing the endpoint that's below the AST node limit
- * defined in `getMaxNumAstNodes`. In the event of a tie, we use the function that appears first
- * within the source code.
- *
- * If no functions are smaller than the AST node limit, then we use the smallest function containing
- * the endpoint.
- */
-Function getRepresentativeFunctionForEndpoint(DataFlow::Node endpoint) {
-  // Check whether there's a function containing the endpoint that's smaller than the AST node
-  // limit.
-  if
-    getNumAstNodesInFunction(EndpointToFunction::getAFunctionForEndpoint(endpoint)) <=
-      getMaxNumAstNodes()
-  then
-    // Use the largest function smaller than the AST node limit, resolving ties using the function
-    // that appears first in the source code.
-    result =
-      min(Function function, int numAstNodes, Location l |
-        function = EndpointToFunction::getAFunctionForEndpoint(endpoint) and
-        numAstNodes = getNumAstNodesInFunction(function) and
-        numAstNodes <= getMaxNumAstNodes() and
-        l = function.getLocation()
-      |
-        function
-        order by
-          numAstNodes desc, l.getStartLine(), l.getStartColumn(), l.getEndLine(), l.getEndColumn()
-      )
-  else
-    // Use the smallest function, resolving ties using the function that appears first in the source
-    // code.
-    result =
-      min(Function function, int numAstNodes, Location l |
-        function = EndpointToFunction::getAFunctionForEndpoint(endpoint) and
-        numAstNodes = getNumAstNodesInFunction(function) and
-        l = function.getLocation()
-      |
-        function
-        order by
-          numAstNodes, l.getStartLine(), l.getStartColumn(), l.getEndLine(), l.getEndColumn()
-      )
 }
 
 module ModelScoring {
@@ -86,7 +19,7 @@ module ModelScoring {
    * A featurization config that only featurizes new candidate endpoints that are part of a flow
    * path.
    */
-  class RelevantFeaturizationConfig extends EndpointFeatures::FeaturizationConfig {
+  class RelevantFeaturizationConfig extends FeaturizationConfig {
     RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
 
     override DataFlow::Node getAnEndpointToFeaturize() {
@@ -97,7 +30,7 @@ module ModelScoring {
   }
 
   DataFlow::Node getARequestedEndpoint() {
-    result = any(EndpointFeatures::FeaturizationConfig cfg).getAnEndpointToFeaturize()
+    result = any(FeaturizationConfig cfg).getAnEndpointToFeaturize()
   }
 
   private int getARequestedEndpointType() { result = any(EndpointType type).getEncoding() }
