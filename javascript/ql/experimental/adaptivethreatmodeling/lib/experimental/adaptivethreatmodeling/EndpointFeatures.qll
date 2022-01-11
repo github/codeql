@@ -128,23 +128,44 @@ private string getACallBasedTokenFeatureComponent(
 
 /** This module provides functionality for getting the function body feature associated with a particular entity. */
 module FunctionBodies {
+  string getTokenizedAstNode(ASTNode node) {
+    // NB: Unary and binary operator expressions e.g. -a, a + b and compound
+    // assignments e.g. a += b can be identified by the expression type.
+    result = node.(Identifier).getName()
+    or
+    // Computed property accesses for which we can predetermine the property being accessed.
+    // NB: May alias with operators e.g. could have '+' as a property name.
+    result = node.(IndexExpr).getPropertyName()
+    or
+    // We use `getRawValue` to give us distinct representations for `0xa`, `0xA`, and `10`.
+    result = node.(NumberLiteral).getRawValue()
+    or
+    // We use `getValue` rather than `getRawValue` so we assign `"a"` and `'a'` the same representation.
+    not node instanceof NumberLiteral and
+    result = node.(Literal).getValue()
+    or
+    result = node.(TemplateElement).getRawValue()
+  }
+
   /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
   private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
     // Performance optimization: Restrict the set of entities to those containing an endpoint to featurize.
     entity =
       getRepresentativeEntityForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
-    // Performance optimization: If a function has more than 256 body tokens, then featurize it as
-    // absent. This approximates the behavior of the classifer on non-generic body features where
-    // large body features are replaced by the absent token.
+    // Performance optimization: If a function has more than 256 body subtokens, then featurize it as absent. This
+    // approximates the behavior of the classifer on non-generic body features where large body
+    // features are replaced by the absent token.
     //
     // We count nodes instead of tokens because tokens are often not unique.
-    strictcount(DatabaseFeatures::AstNode node |
-      DatabaseFeatures::astNodes(entity, _, _, node, _) and
-      exists(string t | DatabaseFeatures::nodeAttributes(node, t))
+    strictcount(ASTNode node |
+      node.getParent*() = entity.getDefinedFunction() and
+      not node = entity.getDefinedFunction().getIdentifier() and
+      exists(getTokenizedAstNode(node))
     ) <= 256 and
-    exists(DatabaseFeatures::AstNode node |
-      DatabaseFeatures::astNodes(entity, _, _, node, _) and
-      token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
+    exists(ASTNode node |
+      node.getParent*() = entity.getDefinedFunction() and
+      not node = entity.getDefinedFunction().getIdentifier() and
+      token = getTokenizedAstNode(node) and
       location = node.getLocation()
     )
   }
