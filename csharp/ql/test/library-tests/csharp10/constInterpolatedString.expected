@@ -1,0 +1,6 @@
+inserts
+| ConstInterpolatedString.cs:6:38:6:53 | $"..." | ConstInterpolatedString.cs:6:41:6:45 | access to constant hello |
+| ConstInterpolatedString.cs:7:44:7:65 | $"..." | ConstInterpolatedString.cs:7:54:7:63 | access to constant helloWorld |
+texts
+| ConstInterpolatedString.cs:6:38:6:53 | $"..." | ConstInterpolatedString.cs:6:47:6:52 | " World" |
+| ConstInterpolatedString.cs:7:44:7:65 | $"..." | ConstInterpolatedString.cs:7:46:7:52 | "Really " |
