@@ -4,7 +4,6 @@
     "ql/lib/qlpack.yml",
     "ql/examples/qlpack.yml",
     "ql/test/qlpack.yml",
-    "upgrades/qlpack.yml",
     "ql/config/legacy-support/qlpack.yml",
     "build/codeql-extractor-go/codeql-extractor.yml"
   ],
