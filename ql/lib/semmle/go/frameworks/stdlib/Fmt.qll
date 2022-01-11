@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.StringOps
 
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
@@ -29,19 +30,11 @@ module Fmt {
     Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
   }
 
-  /** A call to `Print`, `Fprint`, or similar. */
+  /** A call to `Print` or similar. */
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    int firstPrintedArg;
+    PrintCall() { this.getTarget() instanceof Printer }
 
-    PrintCall() {
-      this.getTarget() instanceof Printer and firstPrintedArg = 0
-      or
-      this.getTarget() instanceof Fprinter and firstPrintedArg = 1
-    }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getArgument(any(int i | i >= firstPrintedArg))
-    }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
   /** The `Fprint` function or one of its variants. */
@@ -60,6 +53,25 @@ module Fmt {
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
       input.isParameter(any(int i | i > 0)) and output.isParameter(0)
     }
+  }
+
+  private class FmtStringFormatter extends StringOps::Formatting::Range {
+    int argOffset;
+
+    FmtStringFormatter() {
+      exists(string fname |
+        this.hasQualifiedName("fmt", fname) and
+        (
+          fname = ["Printf", "Sprintf"] and argOffset = 0
+          or
+          fname = "Fprintf" and argOffset = 1
+        )
+      )
+    }
+
+    override int getFormatStringIndex() { result = argOffset }
+
+    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */

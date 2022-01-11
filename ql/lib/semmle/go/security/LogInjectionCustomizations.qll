@@ -4,6 +4,7 @@
  */
 
 import go
+private import semmle.go.StringOps
 
 /**
  * Provides extension points for customizing the data-flow tracking configuration for reasoning
@@ -55,6 +56,22 @@ module LogInjection {
         call.getArgument(3).getNumericValue() < 0
         or
         name = "ReplaceAll"
+      )
+    }
+  }
+
+  /**
+   * An argument that is formatted using the `%q` directive, considered as a sanitizer
+   * for log injection.
+   *
+   * This formatting directive replaces newline characters with escape sequences.
+   */
+  private class SafeFormatArgumentSanitizer extends Sanitizer {
+    SafeFormatArgumentSanitizer() {
+      exists(StringOps::Formatting::StringFormatCall call, string safeDirective |
+        this = call.getOperand(_, safeDirective) and
+        // Mark "%q" formats as safe, but not "%#q", which would preserve newline characters.
+        safeDirective.regexpMatch("%[^%#]*q")
       )
     }
   }

@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.StringOps
 
 /**
  * Provides classes for working with concepts relating to the [github.com/elazarl/goproxy](https://pkg.go.dev/github.com/elazarl/goproxy) package.
@@ -108,8 +109,16 @@ module ElazarlGoproxy {
     }
   }
 
+  private class ProxyLogFunction extends StringOps::Formatting::Range, Method {
+    ProxyLogFunction() { this.hasQualifiedName(packagePath(), "ProxyCtx", ["Logf", "Warnf"]) }
+
+    override int getFormatStringIndex() { result = 0 }
+
+    override int getFirstFormattedParameterIndex() { result = 1 }
+  }
+
   private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {
-    ProxyLog() { this.getTarget().hasQualifiedName(packagePath(), "ProxyCtx", ["Logf", "Warnf"]) }
+    ProxyLog() { this.getTarget() instanceof ProxyLogFunction }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }

@@ -166,6 +166,75 @@ module StringOps {
     }
   }
 
+  /** Provides predicates and classes for working with Printf-style formatters. */
+  module Formatting {
+    /**
+     * Gets a regular expression for matching simple format-string components, including flags,
+     * width and precision specifiers, not including explicit argument indices.
+     */
+    pragma[noinline]
+    private string getFormatComponentRegex() {
+      exists(
+        string literal, string opt_flag, string width, string prec, string opt_width_and_prec,
+        string operator, string verb
+      |
+        literal = "([^%]|%%)+" and
+        opt_flag = "[-+ #0]?" and
+        width = "\\d+|\\*" and
+        prec = "\\.(\\d+|\\*)" and
+        opt_width_and_prec = "(" + width + ")?(" + prec + ")?" and
+        operator = "[bcdeEfFgGoOpqstTxXUv]" and
+        verb = "(%" + opt_flag + opt_width_and_prec + operator + ")"
+      |
+        result = "(" + literal + "|" + verb + ")"
+      )
+    }
+
+    /**
+     * A function that performs string formatting in the same manner as `fmt.Printf` etc.
+     */
+    abstract class Range extends Function {
+      /**
+       * Gets the parameter index of the format string.
+       */
+      abstract int getFormatStringIndex();
+
+      /**
+       * Gets the parameter index of the first parameter to be formatted.
+       */
+      abstract int getFirstFormattedParameterIndex();
+    }
+
+    /**
+     * A call to a `fmt.Printf`-style string formatting function.
+     */
+    class StringFormatCall extends DataFlow::CallNode {
+      string fmt;
+      Range f;
+
+      StringFormatCall() {
+        this = f.getACall() and
+        fmt = this.getArgument(f.getFormatStringIndex()).getStringValue() and
+        fmt.regexpMatch(getFormatComponentRegex() + "*")
+      }
+
+      /**
+       * Gets the `n`th component of this format string.
+       */
+      string getComponent(int n) { result = fmt.regexpFind(getFormatComponentRegex(), n, _) }
+
+      /**
+       * Gets the `n`th argument formatted by this format call, where `formatDirective` specifies how it will be formatted.
+       */
+      DataFlow::Node getOperand(int n, string formatDirective) {
+        formatDirective = this.getComponent(n) and
+        formatDirective.charAt(0) = "%" and
+        formatDirective.charAt(1) != "%" and
+        result = this.getArgument((n / 2) + f.getFirstFormattedParameterIndex())
+      }
+    }
+  }
+
   /**
    * A data-flow node that performs string concatenation.
    *
@@ -234,29 +303,6 @@ module StringOps {
     }
 
     /**
-     * Gets a regular expression for matching simple format-string components, including flags,
-     * width and precision specifiers, but not including `*` specifiers or explicit argument
-     * indices.
-     */
-    pragma[noinline]
-    private string getFormatComponentRegex() {
-      exists(
-        string literal, string opt_flag, string width, string prec, string opt_width_and_prec,
-        string operator, string verb
-      |
-        literal = "([^%]|%%)+" and
-        opt_flag = "[-+ #0]?" and
-        width = "\\d+|\\*" and
-        prec = "\\.(\\d+|\\*)" and
-        opt_width_and_prec = "(" + width + ")?(" + prec + ")?" and
-        operator = "[bcdeEfFgGoOpqstTxXUv]" and
-        verb = "(%" + opt_flag + opt_width_and_prec + operator + ")"
-      |
-        result = "(" + literal + "|" + verb + ")"
-      )
-    }
-
-    /**
      * A call to `fmt.Sprintf`, considered as a string concatenation.
      *
      * Only calls with simple format strings (no `*` specifiers, no explicit argument indices)
@@ -272,42 +318,25 @@ module StringOps {
      * node nor a string value. This is because verbs like `%q` perform additional string
      * transformations that we cannot easily represent.
      */
-    private class SprintfConcat extends Range, DataFlow::CallNode {
-      string fmt;
-
-      SprintfConcat() {
-        exists(Function sprintf | sprintf.hasQualifiedName("fmt", "Sprintf") |
-          this = sprintf.getACall() and
-          fmt = this.getArgument(0).getStringValue() and
-          fmt.regexpMatch(getFormatComponentRegex() + "*")
-        )
-      }
-
-      /**
-       * Gets the `n`th component of this format string.
-       */
-      private string getComponent(int n) {
-        result = fmt.regexpFind(getFormatComponentRegex(), n, _)
-      }
+    private class SprintfConcat extends Range instanceof Formatting::StringFormatCall {
+      SprintfConcat() { this = any(Function f | f.hasQualifiedName("fmt", "Sprintf")).getACall() }
 
       override DataFlow::Node getOperand(int n) {
-        exists(int i, string part | part = "%s" or part = "%v" |
-          part = this.getComponent(n) and
-          i = n / 2 and
-          result = this.getArgument(i + 1)
-        )
+        result = Formatting::StringFormatCall.super.getOperand(n, ["%s", "%v"])
       }
 
       override string getOperandStringValue(int n) {
         result = Range.super.getOperandStringValue(n)
         or
-        exists(string cmp | cmp = this.getComponent(n) |
+        exists(string cmp | cmp = Formatting::StringFormatCall.super.getComponent(n) |
           (cmp.charAt(0) != "%" or cmp.charAt(1) = "%") and
           result = cmp.replaceAll("%%", "%")
         )
       }
 
-      override int getNumOperand() { result = max(int i | exists(this.getComponent(i))) + 1 }
+      override int getNumOperand() {
+        result = max(int i | exists(Formatting::StringFormatCall.super.getComponent(i))) + 1
+      }
     }
 
     /**
