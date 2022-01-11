@@ -2,7 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow4
 import semmle.code.java.frameworks.android.SharedPreferences
 import semmle.code.java.security.CleartextStorageQuery
 
