@@ -133,6 +133,15 @@ module FunctionBodies {
     // Performance optimization: Restrict the set of entities to those containing an endpoint to featurize.
     entity =
       getRepresentativeEntityForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
+    // Performance optimization: If a function has more than 256 body tokens, then featurize it as
+    // absent. This approximates the behavior of the classifer on non-generic body features where
+    // large body features are replaced by the absent token.
+    //
+    // We count nodes instead of tokens because tokens are often not unique.
+    strictcount(DatabaseFeatures::AstNode node |
+      DatabaseFeatures::astNodes(entity, _, _, node, _) and
+      exists(string t | DatabaseFeatures::nodeAttributes(node, t))
+    ) <= 256 and
     exists(DatabaseFeatures::AstNode node |
       DatabaseFeatures::astNodes(entity, _, _, node, _) and
       token = unique(string t | DatabaseFeatures::nodeAttributes(node, t)) and
@@ -146,12 +155,6 @@ module FunctionBodies {
    * This is a string containing natural language tokens in the order that they appear in the source code for the entity.
    */
   string getBodyTokenFeatureForEntity(DatabaseFeatures::Entity entity) {
-    // If a function has more than 256 body subtokens, then featurize it as absent. This
-    // approximates the behavior of the classifer on non-generic body features where large body
-    // features are replaced by the absent token.
-    //
-    // We count locations instead of tokens because tokens are often not unique.
-    strictcount(Location l | bodyTokens(entity, l, _)) <= 256 and
     result =
       strictconcat(string token, Location l |
         bodyTokens(entity, l, token)
