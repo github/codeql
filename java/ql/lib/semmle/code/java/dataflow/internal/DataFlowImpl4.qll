@@ -4175,16 +4175,17 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNodeMid out) {
-    exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout |
+  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
+    exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
       pragma[only_bind_into](arg).getASuccessor() = par and
-      pragma[only_bind_into](arg).getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = out0 and
       subpaths03(arg, p, localStepToHidden*(ret), o, sout, apout) and
       not ret.isHidden() and
       par.getNodeEx() = p and
-      out.getNodeEx() = o and
-      out.getState() = sout and
-      out.getAp() = apout
+      out0.getNodeEx() = o and
+      out0.getState() = sout and
+      out0.getAp() = apout and
+      (out = out0 or out = out0.projectToSink())
     )
   }
 
@@ -4192,7 +4193,7 @@ private module Subpaths {
    * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
    */
   predicate retReach(PathNode n) {
-    exists(PathNodeMid out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
+    exists(PathNode out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
     or
     exists(PathNode mid |
       retReach(mid) and
