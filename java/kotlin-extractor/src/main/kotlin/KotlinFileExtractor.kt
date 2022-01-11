@@ -8,10 +8,8 @@ import com.github.codeql.utils.toRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.DescriptorVisibility
-import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
@@ -135,9 +133,31 @@ open class KotlinFileExtractor(
     fun extractVisibility(elementForLocation: IrElement, id: Label<out DbModifiable>, v: DescriptorVisibility) {
         when (v) {
             DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
+            DescriptorVisibilities.PRIVATE_TO_THIS -> addModifiers(id, "private")
             DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
             DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
             DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
+            DescriptorVisibilities.LOCAL -> if (elementForLocation is IrFunction && elementForLocation.isLocalFunction()) {
+                // The containing class is `private`.
+                addModifiers(id, "public")
+            } else {
+                addModifiers(id, "private")
+            }
+            is DelegatedDescriptorVisibility -> {
+                when (v.delegate) {
+                    JavaVisibilities.ProtectedStaticVisibility -> {
+                        addModifiers(id, "protected")
+                        addModifiers(id, "static")
+                    }
+                    JavaVisibilities.PackageVisibility -> {
+                        // default java visibility (top level)
+                    }
+                    JavaVisibilities.ProtectedAndPackage -> {
+                        // default java visibility (member level)
+                    }
+                    else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
+                }
+            }
             else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
         }
     }
@@ -2505,7 +2525,7 @@ open class KotlinFileExtractor(
 
         // TODO: We might need to add an `<obinit>` function, and a call to it to match other classes
 
-        addModifiers(id, "public", "static", "final")
+        addModifiers(id, "private", "final")
         extractClassSupertypes(superTypes, listOf(), id)
 
         var parent: IrDeclarationParent? = currentDeclaration.parent

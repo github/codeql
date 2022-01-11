@@ -1,0 +1,29 @@
+| modifiers.kt:1:1:21:1 | X | public |
+| modifiers.kt:1:6:21:1 | X | public |
+| modifiers.kt:2:5:2:21 | a | private |
+| modifiers.kt:2:5:2:21 | a | private |
+| modifiers.kt:2:13:2:21 | getA | private |
+| modifiers.kt:3:5:3:23 | b | private |
+| modifiers.kt:3:5:3:23 | b | protected |
+| modifiers.kt:3:15:3:23 | getB | protected |
+| modifiers.kt:4:5:4:22 | c | internal |
+| modifiers.kt:4:5:4:22 | c | private |
+| modifiers.kt:4:14:4:22 | getC | internal |
+| modifiers.kt:5:5:5:34 | d | private |
+| modifiers.kt:5:5:5:34 | d | public |
+| modifiers.kt:5:5:5:34 | getD | public |
+| modifiers.kt:7:5:9:5 | Nested | final |
+| modifiers.kt:7:5:9:5 | Nested | protected |
+| modifiers.kt:7:15:9:5 | Nested | public |
+| modifiers.kt:8:9:8:29 | e | private |
+| modifiers.kt:8:9:8:29 | e | public |
+| modifiers.kt:8:16:8:29 | getE | public |
+| modifiers.kt:11:5:15:5 | fn1 | public |
+| modifiers.kt:12:16:14:9 |  | public |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | final |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | private |
+| modifiers.kt:13:13:13:23 | fn | public |
+| modifiers.kt:17:5:20:5 | fn2 | public |
+| modifiers.kt:18:9:18:24 | fnLocal | public |
+| modifiers.kt:18:9:18:24 | new Object(...) { ... } | final |
+| modifiers.kt:18:9:18:24 | new Object(...) { ... } | private |
