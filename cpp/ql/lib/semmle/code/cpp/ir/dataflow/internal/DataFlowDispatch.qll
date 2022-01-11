@@ -63,7 +63,7 @@ private module VirtualDispatch {
         this.flowsFrom(other, allowOtherFromArg)
       |
         // Call argument
-        exists(DataFlowCall call, int i |
+        exists(DataFlowCall call, Position i |
           other
               .(DataFlow::ParameterNode)
               .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
@@ -266,16 +266,6 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
     f = ctx.getStaticCallTarget() and
     result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
-}
-
-/** A parameter position represented by an integer. */
-class ParameterPosition extends int {
-  ParameterPosition() { any(ParameterNode p).isParameterOf(_, this) }
-}
-
-/** An argument position represented by an integer. */
-class ArgumentPosition extends int {
-  ArgumentPosition() { any(ArgumentNode a).argumentOf(_, this) }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
