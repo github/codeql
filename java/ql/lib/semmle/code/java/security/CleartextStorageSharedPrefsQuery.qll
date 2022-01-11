@@ -77,14 +77,3 @@ private class SharedPreferencesFlowConfig extends DataFlow::Configuration {
     sharedPreferencesStore(sink, _)
   }
 }
-
-/**
- * Method call for encrypting sensitive information. As there are various implementations of
- * encryption (reversible and non-reversible) from both JDK and third parties, this class simply
- * checks method name to take a best guess to reduce false positives.
- */
-private class EncryptedSensitiveMethodAccess extends MethodAccess {
-  EncryptedSensitiveMethodAccess() {
-    this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%"])
-  }
-}
