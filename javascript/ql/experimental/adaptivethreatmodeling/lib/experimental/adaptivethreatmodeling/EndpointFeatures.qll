@@ -31,7 +31,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
       featureName = "enclosingFunctionBody" and
       result =
         strictconcat(string token, Location l |
-          FunctionBodyFeatures::bodyTokens(entity, l, token)
+          FunctionBodyFeatures::bodyTokens(entity.getDefinedFunction(), l, token)
         |
           token, " "
           order by
