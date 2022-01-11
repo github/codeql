@@ -31,7 +31,9 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   (
     // Features for endpoints that are contained within a function.
-    exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
+    exists(DatabaseFeatures::Entity entity |
+      entity.getDefinedFunction() = getRepresentativeFunctionForEndpoint(endpoint)
+    |
       // The name of the function that encloses the endpoint.
       featureName = "enclosingFunctionName" and result = entity.getName()
       or
@@ -147,24 +149,27 @@ module FunctionBodies {
     result = node.(TemplateElement).getRawValue()
   }
 
+  /** Returns an AST node within the function `f` that we should featurize. */
+  pragma[inline]
+  ASTNode getAnASTNodeToFeaturize(Function f) {
+    result.getParent*() = f and
+    not result = f.getIdentifier() and
+    exists(getTokenizedAstNode(result))
+  }
+
   /** Holds if `location` is the location of an AST node within the entity `entity` and `token` is a node attribute associated with that AST node. */
   private predicate bodyTokens(DatabaseFeatures::Entity entity, Location location, string token) {
     // Performance optimization: Restrict the set of entities to those containing an endpoint to featurize.
-    entity =
-      getRepresentativeEntityForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
+    entity.getDefinedFunction() =
+      getRepresentativeFunctionForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
     // Performance optimization: If a function has more than 256 body subtokens, then featurize it as absent. This
     // approximates the behavior of the classifer on non-generic body features where large body
     // features are replaced by the absent token.
     //
     // We count nodes instead of tokens because tokens are often not unique.
-    strictcount(ASTNode node |
-      node.getParent*() = entity.getDefinedFunction() and
-      not node = entity.getDefinedFunction().getIdentifier() and
-      exists(getTokenizedAstNode(node))
-    ) <= 256 and
+    strictcount(getAnASTNodeToFeaturize(entity.getDefinedFunction())) <= 256 and
     exists(ASTNode node |
-      node.getParent*() = entity.getDefinedFunction() and
-      not node = entity.getDefinedFunction().getIdentifier() and
+      node = getAnASTNodeToFeaturize(entity.getDefinedFunction()) and
       token = getTokenizedAstNode(node) and
       location = node.getLocation()
     )

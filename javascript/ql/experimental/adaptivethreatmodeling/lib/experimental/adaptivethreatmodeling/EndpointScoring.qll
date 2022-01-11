@@ -15,8 +15,8 @@ private string getACompatibleModelChecksum() {
 }
 
 /**
- * The maximum number of AST nodes an entity containing an endpoint should have before we should
- * choose a smaller entity to represent the endpoint.
+ * The maximum number of AST nodes an function containing an endpoint should have before we should
+ * choose a smaller function to represent the endpoint.
  *
  * This is intended to represent a balance in terms of the amount of context we provide to the
  * model: we don't want the function to be too small, because then it doesn't contain very much
@@ -26,54 +26,56 @@ private string getACompatibleModelChecksum() {
 private int getMaxNumAstNodes() { result = 1024 }
 
 /**
- * Returns the number of AST nodes contained within the specified entity.
+ * Returns the number of AST nodes contained within the specified function.
  */
-private int getNumAstNodesInEntity(DatabaseFeatures::Entity entity) {
-  // Restrict the values `entity` can take on
-  entity = EndpointToEntity::getAnEntityForEndpoint(_) and
-  result =
-    count(DatabaseFeatures::AstNode astNode | DatabaseFeatures::astNodes(entity, _, _, astNode, _))
+private int getNumAstNodesInFunction(Function function) {
+  // Restrict the values `function` can take on
+  function = EndpointToFunction::getAFunctionForEndpoint(_) and
+  result = count(EndpointFeatures::FunctionBodies::getAnASTNodeToFeaturize(function))
 }
 
 /**
- * Get a single entity to use as the representative entity for the endpoint.
+ * Get the enclosing function for an endpoint.
+ * 
+ * This is used to compute the `enclosingFunctionBody` and `enclosingFunctionName` features.
  *
- * We try to use the largest entity containing the endpoint that's below the AST node limit defined
- * in `getMaxNumAstNodes`. In the event of a tie, we use the entity that appears first within the
- * source archive.
+ * We try to use the largest function containing the endpoint that's below the AST node limit
+ * defined in `getMaxNumAstNodes`. In the event of a tie, we use the function that appears first
+ * within the source code.
  *
- * If no entities are smaller than the AST node limit, then we use the smallest entity containing
+ * If no functions are smaller than the AST node limit, then we use the smallest function containing
  * the endpoint.
  */
-DatabaseFeatures::Entity getRepresentativeEntityForEndpoint(DataFlow::Node endpoint) {
-  // Check whether there's an entity containing the endpoint that's smaller than the AST node limit.
+Function getRepresentativeFunctionForEndpoint(DataFlow::Node endpoint) {
+  // Check whether there's a function containing the endpoint that's smaller than the AST node
+  // limit.
   if
-    getNumAstNodesInEntity(EndpointToEntity::getAnEntityForEndpoint(endpoint)) <=
+    getNumAstNodesInFunction(EndpointToFunction::getAFunctionForEndpoint(endpoint)) <=
       getMaxNumAstNodes()
   then
-    // Use the largest entity smaller than the AST node limit, resolving ties using the entity that
-    // appears first in the source archive.
+    // Use the largest function smaller than the AST node limit, resolving ties using the function
+    // that appears first in the source code.
     result =
-      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
-        entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
-        numAstNodes = getNumAstNodesInEntity(entity) and
+      min(Function function, int numAstNodes, Location l |
+        function = EndpointToFunction::getAFunctionForEndpoint(endpoint) and
+        numAstNodes = getNumAstNodesInFunction(function) and
         numAstNodes <= getMaxNumAstNodes() and
-        l = entity.getLocation()
+        l = function.getLocation()
       |
-        entity
+        function
         order by
           numAstNodes desc, l.getStartLine(), l.getStartColumn(), l.getEndLine(), l.getEndColumn()
       )
   else
-    // Use the smallest entity, resolving ties using the entity that
-    // appears first in the source archive.
+    // Use the smallest function, resolving ties using the function that appears first in the source
+    // code.
     result =
-      min(DatabaseFeatures::Entity entity, int numAstNodes, Location l |
-        entity = EndpointToEntity::getAnEntityForEndpoint(endpoint) and
-        numAstNodes = getNumAstNodesInEntity(entity) and
-        l = entity.getLocation()
+      min(Function function, int numAstNodes, Location l |
+        function = EndpointToFunction::getAFunctionForEndpoint(endpoint) and
+        numAstNodes = getNumAstNodesInFunction(function) and
+        l = function.getLocation()
       |
-        entity
+        function
         order by
           numAstNodes, l.getStartLine(), l.getStartColumn(), l.getEndLine(), l.getEndColumn()
       )
