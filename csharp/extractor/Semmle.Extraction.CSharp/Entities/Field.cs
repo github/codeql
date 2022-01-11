@@ -136,6 +136,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
+
+        public override TrapStackBehaviour TrapStackBehaviour =>
+            IsSourceDeclaration && Symbol.FromSource() ? TrapStackBehaviour.PushesLabel : TrapStackBehaviour.OptionalLabel;
     }
 }

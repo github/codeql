@@ -356,6 +356,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
+        public override TrapStackBehaviour TrapStackBehaviour =>
+            IsSourceDeclaration && Symbol.FromSource() ? TrapStackBehaviour.PushesLabel : TrapStackBehaviour.OptionalLabel;
     }
 }
