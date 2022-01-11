@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.StringOps
 
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
@@ -52,6 +53,25 @@ module Fmt {
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
       input.isParameter(any(int i | i > 0)) and output.isParameter(0)
     }
+  }
+
+  private class FmtStringFormatter extends StringOps::Formatting::Range {
+    int argOffset;
+
+    FmtStringFormatter() {
+      exists(string fname |
+        this.hasQualifiedName("fmt", fname) and
+        (
+          fname = ["Printf", "Sprintf"] and argOffset = 0
+          or
+          fname = "Fprintf" and argOffset = 1
+        )
+      )
+    }
+
+    override int getFormatStringIndex() { result = argOffset }
+
+    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */
