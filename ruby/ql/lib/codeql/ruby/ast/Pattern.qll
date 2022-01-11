@@ -97,7 +97,10 @@ private class TPattern =
  * ```
  */
 class CasePattern extends AstNode, TPattern {
-  CasePattern() { casePattern(toGenerated(this)) }
+  CasePattern() {
+    casePattern(toGenerated(this)) or
+    this = any(HashPattern p).getValue(_)
+  }
 }
 
 /**
@@ -267,7 +270,10 @@ class HashPattern extends CasePattern, THashPattern {
   StringlikeLiteral getKey(int n) { toGenerated(result) = this.keyValuePair(n).getKey() }
 
   /** Gets the value of the `n`th pair. */
-  CasePattern getValue(int n) { toGenerated(result) = this.keyValuePair(n).getValue() }
+  AstNode getValue(int n) {
+    toGenerated(result) = this.keyValuePair(n).getValue() or
+    synthChild(this, n, result)
+  }
 
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {

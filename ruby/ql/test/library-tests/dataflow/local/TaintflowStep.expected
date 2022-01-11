@@ -5,6 +5,9 @@ edges
 | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:82:11:82:11 | c |
 | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:83:11:83:11 | d |
 | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:84:11:84:11 | e |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:85:25:85:25 | f |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:86:31:86:31 | g |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:87:23:87:23 | x |
 nodes
 | local_dataflow.rb:78:12:78:20 | call to source :  | semmle.label | call to source :  |
 | local_dataflow.rb:79:23:79:23 | b | semmle.label | b |
@@ -12,6 +15,9 @@ nodes
 | local_dataflow.rb:82:11:82:11 | c | semmle.label | c |
 | local_dataflow.rb:83:11:83:11 | d | semmle.label | d |
 | local_dataflow.rb:84:11:84:11 | e | semmle.label | e |
+| local_dataflow.rb:85:25:85:25 | f | semmle.label | f |
+| local_dataflow.rb:86:31:86:31 | g | semmle.label | g |
+| local_dataflow.rb:87:23:87:23 | x | semmle.label | x |
 subpaths
 #select
 | local_dataflow.rb:79:23:79:23 | b | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:79:23:79:23 | b | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
@@ -19,3 +25,6 @@ subpaths
 | local_dataflow.rb:82:11:82:11 | c | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:82:11:82:11 | c | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
 | local_dataflow.rb:83:11:83:11 | d | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:83:11:83:11 | d | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
 | local_dataflow.rb:84:11:84:11 | e | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:84:11:84:11 | e | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:85:25:85:25 | f | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:85:25:85:25 | f | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:86:31:86:31 | g | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:86:31:86:31 | g | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:87:23:87:23 | x | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:87:23:87:23 | x | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |

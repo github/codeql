@@ -82,6 +82,9 @@ def test_case x
      sink(c), # $ hasTaintFlow=1
      sink(d), # $ hasTaintFlow=1
      sink(e)] # $ hasTaintFlow=1
-  end
+  in { a: f } then sink(f) # $ hasTaintFlow=1
+  in { foo: 1, g: } then sink(g) # $ hasTaintFlow=1
+  in { x: } then sink(x) # $ hasTaintFlow=1
+end
 end
 
