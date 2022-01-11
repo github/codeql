@@ -173,7 +173,7 @@ class ClassList extends TClassList {
     this.duplicate(n) and result = this.deduplicate(n + 1)
     or
     exists(ClassObjectInternal cls, ClassList tail |
-      deduplicateCons(n, cls, tail) and
+      this.deduplicateCons(n, cls, tail) and
       result = Cons(cls, tail)
     )
   }
@@ -281,7 +281,7 @@ private class ClassListList extends TClassListList {
     removed_head = this.removedClassPartsCons1(cls, removed_tail, n).removeHead(cls)
   }
 
-  pragma[noinline]
+  pragma[nomagic]
   predicate removedClassPartsCons0(ClassObjectInternal cls, ClassListList removed_tail, int n) {
     exists(ClassList prev_head, ClassListList prev_tail |
       this.removedClassParts(cls, prev_head, prev_tail, n + 1) and
@@ -289,9 +289,9 @@ private class ClassListList extends TClassListList {
     )
   }
 
-  pragma[noinline]
+  pragma[nomagic]
   ClassList removedClassPartsCons1(ClassObjectInternal cls, ClassListList removed_tail, int n) {
-    removedClassPartsCons0(cls, removed_tail, n) and
+    this.removedClassPartsCons0(cls, removed_tail, n) and
     result = this.getItem(n)
   }
 
@@ -310,7 +310,7 @@ private class ClassListList extends TClassListList {
     cl = this.getItem(n) and
     j = cl.length()
     or
-    legalMergeCandidateNonEmpty(cls, n, cl, j + 1) and
+    this.legalMergeCandidateNonEmpty(cls, n, cl, j + 1) and
     j >= 1 and
     cls != cl.getItem(j)
   }
@@ -321,14 +321,14 @@ private class ClassListList extends TClassListList {
     this.legalMergeCandidate(cls, n + 1) and
     this.getItem(n) = Empty()
     or
-    legalMergeCandidateNonEmpty(cls, n, _, 1)
+    this.legalMergeCandidateNonEmpty(cls, n, _, 1)
   }
 
   predicate legalMergeCandidate(ClassObjectInternal cls) { this.legalMergeCandidate(cls, 0) }
 
   predicate illegalMergeCandidate(ClassObjectInternal cls) {
     exists(ClassList cl, int j |
-      legalMergeCandidateNonEmpty(cls, _, cl, j + 1) and
+      this.legalMergeCandidateNonEmpty(cls, _, cl, j + 1) and
       j >= 1 and
       cls = cl.getItem(j)
     )
