@@ -14,7 +14,7 @@
 
 <p>To fix this issue these changes should be made:</p>
 <ul>
-  <li>Control the size of the buffer by declaring it with a compile time constant</li>
+  <li>Control the size of the buffer by declaring it with a compile time constant.</li>
   <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, using the defined constant size of the buffer or `sizeof(buffer)` as maximum length to write. This will prevent the buffer overflow.</li>
   <li>Optionally, if `userId` is expected to be less than `10000`, then return or throw an error if `userId` is out of bounds.</li>
   <li>Otherwise, consider increasing the buffer size to at least 25 characters, so that the message is displayed correctly regardless of the value of `userId`.</li>

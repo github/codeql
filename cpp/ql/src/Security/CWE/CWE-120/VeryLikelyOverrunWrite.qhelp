@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy, and by analysing the bounds of the expressions involved it appears that certain inputs will cause a buffer overflow to occur in this case.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy. By analyzing the bounds of the expressions involved, it appears that certain inputs will cause a buffer overflow to occur in this case.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
 
 </overview>
 <include src="OverrunWriteRecommendation.inc.qhelp" />
@@ -14,7 +14,7 @@
 
 <p>To fix this issue these changes should be made:</p>
 <ul>
-  <li>Control the size of the buffer by declaring it with a compile time constant</li>
+  <li>Control the size of the buffer by declaring it with a compile time constant.</li>
   <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, using the defined constant size of the buffer or `sizeof(buffer)` as maximum length to write. This will prevent the buffer overflow.</li>
   <li>Increasing the buffer size to account for the full range of `userId` and the terminating null character.</li>
 </ul>
