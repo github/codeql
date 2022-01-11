@@ -197,38 +197,6 @@ module Raw {
   private string getReceiverName(raw::DataFlow::CallNode call) {
     result = call.getReceiver().asExpr().(raw::VarAccess).getName()
   }
-
-  /** Consistency checks: these predicates should each have no results */
-  module Consistency {
-    /** `getEntityName` should assign each entity a single name. */
-    query predicate entityWithManyNames(Entity entity, string name) {
-      name = getEntityName(entity) and
-      count(getEntityName(entity)) > 1
-    }
-
-    query predicate nodeWithNoType(AstNode node) { not exists(node.astNodeType()) }
-
-    query predicate nodeWithManyTypes(AstNode node, string type) {
-      type = node.astNodeType() and
-      count(node.astNodeType()) > 1
-    }
-
-    query predicate nodeWithNoParent(AstNode node, string type) {
-      not node = any(AstNode parent).astNodeChild(_) and
-      type = node.astNodeType() and
-      not exists(RawAstNode rawNode | node = TAstNode(rawNode) and rawNode instanceof raw::Module)
-    }
-
-    query predicate duplicateChildIndex(AstNode parent, int index, AstNode child) {
-      child = parent.astNodeChild(index) and
-      count(parent.astNodeChild(index)) > 1
-    }
-
-    query predicate duplicateAttributeIndex(AstNode node, int index) {
-      exists(node.astNodeAttribute(index)) and
-      count(node.astNodeAttribute(index)) > 1
-    }
-  }
 }
 
 module Wrapped {
@@ -399,14 +367,6 @@ module DatabaseFeatures {
     override string toString() { result = this.getType() }
 
     override Location getLocation() { result = rawNode.getLocation() }
-  }
-
-  /** Consistency checks: these predicates should each have no results */
-  module Consistency {
-    query predicate nonLeafAttribute(AstNode node, int index, string attribute) {
-      attribute = node.getAttribute(index) and
-      exists(node.getChild(_))
-    }
   }
 
   query predicate entities(
