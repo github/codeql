@@ -11,7 +11,8 @@ namespace Semmle.Extraction
         /// Indicates whether the entity created from `init` should be persisted in the shared
         /// TRAP file.
         /// </summary>
-        public virtual bool IsShared(TInit init) => false;
+        public virtual bool IsShared(TInit init) =>
+            init is ISymbol symbol && !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
 
         /// <summary>
         /// Initializes the entity, but does not generate any trap code.

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
+    internal class Property : ExpressionParentEntity<IPropertySymbol>
     {
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init)
@@ -114,8 +114,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        bool IExpressionParentEntity.IsTopLevelParent => true;
-
         public static Property Create(Context cx, IPropertySymbol prop)
         {
             var isIndexer = prop.IsIndexer || prop.Parameters.Any();
@@ -129,8 +127,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour =>
-            IsSourceDeclaration && Symbol.FromSource() ? TrapStackBehaviour.PushesLabel : TrapStackBehaviour.OptionalLabel;
     }
 }

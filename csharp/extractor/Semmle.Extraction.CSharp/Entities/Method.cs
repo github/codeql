@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
+    internal abstract class Method : ExpressionParentEntity<IMethodSymbol>, IStatementParentEntity
     {
         protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -300,8 +300,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom;
 
-        bool IExpressionParentEntity.IsTopLevelParent => true;
-
         bool IStatementParentEntity.IsTopLevelParent => true;
 
         protected void PopulateGenerics(TextWriter trapFile)
@@ -355,8 +353,5 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMetadataHandle(trapFile);
             PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour =>
-            IsSourceDeclaration && Symbol.FromSource() ? TrapStackBehaviour.PushesLabel : TrapStackBehaviour.OptionalLabel;
     }
 }

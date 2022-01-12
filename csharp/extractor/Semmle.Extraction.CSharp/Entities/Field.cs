@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
+    internal class Field : ExpressionParentEntity<IFieldSymbol>
     {
         private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
@@ -128,16 +128,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";field");
         }
 
-        bool IExpressionParentEntity.IsTopLevelParent => true;
-
         private class FieldFactory : CachedEntityFactory<IFieldSymbol, Field>
         {
             public static FieldFactory Instance { get; } = new FieldFactory();
 
             public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour =>
-            IsSourceDeclaration && Symbol.FromSource() ? TrapStackBehaviour.PushesLabel : TrapStackBehaviour.OptionalLabel;
     }
 }
