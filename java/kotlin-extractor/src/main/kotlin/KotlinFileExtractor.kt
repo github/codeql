@@ -626,9 +626,12 @@ open class KotlinFileExtractor(
     }
 
     private fun getVariableLocationProvider(v: IrVariable): IrElement {
-        if (v.origin == IrDeclarationOrigin.IR_TEMPORARY_VARIABLE) {
-            return v.initializer ?: v
+        val init = v.initializer
+        if (v.startOffset < 0 && init != null) {
+            // IR_TEMPORARY_VARIABLEs have no proper location
+            return init
         }
+
         return v
     }
 
