@@ -62,6 +62,9 @@ namespace Semmle.Extraction.CSharp.Populators
             Entities.LineDirective.Create(cx, node);
         }
 
+        public override void VisitLineSpanDirectiveTrivia(LineSpanDirectiveTriviaSyntax node) =>
+            Entities.LineSpanDirective.Create(cx, node);
+
         private readonly Stack<Entities.RegionDirective> regionStarts = new Stack<Entities.RegionDirective>();
 
         public override void VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
