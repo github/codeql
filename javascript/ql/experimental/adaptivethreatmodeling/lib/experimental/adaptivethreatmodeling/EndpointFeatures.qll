@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import CodeToFeatures
 private import FeaturizationConfig
 private import FunctionBodyFeatures as FunctionBodyFeatures
 
@@ -19,19 +18,18 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   (
     // Features for endpoints that are contained within a function.
-    exists(DatabaseFeatures::Entity entity |
-      entity.getDefinedFunction() =
-        FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint)
+    exists(Function function |
+      function = FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint)
     |
       // The name of the function that encloses the endpoint.
-      featureName = "enclosingFunctionName" and result = entity.getName()
+      featureName = "enclosingFunctionName" and result = FunctionNames::getNameToFeaturize(function)
       or
       // A feature containing natural language tokens from the function that encloses the endpoint in
       // the order that they appear in the source code.
       featureName = "enclosingFunctionBody" and
       result =
         strictconcat(string token, Location l |
-          FunctionBodyFeatures::bodyTokens(entity.getDefinedFunction(), l, token)
+          FunctionBodyFeatures::bodyTokens(function, l, token)
         |
           token, " "
           order by
@@ -84,11 +82,10 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
  *
  * This may in general report multiple strings, each containing a space-separated list of tokens.
  *
- * **Technical details:** This predicate can have multiple values per endpoint and feature name.  As a
- * result, the results from this predicate must be concatenated together.  However concatenating
- * other features like the function body tokens is expensive, so we separate out this predicate
- * from others like `FunctionBodies::getBodyTokenFeatureForEntity` to avoid having to perform this
- * concatenation operation on other features like the function body tokens.
+ * **Technical details:** This predicate can have multiple values per endpoint and feature name. As
+ * a result, the results from this predicate must be concatenated together.  However concatenating
+ * other features like the function body tokens is expensive, so for performance reasons we separate
+ * out this predicate from those other features.
  */
 private string getACallBasedTokenFeatureComponent(
   DataFlow::Node endpoint, DataFlow::CallNode call, string featureName
@@ -240,6 +237,57 @@ private module AccessPaths {
         )
       )
     )
+  }
+}
+
+private module FunctionNames {
+  /**
+   * Get the name of the function.
+   *
+   * We attempt to assign unnamed entities approximate names if they are passed to a likely
+   * external library function. If we can't assign them an approximate name, we give them the name
+   * `""`, so that these entities are included in `AdaptiveThreatModeling.qll`.
+   *
+   * For entities which have multiple names, we choose the lexically smallest name.
+   */
+  string getNameToFeaturize(Function function) {
+    if exists(function.getName())
+    then result = min(function.getName())
+    else
+      if exists(getApproximateNameForFunction(function))
+      then result = getApproximateNameForFunction(function)
+      else result = ""
+  }
+
+  /**
+   * Holds if the call `call` has `function` is its `argumentIndex`th argument.
+   */
+  private predicate functionUsedAsArgumentToCall(
+    Function function, DataFlow::CallNode call, int argumentIndex
+  ) {
+    DataFlow::localFlowStep*(call.getArgument(argumentIndex), function.flow())
+  }
+
+  /**
+   * Returns a generated name for the function. This name is generated such that
+   * entities with the same names have similar behaviour.
+   */
+  private string getApproximateNameForFunction(Function function) {
+    count(DataFlow::CallNode call, int index | functionUsedAsArgumentToCall(function, call, index)) =
+      1 and
+    exists(DataFlow::CallNode call, int index, string basePart |
+      functionUsedAsArgumentToCall(function, call, index) and
+      (
+        if count(getReceiverName(call)) = 1
+        then basePart = getReceiverName(call) + "."
+        else basePart = ""
+      ) and
+      result = basePart + call.getCalleeName() + "#functionalargument"
+    )
+  }
+
+  private string getReceiverName(DataFlow::CallNode call) {
+    result = call.getReceiver().asExpr().(VarAccess).getName()
   }
 }
 
