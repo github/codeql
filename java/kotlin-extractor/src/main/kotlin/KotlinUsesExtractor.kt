@@ -7,6 +7,8 @@ import org.jetbrains.kotlin.backend.jvm.codegen.isRawType
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.types.*
@@ -36,6 +38,42 @@ open class KotlinUsesExtractor(
         val id: Label<DbPackage> = tw.getLabelFor(pkgLabel, {
             tw.writePackages(it, pkg)
         })
+        return id
+    }
+
+
+    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
+    fun extractFileClass(f: IrFile): Label<out DbClass> {
+        val fileName = f.fileEntry.name
+        val pkg = f.fqName.asString()
+        val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
+        var jvmName = defaultName
+        for(a: IrConstructorCall in f.annotations) {
+            val t = a.type
+            if(t is IrSimpleType && a.valueArgumentsCount == 1) {
+                val owner = t.classifier.owner
+                val v = a.getValueArgument(0)
+                if(owner is IrClass) {
+                    val aPkg = owner.packageFqName?.asString()
+                    val name = owner.name.asString()
+                    if(aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
+                        val value = v.value
+                        if(value is String) {
+                            jvmName = value
+                        }
+                    }
+                }
+            }
+        }
+        val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
+        val label = "@\"class;$qualClassName\""
+        val id: Label<DbClass> = tw.getLabelFor(label)
+        val fileId = tw.mkFileId(f.path, false)
+        val locId = tw.getWholeFileLocation(fileId)
+        val pkgId = extractPackage(pkg)
+        tw.writeClasses(id, jvmName, pkgId, id)
+        tw.writeFile_class(id)
+        tw.writeHasLocation(id, locId)
         return id
     }
 
@@ -481,9 +519,24 @@ class X {
         }
     }
 
-    fun useDeclarationParent(dp: IrDeclarationParent, classTypeArguments: List<IrTypeArgument>? = null, inReceiverContext: Boolean = false): Label<out DbElement> =
+    fun useDeclarationParent(
+        // The declaration parent according to Kotlin
+        dp: IrDeclarationParent,
+        // Whether the type of entity whose parent this is can be a
+        // top-level entity in the JVM's eyes. If so, then its parent may
+        // be a file; otherwise, if dp is a file foo.kt, then the parent
+        // is really the JVM class FooKt.
+        canBeTopLevel: Boolean,
+        classTypeArguments: List<IrTypeArgument>? = null,
+        inReceiverContext: Boolean = false):
+        Label<out DbElement> =
         when(dp) {
-            is IrFile -> usePackage(dp.fqName.asString())
+            is IrFile ->
+                if(canBeTopLevel) {
+                    usePackage(dp.fqName.asString())
+                } else {
+                    extractFileClass(dp)
+                }
             is IrClass -> if (classTypeArguments != null && !dp.isAnonymousObject) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
             is IrFunction -> useFunction(dp)
             else -> {
@@ -525,7 +578,7 @@ class X {
         extensionReceiverParameter: IrValueParameter?,
         classTypeArguments: List<IrTypeArgument>? = null
     ): String {
-        val parentId = useDeclarationParent(parent, classTypeArguments, true)
+        val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
         return getFunctionLabel(parentId, name, parameters, returnType, extensionReceiverParameter)
     }
 
@@ -726,7 +779,7 @@ class X {
     }
 
     fun getTypeParameterLabel(param: IrTypeParameter): String {
-        val parentLabel = useDeclarationParent(param.parent)
+        val parentLabel = useDeclarationParent(param.parent, false)
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
@@ -844,7 +897,7 @@ class X {
      * `parent` is null.
      */
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
-        val parentId = parent ?: useDeclarationParent(vp.parent)
+        val parentId = parent ?: useDeclarationParent(vp.parent, false)
         val idx = vp.index
         if (idx < 0) {
             // We're not extracting this and this@TYPE parameters of functions:
@@ -858,7 +911,7 @@ class X {
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(f.parent)
+        val parentId = useDeclarationParent(f.parent, false)
         return "@\"field;{$parentId};${f.name.asString()}\""
     }
 
@@ -866,7 +919,7 @@ class X {
         tw.getLabelFor(getFieldLabel(f))
 
     fun getPropertyLabel(p: IrProperty) =
-        getPropertyLabel(p, useDeclarationParent(p.parent))
+        getPropertyLabel(p, useDeclarationParent(p.parent, false))
 
     fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>) =
         "@\"property;{$parentId};${p.name.asString()}\""
@@ -878,7 +931,7 @@ class X {
         tw.getLabelFor(getPropertyLabel(p, parentId))
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
-        val parentId = useDeclarationParent(ee.parent)
+        val parentId = useDeclarationParent(ee.parent, false)
         return "@\"field;{$parentId};${ee.name.asString()}\""
     }
 
@@ -886,7 +939,7 @@ class X {
         tw.getLabelFor(getEnumEntryLabel(ee))
 
     private fun getTypeAliasLabel(ta: IrTypeAlias): String {
-        val parentId = useDeclarationParent(ta.parent)
+        val parentId = useDeclarationParent(ta.parent, true)
         return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }
 

@@ -34,7 +34,7 @@ open class KotlinFileExtractor(
     genericSpecialisationsExtracted: MutableSet<String>
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
 
-    fun extractDeclaration(declaration: IrDeclaration, parentId: Label<out DbReftype>) {
+    fun extractDeclaration(declaration: IrDeclaration) {
         when (declaration) {
             is IrClass -> {
                 if (isExternalDeclaration(declaration)) {
@@ -43,14 +43,30 @@ open class KotlinFileExtractor(
                     extractClassSource(declaration)
                 }
             }
-            is IrFunction -> extractFunctionIfReal(declaration, parentId)
+            is IrFunction -> {
+                @Suppress("UNCHECKED_CAST")
+                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                extractFunctionIfReal(declaration, parentId)
+            }
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
             }
-            is IrProperty -> extractProperty(declaration, parentId)
-            is IrEnumEntry -> extractEnumEntry(declaration, parentId)
-            is IrField -> extractField(declaration, parentId)
-            is IrTypeAlias -> extractTypeAlias(declaration) // TODO: Pass in and use parentId
+            is IrProperty -> {
+                @Suppress("UNCHECKED_CAST")
+                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                extractProperty(declaration, parentId)
+            }
+            is IrEnumEntry -> {
+                @Suppress("UNCHECKED_CAST")
+                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                extractEnumEntry(declaration, parentId)
+            }
+            is IrField -> {
+                @Suppress("UNCHECKED_CAST")
+                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                extractField(declaration, parentId)
+            }
+            is IrTypeAlias -> extractTypeAlias(declaration)
             else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
@@ -251,7 +267,7 @@ open class KotlinFileExtractor(
         extractEnclosingClass(c, id, locId, listOf())
 
         c.typeParameters.map { extractTypeParameter(it) }
-        c.declarations.map { extractDeclaration(it, id) }
+        c.declarations.map { extractDeclaration(it) }
         extractObjectInitializerFunction(c, id)
         if(c.isNonCompanionObject) {
             // For `object MyObject { ... }`, the .class has an
@@ -443,9 +459,7 @@ open class KotlinFileExtractor(
             if (f.isLocalFunction())
                 getLocallyVisibleFunctionLabels(f).function
             else
-                // TODO: figure out whether to standardise on naming top-level functions for the file-class
-                //   or (as temporarily done here) for their containing package.
-                useFunction<DbCallable>(f, if (f.parent is IrFile) useDeclarationParent(f.parent) else parentId)
+                useFunction<DbCallable>(f, parentId)
 
         val extReceiver = f.extensionReceiverParameter
         val idxOffset = if (extReceiver != null) 1 else 0
@@ -2499,7 +2513,8 @@ open class KotlinFileExtractor(
 
             if (parent is IrFile) {
                 if (this is KotlinSourceFileExtractor && this.file == parent) {
-                    tw.writeEnclInReftype(id, this.fileClass)
+                    val fileId = extractFileClass(parent)
+                    tw.writeEnclInReftype(id, fileId)
                 } else {
                     logger.warn(Severity.ErrorSevere, "Unexpected file parent found")
                 }

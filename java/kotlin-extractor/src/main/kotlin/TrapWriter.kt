@@ -130,7 +130,28 @@ open class TrapWriter (protected val lm: TrapLabelManager, private val bw: Buffe
      * location.
      */
     val unknownLocation: Label<DbLocation> by lazy {
-        getLocation(unknownFileId, 0, 0, 0, 0)
+        getWholeFileLocation(unknownFileId)
+    }
+
+    fun mkFileId(filePath: String, populateFileTables: Boolean): Label<DbFile> {
+        // If a file is in a jar, then the Kotlin compiler gives
+        // `<jar file>!/<path within jar>` as its path. We need to split
+        // it as appropriate, to make the right file ID.
+        val populateFile = PopulateFile(this)
+        val splitFilePath = filePath.split("!/")
+        if(splitFilePath.size == 1) {
+            return populateFile.getFileLabel(File(filePath), populateFileTables)
+        } else {
+            return populateFile.getFileInJarLabel(File(splitFilePath.get(0)), splitFilePath.get(1), populateFileTables)
+        }
+    }
+
+    /**
+     * If you have an ID for a file, then this gets a label for the
+     * location representing the whole of that file.
+     */
+    fun getWholeFileLocation(fileId: Label<DbFile>): Label<DbLocation> {
+        return getLocation(fileId, 0, 0, 0, 0)
     }
 
     /**
@@ -180,16 +201,7 @@ open class FileTrapWriter (
     val filePath: String,
     populateFileTables: Boolean
 ): TrapWriter (lm, bw) {
-    // If a file is in a jar, then the Kotlin compiler gives
-    // `<jar file>!/<path within jar>` as its path. We need to split
-    // it as appropriate, to make the right file ID.
-    val populateFile = PopulateFile(this)
-    val splitFilePath = filePath.split("!/")
-    val fileId =
-        if(splitFilePath.size == 1)
-            populateFile.getFileLabel(File(filePath), populateFileTables)
-         else
-            populateFile.getFileInJarLabel(File(splitFilePath.get(0)), splitFilePath.get(1), populateFileTables)
+    val fileId = mkFileId(filePath, populateFileTables)
 
     /**
      * Gets a label for the location of `e`.
@@ -201,7 +213,7 @@ open class FileTrapWriter (
      * Gets a label for the location representing the whole of this file.
      */
     fun getWholeFileLocation(): Label<DbLocation> {
-        return getLocation(fileId, 0, 0, 0, 0)
+        return getWholeFileLocation(fileId)
     }
     /**
      * Gets a label for the location corresponding to `startOffset` and
