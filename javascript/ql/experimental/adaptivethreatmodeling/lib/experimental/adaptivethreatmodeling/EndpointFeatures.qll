@@ -270,7 +270,7 @@ private module FunctionNames {
 
   /**
    * Returns a generated name for the function. This name is generated such that
-   * entities with the same names have similar behaviour.
+   * entities with the same names have similar behavior.
    */
   private string getApproximateNameForFunction(Function function) {
     count(DataFlow::CallNode call, int index | functionUsedAsArgumentToCall(function, call, index)) =
