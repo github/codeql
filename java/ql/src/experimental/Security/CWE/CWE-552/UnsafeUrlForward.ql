@@ -18,16 +18,25 @@ import semmle.code.java.controlflow.Guards
 import DataFlow::PathGraph
 
 /**
- * Holds if `ma` is a method call of matching with a path string, probably a whitelisted one.
+ * Holds if `ma` is a call to a method that checks exact match of string, probably a whitelisted one.
  */
-predicate isStringPathMatch(MethodAccess ma) {
+predicate isExactStringPathMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().getName() = ["startsWith", "matches", "regionMatches"]
+  ma.getMethod().getName() = ["equals", "equalsIgnoreCase"]
 }
 
 /**
- * Holds if `ma` is a method call of `java.nio.file.Path` which matches with another
- * path, probably a whitelisted one.
+ * Holds if `ma` is a call to a method that checks a path string, probably a whitelisted one.
+ */
+predicate isStringPathMatch(MethodAccess ma) {
+  ma.getMethod().getDeclaringType() instanceof TypeString and
+  ma.getMethod().getName() =
+    ["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"]
+}
+
+/**
+ * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path, probably
+ * a whitelisted one.
  */
 predicate isFilePathMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypePath and
@@ -35,7 +44,7 @@ predicate isFilePathMatch(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a method call that checks an input doesn't match using the `!`
+ * Holds if `ma` is a call to a method that checks an input doesn't match using the `!`
  * logical negation expression.
  */
 predicate checkNoPathMatch(MethodAccess ma) {
@@ -46,7 +55,7 @@ predicate checkNoPathMatch(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a method call to check special characters `..` used in path traversal.
+ * Holds if `ma` is a call to a method that checks special characters `..` used in path traversal.
  */
 predicate isPathTraversalCheck(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
@@ -55,7 +64,7 @@ predicate isPathTraversalCheck(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a method call to decode a url string or check url encoding.
+ * Holds if `ma` is a call to a method that decodes a URL string or check URL encoding.
  */
 predicate isPathDecoding(MethodAccess ma) {
   // Search the special character `%` used in url encoding
@@ -68,44 +77,65 @@ predicate isPathDecoding(MethodAccess ma) {
   ma.getMethod().hasName("decode")
 }
 
-private class PathMatchSanitizer extends DataFlow::Node {
+/** The Java method `normalize` of `java.nio.file.Path`. */
+class PathNormalizeMethod extends Method {
+  PathNormalizeMethod() {
+    this.getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
+    this.hasName("normalize")
+  }
+}
+
+/**
+ * Sanitizer to check the following scenarios in a web application:
+ *  1. Exact string match
+ *  2. String startsWith or match check with path traversal validation
+ *  3. String not startsWith or not match check with decoding processing
+ *  4. java.nio.file.Path startsWith check having path normalization
+ */
+private class PathMatchSanitizer extends DataFlow::BarrierGuard {
   PathMatchSanitizer() {
-    exists(MethodAccess ma |
-      (
-        isStringPathMatch(ma) and
-        exists(MethodAccess ma2 |
-          isPathTraversalCheck(ma2) and
-          ma.getQualifier().(VarAccess).getVariable().getAnAccess() = ma2.getQualifier()
-        )
-        or
-        isFilePathMatch(ma)
-      ) and
-      (
-        not checkNoPathMatch(ma)
-        or
-        // non-match check needs decoding e.g. !path.startsWith("/WEB-INF/") won't detect /%57EB-INF/web.xml, which will be decoded and served by RequestDispatcher
-        checkNoPathMatch(ma) and
-        exists(MethodAccess ma2 |
-          isPathDecoding(ma2) and
-          ma.getQualifier().(VarAccess).getVariable().getAnAccess() = ma2.getQualifier()
-        )
-      ) and
-      this.asExpr() = ma.getQualifier()
+    isExactStringPathMatch(this)
+    or
+    isStringPathMatch(this) and
+    not checkNoPathMatch(this) and
+    exists(MethodAccess tma |
+      isPathTraversalCheck(tma) and
+      DataFlow::localExprFlow(this.(MethodAccess).getQualifier(), tma.getQualifier())
+    )
+    or
+    checkNoPathMatch(this) and
+    exists(MethodAccess dma |
+      isPathDecoding(dma) and
+      DataFlow::localExprFlow(dma, this.(MethodAccess).getQualifier())
+    )
+    or
+    isFilePathMatch(this) and
+    exists(MethodAccess pma |
+      pma.getMethod() instanceof PathNormalizeMethod and
+      DataFlow::localExprFlow(pma, this.(MethodAccess).getQualifier())
+    )
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = this.(MethodAccess).getQualifier() and
+    (
+      branch = true and not checkNoPathMatch(this)
+      or
+      branch = false and checkNoPathMatch(this)
     )
   }
 }
 
 /**
- * Holds if `ma` is a method call to check string content, which means an input string is not
+ * Holds if `ma` is a call to a method that checks string content, which means an input string is not
  * blindly trusted and helps to reduce FPs.
  */
 predicate checkStringContent(MethodAccess ma, Expr expr) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
   ma.getMethod()
       .hasName([
-          "charAt", "contains", "equals", "equalsIgnoreCase", "getBytes", "getChars", "indexOf",
-          "lastIndexOf", "length", "matches", "regionMatches", "replace", "replaceAll",
-          "replaceFirst", "substring"
+          "charAt", "getBytes", "getChars", "length", "replace", "replaceAll", "replaceFirst",
+          "substring"
         ]) and
   expr = ma.getQualifier()
   or
@@ -145,23 +175,6 @@ private class NullOrEmptyCheckSanitizer extends DataFlow::Node {
   NullOrEmptyCheckSanitizer() { isNullOrEmptyCheck(this.asExpr()) }
 }
 
-/** Holds if `ma` is a virtual method call of Map::get or Object::toString. */
-predicate isVirtualMethod(MethodAccess ma, Expr expr) {
-  ma.getMethod().getDeclaringType() instanceof TypeObject and
-  ma.getMethod().hasName("toString") and
-  (expr = ma or expr = ma.getQualifier())
-  or
-  (
-    ma.getMethod().getDeclaringType().getASupertype*().hasQualifiedName("java.util", "Map") and
-    ma.getMethod().hasName(["get", "getOrDefault"])
-  ) and
-  (expr = ma or expr = ma.getAnArgument())
-}
-
-private class VirtualMethodSanitizer extends DataFlow::Node {
-  VirtualMethodSanitizer() { exists(MethodAccess ma | isVirtualMethod(ma, this.asExpr())) }
-}
-
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
 
@@ -181,10 +194,16 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     node instanceof UnsafeUrlForwardSanitizer or
-    node instanceof PathMatchSanitizer or
     node instanceof StringOperationSanitizer or
-    node instanceof NullOrEmptyCheckSanitizer or
-    node instanceof VirtualMethodSanitizer
+    node instanceof NullOrEmptyCheckSanitizer
+  }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof PathMatchSanitizer
+  }
+
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSourceCallContext
   }
 }
 

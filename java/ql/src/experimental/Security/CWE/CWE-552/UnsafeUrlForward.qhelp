@@ -20,7 +20,7 @@ untrusted URL forwarding, it is recommended to avoid concatenating user input di
 
 <p>The following examples show the bad case and the good case respectively.
 The <code>bad</code> methods show an HTTP request parameter being used directly in a URL forward
-without validating the input, which may cause file leakage. In <code>good1</code> method,
+without validating the input, which may cause file leakage. In the <code>good1</code> method,
 ordinary forwarding requests are shown, which will not cause file leakage.
 </p>
 

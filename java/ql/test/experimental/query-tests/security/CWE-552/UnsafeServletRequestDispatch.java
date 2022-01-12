@@ -100,7 +100,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		}
 	}
 
-	// BAD: Request dispatcher with improper negation check and without url decoding 
+	// GOOD: Request dispatcher with negation check and path normalization
 	protected void doHead5(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
