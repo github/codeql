@@ -93,7 +93,7 @@ abstract class Configuration extends DataFlow::Configuration {
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
   final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard)
+    this.isSanitizerGuard(guard) or defaultTaintSanitizerGuard(guard)
   }
 
   /**
