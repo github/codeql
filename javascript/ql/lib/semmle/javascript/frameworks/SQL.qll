@@ -574,7 +574,10 @@ private module SpannerCsv {
           "@google-cloud/spanner;;@google-cloud/spanner;;Member[Spanner]",
           "@google-cloud/spanner;Database;@google-cloud/spanner;;ReturnValue.Member[instance].ReturnValue.Member[database].ReturnValue",
           "@google-cloud/spanner;v1.SpannerClient;@google-cloud/spanner;;Member[v1].Member[SpannerClient].Instance",
-          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[runTransaction,runTransactionAsync].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[runTransaction,runTransactionAsync,getTransaction].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[getTransaction].ReturnValue.Awaited",
+          "@google-cloud/spanner;Snapshot;@google-cloud/spanner;Database;Member[getSnapshot].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Snapshot;@google-cloud/spanner;Database;Member[getSnapshot].ReturnValue.Awaited",
           "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[batchTransaction].ReturnValue",
           "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[createBatchTransaction].ReturnValue.Awaited",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Database;Member[run,runPartitionedUpdate,runStream]",
@@ -597,146 +600,22 @@ private module SpannerCsv {
         ]
     }
   }
-}
 
-/**
- * Provides classes modeling the Google Cloud Spanner library.
- */
-private module Spanner {
-  /**
-   * Gets a node that refers to the `Spanner` class
-   */
-  API::Node spanner() {
-    // older versions
-    result = API::moduleImport("@google-cloud/spanner")
-    or
-    // newer versions
-    result = API::moduleImport("@google-cloud/spanner").getMember("Spanner")
-  }
+  class SpannerSources extends ModelInput::SourceModelCsv {
+    string spannerClass() { result = ["v1.SpannerClient", "Database", "Transaction", "Snapshot",] }
 
-  /**
-   * Gets a node that refers to an instance of the `Database` class.
-   */
-  API::Node database() {
-    result =
-      spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "Database")
-  }
-
-  /**
-   * Gets a node that refers to an instance of the `v1.SpannerClient` class.
-   */
-  API::Node v1SpannerClient() {
-    result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "v1.SpannerClient")
-  }
-
-  /**
-   * Gets a node that refers to a transaction object.
-   */
-  API::Node transaction() {
-    result =
-      database()
-          .getMember(["runTransaction", "runTransactionAsync"])
-          .getParameter([0, 1])
-          .getParameter(1)
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "Transaction")
-  }
-
-  /**
-   * Gets a node that refers to a snapshot object.
-   */
-  API::Node snapshot() {
-    result = database().getMember("getSnapshot").getParameter([0, 1]).getParameter(1)
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "Snapshot")
-  }
-
-  /** Gets an API node referring to a `BatchTransaction` object. */
-  API::Node batchTransaction() {
-    result = database().getMember("batchTransaction").getReturn()
-    or
-    result = database().getMember("createBatchTransaction").getReturn().getPromised()
-    or
-    result = API::Node::ofType("@google-cloud/spanner", "BatchTransaction")
-  }
-
-  /**
-   * A call to a Spanner method that executes a SQL query.
-   */
-  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode { }
-
-  /**
-   * A SQL execution that takes the input directly in the first argument or in the `sql` option.
-   */
-  class SqlExecutionDirect extends SqlExecution {
-    SqlExecutionDirect() {
-      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
-      or
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
-      or
-      this = batchTransaction().getMember("createQueryPartitions").getACall()
-      or
-      this = snapshot().getMember(["run", "runStream"]).getACall()
+    string resultPath() {
+      result =
+        [
+          "Member[executeSql].Argument[0..].Parameter[1]",
+          "Member[executeSql].ReturnValue.Awaited.Member[0]", "Member[run].ReturnValue.Awaited",
+          "Member[run].Argument[0..].Parameter[1]",
+        ]
     }
 
-    override DataFlow::Node getAResult() {
-      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
-      or
-      this = [database(), transaction(), snapshot()].getMember("run").getACall() and
-      result = this.getCallback(_).getParameter(1)
+    override predicate row(string row) {
+      row =
+        "@google-cloud/spanner;" + spannerClass() + ";" + resultPath() + ";database-access-result"
     }
-
-    override DataFlow::Node getAQueryArgument() {
-      result = this.getArgument(0)
-      or
-      result = this.getOptionArgument(0, "sql")
-    }
-  }
-
-  /**
-   * A SQL execution that takes an array of SQL strings or { sql: string } objects.
-   */
-  class SqlExecutionBatch extends SqlExecution, API::CallNode {
-    SqlExecutionBatch() { this = transaction().getMember("batchUpdate").getACall() }
-
-    override DataFlow::Node getAResult() {
-      none() // no results, batch update callbacks get only row counts.
-    }
-
-    override DataFlow::Node getAQueryArgument() {
-      // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
-      // are tainted
-      result = this.getArgument(0)
-      or
-      result = this.getParameter(0).getUnknownMember().getMember("sql").getARhs()
-    }
-  }
-
-  /**
-   * A SQL execution that only takes the input in the `sql` option, and do not accept query strings
-   * directly.
-   */
-  class SqlExecutionWithOption extends SqlExecution, DataFlow::CallNode {
-    SqlExecutionWithOption() {
-      this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
-    }
-
-    override DataFlow::Node getAResult() {
-      this = v1SpannerClient().getMember("executeSql").getACall() and
-      result = this.getCallback(_).getParameter(1)
-    }
-
-    override DataFlow::Node getAQueryArgument() { result = this.getOptionArgument(0, "sql") }
-  }
-
-  /**
-   * An expression that is interpreted as a SQL string.
-   */
-  class QueryString extends SQL::SqlString {
-    QueryString() { this = any(SqlExecution se).getAQueryArgument().asExpr() }
   }
 }

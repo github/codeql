@@ -61,7 +61,21 @@ class DatabaseAccessResultRemoteFlowSource extends HeuristicSource, RemoteFlowSo
 
   override string getSourceType() { result = "Database query result" }
 
+  override predicate isUserControlledObject() { any() }
+}
+
+/**
+ * A remote flow source originating from a database access.
+ */
+private class RemoteFlowSourceFromDBAccess extends RemoteFlowSource, HeuristicSource {
+  RemoteFlowSourceFromDBAccess() {
+    this = ModelOutput::getASourceNode("database-access-result").getAUse()
+  }
+
+  override string getSourceType() { result = "Database access" }
+
   override predicate isUserControlledObject() {
-    this.(DatabaseAccess).returnsUserControlledObject()
+    // NB. supported databases all might return JSON.
+    any()
   }
 }

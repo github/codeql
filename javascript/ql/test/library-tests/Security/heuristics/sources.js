@@ -1,9 +1,3 @@
-const pg = require('pg');
-const { Stream } = require('stream');
-const pool = new pg.Pool({});
-
-function sink(data) {}
-
 (function() {
     const password = '1234';
     sink(password); // NOT OK
@@ -130,6 +124,13 @@ function sink(data) {}
     const db = new Spanner({projectId: 'test'})
         .instance('instanceid')
         .database('databaseid');
+
+    db.executeSql('SELECT * FROM users', {}, function (err, users) {
+        sink(users); // NOT OK
+    });
+
+    const [users] = (await db.executeSql('SELECT * FROM users', {}));
+    sink(users); // NOT OK
     
     const spannerpromise = db.run({
         sql: 'SELECT * FROM users'
@@ -152,6 +153,7 @@ function sink(data) {}
         txn.run('SELECT * FROM users', function (err, users) {
             sink(users); // NOT OK
         });
+        txn.commit(function () {});
     });
 
     db.getSnapshot(function (err, txn) {
