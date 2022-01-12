@@ -800,6 +800,7 @@ control/cases.rb:
 #   52|     getBranch: [InClause] in ... then ...
 #   52|       getPattern: [HashPattern] { ..., ** }
 #   52|         getKey: [SymbolLiteral] :a
+#   52|         getValue: [LocalVariableAccess] a
 #   53|     getBranch: [InClause] in ... then ...
 #   53|       getPattern: [HashPattern] { ..., ** }
 #   53|         getKey: [SymbolLiteral] :a
@@ -813,17 +814,20 @@ control/cases.rb:
 #   55|         getKey: [SymbolLiteral] :a
 #   55|         getValue: [IntegerLiteral] 5
 #   55|         getKey: [SymbolLiteral] :b
+#   55|         getValue: [LocalVariableAccess] b
 #   56|     getBranch: [InClause] in ... then ...
 #   56|       getPattern: [HashPattern] { ..., ** }
 #   56|         getKey: [SymbolLiteral] :a
 #   56|         getValue: [IntegerLiteral] 5
 #   56|         getKey: [SymbolLiteral] :b
+#   56|         getValue: [LocalVariableAccess] b
 #   56|         getRestVariableAccess: [LocalVariableAccess] map
 #   57|     getBranch: [InClause] in ... then ...
 #   57|       getPattern: [HashPattern] { ..., ** }
 #   57|         getKey: [SymbolLiteral] :a
 #   57|         getValue: [IntegerLiteral] 5
 #   57|         getKey: [SymbolLiteral] :b
+#   57|         getValue: [LocalVariableAccess] b
 #   58|     getBranch: [InClause] in ... then ...
 #   58|       getPattern: [HashPattern] { ..., ** }
 #   59|     getBranch: [InClause] in ... then ...
@@ -878,6 +882,7 @@ control/cases.rb:
 #   71|     getBranch: [InClause] in ... then ...
 #   71|       getPattern: [HashPattern] { ..., ** }
 #   71|         getKey: [SymbolLiteral] :a
+#   71|         getValue: [LocalVariableAccess] a
 #   72|     getBranch: [InClause] in ... then ...
 #   72|       getPattern: [HashPattern] { ..., ** }
 #   72|         getKey: [SymbolLiteral] :a
@@ -891,17 +896,20 @@ control/cases.rb:
 #   74|         getKey: [SymbolLiteral] :a
 #   74|         getValue: [IntegerLiteral] 5
 #   74|         getKey: [SymbolLiteral] :b
+#   74|         getValue: [LocalVariableAccess] b
 #   75|     getBranch: [InClause] in ... then ...
 #   75|       getPattern: [HashPattern] { ..., ** }
 #   75|         getKey: [SymbolLiteral] :a
 #   75|         getValue: [IntegerLiteral] 5
 #   75|         getKey: [SymbolLiteral] :b
+#   75|         getValue: [LocalVariableAccess] b
 #   75|         getRestVariableAccess: [LocalVariableAccess] map
 #   76|     getBranch: [InClause] in ... then ...
 #   76|       getPattern: [HashPattern] { ..., ** }
 #   76|         getKey: [SymbolLiteral] :a
 #   76|         getValue: [IntegerLiteral] 5
 #   76|         getKey: [SymbolLiteral] :b
+#   76|         getValue: [LocalVariableAccess] b
 #   77|     getBranch: [InClause] in ... then ...
 #   77|       getPattern: [HashPattern] { ..., ** }
 #   78|     getBranch: [InClause] in ... then ...
@@ -1078,6 +1086,7 @@ control/cases.rb:
 #  139|     getBranch: [InClause] in ... then ...
 #  139|       getPattern: [HashPattern] { ..., ** }
 #  139|         getKey: [SymbolLiteral] :x
+#  139|         getValue: [LocalVariableAccess] x
 #  140|     getBranch: [InClause] in ... then ...
 #  140|       getPattern: [HashPattern] { ..., ** }
 #  140|         getClass: [ConstantReadAccess] Bar
@@ -1091,11 +1100,13 @@ control/cases.rb:
 #  141|         getKey: [SymbolLiteral] :x
 #  141|         getValue: [IntegerLiteral] 1
 #  141|         getKey: [SymbolLiteral] :a
+#  141|         getValue: [LocalVariableAccess] a
 #  141|         getRestVariableAccess: [LocalVariableAccess] rest
 #  142|     getBranch: [InClause] in ... then ...
 #  142|       getPattern: [HashPattern] { ..., ** }
 #  142|         getClass: [ConstantReadAccess] Foo
 #  142|         getKey: [SymbolLiteral] :y
+#  142|         getValue: [LocalVariableAccess] y
 #  143|     getBranch: [InClause] in ... then ...
 #  143|       getPattern: [HashPattern] { ..., ** }
 #  143|         getClass: [ConstantReadAccess] Bar

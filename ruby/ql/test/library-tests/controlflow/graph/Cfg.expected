@@ -936,6 +936,9 @@ case.rb:
 
 #   49| 1
 #-----| no-match -> in ... then ...
+#-----| match -> a
+
+#   49| a
 #-----| match -> rest
 
 #   49| rest
@@ -1361,8 +1364,8 @@ case.rb:
 #-----| match -> case ...
 
 #   91| [ ..., * ]
-#-----| match -> case ...
 #-----| no-match -> { ..., ** }
+#-----| match -> case ...
 
 #   91| { ..., ** }
 #-----| match -> case ...
