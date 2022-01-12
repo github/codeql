@@ -69,7 +69,7 @@ private predicate isNotNeeded(Element el) {
   |
     el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
     c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    not c.getFile().isKotlinSourceFile() // Koltin constructor bodies have the same location as the constructor
+    not c.getFile().isKotlinSourceFile() // Kotlin constructor bodies have the same location as the constructor
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
   or
