@@ -113,6 +113,13 @@ private module Cached {
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
   }
+
+  /**
+   * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+   * but not in local taint.
+   */
+  cached
+  predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 }
 
 import Cached
