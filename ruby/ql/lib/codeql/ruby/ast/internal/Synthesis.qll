@@ -936,7 +936,7 @@ private module ImplicitHashValueSynthesis {
   private Ruby::AstNode keyWithoutValue(HashPattern parent, int i) {
     exists(Ruby::KeywordPattern pair |
       result = pair.getKey() and
-      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      result = toGenerated(parent.getKey(i)) and
       not exists(pair.getValue())
     )
   }
