@@ -347,7 +347,7 @@ class ModuleConstGetCallCodeExecution extends CodeExecution::Range, DataFlow::Ca
   override DataFlow::Node getCode() { result = this.getArgument(0) }
 }
 
-/** Flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
+/** A flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
 class RegexpEscapeSummary extends SummarizedCallable {
   RegexpEscapeSummary() { this = "Regexp.escape" }
 
