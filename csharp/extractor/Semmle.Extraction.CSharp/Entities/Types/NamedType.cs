@@ -13,7 +13,6 @@ namespace Semmle.Extraction.CSharp.Entities
         private NamedType(Context cx, INamedTypeSymbol init, bool constructUnderlyingTupleType)
             : base(cx, init)
         {
-            typeArgumentsLazy = new Lazy<Type[]>(() => Symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
             this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
@@ -43,12 +42,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (UsesTypeRef)
                 trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
+            var typeArguments = TypeArguments.ToArray();
             if (Symbol.IsGenericType)
             {
                 if (Symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    trapFile.nullable_underlying_type(this, TypeArguments[0].TypeRef);
+                    trapFile.nullable_underlying_type(this, typeArguments[0].TypeRef);
                 }
                 else if (Symbol.IsReallyUnbound())
                 {
@@ -67,9 +67,9 @@ namespace Semmle.Extraction.CSharp.Entities
                         : Type.Create(Context, Symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
-                    for (var i = 0; i < TypeArguments.Length; ++i)
+                    for (var i = 0; i < typeArguments.Length; ++i)
                     {
-                        trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
+                        trapFile.type_arguments(typeArguments[i].TypeRef, i, this);
                     }
                 }
             }
@@ -94,10 +94,9 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private readonly Lazy<Type[]> typeArgumentsLazy;
         private readonly bool constructUnderlyingTupleType;
 
-        public Type[] TypeArguments => typeArgumentsLazy.Value;
+        public IEnumerable<Type> TypeArguments => Symbol.TypeArguments.Select(t => Create(Context, t));
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
 

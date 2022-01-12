@@ -24,6 +24,7 @@ namespace Semmle.Extraction
         private readonly Queue<CachedEntity> labelQueue = new();
 
         private bool writingLabel = false;
+        private bool writingRelation = false;
 
         private readonly TrapWriter trapWriterShared;
 
@@ -56,8 +57,14 @@ namespace Semmle.Extraction
         {
             var isSharedTrapFile = trapFile == trapWriterShared.Writer;
 
+            // if (entity.Label.Valid && !isSharedTrapFile && entity.Context.TrapWriter.Writer != trapFile && trapFile is not StringWriter)
+            //     throw new Exception($"HER: {entity.Context.TrapWriter.TrapFile}, {entity.GetType()}");
+
+            if (!isSharedTrapFile && currentThreadContext!.TrapWriter.Writer != trapFile && trapFile is not StringWriter)
+                throw new Exception($"HER: {entity.Context.TrapWriter.TrapFile}, {entity.GetType()}, {trapFile.GetType()}");
+
             // non-shared entity referenced in its own TRAP file
-            if (entity.Label.Valid && !isSharedTrapFile)
+            if (entity.Label.Valid && entity.Context.TrapWriter.Writer == trapFile)// !isSharedTrapFile)
                 return entity.Label;
 
             Label label;
@@ -77,23 +84,25 @@ namespace Semmle.Extraction
                 entity.LabelMap[trapFile] = label;
             };
 
+            // currentThreadContext!.LabelQueue.Enqueue((entity, isSharedTrapFile));
             if (isSharedTrapFile)
             {
                 // shared or non-shared entity referenced from shared TRAP file
-                WriteSharedLabel(entity);
+                // WriteSharedLabel(entity);
+                currentThreadContext!.PopulateQueue.Enqueue(() => WriteSharedLabel(entity));
             }
             else
             {
                 // shared entity referenced from non-shared TRAP file
-                currentThreadContext!.LabelQueue.Enqueue(entity);
+                currentThreadContext!.LabelQueue.Enqueue((entity, trapFile));
             }
             return label;
         }
 
         /// <summary>
-        /// Writes the label for a shared entity to the shared TRAP file.
+        /// Writes the label for an entity to the shared TRAP file.
         /// </summary>
-        private void WriteSharedLabel(CachedEntity entity)
+        public void WriteSharedLabel(CachedEntity entity)
         {
             lock (trapWriterShared)
             {
@@ -117,6 +126,18 @@ namespace Semmle.Extraction
             }
         }
 
+        public void WithWriter(TextWriter trapFile, Action a)
+        {
+            if (trapFile == trapWriterShared.Writer)
+            {
+                WithWriter(_ => a());
+            }
+            else
+            {
+                a();
+            }
+        }
+
         /// <summary>
         /// Access the shared TRAP file in a thread-safe manner.
         /// </summary>
@@ -124,13 +145,21 @@ namespace Semmle.Extraction
         {
             lock (trapWriterShared)
             {
-                if (writingLabel)
+                if (writingLabel || writingRelation)
                 {
                     currentThreadContext!.PopulateQueue.Enqueue(() => WithWriter(a));
                     return;
                 }
 
-                a(trapWriterShared.Writer);
+                writingRelation = true;
+                try
+                {
+                    a(trapWriterShared.Writer);
+                }
+                finally
+                {
+                    writingRelation = false;
+                }
             }
         }
 

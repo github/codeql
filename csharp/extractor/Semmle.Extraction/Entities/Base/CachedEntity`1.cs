@@ -39,6 +39,13 @@ namespace Semmle.Extraction
 
         public sealed override Label GetLabelForWriter(TextWriter trapFile) =>
             Context.ContextShared.GetLabelForWriter(this, trapFile);
+
+        public CachedEntity WithContext(Context context)
+        {
+            var ret = (CachedEntity)MemberwiseClone();
+            ret._context = context;
+            return ret;
+        }
     }
 
     /// <summary>

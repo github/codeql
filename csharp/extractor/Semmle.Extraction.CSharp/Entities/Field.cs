@@ -14,7 +14,6 @@ namespace Semmle.Extraction.CSharp.Entities
         private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
-            type = new Lazy<Type>(() => Entities.Type.Create(cx, Symbol.Type));
         }
 
         public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field.CorrespondingTupleField ?? field);
@@ -73,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         This.CreateImplicit(Context, Symbol.ContainingType, Location, fieldAccess, -1);
                     }
-                });
+                }, trapFile);
             }
 
             foreach (var initializer in Symbol.DeclaringSyntaxReferences
@@ -115,8 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return access;
         }
 
-        private readonly Lazy<Type> type;
-        public Type Type => type.Value;
+        public Type Type => Type.Create(Context, Symbol.Type);
 
         public override void WriteId(EscapingTextWriter trapFile)
         {

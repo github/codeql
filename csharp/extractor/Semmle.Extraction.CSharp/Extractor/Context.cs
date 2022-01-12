@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The current compilation unit.
         /// </summary>
-        public Compilation Compilation { get; }
+        public Compilation Compilation { get; private set; }
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
@@ -156,7 +156,7 @@ namespace Semmle.Extraction.CSharp
             return false;
         }
 
-        private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
+        private readonly HashSet<CachedEntity> extractedGenerics = new();
 
         /// <summary>
         /// Should the given entity be extracted?
@@ -170,13 +170,21 @@ namespace Semmle.Extraction.CSharp
         /// <returns>True only on the first call for a particular entity.</returns>
         internal bool ExtractGenerics(CachedEntity entity)
         {
-            if (extractedGenerics.Contains(entity.Label))
+            if (extractedGenerics.Contains(entity))
             {
                 return false;
             }
 
-            extractedGenerics.Add(entity.Label);
+            extractedGenerics.Add(entity);
             return true;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            cachedModelForTree = null!;
+            cachedModelForOtherTrees = null!;
+            Compilation = null!;
         }
     }
 }

@@ -13,12 +13,9 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init)
         {
-            type = new Lazy<Type>(() => Type.Create(base.Context, Symbol.Type));
         }
 
-        private readonly Lazy<Type> type;
-
-        private Type Type => type.Value;
+        private Type Type => Type.Create(Context, Symbol.Type);
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
@@ -73,7 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var expressionBody = ExpressionBody;
                 if (expressionBody is not null)
                 {
-                    Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
+                    Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0), trapFile);
                 }
 
                 var child = 1;
@@ -93,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         {
                             This.CreateImplicit(Context, Symbol.ContainingType, Location, access, -1);
                         }
-                    });
+                    }, trapFile);
                 }
 
                 foreach (var syntax in declSyntaxReferences)

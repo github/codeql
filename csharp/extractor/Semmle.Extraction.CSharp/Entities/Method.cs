@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
                            Expression.Create(Context, expr!, this, 0);
 
                        NumberOfLines(trapFile, BodyDeclaringSymbol, this);
-                   });
+                   }, trapFile);
             }
         }
 

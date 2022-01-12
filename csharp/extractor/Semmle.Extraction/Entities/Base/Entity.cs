@@ -6,11 +6,12 @@ namespace Semmle.Extraction
 {
     public abstract class Entity : IEntity
     {
-        public virtual Context Context { get; }
+        protected Context _context;
+        public virtual Context Context => _context;
 
         protected Entity(Context context)
         {
-            this.Context = context;
+            _context = context;
         }
 
         public Label Label { get; set; } = new Label(-1);
@@ -53,6 +54,6 @@ namespace Semmle.Extraction
 
         public virtual Label GetLabelForWriter(TextWriter trapFile) => Label;
 
-        public override string ToString() => Label.ToString();
+        public override string ToString() => "Label.ToString()";
     }
 }

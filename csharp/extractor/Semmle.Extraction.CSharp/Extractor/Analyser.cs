@@ -154,7 +154,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), contextShared, addAssemblyTrapPrefix);
+                        using var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), contextShared, addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -207,7 +207,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), contextShared, addAssemblyTrapPrefix);
+                        using var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), contextShared, addAssemblyTrapPrefix);
                         // Ensure that the file itself is populated in case the source file is totally empty
                         var root = tree.GetRoot();
                         Entities.File.Create(cx, root.SyntaxTree.FilePath);

@@ -126,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     ? () => Expression.Create(Context, defaultValueSyntax.Value, this, 0)
                     : () => Expression.CreateGenerated(Context, Symbol, this, 0, Location);
 
-                Context.PopulateLater(defaultValueExpressionCreation);
+                Context.PopulateLater(defaultValueExpressionCreation, trapFile);
             }
 
             if (!IsSourceDeclaration || !Symbol.FromSource())

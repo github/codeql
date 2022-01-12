@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
                             TypeMention.Create(Context, bt.Type, this, baseKey);
                         }
                     }
-                });
+                }, trapFile);
             }
 
             // Visit implemented interfaces
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         {
                             TypeMention.Create(Context, bt.Type, this, interfaceKey);
                         }
-                    });
+                    }, trapFile);
                 }
             }
 

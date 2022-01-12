@@ -26,6 +26,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static LocalFunctionFactory Instance { get; } = new LocalFunctionFactory();
 
+            public override bool IsShared(IMethodSymbol _) => false;
+
             public override LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
         }
 
