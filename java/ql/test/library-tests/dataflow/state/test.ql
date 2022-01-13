@@ -42,11 +42,7 @@ predicate checkNode(Node n) { n.asExpr().(Argument).getCall().getCallee().hasNam
 class Conf extends Configuration {
   Conf() { this = "qltest:state" }
 
-  override predicate isSource(Node n) { none() }
-
   override predicate isSource(Node n, FlowState s) { src(n, s) }
-
-  override predicate isSink(Node n) { none() }
 
   override predicate isSink(Node n, FlowState s) { sink(n, s) }
 
