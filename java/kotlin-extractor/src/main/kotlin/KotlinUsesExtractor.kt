@@ -628,7 +628,7 @@ class X {
                             params.addAll(parameters)
                             params
                         }
-        val paramTypeIds = allParams.joinToString { "{${useType(erase(it.type)).javaResult.id}}" }
+        val paramTypeIds = allParams.joinToString(separator = ",") { "{${useType(erase(it.type)).javaResult.id}}" }
         val labelReturnType = if (name == "<init>") pluginContext.irBuiltIns.unitType else erase(returnType)
         val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
         // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
