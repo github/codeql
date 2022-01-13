@@ -189,13 +189,17 @@ abstract class RegexString extends Expr {
   }
 
   /** Holds if the character at `pos` is a "\" that is actually escaping what comes after. */
-  predicate escapingChar(int pos) { this.escaping(pos) = true }
+  predicate escapingChar(int pos) {
+    this.escaping(pos) = true and
+    not exists(int x, int y | this.quote(x, y) and pos in [x .. y - 1])
+  }
 
   /**
    * Helper predicate for `escapingChar`.
    * In order to avoid negative recusrion, we return a boolean.
    * This way, we can refer to `escaping(pos - 1).booleanNot()`
    * rather than to a negated version of `escaping(pos)`.
+   * Does not take into account escape characters inside quote sequences.
    */
   private boolean escaping(int pos) {
     pos = -1 and result = false
@@ -205,6 +209,53 @@ abstract class RegexString extends Expr {
     this.getChar(pos) != "\\" and result = false
   }
 
+  /**
+   * Helper predicate for `quoteSequence`.
+   * Holds if the char at `pos` could be the beginning of a quote delimiter, i.e. `\Q` (non-escaped) or `\E` (escaping not checked, as quote sequences turn off escapes).
+   * Result is `true` for `\Q` and `false` for `\E`.
+   */
+  private boolean quote_delimiter(int pos) {
+    result = true and
+    this.escaping(pos) = true and
+    this.getChar(pos + 1) = "Q"
+    or
+    result = false and
+    this.getChar(pos) = "\\" and
+    this.getChar(pos + 1) = "E"
+  }
+
+  /**
+   * Helper predicate for `quoteSequence`.
+   * Holds if the char at `pos` is the one-based `index`th occourence of a quote delimiter (`\Q` or `\E`)
+   * Result is `true` for `\Q` and `false` for `\E`.
+   */
+  private boolean quote_delimiter(int index, int pos) {
+    result = this.quote_delimiter(pos) and
+    pos = rank[index](int p | this.quote_delimiter(p) = [true, false])
+  }
+
+  /** Holds if a quoted sequence is found between `start` and `end` */
+  predicate quote(int start, int end) { this.quote(start, end, _, _) }
+
+  /** Holds if a quoted sequence is fund between `start` and `end`, with ontent found between `inner_start` and `inner_end`. */
+  predicate quote(int start, int end, int inner_start, int inner_end) {
+    exists(int index |
+      this.quote_delimiter(index, start) = true and
+      (
+        index = 1
+        or
+        this.quote_delimiter(index - 1, _) = false
+      ) and
+      inner_start = start + 2 and
+      inner_end = end - 2 and
+      inner_end > inner_start and
+      this.quote_delimiter(inner_end) = false and
+      not exists(int mid |
+        this.quote_delimiter(mid) = false and mid in [inner_start .. inner_end - 1]
+      )
+    )
+  }
+
   /** Gets the text of this regex */
   string getText() { result = this.(StringLiteral).getValue() }
 
@@ -212,7 +263,8 @@ abstract class RegexString extends Expr {
 
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
-    not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1])
+    not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
+    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1])
   }
 
   private predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
@@ -728,7 +780,8 @@ abstract class RegexString extends Expr {
     this.character(start, _) or
     this.isGroupStart(start) or
     this.charSet(start, _) or
-    this.backreference(start, _)
+    this.backreference(start, _) or
+    this.quote(start, _)
   }
 
   private predicate item_end(int end) {
@@ -739,6 +792,8 @@ abstract class RegexString extends Expr {
     this.charSet(_, end)
     or
     this.qualifier(_, end, _, _)
+    or
+    this.quote(_, end)
   }
 
   private predicate top_level(int start, int end) {
@@ -846,6 +901,8 @@ abstract class RegexString extends Expr {
       this.qualifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
+      or
+      this.quote(start, end)
     ) and
     this.firstPart(start, end)
   }
@@ -861,6 +918,8 @@ abstract class RegexString extends Expr {
       this.qualifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
+      or
+      this.quote(start, end)
     ) and
     this.lastPart(start, end)
   }
