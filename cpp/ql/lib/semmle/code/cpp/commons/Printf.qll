@@ -382,6 +382,7 @@ private int lengthInBase10(float f) {
   result = f.log10().floor() + 1
 }
 
+bindingset[expr]
 private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Expr expr) {
   // we consider the range analysis non trivial if it
   // * constrained non-trivially both sides of a signed value, or
