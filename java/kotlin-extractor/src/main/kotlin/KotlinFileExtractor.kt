@@ -151,7 +151,7 @@ open class KotlinFileExtractor(
             logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
 
-        val classLabelResults = getClassLabel(c, typeArgs)
+        val classLabelResults = getClassLabel(c, argsIncludingOuterClasses)
         val id = tw.getLabelFor<DbClassorinterface>(classLabelResults.classLabel)
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = classLabelResults.shortName

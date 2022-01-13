@@ -3,6 +3,8 @@ package com.github.codeql
 import com.github.codeql.utils.substituteTypeArguments
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.lower.parents
+import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.codegen.isRawType
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -140,6 +142,24 @@ open class KotlinUsesExtractor(
         } ?: argsIncludingOuterClasses
     }
 
+    // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F> is InnerInner<E, F, C, D, A, B>. This function returns [A, B, C, D, E, F].
+    fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+        if(argsIncludingOuterClasses.isNullOrEmpty())
+            return argsIncludingOuterClasses
+        val ret = ArrayList<IrTypeArgument>()
+        // Iterate over nested inner classes starting at `c`'s surrounding top-level or static nested class and ending at `c`, from the outermost inwards:
+        val parentsList = c.parentsWithSelf.toList()
+        val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && !it.isInner }
+        val truncatedParents = if (firstOuterClassIdx == -1) parentsList else parentsList.subList(0, firstOuterClassIdx + 1)
+        for(parent in truncatedParents.reversed()) {
+            if(parent is IrClass) {
+                val firstArgIdx = argsIncludingOuterClasses.size - (ret.size + parent.typeParameters.size)
+                ret.addAll(argsIncludingOuterClasses.subList(firstArgIdx, firstArgIdx + parent.typeParameters.size))
+            }
+        }
+        return ret
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
@@ -199,7 +219,7 @@ open class KotlinUsesExtractor(
         // For all purposes ignore type arguments relating to outer classes.
         val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
 
-        val classLabelResult = getClassLabel(c, typeArgs)
+        val classLabelResult = getClassLabel(c, argsIncludingOuterClasses)
 
         var instanceSeenBefore = true
 
@@ -733,10 +753,10 @@ class X {
     /**
      * This returns the `X` in c's label `@"class;X"`.
      *
-     * `typeArgs` can be null to describe a raw generic type.
+     * `argsIncludingOuterClasses` can be null to describe a raw generic type.
      * For non-generic types it will be zero-length list.
      */
-    private fun getUnquotedClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?): ClassLabelResults {
+    private fun getUnquotedClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val label = when (val parent = c.parent) {
@@ -753,14 +773,15 @@ class X {
             }
         }
 
-        val typeArgLabels = typeArgs?.map { getTypeArgumentLabel(it) }
+        val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
+        val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
         val typeArgsShortName =
             if (typeArgLabels == null)
                 "<>"
             else if(typeArgLabels.isEmpty())
                 ""
             else
-                typeArgLabels.joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
+                typeArgLabels.takeLast(c.typeParameters.size).joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
 
         return ClassLabelResults(
             label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
@@ -770,12 +791,12 @@ class X {
 
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun getClassLabel(c: IrClass, typeArgs: List<IrTypeArgument>?): ClassLabelResults {
+    fun getClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
         if (c.isAnonymousObject) {
             logger.warn(Severity.ErrorSevere, "Label generation should not be requested for an anonymous class")
         }
 
-        val unquotedLabel = getUnquotedClassLabel(c, typeArgs)
+        val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
         return ClassLabelResults(
             "@\"class;${unquotedLabel.classLabel}\"",
             unquotedLabel.shortName)
