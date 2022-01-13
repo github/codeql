@@ -1,4 +1,3 @@
-| TestClassA.kt:0:0:0:0 | TestClassAKt |
 | TestClassA.kt:2:1:3:1 | TestClassA |
 | TestClassA.kt:2:1:3:1 | TestClassA<TestClassAUser> |
 | TestClassAUser.kt:0:0:0:0 | TestClassAUserKt |

@@ -1,5 +1,4 @@
 | Trivial.kt:0:0:0:0 | Trivial | CompilationUnit |
-| Trivial.kt:0:0:0:0 | TrivialKt | Class |
 | Trivial.kt:1:1:1:16 | <Expr>; | ExprStmt |
 | Trivial.kt:1:1:1:16 | <obinit> | Method |
 | Trivial.kt:1:1:1:16 | <obinit>(...) | MethodAccess |

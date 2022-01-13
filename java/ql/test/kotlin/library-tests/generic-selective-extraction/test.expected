@@ -11,15 +11,6 @@
 | Test.java:11:7:11:17 | NeitherUsed | Test.java:11:7:11:17 | NeitherUsed |
 | Test.java:13:7:13:10 | User | Test.java:13:7:13:10 | User |
 | Test.java:13:7:13:10 | User | Test.java:15:22:15:25 | test |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:1:1:8:1 | <obinit> |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:1:1:8:1 | TestKt |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:3:3:3:22 | field |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:3:3:3:22 | getField |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:3:3:3:22 | setField |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:4:3:5:25 | rawField |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:5:3:5:25 | getRawField |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:5:3:5:25 | setRawField |
-| Test.kt:0:0:0:0 | TestKt | Test.kt:6:3:6:22 | method |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:1:1:8:1 | <obinit> |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:1:1:8:1 | TestKt |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:3:3:3:22 | field |

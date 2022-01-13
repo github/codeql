@@ -1862,7 +1862,6 @@
 | TypeVariable[] | Array |
 | Type[] | Array |
 | TypesAndInvokers | Class |
-| TypesKt | Class |
 | U | TypeVariable |
 | URI | Class |
 | URL | Class |

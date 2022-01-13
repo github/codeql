@@ -435,8 +435,7 @@ classes.kt:
 #  127|                   -3: [TypeAccess] Object
 local_anonymous.kt:
 #    0| [CompilationUnit] local_anonymous
-#    0|   1: [Class] Local_anonymousKt
-#    3|   2: [Class] Class1
+#    3|   1: [Class] Class1
 #    3|     1: [Constructor] Class1
 #    3|       5: [BlockStmt] { ... }
 #    3|         0: [SuperConstructorInvocationStmt] super(...)
@@ -541,8 +540,7 @@ local_anonymous.kt:
 #   26|               -3: [TypeAccess] LocalClass
 superChain.kt:
 #    0| [CompilationUnit] superChain
-#    0|   1: [Class] SuperChainKt
-#    1|   2: [Class,GenericType,ParameterizedType] SuperChain1
+#    1|   1: [Class,GenericType,ParameterizedType] SuperChain1
 #-----|     -2: (Generic Parameters)
 #    1|       0: [TypeVariable] T1
 #    1|       1: [TypeVariable] T2
@@ -551,7 +549,7 @@ superChain.kt:
 #    1|         0: [SuperConstructorInvocationStmt] super(...)
 #    1|         1: [ExprStmt] <Expr>;
 #    1|           0: [MethodAccess] <obinit>(...)
-#    2|   5: [Class,GenericType,ParameterizedType] SuperChain2
+#    2|   4: [Class,GenericType,ParameterizedType] SuperChain2
 #-----|     -2: (Generic Parameters)
 #    2|       0: [TypeVariable] T3
 #    2|       1: [TypeVariable] T4
@@ -560,7 +558,7 @@ superChain.kt:
 #    2|         0: [SuperConstructorInvocationStmt] super(...)
 #    2|         1: [ExprStmt] <Expr>;
 #    2|           0: [MethodAccess] <obinit>(...)
-#    3|   7: [Class,GenericType,ParameterizedType] SuperChain3
+#    3|   6: [Class,GenericType,ParameterizedType] SuperChain3
 #-----|     -2: (Generic Parameters)
 #    3|       0: [TypeVariable] T5
 #    3|       1: [TypeVariable] T6
