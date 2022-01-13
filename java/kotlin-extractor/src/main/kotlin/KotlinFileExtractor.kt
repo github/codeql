@@ -96,7 +96,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeParameter(tp: IrTypeParameter): Label<out DbTypevariable> {
+    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable> {
         val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
 
         val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
@@ -108,7 +108,10 @@ open class KotlinFileExtractor(
             }
         }
 
-        tw.writeTypeVars(id, tp.name.asString(), tp.index, 0, parentId)
+        // Note apparentIndex does not necessarily equal `tp.index`, because at least constructor type parameters
+        // have indices offset from the type parameters of the constructed class (i.e. the parameter S of
+        // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1, not 0).
+        tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
         val locId = tw.getLocation(tp)
         tw.writeHasLocation(id, locId)
 
@@ -266,7 +269,7 @@ open class KotlinFileExtractor(
 
         extractEnclosingClass(c, id, locId, listOf())
 
-        c.typeParameters.map { extractTypeParameter(it) }
+        c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
         c.declarations.map { extractDeclaration(it) }
         extractObjectInitializerFunction(c, id)
         if(c.isNonCompanionObject) {
@@ -451,7 +454,7 @@ open class KotlinFileExtractor(
     fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?): Label<out DbCallable> {
         declarationStack.push(f)
 
-        f.typeParameters.map { extractTypeParameter(it) }
+        getFunctionTypeParameters(f).mapIndexed { idx, it -> extractTypeParameter(it, idx) }
 
         val locId = tw.getLocation(f)
 
