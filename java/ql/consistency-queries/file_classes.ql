@@ -5,5 +5,4 @@ import java
 from Class c
 where file_class(c)
   and not exists(c.getAMember())
-  and none() // TODO: This is currently broken
 select c
