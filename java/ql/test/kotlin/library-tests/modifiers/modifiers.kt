@@ -18,4 +18,8 @@ open class X {
         fun fnLocal() {}
         fnLocal()
     }
+
+    fun fn3() {
+        class localClass {}
+    }
 }

@@ -141,7 +141,7 @@ open class KotlinFileExtractor(
                 // The containing class is `private`.
                 addModifiers(id, "public")
             } else {
-                addModifiers(id, "private")
+                addVisibilityModifierToLocalOrAnonymousClass(id)
             }
             is DelegatedDescriptorVisibility -> {
                 when (v.delegate) {
@@ -155,7 +155,7 @@ open class KotlinFileExtractor(
                     JavaVisibilities.ProtectedAndPackage -> {
                         // default java visibility (member level)
                     }
-                    else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
+                    else -> logger.warnElement(Severity.ErrorSevere, "Unexpected delegated visibility: $v", elementForLocation)
                 }
             }
             else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
@@ -2486,6 +2486,10 @@ open class KotlinFileExtractor(
     private val IrType.isAnonymous: Boolean
         get() = ((this as? IrSimpleType)?.classifier?.owner as? IrClass)?.isAnonymousObject ?: false
 
+    private fun addVisibilityModifierToLocalOrAnonymousClass(id: Label<out DbModifiable>) {
+        addModifiers(id, "private")
+    }
+
     /**
      * Extracts the class around a local function, a lambda, or a function reference.
      */
@@ -2506,6 +2510,7 @@ open class KotlinFileExtractor(
         val unitType = useType(pluginContext.irBuiltIns.unitType)
         tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, unitType.kotlinResult.id, id, ids.constructor)
         tw.writeHasLocation(ids.constructor, locId)
+        addModifiers(ids.constructor, "public")
 
         // Constructor body
         val constructorBlockId = ids.constructorBlock
@@ -2525,7 +2530,8 @@ open class KotlinFileExtractor(
 
         // TODO: We might need to add an `<obinit>` function, and a call to it to match other classes
 
-        addModifiers(id, "private", "final")
+        addModifiers(id, "final")
+        addVisibilityModifierToLocalOrAnonymousClass(id)
         extractClassSupertypes(superTypes, listOf(), id)
 
         var parent: IrDeclarationParent? = currentDeclaration.parent
