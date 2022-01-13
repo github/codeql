@@ -141,13 +141,10 @@ open class KotlinFileExtractor(
         extractVisibility(c, id, c.visibility)
     }
 
-    // `typeArgs` can be null to describe a raw generic type.
+    // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun extractClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
-        // For all purposes ignore type arguments relating to outer classes.
-        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
-
-        if (typeArgs?.isEmpty() == true) {
+        if (argsIncludingOuterClasses?.isEmpty() == true) {
             logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
         }
 
@@ -174,6 +171,7 @@ open class KotlinFileExtractor(
             }
         }
 
+        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
         if (typeArgs != null) {
             for ((idx, arg) in typeArgs.withIndex()) {
                 val argId = getTypeArgumentLabel(arg).id
@@ -187,7 +185,7 @@ open class KotlinFileExtractor(
         val unbound = useClassSource(c)
         tw.writeErasure(id, unbound)
         extractClassModifiers(c, id)
-        extractClassSupertypes(c, id, if (typeArgs == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(typeArgs))
+        extractClassSupertypes(c, id, if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses))
 
         val locId = tw.getLocation(c)
         tw.writeHasLocation(id, locId)
@@ -200,12 +198,12 @@ open class KotlinFileExtractor(
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractMemberPrototypes(c: IrClass, typeArgs: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
+    fun extractMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         val typeParamSubstitution =
-            when (typeArgs) {
+            when (argsIncludingOuterClasses) {
                 null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
                 else -> {
-                    c.typeParameters.map({ it.symbol }).zip(typeArgs).toMap().let {
+                    getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses).toMap().let {
                         { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
                             x.substituteTypeAndArguments(
                                 it,
@@ -219,8 +217,8 @@ open class KotlinFileExtractor(
 
         c.declarations.map {
             when(it) {
-                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, typeArgs)
-                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, typeArgs)
+                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
                 else -> {}
             }
         }
@@ -445,13 +443,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
+    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
             return
-        extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgs)
+        extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbCallable> {
         declarationStack.push(f)
 
         getFunctionTypeParameters(f).mapIndexed { idx, it -> extractTypeParameter(it, idx) }
@@ -462,7 +460,7 @@ open class KotlinFileExtractor(
             if (f.isLocalFunction())
                 getLocallyVisibleFunctionLabels(f).function
             else
-                useFunction<DbCallable>(f, parentId, classTypeArgs)
+                useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses)
 
         val sourceDeclaration =
             if (typeSubstitution != null)

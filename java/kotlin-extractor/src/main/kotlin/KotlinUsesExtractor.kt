@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.substituteTypeAndArguments
 import com.github.codeql.utils.substituteTypeArguments
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -142,15 +143,28 @@ open class KotlinUsesExtractor(
         } ?: argsIncludingOuterClasses
     }
 
+    // Gets nested inner classes starting at `c` and proceeding outwards to the innermost enclosing static class.
+    // For example, for (java syntax) `class A { static class B { class C { class D { } } } }`,
+    // `nonStaticParentsWithSelf(D)` = `[D, C, B]`.
+    fun parentsWithTypeParametersInScope(c: IrClass): List<IrDeclarationParent> {
+        val parentsList = c.parentsWithSelf.toList()
+        val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && !it.isInner }
+        return if (firstOuterClassIdx == -1) parentsList else parentsList.subList(0, firstOuterClassIdx + 1)
+    }
+
+    // Gets the type parameter symbols that are in scope for class `c` in Kotlin order (i.e. for
+    // `class NotInScope<T> { static class OutermostInScope<A, B> { class QueryClass<C, D> { } } }`,
+    // `getTypeParametersInScope(QueryClass)` = `[C, D, A, B]`.
+    fun getTypeParametersInScope(c: IrClass) =
+        parentsWithTypeParametersInScope(c).mapNotNull({ (it as? IrClass)?.typeParameters }).flatten()
+
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F> is InnerInner<E, F, C, D, A, B>. This function returns [A, B, C, D, E, F].
     fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
         val ret = ArrayList<IrTypeArgument>()
         // Iterate over nested inner classes starting at `c`'s surrounding top-level or static nested class and ending at `c`, from the outermost inwards:
-        val parentsList = c.parentsWithSelf.toList()
-        val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && !it.isInner }
-        val truncatedParents = if (firstOuterClassIdx == -1) parentsList else parentsList.subList(0, firstOuterClassIdx + 1)
+        val truncatedParents = parentsWithTypeParametersInScope(c)
         for(parent in truncatedParents.reversed()) {
             if(parent is IrClass) {
                 val firstArgIdx = argsIncludingOuterClasses.size - (ret.size + parent.typeParameters.size)
@@ -216,9 +230,6 @@ open class KotlinUsesExtractor(
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun addClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
-        // For all purposes ignore type arguments relating to outer classes.
-        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
-
         val classLabelResult = getClassLabel(c, argsIncludingOuterClasses)
 
         var instanceSeenBefore = true
@@ -229,7 +240,7 @@ open class KotlinUsesExtractor(
             extractClassLaterIfExternal(c)
         })
 
-        if (typeArgs == null || typeArgs.isNotEmpty()) {
+        if (argsIncludingOuterClasses == null || argsIncludingOuterClasses.isNotEmpty()) {
             // If this is a generic type instantiation or a raw type then it has no
             // source entity, so we need to extract it here
             val extractorWithCSource by lazy { this.withSourceFileOfClass(c) }
@@ -239,7 +250,7 @@ open class KotlinUsesExtractor(
             }
 
             if (inReceiverContext && genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
-                extractorWithCSource.extractMemberPrototypes(c, typeArgs, classLabel)
+                extractorWithCSource.extractMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
             }
         }
 
@@ -596,6 +607,13 @@ class X {
         return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
     }
 
+    fun getEnclosingClass(it: IrDeclarationParent): IrClass? =
+        when(it) {
+            is IrClass -> it
+            is IrFunction -> getEnclosingClass(it.parent)
+            else -> null
+        }
+
     fun getFunctionLabel(
         parent: IrDeclarationParent,
         name: String,
@@ -606,20 +624,21 @@ class X {
         classTypeArguments: List<IrTypeArgument>? = null
     ): String {
         val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
-        return getFunctionLabel(parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
+        return getFunctionLabel(getEnclosingClass(parent), parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
     }
 
-    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArguments: List<IrTypeArgument>?) =
-        getFunctionLabel(parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        getFunctionLabel(getEnclosingClass(f), parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
 
     fun getFunctionLabel(
+        enclosingClass: IrClass?,
         parentId: Label<out DbElement>,
         name: String,
         parameters: List<IrValueParameter>,
         returnType: IrType,
         extensionReceiverParameter: IrValueParameter?,
         functionTypeParameters: List<IrTypeParameter>,
-        classTypeArguments: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
     ): String {
         val allParams = if (extensionReceiverParameter == null) {
                             parameters
@@ -628,10 +647,20 @@ class X {
                             params.addAll(parameters)
                             params
                         }
+
+        val substitutionMap = classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
+            if (notNullArgs.isEmpty())
+                null
+            else
+                enclosingClass?.let { notNullClass ->
+                    getTypeParametersInScope(notNullClass).map({ it.symbol }).zip(notNullArgs).toMap()
+                }
+        }
         val getIdForFunctionLabel = { it: IrValueParameter ->
             // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
             // those without type parameters are named for the generic type.
-            val maybeErased = if (functionTypeParameters.isEmpty()) it.type else erase(it.type)
+            val maybeSubbed = it.type.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
+            val maybeErased = if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
             "{${useType(maybeErased).javaResult.id}}"
         }
         val paramTypeIds = allParams.joinToString(separator = ",", transform = getIdForFunctionLabel)
@@ -641,7 +670,7 @@ class X {
         // Comments in that extractor indicates it didn't want the label of the callable to clash with the raw
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
-        val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArguments.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
+        val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
         return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
@@ -704,8 +733,8 @@ class X {
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArguments: List<IrTypeArgument>?) =
-        useFunctionCommon<T>(f, getFunctionLabel(f, parentId, classTypeArguments))
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        useFunctionCommon<T>(f, getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses))
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
