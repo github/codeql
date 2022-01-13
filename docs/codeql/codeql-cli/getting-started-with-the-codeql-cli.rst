@@ -217,13 +217,13 @@ up to create and analyze databases:
   will display the names of all the QL packs directly available to the CodeQL CLI.
   This should include:
 
-  - Query packs for each supported language, e.g., ``codeql/{language}-queries``.
+  - Query packs for each supported language, for example, ``codeql/{language}-queries``.
     These packs contain the standard queries that will be run for each analysis.
-  - Library packs for each supported language, e.g.,  ``codeql/{language}-all``. These
+  - Library packs for each supported language, for example,  ``codeql/{language}-all``. These
     packs contain query libraries, such as control flow and data flow libraries, that
-    may be useful to other query authors.
-  - Example packs for each supported language, e.g., ``codeql/{language}-examples``.
-    These packs contain useful snippets of CodeQL that query auhtors may want To use.
+    may be useful to query writers.
+  - Example packs for each supported language, for example, ``codeql/{language}-examples``.
+    These packs contain useful snippets of CodeQL that query writers may find useful.
   - Legacy packs that ensure custom queries and libraries created using older products are
     compatible with your version of CodeQL.
 
