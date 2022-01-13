@@ -40,6 +40,8 @@ newtype TRegExpParent =
   TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
   TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
+  /** A quoted sequence */
+  TRegExpQuote(Regex re, int start, int end) { re.quote(start, end) } or
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
@@ -106,6 +108,8 @@ class RegExpTerm extends RegExpParent {
     this = TRegExpCharacterRange(re, start, end)
     or
     this = TRegExpNormalChar(re, start, end)
+    or
+    this = TRegExpQuote(re, start, end)
     or
     this = TRegExpGroup(re, start, end)
     or
@@ -676,8 +680,33 @@ class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
 }
 
 /**
+ * A quoted sequence.
+ *
+ * Example:
+ * ```
+ * \Qabc\E
+ * ```
+ */
+class RegExpQuote extends RegExpTerm, TRegExpQuote {
+  string value;
+
+  RegExpQuote() {
+    exists(int inner_start, int inner_end |
+      this = TRegExpQuote(re, start, end) and
+      re.quote(start, end, inner_start, inner_end) and
+      value = re.getText().substring(inner_start, inner_end)
+    )
+  }
+
+  /** Gets the string matched by this quote term. */
+  string getValue() { result = value }
+
+  override string getPrimaryQLClass() { result = "RegExpQuote" }
+}
+
+/**
  * A constant regular expression term, that is, a regular expression
- * term matching a single string. Currently, this will always be a single character.
+ * term matching a single string. This can be a single character or a quoted sequence.
  *
  * Example:
  *
@@ -689,14 +718,14 @@ class RegExpConstant extends RegExpTerm {
   string value;
 
   RegExpConstant() {
-    this = TRegExpNormalChar(re, start, end) and
+    (this = TRegExpNormalChar(re, start, end) or this = TRegExpQuote(re, start, end)) and
     not this instanceof RegExpCharacterClassEscape and
     // exclude chars in qualifiers
     // TODO: push this into regex library
     not exists(int qstart, int qend | re.qualifiedPart(_, qstart, qend, _, _) |
       qstart <= start and end <= qend
     ) and
-    value = this.(RegExpNormalChar).getValue()
+    (value = this.(RegExpNormalChar).getValue() or value = this.(RegExpQuote).getValue())
   }
 
   /**
