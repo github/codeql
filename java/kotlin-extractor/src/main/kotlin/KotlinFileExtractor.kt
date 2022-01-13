@@ -46,7 +46,7 @@ open class KotlinFileExtractor(
             is IrFunction -> {
                 @Suppress("UNCHECKED_CAST")
                 val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractFunctionIfReal(declaration, parentId)
+                extractFunctionIfReal(declaration, parentId, true, null, listOf())
             }
             is IrAnonymousInitializer -> {
                 // Leaving this intentionally empty. init blocks are extracted during class extraction.
@@ -54,7 +54,7 @@ open class KotlinFileExtractor(
             is IrProperty -> {
                 @Suppress("UNCHECKED_CAST")
                 val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractProperty(declaration, parentId)
+                extractProperty(declaration, parentId, true, null, listOf())
             }
             is IrEnumEntry -> {
                 @Suppress("UNCHECKED_CAST")
@@ -216,8 +216,8 @@ open class KotlinFileExtractor(
 
         c.declarations.map {
             when(it) {
-                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution)
-                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution)
+                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, typeArgs)
+                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, typeArgs)
                 else -> {}
             }
         }
@@ -374,7 +374,7 @@ open class KotlinFileExtractor(
         }
 
         // add method:
-        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null)
+        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArguments = listOf())
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val returnType = useType(pluginContext.irBuiltIns.unitType)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
@@ -442,13 +442,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean = true, typeSubstitution: TypeSubstitution? = null) {
+    fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
         if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
             return
-        extractFunction(f, parentId, extractBody, typeSubstitution)
+        extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgs)
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean = true, typeSubstitution: TypeSubstitution? = null): Label<out DbCallable> {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?): Label<out DbCallable> {
         declarationStack.push(f)
 
         f.typeParameters.map { extractTypeParameter(it) }
@@ -459,7 +459,7 @@ open class KotlinFileExtractor(
             if (f.isLocalFunction())
                 getLocallyVisibleFunctionLabels(f).function
             else
-                useFunction<DbCallable>(f, parentId)
+                useFunction<DbCallable>(f, parentId, classTypeArgs)
 
         val extReceiver = f.extensionReceiverParameter
         val idxOffset = if (extReceiver != null) 1 else 0
@@ -543,7 +543,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean = true, typeSubstitution: TypeSubstitution? = null) {
+    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
         val id = useProperty(p, parentId)
         val locId = tw.getLocation(p)
         tw.writeKtProperties(id, p.name.asString())
@@ -555,7 +555,7 @@ open class KotlinFileExtractor(
 
         if(getter != null) {
             @Suppress("UNCHECKED_CAST")
-            val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution) as Label<out DbMethod>
+            val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
             tw.writeKtPropertyGetters(id, getterId)
         } else {
             if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
@@ -568,7 +568,7 @@ open class KotlinFileExtractor(
                 logger.warnElement(Severity.ErrorSevere, "!isVar property with a setter", p)
             }
             @Suppress("UNCHECKED_CAST")
-            val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution) as Label<out DbMethod>
+            val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
             tw.writeKtPropertySetters(id, setterId)
         } else {
             if (p.isVar && !isExternalDeclaration(p)) {
@@ -1493,7 +1493,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val type = useType(e.type)
                 val locId = tw.getLocation(e)
-                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type, null)
+                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArguments = listOf())
                 val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                 tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
@@ -2536,7 +2536,7 @@ open class KotlinFileExtractor(
         val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
         // Extract local function as a member
-        extractFunctionIfReal(localFunction, id)
+        extractFunctionIfReal(localFunction, id, true, null, listOf())
 
         return id
     }

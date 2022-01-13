@@ -567,8 +567,13 @@ class X {
         return f.name.asString()
     }
 
+    // This excludes class type parameters that show up in (at least) constructors' typeParameters list.
+    fun getFunctionTypeParameters(f: IrFunction): List<IrTypeParameter> {
+        return if (f is IrConstructor) f.typeParameters else f.typeParameters.filter { it.parent == f }
+    }
+
     fun getFunctionLabel(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null) : String {
-        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, classTypeArguments)
+        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
     }
 
     fun getFunctionLabel(
@@ -577,21 +582,24 @@ class X {
         parameters: List<IrValueParameter>,
         returnType: IrType,
         extensionReceiverParameter: IrValueParameter?,
+        functionTypeParameters: List<IrTypeParameter>,
         classTypeArguments: List<IrTypeArgument>? = null
     ): String {
         val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
-        return getFunctionLabel(parentId, name, parameters, returnType, extensionReceiverParameter)
+        return getFunctionLabel(parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
     }
 
-    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>) =
-        getFunctionLabel(parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter)
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArguments: List<IrTypeArgument>?) =
+        getFunctionLabel(parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
 
     fun getFunctionLabel(
         parentId: Label<out DbElement>,
         name: String,
         parameters: List<IrValueParameter>,
         returnType: IrType,
-        extensionReceiverParameter: IrValueParameter?
+        extensionReceiverParameter: IrValueParameter?,
+        functionTypeParameters: List<IrTypeParameter>,
+        classTypeArguments: List<IrTypeArgument>?
     ): String {
         val allParams = if (extensionReceiverParameter == null) {
                             parameters
@@ -603,7 +611,12 @@ class X {
         val paramTypeIds = allParams.joinToString { "{${useType(erase(it.type)).javaResult.id}}" }
         val labelReturnType = if (name == "<init>") pluginContext.irBuiltIns.unitType else erase(returnType)
         val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
-        return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}\""
+        // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
+        // Comments in that extractor indicates it didn't want the label of the callable to clash with the raw
+        // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
+        // instance of a generic class), but as of now I don't know when the raw method would be referred to.
+        val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArguments.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
+        return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
@@ -665,8 +678,8 @@ class X {
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>) =
-        useFunctionCommon<T>(f, getFunctionLabel(f, parentId))
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArguments: List<IrTypeArgument>?) =
+        useFunctionCommon<T>(f, getFunctionLabel(f, parentId, classTypeArguments))
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
