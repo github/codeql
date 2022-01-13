@@ -34,14 +34,14 @@ function
 | generics.kt:11:6:11:19 | C0<Integer> | C0<Integer>() |
 | generics.kt:13:1:18:1 | <obinit> | <obinit>() |
 | generics.kt:13:1:18:1 | C1 | C1(java.lang.Object) |
-| generics.kt:13:1:18:1 | C1<Integer,Integer> | C1<Integer,Integer>(int) |
+| generics.kt:13:1:18:1 | C1<Integer,Integer> | C1<Integer,Integer>(java.lang.Integer) |
 | generics.kt:13:1:18:1 | C1<String,Integer> | C1<String,Integer>(java.lang.String) |
 | generics.kt:13:1:18:1 | C1<U,U> | C1<U,U>(java.lang.Object) |
 | generics.kt:13:16:13:23 | getT | getT() |
 | generics.kt:13:16:13:23 | getT | getT() |
 | generics.kt:13:16:13:23 | getT | getT() |
 | generics.kt:13:16:13:23 | getT | getT() |
-| generics.kt:14:5:14:19 | f1 | f1(int) |
+| generics.kt:14:5:14:19 | f1 | f1(java.lang.Integer) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.Object) |
 | generics.kt:14:5:14:19 | f1 | f1(java.lang.String) |

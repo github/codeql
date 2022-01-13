@@ -278,10 +278,8 @@
 | Array<FieldTypeSignature> | Class, ParameterizedType |
 | Array<File> | Class, ParameterizedType |
 | Array<FileAttribute<?>> | Class, ParameterizedType |
-| Array<FileAttribute> | Class, ParameterizedType |
 | Array<FilteringMode> | Class, ParameterizedType |
 | Array<ForkJoinTask<?>> | Class, ParameterizedType |
-| Array<ForkJoinTask> | Class, ParameterizedType |
 | Array<FormalTypeParameter> | Class, ParameterizedType |
 | Array<FormatStyle> | Class, ParameterizedType |
 | Array<InetAddress> | Class, ParameterizedType |
@@ -328,7 +326,6 @@
 | Array<Tag> | Class, ParameterizedType |
 | Array<TemporalField> | Class, ParameterizedType |
 | Array<TemporalQuery<?>> | Class, ParameterizedType |
-| Array<TemporalQuery> | Class, ParameterizedType |
 | Array<TextStyle> | Class, ParameterizedType |
 | Array<Thread> | Class, ParameterizedType |
 | Array<ThreadGroup> | Class, ParameterizedType |
@@ -949,6 +946,7 @@
 | ExtendedOption[] | Array |
 | Extension | Class |
 | Factory | Class |
+| Factory<> | Class |
 | FairSync | Class |
 | FakeKotlinClass | Class |
 | Field | Class |
@@ -963,7 +961,6 @@
 | FileAttribute<?> | Interface, ParameterizedType |
 | FileAttribute<?>[] | Array |
 | FileAttributeView | Interface |
-| FileAttribute[] | Array |
 | FileChannel | Class |
 | FileDescriptor | Class |
 | FileFilter | Interface |
@@ -1014,7 +1011,6 @@
 | ForkJoinTask<U> | Class, ParameterizedType |
 | ForkJoinTask<V> | Class, ParameterizedType |
 | ForkJoinTask<Void> | Class, ParameterizedType |
-| ForkJoinTask[] | Array |
 | ForkJoinWorkerThread | Class |
 | ForkJoinWorkerThreadFactory | Interface |
 | FormalTypeParameter | Class |
@@ -1706,6 +1702,7 @@
 | SortedMap<String,Charset> | Interface, ParameterizedType |
 | Specializer | Class |
 | SpeciesData | Class |
+| SpeciesData<> | Class |
 | Spliterator | GenericType, Interface, ParameterizedType |
 | Spliterator<Double> | Interface, ParameterizedType |
 | Spliterator<E> | Interface, ParameterizedType |
@@ -1787,7 +1784,6 @@
 | TemporalQuery<R> | Interface, ParameterizedType |
 | TemporalQuery<T> | Interface, ParameterizedType |
 | TemporalQuery<ZoneId> | Interface, ParameterizedType |
-| TemporalQuery[] | Array |
 | TemporalUnit | Interface |
 | TextPrinterParser | Class |
 | TextStyle | Class |

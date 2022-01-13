@@ -8,8 +8,8 @@ callArgs
 | KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | KotlinUser.kt:8:34:8:54 | InnerGeneric<String> | -3 |
 | KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | KotlinUser.kt:8:48:8:52 | hello | 0 |
 | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | OuterGeneric<Integer> | -3 |
-| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | -2 |
-| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric(...) | KotlinUser.kt:9:33:9:49 | InnerNotGeneric | -3 |
+| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:9:33:9:49 | InnerNotGeneric<> | -3 |
 | KotlinUser.kt:10:13:10:29 | new OuterNotGeneric(...) | KotlinUser.kt:10:13:10:29 | OuterNotGeneric | -3 |
 | KotlinUser.kt:10:31:10:52 | new InnerGeneric<String>(...) | KotlinUser.kt:10:13:10:29 | new OuterNotGeneric(...) | -2 |
 | KotlinUser.kt:10:31:10:52 | new InnerGeneric<String>(...) | KotlinUser.kt:10:31:10:52 | InnerGeneric<String> | -3 |
@@ -36,6 +36,7 @@ constructors
 | OuterGeneric.kt:3:8:21:1 | OuterGeneric |
 | OuterGeneric.kt:3:8:21:1 | OuterGeneric<Integer> |
 | OuterGeneric.kt:5:16:9:3 | InnerNotGeneric |
+| OuterGeneric.kt:5:16:9:3 | InnerNotGeneric<> |
 | OuterGeneric.kt:13:5:13:21 | InnerGeneric |
 | OuterGeneric.kt:13:5:13:21 | InnerGeneric<String> |
 | OuterGeneric.kt:15:5:15:25 | InnerGeneric |
@@ -45,6 +46,7 @@ constructors
 | OuterNotGeneric.kt:5:16:9:3 | InnerGeneric<String> |
 nestedTypes
 | OuterGeneric.kt:5:3:9:3 | InnerNotGeneric | OuterGeneric.kt:3:1:21:1 | OuterGeneric |
+| OuterGeneric.kt:5:3:9:3 | InnerNotGeneric<> | OuterGeneric.kt:3:1:21:1 | OuterGeneric<Integer> |
 | OuterGeneric.kt:11:3:19:3 | InnerGeneric | OuterGeneric.kt:3:1:21:1 | OuterGeneric |
 | OuterGeneric.kt:11:3:19:3 | InnerGeneric<String> | OuterGeneric.kt:3:1:21:1 | OuterGeneric<Integer> |
 | OuterNotGeneric.kt:5:3:9:3 | InnerGeneric | OuterNotGeneric.kt:3:1:11:1 | OuterNotGeneric |
