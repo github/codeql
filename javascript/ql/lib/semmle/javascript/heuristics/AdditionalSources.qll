@@ -54,22 +54,12 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
 }
 
 /**
- * The data read from a database.
- */
-class DatabaseAccessResultRemoteFlowSource extends HeuristicSource, RemoteFlowSource {
-  DatabaseAccessResultRemoteFlowSource() { exists(DatabaseAccess dba | this = dba.getAResult()) }
-
-  override string getSourceType() { result = "Database query result" }
-
-  override predicate isUserControlledObject() { any() }
-}
-
-/**
  * A remote flow source originating from a database access.
  */
 private class RemoteFlowSourceFromDBAccess extends RemoteFlowSource, HeuristicSource {
   RemoteFlowSourceFromDBAccess() {
-    this = ModelOutput::getASourceNode("database-access-result").getAUse()
+    this = ModelOutput::getASourceNode("database-access-result").getAUse() or
+    exists(DatabaseAccess dba | this = dba.getAResult())
   }
 
   override string getSourceType() { result = "Database access" }
