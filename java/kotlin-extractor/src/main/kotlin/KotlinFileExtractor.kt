@@ -577,6 +577,12 @@ open class KotlinFileExtractor(
     }
 
     fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
+
+        val visibility = p.visibility
+        if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+            return
+        }
+
         val id = useProperty(p, parentId)
         val locId = tw.getLocation(p)
         tw.writeKtProperties(id, p.name.asString())
