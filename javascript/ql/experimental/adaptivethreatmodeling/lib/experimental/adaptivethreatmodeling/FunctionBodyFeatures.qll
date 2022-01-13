@@ -7,22 +7,30 @@
 import javascript
 private import FeaturizationConfig
 
+/**
+ * Returns a tokenized representation of the AST node for use in the `enclosingFunctionBody`
+ * feature.
+ */
 string getTokenizedAstNode(ASTNode node) {
-  // NB: Unary and binary operator expressions e.g. -a, a + b and compound
-  // assignments e.g. a += b can be identified by the expression type.
+  // e.g. `x` -> "x"
   result = node.(Identifier).getName()
   or
   // Computed property accesses for which we can predetermine the property being accessed.
-  // NB: May alias with operators e.g. could have '+' as a property name.
+  // e.g. we'll featurize the `["date"]` part of `response["date"]` as `date`
   result = node.(IndexExpr).getPropertyName()
   or
   // We use `getRawValue` to give us distinct representations for `0xa`, `0xA`, and `10`.
+  // e.g. `0xa` -> "0xa", `0xA` -> "0xA", `10` -> "10"
   result = node.(NumberLiteral).getRawValue()
   or
-  // We use `getValue` rather than `getRawValue` so we assign `"a"` and `'a'` the same representation.
+  // We use `getValue` rather than `getRawValue` so we assign `"a"` and `'a'` the same
+  // representation.
+  // e.g. `"a"` -> "a", `'a'` -> "a", `true` -> "true"
   not node instanceof NumberLiteral and
   result = node.(Literal).getValue()
   or
+  // e.g. we'll featurize the `Hello ` and `!` parts of ``Hello ${user.name}!`` to "Hello " and "!"
+  // respectively
   result = node.(TemplateElement).getRawValue()
 }
 
