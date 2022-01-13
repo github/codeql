@@ -7,14 +7,14 @@ import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.path
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-class CommentExtractor(private val fileExtractor: KotlinSourceFileExtractor) {
-    private val file = fileExtractor.file
+class CommentExtractor(private val fileExtractor: KotlinSourceFileExtractor, private val file: IrFile) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
     private val ktFile = Psi2Ir().getKtFile(file)

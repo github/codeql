@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.ir.util.IdSignature
 class KotlinSourceFileExtractor(
     logger: FileLogger,
     tw: FileTrapWriter,
-    val file: IrFile,
+    val filePath: String,
     externalClassExtractor: ExternalClassExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
@@ -22,13 +22,13 @@ class KotlinSourceFileExtractor(
 ) :
   KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
 
-    fun extractFileContents(id: Label<DbFile>) {
+    fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         val locId = tw.getWholeFileLocation()
         val pkg = file.fqName.asString()
         val pkgId = extractPackage(pkg)
         tw.writeHasLocation(id, locId)
         tw.writeCupackage(id, pkgId)
         file.declarations.map { extractDeclaration(it) }
-        CommentExtractor(this).extract()
+        CommentExtractor(this, file).extract()
     }
 }

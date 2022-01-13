@@ -123,8 +123,8 @@ fun doFile(invocationTrapFile: String,
             // file information
             val sftw = tw.makeSourceFileTrapWriter(file, true)
             val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, file.path, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
-            val fileExtractor = KotlinSourceFileExtractor(logger, sftw, file, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
-            fileExtractor.extractFileContents(sftw.fileId)
+            val fileExtractor = KotlinSourceFileExtractor(logger, sftw, file.path, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            fileExtractor.extractFileContents(file, sftw.fileId)
             externalClassExtractor.extractExternalClasses()
         }
         if (checkTrapIdentical && trapFile.exists()) {

@@ -2513,7 +2513,7 @@ open class KotlinFileExtractor(
             }
 
             if (parent is IrFile) {
-                if (this is KotlinSourceFileExtractor && this.file == parent) {
+                if (this is KotlinSourceFileExtractor && this.filePath == parent.path) {
                     val fileId = extractFileClass(parent)
                     tw.writeEnclInReftype(id, fileId)
                 } else {
