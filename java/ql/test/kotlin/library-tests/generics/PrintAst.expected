@@ -164,13 +164,13 @@ generics.kt:
 #   44|         5: [BlockStmt] { ... }
 #   45|           0: [LocalVariableDeclStmt] var ...;
 #   45|             1: [LocalVariableDeclExpr] c
-#   45|               0: [ClassInstanceExpr] new Inner1<Integer,String,T1,T2>(...)
-#   45|                 -3: [TypeAccess] Inner1<Integer,String,T1,T2>
+#   45|               0: [ClassInstanceExpr] new Inner1<Integer,String>(...)
+#   45|                 -3: [TypeAccess] Inner1<Integer,String>
 #   45|                   0: [TypeAccess] Integer
 #   45|                   1: [TypeAccess] String
 #   45|                 -2: [ThisAccess] Outer.this
 #   45|                   0: [TypeAccess] Outer
-#   49|     4: [Class,GenericType,ParameterizedType] Nested1
+#   49|     5: [Class,GenericType,ParameterizedType] Nested1
 #-----|       -2: (Generic Parameters)
 #   49|         0: [TypeVariable] T3
 #   49|         1: [TypeVariable] T4
@@ -190,7 +190,7 @@ generics.kt:
 #   51|                 -3: [TypeAccess] Nested1<Integer,String>
 #   51|                   0: [TypeAccess] Integer
 #   51|                   1: [TypeAccess] String
-#   56|   21: [Class,GenericType,ParameterizedType] Class1
+#   56|   19: [Class,GenericType,ParameterizedType] Class1
 #-----|     -2: (Generic Parameters)
 #   56|       0: [TypeVariable] T1
 #   56|     1: [Constructor] Class1
@@ -223,8 +223,8 @@ generics.kt:
 #   61|         1: [ExprStmt] <Expr>;
 #   61|           0: [MethodAccess] fn2(...)
 #   61|             -2: [TypeAccess] String
-#   61|             -1: [ClassInstanceExpr] new Local<Integer,T2,T1>(...)
-#   61|               -3: [TypeAccess] Local<Integer,T2,T1>
+#   61|             -1: [ClassInstanceExpr] new Local<Integer>(...)
+#   61|               -3: [TypeAccess] Local<Integer>
 #   61|                 0: [TypeAccess] Integer
 #   61|             0: [VarAccess] t
 #   61|             1: [StringLiteral] 
