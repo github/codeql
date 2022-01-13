@@ -435,7 +435,7 @@ private module MsSql {
   API::Node pool() { result = mssqlClass("ConnectionPool") }
 
   /** A tagged template evaluated as a query. */
-  private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
+  private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode, DataFlow::SourceNode {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
@@ -443,8 +443,7 @@ private module MsSql {
     }
 
     override DataFlow::Node getAResult() {
-      PromiseFlow::loadStep(this.(DataFlow::SourceNode).getALocalUse(), result,
-        Promises::valueProp())
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
 
     override DataFlow::Node getAQueryArgument() {
@@ -524,31 +523,6 @@ private module Sequelize {
     }
   }
 
-  /** Gets an import of the `sequelize` module or one that re-exports it. */
-  API::Node sequelize() { result = API::moduleImport(["sequelize", "sequelize-typescript"]) }
-
-  /** Gets an expression that creates an instance of the `Sequelize` class. */
-  API::Node instance() {
-    result = [sequelize(), sequelize().getMember("Sequelize")].getInstance()
-    or
-    result = API::Node::ofType(["sequelize", "sequelize-typescript"], ["Sequelize", "default"])
-  }
-
-  /** A call to `Sequelize.query`. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = instance().getMember("query").getACall() }
-
-    override DataFlow::Node getAResult() {
-      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
-    }
-
-    override DataFlow::Node getAQueryArgument() {
-      result = this.getArgument(0)
-      or
-      result = this.getOptionArgument(0, "query")
-    }
-  }
-
   class SequelizeSink extends ModelInput::SinkModelCsv {
     override predicate row(string row) {
       row =
@@ -561,6 +535,12 @@ private module Sequelize {
           "sequelize;;Argument[0..].Member[username];credentials[user name]",
           "sequelize;;Argument[0..].Member[password];credentials[password]"
         ]
+    }
+  }
+
+  class SequelizeSource extends ModelInput::SourceModelCsv {
+    override predicate row(string row) {
+      row = "sequelize;Sequelize;Member[query].ReturnValue.Awaited;database-access-result"
     }
   }
 }
@@ -615,7 +595,8 @@ private module SpannerCsv {
 
     override predicate row(string row) {
       row =
-        "@google-cloud/spanner;" + spannerClass() + ";" + resultPath() + ";database-access-result"
+        "@google-cloud/spanner;" + this.spannerClass() + ";" + this.resultPath() +
+          ";database-access-result"
     }
   }
 }
