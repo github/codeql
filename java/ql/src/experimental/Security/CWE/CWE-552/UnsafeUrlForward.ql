@@ -19,7 +19,7 @@ import semmle.code.java.dataflow.NullGuards
 import DataFlow::PathGraph
 
 /**
- * Holds if `ma` is a call to a method that checks exact match of string, probably a whitelisted one.
+ * Holds if `ma` is a call to a method that checks exact match of string.
  */
 predicate isExactStringPathMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
@@ -27,7 +27,7 @@ predicate isExactStringPathMatch(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a call to a method that checks a path string, probably a whitelisted one.
+ * Holds if `ma` is a call to a method that checks a path string.
  */
 predicate isStringPathMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
@@ -36,8 +36,7 @@ predicate isStringPathMatch(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path, probably
- * a whitelisted one.
+ * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path.
  */
 predicate isFilePathMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypePath and
@@ -45,37 +44,36 @@ predicate isFilePathMatch(MethodAccess ma) {
 }
 
 /**
- * Holds if `ma` is a call to a method that checks an input doesn't match using the `!`
- * logical negation expression.
+ * Holds if `ma` protects against path traversal, by either:
+ * * looking for the literal `..`
+ * * performing path normalization
  */
-predicate checkNoPathMatch(MethodAccess ma) {
-  exists(LogNotExpr lne |
-    (isStringPathMatch(ma) or isFilePathMatch(ma)) and
-    lne.getExpr() = ma
-  )
-}
-
-/**
- * Holds if `ma` is a call to a method that checks special characters `..` used in path traversal.
- */
-predicate isPathTraversalCheck(MethodAccess ma) {
+predicate isPathTraversalCheck(MethodAccess ma, Expr checked) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
   ma.getMethod().hasName(["contains", "indexOf"]) and
-  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
+  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".." and
+  ma.(Guard).controls(checked.getBasicBlock(), false)
+  or
+  ma.getMethod() instanceof PathNormalizeMethod and
+  checked = ma
 }
 
 /**
- * Holds if `ma` is a call to a method that decodes a URL string or check URL encoding.
+ * Holds if `ma` protects against double URL encoding, by either:
+ * * looking for the literal `%`
+ * * performing URL decoding
  */
-predicate isPathDecoding(MethodAccess ma) {
+predicate isURLEncodingCheck(MethodAccess ma, Expr checked) {
   // Search the special character `%` used in url encoding
   ma.getMethod().getDeclaringType() instanceof TypeString and
   ma.getMethod().hasName(["contains", "indexOf"]) and
-  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%"
+  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%" and
+  ma.(Guard).controls(checked.getBasicBlock(), false)
   or
   // Call to `URLDecoder` assuming the implementation handles double encoding correctly
   ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
-  ma.getMethod().hasName("decode")
+  ma.getMethod().hasName("decode") and
+  checked = ma
 }
 
 /** The Java method `normalize` of `java.nio.file.Path`. */
@@ -86,89 +84,53 @@ class PathNormalizeMethod extends Method {
   }
 }
 
+private predicate isDisallowedWord(CompileTimeConstantExpr word) {
+  word.getStringValue().matches(["%WEB-INF%", "%META-INF%", "%..%"])
+}
+
+private predicate isAllowListCheck(MethodAccess ma) {
+  (isStringPathMatch(ma) or isFilePathMatch(ma)) and
+  not isDisallowedWord(ma.getAnArgument())
+}
+
+private predicate isDisallowListCheck(MethodAccess ma) {
+  (isStringPathMatch(ma) or isFilePathMatch(ma)) and
+  isDisallowedWord(ma.getAnArgument())
+}
+
 /**
- * Sanitizer to check the following scenarios in a web application:
+ * A guard that checks a path with the following methods:
  *  1. Exact string match
- *  2. String startsWith or match check with path traversal validation
- *  3. String not startsWith or not match check with decoding processing
- *  4. java.nio.file.Path startsWith check having path normalization
+ *  2. Path matches allowed values (needs to protect against path traversal)
+ *  3. Path matches disallowed values (needs to protect against URL encoding)
  */
 private class PathMatchGuard extends DataFlow::BarrierGuard {
   PathMatchGuard() {
-    isExactStringPathMatch(this)
-    or
-    isStringPathMatch(this) and
-    not checkNoPathMatch(this) and
-    exists(MethodAccess tma |
-      isPathTraversalCheck(tma) and
-      DataFlow::localExprFlow(this.(MethodAccess).getQualifier(), tma.getQualifier())
-    )
-    or
-    checkNoPathMatch(this) and
-    exists(MethodAccess dma |
-      isPathDecoding(dma) and
-      DataFlow::localExprFlow(dma, this.(MethodAccess).getQualifier())
-    )
-    or
-    isFilePathMatch(this) and
-    exists(MethodAccess pma |
-      pma.getMethod() instanceof PathNormalizeMethod and
-      DataFlow::localExprFlow(pma, this.(MethodAccess).getQualifier())
-    )
+    isExactStringPathMatch(this) or isStringPathMatch(this) or isFilePathMatch(this)
   }
 
   override predicate checks(Expr e, boolean branch) {
     e = this.(MethodAccess).getQualifier() and
     (
-      branch = true and not checkNoPathMatch(this)
+      isExactStringPathMatch(this) and
+      branch = true
       or
-      branch = false and checkNoPathMatch(this)
+      isAllowListCheck(this) and
+      exists(MethodAccess ma, Expr checked | isPathTraversalCheck(ma, checked) |
+        DataFlow::localExprFlow(checked, e)
+        or
+        ma.getParent*().(BinaryExpr) = this.(MethodAccess).getParent*()
+      ) and
+      branch = true
+      or
+      isDisallowListCheck(this) and
+      exists(MethodAccess ma, Expr checked | isURLEncodingCheck(ma, checked) |
+        DataFlow::localExprFlow(checked, e)
+        or
+        ma.getParent*().(BinaryExpr) = this.(MethodAccess).getParent*()
+      ) and
+      branch = false
     )
-  }
-}
-
-/**
- * Holds if `ma` is a call to a method that checks string content, which means an input string is not
- * blindly trusted and helps to reduce FPs.
- */
-predicate checkStringContent(MethodAccess ma, Expr expr) {
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod()
-      .hasName([
-          "charAt", "getBytes", "getChars", "length", "replace", "replaceAll", "replaceFirst",
-          "substring"
-        ]) and
-  expr = ma.getQualifier()
-  or
-  (
-    ma.getMethod().getDeclaringType() instanceof TypeStringBuffer or
-    ma.getMethod().getDeclaringType() instanceof TypeStringBuilder
-  ) and
-  expr = ma.getAnArgument()
-}
-
-private class StringOperationSanitizer extends DataFlow::Node {
-  StringOperationSanitizer() { exists(MethodAccess ma | checkStringContent(ma, this.asExpr())) }
-}
-
-private class NullOrEmptyCheckGuard extends DataFlow::BarrierGuard {
-  NullOrEmptyCheckGuard() {
-    this = nullGuard(_, _, _)
-    or
-    exists(MethodAccess ma |
-        cb.getCondition() = ma and
-      ma.getMethod().getDeclaringType() instanceof TypeString and
-      ma.getMethod().hasName("equals") and
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "" and
-      this = ma
-    )
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    exists(SsaVariable ssa | this = nullGuard(ssa, branch, true) and e = ssa.getAFirstUse())
-    or
-    e = this.(MethodAccess).getQualifier() and
-    branch = true
   }
 }
 
@@ -189,14 +151,10 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof UnsafeUrlForwardSanitizer or
-    node instanceof StringOperationSanitizer
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathMatchGuard or
-    guard instanceof NullOrEmptyCheckGuard
+    guard instanceof PathMatchGuard
   }
 
   override DataFlow::FlowFeature getAFeature() {

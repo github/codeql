@@ -80,7 +80,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 	// GOOD: Request dispatcher with path traversal check 
 	protected void doHead3(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path");		
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
 			request.getServletContext().getRequestDispatcher(path).include(request, response);
@@ -100,7 +100,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		}
 	}
 
-	// GOOD: Request dispatcher with negation check and path normalization
+	// BAD: Request dispatcher with negation check and path normalization, but without URL decoding
 	protected void doHead5(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
@@ -111,7 +111,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		}
 	}
 
-	// GOOD: Request dispatcher with path traversal check and url decoding
+	// GOOD: Request dispatcher with path traversal check and URL decoding
 	protected void doHead6(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
