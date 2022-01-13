@@ -27,15 +27,7 @@ private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
       // A feature containing natural language tokens from the function that encloses the endpoint in
       // the order that they appear in the source code.
       featureName = "enclosingFunctionBody" and
-      result =
-        strictconcat(string token, Location l |
-          FunctionBodyFeatures::bodyTokens(function, l, token)
-        |
-          token, " "
-          order by
-            l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-            l.getEndColumn(), token
-        )
+      result = FunctionBodyFeatures::getBodyTokensFeature(function)
     )
     or
     result =

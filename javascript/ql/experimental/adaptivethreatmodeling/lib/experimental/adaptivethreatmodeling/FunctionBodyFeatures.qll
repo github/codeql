@@ -30,8 +30,8 @@ string getTokenizedAstNode(ASTNode node) {
 pragma[inline]
 ASTNode getAnASTNodeToFeaturize(Function f) {
   result.getParent*() = f and
-  not result = f.getIdentifier() and
-  exists(getTokenizedAstNode(result))
+  // Don't featurize the function name as part of the function body tokens
+  not result = f.getIdentifier()
 }
 
 /**
@@ -39,6 +39,8 @@ ASTNode getAnASTNodeToFeaturize(Function f) {
  * can associate an endpoint to multiple functions, since functions can be nested in JavaScript.
  */
 Function getAFunctionForEndpoint(DataFlow::Node endpoint) {
+  // Performance optimization: Restrict the set of endpoints to the endpoints to featurize.
+  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   result = endpoint.getContainer().getEnclosingContainer*()
 }
 
@@ -107,20 +109,38 @@ Function getRepresentativeFunctionForEndpoint(DataFlow::Node endpoint) {
       )
 }
 
-/** Holds if `location` is the location of an AST node within the function `function` and `token` is a node attribute associated with that AST node. */
-predicate bodyTokens(Function function, Location location, string token) {
+/** Returns an AST node within the function `f` that an associated token feature. */
+ASTNode getAnASTNodeWithAFeature(Function f) {
   // Performance optimization: Restrict the set of functions to those containing an endpoint to featurize.
-  function =
-    getRepresentativeFunctionForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
+  f = getRepresentativeFunctionForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
+  result = getAnASTNodeToFeaturize(f)
+}
+
+/** Holds if `location` is the location of an AST node within the function `function` and `token` is a node attribute associated with that AST node. */
+string getBodyTokensFeature(Function function) {
   // Performance optimization: If a function has more than 256 body subtokens, then featurize it as absent. This
   // approximates the behavior of the classifer on non-generic body features where large body
   // features are replaced by the absent token.
   //
   // We count nodes instead of tokens because tokens are often not unique.
-  strictcount(getAnASTNodeToFeaturize(function)) <= 256 and
-  exists(ASTNode node |
+  strictcount(ASTNode node |
     node = getAnASTNodeToFeaturize(function) and
-    token = getTokenizedAstNode(node) and
-    location = node.getLocation()
-  )
+    exists(getTokenizedAstNode(node))
+  ) <= 256 and
+  result =
+    strictconcat(Location l, string token |
+      // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the
+      // same location featurizing to the same token. By using a nested exists, we take only unique
+      // (location, token) pairs.
+      exists(ASTNode node |
+        node = getAnASTNodeToFeaturize(function) and
+        token = getTokenizedAstNode(node) and
+        l = node.getLocation()
+      )
+    |
+      token, " "
+      order by
+        l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+        l.getEndColumn(), token
+    )
 }
