@@ -1,15 +1,15 @@
 /**
  * For internal use only.
  *
- * @name NoSQL database query built from user-controlled sources (boosted)
+ * @name NoSQL database query built from user-controlled sources (experimental)
  * @description Building a database query from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 8.8
- * @id adaptive-threat-modeling/js/nosql-injection
- * @tags experimental experimental/atm security
+ * @id js/ml-powered/nosql-injection
+ * @tags experimental security
  */
 
 import ATM::ResultsInfo

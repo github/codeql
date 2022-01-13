@@ -1,15 +1,15 @@
 /**
  * For internal use only.
  *
- * @name Uncontrolled data used in path expression (boosted)
+ * @name Uncontrolled data used in path expression (experimental)
  * @description Accessing paths influenced by users can allow an attacker to access
  *              unexpected resources.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 7.5
- * @id adaptive-threat-modeling/js/path-injection
- * @tags experimental experimental/atm security
+ * @id js/ml-powered/path-injection
+ * @tags experimental security
  */
 
 import ATM::ResultsInfo
