@@ -359,6 +359,9 @@ private int lengthInBase10(float f) {
   result = f.log10().floor() + 1
 }
 
+pragma[nomagic]
+private predicate isPointerTypeWithBase(Type base, PointerType pt) { base = pt.getBaseType() }
+
 /**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
@@ -910,19 +913,19 @@ class FormatLiteral extends Literal {
       (
         conv = ["s", "S"] and
         len = "h" and
-        result.(PointerType).getBaseType() instanceof PlainCharType
+        isPointerTypeWithBase(any(PlainCharType plainCharType), result)
         or
         conv = ["s", "S"] and
         len = ["l", "w"] and
-        result.(PointerType).getBaseType() = this.getWideCharType()
+        isPointerTypeWithBase(this.getWideCharType(), result)
         or
         conv = "s" and
         (len != "l" and len != "w" and len != "h") and
-        result.(PointerType).getBaseType() = this.getDefaultCharType()
+        isPointerTypeWithBase(this.getDefaultCharType(), result)
         or
         conv = "S" and
         (len != "l" and len != "w" and len != "h") and
-        result.(PointerType).getBaseType() = this.getNonDefaultCharType()
+        isPointerTypeWithBase(this.getNonDefaultCharType(), result)
       )
     )
   }
