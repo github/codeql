@@ -628,7 +628,13 @@ class X {
                             params.addAll(parameters)
                             params
                         }
-        val paramTypeIds = allParams.joinToString(separator = ",") { "{${useType(erase(it.type)).javaResult.id}}" }
+        val getIdForFunctionLabel = { it: IrValueParameter ->
+            // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
+            // those without type parameters are named for the generic type.
+            val maybeErased = if (functionTypeParameters.isEmpty()) it.type else erase(it.type)
+            "{${useType(maybeErased).javaResult.id}}"
+        }
+        val paramTypeIds = allParams.joinToString(separator = ",", transform = getIdForFunctionLabel)
         val labelReturnType = if (name == "<init>") pluginContext.irBuiltIns.unitType else erase(returnType)
         val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
         // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
