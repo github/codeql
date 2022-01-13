@@ -120,18 +120,19 @@ open class KotlinUsesExtractor(
         val clsFile = cls.fileOrNull
 
         if (isExternalDeclaration(cls) || clsFile == null) {
-            val newTrapWriter = tw.makeFileTrapWriter(getIrClassBinaryPath(cls), false)
+            val filePath = getIrClassBinaryPath(cls)
+            val newTrapWriter = tw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-            return KotlinFileExtractor(newLogger, newTrapWriter, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
         }
 
-        if (this is KotlinSourceFileExtractor && this.filePath == clsFile.path) {
+        if (this is KotlinFileExtractor && this.filePath == clsFile.path) {
             return this
         }
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-        return KotlinSourceFileExtractor(newLogger, newTrapWriter, clsFile.path, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
 
     // The Kotlin compiler internal representation of Outer<T>.Inner<S>.InnerInner<R> is InnerInner<R, S, T>. This function returns just `R`.

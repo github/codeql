@@ -28,6 +28,7 @@ import java.util.*
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
+    val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalClassExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
@@ -2524,7 +2525,7 @@ open class KotlinFileExtractor(
             }
 
             if (parent is IrFile) {
-                if (this is KotlinSourceFileExtractor && this.filePath == parent.path) {
+                if (this.filePath == parent.path) {
                     val fileId = extractFileClass(parent)
                     tw.writeEnclInReftype(id, fileId)
                 } else {

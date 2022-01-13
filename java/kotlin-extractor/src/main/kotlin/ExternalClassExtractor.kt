@@ -43,7 +43,7 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
                                 val binaryPath = getIrClassBinaryPath(irClass)
                                 val ftw = tw.makeFileTrapWriter(binaryPath, true)
 
-                                val fileExtractor = KotlinFileExtractor(logger, ftw, manager, this, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                                val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
                                 fileExtractor.extractClassSource(irClass)
                             }
                         }
