@@ -15,6 +15,7 @@ import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.controlflow.Guards
+import semmle.code.java.dataflow.NullGuards
 import DataFlow::PathGraph
 
 /**
@@ -92,8 +93,8 @@ class PathNormalizeMethod extends Method {
  *  3. String not startsWith or not match check with decoding processing
  *  4. java.nio.file.Path startsWith check having path normalization
  */
-private class PathMatchSanitizer extends DataFlow::BarrierGuard {
-  PathMatchSanitizer() {
+private class PathMatchGuard extends DataFlow::BarrierGuard {
+  PathMatchGuard() {
     isExactStringPathMatch(this)
     or
     isStringPathMatch(this) and
@@ -150,29 +151,25 @@ private class StringOperationSanitizer extends DataFlow::Node {
   StringOperationSanitizer() { exists(MethodAccess ma | checkStringContent(ma, this.asExpr())) }
 }
 
-/**
- * Holds if `expr` is an expression returned from null or empty string check.
- */
-predicate isNullOrEmptyCheck(Expr expr) {
-  exists(ConditionBlock cb, ReturnStmt rt |
-    cb.controls(rt.getBasicBlock(), true) and
-    (
-      cb.getCondition().(EQExpr).getAnOperand() instanceof NullLiteral // if (path == null)
-      or
-      // if (path.equals(""))
-      exists(MethodAccess ma |
+private class NullOrEmptyCheckGuard extends DataFlow::BarrierGuard {
+  NullOrEmptyCheckGuard() {
+    this = nullGuard(_, _, _)
+    or
+    exists(MethodAccess ma |
         cb.getCondition() = ma and
-        ma.getMethod().getDeclaringType() instanceof TypeString and
-        ma.getMethod().hasName("equals") and
-        ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ""
-      )
-    ) and
-    expr.getParent+() = rt
-  )
-}
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getMethod().hasName("equals") and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "" and
+      this = ma
+    )
+  }
 
-private class NullOrEmptyCheckSanitizer extends DataFlow::Node {
-  NullOrEmptyCheckSanitizer() { isNullOrEmptyCheck(this.asExpr()) }
+  override predicate checks(Expr e, boolean branch) {
+    exists(SsaVariable ssa | this = nullGuard(ssa, branch, true) and e = ssa.getAFirstUse())
+    or
+    e = this.(MethodAccess).getQualifier() and
+    branch = true
+  }
 }
 
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
@@ -194,12 +191,12 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     node instanceof UnsafeUrlForwardSanitizer or
-    node instanceof StringOperationSanitizer or
-    node instanceof NullOrEmptyCheckSanitizer
+    node instanceof StringOperationSanitizer
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathMatchSanitizer
+    guard instanceof PathMatchGuard or
+    guard instanceof NullOrEmptyCheckGuard
   }
 
   override DataFlow::FlowFeature getAFeature() {
