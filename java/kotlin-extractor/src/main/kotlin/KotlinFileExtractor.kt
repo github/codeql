@@ -2525,12 +2525,11 @@ open class KotlinFileExtractor(
             }
 
             if (parent is IrFile) {
-                if (this.filePath == parent.path) {
-                    val fileId = extractFileClass(parent)
-                    tw.writeEnclInReftype(id, fileId)
-                } else {
+                if (this.filePath != parent.path) {
                     logger.warn(Severity.ErrorSevere, "Unexpected file parent found")
                 }
+                val fileId = extractFileClass(parent)
+                tw.writeEnclInReftype(id, fileId)
                 break
             }
 
