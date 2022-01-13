@@ -72,7 +72,7 @@ class MismatchedContainerModification extends MethodAccess {
     |
       this.getCallee()
           .getDeclaringType()
-          .getASupertype*()
+          .getASourceSupertype*()
           .getSourceDeclaration()
           .hasQualifiedName(package, type) and
       this.getCallee().getParameter(i).getType() instanceof TypeObject
