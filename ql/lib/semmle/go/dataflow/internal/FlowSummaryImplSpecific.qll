@@ -8,6 +8,7 @@ private import DataFlowUtil
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.go.dataflow.ExternalFlow
+private import DataFlowImplCommon
 
 private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
@@ -65,6 +66,8 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
+  exists(int pos | parseReturn(c, pos) and result = SummaryComponent::return(getReturnKind(pos)))
+  or
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
 }
 
@@ -93,6 +96,12 @@ private string getContentSpecificCsv(Content c) {
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
 }
+
+/** Holds if input specification component `c` needs a reference. */
+predicate inputNeedsReferenceSpecific(string c) { none() }
+
+/** Holds if output specification component `c` needs a reference. */
+predicate outputNeedsReferenceSpecific(string c) { parseReturn(c, _) }
 
 private newtype TSourceOrSinkElement =
   TEntityElement(Entity e) or
@@ -144,7 +153,7 @@ predicate sinkElement(SourceOrSinkElement e, string input, string kind) {
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
-ReturnKind getReturnValueKind() { any() }
+ReturnKind getReturnValueKind() { result = getReturnKind(0) }
 
 private newtype TInterpretNode =
   TElement(SourceOrSinkElement n) or
@@ -191,6 +200,10 @@ class InterpretNode extends TInterpretNode {
 /** Provides additional sink specification logic required for annotations. */
 pragma[inline]
 predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(int pos | node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnKind(pos))) |
+    parseReturn(c, pos)
+  )
+  or
   exists(Node n, SourceOrSinkElement e |
     n = node.asNode() and
     e = mid.asElement()
@@ -206,9 +219,32 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
 /** Provides additional source specification logic required for annotations. */
 pragma[inline]
 predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
+  exists(int pos, ReturnNodeExt ret |
+    parseReturn(c, pos) and
+    ret = n.asNode() and
+    ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
+    mid.asCallable() = getNodeEnclosingCallable(ret)
+  )
+  or
   exists(DataFlow::Write fw, Field f |
     c = "" and
     f = mid.asElement().asEntity() and
     fw.writesField(_, f, n.asNode())
+  )
+}
+
+/** Holds if specification component `c` parses as return value `n`. */
+predicate parseReturn(string c, int n) {
+  External::specSplit(_, c, _) and
+  (
+    c = "ReturnValue" and n = 0
+    or
+    c.regexpCapture("ReturnValue\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("ReturnValue\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
   )
 }
