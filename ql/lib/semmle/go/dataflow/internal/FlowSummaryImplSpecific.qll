@@ -95,6 +95,12 @@ private string getContentSpecificCsv(Content c) {
 /** Gets the textual representation of the content in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  or
+  exists(ReturnKind rk, int n | n = rk.getIndex() |
+    sc = TReturnSummaryComponent(rk) and
+    result = "ReturnValue[" + n + "]" and
+    n != 0
+  )
 }
 
 /** Holds if input specification component `c` needs a reference. */
