@@ -67,13 +67,14 @@ open class KotlinUsesExtractor(
         }
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getLabelFor(label)
-        val fileId = tw.mkFileId(f.path, false)
-        val locId = tw.getWholeFileLocation(fileId)
-        val pkgId = extractPackage(pkg)
-        tw.writeClasses(id, jvmName, pkgId, id)
-        tw.writeFile_class(id)
-        tw.writeHasLocation(id, locId)
+        val id: Label<DbClass> = tw.getLabelFor(label, {
+            val fileId = tw.mkFileId(f.path, false)
+            val locId = tw.getWholeFileLocation(fileId)
+            val pkgId = extractPackage(pkg)
+            tw.writeClasses(it, jvmName, pkgId, it)
+            tw.writeFile_class(it)
+            tw.writeHasLocation(it, locId)
+        })
         return id
     }
 
