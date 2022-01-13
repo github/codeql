@@ -1,6 +1,6 @@
 import csharp
 
 query predicate missingPrimaryQlClass(Element e) {
-  e.getAPrimaryQlClass() = "???" and
+  not exists(e.getAPrimaryQlClass()) and
   e.fromSource()
 }
