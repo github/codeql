@@ -8,8 +8,7 @@ import javascript
 private import FeaturizationConfig
 
 /**
- * Returns a tokenized representation of the AST node for use in the `enclosingFunctionBody`
- * feature.
+ * Gets a tokenized representation of the AST node for use in the `enclosingFunctionBody` feature.
  */
 string getTokenizedAstNode(ASTNode node) {
   // e.g. `x` -> "x"
@@ -34,7 +33,7 @@ string getTokenizedAstNode(ASTNode node) {
   result = node.(TemplateElement).getRawValue()
 }
 
-/** Returns an AST node within the function `f` that we should featurize. */
+/** Gets an AST node within the function `f` that we should featurize. */
 pragma[inline]
 ASTNode getAnASTNodeToFeaturize(Function f) {
   result.getParent*() = f and
@@ -43,10 +42,14 @@ ASTNode getAnASTNodeToFeaturize(Function f) {
 }
 
 /**
- * Get a function containing the endpoint that is suitable for featurization. In general, this
- * can associate an endpoint to multiple functions, since functions can be nested in JavaScript.
+ * Gets a function that contains the endpoint.
+ *
+ * This can have multiple results, since functions can be nested in JavaScript. The predicate
+ * `getRepresentativeFunctionForEndpoint` selects a single result from this predicate to use to
+ * construct the `enclosingFunctionBody` feature for that endpoint. Generally you will want to use
+ * `getRepresentativeFunctionForEndpoint` instead of this predicate.
  */
-Function getAFunctionForEndpoint(DataFlow::Node endpoint) {
+private Function getAFunctionForEndpoint(DataFlow::Node endpoint) {
   // Performance optimization: Restrict the set of endpoints to the endpoints to featurize.
   endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
   result = endpoint.getContainer().getEnclosingContainer*()
@@ -124,11 +127,14 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
   result = getAnASTNodeToFeaturize(f)
 }
 
-/** Holds if `location` is the location of an AST node within the function `function` and `token` is a node attribute associated with that AST node. */
+/**
+ * Returns a featurized representation of the function that can be used to populate the
+ * `enclosingFunctionBody` feature for an endpoint.
+ */
 string getBodyTokensFeature(Function function) {
-  // Performance optimization: If a function has more than 256 body subtokens, then featurize it as absent. This
-  // approximates the behavior of the classifer on non-generic body features where large body
-  // features are replaced by the absent token.
+  // Performance optimization: If a function has more than 256 body subtokens, then featurize it as
+  // absent. This approximates the behavior of the classifer on non-generic body features where
+  // large body features are replaced by the absent token.
   //
   // We count nodes instead of tokens because tokens are often not unique.
   strictcount(ASTNode node |
