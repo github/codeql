@@ -1,6 +1,5 @@
 package com.github.codeql
 
-import com.github.codeql.comments.CommentExtractor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
@@ -21,14 +20,4 @@ class KotlinSourceFileExtractor(
     genericSpecialisationsExtracted: MutableSet<String>
 ) :
   KotlinFileExtractor(logger, tw, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
-
-    fun extractFileContents(file: IrFile, id: Label<DbFile>) {
-        val locId = tw.getWholeFileLocation()
-        val pkg = file.fqName.asString()
-        val pkgId = extractPackage(pkg)
-        tw.writeHasLocation(id, locId)
-        tw.writeCupackage(id, pkgId)
-        file.declarations.map { extractDeclaration(it) }
-        CommentExtractor(this, file).extract()
-    }
 }

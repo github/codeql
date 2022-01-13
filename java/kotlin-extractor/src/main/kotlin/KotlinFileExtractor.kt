@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.TypeSubstitution
 import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.substituteTypeAndArguments
@@ -33,6 +34,16 @@ open class KotlinFileExtractor(
     pluginContext: IrPluginContext,
     genericSpecialisationsExtracted: MutableSet<String>
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
+
+    fun extractFileContents(file: IrFile, id: Label<DbFile>) {
+        val locId = tw.getWholeFileLocation()
+        val pkg = file.fqName.asString()
+        val pkgId = extractPackage(pkg)
+        tw.writeHasLocation(id, locId)
+        tw.writeCupackage(id, pkgId)
+        file.declarations.map { extractDeclaration(it) }
+        CommentExtractor(this, file).extract()
+    }
 
     fun extractDeclaration(declaration: IrDeclaration) {
         when (declaration) {

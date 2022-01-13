@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-class CommentExtractor(private val fileExtractor: KotlinSourceFileExtractor, private val file: IrFile) {
+class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
     private val ktFile = Psi2Ir().getKtFile(file)
