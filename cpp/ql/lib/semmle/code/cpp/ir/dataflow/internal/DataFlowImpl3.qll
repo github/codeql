@@ -54,7 +54,7 @@ abstract class Configuration extends string {
   /**
    * Holds if `source` is a relevant data flow source.
    */
-  abstract predicate isSource(Node source);
+  predicate isSource(Node source) { none() }
 
   /**
    * Holds if `source` is a relevant data flow source with the given initial
@@ -65,7 +65,7 @@ abstract class Configuration extends string {
   /**
    * Holds if `sink` is a relevant data flow sink.
    */
-  abstract predicate isSink(Node sink);
+  predicate isSink(Node sink) { none() }
 
   /**
    * Holds if `sink` is a relevant data flow sink accepting `state`.
@@ -308,16 +308,18 @@ private class RetNodeEx extends NodeEx {
 private predicate inBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
-    config.isBarrierIn(n) and
-    (config.isSource(n) or config.isSource(n, _))
+    config.isBarrierIn(n)
+  |
+    config.isSource(n) or config.isSource(n, _)
   )
 }
 
 private predicate outBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
-    config.isBarrierOut(n) and
-    (config.isSink(n) or config.isSink(n, _))
+    config.isBarrierOut(n)
+  |
+    config.isSink(n) or config.isSink(n, _)
   )
 }
 
@@ -1586,9 +1588,11 @@ private module Stage2 {
   pragma[nomagic]
   predicate revFlow(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(
     NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
@@ -2349,9 +2353,11 @@ private module Stage3 {
   pragma[nomagic]
   predicate revFlow(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(
     NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
@@ -3175,9 +3181,11 @@ private module Stage4 {
   pragma[nomagic]
   predicate revFlow(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
 
+  // use an alias as a workaround for bad functionality-induced joins
   pragma[nomagic]
   predicate revFlowAlias(
     NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
@@ -3990,14 +3998,10 @@ private predicate pathIntoArg(
   PathNodeMid mid, ParameterPosition ppos, FlowState state, CallContext cc, DataFlowCall call,
   AccessPath ap, AccessPathApprox apa, Configuration config
 ) {
-  exists(ArgNode arg, ArgumentPosition apos |
-    arg = mid.getNodeEx().asNode() and
-    state = mid.getState() and
-    cc = mid.getCallContext() and
-    arg.argumentOf(call, apos) and
-    ap = mid.getAp() and
+  exists(ArgNodeEx arg, ArgumentPosition apos |
+    pathNode(mid, arg, state, cc, _, ap, config, _) and
+    arg.asNode().(ArgNode).argumentOf(call, apos) and
     apa = ap.getApprox() and
-    config = mid.getConfiguration() and
     parameterMatch(ppos, apos)
   )
 }
@@ -4063,13 +4067,8 @@ private predicate paramFlowsThrough(
   AccessPathApprox apa, Configuration config
 ) {
   exists(PathNodeMid mid, RetNodeEx ret, ParameterPosition pos |
-    mid.getNodeEx() = ret and
+    pathNode(mid, ret, state, cc, sc, ap, config, _) and
     kind = ret.getKind() and
-    state = mid.getState() and
-    cc = mid.getCallContext() and
-    sc = mid.getSummaryCtx() and
-    config = mid.getConfiguration() and
-    ap = mid.getAp() and
     apa = ap.getApprox() and
     pos = sc.getParameterPos() and
     // we don't expect a parameter to return stored in itself, unless explicitly allowed
@@ -4150,13 +4149,8 @@ private module Subpaths {
   ) {
     exists(SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind, RetNodeEx retnode |
       subpaths02(arg, par, sc, innercc, kind, out, sout, apout) and
-      ret.getNodeEx() = retnode and
-      kind = retnode.getKind() and
-      innercc = ret.getCallContext() and
-      sc = ret.getSummaryCtx() and
-      ret.getConfiguration() = unbindConf(getPathNodeConf(arg)) and
-      sout = ret.getState() and
-      apout = ret.getAp()
+      pathNode(ret, retnode, sout, innercc, sc, apout, unbindConf(getPathNodeConf(arg)), _) and
+      kind = retnode.getKind()
     )
   }
 
