@@ -120,16 +120,27 @@ class ClassList extends TClassList {
     this.getTail().contains(cls)
   }
 
+  pragma[nomagic]
   ClassObjectInternal findDeclaringClass(string name) {
-    exists(ClassDecl head | head = this.getHead().getClassDeclaration() |
-      if head.declaresAttribute(name)
-      then result = this.getHead()
-      else result = this.getTail().findDeclaringClass(name)
+    exists(ClassObjectInternal head, ClassList tail, ClassDecl decl |
+      this = Cons(head, tail) and decl = head.getClassDeclaration()
+    |
+      if decl.declaresAttribute(name) then result = head else result = tail.findDeclaringClass(name)
+    )
+  }
+
+  pragma[noinline]
+  private ClassObjectInternal findDeclaringClassAttribute(string name) {
+    result = findDeclaringClass(name) and
+    (
+      exists(any(Builtin b).getMember(name))
+      or
+      declaredAttributeVar(_, name, _)
     )
   }
 
   predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-    exists(ClassObjectInternal decl | decl = this.findDeclaringClass(name) |
+    exists(ClassObjectInternal decl | decl = this.findDeclaringClassAttribute(name) |
       Types::declaredAttribute(decl, name, value, origin)
     )
   }
@@ -252,6 +263,24 @@ private class ClassListList extends TClassListList {
     result = this.getTail().getItem(n - 1)
   }
 
+  /**
+   * Same as
+   *
+   * ```ql
+   * result = this.getItem(n) and n = this.length() - 1
+   * ```
+   *
+   * but avoids non-linear recursion.
+   */
+  ClassList getLastItem(int n) {
+    n = 0 and this = ConsList(result, EmptyList())
+    or
+    exists(ClassListList tail |
+      this = ConsList(_, tail) and
+      result = tail.getLastItem(n - 1)
+    )
+  }
+
   private ClassObjectInternal getAHead() {
     result = this.getHead().getHead()
     or
@@ -274,8 +303,7 @@ private class ClassListList extends TClassListList {
     ClassObjectInternal cls, ClassList removed_head, ClassListList removed_tail, int n
   ) {
     cls = this.bestMergeCandidate() and
-    n = this.length() - 1 and
-    removed_head = this.getItem(n).removeHead(cls) and
+    removed_head = this.getLastItem(n).removeHead(cls) and
     removed_tail = EmptyList()
     or
     removed_head = this.removedClassPartsCons1(cls, removed_tail, n).removeHead(cls)
@@ -305,33 +333,33 @@ private class ClassListList extends TClassListList {
   }
 
   pragma[nomagic]
-  private predicate legalMergeCandidateNonEmpty(ClassObjectInternal cls, int n, ClassList cl, int j) {
-    this.legalMergeCandidate(cls, n + 1) and
-    cl = this.getItem(n) and
-    j = cl.length()
+  private predicate legalMergeCandidateNonEmpty(
+    ClassObjectInternal cls, ClassListList remainingList, ClassList remaining
+  ) {
+    this.legalMergeCandidate(cls, ConsList(Cons(_, remaining), remainingList))
     or
-    this.legalMergeCandidateNonEmpty(cls, n, cl, j + 1) and
-    j >= 1 and
-    cls != cl.getItem(j)
-  }
-
-  private predicate legalMergeCandidate(ClassObjectInternal cls, int n) {
-    cls = this.getAHead() and n = this.length()
-    or
-    this.legalMergeCandidate(cls, n + 1) and
-    this.getItem(n) = Empty()
-    or
-    this.legalMergeCandidateNonEmpty(cls, n, _, 1)
-  }
-
-  predicate legalMergeCandidate(ClassObjectInternal cls) { this.legalMergeCandidate(cls, 0) }
-
-  predicate illegalMergeCandidate(ClassObjectInternal cls) {
-    exists(ClassList cl, int j |
-      this.legalMergeCandidateNonEmpty(cls, _, cl, j + 1) and
-      j >= 1 and
-      cls = cl.getItem(j)
+    exists(ClassObjectInternal head |
+      this.legalMergeCandidateNonEmpty(cls, remainingList, Cons(head, remaining)) and
+      cls != head
     )
+  }
+
+  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remaining) {
+    cls = this.getAHead() and remaining = this
+    or
+    this.legalMergeCandidate(cls, ConsList(Empty(), remaining))
+    or
+    this.legalMergeCandidateNonEmpty(cls, remaining, Empty())
+  }
+
+  pragma[noinline]
+  predicate legalMergeCandidate(ClassObjectInternal cls) {
+    this.legalMergeCandidate(cls, EmptyList())
+  }
+
+  pragma[noinline]
+  predicate illegalMergeCandidate(ClassObjectInternal cls) {
+    this.legalMergeCandidateNonEmpty(cls, _, Cons(cls, _))
   }
 
   ClassObjectInternal bestMergeCandidate(int n) {
@@ -342,6 +370,7 @@ private class ClassListList extends TClassListList {
     )
   }
 
+  pragma[noinline]
   ClassObjectInternal bestMergeCandidate() { result = this.bestMergeCandidate(0) }
 
   /**
