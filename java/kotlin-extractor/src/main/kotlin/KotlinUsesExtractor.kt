@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.substituteTypeAndArguments
 import com.github.codeql.utils.substituteTypeArguments
+import com.github.codeql.utils.withQuestionMark
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
@@ -157,6 +158,13 @@ open class KotlinUsesExtractor(
     // `getTypeParametersInScope(QueryClass)` = `[C, D, A, B]`.
     fun getTypeParametersInScope(c: IrClass) =
         parentsWithTypeParametersInScope(c).mapNotNull({ (it as? IrClass)?.typeParameters }).flatten()
+
+    // Returns a map from `c`'s type variables in scope to type arguments `argsIncludingOuterClasses`.
+    // Hack for the time being: the substituted types are always nullable, to prevent downstream code
+    // from replacing a generic parameter by a primitive. As and when we extract Kotlin types we will
+    // need to track this information in more detail.
+    fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
+        getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses.map { it.withQuestionMark(true) }).toMap()
 
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F> is InnerInner<E, F, C, D, A, B>. This function returns [A, B, C, D, E, F].
     fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
@@ -652,9 +660,7 @@ class X {
             if (notNullArgs.isEmpty())
                 null
             else
-                enclosingClass?.let { notNullClass ->
-                    getTypeParametersInScope(notNullClass).map({ it.symbol }).zip(notNullArgs).toMap()
-                }
+                enclosingClass?.let { notNullClass -> makeTypeGenericSubstitutionMap(notNullClass, notNullArgs) }
         }
         val getIdForFunctionLabel = { it: IrValueParameter ->
             // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
@@ -664,7 +670,11 @@ class X {
             "{${useType(maybeErased).javaResult.id}}"
         }
         val paramTypeIds = allParams.joinToString(separator = ",", transform = getIdForFunctionLabel)
-        val labelReturnType = if (name == "<init>") pluginContext.irBuiltIns.unitType else erase(returnType)
+        val labelReturnType =
+            if (name == "<init>")
+                pluginContext.irBuiltIns.unitType
+            else
+                erase(returnType.substituteTypeAndArguments(substitutionMap, TypeContext.RETURN, pluginContext))
         val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
         // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
         // Comments in that extractor indicates it didn't want the label of the callable to clash with the raw

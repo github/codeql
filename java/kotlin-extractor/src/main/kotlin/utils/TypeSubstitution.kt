@@ -180,4 +180,15 @@ fun IrClass.toRawType(): IrType {
         result
 }
 
+fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
+    when(this) {
+        is IrStarProjection -> this
+        is IrTypeProjection ->
+            this.type.let { when(it) {
+                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.withHasQuestionMark(b), this.variance)
+                else -> this
+            }}
+        else -> this
+    }
+
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType

@@ -203,7 +203,7 @@ open class KotlinFileExtractor(
             when (argsIncludingOuterClasses) {
                 null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
                 else -> {
-                    getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses).toMap().let {
+                    makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
                         { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
                             x.substituteTypeAndArguments(
                                 it,
