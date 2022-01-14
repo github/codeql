@@ -82,6 +82,12 @@ library class StrListParent extends StrListParent_ { }
 /** Internal implementation class */
 library class ExprParent extends ExprParent_ { }
 
+/** Internal implementation class */
+library class PatternListParent extends PatternListParent_ { }
+
+/** Internal implementation class */
+library class PatternParent extends PatternParent_ { }
+
 library class DictItem extends DictItem_, AstNode {
   override string toString() { result = DictItem_.super.toString() }
 
@@ -161,6 +167,8 @@ class ComprehensionList extends ComprehensionList_ { }
 class ExprList extends ExprList_ {
   /* syntax: Expr, ... */
 }
+
+class PatternList extends PatternList_ { }
 
 library class DictItemList extends DictItemList_ { }
 

@@ -718,18 +718,11 @@ class FormattedValue extends FormattedValue_ {
   }
 }
 
-/* Pattern expressions for the match statement */
-/** A capture pattern in a match statement */
-class MatchCapturePattern extends MatchCapturePattern_ {
-  /* syntax: varname */
-  override Expr getASubExpression() { result = this.getVariable() }
-
-  /** Gets the variable that is bound by this capture pattern */
-  Name getVar() { result = this.getVariable() }
+/** A guard in a case statement */
+class Guard extends Guard_ {
+  /* syntax: if Expr */
+  override Expr getASubExpression() { result = this.getTest() }
 }
-
-/** A sequence pattern in a match statement */
-class MatchSequencePattern extends MatchSequencePattern_ { }
 
 /* Expression Contexts */
 /** A context in which an expression used */

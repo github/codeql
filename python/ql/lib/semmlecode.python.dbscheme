@@ -232,7 +232,7 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Call.named_args = 4, dict_item_list */
 
 /* <Field> Case.location = 0, location */
-/* <Field> Case.pattern = 1, expr */
+/* <Field> Case.pattern = 1, pattern */
 /* <Field> Case.guard = 2, expr */
 /* <Field> Case.body = 3, stmt_list */
 
@@ -386,13 +386,13 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> ListComp.generators = 4, comprehension_list */
 /* <Field> ListComp.elt = 5, expr */
 
-/* <Field> Match.location = 0, location */
-/* <Field> Match.subject = 1, expr */
-/* <Field> Match.cases = 2, stmt_list */
+/* <Field> MatchStmt.location = 0, location */
+/* <Field> MatchStmt.subject = 1, expr */
+/* <Field> MatchStmt.cases = 2, stmt_list */
 
 /* <Field> MatchAsPattern.location = 0, location */
 /* <Field> MatchAsPattern.parenthesised = 1, bool */
-/* <Field> MatchAsPattern.pattern = 2, expr */
+/* <Field> MatchAsPattern.pattern = 2, pattern */
 /* <Field> MatchAsPattern.alias = 3, expr */
 
 /* <Field> MatchCapturePattern.location = 0, location */
@@ -403,42 +403,46 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> MatchClassPattern.parenthesised = 1, bool */
 /* <Field> MatchClassPattern.class = 2, expr */
 /* <Field> MatchClassPattern.class_name = 3, expr_list */
-/* <Field> MatchClassPattern.positional = 4, expr_list */
-/* <Field> MatchClassPattern.keyword = 5, expr_list */
+/* <Field> MatchClassPattern.positional = 4, pattern_list */
+/* <Field> MatchClassPattern.keyword = 5, pattern_list */
 
 /* <Field> MatchDoubleStarPattern.location = 0, location */
 /* <Field> MatchDoubleStarPattern.parenthesised = 1, bool */
-/* <Field> MatchDoubleStarPattern.target = 2, expr */
+/* <Field> MatchDoubleStarPattern.target = 2, pattern */
 
 /* <Field> MatchKeyValuePattern.location = 0, location */
 /* <Field> MatchKeyValuePattern.parenthesised = 1, bool */
-/* <Field> MatchKeyValuePattern.key = 2, expr */
-/* <Field> MatchKeyValuePattern.value = 3, expr */
+/* <Field> MatchKeyValuePattern.key = 2, pattern */
+/* <Field> MatchKeyValuePattern.value = 3, pattern */
 
 /* <Field> MatchKeywordPattern.location = 0, location */
 /* <Field> MatchKeywordPattern.parenthesised = 1, bool */
 /* <Field> MatchKeywordPattern.attribute = 2, expr */
-/* <Field> MatchKeywordPattern.pattern = 3, expr */
+/* <Field> MatchKeywordPattern.value = 3, pattern */
+
+/* <Field> MatchLiteralPattern.location = 0, location */
+/* <Field> MatchLiteralPattern.parenthesised = 1, bool */
+/* <Field> MatchLiteralPattern.literal = 2, expr */
 
 /* <Field> MatchMappingPattern.location = 0, location */
 /* <Field> MatchMappingPattern.parenthesised = 1, bool */
-/* <Field> MatchMappingPattern.mappings = 2, expr_list */
+/* <Field> MatchMappingPattern.mappings = 2, pattern_list */
 
 /* <Field> MatchOrPattern.location = 0, location */
 /* <Field> MatchOrPattern.parenthesised = 1, bool */
-/* <Field> MatchOrPattern.patterns = 2, expr_list */
+/* <Field> MatchOrPattern.patterns = 2, pattern_list */
 
 /* <Field> MatchSequencePattern.location = 0, location */
 /* <Field> MatchSequencePattern.parenthesised = 1, bool */
-/* <Field> MatchSequencePattern.patterns = 2, expr_list */
+/* <Field> MatchSequencePattern.patterns = 2, pattern_list */
 
 /* <Field> MatchStarPattern.location = 0, location */
 /* <Field> MatchStarPattern.parenthesised = 1, bool */
-/* <Field> MatchStarPattern.target = 2, expr */
+/* <Field> MatchStarPattern.target = 2, pattern */
 
 /* <Field> MatchValuePattern.location = 0, location */
 /* <Field> MatchValuePattern.parenthesised = 1, bool */
-/* <Field> MatchValuePattern.value = 2, expr_list */
+/* <Field> MatchValuePattern.value = 2, expr */
 
 /* <Field> MatchWildcardPattern.location = 0, location */
 /* <Field> MatchWildcardPattern.parenthesised = 1, bool */
@@ -617,6 +621,11 @@ py_extracted_version(int module : @py_Module ref,
 /* <Parent> Operator = BinaryExpr  */
 /* <Parent> ParameterList = Function  */
 
+/* <Field> Pattern.location = 0, location */
+/* <Field> Pattern.parenthesised = 1, bool */
+/* <Parent> Pattern = PatternParent  */
+/* <Parent> PatternList = PatternListParent  */
+
 /* <Field> Stmt.location = 0, location */
 /* <Parent> Stmt = StmtList  */
 /* <Parent> StmtList = StmtListParent  */
@@ -713,6 +722,15 @@ py_operators(unique int id : @py_operator,
 py_parameter_lists(unique int id : @py_parameter_list,
     unique int parent : @py_Function ref);
 
+py_patterns(unique int id : @py_pattern,
+    int kind: int ref,
+    int parent : @py_pattern_parent ref,
+    int idx : int ref);
+
+py_pattern_lists(unique int id : @py_pattern_list,
+    int parent : @py_pattern_list_parent ref,
+    int idx : int ref);
+
 py_stmts(unique int id : @py_stmt,
     int kind: int ref,
     int parent : @py_stmt_list ref,
@@ -777,39 +795,27 @@ case @py_expr.kind of
 |   16 = @py_List
 |   17 = @py_ListComp
 |   18 = @py_Guard
-|   19 = @py_MatchAsPattern
-|   20 = @py_MatchOrPattern
-|   21 = @py_MatchWildcardPattern
-|   22 = @py_MatchCapturePattern
-|   23 = @py_MatchValuePattern
-|   24 = @py_MatchSequencePattern
-|   25 = @py_MatchStarPattern
-|   26 = @py_MatchMappingPattern
-|   27 = @py_MatchDoubleStarPattern
-|   28 = @py_MatchKeyValuePattern
-|   29 = @py_MatchClassPattern
-|   30 = @py_MatchKeywordPattern
-|   31 = @py_Name
-|   32 = @py_Num
-|   33 = @py_Repr
-|   34 = @py_Set
-|   35 = @py_SetComp
-|   36 = @py_Slice
-|   37 = @py_Starred
-|   38 = @py_Str
-|   39 = @py_Subscript
-|   40 = @py_Tuple
-|   41 = @py_UnaryExpr
-|   42 = @py_Yield
-|   43 = @py_YieldFrom
-|   44 = @py_TemplateDottedNotation
-|   45 = @py_Filter
-|   46 = @py_PlaceHolder
-|   47 = @py_Await
-|   48 = @py_Fstring
-|   49 = @py_FormattedValue
-|   50 = @py_AssignExpr
-|   51 = @py_SpecialOperation;
+|   19 = @py_Name
+|   20 = @py_Num
+|   21 = @py_Repr
+|   22 = @py_Set
+|   23 = @py_SetComp
+|   24 = @py_Slice
+|   25 = @py_Starred
+|   26 = @py_Str
+|   27 = @py_Subscript
+|   28 = @py_Tuple
+|   29 = @py_UnaryExpr
+|   30 = @py_Yield
+|   31 = @py_YieldFrom
+|   32 = @py_TemplateDottedNotation
+|   33 = @py_Filter
+|   34 = @py_PlaceHolder
+|   35 = @py_Await
+|   36 = @py_Fstring
+|   37 = @py_FormattedValue
+|   38 = @py_AssignExpr
+|   39 = @py_SpecialOperation;
 
 case @py_expr_context.kind of
     0 = @py_AugLoad
@@ -834,6 +840,21 @@ case @py_operator.kind of
 |   11 = @py_Sub
 |   12 = @py_MatMult;
 
+case @py_pattern.kind of
+    0 = @py_MatchAsPattern
+|   1 = @py_MatchOrPattern
+|   2 = @py_MatchLiteralPattern
+|   3 = @py_MatchCapturePattern
+|   4 = @py_MatchWildcardPattern
+|   5 = @py_MatchValuePattern
+|   6 = @py_MatchSequencePattern
+|   7 = @py_MatchStarPattern
+|   8 = @py_MatchMappingPattern
+|   9 = @py_MatchDoubleStarPattern
+|   10 = @py_MatchKeyValuePattern
+|   11 = @py_MatchClassPattern
+|   12 = @py_MatchKeywordPattern;
+
 case @py_stmt.kind of
     0 = @py_Assert
 |   1 = @py_Assign
@@ -849,7 +870,7 @@ case @py_stmt.kind of
 |   11 = @py_If
 |   12 = @py_Import
 |   13 = @py_ImportStar
-|   14 = @py_Match
+|   14 = @py_MatchStmt
 |   15 = @py_Case
 |   16 = @py_Nonlocal
 |   17 = @py_Pass
@@ -874,27 +895,31 @@ case @py_unaryop.kind of
 
 @py_arguments_parent = @py_FunctionExpr | @py_Lambda;
 
-@py_ast_node = @py_Class | @py_Function | @py_Module | @py_StringPart | @py_comprehension | @py_dict_item | @py_expr | @py_stmt;
+@py_ast_node = @py_Class | @py_Function | @py_Module | @py_StringPart | @py_comprehension | @py_dict_item | @py_expr | @py_pattern | @py_stmt;
 
-@py_bool_parent = @py_For | @py_Function | @py_Print | @py_With | @py_expr;
+@py_bool_parent = @py_For | @py_Function | @py_Print | @py_With | @py_expr | @py_pattern;
 
 @py_dict_item_list_parent = @py_Call | @py_ClassExpr | @py_Dict;
 
 @py_expr_context_parent = @py_Attribute | @py_List | @py_Name | @py_PlaceHolder | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_Tuple;
 
-@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_MatchClassPattern | @py_MatchMappingPattern | @py_MatchOrPattern | @py_MatchSequencePattern | @py_MatchValuePattern | @py_Print | @py_Set | @py_SpecialOperation | @py_Tuple | @py_arguments | @py_comprehension;
+@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_MatchClassPattern | @py_Print | @py_Set | @py_SpecialOperation | @py_Tuple | @py_arguments | @py_comprehension;
 
 @py_expr_or_stmt = @py_expr | @py_stmt;
 
-@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_Match | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchDoubleStarPattern | @py_MatchKeyValuePattern | @py_MatchKeywordPattern | @py_MatchStarPattern | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
+@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
 
-@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_stmt;
+@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt;
 
 @py_parameter = @py_Name | @py_Tuple;
 
+@py_pattern_list_parent = @py_MatchClassPattern | @py_MatchMappingPattern | @py_MatchOrPattern | @py_MatchSequencePattern;
+
+@py_pattern_parent = @py_Case | @py_MatchAsPattern | @py_MatchDoubleStarPattern | @py_MatchKeyValuePattern | @py_MatchKeywordPattern | @py_MatchStarPattern | @py_pattern_list;
+
 @py_scope = @py_Class | @py_Function | @py_Module;
 
-@py_stmt_list_parent = @py_Case | @py_Class | @py_ExceptStmt | @py_For | @py_Function | @py_If | @py_Match | @py_Module | @py_Try | @py_While | @py_With;
+@py_stmt_list_parent = @py_Case | @py_Class | @py_ExceptStmt | @py_For | @py_Function | @py_If | @py_MatchStmt | @py_Module | @py_Try | @py_While | @py_With;
 
 @py_str_list_parent = @py_Global | @py_Nonlocal;
 

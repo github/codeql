@@ -221,7 +221,7 @@ library class Call_ extends @py_Call, Expr {
 /** INTERNAL: See the class `Case` for further information. */
 library class Case_ extends @py_Case, Stmt {
   /** Gets the pattern of this case statement. */
-  Expr getPattern() { py_exprs(result, _, this, 1) }
+  Pattern getPattern() { py_patterns(result, _, this, 1) }
 
   /** Gets the guard of this case statement. */
   Expr getGuard() { py_exprs(result, _, this, 2) }
@@ -818,8 +818,8 @@ library class MatMult_ extends @py_MatMult, Operator {
   override string toString() { result = "MatMult" }
 }
 
-/** INTERNAL: See the class `Match` for further information. */
-library class Match_ extends @py_Match, Stmt {
+/** INTERNAL: See the class `MatchStmt` for further information. */
+library class MatchStmt_ extends @py_MatchStmt, Stmt {
   /** Gets the subject of this match statement. */
   Expr getSubject() { py_exprs(result, _, this, 1) }
 
@@ -832,159 +832,161 @@ library class Match_ extends @py_Match, Stmt {
   /** Gets a case of this match statement. */
   Stmt getACase() { result = this.getCases().getAnItem() }
 
-  override string toString() { result = "Match" }
+  override string toString() { result = "MatchStmt" }
 }
 
 /** INTERNAL: See the class `MatchAsPattern` for further information. */
-library class MatchAsPattern_ extends @py_MatchAsPattern, Expr {
-  /** Gets the pattern of this matchaspattern expression. */
-  Expr getPattern() { py_exprs(result, _, this, 2) }
+library class MatchAsPattern_ extends @py_MatchAsPattern, Pattern {
+  /** Gets the pattern of this matchaspattern pattern. */
+  Pattern getPattern() { py_patterns(result, _, this, 2) }
 
-  /** Gets the alias of this matchaspattern expression. */
+  /** Gets the alias of this matchaspattern pattern. */
   Expr getAlias() { py_exprs(result, _, this, 3) }
 
   override string toString() { result = "MatchAsPattern" }
 }
 
 /** INTERNAL: See the class `MatchCapturePattern` for further information. */
-library class MatchCapturePattern_ extends @py_MatchCapturePattern, Expr {
-  /** Gets the variable of this matchcapturepattern expression. */
+library class MatchCapturePattern_ extends @py_MatchCapturePattern, Pattern {
+  /** Gets the variable of this matchcapturepattern pattern. */
   Expr getVariable() { py_exprs(result, _, this, 2) }
 
   override string toString() { result = "MatchCapturePattern" }
 }
 
 /** INTERNAL: See the class `MatchClassPattern` for further information. */
-library class MatchClassPattern_ extends @py_MatchClassPattern, Expr {
-  /** Gets the class of this matchclasspattern expression. */
+library class MatchClassPattern_ extends @py_MatchClassPattern, Pattern {
+  /** Gets the class of this matchclasspattern pattern. */
   Expr getClass() { py_exprs(result, _, this, 2) }
 
-  /** Gets the class_name of this matchclasspattern expression. */
+  /** Gets the class_name of this matchclasspattern pattern. */
   ExprList getClassName() { py_expr_lists(result, this, 3) }
 
-  /** Gets the nth class_name of this matchclasspattern expression. */
+  /** Gets the nth class_name of this matchclasspattern pattern. */
   Expr getClassName(int index) { result = this.getClassName().getItem(index) }
 
-  /** Gets a class_name of this matchclasspattern expression. */
+  /** Gets a class_name of this matchclasspattern pattern. */
   Expr getAClassName() { result = this.getClassName().getAnItem() }
 
-  /** Gets the positional of this matchclasspattern expression. */
-  ExprList getPositional() { py_expr_lists(result, this, 4) }
+  /** Gets the positional of this matchclasspattern pattern. */
+  PatternList getPositional() { py_pattern_lists(result, this, 4) }
 
-  /** Gets the nth positional of this matchclasspattern expression. */
-  Expr getPositional(int index) { result = this.getPositional().getItem(index) }
+  /** Gets the nth positional of this matchclasspattern pattern. */
+  Pattern getPositional(int index) { result = this.getPositional().getItem(index) }
 
-  /** Gets a positional of this matchclasspattern expression. */
-  Expr getAPositional() { result = this.getPositional().getAnItem() }
+  /** Gets a positional of this matchclasspattern pattern. */
+  Pattern getAPositional() { result = this.getPositional().getAnItem() }
 
-  /** Gets the keyword of this matchclasspattern expression. */
-  ExprList getKeyword() { py_expr_lists(result, this, 5) }
+  /** Gets the keyword of this matchclasspattern pattern. */
+  PatternList getKeyword() { py_pattern_lists(result, this, 5) }
 
-  /** Gets the nth keyword of this matchclasspattern expression. */
-  Expr getKeyword(int index) { result = this.getKeyword().getItem(index) }
+  /** Gets the nth keyword of this matchclasspattern pattern. */
+  Pattern getKeyword(int index) { result = this.getKeyword().getItem(index) }
 
-  /** Gets a keyword of this matchclasspattern expression. */
-  Expr getAKeyword() { result = this.getKeyword().getAnItem() }
+  /** Gets a keyword of this matchclasspattern pattern. */
+  Pattern getAKeyword() { result = this.getKeyword().getAnItem() }
 
   override string toString() { result = "MatchClassPattern" }
 }
 
 /** INTERNAL: See the class `MatchDoubleStarPattern` for further information. */
-library class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Expr {
-  /** Gets the target of this matchdoublestarpattern expression. */
-  Expr getTarget() { py_exprs(result, _, this, 2) }
+library class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Pattern {
+  /** Gets the target of this matchdoublestarpattern pattern. */
+  Pattern getTarget() { py_patterns(result, _, this, 2) }
 
   override string toString() { result = "MatchDoubleStarPattern" }
 }
 
 /** INTERNAL: See the class `MatchKeyValuePattern` for further information. */
-library class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Expr {
-  /** Gets the key of this matchkeyvaluepattern expression. */
-  Expr getKey() { py_exprs(result, _, this, 2) }
+library class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Pattern {
+  /** Gets the key of this matchkeyvaluepattern pattern. */
+  Pattern getKey() { py_patterns(result, _, this, 2) }
 
-  /** Gets the value of this matchkeyvaluepattern expression. */
-  Expr getValue() { py_exprs(result, _, this, 3) }
+  /** Gets the value of this matchkeyvaluepattern pattern. */
+  Pattern getValue() { py_patterns(result, _, this, 3) }
 
   override string toString() { result = "MatchKeyValuePattern" }
 }
 
 /** INTERNAL: See the class `MatchKeywordPattern` for further information. */
-library class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Expr {
-  /** Gets the attribute of this matchkeywordpattern expression. */
+library class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Pattern {
+  /** Gets the attribute of this matchkeywordpattern pattern. */
   Expr getAttribute() { py_exprs(result, _, this, 2) }
 
-  /** Gets the pattern of this matchkeywordpattern expression. */
-  Expr getPattern() { py_exprs(result, _, this, 3) }
+  /** Gets the value of this matchkeywordpattern pattern. */
+  Pattern getValue() { py_patterns(result, _, this, 3) }
 
   override string toString() { result = "MatchKeywordPattern" }
 }
 
+/** INTERNAL: See the class `MatchLiteralPattern` for further information. */
+library class MatchLiteralPattern_ extends @py_MatchLiteralPattern, Pattern {
+  /** Gets the literal of this matchliteralpattern pattern. */
+  Expr getLiteral() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "MatchLiteralPattern" }
+}
+
 /** INTERNAL: See the class `MatchMappingPattern` for further information. */
-library class MatchMappingPattern_ extends @py_MatchMappingPattern, Expr {
-  /** Gets the mappings of this matchmappingpattern expression. */
-  ExprList getMappings() { py_expr_lists(result, this, 2) }
+library class MatchMappingPattern_ extends @py_MatchMappingPattern, Pattern {
+  /** Gets the mappings of this matchmappingpattern pattern. */
+  PatternList getMappings() { py_pattern_lists(result, this, 2) }
 
-  /** Gets the nth mapping of this matchmappingpattern expression. */
-  Expr getMapping(int index) { result = this.getMappings().getItem(index) }
+  /** Gets the nth mapping of this matchmappingpattern pattern. */
+  Pattern getMapping(int index) { result = this.getMappings().getItem(index) }
 
-  /** Gets a mapping of this matchmappingpattern expression. */
-  Expr getAMapping() { result = this.getMappings().getAnItem() }
+  /** Gets a mapping of this matchmappingpattern pattern. */
+  Pattern getAMapping() { result = this.getMappings().getAnItem() }
 
   override string toString() { result = "MatchMappingPattern" }
 }
 
 /** INTERNAL: See the class `MatchOrPattern` for further information. */
-library class MatchOrPattern_ extends @py_MatchOrPattern, Expr {
-  /** Gets the patterns of this matchorpattern expression. */
-  ExprList getPatterns() { py_expr_lists(result, this, 2) }
+library class MatchOrPattern_ extends @py_MatchOrPattern, Pattern {
+  /** Gets the patterns of this matchorpattern pattern. */
+  PatternList getPatterns() { py_pattern_lists(result, this, 2) }
 
-  /** Gets the nth pattern of this matchorpattern expression. */
-  Expr getPattern(int index) { result = this.getPatterns().getItem(index) }
+  /** Gets the nth pattern of this matchorpattern pattern. */
+  Pattern getPattern(int index) { result = this.getPatterns().getItem(index) }
 
-  /** Gets a pattern of this matchorpattern expression. */
-  Expr getAPattern() { result = this.getPatterns().getAnItem() }
+  /** Gets a pattern of this matchorpattern pattern. */
+  Pattern getAPattern() { result = this.getPatterns().getAnItem() }
 
   override string toString() { result = "MatchOrPattern" }
 }
 
 /** INTERNAL: See the class `MatchSequencePattern` for further information. */
-library class MatchSequencePattern_ extends @py_MatchSequencePattern, Expr {
-  /** Gets the patterns of this matchsequencepattern expression. */
-  ExprList getPatterns() { py_expr_lists(result, this, 2) }
+library class MatchSequencePattern_ extends @py_MatchSequencePattern, Pattern {
+  /** Gets the patterns of this matchsequencepattern pattern. */
+  PatternList getPatterns() { py_pattern_lists(result, this, 2) }
 
-  /** Gets the nth pattern of this matchsequencepattern expression. */
-  Expr getPattern(int index) { result = this.getPatterns().getItem(index) }
+  /** Gets the nth pattern of this matchsequencepattern pattern. */
+  Pattern getPattern(int index) { result = this.getPatterns().getItem(index) }
 
-  /** Gets a pattern of this matchsequencepattern expression. */
-  Expr getAPattern() { result = this.getPatterns().getAnItem() }
+  /** Gets a pattern of this matchsequencepattern pattern. */
+  Pattern getAPattern() { result = this.getPatterns().getAnItem() }
 
   override string toString() { result = "MatchSequencePattern" }
 }
 
 /** INTERNAL: See the class `MatchStarPattern` for further information. */
-library class MatchStarPattern_ extends @py_MatchStarPattern, Expr {
-  /** Gets the target of this matchstarpattern expression. */
-  Expr getTarget() { py_exprs(result, _, this, 2) }
+library class MatchStarPattern_ extends @py_MatchStarPattern, Pattern {
+  /** Gets the target of this matchstarpattern pattern. */
+  Pattern getTarget() { py_patterns(result, _, this, 2) }
 
   override string toString() { result = "MatchStarPattern" }
 }
 
 /** INTERNAL: See the class `MatchValuePattern` for further information. */
-library class MatchValuePattern_ extends @py_MatchValuePattern, Expr {
-  /** Gets the value of this matchvaluepattern expression. */
-  ExprList getValue() { py_expr_lists(result, this, 2) }
-
-  /** Gets the nth value of this matchvaluepattern expression. */
-  Expr getValue(int index) { result = this.getValue().getItem(index) }
-
-  /** Gets a value of this matchvaluepattern expression. */
-  Expr getAValue() { result = this.getValue().getAnItem() }
+library class MatchValuePattern_ extends @py_MatchValuePattern, Pattern {
+  /** Gets the value of this matchvaluepattern pattern. */
+  Expr getValue() { py_exprs(result, _, this, 2) }
 
   override string toString() { result = "MatchValuePattern" }
 }
 
 /** INTERNAL: See the class `MatchWildcardPattern` for further information. */
-library class MatchWildcardPattern_ extends @py_MatchWildcardPattern, Expr {
+library class MatchWildcardPattern_ extends @py_MatchWildcardPattern, Pattern {
   override string toString() { result = "MatchWildcardPattern" }
 }
 
@@ -1764,6 +1766,46 @@ library class Operator_ extends @py_operator {
 library class Parameter_ extends @py_parameter {
   /** Gets a textual representation of this element. */
   string toString() { result = "Parameter" }
+}
+
+/** INTERNAL: See the class `Pattern` for further information. */
+library class Pattern_ extends @py_pattern {
+  /** Gets the location of this pattern. */
+  Location getLocation() { py_locations(result, this) }
+
+  /** Whether the parenthesised property of this pattern is true. */
+  predicate isParenthesised() { py_bools(this, 1) }
+
+  PatternParent getParent() { py_patterns(this, _, result, _) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "Pattern" }
+}
+
+/** INTERNAL: See the class `PatternList` for further information. */
+library class PatternList_ extends @py_pattern_list {
+  PatternListParent getParent() { py_pattern_lists(this, result, _) }
+
+  /** Gets an item of this pattern list */
+  Pattern getAnItem() { py_patterns(result, _, this, _) }
+
+  /** Gets the nth item of this pattern list */
+  Pattern getItem(int index) { py_patterns(result, _, this, index) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternList" }
+}
+
+/** INTERNAL: See the class `PatternListParent` for further information. */
+library class PatternListParent_ extends @py_pattern_list_parent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternListParent" }
+}
+
+/** INTERNAL: See the class `PatternParent` for further information. */
+library class PatternParent_ extends @py_pattern_parent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternParent" }
 }
 
 /** INTERNAL: See the class `Scope` for further information. */
