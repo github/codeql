@@ -1,9 +1,9 @@
 /** Provides taint tracking configurations to be used in queries related to implicit `PendingIntent`s. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
+import semmle.code.java.frameworks.android.PendingIntent
 import semmle.code.java.security.ImplicitPendingIntents
 
 /**
