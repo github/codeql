@@ -7,8 +7,36 @@ import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.StringPrefixes
 
-/** A sanitizer for unsafe url forward vulnerabilities. */
+/** A sink for unsafe URL forward vulnerabilities. */
+abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
+
+/** A sanitizer for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
+
+/** A barrier guard that protects against URL forward vulnerabilities. */
+abstract class UnsafeUrlForwardBarrierGuard extends DataFlow::BarrierGuard { }
+
+/** An argument to `getRequestDispatcher`. */
+private class RequestDispatcherSink extends UnsafeUrlForwardSink {
+  RequestDispatcherSink() {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof GetRequestDispatcherMethod and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
+/** An argument to `new ModelAndView` or `ModelAndView.setViewName`. */
+private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
+  SpringModelAndViewSink() {
+    exists(ClassInstanceExpr cie |
+      cie.getConstructedType() instanceof ModelAndView and
+      cie.getArgument(0) = this.asExpr()
+    )
+    or
+    exists(SpringModelAndViewSetViewNameCall smavsvnc | smavsvnc.getArgument(0) = this.asExpr())
+  }
+}
 
 private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
   PrimitiveSanitizer() {
@@ -29,74 +57,6 @@ private class SanitizingPrefix extends InterestingPrefix {
 
 private class FollowsSanitizingPrefix extends UnsafeUrlForwardSanitizer {
   FollowsSanitizingPrefix() { this.asExpr() = any(SanitizingPrefix fp).getAnAppendedExpression() }
-}
-
-/** A barrier guard that protects against URL forward vulnerabilities. */
-abstract class UnsafeUrlForwardBarrierGuard extends DataFlow::BarrierGuard { }
-
-/**
- * Holds if `ma` is a call to a method that checks a path string.
- */
-private predicate isStringPathMatch(MethodAccess ma) {
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().getName() =
-    ["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"]
-}
-
-/**
- * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path.
- */
-private predicate isFilePathMatch(MethodAccess ma) {
-  ma.getMethod().getDeclaringType() instanceof TypePath and
-  ma.getMethod().getName() = "startsWith"
-}
-
-/** A complementary guard that protects against path traversal, by looking for the literal `..`. */
-private class PathTraversalGuard extends Guard instanceof MethodAccess {
-  Expr checked;
-
-  PathTraversalGuard() {
-    this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().hasName(["contains", "indexOf"]) and
-    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".." and
-    this.controls(checked.getBasicBlock(), false)
-  }
-
-  predicate checks(Expr e) { checked = e }
-}
-
-/** A complementary sanitizer that protects against path traversal using path normalization. */
-private class PathNormalizeSanitizer extends MethodAccess {
-  PathNormalizeSanitizer() {
-    this.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
-    this.getMethod().hasName("normalize")
-  }
-}
-
-/** A complementary guard that protects against double URL encoding, by looking for the literal `%`. */
-private class UrlEncodingGuard extends Guard instanceof MethodAccess {
-  Expr checked;
-
-  UrlEncodingGuard() {
-    this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().hasName(["contains", "indexOf"]) and
-    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%" and
-    this.controls(checked.getBasicBlock(), false)
-  }
-
-  predicate checks(Expr e) { checked = e }
-}
-
-/** A complementary sanitizer that protects against double URL encoding using URL decoding. */
-private class UrlDecodeSanitizer extends MethodAccess {
-  UrlDecodeSanitizer() {
-    this.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
-    this.getMethod().hasName("decode")
-  }
-}
-
-private predicate isDisallowedWord(CompileTimeConstantExpr word) {
-  word.getStringValue().matches(["%WEB-INF%", "%META-INF%", "%..%"])
 }
 
 /**
@@ -176,27 +136,68 @@ private class BlockListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceo
   }
 }
 
-abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
+/**
+ * Holds if `ma` is a call to a method that checks a path string.
+ */
+private predicate isStringPathMatch(MethodAccess ma) {
+  ma.getMethod().getDeclaringType() instanceof TypeString and
+  ma.getMethod().getName() =
+    ["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"]
+}
 
-/** An argument to `getRequestDispatcher`. */
-private class RequestDispatcherSink extends UnsafeUrlForwardSink {
-  RequestDispatcherSink() {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof GetRequestDispatcherMethod and
-      ma.getArgument(0) = this.asExpr()
-    )
+/**
+ * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path.
+ */
+private predicate isFilePathMatch(MethodAccess ma) {
+  ma.getMethod().getDeclaringType() instanceof TypePath and
+  ma.getMethod().getName() = "startsWith"
+}
+
+private predicate isDisallowedWord(CompileTimeConstantExpr word) {
+  word.getStringValue().matches(["%WEB-INF%", "%META-INF%", "%..%"])
+}
+
+/** A complementary guard that protects against path traversal, by looking for the literal `..`. */
+private class PathTraversalGuard extends Guard instanceof MethodAccess {
+  Expr checked;
+
+  PathTraversalGuard() {
+    this.getMethod().getDeclaringType() instanceof TypeString and
+    this.getMethod().hasName(["contains", "indexOf"]) and
+    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".." and
+    this.controls(checked.getBasicBlock(), false)
+  }
+
+  predicate checks(Expr e) { checked = e }
+}
+
+/** A complementary sanitizer that protects against path traversal using path normalization. */
+private class PathNormalizeSanitizer extends MethodAccess {
+  PathNormalizeSanitizer() {
+    this.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
+    this.getMethod().hasName("normalize")
   }
 }
 
-/** An argument to `new ModelAndView` or `ModelAndView.setViewName`. */
-private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
-  SpringModelAndViewSink() {
-    exists(ClassInstanceExpr cie |
-      cie.getConstructedType() instanceof ModelAndView and
-      cie.getArgument(0) = this.asExpr()
-    )
-    or
-    exists(SpringModelAndViewSetViewNameCall smavsvnc | smavsvnc.getArgument(0) = this.asExpr())
+/** A complementary guard that protects against double URL encoding, by looking for the literal `%`. */
+private class UrlEncodingGuard extends Guard instanceof MethodAccess {
+  Expr checked;
+
+  UrlEncodingGuard() {
+    this.getMethod().getDeclaringType() instanceof TypeString and
+    this.getMethod().hasName(["contains", "indexOf"]) and
+    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%" and
+    this.controls(checked.getBasicBlock(), false)
+  }
+
+  predicate checks(Expr e) { checked = e }
+}
+
+/** A complementary sanitizer that protects against double URL encoding using URL decoding. */
+private class UrlDecodeSanitizer extends MethodAccess {
+  UrlDecodeSanitizer() {
+    this.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
+    this.getMethod().hasName("decode")
   }
 }
 
