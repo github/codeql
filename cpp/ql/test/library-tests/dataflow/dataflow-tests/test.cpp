@@ -490,7 +490,7 @@ void regression_with_phi_flow(int clean1) {
   while (unknown()) {
     x = clean1;
     if (unknown()) { }
-    sink(x); // $ SPURIOUS: ir
+    sink(x); // clean
     x = source();
   }
 }
