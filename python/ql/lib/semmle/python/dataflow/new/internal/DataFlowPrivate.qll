@@ -1720,7 +1720,10 @@ module MatchUnpacking {
    * syntax (toplevel): `case {"color": c, "height": x}:`
    */
   predicate matchMappingReadStep(Node nodeFrom, Content c, Node nodeTo) {
-    exists(MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key, Pattern value |
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      Pattern value
+    |
       keyValue = subject.getAMapping() and
       key = keyValue.getKey() and
       value = keyValue.getValue()
@@ -1752,7 +1755,10 @@ module MatchUnpacking {
    * to a double star pattern in the same mapping pattern.
    */
   predicate matchMappingClearStep(Node n, Content c) {
-    exists(MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key, MatchDoubleStarPattern dstar |
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      MatchDoubleStarPattern dstar
+    |
       keyValue = subject.getAMapping() and
       key = keyValue.getKey() and
       dstar = subject.getAMapping()
@@ -1771,7 +1777,7 @@ module MatchUnpacking {
       keyword = subject.getKeyword(_) and
       attr = keyword.getAttribute() and
       value = keyword.getValue()
-      |
+    |
       nodeFrom.asCfgNode().getNode() = subject and
       nodeTo.asCfgNode().getNode() = value and
       c.(AttributeContent).getAttribute() = attr.getId()
@@ -1791,8 +1797,8 @@ module MatchUnpacking {
     matchMappingFlowStep(nodeFrom, nodeTo)
   }
 
-/** All read steps associated with match. */
-predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
+  /** All read steps associated with match. */
+  predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
     matchClassReadStep(nodeFrom, c, nodeTo)
     or
     matchSequenceReadStep(nodeFrom, c, nodeTo)
@@ -1803,16 +1809,14 @@ predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
   }
 
   /** All store steps associated with match. */
-predicate matchStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-  matchStarStoreStep(nodeFrom, c, nodeTo)
-}
-
-/**
- * All clear steps associated with match
- */
-predicate matchClearStep(Node n, Content c) {
-    matchMappingClearStep(n, c)
+  predicate matchStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    matchStarStoreStep(nodeFrom, c, nodeTo)
   }
+
+  /**
+   * All clear steps associated with match
+   */
+  predicate matchClearStep(Node n, Content c) { matchMappingClearStep(n, c) }
 }
 
 import MatchUnpacking
