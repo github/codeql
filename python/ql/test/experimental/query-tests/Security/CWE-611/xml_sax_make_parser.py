@@ -73,3 +73,13 @@ def xml_makeparser_minidom_entitiesTrue():
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_external_ges, True)
     return xml.dom.minidom.parse(StringIO(xml_content), parser=parser).documentElement.childNodes
+
+# Forward Type Tracker test
+
+def contrived_example(user_input, action):
+    parser = xml.sax.make_parser()
+    if action == 'load-config':
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
+        parser.parse("/not-user-controlled/default_config.xml")
+    else:
+        parser.parse(StringIO(user_input))
