@@ -324,10 +324,6 @@ parent_namespace_declaration(
 
 @using_directive = @using_namespace_directive | @using_static_directive;
 
-using_global(
-  unique int id: @using_directive ref
-);
-
 using_namespace_directives(
   unique int id: @using_namespace_directive,
   int namespace_id: @namespace ref);
