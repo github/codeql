@@ -127,7 +127,7 @@ class CompileTimeConstantExpr extends Expr {
       this instanceof Literal
       or
       // Casts to primitive types and casts to type `String`.
-      this.(CastExpr).getExpr().isCompileTimeConstant()
+      this.(CastingExpr).getExpr().isCompileTimeConstant()
       or
       // The unary operators `+`, `-`, `~`, and `!` (but not `++` or `--`).
       this.(PlusExpr).getExpr().isCompileTimeConstant()
@@ -311,7 +311,7 @@ class CompileTimeConstantExpr extends Expr {
       or
       result = this.(CharacterLiteral).getCodePointValue()
       or
-      exists(CastExpr cast, int val |
+      exists(CastingExpr cast, int val |
         cast = this and val = cast.getExpr().(CompileTimeConstantExpr).getIntValue()
       |
         if cast.getType().hasName("byte")
@@ -1138,33 +1138,60 @@ class LogNotExpr extends UnaryExpr, @lognotexpr {
   override string getAPrimaryQlClass() { result = "LogNotExpr" }
 }
 
-/** A cast expression. */
-class CastExpr extends Expr, @castexpr {
-  /** Gets the target type of this cast expression. */
+class CastingExpr extends Expr {
+  CastingExpr() {
+    this instanceof @castexpr or
+    this instanceof @safecastexpr or
+    this instanceof @implicitcastexpr or
+    this instanceof @implicitnotnullexpr or
+    this instanceof @implicitcoerciontounitexpr
+  }
+
+  /** Gets the target type of this casting expression. */
   Expr getTypeExpr() { result.isNthChildOf(this, 0) }
 
-  /** Gets the expression to which the cast operator is applied. */
+  /** Gets the expression to which the casting operator is applied. */
   Expr getExpr() { result.isNthChildOf(this, 1) }
+}
 
+/** A cast expression. */
+class CastExpr extends CastingExpr, @castexpr {
   /** Gets a printable representation of this expression. */
   override string toString() { result = "(...)..." }
 
   override string getAPrimaryQlClass() { result = "CastExpr" }
 }
 
-// TODO: Would this be better as a predicate on CastExpr?
 /** A safe cast expression. */
-class SafeCastExpr extends Expr, @safecastexpr {
-  /** Gets the target type of this cast expression. */
-  Expr getTypeExpr() { result.isNthChildOf(this, 0) }
-
-  /** Gets the expression to which the cast operator is applied. */
-  Expr getExpr() { result.isNthChildOf(this, 1) }
-
+class SafeCastExpr extends CastingExpr, @safecastexpr {
   /** Gets a printable representation of this expression. */
   override string toString() { result = "... as? ..." }
 
   override string getAPrimaryQlClass() { result = "SafeCastExpr" }
+}
+
+/** An implicit cast expression. */
+class ImplicitCastExpr extends CastingExpr, @implicitcastexpr {
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "<implicit cast>" }
+
+  override string getAPrimaryQlClass() { result = "ImplicitCastExpr" }
+}
+
+/** An implicit cast-to-non-null expression. */
+class ImplicitNotNullExpr extends CastingExpr, @implicitnotnullexpr {
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "<implicit not null>" }
+
+  override string getAPrimaryQlClass() { result = "ImplicitNotNullExpr" }
+}
+
+/** An implicit coercion-to-unit expression. */
+class ImplicitCoercionToUnitExpr extends CastingExpr, @implicitcoerciontounitexpr {
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "<implicit coercion to unit>" }
+
+  override string getAPrimaryQlClass() { result = "ImplicitCoercionToUnitExpr" }
 }
 
 /** A class instance creation expression. */

@@ -456,9 +456,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof UnaryExpr and not this instanceof LogNotExpr
       or
-      this instanceof CastExpr
-      or
-      this instanceof SafeCastExpr
+      this instanceof CastingExpr
       or
       this instanceof InstanceOfExpr and not this.(InstanceOfExpr).isPattern()
       or
@@ -544,9 +542,7 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(UnaryExpr).getExpr()
       or
-      index = 0 and result = this.(CastExpr).getExpr()
-      or
-      index = 0 and result = this.(SafeCastExpr).getExpr()
+      index = 0 and result = this.(CastingExpr).getExpr()
       or
       index = 0 and result = this.(InstanceOfExpr).getExpr()
       or

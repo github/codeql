@@ -111,28 +111,16 @@ class StringConversionContext extends ConversionSite {
   override string kind() { result = "string context" }
 }
 
-class CastConversionContext extends ConversionSite {
-  CastExpr c;
+class CastingConversionContext extends ConversionSite {
+  CastingExpr c;
 
-  CastConversionContext() { this = c.getExpr() }
-
-  override Type getConversionTarget() { result = c.getType() }
-
-  override predicate isImplicit() { none() }
-
-  override string kind() { result = "cast context" }
-}
-
-class SafeCastConversionContext extends ConversionSite {
-  SafeCastExpr c;
-
-  SafeCastConversionContext() { this = c.getExpr() }
+  CastingConversionContext() { this = c.getExpr() }
 
   override Type getConversionTarget() { result = c.getType() }
 
   override predicate isImplicit() { none() }
 
-  override string kind() { result = "safe cast context" }
+  override string kind() { result = "casting context" }
 }
 
 /**

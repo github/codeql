@@ -12,7 +12,7 @@ private import IntegerGuards
 /** Gets an expression that is always `null`. */
 Expr alwaysNullExpr() {
   result instanceof NullLiteral or
-  result.(CastExpr).getExpr() = alwaysNullExpr()
+  result.(CastingExpr).getExpr() = alwaysNullExpr()
 }
 
 /** Gets an equality test between an expression `e` and an enum constant `c`. */
@@ -61,6 +61,12 @@ Expr clearlyNotNullExpr(Expr reason) {
   )
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result.(ImplicitCastExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result instanceof ImplicitNotNullExpr
+  or
+  result instanceof ImplicitCoercionToUnitExpr
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
   or

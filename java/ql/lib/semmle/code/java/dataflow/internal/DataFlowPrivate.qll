@@ -224,7 +224,7 @@ predicate compatibleTypes(Type t1, Type t2) {
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastExpr }
+  CastNode() { this.getExpr() instanceof CastingExpr }
 }
 
 private newtype TDataFlowCallable =

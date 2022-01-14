@@ -2394,11 +2394,10 @@ open class KotlinFileExtractor(
                 extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
             }
             IrTypeOperator.IMPLICIT_CAST -> {
-                // TODO: Make this distinguishable from an explicit cast?
-                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val id = tw.getFreshIdLabel<DbImplicitcastexpr>()
                 val locId = tw.getLocation(e)
                 val type = useType(e.type)
-                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeExprs_implicitcastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
@@ -2406,11 +2405,10 @@ open class KotlinFileExtractor(
                 extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
             }
             IrTypeOperator.IMPLICIT_NOTNULL -> {
-                // TODO: Make this distinguishable from an explicit cast?
-                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val id = tw.getFreshIdLabel<DbImplicitnotnullexpr>()
                 val locId = tw.getLocation(e)
                 val type = useType(e.type)
-                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeExprs_implicitnotnullexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
@@ -2418,11 +2416,10 @@ open class KotlinFileExtractor(
                 extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
             }
             IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
-                // TODO: Make this distinguishable from an explicit cast?
-                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val id = tw.getFreshIdLabel<DbImplicitcoerciontounitexpr>()
                 val locId = tw.getLocation(e)
                 val type = useType(e.type)
-                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeExprs_implicitcoerciontounitexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
@@ -2430,11 +2427,10 @@ open class KotlinFileExtractor(
                 extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
             }
             IrTypeOperator.SAFE_CAST -> {
-                // TODO: Distinguish this (e as? T) from CAST
-                val id = tw.getFreshIdLabel<DbCastexpr>()
+                val id = tw.getFreshIdLabel<DbSafecastexpr>()
                 val locId = tw.getLocation(e)
                 val type = useType(e.type)
-                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                tw.writeExprs_safecastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)

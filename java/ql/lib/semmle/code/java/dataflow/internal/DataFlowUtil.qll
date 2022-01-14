@@ -144,7 +144,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
   or
-  node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+  node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
   or
   node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
   or
