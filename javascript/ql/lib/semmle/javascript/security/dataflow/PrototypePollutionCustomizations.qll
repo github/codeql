@@ -89,21 +89,22 @@ module PrototypePollution {
   }
 
   class DeepExtendSink extends Sink {
-    ExtendCall call;
     string moduleName;
     Locatable location;
 
     DeepExtendSink() {
-      this = call.getASourceOperand() and
-      (
-        exists(Dependency dep |
-          isVulnerableVersionOfDeepExtendCall(call, dep) and
-          dep = location and
-          dep.info(moduleName, _)
+      exists(ExtendCall call |
+        this = call.getASourceOperand() and
+        (
+          exists(Dependency dep |
+            isVulnerableVersionOfDeepExtendCall(call, dep) and
+            dep = location and
+            dep.info(moduleName, _)
+          )
+          or
+          isVulnerableDeepExtendCallAllVersions(call, moduleName) and
+          location = call.asExpr()
         )
-        or
-        isVulnerableDeepExtendCallAllVersions(call, moduleName) and
-        location = call.asExpr()
       )
     }
 

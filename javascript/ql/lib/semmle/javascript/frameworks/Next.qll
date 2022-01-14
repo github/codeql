@@ -155,11 +155,7 @@ module NextJS {
    * A Next.js function that is exected on the server for every request, seen as a routehandler.
    */
   class NextHttpRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    Module pageModule;
-
-    NextHttpRouteHandler() {
-      this = getServerSidePropsFunction(pageModule) or this = getInitialProps(pageModule)
-    }
+    NextHttpRouteHandler() { this = getServerSidePropsFunction(_) or this = getInitialProps(_) }
   }
 
   /**

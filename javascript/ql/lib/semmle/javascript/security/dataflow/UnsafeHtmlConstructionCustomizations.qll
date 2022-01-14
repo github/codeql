@@ -149,11 +149,11 @@ module UnsafeHtmlConstruction {
    * A string parsed as XML, which is later used in an XSS sink.
    */
   class XMLParsedSink extends XssSink {
-    XML::ParserInvocation parser;
-
     XMLParsedSink() {
-      this.asExpr() = parser.getSourceArgument() and
-      isUsedInXssSink(xssSink) = parser.getAResult()
+      exists(XML::ParserInvocation parser |
+        this.asExpr() = parser.getSourceArgument() and
+        isUsedInXssSink(xssSink) = parser.getAResult()
+      )
     }
 
     override string describe() { result = "XML parsing" }

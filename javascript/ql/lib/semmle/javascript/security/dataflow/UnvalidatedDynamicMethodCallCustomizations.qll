@@ -73,12 +73,12 @@ module UnvalidatedDynamicMethodCall {
    * A function invocation of an unsafe function, as a sink for remote unvalidated dynamic method calls.
    */
   class CalleeAsSink extends Sink {
-    InvokeExpr invk;
-
     CalleeAsSink() {
-      this = invk.getCallee().flow() and
-      // don't flag invocations inside a try-catch
-      not invk.getASuccessor() instanceof CatchClause
+      exists(InvokeExpr invk |
+        this = invk.getCallee().flow() and
+        // don't flag invocations inside a try-catch
+        not invk.getASuccessor() instanceof CatchClause
+      )
     }
 
     override DataFlow::FlowLabel getFlowLabel() {

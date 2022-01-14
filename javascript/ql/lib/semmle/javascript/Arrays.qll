@@ -152,15 +152,12 @@ private module ArrayDataFlow {
   /**
    * A node that reads or writes an element from an array inside a for-loop.
    */
-  private class ArrayIndexingAccess extends DataFlow::Node {
-    DataFlow::PropRef read;
-
+  private class ArrayIndexingAccess extends DataFlow::Node instanceof DataFlow::PropRef {
     ArrayIndexingAccess() {
-      read = this and
       TTNumber() =
-        unique(InferredType type | type = read.getPropertyNameExpr().flow().analyze().getAType()) and
+        unique(InferredType type | type = super.getPropertyNameExpr().flow().analyze().getAType()) and
       exists(VarAccess i, ExprOrVarDecl init |
-        i = read.getPropertyNameExpr() and init = any(ForStmt f).getInit()
+        i = super.getPropertyNameExpr() and init = any(ForStmt f).getInit()
       |
         i.getVariable().getADefinition() = init or
         i.getVariable().getADefinition().(VariableDeclarator).getDeclStmt() = init

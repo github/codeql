@@ -16,9 +16,7 @@
 import javascript
 
 private class BackwardExploringConfiguration extends DataFlow::Configuration {
-  DataFlow::Configuration cfg;
-
-  BackwardExploringConfiguration() { this = cfg }
+  BackwardExploringConfiguration() { this = any(DataFlow::Configuration cfg) }
 
   override predicate isSource(DataFlow::Node node) { any() }
 
