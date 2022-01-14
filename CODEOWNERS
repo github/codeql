@@ -27,4 +27,4 @@
 /docs/query-*-style-guide.md @github/codeql-analysis-reviewers
 
 # QL for QL reviewers
-/ql/ @erik-krogh @tausbn
+/ql/ @github/codeql-ql-for-ql-reviewers
