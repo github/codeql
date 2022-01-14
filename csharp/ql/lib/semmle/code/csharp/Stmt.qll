@@ -946,15 +946,11 @@ class TryStmt extends Stmt, @try_stmt {
     exists(ControlFlowElement mid |
       mid = this.getATriedElement() and
       not mid instanceof TryStmt and
-      result = getAChild(mid, mid.getEnclosingCallable())
+      result = mid.getAChild() and
+      pragma[only_bind_into](mid.getEnclosingCallable()) =
+        pragma[only_bind_into](result.getEnclosingCallable())
     )
   }
-}
-
-pragma[noinline]
-private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
-  result = cfe.getAChild() and
-  c = result.getEnclosingCallable()
 }
 
 /**
