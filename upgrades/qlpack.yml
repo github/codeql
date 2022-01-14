@@ -1,5 +1,0 @@
-name: codeql/go-upgrades
-version: 0.0.6-dev
-groups: go
-upgrades: .
-library: true
