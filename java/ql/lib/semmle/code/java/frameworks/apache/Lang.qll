@@ -73,6 +73,15 @@ private class ApacheArrayUtilsModel extends SummaryModelCsv {
   }
 }
 
+private class ApacheStringEscapeUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;StringEscapeUtils;false;escapeJson;;;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
 private class ApacheStringUtilsModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =

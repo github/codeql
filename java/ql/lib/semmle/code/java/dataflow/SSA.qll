@@ -366,7 +366,7 @@ private module SsaImpl {
 
   pragma[nomagic]
   private predicate innerclassSupertypeStar(InnerClass t1, RefType t2) {
-    t1.getASupertype*().getSourceDeclaration() = t2
+    t1.getASourceSupertype*().getSourceDeclaration() = t2
   }
 
   /**

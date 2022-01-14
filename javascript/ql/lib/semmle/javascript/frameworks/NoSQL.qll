@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.Promises
 
 module NoSQL {
   /** An expression that is interpreted as a NoSQL query. */
@@ -64,6 +65,10 @@ private module MongoDB {
     }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(this.getParameter(queryArgIdx))
@@ -537,12 +542,29 @@ private module Mongoose {
       // NB: the complete information is not easily accessible for deeply chained calls
       f.getQueryArgument().getARhs() = result
     }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(this.getNumArgument() - 1).getParameter(1)
+    }
   }
 
-  class ExplicitQueryEvaluation extends DatabaseAccess {
+  class ExplicitQueryEvaluation extends DatabaseAccess, DataFlow::CallNode {
+    string member;
+
     ExplicitQueryEvaluation() {
       // explicit execution using a Query method call
-      Query::getAMongooseQuery().getMember(["exec", "then", "catch"]).getACall() = this
+      member = ["exec", "then", "catch"] and
+      Query::getAMongooseQuery().getMember(member).getACall() = this
+    }
+
+    private int resultParamIndex() {
+      member = "then" and result = 0
+      or
+      member = "exec" and result = 1
+    }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(_).getParameter(this.resultParamIndex())
     }
 
     override DataFlow::Node getAQueryArgument() {
@@ -588,6 +610,10 @@ private module Minimongo {
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
 
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
     DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(this.getParameter(queryArgIdx))
     }
@@ -609,7 +635,7 @@ private module Minimongo {
  * Provides classes modeling the MarsDB library.
  */
 private module MarsDB {
-  private class MarsDBAccess extends DatabaseAccess {
+  private class MarsDBAccess extends DatabaseAccess, DataFlow::CallNode {
     string method;
 
     MarsDBAccess() {
@@ -623,19 +649,27 @@ private module MarsDB {
 
     string getMethod() { result = method }
 
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
     override DataFlow::Node getAQueryArgument() { none() }
   }
 
   /** A call to a MarsDB query method. */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
+  private class QueryCall extends MarsDBAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
       exists(string m |
-        this.(MarsDBAccess).getMethod() = m and
+        this.getMethod() = m and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
+    }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(queryArgIdx) }
@@ -744,8 +778,12 @@ private module Redis {
   /**
    * An access to a database through redis
    */
-  class RedisDatabaseAccess extends DatabaseAccess {
+  class RedisDatabaseAccess extends DatabaseAccess, DataFlow::CallNode {
     RedisDatabaseAccess() { this = redis().getMember(_).getACall() }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { none() }
   }
@@ -768,8 +806,12 @@ private module IoRedis {
   /**
    * An access to a database through ioredis
    */
-  class IoRedisDatabaseAccess extends DatabaseAccess {
+  class IoRedisDatabaseAccess extends DatabaseAccess, DataFlow::CallNode {
     IoRedisDatabaseAccess() { this = ioredis().getMember(_).getACall() }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { none() }
   }

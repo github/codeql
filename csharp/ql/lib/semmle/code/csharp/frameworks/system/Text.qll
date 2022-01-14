@@ -3,6 +3,7 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.FlowSummary
 
 /** The `System.Text` namespace. */
 class SystemTextNamespace extends Namespace {
@@ -23,6 +24,18 @@ class SystemTextStringBuilderClass extends SystemTextClass {
 
   /** Gets the `AppendFormat` method. */
   Method getAppendFormatMethod() { result = this.getAMethod("AppendFormat") }
+}
+
+/** Clear content for `System.Text.StringBuilder.Clear`. */
+private class SystemTextStringBuilderClearFlow extends SummarizedCallable {
+  SystemTextStringBuilderClearFlow() {
+    this = any(SystemTextStringBuilderClass s).getAMethod("Clear")
+  }
+
+  override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    pos.getPosition() = -1 and
+    content instanceof DataFlow::ElementContent
+  }
 }
 
 /** Data flow for `System.Text.StringBuilder`. */

@@ -76,7 +76,7 @@ abstract class BufferWrite extends Expr {
    * can be found), specifying the reason for the estimation.
    */
   int getMaxData(BufferWriteEstimationReason reason) {
-    reason instanceof NoSpecifiedEstimateReason and result = getMaxData()
+    reason instanceof UnspecifiedEstimateReason and result = getMaxData()
   }
 
   /**
