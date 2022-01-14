@@ -338,6 +338,8 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
   override Type getType() { localvars(this, _, _, _, getTypeRef(result), _) }
 
   override Location getALocation() { localvar_location(this, result) }
+
+  override string getAPrimaryQlClass() { result = "LocalVariable" }
 }
 
 /**

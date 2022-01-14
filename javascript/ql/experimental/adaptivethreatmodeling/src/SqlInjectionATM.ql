@@ -1,15 +1,15 @@
 /**
  * For internal use only.
  *
- * @name SQL database query built from user-controlled sources (boosted)
+ * @name SQL database query built from user-controlled sources (experimental)
  * @description Building a database query from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 8.8
- * @id adaptive-threat-modeling/js/sql-injection
- * @tags experimental experimental/atm security
+ * @id js/ml-powered/sql-injection
+ * @tags experimental security
  */
 
 import experimental.adaptivethreatmodeling.SqlInjectionATM

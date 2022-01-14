@@ -1,4 +1,4 @@
-/** Provides clases and methods shared by randomness-related queries. */
+/** Provides classes and methods shared by randomness-related queries. */
 
 import java
 import semmle.code.java.dataflow.DefUse

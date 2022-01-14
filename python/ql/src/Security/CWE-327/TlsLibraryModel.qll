@@ -88,7 +88,7 @@ abstract class TlsLibrary extends string {
   /** The name of a specific protocol version. */
   abstract string specific_version_name(ProtocolVersion version);
 
-  /** Gets a name, which is a member of `version_constants`,  that can be used to specify the protocol family `family`. */
+  /** Gets a name, which is a member of `version_constants`, that can be used to specify the protocol family `family`. */
   abstract string unspecific_version_name(ProtocolFamily family);
 
   /** Gets an API node representing the module or class holding the version constants. */

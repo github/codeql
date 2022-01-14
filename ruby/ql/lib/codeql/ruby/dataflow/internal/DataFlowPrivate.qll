@@ -748,14 +748,16 @@ predicate clearsContent(Node n, Content c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
-private newtype TDataFlowType = TTodoDataFlowType()
+private newtype TDataFlowType =
+  TTodoDataFlowType() or
+  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
 
 class DataFlowType extends TDataFlowType {
   string toString() { result = "" }
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { any() }
+DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }

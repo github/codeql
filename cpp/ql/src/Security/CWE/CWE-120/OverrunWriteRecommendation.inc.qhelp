@@ -1,0 +1,8 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<recommendation>
+<p>Always control the length of buffer copy and buffer write operations. <code>strncpy</code> should be used over <code>strcpy</code>, <code>snprintf</code> over <code>sprintf</code>, and in other cases 'n-variant' functions should be preferred.</p>
+</recommendation>
+</qhelp>

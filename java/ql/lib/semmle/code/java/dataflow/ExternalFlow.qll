@@ -95,6 +95,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
+  private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Stream
@@ -102,6 +103,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
+  private import semmle.code.java.frameworks.spring.SpringContext
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
   private import semmle.code.java.frameworks.spring.SpringUi

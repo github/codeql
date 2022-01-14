@@ -127,7 +127,7 @@ module SsaSource {
     not test_contains(_, call)
   }
 
-  /** Holds if an attribute is deleted  at `def` and `use` is the use of `v` for that deletion */
+  /** Holds if an attribute is deleted at `def` and `use` is the use of `v` for that deletion */
   cached
   predicate attribute_deletion_refinement(Variable v, NameNode use, DeletionNode def) {
     use.uses(v) and

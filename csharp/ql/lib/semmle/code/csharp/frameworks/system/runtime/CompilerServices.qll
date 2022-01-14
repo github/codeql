@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Runtime
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Runtime.CompilerServices` namespace. */
@@ -50,6 +51,15 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends System
   /** Gets the field that stores the underlying awaiter. */
   Field getUnderlyingAwaiterField() {
     result = this.getAField() and result.hasName("m_configuredTaskAwaiter")
+  }
+}
+
+private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
+  SyntheticConfiguredTaskAwaiterField() { this = "m_configuredTaskAwaiter" }
+
+  override Type getType() {
+    result instanceof
+      SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct
   }
 }
 
