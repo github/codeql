@@ -122,7 +122,7 @@ private predicate isDisallowListCheck(MethodAccess ma) {
  */
 private class PathMatchGuard extends UnsafeUrlForwardBarrierGuard {
   PathMatchGuard() {
-    isExactStringPathMatch(this) or isStringPathMatch(this) or isFilePathMatch(this)
+    isExactStringPathMatch(this) or isAllowListCheck(this) or isDisallowListCheck(this)
   }
 
   override predicate checks(Expr e, boolean branch) {
