@@ -1,5 +1,5 @@
 /**
- * @name Consistency predicate that should be empty
+ * @name QL-for-QL encountered an internal consistency error
  * @description This query should have no results on the CodeQL repos.
  *              It's marked as a warning query to make the results visible.
  * @kind problem
