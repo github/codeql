@@ -35,14 +35,6 @@ private class FollowsSanitizingPrefix extends UnsafeUrlForwardSanitizer {
 abstract class UnsafeUrlForwardBarrierGuard extends DataFlow::BarrierGuard { }
 
 /**
- * Holds if `ma` is a call to a method that checks exact match of string.
- */
-private predicate isExactStringPathMatch(MethodAccess ma) {
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().getName() = ["equals", "equalsIgnoreCase"]
-}
-
-/**
  * Holds if `ma` is a call to a method that checks a path string.
  */
 private predicate isStringPathMatch(MethodAccess ma) {
@@ -59,44 +51,47 @@ private predicate isFilePathMatch(MethodAccess ma) {
   ma.getMethod().getName() = "startsWith"
 }
 
-/**
- * Holds if `ma` protects against path traversal, by either:
- * * looking for the literal `..`
- * * performing path normalization
- */
-private predicate isPathTraversalCheck(MethodAccess ma, Expr checked) {
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().hasName(["contains", "indexOf"]) and
-  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".." and
-  ma.(Guard).controls(checked.getBasicBlock(), false)
-  or
-  ma.getMethod() instanceof PathNormalizeMethod and
-  checked = ma
+/** A complementary guard that protects against path traversal, by looking for the literal `..`. */
+private class PathTraversalGuard extends Guard instanceof MethodAccess {
+  Expr checked;
+
+  PathTraversalGuard() {
+    this.getMethod().getDeclaringType() instanceof TypeString and
+    this.getMethod().hasName(["contains", "indexOf"]) and
+    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".." and
+    this.controls(checked.getBasicBlock(), false)
+  }
+
+  predicate checks(Expr e) { checked = e }
 }
 
-/**
- * Holds if `ma` protects against double URL encoding, by either:
- * * looking for the literal `%`
- * * performing URL decoding
- */
-private predicate isURLEncodingCheck(MethodAccess ma, Expr checked) {
-  // Search the special character `%` used in url encoding
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().hasName(["contains", "indexOf"]) and
-  ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%" and
-  ma.(Guard).controls(checked.getBasicBlock(), false)
-  or
-  // Call to `URLDecoder` assuming the implementation handles double encoding correctly
-  ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
-  ma.getMethod().hasName("decode") and
-  checked = ma
+/** A complementary sanitizer that protects against path traversal using path normalization. */
+private class PathNormalizeSanitizer extends MethodAccess {
+  PathNormalizeSanitizer() {
+    this.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
+    this.getMethod().hasName("normalize")
+  }
 }
 
-/** The Java method `normalize` of `java.nio.file.Path`. */
-private class PathNormalizeMethod extends Method {
-  PathNormalizeMethod() {
-    this.getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
-    this.hasName("normalize")
+/** A complementary guard that protects against double URL encoding, by looking for the literal `%`. */
+private class UrlEncodingGuard extends Guard instanceof MethodAccess {
+  Expr checked;
+
+  UrlEncodingGuard() {
+    this.getMethod().getDeclaringType() instanceof TypeString and
+    this.getMethod().hasName(["contains", "indexOf"]) and
+    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%" and
+    this.controls(checked.getBasicBlock(), false)
+  }
+
+  predicate checks(Expr e) { checked = e }
+}
+
+/** A complementary sanitizer that protects against double URL encoding using URL decoding. */
+private class UrlDecodeSanitizer extends MethodAccess {
+  UrlDecodeSanitizer() {
+    this.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
+    this.getMethod().hasName("decode")
   }
 }
 
@@ -104,60 +99,79 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
   word.getStringValue().matches(["%WEB-INF%", "%META-INF%", "%..%"])
 }
 
-private predicate isAllowListCheck(MethodAccess ma) {
-  (isStringPathMatch(ma) or isFilePathMatch(ma)) and
-  not isDisallowedWord(ma.getAnArgument())
-}
-
-private predicate isDisallowListCheck(MethodAccess ma) {
-  (isStringPathMatch(ma) or isFilePathMatch(ma)) and
-  isDisallowedWord(ma.getAnArgument())
-}
-
 /**
- * A guard that checks a path with the following methods:
- *  1. Exact string match
- *  2. Path matches allowed values (needs to protect against path traversal)
- *  3. Path matches disallowed values (needs to protect against URL encoding)
+ * A guard that considers safe a string being exactly compared to a trusted value.
  */
-private class PathMatchGuard extends UnsafeUrlForwardBarrierGuard {
-  PathMatchGuard() {
-    isExactStringPathMatch(this) or isAllowListCheck(this) or isDisallowListCheck(this)
+private class ExactStringPathMatchGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
+  ExactStringPathMatchGuard() {
+    this.getMethod().getDeclaringType() instanceof TypeString and
+    this.getMethod().getName() = ["equals", "equalsIgnoreCase"]
   }
 
   override predicate checks(Expr e, boolean branch) {
     e = this.(MethodAccess).getQualifier() and
+    branch = true
+  }
+}
+
+/**
+ * A guard that considers safe a string being matched against an allowlist of partial trusted values.
+ * This requires additional protection against path traversal, either another guard (`PathTraversalGuard`)
+ * or a sanitizer (`PathNormalizeSanitizer`).
+ */
+private class AllowListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
+  AllowListCheckGuard() {
+    (isStringPathMatch(this) or isFilePathMatch(this)) and
+    not isDisallowedWord(this.getAnArgument())
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = this.(MethodAccess).getQualifier() and
+    branch = true and
     (
-      isExactStringPathMatch(this) and
-      branch = true
+      // Either the path normalization sanitizer comes before the guard
+      exists(PathNormalizeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
       or
-      // When using an allowlist, that is, checking for known safe paths
-      // (for example, `path.startsWith(BASE_PATH)`)
-      // the application needs to protect against path traversal bypasses.
-      isAllowListCheck(this) and
-      exists(MethodAccess ma, Expr checked | isPathTraversalCheck(ma, checked) |
-        // Either the path traversal check comes before the guard
-        DataFlow::localExprFlow(checked, e) or
+      // or the path traversal check comes before the guard
+      exists(PathTraversalGuard guard |
+        guard.checks(any(Expr checked | DataFlow::localExprFlow(checked, e))) or
         // or both checks are in the same condition
         // (for example, `path.startsWith(BASE_PATH) && !path.contains("..")`)
-        ma.(Guard).controls(this.getBasicBlock(), _) or
-        this.controls(ma.getBasicBlock(), branch)
-      ) and
-      branch = true
+        guard.controls(this.getBasicBlock().(ConditionBlock), false) or
+        this.controls(guard.getBasicBlock().(ConditionBlock), branch)
+      )
+    )
+  }
+}
+
+/**
+ * A guard that considers safe a string being matched against a blocklist of known dangerous values.
+ * This requires additional protection against path traversal, either another guard (`UrlEncodingGuard`)
+ * or a sanitizer (`UrlDecodeSanitizer`).
+ */
+private class BlockListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
+  BlockListCheckGuard() {
+    (isStringPathMatch(this) or isFilePathMatch(this)) and
+    isDisallowedWord(this.getAnArgument())
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = this.(MethodAccess).getQualifier() and
+    branch = false and
+    (
+      // Either the URL decode sanitization comes before the guard
+      exists(UrlDecodeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
       or
-      // When using a blocklist, that is, checking for known bad patterns in the path,
-      // (for example, `path.startsWith("/WEB-INF/")` or `path.contains("..")`)
-      // the application needs to protect against double URL encoding bypasses.
-      isDisallowListCheck(this) and
-      exists(MethodAccess ma, Expr checked | isURLEncodingCheck(ma, checked) |
-        // Either the URL encoding check comes before the guard
-        DataFlow::localExprFlow(checked, e) or
+      // or the URL encoding check comes before the guard
+      exists(UrlEncodingGuard guard |
+        guard.checks(any(Expr checked | DataFlow::localExprFlow(checked, e)))
+        or
         // or both checks are in the same condition
         // (for example, `!path.contains("..") && !path.contains("%")`)
-        ma.(Guard).controls(this.getBasicBlock(), _) or
-        this.controls(ma.getBasicBlock(), branch)
-      ) and
-      branch = false
+        guard.controls(this.getBasicBlock().(ConditionBlock), false)
+        or
+        this.controls(guard.getBasicBlock().(ConditionBlock), branch)
+      )
     )
   }
 }
