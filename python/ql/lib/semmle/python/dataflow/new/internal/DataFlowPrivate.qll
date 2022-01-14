@@ -1669,6 +1669,16 @@ module MatchUnpacking {
     )
   }
 
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tupe and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the read step.
+   */
   predicate matchStarReadStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(MatchSequencePattern subject, int index, MatchStarPattern star |
       star = subject.getPattern(index)
@@ -1687,6 +1697,16 @@ module MatchUnpacking {
     )
   }
 
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tupe and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the store step.
+   */
   predicate matchStarStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(MatchStarPattern star |
       nodeFrom = TStarPatternElementNode(star) and
@@ -1727,6 +1747,10 @@ module MatchUnpacking {
     )
   }
 
+  /**
+   * Bindings that are mentioned in a mapping pattern will not be available
+   * to a double star pattern in the same mapping pattern.
+   */
   predicate matchMappingClearStep(Node n, Content c) {
     exists(MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key, MatchDoubleStarPattern dstar |
       keyValue = subject.getAMapping() and
@@ -1778,10 +1802,14 @@ predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
     matchStarReadStep(nodeFrom, c, nodeTo)
   }
 
+  /** All store steps associated with match. */
 predicate matchStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-    matchStarStoreStep(nodeFrom, c, nodeTo)
-  }
+  matchStarStoreStep(nodeFrom, c, nodeTo)
+}
 
+/**
+ * All clear steps associated with match
+ */
 predicate matchClearStep(Node n, Content c) {
     matchMappingClearStep(n, c)
   }
