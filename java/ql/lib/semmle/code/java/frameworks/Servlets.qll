@@ -349,7 +349,7 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
 }
 
 /** The Java EE RequestDispatcher. */
-library class RequestDispatcher extends RefType {
+class RequestDispatcher extends RefType {
   RequestDispatcher() {
     this.hasQualifiedName(["javax.servlet", "jakarta.servlet"], "RequestDispatcher") or
     this.hasQualifiedName("javax.portlet", "PortletRequestDispatcher")
@@ -357,7 +357,7 @@ library class RequestDispatcher extends RefType {
 }
 
 /** The `getRequestDispatcher` method. */
-library class GetRequestDispatcherMethod extends Method {
+class GetRequestDispatcherMethod extends Method {
   GetRequestDispatcherMethod() {
     this.getReturnType() instanceof RequestDispatcher and
     this.getName() = "getRequestDispatcher"
@@ -365,7 +365,7 @@ library class GetRequestDispatcherMethod extends Method {
 }
 
 /** The request dispatch method. */
-library class RequestDispatchMethod extends Method {
+class RequestDispatchMethod extends Method {
   RequestDispatchMethod() {
     this.getDeclaringType() instanceof RequestDispatcher and
     this.hasName(["forward", "include"])
