@@ -40,10 +40,22 @@ module SsaSource {
     )
   }
 
+  /** Holds if `v` is defined by a capture pattern. */
   cached
   predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
     exists(MatchCapturePattern capture, Name var |
-      capture.getVar() = var and
+      capture.getVariable() = var and
+      var.getAFlowNode() = defn
+    |
+      var = v.getAStore()
+    )
+  }
+
+  /** Holds if `v` is defined by as the alias of an as-pattern. */
+  cached
+  predicate pattern_alias_definition(Variable v, ControlFlowNode defn) {
+    exists(MatchAsPattern pattern, Name var |
+      pattern.getAlias() = var and
       var.getAFlowNode() = defn
     |
       var = v.getAStore()
