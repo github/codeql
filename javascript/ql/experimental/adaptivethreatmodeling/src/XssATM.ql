@@ -1,15 +1,15 @@
 /**
  * For internal use only.
  *
- * @name Client-side cross-site scripting (boosted)
+ * @name Client-side cross-site scripting (experimental)
  * @description Writing user input directly to the DOM allows for
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 6.1
- * @id adaptive-threat-modeling/js/xss
- * @tags experimental experimental/atm security
+ * @id js/ml-powered/xss
+ * @tags experimental security
  */
 
 import javascript
