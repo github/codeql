@@ -61,7 +61,7 @@ abstract class Configuration extends DataFlow::Configuration {
    * The smaller this predicate is, the faster `hasFlow()` will converge.
    */
   // overridden to provide taint-tracking specific qldoc
-  abstract override predicate isSource(DataFlow::Node source);
+  override predicate isSource(DataFlow::Node source) { none() }
 
   /**
    * Holds if `sink` is a relevant taint sink.
@@ -69,7 +69,7 @@ abstract class Configuration extends DataFlow::Configuration {
    * The smaller this predicate is, the faster `hasFlow()` will converge.
    */
   // overridden to provide taint-tracking specific qldoc
-  abstract override predicate isSink(DataFlow::Node sink);
+  override predicate isSink(DataFlow::Node sink) { none() }
 
   /** Holds if the node `node` is a taint sanitizer. */
   predicate isSanitizer(DataFlow::Node node) { none() }
@@ -93,7 +93,7 @@ abstract class Configuration extends DataFlow::Configuration {
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
   final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard)
+    this.isSanitizerGuard(guard) or defaultTaintSanitizerGuard(guard)
   }
 
   /**

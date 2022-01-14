@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.Promises
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */
@@ -80,6 +81,8 @@ private module MySql {
         this = recv.getMember(["query", "execute"]).getACall()
       )
     }
+
+    override DataFlow::Node getAResult() { result = this.getCallback(_).getParameter(1) }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -177,6 +180,16 @@ private module Postgres {
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [client(), pool()].getMember("query").getACall() }
+
+    override DataFlow::Node getAResult() {
+      this.getNumArgument() = 2 and
+      result = this.getCallback(1).getParameter(1)
+      or
+      this.getNumArgument() = 1 and
+      result = this.getAMethodCall("then").getCallback(0).getParameter(0)
+      or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -322,6 +335,10 @@ private module Postgres {
       )
     }
 
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
     override DataFlow::Node getAQueryArgument() {
       result = this.getADirectQueryArgument()
       or
@@ -370,6 +387,11 @@ private module Sqlite {
       this = database().getMember("prepare").getACall()
     }
 
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(1).getParameter(1) or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
+
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
 
@@ -413,11 +435,15 @@ private module MsSql {
   API::Node pool() { result = mssqlClass("ConnectionPool") }
 
   /** A tagged template evaluated as a query. */
-  private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
+  private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode, DataFlow::SourceNode {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
       mssql().getMember("query").getAUse() = DataFlow::valueNode(astNode.getTag())
+    }
+
+    override DataFlow::Node getAResult() {
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
 
     override DataFlow::Node getAQueryArgument() {
@@ -428,6 +454,12 @@ private module MsSql {
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = [mssql(), request()].getMember(["query", "batch"]).getACall() }
+
+    override DataFlow::Node getAResult() {
+      result = this.getCallback(1).getParameter(1)
+      or
+      PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
+    }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -505,6 +537,12 @@ private module Sequelize {
         ]
     }
   }
+
+  class SequelizeSource extends ModelInput::SourceModelCsv {
+    override predicate row(string row) {
+      row = "sequelize;Sequelize;Member[query].ReturnValue.Awaited;database-access-result"
+    }
+  }
 }
 
 private module SpannerCsv {
@@ -516,7 +554,10 @@ private module SpannerCsv {
           "@google-cloud/spanner;;@google-cloud/spanner;;Member[Spanner]",
           "@google-cloud/spanner;Database;@google-cloud/spanner;;ReturnValue.Member[instance].ReturnValue.Member[database].ReturnValue",
           "@google-cloud/spanner;v1.SpannerClient;@google-cloud/spanner;;Member[v1].Member[SpannerClient].Instance",
-          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[runTransaction,runTransactionAsync].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[runTransaction,runTransactionAsync,getTransaction].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Transaction;@google-cloud/spanner;Database;Member[getTransaction].ReturnValue.Awaited",
+          "@google-cloud/spanner;Snapshot;@google-cloud/spanner;Database;Member[getSnapshot].Argument[0..1].Parameter[1]",
+          "@google-cloud/spanner;Snapshot;@google-cloud/spanner;Database;Member[getSnapshot].ReturnValue.Awaited",
           "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[batchTransaction].ReturnValue",
           "@google-cloud/spanner;BatchTransaction;@google-cloud/spanner;Database;Member[createBatchTransaction].ReturnValue.Awaited",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Database;Member[run,runPartitionedUpdate,runStream]",
@@ -537,6 +578,25 @@ private module SpannerCsv {
           "@google-cloud/spanner;Transaction;Member[batchUpdate].Argument[0].ArrayElement.Member[sql];sql-injection",
           "@google-cloud/spanner;v1.SpannerClient;Member[executeSql,executeStreamingSql].Argument[0].Member[sql];sql-injection",
         ]
+    }
+  }
+
+  class SpannerSources extends ModelInput::SourceModelCsv {
+    string spannerClass() { result = ["v1.SpannerClient", "Database", "Transaction", "Snapshot",] }
+
+    string resultPath() {
+      result =
+        [
+          "Member[executeSql].Argument[0..].Parameter[1]",
+          "Member[executeSql].ReturnValue.Awaited.Member[0]", "Member[run].ReturnValue.Awaited",
+          "Member[run].Argument[0..].Parameter[1]",
+        ]
+    }
+
+    override predicate row(string row) {
+      row =
+        "@google-cloud/spanner;" + this.spannerClass() + ";" + this.resultPath() +
+          ";database-access-result"
     }
   }
 }

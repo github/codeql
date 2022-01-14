@@ -31,7 +31,7 @@
  *     - Instance: the value returned by a constructor call
  *     - Awaited: the value from a resolved promise/future-like object
  *     - WithArity[n]: match a call with the given arity. May be a range of form `x..y` (inclusive) and/or a comma-separated list.
- *     - Other langauge-specific tokens mentioned in `ModelsAsData.qll`.
+ *     - Other language-specific tokens mentioned in `ModelsAsData.qll`.
  * 4. The `input` and `output` columns specify how data enters and leaves the element selected by the
  *    first `(package, type, path)` tuple. Both strings are `.`-separated access paths
  *    of the same syntax as the `path` column.
