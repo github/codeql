@@ -131,19 +131,31 @@ private class PathMatchGuard extends UnsafeUrlForwardBarrierGuard {
       isExactStringPathMatch(this) and
       branch = true
       or
+      // When using an allowlist, that is, checking for known safe paths
+      // (for example, `path.startsWith(BASE_PATH)`)
+      // the application needs to protect against path traversal bypasses.
       isAllowListCheck(this) and
       exists(MethodAccess ma, Expr checked | isPathTraversalCheck(ma, checked) |
-        DataFlow::localExprFlow(checked, e)
-        or
-        ma.getParent*().(BinaryExpr) = this.(MethodAccess).getParent*()
+        // Either the path traversal check comes before the guard
+        DataFlow::localExprFlow(checked, e) or
+        // or both checks are in the same condition
+        // (for example, `path.startsWith(BASE_PATH) && !path.contains("..")`)
+        ma.(Guard).controls(this.getBasicBlock(), _) or
+        this.controls(ma.getBasicBlock(), branch)
       ) and
       branch = true
       or
+      // When using a blocklist, that is, checking for known bad patterns in the path,
+      // (for example, `path.startsWith("/WEB-INF/")` or `path.contains("..")`)
+      // the application needs to protect against double URL encoding bypasses.
       isDisallowListCheck(this) and
       exists(MethodAccess ma, Expr checked | isURLEncodingCheck(ma, checked) |
-        DataFlow::localExprFlow(checked, e)
-        or
-        ma.getParent*().(BinaryExpr) = this.(MethodAccess).getParent*()
+        // Either the URL encoding check comes before the guard
+        DataFlow::localExprFlow(checked, e) or
+        // or both checks are in the same condition
+        // (for example, `!path.contains("..") && !path.contains("%")`)
+        ma.(Guard).controls(this.getBasicBlock(), _) or
+        this.controls(ma.getBasicBlock(), branch)
       ) and
       branch = false
     )
