@@ -61,7 +61,8 @@ if [ $# -gt 0 ]; then
   usage 2 "Unrecognised operand: $1"
 fi
 
-scheme_file="ql/lib/semmlecode.python.dbscheme"
+scheme_file_name="semmlecode.python.dbscheme"
+scheme_file="ql/lib/${scheme_file_name}"
 downgrade_root="ql/downgrades"
 
 check_hash_valid()
@@ -86,8 +87,8 @@ fi
 downgradedir="${downgrade_root}/${current_hash}"
 mkdir -p "${downgradedir}"
 
-cp "${scheme_file}" "${downgradedir}"
-git cat-file blob "${prev_hash}" > "${downgradedir}/new.dbscheme"
+cp "${scheme_file}" "${downgradedir}/old.dbscheme"
+git cat-file blob "${prev_hash}" > "${downgradedir}/${scheme_file_name}"
 
 # Create the template downgrade.properties file.
 cat <<EOF > "${downgradedir}/downgrade.properties"
