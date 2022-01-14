@@ -13,112 +13,42 @@ import semmle.code.java.security.ImplicitPendingIntents
 class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
   ImplicitPendingIntentStartConf() { this = "ImplicitPendingIntentStartConf" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof ImplicitPendingIntentCreation
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    source.(ImplicitPendingIntentSource).hasState(state)
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SendPendingIntent }
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    sink.(ImplicitPendingIntentSink).hasState(state)
+  }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer instanceof ExplicitIntentSanitizer
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(Field f |
-      f.getType() instanceof PendingIntent and
-      node1.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-        DataFlow::getFieldQualifier(f.getAnAccess().(FieldWrite)) and
-      node2.asExpr().(FieldRead).getField() = f
-    )
+    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)
+  }
+
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, state1, node2, state2)
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
     super.allowImplicitRead(node, c)
     or
-    this.isSink(node) and
+    this.isSink(node, _) and
     allowIntentExtrasImplicitRead(node, c)
     or
     this.isAdditionalTaintStep(node, _) and
     c.(DataFlow::FieldContent).getType() instanceof PendingIntent
-  }
-}
-
-private class ImplicitPendingIntentCreation extends Expr {
-  ImplicitPendingIntentCreation() {
-    exists(Argument arg |
-      this.getType() instanceof PendingIntent and
-      exists(ImplicitPendingIntentConf conf | conf.hasFlowTo(DataFlow::exprNode(arg))) and
-      arg.getCall() = this
-    )
-  }
-}
-
-private class SendPendingIntent extends DataFlow::Node {
-  SendPendingIntent() {
-    sinkNode(this, "intent-start") and
-    // implicit intents can't be started as services since API 21
-    not exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m.getDeclaringType().getASupertype*() instanceof TypeContext and
-      m.getName().matches(["start%Service%", "bindService%"]) and
-      this.asExpr() = ma.getArgument(0)
-    )
     or
-    sinkNode(this, "pending-intent-sent")
-  }
-}
-
-private class ImplicitPendingIntentConf extends DataFlow2::Configuration {
-  ImplicitPendingIntentConf() { this = "PendingIntentConf" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(ClassInstanceExpr cc |
-      cc.getConstructedType() instanceof TypeIntent and source.asExpr() = cc
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof MutablePendingIntentSink }
-
-  override predicate isBarrier(DataFlow::Node barrier) {
-    barrier instanceof ExplicitIntentSanitizer
-  }
-
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
-    // Allow implicit reads of Intent arrays for sinks like getStartActivities
-    isSink(node) and
+    // Allow implicit reads of Intent arrays for steps like getActivities
+    // or sinks like startActivities
+    (this.isSink(node, _) or this.isAdditionalFlowStep(node, _, _, _)) and
     node.getType().(Array).getElementType() instanceof TypeIntent and
     c instanceof DataFlow::ArrayContent
   }
-}
-
-private class PendingIntentSink extends DataFlow::Node {
-  PendingIntentSink() { sinkNode(this, "pending-intent") }
-}
-
-private class MutablePendingIntentSink extends PendingIntentSink {
-  MutablePendingIntentSink() {
-    exists(Argument flagArg | flagArg = this.asExpr().(Argument).getCall().getArgument(3) |
-      // API < 31, PendingIntents are mutable by default
-      not TaintTracking::localExprTaint(any(ImmutablePendingIntentFlag flag).getAnAccess(), flagArg)
-      or
-      // API >= 31, PendingIntents need to explicitly set mutability
-      TaintTracking::localExprTaint(any(MutablePendingIntentFlag flag).getAnAccess(), flagArg)
-    )
-  }
-}
-
-private class PendingIntentFlag extends Field {
-  PendingIntentFlag() {
-    this.getDeclaringType() instanceof PendingIntent and
-    this.isPublic() and
-    this.getName().matches("FLAG_%")
-  }
-}
-
-private class ImmutablePendingIntentFlag extends PendingIntentFlag {
-  ImmutablePendingIntentFlag() { this.hasName("FLAG_IMMUTABLE") }
-}
-
-private class MutablePendingIntentFlag extends PendingIntentFlag {
-  MutablePendingIntentFlag() { this.hasName("FLAG_MUTABLE") }
 }

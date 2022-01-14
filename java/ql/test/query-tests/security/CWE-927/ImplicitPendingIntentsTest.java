@@ -99,6 +99,12 @@ public class ImplicitPendingIntentsTest {
         }
 
         {
+            Intent intent = new Intent();
+            // Testing the need of going through a PendingIntent creation (flow state)
+            ctx.startActivity(intent); // Safe
+        }
+
+        {
             Intent safeIntent = new Intent(ctx, Activity.class); // Sanitizer
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, safeIntent, 0);
             Intent fwdIntent = new Intent();
