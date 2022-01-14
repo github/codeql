@@ -372,6 +372,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     nested_types(this, _, result)
   }
 
+  override predicate isRecord() { this.hasModifier("record") }
+
   override string toString() { result = Type.super.toString() }
 }
 
@@ -709,6 +711,20 @@ class Struct extends ValueType, @struct_type {
   predicate isReadonly() { this.hasModifier("readonly") }
 
   override string getAPrimaryQlClass() { result = "Struct" }
+}
+
+/**
+ * A `record struct`, for example
+ * ```csharp
+ * record struct RS {
+ *   ...
+ * }
+ * ```
+ */
+class RecordStruct extends Struct {
+  RecordStruct() { this.isRecord() }
+
+  override string getAPrimaryQlClass() { result = "RecordStruct" }
 }
 
 /**
