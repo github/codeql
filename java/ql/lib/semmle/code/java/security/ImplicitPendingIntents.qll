@@ -7,11 +7,13 @@ private import semmle.code.java.frameworks.android.PendingIntent
 
 /** A source for an implicit `PendingIntent` flow. */
 abstract class ImplicitPendingIntentSource extends DataFlow::Node {
+  /** Holds if this source has the specified `state`. */
   predicate hasState(DataFlow::FlowState state) { state = "" }
 }
 
 /** A sink that sends an implicit and mutable `PendingIntent` to a third party. */
 abstract class ImplicitPendingIntentSink extends DataFlow::Node {
+  /** Holds if this sink has the specified `state`. */
   predicate hasState(DataFlow::FlowState state) { state = "" }
 }
 
