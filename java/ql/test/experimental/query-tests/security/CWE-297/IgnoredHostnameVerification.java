@@ -90,17 +90,30 @@ public class IgnoredHostnameVerification {
     throw new SSLException("Oops! Hostname verification failed!");
   }
 
+  // GOOD: connect and check result of HostnameVerifier.verify()
+  public static String connectWithHostnameVerification04(
+      String[] hosts, HostnameVerifier verifier, SSLSession session) throws IOException {
+
+    for (String host : hosts) {
+      if (verifier.verify(host, session)) {
+        return host;
+      }
+    }
+
+    throw new SSLException("Oops! Hostname verification failed!");
+  }
+
   public static class HostnameVerifierWrapper implements HostnameVerifier {
 
     private final HostnameVerifier verifier;
 
     public HostnameVerifierWrapper(HostnameVerifier verifier) {
-        this.verifier = verifier;
+      this.verifier = verifier;
     }
 
     @Override
     public boolean verify(String hostname, SSLSession session) {
-        return verifier.verify(hostname, session); // GOOD: wrapped calls should not be reported
+      return verifier.verify(hostname, session); // GOOD: wrapped calls should not be reported
     }
 
   }

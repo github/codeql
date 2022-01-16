@@ -51,8 +51,11 @@ private class CheckFailedHostnameVerificationConfig extends DataFlow::Configurat
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Guard guard, ThrowStmt throwStmt |
-      guard.controls(throwStmt.getBasicBlock(), _) and
+    exists(Guard guard, ThrowStmt throwStmt, ReturnStmt returnStmt |
+      (
+        guard.controls(throwStmt.getBasicBlock(), false) or
+        guard.controls(returnStmt.getBasicBlock(), true)
+      ) and
       (
         guard = sink.asExpr() or
         guard.(EqualityTest).getAnOperand() = sink.asExpr() or
