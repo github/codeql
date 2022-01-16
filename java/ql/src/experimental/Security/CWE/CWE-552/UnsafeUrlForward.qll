@@ -81,7 +81,7 @@ private class ExactStringPathMatchGuard extends UnsafeUrlForwardBarrierGuard ins
  */
 private class AllowListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
   AllowListCheckGuard() {
-    (isStringPathMatch(this) or isFilePathMatch(this)) and
+    (isStringPartialMatch(this) or isPathPartialMatch(this)) and
     not isDisallowedWord(this.getAnArgument())
   }
 
@@ -111,7 +111,7 @@ private class AllowListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceo
  */
 private class BlockListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
   BlockListCheckGuard() {
-    (isStringPathMatch(this) or isFilePathMatch(this)) and
+    (isStringPartialMatch(this) or isPathPartialMatch(this)) and
     isDisallowedWord(this.getAnArgument())
   }
 
@@ -137,18 +137,18 @@ private class BlockListCheckGuard extends UnsafeUrlForwardBarrierGuard instanceo
 }
 
 /**
- * Holds if `ma` is a call to a method that checks a path string.
+ * Holds if `ma` is a call to a method that checks a partial string match.
  */
-private predicate isStringPathMatch(MethodAccess ma) {
+private predicate isStringPartialMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
   ma.getMethod().getName() =
     ["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"]
 }
 
 /**
- * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a path.
+ * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a partial path match.
  */
-private predicate isFilePathMatch(MethodAccess ma) {
+private predicate isPathPartialMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypePath and
   ma.getMethod().getName() = "startsWith"
 }
