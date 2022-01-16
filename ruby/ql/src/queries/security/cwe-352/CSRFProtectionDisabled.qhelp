@@ -50,12 +50,23 @@
       <code>skip_before_action</code>.
     </p>
 
+    <p>
+      Care should be taken when using the Rails
+      <code>protect_from_forgery</code> method to prevent CSRF. The default
+      behaviour of this method is to null the session when an invalid CSRF token
+      is provided. This may not be sufficient to avoid a CSRF vulnerability -
+      for example if parts of the session are memoized. Calling
+      <code>protect_from_forgery with: :exception</code> can help to avoid this
+      by raising an exception on an invalid CSRF token instead.
+    </p>
+
   </example>
 
   <references>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-site request forgery</a></li>
     <li>OWASP: <a href="https://owasp.org/www-community/attacks/csrf">Cross-site request forgery</a></li>
     <li>Securing Rails Applications: <a href="https://guides.rubyonrails.org/security.html#cross-site-request-forgery-csrf">Cross-Site Request Forgery (CSRF)</a></li>
+    <li>Veracode: <a href="https://www.veracode.com/blog/managing-appsec/when-rails-protectfromforgery-fails">When Rails' protect_from_forgery Fails</a>.</li>
   </references>
 
 </qhelp>
