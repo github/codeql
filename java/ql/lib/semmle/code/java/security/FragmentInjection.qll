@@ -22,13 +22,8 @@ class IsValidFragmentMethod extends Method {
    */
   predicate isUnsafe() {
     this.getDeclaringType().(AndroidActivity).isExported() and
-    forex(ReturnStmt retStmt, BooleanLiteral bool |
-      retStmt.getEnclosingCallable() = this and
-      // Using taint tracking to handle logical expressions, like
-      // fragmentName.equals("safe") || true
-      TaintTracking::localExprTaint(bool, retStmt.getResult())
-    |
-      bool.getBooleanValue() = true
+    forex(ReturnStmt retStmt | retStmt.getEnclosingCallable() = this |
+      retStmt.getResult().(BooleanLiteral).getBooleanValue() = true
     )
   }
 }
@@ -39,15 +34,11 @@ class IsValidFragmentMethod extends Method {
  */
 abstract class FragmentInjectionSink extends DataFlow::Node { }
 
-/**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to `FragmentInjectionTaintConf`.
- */
+/** An additional taint step for flows related to Fragment injection vulnerabilites. */
 class FragmentInjectionAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for the `FragmentInjectionTaintConf` configuration.
+   * step in flows related to Fragment injection vulnerabilites.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }

@@ -6,6 +6,6 @@ public class UnsafePreferenceActivity extends PreferenceActivity {
 
     @Override
     protected boolean isValidFragment(String fragmentName) { // $ hasPreferenceFragmentInjection
-        return fragmentName.equals("MySafeClass") || true;
+        return true;
     }
 }
