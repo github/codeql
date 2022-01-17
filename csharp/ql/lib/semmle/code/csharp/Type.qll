@@ -452,6 +452,14 @@ class SimpleType extends ValueType, @simple_type {
 }
 
 /**
+ * A `record` like type.
+ * This can be either a `class` or a `struct`.
+ */
+abstract class RecordType extends ValueOrRefType {
+  RecordType() { this.isRecord() }
+}
+
+/**
  * The Boolean type, `bool`.
  */
 class BoolType extends SimpleType, @bool_type {
@@ -721,7 +729,7 @@ class Struct extends ValueType, @struct_type {
  * }
  * ```
  */
-class RecordStruct extends Struct {
+class RecordStruct extends RecordType, Struct {
   RecordStruct() { this.isRecord() }
 
   override string getAPrimaryQlClass() { result = "RecordStruct" }
@@ -782,6 +790,18 @@ class Class extends RefType, @class_type {
 }
 
 /**
+ * DEPRECATED: Use `RecordClass` instead.
+ */
+deprecated class Record extends Class {
+  Record() { this.isRecord() }
+
+  /** Gets the clone method of this record. */
+  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
+
+  override string getAPrimaryQlClass() { result = "Record" }
+}
+
+/**
  * A `record`, for example
  *
  * ```csharp
@@ -790,13 +810,11 @@ class Class extends RefType, @class_type {
  * }
  * ```
  */
-class Record extends Class {
-  Record() { this.isRecord() }
-
+class RecordClass extends RecordType, Class {
   /** Gets the clone method of this record. */
   RecordCloneMethod getCloneMethod() { result = this.getAMember() }
 
-  override string getAPrimaryQlClass() { result = "Record" }
+  override string getAPrimaryQlClass() { result = "RecordClass" }
 }
 
 /**

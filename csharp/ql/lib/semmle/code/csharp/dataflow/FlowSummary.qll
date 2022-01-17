@@ -111,7 +111,7 @@ module SummaryComponentStack {
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(Record r).getAMember() and
+  c = any(RecordType r).getAMember() and
   exists(string name |
     c.getParameter(i).getName() = name and
     c.getDeclaringType().getAMember(name) = p
