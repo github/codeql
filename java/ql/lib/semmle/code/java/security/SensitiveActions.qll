@@ -24,9 +24,7 @@ private string suspicious() {
 private string nonSuspicious() {
   result = "%hashed%" or
   result = "%encrypted%" or
-  result = "%crypt%" or
-  result = "%create table%" or
-  result = "%drop table%"
+  result = "%crypt%"
 }
 
 /**
