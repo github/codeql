@@ -223,8 +223,8 @@ generics.kt:
 #   61|         1: [ExprStmt] <Expr>;
 #   61|           0: [MethodAccess] fn2(...)
 #   61|             -2: [TypeAccess] String
-#   61|             -1: [ClassInstanceExpr] new Local<T1>(...)
-#   61|               -3: [TypeAccess] Local<T1>
+#   61|             -1: [ClassInstanceExpr] new Local<Integer>(...)
+#   61|               -3: [TypeAccess] Local<Integer>
 #   61|                 0: [TypeAccess] Integer
 #   61|             0: [VarAccess] t
 #   61|             1: [StringLiteral] 

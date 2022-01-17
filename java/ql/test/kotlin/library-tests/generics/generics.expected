@@ -49,7 +49,7 @@ parameterizedType
 | generics.kt:56:1:63:1 | Class1 | generics.kt:56:1:63:1 | Class1 | 0 | T1 |
 | generics.kt:56:1:63:1 | Class1<T1> | generics.kt:56:1:63:1 | Class1 | 0 | T2 |
 | generics.kt:58:9:60:9 | Local | generics.kt:58:9:60:9 | Local | 0 | T3 |
-| generics.kt:58:9:60:9 | Local<T1> | generics.kt:58:9:60:9 | Local | 0 | Integer |
+| generics.kt:58:9:60:9 | Local<Integer> | generics.kt:58:9:60:9 | Local | 0 | Integer |
 function
 | generics.kt:3:1:5:1 | f0 | f0(int,java.lang.Object) |
 | generics.kt:7:1:9:1 | f1 | f1(int,java.lang.Object) |
@@ -97,7 +97,7 @@ function
 | generics.kt:57:5:62:5 | fn1 | fn1(java.lang.Object) |
 | generics.kt:58:9:60:9 | <obinit> | <obinit>() |
 | generics.kt:58:9:60:9 | Local | Local() |
-| generics.kt:58:9:60:9 | Local<T1> | Local<T1>() |
+| generics.kt:58:9:60:9 | Local<Integer> | Local<Integer>() |
 | generics.kt:59:13:59:43 | fn2 | fn2(java.lang.Object,java.lang.Object) |
 | generics.kt:59:13:59:43 | fn2 | fn2(java.lang.Object,java.lang.Object) |
 genericFunction
@@ -110,7 +110,7 @@ genericFunction
 | generics.kt:21:5:21:23 | f4 | generics.kt:20:1:22:1 | C2 | generics.kt:21:10:21:10 | P | 0 |
 | generics.kt:57:5:62:5 | fn1 | generics.kt:56:1:63:1 | Class1 | generics.kt:57:10:57:11 | T2 | 0 |
 | generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local | generics.kt:59:18:59:19 | T4 | 0 |
-| generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local<T1> | generics.kt:59:18:59:19 | T4 | 0 |
+| generics.kt:59:13:59:43 | fn2 | generics.kt:58:9:60:9 | Local<Integer> | generics.kt:59:18:59:19 | T4 | 0 |
 genericCall
 | generics.kt:27:17:27:22 | f2(...) | generics.kt:15:10:15:10 | U | String |
 | generics.kt:30:17:30:21 | f2(...) | generics.kt:15:10:15:10 | U | Integer |
@@ -128,4 +128,4 @@ genericCtor
 | generics.kt:45:21:45:41 | new Inner1<Integer,String>(...) | 1 | String |
 | generics.kt:51:21:51:42 | new Nested1<Integer,String>(...) | 0 | Integer |
 | generics.kt:51:21:51:42 | new Nested1<Integer,String>(...) | 1 | String |
-| generics.kt:61:9:61:20 | new Local<T1>(...) | 0 | Integer |
+| generics.kt:61:9:61:20 | new Local<Integer>(...) | 0 | Integer |

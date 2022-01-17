@@ -145,12 +145,14 @@ open class KotlinUsesExtractor(
         } ?: argsIncludingOuterClasses
     }
 
+    fun isStaticClass(c: IrClass) = c.visibility != DescriptorVisibilities.LOCAL && !c.isInner
+
     // Gets nested inner classes starting at `c` and proceeding outwards to the innermost enclosing static class.
     // For example, for (java syntax) `class A { static class B { class C { class D { } } } }`,
     // `nonStaticParentsWithSelf(D)` = `[D, C, B]`.
     fun parentsWithTypeParametersInScope(c: IrClass): List<IrDeclarationParent> {
         val parentsList = c.parentsWithSelf.toList()
-        val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && !it.isInner }
+        val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && isStaticClass(it) }
         return if (firstOuterClassIdx == -1) parentsList else parentsList.subList(0, firstOuterClassIdx + 1)
     }
 
@@ -158,7 +160,7 @@ open class KotlinUsesExtractor(
     // `class NotInScope<T> { static class OutermostInScope<A, B> { class QueryClass<C, D> { } } }`,
     // `getTypeParametersInScope(QueryClass)` = `[C, D, A, B]`.
     fun getTypeParametersInScope(c: IrClass) =
-        parentsWithTypeParametersInScope(c).mapNotNull({ (it as? IrClass)?.typeParameters }).flatten()
+        parentsWithTypeParametersInScope(c).mapNotNull({ getTypeParameters(it) }).flatten()
 
     // Returns a map from `c`'s type variables in scope to type arguments `argsIncludingOuterClasses`.
     // Hack for the time being: the substituted types are always nullable, to prevent downstream code
@@ -167,7 +169,7 @@ open class KotlinUsesExtractor(
     fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
         getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses.map { it.withQuestionMark(true) }).toMap()
 
-    // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F> is InnerInner<E, F, C, D, A, B>. This function returns [A, B, C, D, E, F].
+    // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
     fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
@@ -175,10 +177,9 @@ open class KotlinUsesExtractor(
         // Iterate over nested inner classes starting at `c`'s surrounding top-level or static nested class and ending at `c`, from the outermost inwards:
         val truncatedParents = parentsWithTypeParametersInScope(c)
         for(parent in truncatedParents.reversed()) {
-            if(parent is IrClass) {
-                val firstArgIdx = argsIncludingOuterClasses.size - (ret.size + parent.typeParameters.size)
-                ret.addAll(argsIncludingOuterClasses.subList(firstArgIdx, firstArgIdx + parent.typeParameters.size))
-            }
+            val parentTypeParameters = getTypeParameters(parent)
+            val firstArgIdx = argsIncludingOuterClasses.size - (ret.size + parentTypeParameters.size)
+            ret.addAll(argsIncludingOuterClasses.subList(firstArgIdx, firstArgIdx + parentTypeParameters.size))
         }
         return ret
     }
@@ -611,6 +612,13 @@ class X {
     fun getFunctionTypeParameters(f: IrFunction): List<IrTypeParameter> {
         return if (f is IrConstructor) f.typeParameters else f.typeParameters.filter { it.parent == f }
     }
+
+    fun getTypeParameters(dp: IrDeclarationParent): List<IrTypeParameter> =
+        when(dp) {
+            is IrClass -> dp.typeParameters
+            is IrFunction -> getFunctionTypeParameters(dp)
+            else -> listOf()
+        }
 
     fun getFunctionLabel(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null) : String {
         return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
