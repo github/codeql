@@ -33,7 +33,7 @@ class LocalFileOpenCall extends Storable {
 
   override Expr getAStore() {
     exists(FilesystemFlowConfig conf, DataFlow::Node n |
-      filesystemStore(n, result) and
+      closesFile(n, result) and
       conf.hasFlow(DataFlow::exprNode(this), n)
     )
   }
@@ -57,14 +57,14 @@ private predicate isVarargs(Argument arg, DataFlow::ImplicitVarargsArray varargs
 
 /** Holds if `store` closes `file`. */
 private predicate closesFile(DataFlow::Node file, Call closeCall) {
-  store.getCallee() instanceof CloseFileMethod and
-  if store.getCallee().isStatic()
-  then file.asExpr() = store
-  else file.asExpr() = store.getQualifier()
+  closeCall.getCallee() instanceof CloseFileMethod and
+  if closeCall.getCallee().isStatic()
+  then file.asExpr() = closeCall
+  else file.asExpr() = closeCall.getQualifier()
   or
   // try-with-resources automatically closes the file
-  any(TryStmt try).getAResource() = store.(LocalFileOpenCall).getEnclosingStmt() and
-  store = file.asExpr()
+  any(TryStmt try).getAResource() = closeCall.(LocalFileOpenCall).getEnclosingStmt() and
+  closeCall = file.asExpr()
 }
 
 /** A method that closes a file, perhaps after writing some data. */
@@ -87,7 +87,7 @@ private class FilesystemFlowConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     filesystemInput(sink, _) or
-    filesystemStore(sink, _)
+    closesFile(sink, _)
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
