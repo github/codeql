@@ -102,6 +102,12 @@ string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
 
+/** Holds if input specification component `c` needs a reference. */
+predicate inputNeedsReferenceSpecific(string c) { none() }
+
+/** Holds if output specification component `c` needs a reference. */
+predicate outputNeedsReferenceSpecific(string c) { none() }
+
 class SourceOrSinkElement = Top;
 
 /**

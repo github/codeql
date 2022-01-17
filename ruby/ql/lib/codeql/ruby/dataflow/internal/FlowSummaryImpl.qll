@@ -921,13 +921,15 @@ module Private {
 
     private predicate inputNeedsReference(string c) {
       c = "Argument" or
-      parseArg(c, _)
+      parseArg(c, _) or
+      inputNeedsReferenceSpecific(c)
     }
 
     private predicate outputNeedsReference(string c) {
       c = "Argument" or
       parseArg(c, _) or
-      c = "ReturnValue"
+      c = "ReturnValue" or
+      outputNeedsReferenceSpecific(c)
     }
 
     private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
