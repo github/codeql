@@ -9,6 +9,7 @@
  * @id java/random-used-once
  * @tags reliability
  *       maintainability
+ *       security
  *       external/cwe/cwe-335
  */
 
