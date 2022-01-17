@@ -1,5 +1,6 @@
 package com.semmle.extractor.java;
 
+import java.lang.reflect.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -515,7 +516,26 @@ public class OdasaOutput {
 			final int[] versionStore = new int[1];
 
 			try {
-				ClassVisitor versionGetter = new ClassVisitor(Opcodes.ASM9) {
+				// Opcodes has fields called ASM4, ASM5, ...
+				// We want to use the latest one that there is.
+				Field asmField = null;
+				int asmNum = -1;
+				for(Field f : Opcodes.class.getDeclaredFields()) {
+					String name = f.getName();
+					if(name.startsWith("ASM")) {
+						try {
+							int i = Integer.parseInt(name.substring(3));
+							if(i > asmNum) {
+								asmNum = i;
+								asmField = f;
+							}
+						} catch (NumberFormatException ex) {
+							// Do nothing; this field doesn't have a name of the right format
+						}
+					}
+				}
+				int asm = asmField.getInt(null);
+				ClassVisitor versionGetter = new ClassVisitor(asm) {
 					public void visit​(int version, int access, java.lang.String name, java.lang.String signature, java.lang.String superName, java.lang.String[] interfaces) {
 						versionStore[0] = version;
 					}
@@ -524,7 +544,12 @@ public class OdasaOutput {
 
 				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp());
 			}
+			catch(IllegalAccessException e) {
+				// TODO: Log something
+				return new TrapClassVersion(0, 0, 0);
+			}
 			catch(IOException e) {
+				// TODO: Log something
 				return new TrapClassVersion(0, 0, 0);
 			}
 		}
