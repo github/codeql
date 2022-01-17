@@ -125,11 +125,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
 
-        private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
-
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (IsAnonymousType())
+            if (Symbol.IsAnonymousTypeExt())
             {
                 trapFile.Write('*');
             }
@@ -142,7 +140,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
-            if (IsAnonymousType())
+            if (Symbol.IsAnonymousTypeExt())
                 trapFile.Write('*');
             else
                 base.WriteQuotedId(trapFile);
@@ -162,7 +160,7 @@ namespace Semmle.Extraction.CSharp.Entities
             public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
-        // Do not create typerefs of constructed generics as they are always in the current trap file.
+        // Do not create typerefs of constructed generics as they are always in the shared trap file.
         // Create typerefs for constructed error types in case they are fully defined elsewhere.
         // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
         // the assembly that was being extracted at the time.
@@ -173,11 +171,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
     internal class NamedTypeRef : Type<INamedTypeSymbol>
     {
-        private readonly Type referencedType;
+        private Type ReferencedType => Type.Create(Context, Symbol);
 
         public NamedTypeRef(Context cx, INamedTypeSymbol symbol) : base(cx, symbol)
         {
-            referencedType = Type.Create(cx, symbol);
         }
 
         public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
@@ -189,6 +186,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
+            public override bool IsShared(INamedTypeSymbol _) => false;
+
             public override NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }
 
@@ -196,7 +195,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(referencedType);
+            trapFile.WriteSubId(ReferencedType);
             trapFile.Write(";typeRef");
         }
 

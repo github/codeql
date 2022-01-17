@@ -130,6 +130,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static FieldFactory Instance { get; } = new FieldFactory();
 
+            public override bool IsShared(IFieldSymbol init) =>
+                base.IsShared(init) && !init.Type.ContainsAnonymousType() && !init.IsImplicitlyDeclared;
+
             public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
     }

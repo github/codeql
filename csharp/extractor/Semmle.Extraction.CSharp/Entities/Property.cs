@@ -122,6 +122,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static PropertyFactory Instance { get; } = new PropertyFactory();
 
+            public override bool IsShared(IPropertySymbol init) =>
+                base.IsShared(init) && !init.Type.ContainsAnonymousType();
+
             public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
     }

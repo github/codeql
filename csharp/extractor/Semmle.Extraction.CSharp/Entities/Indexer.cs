@@ -102,6 +102,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static IndexerFactory Instance { get; } = new IndexerFactory();
 
+            public override bool IsShared(IPropertySymbol init) =>
+                base.IsShared(init) &&
+                !init.Type.ContainsAnonymousType() &&
+                !init.Parameters.Any(p => p.Type.ContainsAnonymousType());
+
             public override Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
         }
     }

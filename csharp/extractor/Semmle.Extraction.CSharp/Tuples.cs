@@ -453,5 +453,5 @@ namespace Semmle.Extraction.CSharp
 
         internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, ExtractorMode mode) =>
             trapFile.WriteTuple("file_extraction_mode", file, mode);
-        }
     }
+}

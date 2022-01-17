@@ -645,5 +645,60 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        public static bool IsAnonymousTypeExt(this ITypeSymbol type) =>
+            type.IsAnonymousType || type.Name.Contains("__AnonymousType");
+
+        /// <summary>
+        /// Returns `true` if this symbol is an anonymous type, or if it contains
+        /// an anonymoys type.
+        /// </summary>
+        public static bool ContainsAnonymousType(this ITypeSymbol type)
+        {
+            if (type.IsAnonymousTypeExt())
+                return true;
+
+            if (type.BaseType?.SpecialType == SpecialType.System_MulticastDelegate)
+            {
+                var invokeMethod = ((INamedTypeSymbol)type).DelegateInvokeMethod!;
+                return invokeMethod.ReturnType.ContainsAnonymousType() || invokeMethod.Parameters.Any(p => p.Type.ContainsAnonymousType());
+            }
+
+            switch (type.TypeKind)
+            {
+                case TypeKind.Array:
+                    var array = (IArrayTypeSymbol)type;
+                    return array.ElementType.ContainsAnonymousType();
+                case TypeKind.Class:
+                case TypeKind.Interface:
+                case TypeKind.Struct:
+                case TypeKind.Enum:
+                case TypeKind.Delegate:
+                case TypeKind.Error:
+                    var named = (INamedTypeSymbol)type;
+                    return
+                        named.IsTupleType && named.TupleElements.Any(t => t.Type.ContainsAnonymousType())
+                        ||
+                        named.TypeArguments.Any(t => t.ContainsAnonymousType());
+                case TypeKind.Pointer:
+                    var ptr = (IPointerTypeSymbol)type;
+                    return ptr.PointedAtType.ContainsAnonymousType();
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns `true` if this method symbol uses anonymous types.
+        /// </summary>
+        public static bool ContainsAnonymousType(this IMethodSymbol method)
+        {
+            return
+                method.TypeArguments.Any(t => t.ContainsAnonymousType())
+                ||
+                method.ReturnType.ContainsAnonymousType()
+                ||
+                method.Parameters.Any(p => p.Type.ContainsAnonymousType());
+        }
     }
 }
