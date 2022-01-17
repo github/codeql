@@ -1,6 +1,6 @@
 /**
  * @name Cleartext storage of sensitive information in the Android filesystem
- * @description Cleartext Storage of Sensitive Information the Android filesystem
+ * @description Cleartext storage of sensitive information in the Android filesystem
  *              allows access for users with root privileges or unexpected exposure
  *              from chained vulnerabilities.
  * @kind problem
