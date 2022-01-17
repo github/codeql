@@ -66,7 +66,7 @@ private class LocalDatabaseInputStoreMethod extends Method {
 }
 
 private predicate localDatabaseInput(DataFlow::Node database, Argument input) {
-  exists(Method m | input.getCall().(MethodAccess).getMethod() = m |
+  exists(Method m | input.getCall().getCallee() = m |
     m instanceof LocalDatabaseInputStoreMethod and
     database.asExpr() = input.getCall().getQualifier()
     or
