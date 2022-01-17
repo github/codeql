@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Generated automatically from android.database.sqlite.SQLiteDatabase for testing purposes
 
 package android.database.sqlite;

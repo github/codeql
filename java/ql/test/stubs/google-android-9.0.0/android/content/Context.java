@@ -101,7 +101,6 @@ abstract public class Context
     public abstract String getSystemServiceName(Class<? extends Object> p0);
     public abstract String[] databaseList();
     public abstract String[] fileList();
-<<<<<<< HEAD
     public abstract boolean bindService(Intent p0, ServiceConnection p1, int p2);
     public abstract boolean bindServiceAsUser(Intent p0, ServiceConnection p1, int p2, UserHandle p3);
     public abstract boolean deleteDatabase(String p0);
