@@ -77,8 +77,12 @@ private module Cached {
       p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
     or
-    // super calls
-    exists(Super sup, ClassType type, Type supertype |
+    // super calls - and `this.method()` calls in charpreds. (Basically: in charpreds there is no difference between super and this.)
+    exists(AstNode sup, ClassType type, Type supertype |
+      sup instanceof Super
+      or
+      sup.(ThisAccess).getEnclosingPredicate() instanceof CharPred
+    |
       mc.getBase() = sup and
       sup.getEnclosingPredicate().getParent().(Class).getType() = type and
       supertype in [type.getASuperType(), type.getAnInstanceofType()] and
