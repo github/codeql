@@ -7,7 +7,7 @@ LGTM Enterprise |release| includes CodeQL CLI |version|. The CodeQL libraries an
 
     Note
 
-    For details of language and compiler support in the most recent release of the CodeQL CLI, see `Supported languages and frameworks <https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks/>`__ in the CodeQL CLI documentation.
+    For details of framework and library support in the most recent release of the CodeQL CLI, see `Supported languages and frameworks <https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks/>`__ in the CodeQL CLI documentation.
 
 .. pull-quote::
 
