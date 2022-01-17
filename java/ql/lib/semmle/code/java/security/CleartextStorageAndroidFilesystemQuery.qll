@@ -18,7 +18,7 @@ private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink
   }
 }
 
-/** The creation of an object that can be used to write to files to the local filesystem. */
+/** A call to a method or constructor that may write to files to the local filesystem. */
 class LocalFileOpenCall extends Storable {
   LocalFileOpenCall() {
     this = any(DataFlow::Node sink | sinkNode(sink, "create-file")).asExpr().(Argument).getCall()
@@ -56,7 +56,7 @@ private predicate isVarargs(Argument arg, DataFlow::ImplicitVarargsArray varargs
 }
 
 /** Holds if `store` closes `file`. */
-private predicate filesystemStore(DataFlow::Node file, Call store) {
+private predicate closesFile(DataFlow::Node file, Call closeCall) {
   store.getCallee() instanceof CloseFileMethod and
   if store.getCallee().isStatic()
   then file.asExpr() = store
@@ -67,7 +67,7 @@ private predicate filesystemStore(DataFlow::Node file, Call store) {
   store = file.asExpr()
 }
 
-/** A method that closes a file. */
+/** A method that closes a file, perhaps after writing some data. */
 private class CloseFileMethod extends Method {
   CloseFileMethod() {
     this.hasQualifiedName("java.io", ["RandomAccessFile", "FileOutputStream", "PrintStream"],
