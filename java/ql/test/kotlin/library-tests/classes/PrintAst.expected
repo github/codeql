@@ -534,7 +534,7 @@ local_anonymous.kt:
 #   25|                 1: [ExprStmt] <Expr>;
 #   25|                   0: [MethodAccess] <obinit>(...)
 #   26|         1: [ExprStmt] <Expr>;
-#   26|           0: [CastExpr] (...)...
+#   26|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   26|             0: [TypeAccess] Unit
 #   26|             1: [ClassInstanceExpr] new LocalClass(...)
 #   26|               -3: [TypeAccess] LocalClass

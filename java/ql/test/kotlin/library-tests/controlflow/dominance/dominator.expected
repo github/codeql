@@ -84,7 +84,7 @@
 | Test.kt:40:4:40:6 | <Expr>; | Test.kt:40:4:40:6 | tmp0 |
 | Test.kt:40:4:40:6 | <Stmt> | Test.kt:40:4:40:6 | { ... } |
 | Test.kt:40:4:40:6 | dec(...) | Test.kt:40:4:40:4 | ...=... |
-| Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | (...)... |
+| Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | <implicit coercion to unit> |
 | Test.kt:40:4:40:6 | tmp0 | Test.kt:40:4:40:6 | dec(...) |
 | Test.kt:40:4:40:6 | { ... } | Test.kt:40:4:40:4 | var ...; |
 | Test.kt:43:3:43:3 | ...=... | Test.kt:73:3:73:3 | <Expr>; |
@@ -100,8 +100,8 @@
 | Test.kt:73:8:73:8 | x | Test.kt:73:12:73:12 | y |
 | Test.kt:73:8:73:12 | ... + ... | Test.kt:73:16:73:16 | w |
 | Test.kt:73:8:73:16 | ... + ... | Test.kt:73:3:73:16 | plus(...) |
-| Test.kt:73:12:73:12 | (...)... | Test.kt:73:8:73:12 | ... + ... |
-| Test.kt:73:12:73:12 | y | Test.kt:73:12:73:12 | (...)... |
+| Test.kt:73:12:73:12 | <implicit cast> | Test.kt:73:8:73:12 | ... + ... |
+| Test.kt:73:12:73:12 | y | Test.kt:73:12:73:12 | <implicit cast> |
 | Test.kt:73:16:73:16 | w | Test.kt:73:8:73:16 | ... + ... |
 | Test.kt:77:3:77:3 | ...=... | Test.kt:78:10:78:10 | w |
 | Test.kt:77:3:77:3 | <Expr>; | Test.kt:77:7:77:8 | 40 |

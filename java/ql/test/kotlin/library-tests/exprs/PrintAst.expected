@@ -600,7 +600,7 @@ exprs.kt:
 #  131|             1: [IntegerLiteral] 0
 #  131|           1: [BlockStmt] { ... }
 #  132|             0: [ExprStmt] <Expr>;
-#  132|               0: [CastExpr] (...)...
+#  132|               0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  132|                 0: [TypeAccess] Unit
 #  132|                 1: [StmtExpr] <Stmt>
 #  132|                   0: [BlockStmt] { ... }
@@ -638,7 +638,7 @@ exprs.kt:
 #  151|               1: [BlockStmt] { ... }
 #  152|                 0: [LocalVariableDeclStmt] var ...;
 #  152|                   1: [LocalVariableDeclExpr] x1
-#  152|                     0: [CastExpr] (...)...
+#  152|                     0: [ImplicitCastExpr] <implicit cast>
 #  152|                       0: [TypeAccess] Subclass1
 #  152|                       1: [VarAccess] x
 #  154|         1: [LocalVariableDeclStmt] var ...;
@@ -649,7 +649,7 @@ exprs.kt:
 #  154|                   0: [VarAccess] x
 #  154|                   1: [TypeAccess] Subclass1
 #  154|                 1: [ExprStmt] <Expr>;
-#  154|                   0: [CastExpr] (...)...
+#  154|                   0: [ImplicitCastExpr] <implicit cast>
 #  154|                     0: [TypeAccess] Subclass1
 #  154|                     1: [StmtExpr] <Stmt>
 #  154|                       0: [BlockStmt] { ... }
@@ -698,7 +698,7 @@ exprs.kt:
 #  161|               1: [BlockStmt] { ... }
 #  162|                 0: [LocalVariableDeclStmt] var ...;
 #  162|                   1: [LocalVariableDeclExpr] r2
-#  162|                     0: [CastExpr] (...)...
+#  162|                     0: [ImplicitNotNullExpr] <implicit not null>
 #  162|                       0: [TypeAccess] Rectangle
 #  162|                       1: [VarAccess] r
 #  163|                 1: [LocalVariableDeclStmt] var ...;
@@ -1194,7 +1194,7 @@ funcExprs.kt:
 #   29|                     21: [Parameter] a21
 #   29|                   5: [BlockStmt] { ... }
 #   29|                     0: [ExprStmt] <Expr>;
-#   29|                       0: [CastExpr] (...)...
+#   29|                       0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   29|                         0: [TypeAccess] Unit
 #   29|                         1: [IntegerLiteral] 5
 #   29|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
@@ -2015,7 +2015,7 @@ localFunctionCalls.kt:
 #    6|             0: [VarAccess] x
 #    6|             1: [IntegerLiteral] 6
 #    7|         3: [ExprStmt] <Expr>;
-#    7|           0: [CastExpr] (...)...
+#    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    7|             0: [TypeAccess] Unit
 #    7|             1: [MethodAccess] a(...)
 #    7|               -2: [TypeAccess] String
@@ -2041,7 +2041,7 @@ localFunctionCalls.kt:
 #    9|                 0: [ReturnStmt] return ...
 #    9|                   0: [IntegerLiteral] 5
 #   10|         6: [ExprStmt] <Expr>;
-#   10|           0: [CastExpr] (...)...
+#   10|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   10|             0: [TypeAccess] Unit
 #   10|             1: [MethodAccess] f1(...)
 #   10|               -2: [TypeAccess] Integer

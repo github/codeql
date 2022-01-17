@@ -91,7 +91,7 @@
 | Test.kt:38:16:41:3 | { ... } | 13 | Test.kt:40:4:40:4 | ...=... |
 | Test.kt:38:16:41:3 | { ... } | 14 | Test.kt:40:4:40:6 | <Expr>; |
 | Test.kt:38:16:41:3 | { ... } | 15 | Test.kt:40:4:40:6 | tmp0 |
-| Test.kt:38:16:41:3 | { ... } | 16 | Test.kt:40:4:40:6 | (...)... |
+| Test.kt:38:16:41:3 | { ... } | 16 | Test.kt:40:4:40:6 | <implicit coercion to unit> |
 | Test.kt:43:3:43:3 | <Expr>; | 0 | Test.kt:43:3:43:3 | <Expr>; |
 | Test.kt:43:3:43:3 | <Expr>; | 1 | Test.kt:43:7:43:8 | 30 |
 | Test.kt:43:3:43:3 | <Expr>; | 2 | Test.kt:43:3:43:3 | ...=... |

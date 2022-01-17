@@ -463,8 +463,8 @@
 | exprs.kt:132:9:132:16 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:132:9:132:16 | variable | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:132:9:132:18 | (...)... | exprs.kt:4:1:136:1 | topLevelMethod | CastExpr |
 | exprs.kt:132:9:132:18 | <Stmt> | exprs.kt:4:1:136:1 | topLevelMethod | StmtExpr |
+| exprs.kt:132:9:132:18 | <implicit coercion to unit> | exprs.kt:4:1:136:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
 | exprs.kt:132:9:132:18 | Unit | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
 | exprs.kt:132:9:132:18 | dec(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:132:9:132:18 | tmp0 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
@@ -490,7 +490,7 @@
 | exprs.kt:151:8:151:21 | ...instanceof... | exprs.kt:150:1:157:1 | typeTests | InstanceOfExpr |
 | exprs.kt:151:8:151:21 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
 | exprs.kt:152:9:152:29 | x1 | exprs.kt:150:1:157:1 | typeTests | LocalVariableDeclExpr |
-| exprs.kt:152:29:152:29 | (...)... | exprs.kt:150:1:157:1 | typeTests | CastExpr |
+| exprs.kt:152:29:152:29 | <implicit cast> | exprs.kt:150:1:157:1 | typeTests | ImplicitCastExpr |
 | exprs.kt:152:29:152:29 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
 | exprs.kt:152:29:152:29 | x | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:154:5:154:60 | y1 | exprs.kt:150:1:157:1 | typeTests | LocalVariableDeclExpr |
@@ -499,8 +499,8 @@
 | exprs.kt:154:29:154:29 | x | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:154:29:154:42 | ...instanceof... | exprs.kt:150:1:157:1 | typeTests | InstanceOfExpr |
 | exprs.kt:154:29:154:42 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
-| exprs.kt:154:45:154:49 | (...)... | exprs.kt:150:1:157:1 | typeTests | CastExpr |
 | exprs.kt:154:45:154:49 | <Stmt> | exprs.kt:150:1:157:1 | typeTests | StmtExpr |
+| exprs.kt:154:45:154:49 | <implicit cast> | exprs.kt:150:1:157:1 | typeTests | ImplicitCastExpr |
 | exprs.kt:154:45:154:49 | Subclass1 | exprs.kt:150:1:157:1 | typeTests | TypeAccess |
 | exprs.kt:154:47:154:47 | x | exprs.kt:150:1:157:1 | typeTests | VarAccess |
 | exprs.kt:154:58:154:58 | y | exprs.kt:150:1:157:1 | typeTests | VarAccess |
@@ -525,7 +525,7 @@
 | exprs.kt:161:8:161:16 | ... != ... | exprs.kt:159:1:166:1 | foo | NEExpr |
 | exprs.kt:161:13:161:16 | null | exprs.kt:159:1:166:1 | foo | NullLiteral |
 | exprs.kt:162:9:162:29 | r2 | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
-| exprs.kt:162:29:162:29 | (...)... | exprs.kt:159:1:166:1 | foo | CastExpr |
+| exprs.kt:162:29:162:29 | <implicit not null> | exprs.kt:159:1:166:1 | foo | ImplicitNotNullExpr |
 | exprs.kt:162:29:162:29 | Rectangle | exprs.kt:159:1:166:1 | foo | TypeAccess |
 | exprs.kt:162:29:162:29 | r | exprs.kt:159:1:166:1 | foo | VarAccess |
 | exprs.kt:163:9:163:30 | height | exprs.kt:159:1:166:1 | foo | LocalVariableDeclExpr |
@@ -683,7 +683,7 @@
 | funcExprs.kt:29:29:29:112 | ...->... | funcExprs.kt:15:1:46:1 | call | LambdaExpr |
 | funcExprs.kt:29:29:29:112 | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit> | funcExprs.kt:15:1:46:1 | call | TypeAccess |
 | funcExprs.kt:29:111:29:111 | 5 | funcExprs.kt:29:29:29:112 | invoke | IntegerLiteral |
-| funcExprs.kt:29:111:29:111 | (...)... | funcExprs.kt:29:29:29:112 | invoke | CastExpr |
+| funcExprs.kt:29:111:29:111 | <implicit coercion to unit> | funcExprs.kt:29:29:29:112 | invoke | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:29:111:29:111 | Unit | funcExprs.kt:29:29:29:112 | invoke | TypeAccess |
 | funcExprs.kt:30:5:30:117 | functionExpression23(...) | funcExprs.kt:15:1:46:1 | call | MethodAccess |
 | funcExprs.kt:30:26:30:26 | 5 | funcExprs.kt:15:1:46:1 | call | IntegerLiteral |
@@ -1193,7 +1193,7 @@
 | localFunctionCalls.kt:6:5:6:5 | ...=... | localFunctionCalls.kt:3:1:11:1 | x | AssignExpr |
 | localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:11:1 | x | VarAccess |
 | localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:11:1 | x | IntegerLiteral |
-| localFunctionCalls.kt:7:5:7:17 | (...)... | localFunctionCalls.kt:3:1:11:1 | x | CastExpr |
+| localFunctionCalls.kt:7:5:7:17 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:11:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | String | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
@@ -1207,7 +1207,7 @@
 | localFunctionCalls.kt:10:5:10:13 | C1<Integer> | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:5:10:13 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:11:1 | x | ClassInstanceExpr |
-| localFunctionCalls.kt:10:15:10:20 | (...)... | localFunctionCalls.kt:3:1:11:1 | x | CastExpr |
+| localFunctionCalls.kt:10:15:10:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:11:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:10:15:10:20 | Integer | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:15:10:20 | Object | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:11:1 | x | TypeAccess |
