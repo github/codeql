@@ -72,6 +72,8 @@ private class IntentFlagsOrDataCheckedGuard extends IntentUriPermissionManipulat
 
   override predicate checks(Expr e, boolean branch) {
     exists(MethodAccess ma, Method m |
+      // This checks `intent` when the result of an `intent.getFlags` or `intent.getData` call flows to `condition`
+      // (i.e., that result is equality-tested)
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       m.hasName(["getFlags", "getData"]) and
