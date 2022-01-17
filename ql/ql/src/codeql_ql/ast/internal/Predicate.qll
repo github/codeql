@@ -77,7 +77,7 @@ private module Cached {
       p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
     or
-    // super calls - and `this.method()` calls in charpreds (for confusing reasons)
+    // super calls - and `this.method()` calls in charpreds. (Basically: in charpreds there is no difference between super and this.)
     exists(AstNode sup, ClassType type, Type supertype |
       sup instanceof Super
       or
