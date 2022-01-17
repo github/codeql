@@ -2,7 +2,7 @@
 
 import java
 
-/** An Android Fragment. */
+/** The class `android.app.Fragment`. */
 class AndroidFragment extends Class {
   AndroidFragment() { this.getASupertype*().hasQualifiedName("android.app", "Fragment") }
 }

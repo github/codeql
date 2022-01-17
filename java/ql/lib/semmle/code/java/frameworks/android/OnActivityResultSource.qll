@@ -28,10 +28,12 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
    * Intent to `onActivityResult`.
    */
   predicate isRemoteSource() {
-    exists(ImplicitStartActivityForResultConf conf, RefType startingType, DataFlow::Node sink |
-      conf.hasFlowTo(sink) and
-      startingType = sink.asExpr().(Argument).getCall().getEnclosingCallable().getDeclaringType()
+    exists(ImplicitStartActivityForResultConf conf, RefType startingType, Expr startActivityForResultArg |
+      conf.hasFlowToExpr(startActivityForResultArg) and
+      // startingType is the class enclosing the method that calls `startActivityForResult`.
+      startingType = startActivityForResultArg.getEnclosingCallable().getDeclaringType()
     |
+      // startingType itself defines an `onActivityResult` method:
       startingType = this.getEnclosingCallable().getDeclaringType()
       or
       // A fragment calls `startActivityForResult`
