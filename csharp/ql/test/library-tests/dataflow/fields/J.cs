@@ -3,14 +3,16 @@ namespace System.Runtime.CompilerServices
     internal static class IsExternalInit { }
 }
 
-public record Record(object Prop1, object Prop2) { }
+public record class RecordClass(object Prop1, object Prop2) { }
+
+public record struct RecordStruct(object Prop1, object Prop2) { }
 
 public class J
 {
     private void M1()
     {
         var o = Source<object>(1);
-        var r1 = new Record(o, null);
+        var r1 = new RecordClass(o, null);
         Sink(r1.Prop1); // $ hasValueFlow=1
         Sink(r1.Prop2); // no flow
 
@@ -25,6 +27,14 @@ public class J
         var r4 = r1 with { Prop1 = null };
         Sink(r4.Prop1); // no flow
         Sink(r4.Prop2); // no flow
+    }
+
+    private void M2()
+    {
+        var o = Source<object>(1);
+        var r1 = new RecordStruct(o, null);
+        Sink(r1.Prop1); // $ hasValueFlow=1
+        Sink(r1.Prop2); // no flow
     }
 
     public static void Sink(object o) { }
