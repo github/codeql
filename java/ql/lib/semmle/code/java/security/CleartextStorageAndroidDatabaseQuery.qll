@@ -65,6 +65,11 @@ private class LocalDatabaseInputStoreMethod extends Method {
   }
 }
 
+/**
+ * Holds if `input` is a value being prepared for being stored into the SQLite dataabse `database`.
+ * This can be done using prepared statements, using the class `ContentValues`, or directly
+ * appending `input` to a SQL query.
+ */
 private predicate localDatabaseInput(DataFlow::Node database, Argument input) {
   exists(Method m | input.getCall().getCallee() = m |
     m instanceof LocalDatabaseInputStoreMethod and
@@ -81,6 +86,11 @@ private predicate localDatabaseInput(DataFlow::Node database, Argument input) {
   )
 }
 
+/**
+ * Holds if `store` is a method call for storing a previously appended input value,
+ * either through the use of prepared statements, via the `ContentValues` class, or
+ * directly executing a raw SQL query.
+ */
 private predicate localDatabaseStore(DataFlow::Node database, MethodAccess store) {
   exists(Method m | store.getMethod() = m |
     m instanceof LocalDatabaseInputStoreMethod and
@@ -110,6 +120,8 @@ private class LocalDatabaseFlowConfig extends DataFlow::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    // Adds a step for tracking databases through field flow, that is, a database is opened and
+    // assigned to a field, and then an input or store method is called on that field elsewhere.
     exists(Field f |
       f.getType() instanceof TypeSQLiteDatabase and
       f.getAnAssignedValue() = n1.asExpr() and
