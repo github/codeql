@@ -6,7 +6,7 @@
 When fragments are instantiated with externally provided names, this exposes any exported activity that dynamically
 creates and hosts the fragment to fragment injection. A malicious application could provide the 
 name of an arbitrary fragment, even one not designed to be externally accessible, and inject it into the activity. 
-Thus, effectively bypassing access controls and exposing the application to unintended effects.
+This can bypass access controls and expose the application to unintended effects.
 </p>
 <p>
 Fragments are reusable parts of an Android application's user interface.
