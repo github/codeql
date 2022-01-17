@@ -2,7 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.DataFlow5
+private import semmle.code.java.dataflow.internal.DataFlowForOnActivityResult
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.frameworks.android.Fragment
 private import semmle.code.java.frameworks.android.Intent
@@ -59,7 +59,7 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
 /**
  * A data flow configuration for implicit intents being used in `startActivityForResult`.
  */
-private class ImplicitStartActivityForResultConf extends DataFlow5::Configuration {
+private class ImplicitStartActivityForResultConf extends DataFlowForOnActivityResult::Configuration {
   ImplicitStartActivityForResultConf() { this = "ImplicitStartActivityForResultConf" }
 
   override predicate isSource(DataFlow::Node source) {
