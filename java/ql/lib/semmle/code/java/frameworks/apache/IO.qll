@@ -1,17 +1,9 @@
-/** Definitions related to the Apache Commons IO library. */
+/** Definitions of taint steps in the IO framework */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
-// TODO: manual models that were not generated yet
-private class ApacheCommonsIOCustomSummaryCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      ["org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint"]
-  }
-}
-
-private class ApacheCommonsIOSinksCsv extends SinkModelCsv {
+private class IOSinksCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -112,13 +104,17 @@ private class ApacheCommonsIOSinksCsv extends SinkModelCsv {
   }
 }
 
-private class ApacheCommonsIOSourcesCsv extends SourceModelCsv {
+private class IOSourcesCsv extends SourceModelCsv {
   override predicate row(string row) {
-    row = ["org.apache.commons.io;IOUtils;true;toByteArray;(URL);;ReturnValue;remote"]
+    row =
+      [
+        "org.apache.commons.io;IOUtils;true;resourceToByteArray;(String,ClassLoader);;ReturnValue;remote",
+        "org.apache.commons.io;IOUtils;true;toByteArray;(URI);;ReturnValue;remote"
+      ]
   }
 }
 
-private class ApacheCommonsIOSummaryCsv extends SummaryModelCsv {
+private class IOSummaryCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -540,6 +536,8 @@ private class ApacheCommonsIOSummaryCsv extends SummaryModelCsv {
         "org.apache.commons.io;CopyUtils;true;copy;(Reader,Writer);;Argument[0];Argument[1];taint",
         "org.apache.commons.io;CopyUtils;true;copy;(String,Writer);;Argument[0];Argument[1];taint",
         "org.apache.commons.io;CopyUtils;true;copy;(byte[],OutputStream);;Argument[0];Argument[1];taint",
+        "org.apache.commons.io;CopyUtils;true;copy;(byte[],Writer);;Argument[0];Argument[1];taint",
+        "org.apache.commons.io;CopyUtils;true;copy;(byte[],Writer,String);;Argument[0];Argument[1];taint",
         "org.apache.commons.io;DirectoryWalker$CancelException;true;CancelException;(File,int);;Argument[0];Argument[-1];taint",
         "org.apache.commons.io;DirectoryWalker$CancelException;true;CancelException;(String,File,int);;Argument[1];Argument[-1];taint",
         "org.apache.commons.io;DirectoryWalker$CancelException;true;getFile;();;Argument[-1];ReturnValue;taint",
@@ -634,9 +632,11 @@ private class ApacheCommonsIOSummaryCsv extends SummaryModelCsv {
         "org.apache.commons.io;IOUtils;true;toBufferedReader;(Reader,int);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toByteArray;(InputStream,int);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toByteArray;(InputStream,long);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.io;IOUtils;true;toByteArray;(Reader);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.io;IOUtils;true;toByteArray;(Reader,String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toByteArray;(String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.io;IOUtils;true;toCharArray;(InputStream);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.io;IOUtils;true;toCharArray;(InputStream,Charset);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.io;IOUtils;true;toCharArray;(InputStream,String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.io;IOUtils;true;toCharArray;(Reader);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toInputStream;(CharSequence);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toInputStream;(CharSequence,Charset);;Argument[0];ReturnValue;taint",
         "org.apache.commons.io;IOUtils;true;toInputStream;(CharSequence,String);;Argument[0];ReturnValue;taint",

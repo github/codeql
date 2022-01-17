@@ -86,6 +86,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.IO
+  private import semmle.code.java.frameworks.apache.IOCustom
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
