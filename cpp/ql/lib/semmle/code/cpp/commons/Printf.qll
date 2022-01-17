@@ -400,6 +400,18 @@ private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Exp
 }
 
 /**
+ * Gets the number of hex digits required to represent the integer represented by `f`.
+ *
+ * `f` is assumed to be nonnegative.
+ */
+bindingset[f]
+private int lengthInBase16(float f) {
+  f = 0 and result = 1
+  or
+  result = (f.log2() / 4.0).floor() + 1
+}
+
+/**
  * A class to represent format strings that occur as arguments to invocations of formatting functions.
  */
 class FormatLiteral extends Literal {
@@ -1253,23 +1265,42 @@ class FormatLiteral extends Literal {
         or
         this.getConversionChar(n).toLowerCase() = "x" and
         // e.g. "12345678"
-        exists(int sizeBytes, int baseLen |
-          sizeBytes =
-            min(int bytes |
-              bytes = this.getIntegralDisplayType(n).getSize()
+        exists(int baseLen, int typeBasedBound, int valueBasedBound |
+          typeBasedBound =
+            min(int digits |
+              digits = 2 * this.getIntegralDisplayType(n).getSize()
               or
               exists(IntegralType t |
                 t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
               |
-                t.isUnsigned() and bytes = t.getSize()
+                t.isUnsigned() and
+                digits = 2 * t.getSize()
               )
             ) and
-          baseLen = sizeBytes * 2 and
-          (
-            if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
-          )
-        ) and
-        reason = TTypeBoundsAnalysis()
+          exists(Expr arg, float lower, float upper, float typeLower, float typeUpper |
+            arg = this.getUse().getConversionArgument(n) and
+            lower = lowerBound(arg.getFullyConverted()) and
+            upper = upperBound(arg.getFullyConverted()) and
+            typeLower = exprMinVal(arg.getFullyConverted()) and
+            typeUpper = exprMaxVal(arg.getFullyConverted())
+          |
+            valueBasedBound =
+              lengthInBase16(max(float cand |
+                  // If lower can be negative we use `(unsigned)-1` as the candidate value.
+                  lower < 0 and
+                  cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  or
+                  cand = upper
+                )) and
+            (
+              if lower > typeLower or upper < typeUpper
+              then reason = TValueFlowAnalysis()
+              else reason = TTypeBoundsAnalysis()
+            )
+          ) and
+          baseLen = valueBasedBound.minimum(typeBasedBound) and
+          if this.hasAlternateFlag(n) then len = 2 + baseLen else len = baseLen // "0x"
+        )
         or
         this.getConversionChar(n).toLowerCase() = "p" and
         exists(PointerType ptrType, int baseLen |
