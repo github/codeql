@@ -16,6 +16,7 @@ package android.app;
 
 import android.annotation.Nullable;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
