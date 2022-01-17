@@ -31,9 +31,9 @@ public class J
 
     private void M2()
     {
-        var o = Source<object>(1);
+        var o = Source<object>(2);
         var r1 = new RecordStruct(o, null);
-        Sink(r1.Prop1); // $ hasValueFlow=1
+        Sink(r1.Prop1); // $ hasValueFlow=2
         Sink(r1.Prop2); // no flow
     }
 

@@ -455,7 +455,7 @@ class SimpleType extends ValueType, @simple_type {
  * A `record` like type.
  * This can be either a `class` or a `struct`.
  */
-abstract class RecordType extends ValueOrRefType {
+class RecordType extends ValueOrRefType {
   RecordType() { this.isRecord() }
 }
 
@@ -730,8 +730,6 @@ class Struct extends ValueType, @struct_type {
  * ```
  */
 class RecordStruct extends RecordType, Struct {
-  RecordStruct() { this.isRecord() }
-
   override string getAPrimaryQlClass() { result = "RecordStruct" }
 }
 
@@ -797,8 +795,6 @@ deprecated class Record extends Class {
 
   /** Gets the clone method of this record. */
   RecordCloneMethod getCloneMethod() { result = this.getAMember() }
-
-  override string getAPrimaryQlClass() { result = "Record" }
 }
 
 /**
