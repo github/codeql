@@ -43,29 +43,27 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        public readonly Queue<(IEntity, TextWriter)> LabelQueue = new();
+        public readonly Queue<IEntity> LabelQueue = new();
 
-        public void DefineLabel(IEntity entity, TextWriter? trapFile = null)
+        public void DefineLabel(IEntity entity)
         {
-            trapFile ??= TrapWriter.Writer;
-
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                LabelQueue.Enqueue((entity, trapFile));
+                LabelQueue.Enqueue(entity);
             }
             else
             {
                 try
                 {
                     writingLabel = true;
-                    entity.DefineLabel(trapFile, Extractor);
+                    entity.DefineLabel(TrapWriter.Writer, Extractor);
                 }
                 finally
                 {
                     writingLabel = false;
                     if (LabelQueue.TryDequeue(out var next))
-                        DefineLabel(next.Item1, next.Item2);
+                        DefineLabel(next);
                 }
             }
         }
@@ -139,9 +137,9 @@ namespace Semmle.Extraction
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
-                // using var id = new EscapingTextWriter();
-                // entity.WriteQuotedId(id);
-                // CheckEntityHasUniqueLabel(id.ToString(), entity);
+                using var id = new EscapingTextWriter();
+                entity.WriteQuotedId(id);
+                CheckEntityHasUniqueLabel(id.ToString(), entity);
 #endif
 
                 return entity;
@@ -207,7 +205,7 @@ namespace Semmle.Extraction
         /// The only reason for this is so that the call stack does not
         /// grow indefinitely, causing a potential stack overflow.
         /// </summary>
-        public readonly Queue<Action> PopulateQueue = new();
+        public readonly LinkedList<Action> PopulateQueue = new();
 
         /// <summary>
         /// Enqueue the given action to be performed later.
@@ -221,11 +219,11 @@ namespace Semmle.Extraction
             {
                 // If we are currently executing with a duplication guard, then the same
                 // guard must be used for the deferred action
-                PopulateQueue.Enqueue(() => ContextShared.WithWriter(trapFile, () => WithDuplicationGuard(key, a)));
+                PopulateQueue.AddLast(() => ContextShared.WithWriter(trapFile, () => WithDuplicationGuard(key, a)));
             }
             else
             {
-                PopulateQueue.Enqueue(() => ContextShared.WithWriter(trapFile, a));
+                PopulateQueue.AddLast(() => ContextShared.WithWriter(trapFile, a));
             }
         }
 
@@ -237,16 +235,17 @@ namespace Semmle.Extraction
             void ProcessLabelQueue()
             {
                 if (LabelQueue.TryDequeue(out var next))
-                    DefineLabel(next.Item1, next.Item2);
+                    DefineLabel(next);
             }
 
             ProcessLabelQueue();
 
-            while (PopulateQueue.TryDequeue(out var next))
+            while (PopulateQueue.First is LinkedListNode<Action> next)
             {
+                PopulateQueue.RemoveFirst();
                 try
                 {
-                    next();
+                    next.Value();
                 }
                 catch (InternalError ex)
                 {
@@ -386,7 +385,7 @@ namespace Semmle.Extraction
                 : () => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
 
             if (deferred)
-                PopulateQueue.Enqueue(a);
+                PopulateQueue.AddLast(a);
             else
                 a();
         }

@@ -57,14 +57,11 @@ namespace Semmle.Extraction
         {
             var isSharedTrapFile = trapFile == trapWriterShared.Writer;
 
-            // if (entity.Label.Valid && !isSharedTrapFile && entity.Context.TrapWriter.Writer != trapFile && trapFile is not StringWriter)
-            //     throw new Exception($"HER: {entity.Context.TrapWriter.TrapFile}, {entity.GetType()}");
-
             if (!isSharedTrapFile && currentThreadContext!.TrapWriter.Writer != trapFile && trapFile is not StringWriter)
                 throw new Exception($"HER: {entity.Context.TrapWriter.TrapFile}, {entity.GetType()}, {trapFile.GetType()}");
 
             // non-shared entity referenced in its own TRAP file
-            if (entity.Label.Valid && entity.Context.TrapWriter.Writer == trapFile)// !isSharedTrapFile)
+            if (entity.Label.Valid && entity.Context.TrapWriter.Writer == trapFile)
                 return entity.Label;
 
             Label label;
@@ -84,17 +81,16 @@ namespace Semmle.Extraction
                 entity.LabelMap[trapFile] = label;
             };
 
-            // currentThreadContext!.LabelQueue.Enqueue((entity, isSharedTrapFile));
             if (isSharedTrapFile)
             {
-                // shared or non-shared entity referenced from shared TRAP file
-                // WriteSharedLabel(entity);
-                currentThreadContext!.PopulateQueue.Enqueue(() => WriteSharedLabel(entity));
+                if (writingRelation)
+                    currentThreadContext!.PopulateQueue.AddFirst(() => WriteSharedLabel(entity));
+                else
+                    WriteSharedLabel(entity);
             }
             else
             {
-                // shared entity referenced from non-shared TRAP file
-                currentThreadContext!.LabelQueue.Enqueue((entity, trapFile));
+                currentThreadContext!.LabelQueue.Enqueue(entity);
             }
             return label;
         }
@@ -147,7 +143,7 @@ namespace Semmle.Extraction
             {
                 if (writingLabel || writingRelation)
                 {
-                    currentThreadContext!.PopulateQueue.Enqueue(() => WithWriter(a));
+                    currentThreadContext!.PopulateQueue.AddLast(() => WithWriter(a));
                     return;
                 }
 
