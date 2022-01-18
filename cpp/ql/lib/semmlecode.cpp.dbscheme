@@ -344,12 +344,11 @@ affectedbymacroexpansion(
     int inv: @macroinvocation ref
 );
 
-/*
   case @macroinvocations.kind of
     1 = macro expansion
   | 2 = other macro reference
   ;
-*/
+
 macroinvocations(
     unique int id: @macroinvocation,
     int macro_id: @ppd_define ref,
@@ -385,7 +384,6 @@ macro_argument_expanded(
     string text: string ref
 );
 
-/*
   case @function.kind of
     1 = normal
   | 2 = constructor
@@ -394,7 +392,7 @@ macro_argument_expanded(
   | 5 = operator
   | 6 = builtin     // GCC built-in functions, e.g. __builtin___memcpy_chk
   ;
-*/
+
 functions(
     unique int id: @function,
     string name: string ref,
@@ -576,8 +574,7 @@ enumconstants(
 
 @localscopevariable = @localvariable | @parameter;
 
-/*
-  Built-in types are the fundamental types, e.g., integral, floating, and void.
+//   Built-in types are the fundamental types, e.g., integral, floating, and void.
 
   case @builtintype.kind of
     1 = error
@@ -632,7 +629,7 @@ enumconstants(
   | 50 = _Float128x
   | 51 = char8_t
   ;
-*/
+
 builtintypes(
     unique int id: @builtintype,
     string name: string ref,
@@ -642,9 +639,8 @@ builtintypes(
     int alignment: int ref
 );
 
-/*
-  Derived types are types that are directly derived from existing types and
-  point to, refer to, transform type data to return a new type.
+//   Derived types are types that are directly derived from existing types and
+//   point to, refer to, transform type data to return a new type.
 
   case @derivedtype.kind of
     1 = pointer
@@ -658,7 +654,6 @@ builtintypes(
 // ... 9 type_conforming_to_protocols deprecated
   | 10 = block
   ;
-*/
 derivedtypes(
     unique int id: @derivedtype,
     string name: string ref,
@@ -709,7 +704,6 @@ decltypes(
     boolean parentheses_would_change_meaning: boolean ref
 );
 
-/*
   case @usertype.kind of
     1 = struct
   | 2 = class
@@ -726,7 +720,7 @@ decltypes(
   | 13 = scoped_enum
   | 14 = using_alias                  // a using name = type style typedef
   ;
-*/
+
 usertypes(
     unique int id: @usertype,
     string name: string ref,
@@ -1155,7 +1149,6 @@ expr_isload(unique int expr_id: @expr ref);
       | @static_cast
       ;
 
-/*
 case @conversion.kind of
   0 = @simple_conversion           // a numeric conversion, qualification conversion, or a reinterpret_cast
 | 1 = @bool_conversion             // conversion to 'bool'
@@ -1166,7 +1159,7 @@ case @conversion.kind of
 | 6 = @glvalue_adjust              // an adjustment of the type of a glvalue
 | 7 = @prvalue_adjust              // an adjustment of the type of a prvalue
 ;
-*/
+
 /**
  * Describes the semantics represented by a cast expression. This is largely
  * independent of the source syntax of the cast, so it is separate from the
@@ -1185,13 +1178,12 @@ conversionkinds(
             | @temp_init
             ;
 
-/*
 case @funbindexpr.kind of
   0 = @normal_call  // a normal call
 | 1 = @virtual_call // a virtual call
 | 2 = @adl_call     // a call whose target is only found by ADL
 ;
-*/
+
 iscall(unique int caller: @funbindexpr ref, int kind: int ref);
 
 numtemplatearguments(
@@ -1339,12 +1331,10 @@ funbind(
 
 @assign_expr = @assignexpr | @assign_op_expr
 
-/*
   case @allocator.form of
     0 = plain
   | 1 = alignment
   ;
-*/
 
 /**
  * The allocator function associated with a `new` or `new[]` expression.
@@ -1357,14 +1347,12 @@ expr_allocator(
     int form: int ref
 );
 
-/*
   case @deallocator.form of
     0 = plain
   | 1 = size
   | 2 = alignment
   | 3 = size_and_alignment
   ;
-*/
 
 /**
  * The deallocator function associated with a `delete`, `delete[]`, `new`, or
@@ -1491,13 +1479,12 @@ exprs(
     int location: @location_expr ref
 );
 
-/*
   case @value.category of
     1 = prval
   | 2 = xval
   | 3 = lval
   ;
-*/
+
 expr_types(
     int id: @expr ref,
     int typeid: @type ref,
