@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Temporary files created in the operating system tmp directory are by default accessible 
+to other users. This can in some cases lead to information exposure, or in the worst 
+case to remote code execution.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use a well tested library like <a href="https://www.npmjs.com/package/tmp">tmp</a> 
+for creating temprary files. These libraries ensure both that the file is inaccesible
+to other users and that the file does not already exist.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example creates a temporary file in the operating system tmp directory.
+</p>
+<sample src="examples/insecure-temporary-file.js" />
+
+<p>
+The file created above is accessible to other users, and there is no guarantee that
+the file does not already exist. 
+</p>
+<p>
+The below example uses the <a href="https://www.npmjs.com/package/tmp">tmp</a> library
+to securely create a temporary file.
+</p>
+<sample src="examples/secure-temporary-file.js" />
+
+</example>
+
+<references>
+<li>Mitre.org: <a href="https://cwe.mitre.org/data/definitions/377.html">CWE-377</a>.</li>
+<li>NPM: <a href="https://www.npmjs.com/package/tmp">tmp</a>.</li>
+</references>
+
+</qhelp>
