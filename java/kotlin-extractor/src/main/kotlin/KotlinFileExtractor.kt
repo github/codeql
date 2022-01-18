@@ -655,6 +655,10 @@ open class KotlinFileExtractor(
         when(b) {
             is IrBlockBody -> extractBlockBody(b, callable)
             is IrSyntheticBody -> extractSyntheticBody(b, callable)
+            is IrExpressionBody -> {
+                // TODO
+                logger.warnElement(Severity.ErrorSevere, "Unhandled IrExpressionBody", b)
+            }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
             }
@@ -733,6 +737,10 @@ open class KotlinFileExtractor(
                 } else {
                     logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
                 }
+            }
+            is IrLocalDelegatedProperty -> {
+                // TODO:
+                logger.warnElement(Severity.ErrorSevere, "Unhandled IrLocalDelegatedProperty", s)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
@@ -1732,6 +1740,9 @@ open class KotlinFileExtractor(
                 tw.writeHasLocation(id, locId)
                 tw.writeCallableEnclosingExpr(id, callable)
                 tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                if (!e.symbol.isBound) {
+                    return
+                }
                 val owner = e.symbol.owner
                 val vId = useEnumEntry(owner)
                 tw.writeVariableBinding(id, vId)
@@ -1835,10 +1846,14 @@ open class KotlinFileExtractor(
                 // automatically-generated `public static final MyObject INSTANCE`
                 // field that we are accessing here.
                 val exprParent = parent.expr(e, callable)
+                if (!e.symbol.isBound) {
+                    return
+                }
+
                 val c: IrClass = e.symbol.owner
                 val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
-                if(instance != null) {
+                if (instance != null) {
                     val id = tw.getFreshIdLabel<DbVaraccess>()
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
@@ -1925,6 +1940,10 @@ open class KotlinFileExtractor(
 
                 extractTypeAccess(e.classType, locId, callable, id, 0, exprParent.enclosingStmt)
             }
+            is IrPropertyReference -> {
+                // TODO
+                logger.warnElement(Severity.ErrorSevere, "Unhandled IrPropertyReference", e)
+            }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
             }
@@ -1941,6 +1960,14 @@ open class KotlinFileExtractor(
             logger.warnElement(Severity.ErrorSevere, "Expected to find reflection target for function reference", functionReferenceExpr)
             return
         }
+
+        if (declarationStack.size == 0) {
+            // TODO: fix this
+            logger.warnElement(Severity.ErrorSevere, "Expected to find current declaration", functionReferenceExpr)
+            return
+        }
+
+        val currentDeclaration = declarationStack.peek()
 
         /*
          * Extract generated class:
@@ -2004,7 +2031,6 @@ open class KotlinFileExtractor(
             tw.getFreshIdLabel()
         )
 
-        val currentDeclaration = declarationStack.peek()
         val id = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType), locId, currentDeclaration)
 
         fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
@@ -2361,6 +2387,10 @@ open class KotlinFileExtractor(
             is IrExpression -> {
                 extractExpressionExpr(e, callable, parent, idx, enclosingStmt)
             }
+            is IrSpreadElement -> {
+                // TODO:
+                logger.warnElement(Severity.ErrorSevere, "Unhandled IrSpreadElement", e)
+            }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrVarargElement: " + e.javaClass, e)
             }
@@ -2474,6 +2504,10 @@ open class KotlinFileExtractor(
                 tw.writeStatementEnclosingExpr(id, enclosingStmt)
                 extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
                 extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
+            }
+            IrTypeOperator.SAM_CONVERSION -> {
+                // TODO:
+                logger.warnElement(Severity.ErrorSevere, "Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
             }
             else -> {
                 logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)

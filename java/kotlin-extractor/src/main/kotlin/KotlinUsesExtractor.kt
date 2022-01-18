@@ -581,6 +581,11 @@ class X {
                 }
             is IrClass -> if (classTypeArguments != null && !dp.isAnonymousObject) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
             is IrFunction -> useFunction(dp)
+            is IrExternalPackageFragment -> {
+                // TODO
+                logger.warn(Severity.ErrorSevere, "Unhandled IrExternalPackageFragment")
+                fakeLabel()
+            }
             else -> {
                 logger.warn(Severity.ErrorSevere, "Unrecognised IrDeclarationParent: " + dp.javaClass)
                 fakeLabel()
