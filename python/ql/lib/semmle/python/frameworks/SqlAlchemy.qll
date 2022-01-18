@@ -211,6 +211,13 @@ module SqlAlchemy {
               .getReturn()
               .getMember("begin")
               .getACall()
+        or
+        this =
+          API::moduleImport("sqlalchemy")
+              .getMember("orm")
+              .getMember("scoped_session")
+              .getReturn()
+              .getACall()
       }
     }
 
