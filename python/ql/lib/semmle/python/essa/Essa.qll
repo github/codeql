@@ -545,6 +545,24 @@ class WithDefinition extends EssaNodeDefinition {
   override string getRepresentation() { result = "with" }
 }
 
+/** A definition of a variable via a capture pattern */
+class PatternCaptureDefinition extends EssaNodeDefinition {
+  PatternCaptureDefinition() {
+    SsaSource::pattern_capture_definition(this.getSourceVariable(), this.getDefiningNode())
+  }
+
+  override string getRepresentation() { result = "pattern capture" }
+}
+
+/** A definition of a variable via a pattern alias */
+class PatternAliasDefinition extends EssaNodeDefinition {
+  PatternAliasDefinition() {
+    SsaSource::pattern_alias_definition(this.getSourceVariable(), this.getDefiningNode())
+  }
+
+  override string getRepresentation() { result = "pattern alias" }
+}
+
 /** A definition of a variable by declaring it as a parameter */
 class ParameterDefinition extends EssaNodeDefinition {
   ParameterDefinition() {
