@@ -329,7 +329,7 @@ private module Cached {
 
   private class Access extends Ruby::Token {
     Access() {
-      access(this, _) or
+      access(this.(Ruby::Identifier), _) or
       this instanceof Ruby::GlobalVariable or
       this instanceof Ruby::InstanceVariable or
       this instanceof Ruby::ClassVariable or
