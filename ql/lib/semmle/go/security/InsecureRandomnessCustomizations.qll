@@ -60,7 +60,7 @@ module InsecureRandomness {
         // Some interfaces in the `crypto` package are the same as interfaces
         // elsewhere, e.g. tls.listener is the same as net.Listener
         not fn.hasQualifiedName(nonCryptoInterface(), _) and
-        this = fn.getACall().getAnArgument()
+        exists(DataFlow::CallNode call | call.getTarget() = fn and this = call.getAnArgument())
       )
     }
 
