@@ -11,13 +11,17 @@
 import ql
 import codeql_ql.style.CouldBeCastQuery
 
-from AstNode aggr, VarDecl var, string msg
+from AstNode aggr, VarDecl var, string msg, Expr operand
 where
-  exists(string kind | aggregateCouldBeCast(aggr, _, kind, var, _) |
+  exists(string kind | aggregateCouldBeCast(aggr, _, kind, var, operand) |
     kind = "exists" and
-    msg = "The assignment to $@ in the exists(..) can replaced with an instanceof expression."
+    if operand.getType().getASuperType*() = var.getType()
+    then msg = "The assignment in the exists(..) is redundant."
+    else msg = "The assignment to $@ in the exists(..) can replaced with an instanceof expression."
     or
     kind = "any" and
-    msg = "The assignment to $@ in this any(..) can be replaced with an inline cast."
+    if operand.getType().getASuperType*() = var.getType()
+    then msg = "The assignment in the any(..) is redundant."
+    else msg = "The assignment to $@ in this any(..) can be replaced with an inline cast."
   )
 select aggr, msg, var, var.getName()
