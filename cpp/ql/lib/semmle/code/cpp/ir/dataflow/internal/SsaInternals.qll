@@ -170,10 +170,16 @@ private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
 }
 
 private predicate isExplicitUse(Operand op) {
-  op.getDef() instanceof VariableAddressInstruction and
-  not exists(LoadInstruction load |
-    load.getSourceAddressOperand() = op and
-    load.getAUse().getUse() instanceof InitializeIndirectionInstruction
+  exists(VariableAddressInstruction vai | vai = op.getDef() |
+    // Don't include this operand as a use if it only exists to initialize the
+    // indirection of a parameter.
+    not exists(LoadInstruction load |
+      load.getSourceAddressOperand() = op and
+      load.getAUse().getUse() instanceof InitializeIndirectionInstruction
+    ) and
+    // Don't include this operand as a use if the only use of the address is for a write
+    // that definitely overrides a variable.
+    not (explicitWrite(true, _, vai) and exists(unique( | | vai.getAUse())))
   )
 }
 
