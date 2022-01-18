@@ -366,11 +366,18 @@ class PromotedField extends Field {
 
 /** A built-in or declared function. */
 class Function extends ValueEntity, @functionobject {
-  /** Gets a call to this function. */
+  /**
+   * Gets a call to this function.
+   *
+   * This includes calls that target this function indirectly, by calling an
+   * interface method that this function implements.
+   */
   pragma[nomagic]
   DataFlow::CallNode getACall() {
+    // Direct calls to this function
     this = result.getTarget()
     or
+    // Direct calls and calls to interface methods that this function implements
     this = result.getACalleeIncludingExternals().asFunction()
   }
 
