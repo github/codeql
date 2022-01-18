@@ -1084,6 +1084,8 @@ class DiscardExpr extends Expr, @discard_expr {
 
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
+
+  override string getAPrimaryQlClass() { result = "UnknownExpr" }
 }
 
 /**

@@ -115,6 +115,7 @@ private module Frameworks {
   private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
+  private import semmle.code.java.security.Files
   private import semmle.code.java.security.GroovyInjection
   private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
@@ -259,20 +260,6 @@ private predicate sinkModelCsv(string row) {
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
       "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
-      // Create file
-      "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
-      "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
-      "java.io;FileWriter;false;FileWriter;;;Argument[0];create-file",
-      "java.nio.file;Files;false;move;;;Argument[1];create-file",
-      "java.nio.file;Files;false;copy;;;Argument[1];create-file",
-      "java.nio.file;Files;false;newOutputStream;;;Argument[0];create-file",
-      "java.nio.file;Files;false;newBufferedReader;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createFile;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
       // Bean validation
       "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation",
       // Set hostname
