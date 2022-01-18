@@ -68,6 +68,9 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
   override predicate hasState(DataFlow::FlowState state) { state = "MutablePendingIntent" }
 }
 
+/**
+ * Propagates taint from any tainted object to reads from its `PendingIntent`-typed fields.
+ */
 private class PendingIntentAsFieldAdditionalTaintStep extends ImplicitPendingIntentAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Field f |
@@ -91,10 +94,11 @@ private class MutablePendingIntentFlowStep extends PendingIntentAsFieldAdditiona
       node2.asExpr() = pic and
       flagArg = pic.getFlagsArg()
     |
-      // API < 31, PendingIntents are mutable by default
+      // We err on the side of false positives here, assuming a PendingIntent may be mutable unless it is at
+      // least sometimes explicitly marked immutable and never marked mutable.
+      // Note for API level < 31, PendingIntents were mutable by default, whereas since then they are immutable by default.
       not TaintTracking::localExprTaint(any(ImmutablePendingIntentFlag flag).getAnAccess(), flagArg)
       or
-      // API >= 31, PendingIntents need to explicitly set mutability
       TaintTracking::localExprTaint(any(MutablePendingIntentFlag flag).getAnAccess(), flagArg)
     )
   }
