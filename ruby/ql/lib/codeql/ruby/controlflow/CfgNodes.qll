@@ -149,7 +149,7 @@ private AstNode desugar(AstNode n) {
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
-abstract private class ExprChildMapping extends Expr {
+abstract private class ChildMapping extends AstNode {
   /**
    * Holds if `child` is a (possibly nested) child of this expression
    * for which we would like to find a matching CFG child.
@@ -157,17 +157,7 @@ abstract private class ExprChildMapping extends Expr {
   abstract predicate relevantChild(AstNode child);
 
   pragma[nomagic]
-  private predicate reachesBasicBlock(AstNode child, CfgNode cfn, BasicBlock bb) {
-    this.relevantChild(child) and
-    cfn = this.getAControlFlowNode() and
-    bb.getANode() = cfn
-    or
-    exists(BasicBlock mid |
-      this.reachesBasicBlock(child, cfn, mid) and
-      bb = mid.getAPredecessor() and
-      not mid.getANode().getNode() = child
-    )
-  }
+  abstract predicate reachesBasicBlock(AstNode child, CfgNode cfn, BasicBlock bb);
 
   /**
    * Holds if there is a control-flow path from `cfn` to `cfnChild`, where `cfn`
@@ -180,6 +170,44 @@ abstract private class ExprChildMapping extends Expr {
   predicate hasCfgChild(AstNode child, CfgNode cfn, CfgNode cfnChild) {
     this.reachesBasicBlock(child, cfn, cfnChild.getBasicBlock()) and
     cfnChild.getNode() = desugar(child)
+  }
+}
+
+/**
+ * A class for mapping parent-child AST nodes to parent-child CFG nodes.
+ */
+abstract private class ExprChildMapping extends Expr, ChildMapping {
+  pragma[nomagic]
+  override predicate reachesBasicBlock(AstNode child, CfgNode cfn, BasicBlock bb) {
+    this.relevantChild(child) and
+    cfn = this.getAControlFlowNode() and
+    bb.getANode() = cfn
+    or
+    exists(BasicBlock mid |
+      this.reachesBasicBlock(child, cfn, mid) and
+      bb = mid.getAPredecessor() and
+      not mid.getANode().getNode() = child
+    )
+  }
+}
+
+/**
+ * A class for mapping parent-child AST nodes to parent-child CFG nodes.
+ */
+abstract private class NonExprChildMapping extends ChildMapping {
+  NonExprChildMapping() { not this instanceof Expr }
+
+  pragma[nomagic]
+  override predicate reachesBasicBlock(AstNode child, CfgNode cfn, BasicBlock bb) {
+    this.relevantChild(child) and
+    cfn.getNode() = this and
+    bb.getANode() = cfn
+    or
+    exists(BasicBlock mid |
+      this.reachesBasicBlock(child, cfn, mid) and
+      bb = mid.getASuccessor() and
+      not mid.getANode().getNode() = child
+    )
   }
 }
 
@@ -346,15 +374,15 @@ module ExprNodes {
     final ExprCfgNode getBlock() { e.hasCfgChild(e.(MethodCall).getBlock(), this, result) }
   }
 
-  private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
-    override predicate relevantChild(AstNode e) { e = this.getValue() }
-  }
-
   /** A control-flow node that wraps a `MethodCall` AST expression. */
   class MethodCallCfgNode extends CallCfgNode {
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
 
     override MethodCall getExpr() { result = super.getExpr() }
+  }
+
+  private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
+    override predicate relevantChild(AstNode e) { e = this.getValue() or e = this.getABranch() }
   }
 
   /** A control-flow node that wraps a `CaseExpr` AST expression. */
@@ -365,6 +393,47 @@ module ExprNodes {
 
     /** Gets the expression being compared, if any. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
+
+    /**
+     * Gets the `n`th branch of this case expression, either a `when` clause, an `in` clause, or an `else` branch.
+     */
+    final AstCfgNode getBranch(int n) { e.hasCfgChild(e.getBranch(n), this, result) }
+  }
+
+  private class InClauseChildMapping extends NonExprChildMapping, InClause {
+    override predicate relevantChild(AstNode e) {
+      e = this.getPattern() or
+      e = this.getCondition() or
+      e = this.getBody()
+    }
+  }
+
+  /** A control-flow node that wraps an `InClause` AST expression. */
+  class InClauseCfgNode extends AstCfgNode {
+    private InClauseChildMapping e;
+
+    /**
+     * Gets the pattern in this `in`-clause.
+     */
+    final AstCfgNode getPattern() { e.hasCfgChild(e.getPattern(), this, result) }
+
+    /** Gets the pattern guard condition in this `in` clause, if any. */
+    final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
+
+    /** Gets the body of this `in`-clause. */
+    final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
+  }
+
+  private class WhenClauseChildMapping extends NonExprChildMapping, WhenClause {
+    override predicate relevantChild(AstNode e) { e = this.getBody() }
+  }
+
+  /** A control-flow node that wraps a `WhenClause` AST expression. */
+  class WhenClauseCfgNode extends AstCfgNode {
+    private WhenClauseChildMapping e;
+
+    /** Gets the body of this `when`-clause. */
+    final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
   }
 
   private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
