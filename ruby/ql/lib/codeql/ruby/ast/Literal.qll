@@ -277,7 +277,9 @@ class StringComponent extends AstNode, TStringComponent {
 class StringTextComponent extends StringComponent, TStringTextComponent {
   private Ruby::Token g;
 
-  StringTextComponent() { this = TStringTextComponent(g) }
+  StringTextComponent() {
+    this = TStringTextComponent(g) and not g.getParent() instanceof Ruby::Regex
+  }
 
   final override string toString() { result = g.getValue() }
 
@@ -292,7 +294,9 @@ class StringTextComponent extends StringComponent, TStringTextComponent {
 class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponent {
   private Ruby::EscapeSequence g;
 
-  StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
+  StringEscapeSequenceComponent() {
+    this = TStringEscapeSequenceComponent(g) and not g.getParent() instanceof Ruby::Regex
+  }
 
   final override string toString() { result = g.getValue() }
 
@@ -308,7 +312,9 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
   TStringInterpolationComponent {
   private Ruby::Interpolation g;
 
-  StringInterpolationComponent() { this = TStringInterpolationComponent(g) }
+  StringInterpolationComponent() {
+    this = TStringInterpolationComponent(g) and not g.getParent() instanceof Ruby::Regex
+  }
 
   final override string toString() { result = "#{...}" }
 
@@ -317,6 +323,82 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
   final override string getValueText() { none() }
 
   final override string getAPrimaryQlClass() { result = "StringInterpolationComponent" }
+}
+
+/**
+ * The base class for a component of a regular expression literal.
+ */
+class RegExpComponent extends AstNode, TStringComponent {
+  private RegExpLiteral parent;
+
+  RegExpComponent() { toGenerated(this).getParent() = toGenerated(parent) }
+
+  string getValueText() { none() }
+}
+
+/**
+ * A component of a regex literal that is simply text.
+ *
+ * For example, the following regex literals all contain `RegExpTextComponent`
+ * components whose `getValueText()` returns `"foo"`:
+ *
+ * ```rb
+ * 'foo'
+ * "#{ bar() }foo"
+ * "foo#{ bar() } baz"
+ * ```
+ */
+class RegExpTextComponent extends RegExpComponent, TStringTextComponent {
+  private Ruby::Token g;
+
+  RegExpTextComponent() { this = TStringTextComponent(g) and g.getParent() instanceof Ruby::Regex }
+
+  final override string toString() { result = g.getValue() }
+
+  // Exclude components that are children of a free-spacing regex.
+  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+  final override string getValueText() {
+    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  }
+
+  final override string getAPrimaryQlClass() { result = "RegExpTextComponent" }
+}
+
+/**
+ * An escape sequence component of a regex literal.
+ */
+class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequenceComponent {
+  private Ruby::EscapeSequence g;
+
+  RegExpEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  // Exclude components that are children of a free-spacing regex.
+  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+  final override string getValueText() {
+    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  }
+
+  final override string getAPrimaryQlClass() { result = "RegExpEscapeSequenceComponent" }
+}
+
+/**
+ * An interpolation expression component of a regex literal.
+ */
+class RegExpInterpolationComponent extends RegExpComponent, StmtSequence,
+  TStringInterpolationComponent {
+  private Ruby::Interpolation g;
+
+  RegExpInterpolationComponent() { this = TStringInterpolationComponent(g) }
+
+  final override string toString() { result = "#{...}" }
+
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string getValueText() { none() }
+
+  final override string getAPrimaryQlClass() { result = "RegExpInterpolationComponent" }
 }
 
 /**

@@ -1351,7 +1351,13 @@ module Trees {
   }
 
   private class StringComponentTree extends LeafTree, StringComponent {
-    StringComponentTree() { not this instanceof StringInterpolationComponent }
+    StringComponentTree() {
+      // Interpolations contain `StmtSequence`s, so they shouldn't be treated as leaf nodes.
+      not this instanceof StringInterpolationComponent and
+      // In the interests of brevity we treat regexes as string literals when constructing the CFG.
+      // Thus we must exclude regex interpolations here too.
+      not this instanceof RegExpInterpolationComponent
+    }
   }
 
   private class ToplevelTree extends BodyStmtTree, Toplevel {

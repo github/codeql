@@ -132,6 +132,13 @@ class StringComponentCfgNode extends AstCfgNode {
   string getValueText() { result = this.getNode().(StringComponent).getValueText() }
 }
 
+/** A control-flow node that wraps a `RegExpComponent` AST expression. */
+class RegExpComponentCfgNode extends AstCfgNode {
+  RegExpComponentCfgNode() { this.getNode() instanceof RegExpComponent }
+
+  string getValueText() { result = this.getNode().(RegExpComponent).getValueText() }
+}
+
 private AstNode desugar(AstNode n) {
   result = n.getDesugared()
   or
@@ -474,6 +481,15 @@ module ExprNodes {
     final override string getValueText() { result = this.getLastStmt().getValueText() }
   }
 
+  /** A control-flow node that wraps a `RegExpInterpolationComponent` AST expression. */
+  class RegExpInterpolationComponentCfgNode extends RegExpComponentCfgNode, StmtSequenceCfgNode {
+    RegExpInterpolationComponentCfgNode() { this.getNode() instanceof RegExpInterpolationComponent }
+
+    // If last statement in the interpolation is a constant or local variable read,
+    // attempt to look up its definition and return the definition's `getValueText()`.
+    final override string getValueText() { result = this.getLastStmt().getValueText() }
+  }
+
   private class StringlikeLiteralChildMapping extends ExprChildMapping, StringlikeLiteral {
     override predicate relevantChild(AstNode n) { n = this.getComponent(_) }
   }
@@ -510,11 +526,27 @@ module ExprNodes {
     final override StringLiteral getExpr() { result = super.getExpr() }
   }
 
+  private class RegExpLiteralChildMapping extends ExprChildMapping, RegExpLiteral {
+    override predicate relevantChild(AstNode n) { n = this.getComponent(_) }
+  }
+
   /** A control-flow node that wraps a `RegExpLiteral` AST expression. */
   class RegExpLiteralCfgNode extends ExprCfgNode {
-    override RegExpLiteral e;
+    override RegExpLiteralChildMapping e;
+
+    RegExpComponentCfgNode getComponent(int n) { e.hasCfgChild(e.getComponent(n), this, result) }
 
     final override RegExpLiteral getExpr() { result = super.getExpr() }
+
+    language[monotonicAggregates]
+    override string getValueText() {
+      result =
+        concat(RegExpComponentCfgNode c, int i |
+          c = this.getComponent(i)
+        |
+          c.getValueText() order by i
+        )
+    }
   }
 
   /** A control-flow node that wraps a `ComparisonOperation` AST expression. */

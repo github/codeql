@@ -198,7 +198,7 @@ allLiterals
 | literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | foo2barbarbar |
 | literals.rb:140:8:140:8 | 1 | IntegerLiteral | 1 |
 | literals.rb:140:12:140:12 | 1 | IntegerLiteral | 1 |
-| literals.rb:141:1:141:8 | /foo/ | RegExpLiteral | foo |
+| literals.rb:141:1:141:8 | /foo/ | RegExpLiteral | <none> |
 | literals.rb:142:1:142:4 | // | RegExpLiteral |  |
 | literals.rb:143:1:143:7 | /foo/ | RegExpLiteral | foo |
 | literals.rb:144:1:144:8 | /foo/ | RegExpLiteral | foo |
@@ -206,7 +206,7 @@ allLiterals
 | literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | foo2barbarbar |
 | literals.rb:146:10:146:10 | 1 | IntegerLiteral | 1 |
 | literals.rb:146:14:146:14 | 1 | IntegerLiteral | 1 |
-| literals.rb:147:1:147:10 | /foo/ | RegExpLiteral | foo |
+| literals.rb:147:1:147:10 | /foo/ | RegExpLiteral | <none> |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
@@ -310,13 +310,13 @@ stringlikeLiterals
 | literals.rb:138:1:138:6 | /foo/ | foo |
 | literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
 | literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
-| literals.rb:141:1:141:8 | /foo/ | foo |
+| literals.rb:141:1:141:8 | /foo/ | <none> |
 | literals.rb:142:1:142:4 | // |  |
 | literals.rb:143:1:143:7 | /foo/ | foo |
 | literals.rb:144:1:144:8 | /foo/ | foo |
 | literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
 | literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |
-| literals.rb:147:1:147:10 | /foo/ | foo |
+| literals.rb:147:1:147:10 | /foo/ | <none> |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
@@ -387,13 +387,20 @@ regExpLiterals
 | literals.rb:138:1:138:6 | /foo/ | foo | i |
 | literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | foo+\\sbar\\S |  |
 | literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |  |
-| literals.rb:141:1:141:8 | /foo/ | foo | oxm |
+| literals.rb:141:1:141:8 | /foo/ | <none> | oxm |
 | literals.rb:142:1:142:4 | // |  |  |
 | literals.rb:143:1:143:7 | /foo/ | foo |  |
 | literals.rb:144:1:144:8 | /foo/ | foo | i |
 | literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |  |
 | literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | foo2barbarbar |  |
-| literals.rb:147:1:147:10 | /foo/ | foo | mxo |
+| literals.rb:147:1:147:10 | /foo/ | <none> | mxo |
+regExpInterpolations
+| literals.rb:140:5:140:14 | #{...} | 0 | literals.rb:140:8:140:12 | ... + ... | AddExpr |
+| literals.rb:140:18:140:23 | #{...} | 0 | literals.rb:140:20:140:22 | bar | LocalVariableAccess |
+| literals.rb:140:24:140:29 | #{...} | 0 | literals.rb:140:26:140:28 | BAR | ConstantReadAccess |
+| literals.rb:146:7:146:16 | #{...} | 0 | literals.rb:146:10:146:14 | ... + ... | AddExpr |
+| literals.rb:146:20:146:25 | #{...} | 0 | literals.rb:146:22:146:24 | bar | LocalVariableAccess |
+| literals.rb:146:26:146:31 | #{...} | 0 | literals.rb:146:28:146:30 | BAR | ConstantReadAccess |
 symbolLiterals
 | literals.rb:84:1:84:3 | :"" |  |
 | literals.rb:85:1:85:6 | :hello | hello |
@@ -540,30 +547,30 @@ stringComponents
 | literals.rb:132:1:132:32 | `du -d #{...} #{...} #{...}` | SubshellLiteral | 5 | literals.rb:132:26:132:31 | #{...} | StringInterpolationComponent |
 | literals.rb:133:1:133:20 | `du -d #{...}` | SubshellLiteral | 0 | literals.rb:133:4:133:9 | du -d  | StringTextComponent |
 | literals.rb:133:1:133:20 | `du -d #{...}` | SubshellLiteral | 1 | literals.rb:133:10:133:19 | #{...} | StringInterpolationComponent |
-| literals.rb:137:1:137:5 | /foo/ | RegExpLiteral | 0 | literals.rb:137:2:137:4 | foo | StringTextComponent |
-| literals.rb:138:1:138:6 | /foo/ | RegExpLiteral | 0 | literals.rb:138:2:138:4 | foo | StringTextComponent |
-| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:139:2:139:5 | foo+ | StringTextComponent |
-| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:139:6:139:7 | \\s | StringEscapeSequenceComponent |
-| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:139:8:139:10 | bar | StringTextComponent |
-| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:139:11:139:12 | \\S | StringEscapeSequenceComponent |
-| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:140:2:140:4 | foo | StringTextComponent |
-| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:140:5:140:14 | #{...} | StringInterpolationComponent |
-| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:140:15:140:17 | bar | StringTextComponent |
-| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:140:18:140:23 | #{...} | StringInterpolationComponent |
-| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:140:24:140:29 | #{...} | StringInterpolationComponent |
-| literals.rb:141:1:141:8 | /foo/ | RegExpLiteral | 0 | literals.rb:141:2:141:4 | foo | StringTextComponent |
-| literals.rb:143:1:143:7 | /foo/ | RegExpLiteral | 0 | literals.rb:143:4:143:6 | foo | StringTextComponent |
-| literals.rb:144:1:144:8 | /foo/ | RegExpLiteral | 0 | literals.rb:144:4:144:6 | foo | StringTextComponent |
-| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:145:4:145:7 | foo+ | StringTextComponent |
-| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:145:8:145:9 | \\s | StringEscapeSequenceComponent |
-| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:145:10:145:12 | bar | StringTextComponent |
-| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:145:13:145:14 | \\S | StringEscapeSequenceComponent |
-| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:146:4:146:6 | foo | StringTextComponent |
-| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:146:7:146:16 | #{...} | StringInterpolationComponent |
-| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:146:17:146:19 | bar | StringTextComponent |
-| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:146:20:146:25 | #{...} | StringInterpolationComponent |
-| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:146:26:146:31 | #{...} | StringInterpolationComponent |
-| literals.rb:147:1:147:10 | /foo/ | RegExpLiteral | 0 | literals.rb:147:4:147:6 | foo | StringTextComponent |
+| literals.rb:137:1:137:5 | /foo/ | RegExpLiteral | 0 | literals.rb:137:2:137:4 | foo | RegExpTextComponent |
+| literals.rb:138:1:138:6 | /foo/ | RegExpLiteral | 0 | literals.rb:138:2:138:4 | foo | RegExpTextComponent |
+| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:139:2:139:5 | foo+ | RegExpTextComponent |
+| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:139:6:139:7 | \\s | RegExpEscapeSequenceComponent |
+| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:139:8:139:10 | bar | RegExpTextComponent |
+| literals.rb:139:1:139:13 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:139:11:139:12 | \\S | RegExpEscapeSequenceComponent |
+| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:140:2:140:4 | foo | RegExpTextComponent |
+| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:140:5:140:14 | #{...} | RegExpInterpolationComponent |
+| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:140:15:140:17 | bar | RegExpTextComponent |
+| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:140:18:140:23 | #{...} | RegExpInterpolationComponent |
+| literals.rb:140:1:140:30 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:140:24:140:29 | #{...} | RegExpInterpolationComponent |
+| literals.rb:141:1:141:8 | /foo/ | RegExpLiteral | 0 | literals.rb:141:2:141:4 | foo | RegExpTextComponent |
+| literals.rb:143:1:143:7 | /foo/ | RegExpLiteral | 0 | literals.rb:143:4:143:6 | foo | RegExpTextComponent |
+| literals.rb:144:1:144:8 | /foo/ | RegExpLiteral | 0 | literals.rb:144:4:144:6 | foo | RegExpTextComponent |
+| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 0 | literals.rb:145:4:145:7 | foo+ | RegExpTextComponent |
+| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 1 | literals.rb:145:8:145:9 | \\s | RegExpEscapeSequenceComponent |
+| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 2 | literals.rb:145:10:145:12 | bar | RegExpTextComponent |
+| literals.rb:145:1:145:15 | /foo+\\sbar\\S/ | RegExpLiteral | 3 | literals.rb:145:13:145:14 | \\S | RegExpEscapeSequenceComponent |
+| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 0 | literals.rb:146:4:146:6 | foo | RegExpTextComponent |
+| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 1 | literals.rb:146:7:146:16 | #{...} | RegExpInterpolationComponent |
+| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 2 | literals.rb:146:17:146:19 | bar | RegExpTextComponent |
+| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 3 | literals.rb:146:20:146:25 | #{...} | RegExpInterpolationComponent |
+| literals.rb:146:1:146:32 | /foo#{...}bar#{...}#{...}/ | RegExpLiteral | 4 | literals.rb:146:26:146:31 | #{...} | RegExpInterpolationComponent |
+| literals.rb:147:1:147:10 | /foo/ | RegExpLiteral | 0 | literals.rb:147:4:147:6 | foo | RegExpTextComponent |
 | literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | 0 | literals.rb:150:2:150:33 | abcdefghijklmnopqrstuvwxyzabcdef | StringTextComponent |
 | literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | 0 | literals.rb:151:2:151:34 | foobarfoobarfoobarfoobarfoobarfoo | StringTextComponent |
 | literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 0 | literals.rb:152:2:152:7 | foobar | StringTextComponent |
@@ -613,12 +620,6 @@ stringInterpolations
 | literals.rb:132:19:132:24 | #{...} | 0 | literals.rb:132:21:132:23 | bar | LocalVariableAccess |
 | literals.rb:132:26:132:31 | #{...} | 0 | literals.rb:132:28:132:30 | BAR | ConstantReadAccess |
 | literals.rb:133:10:133:19 | #{...} | 0 | literals.rb:133:13:133:17 | ... - ... | SubExpr |
-| literals.rb:140:5:140:14 | #{...} | 0 | literals.rb:140:8:140:12 | ... + ... | AddExpr |
-| literals.rb:140:18:140:23 | #{...} | 0 | literals.rb:140:20:140:22 | bar | LocalVariableAccess |
-| literals.rb:140:24:140:29 | #{...} | 0 | literals.rb:140:26:140:28 | BAR | ConstantReadAccess |
-| literals.rb:146:7:146:16 | #{...} | 0 | literals.rb:146:10:146:14 | ... + ... | AddExpr |
-| literals.rb:146:20:146:25 | #{...} | 0 | literals.rb:146:22:146:24 | bar | LocalVariableAccess |
-| literals.rb:146:26:146:31 | #{...} | 0 | literals.rb:146:28:146:30 | BAR | ConstantReadAccess |
 | literals.rb:158:14:158:22 | #{...} | 0 | literals.rb:158:17:158:20 | call to name | MethodCall |
 | literals.rb:172:12:172:29 | #{...} | 0 | literals.rb:172:15:172:27 | call to interpolation | MethodCall |
 | literals.rb:177:15:177:32 | #{...} | 0 | literals.rb:177:18:177:30 | call to interpolation | MethodCall |

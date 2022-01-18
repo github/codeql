@@ -552,7 +552,6 @@
 | literals/literals.rb:140:12:140:12 | 1 | 1 |
 | literals/literals.rb:140:20:140:22 | bar | bar |
 | literals/literals.rb:140:26:140:28 | BAR | bar |
-| literals/literals.rb:141:1:141:8 | /foo/ | foo |
 | literals/literals.rb:142:1:142:4 | // |  |
 | literals/literals.rb:143:1:143:7 | /foo/ | foo |
 | literals/literals.rb:144:1:144:8 | /foo/ | foo |
@@ -563,7 +562,6 @@
 | literals/literals.rb:146:14:146:14 | 1 | 1 |
 | literals/literals.rb:146:22:146:24 | bar | bar |
 | literals/literals.rb:146:28:146:30 | BAR | bar |
-| literals/literals.rb:147:1:147:10 | /foo/ | foo |
 | literals/literals.rb:150:1:150:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals/literals.rb:151:1:151:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
 | literals/literals.rb:152:1:152:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
