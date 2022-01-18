@@ -3749,6 +3749,11 @@ module PathGraph {
     reach(n) and key = "semmle.label" and val = n.toString()
   }
 
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+   * `ret -> out` is summarized as the edge `arg -> out`.
+   */
   query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
     Subpaths::subpaths(arg, par, ret, out) and
     reach(arg) and
