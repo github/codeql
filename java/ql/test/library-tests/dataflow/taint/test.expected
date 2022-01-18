@@ -44,6 +44,10 @@
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:8:12:8:14 | seq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:11:12:11:21 | seqFromSeq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:14:12:14:24 | stringFromSeq |
+| JavaIo.java:13:20:13:26 | taint(...) | JavaIo.java:16:10:16:21 | toString(...) |
+| JavaIo.java:13:20:13:26 | taint(...) | JavaIo.java:17:10:17:33 | toString(...) |
+| JavaIo.java:30:24:30:30 | taint(...) | JavaIo.java:33:10:33:24 | toCharArray(...) |
+| JavaIo.java:37:74:37:80 | taint(...) | JavaIo.java:41:10:41:12 | buf |
 | MethodFlow.java:7:22:7:28 | taint(...) | MethodFlow.java:8:10:8:16 | tainted |
 | MethodFlow.java:9:31:9:37 | taint(...) | MethodFlow.java:10:10:10:17 | tainted2 |
 | MethodFlow.java:11:35:11:41 | taint(...) | MethodFlow.java:12:10:12:17 | tainted3 |
