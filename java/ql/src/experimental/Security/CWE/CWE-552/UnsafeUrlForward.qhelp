@@ -13,9 +13,9 @@
 
 <p>Unsanitized user provided data must not be used to construct the path for URL forwarding. In order to prevent
 untrusted URL forwarding, it is recommended to avoid concatenating user input directly into the forwarding URL.
-Instead, user input should be checked for path traversal using <code>..</code> sequences or the user input should
-be normalized using <code>Path.normalize</code>, any URL encoding should be removed, and user input should be
-checked against a permitted URI.
+Instead, user input should be checked against allowed (e.g., must come within <code>user_content/</code>) or disallowed
+(e.g. must not come within <code>/internal</code>) paths, ensuring that neither path traversal using <code>../</code>
+or URL encoding are used to evade these checks.
 </p>
 
 </recommendation>
