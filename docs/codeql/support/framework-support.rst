@@ -1,7 +1,13 @@
 Frameworks and libraries
 ########################
 
-The libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
+LGTM Enterprise |release| includes CodeQL CLI |version|. The CodeQL libraries and queries used by this version of LGTM Enterprise have been explicitly checked against the libraries and frameworks listed below.
+
+.. pull-quote::
+
+    Note
+
+    For details of framework and library support in the most recent release of the CodeQL CLI, see `Supported languages and frameworks <https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks/>`__ in the CodeQL CLI documentation.
 
 .. pull-quote::
 
