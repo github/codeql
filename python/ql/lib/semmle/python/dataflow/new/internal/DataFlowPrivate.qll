@@ -249,6 +249,8 @@ module EssaFlow {
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
+    matchFlowStep(nodeFrom, nodeTo)
+    or
     // Overflow keyword argument
     exists(CallNode call, CallableValue callable |
       call = callable.getACall() and
@@ -982,6 +984,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   posOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
+  or
+  matchStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -1123,6 +1127,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+  or
+  matchReadStep(nodeFrom, c, nodeTo)
   or
   popReadStep(nodeFrom, c, nodeTo)
   or
@@ -1553,6 +1559,290 @@ module IterableUnpacking {
 
 import IterableUnpacking
 
+/**
+ * There are a number of patterns available for the match statement.
+ * Each one transfers data and content differently to its parts.
+ *
+ * Furthermore, given a successful match, we can infer some daa about
+ * the subject. Consider the example:
+ * ```python
+ * match choice:
+ *   case 'Y':
+ *     ...body
+ * ```
+ * Inside `body`, we know that `choice` has the value `'Y'`.
+ *
+ * A similar thing happens with the "as pattern". Consider the example:
+ * ```python
+ * match choice:
+ *  case ('y'|'Y') as c:
+ *   ...body
+ * ```
+ * By the binding rules, there is data flow from `choice` to `c`. But we
+ * can infer the value of `c` to be either `'y'` or `'Y'` if the match succeeds.
+ *
+ * We will treat such inference separately as guards. First we will model the data flow
+ * stemming from the bindings and the matching of shape. Below, 'subject' is not necessarily the
+ * top-level subject of the match, but rather the part recursively matched by the current pattern.
+ * For instance, in the example:
+ * ```python
+ * match command:
+ *  case ('quit' as c) | ('go', ('up'|'down') as c):
+ *   ...body
+ * ```
+ * `command` is the subject of the as-pattern, while the second component of `command` is the subject
+ * of the first capture pattern. As such, 'subject' refers to the pattern under evaluation.
+ *
+ * - as pattern: subject flows to alias as well as to the interior pattern
+ * - or pattern: subject flows to each alternative
+ * - literal pattern: no flow
+ * - capture pattern: subject flows to the variable
+ * - wildcard pattern: no flow
+ * - value pattern: no flow
+ * - sequence pattern: each element reads from subject at the associated index
+ * - star pattern: subject flows to the variable, possibly via a conversion
+ * - mapping pattern: each value reads from subject at the associated key
+ * - double star pattern: subject flows to the variable, possibly via a conversion
+ * - key-value pattern: the value reads from the subject at the key (see mapping pattern)
+ * - class pattern: all keywords read the appropriate attribute from the subject
+ * - keyword pattern: the appropriate attribute is read from the subject (see class pattern)
+ *
+ * Inside the class pattern, we also find positional arguments. They are converted to
+ * keyword arguments using the `__match_args__` attribute on the class. We do not
+ * currently model this.
+ */
+module MatchUnpacking {
+  /**
+   * The subject of a match flows to each top-level pattern
+   * (a pattern directly under a `case` statement).
+   *
+   * We could consider a model closer to use-use-flow, where the subject
+   * only flows to the first top-level pattern and from there to the
+   * following ones.
+   */
+  predicate matchSubjectFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchStmt match, Expr subject, Pattern target |
+      subject = match.getSubject() and
+      target = match.getCase(_).(Case).getPattern()
+    |
+      nodeFrom.asExpr() = subject and
+      nodeTo.asCfgNode().getNode() = target
+    )
+  }
+
+  /**
+   * as pattern: subject flows to alias as well as to the interior pattern
+   * syntax (toplevel): `case pattern as alias:`
+   */
+  predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchAsPattern subject, Name alias | alias = subject.getAlias() |
+      nodeFrom.asCfgNode().getNode() = subject and
+      (
+        // the subject flows to the alias
+        nodeTo.asVar().getDefinition().(PatternAliasDefinition).getDefiningNode().getNode() = alias
+        or
+        // the subject flows to the interior pattern
+        nodeTo.asCfgNode().getNode() = subject.getPattern()
+      )
+    )
+  }
+
+  /**
+   * or pattern: subject flows to each alternative
+   * syntax (toplevel): `case alt1 | alt2:`
+   */
+  predicate matchOrFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchOrPattern subject, Pattern pattern | pattern = subject.getAPattern() |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = pattern
+    )
+  }
+
+  /**
+   * capture pattern: subject flows to the variable
+   * syntax (toplevel): `case var:`
+   */
+  predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
+      nodeFrom.asCfgNode().getNode() = capture and
+      nodeTo.asVar().getDefinition().(PatternCaptureDefinition).getDefiningNode().getNode() = var
+    )
+  }
+
+  /**
+   * sequence pattern: each element reads from subject at the associated index
+   * syntax (toplevel): `case [a, b]:`
+   */
+  predicate matchSequenceReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchSequencePattern subject, int index, Pattern element |
+      element = subject.getPattern(index)
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = element and
+      (
+        // tuple content
+        c.(TupleElementContent).getIndex() = index
+        or
+        // list content
+        c instanceof ListElementContent
+        // set content is excluded from sequence patterns,
+        // see https://www.python.org/dev/peps/pep-0635/#sequence-patterns
+      )
+    )
+  }
+
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tupe and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the read step.
+   */
+  predicate matchStarReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchSequencePattern subject, int index, MatchStarPattern star |
+      star = subject.getPattern(index)
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo = TStarPatternElementNode(star) and
+      (
+        // tuple content
+        c.(TupleElementContent).getIndex() >= index
+        or
+        // list content
+        c instanceof ListElementContent
+        // set content is excluded from sequence patterns,
+        // see https://www.python.org/dev/peps/pep-0635/#sequence-patterns
+      )
+    )
+  }
+
+  /**
+   * star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case *var:`
+   *
+   * We decompose this flow into a read step and a store step. The read step
+   * reads both tupe and list content, the store step only stores list content.
+   * This way, we convert all content to list content.
+   *
+   * This is the store step.
+   */
+  predicate matchStarStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchStarPattern star |
+      nodeFrom = TStarPatternElementNode(star) and
+      nodeTo.asCfgNode().getNode() = star.getTarget() and
+      c instanceof ListElementContent
+    )
+  }
+
+  /**
+   * mapping pattern: each value reads from subject at the associated key
+   * syntax (toplevel): `case {"color": c, "height": x}:`
+   */
+  predicate matchMappingReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      Pattern value
+    |
+      keyValue = subject.getAMapping() and
+      key = keyValue.getKey() and
+      value = keyValue.getValue()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = value and
+      c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    )
+  }
+
+  /**
+   * double star pattern: subject flows to the variable, possibly via a conversion
+   * syntax (toplevel): `case {**var}:`
+   *
+   * Dictionary content flows to the double star, but all mentioned keys in the
+   * mapping pattern should be cleared.
+   */
+  predicate matchMappingFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchMappingPattern subject, MatchDoubleStarPattern dstar |
+      dstar = subject.getAMapping()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = dstar.getTarget()
+    )
+  }
+
+  /**
+   * Bindings that are mentioned in a mapping pattern will not be available
+   * to a double star pattern in the same mapping pattern.
+   */
+  predicate matchMappingClearStep(Node n, Content c) {
+    exists(
+      MatchMappingPattern subject, MatchKeyValuePattern keyValue, MatchLiteralPattern key,
+      MatchDoubleStarPattern dstar
+    |
+      keyValue = subject.getAMapping() and
+      key = keyValue.getKey() and
+      dstar = subject.getAMapping()
+    |
+      n.asCfgNode().getNode() = dstar.getTarget() and
+      c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    )
+  }
+
+  /**
+   * class pattern: all keywords read the appropriate attribute from the subject
+   * syntax (toplevel): `case ClassName(attr = val):`
+   */
+  predicate matchClassReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(MatchClassPattern subject, MatchKeywordPattern keyword, Name attr, Pattern value |
+      keyword = subject.getKeyword(_) and
+      attr = keyword.getAttribute() and
+      value = keyword.getValue()
+    |
+      nodeFrom.asCfgNode().getNode() = subject and
+      nodeTo.asCfgNode().getNode() = value and
+      c.(AttributeContent).getAttribute() = attr.getId()
+    )
+  }
+
+  /** All flow steps associated with match. */
+  predicate matchFlowStep(Node nodeFrom, Node nodeTo) {
+    matchSubjectFlowStep(nodeFrom, nodeTo)
+    or
+    matchAsFlowStep(nodeFrom, nodeTo)
+    or
+    matchOrFlowStep(nodeFrom, nodeTo)
+    or
+    matchCaptureFlowStep(nodeFrom, nodeTo)
+    or
+    matchMappingFlowStep(nodeFrom, nodeTo)
+  }
+
+  /** All read steps associated with match. */
+  predicate matchReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    matchClassReadStep(nodeFrom, c, nodeTo)
+    or
+    matchSequenceReadStep(nodeFrom, c, nodeTo)
+    or
+    matchMappingReadStep(nodeFrom, c, nodeTo)
+    or
+    matchStarReadStep(nodeFrom, c, nodeTo)
+  }
+
+  /** All store steps associated with match. */
+  predicate matchStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    matchStarStoreStep(nodeFrom, c, nodeTo)
+  }
+
+  /**
+   * All clear steps associated with match
+   */
+  predicate matchClearStep(Node n, Content c) { matchMappingClearStep(n, c) }
+}
+
+import MatchUnpacking
+
 /** Data flows from a sequence to a call to `pop` on the sequence. */
 predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // set.pop or list.pop
@@ -1635,16 +1925,26 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
 }
 
 /**
- * Holds if values stored inside content `c` are cleared at node `n`. For example,
- * any value stored inside `f` is cleared at the pre-update node associated with `x`
- * in `x.f = newValue`.
+ * Clear content at key `name` of the synthesized dictionary `TKwOverflowNode(call, callable)`,
+ * whenever `call` unpacks `name`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate kwOverflowClearStep(Node n, Content c) {
   exists(CallNode call, CallableValue callable, string name |
     call_unpacks(call, _, callable, name, _) and
     n = TKwOverflowNode(call, callable) and
     c.(DictionaryElementContent).getKey() = name
   )
+}
+
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  kwOverflowClearStep(n, c)
+  or
+  matchClearStep(n, c)
 }
 
 //--------

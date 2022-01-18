@@ -25,7 +25,11 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
+  TCfgNode(ControlFlowNode node) {
+    isExpressionNode(node)
+    or
+    node.getNode() instanceof Pattern
+  } or
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
   /** A synthetic node representing the value of an object after a state change. */
@@ -79,7 +83,11 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  /**
+   * A synthetic node representing element content in a star pattern.
+   */
+  TStarPatternElementNode(MatchStarPattern target)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -470,6 +478,21 @@ class IterableElementNode extends Node, TIterableElementNode {
   IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
 
   override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing elemnt content of a star pattern.
+ */
+class StarPatternElementNode extends Node, TStarPatternElementNode {
+  CfgNode consumer;
+
+  StarPatternElementNode() { this = TStarPatternElementNode(consumer.getNode().getNode()) }
+
+  override string toString() { result = "StarPatternElement" }
 
   override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
 
