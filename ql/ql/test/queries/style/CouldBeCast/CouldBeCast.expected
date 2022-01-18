@@ -1,0 +1,3 @@
+| Foo.qll:3:3:3:24 | Exists | The assignment to $@ in the exists(..) can replaced with an instanceof expression. | Foo.qll:3:10:3:15 | j | j |
+| Foo.qll:7:3:7:21 | Any | The assignment to $@ in this any(..) can be replaced with an inline cast. | Foo.qll:7:7:7:12 | j | j |
+| Foo.qll:9:3:9:25 | Any | The assignment to $@ in this any(..) can be replaced with an inline cast. | Foo.qll:9:7:9:12 | j | j |
