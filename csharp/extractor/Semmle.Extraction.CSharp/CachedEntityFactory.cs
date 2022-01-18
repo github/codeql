@@ -16,14 +16,8 @@ namespace Semmle.Extraction.CSharp
             return Create((Context)cx, init);
         }
 
-        public override bool IsShared(TInit init)
-        {
-            return
-                base.IsShared(init) &&
-                !(init is ITypeSymbol type && type.ContainsAnonymousType()) &&
-                !(init is IMethodSymbol method && method.ContainsAnonymousType()) &&
-                !(init is ISymbol symbol && symbol.ContainingType?.ContainsAnonymousType() == true);
-        }
+        public override bool IsShared(TInit init) =>
+            base.IsShared(init) && !(init is ISymbol symbol && symbol.ContainsAnonymousType());
 
         public abstract TEntity Create(Context cx, TInit init);
     }

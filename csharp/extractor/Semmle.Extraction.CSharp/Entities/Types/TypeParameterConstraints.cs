@@ -19,6 +19,8 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";typeparameterconstraints");
         }
 
+        public override bool NeedsPopulation => true;
+
         public override void Populate(TextWriter trapFile)
         {
             trapFile.type_parameter_constraints(this, parent);
@@ -47,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
+        public override Location? ReportingLocation => null;
 
         public static TypeParameterConstraints Create(Context cx, TypeParameter p) =>
             TypeParameterConstraintsFactory.Instance.CreateEntity(cx, (typeof(TypeParameterConstraints), p), p);
@@ -55,9 +57,6 @@ namespace Semmle.Extraction.CSharp.Entities
         private class TypeParameterConstraintsFactory : CachedEntityFactory<TypeParameter, TypeParameterConstraints>
         {
             public static TypeParameterConstraintsFactory Instance { get; } = new TypeParameterConstraintsFactory();
-
-            public override bool IsShared(TypeParameter init) =>
-                !SymbolEqualityComparer.Default.Equals(init.Symbol, init.Symbol.OriginalDefinition);
 
             public override TypeParameterConstraints Create(Context cx, TypeParameter init) => new(cx, init);
         }
