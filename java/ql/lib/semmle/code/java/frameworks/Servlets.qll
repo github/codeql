@@ -347,3 +347,27 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
 }
+
+/** The Java EE RequestDispatcher. */
+class RequestDispatcher extends RefType {
+  RequestDispatcher() {
+    this.hasQualifiedName(["javax.servlet", "jakarta.servlet"], "RequestDispatcher") or
+    this.hasQualifiedName("javax.portlet", "PortletRequestDispatcher")
+  }
+}
+
+/** The `getRequestDispatcher` method. */
+class GetRequestDispatcherMethod extends Method {
+  GetRequestDispatcherMethod() {
+    this.getReturnType() instanceof RequestDispatcher and
+    this.getName() = "getRequestDispatcher"
+  }
+}
+
+/** The request dispatch method. */
+class RequestDispatchMethod extends Method {
+  RequestDispatchMethod() {
+    this.getDeclaringType() instanceof RequestDispatcher and
+    this.hasName(["forward", "include"])
+  }
+}
