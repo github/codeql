@@ -3729,7 +3729,7 @@ private predicate directReach(PathNode n) {
   n instanceof PathNodeSink or directReach(n.getASuccessor())
 }
 
-/** Holds if `n` can reach a sink or is used in a subpath. */
+/** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
 private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
 
 /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
@@ -3742,14 +3742,25 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
  */
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(b) }
+  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(a) and reach(b) }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
     reach(n) and key = "semmle.label" and val = n.toString()
   }
 
-  query predicate subpaths = Subpaths::subpaths/4;
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+   * `ret -> out` is summarized as the edge `arg -> out`.
+   */
+  query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+    Subpaths::subpaths(arg, par, ret, out) and
+    reach(arg) and
+    reach(par) and
+    reach(ret) and
+    reach(out)
+  }
 }
 
 /**
@@ -4169,24 +4180,25 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNodeMid out) {
-    exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout |
+  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
+    exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
       pragma[only_bind_into](arg).getASuccessor() = par and
-      pragma[only_bind_into](arg).getASuccessor() = out and
+      pragma[only_bind_into](arg).getASuccessor() = out0 and
       subpaths03(arg, p, localStepToHidden*(ret), o, sout, apout) and
       not ret.isHidden() and
       par.getNodeEx() = p and
-      out.getNodeEx() = o and
-      out.getState() = sout and
-      out.getAp() = apout
+      out0.getNodeEx() = o and
+      out0.getState() = sout and
+      out0.getAp() = apout and
+      (out = out0 or out = out0.projectToSink())
     )
   }
 
   /**
-   * Holds if `n` can reach a return node in a summarized subpath.
+   * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
    */
   predicate retReach(PathNode n) {
-    subpaths(_, _, n, _)
+    exists(PathNode out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
     or
     exists(PathNode mid |
       retReach(mid) and

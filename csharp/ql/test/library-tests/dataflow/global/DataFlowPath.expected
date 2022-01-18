@@ -218,7 +218,6 @@ edges
 | GlobalDataFlow.cs:310:32:310:32 | x : String | GlobalDataFlow.cs:312:9:312:13 | SSA def(y) : String |
 | GlobalDataFlow.cs:315:31:315:40 | sinkParam8 : String | GlobalDataFlow.cs:317:15:317:24 | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:321:32:321:41 | sinkParam9 : String | GlobalDataFlow.cs:323:15:323:24 | access to parameter sinkParam9 |
-| GlobalDataFlow.cs:321:32:321:41 | sinkParam9 : String | GlobalDataFlow.cs:324:16:324:25 | access to parameter sinkParam9 : String |
 | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | GlobalDataFlow.cs:329:15:329:25 | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | GlobalDataFlow.cs:157:21:157:25 | call to method Out : String |
 | GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | GlobalDataFlow.cs:193:22:193:42 | object creation of type Lazy<String> [property Value] : String |
@@ -476,7 +475,6 @@ nodes
 | GlobalDataFlow.cs:317:15:317:24 | access to parameter sinkParam8 | semmle.label | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:321:32:321:41 | sinkParam9 : String | semmle.label | sinkParam9 : String |
 | GlobalDataFlow.cs:323:15:323:24 | access to parameter sinkParam9 | semmle.label | access to parameter sinkParam9 |
-| GlobalDataFlow.cs:324:16:324:25 | access to parameter sinkParam9 : String | semmle.label | access to parameter sinkParam9 : String |
 | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | semmle.label | sinkParam11 : String |
 | GlobalDataFlow.cs:329:15:329:25 | access to parameter sinkParam11 | semmle.label | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | semmle.label | "taint source" : String |
@@ -570,7 +568,6 @@ subpaths
 | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String |
 | GlobalDataFlow.cs:139:29:139:33 | access to local variable sink3 : String | GlobalDataFlow.cs:138:40:138:40 | x : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String | GlobalDataFlow.cs:139:21:139:34 | delegate call : String |
 | GlobalDataFlow.cs:147:39:147:43 | access to local variable sink4 : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> : String |
-| GlobalDataFlow.cs:215:89:215:89 | access to parameter x : String | GlobalDataFlow.cs:321:32:321:41 | sinkParam9 : String | GlobalDataFlow.cs:324:16:324:25 | access to parameter sinkParam9 : String | GlobalDataFlow.cs:215:76:215:90 | call to method ReturnCheck2<String> : String |
 | GlobalDataFlow.cs:300:37:300:37 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
@@ -579,7 +576,7 @@ subpaths
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String |
-| Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:21:21:21:33 | call to method Return<String> : String |
+| Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:21:21:21:33 | call to method Return<String> |
 | Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String |
 | Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String |
 #select
