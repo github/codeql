@@ -1,102 +1,46 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from android.view.LayoutInflater for testing purposes
 
 package android.view;
 
-import org.xmlpull.v1.XmlPullParser;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import org.xmlpull.v1.XmlPullParser;
 
-public abstract class LayoutInflater {
-  public interface Filter {
-    boolean onLoadClass(Class clazz);
-
-  }
-  public interface Factory {
-    View onCreateView(String name, Context context, AttributeSet attrs);
-
-  }
-  public interface Factory2 extends Factory {
-    View onCreateView(View parent, String name, Context context, AttributeSet attrs);
-
-  }
-
-  public static LayoutInflater from(Context context) {
-    return null;
-  }
-
-  public abstract LayoutInflater cloneInContext(Context newContext);
-
-  public Context getContext() {
-    return null;
-  }
-
-  public final Factory getFactory() {
-    return null;
-  }
-
-  public final Factory2 getFactory2() {
-    return null;
-  }
-
-  public void setFactory(Factory factory) {}
-
-  public void setFactory2(Factory2 factory) {}
-
-  public void setPrivateFactory(Factory2 factory) {}
-
-  public Filter getFilter() {
-    return null;
-  }
-
-  public void setFilter(Filter filter) {}
-
-  public void setPrecompiledLayoutsEnabledForTesting(boolean enablePrecompiledLayouts) {}
-
-  public View inflate(int resource, ViewGroup root) {
-    return null;
-  }
-
-  public View inflate(XmlPullParser parser, ViewGroup root) {
-    return null;
-  }
-
-  public View inflate(int resource, ViewGroup root, boolean attachToRoot) {
-    return null;
-  }
-
-  public View inflate(XmlPullParser parser, ViewGroup root, boolean attachToRoot) {
-    return null;
-  }
-
-  public final View createView(String name, String prefix, AttributeSet attrs)
-      throws ClassNotFoundException {
-    return null;
-  }
-
-  public final View createView(Context viewContext, String name, String prefix, AttributeSet attrs)
-      throws ClassNotFoundException {
-    return null;
-  }
-
-  public View onCreateView(Context viewContext, View parent, String name, AttributeSet attrs)
-      throws ClassNotFoundException {
-    return null;
-  }
-
-  public final View tryCreateView(View parent, String name, Context context, AttributeSet attrs) {
-    return null;
-  }
-
+abstract public class LayoutInflater
+{
+    protected LayoutInflater() {}
+    protected LayoutInflater(Context p0){}
+    protected LayoutInflater(LayoutInflater p0, Context p1){}
+    protected View onCreateView(String p0, AttributeSet p1){ return null; }
+    protected View onCreateView(View p0, String p1, AttributeSet p2){ return null; }
+    public Context getContext(){ return null; }
+    public LayoutInflater.Filter getFilter(){ return null; }
+    public View inflate(XmlPullParser p0, ViewGroup p1){ return null; }
+    public View inflate(XmlPullParser p0, ViewGroup p1, boolean p2){ return null; }
+    public View inflate(int p0, ViewGroup p1){ return null; }
+    public View inflate(int p0, ViewGroup p1, boolean p2){ return null; }
+    public View onCreateView(Context p0, View p1, String p2, AttributeSet p3){ return null; }
+    public abstract LayoutInflater cloneInContext(Context p0);
+    public final LayoutInflater.Factory getFactory(){ return null; }
+    public final LayoutInflater.Factory2 getFactory2(){ return null; }
+    public final View createView(Context p0, String p1, String p2, AttributeSet p3){ return null; }
+    public final View createView(String p0, String p1, AttributeSet p2){ return null; }
+    public static LayoutInflater from(Context p0){ return null; }
+    public void setFactory(LayoutInflater.Factory p0){}
+    public void setFactory2(LayoutInflater.Factory2 p0){}
+    public void setFilter(LayoutInflater.Filter p0){}
+    static public interface Factory
+    {
+        View onCreateView(String p0, Context p1, AttributeSet p2);
+    }
+    static public interface Factory2 extends LayoutInflater.Factory
+    {
+        View onCreateView(View p0, String p1, Context p2, AttributeSet p3);
+    }
+    static public interface Filter
+    {
+        boolean onLoadClass(Class p0);
+    }
 }

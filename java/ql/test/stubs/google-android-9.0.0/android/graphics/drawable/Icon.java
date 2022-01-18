@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BlendMode;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,8 @@ public class Icon implements Parcelable
     public int getResId(){ return 0; }
     public int getType(){ return 0; }
     public static Icon createWithAdaptiveBitmap(Bitmap p0){ return null; }
+    public static Icon createWithAdaptiveBitmapContentUri(String p0){ return null; }
+    public static Icon createWithAdaptiveBitmapContentUri(Uri p0){ return null; }
     public static Icon createWithBitmap(Bitmap p0){ return null; }
     public static Icon createWithContentUri(String p0){ return null; }
     public static Icon createWithContentUri(Uri p0){ return null; }
@@ -41,6 +44,7 @@ public class Icon implements Parcelable
     public static int TYPE_DATA = 0;
     public static int TYPE_RESOURCE = 0;
     public static int TYPE_URI = 0;
+    public static int TYPE_URI_ADAPTIVE_BITMAP = 0;
     public void loadDrawableAsync(Context p0, Icon.OnDrawableLoadedListener p1, Handler p2){}
     public void loadDrawableAsync(Context p0, Message p1){}
     public void writeToParcel(Parcel p0, int p1){}

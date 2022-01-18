@@ -274,8 +274,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;setActions;;;ArrayElement of
-			// Argument[0];SyntheticField[android.app.Notification.action] of
-			// Argument[-1];taint"
+			// Argument[0];Argument[-1];taint"
 			Notification.Builder out = null;
 			Notification.Action[] in = (Notification.Action[]) new Notification.Action[] {
 					(Notification.Action) source()};
@@ -696,7 +695,125 @@ public class Test {
 			out = in.setWhen(0L);
 			sink(out); // $ hasValueFlow
 		}
-
+		{
+			// "android.app;Notification$Style;true;build;;;Argument[-1];ReturnValue;taint"
+			Notification out = null;
+			Notification.Style in = (Notification.Style) source();
+			out = in.build();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;BigPictureStyle;(Builder);;Argument[0];Argument[-1];taint"
+			Notification.BigPictureStyle out = null;
+			Notification.Builder in = (Notification.Builder) source();
+			out = new Notification.BigPictureStyle(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;bigLargeIcon;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.bigLargeIcon((Icon) null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;bigPicture;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.bigPicture((Bitmap) null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.setBigContentTitle(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;setContentDescription;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.setContentDescription(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.setSummaryText(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigPictureStyle;true;showBigPictureWhenCollapsed;;;Argument[-1];ReturnValue;value"
+			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
+			Notification.BigPictureStyle out = in.showBigPictureWhenCollapsed(false);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigTextStyle;true;BigTextStyle;(Builder);;Argument[0];Argument[-1];taint"
+			Notification.BigTextStyle out = null;
+			Notification.Builder in = (Notification.Builder) source();
+			out = new Notification.BigTextStyle(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$BigTextStyle;true;bigText;;;Argument[-1];ReturnValue;value"
+			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
+			Notification.BigTextStyle out = in.bigText(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigTextStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value"
+			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
+			Notification.BigTextStyle out = in.setBigContentTitle(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$BigTextStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value"
+			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
+			Notification.BigTextStyle out = in.setSummaryText(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$InboxStyle;true;InboxStyle;(Builder);;Argument[0];Argument[-1];taint"
+			Notification.InboxStyle out = null;
+			Notification.Builder in = (Notification.Builder) source();
+			out = new Notification.InboxStyle(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$InboxStyle;true;addLine;;;Argument[-1];ReturnValue;value"
+			Notification.InboxStyle in = (Notification.InboxStyle) source();
+			Notification.InboxStyle out = in.addLine(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$InboxStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value"
+			Notification.InboxStyle in = (Notification.InboxStyle) source();
+			Notification.InboxStyle out = in.setBigContentTitle(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$InboxStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value"
+			Notification.InboxStyle in = (Notification.InboxStyle) source();
+			Notification.InboxStyle out = in.setSummaryText(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$MediaStyle;true;MediaStyle;(Builder);;Argument[0];Argument[-1];taint"
+			Notification.MediaStyle out = null;
+			Notification.Builder in = (Notification.Builder) source();
+			out = new Notification.MediaStyle(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "android.app;Notification$MediaStyle;true;setMediaSession;;;Argument[-1];ReturnValue;value"
+			Notification.MediaStyle in = (Notification.MediaStyle) source();
+			Notification.MediaStyle out = in.setMediaSession(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "android.app;Notification$MediaStyle;true;setShowActionsInCompactView;;;Argument[-1];ReturnValue;value"
+			Notification.MediaStyle in = (Notification.MediaStyle) source();
+			Notification.MediaStyle out = in.setShowActionsInCompactView(null);
+			sink(out); // $ hasValueFlow
+		}
 	}
 
 }

@@ -2,11 +2,13 @@
 
 package android.content.pm;
 
-import java.util.UUID;
 import android.content.Context;
+import android.content.pm.PackageItemInfo;
+import android.content.pm.PackageManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Printer;
+import java.util.UUID;
 
 public class ApplicationInfo extends PackageItemInfo implements Parcelable
 {
@@ -16,6 +18,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable
     public String appComponentFactory = null;
     public String backupAgentName = null;
     public String className = null;
+    public String compileSdkVersionCodename = null;
     public String dataDir = null;
     public String deviceProtectedDataDir = null;
     public String manageSpaceActivityName = null;
@@ -31,15 +34,22 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable
     public String[] splitPublicSourceDirs = null;
     public String[] splitSourceDirs = null;
     public UUID storageUuid = null;
+    public boolean areAttributionsUserVisible(){ return false; }
     public boolean enabled = false;
+    public boolean isProfileable(){ return false; }
     public boolean isProfileableByShell(){ return false; }
     public boolean isResourceOverlay(){ return false; }
     public boolean isVirtualPreload(){ return false; }
     public int category = 0;
     public int compatibleWidthLimitDp = 0;
+    public int compileSdkVersion = 0;
     public int describeContents(){ return 0; }
     public int descriptionRes = 0;
     public int flags = 0;
+    public int getGwpAsanMode(){ return 0; }
+    public int getMemtagMode(){ return 0; }
+    public int getNativeHeapZeroInitialized(){ return 0; }
+    public int getRequestRawExternalStorageAccess(){ return 0; }
     public int largestWidthLimitDp = 0;
     public int minSdkVersion = 0;
     public int requiresSmallestWidthDp = 0;
@@ -49,6 +59,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable
     public int uid = 0;
     public static CharSequence getCategoryTitle(Context p0, int p1){ return null; }
     public static Parcelable.Creator<ApplicationInfo> CREATOR = null;
+    public static int CATEGORY_ACCESSIBILITY = 0;
     public static int CATEGORY_AUDIO = 0;
     public static int CATEGORY_GAME = 0;
     public static int CATEGORY_IMAGE = 0;
@@ -90,6 +101,19 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable
     public static int FLAG_UPDATED_SYSTEM_APP = 0;
     public static int FLAG_USES_CLEARTEXT_TRAFFIC = 0;
     public static int FLAG_VM_SAFE_MODE = 0;
+    public static int GWP_ASAN_ALWAYS = 0;
+    public static int GWP_ASAN_DEFAULT = 0;
+    public static int GWP_ASAN_NEVER = 0;
+    public static int MEMTAG_ASYNC = 0;
+    public static int MEMTAG_DEFAULT = 0;
+    public static int MEMTAG_OFF = 0;
+    public static int MEMTAG_SYNC = 0;
+    public static int RAW_EXTERNAL_STORAGE_ACCESS_DEFAULT = 0;
+    public static int RAW_EXTERNAL_STORAGE_ACCESS_NOT_REQUESTED = 0;
+    public static int RAW_EXTERNAL_STORAGE_ACCESS_REQUESTED = 0;
+    public static int ZEROINIT_DEFAULT = 0;
+    public static int ZEROINIT_DISABLED = 0;
+    public static int ZEROINIT_ENABLED = 0;
     public void dump(Printer p0, String p1){}
     public void writeToParcel(Parcel p0, int p1){}
 }

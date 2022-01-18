@@ -7,7 +7,6 @@ import android.os.Parcelable;
 
 public class SyncRequest implements Parcelable
 {
-    protected SyncRequest() {}
     public int describeContents(){ return 0; }
     public static Parcelable.Creator<SyncRequest> CREATOR = null;
     public void writeToParcel(Parcel p0, int p1){}

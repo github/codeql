@@ -6,7 +6,6 @@ import java.io.FileDescriptor;
 
 public class MessageQueue
 {
-    protected MessageQueue() {}
     protected void finalize(){}
     public boolean isIdle(){ return false; }
     public void addIdleHandler(MessageQueue.IdleHandler p0){}
