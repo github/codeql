@@ -17,15 +17,11 @@ import ATM::ResultsInfo
 import DataFlow::PathGraph
 import experimental.adaptivethreatmodeling.XssATM
 
-from
-  DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score,
-  string scoreString
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score
 where
   cfg.hasFlowPath(source, sink) and
   not isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
-  score = getScoreForFlow(source.getNode(), sink.getNode()) and
-  scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
+  score = getScoreForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "[Score = " + scoreString + "] This may be a js/xss result depending on $@ " +
-    getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  "a user-provided value", score
+  "(Experimental) This may be a cross-site scripting vulnerability due to $@. Identified using machine learning."
+    + "a user-provided value", score

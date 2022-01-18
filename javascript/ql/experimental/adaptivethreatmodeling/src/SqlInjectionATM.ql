@@ -16,15 +16,11 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM
 import ATM::ResultsInfo
 import DataFlow::PathGraph
 
-from
-  DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score,
-  string scoreString
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score
 where
   cfg.hasFlowPath(source, sink) and
   not isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
-  score = getScoreForFlow(source.getNode(), sink.getNode()) and
-  scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
+  score = getScoreForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "[Score = " + scoreString + "] This may be a js/sql result depending on $@ " +
-    getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  "a user-provided value", score
+  "(Experimental) This may be a database query that depends on $@. Identified using machine learning.",
+  source.getNode(), "a user-provided value", score
