@@ -9,7 +9,7 @@ private class JavaIoSummaryCsv extends SummaryModelCsv {
       [
         //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "java.lang;Appendable;true;append;;;Argument[0];Argument[-1];taint",
-        "java.lang;Appendable;true;append;;;Argument[-1];ReturnValue;taint",
+        "java.lang;Appendable;true;append;;;Argument[-1];ReturnValue;value",
         "java.io;Writer;true;write;;;Argument[0];Argument[-1];taint",
         "java.io;Writer;true;toString;;;Argument[-1];ReturnValue;taint",
         "java.io;CharArrayWriter;true;toCharArray;;;Argument[-1];ReturnValue;taint",
