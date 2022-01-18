@@ -35,7 +35,6 @@ attacks. It also shows how to remedy the problem by validating the user input.
 </p>
 
 <sample src="UnsafeServletRequestDispatch.java" />
-<sample src="UnsafeRequestPath.java" />
 
 </example>
 <references>
