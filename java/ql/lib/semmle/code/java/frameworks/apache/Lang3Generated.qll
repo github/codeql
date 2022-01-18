@@ -3,10 +3,7 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
-/**
- * Taint-propagating models for `ArrayUtils`.
- */
-private class ApacheArrayUtilsModel extends SummaryModelCsv {
+private class ApacheCommonsLang3Model extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -44,24 +41,8 @@ private class ApacheArrayUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;ArrayUtils;false;toMap;;;ArrayElement of ArrayElement of Argument[0];MapValue of ReturnValue;value",
         "org.apache.commons.lang3;ArrayUtils;false;toObject;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
         "org.apache.commons.lang3;ArrayUtils;false;toPrimitive;;;ArrayElement of Argument[0];ArrayElement of ReturnValue;value",
-        "org.apache.commons.lang3;ArrayUtils;false;toPrimitive;;;Argument[1];ArrayElement of ReturnValue;value"
-      ]
-  }
-}
-
-private class ApacheStringEscapeUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.apache.commons.lang3;StringEscapeUtils;false;escapeJson;;;Argument[0];ReturnValue;taint"
-      ]
-  }
-}
-
-private class ApacheStringUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3;ArrayUtils;false;toPrimitive;;;Argument[1];ArrayElement of ReturnValue;value",
+        "org.apache.commons.lang3;StringEscapeUtils;false;escapeJson;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int);;Argument[1];ReturnValue;taint",
         "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int,int);;Argument[1];ReturnValue;taint",
         "org.apache.commons.lang3;StringUtils;false;abbreviate;;;Argument[0];ReturnValue;taint",
@@ -204,15 +185,7 @@ private class ApacheStringUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,char);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,java.lang.String);;Argument[0..1];ReturnValue;taint",
         "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,char);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,java.lang.String);;Argument[0..1];ReturnValue;taint"
-      ]
-  }
-}
-
-private class ApacheStrBuilderModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,java.lang.String);;Argument[0..1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrBuilder;false;append;(char[]);;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
@@ -287,14 +260,6 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
-      ]
-  }
-}
-
-private class ApacheStrBuilderFluentMethodsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;value",
@@ -321,17 +286,6 @@ private class ApacheStrBuilderFluentMethodsModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrBuilder;false;setNewLineText;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.text;StrBuilder;false;setNullText;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.text;StrBuilder;false;trim;;;Argument[-1];ReturnValue;value",
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `WordUtils`.
- */
-private class ApacheWordUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3.text;WordUtils;false;wrap;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean);;Argument[2];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean,java.lang.String);;Argument[2];ReturnValue;taint",
@@ -344,17 +298,6 @@ private class ApacheWordUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;WordUtils;false;initials;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;WordUtils;false;capitalizeFully;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrTokenizer`.
- */
-private class ApacheStrTokenizerModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
@@ -369,30 +312,8 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;getTSVInstance;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint",
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrLookup`.
- */
-private class ApacheStrLookupModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3.text;StrLookup;false;lookup;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrLookup;false;mapLookup;;;MapValue of Argument[0];ReturnValue;taint",
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrSubstitutor`.
- */
-private class ApacheStrSubstitutorModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;MapValue of Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
@@ -420,17 +341,6 @@ private class ApacheStrSubstitutorModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder,int,int);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(org.apache.commons.lang3.text.StrBuilder,int,int);;Argument[-1];Argument[0];taint",
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `RegexUtils`.
- */
-private class ApacheRegExUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
         "org.apache.commons.lang3;RegExUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3;RegExUtils;false;removeFirst;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3;RegExUtils;false;removePattern;;;Argument[0];ReturnValue;taint",
@@ -439,20 +349,7 @@ private class ApacheRegExUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;RegExUtils;false;replacePattern;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.lang3;RegExUtils;false;replaceAll;;;Argument[2];ReturnValue;taint",
         "org.apache.commons.lang3;RegExUtils;false;replaceFirst;;;Argument[2];ReturnValue;taint",
-        "org.apache.commons.lang3;RegExUtils;false;replacePattern;;;Argument[2];ReturnValue;taint"
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `ObjectUtils`.
- */
-private class ApacheObjectUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // Note all the functions annotated with `taint` flow really should have `value` flow,
-        // but we don't support value-preserving varargs functions at the moment.
+        "org.apache.commons.lang3;RegExUtils;false;replacePattern;;;Argument[2];ReturnValue;taint",
         "org.apache.commons.lang3;ObjectUtils;false;clone;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;cloneIfPossible;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;CONST;;;Argument[0];ReturnValue;value",
@@ -466,15 +363,7 @@ private class ApacheObjectUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;ObjectUtils;false;min;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;mode;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;requireNonEmpty;;;Argument[0];ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;toString;(Object,String);;Argument[1];ReturnValue;value"
-      ]
-  }
-}
-
-private class ApacheToStringBuilderModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3;ObjectUtils;false;toString;(Object,String);;Argument[1];ReturnValue;value",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
@@ -488,22 +377,10 @@ private class ApacheToStringBuilderModel extends SummaryModelCsv {
         "org.apache.commons.lang3.builder;ToStringBuilder;false;getStringBuffer;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[0];Argument[-1];taint",
-        // The following are value-preserving steps for fluent methods:
         "org.apache.commons.lang3.builder;ToStringBuilder;false;append;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;appendAsObjectToString;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[-1];ReturnValue;value",
-        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[-1];ReturnValue;value"
-      ]
-  }
-}
-
-/**
- * Value-propagating models for `Pair`, `ImmutablePair` and `MutablePair`.
- */
-private class ApachePairModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.tuple;Pair;false;getKey;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.tuple;Pair;false;getValue;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of Argument[-1];ReturnValue;value",
         "org.apache.commons.lang3.tuple;Pair;false;getKey;;;Field[org.apache.commons.lang3.tuple.MutablePair.left] of Argument[-1];ReturnValue;value",
@@ -526,18 +403,7 @@ private class ApachePairModel extends SummaryModelCsv {
         "org.apache.commons.lang3.tuple;MutablePair;false;setRight;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];value",
         "org.apache.commons.lang3.tuple;MutablePair;false;setValue;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];value",
         "org.apache.commons.lang3.tuple;MutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.left] of ReturnValue;value",
-        "org.apache.commons.lang3.tuple;MutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutablePair.right] of ReturnValue;value"
-      ]
-  }
-}
-
-/**
- * Value-propagating models for `Triple`, `ImmutableTriple` and `MutableTriple`.
- */
-private class ApacheTripleModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3.tuple;MutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutablePair.right] of ReturnValue;value",
         "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutableTriple.left] of ReturnValue;value",
         "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutableTriple.middle] of ReturnValue;value",
         "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.ImmutableTriple.right] of ReturnValue;value",
@@ -561,18 +427,7 @@ private class ApacheTripleModel extends SummaryModelCsv {
         "org.apache.commons.lang3.tuple;MutableTriple;false;setRight;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of Argument[-1];value",
         "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.left] of ReturnValue;value",
         "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutableTriple.middle] of ReturnValue;value",
-        "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of ReturnValue;value"
-      ]
-  }
-}
-
-/**
- * Value-propagating models for `MutableObject`.
- */
-private class ApacheMutableObjectModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of ReturnValue;value",
         "org.apache.commons.lang3.mutable;MutableObject;false;MutableObject;;;Argument[0];SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];value",
         "org.apache.commons.lang3.mutable;MutableObject;false;setValue;;;Argument[0];SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];value",
         "org.apache.commons.lang3.mutable;MutableObject;false;getValue;;;SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];ReturnValue;value"
