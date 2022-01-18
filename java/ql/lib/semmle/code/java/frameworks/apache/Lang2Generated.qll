@@ -3,7 +3,7 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
-private class ApacheStrBuilderModel extends SummaryModelCsv {
+private class ApacheCommonsLangModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -155,15 +155,7 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
         "org.apache.commons.text;TextStringBuilder;false;toCharArray;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;TextStringBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;TextStringBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;TextStringBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint"
-      ]
-  }
-}
-
-private class ApacheStrBuilderFluentMethodsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.text;TextStringBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrBuilder;false;append;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.text;StrBuilder;false;appendAll;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.text;StrBuilder;false;appendFixedWidthPadLeft;;;Argument[-1];ReturnValue;value",
@@ -215,18 +207,7 @@ private class ApacheStrBuilderFluentMethodsModel extends SummaryModelCsv {
         "org.apache.commons.text;TextStringBuilder;false;setLength;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.text;TextStringBuilder;false;setNewLineText;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.text;TextStringBuilder;false;setNullText;;;Argument[-1];ReturnValue;value",
-        "org.apache.commons.text;TextStringBuilder;false;trim;;;Argument[-1];ReturnValue;value"
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `WordUtils`.
- */
-private class ApacheWordUtilsModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.text;TextStringBuilder;false;trim;;;Argument[-1];ReturnValue;value",
         "org.apache.commons.text;WordUtils;false;wrap;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean);;Argument[2];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;wrap;(java.lang.String,int,java.lang.String,boolean,java.lang.String);;Argument[2];ReturnValue;taint",
@@ -240,18 +221,7 @@ private class ApacheWordUtilsModel extends SummaryModelCsv {
         "org.apache.commons.text;WordUtils;false;initials;(java.lang.String);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;initials;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String);;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String,char[]);;Argument[0];ReturnValue;taint"
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrTokenizer`.
- */
-private class ApacheStrTokenizerModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.text;WordUtils;false;capitalizeFully;(java.lang.String,char[]);;Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
@@ -279,31 +249,9 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.text;StringTokenizer;false;previousToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;getTSVInstance;;;Argument[0];ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint"
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrLookup`.
- */
-private class ApacheStrLookupModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.text;StringTokenizer;false;getCSVInstance;;;Argument[0];ReturnValue;taint",
         "org.apache.commons.text.lookup;StringLookup;true;lookup;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text.lookup;StringLookupFactory;false;mapStringLookup;;;MapValue of Argument[0];ReturnValue;taint"
-      ]
-  }
-}
-
-/**
- * Taint-propagating models for `StrSubstitutor`.
- */
-private class ApacheStrSubstitutorModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
+        "org.apache.commons.text.lookup;StringLookupFactory;false;mapStringLookup;;;MapValue of Argument[0];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;MapValue of Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
