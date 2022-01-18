@@ -1403,6 +1403,8 @@ subpaths
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | ReturnValue [c] | A.cpp:48:12:48:18 | call to make [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | c [post update] | A.cpp:55:5:55:5 | b [post update] [c] |
 | A.cpp:56:10:56:10 | b [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:56:13:56:15 | call to get |
+| A.cpp:56:10:56:10 | b [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:56:13:56:15 | call to get |
+| A.cpp:57:11:57:24 | new [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:11:57:24 | new [c] | A.cpp:28:8:28:10 | this [c] | A.cpp:28:8:28:10 | ReturnValue | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | c [post update] | A.cpp:57:11:57:24 | new [post update] [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | ReturnValue [c] | A.cpp:64:10:64:15 | call to setOnB [c] |
@@ -1419,6 +1421,7 @@ subpaths
 | B.cpp:16:37:16:37 | e | B.cpp:33:26:33:27 | e2 | B.cpp:36:13:36:17 | elem2 [post update] | B.cpp:16:16:16:38 | new [post update] [elem2] |
 | B.cpp:17:25:17:26 | b1 [elem2] | B.cpp:44:16:44:17 | b1 [elem2] | B.cpp:46:13:46:16 | box1 [post update] [elem2] | B.cpp:17:16:17:27 | new [post update] [box1, elem2] |
 | D.cpp:22:10:22:11 | b2 [box, elem] | D.cpp:17:11:17:17 | this [box, elem] | D.cpp:17:11:17:17 | ReturnValue [elem] | D.cpp:22:14:22:20 | call to getBox1 [elem] |
+| D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] | D.cpp:10:11:10:17 | ReturnValue | D.cpp:22:25:22:31 | call to getElem |
 | D.cpp:22:14:22:20 | call to getBox1 [elem] | D.cpp:10:11:10:17 | this [elem] | D.cpp:10:11:10:17 | ReturnValue | D.cpp:22:25:22:31 | call to getElem |
 | D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | elem [post update] | D.cpp:37:8:37:10 | box [post update] [elem] |
 | D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | elem [post update] | D.cpp:51:8:51:14 | call to getBox1 [post update] [elem] |
