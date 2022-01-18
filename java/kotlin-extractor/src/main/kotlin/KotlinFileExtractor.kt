@@ -740,9 +740,27 @@ open class KotlinFileExtractor(
         }
     }
 
+    /**
+    Returns true iff `c` is a call to the function `fName` in the
+    `kotlin.internal.ir` package. This is used to find calls to builtin
+    functions, which need to be handled specially as they do not have
+    corresponding source definitions.
+    */
     private fun isBuiltinCallInternal(c: IrCall, fName: String) = isBuiltinCall(c, fName, "kotlin.internal.ir")
+    /**
+    Returns true iff `c` is a call to the function `fName` in the
+    `kotlin` package. This is used to find calls to builtin
+    functions, which need to be handled specially as they do not have
+    corresponding source definitions.
+    */
     private fun isBuiltinCallKotlin(c: IrCall, fName: String) = isBuiltinCall(c, fName, "kotlin")
 
+    /**
+    Returns true iff `c` is a call to the function `fName` in package
+    `pName`. This is used to find calls to builtin functions, which need
+    to be handled specially as they do not have corresponding source
+    definitions.
+    */
     private fun isBuiltinCall(c: IrCall, fName: String, pName: String): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
@@ -752,10 +770,8 @@ open class KotlinFileExtractor(
             verboseln("No match as function name is ${target.name.asString()} not $fName")
             return false
         }
-        val extensionReceiverParameter = target.extensionReceiverParameter
-        // TODO: Are both branches of this `if` possible?:
-        val targetPkg = if (extensionReceiverParameter == null) target.parent
-                        else (extensionReceiverParameter.type as? IrSimpleType)?.classifier?.owner
+
+        val targetPkg = target.parent
         if (targetPkg !is IrPackageFragment) {
             verboseln("No match as didn't find target package")
             return false
@@ -841,15 +857,15 @@ open class KotlinFileExtractor(
                 return false
             }
             val extensionReceiverParameter = target.extensionReceiverParameter
-            // TODO: Are both branches of this `if` possible?:
-            val targetClass = if (extensionReceiverParameter == null) target.parent
-                              else {
-                                    val st = extensionReceiverParameter.type as? IrSimpleType
-                                    if (st?.hasQuestionMark != hasQuestionMark) {
-                                        verboseln("Nullablility of type didn't match")
-                                        return false
-                                    }
-                                    st?.classifier?.owner
+            val targetClass = if (extensionReceiverParameter == null) {
+                                  target.parent
+                              } else {
+                                  val st = extensionReceiverParameter.type as? IrSimpleType
+                                  if (st?.hasQuestionMark != hasQuestionMark) {
+                                      verboseln("Nullablility of type didn't match")
+                                      return false
+                                  }
+                                  st?.classifier?.owner
                               }
             if (targetClass !is IrClass) {
                 verboseln("No match as didn't find target class")
