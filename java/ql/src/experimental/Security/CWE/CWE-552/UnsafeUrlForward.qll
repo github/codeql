@@ -64,20 +64,20 @@ private class FollowsSanitizingPrefix extends UnsafeUrlForwardSanitizer {
  */
 private class ExactStringPathMatchGuard extends UnsafeUrlForwardBarrierGuard instanceof MethodAccess {
   ExactStringPathMatchGuard() {
-    this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().getName() = ["equals", "equalsIgnoreCase"]
+    super.getMethod().getDeclaringType() instanceof TypeString and
+    super.getMethod().getName() = ["equals", "equalsIgnoreCase"]
   }
 
   override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and
+    e = super.getQualifier() and
     branch = true
   }
 }
 
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
-    (isStringPartialMatch(this.(MethodAccess)) or isPathPartialMatch(this.(MethodAccess))) and
-    not isDisallowedWord(this.(MethodAccess).getAnArgument())
+    (isStringPartialMatch(this) or isPathPartialMatch(this)) and
+    not isDisallowedWord(super.getAnArgument())
   }
 
   Expr getCheckedExpr() { result = super.getQualifier() }
@@ -124,7 +124,7 @@ private class DotDotCheckBarrierGuard extends UnsafeUrlForwardBarrierGuard insta
 private class BlockListGuard extends Guard instanceof MethodAccess {
   BlockListGuard() {
     (isStringPartialMatch(this) or isPathPartialMatch(this)) and
-    isDisallowedWord(this.getAnArgument())
+    isDisallowedWord(super.getAnArgument())
   }
 
   Expr getCheckedExpr() { result = super.getQualifier() }
@@ -193,9 +193,9 @@ private class PathTraversalGuard extends Guard instanceof MethodAccess {
   Expr checked;
 
   PathTraversalGuard() {
-    this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().hasName(["contains", "indexOf"]) and
-    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
+    super.getMethod().getDeclaringType() instanceof TypeString and
+    super.getMethod().hasName(["contains", "indexOf"]) and
+    super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
   }
 
   Expr getCheckedExpr() { result = super.getQualifier() }
@@ -212,9 +212,9 @@ private class PathNormalizeSanitizer extends MethodAccess {
 /** A complementary guard that protects against double URL encoding, by looking for the literal `%`. */
 private class UrlEncodingGuard extends Guard instanceof MethodAccess {
   UrlEncodingGuard() {
-    this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().hasName(["contains", "indexOf"]) and
-    this.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%"
+    super.getMethod().getDeclaringType() instanceof TypeString and
+    super.getMethod().hasName(["contains", "indexOf"]) and
+    super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "%"
   }
 
   Expr getCheckedExpr() { result = super.getQualifier() }
