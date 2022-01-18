@@ -87,7 +87,17 @@ class AndroidBundle extends Class {
   AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
 }
 
-/** An `Intent` that explicitly sets a destination component. */
+/**
+ * An `Intent` that explicitly sets a destination component.
+ *
+ * The `Intent` is not considered explicit if a `null` value ever flows to the destination
+ * component, even if only conditionally.
+ *
+ * For example, in the following code, `intent` is not considered an `ExplicitIntent`:
+ * ```java
+ * intent.setClass(condition ? null : "MyClass");
+ * ```
+ */
 class ExplicitIntent extends Expr {
   ExplicitIntent() {
     exists(MethodAccess ma, Method m |

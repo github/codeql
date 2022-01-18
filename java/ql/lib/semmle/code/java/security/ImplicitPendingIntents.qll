@@ -94,9 +94,10 @@ private class MutablePendingIntentFlowStep extends PendingIntentAsFieldAdditiona
       node2.asExpr() = pic and
       flagArg = pic.getFlagsArg()
     |
-      // We err on the side of false positives here, assuming a PendingIntent may be mutable unless it is at
-      // least sometimes explicitly marked immutable and never marked mutable.
-      // Note for API level < 31, PendingIntents were mutable by default, whereas since then they are immutable by default.
+      // We err on the side of false positives here, assuming a PendingIntent may be mutable
+      // unless it is at least sometimes explicitly marked immutable and never marked mutable.
+      // Note: for API level < 31, PendingIntents were mutable by default, whereas since then
+      // they are immutable by default.
       not TaintTracking::localExprTaint(any(ImmutablePendingIntentFlag flag).getAnAccess(), flagArg)
       or
       TaintTracking::localExprTaint(any(MutablePendingIntentFlag flag).getAnAccess(), flagArg)
