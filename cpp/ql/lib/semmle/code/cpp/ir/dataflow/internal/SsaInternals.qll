@@ -178,7 +178,7 @@ private predicate isExplicitUse(Operand op) {
       load.getAUse().getUse() instanceof InitializeIndirectionInstruction
     ) and
     // Don't include this operand as a use if the only use of the address is for a write
-    // that definately overrides a variable.
+    // that definitely overrides a variable.
     not (explicitWrite(true, _, vai) and exists(unique( | | vai.getAUse())))
   )
 }
