@@ -352,7 +352,7 @@ void test_strlen(bool cond1, bool cond2)
 		if (cond1)
 			buffer[0] = 0;
 		if (cond1)
-			strlen(buffer); // GOOD [FALSE POSITIVE]
+			strlen(buffer); // GOOD
 	}
 
 	{
@@ -361,7 +361,7 @@ void test_strlen(bool cond1, bool cond2)
 		if (cond1)
 			buffer[0] = 0;
 		if (cond2)
-			strlen(buffer); // BAD
+			strlen(buffer); // BAD [NOT DETECTED]
 	}
 
 	{
@@ -389,7 +389,7 @@ void test_strlen(bool cond1, bool cond2)
 
 		if (init != 0)
 		{
-			strlen(buffer); // GOOD [FALSE POSITIVE]
+			strlen(buffer); // GOOD
 		}
 	}
 
@@ -407,7 +407,7 @@ void test_strlen(bool cond1, bool cond2)
 		{
 			// ...
 		} else {
-			strlen(buffer); // GOOD [FALSE POSITIVE]
+			strlen(buffer); // GOOD
 		}
 	}
 }
