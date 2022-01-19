@@ -648,14 +648,14 @@ class X {
         classTypeArguments: List<IrTypeArgument>?
     ): String {
         val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
-        return getFunctionLabel(getEnclosingClass(parent), parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
+        return getFunctionLabel(parent, parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
     }
 
     fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        getFunctionLabel(getEnclosingClass(f), parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
+        getFunctionLabel(f.parent, parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
 
     fun getFunctionLabel(
-        enclosingClass: IrClass?,
+        parent: IrDeclarationParent,
         parentId: Label<out DbElement>,
         name: String,
         parameters: List<IrValueParameter>,
@@ -673,10 +673,12 @@ class X {
                         }
 
         val substitutionMap = classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
-            if (notNullArgs.isEmpty())
+            if (notNullArgs.isEmpty()) {
                 null
-            else
+            } else {
+                val enclosingClass = getEnclosingClass(parent)
                 enclosingClass?.let { notNullClass -> makeTypeGenericSubstitutionMap(notNullClass, notNullArgs) }
+            }
         }
         val getIdForFunctionLabel = { it: IrValueParameter ->
             // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
