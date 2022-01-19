@@ -472,6 +472,7 @@ class RegExpEscape extends RegExpNormalChar {
     this.getUnescaped() = "t" and result = "\t"
     or
     // TODO: Find a way to include a formfeed character
+    // also the alert/bell character for \a and escape character for \e.
     // this.getUnescaped() = "f" and result = ""
     // or
     this.isUnicode() and
@@ -479,7 +480,7 @@ class RegExpEscape extends RegExpNormalChar {
   }
 
   /** Holds if this terms name is given by the part following the escape character. */
-  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t", "f"] }
+  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t", "f", "a", "e"] }
 
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
@@ -494,7 +495,7 @@ class RegExpEscape extends RegExpNormalChar {
   /**
    * Holds if this is a unicode escape.
    */
-  private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U"] }
+  private predicate isUnicode() { this.getText().prefix(2) = "\\u" }
 
   /**
    * Gets the unicode char for this escape.
@@ -551,7 +552,10 @@ private int toHex(string hex) {
  * ```
  */
 class RegExpCharacterClassEscape extends RegExpEscape {
-  RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W"] }
+  RegExpCharacterClassEscape() {
+    this.getValue() in ["d", "D", "s", "S", "w", "W", "h", "H", "v", "V"] or
+    this.getValue().charAt(0) in ["p", "P"]
+  }
 
   override RegExpTerm getChild(int i) { none() }
 
