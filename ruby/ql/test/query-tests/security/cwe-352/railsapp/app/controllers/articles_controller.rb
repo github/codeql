@@ -9,6 +9,11 @@ class ArticlesController < ApplicationController
     article.destroy
   end
 
+  def change_title
+    article.title = params[:article_title]
+    article.save!
+  end
+
   def article
     @article ||= Article.find(params[:article_id])
   end
