@@ -3,87 +3,13 @@ private import RegexFlowConfigs
 
 /**
  * A string literal that is used as a regular exprssion.
- * TODO: adjust parser for java regex syntax
  */
 abstract class RegexString extends Expr {
   RegexString() { this instanceof StringLiteral }
 
-  /**
-   * Helper predicate for `char_set_start(int start, int end)`.
-   *
-   * In order to identify left brackets ('[') which actually start a character class,
-   * we perform a left to right scan of the string.
-   *
-   * To avoid negative recursion we return a boolean. See `escaping`,
-   * the helper for `escapingChar`, for a clean use of this pattern.
-   *
-   * result is true for those start chars that actually mark a start of a char set.
-   */
-  boolean char_set_start(int pos) {
-    exists(int index |
-      // is opening bracket
-      this.char_set_delimiter(index, pos) = true and
-      (
-        // if this is the first bracket, `pos` starts a char set
-        index = 1 and result = true
-        or
-        // if the previous char set delimiter was not a closing bracket, `pos` does
-        // not start a char set. This is needed to handle cases such as `[[]` (a
-        // char set that matches the `[` char)
-        index > 1 and
-        not this.char_set_delimiter(index - 1, _) = false and
-        result = false
-        or
-        // special handling of cases such as `[][]` (the character-set of the characters `]` and `[`).
-        exists(int prev_closing_bracket_pos |
-          // previous bracket is a closing bracket
-          this.char_set_delimiter(index - 1, prev_closing_bracket_pos) = false and
-          if
-            // check if the character that comes before the previous closing bracket
-            // is an opening bracket (taking `^` into account)
-            exists(int pos_before_prev_closing_bracket |
-              if this.getChar(prev_closing_bracket_pos - 1) = "^"
-              then pos_before_prev_closing_bracket = prev_closing_bracket_pos - 2
-              else pos_before_prev_closing_bracket = prev_closing_bracket_pos - 1
-            |
-              this.char_set_delimiter(index - 2, pos_before_prev_closing_bracket) = true
-            )
-          then
-            // brackets without anything in between is not valid character ranges, so
-            // the first closing bracket in `[]]` and `[^]]` does not count,
-            //
-            // and we should _not_ mark the second opening bracket in `[][]` and `[^][]`
-            // as starting a new char set.                               ^           ^
-            exists(int pos_before_prev_closing_bracket |
-              this.char_set_delimiter(index - 2, pos_before_prev_closing_bracket) = true
-            |
-              result = this.char_set_start(pos_before_prev_closing_bracket).booleanNot()
-            )
-          else
-            // if not, `pos` does in fact mark a real start of a character range
-            result = true
-        )
-      )
-    )
-  }
-
-  /**
-   * Helper predicate for chars that could be character-set delimiters.
-   * Holds if the (non-escaped) char at `pos` in the string, is the (one-based) `index` occurrence of a bracket (`[` or `]`) in the string.
-   * Result if `true` is the char is `[`, and `false` if the char is `]`.
-   */
-  boolean char_set_delimiter(int index, int pos) {
-    pos = rank[index](int p | this.nonEscapedCharAt(p) = "[" or this.nonEscapedCharAt(p) = "]") and
-    (
-      this.nonEscapedCharAt(pos) = "[" and result = true
-      or
-      this.nonEscapedCharAt(pos) = "]" and result = false
-    )
-  }
-
-  /** Hold is a character set starts between `start` and `end`. */
-  predicate char_set_start(int start, int end) {
-    this.char_set_start(start) = true and
+  /** Holds if a character set starts between `start` and `end`. */
+  private predicate char_set_start0(int start, int end) {
+    this.nonEscapedCharAt(start) = "[" and
     (
       this.getChar(start + 1) = "^" and end = start + 2
       or
@@ -91,7 +17,41 @@ abstract class RegexString extends Expr {
     )
   }
 
-  /** Whether there is a character class, between start (inclusive) and end (exclusive) */
+  /** Holds if the character at `pos` marks the end of a character class. */
+  private predicate char_set_end0(int pos) {
+    this.nonEscapedCharAt(pos) = "]" and
+    /* special case: `[]]` and `[^]]` are valid char classes.  */
+    not char_set_start0(_, pos - 1)
+  }
+
+  /**
+   * Gets the nesting depth of charcter classes at position `pos`
+   */
+  private int char_set_depth(int pos) {
+    exists(this.getChar(pos)) and
+    result =
+      count(int i | i < pos and this.char_set_start0(i, _)) -
+        count(int i | i < pos and this.char_set_end0(i))
+  }
+
+  /** Hold if a top-level character set starts between `start` and `end`. */
+  predicate char_set_start(int start, int end) {
+    this.char_set_start0(start, end) and
+    this.char_set_depth(start) = 0
+  }
+
+  /** Holds if a top-level character set ends at `pos`. */
+  predicate char_set_end(int pos) {
+    this.char_set_end0(pos) and
+    this.char_set_depth(pos) = 1
+  }
+
+  /**
+   * Whether there is a top-level character class, between start (inclusive) and end (exclusive)
+   *
+   * For now, nested character classes are approximated by only considering the top-level class for parsing.
+   * This leads to very similar results for ReDoS queries.
+   */
   predicate charSet(int start, int end) {
     exists(int inner_start, int inner_end |
       this.char_set_start(start, inner_start) and
@@ -99,8 +59,8 @@ abstract class RegexString extends Expr {
     |
       end = inner_end + 1 and
       inner_end > inner_start and
-      this.nonEscapedCharAt(inner_end) = "]" and
-      not exists(int mid | this.nonEscapedCharAt(mid) = "]" | mid > inner_start and mid < inner_end)
+      this.char_set_end(inner_end) and
+      not exists(int mid | char_set_end(mid) | mid > inner_start and mid < inner_end)
     )
   }
 
@@ -118,6 +78,8 @@ abstract class RegexString extends Expr {
       this.escapedCharacter(start, end)
       or
       exists(this.nonEscapedCharAt(start)) and end = start + 1
+      or
+      this.quote(start, end)
     )
     or
     this.char_set_token(charset_start, _, start) and
@@ -126,7 +88,9 @@ abstract class RegexString extends Expr {
       or
       exists(this.nonEscapedCharAt(start)) and
       end = start + 1 and
-      not this.getChar(start) = "]"
+      not this.char_set_end(start)
+      or
+      this.quote(start, end)
     )
   }
 
