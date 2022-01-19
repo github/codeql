@@ -24,6 +24,42 @@ predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
+private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
+  CfgNodes::ExprNodes::CasePatternCfgNode p
+) {
+  result = p
+  or
+  exists(CfgNodes::ExprNodes::AsPatternCfgNode ap | p = ap |
+    result = variablesInPattern(ap.getPattern()) or
+    result = ap.getVariableAccess()
+  )
+  or
+  exists(CfgNodes::ExprNodes::ParenthesizedPatternCfgNode pp | p = pp |
+    result = variablesInPattern(pp.getPattern())
+  )
+  or
+  exists(CfgNodes::ExprNodes::AlternativePatternCfgNode ap | p = ap |
+    result = variablesInPattern(ap.getAlternative(_))
+  )
+  or
+  exists(CfgNodes::ExprNodes::ArrayPatternCfgNode ap | p = ap |
+    result = variablesInPattern(ap.getPrefixElement(_)) or
+    result = variablesInPattern(ap.getSuffixElement(_)) or
+    result = ap.getRestVariableAccess()
+  )
+  or
+  exists(CfgNodes::ExprNodes::FindPatternCfgNode fp | p = fp |
+    result = variablesInPattern(fp.getElement(_)) or
+    result = fp.getPrefixVariableAccess() or
+    result = fp.getSuffixVariableAccess()
+  )
+  or
+  exists(CfgNodes::ExprNodes::HashPatternCfgNode hp | p = hp |
+    result = variablesInPattern(hp.getValue(_)) or
+    result = hp.getRestVariableAccess()
+  )
+}
+
 /**
  * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
  * in all global taint flow configurations.
@@ -31,13 +67,11 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // value of `case` expression into variables in patterns
-  exists(VariableWriteAccess varDef, CaseExpr case, InClause clause, CfgNode nodeToCfg |
-    clause = case.getABranch() and
-    varDef.getParent*() = clause.getPattern() and
-    nodeFrom.asExpr().getExpr() = case.getValue() and
-    nodeToCfg = nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() and
-    nodeToCfg = nodeFrom.asExpr().getASuccessor+() and
-    nodeToCfg.getNode() = varDef
+  exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
+    nodeFrom.asExpr() = case.getValue() and
+    clause = case.getBranch(_) and
+    nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
+      variablesInPattern(clause.getPattern())
   )
   or
   // operation involving `nodeFrom`
