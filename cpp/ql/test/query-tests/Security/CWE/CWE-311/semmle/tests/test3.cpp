@@ -356,3 +356,21 @@ void test_loops()
 		}
 	}
 }
+
+void DoDisguisedOperation(char *buffer, size_t size);
+void SecureZeroBuffer(char *buffer, size_t size);
+
+void test_securezero()
+{
+	{
+		char password[256];
+
+		recv(val(), password, 256, val()); // GOOD: password is (probably) encrypted [FALSE POSITIVE]
+
+		DoDisguisedOperation(password, 256); // decryption (disguised)
+
+		// ...
+
+		SecureZeroBuffer(password, 256); // evidence we may have been doing decryption
+	}
+}
