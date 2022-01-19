@@ -3,21 +3,14 @@ private import codeql.ruby.security.performance.RegExpTreeView as RETV
 private import internal.AST
 private import internal.Scope
 private import internal.TreeSitter
+private import codeql.ruby.controlflow.CfgNodes
 
 /**
  * A literal.
  *
  * This is the QL root class for all literals.
  */
-class Literal extends Expr, TLiteral {
-  /**
-   * Gets the source text for this literal, if this is a simple literal.
-   *
-   * For complex literals, such as arrays, hashes, and strings with
-   * interpolations, this predicate has no result.
-   */
-  override string getValueText() { none() }
-}
+class Literal extends Expr, TLiteral { }
 
 /**
  * A numeric literal, i.e. an integer, floating-point, rational, or complex
@@ -281,10 +274,10 @@ class StringComponent extends AstNode, TStringComponent {
  * "foo#{ bar() } baz"
  * ```
  */
-class StringTextComponent extends StringComponent, TStringTextComponent {
+class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp {
   private Ruby::Token g;
 
-  StringTextComponent() { this = TStringTextComponent(g) }
+  StringTextComponent() { this = TStringTextComponentNonRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -296,10 +289,10 @@ class StringTextComponent extends StringComponent, TStringTextComponent {
 /**
  * An escape sequence component of a string or string-like literal.
  */
-class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponent {
+class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponentNonRegexp {
   private Ruby::EscapeSequence g;
 
-  StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
+  StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponentNonRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -312,10 +305,10 @@ class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequen
  * An interpolation expression component of a string or string-like literal.
  */
 class StringInterpolationComponent extends StringComponent, StmtSequence,
-  TStringInterpolationComponent {
+  TStringInterpolationComponentNonRegexp {
   private Ruby::Interpolation g;
 
-  StringInterpolationComponent() { this = TStringInterpolationComponent(g) }
+  StringInterpolationComponent() { this = TStringInterpolationComponentNonRegexp(g) }
 
   final override string toString() { result = "#{...}" }
 
@@ -324,6 +317,83 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
   final override string getValueText() { none() }
 
   final override string getAPrimaryQlClass() { result = "StringInterpolationComponent" }
+}
+
+private class TRegExpComponent =
+  TStringTextComponentRegexp or TStringEscapeSequenceComponentRegexp or
+      TStringInterpolationComponentRegexp;
+
+/**
+ * The base class for a component of a regular expression literal.
+ */
+class RegExpComponent extends AstNode, TRegExpComponent {
+  /** Gets the source text for this regex component, if any. */
+  string getValueText() { none() }
+}
+
+/**
+ * A component of a regex literal that is simply text.
+ *
+ * For example, the following regex literals all contain `RegExpTextComponent`
+ * components whose `getValueText()` returns `"foo"`:
+ *
+ * ```rb
+ * 'foo'
+ * "#{ bar() }foo"
+ * "foo#{ bar() } baz"
+ * ```
+ */
+class RegExpTextComponent extends RegExpComponent, TStringTextComponentRegexp {
+  private Ruby::Token g;
+
+  RegExpTextComponent() { this = TStringTextComponentRegexp(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  // Exclude components that are children of a free-spacing regex.
+  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+  final override string getValueText() {
+    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  }
+
+  final override string getAPrimaryQlClass() { result = "RegExpTextComponent" }
+}
+
+/**
+ * An escape sequence component of a regex literal.
+ */
+class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequenceComponentRegexp {
+  private Ruby::EscapeSequence g;
+
+  RegExpEscapeSequenceComponent() { this = TStringEscapeSequenceComponentRegexp(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  // Exclude components that are children of a free-spacing regex.
+  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+  final override string getValueText() {
+    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  }
+
+  final override string getAPrimaryQlClass() { result = "RegExpEscapeSequenceComponent" }
+}
+
+/**
+ * An interpolation expression component of a regex literal.
+ */
+class RegExpInterpolationComponent extends RegExpComponent, StmtSequence,
+  TStringInterpolationComponentRegexp {
+  private Ruby::Interpolation g;
+
+  RegExpInterpolationComponent() { this = TStringInterpolationComponentRegexp(g) }
+
+  final override string toString() { result = "#{...}" }
+
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string getValueText() { none() }
+
+  final override string getAPrimaryQlClass() { result = "RegExpInterpolationComponent" }
 }
 
 /**
@@ -408,17 +478,6 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
     or
     this instanceof THereDoc and
     result = ""
-  }
-
-  override string getValueText() {
-    // 0 components should result in the empty string
-    // if there are any interpolations, there should be no result
-    // otherwise, concatenate all the components
-    forall(StringComponent c | c = this.getComponent(_) |
-      not c instanceof StringInterpolationComponent
-    ) and
-    result =
-      concat(StringComponent c, int i | c = this.getComponent(i) | c.getValueText() order by i)
   }
 
   override string toString() {

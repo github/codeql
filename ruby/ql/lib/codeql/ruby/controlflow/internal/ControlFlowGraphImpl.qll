@@ -1350,6 +1350,16 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
+  private class StringComponentTree extends LeafTree, StringComponent {
+    StringComponentTree() {
+      // Interpolations contain `StmtSequence`s, so they shouldn't be treated as leaf nodes.
+      not this instanceof StringInterpolationComponent and
+      // In the interests of brevity we treat regexes as string literals when constructing the CFG.
+      // Thus we must exclude regex interpolations here too.
+      not this instanceof RegExpInterpolationComponent
+    }
+  }
+
   private class ToplevelTree extends BodyStmtTree, Toplevel {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getBeginBlock(i) and rescuable = true
