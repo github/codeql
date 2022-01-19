@@ -30,8 +30,12 @@ abstract class RegexString extends Expr {
   private int char_set_depth(int pos) {
     exists(this.getChar(pos)) and
     result =
-      count(int i | i < pos and this.char_set_start0(i, _)) -
-        count(int i | i < pos and this.char_set_end0(i))
+      max(int j |
+        j = 0 or
+        j =
+          count(int i | i < pos and this.char_set_start0(i, _)) -
+            count(int i | i < pos and this.char_set_end0(i))
+      )
   }
 
   /** Hold if a top-level character set starts between `start` and `end`. */
@@ -168,7 +172,12 @@ abstract class RegexString extends Expr {
   private boolean escaping(int pos) {
     pos = -1 and result = false
     or
-    this.getChar(pos) = "\\" and result = this.escaping(pos - 1).booleanNot()
+    this.getChar(pos) = "\\" and
+    (
+      if this.getChar(pos - 1) = "c" //  in `\c\`, the latter `\` isn't escaping
+      then result = this.escaping(pos - 2).booleanNot()
+      else result = this.escaping(pos - 1).booleanNot()
+    )
     or
     this.getChar(pos) != "\\" and result = false
   }
@@ -220,6 +229,16 @@ abstract class RegexString extends Expr {
     )
   }
 
+  /**
+   * A control sequence, `\cx`
+   * `x` may be any ascii character including special characters.
+   */
+  predicate controlEscape(int start, int end) {
+    this.escapingChar(start) and
+    this.getChar(start + 1) = "c" and
+    end = start + 3
+  }
+
   /** Gets the text of this regex */
   string getText() { result = this.(StringLiteral).getValue() }
 
@@ -228,7 +247,8 @@ abstract class RegexString extends Expr {
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
     not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
-    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1])
+    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1]) and
+    not exists(int x, int y | this.controlEscape(x, y) and i in [x .. y - 1])
   }
 
   private predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
@@ -246,10 +266,10 @@ abstract class RegexString extends Expr {
     )
   }
 
-  /** Named unicode characters, eg \N{degree sign} */
-  private predicate escapedName(int start, int end) {
+  /** An escape sequence that includes braces, such as named characters (\N{degree sign}), named classes (\p{Lower}), or hex values (\x{h..h}) */
+  private predicate escapedBraces(int start, int end) {
     this.escapingChar(start) and
-    this.getChar(start + 1) = "N" and
+    this.getChar(start + 1) = ["N", "p", "P", "x"] and
     this.getChar(start + 2) = "{" and
     this.getChar(end - 1) = "}" and
     end > start and
@@ -266,26 +286,38 @@ abstract class RegexString extends Expr {
     not this.numbered_backreference(start, _, _) and
     (
       // hex value \xhh
-      this.getChar(start + 1) = "x" and end = start + 4
+      this.getChar(start + 1) = "x" and
+      this.getChar(start + 2) != "{" and
+      end = start + 4
       or
-      // octal value \o, \oo, or \ooo
-      end in [start + 2 .. start + 4] and
+      // octal value \0o, \0oo, or \0ooo. Max of 0377.
+      this.getChar(start + 1) = "0" and
+      end in [start + 3 .. start + 5] and
       forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
+      (end = start + 5 implies this.getChar(start + 2) <= "3") and
       not (
-        end < start + 4 and
-        this.isOctal(end)
+        end < start + 5 and
+        this.isOctal(end) and
+        (end = start + 4 implies this.getChar(start + 2) <= "3")
       )
       or
       // 16-bit hex value \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
       or
-      // 32-bit hex value \Uhhhhhhhh
-      this.getChar(start + 1) = "U" and end = start + 10
+      escapedBraces(start, end)
       or
-      escapedName(start, end)
+      // Boundry matchers \b, \b{g}
+      this.getChar(start + 1) = "b" and
+      (
+        if this.getText().substring(start + 2, start + 5) = "{g}"
+        then end = start + 5
+        else end = start + 2
+      )
+      or
+      this.controlEscape(start, end)
       or
       // escape not handled above, update when adding a new case
-      not this.getChar(start + 1) in ["x", "u", "U", "N"] and
+      not this.getChar(start + 1) in ["x", "0", "u", "p", "P", "N", "b", "c"] and
       not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
@@ -370,7 +402,7 @@ abstract class RegexString extends Expr {
     this.group(start, end) and
     exists(int name_end |
       this.named_group_start(start, name_end) and
-      result = this.getText().substring(start + 4, name_end - 1)
+      result = this.getText().substring(start + 3, name_end - 1)
     )
   }
 
@@ -464,7 +496,7 @@ abstract class RegexString extends Expr {
     or
     this.negative_lookbehind_assertion_start(start, end)
     or
-    this.comment_group_start(start, end)
+    this.atomic_group_start(start, end)
     or
     this.simple_group_start(start, end)
   }
@@ -485,12 +517,11 @@ abstract class RegexString extends Expr {
   private predicate named_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "P" and
-    this.getChar(start + 3) = "<" and
-    not this.getChar(start + 4) = "=" and
-    not this.getChar(start + 4) = "!" and
+    this.getChar(start + 2) = "<" and
+    not this.getChar(start + 3) = "=" and
+    not this.getChar(start + 3) = "!" and
     exists(int name_end |
-      name_end = min(int i | i > start + 4 and this.getChar(i) = ">") and
+      name_end = min(int i | i > start + 3 and this.getChar(i) = ">") and
       end = name_end + 1
     )
   }
@@ -498,7 +529,7 @@ abstract class RegexString extends Expr {
   private predicate named_backreference_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "P" and
+    this.getChar(start + 2) = "k" and
     this.getChar(start + 3) = "=" and
     // Should this be looking for unescaped ")"?
     // TODO: test this
@@ -510,7 +541,7 @@ abstract class RegexString extends Expr {
     this.getChar(start + 1) = "?" and
     end = start + 3 and
     c = this.getChar(start + 2) and
-    c in ["i", "L", "m", "s", "u", "x"]
+    c in ["i", "m", "s", "u", "x", "U"]
   }
 
   /**
@@ -521,8 +552,6 @@ abstract class RegexString extends Expr {
     exists(string c | this.flag_group_start(_, _, c) |
       c = "i" and result = "IGNORECASE"
       or
-      c = "L" and result = "LOCALE"
-      or
       c = "m" and result = "MULTILINE"
       or
       c = "s" and result = "DOTALL"
@@ -530,6 +559,8 @@ abstract class RegexString extends Expr {
       c = "u" and result = "UNICODE"
       or
       c = "x" and result = "VERBOSE"
+      or
+      c = "U" and result = "UNICODECLASS"
     )
   }
 
@@ -563,10 +594,10 @@ abstract class RegexString extends Expr {
     end = start + 4
   }
 
-  private predicate comment_group_start(int start, int end) {
+  private predicate atomic_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "#" and
+    this.getChar(start + 2) = ">" and
     end = start + 3
   }
 
@@ -633,10 +664,10 @@ abstract class RegexString extends Expr {
 
   private predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
     this.short_qualifier(start, end, maybe_empty, may_repeat_forever) and
-    not this.getChar(end) = "?"
+    not this.getChar(end) = ["?", "+"]
     or
     exists(int short_end | this.short_qualifier(start, short_end, maybe_empty, may_repeat_forever) |
-      if this.getChar(short_end) = "?" then end = short_end + 1 else end = short_end
+      if this.getChar(short_end) = ["?", "+"] then end = short_end + 1 else end = short_end
     )
   }
 
@@ -897,11 +928,11 @@ class Regex extends RegexString {
    * Gets a mode (if any) of this regular expression. Can be any of:
    * DEBUG
    * IGNORECASE
-   * LOCALE
    * MULTILINE
    * DOTALL
    * UNICODE
    * VERBOSE
+   * UNICODECLASS
    */
   string getAMode() {
     result != "None" and
