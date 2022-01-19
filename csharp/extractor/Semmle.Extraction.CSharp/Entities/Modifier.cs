@@ -111,6 +111,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (nt is null)
                     throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
 
+                if (nt.IsRecord)
+                    HasModifier(cx, trapFile, key, "record");
+
                 if (nt.TypeKind == TypeKind.Struct)
                 {
                     if (nt.IsReadOnly)

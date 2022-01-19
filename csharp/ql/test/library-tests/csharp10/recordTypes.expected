@@ -1,0 +1,11 @@
+recordTypes
+| RecordTypes.cs:3:1:6:2 | MyEntry |
+| RecordTypes.cs:8:1:8:53 | MyClassRecord |
+| RecordTypes.cs:10:1:10:70 | MyReadonlyRecordStruct |
+| RecordTypes.cs:12:1:12:50 | MyRecordStruct |
+recordStructs
+| RecordTypes.cs:10:1:10:70 | MyReadonlyRecordStruct |
+| RecordTypes.cs:12:1:12:50 | MyRecordStruct |
+recordClass
+| RecordTypes.cs:3:1:6:2 | MyEntry |
+| RecordTypes.cs:8:1:8:53 | MyClassRecord |
