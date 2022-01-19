@@ -489,7 +489,7 @@ open class KotlinFileExtractor(
     fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbCallable> {
         DeclarationStackAdjuster(f).use {
 
-            getFunctionTypeParameters(f).mapIndexed { idx, it -> extractTypeParameter(it, idx) }
+            getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
 
             val locId = tw.getLocation(f)
 
