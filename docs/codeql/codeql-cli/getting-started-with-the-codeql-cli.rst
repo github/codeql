@@ -30,6 +30,8 @@ to display in GitHub as code scanning alerts, see
 `Installing CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system>`__
 in the GitHub documentation.
 
+.. _download-cli:
+
 1. Download the CodeQL CLI zip package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -107,6 +109,8 @@ simply extract the zip archive.
       iii. ``/usr/bin/xattr -c codeql*.zip``
       iv. ``unzip codeql*.zip``
 
+.. _launch-codeql-cli:
+
 3. Launch ``codeql``
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -139,7 +143,7 @@ up to create and analyze databases:
 - Run ``codeql resolve languages`` to show which languages are
   available for database creation. This will list the languages supported by
   default in your CodeQL CLI package.
-- (Optional) You can download some ":ref"`CodeQL packs <about-codeql-packs>` containing pre-compiled queries you would like to run.
+- (Optional) You can download some ":ref`CodeQL packs <about-codeql-packs>`" containing pre-compiled queries you would like to run.
   To do this, run ``codeql pack download <pack-name> [...pack-name]``, where ``pack-name`` is the name of
   the pack you want to download. The core query packs are a good place to start. They are:
 
@@ -150,8 +154,126 @@ up to create and analyze databases:
       - ``codeql/python-queries``
       - ``codeql/ruby-queries``
 
-   Alternatively, you can download query packs during the analysis by using the `--download` flag of the `codeql database analyze`
+   Alternatively, you can download query packs during the analysis by using the ``--download`` flag of the ``codeql database analyze``
    command.
+
+
+Checking out the CodeQL source code directly
+--------------------------------------------
+
+Some users prefer working with CodeQL query sources directly in order to work on or contribute to the Open Source shared queries. In
+order to do this, the following steps are recommended. Note that the following instructions are a slightly more complicated alternative
+to working with CodeQL packages as explained above.
+
+1. Download the CodeQL CLI zip
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Follow :ref:`step 1 from the previous section<download-cli>`.
+
+2. Create a new CodeQL directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a new directory where you can place the CLI and any queries and libraries
+you want to use. For example, ``$HOME/codeql-home``.
+
+The CLI's built-in search operations automatically look in all of its sibling
+directories for the files used in database creation and analysis. Keeping these
+components in their own directory prevents the CLI searching unrelated sibling
+directories while ensuring all files are available without specifying any
+further options on the command line.
+
+.. _local-copy-codeql-queries:
+
+3. Obtain a local copy of the CodeQL queries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `CodeQL repository <https://github.com/github/codeql>`__ contains
+the queries and libraries required for CodeQL analysis of C/C++, C#, Java,
+JavaScript/TypeScript, Python, and Ruby.
+Clone a copy of this repository into ``codeql-home``.
+
+By default, the root of the cloned repository will be called ``codeql``.
+Rename this folder ``codeql-repo`` to avoid conflicting with the CodeQL
+CLI that you will extract in step 4. If you use git on the command line, you can
+clone and rename the repository in a single step by running
+``git clone git@github.com:github/codeql.git codeql-repo`` in the ``codeql-home`` folder.
+
+The CodeQL libraries and queries for Go analysis live in the `CodeQL for Go
+repository <https://github.com/github/codeql-go/>`__. Clone a copy of this
+repository into ``codeql-home``.
+
+The cloned repositories should have a sibling relationship.
+For example, if the root of the cloned CodeQL repository is
+``$HOME/codeql-home/codeql-repo``, then the root of the cloned CodeQL for Go
+repository should be ``$HOME/codeql-home/codeql-go``.
+
+Within these repositories, the queries and libraries are organized into QL
+packs. Along with the queries themselves, QL packs contain important metadata
+that tells the CodeQL CLI how to process the query files. For more information,
+see ":doc:`About QL packs <about-ql-packs>`."
+
+.. pull-quote:: Important
+
+   There are different versions of the CodeQL queries available for different
+   users. Check out the correct version for your use case:
+
+   - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
+     ``lgtm.com`` branch. You should use this branch for databases you've built
+     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from LGTM.com.
+     The queries on the ``lgtm.com`` branch are more likely to be compatible
+     with the ``latest`` CLI, so you'll be less likely to have to upgrade
+     newly-created databases than if you use the ``main`` branch. Older databases
+     may need to be upgraded before you can analyze them.
+
+   - For the most up to date CodeQL queries, check out the ``main`` branch.
+     This branch represents the very latest version of CodeQL's analysis. Even
+     databases created using the most recent version of the CLI may have to be
+     upgraded before you can analyze them. For more information, see
+     ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
+
+   - For the queries used in a particular LGTM Enterprise release, check out the
+     branch tagged with the relevant release number. For example, the branch
+     tagged ``v1.27.0`` corresponds to LGTM Enterprise 1.27. You must use this
+     version if you want to upload data to LGTM Enterprise. For further
+     information, see `Preparing CodeQL databases to upload to LGTM
+     <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
+     in the LGTM admin help.
+
+4. Extract the zip archive
+--------------------------
+
+For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)
+simply
+extract the zip archive into the directory you created in step 2.
+
+For example, if the path to your copy of the CodeQL repository is
+``$HOME/codeql-home/codeql-repo``, then extract the CLI into
+``$HOME/codeql-home/``.
+
+
+5. Launch ``codeql``
+~~~~~~~~~~~~~~~~~~~~
+
+See :ref:`step 3 from the previous section<launch-codeql-cli>`.
+
+6. Verify your CodeQL CLI setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+CodeQL CLI has subcommands you can execute to verify that you are correctly set
+up to create and analyze databases:
+
+- Run ``codeql resolve languages`` to show which languages are
+  available for database creation. This will list the languages supported by
+  default in your CodeQL CLI package.
+- Run ``codeql resolve qlpacks`` to show which QL packs the CLI can find. This
+  will display the names of the QL packs included in the CodeQL repositories:
+  ``codeql-cpp``, ``codeql-csharp``, ``codeql-go``,
+  ``codeql-java``, ``codeql-javascript``, and ``codeql-python``. The CodeQL
+  repositories also contain 'upgrade' packs and 'legacy' packs. Upgrade packs
+  are used by the CLI when you want to upgrade a database so that it can be
+  analyzed with a newer version of the CodeQL toolchain than was used to create
+  it. Legacy packs ensure that custom queries and libraries created using older
+  products are compatible with your version of CodeQL.
 
 .. _using-two-versions-of-the-codeql-cli:
 
