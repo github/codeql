@@ -634,7 +634,7 @@ class X {
             else -> null
         }
 
-    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null) : String {
+    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) : String {
         return getFunctionLabel(f, null, classTypeArgsIncludingOuterClasses)
     }
 

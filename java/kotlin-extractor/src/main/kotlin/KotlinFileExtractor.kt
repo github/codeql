@@ -89,7 +89,7 @@ open class KotlinFileExtractor(
             is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
             is IrClass -> return getClassLabel(element, listOf()).classLabel
             is IrTypeParameter -> return getTypeParameterLabel(element)
-            is IrFunction -> return getFunctionLabel(element)
+            is IrFunction -> return getFunctionLabel(element, null)
             is IrValueParameter -> return getValueParameterLabel(element, null)
             is IrProperty -> return getPropertyLabel(element)
             is IrField -> return getFieldLabel(element)
