@@ -4,12 +4,10 @@
  *              guarantee an evenly distributed sequence of random numbers.
  * @kind problem
  * @problem.severity warning
- * @security-severity 9.8
  * @precision medium
  * @id java/random-used-once
  * @tags reliability
  *       maintainability
- *       security
  *       external/cwe/cwe-335
  */
 
