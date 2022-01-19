@@ -56,6 +56,8 @@ function
 | generics.kt:11:1:11:19 | <obinit> | <obinit>() |
 | generics.kt:11:6:11:19 | C0 | C0() |
 | generics.kt:11:6:11:19 | C0<Integer> | C0<Integer>() |
+| generics.kt:11:6:11:19 | C0<U> | C0<U>() |
+| generics.kt:11:6:11:19 | C0<W> | C0<W>() |
 | generics.kt:13:1:18:1 | <obinit> | <obinit>() |
 | generics.kt:13:1:18:1 | C1 | C1(java.lang.Object) |
 | generics.kt:13:1:18:1 | C1<Integer,Integer> | C1<Integer,Integer>(java.lang.Integer) |
