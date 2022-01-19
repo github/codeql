@@ -119,6 +119,6 @@ deprecated private predicate f_string(ControlFlowNode fromnode, ControlFlowNode 
  *
  * DEPRECATED: Use `ExternalStringDictKind` instead.
  */
-deprecated deprecated class StringDictKind extends DictKind {
+deprecated class StringDictKind extends DictKind {
   StringDictKind() { this.getValue() instanceof StringKind }
 }

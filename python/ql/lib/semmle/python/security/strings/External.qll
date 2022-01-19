@@ -134,7 +134,7 @@ deprecated class ExternalUrlParseResult extends ExternalStringSequenceKind {
 
 /* Helper for getTaintForStep() */
 pragma[noinline]
-deprecated deprecated private predicate json_subscript_taint(
+deprecated private predicate json_subscript_taint(
   SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
   sub.isLoad() and
