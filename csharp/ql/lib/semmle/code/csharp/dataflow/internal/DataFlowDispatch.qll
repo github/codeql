@@ -116,19 +116,17 @@ private module Cached {
   cached
   DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
 
-  private int parameterPosition() {
-    result =
-      [
-        -1, any(Parameter p).getPosition(),
-        ImplicitCapturedParameterNodeImpl::getParameterPosition(_)
-      ]
-  }
+  cached
+  newtype TParameterPosition =
+    TPositionalParameterPosition(int i) { i = any(Parameter p).getPosition() } or
+    TThisParameterPosition() or
+    TImplicitCapturedParameterPosition(SsaCapturedEntryDefinition def)
 
   cached
-  newtype TParameterPosition = MkParameterPosition(int i) { i = parameterPosition() }
-
-  cached
-  newtype TArgumentPosition = MkArgumentPosition(int i) { i = parameterPosition() }
+  newtype TArgumentPosition =
+    TPositionalArgumentPosition(int i) { i = any(Parameter p).getPosition() } or
+    TQualifierArgumentPosition() or
+    TImplicitCapturedArgumentPosition(SsaCapturedEntryDefinition def)
 }
 
 import Cached
@@ -268,8 +266,8 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying expression, if any. */
   final DotNet::Expr getExpr() { result = this.getNode().asExpr() }
 
-  /** Gets the `i`th argument of this call. */
-  final ArgumentNode getArgument(int i) { result.argumentOf(this, i) }
+  /** Gets the argument at position `pos` of this call. */
+  final ArgumentNode getArgument(ArgumentPosition pos) { result.argumentOf(this, pos) }
 
   /** Gets a textual representation of this call. */
   abstract string toString();
@@ -425,36 +423,64 @@ class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
-/** A parameter position represented by an integer. */
-class ParameterPosition extends MkParameterPosition {
-  private int i;
+/** A parameter position. */
+class ParameterPosition extends TParameterPosition {
+  /** Gets the underlying integer position, if any. */
+  int getPosition() { this = TPositionalParameterPosition(result) }
 
-  ParameterPosition() { this = MkParameterPosition(i) }
+  /** Holds if this position represents a `this` parameter. */
+  predicate isThisParameter() { this = TThisParameterPosition() }
 
-  /** Gets the underlying integer. */
-  int getPosition() { result = i }
+  /** Holds if this position is used to model flow through captured variables. */
+  predicate isImplicitCapturedParameterPosition(SsaCapturedEntryDefinition def) {
+    this = TImplicitCapturedParameterPosition(def)
+  }
 
   /** Gets a textual representation of this position. */
-  string toString() { result = i.toString() }
+  string toString() {
+    result = "position " + this.getPosition()
+    or
+    this.isThisParameter() and result = "this"
+    or
+    exists(SsaCapturedEntryDefinition def |
+      this.isImplicitCapturedParameterPosition(def) and result = "captured " + def
+    )
+  }
 }
 
-/** An argument position represented by an integer. */
-class ArgumentPosition extends MkArgumentPosition {
-  private int i;
+/** An argument position. */
+class ArgumentPosition extends TArgumentPosition {
+  /** Gets the underlying integer position, if any. */
+  int getPosition() { this = TPositionalArgumentPosition(result) }
 
-  ArgumentPosition() { this = MkArgumentPosition(i) }
+  /** Holds if this position represents a qualifier. */
+  predicate isQualifier() { this = TQualifierArgumentPosition() }
 
-  /** Gets the underlying integer. */
-  int getPosition() { result = i }
+  /** Holds if this position is used to model flow through captured variables. */
+  predicate isImplicitCapturedArgumentPosition(SsaCapturedEntryDefinition def) {
+    this = TImplicitCapturedArgumentPosition(def)
+  }
 
   /** Gets a textual representation of this position. */
-  string toString() { result = i.toString() }
+  string toString() {
+    result = "position " + this.getPosition()
+    or
+    this.isQualifier() and result = "qualifier"
+    or
+    exists(SsaCapturedEntryDefinition def |
+      this.isImplicitCapturedArgumentPosition(def) and result = "captured " + def
+    )
+  }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
-  exists(int i |
-    ppos = MkParameterPosition(i) and
-    apos = MkArgumentPosition(i)
+  ppos.getPosition() = apos.getPosition()
+  or
+  ppos.isThisParameter() and apos.isQualifier()
+  or
+  exists(SsaCapturedEntryDefinition def |
+    ppos.isImplicitCapturedParameterPosition(def) and
+    apos.isImplicitCapturedArgumentPosition(def)
   )
 }
