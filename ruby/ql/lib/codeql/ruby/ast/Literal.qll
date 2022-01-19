@@ -274,12 +274,10 @@ class StringComponent extends AstNode, TStringComponent {
  * "foo#{ bar() } baz"
  * ```
  */
-class StringTextComponent extends StringComponent, TStringTextComponent {
+class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp {
   private Ruby::Token g;
 
-  StringTextComponent() {
-    this = TStringTextComponent(g) and not g.getParent() instanceof Ruby::Regex
-  }
+  StringTextComponent() { this = TStringTextComponentNonRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -291,12 +289,10 @@ class StringTextComponent extends StringComponent, TStringTextComponent {
 /**
  * An escape sequence component of a string or string-like literal.
  */
-class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponent {
+class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponentNonRegexp {
   private Ruby::EscapeSequence g;
 
-  StringEscapeSequenceComponent() {
-    this = TStringEscapeSequenceComponent(g) and not g.getParent() instanceof Ruby::Regex
-  }
+  StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponentNonRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -309,12 +305,10 @@ class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequen
  * An interpolation expression component of a string or string-like literal.
  */
 class StringInterpolationComponent extends StringComponent, StmtSequence,
-  TStringInterpolationComponent {
+  TStringInterpolationComponentNonRegexp {
   private Ruby::Interpolation g;
 
-  StringInterpolationComponent() {
-    this = TStringInterpolationComponent(g) and not g.getParent() instanceof Ruby::Regex
-  }
+  StringInterpolationComponent() { this = TStringInterpolationComponentNonRegexp(g) }
 
   final override string toString() { result = "#{...}" }
 
@@ -325,14 +319,15 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
   final override string getAPrimaryQlClass() { result = "StringInterpolationComponent" }
 }
 
+private class TRegExpComponent =
+  TStringTextComponentRegexp or TStringEscapeSequenceComponentRegexp or
+      TStringInterpolationComponentRegexp;
+
 /**
  * The base class for a component of a regular expression literal.
  */
-class RegExpComponent extends AstNode, TStringComponent {
-  private RegExpLiteral parent;
-
-  RegExpComponent() { toGenerated(this).getParent() = toGenerated(parent) }
-
+class RegExpComponent extends AstNode, TRegExpComponent {
+  /** Gets the source text for this regex component, if any. */
   string getValueText() { none() }
 }
 
@@ -348,10 +343,10 @@ class RegExpComponent extends AstNode, TStringComponent {
  * "foo#{ bar() } baz"
  * ```
  */
-class RegExpTextComponent extends RegExpComponent, TStringTextComponent {
+class RegExpTextComponent extends RegExpComponent, TStringTextComponentRegexp {
   private Ruby::Token g;
 
-  RegExpTextComponent() { this = TStringTextComponent(g) and g.getParent() instanceof Ruby::Regex }
+  RegExpTextComponent() { this = TStringTextComponentRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -367,10 +362,10 @@ class RegExpTextComponent extends RegExpComponent, TStringTextComponent {
 /**
  * An escape sequence component of a regex literal.
  */
-class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequenceComponent {
+class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequenceComponentRegexp {
   private Ruby::EscapeSequence g;
 
-  RegExpEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
+  RegExpEscapeSequenceComponent() { this = TStringEscapeSequenceComponentRegexp(g) }
 
   final override string toString() { result = g.getValue() }
 
@@ -387,10 +382,10 @@ class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequen
  * An interpolation expression component of a regex literal.
  */
 class RegExpInterpolationComponent extends RegExpComponent, StmtSequence,
-  TStringInterpolationComponent {
+  TStringInterpolationComponentRegexp {
   private Ruby::Interpolation g;
 
-  RegExpInterpolationComponent() { this = TStringInterpolationComponent(g) }
+  RegExpInterpolationComponent() { this = TStringInterpolationComponentRegexp(g) }
 
   final override string toString() { result = "#{...}" }
 
