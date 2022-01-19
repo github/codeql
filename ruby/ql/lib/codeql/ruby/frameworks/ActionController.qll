@@ -4,21 +4,8 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.ApiGraphs
 private import ActionView
-
-private class ActionControllerBaseAccess extends ConstantReadAccess {
-  ActionControllerBaseAccess() {
-    this.getName() = "Base" and
-    this.getScopeExpr().(ConstantAccess).getName() = "ActionController"
-  }
-}
-
-// ApplicationController extends ActionController::Base, but we
-// treat it separately in case the ApplicationController definition
-// is not in the database
-private class ApplicationControllerAccess extends ConstantReadAccess {
-  ApplicationControllerAccess() { this.getName() = "ApplicationController" }
-}
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -35,16 +22,13 @@ private class ApplicationControllerAccess extends ConstantReadAccess {
  */
 class ActionControllerControllerClass extends ClassDeclaration {
   ActionControllerControllerClass() {
-    // class FooController < ActionController::Base
-    this.getSuperclassExpr() instanceof ActionControllerBaseAccess
-    or
-    // class FooController < ApplicationController
-    this.getSuperclassExpr() instanceof ApplicationControllerAccess
-    or
-    // class BarController < FooController
-    exists(ActionControllerControllerClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      [
+        API::getTopLevelMember("ActionController").getMember("Base"),
+        // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
+        // treat it separately in case the `ApplicationController` definition is not in the database.
+        API::getTopLevelMember("ApplicationController")
+      ].getASubclass*().getAUse().asExpr().getExpr()
   }
 
   /**
