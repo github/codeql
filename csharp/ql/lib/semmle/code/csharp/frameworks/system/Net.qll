@@ -77,8 +77,8 @@ private class SystemNetIPHostEntryClassFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[-1];ReturnValue;taint",
-        "System.Net;IPHostEntry;false;get_HostName;();;Argument[-1];ReturnValue;taint"
+        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[Qualifier];ReturnValue;taint",
+        "System.Net;IPHostEntry;false;get_HostName;();;Argument[Qualifier];ReturnValue;taint"
       ]
   }
 }
@@ -94,7 +94,7 @@ class SystemNetCookieClass extends SystemNetClass {
 /** Data flow for `System.Net.Cookie`. */
 private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
-    row = "System.Net;Cookie;false;get_Value;();;Argument[-1];ReturnValue;taint"
+    row = "System.Net;Cookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint"
   }
 }
 
@@ -102,7 +102,7 @@ private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
 private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value"
   }
 }
 
@@ -110,7 +110,7 @@ private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryM
 private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Element of Argument[-1];value"
+      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Element of Argument[Qualifier];value"
   }
 }
 
@@ -118,6 +118,6 @@ private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
 private class SystemNetWebHeaderCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value"
+      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Element of Argument[Qualifier];value"
   }
 }

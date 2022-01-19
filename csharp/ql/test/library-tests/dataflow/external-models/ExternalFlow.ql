@@ -14,14 +14,14 @@ class SummaryModelTest extends SummaryModelCsv {
         //"namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind",
         "My.Qltest;D;false;StepArgRes;(System.Object);;Argument[0];ReturnValue;taint",
         "My.Qltest;D;false;StepArgArg;(System.Object,System.Object);;Argument[0];Argument[1];taint",
-        "My.Qltest;D;false;StepArgQual;(System.Object);;Argument[0];Argument[-1];taint",
-        "My.Qltest;D;false;StepFieldGetter;();;Field[My.Qltest.D.Field] of Argument[-1];ReturnValue;value",
-        "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[0];Field[My.Qltest.D.Field] of Argument[-1];value",
-        "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[-1];Field[My.Qltest.D.Field2] of ReturnValue;value",
-        "My.Qltest;D;false;StepPropertyGetter;();;Property[My.Qltest.D.Property] of Argument[-1];ReturnValue;value",
-        "My.Qltest;D;false;StepPropertySetter;(System.Object);;Argument[0];Property[My.Qltest.D.Property] of Argument[-1];value",
-        "My.Qltest;D;false;StepElementGetter;();;Element of Argument[-1];ReturnValue;value",
-        "My.Qltest;D;false;StepElementSetter;(System.Object);;Argument[0];Element of Argument[-1];value",
+        "My.Qltest;D;false;StepArgQual;(System.Object);;Argument[0];Argument[Qualifier];taint",
+        "My.Qltest;D;false;StepFieldGetter;();;Field[My.Qltest.D.Field] of Argument[Qualifier];ReturnValue;value",
+        "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[0];Field[My.Qltest.D.Field] of Argument[Qualifier];value",
+        "My.Qltest;D;false;StepFieldSetter;(System.Object);;Argument[Qualifier];Field[My.Qltest.D.Field2] of ReturnValue;value",
+        "My.Qltest;D;false;StepPropertyGetter;();;Property[My.Qltest.D.Property] of Argument[Qualifier];ReturnValue;value",
+        "My.Qltest;D;false;StepPropertySetter;(System.Object);;Argument[0];Property[My.Qltest.D.Property] of Argument[Qualifier];value",
+        "My.Qltest;D;false;StepElementGetter;();;Element of Argument[Qualifier];ReturnValue;value",
+        "My.Qltest;D;false;StepElementSetter;(System.Object);;Argument[0];Element of Argument[Qualifier];value",
         "My.Qltest;D;false;Apply<,>;(System.Func<S,T>,S);;Argument[1];Parameter[0] of Argument[0];value",
         "My.Qltest;D;false;Apply<,>;(System.Func<S,T>,S);;ReturnValue of Argument[0];ReturnValue;value",
         "My.Qltest;D;false;Apply2<>;(System.Action<S>,S,S);;Field[My.Qltest.D.Field] of Argument[1];Parameter[0] of Argument[0];value",
@@ -29,8 +29,8 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;D;false;Map<,>;(S[],System.Func<S,T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
         "My.Qltest;D;false;Map<,>;(S[],System.Func<S,T>);;ReturnValue of Argument[1];Element of ReturnValue;value",
         "My.Qltest;D;false;Parse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
-        "My.Qltest;E;true;get_MyProp;();;Field[My.Qltest.E.MyField] of Argument[-1];ReturnValue;value",
-        "My.Qltest;E;true;set_MyProp;(System.Object);;Argument[0];Field[My.Qltest.E.MyField] of Argument[-1];value"
+        "My.Qltest;E;true;get_MyProp;();;Field[My.Qltest.E.MyField] of Argument[Qualifier];ReturnValue;value",
+        "My.Qltest;E;true;set_MyProp;(System.Object);;Argument[0];Field[My.Qltest.E.MyField] of Argument[Qualifier];value"
       ]
   }
 }

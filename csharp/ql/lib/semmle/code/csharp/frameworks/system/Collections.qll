@@ -42,7 +42,7 @@ class SystemCollectionsIEnumerableInterface extends SystemCollectionsInterface {
 private class SystemCollectionIEnumerableFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections;IEnumerable;true;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+      "System.Collections;IEnumerable;true;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
   }
 }
 
@@ -55,7 +55,7 @@ private class SystemCollectionsIEnumerableClearFlow extends SummarizedCallable {
   }
 
   override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-    pos.getPosition() = -1 and
+    pos.isThisParameter() and
     content instanceof DataFlow::ElementContent
   }
 }
@@ -81,7 +81,7 @@ class SystemCollectionsICollectionInterface extends SystemCollectionsInterface {
 private class SystemCollectionsICollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections;ICollection;true;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+      "System.Collections;ICollection;true;CopyTo;(System.Array,System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value"
   }
 }
 
@@ -95,10 +95,10 @@ private class SystemCollectionsIListFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Collections;IList;true;Add;(System.Object);;Argument[0];Element of Argument[-1];value",
-        "System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value",
-        "System.Collections;IList;true;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[-1];value",
+        "System.Collections;IList;true;Add;(System.Object);;Argument[0];Element of Argument[Qualifier];value",
+        "System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Element of Argument[Qualifier];value",
+        "System.Collections;IList;true;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Element of Argument[Qualifier];value",
       ]
   }
 }
@@ -113,13 +113,13 @@ private class SystemCollectionsIDictionaryFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
-        "System.Collections;IDictionary;true;get_Item;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
-        "System.Collections;IDictionary;true;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
-        "System.Collections;IDictionary;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
-        "System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+        "System.Collections;IDictionary;true;get_Item;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections;IDictionary;true;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];Element of ReturnValue;value",
+        "System.Collections;IDictionary;true;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];Element of ReturnValue;value",
+        "System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
       ]
   }
 }
@@ -152,8 +152,8 @@ private class SystemCollectionsSortedListFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System.Collections;SortedList;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
-        "System.Collections;SortedList;false;GetByIndex;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
-        "System.Collections;SortedList;false;GetValueList;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections;SortedList;false;GetByIndex;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections;SortedList;false;GetValueList;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];Element of ReturnValue;value",
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
         "System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary,System.Collections.IComparer);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
@@ -167,13 +167,13 @@ private class SystemCollectionsArrayListFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Collections;ArrayList;false;AddRange;(System.Collections.ICollection);;Element of Argument[0];Element of Argument[-1];value",
+        "System.Collections;ArrayList;false;AddRange;(System.Collections.ICollection);;Element of Argument[0];Element of Argument[Qualifier];value",
         "System.Collections;ArrayList;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;FixedSize;(System.Collections.ArrayList);;Element of Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;FixedSize;(System.Collections.IList);;Element of Argument[0];Element of ReturnValue;value",
-        "System.Collections;ArrayList;false;GetEnumerator;(System.Int32,System.Int32);;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.Collections;ArrayList;false;GetEnumerator;(System.Int32,System.Int32);;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
         "System.Collections;ArrayList;false;GetRange;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
-        "System.Collections;ArrayList;false;InsertRange;(System.Int32,System.Collections.ICollection);;Element of Argument[1];Element of Argument[-1];value",
+        "System.Collections;ArrayList;false;InsertRange;(System.Int32,System.Collections.ICollection);;Element of Argument[1];Element of Argument[Qualifier];value",
         "System.Collections;ArrayList;false;Repeat;(System.Object,System.Int32);;Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
         "System.Collections;ArrayList;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
@@ -195,7 +195,7 @@ private class SystemCollectionsQueueFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System.Collections;Queue;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
-        "System.Collections;Queue;false;Peek;();;Element of Argument[-1];ReturnValue;value",
+        "System.Collections;Queue;false;Peek;();;Element of Argument[Qualifier];ReturnValue;value",
       ]
   }
 }
@@ -206,8 +206,8 @@ private class SystemCollectionsStackFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System.Collections;Stack;false;Clone;();;Element of Argument[0];Element of ReturnValue;value",
-        "System.Collections;Stack;false;Peek;();;Element of Argument[-1];ReturnValue;value",
-        "System.Collections;Stack;false;Pop;();;Element of Argument[-1];ReturnValue;value",
+        "System.Collections;Stack;false;Peek;();;Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections;Stack;false;Pop;();;Element of Argument[Qualifier];ReturnValue;value",
       ]
   }
 }
