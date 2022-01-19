@@ -208,7 +208,9 @@ class HiddenLineDirective extends LineDirective {
   override string getAPrimaryQlClass() { result = "HiddenLineDirective" }
 }
 
-abstract private class NumericOrSpanLineDirective extends LineDirective {
+private class NumericOrSpanLineDirective extends LineDirective {
+  NumericOrSpanLineDirective() { directive_lines(this, [2, 3]) }
+
   /** Gets the referenced file of this directive. */
   File getReferencedFile() { directive_line_file(this, result) }
 }
@@ -234,7 +236,7 @@ class SpanLineDirective extends NumericOrSpanLineDirective {
   /** Gets the offset of this directive. */
   int getOffset() { directive_line_offset(this, result) }
 
-  /** Gets the span of this directive. */
+  /** Holds if the specified start and end positions match this SpanLineDirective. */
   predicate span(int startLine, int startColumn, int endLine, int endColumn) {
     directive_line_span(this, startLine, startColumn, endLine, endColumn)
   }

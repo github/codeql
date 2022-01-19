@@ -8,22 +8,18 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class LineDirective : LineOrSpanDirective<LineDirectiveTriviaSyntax>
     {
         private LineDirective(Context cx, LineDirectiveTriviaSyntax trivia)
-            : base(cx, trivia)
+            : base(cx, trivia, trivia.Line.Kind() switch
+            {
+                SyntaxKind.DefaultKeyword => LineDirectiveKind.Default,
+                SyntaxKind.HiddenKeyword => LineDirectiveKind.Hidden,
+                SyntaxKind.NumericLiteralToken => LineDirectiveKind.Numeric,
+                _ => throw new InternalError(trivia, "Unhandled line token kind")
+            })
         {
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            var type = Symbol.Line.Kind() switch
-            {
-                SyntaxKind.DefaultKeyword => LineDirectiveKind.Default,
-                SyntaxKind.HiddenKeyword => LineDirectiveKind.Hidden,
-                SyntaxKind.NumericLiteralToken => LineDirectiveKind.Numeric,
-                _ => throw new InternalError(Symbol, "Unhandled line token kind")
-            };
-
-            trapFile.directive_lines(this, type);
-
             if (Symbol.Line.IsKind(SyntaxKind.NumericLiteralToken))
             {
                 var value = (int)Symbol.Line.Value!;

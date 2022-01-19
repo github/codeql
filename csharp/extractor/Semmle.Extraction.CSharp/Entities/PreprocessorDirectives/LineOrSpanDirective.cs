@@ -15,13 +15,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
     internal abstract class LineOrSpanDirective<T> : PreprocessorDirective<T> where T : LineOrSpanDirectiveTriviaSyntax
     {
-        protected LineOrSpanDirective(Context cx, T trivia)
+        private readonly LineDirectiveKind kind;
+
+        protected LineOrSpanDirective(Context cx, T trivia, LineDirectiveKind k)
             : base(cx, trivia)
         {
+            kind = k;
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
+            trapFile.directive_lines(this, kind);
+
             if (!string.IsNullOrWhiteSpace(Symbol.File.ValueText))
             {
                 var file = File.Create(Context, Symbol.File.ValueText);
