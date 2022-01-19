@@ -69,11 +69,7 @@ private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
  * or the qualifier of `createSocket` is an instance of `SSLSocketFactory`.
  */
 private predicate isSslSocket(MethodAccess createSocket) {
-  exists(Variable ssl, CastExpr ce |
-    ce.getExpr() = createSocket and
-    ce.getControlFlowNode().getASuccessor().(VariableAssign).getDestVar() = ssl and
-    ssl.getType() instanceof SSLSocket
-  )
+  createSocket = any(CastExpr ce | ce.getType() instanceof SSLSocket).getExpr()
   or
   createSocket.getQualifier().getType().(RefType).getASupertype*() instanceof SSLSocketFactory
 }
