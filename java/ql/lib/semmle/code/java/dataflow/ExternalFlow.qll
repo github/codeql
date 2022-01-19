@@ -84,6 +84,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.BeanUtils
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
