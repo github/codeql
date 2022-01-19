@@ -345,13 +345,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  method.getDeclaringType().hasQualifiedName("org.apache.commons.codec.binary", "Base64") and
-  (
-    method.getName() = "decodeBase64" and arg = 0
-    or
-    method.getName().matches("encodeBase64%") and arg = 0
-  )
-  or
   method.(TaintPreservingCallable).returnsTaintFrom(arg)
 }
 
