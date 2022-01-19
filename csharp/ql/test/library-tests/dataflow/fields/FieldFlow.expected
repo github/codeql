@@ -802,10 +802,24 @@ edges
 | J.cs:34:17:34:33 | call to method Source<Object> : Object | J.cs:35:35:35:35 | access to local variable o : Object |
 | J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:36:14:36:15 | access to local variable r1 [property Prop1] : Object |
 | J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:36:14:36:15 | access to local variable r1 [property Prop1] : Object |
+| J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object |
+| J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object |
+| J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object |
+| J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object | J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object |
 | J.cs:35:35:35:35 | access to local variable o : Object | J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object |
 | J.cs:35:35:35:35 | access to local variable o : Object | J.cs:35:18:35:42 | object creation of type RecordStruct [property Prop1] : Object |
 | J.cs:36:14:36:15 | access to local variable r1 [property Prop1] : Object | J.cs:36:14:36:21 | access to property Prop1 |
 | J.cs:36:14:36:15 | access to local variable r1 [property Prop1] : Object | J.cs:36:14:36:21 | access to property Prop1 |
+| J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object | J.cs:40:14:40:21 | access to property Prop1 |
+| J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object | J.cs:40:14:40:21 | access to property Prop1 |
+| J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object | J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object |
+| J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object | J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object |
+| J.cs:43:36:43:52 | call to method Source<Object> : Object | J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object |
+| J.cs:43:36:43:52 | call to method Source<Object> : Object | J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object |
+| J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object | J.cs:44:14:44:21 | access to property Prop1 |
+| J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object | J.cs:44:14:44:21 | access to property Prop1 |
+| J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object | J.cs:45:14:45:21 | access to property Prop2 |
+| J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object | J.cs:45:14:45:21 | access to property Prop2 |
 nodes
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
@@ -1681,6 +1695,22 @@ nodes
 | J.cs:36:14:36:15 | access to local variable r1 [property Prop1] : Object | semmle.label | access to local variable r1 [property Prop1] : Object |
 | J.cs:36:14:36:21 | access to property Prop1 | semmle.label | access to property Prop1 |
 | J.cs:36:14:36:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object | semmle.label | access to local variable r2 [property Prop1] : Object |
+| J.cs:40:14:40:15 | access to local variable r2 [property Prop1] : Object | semmle.label | access to local variable r2 [property Prop1] : Object |
+| J.cs:40:14:40:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:40:14:40:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object | semmle.label | ... with { ... } [property Prop2] : Object |
+| J.cs:43:18:43:54 | ... with { ... } [property Prop2] : Object | semmle.label | ... with { ... } [property Prop2] : Object |
+| J.cs:43:36:43:52 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| J.cs:43:36:43:52 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object | semmle.label | access to local variable r3 [property Prop1] : Object |
+| J.cs:44:14:44:15 | access to local variable r3 [property Prop1] : Object | semmle.label | access to local variable r3 [property Prop1] : Object |
+| J.cs:44:14:44:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:44:14:44:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object | semmle.label | access to local variable r3 [property Prop2] : Object |
+| J.cs:45:14:45:15 | access to local variable r3 [property Prop2] : Object | semmle.label | access to local variable r3 [property Prop2] : Object |
+| J.cs:45:14:45:21 | access to property Prop2 | semmle.label | access to property Prop2 |
+| J.cs:45:14:45:21 | access to property Prop2 | semmle.label | access to property Prop2 |
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
@@ -1838,3 +1868,6 @@ subpaths
 | J.cs:24:14:24:21 | access to property Prop1 | J.cs:14:17:14:33 | call to method Source<Object> : Object | J.cs:24:14:24:21 | access to property Prop1 | $@ | J.cs:14:17:14:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:25:14:25:21 | access to property Prop2 | J.cs:23:36:23:52 | call to method Source<Object> : Object | J.cs:25:14:25:21 | access to property Prop2 | $@ | J.cs:23:36:23:52 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:36:14:36:21 | access to property Prop1 | J.cs:34:17:34:33 | call to method Source<Object> : Object | J.cs:36:14:36:21 | access to property Prop1 | $@ | J.cs:34:17:34:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| J.cs:40:14:40:21 | access to property Prop1 | J.cs:34:17:34:33 | call to method Source<Object> : Object | J.cs:40:14:40:21 | access to property Prop1 | $@ | J.cs:34:17:34:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| J.cs:44:14:44:21 | access to property Prop1 | J.cs:34:17:34:33 | call to method Source<Object> : Object | J.cs:44:14:44:21 | access to property Prop1 | $@ | J.cs:34:17:34:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| J.cs:45:14:45:21 | access to property Prop2 | J.cs:43:36:43:52 | call to method Source<Object> : Object | J.cs:45:14:45:21 | access to property Prop2 | $@ | J.cs:43:36:43:52 | call to method Source<Object> : Object | call to method Source<Object> : Object |

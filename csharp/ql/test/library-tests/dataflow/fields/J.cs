@@ -35,6 +35,18 @@ public class J
         var r1 = new RecordStruct(o, null);
         Sink(r1.Prop1); // $ hasValueFlow=2
         Sink(r1.Prop2); // no flow
+
+        var r2 = r1 with { };
+        Sink(r2.Prop1); // $ hasValueFlow=2
+        Sink(r2.Prop2); // no flow
+
+        var r3 = r1 with { Prop2 = Source<object>(3) };
+        Sink(r3.Prop1); // $ hasValueFlow=2
+        Sink(r3.Prop2); // $ hasValueFlow=3
+
+        var r4 = r1 with { Prop1 = null };
+        Sink(r4.Prop1); // no flow
+        Sink(r4.Prop2); // no flow
     }
 
     public static void Sink(object o) { }
