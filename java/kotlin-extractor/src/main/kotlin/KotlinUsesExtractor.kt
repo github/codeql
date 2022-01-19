@@ -643,7 +643,7 @@ class X {
         returnType: IrType,
         extensionReceiverParameter: IrValueParameter?,
         functionTypeParameters: List<IrTypeParameter>,
-        classTypeArguments: List<IrTypeArgument>? = null
+        classTypeArguments: List<IrTypeArgument>?
     ): String {
         val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
         return getFunctionLabel(getEnclosingClass(parent), parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
