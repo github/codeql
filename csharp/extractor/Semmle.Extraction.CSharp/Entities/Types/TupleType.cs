@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
         {
-            tupleElementsLazy = new Lazy<Field[]>(() => Symbol.TupleElements.Select(t => Field.Create(cx, t)).ToArray());
+            tupleElementsLazy = new Lazy<Field[]>(() => Symbol.TupleElementsAdjusted().Select(t => Field.Create(cx, t)).ToArray());
         }
 
         // All tuple types are "local types"

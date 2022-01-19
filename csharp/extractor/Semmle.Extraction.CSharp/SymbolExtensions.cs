@@ -280,12 +280,18 @@ namespace Semmle.Extraction.CSharp
         private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
             BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildOrWriteId(cx, trapFile, symbolBeingDefined));
 
+        /// <summary>
+        /// Workaround for a Roslyn bug: https://github.com/dotnet/roslyn/issues/53943
+        /// </summary>
+        public static IEnumerable<IFieldSymbol> TupleElementsAdjusted(this INamedTypeSymbol type) =>
+            type.TupleElements.Where(f => f is not null && f.Type is not null);
+
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
-                trapFile.BuildList(",", named.TupleElements,
+                trapFile.BuildList(",", named.TupleElementsAdjusted(),
                     f =>
                     {
                         trapFile.Write((f.CorrespondingTupleField ?? f).Name);
@@ -464,7 +470,7 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write('(');
                 trapFile.BuildList(
                     ",",
-                    namedType.TupleElements.Select(f => f.Type),
+                    namedType.TupleElementsAdjusted().Select(f => f.Type),
                     t => t.BuildDisplayName(cx, trapFile));
                 trapFile.Write(")");
                 return;
