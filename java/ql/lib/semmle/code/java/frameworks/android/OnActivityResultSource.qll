@@ -42,14 +42,18 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
       // and the activity it belongs to defines `onActivityResult`.
       exists(MethodAccess ma |
         ma.getMethod().hasName(["add", "attach", "replace"]) and
-        ma.getMethod().getDeclaringType().hasQualifiedName("android.app", "FragmentTransaction") and
+        ma.getMethod()
+            .getDeclaringType()
+            .hasQualifiedName(["android.app", "android.support.v4.app", "androidx.fragment.app"],
+              "FragmentTransaction") and
         any(Argument arg | arg = ma.getAnArgument()).getType() = startingType
         or
         ma.getMethod().hasName("show") and
         ma.getMethod()
             .getDeclaringType()
             .getASupertype*()
-            .hasQualifiedName("android.app", "DialogFragment") and
+            .hasQualifiedName(["android.app", "android.support.v4.app", "androidx.fragment.app"],
+              "DialogFragment") and
         startingType = ma.getQualifier().getType()
       |
         ma.getEnclosingCallable().getDeclaringType() =
