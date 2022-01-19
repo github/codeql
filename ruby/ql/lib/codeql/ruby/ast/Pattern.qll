@@ -99,7 +99,7 @@ private class TPattern =
 class CasePattern extends AstNode, TPattern {
   CasePattern() {
     casePattern(toGenerated(this)) or
-    this = any(HashPattern p).getValue(_)
+    synthChild(any(HashPattern p), _, this)
   }
 }
 
@@ -270,7 +270,7 @@ class HashPattern extends CasePattern, THashPattern {
   StringlikeLiteral getKey(int n) { toGenerated(result) = this.keyValuePair(n).getKey() }
 
   /** Gets the value of the `n`th pair. */
-  AstNode getValue(int n) {
+  CasePattern getValue(int n) {
     toGenerated(result) = this.keyValuePair(n).getValue() or
     synthChild(this, n, result)
   }
@@ -387,6 +387,7 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
 
   ParenthesizedPattern() { this = TParenthesizedPattern(g) }
 
+  /** Gets the underlying pattern. */
   final CasePattern getPattern() { toGenerated(result) = g.getChild() }
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
