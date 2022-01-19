@@ -60,6 +60,6 @@ private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
     this.getMethod().hasName("setEndpointIdentificationAlgorithm") and
     this.getMethod().getDeclaringType() instanceof SSLParameters and
     not this.getArgument(0) instanceof NullLiteral and
-    not this.getArgument(0).(CompileTimeConstantExpr).getStringValue().length() = 0
+    not this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ""
   }
 }
