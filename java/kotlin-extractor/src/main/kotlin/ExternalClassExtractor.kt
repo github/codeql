@@ -3,7 +3,7 @@ package com.github.codeql
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.util.IdSignature
+import org.jetbrains.kotlin.ir.util.packageFqName
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
@@ -44,6 +44,15 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
                                 val ftw = tw.makeFileTrapWriter(binaryPath, true)
 
                                 val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+
+                                // Populate a location and compilation-unit package for the file. This is similar to
+                                // the beginning of `KotlinFileExtractor.extractFileContents` but without an `IrFile`
+                                // to start from.
+                                val pkg = irClass.packageFqName?.asString() ?: ""
+                                val pkgId = fileExtractor.extractPackage(pkg)
+                                ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
+                                ftw.writeCupackage(ftw.fileId, pkgId)
+
                                 fileExtractor.extractClassSource(irClass)
                             }
                         }
