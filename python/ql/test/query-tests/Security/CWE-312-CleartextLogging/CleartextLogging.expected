@@ -4,9 +4,6 @@ edges
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:23:58:23:65 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:27:40:27:47 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:30:58:30:65 | ControlFlowNode for password |
-| test.py:43:9:43:15 | ControlFlowNode for account | test.py:46:11:46:17 | ControlFlowNode for account |
-| test.py:43:18:43:27 | ControlFlowNode for account_id | test.py:50:18:50:51 | ControlFlowNode for Fstring |
-| test.py:55:9:55:24 | ControlFlowNode for generate_uuid4() | test.py:56:11:56:11 | ControlFlowNode for x |
 | test.py:65:14:68:5 | ControlFlowNode for Dict | test.py:69:11:69:31 | ControlFlowNode for Subscript |
 | test.py:67:21:67:37 | ControlFlowNode for Attribute | test.py:65:14:68:5 | ControlFlowNode for Dict |
 nodes
@@ -20,13 +17,6 @@ nodes
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
-| test.py:43:9:43:15 | ControlFlowNode for account | semmle.label | ControlFlowNode for account |
-| test.py:43:18:43:27 | ControlFlowNode for account_id | semmle.label | ControlFlowNode for account_id |
-| test.py:46:11:46:17 | ControlFlowNode for account | semmle.label | ControlFlowNode for account |
-| test.py:50:18:50:51 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
-| test.py:55:9:55:24 | ControlFlowNode for generate_uuid4() | semmle.label | ControlFlowNode for generate_uuid4() |
-| test.py:56:11:56:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:60:50:60:70 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:65:14:68:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
 | test.py:67:21:67:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:69:11:69:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -41,8 +31,4 @@ subpaths
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | $@ is logged here. | test.py:37:11:37:24 | ControlFlowNode for get_password() | Sensitive data (password) |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | $@ is logged here. | test.py:39:22:39:35 | ControlFlowNode for get_password() | Sensitive data (password) |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | $@ is logged here. | test.py:40:22:40:35 | ControlFlowNode for get_password() | Sensitive data (password) |
-| test.py:46:11:46:17 | ControlFlowNode for account | test.py:43:9:43:15 | ControlFlowNode for account | test.py:46:11:46:17 | ControlFlowNode for account | $@ is logged here. | test.py:43:9:43:15 | ControlFlowNode for account | Sensitive data (id) |
-| test.py:50:18:50:51 | ControlFlowNode for Fstring | test.py:43:18:43:27 | ControlFlowNode for account_id | test.py:50:18:50:51 | ControlFlowNode for Fstring | $@ is logged here. | test.py:43:18:43:27 | ControlFlowNode for account_id | Sensitive data (id) |
-| test.py:56:11:56:11 | ControlFlowNode for x | test.py:55:9:55:24 | ControlFlowNode for generate_uuid4() | test.py:56:11:56:11 | ControlFlowNode for x | $@ is logged here. | test.py:55:9:55:24 | ControlFlowNode for generate_uuid4() | Sensitive data (id) |
-| test.py:60:50:60:70 | ControlFlowNode for Attribute | test.py:60:50:60:70 | ControlFlowNode for Attribute | test.py:60:50:60:70 | ControlFlowNode for Attribute | $@ is logged here. | test.py:60:50:60:70 | ControlFlowNode for Attribute | Sensitive data (id) |
 | test.py:69:11:69:31 | ControlFlowNode for Subscript | test.py:67:21:67:37 | ControlFlowNode for Attribute | test.py:69:11:69:31 | ControlFlowNode for Subscript | $@ is logged here. | test.py:67:21:67:37 | ControlFlowNode for Attribute | Sensitive data (password) |
