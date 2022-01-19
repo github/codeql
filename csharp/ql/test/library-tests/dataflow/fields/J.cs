@@ -7,6 +7,13 @@ public record class RecordClass(object Prop1, object Prop2) { }
 
 public record struct RecordStruct(object Prop1, object Prop2) { }
 
+public struct Struct
+{
+    public object Field;
+    public object Prop { get; init; }
+    public Struct(object field, object prop) => (Field, Prop) = (field, prop);
+}
+
 public class J
 {
     private void M1()
@@ -47,6 +54,42 @@ public class J
         var r4 = r1 with { Prop1 = null };
         Sink(r4.Prop1); // no flow
         Sink(r4.Prop2); // no flow
+    }
+
+    private void M3()
+    {
+        var o = Source<object>(3);
+        var s1 = new Struct(o, null);
+
+        var s2 = s1 with { };
+        Sink(s2.Field); // $ hasValueFlow=3
+        Sink(s2.Prop); // no flow
+
+        var s3 = s1 with { Prop = Source<object>(4) };
+        Sink(s3.Field); // $ hasValueFlow=3
+        Sink(s3.Prop); // $ hasValueFlow=4
+
+        var s4 = s1 with { Field = null };
+        Sink(s4.Field); // no flow
+        Sink(s4.Prop); // no flow
+    }
+
+    private void M4()
+    {
+        var o = Source<object>(5);
+        var s1 = new Struct(null, o);
+
+        var s2 = s1 with { };
+        Sink(s2.Field); // $ no flow
+        Sink(s2.Prop); // $ hasValueFlow=5
+
+        var s3 = s1 with { Field = Source<object>(6) };
+        Sink(s3.Field); // $ hasValueFlow=6
+        Sink(s3.Prop); // $ hasValueFlow=5
+
+        var s4 = s1 with { Prop = null };
+        Sink(s4.Field); // no flow
+        Sink(s4.Prop); // no flow
     }
 
     public static void Sink(object o) { }
