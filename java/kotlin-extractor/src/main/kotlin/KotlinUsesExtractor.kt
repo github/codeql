@@ -627,8 +627,8 @@ class X {
             else -> listOf()
         }
 
-    fun getFunctionLabel(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null) : String {
-        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArguments)
+    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null) : String {
+        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
     }
 
     fun getEnclosingClass(it: IrDeclarationParent): IrClass? =
@@ -645,10 +645,10 @@ class X {
         returnType: IrType,
         extensionReceiverParameter: IrValueParameter?,
         functionTypeParameters: List<IrTypeParameter>,
-        classTypeArguments: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
     ): String {
-        val parentId = useDeclarationParent(parent, false, classTypeArguments, true)
-        return getFunctionLabel(parent, parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArguments)
+        val parentId = useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
+        return getFunctionLabel(parent, parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArgsIncludingOuterClasses)
     }
 
     fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
@@ -751,13 +751,13 @@ class X {
         return id
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArguments: List<IrTypeArgument>? = null): Label<out T> {
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             @Suppress("UNCHECKED_CAST")
             return ids.function as Label<out T>
         } else {
-            return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArguments))
+            return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArgsIncludingOuterClasses))
         }
     }
 

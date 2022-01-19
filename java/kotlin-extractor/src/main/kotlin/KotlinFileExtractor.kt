@@ -412,7 +412,7 @@ open class KotlinFileExtractor(
         }
 
         // add method:
-        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArguments = listOf())
+        val obinitLabel = getFunctionLabel(c, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val returnType = useType(pluginContext.irBuiltIns.unitType)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
@@ -1561,7 +1561,7 @@ open class KotlinFileExtractor(
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val type = useType(e.type)
                 val locId = tw.getLocation(e)
-                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArguments = listOf())
+                val methodLabel = getFunctionLabel(irCallable.parent, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
                 val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                 tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                 tw.writeHasLocation(id, locId)
