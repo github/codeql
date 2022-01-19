@@ -283,20 +283,27 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Workaround for a Roslyn bug: https://github.com/dotnet/roslyn/issues/53943
         /// </summary>
-        public static IEnumerable<IFieldSymbol> TupleElementsAdjusted(this INamedTypeSymbol type) =>
-            type.TupleElements.Where(f => f is not null && f.Type is not null);
+        public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
+            type.TupleElements;
 
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
-                trapFile.BuildList(",", named.TupleElementsAdjusted(),
-                    f =>
+                trapFile.BuildList(",", named.GetTupleElementsMaybeNull(),
+                    (i, f) =>
                     {
-                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
-                        trapFile.Write(":");
-                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                        if (f is null)
+                        {
+                            trapFile.Write($"null({i})");
+                        }
+                        else
+                        {
+                            trapFile.Write((f.CorrespondingTupleField ?? f).Name);
+                            trapFile.Write(":");
+                            f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
+                        }
                     }
                     );
                 trapFile.Write(")");
@@ -470,8 +477,14 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write('(');
                 trapFile.BuildList(
                     ",",
-                    namedType.TupleElementsAdjusted().Select(f => f.Type),
-                    t => t.BuildDisplayName(cx, trapFile));
+                    namedType.GetTupleElementsMaybeNull(),
+                    (i, f) =>
+                    {
+                        if (f is null)
+                            trapFile.Write($"null({i})");
+                        else
+                            f.Type.BuildDisplayName(cx, trapFile);
+                    });
                 trapFile.Write(")");
                 return;
             }
