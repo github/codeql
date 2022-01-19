@@ -12,7 +12,7 @@ ret
 | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:51:3:51:15 | break |
 | local_dataflow.rb:52:3:52:10 | "normal" |
-| local_dataflow.rb:78:3:89:3 | ... = ... |
+| local_dataflow.rb:89:1:89:7 | call to sink |
 arg
 | local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | self |
 | local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | position 0 |
@@ -73,5 +73,5 @@ arg
 | local_dataflow.rb:86:31:86:31 | g | local_dataflow.rb:86:26:86:32 | call to sink | position 0 |
 | local_dataflow.rb:87:18:87:24 | self | local_dataflow.rb:87:18:87:24 | call to sink | self |
 | local_dataflow.rb:87:23:87:23 | x | local_dataflow.rb:87:18:87:24 | call to sink | position 0 |
-| local_dataflow.rb:88:3:88:9 | self | local_dataflow.rb:88:3:88:9 | call to sink | self |
-| local_dataflow.rb:88:8:88:8 | z | local_dataflow.rb:88:3:88:9 | call to sink | position 0 |
+| local_dataflow.rb:89:1:89:7 | self | local_dataflow.rb:89:1:89:7 | call to sink | self |
+| local_dataflow.rb:89:6:89:6 | z | local_dataflow.rb:89:1:89:7 | call to sink | position 0 |
