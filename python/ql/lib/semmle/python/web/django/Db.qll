@@ -4,16 +4,18 @@ import semmle.python.security.injection.Sql
 /**
  * A taint kind representing a django cursor object.
  */
-class DjangoDbCursor extends DbCursor {
+deprecated class DjangoDbCursor extends DbCursor {
   DjangoDbCursor() { this = "django.db.connection.cursor" }
 }
 
-private Value theDjangoConnectionObject() { result = Value::named("django.db.connection") }
+deprecated private Value theDjangoConnectionObject() {
+  result = Value::named("django.db.connection")
+}
 
 /**
  * A kind of taint source representing sources of django cursor objects.
  */
-class DjangoDbCursorSource extends DbConnectionSource {
+deprecated class DjangoDbCursorSource extends DbConnectionSource {
   DjangoDbCursorSource() {
     exists(AttrNode cursor |
       this.(CallNode).getFunction() = cursor and
@@ -26,13 +28,15 @@ class DjangoDbCursorSource extends DbConnectionSource {
   override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoDbCursor }
 }
 
-ClassValue theDjangoRawSqlClass() { result = Value::named("django.db.models.expressions.RawSQL") }
+deprecated ClassValue theDjangoRawSqlClass() {
+  result = Value::named("django.db.models.expressions.RawSQL")
+}
 
 /**
  * A sink of taint on calls to `django.db.models.expressions.RawSQL`. This
  * allows arbitrary SQL statements to be executed, which is a security risk.
  */
-class DjangoRawSqlSink extends SqlInjectionSink {
+deprecated class DjangoRawSqlSink extends SqlInjectionSink {
   DjangoRawSqlSink() {
     exists(CallNode call |
       call = theDjangoRawSqlClass().getACall() and
