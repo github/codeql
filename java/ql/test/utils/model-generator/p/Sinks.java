@@ -21,4 +21,8 @@ public class Sinks {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        String foo = new Sinks().readUrl(new URL(args[0]), Charset.defaultCharset());
+    }
+
 }
