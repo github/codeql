@@ -4,8 +4,7 @@ namespace Semmle.Extraction
 {
     public class StandaloneExtractor : Extractor
     {
-        private readonly ExtractorMode mode;
-        public override ExtractorMode Mode => mode;
+        public override ExtractorMode Mode { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
@@ -14,9 +13,11 @@ namespace Semmle.Extraction
         /// <param name="pathTransformer">The object used for path transformations.</param>
         public StandaloneExtractor(ILogger logger, PathTransformer pathTransformer, CommonOptions options) : base(logger, pathTransformer)
         {
-            mode = ExtractorMode.Standalone;
+            Mode = ExtractorMode.Standalone;
             if (options.QlTest)
-                mode |= ExtractorMode.QlTest;
+            {
+                Mode |= ExtractorMode.QlTest;
+            }
         }
     }
 }

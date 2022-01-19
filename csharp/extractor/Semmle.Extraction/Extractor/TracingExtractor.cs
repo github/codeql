@@ -4,8 +4,7 @@ namespace Semmle.Extraction
 {
     public class TracingExtractor : Extractor
     {
-        private readonly ExtractorMode mode;
-        public override ExtractorMode Mode => mode;
+        public override ExtractorMode Mode { get; }
         public string OutputPath { get; }
 
         /// <summary>
@@ -17,9 +16,11 @@ namespace Semmle.Extraction
         public TracingExtractor(string outputPath, ILogger logger, PathTransformer pathTransformer, CommonOptions options) : base(logger, pathTransformer)
         {
             OutputPath = outputPath;
-            mode = ExtractorMode.None;
+            Mode = ExtractorMode.None;
             if (options.QlTest)
-                mode |= ExtractorMode.QlTest;
+            {
+                Mode |= ExtractorMode.QlTest;
+            }
         }
     }
 }

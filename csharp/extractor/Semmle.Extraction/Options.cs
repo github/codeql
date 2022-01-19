@@ -37,7 +37,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Whether to extract PDB information.
         /// </summary>
-        public bool PDB { get; set; } = false;
+        public bool PDB { get; private set; } = false;
 
         /// <summary>
         /// Whether "fast extraction mode" has been enabled.

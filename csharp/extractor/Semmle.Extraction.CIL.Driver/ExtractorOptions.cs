@@ -176,8 +176,7 @@ namespace Semmle.Extraction.CIL.Driver
 
         public ExtractorOptions(string[] args)
         {
-            PDB = true;
-            this.ParseArguments(args);
+            this.ParseArguments(args.Append("--pdb").ToArray());
 
             AddFrameworkDirectories(false);
 
