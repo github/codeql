@@ -516,9 +516,7 @@ open class KotlinFileExtractor(
                 tw.writeKtExtensionFunctions(id as Label<DbMethod>, extendedType.javaResult.id, extendedType.kotlinResult.id)
 
                 val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration)
-                val l = mutableListOf(t)
-                l.addAll(paramTypes)
-                l
+                listOf(t) + paramTypes
             } else {
                 paramTypes
             }
@@ -1901,9 +1899,7 @@ open class KotlinFileExtractor(
 
                 val ext = e.function.extensionReceiverParameter
                 val parameters = if (ext != null) {
-                    val l = mutableListOf(ext)
-                    l.addAll(e.function.valueParameters)
-                    l
+                    listOf(ext) + e.function.valueParameters
                 } else {
                     e.function.valueParameters
                 }
