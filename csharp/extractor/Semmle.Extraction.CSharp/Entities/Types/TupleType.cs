@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
         {
-            tupleElementsLazy = new Lazy<Field[]>(() => Symbol.TupleElements.Select(t => Field.Create(cx, t)).ToArray());
+            tupleElementsLazy = new Lazy<Field?[]>(() => Symbol.GetTupleElementsMaybeNull().Select(t => t is null ? null : Field.Create(cx, t)).ToArray());
         }
 
         // All tuple types are "local types"
@@ -47,7 +47,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var index = 0;
             foreach (var element in TupleElements)
-                trapFile.tuple_element(this, index++, element);
+            {
+                if (element is not null)
+                    trapFile.tuple_element(this, index++, element);
+            }
 
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
@@ -56,9 +59,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_location(this, Context.CreateLocation(l));
         }
 
-        private readonly Lazy<Field[]> tupleElementsLazy;
-        public Field[] TupleElements => tupleElementsLazy.Value;
+        private readonly Lazy<Field?[]> tupleElementsLazy;
+        public Field?[] TupleElements => tupleElementsLazy.Value;
 
-        public override IEnumerable<Type> TypeMentions => TupleElements.Select(e => e.Type);
+        public override IEnumerable<Type> TypeMentions =>
+            TupleElements.OfType<Field>().Select(e => e.Type);
     }
 }
