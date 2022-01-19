@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modelling the `graphql` gem.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
