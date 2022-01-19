@@ -489,7 +489,7 @@ private class ArrayIndex extends int {
  * Provides flow summaries for the `Array` class.
  *
  * The summaries are ordered (and implemented) based on
- * https://ruby-doc.org/core-2.7.0/Array.html, however for methods that have the
+ * https://ruby-doc.org/core-3.1.0/Array.html, however for methods that have the
  * more general `Enumerable` scope, they are implemented in the `Enumerable`
  * module instead.
  */
@@ -581,6 +581,18 @@ module Array {
     }
   }
 
+  private class SetUnionSummary extends SummarizedCallable {
+    SetUnionSummary() { this = "|" }
+
+    override BitwiseOrExpr getACall() { any() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["ArrayElement of Receiver", "ArrayElement of Argument[0]"] and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
   private class RepetitionSummary extends SummarizedCallable {
     RepetitionSummary() { this = "*" }
 
@@ -637,19 +649,22 @@ module Array {
           output = "ArrayElement[" + i + "] of ReturnValue"
         )
         or
-        input = ["ArrayElement[?] of Receiver", "Argument[0]"] and
+        input = "ArrayElement[?] of Receiver" and
         output = "ArrayElement[?] of ReturnValue"
+        or
+        input = "Argument[0]" and
+        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
       ) and
       preservesValue = true
     }
   }
 
-  /** A call to `[]`. */
+  /** A call to `[]`, or its alias, `slice`. */
   abstract private class ElementReferenceReadSummary extends SummarizedCallable {
     MethodCall mc;
 
     bindingset[this]
-    ElementReferenceReadSummary() { mc.getMethodName() = "[]" }
+    ElementReferenceReadSummary() { mc.getMethodName() = ["[]", "slice"] }
 
     override MethodCall getACall() { result = mc }
   }
@@ -671,7 +686,10 @@ module Array {
     }
   }
 
-  /** A call to `[]` with an unknown index. */
+  /**
+   * A call to `[]` with an unknown argument, which could be either an index or
+   * a range.
+   */
   private class ElementReferenceReadUnknownSummary extends ElementReferenceReadSummary {
     ElementReferenceReadUnknownSummary() {
       this = "[](index)" and
@@ -681,20 +699,80 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = "ReturnValue" and
+      output = ["ReturnValue", "ArrayElement[?] of ReturnValue"] and
       preservesValue = true
     }
   }
 
-  /** A call to `[]` with two arguments or a range argument. */
-  private class ElementReferenceSliceReadSummary extends ElementReferenceReadSummary {
-    ElementReferenceSliceReadSummary() {
-      this = "[](slice)" and
+  /** A call to `[]` with two known arguments or a known range argument. */
+  private class ElementReferenceRangeReadKnownSummary extends ElementReferenceReadSummary {
+    int start;
+    int end;
+
+    ElementReferenceRangeReadKnownSummary() {
+      mc.getNumberOfArguments() = 2 and
+      start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
+      exists(int length | length = mc.getArgument(1).getValueText().toInt() |
+        end = (start + length - 1) and
+        this = "[](" + start + ", " + length + ")"
+      )
+      or
+      mc.getNumberOfArguments() = 1 and
+      exists(RangeLiteral rl |
+        rl = mc.getArgument(0) and
+        (
+          // Either an explicit, positive beginning index...
+          start = rl.getBegin().getValueText().toInt() and start >= 0
+          or
+          // Or a begin-less one, since `..n` is equivalent to `0..n`
+          not exists(rl.getBegin()) and start = 0
+        ) and
+        // There must be an explicit end. An end-less range like `2..` is not
+        // treated as a known range, since we don't track the length of the array.
+        exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0 |
+          rl.isInclusive() and end = e
+          or
+          rl.isExclusive() and end = e - 1
+        ) and
+        this = "[](" + start + ".." + end + ")"
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
       (
-        mc.getNumberOfArguments() = 2
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex i | i >= start and i <= end |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          output = "ArrayElement[" + (i - start) + "] of ReturnValue"
+        )
+      )
+    }
+  }
+
+  /**
+   * A call to `[]` with two arguments or a range argument, where at least one
+   * of the start and end/length is unknown.
+   */
+  private class ElementReferenceRangeReadUnknownSummary extends ElementReferenceReadSummary {
+    ElementReferenceRangeReadUnknownSummary() {
+      this = "[](range_unknown)" and
+      (
+        mc.getNumberOfArguments() = 2 and
+        (
+          not exists(mc.getArgument(0).getValueText().toInt()) or
+          not exists(mc.getArgument(1).getValueText().toInt())
+        )
         or
         mc.getNumberOfArguments() = 1 and
-        mc.getArgument(0) instanceof RangeLiteral
+        exists(RangeLiteral rl | rl = mc.getArgument(0) |
+          exists(rl.getBegin()) and
+          not exists(int b | b = rl.getBegin().getValueText().toInt() and b >= 0)
+          or
+          not exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0)
+        )
       )
     }
 
@@ -780,7 +858,7 @@ module Array {
   }
 
   private class AssocSummary extends SimpleSummarizedCallable {
-    AssocSummary() { this = "assoc" }
+    AssocSummary() { this = ["assoc", "rassoc"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of ArrayElement of Receiver" and
@@ -857,6 +935,21 @@ module Array {
     }
   }
 
+  private class CollectBangSummary extends SimpleSummarizedCallable {
+    // `map!` is an alias of `collect!`.
+    CollectBangSummary() { this = ["collect!", "map!"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "Parameter[0] of BlockArgument" and
+      preservesValue = true
+      or
+      input = "ReturnValue of BlockArgument" and
+      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
+      preservesValue = true
+    }
+  }
+
   private class CombinationSummary extends SimpleSummarizedCallable {
     CombinationSummary() { this = "combination" }
 
@@ -867,12 +960,12 @@ module Array {
     }
   }
 
-  private class CompactSummary extends SimpleSummarizedCallable {
-    CompactSummary() { this = "compact" + ["", "!"] }
+  private class CompactBangSummary extends SimpleSummarizedCallable {
+    CompactBangSummary() { this = "compact!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
-      output = "ArrayElement[?] of ReturnValue" and
+      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
       preservesValue = true
     }
   }
@@ -883,6 +976,19 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Argument[_]" and
       output = "ArrayElement[?] of Receiver" and
+      preservesValue = true
+    }
+  }
+
+  private class DeconstructSummary extends SimpleSummarizedCallable {
+    DeconstructSummary() { this = "deconstruct" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // The documentation of `deconstruct` is blank, but the implementation
+      // shows that it just returns the receiver, unchanged:
+      // https://github.com/ruby/ruby/blob/71bc99900914ef3bc3800a22d9221f5acf528082/array.c#L7810-L7814.
+      input = "Receiver" and
+      output = "ReturnValue" and
       preservesValue = true
     }
   }
@@ -1067,16 +1173,6 @@ module Array {
     }
   }
 
-  private class FilterBangSummary extends SimpleSummarizedCallable {
-    FilterBangSummary() { this = "filter!" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "ArrayElement of Receiver" and
-      output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
-      preservesValue = true
-    }
-  }
-
   private class FlattenSummary extends SimpleSummarizedCallable {
     FlattenSummary() { this = "flatten" }
 
@@ -1115,7 +1211,7 @@ module Array {
   }
 
   private class IndexSummary extends SimpleSummarizedCallable {
-    IndexSummary() { this = "index" }
+    IndexSummary() { this = ["index", "rindex"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "ArrayElement of Receiver" and
@@ -1124,19 +1220,105 @@ module Array {
     }
   }
 
-  private class ReplaceSummary extends SimpleSummarizedCallable {
-    ReplaceSummary() { this = "replace" }
+  abstract private class InsertSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    InsertSummary() { mc.getMethodName() = "insert" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class InsertKnownSummary extends InsertSummary {
+    private int i;
+
+    InsertKnownSummary() {
+      this = "insert(" + i + ")" and
+      i = mc.getArgument(0).getValueText().toInt()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(int numValues, string r |
+        numValues = mc.getNumberOfArguments() - 1 and
+        r = ["ReturnValue", "Receiver"] and
+        preservesValue = true
+      |
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of " + r
+        or
+        exists(ArrayIndex j |
+          // Existing elements before the insertion point are unaffected.
+          j < i and
+          input = "ArrayElement[" + j + "] of Receiver" and
+          output = "ArrayElement[" + j + "] of " + r
+          or
+          // Existing elements after the insertion point are shifted by however
+          // many values we're inserting.
+          j >= i and
+          input = "ArrayElement[" + j + "] of Receiver" and
+          output = "ArrayElement[" + (j + numValues) + "] of " + r
+        )
+        or
+        exists(int j | j in [1 .. numValues] |
+          input = "Argument[" + j + "]" and
+          output = "ArrayElement[" + (i + j - 1) + "] of " + r
+        )
+      )
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
+  private class InsertUnknownSummary extends InsertSummary {
+    InsertUnknownSummary() {
+      this = "insert(index)" and
+      not exists(mc.getArgument(0).getValueText().toInt())
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "ArrayElement[?] of Argument[0]" and
-        output = "ArrayElement[?] of Receiver"
+        input = "ArrayElement of Receiver"
         or
-        exists(ArrayIndex i |
-          input = "ArrayElement[" + i + "] of Argument[0]" and
-          output = "ArrayElement[" + i + "] of Receiver"
+        exists(int j | j in [1 .. mc.getNumberOfArguments() - 1] | input = "Argument[" + j + "]")
+      ) and
+      output = "ArrayElement[?] of " + ["ReturnValue", "Receiver"] and
+      preservesValue = true
+    }
+  }
+
+  private class IntersectionSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    IntersectionSummary() { this = "intersection" and mc.getMethodName() = this }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver"
+        or
+        exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
+          input = "ArrayElement of Argument[" + i + "]"
         )
       ) and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class KeepIfSummary extends SimpleSummarizedCallable {
+    KeepIfSummary() { this = "keep_if" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
+          "Parameter[0] of BlockArgument"
+        ] and
       preservesValue = true
     }
 
@@ -1146,29 +1328,635 @@ module Array {
     }
   }
 
+  abstract private class LastSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    LastSummary() { mc.getMethodName() = "last" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class LastNoArgSummary extends LastSummary {
+    LastNoArgSummary() { this = "last(no_arg)" and mc.getNumberOfArguments() = 0 }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class LastArgSummary extends LastSummary {
+    LastArgSummary() { this = "last(arg)" and mc.getNumberOfArguments() > 0 }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class PackSummary extends SimpleSummarizedCallable {
+    PackSummary() { this = "pack" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  private class PermutationSummary extends SimpleSummarizedCallable {
+    PermutationSummary() { this = ["permutation", "repeated_combination", "repeated_permutation"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver" and
+        output = "ArrayElement[?] of Parameter[0] of BlockArgument"
+        or
+        input = "Receiver" and
+        output = "ReturnValue"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  abstract private class PopSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    PopSummary() { mc.getMethodName() = "pop" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class PopNoArgSummary extends PopSummary {
+    PopNoArgSummary() { this = "pop(no_arg)" and mc.getNumberOfArguments() = 0 }
+
+    // We don't track the length of the array, so we can't model that this
+    // clears the last element of the receiver, and we can't be precise about
+    // which particular element flows to the return value.
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class PopArgSummary extends PopSummary {
+    PopArgSummary() { this = "pop(arg)" and mc.getNumberOfArguments() > 0 }
+
+    // We don't track the length of the array, so we can't model that this
+    // clears elements from the end of the receiver, and we can't be precise
+    // about which particular elements flow to the return value.
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
   private class PrependSummary extends SummarizedCallable {
     private MethodCall mc;
 
+    // `unshift` is an alias for `prepend`
     PrependSummary() {
-      mc.getMethodName() = "prepend" and
+      mc.getMethodName() = ["prepend", "unshift"] and
       this = "prepend(" + mc.getNumberOfArguments() + ")"
     }
 
     override MethodCall getACall() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      exists(ArrayIndex i, int num | num = mc.getNumberOfArguments() and preservesValue = true |
-        input = "ArrayElement[" + i + "] of Receiver" and
-        output = "ArrayElement[" + (i + num) + "] of Receiver"
+      exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          output = "ArrayElement[" + (i + num) + "] of Receiver"
+        )
         or
-        input = "Argument[" + i + "]" and
-        output = "ArrayElement[" + i + "] of Receiver"
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of Receiver"
+        or
+        exists(int i | i in [0 .. (num - 1)] |
+          input = "Argument[" + i + "]" and
+          output = "ArrayElement[" + i + "] of Receiver"
+        )
       )
     }
 
     override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
       pos.isSelf() and
       content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
+  private class ProductSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    ProductSummary() { this = "product" and mc.getMethodName() = this }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver"
+        or
+        exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
+          input = "ArrayElement of Argument[" + i + "]"
+        )
+      ) and
+      output = "ArrayElement[?] of ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class PushSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    // `append` is an alias for `push`
+    PushSummary() { this = ["push", "append"] and mc.getMethodName() = this }
+
+    override MethodCall getACall() { result = mc }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          output = "ArrayElement[" + i + "] of ReturnValue"
+        )
+        or
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ReturnValue"
+        or
+        exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
+          input = "Argument[" + i + "]" and
+          output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        )
+      ) and
+      preservesValue = true
+    }
+  }
+
+  private class ReplaceSummary extends SimpleSummarizedCallable {
+    ReplaceSummary() { this = "replace" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string r | r = ["ReturnValue", "Receiver"] and preservesValue = true |
+        input = "ArrayElement[?] of Argument[0]" and
+        output = "ArrayElement[?] of " + r
+        or
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Argument[0]" and
+          output = "ArrayElement[" + i + "] of " + r
+        )
+      )
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
+  private class ReverseSummary extends SimpleSummarizedCallable {
+    ReverseSummary() { this = "reverse" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class ReverseBangSummary extends SimpleSummarizedCallable {
+    ReverseBangSummary() { this = "reverse!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of " + ["Receiver", "ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class RotateSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    RotateSummary() { mc.getMethodName() = "rotate" }
+
+    override MethodCall getACall() { result = mc }
+  }
+
+  private class RotateKnownSummary extends RotateSummary {
+    private int c;
+
+    RotateKnownSummary() {
+      c = mc.getArgument(0).getValueText().toInt() and
+      this = "rotate(" + c + ")"
+      or
+      not exists(mc.getArgument(0)) and c = 1 and this = "rotate"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          (
+            i < c and output = "ArrayElement[?] of ReturnValue"
+            or
+            i >= c and output = "ArrayElement[" + (i - c) + "] of ReturnValue"
+          )
+        )
+      )
+    }
+  }
+
+  private class RotateUnknownSummary extends RotateSummary {
+    RotateUnknownSummary() {
+      this = "rotate(index)" and
+      exists(mc.getArgument(0)) and
+      not exists(mc.getArgument(0).getValueText().toInt())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  abstract private class RotateBangSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    RotateBangSummary() { mc.getMethodName() = "rotate!" }
+
+    override MethodCall getACall() { result = mc }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
+  private class RotateBangKnownSummary extends RotateBangSummary {
+    private int c;
+
+    RotateBangKnownSummary() {
+      c = mc.getArgument(0).getValueText().toInt() and
+      this = "rotate!(" + c + ")"
+      or
+      not exists(mc.getArgument(0)) and c = 1 and this = "rotate!"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string r | r = ["Receiver", "ReturnValue"] and preservesValue = true |
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of " + r
+        or
+        exists(ArrayIndex i |
+          input = "ArrayElement[" + i + "] of Receiver" and
+          (
+            i < c and output = "ArrayElement[?] of " + r
+            or
+            i >= c and output = "ArrayElement[" + (i - c) + "] of " + r
+          )
+        )
+      )
+    }
+  }
+
+  private class RotateBangUnknownSummary extends RotateBangSummary {
+    RotateBangUnknownSummary() {
+      this = "rotate!(index)" and
+      exists(mc.getArgument(0)) and
+      not exists(mc.getArgument(0).getValueText().toInt())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class SelectBangSummary extends SimpleSummarizedCallable {
+    // `filter!` is an alias for `select!`
+    SelectBangSummary() { this = ["select!", "filter!"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
+  abstract private class ShiftSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    ShiftSummary() { mc.getMethodName() = "shift" }
+
+    override MethodCall getACall() { result = mc }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
+  private class ShiftNoArgSummary extends ShiftSummary {
+    ShiftNoArgSummary() { this = "shift" and not exists(mc.getArgument(0)) }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
+          i = 0 and output = "ReturnValue"
+          or
+          i > 0 and output = "ArrayElement[" + (i - 1) + "] of Receiver"
+        )
+      )
+    }
+  }
+
+  private class ShiftArgKnownSummary extends ShiftSummary {
+    private int n;
+
+    ShiftArgKnownSummary() {
+      n = mc.getArgument(0).getValueText().toInt() and
+      this = "shift(" + n + ")"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
+          i < n and output = "ArrayElement[" + i + "] of ReturnValue"
+          or
+          i >= n and output = "ArrayElement[" + (i - n) + "] of Receiver"
+        )
+      )
+    }
+  }
+
+  private class ShiftArgUnknownSummary extends ShiftSummary {
+    ShiftArgUnknownSummary() {
+      this = "shift(index)" and
+      exists(mc.getArgument(0)) and
+      not exists(mc.getArgument(0).getValueText().toInt())
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  private class ShuffleSummary extends SimpleSummarizedCallable {
+    ShuffleSummary() { this = "shuffle" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class ShuffleBangSummary extends SimpleSummarizedCallable {
+    ShuffleBangSummary() { this = "shuffle!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class SliceBangSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    SliceBangSummary() { mc.getMethodName() = "slice!" }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+
+    override Call getACall() { result = mc }
+  }
+
+  /** A call to `slice!` with a known integer index. */
+  private class SliceBangKnownIndexSummary extends SliceBangSummary {
+    int n;
+
+    SliceBangKnownIndexSummary() {
+      this = "slice!(" + n + ")" and
+      mc.getNumberOfArguments() = 1 and
+      n = getKnownArrayElementContent(mc.getArgument(0)).getIndex()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
+          i < n and output = "ArrayElement[" + i + "] of Receiver"
+          or
+          i = n and output = "ReturnValue"
+          or
+          i > n and output = "ArrayElement[" + (i - 1) + "] of Receiver"
+        )
+      )
+    }
+  }
+
+  /**
+   * A call to `slice!` with a single, unknown argument, which could be either
+   * an integer index or a range.
+   */
+  private class SliceBangUnknownSummary extends SliceBangSummary {
+    SliceBangUnknownSummary() {
+      this = "slice!(index)" and
+      mc.getNumberOfArguments() = 1 and
+      isUnknownArrayElementContent(mc.getArgument(0))
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of Receiver",
+          "ArrayElement[?] of ReturnValue", // Return value is an array if the argument is a range
+          "ReturnValue" // Return value is an element if the argument is an integer
+        ] and
+      preservesValue = true
+    }
+  }
+
+  /** A call to `slice!` with two known arguments or a known range argument. */
+  private class SliceBangRangeKnownSummary extends SliceBangSummary {
+    int start;
+    int end;
+
+    SliceBangRangeKnownSummary() {
+      mc.getNumberOfArguments() = 2 and
+      start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
+      exists(int length | length = mc.getArgument(1).getValueText().toInt() |
+        end = (start + length - 1) and
+        this = "slice!(" + start + ", " + length + ")"
+      )
+      or
+      mc.getNumberOfArguments() = 1 and
+      exists(RangeLiteral rl |
+        rl = mc.getArgument(0) and
+        (
+          start = rl.getBegin().getValueText().toInt() and start >= 0
+          or
+          not exists(rl.getBegin()) and start = 0
+        ) and
+        exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0 |
+          rl.isInclusive() and end = e
+          or
+          rl.isExclusive() and end = e - 1
+        ) and
+        this = "slice!(" + start + ".." + end + ")"
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = ["ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver"]
+        or
+        exists(ArrayIndex i | input = "ArrayElement[" + i + "] of Receiver" |
+          i < start and output = "ArrayElement[" + i + "] of Receiver"
+          or
+          i >= start and i <= end and output = "ArrayElement[" + (i - start) + "] of ReturnValue"
+          or
+          i > end and output = "ArrayElement[" + (i - (end - start + 1)) + "] of Receiver"
+        )
+      )
+    }
+
+    predicate debugDeleteMe(MethodCall c, string input, string output, int s, int e, int ln) {
+      c = mc and
+      s = start and
+      e = end and
+      propagatesFlowExt(input, output, _) and
+      ln = mc.getLocation().getStartLine()
+    }
+  }
+
+  /**
+   * A call to `slice!` with two arguments or a range argument, where at least one
+   * of the start and end/length is unknown.
+   */
+  private class SliceBangRangeUnknownSummary extends SliceBangSummary {
+    SliceBangRangeUnknownSummary() {
+      this = "slice!(range_unknown)" and
+      (
+        mc.getNumberOfArguments() = 2 and
+        (
+          not exists(mc.getArgument(0).getValueText().toInt()) or
+          not exists(mc.getArgument(1).getValueText().toInt())
+        )
+        or
+        mc.getNumberOfArguments() = 1 and
+        exists(RangeLiteral rl | rl = mc.getArgument(0) |
+          exists(rl.getBegin()) and
+          not exists(int b | b = rl.getBegin().getValueText().toInt() and b >= 0)
+          or
+          not exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0)
+        )
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = ["ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  abstract private class ValuesAtSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    bindingset[this]
+    ValuesAtSummary() { mc.getMethodName() = "values_at" }
+
+    override Call getACall() { result = mc }
+  }
+
+  /**
+   * A call to `values_at` where all the arguments are known, positive integers.
+   */
+  private class ValuesAtKnownSummary extends ValuesAtSummary {
+    ValuesAtKnownSummary() {
+      this = "values_at(known)" and
+      forall(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
+        mc.getArgument(i).getValueText().toInt() >= 0
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex elementIndex, int argIndex |
+          argIndex in [0 .. mc.getNumberOfArguments() - 1] and
+          elementIndex = mc.getArgument(argIndex).getValueText().toInt()
+        |
+          input = "ArrayElement[" + elementIndex + "] of Receiver" and
+          output = "ArrayElement[" + argIndex + "] of ReturnValue"
+        )
+      )
+    }
+  }
+
+  /**
+   * A call to `values_at` where at least one of the arguments is not a known,
+   * positive integer.
+   */
+  private class ValuesAtUnknownSummary extends ValuesAtSummary {
+    ValuesAtUnknownSummary() {
+      this = "values_at(unknown)" and
+      exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
+        not exists(int val | val = mc.getArgument(i).getValueText().toInt() and val >= 0)
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
     }
   }
 }
@@ -1202,8 +1990,6 @@ module Enumerable {
 
   private class CollectSummary extends SimpleSummarizedCallable {
     // `map` is an alias of `collect`.
-    // TODO: handle `map!` and `collect!` in the Array module. They were
-    // previously handled here, but they are not Enumerable methods.
     CollectSummary() { this = ["collect", "map"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1227,6 +2013,16 @@ module Enumerable {
       preservesValue = true
       or
       input = "ArrayElement of ReturnValue of BlockArgument" and
+      output = "ArrayElement[?] of ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class CompactSummary extends SimpleSummarizedCallable {
+    CompactSummary() { this = "compact" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
       output = "ArrayElement[?] of ReturnValue" and
       preservesValue = true
     }
@@ -1763,6 +2559,25 @@ module Enumerable {
     }
   }
 
+  private class RejectBangSummary extends SimpleSummarizedCallable {
+    RejectBangSummary() { this = "reject!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of ReturnValue", "ArrayElement[?] of Receiver",
+          "Parameter[0] of BlockArgument"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::ArrayElementContent
+    }
+  }
+
   private class SelectSummary extends SimpleSummarizedCallable {
     // `find_all` and `filter` are aliases of `select`.
     SelectSummary() { this = ["select", "find_all", "filter"] }
@@ -1808,6 +2623,25 @@ module Enumerable {
     }
   }
 
+  private class SortBangSummary extends SimpleSummarizedCallable {
+    SortBangSummary() { this = "sort!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "Parameter[1] of BlockArgument",
+          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
+    }
+  }
+
   private class SortBySummary extends SimpleSummarizedCallable {
     SortBySummary() { this = "sort_by" }
 
@@ -1815,6 +2649,25 @@ module Enumerable {
       input = "ArrayElement of Receiver" and
       output = ["Parameter[0] of BlockArgument", "ArrayElement[?] of ReturnValue"] and
       preservesValue = true
+    }
+  }
+
+  private class SortByBangSummary extends SimpleSummarizedCallable {
+    SortByBangSummary() { this = "sort_by!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "Parameter[0] of BlockArgument", "ArrayElement[?] of Receiver",
+          "ArrayElement[?] of ReturnValue"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
     }
   }
 
@@ -1894,11 +2747,49 @@ module Enumerable {
 
   private class ToASummary extends SimpleSummarizedCallable {
     // `entries` is an alias of `to_a`.
-    ToASummary() { this = ["to_a", "entries"] }
+    // `to_ary` works a bit like `to_a` (close enough for our purposes).
+    ToASummary() { this = ["to_a", "entries", "to_ary"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Receiver" and
       output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  private class TransposeSummary extends SimpleSummarizedCallable {
+    TransposeSummary() { this = "transpose" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      (
+        input = "ArrayElement[?] of ArrayElement[?] of Receiver" and
+        output = "ArrayElement[?] of ArrayElement[?] of ReturnValue"
+        or
+        exists(ArrayIndex i, ArrayIndex j |
+          input = "ArrayElement[" + i + "] of ArrayElement[" + j + "] of Receiver" and
+          output = "ArrayElement[" + j + "] of ArrayElement[" + i + "] of ReturnValue"
+        )
+      )
+    }
+  }
+
+  private class UnionSummary extends SummarizedCallable {
+    MethodCall mc;
+
+    UnionSummary() { this = "union" and mc.getMethodName() = this }
+
+    override MethodCall getACall() { result = mc }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "ArrayElement of Receiver"
+        or
+        exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
+          input = "ArrayElement of Argument[" + i + "]"
+        )
+      ) and
+      output = "ArrayElement[?] of ReturnValue" and
       preservesValue = true
     }
   }
@@ -1910,6 +2801,25 @@ module Enumerable {
       input = "ArrayElement of Receiver" and
       output = ["ArrayElement[?] of ReturnValue", "Parameter[0] of BlockArgument"] and
       preservesValue = true
+    }
+  }
+
+  private class UniqBangSummary extends SimpleSummarizedCallable {
+    UniqBangSummary() { this = "uniq!" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "ArrayElement of Receiver" and
+      output =
+        [
+          "ArrayElement[?] of Receiver", "ArrayElement[?] of ReturnValue",
+          "Parameter[0] of BlockArgument"
+        ] and
+      preservesValue = true
+    }
+
+    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+      pos.isSelf() and
+      content instanceof DataFlow::Content::KnownArrayElementContent
     }
   }
 
@@ -1930,9 +2840,9 @@ module Enumerable {
         input = "ArrayElement of Receiver" and
         output = "ArrayElement[0] of Parameter[0] of BlockArgument"
         or
-        exists(int j | j in [0 .. 5] |
-          input = "ArrayElement of Argument[" + j + "]" and
-          output = "ArrayElement[" + (j + 1) + "] of Parameter[0] of BlockArgument"
+        exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
+          input = "ArrayElement of Argument[" + i + "]" and
+          output = "ArrayElement[" + (i + 1) + "] of Parameter[0] of BlockArgument"
         )
       ) and
       preservesValue = true
@@ -1955,13 +2865,13 @@ module Enumerable {
         output = "ArrayElement[0] of ArrayElement[?] of ReturnValue"
         or
         // arg_j[i] -> return_value[i][j+1]
-        exists(ArrayIndex i, int j | j in [0 .. 5] |
+        exists(ArrayIndex i, int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
           input = "ArrayElement[" + i + "] of Argument[" + j + "]" and
           output = "ArrayElement[" + (j + 1) + "] of ArrayElement[" + i + "] of ReturnValue"
         )
         or
         // arg_j[?] -> return_value[?][j+1]
-        exists(int j | j in [0 .. 5] |
+        exists(int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
           input = "ArrayElement[?] of Argument[" + j + "]" and
           output = "ArrayElement[" + (j + 1) + "] of ArrayElement[?] of ReturnValue"
         )

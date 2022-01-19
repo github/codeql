@@ -6,6 +6,7 @@ import ruby
 import TestUtilities.InlineFlowTest
 import PathGraph
 
+// TODO enable taint flow for this test
 class HasFlowTest extends InlineFlowTest {
   override DataFlow::Configuration getTaintFlowConfig() { none() }
 }
