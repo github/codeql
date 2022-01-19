@@ -4,6 +4,7 @@
  */
 
 import java
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
@@ -85,38 +86,40 @@ private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManip
 private class IntentFlagsOrDataCheckedGuard extends IntentUriPermissionManipulationGuard {
   Expr condition;
 
-  IntentFlagsOrDataCheckedGuard() {
-    this.(MethodAccess).getMethod() instanceof EqualsMethod and
-    condition = [this.(MethodAccess).getArgument(0), this.(MethodAccess).getQualifier()]
+  IntentFlagsOrDataCheckedGuard() { intentFlagsOrDataChecked(this, _, _) }
+
+  override predicate checks(Expr e, boolean branch) { intentFlagsOrDataChecked(this, e, branch) }
+}
+
+/**
+ * Holds if `g` checks `intent` when the result of an `intent.getFlags` or `intent.getData` call
+ * is equality-tested.
+ */
+private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch) {
+  exists(MethodAccess ma, Method m, Expr checkedValue |
+    ma.getQualifier() = intent and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeIntent and
+    m.hasName(["getFlags", "getData"]) and
+    TaintTracking::localExprTaint(ma, checkedValue)
+  |
+    bitwiseCheck(g, branch) and
+    checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
     or
-    condition = this.(EqualityTest).getAnOperand().(AndBitwiseExpr)
-  }
+    g.(MethodAccess).getMethod() instanceof EqualsMethod and
+    branch = true and
+    checkedValue = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()]
+  )
+}
 
-  override predicate checks(Expr e, boolean branch) {
-    exists(MethodAccess ma, Method m |
-      // This checks `intent` when the result of an `intent.getFlags` or `intent.getData` call flows to `condition`
-      // (i.e., that result is equality-tested)
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeIntent and
-      m.hasName(["getFlags", "getData"]) and
-      TaintTracking::localExprTaint(ma, condition) and
-      ma.getQualifier() = e
-    |
-      bitwiseCheck(branch)
-      or
-      this.(MethodAccess).getMethod() instanceof EqualsMethod and branch = true
-    )
-  }
-
-  /**
-   * Holds if `this` is a bitwise check. `branch` is `true` when the expected value is `0`
-   * and `false` otherwise.
-   */
-  private predicate bitwiseCheck(boolean branch) {
-    exists(CompileTimeConstantExpr operand | operand = this.(EqualityTest).getAnOperand() |
-      if operand.getIntValue() = 0
-      then this.(EqualityTest).polarity() = branch
-      else this.(EqualityTest).polarity().booleanNot() = branch
-    )
-  }
+/**
+ * Holds if `g` is a bitwise check. `branch` is `true` when the expected value is `0`
+ * and `false` otherwise.
+ */
+private predicate bitwiseCheck(Guard g, boolean branch) {
+  exists(CompileTimeConstantExpr operand | operand = g.(EqualityTest).getAnOperand() |
+    if operand.getIntValue() = 0
+    then g.(EqualityTest).polarity() = branch
+    else g.(EqualityTest).polarity().booleanNot() = branch
+  )
 }
