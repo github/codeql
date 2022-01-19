@@ -627,10 +627,6 @@ class X {
             else -> listOf()
         }
 
-    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null) : String {
-        return getFunctionLabel(f.parent, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
-    }
-
     fun getEnclosingClass(it: IrDeclarationParent): IrClass? =
         when(it) {
             is IrClass -> it
@@ -638,25 +634,16 @@ class X {
             else -> null
         }
 
-    fun getFunctionLabel(
-        parent: IrDeclarationParent,
-        name: String,
-        parameters: List<IrValueParameter>,
-        returnType: IrType,
-        extensionReceiverParameter: IrValueParameter?,
-        functionTypeParameters: List<IrTypeParameter>,
-        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    ): String {
-        val parentId = useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
-        return getFunctionLabel(parent, parentId, name, parameters, returnType, extensionReceiverParameter, functionTypeParameters, classTypeArgsIncludingOuterClasses)
+    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null) : String {
+        return getFunctionLabel(f, null, classTypeArgsIncludingOuterClasses)
     }
 
-    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         getFunctionLabel(f.parent, parentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
 
     fun getFunctionLabel(
         parent: IrDeclarationParent,
-        parentId: Label<out DbElement>,
+        maybeParentId: Label<out DbElement>?,
         name: String,
         parameters: List<IrValueParameter>,
         returnType: IrType,
@@ -664,6 +651,7 @@ class X {
         functionTypeParameters: List<IrTypeParameter>,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
     ): String {
+        val parentId = maybeParentId ?: useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
         val allParams = if (extensionReceiverParameter == null) {
                             parameters
                         } else {
