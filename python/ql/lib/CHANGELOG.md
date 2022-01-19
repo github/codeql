@@ -1,3 +1,9 @@
+## 0.0.7
+
+### Deprecated APIs
+
+* The `codeql/python-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the `codeql/python-all` CodeQL pack.
+
 ## 0.0.6
 
 ## 0.0.5
