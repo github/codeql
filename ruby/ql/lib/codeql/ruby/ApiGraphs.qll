@@ -254,10 +254,9 @@ module API {
      */
     pragma[nomagic]
     private predicate useRoot(string lbl, DataFlow::Node ref) {
-      exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
-        access = ref.asExpr() and
-        lbl = Label::member(read.getName()) and
-        read = access.getExpr()
+      exists(string name, ConstantReadAccess read |
+        read = ref.asExpr().getExpr() and
+        lbl = Label::member(read.getName())
       |
         name = resolveTopLevel(read)
         or
@@ -388,6 +387,17 @@ module API {
           trackUseNode(src).flowsTo(any(DataFlow::ExprNode n | n.getExprNode() = node)) and
           useStep(lbl, node, ref)
         )
+      )
+      or
+      // `pred` is a use of class A
+      // `succ` is a use of class B
+      // there exists a class declaration B < A
+      exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
+        use(pred, a) and
+        use(succ, b) and
+        resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
+        c.getSuperclassExpr() = a.asExpr().getExpr() and
+        lbl = Label::subclass()
       )
     }
 
