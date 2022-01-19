@@ -451,7 +451,7 @@ namespace Semmle.Extraction.CSharp
         internal static void locations_mapped(this System.IO.TextWriter trapFile, NonGeneratedSourceLocation l1, Location l2) =>
             trapFile.WriteTuple("locations_mapped", l1, l2);
 
-        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode) =>
+        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, ExtractorMode mode) =>
             trapFile.WriteTuple("file_extraction_mode", file, mode);
     }
 }

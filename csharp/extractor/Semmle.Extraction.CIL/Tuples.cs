@@ -206,7 +206,7 @@ namespace Semmle.Extraction.CIL
         internal static Tuple files(File file, string fullName) =>
             new Tuple("files", file, fullName);
 
-        internal static Tuple file_extraction_mode(File file, int mode) =>
+        internal static Tuple file_extraction_mode(File file, ExtractorMode mode) =>
             new Tuple("file_extraction_mode", file, mode);
 
         internal static Tuple folders(Folder folder, string path) =>

@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL
         /// <param name="extractPdbs">Whether to extract PDBs.</param>
         /// <param name="trapFile">The path of the trap file.</param>
         /// <param name="extracted">Whether the file was extracted (false=cached).</param>
-        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression, out string trapFile, out bool extracted)
+        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, CommonOptions options, out string trapFile, out bool extracted)
         {
             trapFile = "";
             extracted = false;
@@ -33,14 +33,14 @@ namespace Semmle.Extraction.CIL
             {
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
                 var pathTransformer = new PathTransformer(canonicalPathCache);
-                var extractor = new TracingExtractor(assemblyPath, logger, pathTransformer);
+                var extractor = new TracingExtractor(assemblyPath, logger, pathTransformer, options);
                 var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
                 var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), trapCompression, discardDuplicates: true);
+                using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), options.TrapCompression, discardDuplicates: true);
                 trapFile = trapWriter.TrapFile;
-                if (nocache || !System.IO.File.Exists(trapFile))
+                if (!options.Cache || !System.IO.File.Exists(trapFile))
                 {
-                    ExtractCIL(extractor, trapWriter, extractPdbs);
+                    ExtractCIL(extractor, trapWriter, options.PDB);
                     extracted = true;
                 }
             }
