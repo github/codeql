@@ -373,13 +373,7 @@ class Function extends ValueEntity, @functionobject {
    * interface method that this function implements.
    */
   pragma[nomagic]
-  DataFlow::CallNode getACall() {
-    // Direct calls to this function
-    this = result.getTarget()
-    or
-    // Direct calls and calls to interface methods that this function implements
-    this = result.getACalleeIncludingExternals().asFunction()
-  }
+  DataFlow::CallNode getACall() { this = result.getACalleeIncludingExternals().asFunction() }
 
   /** Gets the declaration of this function, if any. */
   FuncDecl getFuncDecl() { none() }
