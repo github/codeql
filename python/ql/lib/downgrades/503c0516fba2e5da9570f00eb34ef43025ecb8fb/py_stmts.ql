@@ -6,12 +6,6 @@ class Location extends @location {
     locations_ast(this, _, result, _, _, _)
   }
 
-  /** Gets the start column of this location */
-  int getStartColumn() {
-    locations_default(this, _, _, result, _, _) or
-    locations_ast(this, _, _, result, _, _)
-  }
-
   string toString() { result = "<some file>" + ":" + this.getStartLine().toString() }
 }
 
