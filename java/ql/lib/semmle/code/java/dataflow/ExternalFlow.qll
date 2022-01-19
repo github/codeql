@@ -86,6 +86,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.Widget
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Codec
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
@@ -313,12 +314,6 @@ private predicate summaryModelCsv(string row) {
       "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
       "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint",
       "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint",
       "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
       "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
       "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
