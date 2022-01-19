@@ -534,7 +534,11 @@ class RegexEscaping extends Escaping {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
-  import semmle.python.web.HttpConstants
+  /** Gets an HTTP verb, in upper case */
+  string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
+
+  /** Gets an HTTP verb, in lower case */
+  string httpVerbLower() { result = httpVerb().toLowerCase() }
 
   /** Provides classes for modeling HTTP servers. */
   module Server {
