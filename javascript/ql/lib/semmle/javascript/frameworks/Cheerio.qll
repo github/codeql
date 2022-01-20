@@ -29,7 +29,7 @@ module Cheerio {
   DataFlow::SourceNode cheerioRef() { result = cheerioRef(DataFlow::TypeTracker::end()) }
 
   /**
-   * Creation of `cheerio` object, a collection of virtual DOM elements
+   * A creation of `cheerio` object, a collection of virtual DOM elements
    * with an interface similar to that of a jQuery object.
    */
   class CheerioObjectCreation extends DataFlow::SourceNode instanceof CheerioObjectCreation::Range {
@@ -88,7 +88,7 @@ module Cheerio {
   }
 
   /**
-   * Definition of a DOM attribute through `cheerio`.
+   * A definition of a DOM attribute through `cheerio`.
    */
   class AttributeDef extends DOM::AttributeDefinition {
     DataFlow::CallNode call;
@@ -105,7 +105,7 @@ module Cheerio {
   }
 
   /**
-   * XSS sink through `cheerio`.
+   * An XSS sink through `cheerio`.
    */
   class XssSink extends Xss::DomBasedXss::Sink {
     XssSink() {

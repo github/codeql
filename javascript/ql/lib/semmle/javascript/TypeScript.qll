@@ -1644,7 +1644,7 @@ class EnumMember extends ASTNode, @enum_member {
 }
 
 /**
- * Scope induced by an interface declaration, containing the type parameters declared on the interface.
+ * A scope induced by an interface declaration, containing the type parameters declared on the interface.
  *
  * Interfaces that do not declare type parameters have no scope object.
  */
@@ -1653,7 +1653,7 @@ class InterfaceScope extends @interface_scope, Scope {
 }
 
 /**
- * Scope induced by a type alias declaration, containing the type parameters declared the the alias.
+ * A scope induced by a type alias declaration, containing the type parameters declared the the alias.
  *
  * Type aliases that do not declare type parameters have no scope object.
  */
@@ -1662,14 +1662,14 @@ class TypeAliasScope extends @type_alias_scope, Scope {
 }
 
 /**
- * Scope induced by a mapped type expression, containing the type parameter declared as part of the type.
+ * A scope induced by a mapped type expression, containing the type parameter declared as part of the type.
  */
 class MappedTypeScope extends @mapped_type_scope, Scope {
   override string toString() { result = "mapped type scope" }
 }
 
 /**
- * Scope induced by an enum declaration, containing the names of its enum members.
+ * A scope induced by an enum declaration, containing the names of its enum members.
  *
  * Initializers of enum members are resolved in this scope since they can reference
  * previously-defined enum members by their unqualified name.
@@ -2637,7 +2637,7 @@ class TypeofType extends Type, @typeof_type {
 }
 
 /**
- * One of two values indicating if a signature is a function or constructor signature.
+ * A value indicating if a signature is a function or constructor signature.
  */
 class SignatureKind extends string {
   SignatureKind() { this = "function" or this = "constructor" }
