@@ -75,7 +75,9 @@ abstract class FrameworkLibraryInstance extends TopLevel {
  * via the `src` attribute of a `<script>` element.
  */
 abstract class FrameworkLibraryReference extends HTML::Attribute {
-  FrameworkLibraryReference() { getName() = "src" and getElement() instanceof HTML::ScriptElement }
+  FrameworkLibraryReference() {
+    this.getName() = "src" and this.getElement() instanceof HTML::ScriptElement
+  }
 
   /**
    * Holds if this is a reference to version `v` of framework library `fl`.
@@ -160,7 +162,7 @@ abstract class FrameworkLibraryWithGenericURL extends FrameworkLibraryWithURLReg
   string getAnAlias() { none() }
 
   override string getAURLRegex() {
-    exists(string id | id = getId() or id = getAnAlias() |
+    exists(string id | id = this.getId() or id = this.getAnAlias() |
       result = ".*(?:^|/)" + id + "-(" + semverRegex() + ")" + variantRegex() + "\\.js" or
       result =
         ".*/(?:\\w+@)?(" + semverRegex() + ")/(?:(?:dist|js|" + id + ")/)?" + id + variantRegex() +
@@ -976,7 +978,9 @@ private class TwitterTextClassicInstance extends FrameworkLibraryInstance {
 private class FrameworkLibraryReferenceToInstance extends FrameworkLibraryReference {
   FrameworkLibraryInstance fli;
 
-  FrameworkLibraryReferenceToInstance() { fli = getElement().(HTML::ScriptElement).resolveSource() }
+  FrameworkLibraryReferenceToInstance() {
+    fli = this.getElement().(HTML::ScriptElement).resolveSource()
+  }
 
   override predicate info(FrameworkLibrary fl, string v) { fli.info(fl, v) }
 }

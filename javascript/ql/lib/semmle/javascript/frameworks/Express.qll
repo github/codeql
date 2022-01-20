@@ -84,14 +84,14 @@ module Express {
   }
 
   private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { asExpr() instanceof RouteSetup }
+    RoutingTreeSetup() { this.asExpr() instanceof RouteSetup }
 
     override string getRelativePath() {
-      not getMethodName() = "param" and // do not treat parameter name as a path
-      result = getArgument(0).getStringValue()
+      not this.getMethodName() = "param" and // do not treat parameter name as a path
+      result = this.getArgument(0).getStringValue()
     }
 
-    override HTTP::RequestMethodName getHttpMethod() { result.toLowerCase() = getMethodName() }
+    override HTTP::RequestMethodName getHttpMethod() { result.toLowerCase() = this.getMethodName() }
   }
 
   /**
@@ -117,7 +117,7 @@ module Express {
 
     override predicate isInstalledAt(Routing::Router::Range router, ControlFlowNode cfgNode) {
       router.getAReference().getALocalUse() = limitCall.getArgument(0) and
-      cfgNode = asExpr()
+      cfgNode = this.asExpr()
     }
   }
 
@@ -845,7 +845,7 @@ module Express {
     }
 
     /** Gets a data flow node referring to this router. */
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     /**
      * Holds if `sink` may refer to this router.
