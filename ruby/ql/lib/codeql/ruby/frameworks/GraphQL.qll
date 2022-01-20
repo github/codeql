@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling the `graphql` gem.
+ * Provides classes for modeling the `graphql` gem.
  */
 
 private import codeql.ruby.AST
