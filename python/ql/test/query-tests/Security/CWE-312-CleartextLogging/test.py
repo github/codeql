@@ -59,7 +59,7 @@ def FPs(account, account_id):
     # https://github.com/github/codeql/issues/7116
     logging.error("Misc Exception. User %s: %s", request.user.username)
 
-    # dictionary taint-flow corss-talk
+    # dictionary taint-flow cross-talk
     # https://github.com/github/codeql/issues/6380
     import settings
     config = {
