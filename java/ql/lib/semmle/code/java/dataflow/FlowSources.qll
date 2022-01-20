@@ -109,7 +109,7 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
 }
 
 private class PlayParameterSource extends RemoteFlowSource {
-  PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
+  PlayParameterSource() { this.asParameter() instanceof PlayActionMethodQueryParameter }
 
   override string getSourceType() { result = "Play Query Parameters" }
 }

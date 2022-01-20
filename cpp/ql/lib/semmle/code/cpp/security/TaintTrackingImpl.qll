@@ -258,7 +258,7 @@ private predicate insideFunctionValueMoveTo(Element src, Element dest) {
           format.getConversionChar(sourceArg - ffc.getTarget().getNumberOfParameters()) = ["s", "S"]
         )
         or
-        not exists(FormatLiteral fl | fl = c.(FormattingFunctionCall).getFormat())
+        not c.(FormattingFunctionCall).getFormat() instanceof FormatLiteral
         or
         not c instanceof FormattingFunctionCall
       ) and

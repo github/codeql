@@ -46,7 +46,7 @@ predicate missedAllOpportunity(ForeachStmt fes) {
       bl = a.getRValue() and
       bl.toString() = "false"
     ) and
-    exists(BreakStmt bs | bs = is.getThen().getAChild*())
+    is.getThen().getAChild*() instanceof BreakStmt
   )
 }
 
