@@ -55,20 +55,10 @@ module PkgCloud {
          */
 
         kind = "user name" and
-        (
-          propertyName = "account" or
-          propertyName = "keyId" or
-          propertyName = "storageAccount" or
-          propertyName = "username"
-        )
+        propertyName = ["account", "keyId", "storageAccount", "username"]
         or
         kind = "password" and
-        (
-          propertyName = "key" or
-          propertyName = "apiKey" or
-          propertyName = "storageAccessKey" or
-          propertyName = "password"
-        )
+        propertyName = ["key", "apiKey", "storageAccessKey", "password"]
         or
         kind = "token" and
         propertyName = "token"

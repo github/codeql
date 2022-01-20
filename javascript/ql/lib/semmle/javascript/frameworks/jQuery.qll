@@ -385,12 +385,7 @@ private module JQueryClientRequest {
     string name;
 
     JQueryAjaxShortHand() {
-      (
-        name = "get" or
-        name = "getJSON" or
-        name = "getScript" or
-        name = "post"
-      ) and
+      name = ["get", "getJSON", "getScript", "post"] and
       this = jquery().getAMemberCall(name)
       or
       name = "load" and

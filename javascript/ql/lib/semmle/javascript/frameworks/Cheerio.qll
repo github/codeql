@@ -64,10 +64,10 @@ module Cheerio {
       call = cheerioObjectRef().getAMethodCall(name) and
       result = call
     |
-      if name = "attr" or name = "data" or name = "prop" or name = "css"
+      if name = ["attr", "data", "prop", "css"]
       then call.getNumArgument() = 2
       else
-        if name = "val" or name = "html" or name = "text"
+        if name = ["val", "html", "text"]
         then call.getNumArgument() = 1
         else (
           name != "toString" and

@@ -548,12 +548,7 @@ module NodeJSLib {
 
   /** A file system read. */
   private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
-    NodeJSFileSystemAccessRead() {
-      methodName = "read" or
-      methodName = "readSync" or
-      methodName = "readFile" or
-      methodName = "readFileSync"
-    }
+    NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
 
     override DataFlow::Node getADataNode() {
       if methodName.matches("%Sync")

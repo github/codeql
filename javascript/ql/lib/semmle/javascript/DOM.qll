@@ -176,18 +176,13 @@ module DOM {
       eltName = ["script", "iframe", "embed", "video", "audio", "source", "track"] and
       attrName = "src"
       or
-      (
-        eltName = "link" or
-        eltName = "a" or
-        eltName = "base" or
-        eltName = "area"
-      ) and
+      eltName = ["link", "a", "base", "area"] and
       attrName = "href"
       or
       eltName = "form" and
       attrName = "action"
       or
-      (eltName = "input" or eltName = "button") and
+      eltName = ["input", "button"] and
       attrName = "formaction"
     )
   }

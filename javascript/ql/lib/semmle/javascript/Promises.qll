@@ -157,9 +157,7 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" or m = "any" or m = "allSettled" |
-      this = getAPromiseObject().getAMemberCall(m)
-    )
+    this = getAPromiseObject().getAMemberCall(["all", "race", "any", "allSettled"])
     or
     this = DataFlow::moduleImport("promise.allsettled").getACall()
   }
@@ -654,10 +652,7 @@ private module ClosurePromise {
         succ = call and
         pred = call.getAnArgument()
       |
-        name = "all" or
-        name = "allSettled" or
-        name = "firstFulfilled" or
-        name = "race"
+        name = ["all", "allSettled", "firstFulfilled", "race"]
       )
       or
       // promise created through goog.promise.withResolver()
