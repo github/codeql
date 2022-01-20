@@ -92,5 +92,37 @@ public class Test {
             throw new RuntimeException("Failed to create directory");
         }
     }
+
+    static File safe7() throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        if (!temp.delete() || !temp.mkdir()) {
+            throw new IOException("Can not convert temporary file " + temp + "to directory");
+        } else {
+            return temp;
+        }
+    }
+
+    /**
+     * When `isDirectory` is true, create a temporary directory, else create a temporary file.
+     */
+    static File safe8(boolean isDirectory) throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        if (isDirectory && (!temp.delete() || !temp.mkdir())) {
+            throw new IOException("Can not convert temporary file " + temp + "to directory");
+        } else {
+            return temp;
+        }
+    }
+
+    static File safe9() throws IOException {
+        File temp = File.createTempFile("test", "directory");
+        if (!temp.delete()) {
+            throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
+        }
+        if (!temp.mkdir()) {
+            throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
+        }
+        return temp;
+    }
     
 }
