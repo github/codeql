@@ -167,14 +167,14 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int i |
       this = call.getArgument(i) and
       not this.getExpr() instanceof BlockArgument and
-      not exists(this.getExpr().(Pair).getKey().getValueText()) and
+      not exists(this.getExpr().(Pair).getKey().getConstantValue().getString()) and
       arg.isPositional(i)
     )
     or
     exists(CfgNodes::ExprNodes::PairCfgNode p |
       p = call.getArgument(_) and
       this = p.getValue() and
-      arg.isKeyword(p.getKey().getValueText())
+      arg.isKeyword(p.getKey().getConstantValue().getString())
     )
     or
     this = call.getReceiver() and arg.isSelf()

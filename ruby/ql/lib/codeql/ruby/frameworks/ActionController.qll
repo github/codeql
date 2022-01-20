@@ -176,7 +176,7 @@ class RedirectToCall extends ActionControllerContextCall {
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string methodName |
-      methodName = this.getKeywordArgument("action").(StringlikeLiteral).getValueText() and
+      this.getKeywordArgument("action").getConstantValue().isString(methodName) and
       methodName = result.getName() and
       result.getEnclosingModule() = this.getControllerClass()
     )
@@ -225,7 +225,7 @@ class ActionControllerHelperMethod extends Method {
     this.getEnclosingModule() = controllerClass and
     exists(MethodCall helperMethodMarker |
       helperMethodMarker.getMethodName() = "helper_method" and
-      helperMethodMarker.getAnArgument().(StringlikeLiteral).getValueText() = this.getName() and
+      helperMethodMarker.getAnArgument().getConstantValue().isString(this.getName()) and
       helperMethodMarker.getEnclosingModule() = controllerClass
     )
   }
@@ -291,7 +291,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
       call.getMethodName() = "skip_forgery_protection"
       or
       call.getMethodName() = "skip_before_action" and
-      call.getAnArgument().(SymbolLiteral).getValueText() = "verify_authenticity_token"
+      call.getAnArgument().getConstantValue().isString("verify_authenticity_token")
     )
   }
 
@@ -309,7 +309,9 @@ private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetti
     callExpr.getMethodName() = "protect_from_forgery"
   }
 
-  private string getWithValueText() { result = callExpr.getKeywordArgument("with").getValueText() }
+  private string getWithValueText() {
+    result = callExpr.getKeywordArgument("with").getConstantValue().getString()
+  }
 
   // Calls without `with: :exception` can allow for bypassing CSRF protection
   // in some scenarios.

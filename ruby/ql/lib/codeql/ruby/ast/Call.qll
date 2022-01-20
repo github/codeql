@@ -41,7 +41,7 @@ class Call extends Expr instanceof CallImpl {
   final Expr getKeywordArgument(string keyword) {
     exists(Pair p |
       p = this.getAnArgument() and
-      p.getKey().(SymbolLiteral).getValueText() = keyword and
+      p.getKey().(SymbolLiteral).getConstantValue().isString(keyword) and
       result = p.getValue()
     )
   }
