@@ -48,10 +48,7 @@ private module AlgorithmNames {
   }
 
   predicate isStrongPasswordHashingAlgorithm(string name) {
-    name = "ARGON2" or
-    name = "PBKDF2" or
-    name = "BCRYPT" or
-    name = "SCRYPT"
+    name = ["ARGON2", "PBKDF2", "BCRYPT", "SCRYPT"]
   }
 
   predicate isWeakPasswordHashingAlgorithm(string name) { none() }
