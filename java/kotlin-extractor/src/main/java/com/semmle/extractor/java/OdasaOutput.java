@@ -272,7 +272,7 @@ public class OdasaOutput {
 		File trap = getTrapFileForClassFile(sym);
 		if (trap==null)
 			return null;
-		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym);
+		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 		if (trap.exists()) {
 			// Only re-write an existing trap file if we encountered a newer version of the same class.
 			TrapClassVersion trapVersion = readVersionInfo(trap);
@@ -337,7 +337,7 @@ public class OdasaOutput {
 			File metadataFile = new File(trapFile.getAbsolutePath().replace(".trap.gz", ".metadata"));
 			try {
 				Map<String, String> versionMap = new LinkedHashMap<>();
-				TrapClassVersion tcv = TrapClassVersion.fromSymbol(sym);
+				TrapClassVersion tcv = TrapClassVersion.fromSymbol(sym, log);
 				versionMap.put(MAJOR_VERSION, String.valueOf(tcv.getMajorVersion()));
 				versionMap.put(MINOR_VERSION, String.valueOf(tcv.getMinorVersion()));
 				versionMap.put(LAST_MODIFIED, String.valueOf(tcv.getLastModified()));
@@ -517,7 +517,7 @@ public class OdasaOutput {
 					(tcv.majorVersion == majorVersion && tcv.minorVersion == minorVersion &&
 					tcv.lastModified < lastModified);
 		}
-		private static TrapClassVersion fromSymbol(IrClass sym) {
+		private static TrapClassVersion fromSymbol(IrClass sym, Logger log) {
 			VirtualFile vf = getIrClassVirtualFile(sym);
 			if(vf == null)
 				return new TrapClassVersion(0, 0, 0);
@@ -554,11 +554,11 @@ public class OdasaOutput {
 				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp());
 			}
 			catch(IllegalAccessException e) {
-				// TODO: Log something
+				log.warn("Failed to read class file version information", e);
 				return new TrapClassVersion(0, 0, 0);
 			}
 			catch(IOException e) {
-				// TODO: Log something
+				log.warn("Failed to read class file version information", e);
 				return new TrapClassVersion(0, 0, 0);
 			}
 		}
