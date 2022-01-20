@@ -486,25 +486,6 @@ XXX delete?
                 primitiveInfo.javaClass,
                 primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
             )
-/*
-TODO: Test case: nullable and has-question-mark type variables:
-class X {
-    fun <T : Int> f1(t: T?) {
-        f1(null)
-    }
-
-    fun <T : Int?> f2(t: T) {
-        f2(null)
-    }
-}
-
-TODO: Test case: This breaks kotlinc codegen currently, but up to IR is OK, so we can still have it in a qltest
-class X {
-    fun <T : Int> f1(t: T?) {
-        f1(null)
-    }
-}
-*/
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 var dimensions = 1
