@@ -92,6 +92,25 @@ public class J
         Sink(s4.Prop); // no flow
     }
 
+    private void M5()
+    {
+        var o = Source<object>(7);
+        object @null = null;
+        var a1 = new { X = o, Y = @null };
+
+        var a2 = a1 with { };
+        Sink(a2.X); // $ hasValueFlow=7
+        Sink(a2.Y); // no flow
+
+        var a3 = a1 with { Y = Source<object>(8) };
+        Sink(a3.X); // $ hasValueFlow=7
+        Sink(a3.Y); // $ hasValueFlow=8
+
+        var a4 = a1 with { X = @null };
+        Sink(a4.X); // no flow
+        Sink(a4.Y); // no flow
+    }
+
     public static void Sink(object o) { }
 
     static T Source<T>(object source) => throw null;
