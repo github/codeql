@@ -694,15 +694,13 @@ module TaintTracking {
         )
         or
         // `(encode|decode)URI(Component)?` propagate taint
-        exists(DataFlow::CallNode c, string name |
+        exists(DataFlow::CallNode c |
           succ = c and
-          c = DataFlow::globalVarRef(name).getACall() and
+          c =
+            DataFlow::globalVarRef([
+                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent"
+              ]).getACall() and
           pred = c.getArgument(0)
-        |
-          name = "encodeURI" or
-          name = "decodeURI" or
-          name = "encodeURIComponent" or
-          name = "decodeURIComponent"
         )
         or
         // In and out of .replace callbacks

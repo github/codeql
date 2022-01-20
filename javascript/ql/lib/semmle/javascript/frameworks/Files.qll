@@ -159,7 +159,7 @@ private module FStream {
         or
         readOrWrite = "Writer" and writer = true
       ) and
-      (subMod = "File" or subMod = "Dir" or subMod = "Link" or subMod = "Proxy")
+      subMod = ["File", "Dir", "Link", "Proxy"]
     |
       result = mod.getAPropertyRead(readOrWrite) or
       result = mod.getAPropertyRead(readOrWrite).getAPropertyRead(subMod) or
