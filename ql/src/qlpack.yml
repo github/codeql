@@ -1,5 +1,5 @@
 name: codeql/go-queries
-version: 0.0.6
+version: 0.0.7-dev
 groups: go
 suites: codeql-suites
 extractor: go
