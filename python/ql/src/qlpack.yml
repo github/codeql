@@ -1,5 +1,5 @@
 name: codeql/python-queries
-version: 0.0.7
+version: 0.0.8-dev
 groups: python
 dependencies:
     codeql/python-all: "*"
