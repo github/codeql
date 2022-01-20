@@ -10,44 +10,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 
-private class GraphqlRelayClassicMutationAccess extends ConstantReadAccess {
-  //GraphQL::Schema::RelayClassicMutation
-  GraphqlRelayClassicMutationAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("RelayClassicMutation")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
-
-private class GraphqlSchemaResolverAccess extends ConstantReadAccess {
-  //GraphQL::Schema::Resolver
-  GraphqlSchemaResolverAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("Resolver")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
-
-private class GraphqlSchemaObjectAccess extends ConstantReadAccess {
-  //GraphQL::Schema::Object
-  GraphqlSchemaObjectAccess() {
-    this =
-      API::getTopLevelMember("GraphQL")
-          .getMember("Schema")
-          .getMember("Object")
-          .getAUse()
-          .asExpr()
-          .getExpr()
-  }
-}
+private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").getMember("Schema") }
 
 /**
  * A `ClassDeclaration` for a class that extends `GraphQL::Schema::RelayClassicMutation`.
@@ -77,13 +40,8 @@ private class GraphqlSchemaObjectAccess extends ConstantReadAccess {
  */
 private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
   GraphqlRelayClassicMutationClass() {
-    // class BaseMutation < GraphQL::Schema::RelayClassicMutation
-    this.getSuperclassExpr() instanceof GraphqlRelayClassicMutationAccess
-    or
-    // class MyMutation < BaseMutation
-    exists(GraphqlRelayClassicMutationClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("RelayClassicMutation").getASubclass*().getAUse().asExpr().getExpr()
   }
 }
 
@@ -112,13 +70,8 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
  */
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
-    // class BaseResolver < GraphQL::Schema::Resolver
-    this.getSuperclassExpr() instanceof GraphqlSchemaResolverAccess
-    or
-    // class MyResolver < BaseResolver
-    exists(GraphqlSchemaResolverClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("Resolver").getASubclass*().getAUse().asExpr().getExpr()
   }
 }
 
@@ -138,13 +91,8 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
  */
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
-    // class BaseObject < GraphQL::Schema::Object
-    this.getSuperclassExpr() instanceof GraphqlSchemaObjectAccess
-    or
-    // class MyObject < BaseObject
-    exists(GraphqlSchemaObjectClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
-    )
+    this.getSuperclassExpr() =
+      graphQlSchema().getMember("Object").getASubclass*().getAUse().asExpr().getExpr()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */
