@@ -10,7 +10,7 @@ private import semmle.python.Frameworks
 private import semmle.python.Concepts
 
 /**
- * A data flow source of remote user input.
+ * A data flow source of local user input.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LocalFlowSource::Range` instead.
@@ -20,20 +20,20 @@ class LocalFlowSource extends DataFlow::Node {
 
   LocalFlowSource() { this = self }
 
-  /** Gets a string that describes the type of this remote flow source. */
+  /** Gets a string that describes the type of this local flow source. */
   string getSourceType() { result = self.getSourceType() }
 }
 
-/** Provides a class for modeling new sources of remote user input. */
+/** Provides a class for modeling new sources of local user input. */
 module LocalFlowSource {
   /**
-   * A data flow source of remote user input.
+   * A data flow source of local user input.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `LocalFlowSource` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Gets a string that describes the type of this remote flow source. */
+    /** Gets a string that describes the type of this local flow source. */
     abstract string getSourceType();
   }
 }
