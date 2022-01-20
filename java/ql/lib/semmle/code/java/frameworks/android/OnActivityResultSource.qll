@@ -46,7 +46,7 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
             .getDeclaringType()
             .hasQualifiedName(["android.app", "android.support.v4.app", "androidx.fragment.app"],
               "FragmentTransaction") and
-        any(Argument arg | arg = ma.getAnArgument()).getType() = startingType
+        ma.getAnArgument().getType() = startingType
         or
         ma.getMethod().hasName("show") and
         ma.getMethod()
