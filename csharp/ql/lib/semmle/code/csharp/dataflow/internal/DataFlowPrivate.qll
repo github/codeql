@@ -950,7 +950,7 @@ private module ParameterNodes {
     LocalScopeVariable getVariable() { result = def.getVariable() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      pos.isImplicitCapturedParameterPosition(def) and
+      pos.isImplicitCapturedParameterPosition(def.getSourceVariable().getAssignable()) and
       c = this.getEnclosingCallable()
     }
   }
@@ -1031,30 +1031,9 @@ private module ArgumentNodes {
 
     ImplicitCapturedArgumentNode() { this = TImplicitCapturedArgumentNode(cfn, v) }
 
-    /** Holds if the value at this node may flow into the implicit parameter `p`. */
-    private predicate flowsInto(ImplicitCapturedParameterNode p, boolean additionalCalls) {
-      exists(Ssa::ImplicitEntryDefinition def, Ssa::ExplicitDefinition edef |
-        def = p.getDefinition()
-      |
-        edef.isCapturedVariableDefinitionFlowIn(def, cfn, additionalCalls) and
-        v = def.getSourceVariable().getAssignable()
-      )
-    }
-
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      exists(
-        ImplicitCapturedParameterNode p, boolean additionalCalls, ParameterPosition ppos,
-        SsaCapturedEntryDefinition def
-      |
-        this.flowsInto(p, additionalCalls) and
-        p.isParameterOf(call.getARuntimeTarget(), ppos) and
-        pos.isImplicitCapturedArgumentPosition(def) and
-        ppos.isImplicitCapturedParameterPosition(def) and
-        call.getControlFlowNode() = cfn and
-        if call instanceof TransitiveCapturedDataFlowCall
-        then additionalCalls = true
-        else additionalCalls = false
-      )
+      pos.isImplicitCapturedArgumentPosition(v) and
+      call.getControlFlowNode() = cfn
     }
 
     override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }

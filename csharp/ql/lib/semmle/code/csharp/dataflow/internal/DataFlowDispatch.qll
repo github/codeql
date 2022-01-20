@@ -116,17 +116,23 @@ private module Cached {
   cached
   DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
 
+  private predicate capturedWithFlowIn(LocalScopeVariable v) {
+    exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, _, _) |
+      v = def.getSourceVariable().getAssignable()
+    )
+  }
+
   cached
   newtype TParameterPosition =
     TPositionalParameterPosition(int i) { i = any(Parameter p).getPosition() } or
     TThisParameterPosition() or
-    TImplicitCapturedParameterPosition(SsaCapturedEntryDefinition def)
+    TImplicitCapturedParameterPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
 
   cached
   newtype TArgumentPosition =
     TPositionalArgumentPosition(int i) { i = any(Parameter p).getPosition() } or
     TQualifierArgumentPosition() or
-    TImplicitCapturedArgumentPosition(SsaCapturedEntryDefinition def)
+    TImplicitCapturedArgumentPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
 }
 
 import Cached
@@ -432,8 +438,8 @@ class ParameterPosition extends TParameterPosition {
   predicate isThisParameter() { this = TThisParameterPosition() }
 
   /** Holds if this position is used to model flow through captured variables. */
-  predicate isImplicitCapturedParameterPosition(SsaCapturedEntryDefinition def) {
-    this = TImplicitCapturedParameterPosition(def)
+  predicate isImplicitCapturedParameterPosition(LocalScopeVariable v) {
+    this = TImplicitCapturedParameterPosition(v)
   }
 
   /** Gets a textual representation of this position. */
@@ -442,8 +448,8 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isThisParameter() and result = "this"
     or
-    exists(SsaCapturedEntryDefinition def |
-      this.isImplicitCapturedParameterPosition(def) and result = "captured " + def
+    exists(LocalScopeVariable v |
+      this.isImplicitCapturedParameterPosition(v) and result = "captured " + v
     )
   }
 }
@@ -457,8 +463,8 @@ class ArgumentPosition extends TArgumentPosition {
   predicate isQualifier() { this = TQualifierArgumentPosition() }
 
   /** Holds if this position is used to model flow through captured variables. */
-  predicate isImplicitCapturedArgumentPosition(SsaCapturedEntryDefinition def) {
-    this = TImplicitCapturedArgumentPosition(def)
+  predicate isImplicitCapturedArgumentPosition(LocalScopeVariable v) {
+    this = TImplicitCapturedArgumentPosition(v)
   }
 
   /** Gets a textual representation of this position. */
@@ -467,8 +473,8 @@ class ArgumentPosition extends TArgumentPosition {
     or
     this.isQualifier() and result = "qualifier"
     or
-    exists(SsaCapturedEntryDefinition def |
-      this.isImplicitCapturedArgumentPosition(def) and result = "captured " + def
+    exists(LocalScopeVariable v |
+      this.isImplicitCapturedArgumentPosition(v) and result = "captured " + v
     )
   }
 }
@@ -479,8 +485,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isThisParameter() and apos.isQualifier()
   or
-  exists(SsaCapturedEntryDefinition def |
-    ppos.isImplicitCapturedParameterPosition(def) and
-    apos.isImplicitCapturedArgumentPosition(def)
+  exists(LocalScopeVariable v |
+    ppos.isImplicitCapturedParameterPosition(v) and
+    apos.isImplicitCapturedArgumentPosition(v)
   )
 }
