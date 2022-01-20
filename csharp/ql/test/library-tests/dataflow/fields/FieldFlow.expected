@@ -456,6 +456,14 @@ edges
 | F.cs:23:32:23:48 | call to method Source<Object> : Object | F.cs:23:21:23:50 | { ..., ... } [field Field2] : Object |
 | F.cs:25:14:25:14 | access to local variable f [field Field2] : Object | F.cs:25:14:25:21 | access to field Field2 |
 | F.cs:25:14:25:14 | access to local variable f [field Field2] : Object | F.cs:25:14:25:21 | access to field Field2 |
+| F.cs:30:17:30:33 | call to method Source<Object> : Object | F.cs:32:27:32:27 | access to local variable o : Object |
+| F.cs:30:17:30:33 | call to method Source<Object> : Object | F.cs:32:27:32:27 | access to local variable o : Object |
+| F.cs:32:17:32:40 | { ..., ... } [property X] : Object | F.cs:33:14:33:14 | access to local variable a [property X] : Object |
+| F.cs:32:17:32:40 | { ..., ... } [property X] : Object | F.cs:33:14:33:14 | access to local variable a [property X] : Object |
+| F.cs:32:27:32:27 | access to local variable o : Object | F.cs:32:17:32:40 | { ..., ... } [property X] : Object |
+| F.cs:32:27:32:27 | access to local variable o : Object | F.cs:32:17:32:40 | { ..., ... } [property X] : Object |
+| F.cs:33:14:33:14 | access to local variable a [property X] : Object | F.cs:33:14:33:16 | access to property X |
+| F.cs:33:14:33:14 | access to local variable a [property X] : Object | F.cs:33:14:33:16 | access to property X |
 | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | G.cs:9:23:9:23 | access to local variable e : Elem |
 | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | G.cs:9:23:9:23 | access to local variable e : Elem |
 | G.cs:9:9:9:9 | [post] access to local variable b [field Box1, field Elem] : Elem | G.cs:10:18:10:18 | access to local variable b [field Box1, field Elem] : Elem |
@@ -1367,6 +1375,16 @@ nodes
 | F.cs:25:14:25:14 | access to local variable f [field Field2] : Object | semmle.label | access to local variable f [field Field2] : Object |
 | F.cs:25:14:25:21 | access to field Field2 | semmle.label | access to field Field2 |
 | F.cs:25:14:25:21 | access to field Field2 | semmle.label | access to field Field2 |
+| F.cs:30:17:30:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| F.cs:30:17:30:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| F.cs:32:17:32:40 | { ..., ... } [property X] : Object | semmle.label | { ..., ... } [property X] : Object |
+| F.cs:32:17:32:40 | { ..., ... } [property X] : Object | semmle.label | { ..., ... } [property X] : Object |
+| F.cs:32:27:32:27 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| F.cs:32:27:32:27 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| F.cs:33:14:33:14 | access to local variable a [property X] : Object | semmle.label | access to local variable a [property X] : Object |
+| F.cs:33:14:33:14 | access to local variable a [property X] : Object | semmle.label | access to local variable a [property X] : Object |
+| F.cs:33:14:33:16 | access to property X | semmle.label | access to property X |
+| F.cs:33:14:33:16 | access to property X | semmle.label | access to property X |
 | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
 | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
 | G.cs:9:9:9:9 | [post] access to local variable b [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b [field Box1, field Elem] : Elem |
@@ -1952,6 +1970,7 @@ subpaths
 | F.cs:17:14:17:21 | access to field Field2 | F.cs:15:26:15:42 | call to method Source<Object> : Object | F.cs:17:14:17:21 | access to field Field2 | $@ | F.cs:15:26:15:42 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | F.cs:20:14:20:21 | access to field Field1 | F.cs:19:32:19:48 | call to method Source<Object> : Object | F.cs:20:14:20:21 | access to field Field1 | $@ | F.cs:19:32:19:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | F.cs:25:14:25:21 | access to field Field2 | F.cs:23:32:23:48 | call to method Source<Object> : Object | F.cs:25:14:25:21 | access to field Field2 | $@ | F.cs:23:32:23:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| F.cs:33:14:33:16 | access to property X | F.cs:30:17:30:33 | call to method Source<Object> : Object | F.cs:33:14:33:16 | access to property X | $@ | F.cs:30:17:30:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | G.cs:39:14:39:35 | call to method GetElem | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:7:18:7:32 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
 | G.cs:39:14:39:35 | call to method GetElem | G.cs:15:18:15:32 | call to method Source<Elem> : Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:15:18:15:32 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
 | G.cs:39:14:39:35 | call to method GetElem | G.cs:23:18:23:32 | call to method Source<Elem> : Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:23:18:23:32 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |

@@ -1481,6 +1481,8 @@ class FieldOrProperty extends Assignable, Modifiable {
           p.isAutoImplemented()
           or
           p.matchesHandle(any(CIL::TrivialProperty tp))
+          or
+          p.getDeclaringType() instanceof AnonymousClass
         )
       )
   }
