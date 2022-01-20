@@ -3,7 +3,6 @@ package com.github.codeql
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.*
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -89,30 +88,33 @@ fun doFile(invocationTrapFile: String,
            fileTrapWriter: FileTrapWriter,
            checkTrapIdentical: Boolean,
            logCounter: LogCounter,
-           trapDir: File,
-           srcDir: File,
-           file: IrFile,
+           dbTrapDir: File,
+           dbSrcDir: File,
+           srcFile: IrFile,
            primitiveTypeMapping: PrimitiveTypeMapping,
            pluginContext: IrPluginContext,
            genericSpecialisationsExtracted: MutableSet<String>) {
-    val filePath = file.path
+    val srcFilePath = srcFile.path
     val logger = FileLogger(logCounter, fileTrapWriter)
-    logger.info("Extracting file $filePath")
+    logger.info("Extracting file $srcFilePath")
     logger.flush()
-    val dest = Paths.get("$srcDir/${file.path}")
-    val destDir = dest.getParent()
-    Files.createDirectories(destDir)
-    val srcTmpFile = File.createTempFile(dest.getFileName().toString() + ".", ".src.tmp", destDir.toFile())
-    val srcTmpOS = FileOutputStream(srcTmpFile)
-    Files.copy(Paths.get(file.path), srcTmpOS)
-    srcTmpOS.close()
-    srcTmpFile.renameTo(dest.toFile())
 
-    val trapFile = File("$trapDir/$filePath.trap")
-    val trapFileDir = trapFile.getParentFile()
+    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFilePath")
+    val dbSrcDirPath = dbSrcFilePath.parent
+    Files.createDirectories(dbSrcDirPath)
+    val srcTmpFile = File.createTempFile(dbSrcFilePath.fileName.toString() + ".", ".src.tmp", dbSrcDirPath.toFile())
+    srcTmpFile.outputStream().use {
+        Files.copy(Paths.get(srcFilePath), it)
+    }
+    srcTmpFile.renameTo(dbSrcFilePath.toFile())
+
+    val trapFile = File("$dbTrapDir/$srcFilePath.trap")
+    val trapFileDir = trapFile.parentFile
     trapFileDir.mkdirs()
+
     if (checkTrapIdentical || !trapFile.exists()) {
-        val trapTmpFile = File.createTempFile("$filePath.", ".trap.tmp", trapFileDir)
+        val trapTmpFile = File.createTempFile("$srcFilePath.", ".trap.tmp", trapFileDir)
+        var hasError = false
         trapTmpFile.bufferedWriter().use { trapFileBW ->
             // We want our comments to be the first thing in the file,
             // so start off with a mere TrapWriter
@@ -121,28 +123,40 @@ fun doFile(invocationTrapFile: String,
             tw.writeComment("Part of invocation $invocationTrapFile")
             // Now elevate to a SourceFileTrapWriter, and populate the
             // file information
-            val sftw = tw.makeSourceFileTrapWriter(file, true)
-            val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, file.path, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
-            val fileExtractor = KotlinFileExtractor(logger, sftw, file.path, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
-            fileExtractor.extractFileContents(file, sftw.fileId)
-            externalClassExtractor.extractExternalClasses()
+            val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
+            val externalClassExtractor = ExternalClassExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            val fileExtractor = KotlinFileExtractor(logger, sftw, srcFilePath, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+            try {
+                fileExtractor.extractFileContents(srcFile, sftw.fileId)
+                externalClassExtractor.extractExternalClasses()
+            } catch (e: Exception) {
+                hasError = true
+                logger.error("Failed to extract '$srcFilePath'", e)
+            }
         }
-        if (checkTrapIdentical && trapFile.exists()) {
-            if(equivalentTrap(trapTmpFile, trapFile)) {
-                if(!trapTmpFile.delete()) {
-                    logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
-                }
-            } else {
-                val trapDifferentFile = File.createTempFile("$filePath.", ".trap.different", trapDir)
-                if(trapTmpFile.renameTo(trapDifferentFile)) {
-                    logger.warn(Severity.Warn, "TRAP difference: $trapFile vs $trapDifferentFile")
-                } else {
-                    logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
-                }
+
+        if (hasError) {
+            if (!trapTmpFile.delete()) {
+                logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
             }
         } else {
-            if(!trapTmpFile.renameTo(trapFile)) {
-                logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
+            if (checkTrapIdentical && trapFile.exists()) {
+                if (equivalentTrap(trapTmpFile, trapFile)) {
+                    if (!trapTmpFile.delete()) {
+                        logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
+                    }
+                } else {
+                    val trapDifferentFile = File.createTempFile("$srcFilePath.", ".trap.different", dbTrapDir)
+                    if (trapTmpFile.renameTo(trapDifferentFile)) {
+                        logger.warn(Severity.Warn, "TRAP difference: $trapFile vs $trapDifferentFile")
+                    } else {
+                        logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
+                    }
+                }
+            } else {
+                if (!trapTmpFile.renameTo(trapFile)) {
+                    logger.warn(Severity.WarnLow, "Failed to rename $trapTmpFile to $trapFile")
+                }
             }
         }
     }

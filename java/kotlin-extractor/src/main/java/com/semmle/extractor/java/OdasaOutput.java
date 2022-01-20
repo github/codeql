@@ -310,6 +310,7 @@ public class OdasaOutput {
 		private TrapDependencies trapDependenciesForClass;
 		private File trapFile;
 		private IrClass sym;
+		private boolean hasError = false;
 
 		private TrapFileManager(File trapFile, String relative, boolean concurrentCreation, Logger log, IrClass sym) {
 			trapDependenciesForClass = new TrapDependencies(relative);
@@ -326,6 +327,10 @@ public class OdasaOutput {
 		}
 
 		public void close() {
+			if (hasError) {
+				return;
+			}
+
 			writeTrapDependencies(trapDependenciesForClass);
 			// Record major/minor version information for extracted class files.
 			// This is subsequently used to determine whether to re-extract (a newer version of) the same class.
@@ -345,6 +350,10 @@ public class OdasaOutput {
 			String dep = trapDependencies.trapFile().replace(".trap.gz", ".dep");
 			trapDependencies.save(
 					currentSpecFileEntry.getTrapFolder().toPath().resolve(dep));
+		}
+
+		public void closeWithoutAdditionalFiles() {
+			hasError = true;
 		}
 	}
 
