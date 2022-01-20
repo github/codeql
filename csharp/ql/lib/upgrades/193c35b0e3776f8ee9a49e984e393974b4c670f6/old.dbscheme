@@ -385,7 +385,7 @@ directive_endregions(
 
 directive_lines(
   unique int id: @directive_line,
-  int kind: int ref); /* 0: default, 1: hidden, 2: numeric, 3: span */
+  int kind: int ref); /* 0: default, 1: hidden, 2: numeric */
 
 directive_line_value(
   unique int id: @directive_line ref,
@@ -393,18 +393,8 @@ directive_line_value(
 
 directive_line_file(
   unique int id: @directive_line ref,
-  int file: @file ref);
-
-directive_line_offset(
-  unique int id: @directive_line ref,
-  int offset: int ref);
-
-directive_line_span(
-  unique int id: @directive_line ref,
-  int startLine: int ref,
-  int startColumn: int ref,
-  int endLine: int ref,
-  int endColumn: int ref);
+  int file: @file ref
+)
 
 directive_nullables(
   unique int id: @directive_nullable,

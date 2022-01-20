@@ -5,36 +5,28 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class LineDirective : PreprocessorDirective<LineDirectiveTriviaSyntax>
+    internal class LineDirective : LineOrSpanDirective<LineDirectiveTriviaSyntax>
     {
         private LineDirective(Context cx, LineDirectiveTriviaSyntax trivia)
-            : base(cx, trivia)
+            : base(cx, trivia, trivia.Line.Kind() switch
+            {
+                SyntaxKind.DefaultKeyword => LineDirectiveKind.Default,
+                SyntaxKind.HiddenKeyword => LineDirectiveKind.Hidden,
+                SyntaxKind.NumericLiteralToken => LineDirectiveKind.Numeric,
+                _ => throw new InternalError(trivia, "Unhandled line token kind")
+            })
         {
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            var type = Symbol.Line.Kind() switch
-            {
-                SyntaxKind.DefaultKeyword => 0,
-                SyntaxKind.HiddenKeyword => 1,
-                SyntaxKind.NumericLiteralToken => 2,
-                _ => throw new InternalError(Symbol, "Unhandled line token kind")
-            };
-
-            trapFile.directive_lines(this, type);
-
             if (Symbol.Line.IsKind(SyntaxKind.NumericLiteralToken))
             {
                 var value = (int)Symbol.Line.Value!;
                 trapFile.directive_line_value(this, value);
-
-                if (!string.IsNullOrWhiteSpace(Symbol.File.ValueText))
-                {
-                    var file = File.Create(Context, Symbol.File.ValueText);
-                    trapFile.directive_line_file(this, file);
-                }
             }
+
+            base.PopulatePreprocessor(trapFile);
         }
 
         public static LineDirective Create(Context cx, LineDirectiveTriviaSyntax line) =>
