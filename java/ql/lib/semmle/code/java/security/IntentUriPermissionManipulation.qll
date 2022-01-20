@@ -67,11 +67,14 @@ private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManip
       this.asExpr() = ma.getQualifier()
     |
       m.hasName("removeFlags") and
-      bitwiseLocalTaintStep*(any(GrantReadUriPermissionFlag f).getAnAccess(), ma.getArgument(0)) and
-      bitwiseLocalTaintStep*(any(GrantWriteUriPermissionFlag f).getAnAccess(), ma.getArgument(0))
+      bitwiseLocalTaintStep*(DataFlow::exprNode(any(GrantReadUriPermissionFlag f).getAnAccess()),
+        DataFlow::exprNode(ma.getArgument(0))) and
+      bitwiseLocalTaintStep*(DataFlow::exprNode(any(GrantWriteUriPermissionFlag f).getAnAccess()),
+        DataFlow::exprNode(ma.getArgument(0)))
       or
       m.hasName("setFlags") and
-      not bitwiseLocalTaintStep*(any(GrantUriPermissionFlag f).getAnAccess(), ma.getArgument(0))
+      not bitwiseLocalTaintStep*(DataFlow::exprNode(any(GrantUriPermissionFlag f).getAnAccess()),
+        DataFlow::exprNode(ma.getArgument(0)))
       or
       m.hasName("setData")
     )
@@ -110,7 +113,7 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeIntent and
     m.hasName(["getFlags", "getData"]) and
-    bitwiseLocalTaintStep*(ma, checkedValue)
+    bitwiseLocalTaintStep*(DataFlow::exprNode(ma), DataFlow::exprNode(checkedValue))
   |
     bitwiseCheck(g, branch) and
     checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
@@ -137,7 +140,7 @@ private predicate bitwiseCheck(Guard g, boolean branch) {
  * Holds if taint can flow from `source` to `sink` in one local step,
  * including bitwise operations.
  */
-private predicate bitwiseLocalTaintStep(Expr source, Expr sink) {
-  TaintTracking::localTaintStep(DataFlow::exprNode(source), DataFlow::exprNode(sink)) or
-  source = sink.(BinaryExpr).getAnOperand()
+private predicate bitwiseLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
+  TaintTracking::localTaintStep(source, sink) or
+  source.asExpr() = sink.asExpr().(BitwiseExpr).(BinaryExpr).getAnOperand()
 }
