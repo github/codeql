@@ -30,6 +30,16 @@ class ApiUseTest extends InlineExpectationsTest {
       element = n.toString()
     )
   }
+
+  // We also permit optional annotations for any other path on the line.
+  // This is used to test subclass paths, which typically have a shorter canonical path.
+  override predicate hasOptionalResult(Location location, string element, string tag, string value) {
+    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location) |
+      tag = "use" and
+      element = n.toString() and
+      value = a.getAPath(_)
+    )
+  }
 }
 
 private int size(AstNode n) { not n instanceof StmtSequence and result = count(n.getAChild*()) }

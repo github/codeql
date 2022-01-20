@@ -160,7 +160,7 @@ module API {
     /**
      * Gets a path of the given `length` from the root to this node.
      */
-    private string getAPath(int length) {
+    string getAPath(int length) {
       this instanceof Impl::MkRoot and
       length = 0 and
       result = ""
@@ -174,8 +174,7 @@ module API {
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
-      ) and
-      length in [1 .. Impl::distanceFromRoot(this)]
+      )
     }
 
     /** Gets the shortest distance from the root to this node in the API graph. */
