@@ -13,6 +13,12 @@ About CodeQL packs
 ------------------
 CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. For more information, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
+Installing dependencies for CodeQL packs in Visual Studio Code
+--------------------------------------------------------------
+To install dependencies for a CodeQL pack in your Visual Studio Code workspace, run the **CodeQL: Install Pack Dependencies** command from the Command Palette and select the packs you want to install dependencies for.
+
+In particular, installing pack dependencies lets you write and run query packs that depend on the CodeQL standard libraries, without needing to check out the standard libraries in your workspace.
+
 Creating and editing CodeQL packs in Visual Studio Code
 -------------------------------------------------------
 To create a new CodeQL pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`."
@@ -30,7 +36,3 @@ Whether you have downloaded a CodeQL pack or created your own, you can open the 
 If you want to understand a query in a CodeQL pack better, you can open the query file and view the code, using the IntelliSense code editing features of Visual Studio Code. For example, if you hover over an element from a library depended on by the pack, Visual Studio Code will resolve it so you can see documentation about the element. 
 
 To view the full definition of an element of a query, you can right-click and choose **Go to Definition**. If the library pack is present within the same Visual Studio Code workspace, this will take you to the definition within the workspace. Otherwise it will take you to the definition within your package cache, the shared location where downloaded dependencies are stored, which is in your home directory by default.
-
-Installing dependencies for CodeQL packs in Visual Studio Code
---------------------------------------------------------------
-To  install dependencies for a CodeQL pack in your Visual Studio Code workspace, run the **CodeQL: Install Pack Dependencies** command from the Command Palette and select the packs you want to install dependencies for.
