@@ -125,13 +125,10 @@ abstract class NetworkSendRecv extends FunctionCall {
           v.getInitializer().getExpr() instanceof Literal and
           g = globalValueNumber(v.getAnAccess())
         )
-        or 
+        or
         // result of a function call with literal inputs (likely constant)
         exists(FunctionCall fc |
-          forex(Expr arg |
-            arg = fc.getAnArgument() |
-            arg instanceof Literal
-          ) and
+          forex(Expr arg | arg = fc.getAnArgument() | arg instanceof Literal) and
           g = globalValueNumber(fc)
         )
         // (this is far from exhaustive)
