@@ -240,7 +240,7 @@ see ":doc:`About QL packs <about-ql-packs>`."
      in the LGTM admin help.
 
 4. Extract the zip archive
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)
 simply
