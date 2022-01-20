@@ -13,7 +13,7 @@ import ql
 from Class c, FieldDecl f
 where
   c.getAField() = f and
-  forex(FieldAccess access | access.getDeclaration() = f.getVarDecl() |
+  forex(FieldAccess access | access.getDeclaration() = f |
     access.getEnclosingPredicate() = c.getCharPred()
   ) and
   not f.getVarDecl().overrides(_)

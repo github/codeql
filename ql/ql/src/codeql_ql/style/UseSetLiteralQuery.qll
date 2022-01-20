@@ -68,7 +68,7 @@ class DisjunctionEqualsLiteral extends DisjunctionChain {
     )
     or
     // FieldAccess on the same variable
-    exists(VarDecl v |
+    exists(FieldDecl v |
       forex(Formula f | f = getOperand(_) |
         f.(EqualsLiteral).getAnOperand().(FieldAccess).getDeclaration() = v
       ) and

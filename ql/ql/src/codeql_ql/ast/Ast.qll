@@ -1754,11 +1754,11 @@ class FieldAccess extends Identifier {
   FieldAccess() { resolveField(this, decl) }
 
   /** Gets the accessed field. */
-  VarDecl getDeclaration() { result = decl }
+  FieldDecl getDeclaration() { result.getVarDecl() = decl }
 
   override string getName() { result = id.getChild().(QL::VarName).getChild().getValue() }
 
-  override Type getType() { result = this.getDeclaration().getType() }
+  override Type getType() { result = decl.getType() }
 
   override string getAPrimaryQlClass() { result = "FieldAccess" }
 }
