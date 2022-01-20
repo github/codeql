@@ -55,7 +55,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
       op.getAnOperand() = this and
       (
         op instanceof AssignArithmeticOperation or
-        exists(BinaryArithmeticOperation bao | bao = op.getAnOperand()) or
+        op.getAnOperand() instanceof BinaryArithmeticOperation or
         op instanceof CrementOperation
       )
     )
@@ -212,9 +212,7 @@ class ChecksForLeapYearFunctionCall extends FunctionCall {
 class LeapYearCheckConfiguration extends DataFlow::Configuration {
   LeapYearCheckConfiguration() { this = "LeapYearCheckConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(VariableAccess va | va = source.asExpr())
-  }
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof VariableAccess }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())

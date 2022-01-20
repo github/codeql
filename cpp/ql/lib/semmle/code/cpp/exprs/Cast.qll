@@ -724,7 +724,7 @@ class SizeofOperator extends Expr, @runtime_sizeof {
  * ```
  */
 class SizeofExprOperator extends SizeofOperator {
-  SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
+  SizeofExprOperator() { exists(this.getChild(0)) }
 
   override string getAPrimaryQlClass() { result = "SizeofExprOperator" }
 
@@ -787,7 +787,7 @@ class AlignofOperator extends Expr, @runtime_alignof {
  * ```
  */
 class AlignofExprOperator extends AlignofOperator {
-  AlignofExprOperator() { exists(Expr e | this.getChild(0) = e) }
+  AlignofExprOperator() { exists(this.getChild(0)) }
 
   /**
    * Gets the contained expression.

@@ -48,7 +48,7 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
   PermissivePermissionsConfig() { this = "PermissivePermissionsConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(PermissivePermissionsExpr ppe | source.asExpr().getExpr() = ppe)
+    source.asExpr().getExpr() instanceof PermissivePermissionsExpr
   }
 
   override predicate isSink(DataFlow::Node sink) {

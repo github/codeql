@@ -53,9 +53,7 @@ class PostMessageEvent extends DataFlow::SourceNode {
    * Holds if there is an insufficient method call (i.e indexOf) used to verify `MessageEvent.origin`
    */
   predicate hasOriginInsufficientlyChecked() {
-    exists(InsufficientOriginChecks insufficientChecks |
-      this.getAPropertyRead("origin").getAMethodCall*() = insufficientChecks
-    )
+    this.getAPropertyRead("origin").getAMethodCall*() instanceof InsufficientOriginChecks
   }
 }
 
