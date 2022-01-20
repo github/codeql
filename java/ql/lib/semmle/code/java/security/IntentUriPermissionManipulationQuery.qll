@@ -27,4 +27,8 @@ class IntentUriPermissionManipulationConf extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof IntentUriPermissionManipulationGuard
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(IntentUriPermissionManipulationAdditionalTaintStep c).step(node1, node2)
+  }
 }

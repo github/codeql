@@ -31,6 +31,18 @@ abstract class IntentUriPermissionManipulationSanitizer extends DataFlow::Node {
  */
 abstract class IntentUriPermissionManipulationGuard extends DataFlow::BarrierGuard { }
 
+/**
+ * An additional taint step for flows related to Intent URI permission manipulation
+ * vulnerabilities.
+ */
+class IntentUriPermissionManipulationAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for flows related to Intent URI permission manipulation vulnerabilities.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
 private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermissionManipulationSink {
   DefaultIntentUriPermissionManipulationSink() {
     exists(MethodAccess ma | ma.getMethod() instanceof ActivitySetResultMethod |
@@ -55,14 +67,11 @@ private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManip
       this.asExpr() = ma.getQualifier()
     |
       m.hasName("removeFlags") and
-      TaintTracking::localExprTaint(any(GrantReadUriPermissionFlag f).getAnAccess(),
-        ma.getArgument(0)) and
-      TaintTracking::localExprTaint(any(GrantWriteUriPermissionFlag f).getAnAccess(),
-        ma.getArgument(0))
+      bitwiseLocalTaintStep*(any(GrantReadUriPermissionFlag f).getAnAccess(), ma.getArgument(0)) and
+      bitwiseLocalTaintStep*(any(GrantWriteUriPermissionFlag f).getAnAccess(), ma.getArgument(0))
       or
       m.hasName("setFlags") and
-      not TaintTracking::localExprTaint(any(GrantUriPermissionFlag f).getAnAccess(),
-        ma.getArgument(0))
+      not bitwiseLocalTaintStep*(any(GrantUriPermissionFlag f).getAnAccess(), ma.getArgument(0))
       or
       m.hasName("setData")
     )
@@ -101,7 +110,7 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeIntent and
     m.hasName(["getFlags", "getData"]) and
-    TaintTracking::localExprTaint(ma, checkedValue)
+    bitwiseLocalTaintStep*(ma, checkedValue)
   |
     bitwiseCheck(g, branch) and
     checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
@@ -122,4 +131,13 @@ private predicate bitwiseCheck(Guard g, boolean branch) {
     then g.(EqualityTest).polarity() = branch
     else g.(EqualityTest).polarity().booleanNot() = branch
   )
+}
+
+/**
+ * Holds if taint can flow from `source` to `sink` in one local step,
+ * including bitwise operations.
+ */
+private predicate bitwiseLocalTaintStep(Expr source, Expr sink) {
+  TaintTracking::localTaintStep(DataFlow::exprNode(source), DataFlow::exprNode(sink)) or
+  source = sink.(BinaryExpr).getAnOperand()
 }
