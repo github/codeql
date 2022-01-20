@@ -19,14 +19,20 @@ public class CleartextStorageAndroidDatabaseTest extends Activity {
         db.execSQL("DROP TABLE passwords;"); // Safe - no sensitive value being stored
     }
 
-    public void testCleartextStorageAndroiDatabase1(Context ctx, String name, String password) {
+    public void testCleartextStorageAndroiDatabase0(Context ctx, String name, String password) {
         SQLiteDatabase db = ctx.openOrCreateDatabase("test", Context.MODE_PRIVATE, null);
         String query = "INSERT INTO users VALUES ('" + name + "', '" + password + "');";
         db.execSQL(query); // $ hasCleartextStorageAndroidDatabase
     }
 
+    public void testCleartextStorageAndroiDatabase1(Context ctx, String name, String password) {
+        SQLiteDatabase db = SQLiteDatabase.openDatabase("", null, 0);
+        String query = "INSERT INTO users VALUES ('" + name + "', '" + password + "');";
+        db.execSQL(query); // $ hasCleartextStorageAndroidDatabase
+    }
+
     public void testCleartextStorageAndroiDatabase2(String name, String password) {
-        SQLiteDatabase db = SQLiteDatabase.create(null);
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase("", null);
         String query = "INSERT INTO users VALUES (?, ?)";
         db.execSQL(query, new String[] {name, password}); // $ hasCleartextStorageAndroidDatabase
     }

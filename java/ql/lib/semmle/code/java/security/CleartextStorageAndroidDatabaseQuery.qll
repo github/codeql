@@ -33,7 +33,7 @@ class LocalDatabaseOpenMethodAccess extends Storable, Call {
       m.hasName("getWritableDatabase")
       or
       m.getDeclaringType() instanceof TypeSQLiteDatabase and
-      m.hasName(["create", "open%Database", "compileStatement"])
+      m.hasName(["create", "openDatabase", "openOrCreateDatabase", "compileStatement"])
       or
       m.getDeclaringType().getASupertype*() instanceof TypeContext and
       m.hasName("openOrCreateDatabase")
