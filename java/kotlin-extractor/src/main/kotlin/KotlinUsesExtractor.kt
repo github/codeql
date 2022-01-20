@@ -469,17 +469,6 @@ open class KotlinUsesExtractor(
         val primitiveInfo = primitiveTypeMapping.getPrimitiveInfo(s)
 
         when {
-/*
-XXX delete?
-            // temporary fix for type parameters types that would otherwise be primitive types
-            !canReturnPrimitiveTypes && (s.isPrimitiveType() || s.isUnsignedType() || s.isString()) -> {
-                val classifier: IrClassifierSymbol = s.classifier
-                val cls: IrClass = classifier.owner as IrClass
-
-                return useClassInstance(cls, s.arguments)
-            }
-
-*/
             primitiveInfo != null -> return primitiveType(
                 s.classifier.owner as IrClass,
                 primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
