@@ -96,7 +96,6 @@ public class SQLiteDatabase extends SQLiteClosable
     public void execPerConnectionSQL(String p0, Object[] p1){}
     public void execSQL(String p0){}
     public void execSQL(String p0, Object[] p1){}
-    public void execPerConnectionSQL (String p0, Object[] p1){}
     public void markTableSyncable(String p0, String p1){}
     public void markTableSyncable(String p0, String p1, String p2){}
     public void setCustomAggregateFunction(String p0, BinaryOperator<String> p1){}
