@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.github.codeql.Logger;
@@ -479,11 +480,13 @@ public class OdasaOutput {
 	private static final String MAJOR_VERSION = "majorVersion";
 	private static final String MINOR_VERSION = "minorVersion";
 	private static final String LAST_MODIFIED = "lastModified";
+	private static final String EXTRACTOR_NAME = "extractorName";
 
 	private static class TrapClassVersion {
 		private int majorVersion;
 		private int minorVersion;
 		private long lastModified;
+		private String extractorName; // May be null if not given
 
 		public int getMajorVersion() {
 			return majorVersion;
@@ -497,10 +500,13 @@ public class OdasaOutput {
 			return lastModified;
 		}
 
-		private TrapClassVersion(int majorVersion, int minorVersion, long lastModified) {
+		public String getExtractorName() { return extractorName; }
+
+		private TrapClassVersion(int majorVersion, int minorVersion, long lastModified, String extractorName) {
 			this.majorVersion = majorVersion;
 			this.minorVersion = minorVersion;
 			this.lastModified = lastModified;
+			this.extractorName = extractorName;
 		}
 		private boolean newerThan(TrapClassVersion tcv) {
 			// Classes being compiled from source have major version 0 but should take precedence
@@ -510,6 +516,14 @@ public class OdasaOutput {
 				return false;
 			else if (majorVersion==0)
 				return true;
+			// Always consider the Kotlin extractor superior to the Java extractor, because we may decode and extract
+			// Kotlin metadata that the Java extractor can't understand:
+			if(!Objects.equals(tcv.extractorName, extractorName)) {
+				if (Objects.equals(tcv.extractorName, "kotlin"))
+					return false;
+				if (Objects.equals(extractorName, "kotlin"))
+					return true;
+			}
 			// Otherwise, determine precedence in the following order:
 			// majorVersion, minorVersion, lastModified.
 			return tcv.majorVersion < majorVersion ||
@@ -520,7 +534,7 @@ public class OdasaOutput {
 		private static TrapClassVersion fromSymbol(IrClass sym, Logger log) {
 			VirtualFile vf = getIrClassVirtualFile(sym);
 			if(vf == null)
-				return new TrapClassVersion(0, 0, 0);
+				return new TrapClassVersion(0, 0, 0, null);
 
 			final int[] versionStore = new int[1];
 
@@ -551,15 +565,15 @@ public class OdasaOutput {
 				};
 				(new ClassReader(vf.contentsToByteArray())).accept(versionGetter, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
 
-				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp());
+				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp(), "kotlin");
 			}
 			catch(IllegalAccessException e) {
 				log.warn("Failed to read class file version information", e);
-				return new TrapClassVersion(0, 0, 0);
+				return new TrapClassVersion(0, 0, 0, null);
 			}
 			catch(IOException e) {
 				log.warn("Failed to read class file version information", e);
-				return new TrapClassVersion(0, 0, 0);
+				return new TrapClassVersion(0, 0, 0, null);
 			}
 		}
 		private boolean isValid() {
@@ -575,6 +589,7 @@ public class OdasaOutput {
 		int majorVersion = 0;
 		int minorVersion = 0;
 		long lastModified = 0;
+		String extractorName = null;
 		File metadataFile = new File(trap.getAbsolutePath().replace(".trap.gz", ".metadata"));
 		if (metadataFile.exists()) {
 			Map<String,String> metadataMap = FileUtil.readPropertiesCSV(metadataFile);
@@ -582,13 +597,14 @@ public class OdasaOutput {
 				majorVersion = Integer.parseInt(metadataMap.get(MAJOR_VERSION));
 				minorVersion = Integer.parseInt(metadataMap.get(MINOR_VERSION));
 				lastModified = Long.parseLong(metadataMap.get(LAST_MODIFIED));
+				extractorName = metadataMap.get(EXTRACTOR_NAME);
 			} catch (NumberFormatException e) {
 				log.warn("Invalid class file version for " + trap.getAbsolutePath(), e);
 			}
 		} else {
 			log.warn("Trap metadata file does not exist: " + metadataFile.getAbsolutePath());
 		}
-		return new TrapClassVersion(majorVersion, minorVersion, lastModified);
+		return new TrapClassVersion(majorVersion, minorVersion, lastModified, extractorName);
 	}
 
 }
