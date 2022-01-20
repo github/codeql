@@ -16,5 +16,10 @@ where
   forex(FieldAccess access | access.getDeclaration() = f |
     access.getEnclosingPredicate() = c.getCharPred()
   ) and
+  // excluding fields that are uniquely used in call to an IPA constructor
+  not unique(FieldAccess access | access.getDeclaration() = f | access) =
+    any(PredicateCall call |
+      call.getEnclosingPredicate() = c.getCharPred() and call.getTarget() instanceof NewTypeBranch
+    ).getAnArgument() and
   not f.getVarDecl().overrides(_)
 select f, "Field is only used in CharPred"
