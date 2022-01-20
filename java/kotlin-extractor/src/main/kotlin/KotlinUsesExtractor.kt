@@ -132,7 +132,7 @@ open class KotlinUsesExtractor(
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.logCounter, newTrapWriter)
-        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, null, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
     }
 
     // The Kotlin compiler internal representation of Outer<T>.Inner<S>.InnerInner<R> is InnerInner<R, S, T>. This function returns just `R`.
