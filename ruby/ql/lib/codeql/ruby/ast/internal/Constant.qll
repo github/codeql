@@ -9,6 +9,7 @@ newtype TConstantValue =
     any(RequiredConstantValue x).requiredComplex(real, imaginary)
   } or
   TString(string s) { any(RequiredConstantValue x).requiredString(s) } or
+  TSymbol(string s) { any(RequiredConstantValue x).requiredSymbol(s) } or
   TBoolean(boolean b) { b in [false, true] } or
   TNil()
 
@@ -26,4 +27,6 @@ class RequiredConstantValue extends MkRequiredConstantValue {
   predicate requiredComplex(float real, float imaginary) { none() }
 
   predicate requiredString(string s) { none() }
+
+  predicate requiredSymbol(string s) { none() }
 }

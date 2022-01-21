@@ -173,10 +173,11 @@ private module Settings {
   class NillableStringlikeSetting extends LiteralSetting {
     NillableStringlikeSetting() {
       value instanceof ConstantValue::ConstantStringValue or
+      value instanceof ConstantValue::ConstantSymbolValue or
       value instanceof ConstantValue::ConstantNilValue
     }
 
-    string getStringValue() { result = value.getString() }
+    string getStringValue() { result = value.getStringOrSymbol() }
 
     predicate isNilValue() { value.isNil() }
   }

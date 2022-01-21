@@ -761,8 +761,8 @@ class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
 // Tree-sitter gives us value text including the colon, which we skip.
 private string getSimpleSymbolValue(Ruby::SimpleSymbol ss) { result = ss.getValue().suffix(1) }
 
-private class RequiredStringConstantValue7 extends RequiredConstantValue {
-  override predicate requiredString(string s) { s = getSimpleSymbolValue(_) }
+private class RequiredSymbolConstantValue extends RequiredConstantValue {
+  override predicate requiredSymbol(string s) { s = getSimpleSymbolValue(_) }
 }
 
 private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
@@ -770,8 +770,8 @@ private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
 
   SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
 
-  final override ConstantValue::ConstantStringValue getConstantValue() {
-    result.isString(getSimpleSymbolValue(g))
+  final override ConstantValue::ConstantSymbolValue getConstantValue() {
+    result.isSymbol(getSimpleSymbolValue(g))
   }
 
   final override string toString() { result = g.getValue() }
@@ -795,8 +795,8 @@ private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
-private class RequiredStringConstantValue8 extends RequiredConstantValue {
-  override predicate requiredString(string s) { s = any(Ruby::HashKeySymbol h).getValue() }
+private class RequiredSymbolConstantValue2 extends RequiredConstantValue {
+  override predicate requiredSymbol(string s) { s = any(Ruby::HashKeySymbol h).getValue() }
 }
 
 private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral {
@@ -804,8 +804,8 @@ private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral 
 
   HashKeySymbolLiteral() { this = THashKeySymbolLiteral(g) }
 
-  final override ConstantValue::ConstantStringValue getConstantValue() {
-    result.isString(g.getValue())
+  final override ConstantValue::ConstantSymbolValue getConstantValue() {
+    result.isSymbol(g.getValue())
   }
 
   final override string toString() { result = ":" + g.getValue() }
@@ -829,7 +829,7 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
-private class RequiredStringConstantValue9 extends RequiredConstantValue {
+private class RequiredStringConstantValue7 extends RequiredConstantValue {
   override predicate requiredString(string s) { s = any(Ruby::Character c).getValue() }
 }
 
@@ -1131,7 +1131,7 @@ private string getMethodName(MethodName::Token t) {
   result = t.(Ruby::Setter).getName().getValue() + "="
 }
 
-private class RequiredStringConstantValue10 extends RequiredConstantValue {
+private class RequiredStringConstantValue8 extends RequiredConstantValue {
   override predicate requiredString(string s) { s = getMethodName(_) }
 }
 

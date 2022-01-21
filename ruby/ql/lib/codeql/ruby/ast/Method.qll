@@ -53,7 +53,7 @@ private class MethodModifier extends MethodCall {
   predicate modifiesMethod(Namespace n, string name) {
     this = n.getAStmt() and
     [
-      this.getMethodArgument().(StringlikeLiteral).getConstantValue().getString(),
+      this.getMethodArgument().getConstantValue().getStringOrSymbol(),
       this.getMethodArgument().(MethodBase).getName()
     ] = name
   }

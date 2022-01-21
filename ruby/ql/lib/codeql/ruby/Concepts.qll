@@ -239,7 +239,7 @@ module HTTP {
         string getUrlPattern() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getString()
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol()
           )
         }
 
@@ -364,7 +364,7 @@ module HTTP {
         string getMimetype() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getString().splitAt(";", 0)
+            result = strNode.getExpr().getConstantValue().getStringOrSymbol().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and

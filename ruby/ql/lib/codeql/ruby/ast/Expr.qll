@@ -464,10 +464,12 @@ class StringConcatenation extends Expr, TStringConcatenation {
    * ```
    */
   final string getConcatenatedValueText() {
-    forall(StringLiteral c | c = this.getString(_) | exists(c.getConstantValue().getString())) and
+    forall(StringLiteral c | c = this.getString(_) |
+      exists(c.getConstantValue().getStringOrSymbol())
+    ) and
     result =
       concat(string valueText, int i |
-        valueText = this.getString(i).getConstantValue().getString()
+        valueText = this.getString(i).getConstantValue().getStringOrSymbol()
       |
         valueText order by i
       )

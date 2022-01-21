@@ -1,7 +1,7 @@
 import ruby
 
 private string getValueText(MethodName m) {
-  result = m.getConstantValue().getString()
+  result = m.getConstantValue().getStringOrSymbol()
   or
   not exists(m.getConstantValue()) and result = "(none)"
 }

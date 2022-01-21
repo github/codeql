@@ -458,7 +458,7 @@ module ExprNodes {
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
         e.hasCfgChild(e.getAnArgument(), this, n) and
-        n.getKey().getExpr().(SymbolLiteral).getConstantValue().isString(keyword) and
+        n.getKey().getExpr().getConstantValue().isSymbol(keyword) and
         result = n.getValue()
       )
     }
@@ -643,7 +643,19 @@ module ExprNodes {
   }
 
   private class RequiredStringConstantValue extends RequiredConstantValue {
-    override predicate requiredString(string s) { s = getStringlikeLiteralCfgNodeValue(_) }
+    override predicate requiredString(string s) {
+      exists(StringlikeLiteralCfgNode n |
+        s = getStringlikeLiteralCfgNodeValue(n) and
+        not n.getExpr() instanceof SymbolLiteral
+      )
+    }
+
+    override predicate requiredSymbol(string s) {
+      exists(StringlikeLiteralCfgNode n |
+        s = getStringlikeLiteralCfgNodeValue(n) and
+        n.getExpr() instanceof SymbolLiteral
+      )
+    }
   }
 
   /** A control-flow node that wraps a `StringlikeLiteral` AST expression. */
@@ -658,8 +670,10 @@ module ExprNodes {
     /** Gets a component of this `StringlikeLiteral` */
     StringComponentCfgNode getAComponent() { result = this.getComponent(_) }
 
-    final override ConstantValue::ConstantStringValue getConstantValue() {
-      result.isString(getStringlikeLiteralCfgNodeValue(this))
+    final override ConstantValue getConstantValue() {
+      if this.getExpr() instanceof SymbolLiteral
+      then result.isSymbol(getStringlikeLiteralCfgNodeValue(this))
+      else result.isString(getStringlikeLiteralCfgNodeValue(this))
     }
   }
 

@@ -25,6 +25,8 @@ class ConstantValue extends TConstantValue {
     or
     result = this.getString()
     or
+    result = ":" + this.getSymbol()
+    or
     result = this.getBoolean().toString()
     or
     this.isNil() and result = "nil"
@@ -54,6 +56,18 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the string value `s`. */
   predicate isString(string s) { s = this.getString() }
 
+  /** Gets the symbol value (exluding the `:` prefix), if this is a symbol. */
+  string getSymbol() { this = TSymbol(result) }
+
+  /** Holds if this is the symbol value `:s`. */
+  predicate isSymbol(string s) { s = this.getSymbol() }
+
+  /** Gets the string or symbol value, if any. */
+  string getStringOrSymbol() { result = [this.getString(), this.getSymbol()] }
+
+  /** Holds if this is the string value `s` or the symbol value `:s`. */
+  predicate isStringOrSymbol(string s) { s = this.getStringOrSymbol() }
+
   /** Gets the Boolean value, if this is a Boolean. */
   boolean getBoolean() { this = TBoolean(result) }
 
@@ -80,6 +94,9 @@ module ConstantValue {
 
   /** A constant string value. */
   class ConstantStringValue extends ConstantValue, TString { }
+
+  /** A constant symbol value. */
+  class ConstantSymbolValue extends ConstantValue, TSymbol { }
 
   /** A constant Boolean value. */
   class ConstantBooleanValue extends ConstantValue, TBoolean { }

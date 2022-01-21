@@ -90,7 +90,7 @@ private predicate isSslOptionsPairDisablingValidation(Pair p) {
 /** Holds if `node` represents the symbol literal with the given `valueText`. */
 private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isString(valueText) and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(valueText) and
     literal.flowsTo(node)
   )
 }
