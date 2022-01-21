@@ -29,7 +29,7 @@ class Index extends TIndex {
 DataFlow::Node getAUse(Index i) {
   i = VariableIndex(any(DataFlow::SsaNode v | result = v.getAUse()))
   or
-  i = ConstantIndex(any(int v | v = result.getIntValue()))
+  i = ConstantIndex(result.getIntValue())
 }
 
 /**

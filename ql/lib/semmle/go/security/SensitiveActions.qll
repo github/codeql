@@ -85,7 +85,7 @@ module SensitiveExpr {
    * Instead, use the predicates below to work with classifications.
    */
   class Classification extends string {
-    Classification() { this = "secret" or this = "id" or this = "password" or this = "certificate" }
+    Classification() { this = ["secret", "id", "password", "certificate"] }
   }
 
   /** Gets the classification for secret or trusted data. */

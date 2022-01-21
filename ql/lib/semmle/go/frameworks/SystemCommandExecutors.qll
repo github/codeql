@@ -38,7 +38,7 @@ private class SystemCommandExecutors extends SystemCommandExecution::Range, Data
       // NOTE: syscall.ForkExec exists only on unix.
       // NOTE: syscall.CreateProcess and syscall.CreateProcessAsUser exist only on windows.
       pkg = "syscall" and
-      (name = "Exec" or name = "ForkExec" or name = "StartProcess" or name = "CreateProcess") and
+      name = ["Exec", "ForkExec", "StartProcess", "CreateProcess"] and
       cmdArg = 0
       or
       pkg = "syscall" and
@@ -93,13 +93,7 @@ module CryptoSsh {
     SshCommandExecution() {
       // Catch method calls on the `Session` object:
       exists(Method method, string methodName |
-        methodName = "CombinedOutput"
-        or
-        methodName = "Output"
-        or
-        methodName = "Run"
-        or
-        methodName = "Start"
+        methodName = ["CombinedOutput", "Output", "Run", "Start"]
       |
         method.hasQualifiedName(packagePath(), "Session", methodName) and
         this = method.getACall()
@@ -217,9 +211,7 @@ private predicate isProgrammingLanguageCli(DataFlow::Node node) {
   )
 }
 
-private string getASshCommand() {
-  result = "ssh" or result = "ssh-argv0" or result = "putty.exe" or result = "kitty.exe"
-}
+private string getASshCommand() { result = ["ssh", "ssh-argv0", "putty.exe", "kitty.exe"] }
 
 /**
  * A data-flow node whose string value might refer to an SSH client or similar, whose arguments can be
