@@ -10,7 +10,8 @@ newtype TEndpointType =
   TXssSinkType() or
   TNosqlInjectionSinkType() or
   TSqlInjectionSinkType() or
-  TTaintedPathSinkType()
+  TTaintedPathSinkType() or
+  TStoredXssSinkType()
 
 /** A class that can be predicted by endpoint scoring models. */
 abstract class EndpointType extends TEndpointType {
@@ -54,4 +55,11 @@ class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
   override string getDescription() { result = "TaintedPathSink" }
 
   override int getEncoding() { result = 4 }
+}
+
+/** The `StoredXssSinkType` class that can be predicted by endpoint scoring models. */
+class StoredXssSinkType extends EndpointType, TStoredXssSinkType {
+  override string getDescription() { result = "StoredXssSink" }
+
+  override int getEncoding() { result = 5 }
 }
