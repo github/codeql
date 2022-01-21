@@ -9,4 +9,4 @@ public record class MyClassRecord(DateTime stuff) { }
 
 public readonly record struct MyReadonlyRecordStruct(string Stuff) { }
 
-public record struct MyRecordStruct(int Stuff) { }
+public record struct MyRecordStruct1(int Stuff) { }
