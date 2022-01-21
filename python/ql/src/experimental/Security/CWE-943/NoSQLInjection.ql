@@ -12,7 +12,7 @@
 import python
 import experimental.semmle.python.security.injection.NoSQLInjection
 
-from CustomPathNode source, CustomPathNode sink
-where noSQLInjectionFlow(source, sink)
+from NoSQLInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select sink, source, sink, "$@ NoSQL query contains an unsanitized $@", sink, "This", source,
   "user-provided value"
