@@ -33,9 +33,11 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
                             logger.info("Skipping extracting class ${irClass.name}")
                         } else {
                             val trapFile = manager.file
+                            val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
+
                             val binaryPath = getIrClassBinaryPath(irClass)
                             try {
-                                GZIPOutputStream(trapFile.outputStream()).bufferedWriter().use { trapFileBW ->
+                                GZIPOutputStream(trapTmpFile.outputStream()).bufferedWriter().use { trapFileBW ->
                                     // We want our comments to be the first thing in the file,
                                     // so start off with a mere TrapWriter
                                     val tw = TrapWriter(TrapLabelManager(), trapFileBW)
@@ -57,9 +59,14 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
 
                                     fileExtractor.extractClassSource(irClass)
                                 }
+
+                                if (!trapTmpFile.renameTo(trapFile)) {
+                                    logger.warn(Severity.Error, "Failed to rename $trapTmpFile to $trapFile")
+                                }
+
                             } catch (e: Exception) {
-                                manager.closeWithoutAdditionalFiles()
-                                trapFile.delete()
+                                manager.setHasError()
+                                trapTmpFile.delete()
                                 logger.error("Failed to extract '$binaryPath'", e)
                             }
                         }

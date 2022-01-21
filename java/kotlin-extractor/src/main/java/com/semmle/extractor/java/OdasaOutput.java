@@ -352,7 +352,7 @@ public class OdasaOutput {
 					currentSpecFileEntry.getTrapFolder().toPath().resolve(dep));
 		}
 
-		public void closeWithoutAdditionalFiles() {
+		public void setHasError() {
 			hasError = true;
 		}
 	}
