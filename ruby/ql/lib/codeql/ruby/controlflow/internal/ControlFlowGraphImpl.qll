@@ -753,7 +753,7 @@ module Trees {
       c.(MatchingCompletion).getValue() = false
       or
       exists(BooleanCompletion bc, boolean flag, MatchingCompletion mc |
-        lastCondition(last, bc, flag) and
+        this.lastCondition(last, bc, flag) and
         c =
           any(NestedMatchingCompletion nmc |
             nmc.getInnerCompletion() = bc and nmc.getOuterCompletion() = mc
@@ -790,7 +790,7 @@ module Trees {
       )
       or
       exists(boolean flag |
-        lastCondition(pred, c, flag) and
+        this.lastCondition(pred, c, flag) and
         c.(BooleanCompletion).getValue() = flag and
         first(this.getBody(), succ)
       )

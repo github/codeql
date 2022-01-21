@@ -1122,7 +1122,7 @@ class FormatLiteral extends Literal {
    * conversion specifier of this format string; has no result if this cannot
    * be determined.
    */
-  int getMaxConvertedLength(int n) { result = max(getMaxConvertedLength(n, _)) }
+  int getMaxConvertedLength(int n) { result = max(this.getMaxConvertedLength(n, _)) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth
@@ -1353,7 +1353,7 @@ class FormatLiteral extends Literal {
    * determining whether a buffer overflow is caused by long float to string
    * conversions.
    */
-  int getMaxConvertedLengthLimited(int n) { result = max(getMaxConvertedLengthLimited(n, _)) }
+  int getMaxConvertedLengthLimited(int n) { result = max(this.getMaxConvertedLengthLimited(n, _)) }
 
   /**
    * Gets the maximum length of the string that can be produced by the nth

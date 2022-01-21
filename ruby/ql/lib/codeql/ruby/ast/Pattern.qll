@@ -135,7 +135,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
     (
       n < this.restIndex()
       or
-      not exists(restIndex())
+      not exists(this.restIndex())
     )
   }
 
@@ -156,7 +156,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
    * ```
    */
   LocalVariableWriteAccess getRestVariableAccess() {
-    toGenerated(result) = g.getChild(restIndex()).(Ruby::SplatParameter).getName()
+    toGenerated(result) = g.getChild(this.restIndex()).(Ruby::SplatParameter).getName()
   }
 
   /**
@@ -264,10 +264,10 @@ class HashPattern extends CasePattern, THashPattern {
   private Ruby::KeywordPattern keyValuePair(int n) { result = g.getChild(n) }
 
   /** Gets the key of the `n`th pair. */
-  StringlikeLiteral getKey(int n) { toGenerated(result) = keyValuePair(n).getKey() }
+  StringlikeLiteral getKey(int n) { toGenerated(result) = this.keyValuePair(n).getKey() }
 
   /** Gets the value of the `n`th pair. */
-  CasePattern getValue(int n) { toGenerated(result) = keyValuePair(n).getValue() }
+  CasePattern getValue(int n) { toGenerated(result) = this.keyValuePair(n).getValue() }
 
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {

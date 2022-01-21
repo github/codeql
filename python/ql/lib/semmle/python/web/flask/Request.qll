@@ -16,10 +16,7 @@ class FlaskRequestData extends HttpRequestTaintSource {
   FlaskRequestData() {
     not this instanceof FlaskRequestArgs and
     exists(string name | flask_request_attr(this, name) |
-      name = "path" or
-      name = "full_path" or
-      name = "base_url" or
-      name = "url"
+      name in ["path", "full_path", "base_url", "url"]
     )
   }
 

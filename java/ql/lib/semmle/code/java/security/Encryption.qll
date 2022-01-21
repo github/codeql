@@ -151,8 +151,8 @@ class SslUnwrapMethod extends Method {
 /** The `getSession` method of the class `javax.net.ssl.SSLSession`.select */
 class GetSslSessionMethod extends Method {
   GetSslSessionMethod() {
-    hasName("getSession") and
-    getDeclaringType().getASupertype*() instanceof SSLSession
+    this.hasName("getSession") and
+    this.getDeclaringType().getASupertype*() instanceof SSLSession
   }
 }
 
