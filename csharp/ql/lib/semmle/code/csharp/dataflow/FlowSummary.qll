@@ -153,15 +153,11 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
 private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-  private SummaryComponent head;
-
-  RecordConstructorFlowRequiredSummaryComponentStack() {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and
       head = SummaryComponent::property(p) and
-      this = SummaryComponentStack::return()
+      tail = SummaryComponentStack::return()
     )
   }
-
-  override predicate required(SummaryComponent c) { c = head }
 }
