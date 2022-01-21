@@ -27,7 +27,7 @@
 <recommendation>
 <p>Avoid creating implicit <code>PendingIntent</code>s. This means that the underlying <code>Intent</code> should always have an 
   explicit destination component.</p>
-<p>Also, when adding the <code>PendingIntent</code> as an extra of another <code>Intent</code>, make sure that said <code>Intent</code> also has
+<p>When you add the <code>PendingIntent</code> as an extra of another <code>Intent</code>, make sure that this second <code>Intent</code> also has
 an explicit destination component, so that it is not delivered to untrusted applications.</p>
 <p>Create the <code>PendingIntent</code> using the flag <code>FLAG_IMMUTABLE</code> whenever possible,
   to prevent the destination component from modifying empty fields of the underlying <code>Intent</code>.</p>
