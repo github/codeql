@@ -92,3 +92,14 @@ void tests(FILE *log, myStruct &s)
 		fprintf(log, "log: %s", buffer); // BAD [NOT DETECTED]
 	}
 }
+
+char *gets(char *s);
+
+void test_gets()
+{
+	{
+		char password[1024];
+
+		gets(password); // BAD [but FALSE POSITIVE from cpp/cleartext-transmission]
+	}
+}
