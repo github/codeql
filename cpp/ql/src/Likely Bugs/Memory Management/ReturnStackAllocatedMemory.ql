@@ -15,17 +15,24 @@ import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow
 
+/** Holds if `f` has a name that we intrepret as evidence of intentionally returning the value of the stack pointer. */
+predicate intentionallyReturnsStackPointer(Function f) {
+  f.getName().toLowerCase().matches(["%stack%", "%sp%"])
+}
+
 /**
  * Holds if `source` is a node that represents the use of a stack variable
  */
 predicate isSource(Node source) {
-  exists(VariableAddressInstruction var |
+  exists(VariableAddressInstruction var, Function func |
     var = source.asInstruction() and
+    func = var.getEnclosingFunction() and
     var.getASTVariable() instanceof StackVariable and
     // Pointer-to-member types aren't properly handled in the dbscheme.
     not var.getResultType() instanceof PointerToMemberType and
     // Rule out FPs caused by extraction errors.
-    not any(ErrorExpr e).getEnclosingFunction() = var.getEnclosingFunction()
+    not any(ErrorExpr e).getEnclosingFunction() = func and
+    not intentionallyReturnsStackPointer(func)
   )
 }
 

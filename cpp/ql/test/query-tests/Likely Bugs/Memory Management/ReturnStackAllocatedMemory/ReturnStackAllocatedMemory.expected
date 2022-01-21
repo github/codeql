@@ -100,11 +100,6 @@ edges
 | test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference dereference) |
 | test.cpp:190:10:190:13 | Unary | test.cpp:190:10:190:13 | (reference to) |
 | test.cpp:190:10:190:13 | pRef | test.cpp:190:10:190:13 | Unary |
-| test.cpp:222:9:222:17 | (void *)... | test.cpp:222:9:222:17 | StoreValue |
-| test.cpp:222:16:222:17 | & ... | test.cpp:222:16:222:17 | Unary |
-| test.cpp:222:16:222:17 | Unary | test.cpp:222:9:222:17 | (void *)... |
-| test.cpp:222:17:222:17 | Unary | test.cpp:222:16:222:17 | & ... |
-| test.cpp:222:17:222:17 | p | test.cpp:222:17:222:17 | Unary |
 nodes
 | test.cpp:17:9:17:11 | & ... | semmle.label | & ... |
 | test.cpp:17:9:17:11 | StoreValue | semmle.label | StoreValue |
@@ -220,12 +215,6 @@ nodes
 | test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
 | test.cpp:190:10:190:13 | Unary | semmle.label | Unary |
 | test.cpp:190:10:190:13 | pRef | semmle.label | pRef |
-| test.cpp:222:9:222:17 | (void *)... | semmle.label | (void *)... |
-| test.cpp:222:9:222:17 | StoreValue | semmle.label | StoreValue |
-| test.cpp:222:16:222:17 | & ... | semmle.label | & ... |
-| test.cpp:222:16:222:17 | Unary | semmle.label | Unary |
-| test.cpp:222:17:222:17 | Unary | semmle.label | Unary |
-| test.cpp:222:17:222:17 | p | semmle.label | p |
 #select
 | test.cpp:17:9:17:11 | StoreValue | test.cpp:17:10:17:11 | mc | test.cpp:17:9:17:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
 | test.cpp:25:9:25:11 | StoreValue | test.cpp:23:18:23:19 | mc | test.cpp:25:9:25:11 | StoreValue | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |
@@ -240,4 +229,3 @@ nodes
 | test.cpp:177:10:177:23 | StoreValue | test.cpp:176:25:176:34 | localArray | test.cpp:177:10:177:23 | StoreValue | May return stack-allocated memory from $@. | test.cpp:176:25:176:34 | localArray | localArray |
 | test.cpp:183:10:183:19 | StoreValue | test.cpp:182:21:182:27 | myLocal | test.cpp:183:10:183:19 | StoreValue | May return stack-allocated memory from $@. | test.cpp:182:21:182:27 | myLocal | myLocal |
 | test.cpp:190:10:190:13 | StoreValue | test.cpp:189:16:189:16 | p | test.cpp:190:10:190:13 | StoreValue | May return stack-allocated memory from $@. | test.cpp:189:16:189:16 | p | p |
-| test.cpp:222:9:222:17 | StoreValue | test.cpp:222:17:222:17 | p | test.cpp:222:9:222:17 | StoreValue | May return stack-allocated memory from $@. | test.cpp:222:17:222:17 | p | p |

@@ -219,5 +219,5 @@ auto make_read_port()
 
 void* get_sp() {
 	int p;
-	return (void*)&p; // GOOD: The function name makes it sound like the programmer intended to get the value of the stack pointer. [FALSE POSITIVE]
+	return (void*)&p; // GOOD: The function name makes it sound like the programmer intended to get the value of the stack pointer.
 }
