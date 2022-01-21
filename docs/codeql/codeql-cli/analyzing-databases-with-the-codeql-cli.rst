@@ -59,7 +59,7 @@ You can also specify:
   - a path to a query suite file
   - the name of a CodeQL query pack
     If omitted, the default query suite for the language
-    of the database being analyzed will be usedFor more information, see the
+    of the database being analyzed will be used. For more information, see the
     :ref:`examples <database-analyze-examples>` below.
 
 - ``--sarif-category``: an identifying category for the results. Used when
@@ -130,7 +130,7 @@ Running a CodeQL pack
 To run an existing CodeQL query pack from the GitHub Container registry, you can specify one or more
 pack names and use the ``--download`` flag::
 
-   codeql database analyze <database> microsoft/coding-standards@1.0.0 github/secutiry-queries --format=sarifv2.1.0 --output=query-results.sarif --download
+   codeql database analyze <database> microsoft/coding-standards@1.0.0 github/security-queries --format=sarifv2.1.0 --output=query-results.sarif --download
 
 The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``github/secutiry-queries`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
@@ -183,7 +183,7 @@ Integrating a CodeQL pack into a code scanning workflow in GitHub
 
 .. include:: ../reusables/beta-note-package-management.rst
 
-You can use CodeQL query packs in your Code Scanning setup. This allows you to select query packs published by various sources and use them to analyze your code.
+You can use CodeQL query packs in your code scanning setup. This allows you to select query packs published by various sources and use them to analyze your code.
 For more information, see "`Using CodeQL query packs in the CodeQL action <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-codeql-query-packs/>`_" or "`Downloading and using CodeQL query packs in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#downloading-and-using-codeql-query-packs>`_."
 
 

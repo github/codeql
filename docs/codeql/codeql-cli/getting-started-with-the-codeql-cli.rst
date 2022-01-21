@@ -143,7 +143,7 @@ up to create and analyze databases:
 - Run ``codeql resolve languages`` to show which languages are
   available for database creation. This will list the languages supported by
   default in your CodeQL CLI package.
-- (Optional) You can download some ":ref`CodeQL packs <about-codeql-packs>`" containing pre-compiled queries you would like to run.
+- (Optional) You can download some ":ref:`CodeQL packs <about-codeql-packs>`" containing pre-compiled queries you would like to run.
   To do this, run ``codeql pack download <pack-name> [...pack-name]``, where ``pack-name`` is the name of
   the pack you want to download. The core query packs are a good place to start. They are:
 
