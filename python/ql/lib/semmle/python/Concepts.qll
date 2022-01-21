@@ -116,6 +116,7 @@ module Path {
 
     PathNormalization() { this = range }
 
+    /** Gets an argument to this path normalization that is interpreted as a path. */
     DataFlow::Node getPathArg() { result = range.getPathArg() }
   }
 
