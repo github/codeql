@@ -115,6 +115,8 @@ module Path {
     PathNormalization::Range range;
 
     PathNormalization() { this = range }
+
+    DataFlow::Node getPathArg() { result = range.getPathArg() }
   }
 
   /** Provides a class for modeling new path normalization APIs. */
@@ -123,7 +125,10 @@ module Path {
      * A data-flow node that performs path normalization. This is often needed in order
      * to safely access paths.
      */
-    abstract class Range extends DataFlow::Node { }
+    abstract class Range extends DataFlow::Node {
+      /** Gets an argument to this path normalization that is interpreted as a path. */
+      abstract DataFlow::Node getPathArg();
+    }
   }
 
   /** A data-flow node that checks that a path is safe to access. */

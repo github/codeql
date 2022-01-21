@@ -970,7 +970,7 @@ private module StdlibPrivate {
   private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
@@ -980,7 +980,7 @@ private module StdlibPrivate {
   private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
@@ -990,7 +990,7 @@ private module StdlibPrivate {
   private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
-    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
+    override DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /**
