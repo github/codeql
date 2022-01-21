@@ -11,6 +11,7 @@
 
 import python
 import experimental.semmle.python.security.injection.NoSQLInjection
+import DataFlow::PathGraph
 
 from NoSQLInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
