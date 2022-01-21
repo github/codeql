@@ -68,21 +68,7 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
   override predicate hasState(DataFlow::FlowState state) { state = "MutablePendingIntent" }
 }
 
-/**
- * Propagates taint from any tainted object to reads from its `PendingIntent`-typed fields.
- */
-private class PendingIntentAsFieldAdditionalTaintStep extends ImplicitPendingIntentAdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(Field f |
-      f.getType() instanceof PendingIntent and
-      node1.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-        DataFlow::getFieldQualifier(f.getAnAccess().(FieldWrite)) and
-      node2.asExpr().(FieldRead).getField() = f
-    )
-  }
-}
-
-private class MutablePendingIntentFlowStep extends PendingIntentAsFieldAdditionalTaintStep {
+private class MutablePendingIntentFlowStep extends ImplicitPendingIntentAdditionalTaintStep {
   override predicate step(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
