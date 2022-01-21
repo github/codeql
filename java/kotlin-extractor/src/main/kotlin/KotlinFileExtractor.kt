@@ -35,7 +35,7 @@ open class KotlinFileExtractor(
     genericSpecialisationsExtracted: MutableSet<String>
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted) {
 
-    fun <T> with(kind: String, element: IrElement, f: () -> T): T {
+    inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         try {
             return f()
         } catch(exception: Exception) {
