@@ -23,6 +23,10 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   or
   g1.(OrBitwiseExpr).getAnOperand() = g2 and b1 = false and b2 = false
   or
+  g1.(AssignAndExpr).getSource() = g2 and b1 = true and b2 = true
+  or
+  g1.(AssignOrExpr).getSource() = g2 and b1 = false and b2 = false
+  or
   g1.(AndLogicalExpr).getAnOperand() = g2 and b1 = true and b2 = true
   or
   g1.(OrLogicalExpr).getAnOperand() = g2 and b1 = false and b2 = false
@@ -61,11 +65,15 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   )
   or
   exists(BaseSsaUpdate vbool |
+    vbool.getDefiningExpr().(VariableAssign).getSource() = g2 or
+    vbool.getDefiningExpr().(AssignOp) = g2
+  |
     vbool.getAUse() = g1 and
-    vbool.getDefiningExpr().(VariableAssign).getSource() = g2 and
     (b1 = true or b1 = false) and
     b2 = b1
   )
+  or
+  g1.(AssignExpr).getSource() = g2 and b2 = b1 and b1 = [true, false]
 }
 
 /**
@@ -79,8 +87,10 @@ predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
   implies_v1(g1, b1, g2, b2)
   or
   exists(SsaExplicitUpdate vbool |
+    vbool.getDefiningExpr().(VariableAssign).getSource() = g2 or
+    vbool.getDefiningExpr().(AssignOp) = g2
+  |
     vbool.getAUse() = g1 and
-    vbool.getDefiningExpr().(VariableAssign).getSource() = g2 and
     (b1 = true or b1 = false) and
     b2 = b1
   )
