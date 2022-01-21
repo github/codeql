@@ -397,7 +397,7 @@ void test_more_clues()
 	{
 		encrypted_data password;
 
-		recv(val(), &password, sizeof(password), val()); // GOOD: password is (probably) encrypted [FALSE POSITIVE]
+		recv(val(), &password, sizeof(password), val()); // GOOD: password is (probably) encrypted
 	}
 }
 
