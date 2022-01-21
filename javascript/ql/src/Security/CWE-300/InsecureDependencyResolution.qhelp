@@ -2,34 +2,54 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
+
 <overview>
-<p>Using an insecure protocol like HTTP or FTP to download your dependencies leaves your npm build vulnerable to a
-<a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man in the Middle (MITM)</a>.
-This can allow attackers to inject malicious code into the artifacts that you are resolving and infect build artifacts
-that are being produced. This can be used by attackers to perform a
-<a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack</a>
-against your project's users.
+<p>
+Using an insecure protocol like HTTP or FTP to download build dependencies makes the build process vulnerable to a 
+Man in the Middle (MITM) attack.
+</p>
+<p>
+This can allow attackers to inject malicious code into the downloaded dependencies and thereby 
+infect the build artifacts and execute arbitrary code on the machine building the artifacts.
 </p>
 
 </overview>
 <recommendation>
 
-<p>Always use HTTPS or SFTP to download artifacts from artifact servers.</p>
+<p>Always use HTTPS or SFTP when downloading artifacts from an URL.</p>
 
 </recommendation>
 
+<example>
+<p>
+The below example shows a <code>package.json</code> file that downloads a dependency using unencrypted HTTP.
+</p>
+<sample src="examples/bad-package.json" />
+<p>
+The fix is to change the protocol to HTTPS.
+</p>
+<sample src="examples/good-package.json" />
+
+</example>
+
 <references>
 <li>
-  Research:
-  <a href="https://medium.com/bugbountywriteup/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb?source=friends_link&amp;sk=3c99970c55a899ad9ef41f126efcde0e">
+  Jonathan Leitschuh: 
+  <a href="https://infosecwriteups.com/want-to-take-over-the-java-ecosystem-all-you-need-is-a-mitm-1fc329d898fb">
     Want to take over the Java ecosystem? All you need is a MITM!
   </a>
 </li>
 <li>
-  Research:
+  Max Veytsman: 
   <a href="https://max.computer/blog/how-to-take-over-the-computer-of-any-java-or-clojure-or-scala-developer/">
     How to take over the computer of any Java (or Closure or Scala) Developer.
   </a>
+</li>
+<li>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack</a>
+</li>
+<li>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a>
 </li>
 </references>
 </qhelp>
