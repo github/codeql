@@ -119,7 +119,7 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
 }
 
 /**
- * Number.isInteger is a sanitizer guard because a number can't be used to exploit a SSRF.
+ * A call to Number.isInteger seen as a sanitizer guard because a number can't be used to exploit a SSRF.
  */
 class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
   IntegerCheck() { this = DataFlow::globalVarRef("Number").getAMemberCall("isInteger") }
@@ -131,7 +131,7 @@ class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode
 }
 
 /**
- * ValidatorCheck identifies if exists a call to validator's library methods.
+ * A call to validator's library methods.
  * validator is a library which has a variety of input-validation functions. We are interesed in
  * checking that source is a number (any type of number) or an alphanumeric value.
  */

@@ -54,7 +54,7 @@ module Redux {
   }
 
   /**
-   * Creation of a redux store, usually via a call to `createStore`.
+   * A creation of a redux store, usually via a call to `createStore`.
    */
   class StoreCreation extends DataFlow::SourceNode instanceof StoreCreation::Range {
     /** Gets a reference to the store. */
@@ -566,7 +566,7 @@ module Redux {
     }
 
     /**
-     * One of the action creators made by a call to `createActions`:
+     * An action creator made by a call to `createActions`:
      * ```js
      * let { actionOne, actionTwo } = createActions({
      *   ACTION_ONE: (x, y) => { x, y },
@@ -988,7 +988,7 @@ module Redux {
     API::Node useSelector() { result = API::moduleImport("react-redux").getMember("useSelector") }
 
     /**
-     * Step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
+     * A step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
      */
     class UseSelectorStep extends StateStep {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {

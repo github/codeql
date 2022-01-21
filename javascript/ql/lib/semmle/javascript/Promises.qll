@@ -707,7 +707,7 @@ private module DynamicImportSteps {
  */
 module Promisify {
   /**
-   * Gets a call to a `promisifyAll` function.
+   * A call to a `promisifyAll` function.
    * E.g. `require("bluebird").promisifyAll(...)`.
    */
   class PromisifyAllCall extends DataFlow::CallNode {
@@ -721,7 +721,7 @@ module Promisify {
   }
 
   /**
-   * Gets a call to a `promisify` function.
+   * A call to a `promisify` function.
    * E.g. `require("util").promisify(...)`.
    */
   class PromisifyCall extends DataFlow::CallNode {
