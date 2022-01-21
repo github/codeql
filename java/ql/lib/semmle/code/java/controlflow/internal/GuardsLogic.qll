@@ -33,13 +33,13 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   or
   g1.(LogNotExpr).getExpr() = g2 and
   b1 = b2.booleanNot() and
-  (b1 = true or b1 = false)
+  b1 = [true, false]
   or
   exists(EqualityTest eqtest, boolean polarity, BooleanLiteral boollit |
     eqtest = g1 and
     eqtest.hasOperands(g2, boollit) and
     eqtest.polarity() = polarity and
-    (b1 = true or b1 = false) and
+    b1 = [true, false] and
     b2 = b1.booleanXor(polarity).booleanXor(boollit.getBooleanValue())
   )
   or
@@ -60,7 +60,7 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   exists(MethodAccess check | check = g1 |
     conditionCheck(check, _) and
     g2 = check.getArgument(0) and
-    (b1 = true or b1 = false) and
+    b1 = [true, false] and
     b2 = b1
   )
   or
@@ -69,7 +69,7 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
     vbool.getDefiningExpr().(AssignOp) = g2
   |
     vbool.getAUse() = g1 and
-    (b1 = true or b1 = false) and
+    b1 = [true, false] and
     b2 = b1
   )
   or
@@ -91,7 +91,7 @@ predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
     vbool.getDefiningExpr().(AssignOp) = g2
   |
     vbool.getAUse() = g1 and
-    (b1 = true or b1 = false) and
+    b1 = [true, false] and
     b2 = b1
   )
   or
