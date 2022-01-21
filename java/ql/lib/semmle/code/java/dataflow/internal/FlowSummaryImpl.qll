@@ -171,15 +171,20 @@ module Public {
     )
   }
 
+  private newtype TRequiredSummaryComponentStack = MkRequiredSummaryComponentStack()
+
   /**
    * A class that exists for QL technical reasons only (the IPA type used
    * to represent component stacks needs to be bounded).
    */
-  abstract class RequiredSummaryComponentStack extends SummaryComponentStack {
+  class RequiredSummaryComponentStack extends TRequiredSummaryComponentStack {
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
     /**
      * Holds if the stack obtained by pushing `head` onto `tail` is required.
      */
-    abstract predicate required(SummaryComponent c);
+    predicate required(SummaryComponent head, SummaryComponentStack tail) { none() }
   }
 
   /** A callable with a flow summary. */
@@ -240,9 +245,9 @@ module Private {
   newtype TSummaryComponentStack =
     TSingletonSummaryComponentStack(SummaryComponent c) or
     TConsSummaryComponentStack(SummaryComponent head, SummaryComponentStack tail) {
-      tail.(RequiredSummaryComponentStack).required(head)
+      any(RequiredSummaryComponentStack x).required(head, tail)
       or
-      tail.(RequiredSummaryComponentStack).required(TParameterSummaryComponent(_)) and
+      any(RequiredSummaryComponentStack x).required(TParameterSummaryComponent(_), tail) and
       head = thisParam()
       or
       derivedFluentFlowPush(_, _, _, head, tail, _)
@@ -890,9 +895,9 @@ module Private {
     }
 
     private class MkStack extends RequiredSummaryComponentStack {
-      MkStack() { interpretSpec(_, _, _, this) }
-
-      override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
+      override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+        interpretSpec(_, _, head, tail)
+      }
     }
 
     private class SummarizedCallableExternal extends SummarizedCallable {
