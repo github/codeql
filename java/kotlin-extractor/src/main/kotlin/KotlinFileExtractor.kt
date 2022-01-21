@@ -44,49 +44,53 @@ open class KotlinFileExtractor(
     }
 
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
-        val locId = tw.getWholeFileLocation()
-        val pkg = file.fqName.asString()
-        val pkgId = extractPackage(pkg)
-        tw.writeHasLocation(id, locId)
-        tw.writeCupackage(id, pkgId)
-        file.declarations.map { extractDeclaration(it) }
-        CommentExtractor(this, file).extract()
+        with("file", file) {
+            val locId = tw.getWholeFileLocation()
+            val pkg = file.fqName.asString()
+            val pkgId = extractPackage(pkg)
+            tw.writeHasLocation(id, locId)
+            tw.writeCupackage(id, pkgId)
+            file.declarations.map { extractDeclaration(it) }
+            CommentExtractor(this, file).extract()
+        }
     }
 
     fun extractDeclaration(declaration: IrDeclaration) {
-        when (declaration) {
-            is IrClass -> {
-                if (isExternalDeclaration(declaration)) {
-                    extractExternalClassLater(declaration)
-                } else {
-                    extractClassSource(declaration)
+        with("declaration", declaration) {
+            when (declaration) {
+                is IrClass -> {
+                    if (isExternalDeclaration(declaration)) {
+                        extractExternalClassLater(declaration)
+                    } else {
+                        extractClassSource(declaration)
+                    }
                 }
+                is IrFunction -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                    extractFunctionIfReal(declaration, parentId, true, null, listOf())
+                }
+                is IrAnonymousInitializer -> {
+                    // Leaving this intentionally empty. init blocks are extracted during class extraction.
+                }
+                is IrProperty -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                    extractProperty(declaration, parentId, true, null, listOf())
+                }
+                is IrEnumEntry -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                    extractEnumEntry(declaration, parentId)
+                }
+                is IrField -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
+                    extractField(declaration, parentId)
+                }
+                is IrTypeAlias -> extractTypeAlias(declaration)
+                else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
             }
-            is IrFunction -> {
-                @Suppress("UNCHECKED_CAST")
-                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractFunctionIfReal(declaration, parentId, true, null, listOf())
-            }
-            is IrAnonymousInitializer -> {
-                // Leaving this intentionally empty. init blocks are extracted during class extraction.
-            }
-            is IrProperty -> {
-                @Suppress("UNCHECKED_CAST")
-                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractProperty(declaration, parentId, true, null, listOf())
-            }
-            is IrEnumEntry -> {
-                @Suppress("UNCHECKED_CAST")
-                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractEnumEntry(declaration, parentId)
-            }
-            is IrField -> {
-                @Suppress("UNCHECKED_CAST")
-                val parentId = useDeclarationParent(declaration.parent, false) as Label<DbReftype>
-                extractField(declaration, parentId)
-            }
-            is IrTypeAlias -> extractTypeAlias(declaration)
-            else -> logger.warnElement(Severity.ErrorSevere, "Unrecognised IrDeclaration: " + declaration.javaClass, declaration)
         }
     }
 
@@ -116,151 +120,161 @@ open class KotlinFileExtractor(
     }
 
     fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable> {
-        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
+        with("type parameter", tp) {
+            val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
 
-        val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
-            is IrFunction -> useFunction(parent)
-            is IrClass -> useClassSource(parent)
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
-                fakeLabel()
+            val parentId: Label<out DbClassorinterfaceorcallable> = when (val parent = tp.parent) {
+                is IrFunction -> useFunction(parent)
+                is IrClass -> useClassSource(parent)
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unexpected type parameter parent", tp)
+                    fakeLabel()
+                }
             }
+
+            // Note apparentIndex does not necessarily equal `tp.index`, because at least constructor type parameters
+            // have indices offset from the type parameters of the constructed class (i.e. the parameter S of
+            // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1, not 0).
+            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
+            val locId = tw.getLocation(tp)
+            tw.writeHasLocation(id, locId)
+
+            // todo: add type bounds
+
+            return id
         }
-
-        // Note apparentIndex does not necessarily equal `tp.index`, because at least constructor type parameters
-        // have indices offset from the type parameters of the constructed class (i.e. the parameter S of
-        // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1, not 0).
-        tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
-        val locId = tw.getLocation(tp)
-        tw.writeHasLocation(id, locId)
-
-        // todo: add type bounds
-
-        return id
     }
 
     fun extractVisibility(elementForLocation: IrElement, id: Label<out DbModifiable>, v: DescriptorVisibility) {
-        when (v) {
-            DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
-            DescriptorVisibilities.PRIVATE_TO_THIS -> addModifiers(id, "private")
-            DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
-            DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
-            DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
-            DescriptorVisibilities.LOCAL -> if (elementForLocation is IrFunction && elementForLocation.isLocalFunction()) {
-                // The containing class is `private`.
-                addModifiers(id, "public")
-            } else {
-                addVisibilityModifierToLocalOrAnonymousClass(id)
-            }
-            is DelegatedDescriptorVisibility -> {
-                when (v.delegate) {
-                    JavaVisibilities.ProtectedStaticVisibility -> {
-                        addModifiers(id, "protected")
-                        addModifiers(id, "static")
-                    }
-                    JavaVisibilities.PackageVisibility -> {
-                        // default java visibility (top level)
-                    }
-                    JavaVisibilities.ProtectedAndPackage -> {
-                        // default java visibility (member level)
-                    }
-                    else -> logger.warnElement(Severity.ErrorSevere, "Unexpected delegated visibility: $v", elementForLocation)
+        with("visibility", elementForLocation) {
+            when (v) {
+                DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
+                DescriptorVisibilities.PRIVATE_TO_THIS -> addModifiers(id, "private")
+                DescriptorVisibilities.PROTECTED -> addModifiers(id, "protected")
+                DescriptorVisibilities.PUBLIC -> addModifiers(id, "public")
+                DescriptorVisibilities.INTERNAL -> addModifiers(id, "internal")
+                DescriptorVisibilities.LOCAL -> if (elementForLocation is IrFunction && elementForLocation.isLocalFunction()) {
+                    // The containing class is `private`.
+                    addModifiers(id, "public")
+                } else {
+                    addVisibilityModifierToLocalOrAnonymousClass(id)
                 }
+                is DelegatedDescriptorVisibility -> {
+                    when (v.delegate) {
+                        JavaVisibilities.ProtectedStaticVisibility -> {
+                            addModifiers(id, "protected")
+                            addModifiers(id, "static")
+                        }
+                        JavaVisibilities.PackageVisibility -> {
+                            // default java visibility (top level)
+                        }
+                        JavaVisibilities.ProtectedAndPackage -> {
+                            // default java visibility (member level)
+                        }
+                        else -> logger.warnElement(Severity.ErrorSevere, "Unexpected delegated visibility: $v", elementForLocation)
+                    }
+                }
+                else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
             }
-            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected visibility: $v", elementForLocation)
         }
     }
 
     fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
-        when (c.modality) {
-            Modality.FINAL -> addModifiers(id, "final")
-            Modality.SEALED -> addModifiers(id, "sealed")
-            Modality.OPEN -> { } // This is the default
-            Modality.ABSTRACT -> addModifiers(id, "abstract")
-            else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}", c)
+        with("class modifiers", c) {
+            when (c.modality) {
+                Modality.FINAL -> addModifiers(id, "final")
+                Modality.SEALED -> addModifiers(id, "sealed")
+                Modality.OPEN -> { } // This is the default
+                Modality.ABSTRACT -> addModifiers(id, "abstract")
+                else -> logger.warnElement(Severity.ErrorSevere, "Unexpected class modality: ${c.modality}", c)
+            }
+            extractVisibility(c, id, c.visibility)
         }
-        extractVisibility(c, id, c.visibility)
     }
 
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun extractClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
-        if (argsIncludingOuterClasses?.isEmpty() == true) {
-            logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
-        }
-
-        val classLabelResults = getClassLabel(c, argsIncludingOuterClasses)
-        val id = tw.getLabelFor<DbClassorinterface>(classLabelResults.classLabel)
-        val pkg = c.packageFqName?.asString() ?: ""
-        val cls = classLabelResults.shortName
-        val pkgId = extractPackage(pkg)
-        if(c.kind == ClassKind.INTERFACE) {
-            @Suppress("UNCHECKED_CAST")
-            val interfaceId = id as Label<out DbInterface>
-            @Suppress("UNCHECKED_CAST")
-            val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
-            tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
-        } else {
-            @Suppress("UNCHECKED_CAST")
-            val classId = id as Label<out DbClass>
-            @Suppress("UNCHECKED_CAST")
-            val sourceClassId = useClassSource(c) as Label<out DbClass>
-            tw.writeClasses(classId, cls, pkgId, sourceClassId)
-
-            if (c.kind == ClassKind.ENUM_CLASS) {
-                tw.writeIsEnumType(classId)
+        with("class instance", c) {
+            if (argsIncludingOuterClasses?.isEmpty() == true) {
+                logger.warn(Severity.ErrorSevere, "Instance without type arguments: " + c.name.asString())
             }
-        }
 
-        val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
-        if (typeArgs != null) {
-            for ((idx, arg) in typeArgs.withIndex()) {
-                val argId = getTypeArgumentLabel(arg).id
-                tw.writeTypeArgs(argId, idx, id)
+            val classLabelResults = getClassLabel(c, argsIncludingOuterClasses)
+            val id = tw.getLabelFor<DbClassorinterface>(classLabelResults.classLabel)
+            val pkg = c.packageFqName?.asString() ?: ""
+            val cls = classLabelResults.shortName
+            val pkgId = extractPackage(pkg)
+            if(c.kind == ClassKind.INTERFACE) {
+                @Suppress("UNCHECKED_CAST")
+                val interfaceId = id as Label<out DbInterface>
+                @Suppress("UNCHECKED_CAST")
+                val sourceInterfaceId = useClassSource(c) as Label<out DbInterface>
+                tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
+            } else {
+                @Suppress("UNCHECKED_CAST")
+                val classId = id as Label<out DbClass>
+                @Suppress("UNCHECKED_CAST")
+                val sourceClassId = useClassSource(c) as Label<out DbClass>
+                tw.writeClasses(classId, cls, pkgId, sourceClassId)
+
+                if (c.kind == ClassKind.ENUM_CLASS) {
+                    tw.writeIsEnumType(classId)
+                }
             }
-            tw.writeIsParameterized(id)
-        } else {
-            tw.writeIsRaw(id)
+
+            val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
+            if (typeArgs != null) {
+                for ((idx, arg) in typeArgs.withIndex()) {
+                    val argId = getTypeArgumentLabel(arg).id
+                    tw.writeTypeArgs(argId, idx, id)
+                }
+                tw.writeIsParameterized(id)
+            } else {
+                tw.writeIsRaw(id)
+            }
+
+            val unbound = useClassSource(c)
+            tw.writeErasure(id, unbound)
+            extractClassModifiers(c, id)
+            extractClassSupertypes(c, id, if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses))
+
+            val locId = tw.getLocation(c)
+            tw.writeHasLocation(id, locId)
+
+            // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
+            extractEnclosingClass(c, id, locId, argsIncludingOuterClasses?.drop(c.typeParameters.size) ?: listOf())
+
+            return id
         }
-
-        val unbound = useClassSource(c)
-        tw.writeErasure(id, unbound)
-        extractClassModifiers(c, id)
-        extractClassSupertypes(c, id, if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses))
-
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(id, locId)
-
-        // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
-        extractEnclosingClass(c, id, locId, argsIncludingOuterClasses?.drop(c.typeParameters.size) ?: listOf())
-
-        return id
     }
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun extractMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
-        val typeParamSubstitution =
-            when (argsIncludingOuterClasses) {
-                null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
-                else -> {
-                    makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
-                        { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
-                            x.substituteTypeAndArguments(
-                                it,
-                                useContext,
-                                pluginContext
-                            )
+        with("member prototypes", c) {
+            val typeParamSubstitution =
+                when (argsIncludingOuterClasses) {
+                    null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
+                    else -> {
+                        makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
+                            { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
+                                x.substituteTypeAndArguments(
+                                    it,
+                                    useContext,
+                                    pluginContext
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-        c.declarations.map {
-            when(it) {
-                is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
-                is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
-                else -> {}
+            c.declarations.map {
+                when(it) {
+                    is IrFunction -> extractFunctionIfReal(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                    is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                    else -> {}
+                }
             }
         }
     }
@@ -280,93 +294,97 @@ open class KotlinFileExtractor(
     }
 
     fun extractClassSource(c: IrClass): Label<out DbClassorinterface> {
-        DeclarationStackAdjuster(c).use {
+        with("class source", c) {
+            DeclarationStackAdjuster(c).use {
 
-            val id = if (c.isAnonymousObject) {
-                @Suppress("UNCHECKED_CAST")
-                useAnonymousClass(c).javaResult.id as Label<out DbClass>
-            } else {
-                useClassSource(c)
-            }
-            val pkg = c.packageFqName?.asString() ?: ""
-            val cls = if (c.isAnonymousObject) "" else c.name.asString()
-            val pkgId = extractPackage(pkg)
-            if (c.kind == ClassKind.INTERFACE) {
-                @Suppress("UNCHECKED_CAST")
-                val interfaceId = id as Label<out DbInterface>
-                tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
-            } else {
-                @Suppress("UNCHECKED_CAST")
-                val classId = id as Label<out DbClass>
-                tw.writeClasses(classId, cls, pkgId, classId)
-
-                if (c.kind == ClassKind.ENUM_CLASS) {
-                    tw.writeIsEnumType(classId)
+                val id = if (c.isAnonymousObject) {
+                    @Suppress("UNCHECKED_CAST")
+                    useAnonymousClass(c).javaResult.id as Label<out DbClass>
+                } else {
+                    useClassSource(c)
                 }
+                val pkg = c.packageFqName?.asString() ?: ""
+                val cls = if (c.isAnonymousObject) "" else c.name.asString()
+                val pkgId = extractPackage(pkg)
+                if (c.kind == ClassKind.INTERFACE) {
+                    @Suppress("UNCHECKED_CAST")
+                    val interfaceId = id as Label<out DbInterface>
+                    tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
+                } else {
+                    @Suppress("UNCHECKED_CAST")
+                    val classId = id as Label<out DbClass>
+                    tw.writeClasses(classId, cls, pkgId, classId)
+
+                    if (c.kind == ClassKind.ENUM_CLASS) {
+                        tw.writeIsEnumType(classId)
+                    }
+                }
+
+                val locId = tw.getLocation(c)
+                tw.writeHasLocation(id, locId)
+
+                extractEnclosingClass(c, id, locId, listOf())
+
+                c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
+                c.declarations.map { extractDeclaration(it) }
+                extractObjectInitializerFunction(c, id)
+                if (c.isNonCompanionObject) {
+                    // For `object MyObject { ... }`, the .class has an
+                    // automatically-generated `public static final MyObject INSTANCE`
+                    // field that may be referenced from Java code, and is used in our
+                    // IrGetObjectValue support. We therefore need to fabricate it
+                    // here.
+                    val instance = useObjectClassInstance(c)
+                    val type = useSimpleTypeClass(c, emptyList(), false)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
+                    tw.writeHasLocation(instance.id, locId)
+                    addModifiers(instance.id, "public", "static", "final")
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeClass_object(id as Label<DbClass>, instance.id)
+                }
+
+                extractClassModifiers(c, id)
+                val forceExtractSupertypeMembers = !isExternalDeclaration(c)
+                extractClassSupertypes(c, id, inReceiverContext = forceExtractSupertypeMembers)
+
+                return id
             }
-
-            val locId = tw.getLocation(c)
-            tw.writeHasLocation(id, locId)
-
-            extractEnclosingClass(c, id, locId, listOf())
-
-            c.typeParameters.mapIndexed { idx, it -> extractTypeParameter(it, idx) }
-            c.declarations.map { extractDeclaration(it) }
-            extractObjectInitializerFunction(c, id)
-            if (c.isNonCompanionObject) {
-                // For `object MyObject { ... }`, the .class has an
-                // automatically-generated `public static final MyObject INSTANCE`
-                // field that may be referenced from Java code, and is used in our
-                // IrGetObjectValue support. We therefore need to fabricate it
-                // here.
-                val instance = useObjectClassInstance(c)
-                val type = useSimpleTypeClass(c, emptyList(), false)
-                tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
-                tw.writeHasLocation(instance.id, locId)
-                addModifiers(instance.id, "public", "static", "final")
-                @Suppress("UNCHECKED_CAST")
-                tw.writeClass_object(id as Label<DbClass>, instance.id)
-            }
-
-            extractClassModifiers(c, id)
-            val forceExtractSupertypeMembers = !isExternalDeclaration(c)
-            extractClassSupertypes(c, id, inReceiverContext = forceExtractSupertypeMembers)
-
-            return id
         }
     }
 
     fun extractEnclosingClass(innerClass: IrClass, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>) {
-        var parent: IrDeclarationParent? = innerClass.parent
-        while (parent != null) {
-            if (parent is IrClass) {
-                val parentId =
-                    if (parent.isAnonymousObject) {
-                        @Suppress("UNCHECKED_CAST")
-                        useAnonymousClass(parent).javaResult.id as Label<out DbClass>
-                    } else {
-                        useClassInstance(parent, parentClassTypeArguments).typeResult.id
+        with("inner class", innerClass) {
+            var parent: IrDeclarationParent? = innerClass.parent
+            while (parent != null) {
+                if (parent is IrClass) {
+                    val parentId =
+                        if (parent.isAnonymousObject) {
+                            @Suppress("UNCHECKED_CAST")
+                            useAnonymousClass(parent).javaResult.id as Label<out DbClass>
+                        } else {
+                            useClassInstance(parent, parentClassTypeArguments).typeResult.id
+                        }
+                    tw.writeEnclInReftype(innerId, parentId)
+                    if(innerClass.isCompanion) {
+                        // If we are a companion then our parent has a
+                        //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
+                        // that we need to fabricate here
+                        val instance = useCompanionObjectClassInstance(innerClass)
+                        if(instance != null) {
+                            val type = useSimpleTypeClass(innerClass, emptyList(), false)
+                            tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, innerId, instance.id)
+                            tw.writeHasLocation(instance.id, innerLocId)
+                            addModifiers(instance.id, "public", "static", "final")
+                            @Suppress("UNCHECKED_CAST")
+                            tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, innerId as Label<DbClass>)
+                        }
                     }
-                tw.writeEnclInReftype(innerId, parentId)
-                if(innerClass.isCompanion) {
-                    // If we are a companion then our parent has a
-                    //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
-                    // that we need to fabricate here
-                    val instance = useCompanionObjectClassInstance(innerClass)
-                    if(instance != null) {
-                        val type = useSimpleTypeClass(innerClass, emptyList(), false)
-                        tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, innerId, instance.id)
-                        tw.writeHasLocation(instance.id, innerLocId)
-                        addModifiers(instance.id, "public", "static", "final")
-                        @Suppress("UNCHECKED_CAST")
-                        tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, innerId as Label<DbClass>)
-                    }
+
+                    break
                 }
 
-                break
+                parent = (parent as? IrDeclaration)?.parent
             }
-
-            parent = (parent as? IrDeclaration)?.parent
         }
     }
 
@@ -402,7 +420,9 @@ open class KotlinFileExtractor(
     }
 
     private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>): TypeResults {
-        return extractValueParameter(useValueParameter(vp, parent), vp.type, vp.name.asString(), tw.getLocation(vp), parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration))
+        with("value parameter", vp) {
+            return extractValueParameter(useValueParameter(vp, parent), vp.type, vp.name.asString(), tw.getLocation(vp), parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration))
+        }
     }
 
     private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, paramSourceDeclaration: Label<out DbParam>): TypeResults {
@@ -415,159 +435,167 @@ open class KotlinFileExtractor(
     }
 
     private fun extractObjectInitializerFunction(c: IrClass, parentId: Label<out DbReftype>) {
-        if (isExternalDeclaration(c)) {
-            return
-        }
+        with("object initializer function", c) {
+            if (isExternalDeclaration(c)) {
+                return
+            }
 
-        // add method:
-        val obinitLabel = getFunctionLabel(c, parentId, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
-        val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
-        val returnType = useType(pluginContext.irBuiltIns.unitType)
-        tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
+            // add method:
+            val obinitLabel = getFunctionLabel(c, parentId, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
+            val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
+            val returnType = useType(pluginContext.irBuiltIns.unitType)
+            tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
 
-        val locId = tw.getLocation(c)
-        tw.writeHasLocation(obinitId, locId)
+            val locId = tw.getLocation(c)
+            tw.writeHasLocation(obinitId, locId)
 
-        // add body:
-        val blockId = tw.getFreshIdLabel<DbBlock>()
-        tw.writeStmts_block(blockId, obinitId, 0, obinitId)
-        tw.writeHasLocation(blockId, locId)
+            // add body:
+            val blockId = tw.getFreshIdLabel<DbBlock>()
+            tw.writeStmts_block(blockId, obinitId, 0, obinitId)
+            tw.writeHasLocation(blockId, locId)
 
-        // body content with field initializers and init blocks
-        var idx = 0
-        for (decl in c.declarations) {
-            when (decl) {
-                is IrProperty -> {
-                    val backingField = decl.backingField
-                    val initializer = backingField?.initializer
+            // body content with field initializers and init blocks
+            var idx = 0
+            for (decl in c.declarations) {
+                when (decl) {
+                    is IrProperty -> {
+                        val backingField = decl.backingField
+                        val initializer = backingField?.initializer
 
-                    if (backingField == null || backingField.isStatic || initializer == null) {
-                        continue
+                        if (backingField == null || backingField.isStatic || initializer == null) {
+                            continue
+                        }
+
+                        val expr = initializer.expression
+
+                        if (expr is IrGetValue && expr.origin == IrStatementOrigin.INITIALIZE_PROPERTY_FROM_PARAMETER) {
+                            // TODO: this initialization should go into the default constructor
+                            continue
+                        }
+
+                        val declLocId = tw.getLocation(decl)
+                        val stmtId = tw.getFreshIdLabel<DbExprstmt>()
+                        tw.writeStmts_exprstmt(stmtId, blockId, idx++, obinitId)
+                        tw.writeHasLocation(stmtId, declLocId)
+                        val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
+                        val type = useType(expr.type)
+                        tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
+                        tw.writeHasLocation(assignmentId, declLocId)
+                        tw.writeCallableEnclosingExpr(assignmentId, obinitId)
+                        tw.writeStatementEnclosingExpr(assignmentId, stmtId)
+
+                        val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                        val lhsType = useType(backingField.type)
+                        tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
+                        tw.writeHasLocation(lhsId, declLocId)
+                        tw.writeCallableEnclosingExpr(lhsId, obinitId)
+                        tw.writeStatementEnclosingExpr(lhsId, stmtId)
+                        val vId = useField(backingField)
+                        tw.writeVariableBinding(lhsId, vId)
+
+                        extractExpressionExpr(expr, obinitId, assignmentId, 1, stmtId)
                     }
+                    is IrAnonymousInitializer -> {
+                        if (decl.isStatic) {
+                            continue
+                        }
 
-                    val expr = initializer.expression
-
-                    if (expr is IrGetValue && expr.origin == IrStatementOrigin.INITIALIZE_PROPERTY_FROM_PARAMETER) {
-                        // TODO: this initialization should go into the default constructor
-                        continue
+                        for (stmt in decl.body.statements) {
+                            extractStatement(stmt, obinitId, blockId, idx++)
+                        }
                     }
-
-                    val declLocId = tw.getLocation(decl)
-                    val stmtId = tw.getFreshIdLabel<DbExprstmt>()
-                    tw.writeStmts_exprstmt(stmtId, blockId, idx++, obinitId)
-                    tw.writeHasLocation(stmtId, declLocId)
-                    val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-                    val type = useType(expr.type)
-                    tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, type.kotlinResult.id, stmtId, 0)
-                    tw.writeHasLocation(assignmentId, declLocId)
-                    tw.writeCallableEnclosingExpr(assignmentId, obinitId)
-                    tw.writeStatementEnclosingExpr(assignmentId, stmtId)
-
-                    val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    val lhsType = useType(backingField.type)
-                    tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, assignmentId, 0)
-                    tw.writeHasLocation(lhsId, declLocId)
-                    tw.writeCallableEnclosingExpr(lhsId, obinitId)
-                    tw.writeStatementEnclosingExpr(lhsId, stmtId)
-                    val vId = useField(backingField)
-                    tw.writeVariableBinding(lhsId, vId)
-
-                    extractExpressionExpr(expr, obinitId, assignmentId, 1, stmtId)
+                    else -> continue
                 }
-                is IrAnonymousInitializer -> {
-                    if (decl.isStatic) {
-                        continue
-                    }
-
-                    for (stmt in decl.body.statements) {
-                        extractStatement(stmt, obinitId, blockId, idx++)
-                    }
-                }
-                else -> continue
             }
         }
     }
 
     fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
-        if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
-            return
-        extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
+        with("function if real", f) {
+            if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
+                return
+            extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
+        }
     }
 
     fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbCallable> {
-        DeclarationStackAdjuster(f).use {
+        with("function", f) {
+            DeclarationStackAdjuster(f).use {
 
-            getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
+                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
 
-            val locId = tw.getLocation(f)
+                val locId = tw.getLocation(f)
 
-            val id =
-                if (f.isLocalFunction())
-                    getLocallyVisibleFunctionLabels(f).function
-                else
-                    useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses)
+                val id =
+                    if (f.isLocalFunction())
+                        getLocallyVisibleFunctionLabels(f).function
+                    else
+                        useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses)
 
-            val sourceDeclaration =
-                if (typeSubstitution != null)
-                    useFunction(f)
-                else
-                    id
+                val sourceDeclaration =
+                    if (typeSubstitution != null)
+                        useFunction(f)
+                    else
+                        id
 
-            val extReceiver = f.extensionReceiverParameter
-            val idxOffset = if (extReceiver != null) 1 else 0
-            val paramTypes = f.valueParameters.mapIndexed { i, vp ->
-                extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration)
-            }
-            val allParamTypes = if (extReceiver != null) {
-                val extendedType = useType(extReceiver.type)
-                @Suppress("UNCHECKED_CAST")
-                tw.writeKtExtensionFunctions(id as Label<DbMethod>, extendedType.javaResult.id, extendedType.kotlinResult.id)
-
-                val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration)
-                listOf(t) + paramTypes
-            } else {
-                paramTypes
-            }
-
-            val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
-
-            val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
-
-            if (f.symbol is IrConstructorSymbol) {
-                val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
-                val shortName = when {
-                    f.returnType.isAnonymous -> ""
-                    typeSubstitution != null -> useType(substReturnType).javaResult.shortName
-                    else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
+                val extReceiver = f.extensionReceiverParameter
+                val idxOffset = if (extReceiver != null) 1 else 0
+                val paramTypes = f.valueParameters.mapIndexed { i, vp ->
+                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration)
                 }
-                @Suppress("UNCHECKED_CAST")
-                tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", unitType.javaResult.id, unitType.kotlinResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
-            } else {
-                val returnType = useType(substReturnType, TypeContext.RETURN)
-                val shortName = getFunctionShortName(f)
-                @Suppress("UNCHECKED_CAST")
-                tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, sourceDeclaration as Label<DbMethod>)
-                // TODO: fix `sourceId`. It doesn't always match the method ID.
+                val allParamTypes = if (extReceiver != null) {
+                    val extendedType = useType(extReceiver.type)
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeKtExtensionFunctions(id as Label<DbMethod>, extendedType.javaResult.id, extendedType.kotlinResult.id)
+
+                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration)
+                    listOf(t) + paramTypes
+                } else {
+                    paramTypes
+                }
+
+                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+
+                val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
+
+                if (f.symbol is IrConstructorSymbol) {
+                    val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
+                    val shortName = when {
+                        f.returnType.isAnonymous -> ""
+                        typeSubstitution != null -> useType(substReturnType).javaResult.shortName
+                        else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
+                    }
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", unitType.javaResult.id, unitType.kotlinResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
+                } else {
+                    val returnType = useType(substReturnType, TypeContext.RETURN)
+                    val shortName = getFunctionShortName(f)
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, sourceDeclaration as Label<DbMethod>)
+                    // TODO: fix `sourceId`. It doesn't always match the method ID.
+                }
+
+                tw.writeHasLocation(id, locId)
+                val body = f.body
+                if (body != null && extractBody) {
+                    if (typeSubstitution != null)
+                        logger.warnElement(Severity.ErrorSevere, "Type substitution should only be used to extract a function prototype, not the body", f)
+                    extractBody(body, id)
+                }
+
+                extractVisibility(f, id, f.visibility)
+
+                return id
             }
-
-            tw.writeHasLocation(id, locId)
-            val body = f.body
-            if (body != null && extractBody) {
-                if (typeSubstitution != null)
-                    logger.warnElement(Severity.ErrorSevere, "Type substitution should only be used to extract a function prototype, not the body", f)
-                extractBody(body, id)
-            }
-
-            extractVisibility(f, id, f.visibility)
-
-            return id
         }
     }
 
     fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
-        DeclarationStackAdjuster(f).use {
-            declarationStack.push(f)
-            return extractField(useField(f), f.name.asString(), f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f))
+        with("field", f) {
+           DeclarationStackAdjuster(f).use {
+               declarationStack.push(f)
+               return extractField(useField(f), f.name.asString(), f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f))
+           }
         }
     }
 
@@ -592,112 +620,124 @@ open class KotlinFileExtractor(
     }
 
     fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
-        DeclarationStackAdjuster(p).use {
+        with("property", p) {
+            DeclarationStackAdjuster(p).use {
 
-            val visibility = p.visibility
-            if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
-                return
-            }
-
-            val id = useProperty(p, parentId)
-            val locId = tw.getLocation(p)
-            tw.writeKtProperties(id, p.name.asString())
-            tw.writeHasLocation(id, locId)
-
-            val bf = p.backingField
-            val getter = p.getter
-            val setter = p.setter
-
-            if (getter != null) {
-                @Suppress("UNCHECKED_CAST")
-                val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
-                tw.writeKtPropertyGetters(id, getterId)
-            } else {
-                if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
-                    logger.warnElement(Severity.ErrorSevere, "IrProperty without a getter", p)
+                val visibility = p.visibility
+                if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+                    return
                 }
-            }
 
-            if (setter != null) {
-                if (!p.isVar) {
-                    logger.warnElement(Severity.ErrorSevere, "!isVar property with a setter", p)
+                val id = useProperty(p, parentId)
+                val locId = tw.getLocation(p)
+                tw.writeKtProperties(id, p.name.asString())
+                tw.writeHasLocation(id, locId)
+
+                val bf = p.backingField
+                val getter = p.getter
+                val setter = p.setter
+
+                if (getter != null) {
+                    @Suppress("UNCHECKED_CAST")
+                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
+                    tw.writeKtPropertyGetters(id, getterId)
+                } else {
+                    if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
+                        logger.warnElement(Severity.ErrorSevere, "IrProperty without a getter", p)
+                    }
                 }
-                @Suppress("UNCHECKED_CAST")
-                val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
-                tw.writeKtPropertySetters(id, setterId)
-            } else {
-                if (p.isVar && !isExternalDeclaration(p)) {
-                    logger.warnElement(Severity.ErrorSevere, "isVar property without a setter", p)
+
+                if (setter != null) {
+                    if (!p.isVar) {
+                        logger.warnElement(Severity.ErrorSevere, "!isVar property with a setter", p)
+                    }
+                    @Suppress("UNCHECKED_CAST")
+                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs) as Label<out DbMethod>
+                    tw.writeKtPropertySetters(id, setterId)
+                } else {
+                    if (p.isVar && !isExternalDeclaration(p)) {
+                        logger.warnElement(Severity.ErrorSevere, "isVar property without a setter", p)
+                    }
                 }
-            }
 
-            if (bf != null && extractBackingField) {
-                val fieldId = extractField(bf, parentId)
-                tw.writeKtPropertyBackingFields(id, fieldId)
-            }
+                if (bf != null && extractBackingField) {
+                    val fieldId = extractField(bf, parentId)
+                    tw.writeKtPropertyBackingFields(id, fieldId)
+                }
 
-            extractVisibility(p, id, p.visibility)
+                extractVisibility(p, id, p.visibility)
+            }
         }
     }
 
     fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>) {
-        DeclarationStackAdjuster(ee).use {
-            val id = useEnumEntry(ee)
-            val parent = ee.parent
-            if (parent !is IrClass) {
-                logger.warnElement(Severity.ErrorSevere, "Enum entry with unexpected parent: " + parent.javaClass, ee)
-            } else if (parent.typeParameters.isNotEmpty()) {
-                logger.warnElement(Severity.ErrorSevere, "Enum entry parent class has type parameters: " + parent.name, ee)
-            } else {
-                val type = useSimpleTypeClass(parent, emptyList(), false)
-                tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
-                val locId = tw.getLocation(ee)
-                tw.writeHasLocation(id, locId)
+        with("enum entry", ee) {
+            DeclarationStackAdjuster(ee).use {
+                val id = useEnumEntry(ee)
+                val parent = ee.parent
+                if (parent !is IrClass) {
+                    logger.warnElement(Severity.ErrorSevere, "Enum entry with unexpected parent: " + parent.javaClass, ee)
+                } else if (parent.typeParameters.isNotEmpty()) {
+                    logger.warnElement(Severity.ErrorSevere, "Enum entry parent class has type parameters: " + parent.name, ee)
+                } else {
+                    val type = useSimpleTypeClass(parent, emptyList(), false)
+                    tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
+                    val locId = tw.getLocation(ee)
+                    tw.writeHasLocation(id, locId)
+                }
             }
         }
     }
 
     fun extractTypeAlias(ta: IrTypeAlias) {
-        if (ta.typeParameters.isNotEmpty()) {
-            // TODO: Extract this information
-            logger.warn(Severity.ErrorSevere, "Type alias type parameters ignored for " + ta.render())
+        with("type alias", ta) {
+            if (ta.typeParameters.isNotEmpty()) {
+                // TODO: Extract this information
+                logger.warn(Severity.ErrorSevere, "Type alias type parameters ignored for " + ta.render())
+            }
+            val id = useTypeAlias(ta)
+            val locId = tw.getLocation(ta)
+            // TODO: We don't really want to generate any Java types here; we only want the KT type:
+            val type = useType(ta.expandedType)
+            tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
+            tw.writeHasLocation(id, locId)
         }
-        val id = useTypeAlias(ta)
-        val locId = tw.getLocation(ta)
-        // TODO: We don't really want to generate any Java types here; we only want the KT type:
-        val type = useType(ta.expandedType)
-        tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
-        tw.writeHasLocation(id, locId)
     }
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
-        when(b) {
-            is IrBlockBody -> extractBlockBody(b, callable)
-            is IrSyntheticBody -> extractSyntheticBody(b, callable)
-            is IrExpressionBody -> {
-                // TODO
-                logger.warnElement(Severity.ErrorSevere, "Unhandled IrExpressionBody", b)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
+        with("body", b) {
+            when(b) {
+                is IrBlockBody -> extractBlockBody(b, callable)
+                is IrSyntheticBody -> extractSyntheticBody(b, callable)
+                is IrExpressionBody -> {
+                    // TODO
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrExpressionBody", b)
+                }
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
+                }
             }
         }
     }
 
     fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
-        val id = tw.getFreshIdLabel<DbBlock>()
-        val locId = tw.getLocation(b)
-        tw.writeStmts_block(id, callable, 0, callable)
-        tw.writeHasLocation(id, locId)
-        for((sIdx, stmt) in b.statements.withIndex()) {
-            extractStatement(stmt, callable, id, sIdx)
+        with("block body", b) {
+            val id = tw.getFreshIdLabel<DbBlock>()
+            val locId = tw.getLocation(b)
+            tw.writeStmts_block(id, callable, 0, callable)
+            tw.writeHasLocation(id, locId)
+            for((sIdx, stmt) in b.statements.withIndex()) {
+                extractStatement(stmt, callable, id, sIdx)
+            }
         }
     }
 
     fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
-        when (b.kind) {
-            IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
-            IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+        with("synthetic body", b) {
+            when (b.kind) {
+                IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
+                IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+            }
         }
     }
 
@@ -712,57 +752,63 @@ open class KotlinFileExtractor(
     }
 
     fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-        val locId = tw.getLocation(getVariableLocationProvider(v))
-        tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
-        tw.writeHasLocation(stmtId, locId)
-        extractVariableExpr(v, callable, stmtId, 1, stmtId)
+        with("variable", v) {
+            val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
+            val locId = tw.getLocation(getVariableLocationProvider(v))
+            tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
+            tw.writeHasLocation(stmtId, locId)
+            extractVariableExpr(v, callable, stmtId, 1, stmtId)
+        }
     }
 
     fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
-        val varId = useVariable(v)
-        val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-        val locId = tw.getLocation(getVariableLocationProvider(v))
-        val type = useType(v.type)
-        tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, type.kotlinResult.id, exprId)
-        tw.writeHasLocation(varId, locId)
-        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, parent, idx)
-        tw.writeHasLocation(exprId, locId)
-        tw.writeCallableEnclosingExpr(exprId, callable)
-        tw.writeStatementEnclosingExpr(exprId, enclosingStmt)
-        val i = v.initializer
-        if(i != null) {
-            extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
+        with("variable expr", v) {
+            val varId = useVariable(v)
+            val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val type = useType(v.type)
+            tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, type.kotlinResult.id, exprId)
+            tw.writeHasLocation(varId, locId)
+            tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, type.kotlinResult.id, parent, idx)
+            tw.writeHasLocation(exprId, locId)
+            tw.writeCallableEnclosingExpr(exprId, callable)
+            tw.writeStatementEnclosingExpr(exprId, enclosingStmt)
+            val i = v.initializer
+            if(i != null) {
+                extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
+            }
         }
     }
 
     fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        when(s) {
-            is IrExpression -> {
-                extractExpressionStmt(s, callable, parent, idx)
-            }
-            is IrVariable -> {
-                extractVariable(s, callable, parent, idx)
-            }
-            is IrClass -> {
-                extractLocalTypeDeclStmt(s, callable, parent, idx)
-            }
-            is IrFunction -> {
-                if (s.isLocalFunction()) {
-                    val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
-                    extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
-                    val ids = getLocallyVisibleFunctionLabels(s)
-                    tw.writeKtLocalFunction(ids.function)
-                } else {
-                    logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
+        with("statement", s) {
+            when(s) {
+                is IrExpression -> {
+                    extractExpressionStmt(s, callable, parent, idx)
                 }
-            }
-            is IrLocalDelegatedProperty -> {
-                // TODO:
-                logger.warnElement(Severity.ErrorSevere, "Unhandled IrLocalDelegatedProperty", s)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
+                is IrVariable -> {
+                    extractVariable(s, callable, parent, idx)
+                }
+                is IrClass -> {
+                    extractLocalTypeDeclStmt(s, callable, parent, idx)
+                }
+                is IrFunction -> {
+                    if (s.isLocalFunction()) {
+                        val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
+                        extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
+                        val ids = getLocallyVisibleFunctionLabels(s)
+                        tw.writeKtLocalFunction(ids.function)
+                    } else {
+                        logger.warnElement(Severity.ErrorSevere, "Expected to find local function", s)
+                    }
+                }
+                is IrLocalDelegatedProperty -> {
+                    // TODO:
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrLocalDelegatedProperty", s)
+                }
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrStatement: " + s.javaClass, s)
+                }
             }
         }
     }
@@ -1061,7 +1107,7 @@ open class KotlinFileExtractor(
                     val func = pluginContext.irBuiltIns.stringType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "plus" }
                     if (func == null) {
                         logger.warnElement(Severity.ErrorSevere, "Couldn't find plus function on string type", c)
-                        return@with
+                        return
                     }
                     extractMethodAccess(func as IrFunction)
                 }
@@ -1211,7 +1257,7 @@ open class KotlinFileExtractor(
                     val func = pluginContext.irBuiltIns.anyType.classOrNull?.owner?.declarations?.find { it is IrFunction && it.name.asString() == "toString" }
                     if (func == null) {
                         logger.warnElement(Severity.ErrorSevere, "Couldn't find toString function", c)
-                        return@with
+                        return
                     }
                     extractMethodAccess(func as IrFunction)
                 }
@@ -1433,533 +1479,536 @@ open class KotlinFileExtractor(
     }
 
     fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
-        when(e) {
-            is IrDelegatingConstructorCall -> {
-                val stmtParent = parent.stmt(e, callable)
+        with("expression", e) {
+            when(e) {
+                is IrDelegatingConstructorCall -> {
+                    val stmtParent = parent.stmt(e, callable)
 
-                val irCallable = declarationStack.peek()
+                    val irCallable = declarationStack.peek()
 
-                val delegatingClass = e.symbol.owner.parent as IrClass
-                val currentClass = irCallable.parent as IrClass
+                    val delegatingClass = e.symbol.owner.parent as IrClass
+                    val currentClass = irCallable.parent as IrClass
 
-                val id: Label<out DbStmt>
-                if (delegatingClass != currentClass) {
-                    id = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
-                    tw.writeStmts_superconstructorinvocationstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                } else {
-                    id = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
-                    tw.writeStmts_constructorinvocationstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    val id: Label<out DbStmt>
+                    if (delegatingClass != currentClass) {
+                        id = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
+                        tw.writeStmts_superconstructorinvocationstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    } else {
+                        id = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
+                        tw.writeStmts_constructorinvocationstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    }
+
+                    val locId = tw.getLocation(e)
+                    val methodId = useFunction<DbConstructor>(e.symbol.owner)
+
+                    tw.writeHasLocation(id, locId)
+                    @Suppress("UNCHECKED_CAST")
+                    tw.writeCallableBinding(id as Label<DbCaller>, methodId)
+                    for (i in 0 until e.valueArgumentsCount) {
+                        val arg = e.getValueArgument(i)
+                        if (arg != null) {
+                            extractExpressionExpr(arg, callable, id, i, id)
+                        }
+                    }
+                    val dr = e.dispatchReceiver
+                    if (dr != null) {
+                        extractExpressionExpr(dr, callable, id, -1, id)
+                    }
+
+                    // todo: type arguments at index -2, -3, ...
                 }
-
-                val locId = tw.getLocation(e)
-                val methodId = useFunction<DbConstructor>(e.symbol.owner)
-
-                tw.writeHasLocation(id, locId)
-                @Suppress("UNCHECKED_CAST")
-                tw.writeCallableBinding(id as Label<DbCaller>, methodId)
-                for (i in 0 until e.valueArgumentsCount) {
-                    val arg = e.getValueArgument(i)
-                    if (arg != null) {
-                        extractExpressionExpr(arg, callable, id, i, id)
+                is IrThrow -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbThrowstmt>()
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    extractExpressionExpr(e.value, callable, id, 0, id)
+                }
+                is IrBreak -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbBreakstmt>()
+                    tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    extractBreakContinue(e, id)
+                }
+                is IrContinue -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbContinuestmt>()
+                    tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    extractBreakContinue(e, id)
+                }
+                is IrReturn -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbReturnstmt>()
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    extractExpressionExpr(e.value, callable, id, 0, id)
+                }
+                is IrTry -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbTrystmt>()
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    extractExpressionStmt(e.tryResult, callable, id, -1)
+                    val finallyStmt = e.finallyExpression
+                    if(finallyStmt != null) {
+                        extractExpressionStmt(finallyStmt, callable, id, -2)
+                    }
+                    for((catchIdx, catchClause) in e.catches.withIndex()) {
+                        val catchId = tw.getFreshIdLabel<DbCatchclause>()
+                        tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
+                        val catchLocId = tw.getLocation(catchClause)
+                        tw.writeHasLocation(catchId, catchLocId)
+                        extractTypeAccess(catchClause.catchParameter.type, callable, catchId, -1, catchClause.catchParameter, catchId)
+                        extractVariableExpr(catchClause.catchParameter, callable, catchId, 0, catchId)
+                        extractExpressionStmt(catchClause.result, callable, catchId, 1)
                     }
                 }
-                val dr = e.dispatchReceiver
-                if (dr != null) {
-                    extractExpressionExpr(dr, callable, id, -1, id)
-                }
-
-                // todo: type arguments at index -2, -3, ...
-            }
-            is IrThrow -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbThrowstmt>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpressionExpr(e.value, callable, id, 0, id)
-            }
-            is IrBreak -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbBreakstmt>()
-                tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                extractBreakContinue(e, id)
-            }
-            is IrContinue -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbContinuestmt>()
-                tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
-                extractBreakContinue(e, id)
-            }
-            is IrReturn -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbReturnstmt>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpressionExpr(e.value, callable, id, 0, id)
-            }
-            is IrTry -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbTrystmt>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpressionStmt(e.tryResult, callable, id, -1)
-                val finallyStmt = e.finallyExpression
-                if(finallyStmt != null) {
-                    extractExpressionStmt(finallyStmt, callable, id, -2)
-                }
-                for((catchIdx, catchClause) in e.catches.withIndex()) {
-                    val catchId = tw.getFreshIdLabel<DbCatchclause>()
-                    tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
-                    val catchLocId = tw.getLocation(catchClause)
-                    tw.writeHasLocation(catchId, catchLocId)
-                    extractTypeAccess(catchClause.catchParameter.type, callable, catchId, -1, catchClause.catchParameter, catchId)
-                    extractVariableExpr(catchClause.catchParameter, callable, catchId, 0, catchId)
-                    extractExpressionStmt(catchClause.result, callable, catchId, 1)
-                }
-            }
-            is IrContainerExpression -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbBlock>()
-                val locId = tw.getLocation(e)
-                tw.writeStmts_block(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                e.statements.forEachIndexed { i, s ->
-                    extractStatement(s, callable, id, i)
-                }
-            }
-            is IrWhileLoop -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbWhilestmt>()
-                loopIdMap[e] = id
-                val locId = tw.getLocation(e)
-                tw.writeStmts_whilestmt(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpressionExpr(e.condition, callable, id, 0, id)
-                val body = e.body
-                if(body != null) {
-                    extractExpressionStmt(body, callable, id, 1)
-                }
-                loopIdMap.remove(e)
-            }
-            is IrDoWhileLoop -> {
-                val stmtParent = parent.stmt(e, callable)
-                val id = tw.getFreshIdLabel<DbDostmt>()
-                loopIdMap[e] = id
-                val locId = tw.getLocation(e)
-                tw.writeStmts_dostmt(id, stmtParent.parent, stmtParent.idx, callable)
-                tw.writeHasLocation(id, locId)
-                extractExpressionExpr(e.condition, callable, id, 0, id)
-                val body = e.body
-                if(body != null) {
-                    extractExpressionStmt(body, callable, id, 1)
-                }
-                loopIdMap.remove(e)
-            }
-            is IrInstanceInitializerCall -> {
-                val exprParent = parent.expr(e, callable)
-                val irCallable = declarationStack.peek()
-
-                if (irCallable is IrConstructor && irCallable.isPrimary) {
-                    // Todo add parameter to field assignments
-                }
-
-                // Add call to <obinit>:
-                val id = tw.getFreshIdLabel<DbMethodaccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                val methodLabel = getFunctionLabel(irCallable.parent, null, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
-                val methodId = tw.getLabelFor<DbMethod>(methodLabel)
-                tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                tw.writeCallableBinding(id, methodId)
-            }
-            is IrConstructorCall -> {
-                val exprParent = parent.expr(e, callable)
-                extractConstructorCall(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
-            }
-            is IrEnumConstructorCall -> {
-                val exprParent = parent.expr(e, callable)
-                extractConstructorCall(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
-            }
-            is IrCall -> {
-                val exprParent = parent.expr(e, callable)
-                extractCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
-            }
-            is IrStringConcatenation -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbStringtemplateexpr>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_stringtemplateexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                e.arguments.forEachIndexed { i, a ->
-                    extractExpressionExpr(a, callable, id, i, exprParent.enclosingStmt)
-                }
-            }
-            is IrConst<*> -> {
-                val exprParent = parent.expr(e, callable)
-                when(val v = e.value) {
-                    is Int, is Short, is Byte -> {
-                        val id = tw.getFreshIdLabel<DbIntegerliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_integerliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is Long -> {
-                        val id = tw.getFreshIdLabel<DbLongliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_longliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is Float -> {
-                        val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_floatingpointliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is Double -> {
-                        val id = tw.getFreshIdLabel<DbDoubleliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_doubleliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is Boolean -> {
-                        val id = tw.getFreshIdLabel<DbBooleanliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_booleanliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is Char -> {
-                        val id = tw.getFreshIdLabel<DbCharacterliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_characterliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    } is String -> {
-                        val id = tw.getFreshIdLabel<DbStringliteral>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_stringliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    }
-                    null -> {
-                        val id = tw.getFreshIdLabel<DbNullliteral>()
-                        val type = useType(e.type) // class;kotlin.Nothing
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_nullliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                    }
-                    else -> {
-                        logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
+                is IrContainerExpression -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbBlock>()
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_block(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    e.statements.forEachIndexed { i, s ->
+                        extractStatement(s, callable, id, i)
                     }
                 }
-            }
-            is IrGetValue -> {
-                val exprParent = parent.expr(e, callable)
-                val owner = e.symbol.owner
-                if (owner is IrValueParameter && owner.index == -1) {
-                    val id = tw.getFreshIdLabel<DbThisaccess>()
+                is IrWhileLoop -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbWhilestmt>()
+                    loopIdMap[e] = id
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_whilestmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    extractExpressionExpr(e.condition, callable, id, 0, id)
+                    val body = e.body
+                    if(body != null) {
+                        extractExpressionStmt(body, callable, id, 1)
+                    }
+                    loopIdMap.remove(e)
+                }
+                is IrDoWhileLoop -> {
+                    val stmtParent = parent.stmt(e, callable)
+                    val id = tw.getFreshIdLabel<DbDostmt>()
+                    loopIdMap[e] = id
+                    val locId = tw.getLocation(e)
+                    tw.writeStmts_dostmt(id, stmtParent.parent, stmtParent.idx, callable)
+                    tw.writeHasLocation(id, locId)
+                    extractExpressionExpr(e.condition, callable, id, 0, id)
+                    val body = e.body
+                    if(body != null) {
+                        extractExpressionStmt(body, callable, id, 1)
+                    }
+                    loopIdMap.remove(e)
+                }
+                is IrInstanceInitializerCall -> {
+                    val exprParent = parent.expr(e, callable)
+                    val irCallable = declarationStack.peek()
+
+                    if (irCallable is IrConstructor && irCallable.isPrimary) {
+                        // Todo add parameter to field assignments
+                    }
+
+                    // Add call to <obinit>:
+                    val id = tw.getFreshIdLabel<DbMethodaccess>()
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
-                    tw.writeExprs_thisaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    val methodLabel = getFunctionLabel(irCallable.parent, null, "<obinit>", listOf(), e.type, null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
+                    val methodId = tw.getLabelFor<DbMethod>(methodLabel)
+                    tw.writeExprs_methodaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    tw.writeCallableBinding(id, methodId)
+                }
+                is IrConstructorCall -> {
+                    val exprParent = parent.expr(e, callable)
+                    extractConstructorCall(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                }
+                is IrEnumConstructorCall -> {
+                    val exprParent = parent.expr(e, callable)
+                    extractConstructorCall(e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                }
+                is IrCall -> {
+                    val exprParent = parent.expr(e, callable)
+                    extractCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
+                }
+                is IrStringConcatenation -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbStringtemplateexpr>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_stringtemplateexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    e.arguments.forEachIndexed { i, a ->
+                        extractExpressionExpr(a, callable, id, i, exprParent.enclosingStmt)
+                    }
+                }
+                is IrConst<*> -> {
+                    val exprParent = parent.expr(e, callable)
+                    when(val v = e.value) {
+                        is Int, is Short, is Byte -> {
+                            val id = tw.getFreshIdLabel<DbIntegerliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_integerliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is Long -> {
+                            val id = tw.getFreshIdLabel<DbLongliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_longliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is Float -> {
+                            val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_floatingpointliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is Double -> {
+                            val id = tw.getFreshIdLabel<DbDoubleliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_doubleliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is Boolean -> {
+                            val id = tw.getFreshIdLabel<DbBooleanliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_booleanliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is Char -> {
+                            val id = tw.getFreshIdLabel<DbCharacterliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_characterliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        } is String -> {
+                            val id = tw.getFreshIdLabel<DbStringliteral>()
+                            val type = useType(e.type)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_stringliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                        }
+                        null -> {
+                            val id = tw.getFreshIdLabel<DbNullliteral>()
+                            val type = useType(e.type) // class;kotlin.Nothing
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_nullliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                            tw.writeHasLocation(id, locId)
+                            tw.writeCallableEnclosingExpr(id, callable)
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                        }
+                        else -> {
+                            logger.warnElement(Severity.ErrorSevere, "Unrecognised IrConst: " + v.javaClass, e)
+                        }
+                    }
+                }
+                is IrGetValue -> {
+                    val exprParent = parent.expr(e, callable)
+                    val owner = e.symbol.owner
+                    if (owner is IrValueParameter && owner.index == -1) {
+                        val id = tw.getFreshIdLabel<DbThisaccess>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_thisaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                        when(val ownerParent = owner.parent) {
+                            is IrFunction -> {
+                                if (ownerParent.dispatchReceiverParameter == owner &&
+                                    ownerParent.extensionReceiverParameter != null) {
+                                    logger.warnElement(Severity.ErrorSevere, "Function-qualifier for this", e)
+                                }
+                            }
+                            is IrClass -> {
+                                if (ownerParent.thisReceiver == owner) {
+                                    // TODO: Type arguments
+                                    extractTypeAccess(ownerParent.typeWith(listOf()), locId, callable, id, 0, exprParent.enclosingStmt)
+                                }
+                            }
+                            else -> {
+                                logger.warnElement(Severity.ErrorSevere, "Unexpected owner parent for this access: " + ownerParent.javaClass, e)
+                            }
+                        }
+                    } else {
+                        val id = tw.getFreshIdLabel<DbVaraccess>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                        val vId = useValueDeclaration(owner)
+                        tw.writeVariableBinding(id, vId)
+                    }
+                }
+                is IrGetField -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    val owner = e.symbol.owner
+                    val vId = useField(owner)
+                    tw.writeVariableBinding(id, vId)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                    val receiver = e.receiver
+                    if (receiver != null) {
+                        extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
+                    }
+                }
+                is IrGetEnumValue -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    if (!e.symbol.isBound) {
+                        logger.warnElement(Severity.ErrorSevere, "Unbound enum value", e)
+                        return
+                    }
+                    val owner = e.symbol.owner
+                    val vId = useEnumEntry(owner)
+                    tw.writeVariableBinding(id, vId)
+                }
+                is IrSetValue,
+                is IrSetField -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbAssignexpr>()
+                    val type = useType(e.type)
+                    val locId = tw.getLocation(e)
+                    tw.writeExprs_assignexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    when(val ownerParent = owner.parent) {
-                        is IrFunction -> {
-                            if (ownerParent.dispatchReceiverParameter == owner &&
-                                ownerParent.extensionReceiverParameter != null) {
-                                logger.warnElement(Severity.ErrorSevere, "Function-qualifier for this", e)
-                            }
+                    val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                    tw.writeHasLocation(lhsId, locId)
+                    tw.writeCallableEnclosingExpr(lhsId, callable)
+
+                    when (e) {
+                        is IrSetValue -> {
+                            val lhsType = useType(e.symbol.owner.type)
+                            tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
+                            // TODO: location, enclosing callable?
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            val vId = useValueDeclaration(e.symbol.owner)
+                            tw.writeVariableBinding(lhsId, vId)
+                            extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
                         }
-                        is IrClass -> {
-                            if (ownerParent.thisReceiver == owner) {
-                                // TODO: Type arguments
-                                extractTypeAccess(ownerParent.typeWith(listOf()), locId, callable, id, 0, exprParent.enclosingStmt)
+                        is IrSetField -> {
+                            val lhsType = useType(e.symbol.owner.type)
+                            tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
+                            // TODO: location, enclosing callable?
+                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            val vId = useField(e.symbol.owner)
+                            tw.writeVariableBinding(lhsId, vId)
+                            extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
+
+                            val receiver = e.receiver
+                            if (receiver != null) {
+                                extractExpressionExpr(receiver, callable, lhsId, -1, exprParent.enclosingStmt)
                             }
                         }
                         else -> {
-                            logger.warnElement(Severity.ErrorSevere, "Unexpected owner parent for this access: " + ownerParent.javaClass, e)
+                            logger.warnElement(Severity.ErrorSevere, "Unhandled IrSet* element.", e)
                         }
                     }
-                } else {
-                    val id = tw.getFreshIdLabel<DbVaraccess>()
+                }
+                is IrWhen -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbWhenexpr>()
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
-                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeExprs_whenexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    if(e.origin == IrStatementOrigin.IF) {
+                        tw.writeWhen_if(id)
+                    }
+                    e.branches.forEachIndexed { i, b ->
+                        val bId = tw.getFreshIdLabel<DbWhenbranch>()
+                        val bLocId = tw.getLocation(b)
+                        tw.writeWhen_branch(bId, id, i)
+                        tw.writeHasLocation(bId, bLocId)
+                        extractExpressionExpr(b.condition, callable, bId, 0, exprParent.enclosingStmt)
+                        extractExpressionStmt(b.result, callable, bId, 1)
+                        if(b is IrElseBranch) {
+                            tw.writeWhen_branch_else(bId)
+                        }
+                    }
+                }
+                is IrGetClass -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbGetclassexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_getclassexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 0, exprParent.enclosingStmt)
+                }
+                is IrTypeOperatorCall -> {
+                    val exprParent = parent.expr(e, callable)
+                    extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
+                }
+                is IrVararg -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbVarargexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_varargexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                    e.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, id, i, exprParent.enclosingStmt) }
+                }
+                is IrGetObjectValue -> {
+                    // For `object MyObject { ... }`, the .class has an
+                    // automatically-generated `public static final MyObject INSTANCE`
+                    // field that we are accessing here.
+                    val exprParent = parent.expr(e, callable)
+                    if (!e.symbol.isBound) {
+                        logger.warnElement(Severity.ErrorSevere, "Unbound object value", e)
+                        return
+                    }
+
+                    val c: IrClass = e.symbol.owner
+                    val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
+
+                    if (instance != null) {
+                        val id = tw.getFreshIdLabel<DbVaraccess>()
+                        val type = useType(e.type)
+                        val locId = tw.getLocation(e)
+                        tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+                        tw.writeVariableBinding(id, instance.id)
+                    }
+                }
+                is IrFunctionReference -> {
+                    extractFunctionReference(e, parent, callable)
+                }
+                is IrFunctionExpression -> {
+                    /*
+                     * Extract generated class:
+                     * ```
+                     * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
+                     *   constructor() { super(); }
+                     *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
+                     * }
+                     * ```
+                     * or in case of big arity lambdas
+                     * ```
+                     * class C : Any, kotlin.FunctionN<R> {
+                     *   constructor() { super(); }
+                     *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
+                     *   fun invoke(vararg args: Any?): R {
+                     *     return invoke(args[0] as T0, args[1] as T1, ..., args[I] as TI)
+                     *   }
+                     * }
+                     * ```
+                     **/
+
+                    val ids = getLocallyVisibleFunctionLabels(e.function)
+                    val locId = tw.getLocation(e)
+
+                    val ext = e.function.extensionReceiverParameter
+                    val parameters = if (ext != null) {
+                        listOf(ext) + e.function.valueParameters
+                    } else {
+                        e.function.valueParameters
+                    }
+
+                    var types = parameters.map { it.type }
+                    types += e.function.returnType
+
+                    val fnInterfaceType = getFunctionalInterfaceType(types)
+                    val id = extractGeneratedClass(
+                        e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
+                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
+
+                    if (types.size > BuiltInFunctionArity.BIG_ARITY) {
+                        implementFunctionNInvoke(e.function, ids, locId, parameters)
+                    }
+
+                    val exprParent = parent.expr(e, callable)
+                    val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
+                    tw.writeExprs_lambdaexpr(idLambdaExpr, ids.type.javaResult.id, ids.type.kotlinResult.id, exprParent.parent, exprParent.idx)
+                    tw.writeHasLocation(idLambdaExpr, locId)
+                    tw.writeCallableEnclosingExpr(idLambdaExpr, callable)
+                    tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
+                    tw.writeCallableBinding(idLambdaExpr, ids.constructor)
+
+                    extractTypeAccess(fnInterfaceType, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
+
+                    // todo: fix hard coded block body of lambda
+                    tw.writeLambdaKind(idLambdaExpr, 1)
+
+                    tw.writeIsAnonymClass(id, idLambdaExpr)
+                }
+                is IrClassReference -> {
+                    val exprParent = parent.expr(e, callable)
+                    val id = tw.getFreshIdLabel<DbTypeliteral>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_typeliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    val vId = useValueDeclaration(owner)
-                    tw.writeVariableBinding(id, vId)
+                    extractTypeAccess(e.classType, locId, callable, id, 0, exprParent.enclosingStmt)
+                }
+                is IrPropertyReference -> {
+                    // TODO
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrPropertyReference", e)
+                }
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
                 }
             }
-            is IrGetField -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbVaraccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                val owner = e.symbol.owner
-                val vId = useField(owner)
-                tw.writeVariableBinding(id, vId)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                val receiver = e.receiver
-                if (receiver != null) {
-                    extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
-                }
-            }
-            is IrGetEnumValue -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbVaraccess>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                if (!e.symbol.isBound) {
-                    logger.warnElement(Severity.ErrorSevere, "Unbound enum value", e)
-                    return
-                }
-                val owner = e.symbol.owner
-                val vId = useEnumEntry(owner)
-                tw.writeVariableBinding(id, vId)
-            }
-            is IrSetValue,
-            is IrSetField -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbAssignexpr>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_assignexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                tw.writeHasLocation(lhsId, locId)
-                tw.writeCallableEnclosingExpr(lhsId, callable)
-
-                when (e) {
-                    is IrSetValue -> {
-                        val lhsType = useType(e.symbol.owner.type)
-                        tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
-                        // TODO: location, enclosing callable?
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        val vId = useValueDeclaration(e.symbol.owner)
-                        tw.writeVariableBinding(lhsId, vId)
-                        extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
-                    }
-                    is IrSetField -> {
-                        val lhsType = useType(e.symbol.owner.type)
-                        tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, lhsType.kotlinResult.id, id, 0)
-                        // TODO: location, enclosing callable?
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                        val vId = useField(e.symbol.owner)
-                        tw.writeVariableBinding(lhsId, vId)
-                        extractExpressionExpr(e.value, callable, id, 1, exprParent.enclosingStmt)
-
-                        val receiver = e.receiver
-                        if (receiver != null) {
-                            extractExpressionExpr(receiver, callable, lhsId, -1, exprParent.enclosingStmt)
-                        }
-                    }
-                    else -> {
-                        logger.warnElement(Severity.ErrorSevere, "Unhandled IrSet* element.", e)
-                    }
-                }
-            }
-            is IrWhen -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbWhenexpr>()
-                val type = useType(e.type)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_whenexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                if(e.origin == IrStatementOrigin.IF) {
-                    tw.writeWhen_if(id)
-                }
-                e.branches.forEachIndexed { i, b ->
-                    val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                    val bLocId = tw.getLocation(b)
-                    tw.writeWhen_branch(bId, id, i)
-                    tw.writeHasLocation(bId, bLocId)
-                    extractExpressionExpr(b.condition, callable, bId, 0, exprParent.enclosingStmt)
-                    extractExpressionStmt(b.result, callable, bId, 1)
-                    if(b is IrElseBranch) {
-                        tw.writeWhen_branch_else(bId)
-                    }
-                }
-            }
-            is IrGetClass -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbGetclassexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_getclassexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 0, exprParent.enclosingStmt)
-            }
-            is IrTypeOperatorCall -> {
-                val exprParent = parent.expr(e, callable)
-                extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
-            }
-            is IrVararg -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbVarargexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_varargexpr(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                e.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, id, i, exprParent.enclosingStmt) }
-            }
-            is IrGetObjectValue -> {
-                // For `object MyObject { ... }`, the .class has an
-                // automatically-generated `public static final MyObject INSTANCE`
-                // field that we are accessing here.
-                val exprParent = parent.expr(e, callable)
-                if (!e.symbol.isBound) {
-                    logger.warnElement(Severity.ErrorSevere, "Unbound object value", e)
-                    return
-                }
-
-                val c: IrClass = e.symbol.owner
-                val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
-
-                if (instance != null) {
-                    val id = tw.getFreshIdLabel<DbVaraccess>()
-                    val type = useType(e.type)
-                    val locId = tw.getLocation(e)
-                    tw.writeExprs_varaccess(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                    tw.writeHasLocation(id, locId)
-                    tw.writeCallableEnclosingExpr(id, callable)
-                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                    tw.writeVariableBinding(id, instance.id)
-                }
-            }
-            is IrFunctionReference -> {
-                extractFunctionReference(e, parent, callable)
-            }
-            is IrFunctionExpression -> {
-                /*
-                 * Extract generated class:
-                 * ```
-                 * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
-                 *   constructor() { super(); }
-                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
-                 * }
-                 * ```
-                 * or in case of big arity lambdas
-                 * ```
-                 * class C : Any, kotlin.FunctionN<R> {
-                 *   constructor() { super(); }
-                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
-                 *   fun invoke(vararg args: Any?): R {
-                 *     return invoke(args[0] as T0, args[1] as T1, ..., args[I] as TI)
-                 *   }
-                 * }
-                 * ```
-                 **/
-
-                val ids = getLocallyVisibleFunctionLabels(e.function)
-                val locId = tw.getLocation(e)
-
-                val ext = e.function.extensionReceiverParameter
-                val parameters = if (ext != null) {
-                    listOf(ext) + e.function.valueParameters
-                } else {
-                    e.function.valueParameters
-                }
-
-                var types = parameters.map { it.type }
-                types += e.function.returnType
-
-                val fnInterfaceType = getFunctionalInterfaceType(types)
-                val id = extractGeneratedClass(
-                    e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
-                    listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
-
-                if (types.size > BuiltInFunctionArity.BIG_ARITY) {
-                    implementFunctionNInvoke(e.function, ids, locId, parameters)
-                }
-
-                val exprParent = parent.expr(e, callable)
-                val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
-                tw.writeExprs_lambdaexpr(idLambdaExpr, ids.type.javaResult.id, ids.type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(idLambdaExpr, locId)
-                tw.writeCallableEnclosingExpr(idLambdaExpr, callable)
-                tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
-                tw.writeCallableBinding(idLambdaExpr, ids.constructor)
-
-                extractTypeAccess(fnInterfaceType, callable, idLambdaExpr, -3, e, exprParent.enclosingStmt)
-
-                // todo: fix hard coded block body of lambda
-                tw.writeLambdaKind(idLambdaExpr, 1)
-
-                tw.writeIsAnonymClass(id, idLambdaExpr)
-            }
-            is IrClassReference -> {
-                val exprParent = parent.expr(e, callable)
-                val id = tw.getFreshIdLabel<DbTypeliteral>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_typeliteral(id, type.javaResult.id, type.kotlinResult.id, exprParent.parent, exprParent.idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                extractTypeAccess(e.classType, locId, callable, id, 0, exprParent.enclosingStmt)
-            }
-            is IrPropertyReference -> {
-                // TODO
-                logger.warnElement(Severity.ErrorSevere, "Unhandled IrPropertyReference", e)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrExpression: " + e.javaClass, e)
-            }
+            return
         }
     }
 
@@ -1968,258 +2017,260 @@ open class KotlinFileExtractor(
         parent: StmtExprParent,
         callable: Label<out DbCallable>
     ) {
-        val target = functionReferenceExpr.reflectionTarget
-        if (target == null) {
-            logger.warnElement(Severity.ErrorSevere, "Expected to find reflection target for function reference", functionReferenceExpr)
-            return
-        }
-
-        /*
-         * Extract generated class:
-         * ```
-         * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
-         *   private dispatchReceiver: TD
-         *   private extensionReceiver: TE
-         *   constructor(dispatchReceiver: TD, extensionReceiver: TE) {
-         *       super()
-         *       this.dispatchReceiver = dispatchReceiver
-         *       this.extensionReceiver = extensionReceiver
-         *   }
-         *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { return this.dispatchReceiver.FN(a0,a1,...,aI) }                       OR
-         *   fun invoke(       a1:T1, ... aI: TI): R { return this.dispatchReceiver.FN(this.dispatchReceiver,a1,...,aI) }    OR
-         *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { return Ctor(a0,a1,...,aI) }
-         * }
-         * ```
-         * or in case of big arity lambdas ????
-         * ```
-         * class C : Any, kotlin.FunctionN<R> {
-         *   private receiver: TD
-         *   constructor(receiver: TD) { super(); this.receiver = receiver; }
-         *   fun invoke(vararg args: Any?): R {
-         *     return this.receiver.FN(args[0] as T0, args[1] as T1, ..., args[I] as TI)
-         *   }
-         * }
-         * ```
-         **/
-
-        val typeArguments = if (target is IrConstructorSymbol) {
-            (target.owner.returnType as? IrSimpleType)?.arguments
-        } else {
-            (functionReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments
-        }
-
-        val targetCallableId = useFunction<DbCallable>(target.owner, typeArguments)
-        val locId = tw.getLocation(functionReferenceExpr)
-
-        val extensionParameter = target.owner.extensionReceiverParameter
-        val dispatchParameter = target.owner.dispatchReceiverParameter
-
-        var parameters = LinkedList(target.owner.valueParameters)
-        if (extensionParameter != null && functionReferenceExpr.extensionReceiver == null) {
-            parameters.addFirst(extensionParameter)
-        }
-        if (dispatchParameter != null && functionReferenceExpr.dispatchReceiver == null) {
-            parameters.addFirst(dispatchParameter)
-        }
-
-        val parameterTypes = parameters.map { it.type }
-        val functionNTypeArguments = parameterTypes + target.owner.returnType
-        val fnInterfaceType = getFunctionalInterfaceType(functionNTypeArguments)
-
-        val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
-        val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-        tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-        val ids = LocallyVisibleFunctionLabels(
-            TypeResults(javaResult, kotlinResult),
-            tw.getFreshIdLabel(),
-            tw.getFreshIdLabel(),
-            tw.getFreshIdLabel()
-        )
-
-        val currentDeclaration = declarationStack.peek()
-        val id = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType), locId, currentDeclaration)
-
-        fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
-            tw.writeHasLocation(id, locId)
-            tw.writeCallableEnclosingExpr(id, callable)
-            tw.writeStatementEnclosingExpr(id, stmt)
-        }
-
-        /**
-         * Extract a parameter to field assignment, such as `this.field = paramName` below:
-         * ```
-         * constructor(paramName: type) {
-         *   this.field = paramName
-         * }
-         * ```
-         */
-        fun extractParameterToFieldAssignmentInConstructor(
-            paramName: String,
-            type: IrType,
-            fieldId: Label<DbField>,
-            paramIdx: Int,
-            stmtIdx: Int
-        ) {
-            val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramType = extractValueParameter(paramId, type, paramName, locId, ids.constructor, paramIdx, null, paramId)
-
-            val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
-            tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
-            tw.writeHasLocation(assignmentStmtId, locId)
-
-            val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-            tw.writeExprs_assignexpr(assignmentId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentStmtId, 0)
-            writeExpressionMetadataToTrapFile(assignmentId, ids.constructor, assignmentStmtId)
-
-            val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(lhsId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentId, 0)
-            tw.writeVariableBinding(lhsId, fieldId)
-            writeExpressionMetadataToTrapFile(lhsId, ids.constructor, assignmentStmtId)
-
-            val thisId = tw.getFreshIdLabel<DbThisaccess>()
-            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, ids.type.kotlinResult.id, lhsId, -1)
-            writeExpressionMetadataToTrapFile(thisId, ids.constructor, assignmentStmtId)
-
-            val rhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(rhsId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentId, 1)
-            tw.writeVariableBinding(rhsId, paramId)
-            writeExpressionMetadataToTrapFile(rhsId, ids.constructor, assignmentStmtId)
-        }
-
-        val firstAssignmentStmtIdx = 1
-        val extensionParameterIndex: Int
-        val dispatchReceiver = functionReferenceExpr.dispatchReceiver
-        val dispatchFieldId: Label<DbField>?
-        if (dispatchReceiver != null) {
-            dispatchFieldId = tw.getFreshIdLabel()
-            extensionParameterIndex = 1
-
-            extractField(dispatchFieldId, "<dispatchReceiver>", dispatchReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, functionReferenceExpr, false)
-            extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
-        } else {
-            dispatchFieldId = null
-            extensionParameterIndex = 0
-        }
-
-        val extensionReceiver = functionReferenceExpr.extensionReceiver
-        val extensionFieldId: Label<out DbField>?
-        if (extensionReceiver != null) {
-            extensionFieldId = tw.getFreshIdLabel()
-
-            extractField(extensionFieldId, "<extensionReceiver>", extensionReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, functionReferenceExpr, false)
-            extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
-        } else {
-            extensionFieldId = null
-        }
-
-        val funLabels = if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            addFunctionNInvoke(target.owner.returnType, id, locId)
-        } else {
-            addFunctionInvoke(parameterTypes, target.owner.returnType, id, locId)
-        }
-
-        // Return statement of generated function:
-        val retId = tw.getFreshIdLabel<DbReturnstmt>()
-        tw.writeStmts_returnstmt(retId, funLabels.blockId, 0, funLabels.methodId)
-        tw.writeHasLocation(retId, locId)
-
-        // Call to target function:
-        val dispatchReceiverIdx: Int
-        val callId: Label<out DbExpr>
-        val callType = useType(target.owner.returnType)
-        if (target is IrConstructorSymbol) {
-            callId = tw.getFreshIdLabel<DbNewexpr>()
-            tw.writeExprs_newexpr(callId, callType.javaResult.id, callType.kotlinResult.id, retId, 0)
-
-            val typeAccessId = extractTypeAccess(callType, locId, funLabels.methodId, callId, -3, retId)
-
-            extractTypeArguments(functionReferenceExpr, typeAccessId, funLabels.methodId, retId)
-            dispatchReceiverIdx = -2
-        } else {
-            callId = tw.getFreshIdLabel<DbMethodaccess>()
-            tw.writeExprs_methodaccess(callId, callType.javaResult.id, callType.kotlinResult.id, retId, 0)
-
-            extractTypeArguments(functionReferenceExpr, callId, funLabels.methodId, retId, -2, true)
-            dispatchReceiverIdx = -1
-        }
-
-        writeExpressionMetadataToTrapFile(callId, funLabels.methodId, retId)
-        @Suppress("UNCHECKED_CAST")
-        tw.writeCallableBinding(callId as Label<out DbCaller>, targetCallableId)
-
-        fun writeVariableAccessInInvokeBody(
-            pType: TypeResults,
-            idx: Int,
-            variable: Label<out DbVariable>
-        ): Label<DbVaraccess> {
-            val pId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(pId, pType.javaResult.id, pType.kotlinResult.id, callId, idx)
-            tw.writeVariableBinding(pId, variable)
-            writeExpressionMetadataToTrapFile(pId, funLabels.methodId, retId)
-            return pId
-        }
-
-        fun writeFieldAccessInInvokeBody(pType: IrType, idx: Int, variable: Label<out DbField>) {
-            val accessId = writeVariableAccessInInvokeBody(useType(pType), idx, variable)
-            val thisId = tw.getFreshIdLabel<DbThisaccess>()
-            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, ids.type.kotlinResult.id, accessId, -1)
-            writeExpressionMetadataToTrapFile(thisId, funLabels.methodId, retId)
-        }
-
-        val useFirstArgAsDispatch: Boolean
-        if (dispatchReceiver != null) {
-            writeFieldAccessInInvokeBody(dispatchReceiver.type, dispatchReceiverIdx, dispatchFieldId!!)
-
-            useFirstArgAsDispatch = false
-        } else {
-            useFirstArgAsDispatch = dispatchParameter != null
-        }
-
-        val extensionIdxOffset: Int
-        if (extensionReceiver != null) {
-            writeFieldAccessInInvokeBody(extensionReceiver.type, 0, extensionFieldId!!)
-            extensionIdxOffset = 1
-        } else {
-            extensionIdxOffset = 0
-        }
-
-        if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            addArgumentsToInvocationInInvokeNBody(parameters, funLabels, retId, callId, locId, { exp -> writeExpressionMetadataToTrapFile(exp, funLabels.methodId, retId) }, extensionIdxOffset, useFirstArgAsDispatch, dispatchReceiverIdx)
-        } else {
-            val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
-            for ((pIdx, p) in funLabels.parameters.withIndex()) {
-                val childIdx = if (pIdx == 0 && useFirstArgAsDispatch) {
-                    dispatchReceiverIdx
-                } else {
-                    pIdx + extensionIdxOffset - dispatchIdxOffset
-                }
-                writeVariableAccessInInvokeBody(p.second, childIdx, p.first)
+        with("function reference", functionReferenceExpr) {
+            val target = functionReferenceExpr.reflectionTarget
+            if (target == null) {
+                logger.warnElement(Severity.ErrorSevere, "Expected to find reflection target for function reference", functionReferenceExpr)
+                return
             }
+
+            /*
+             * Extract generated class:
+             * ```
+             * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
+             *   private dispatchReceiver: TD
+             *   private extensionReceiver: TE
+             *   constructor(dispatchReceiver: TD, extensionReceiver: TE) {
+             *       super()
+             *       this.dispatchReceiver = dispatchReceiver
+             *       this.extensionReceiver = extensionReceiver
+             *   }
+             *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { return this.dispatchReceiver.FN(a0,a1,...,aI) }                       OR
+             *   fun invoke(       a1:T1, ... aI: TI): R { return this.dispatchReceiver.FN(this.dispatchReceiver,a1,...,aI) }    OR
+             *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { return Ctor(a0,a1,...,aI) }
+             * }
+             * ```
+             * or in case of big arity lambdas ????
+             * ```
+             * class C : Any, kotlin.FunctionN<R> {
+             *   private receiver: TD
+             *   constructor(receiver: TD) { super(); this.receiver = receiver; }
+             *   fun invoke(vararg args: Any?): R {
+             *     return this.receiver.FN(args[0] as T0, args[1] as T1, ..., args[I] as TI)
+             *   }
+             * }
+             * ```
+             **/
+
+            val typeArguments = if (target is IrConstructorSymbol) {
+                (target.owner.returnType as? IrSimpleType)?.arguments
+            } else {
+                (functionReferenceExpr.dispatchReceiver?.type as? IrSimpleType)?.arguments
+            }
+
+            val targetCallableId = useFunction<DbCallable>(target.owner, typeArguments)
+            val locId = tw.getLocation(functionReferenceExpr)
+
+            val extensionParameter = target.owner.extensionReceiverParameter
+            val dispatchParameter = target.owner.dispatchReceiverParameter
+
+            var parameters = LinkedList(target.owner.valueParameters)
+            if (extensionParameter != null && functionReferenceExpr.extensionReceiver == null) {
+                parameters.addFirst(extensionParameter)
+            }
+            if (dispatchParameter != null && functionReferenceExpr.dispatchReceiver == null) {
+                parameters.addFirst(dispatchParameter)
+            }
+
+            val parameterTypes = parameters.map { it.type }
+            val functionNTypeArguments = parameterTypes + target.owner.returnType
+            val fnInterfaceType = getFunctionalInterfaceType(functionNTypeArguments)
+
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            val ids = LocallyVisibleFunctionLabels(
+                TypeResults(javaResult, kotlinResult),
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel(),
+                tw.getFreshIdLabel()
+            )
+
+            val currentDeclaration = declarationStack.peek()
+            val id = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType), locId, currentDeclaration)
+
+            fun writeExpressionMetadataToTrapFile(id: Label<out DbExpr>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+                tw.writeStatementEnclosingExpr(id, stmt)
+            }
+
+            /**
+             * Extract a parameter to field assignment, such as `this.field = paramName` below:
+             * ```
+             * constructor(paramName: type) {
+             *   this.field = paramName
+             * }
+             * ```
+             */
+            fun extractParameterToFieldAssignmentInConstructor(
+                paramName: String,
+                type: IrType,
+                fieldId: Label<DbField>,
+                paramIdx: Int,
+                stmtIdx: Int
+            ) {
+                val paramId = tw.getFreshIdLabel<DbParam>()
+                val paramType = extractValueParameter(paramId, type, paramName, locId, ids.constructor, paramIdx, null, paramId)
+
+                val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
+                tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
+                tw.writeHasLocation(assignmentStmtId, locId)
+
+                val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
+                tw.writeExprs_assignexpr(assignmentId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentStmtId, 0)
+                writeExpressionMetadataToTrapFile(assignmentId, ids.constructor, assignmentStmtId)
+
+                val lhsId = tw.getFreshIdLabel<DbVaraccess>()
+                tw.writeExprs_varaccess(lhsId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentId, 0)
+                tw.writeVariableBinding(lhsId, fieldId)
+                writeExpressionMetadataToTrapFile(lhsId, ids.constructor, assignmentStmtId)
+
+                val thisId = tw.getFreshIdLabel<DbThisaccess>()
+                tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, ids.type.kotlinResult.id, lhsId, -1)
+                writeExpressionMetadataToTrapFile(thisId, ids.constructor, assignmentStmtId)
+
+                val rhsId = tw.getFreshIdLabel<DbVaraccess>()
+                tw.writeExprs_varaccess(rhsId, paramType.javaResult.id, paramType.kotlinResult.id, assignmentId, 1)
+                tw.writeVariableBinding(rhsId, paramId)
+                writeExpressionMetadataToTrapFile(rhsId, ids.constructor, assignmentStmtId)
+            }
+
+            val firstAssignmentStmtIdx = 1
+            val extensionParameterIndex: Int
+            val dispatchReceiver = functionReferenceExpr.dispatchReceiver
+            val dispatchFieldId: Label<DbField>?
+            if (dispatchReceiver != null) {
+                dispatchFieldId = tw.getFreshIdLabel()
+                extensionParameterIndex = 1
+
+                extractField(dispatchFieldId, "<dispatchReceiver>", dispatchReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, functionReferenceExpr, false)
+                extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
+            } else {
+                dispatchFieldId = null
+                extensionParameterIndex = 0
+            }
+
+            val extensionReceiver = functionReferenceExpr.extensionReceiver
+            val extensionFieldId: Label<out DbField>?
+            if (extensionReceiver != null) {
+                extensionFieldId = tw.getFreshIdLabel()
+
+                extractField(extensionFieldId, "<extensionReceiver>", extensionReceiver.type, id, locId, DescriptorVisibilities.PRIVATE, functionReferenceExpr, false)
+                extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
+            } else {
+                extensionFieldId = null
+            }
+
+            val funLabels = if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
+                addFunctionNInvoke(target.owner.returnType, id, locId)
+            } else {
+                addFunctionInvoke(parameterTypes, target.owner.returnType, id, locId)
+            }
+
+            // Return statement of generated function:
+            val retId = tw.getFreshIdLabel<DbReturnstmt>()
+            tw.writeStmts_returnstmt(retId, funLabels.blockId, 0, funLabels.methodId)
+            tw.writeHasLocation(retId, locId)
+
+            // Call to target function:
+            val dispatchReceiverIdx: Int
+            val callId: Label<out DbExpr>
+            val callType = useType(target.owner.returnType)
+            if (target is IrConstructorSymbol) {
+                callId = tw.getFreshIdLabel<DbNewexpr>()
+                tw.writeExprs_newexpr(callId, callType.javaResult.id, callType.kotlinResult.id, retId, 0)
+
+                val typeAccessId = extractTypeAccess(callType, locId, funLabels.methodId, callId, -3, retId)
+
+                extractTypeArguments(functionReferenceExpr, typeAccessId, funLabels.methodId, retId)
+                dispatchReceiverIdx = -2
+            } else {
+                callId = tw.getFreshIdLabel<DbMethodaccess>()
+                tw.writeExprs_methodaccess(callId, callType.javaResult.id, callType.kotlinResult.id, retId, 0)
+
+                extractTypeArguments(functionReferenceExpr, callId, funLabels.methodId, retId, -2, true)
+                dispatchReceiverIdx = -1
+            }
+
+            writeExpressionMetadataToTrapFile(callId, funLabels.methodId, retId)
+            @Suppress("UNCHECKED_CAST")
+            tw.writeCallableBinding(callId as Label<out DbCaller>, targetCallableId)
+
+            fun writeVariableAccessInInvokeBody(
+                pType: TypeResults,
+                idx: Int,
+                variable: Label<out DbVariable>
+            ): Label<DbVaraccess> {
+                val pId = tw.getFreshIdLabel<DbVaraccess>()
+                tw.writeExprs_varaccess(pId, pType.javaResult.id, pType.kotlinResult.id, callId, idx)
+                tw.writeVariableBinding(pId, variable)
+                writeExpressionMetadataToTrapFile(pId, funLabels.methodId, retId)
+                return pId
+            }
+
+            fun writeFieldAccessInInvokeBody(pType: IrType, idx: Int, variable: Label<out DbField>) {
+                val accessId = writeVariableAccessInInvokeBody(useType(pType), idx, variable)
+                val thisId = tw.getFreshIdLabel<DbThisaccess>()
+                tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, ids.type.kotlinResult.id, accessId, -1)
+                writeExpressionMetadataToTrapFile(thisId, funLabels.methodId, retId)
+            }
+
+            val useFirstArgAsDispatch: Boolean
+            if (dispatchReceiver != null) {
+                writeFieldAccessInInvokeBody(dispatchReceiver.type, dispatchReceiverIdx, dispatchFieldId!!)
+
+                useFirstArgAsDispatch = false
+            } else {
+                useFirstArgAsDispatch = dispatchParameter != null
+            }
+
+            val extensionIdxOffset: Int
+            if (extensionReceiver != null) {
+                writeFieldAccessInInvokeBody(extensionReceiver.type, 0, extensionFieldId!!)
+                extensionIdxOffset = 1
+            } else {
+                extensionIdxOffset = 0
+            }
+
+            if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
+                addArgumentsToInvocationInInvokeNBody(parameters, funLabels, retId, callId, locId, { exp -> writeExpressionMetadataToTrapFile(exp, funLabels.methodId, retId) }, extensionIdxOffset, useFirstArgAsDispatch, dispatchReceiverIdx)
+            } else {
+                val dispatchIdxOffset = if (useFirstArgAsDispatch) 1 else 0
+                for ((pIdx, p) in funLabels.parameters.withIndex()) {
+                    val childIdx = if (pIdx == 0 && useFirstArgAsDispatch) {
+                        dispatchReceiverIdx
+                    } else {
+                        pIdx + extensionIdxOffset - dispatchIdxOffset
+                    }
+                    writeVariableAccessInInvokeBody(p.second, childIdx, p.first)
+                }
+            }
+
+            // Add constructor (member ref) call:
+            val exprParent = parent.expr(functionReferenceExpr, callable)
+            val idMemberRef = tw.getFreshIdLabel<DbMemberref>()
+            tw.writeExprs_memberref(idMemberRef, ids.type.javaResult.id, ids.type.kotlinResult.id, exprParent.parent, exprParent.idx)
+            tw.writeHasLocation(idMemberRef, locId)
+            tw.writeCallableEnclosingExpr(idMemberRef, callable)
+            tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
+            tw.writeCallableBinding(idMemberRef, ids.constructor)
+
+            extractTypeAccess(fnInterfaceType, locId, callable, idMemberRef, -3, exprParent.enclosingStmt)
+
+            tw.writeMemberRefBinding(idMemberRef, targetCallableId)
+
+            // constructor arguments:
+            if (dispatchReceiver != null) {
+                extractExpressionExpr(dispatchReceiver, callable, idMemberRef, 0, exprParent.enclosingStmt)
+            }
+
+            if (extensionReceiver != null) {
+                extractExpressionExpr(extensionReceiver, callable, idMemberRef, 0 + extensionParameterIndex, exprParent.enclosingStmt)
+            }
+
+            tw.writeIsAnonymClass(id, idMemberRef)
         }
-
-        // Add constructor (member ref) call:
-        val exprParent = parent.expr(functionReferenceExpr, callable)
-        val idMemberRef = tw.getFreshIdLabel<DbMemberref>()
-        tw.writeExprs_memberref(idMemberRef, ids.type.javaResult.id, ids.type.kotlinResult.id, exprParent.parent, exprParent.idx)
-        tw.writeHasLocation(idMemberRef, locId)
-        tw.writeCallableEnclosingExpr(idMemberRef, callable)
-        tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
-        tw.writeCallableBinding(idMemberRef, ids.constructor)
-
-        extractTypeAccess(fnInterfaceType, locId, callable, idMemberRef, -3, exprParent.enclosingStmt)
-
-        tw.writeMemberRefBinding(idMemberRef, targetCallableId)
-
-        // constructor arguments:
-        if (dispatchReceiver != null) {
-            extractExpressionExpr(dispatchReceiver, callable, idMemberRef, 0, exprParent.enclosingStmt)
-        }
-
-        if (extensionReceiver != null) {
-            extractExpressionExpr(extensionReceiver, callable, idMemberRef, 0 + extensionParameterIndex, exprParent.enclosingStmt)
-        }
-
-        tw.writeIsAnonymClass(id, idMemberRef)
     }
 
     private fun getFunctionalInterfaceType(functionNTypeArguments: List<IrType>) =
@@ -2389,16 +2440,18 @@ open class KotlinFileExtractor(
     }
 
     fun extractVarargElement(e: IrVarargElement, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
-        when(e) {
-            is IrExpression -> {
-                extractExpressionExpr(e, callable, parent, idx, enclosingStmt)
-            }
-            is IrSpreadElement -> {
-                // TODO:
-                logger.warnElement(Severity.ErrorSevere, "Unhandled IrSpreadElement", e)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrVarargElement: " + e.javaClass, e)
+        with("vararg element", e) {
+            when(e) {
+                is IrExpression -> {
+                    extractExpressionExpr(e, callable, parent, idx, enclosingStmt)
+                }
+                is IrSpreadElement -> {
+                    // TODO:
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrSpreadElement", e)
+                }
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrVarargElement: " + e.javaClass, e)
+                }
             }
         }
     }
@@ -2433,90 +2486,92 @@ open class KotlinFileExtractor(
     }
 
     fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
-        when(e.operator) {
-            IrTypeOperator.CAST -> {
-                val id = tw.getFreshIdLabel<DbCastexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-            }
-            IrTypeOperator.IMPLICIT_CAST -> {
-                val id = tw.getFreshIdLabel<DbImplicitcastexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_implicitcastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-            }
-            IrTypeOperator.IMPLICIT_NOTNULL -> {
-                val id = tw.getFreshIdLabel<DbImplicitnotnullexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_implicitnotnullexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-            }
-            IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
-                val id = tw.getFreshIdLabel<DbImplicitcoerciontounitexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_implicitcoerciontounitexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-            }
-            IrTypeOperator.SAFE_CAST -> {
-                val id = tw.getFreshIdLabel<DbSafecastexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_safecastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-            }
-            IrTypeOperator.INSTANCEOF -> {
-                val id = tw.getFreshIdLabel<DbInstanceofexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_instanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
-            }
-            IrTypeOperator.NOT_INSTANCEOF -> {
-                val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
-                val locId = tw.getLocation(e)
-                val type = useType(e.type)
-                tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
-                tw.writeHasLocation(id, locId)
-                tw.writeCallableEnclosingExpr(id, callable)
-                tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
-            }
-            IrTypeOperator.SAM_CONVERSION -> {
-                // TODO:
-                logger.warnElement(Severity.ErrorSevere, "Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
-            }
-            else -> {
-                logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
+        with("type operator call", e) {
+            when(e.operator) {
+                IrTypeOperator.CAST -> {
+                    val id = tw.getFreshIdLabel<DbCastexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_castexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+                }
+                IrTypeOperator.IMPLICIT_CAST -> {
+                    val id = tw.getFreshIdLabel<DbImplicitcastexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_implicitcastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+                }
+                IrTypeOperator.IMPLICIT_NOTNULL -> {
+                    val id = tw.getFreshIdLabel<DbImplicitnotnullexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_implicitnotnullexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+                }
+                IrTypeOperator.IMPLICIT_COERCION_TO_UNIT -> {
+                    val id = tw.getFreshIdLabel<DbImplicitcoerciontounitexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_implicitcoerciontounitexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+                }
+                IrTypeOperator.SAFE_CAST -> {
+                    val id = tw.getFreshIdLabel<DbSafecastexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_safecastexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 0, e, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
+                }
+                IrTypeOperator.INSTANCEOF -> {
+                    val id = tw.getFreshIdLabel<DbInstanceofexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_instanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
+                }
+                IrTypeOperator.NOT_INSTANCEOF -> {
+                    val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
+                    val locId = tw.getLocation(e)
+                    val type = useType(e.type)
+                    tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
+                    extractTypeAccess(e.typeOperand, callable, id, 1, e, enclosingStmt)
+                }
+                IrTypeOperator.SAM_CONVERSION -> {
+                    // TODO:
+                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrTypeOperatorCall for SAM_CONVERSION: " + e.render(), e)
+                }
+                else -> {
+                    logger.warnElement(Severity.ErrorSevere, "Unrecognised IrTypeOperatorCall for ${e.operator}: " + e.render(), e)
+                }
             }
         }
     }
@@ -2525,20 +2580,22 @@ open class KotlinFileExtractor(
         e: IrBreakContinue,
         id: Label<out DbBreakcontinuestmt>
     ) {
-        val locId = tw.getLocation(e)
-        tw.writeHasLocation(id, locId)
-        val label = e.label
-        if (label != null) {
-            tw.writeNamestrings(label, "", id)
-        }
+        with("break/continue", e) {
+            val locId = tw.getLocation(e)
+            tw.writeHasLocation(id, locId)
+            val label = e.label
+            if (label != null) {
+                tw.writeNamestrings(label, "", id)
+            }
 
-        val loopId = loopIdMap[e.loop]
-        if (loopId == null) {
-            logger.warnElement(Severity.ErrorSevere, "Missing break/continue target", e)
-            return
-        }
+            val loopId = loopIdMap[e.loop]
+            if (loopId == null) {
+                logger.warnElement(Severity.ErrorSevere, "Missing break/continue target", e)
+                return
+            }
 
-        tw.writeKtBreakContinueTargets(id, loopId)
+            tw.writeKtBreakContinueTargets(id, loopId)
+        }
     }
 
     private val IrType.isAnonymous: Boolean
@@ -2627,14 +2684,16 @@ open class KotlinFileExtractor(
      * Extracts the class around a local function or a lambda.
      */
     private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
-        val ids = getLocallyVisibleFunctionLabels(localFunction)
+        with("generated class", localFunction) {
+            val ids = getLocallyVisibleFunctionLabels(localFunction)
 
-        val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
+            val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
-        // Extract local function as a member
-        extractFunctionIfReal(localFunction, id, true, null, listOf())
+            // Extract local function as a member
+            extractFunctionIfReal(localFunction, id, true, null, listOf())
 
-        return id
+            return id
+        }
     }
 
 
