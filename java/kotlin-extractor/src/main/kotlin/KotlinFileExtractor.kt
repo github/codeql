@@ -716,13 +716,10 @@ open class KotlinFileExtractor(
 
     fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         with("body", b) {
-            when(b) {
+            when (b) {
                 is IrBlockBody -> extractBlockBody(b, callable)
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
-                is IrExpressionBody -> {
-                    // TODO
-                    logger.warnElement(Severity.ErrorSevere, "Unhandled IrExpressionBody", b)
-                }
+                is IrExpressionBody -> extractExpressionBody(b, callable)
                 else -> {
                     logger.warnElement(Severity.ErrorSevere, "Unrecognised IrBody: " + b.javaClass, b)
                 }
@@ -736,7 +733,7 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(b)
             tw.writeStmts_block(id, callable, 0, callable)
             tw.writeHasLocation(id, locId)
-            for((sIdx, stmt) in b.statements.withIndex()) {
+            for ((sIdx, stmt) in b.statements.withIndex()) {
                 extractStatement(stmt, callable, id, sIdx)
             }
         }
@@ -748,6 +745,20 @@ open class KotlinFileExtractor(
                 IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
             }
+        }
+    }
+
+    fun extractExpressionBody(b: IrExpressionBody, callable: Label<out DbCallable>) {
+        with("expression body", b) {
+            val blockId = tw.getFreshIdLabel<DbBlock>()
+            val locId = tw.getLocation(b)
+            tw.writeStmts_block(blockId, callable, 0, callable)
+            tw.writeHasLocation(blockId, locId)
+
+            val returnId = tw.getFreshIdLabel<DbReturnstmt>()
+            tw.writeStmts_returnstmt(returnId, blockId, 0, callable)
+            tw.writeHasLocation(returnId, locId)
+            extractExpressionExpr(b.expression, callable, returnId, 0, returnId)
         }
     }
 
