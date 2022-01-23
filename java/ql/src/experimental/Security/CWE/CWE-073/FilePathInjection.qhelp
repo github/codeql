@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>External Control of File Name or Path, also called File Path Injection, is a vulnerability that a file path
+being accessed is composed using data from outside the application (such as the HTTP request, the database, or
+the filesystem). It allows an attacker to traverse through the filesystem and access arbitrary files.</p>
+</overview>
+
+<recommendation>
+<p>Unsanitized user provided data must not be used to construct the file path. In order to prevent File
+Path Injection, it is recommended to avoid concatenating user input directly into the file path. Instead, 
+user input should be checked against allowed (e.g., must come within <code>user_content/</code>) or disallowed
+(e.g. must not come within <code>/internal</code>) paths, ensuring that neither path traversal using <code>../</code>
+or URL encoding are used to evade these checks.
+</p>
+</recommendation>
+
+<example>
+<p>The following examples show the bad case and the good case respectively.
+The <code>BAD</code> methods show an HTTP request parameter being used directly to construct a file path
+without validating the input, which may cause file leakage. In the <code>GOOD</code> method, file path
+is validated.
+</p>
+<sample src="FilePathInjection.java" />
+</example>
+
+<references>
+<li>OWASP:
+  <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
+</li>
+<li>Veracode:
+  <a href="https://www.veracode.com/security/dotnet/cwe-73">External Control of File Name or Path Flaw</a>.
+</li>
+</references>
+</qhelp>
