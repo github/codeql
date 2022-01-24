@@ -28,6 +28,12 @@ module CookieWrites {
     abstract predicate isSensitive();
 
     /**
+     * Gets the SameSite attribute of the cookie if present.
+     * Either "Strict", "Lax" or "None".
+     */
+    abstract string getSameSite();
+
+    /**
      * Holds if the cookie write happens on a server, i.e. the `httpOnly` flag is relevant.
      */
     predicate isServerSide() {
@@ -96,6 +102,14 @@ private predicate hasCookieAttribute(string s, string attribute) {
 }
 
 /**
+ * Gets the value for a `Set-Cookie` header attribute.
+ */
+bindingset[s, attribute]
+private string getCookieValue(string s, string attribute) {
+  result = s.regexpCapture("(?i).*;\\s*" + attribute + "=(\\w+)\\b\\s*;?.*$", 1)
+}
+
+/**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
 private module JsCookie {
@@ -105,7 +119,9 @@ private module JsCookie {
   DataFlow::CallNode libMemberCall(string name) {
     result = DataFlow::globalVarRef("Cookie").getAMemberCall(name) or
     result = DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict").getAMemberCall(name) or
-    result = DataFlow::moduleMember("js-cookie", name).getACall()
+    result = DataFlow::moduleMember("js-cookie", name).getACall() or
+    // es-cookie behaves basically the same as js-cookie
+    result = DataFlow::moduleMember("es-cookie", name).getACall()
   }
 
   class ReadAccess extends PersistentReadAccess, DataFlow::CallNode {
@@ -132,6 +148,10 @@ private module JsCookie {
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
+
+    override string getSameSite() {
+      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
+    }
   }
 }
 
@@ -173,6 +193,15 @@ private module BrowserCookies {
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
+
+    override string getSameSite() {
+      this.getOptionArgument(2, "samesite").mayHaveStringValue(result)
+      or
+      // or, an explicit default has been set
+      DataFlow::moduleMember("browser-cookies", "defaults")
+          .getAPropertyWrite("samesite")
+          .mayHaveStringValue(result)
+    }
   }
 }
 
@@ -211,6 +240,13 @@ private module LibCookie {
     }
 
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
+
+    override string getSameSite() {
+      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
+      or
+      this.getOptionArgument(2, "sameSite").mayHaveBooleanValue(true) and
+      result = "Strict"
+    }
   }
 }
 
@@ -242,6 +278,13 @@ private module ExpressCookies {
         not value.mayHaveBooleanValue(false) // anything but `false` is accepted as being maybe true
       )
     }
+
+    override string getSameSite() {
+      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
+      or
+      this.getOptionArgument(2, "sameSite").mayHaveBooleanValue(true) and
+      result = "Strict"
+    }
   }
 
   /**
@@ -267,6 +310,13 @@ private module ExpressCookies {
       // The flag `httpOnly` is set to `true` by default (https://github.com/expressjs/cookie-session#cookie-options).
       // A cookie is httpOnly if the `httpOnly` flag is not explicitly set to `false`.
       not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
+    }
+
+    override string getSameSite() {
+      this.getCookieFlagValue("sameSite").mayHaveStringValue(result)
+      or
+      this.getCookieFlagValue("sameSite").mayHaveBooleanValue(true) and
+      result = "Strict"
     }
   }
 
@@ -296,6 +346,13 @@ private module ExpressCookies {
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
       // A cookie is httpOnly if the `httpOnly` flag is not explicitly set to `false`.
       not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
+    }
+
+    override string getSameSite() {
+      this.getCookieFlagValue("sameSite").mayHaveStringValue(result)
+      or
+      this.getCookieFlagValue("sameSite").mayHaveBooleanValue(true) and
+      result = "Strict"
     }
   }
 }
@@ -339,6 +396,8 @@ private class HTTPCookieWrite extends CookieWrites::CookieWrite {
   }
 
   override predicate isSensitive() { canHaveSensitiveCookie(this) }
+
+  override string getSameSite() { result = getCookieValue(header, "SameSite") }
 }
 
 /**
@@ -365,4 +424,6 @@ private class DocumentCookieWrite extends CookieWrites::ClientSideCookieWrite {
   }
 
   override predicate isSensitive() { canHaveSensitiveCookie(write.getRhs()) }
+
+  override string getSameSite() { result = getCookieValue(cookie, "SameSite") }
 }
