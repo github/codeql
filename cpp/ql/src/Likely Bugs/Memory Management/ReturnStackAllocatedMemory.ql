@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @precision high
  * @tags reliability
+ *       security
  *       external/cwe/cwe-825
  */
 
