@@ -91,14 +91,10 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private SummaryComponent head;
-
-    DbSetAddOrUpdateRequiredSummaryComponentStack() {
-      this = SummaryComponentStack::argument([-1, 0]) and
-      head = SummaryComponent::element()
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      head = SummaryComponent::element() and
+      tail = SummaryComponentStack::argument([-1, 0])
     }
-
-    override predicate required(SummaryComponent c) { c = head }
   }
 
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
@@ -462,14 +458,12 @@ module EntityFramework {
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private Content head;
-
-    DbContextSaveChangesRequiredSummaryComponentStack() {
-      any(DbContextClass c).requiresComponentStackIn(head, _, this, _)
-      or
-      any(DbContextClass c).requiresComponentStackOut(head, _, this, _)
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      exists(Content c | head = SummaryComponent::content(c) |
+        any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
+        or
+        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
+      )
     }
-
-    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
   }
 }
