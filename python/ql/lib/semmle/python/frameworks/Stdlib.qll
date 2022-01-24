@@ -2942,6 +2942,90 @@ private module StdlibPrivate {
         ]
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // shutil
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `shutil` module. */
+  private API::Node shutil() { result = API::moduleImport("shutil") }
+
+  /**
+   * A call to the `shutil.rmtree` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.rmtree
+   */
+  private class ShutilRmtreeCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilRmtreeCall() { this = shutil().getMember("rmtree").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
+   * The `shutil` module provides methods to copy, move files or copy file attributes.
+   * See:
+   * - https://docs.python.org/3/library/shutil.html#shutil.copyfile
+   * - https://docs.python.org/3/library/shutil.html#shutil.copymode
+   * - https://docs.python.org/3/library/shutil.html#shutil.copystat
+   * - https://docs.python.org/3/library/shutil.html#shutil.copy
+   * - https://docs.python.org/3/library/shutil.html#shutil.copy2
+   * - https://docs.python.org/3/library/shutil.html#shutil.copytree
+   * - https://docs.python.org/3/library/shutil.html#shutil.move
+   */
+  private class ShutilCopyCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilCopyCall() {
+      this =
+        shutil()
+            .getMember([
+                // these are used to copy files
+                "copyfile", "copy", "copy2", "copytree",
+                // these are used to move files
+                "move",
+                // these are used to copy some attributes of the file
+                "copymode", "copystat"
+              ])
+            .getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("src"), this.getArg(1), this.getArgByName("dst")]
+    }
+  }
+
+  // TODO: once we have flow summaries, model `shutil.copyfileobj` which copies the content between its' file-like arguments.
+  // See https://docs.python.org/3/library/shutil.html#shutil.copyfileobj
+  private class ShutilCopyfileobjCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilCopyfileobjCall() { this = shutil().getMember("copyfileobj").getACall() }
+
+    override DataFlow::Node getAPathArgument() { none() }
+  }
+
+  /**
+   * A call to the `shutil.disk_usage` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.disk_usage
+   */
+  private class ShutilDiskUsageCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilDiskUsageCall() { this = shutil().getMember("disk_usage").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
+
+  /**
+   * A call to the `shutil.chown` function.
+   *
+   * See https://docs.python.org/3/library/shutil.html#shutil.chown
+   */
+  private class ShutilChownCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    ShutilChownCall() { this = shutil().getMember("chown").getACall() }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("path")]
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
