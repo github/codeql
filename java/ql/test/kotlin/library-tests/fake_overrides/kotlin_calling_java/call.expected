@@ -1,0 +1,6 @@
+| A.kt:2:1:6:1 | <obinit>(...) | A.kt:2:1:6:1 | <obinit> |
+| A.kt:4:21:4:29 | someFun(...) | file:///!unknown-binary-location/OB$B.class:0:0:0:0 | someFun |
+| A.kt:8:1:8:11 | <obinit>(...) | A.kt:8:1:8:11 | <obinit> |
+| A.kt:9:1:9:11 | <obinit>(...) | A.kt:9:1:9:11 | <obinit> |
+| A.kt:11:1:11:11 | <obinit>(...) | A.kt:11:1:11:11 | <obinit> |
+| A.kt:12:1:12:11 | <obinit>(...) | A.kt:12:1:12:11 | <obinit> |
