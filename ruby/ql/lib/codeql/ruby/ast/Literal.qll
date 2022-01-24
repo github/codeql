@@ -48,37 +48,41 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
 }
 
 private int parseInteger(Ruby::Integer i) {
-  exists(string s, string values, string str |
-    s = i.getValue().toLowerCase() and
-    (
+  exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
+    s.charAt(0) != "0" and
+    result = s.toInt()
+    or
+    exists(string str, string values, int shift |
       s.matches("0b%") and
       values = "01" and
-      str = s.suffix(2)
+      str = s.suffix(2) and
+      shift = 1
       or
       s.matches("0x%") and
       values = "0123456789abcdef" and
-      str = s.suffix(2)
+      str = s.suffix(2) and
+      shift = 4
       or
       s.charAt(0) = "0" and
       not s.charAt(1) = ["b", "x", "o"] and
       values = "01234567" and
-      str = s.suffix(1)
+      str = s.suffix(1) and
+      shift = 3
       or
       s.matches("0o%") and
       values = "01234567" and
-      str = s.suffix(2)
-      or
-      s.charAt(0) != "0" and values = "0123456789" and str = s
+      str = s.suffix(2) and
+      shift = 3
+    |
+      result =
+        sum(int index, string c, int v, int exp |
+          c = str.charAt(index) and
+          v = values.indexOf(c.toLowerCase()) and
+          exp = str.length() - index - 1
+        |
+          v.bitShiftLeft((str.length() - index - 1) * shift)
+        )
     )
-  |
-    result =
-      sum(int index, string c, int v, int exp |
-        c = str.replaceAll("_", "").charAt(index) and
-        v = values.indexOf(c.toLowerCase()) and
-        exp = str.replaceAll("_", "").length() - index - 1
-      |
-        v * values.length().pow(exp).floor()
-      )
   )
 }
 
