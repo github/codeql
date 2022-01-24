@@ -17,6 +17,20 @@ import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FileWrite
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.dataflow.TaintTracking
+
+/**
+ * Taint flow from a sensitive expression to a `FileWrite` sink.
+ */
+class FromSensitiveConfiguration extends TaintTracking::Configuration {
+  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+
+  override predicate isSink(DataFlow::Node sink) {
+    any(FileWrite w).getASource() = sink.asExpr()
+  }
+}
 
 /**
  * An operation on a filename.
@@ -43,9 +57,13 @@ predicate isFileName(GVN gvn) {
   )
 }
 
-from FileWrite w, SensitiveExpr source, Expr mid, Expr dest
+from FromSensitiveConfiguration config, SensitiveExpr source, Expr mid, FileWrite w, Expr dest
 where
-  DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(mid)) and
+  exists(DataFlow::PathNode s, DataFlow::PathNode m |
+    config.hasFlowPath(s, m) and
+    s.getNode().asExpr() = source and
+    m.getNode().asExpr() = mid
+  ) and
   mid = w.getASource() and
   dest = w.getDest() and
   not isFileName(globalValueNumber(source)) and // file names are not passwords
