@@ -171,20 +171,15 @@ module Public {
     )
   }
 
-  private newtype TRequiredSummaryComponentStack = MkRequiredSummaryComponentStack()
-
   /**
    * A class that exists for QL technical reasons only (the IPA type used
    * to represent component stacks needs to be bounded).
    */
-  class RequiredSummaryComponentStack extends TRequiredSummaryComponentStack {
-    /** Gets a textual representation of this element. */
-    string toString() { none() }
-
+  class RequiredSummaryComponentStack extends Unit {
     /**
      * Holds if the stack obtained by pushing `head` onto `tail` is required.
      */
-    predicate required(SummaryComponent head, SummaryComponentStack tail) { none() }
+    abstract predicate required(SummaryComponent head, SummaryComponentStack tail);
   }
 
   /** A callable with a flow summary. */
