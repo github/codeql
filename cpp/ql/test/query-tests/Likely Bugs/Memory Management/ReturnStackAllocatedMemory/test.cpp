@@ -216,3 +216,8 @@ auto make_read_port()
   auto ptr = port.get();
   return ptr; // GOOD
 }
+
+void* get_sp() {
+	int p;
+	return (void*)&p; // GOOD: The function name makes it sound like the programmer intended to get the value of the stack pointer.
+}
