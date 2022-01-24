@@ -296,7 +296,8 @@ private module Cached {
   cached
   newtype TContent =
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
-    TUnknownArrayElementContent()
+    TUnknownArrayElementContent() or
+    TAnyArrayElementContent()
 }
 
 class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
@@ -736,7 +737,13 @@ predicate storeStep(Node node1, Content c, Node node2) {
 }
 
 predicate readStep(Node node1, Content c, Node node2) {
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+  exists(Content c0 | FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c0, node2) |
+    if c0 = TAnyArrayElementContent()
+    then
+      c instanceof TUnknownArrayElementContent or
+      c instanceof TKnownArrayElementContent
+    else c = c0
+  )
 }
 
 /**
