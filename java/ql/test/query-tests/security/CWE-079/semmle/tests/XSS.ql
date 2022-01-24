@@ -20,7 +20,7 @@ class XSSConfig extends TaintTracking::Configuration {
 class XssTest extends InlineExpectationsTest {
   XssTest() { this = "XssTest" }
 
-  override string getARelevantTag() { result = ["xss"] }
+  override string getARelevantTag() { result = "xss" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "xss" and

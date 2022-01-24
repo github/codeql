@@ -13,19 +13,19 @@ private import semmle.javascript.internal.CachedStages
  */
 abstract class Module extends TopLevel {
   /** Gets the full path of the file containing this module. */
-  string getPath() { result = getFile().getAbsolutePath() }
+  string getPath() { result = this.getFile().getAbsolutePath() }
 
   /** Gets the short name of this module without file extension. */
-  string getName() { result = getFile().getStem() }
+  string getName() { result = this.getFile().getStem() }
 
   /** Gets an import appearing in this module. */
   Import getAnImport() { result.getTopLevel() = this }
 
   /** Gets a module from which this module imports. */
-  Module getAnImportedModule() { result = getAnImport().getImportedModule() }
+  Module getAnImportedModule() { result = this.getAnImport().getImportedModule() }
 
   /** Gets a symbol exported by this module. */
-  string getAnExportedSymbol() { exists(getAnExportedValue(result)) }
+  string getAnExportedSymbol() { exists(this.getAnExportedValue(result)) }
 
   /**
    * DEPRECATED. Use `getAnExportedValue` instead.
@@ -86,7 +86,7 @@ abstract class Module extends TopLevel {
       exists(PropAccess pacc | export = pacc |
         pacc.getBase() = this.(NodeModule).getAModuleExportsNode().asExpr() and
         name = pacc.getPropertyName() and
-        isExterns() and
+        this.isExterns() and
         exists(pacc.getDocumentation())
       )
     )
@@ -112,6 +112,23 @@ abstract class Module extends TopLevel {
   abstract DataFlow::Node getAnExportedValue(string name);
 
   /**
+   * Gets a value that is exported as the whole exports object of this module.
+   */
+  cached
+  DataFlow::Node getABulkExportedNode() { none() } // overridden in subclasses
+
+  /**
+   * Gets the ES2015 `default` export from this module, or for other types of modules,
+   * gets a bulk exported node.
+   *
+   * This can be used to determine which value a default-import will likely refer to,
+   * as the interaction between different module types is not standardized.
+   */
+  DataFlow::Node getDefaultOrBulkExport() {
+    result = [this.getAnExportedValue("default"), this.getABulkExportedNode()]
+  }
+
+  /**
    * Gets the root folder relative to which the given import path (which must
    * appear in this module) is resolved.
    *
@@ -127,7 +144,7 @@ abstract class Module extends TopLevel {
     exists(string v | v = path.getValue() |
       // paths starting with a dot are resolved relative to the module's directory
       if v.matches(".%")
-      then searchRoot = getFile().getParentContainer()
+      then searchRoot = this.getFile().getParentContainer()
       else
         // all other paths are resolved relative to the file system root
         searchRoot.getBaseName() = ""
@@ -185,14 +202,14 @@ abstract class Import extends ASTNode {
    * path is assumed to be a possible target of the import.
    */
   Module resolveExternsImport() {
-    result.isExterns() and result.getName() = getImportedPath().getValue()
+    result.isExterns() and result.getName() = this.getImportedPath().getValue()
   }
 
   /**
    * Gets the module the path of this import resolves to.
    */
   Module resolveImportedPath() {
-    result.getFile() = getEnclosingModule().resolve(getImportedPath())
+    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
   }
 
   /**
@@ -203,7 +220,7 @@ abstract class Import extends ASTNode {
     exists(JSDocTag tag |
       tag.getTitle() = "providesModule" and
       tag.getParent().getComment().getTopLevel() = result and
-      tag.getDescription().trim() = getImportedPath().getValue()
+      tag.getDescription().trim() = this.getImportedPath().getValue()
     )
   }
 
@@ -214,9 +231,9 @@ abstract class Import extends ASTNode {
     result.getFile() =
       min(TypeRootFolder typeRoot |
         |
-        typeRoot.getModuleFile(getImportedPath().getValue())
+        typeRoot.getModuleFile(this.getImportedPath().getValue())
         order by
-          typeRoot.getSearchPriority(getFile().getParentContainer())
+          typeRoot.getSearchPriority(this.getFile().getParentContainer())
       )
   }
 
@@ -241,13 +258,13 @@ abstract class Import extends ASTNode {
   cached
   Module getImportedModule() {
     Stages::Imports::ref() and
-    if exists(resolveExternsImport())
-    then result = resolveExternsImport()
+    if exists(this.resolveExternsImport())
+    then result = this.resolveExternsImport()
     else (
-      result = resolveAsProvidedModule() or
-      result = resolveImportedPath() or
-      result = resolveFromTypeRoot() or
-      result = resolveFromTypeScriptSymbol() or
+      result = this.resolveAsProvidedModule() or
+      result = this.resolveImportedPath() or
+      result = this.resolveFromTypeRoot() or
+      result = this.resolveFromTypeScriptSymbol() or
       result = resolveNeighbourPackage(this.getImportedPath().getValue())
     )
   }

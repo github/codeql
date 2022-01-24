@@ -107,9 +107,7 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
  */
 bindingset[name]
 private boolean getSync(string name) {
-  if name.suffix(name.length() - 4) = "Sync" or name.suffix(name.length() - 4) = "sync"
-  then result = true
-  else result = false
+  if name.matches("%Sync") or name.matches("%sync") then result = true else result = false
 }
 
 private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::InvokeNode {

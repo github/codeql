@@ -103,7 +103,7 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
 class LateBindableExpr extends Expr, @late_bindable_expr {
   /** Holds if this expression is late bound. */
   predicate isLateBound() {
-    exists(getLateBoundTargetName()) or
+    exists(this.getLateBoundTargetName()) or
     isDynamicMemberAccess(this) or
     isDynamicElementAccess(this)
   }
@@ -221,9 +221,9 @@ class BinaryOperation extends Operation, @bin_op {
 
   /** Gets the other operand of this binary operation, given operand `o`. */
   Expr getOtherOperand(Expr o) {
-    o = getLeftOperand() and result = getRightOperand()
+    o = this.getLeftOperand() and result = this.getRightOperand()
     or
-    o = getRightOperand() and result = getLeftOperand()
+    o = this.getRightOperand() and result = this.getLeftOperand()
   }
 
   override string getOperator() { none() }
@@ -316,6 +316,12 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     child = mid.getChildExpr(0) or
     child = mid.getChildExpr(1)
   )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @tuple_expr and
+    child = mid.getAChildExpr()
+  )
 }
 
 /**
@@ -368,7 +374,7 @@ class RelationalPatternExpr extends PatternExpr, @relational_pattern_expr {
   /** Gets the expression of this relational pattern. */
   Expr getExpr() { result = this.getChild(0) }
 
-  override string toString() { result = getOperator() + " ..." }
+  override string toString() { result = this.getOperator() + " ..." }
 }
 
 /** A less-than pattern, for example `< 10` in `x is < 10`. */
@@ -420,13 +426,10 @@ class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess {
   override string getAPrimaryQlClass() { result = "TypeAccessPatternExpr" }
 }
 
-/** A pattern that may bind a variable, for example `string s` in `x is string s`. */
-class BindingPatternExpr extends PatternExpr {
-  BindingPatternExpr() {
-    this instanceof LocalVariableDeclExpr or
-    this instanceof @recursive_pattern_expr
-  }
+private class TBindingPatternExpr = @local_var_decl_expr or @recursive_pattern_expr;
 
+/** A pattern that may bind a variable, for example `string s` in `x is string s`. */
+class BindingPatternExpr extends PatternExpr, TBindingPatternExpr {
   /**
    * Gets the local variable declaration of this pattern, if any. For example,
    * `string s` in `string { Length: 5 } s`.
@@ -520,7 +523,7 @@ class NotPatternExpr extends UnaryPatternExpr, @not_pattern_expr {
 /** A binary pattern. For example, `1 or 2`. */
 class BinaryPatternExpr extends PatternExpr, @binary_pattern_expr {
   /** Gets a pattern. */
-  PatternExpr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+  PatternExpr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
 
   /** Gets the left pattern. */
   PatternExpr getLeftOperand() { result = this.getChild(0) }
@@ -743,7 +746,7 @@ class DefaultValueExpr extends Expr, @default_expr {
   TypeAccess getTypeAccess() { result = this.getChild(0) }
 
   override string toString() {
-    if exists(getTypeAccess()) then result = "default(...)" else result = "default"
+    if exists(this.getTypeAccess()) then result = "default(...)" else result = "default"
   }
 
   override string getAPrimaryQlClass() { result = "DefaultValueExpr" }
@@ -757,7 +760,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
    * Gets the type access in this `sizeof` expression, for example `int` in
    * `sizeof(int)`.
    */
-  TypeAccess getTypeAccess() { result = getOperand() }
+  TypeAccess getTypeAccess() { result = this.getOperand() }
 
   override string getOperator() { result = "sizeof(..)" }
 
@@ -830,7 +833,7 @@ class AddressOfExpr extends UnaryOperation, @address_of_expr {
  */
 class AwaitExpr extends Expr, @await_expr {
   /** Gets the expression being awaited. */
-  Expr getExpr() { result = getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   override string toString() { result = "await ..." }
 
@@ -881,7 +884,7 @@ class InterpolatedStringExpr extends Expr, @interpolated_string_expr {
    * element (`getText(0)` gets the text).
    */
   Expr getInsert(int i) {
-    result = getChild(i) and
+    result = this.getChild(i) and
     not result instanceof StringLiteral
   }
 
@@ -891,13 +894,13 @@ class InterpolatedStringExpr extends Expr, @interpolated_string_expr {
    * `$"Hello, {name}!"`. Note that there is no text element at index `i = 1`,
    * but instead an insert (`getInsert(1)` gets the insert).
    */
-  StringLiteral getText(int i) { result = getChild(i) }
+  StringLiteral getText(int i) { result = this.getChild(i) }
 
   /** Gets an insert in this interpolated string. */
-  Expr getAnInsert() { result = getInsert(_) }
+  Expr getAnInsert() { result = this.getInsert(_) }
 
   /** Gets a text element in this interpolated string. */
-  StringLiteral getAText() { result = getText(_) }
+  StringLiteral getAText() { result = this.getText(_) }
 }
 
 /**
@@ -914,7 +917,7 @@ class ThrowElement extends ControlFlowElement, DotNet::Throw, @throw_element {
 
   /** Gets the type of exception being thrown. */
   Class getThrownExceptionType() {
-    result = getExpr().getType()
+    result = this.getExpr().getType()
     or
     // Corner case: `throw null`
     this.getExpr().getType() instanceof NullType and
@@ -958,7 +961,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
   Expr getQualifier() { result = this.getChildExpr(-1) }
 
   /** Holds if this expression is qualified. */
-  final predicate hasQualifier() { exists(getQualifier()) }
+  final predicate hasQualifier() { exists(this.getQualifier()) }
 
   /** Holds if this expression has an implicit `this` qualifier. */
   predicate hasImplicitThisQualifier() { this.getQualifier().(ThisAccess).isImplicit() }
@@ -996,7 +999,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
    */
   predicate targetIsOverridableOrImplementable() {
     not this.getQualifier() instanceof BaseAccess and
-    this.getQualifiedDeclaration().(Virtualizable).isOverridableOrImplementable()
+    this.getQualifiedDeclaration().(Overridable).isOverridableOrImplementable()
   }
 
   /** Holds if this expression has a conditional qualifier `?.` */
@@ -1029,10 +1032,10 @@ class TupleExpr extends Expr, @tuple_expr {
   override string toString() { result = "(..., ...)" }
 
   /** Gets the `i`th argument of this tuple. */
-  Expr getArgument(int i) { result = getChild(i) }
+  Expr getArgument(int i) { result = this.getChild(i) }
 
   /** Gets an argument of this tuple. */
-  Expr getAnArgument() { result = getArgument(_) }
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Holds if this tuple is a read access. */
   deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
@@ -1057,11 +1060,11 @@ class TupleExpr extends Expr, @tuple_expr {
  */
 class RefExpr extends Expr, @ref_expr {
   /** Gets the expression being referenced. */
-  Expr getExpr() { result = getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   override string toString() { result = "ref ..." }
 
-  override Type getType() { result = getExpr().getType() }
+  override Type getType() { result = this.getExpr().getType() }
 
   override string getAPrimaryQlClass() { result = "RefExpr" }
 }
@@ -1081,6 +1084,8 @@ class DiscardExpr extends Expr, @discard_expr {
 
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
+
+  override string getAPrimaryQlClass() { result = "UnknownExpr" }
 }
 
 /**
@@ -1154,7 +1159,7 @@ class DefineSymbolExpr extends Expr, @define_symbol_expr {
   /** Gets the name of the symbol. */
   string getName() { directive_define_symbols(this, result) }
 
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 
   override string getAPrimaryQlClass() { result = "DefineSymbolExpr" }
 }
@@ -1170,7 +1175,9 @@ class WithExpr extends Expr, @with_expr {
   Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the clone method of the `record` that is targetted by this `with` expression. */
-  RecordCloneMethod getCloneMethod() { result = this.getExpr().getType().(Record).getCloneMethod() }
+  RecordCloneMethod getCloneMethod() {
+    result = this.getExpr().getType().(RecordClass).getCloneMethod()
+  }
 
   override string toString() { result = "... with { ... }" }
 

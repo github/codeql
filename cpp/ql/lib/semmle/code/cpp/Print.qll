@@ -105,8 +105,8 @@ private class DumpType extends Type {
     // for a `SpecifiedType`, insert the qualifiers after
     // `getDeclaratorSuffixBeforeQualifiers()`.
     result =
-      getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() +
-        getDeclaratorSuffix()
+      this.getTypeSpecifier() + this.getDeclaratorPrefix() +
+        this.getDeclaratorSuffixBeforeQualifiers() + this.getDeclaratorSuffix()
   }
 
   /**
@@ -147,29 +147,35 @@ private class DumpType extends Type {
 }
 
 private class BuiltInDumpType extends DumpType, BuiltInType {
-  override string getTypeSpecifier() { result = toString() }
+  override string getTypeSpecifier() { result = this.toString() }
 }
 
 private class IntegralDumpType extends BuiltInDumpType, IntegralType {
-  override string getTypeSpecifier() { result = getCanonicalArithmeticType().toString() }
+  override string getTypeSpecifier() { result = this.getCanonicalArithmeticType().toString() }
 }
 
 private class DerivedDumpType extends DumpType, DerivedType {
-  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
-    result = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+    result = this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 
-  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
 }
 
 private class DecltypeDumpType extends DumpType, Decltype {
-  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
 
-  override string getDeclaratorPrefix() { result = getBaseType().(DumpType).getDeclaratorPrefix() }
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
 
-  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
 }
 
 private class PointerIshDumpType extends DerivedDumpType {
@@ -180,10 +186,10 @@ private class PointerIshDumpType extends DerivedDumpType {
 
   override string getDeclaratorPrefix() {
     exists(string declarator |
-      result = getBaseType().(DumpType).getDeclaratorPrefix() + declarator and
-      if getBaseType().getUnspecifiedType() instanceof ArrayType
-      then declarator = "(" + getDeclaratorToken() + ")"
-      else declarator = getDeclaratorToken()
+      result = this.getBaseType().(DumpType).getDeclaratorPrefix() + declarator and
+      if this.getBaseType().getUnspecifiedType() instanceof ArrayType
+      then declarator = "(" + this.getDeclaratorToken() + ")"
+      else declarator = this.getDeclaratorToken()
     )
   }
 
@@ -206,13 +212,13 @@ private class RValueReferenceDumpType extends PointerIshDumpType, RValueReferenc
 }
 
 private class PointerToMemberDumpType extends DumpType, PointerToMemberType {
-  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorPrefix() {
     exists(string declarator, string parenDeclarator, Type baseType |
-      declarator = getClass().(DumpType).getTypeIdentityString() + "::*" and
-      result = getBaseType().(DumpType).getDeclaratorPrefix() + " " + parenDeclarator and
-      baseType = getBaseType().getUnspecifiedType() and
+      declarator = this.getClass().(DumpType).getTypeIdentityString() + "::*" and
+      result = this.getBaseType().(DumpType).getDeclaratorPrefix() + " " + parenDeclarator and
+      baseType = this.getBaseType().getUnspecifiedType() and
       if baseType instanceof ArrayType or baseType instanceof RoutineType
       then parenDeclarator = "(" + declarator
       else parenDeclarator = declarator
@@ -221,38 +227,44 @@ private class PointerToMemberDumpType extends DumpType, PointerToMemberType {
 
   override string getDeclaratorSuffixBeforeQualifiers() {
     exists(Type baseType |
-      baseType = getBaseType().getUnspecifiedType() and
+      baseType = this.getBaseType().getUnspecifiedType() and
       if baseType instanceof ArrayType or baseType instanceof RoutineType
-      then result = ")" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
-      else result = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+      then result = ")" + this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+      else result = this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
     )
   }
 
-  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
 }
 
 private class ArrayDumpType extends DerivedDumpType, ArrayType {
-  override string getDeclaratorPrefix() { result = getBaseType().(DumpType).getDeclaratorPrefix() }
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
-    if exists(getArraySize())
+    if exists(this.getArraySize())
     then
       result =
-        "[" + getArraySize().toString() + "]" +
-          getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
-    else result = "[]" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+        "[" + this.getArraySize().toString() + "]" +
+          this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+    else result = "[]" + this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 }
 
 private class FunctionPointerIshDumpType extends DerivedDumpType, FunctionPointerIshType {
   override string getDeclaratorSuffixBeforeQualifiers() {
-    result = ")" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+    result = ")" + this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 
-  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
 
   override string getDeclaratorPrefix() {
-    result = getBaseType().(DumpType).getDeclaratorPrefix() + "(" + getDeclaratorToken()
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix() + "(" + this.getDeclaratorToken()
   }
 
   /**
@@ -274,10 +286,10 @@ private class BlockDumpType extends FunctionPointerIshDumpType, BlockType {
 }
 
 private class RoutineDumpType extends DumpType, RoutineType {
-  override string getTypeSpecifier() { result = getReturnType().(DumpType).getTypeSpecifier() }
+  override string getTypeSpecifier() { result = this.getReturnType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorPrefix() {
-    result = getReturnType().(DumpType).getDeclaratorPrefix()
+    result = this.getReturnType().(DumpType).getDeclaratorPrefix()
   }
 
   language[monotonicAggregates]
@@ -285,39 +297,41 @@ private class RoutineDumpType extends DumpType, RoutineType {
     result =
       "(" +
         concat(int i |
-          exists(getParameterType(i))
+          exists(this.getParameterType(i))
         |
-          getParameterTypeString(getParameterType(i)), ", " order by i
+          getParameterTypeString(this.getParameterType(i)), ", " order by i
         ) + ")"
   }
 
   override string getDeclaratorSuffix() {
     result =
-      getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
-        getReturnType().(DumpType).getDeclaratorSuffix()
+      this.getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+        this.getReturnType().(DumpType).getDeclaratorSuffix()
   }
 }
 
 private class SpecifiedDumpType extends DerivedDumpType, SpecifiedType {
   override string getDeclaratorPrefix() {
     exists(string basePrefix |
-      basePrefix = getBaseType().(DumpType).getDeclaratorPrefix() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType
+      basePrefix = this.getBaseType().(DumpType).getDeclaratorPrefix() and
+      if this.getBaseType().getUnspecifiedType() instanceof RoutineType
       then result = basePrefix
-      else result = basePrefix + " " + getSpecifierString()
+      else result = basePrefix + " " + this.getSpecifierString()
     )
   }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
     exists(string baseSuffix |
-      baseSuffix = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType
-      then result = baseSuffix + " " + getSpecifierString()
+      baseSuffix = this.getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers() and
+      if this.getBaseType().getUnspecifiedType() instanceof RoutineType
+      then result = baseSuffix + " " + this.getSpecifierString()
       else result = baseSuffix
     )
   }
 
-  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
 }
 
 private class UserDumpType extends DumpType, DumpDeclaration, UserType {
@@ -330,18 +344,18 @@ private class UserDumpType extends DumpType, DumpDeclaration, UserType {
           // "lambda [] type at line 12, col. 40"
           // Use `min(getSimpleName())` to work around an extractor bug where a lambda can have different names
           // from different compilation units.
-          simpleName = "(" + min(getSimpleName()) + ")"
-        else simpleName = getSimpleName()
+          simpleName = "(" + min(this.getSimpleName()) + ")"
+        else simpleName = this.getSimpleName()
       ) and
-      result = getScopePrefix(this) + simpleName + getTemplateArgumentsString()
+      result = getScopePrefix(this) + simpleName + this.getTemplateArgumentsString()
     )
   }
 
-  override string getTypeSpecifier() { result = getIdentityString() }
+  override string getTypeSpecifier() { result = this.getIdentityString() }
 }
 
 private class DumpProxyClass extends UserDumpType, ProxyClass {
-  override string getIdentityString() { result = getName() }
+  override string getIdentityString() { result = this.getName() }
 }
 
 private class DumpVariable extends DumpDeclaration, Variable {
@@ -360,9 +374,9 @@ private class DumpVariable extends DumpDeclaration, Variable {
 private class DumpFunction extends DumpDeclaration, Function {
   override string getIdentityString() {
     result =
-      getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() + " " +
-        getScopePrefix(this) + getName() + getTemplateArgumentsString() +
-        getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
+      this.getType().(DumpType).getTypeSpecifier() + this.getType().(DumpType).getDeclaratorPrefix()
+        + " " + getScopePrefix(this) + this.getName() + this.getTemplateArgumentsString() +
+        this.getDeclaratorSuffixBeforeQualifiers() + this.getDeclaratorSuffix()
   }
 
   language[monotonicAggregates]
@@ -370,28 +384,29 @@ private class DumpFunction extends DumpDeclaration, Function {
     result =
       "(" +
         concat(int i |
-          exists(getParameter(i).getType())
+          exists(this.getParameter(i).getType())
         |
-          getParameterTypeString(getParameter(i).getType()), ", " order by i
-        ) + ")" + getQualifierString()
+          getParameterTypeString(this.getParameter(i).getType()), ", " order by i
+        ) + ")" + this.getQualifierString()
   }
 
   private string getQualifierString() {
-    if exists(getACVQualifier())
+    if exists(this.getACVQualifier())
     then
-      result = " " + strictconcat(string qualifier | qualifier = getACVQualifier() | qualifier, " ")
+      result =
+        " " + strictconcat(string qualifier | qualifier = this.getACVQualifier() | qualifier, " ")
     else result = ""
   }
 
   private string getACVQualifier() {
-    result = getASpecifier().getName() and
+    result = this.getASpecifier().getName() and
     result = ["const", "volatile"]
   }
 
   private string getDeclaratorSuffix() {
     result =
-      getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
-        getType().(DumpType).getDeclaratorSuffix()
+      this.getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+        this.getType().(DumpType).getDeclaratorSuffix()
   }
 }
 

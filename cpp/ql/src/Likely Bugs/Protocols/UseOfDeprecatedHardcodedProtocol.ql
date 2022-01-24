@@ -3,8 +3,10 @@
  * @description Using a deprecated hard-coded protocol using the boost::asio library.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @id cpp/boost/use-of-deprecated-hardcoded-security-protocol
  * @tags security
+ *       external/cwe/cwe-327
  */
 
 import cpp

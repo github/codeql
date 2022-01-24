@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling common HTTP concepts.
+ * Provides classes for modeling common HTTP concepts.
  */
 
 import javascript
@@ -49,18 +49,18 @@ module HTTP {
    * An expression that sets HTTP response headers implicitly.
    */
   abstract class ImplicitHeaderDefinition extends HeaderDefinition {
-    override string getAHeaderName() { defines(result, _) }
+    override string getAHeaderName() { this.defines(result, _) }
   }
 
   /**
    * An expression that sets HTTP response headers explicitly.
    */
   abstract class ExplicitHeaderDefinition extends HeaderDefinition {
-    override string getAHeaderName() { definesExplicitly(result, _) }
+    override string getAHeaderName() { this.definesExplicitly(result, _) }
 
     override predicate defines(string headerName, string headerValue) {
       exists(Expr e |
-        definesExplicitly(headerName, e) and
+        this.definesExplicitly(headerName, e) and
         headerValue = e.getStringValue()
       )
     }
@@ -81,29 +81,12 @@ module HTTP {
    */
   class RequestMethodName extends string {
     RequestMethodName() {
-      this = "CHECKOUT" or
-      this = "COPY" or
-      this = "DELETE" or
-      this = "GET" or
-      this = "HEAD" or
-      this = "LOCK" or
-      this = "MERGE" or
-      this = "MKACTIVITY" or
-      this = "MKCOL" or
-      this = "MOVE" or
-      this = "M-SEARCH" or
-      this = "NOTIFY" or
-      this = "OPTIONS" or
-      this = "PATCH" or
-      this = "POST" or
-      this = "PURGE" or
-      this = "PUT" or
-      this = "REPORT" or
-      this = "SEARCH" or
-      this = "SUBSCRIBE" or
-      this = "TRACE" or
-      this = "UNLOCK" or
-      this = "UNSUBSCRIBE"
+      this =
+        [
+          "CHECKOUT", "COPY", "DELETE", "GET", "HEAD", "LOCK", "MERGE", "MKACTIVITY", "MKCOL",
+          "MOVE", "M-SEARCH", "NOTIFY", "OPTIONS", "PATCH", "POST", "PURGE", "PUT", "REPORT",
+          "SEARCH", "SUBSCRIBE", "TRACE", "UNLOCK", "UNSUBSCRIBE"
+        ]
     }
 
     /**
@@ -111,15 +94,14 @@ module HTTP {
      * such as for `GET` and `HEAD` requests.
      */
     predicate isSafe() {
-      this = "GET" or
-      this = "HEAD" or
-      this = "OPTIONS" or
-      this = "PRI" or
-      this = "PROPFIND" or
-      this = "REPORT" or
-      this = "SEARCH" or
-      this = "TRACE"
+      this = ["GET", "HEAD", "OPTIONS", "PRI", "PROPFIND", "REPORT", "SEARCH", "TRACE"]
     }
+
+    /**
+     * Holds if this kind of HTTP request should not generally be considered free of side effects,
+     * such as for `POST` or `PUT` requests.
+     */
+    predicate isUnsafe() { not this.isSafe() }
   }
 
   /**
@@ -294,13 +276,13 @@ module HTTP {
         t.start() and
         result = DataFlow::exprNode(this)
         or
-        exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+        exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
       }
 
       /**
        * Holds if `sink` may refer to this server definition.
        */
-      predicate flowsTo(Expr sink) { ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
+      predicate flowsTo(Expr sink) { this.ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
     }
 
     /**
@@ -334,17 +316,17 @@ module HTTP {
       abstract RouteHandler getRouteHandler();
 
       /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
+      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
         result = this
         or
-        exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+        exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
       }
 
       /** Gets a `SourceNode` that refers to this request object. */
-      DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+      DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
     }
 
     /**
@@ -359,17 +341,17 @@ module HTTP {
       abstract RouteHandler getRouteHandler();
 
       /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
+      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
         result = this
         or
-        exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+        exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
       }
 
       /** Gets a `SourceNode` that refers to this response object. */
-      DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+      DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
     }
 
     /**
@@ -401,7 +383,7 @@ module HTTP {
       override MethodCallExpr astNode;
 
       override predicate definesExplicitly(string headerName, Expr headerValue) {
-        headerName = getNameExpr().getStringValue().toLowerCase() and
+        headerName = this.getNameExpr().getStringValue().toLowerCase() and
         headerValue = astNode.getArgument(1)
       }
 
@@ -446,7 +428,7 @@ module HTTP {
    * An access to a user-controlled HTTP request input.
    */
   abstract class RequestInputAccess extends RemoteFlowSource {
-    override string getSourceType() { result = "Server request " + getKind() }
+    override string getSourceType() { result = "Server request " + this.getKind() }
 
     /**
      * Gets the route handler whose request input is accessed.
@@ -477,13 +459,7 @@ module HTTP {
      * Headers are never considered third-party controllable by this predicate, although the
      * third party does have some control over the the Referer and Origin headers.
      */
-    predicate isThirdPartyControllable() {
-      exists(string kind | kind = getKind() |
-        kind = "parameter" or
-        kind = "url" or
-        kind = "body"
-      )
-    }
+    predicate isThirdPartyControllable() { this.getKind() = ["parameter", "url", "body"] }
   }
 
   /**
@@ -540,16 +516,12 @@ module HTTP {
   /**
    * An object that contains one or more potential route handlers.
    */
-  class RouteHandlerCandidateContainer extends DataFlow::Node {
-    RouteHandlerCandidateContainer::Range self;
-
-    RouteHandlerCandidateContainer() { this = self }
-
+  class RouteHandlerCandidateContainer extends DataFlow::Node instanceof RouteHandlerCandidateContainer::Range {
     /**
      * Gets the route handler in this container that is accessed at `access`.
      */
     DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-      result = self.getRouteHandler(access)
+      result = super.getRouteHandler(access)
     }
   }
 
@@ -594,7 +566,7 @@ module HTTP {
           )
         ) and
         exists(RouteHandlerCandidate candidate |
-          getAPossiblyDecoratedHandler(candidate).flowsTo(getAPropertyWrite().getRhs())
+          getAPossiblyDecoratedHandler(candidate).flowsTo(this.getAPropertyWrite().getRhs())
         )
       }
 

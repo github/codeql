@@ -76,11 +76,11 @@ class FreshMap extends ClassInstanceExpr {
  * A call to `Map.put(key, value)`.
  */
 class MapPutCall extends MethodAccess {
-  MapPutCall() { getCallee().(MapMethod).hasName("put") }
+  MapPutCall() { this.getCallee().(MapMethod).hasName("put") }
 
   /** Gets the key argument of this call. */
-  Expr getKey() { result = getArgument(0) }
+  Expr getKey() { result = this.getArgument(0) }
 
   /** Gets the value argument of this call. */
-  Expr getValue() { result = getArgument(1) }
+  Expr getValue() { result = this.getArgument(1) }
 }

@@ -102,15 +102,7 @@ string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
  * Gets a regular expression mode flag associated with the given value.
  */
 deprecated string mode_from_mode_object(Value obj) {
-  (
-    result = "DEBUG" or
-    result = "IGNORECASE" or
-    result = "LOCALE" or
-    result = "MULTILINE" or
-    result = "DOTALL" or
-    result = "UNICODE" or
-    result = "VERBOSE"
-  ) and
+  result in ["DEBUG", "IGNORECASE", "LOCALE", "MULTILINE", "DOTALL", "UNICODE", "VERBOSE"] and
   exists(int flag |
     flag = Value::named("sre_constants.SRE_FLAG_" + result).(OI::ObjectInternal).intValue() and
     obj.(OI::ObjectInternal).intValue().bitAnd(flag) = flag
@@ -369,12 +361,12 @@ abstract class RegexString extends Expr {
       // hex value \xhh
       this.getChar(start + 1) = "x" and end = start + 4
       or
-      // octal value \ooo
+      // octal value \o, \oo, or \ooo
       end in [start + 2 .. start + 4] and
-      this.getText().substring(start + 1, end).toInt() >= 0 and
+      forall(int i | i in [start + 1 .. end - 1] | this.isOctal(i)) and
       not (
         end < start + 4 and
-        exists(this.getText().substring(start + 1, end + 1).toInt())
+        this.isOctal(end)
       )
       or
       // 16-bit hex value \uhhhh
@@ -383,7 +375,7 @@ abstract class RegexString extends Expr {
       // 32-bit hex value \Uhhhhhhhh
       this.getChar(start + 1) = "U" and end = start + 10
       or
-      escapedName(start, end)
+      this.escapedName(start, end)
       or
       // escape not handled above, update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "U", "N"] and
@@ -391,6 +383,9 @@ abstract class RegexString extends Expr {
       end = start + 2
     )
   }
+
+  pragma[inline]
+  private predicate isOctal(int index) { this.getChar(index) = [0 .. 7].toString() }
 
   /** Holds if `index` is inside a character set. */
   predicate inCharSet(int index) {
@@ -442,11 +437,18 @@ abstract class RegexString extends Expr {
   }
 
   predicate specialCharacter(int start, int end, string char) {
+    not this.inCharSet(start) and
     this.character(start, end) and
-    end = start + 1 and
-    char = this.getChar(start) and
-    (char = "$" or char = "^" or char = ".") and
-    not this.inCharSet(start)
+    (
+      end = start + 1 and
+      char = this.getChar(start) and
+      (char = "$" or char = "^" or char = ".")
+      or
+      end = start + 2 and
+      this.escapingChar(start) and
+      char = this.getText().substring(start, end) and
+      char = ["\\A", "\\Z", "\\b", "\\B"]
+    )
   }
 
   /** Whether the text in the range start,end is a group */
@@ -459,6 +461,7 @@ abstract class RegexString extends Expr {
   /** Gets the number of the group in start,end */
   int getGroupNumber(int start, int end) {
     this.group(start, end) and
+    not this.non_capturing_group_start(start, _) and
     result =
       count(int i | this.group(i, _) and i < start and not this.non_capturing_group_start(i, _)) + 1
   }
@@ -608,14 +611,7 @@ abstract class RegexString extends Expr {
     this.getChar(start + 1) = "?" and
     end = start + 3 and
     c = this.getChar(start + 2) and
-    (
-      c = "i" or
-      c = "L" or
-      c = "m" or
-      c = "s" or
-      c = "u" or
-      c = "x"
-    )
+    c in ["i", "L", "m", "s", "u", "x"]
   }
 
   /**
@@ -690,6 +686,7 @@ abstract class RegexString extends Expr {
 
   private predicate numbered_backreference(int start, int end, int value) {
     this.escapingChar(start) and
+    // starting with 0 makes it an octal escape
     not this.getChar(start + 1) = "0" and
     exists(string text, string svalue, int len |
       end = start + len and
@@ -698,8 +695,16 @@ abstract class RegexString extends Expr {
     |
       svalue = text.substring(start + 1, start + len) and
       value = svalue.toInt() and
-      not exists(text.substring(start + 1, start + len + 1).toInt()) and
-      value > 0
+      // value is composed of digits
+      forall(int i | i in [start + 1 .. start + len - 1] | this.getChar(i) = [0 .. 9].toString()) and
+      // a longer reference is not possible
+      not (
+        len = 2 and
+        exists(text.substring(start + 1, start + len + 1).toInt())
+      ) and
+      // 3 octal digits makes it an octal escape
+      not forall(int i | i in [start + 1 .. start + 4] | this.isOctal(i))
+      // TODO: Inside a character set, all numeric escapes are treated as characters.
     )
   }
 
@@ -761,15 +766,18 @@ abstract class RegexString extends Expr {
    * string is empty.
    */
   predicate multiples(int start, int end, string lower, string upper) {
-    this.getChar(start) = "{" and
-    this.getChar(end - 1) = "}" and
-    exists(string inner | inner = this.getText().substring(start + 1, end - 1) |
-      inner.regexpMatch("[0-9]+") and
+    exists(string text, string match, string inner |
+      text = this.getText() and
+      end = start + match.length() and
+      inner = match.substring(1, match.length() - 1)
+    |
+      match = text.regexpFind("\\{[0-9]+\\}", _, start) and
       lower = inner and
       upper = lower
       or
-      inner.regexpMatch("[0-9]*,[0-9]*") and
-      exists(int commaIndex | commaIndex = inner.indexOf(",") |
+      match = text.regexpFind("\\{[0-9]*,[0-9]*\\}", _, start) and
+      exists(int commaIndex |
+        commaIndex = inner.indexOf(",") and
         lower = inner.prefix(commaIndex) and
         upper = inner.suffix(commaIndex + 1)
       )
@@ -900,7 +908,8 @@ abstract class RegexString extends Expr {
     exists(int x | this.firstPart(x, end) |
       this.emptyMatchAtStartGroup(x, start) or
       this.qualifiedItem(x, start, true, _) or
-      this.specialCharacter(x, start, "^")
+      // ^ and \A match the start of the string
+      this.specialCharacter(x, start, ["^", "\\A"])
     )
     or
     exists(int y | this.firstPart(start, y) |
@@ -925,9 +934,8 @@ abstract class RegexString extends Expr {
       or
       this.qualifiedItem(end, y, true, _)
       or
-      this.specialCharacter(end, y, "$")
-      or
-      y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
+      // $ and \Z match the end of the string.
+      this.specialCharacter(end, y, ["$", "\\Z"])
     )
     or
     exists(int x |

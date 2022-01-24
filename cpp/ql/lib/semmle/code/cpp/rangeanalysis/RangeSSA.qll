@@ -88,17 +88,27 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   ControlFlowNode getDefinition() { result = this }
 
   /** Gets the basic block containing this definition. */
-  BasicBlock getBasicBlock() { result.contains(getDefinition()) }
+  BasicBlock getBasicBlock() { result.contains(this.getDefinition()) }
 
   /** Whether this definition is a phi node for variable `v`. */
-  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this.(BasicBlock))) }
+  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this)) }
+
+  /**
+   * DEPRECATED: Use isGuardPhi/4 instead
+   * If this definition is a phi node corresponding to a guard,
+   * then return the variable access and the guard.
+   */
+  deprecated predicate isGuardPhi(VariableAccess va, Expr guard, boolean branch) {
+    guard_defn(va, guard, this, branch)
+  }
 
   /**
    * If this definition is a phi node corresponding to a guard,
-   * then return the variable and the guard.
+   * then return the variable guarded, the variable access and the guard.
    */
-  predicate isGuardPhi(VariableAccess v, Expr guard, boolean branch) {
-    guard_defn(v, guard, this, branch)
+  predicate isGuardPhi(StackVariable v, VariableAccess va, Expr guard, boolean branch) {
+    guard_defn(va, guard, this, branch) and
+    va.getTarget() = v
   }
 
   /** Gets the primary location of this definition. */
@@ -133,9 +143,8 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
       // below excludes definitions which can only reach guard phi
       // nodes by going through the corresponding guard.
       not exists(VariableAccess access |
-        v = access.getTarget() and
         pred.contains(access) and
-        this.isGuardPhi(access, _, _)
+        this.isGuardPhi(v, access, _, _)
       )
     )
   }

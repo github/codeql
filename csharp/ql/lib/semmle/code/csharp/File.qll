@@ -2,6 +2,8 @@
  * Provides classes representing filesystem files and folders.
  */
 
+private import Comments
+
 /** A file or folder. */
 class Container extends @container {
   /**
@@ -33,7 +35,7 @@ class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   string getURL() { none() }
 
@@ -47,7 +49,7 @@ class Container extends @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -74,7 +76,7 @@ class Container extends @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -100,7 +102,9 @@ class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -119,7 +123,9 @@ class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() { containerparent(result, this) }
@@ -128,57 +134,57 @@ class Container extends @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
   /** Gets the file or sub-folder in this container that has the given `name`, if any. */
   Container getChildContainer(string name) {
-    result = getAChildContainer() and
+    result = this.getAChildContainer() and
     result.getBaseName() = name
   }
 
   /** Gets the file in this container that has the given `stem` and `extension`, if any. */
   File getFile(string stem, string extension) {
-    result = getAChildContainer() and
+    result = this.getAChildContainer() and
     result.getStem() = stem and
     result.getExtension() = extension
   }
 
   /** Gets a sub-folder contained in this container. */
-  Folder getASubFolder() { result = getAChildContainer() }
+  Folder getASubFolder() { result = this.getAChildContainer() }
 
   /**
    * Gets a textual representation of the path of this container.
    *
    * This is the absolute path of the container.
    */
-  string toString() { result = getAbsolutePath() }
+  string toString() { result = this.getAbsolutePath() }
 }
 
 /** A folder. */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(this, result, _) }
+  override string getAbsolutePath() { folders(this, result) }
 
-  override string getURL() { result = "folder://" + getAbsolutePath() }
+  override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
 /** A file. */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { files(this, result) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
@@ -191,11 +197,18 @@ class File extends Container, @file {
 
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
+  /** Holds if this file is a QL test stub file. */
+  pragma[noinline]
+  private predicate isStub() { this.getAbsolutePath().matches("%resources/stubs/%") }
+
   /** Holds if this file contains source code. */
-  predicate fromSource() { files(this, _, _, "cs", _) }
+  final predicate fromSource() {
+    this.getExtension() = "cs" and
+    not this.isStub()
+  }
 
   /** Holds if this file is a library. */
-  predicate fromLibrary() {
+  final predicate fromLibrary() {
     not this.getBaseName() = "" and
     not this.fromSource()
   }
@@ -205,7 +218,12 @@ class File extends Container, @file {
    * A source file can come from a PDB and from regular extraction
    * in the same snapshot.
    */
-  predicate isPdbSourceFile() { file_extraction_mode(this, 2) }
+  predicate isPdbSourceFile() {
+    exists(int i |
+      file_extraction_mode(this, i) and
+      i.bitAnd(2) = 2
+    )
+  }
 }
 
 /**
@@ -215,5 +233,10 @@ class SourceFile extends File {
   SourceFile() { this.fromSource() }
 
   /** Holds if the file was extracted without building the source code. */
-  predicate extractedStandalone() { file_extraction_mode(this, 1) }
+  predicate extractedStandalone() {
+    exists(int i |
+      file_extraction_mode(this, i) and
+      i.bitAnd(1) = 1
+    )
+  }
 }

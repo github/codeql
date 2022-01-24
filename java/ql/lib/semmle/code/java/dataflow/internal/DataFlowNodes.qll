@@ -14,14 +14,14 @@ newtype TNode =
     not e.getParent*() instanceof Annotation
   } or
   TExplicitParameterNode(Parameter p) {
-    exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
+    exists(p.getCallable().getBody()) or p.getCallable() = any(SummarizedCallable sc).asCallable()
   } or
   TImplicitVarargsArray(Call c) {
     c.getCallee().isVarargs() and
     not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
   } or
   TInstanceParameterNode(Callable c) {
-    (exists(c.getBody()) or c instanceof SummarizedCallable) and
+    (exists(c.getBody()) or c = any(SummarizedCallable sc).asCallable()) and
     not c.isStatic()
   } or
   TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
@@ -44,7 +44,8 @@ newtype TNode =
   } or
   TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  }
+  } or
+  TFieldValueNode(Field f)
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
   call instanceof MethodAccess and
@@ -94,19 +95,12 @@ module Public {
       result = this.(MallocNode).getClassInstanceExpr().getType()
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
+      or
+      result = this.(FieldValueNode).getField().getType()
     }
 
     /** Gets the callable in which this node occurs. */
-    Callable getEnclosingCallable() {
-      result = this.asExpr().getEnclosingCallable() or
-      result = this.asParameter().getCallable() or
-      result = this.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
-      result = this.(InstanceParameterNode).getCallable() or
-      result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
-      result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-      result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallable() or
-      this = TSummaryInternalNode(result, _)
-    }
+    Callable getEnclosingCallable() { result = nodeGetEnclosingCallable(this).asCallable() }
 
     private Type getImprovedTypeBound() {
       exprTypeFlow(this.asExpr(), result, _) or
@@ -117,9 +111,9 @@ module Public {
      * Gets an upper bound on the type of this node.
      */
     Type getTypeBound() {
-      result = getImprovedTypeBound()
+      result = this.getImprovedTypeBound()
       or
-      result = getType() and not exists(getImprovedTypeBound())
+      result = this.getType() and not exists(this.getImprovedTypeBound())
     }
 
     /**
@@ -127,12 +121,12 @@ module Public {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
@@ -258,6 +252,18 @@ module Public {
   }
 
   /**
+   * A node representing the value of a field.
+   */
+  class FieldValueNode extends Node, TFieldValueNode {
+    /** Gets the field corresponding to this node. */
+    Field getField() { this = TFieldValueNode(result) }
+
+    override string toString() { result = this.getField().toString() }
+
+    override Location getLocation() { result = this.getField().getLocation() }
+  }
+
+  /**
    * Gets the node that occurs as the qualifier of `fa`.
    */
   Node getFieldQualifier(FieldAccess fa) {
@@ -274,6 +280,21 @@ module Public {
     explicitInstanceArgument(call, result.asExpr()) or
     implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
   }
+
+  /** A node representing an `InstanceAccessExt`. */
+  class InstanceAccessNode extends Node {
+    InstanceAccessNode() {
+      this instanceof ImplicitInstanceAccess or this.asExpr() instanceof InstanceAccess
+    }
+
+    /** Gets the instance access corresponding to this node. */
+    InstanceAccessExt getInstanceAccess() {
+      result = this.(ImplicitInstanceAccess).getInstanceAccess() or result.isExplicit(this.asExpr())
+    }
+
+    /** Holds if this is an access to an object's own instance. */
+    predicate isOwnInstanceAccess() { this.getInstanceAccess().isOwnInstanceAccess() }
+  }
 }
 
 private import Public
@@ -288,9 +309,9 @@ private class NewExpr extends PostUpdateNode, TExprNode {
  * A `PostUpdateNode` that is not a `ClassInstanceExpr`.
  */
 abstract private class ImplicitPostUpdateNode extends PostUpdateNode {
-  override Location getLocation() { result = getPreUpdateNode().getLocation() }
+  override Location getLocation() { result = this.getPreUpdateNode().getLocation() }
 
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+  override string toString() { result = this.getPreUpdateNode().toString() + " [post update]" }
 }
 
 private class ExplicitExprPostUpdate extends ImplicitPostUpdateNode, TExplicitExprPostUpdate {
@@ -304,6 +325,31 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
 }
 
 module Private {
+  private import DataFlowDispatch
+
+  /** Gets the callable in which this node occurs. */
+  DataFlowCallable nodeGetEnclosingCallable(Node n) {
+    result.asCallable() = n.asExpr().getEnclosingCallable() or
+    result.asCallable() = n.asParameter().getCallable() or
+    result.asCallable() = n.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
+    result.asCallable() = n.(InstanceParameterNode).getCallable() or
+    result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
+    result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
+    result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
+    n = TSummaryInternalNode(result, _) or
+    result.asFieldScope() = n.(FieldValueNode).getField()
+  }
+
+  /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+    p.isParameterOf(c.asCallable(), pos)
+  }
+
+  /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+  predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+    arg.argumentOf(c, pos)
+  }
+
   /**
    * A data flow node that occurs as the argument of a call and is passed as-is
    * to the callable. Arguments that are wrapped in an implicit varargs array
@@ -326,12 +372,14 @@ module Private {
      * The instance argument is considered to have index `-1`.
      */
     predicate argumentOf(DataFlowCall call, int pos) {
-      exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
+      exists(Argument arg | this.asExpr() = arg |
+        call.asCall() = arg.getCall() and pos = arg.getPosition()
+      )
       or
-      call = this.(ImplicitVarargsArray).getCall() and
-      pos = call.getCallee().getNumberOfParameters() - 1
+      call.asCall() = this.(ImplicitVarargsArray).getCall() and
+      pos = call.asCall().getCallee().getNumberOfParameters() - 1
       or
-      pos = -1 and this = getInstanceArgument(call)
+      pos = -1 and this = getInstanceArgument(call.asCall())
       or
       this.(SummaryNode).isArgumentOf(call, pos)
     }
@@ -361,7 +409,7 @@ module Private {
 
     /** Gets the underlying call. */
     DataFlowCall getCall() {
-      result = this.asExpr()
+      result.asCall() = this.asExpr()
       or
       this.(SummaryNode).isOut(result)
     }

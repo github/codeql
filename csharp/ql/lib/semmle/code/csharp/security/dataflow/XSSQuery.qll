@@ -62,6 +62,16 @@ module PathGraph {
     key = "semmle.label" and
     val = n.(XssAspNode).toString()
   }
+
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+   * `ret -> out` is summarized as the edge `arg -> out`.
+   */
+  query predicate subpaths(XssNode arg, XssNode par, XssNode ret, XssNode out) {
+    DataFlow2::PathGraph::subpaths(arg.asDataFlowNode(), par.asDataFlowNode(), ret.asDataFlowNode(),
+      out.asDataFlowNode())
+  }
 }
 
 private newtype TXssNode =

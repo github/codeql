@@ -19,7 +19,7 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
     // gets(str)
     // fgets(str, num, stream)
     // fgetws(wstr, num, stream)
-    hasGlobalOrStdOrBslName(["gets", "fgets", "fgetws"])
+    this.hasGlobalOrStdOrBslName(["gets", "fgets", "fgetws"])
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -54,15 +54,17 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    not hasName("gets") and
+    not this.hasName("gets") and
     bufParam = 0 and
     countParam = 1
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
-    hasName("gets") and
+    this.hasName("gets") and
     bufParam = 0
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+
+  override predicate hasSocketInput(FunctionInput input) { input.isParameter(2) }
 }

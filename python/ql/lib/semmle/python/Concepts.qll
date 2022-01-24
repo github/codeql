@@ -327,7 +327,45 @@ module CodeExecution {
 }
 
 /**
+ * A data-flow node that constructs an SQL statement.
+ * Often, it is worthy of an alert if an SQL statement is constructed such that
+ * executing it would be a security risk.
+ *
+ * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `SqlConstruction::Range` instead.
+ */
+class SqlConstruction extends DataFlow::Node {
+  SqlConstruction::Range range;
+
+  SqlConstruction() { this = range }
+
+  /** Gets the argument that specifies the SQL statements to be constructed. */
+  DataFlow::Node getSql() { result = range.getSql() }
+}
+
+/** Provides a class for modeling new SQL execution APIs. */
+module SqlConstruction {
+  /**
+   * A data-flow node that constructs an SQL statement.
+   * Often, it is worthy of an alert if an SQL statement is constructed such that
+   * executing it would be a security risk.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SqlExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the SQL statements to be constructed. */
+    abstract DataFlow::Node getSql();
+  }
+}
+
+/**
  * A data-flow node that executes SQL statements.
+ *
+ * If the context of interest is such that merely constructing an SQL statement
+ * would be valuabe to report, then consider using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
@@ -346,12 +384,62 @@ module SqlExecution {
   /**
    * A data-flow node that executes SQL statements.
    *
+   * If the context of interest is such that merely constructing an SQL statement
+   * would be valuabe to report, then consider using `SqlConstruction`.
+   *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
+  }
+}
+
+/**
+ * A data-flow node that executes a regular expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexExecution::Range` instead.
+ */
+class RegexExecution extends DataFlow::Node {
+  RegexExecution::Range range;
+
+  RegexExecution() { this = range }
+
+  /** Gets the data flow node for the regex being executed by this node. */
+  DataFlow::Node getRegex() { result = range.getRegex() }
+
+  /** Gets a dataflow node for the string to be searched or matched against. */
+  DataFlow::Node getString() { result = range.getString() }
+
+  /**
+   * Gets the name of this regex execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = range.getName() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module RegexExecution {
+  /**
+   * A data-flow node that executes a regular expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the regex being executed by this node. */
+    abstract DataFlow::Node getRegex();
+
+    /** Gets a dataflow node for the string to be searched or matched against. */
+    abstract DataFlow::Node getString();
+
+    /**
+     * Gets the name of this regex execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
@@ -411,6 +499,9 @@ module Escaping {
 
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
+
+  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  string getRegexKind() { result = "regex" }
   // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
   //
   // Technically it claims to escape for both HTML and XML, but for now we don't have
@@ -425,6 +516,14 @@ module Escaping {
  */
 class HtmlEscaping extends Escaping {
   HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of a regex.
+ */
+class RegexEscaping extends Escaping {
+  RegexEscaping() { range.getKind() = Escaping::getRegexKind() }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
@@ -712,6 +811,72 @@ module HTTP {
         abstract DataFlow::Node getValueArg();
       }
     }
+  }
+
+  /** Provides classes for modeling HTTP clients. */
+  module Client {
+    /**
+     * A data-flow node that makes an outgoing HTTP request.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HTTP::Client::Request::Range` instead.
+     */
+    class Request extends DataFlow::Node instanceof Request::Range {
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
+
+      /** Gets a string that identifies the framework used for this request. */
+      string getFramework() { result = super.getFramework() }
+
+      /**
+       * Holds if this request is made using a mode that disables SSL/TLS
+       * certificate validation, where `disablingNode` represents the point at
+       * which the validation was disabled, and `argumentOrigin` represents the origin
+       * of the argument that disabled the validation (which could be the same node as
+       * `disablingNode`).
+       */
+      predicate disablesCertificateValidation(
+        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+      ) {
+        super.disablesCertificateValidation(disablingNode, argumentOrigin)
+      }
+    }
+
+    /** Provides a class for modeling new HTTP requests. */
+    module Request {
+      /**
+       * A data-flow node that makes an outgoing HTTP request.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HTTP::Client::Request` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getAUrlPart();
+
+        /** Gets a string that identifies the framework used for this request. */
+        abstract string getFramework();
+
+        /**
+         * Holds if this request is made using a mode that disables SSL/TLS
+         * certificate validation, where `disablingNode` represents the point at
+         * which the validation was disabled, and `argumentOrigin` represents the origin
+         * of the argument that disabled the validation (which could be the same node as
+         * `disablingNode`).
+         */
+        abstract predicate disablesCertificateValidation(
+          DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+        );
+      }
+    }
+    // TODO: investigate whether we should treat responses to client requests as
+    // remote-flow-sources in general.
   }
 }
 

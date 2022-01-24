@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling URI libraries.
+ * Provides classes for modeling URI libraries.
  */
 
 import javascript

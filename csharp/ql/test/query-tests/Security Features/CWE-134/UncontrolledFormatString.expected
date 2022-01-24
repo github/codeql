@@ -12,6 +12,7 @@ nodes
 | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | semmle.label | access to property Text |
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | semmle.label | access to local variable format |
+subpaths
 #select
 | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | $@ flows to here and is used as a format string. | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine | call to method ReadLine |
 | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | $@ flows to here and is used as a format string. | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString | access to property QueryString |

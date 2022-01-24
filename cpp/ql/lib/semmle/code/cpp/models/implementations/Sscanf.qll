@@ -23,15 +23,15 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
     bufParam = this.(ScanfFunction).getInputParameterIndex()
   }
 
-  override predicate hasArrayInput(int bufParam) { hasArrayWithNullTerminator(bufParam) }
+  override predicate hasArrayInput(int bufParam) { this.hasArrayWithNullTerminator(bufParam) }
 
   private int getLengthParameterIndex() { result = this.(Snscanf).getInputLengthParameterIndex() }
 
   private int getLocaleParameterIndex() {
     this.getName().matches("%\\_l") and
     (
-      if exists(getLengthParameterIndex())
-      then result = getLengthParameterIndex() + 2
+      if exists(this.getLengthParameterIndex())
+      then result = this.getLengthParameterIndex() + 2
       else result = 2
     )
   }
@@ -40,11 +40,11 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(this.(ScanfFunction).getInputParameterIndex()) and
-    output.isParameterDeref(any(int i | i >= getArgsStartPosition()))
+    output.isParameterDeref(any(int i | i >= this.getArgsStartPosition()))
   }
 
   override predicate parameterNeverEscapes(int index) {
-    index = [0 .. max(getACallToThisFunction().getNumberOfArguments())]
+    index = [0 .. max(this.getACallToThisFunction().getNumberOfArguments())]
   }
 
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
@@ -56,7 +56,7 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    i >= getArgsStartPosition() and
+    i >= this.getArgsStartPosition() and
     buffer = true and
     mustWrite = true
   }
@@ -66,7 +66,7 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
     i =
       [
         this.(ScanfFunction).getInputParameterIndex(),
-        this.(ScanfFunction).getFormatParameterIndex(), getLocaleParameterIndex()
+        this.(ScanfFunction).getFormatParameterIndex(), this.getLocaleParameterIndex()
       ]
   }
 }

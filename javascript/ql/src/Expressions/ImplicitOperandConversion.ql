@@ -49,15 +49,15 @@ abstract class ImplicitConversionWithWhitelist extends ImplicitConversion {
   abstract string getConversionTarget();
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
-    not v.getType() = getAWhitelistedType() and
-    result = getConversionTarget()
+    v = this.getAValue() and
+    not v.getType() = this.getAWhitelistedType() and
+    result = this.getConversionTarget()
   }
 }
 
 /**
- * Property names in `in` expressions are converted to strings,
- * so they should be strings or numbers.
+ * A property name in an `in` expression that is converted to string,
+ * so it should be a string or number.
  */
 class PropertyNameConversion extends ImplicitConversionWithWhitelist {
   PropertyNameConversion() { this.asExpr() = parent.(InExpr).getLeftOperand() }
@@ -68,8 +68,8 @@ class PropertyNameConversion extends ImplicitConversionWithWhitelist {
 }
 
 /**
- * Property names in index expressions are converted to strings,
- * so they should be Booleans, strings or numbers.
+ * A property name in an index expression that is converted to string,
+ * so it should be Boolean, string or number.
  */
 class IndexExprConversion extends ImplicitConversionWithWhitelist {
   IndexExprConversion() { this.asExpr() = parent.(IndexExpr).getIndex() }
@@ -82,7 +82,7 @@ class IndexExprConversion extends ImplicitConversionWithWhitelist {
 }
 
 /**
- * Expressions that are interpreted as objects shouldn't be primitive values.
+ * An expression that is interpreted as an object, and therefore shouldn't be a primitive value.
  */
 class ObjectConversion extends ImplicitConversionWithWhitelist {
   ObjectConversion() {
@@ -107,8 +107,8 @@ class ConstructorConversion extends ImplicitConversionWithWhitelist {
 }
 
 /**
- * Operands of relational operators are converted to strings or numbers,
- * and hence should be strings, numbers or Dates.
+ * An operand of an relational comparison that is converted to string or number,
+ * and hence should be a string, number or Date.
  */
 class RelationalOperandConversion extends ImplicitConversionWithWhitelist {
   RelationalOperandConversion() { parent instanceof RelationalComparison }
@@ -121,8 +121,8 @@ class RelationalOperandConversion extends ImplicitConversionWithWhitelist {
 }
 
 /**
- * Operands of arithmetic and bitwise operations are converted to numbers,
- * so they should be Booleans, numbers or Dates.
+ * An operand of arithmetic and bitwise operations that is converted to a number,
+ * so it should be a Boolean, number or Date.
  */
 class NumericConversion extends ImplicitConversion {
   NumericConversion() {
@@ -136,7 +136,7 @@ class NumericConversion extends ImplicitConversion {
   }
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
+    v = this.getAValue() and
     not v.isCoercibleToNumber() and
     result = "number"
   }
@@ -149,23 +149,23 @@ abstract class NullOrUndefinedConversion extends ImplicitConversion {
   abstract string getConversionTarget();
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
-    v = getAValue() and
+    v = this.getAValue() and
     (v instanceof AbstractNull or v instanceof AbstractUndefined) and
-    result = getConversionTarget()
+    result = this.getConversionTarget()
   }
 }
 
 /**
- * Operands of `+` or `+=` are converted to strings or numbers, and hence
+ * An operand of `+` or `+=` that is converted to string or number, and hence
  * should not be `null` or `undefined`.
  */
 class PlusConversion extends NullOrUndefinedConversion {
   PlusConversion() { parent instanceof AddExpr or parent instanceof AssignAddExpr }
 
   override string getConversionTarget() {
-    result = getDefiniteSiblingType()
+    result = this.getDefiniteSiblingType()
     or
-    not exists(getDefiniteSiblingType()) and
+    not exists(this.getDefiniteSiblingType()) and
     result = "number or string"
   }
 
@@ -179,13 +179,14 @@ class PlusConversion extends NullOrUndefinedConversion {
    * Gets the unique type of the sibling expression, if that type is `string` or `number`.
    */
   private string getDefiniteSiblingType() {
-    result = unique(InferredType t | t = getSibling().flow().analyze().getAType()).getTypeofTag() and
+    result =
+      unique(InferredType t | t = this.getSibling().flow().analyze().getAType()).getTypeofTag() and
     result = ["string", "number"]
   }
 }
 
 /**
- * Template literal elements are converted to strings, and hence should not
+ * A template literal element that is converted to a string, and hence should not
  * be `null` or `undefined`.
  */
 class TemplateElementConversion extends NullOrUndefinedConversion {

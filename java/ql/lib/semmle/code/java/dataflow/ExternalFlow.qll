@@ -77,19 +77,34 @@ private import FlowSummary
  */
 private module Frameworks {
   private import internal.ContainerFlow
+  private import semmle.code.java.frameworks.android.Android
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.Notifications
+  private import semmle.code.java.frameworks.android.Slice
+  private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
+  private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.Flexjson
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+  private import semmle.code.java.frameworks.JavaIo
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
+  private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
   private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.Stream
+  private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.ratpack.Ratpack
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
+  private import semmle.code.java.frameworks.spring.SpringContext
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
   private import semmle.code.java.frameworks.spring.SpringUi
@@ -98,16 +113,19 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.frameworks.spring.SpringWebUtil
+  private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
+  private import semmle.code.java.security.Files
   private import semmle.code.java.security.GroovyInjection
+  private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.JndiInjection
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
   private import semmle.code.java.security.XPath
-  private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
@@ -243,20 +261,6 @@ private predicate sinkModelCsv(string row) {
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
       "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
       "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
-      // Create file
-      "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
-      "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
-      "java.io;FileWriter;false;FileWriter;;;Argument[0];create-file",
-      "java.nio.file;Files;false;move;;;Argument[1];create-file",
-      "java.nio.file;Files;false;copy;;;Argument[1];create-file",
-      "java.nio.file;Files;false;newOutputStream;;;Argument[0];create-file",
-      "java.nio.file;Files;false;newBufferedReader;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createFile;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
       // Bean validation
       "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation",
       // Set hostname
@@ -304,39 +308,19 @@ private predicate summaryModelCsv(string row) {
       "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
       "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
       "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
       "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
       // arg to arg
       "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
-      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
-      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
-      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
       // constructor flow
       "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
       "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
@@ -361,7 +345,11 @@ private predicate summaryModelCsv(string row) {
       "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
       "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
       "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
-      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[]);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(byte[],int,int);;Argument[0];Argument[-1];taint",
+      "java.io;OutputStream;true;write;(int);;Argument[0];Argument[-1];taint",
+      "java.io;FilterOutputStream;true;FilterOutputStream;(OutputStream);;Argument[0];Argument[-1];taint"
     ]
 }
 
@@ -566,7 +554,7 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        specSplit(input, part, _) and
+        part = specLast(input) and
         parseParam(part, _)
       ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
@@ -628,9 +616,14 @@ private string paramsStringPart(Callable c, int i) {
   i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsString(Callable c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+cached
+string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
@@ -693,7 +686,7 @@ class SyntheticField extends string {
 
 private predicate parseSynthField(string c, string f) {
   specSplit(_, c, _) and
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9$]+)\\]", 1) = f
 }
 
 /** Holds if the specification component parses as a `Content`. */

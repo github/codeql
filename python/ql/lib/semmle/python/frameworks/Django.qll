@@ -10,15 +10,19 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.Stdlib
 private import semmle.python.regex
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package.
  * See https://www.djangoproject.com/.
  */
-private module Django {
+module Django {
   /** Provides models for the `django.views` module */
   module Views {
     /**
@@ -289,13 +293,233 @@ private module Django {
       API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
     }
   }
+
+  /**
+   * Provides models for the `django.utils.datastructures.MultiValueDict` class
+   *
+   * See
+   * - https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.QueryDict (subclass that has proper docs)
+   * - https://www.kite.com/python/docs/django.utils.datastructures.MultiValueDict
+   */
+  module MultiValueDict {
+    /** Gets a reference to the `django.utils.datastructures.MultiValueDict` class. */
+    private API::Node classRef() {
+      result =
+        API::moduleImport("django")
+            .getMember("utils")
+            .getMember("datastructures")
+            .getMember("MultiValueDict")
+    }
+
+    /**
+     * A source of instances of `django.utils.datastructures.MultiValueDict`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `MultiValueDict::instance()` to get references to instances of `django.utils.datastructures.MultiValueDict`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `django.utils.datastructures.MultiValueDict`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `django.utils.datastructures.MultiValueDict`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.utils.datastructures.MultiValueDict`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.utils.datastructures.MultiValueDict`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.utils.datastructures.MultiValueDict" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() {
+        result in ["getlist", "lists", "popitem", "dict", "urlencode"]
+      }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `django.utils.datastructures.MultiValueDict`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // class instantiation
+        exists(ClassInstantiation call |
+          nodeFrom = call.getArg(0) and
+          nodeTo = call
+        )
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `django.contrib.auth.models.User` class
+   *
+   * See https://docs.djangoproject.com/en/3.2/ref/contrib/auth/#user-model.
+   */
+  module User {
+    /**
+     * A source of instances of `django.contrib.auth.models.User`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `User::instance()` to get references to instances of `django.contrib.auth.models.User`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.contrib.auth.models.User`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.contrib.auth.models.User`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.contrib.auth.models.User" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in ["username", "first_name", "last_name", "email"]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
+  /**
+   * Provides models for the `django.core.files.uploadedfile.UploadedFile` class
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.
+   */
+  module UploadedFile {
+    /**
+     * A source of instances of `django.core.files.uploadedfile.UploadedFile`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `UploadedFile::instance()` to get references to instances of `django.core.files.uploadedfile.UploadedFile`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.core.files.uploadedfile.UploadedFile`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.core.files.uploadedfile.UploadedFile`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.core.files.uploadedfile.UploadedFile`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.core.files.uploadedfile.UploadedFile" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "content_type", "content_type_extra", "content_type_extra", "charset", "name", "file"
+          ]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /** A file-like object instance that originates from a `UploadedFile`. */
+    class UploadedFileFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+      UploadedFileFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "file") }
+    }
+  }
+
+  /**
+   * Provides models for the `django.urls.ResolverMatch` class
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/urlresolvers/#django.urls.ResolverMatch.
+   */
+  module ResolverMatch {
+    /**
+     * A source of instances of `django.urls.ResolverMatch`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `ResolverMatch::instance()` to get references to instances of `django.urls.ResolverMatch`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.urls.ResolverMatch`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.urls.ResolverMatch`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.urls.ResolverMatch`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "django.urls.ResolverMatch" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["args", "kwargs"] }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `django` PyPI package (that we are not quite ready to publicly expose yet).
  * See https://www.djangoproject.com/.
  */
-private module PrivateDjango {
+module PrivateDjango {
   // ---------------------------------------------------------------------------
   // django
   // ---------------------------------------------------------------------------
@@ -322,6 +546,7 @@ private module PrivateDjango {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
+      /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
         DjangoDbConnection() { this = connection().getAUse() }
       }
@@ -518,6 +743,7 @@ private module PrivateDjango {
 
     /** Provides models for the `django.conf` module */
     module conf {
+      /** Provides models for the `django.conf.urls` module */
       module conf_urls {
         // -------------------------------------------------------------------------
         // django.conf.urls
@@ -587,6 +813,118 @@ private module PrivateDjango {
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
           DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+          /**
+           * Taint propagation for `django.http.request.HttpRequest`.
+           */
+          private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+            InstanceTaintSteps() { this = "django.http.request.HttpRequest" }
+
+            override DataFlow::Node getInstance() { result = instance() }
+
+            override string getAttributeName() {
+              result in [
+                  // str / bytes
+                  "body", "path", "path_info", "method", "encoding", "content_type",
+                  // django.http.QueryDict
+                  "GET", "POST",
+                  // dict[str, str]
+                  "content_params", "COOKIES",
+                  // dict[str, Any]
+                  "META",
+                  // HttpHeaders (case insensitive dict-like)
+                  "headers",
+                  // MultiValueDict[str, UploadedFile]
+                  "FILES",
+                  // django.urls.ResolverMatch
+                  "resolver_match"
+                ]
+              // TODO: Handle that a HttpRequest is iterable
+            }
+
+            override string getMethodName() {
+              result in ["get_full_path", "get_full_path_info", "read", "readline", "readlines"]
+            }
+
+            override string getAsyncMethodName() { none() }
+          }
+
+          /**
+           * Extra taint propagation for `django.http.request.HttpRequest`, not covered by `InstanceTaintSteps`.
+           */
+          private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+            override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+              // special handling of the `build_absolute_uri` method, see
+              // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
+              exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
+                instance = django::http::request::HttpRequest::instance() and
+                attr.getObject() = instance
+              |
+                attr.getAttributeName() = "build_absolute_uri" and
+                nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
+                call = nodeTo and
+                (
+                  not exists(call.getArg(_)) and
+                  not exists(call.getArgByName(_)) and
+                  nodeFrom = instance
+                  or
+                  nodeFrom = call.getArg(0)
+                  or
+                  nodeFrom = call.getArgByName("location")
+                )
+              )
+            }
+          }
+
+          /** An attribute read on an django request that is a `MultiValueDict` instance. */
+          private class DjangoHttpRequestMultiValueDictInstances extends Django::MultiValueDict::InstanceSource {
+            DjangoHttpRequestMultiValueDictInstances() {
+              this.(DataFlow::AttrRead).getObject() = instance() and
+              this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
+            }
+          }
+
+          /** An attribute read on an django request that is a `ResolverMatch` instance. */
+          private class DjangoHttpRequestResolverMatchInstances extends Django::ResolverMatch::InstanceSource {
+            DjangoHttpRequestResolverMatchInstances() {
+              this.(DataFlow::AttrRead).getObject() = instance() and
+              this.(DataFlow::AttrRead).getAttributeName() = "resolver_match"
+            }
+          }
+
+          /** An `UploadedFile` instance that originates from a django request. */
+          private class DjangoHttpRequestUploadedFileInstances extends Django::UploadedFile::InstanceSource {
+            DjangoHttpRequestUploadedFileInstances() {
+              // TODO: this currently only works in local-scope, since writing type-trackers for
+              // this is a little too much effort. Once API-graphs are available for more
+              // things, we can rewrite this.
+              //
+              // TODO: This approach for identifying member-access is very adhoc, and we should
+              // be able to do something more structured for providing modeling of the members
+              // of a container-object.
+              //
+              // dicts
+              exists(DataFlow::AttrRead files, DataFlow::Node dict |
+                files.accesses(instance(), "FILES") and
+                (
+                  dict = files
+                  or
+                  dict.(DataFlow::MethodCallNode).calls(files, "dict")
+                )
+              |
+                this.asCfgNode().(SubscriptNode).getObject() = dict.asCfgNode()
+                or
+                this.(DataFlow::MethodCallNode).calls(dict, "get")
+              )
+              or
+              // getlist
+              exists(DataFlow::AttrRead files, DataFlow::MethodCallNode getlistCall |
+                files.accesses(instance(), "FILES") and
+                getlistCall.calls(files, "getlist") and
+                this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+              )
+            }
+          }
         }
       }
 
@@ -604,6 +942,7 @@ private module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.
          */
         module HttpResponse {
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
           API::Node baseClassRef() {
             result = response().getMember("HttpResponse")
             or
@@ -611,7 +950,7 @@ private module PrivateDjango {
             result = http().getMember("HttpResponse")
           }
 
-          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          /** Gets a reference to the `django.http.response.HttpResponse` class or any subclass. */
           API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
@@ -1456,9 +1795,6 @@ private module PrivateDjango {
   }
 
   // ---------------------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------------------
-  // ---------------------------------------------------------------------------
   // Form and form field modeling
   // ---------------------------------------------------------------------------
   /**
@@ -1561,11 +1897,13 @@ private module PrivateDjango {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
       or
-      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.asViewResult(t2).track(t2, t))
     }
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    DataFlow::Node asViewResult() { asViewResult(DataFlow::TypeTracker::end()).flowsTo(result) }
+    DataFlow::Node asViewResult() {
+      this.asViewResult(DataFlow::TypeTracker::end()).flowsTo(result)
+    }
   }
 
   /** A class that we consider a django View class. */
@@ -1608,14 +1946,11 @@ private module PrivateDjango {
    * with the django framework.
    *
    * Most functions take a django HttpRequest as a parameter (but not all).
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `DjangoRouteHandler::Range` instead.
    */
-  private class DjangoRouteHandler extends Function {
-    DjangoRouteHandler() {
-      exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
-      or
-      any(DjangoViewClass vc).getARequestHandler() = this
-    }
-
+  class DjangoRouteHandler extends Function instanceof DjangoRouteHandler::Range {
     /**
      * Gets the index of the parameter where the first routed parameter can be passed --
      * that is, the one just after any possible `self` or HttpRequest parameters.
@@ -1633,6 +1968,24 @@ private module PrivateDjango {
 
     /** Gets the request parameter. */
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
+  }
+
+  /** Provides a class for modeling new django route handlers. */
+  module DjangoRouteHandler {
+    /**
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `DjangoRouteHandler` instead.
+     */
+    abstract class Range extends Function { }
+
+    /** Route handlers from normal usage of django. */
+    private class StandardDjangoRouteHandlers extends Range {
+      StandardDjangoRouteHandlers() {
+        exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
+        or
+        any(DjangoViewClass vc).getARequestHandler() = this
+      }
+    }
   }
 
   /**
@@ -1656,15 +2009,15 @@ private module PrivateDjango {
   }
 
   /** A data-flow node that sets up a route on a server, using the django framework. */
-  abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  abstract class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
     /** Gets the data-flow node that is used as the argument for the view handler. */
     abstract DataFlow::Node getViewArg();
 
     final override DjangoRouteHandler getARequestHandler() {
-      poorMansFunctionTracker(result) = getViewArg()
+      poorMansFunctionTracker(result) = this.getViewArg()
       or
       exists(DjangoViewClass vc |
-        getViewArg() = vc.asViewResult() and
+        this.getViewArg() = vc.asViewResult() and
         result = vc.getARequestHandler()
       )
     }
@@ -1880,36 +2233,6 @@ private module PrivateDjango {
 
     override string getSourceType() {
       result = "django routed param from self.args/kwargs in View class"
-    }
-  }
-
-  private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      nodeFrom = django::http::request::HttpRequest::instance() and
-      exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-        read.getAttributeName() in [
-            // str / bytes
-            "body", "path", "path_info", "method", "encoding", "content_type",
-            // django.http.QueryDict
-            // TODO: Model QueryDict
-            "GET", "POST",
-            // dict[str, str]
-            "content_params", "COOKIES",
-            // dict[str, Any]
-            "META",
-            // HttpHeaders (case insensitive dict-like)
-            "headers",
-            // MultiValueDict[str, UploadedFile]
-            // TODO: Model MultiValueDict
-            // TODO: Model UploadedFile
-            "FILES",
-            // django.urls.ResolverMatch
-            // TODO: Model ResolverMatch
-            "resolver_match"
-          ]
-        // TODO: Handle calls to methods
-        // TODO: Handle that a HttpRequest is iterable
-      )
     }
   }
 

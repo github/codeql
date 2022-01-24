@@ -9,7 +9,6 @@
  * @id py/path-injection
  * @tags correctness
  *       security
- *       external/owasp/owasp-a1
  *       external/cwe/cwe-022
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036

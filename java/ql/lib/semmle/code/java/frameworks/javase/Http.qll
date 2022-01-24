@@ -6,12 +6,12 @@ import java
 
 /** The interface representing `HttpRequest.Builder`. */
 class TypeHttpRequestBuilder extends Interface {
-  TypeHttpRequestBuilder() { hasQualifiedName("java.net.http", "HttpRequest$Builder") }
+  TypeHttpRequestBuilder() { this.hasQualifiedName("java.net.http", "HttpRequest$Builder") }
 }
 
 /** The interface representing `java.net.http.HttpRequest`. */
 class TypeHttpRequest extends Interface {
-  TypeHttpRequest() { hasQualifiedName("java.net.http", "HttpRequest") }
+  TypeHttpRequest() { this.hasQualifiedName("java.net.http", "HttpRequest") }
 }
 
 /** The `uri` method on `java.net.http.HttpRequest.Builder`. */

@@ -12,7 +12,7 @@
  *    affect `x`, while `yield` expressions in functions other than `f`
  *    still may affect it.
  *
- * This is modelled as follows.
+ * This is modeled as follows.
  *
  * Within each function `g` that accesses a variable `x` declared in an
  * enclosing function `f`, we introduce a pseudo-assignment to `x` called
@@ -180,7 +180,7 @@ private module Internal {
 
   /**
    * Holds if the `i`th node of basic block `bb` may induce a pseudo-definition for
-   * modelling updates to captured variable `v`. Whether the definition is actually
+   * modeling updates to captured variable `v`. Whether the definition is actually
    * introduced depends on whether `v` is live at this point in the program.
    */
   private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
@@ -417,7 +417,7 @@ class SsaVariable extends TSsaDefinition {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -482,7 +482,7 @@ class SsaDefinition extends TSsaDefinition {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   abstract predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

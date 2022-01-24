@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension);
+            trapFile.files(this, TransformedPath.Value);
 
             if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
                 trapFile.containerparent(Extraction.Entities.Folder.Create(Context, dir), this);
@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
+            trapFile.file_extraction_mode(this, Context.Extractor.Mode);
         }
 
         private bool IsPossiblyTextFile()

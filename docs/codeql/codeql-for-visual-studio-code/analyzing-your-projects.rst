@@ -79,6 +79,8 @@ You can see all quick queries that you've run in the current session in the Quer
 
 Once you're happy with your quick query, you should save it in a QL pack so you can access it later. For more information, see ":ref:`About QL packs <about-ql-packs>`."
 
+.. _running-a-specific-part-of-a-query-or-library:
+
 Running a specific part of a query or library
 ----------------------------------------------
 

@@ -50,64 +50,70 @@ class Assertion extends Comment {
     |
       polarity = txt.regexpCapture(rex, 1) and
       expectedKind = txt.regexpCapture(rex, 2) and
-      expectedLoc = getFile().getAbsolutePath() + ":" + getLocation().getStartLine()
+      expectedLoc = this.getFile().getAbsolutePath() + ":" + this.getLocation().getStartLine()
     )
   }
 
   string getEdgeLabel(int i) { result = this.getText().regexpFind("(?<=\\()[^()]+", i, _).trim() }
 
-  int getPathLength() { result = max(int i | exists(getEdgeLabel(i))) + 1 }
+  int getPathLength() { result = max(int i | exists(this.getEdgeLabel(i))) + 1 }
 
   API::Node lookup(int i) {
-    i = getPathLength() and
+    i = this.getPathLength() and
     result = API::root()
     or
-    result = lookup(i + 1).getASuccessor(getEdgeLabel(i))
+    result =
+      this.lookup(i + 1)
+          .getASuccessor(any(API::Label::ApiLabel label | label.toString() = this.getEdgeLabel(i)))
   }
 
   predicate isNegative() { polarity = "!" }
 
-  predicate holds() { getLoc(getNode(lookup(0), expectedKind)) = expectedLoc }
+  predicate holds() { getLoc(getNode(this.lookup(0), expectedKind)) = expectedLoc }
 
   string tryExplainFailure() {
     exists(int i, API::Node nd, string prefix, string suffix |
-      nd = lookup(i) and
+      nd = this.lookup(i) and
       i > 0 and
-      not exists(lookup([0 .. i - 1])) and
-      prefix = nd + " has no outgoing edge labelled " + getEdgeLabel(i - 1) + ";" and
+      not exists(this.lookup([0 .. i - 1])) and
+      prefix = nd + " has no outgoing edge labelled " + this.getEdgeLabel(i - 1) + ";" and
       if exists(nd.getASuccessor())
       then
         suffix =
           "it does have outgoing edges labelled " +
-            concat(string lbl | exists(nd.getASuccessor(lbl)) | lbl, ", ") + "."
+            concat(string lbl |
+              exists(nd.getASuccessor(any(API::Label::ApiLabel label | label.toString() = lbl)))
+            |
+              lbl, ", "
+            ) + "."
       else suffix = "it has no outgoing edges at all."
     |
       result = prefix + " " + suffix
     )
     or
-    exists(API::Node nd, string kind | nd = lookup(0) |
+    exists(API::Node nd, string kind | nd = this.lookup(0) |
       exists(getNode(nd, kind)) and
       not exists(getNode(nd, expectedKind)) and
       result = "Expected " + expectedKind + " node, but found " + kind + " node."
     )
     or
-    exists(DataFlow::Node nd | nd = getNode(lookup(0), expectedKind) |
+    exists(DataFlow::Node nd | nd = getNode(this.lookup(0), expectedKind) |
       not getLoc(nd) = expectedLoc and
       result = "Node not found on this line (but there is one on line " + min(getLoc(nd)) + ")."
     )
   }
 
   string explainFailure() {
-    if isNegative()
+    if this.isNegative()
     then (
-      holds() and
+      this.holds() and
       result = "Negative assertion failed."
     ) else (
-      not holds() and
+      not this.holds() and
       (
-        result = tryExplainFailure()
+        result = this.tryExplainFailure()
         or
-        not exists(tryExplainFailure()) and
+        not exists(this.tryExplainFailure()) and
         result = "Positive assertion failed for unknown reasons."
       )
     )

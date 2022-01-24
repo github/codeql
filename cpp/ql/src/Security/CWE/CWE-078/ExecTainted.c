@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     system(command1);
   }
 
-  {  
+  {
     // GOOD: the user string is encoded by a library routine.
     char userNameQuoted[1000] = {0};
     encodeShellString(userNameQuoted, 1000, userName); 

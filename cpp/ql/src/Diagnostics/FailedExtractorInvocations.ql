@@ -13,6 +13,9 @@ string describe(Compilation c) {
   else result = "extractor invocation " + concat(int i | | c.getArgument(i), " " order by i)
 }
 
+/** Gets the SARIF severity level that indicates an error. */
+private int getErrorSeverity() { result = 2 }
+
 from Compilation c
 where not c.normalTermination()
-select "Extraction aborted for " + describe(c)
+select "Extraction aborted for " + describe(c), getErrorSeverity()

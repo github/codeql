@@ -24,7 +24,7 @@ where
   // Exclude fields that may be read from reflectively.
   not reflectivelyRead(v) and
   // Exclude fields annotated with `@SuppressWarnings("unused")`.
-  not v.getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning() = "\"unused\"" and
+  not v.getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning() = "unused" and
   // Exclude fields with relevant Lombok annotations.
   not v instanceof LombokGetterAnnotatedField and
   // Every access to `v` is either...

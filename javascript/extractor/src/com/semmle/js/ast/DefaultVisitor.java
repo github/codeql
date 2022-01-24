@@ -782,4 +782,9 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
   public R visit(GeneratedCodeExpr nd, C c) {
     return visit((Expression) nd, c);
   }
+
+  @Override
+  public R visit(StaticInitializer nd, C c) {
+    return visit((MemberDefinition<BlockStatement>) nd, c);
+  }
 }

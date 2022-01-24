@@ -6,8 +6,8 @@ private import semmle.code.csharp.frameworks.system.Web
 /** The `System.Web.Mvc` namespace. */
 class SystemWebMvcNamespace extends Namespace {
   SystemWebMvcNamespace() {
-    getParentNamespace() instanceof SystemWebNamespace and
-    hasName("Mvc")
+    this.getParentNamespace() instanceof SystemWebNamespace and
+    this.hasName("Mvc")
   }
 }
 
@@ -31,7 +31,7 @@ class SystemWebMvcHtmlHelperClass extends SystemWebMvcClass {
 
 /** An attribute whose type is in the `System.Web.Mvc` namespace. */
 class SystemWebMvcAttribute extends Attribute {
-  SystemWebMvcAttribute() { getType().getNamespace() instanceof SystemWebMvcNamespace }
+  SystemWebMvcAttribute() { this.getType().getNamespace() instanceof SystemWebMvcNamespace }
 }
 
 /** An attribute whose type is `System.Web.Mvc.HttpPost`. */

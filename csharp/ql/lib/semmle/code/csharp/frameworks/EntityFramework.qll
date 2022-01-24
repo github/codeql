@@ -1,5 +1,5 @@
 /**
- * Classes modelling EntityFramework and EntityFrameworkCore.
+ * Classes modeling EntityFramework and EntityFrameworkCore.
  */
 
 import csharp
@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
@@ -90,14 +91,10 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private SummaryComponent head;
-
-    DbSetAddOrUpdateRequiredSummaryComponentStack() {
-      this = SummaryComponentStack::argument([-1, 0]) and
-      head = SummaryComponent::element()
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      head = SummaryComponent::element() and
+      tail = SummaryComponentStack::argument([-1, 0])
     }
-
-    override predicate required(SummaryComponent c) { c = head }
   }
 
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
@@ -173,32 +170,34 @@ module EntityFramework {
     }
   }
 
-  private class RawSqlStringSummarizedCallable extends EFSummarizedCallable {
-    private SummaryComponentStack input_;
-    private SummaryComponentStack output_;
-    private boolean preservesValue_;
-
-    RawSqlStringSummarizedCallable() {
+  private class RawSqlStringConstructorSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConstructorSummarizedCallable() {
       exists(RawSqlStringStruct s |
         this = s.getAConstructor() and
-        input_ = SummaryComponentStack::argument(0) and
-        this.getNumberOfParameters() > 0 and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
-        or
-        this = s.getAConversionTo() and
-        input_ = SummaryComponentStack::argument(0) and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
+        this.getNumberOfParameters() > 0
       )
     }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      input = input_ and
-      output = output_ and
-      preservesValue = preservesValue_
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
+    }
+  }
+
+  private class RawSqlStringConversionSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConversionSummarizedCallable() {
+      exists(RawSqlStringStruct s | this = s.getAConversionTo())
+    }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
     }
   }
 
@@ -234,26 +233,29 @@ module EntityFramework {
     override Expr getSql() { result = this.getArgumentForParameter(sqlParam) }
   }
 
-  /** A call to `System.Data.Entity.DbSet.SqlQuery`. */
-  class SystemDataEntityDbSetSqlExpr extends SqlExpr, MethodCall {
-    SystemDataEntityDbSetSqlExpr() {
-      this.getTarget() = any(SystemDataEntity::DbSet dbSet).getSqlQueryMethod()
+  /** The sink method `System.Data.Entity.DbSet.SqlQuery`. */
+  private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"
     }
-
-    override Expr getSql() { result = this.getArgumentForName("sql") }
   }
 
-  /** A call to a method in `System.Data.Entity.Database` that executes SQL. */
-  class SystemDataEntityDatabaseSqlExpr extends SqlExpr, MethodCall {
-    SystemDataEntityDatabaseSqlExpr() {
-      exists(SystemDataEntity::Database db |
-        this.getTarget() = db.getSqlQueryMethod() or
-        this.getTarget() = db.getExecuteSqlCommandMethod() or
-        this.getTarget() = db.getExecuteSqlCommandAsyncMethod()
-      )
+  /** A sink method in `System.Data.Entity.Database` that executes SQL. */
+  private class SystemDataEntityDatabaseSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql"
+        ]
     }
-
-    override Expr getSql() { result = this.getArgumentForName("sql") }
   }
 
   /** Holds if `t` is compatible with a DB column type. */
@@ -313,7 +315,7 @@ module EntityFramework {
         dist = 0
       )
       or
-      step(_, _, c1, t1, dist - 1) and
+      this.step(_, _, c1, t1, dist - 1) and
       dist < DataFlowPrivate::accessPathLimit() - 1 and
       not isNotMapped(t2) and
       (
@@ -370,11 +372,11 @@ module EntityFramework {
     }
 
     private predicate stepRev(Content c1, Type t1, Content c2, Type t2, int dist) {
-      step(c1, t1, c2, t2, dist) and
-      c2.(PropertyContent).getProperty() = getAColumnProperty(dist)
+      this.step(c1, t1, c2, t2, dist) and
+      c2.(PropertyContent).getProperty() = this.getAColumnProperty(dist)
       or
-      stepRev(c2, t2, _, _, dist + 1) and
-      step(c1, t1, c2, t2, dist)
+      this.stepRev(c2, t2, _, _, dist + 1) and
+      this.step(c1, t1, c2, t2, dist)
     }
 
     /** Gets a `SaveChanges[Async]` method. */
@@ -449,21 +451,19 @@ module EntityFramework {
     ) {
       exists(Property mapped |
         preservesValue = true and
-        input(input, mapped) and
-        output(output, mapped)
+        this.input(input, mapped) and
+        this.output(output, mapped)
       )
     }
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private Content head;
-
-    DbContextSaveChangesRequiredSummaryComponentStack() {
-      any(DbContextClass c).requiresComponentStackIn(head, _, this, _)
-      or
-      any(DbContextClass c).requiresComponentStackOut(head, _, this, _)
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      exists(Content c | head = SummaryComponent::content(c) |
+        any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
+        or
+        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
+      )
     }
-
-    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
   }
 }

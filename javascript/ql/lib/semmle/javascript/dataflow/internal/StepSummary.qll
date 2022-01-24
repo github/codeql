@@ -156,6 +156,13 @@ private module Cached {
         succ = fun.getAnInvocation()
       )
     )
+    or
+    // Add 'return' steps from callback arguments to callback parameters
+    exists(DataFlow::ParameterNode parameter, int i |
+      pred = parameter.getAnInvocation().getArgument(i) and
+      succ = getACallbackSource(parameter).getParameter(i) and
+      summary = ReturnStep()
+    )
   }
 }
 

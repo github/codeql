@@ -39,7 +39,7 @@ abstract public class AbstractMapBag<E> implements Bag<E>
     public int hashCode(){ return 0; }
     public int size(){ return 0; }
     public void clear(){}
-    static class MutableInteger
+    protected static class MutableInteger
     {
         protected MutableInteger() {}
         MutableInteger(int p0){}

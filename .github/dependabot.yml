@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "ruby/node-types"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "ruby/generator"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "ruby/extractor"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "ruby/autobuilder"
+    schedule:
+      interval: "daily"

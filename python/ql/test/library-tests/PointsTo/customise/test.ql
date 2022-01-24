@@ -11,7 +11,7 @@ class HasTypeFact extends CustomPointsToOriginFact {
     exists(FunctionObject func, string name |
       func.getACall() = this and
       name = func.getName() and
-      name.prefix("has_type_".length()) = "has_type_"
+      name.matches("has\\_type\\_%")
     )
   }
 
@@ -19,7 +19,7 @@ class HasTypeFact extends CustomPointsToOriginFact {
     exists(FunctionObject func, string name |
       func.getACall() = this and
       name = func.getName() and
-      name.prefix("has_type_".length()) = "has_type_"
+      name.matches("has\\_type\\_%")
     |
       cls.getName() = name.suffix("has_type_".length())
     ) and

@@ -8,20 +8,16 @@ module StringOps {
   /**
    * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
    */
-  class StartsWith extends DataFlow::Node {
-    StartsWith::Range range;
-
-    StartsWith() { range = this }
-
+  class StartsWith extends DataFlow::Node instanceof StartsWith::Range {
     /**
      * Gets the `A` in `A.startsWith(B)`.
      */
-    DataFlow::Node getBaseString() { result = range.getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.startsWith(B)`.
      */
-    DataFlow::Node getSubstring() { result = range.getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -29,7 +25,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = range.getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   module StartsWith {
@@ -93,13 +89,13 @@ module StringOps {
      */
     private class StartsWith_Native extends Range, DataFlow::MethodCallNode {
       StartsWith_Native() {
-        getMethodName() = "startsWith" and
-        getNumArgument() = 1
+        this.getMethodName() = "startsWith" and
+        this.getNumArgument() = 1
       }
 
-      override DataFlow::Node getBaseString() { result = getReceiver() }
+      override DataFlow::Node getBaseString() { result = this.getReceiver() }
 
-      override DataFlow::Node getSubstring() { result = getArgument(0) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(0) }
     }
 
     /**
@@ -130,14 +126,14 @@ module StringOps {
      */
     private class StartsWith_IndexOfCoercion extends Range, DataFlow::MethodCallNode {
       StartsWith_IndexOfCoercion() {
-        getMethodName() = "indexOf" and
-        getNumArgument() = 1 and
+        this.getMethodName() = "indexOf" and
+        this.getNumArgument() = 1 and
         this.flowsToExpr(any(ConditionGuardNode guard).getTest()) // check for boolean coercion
       }
 
-      override DataFlow::Node getBaseString() { result = getReceiver() }
+      override DataFlow::Node getBaseString() { result = this.getReceiver() }
 
-      override DataFlow::Node getSubstring() { result = getArgument(0) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(0) }
 
       override boolean getPolarity() { result = false }
     }
@@ -147,7 +143,7 @@ module StringOps {
      */
     private class StartsWith_Library extends Range, DataFlow::CallNode {
       StartsWith_Library() {
-        getNumArgument() = 2 and
+        this.getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
           callee = LodashUnderscore::member("startsWith")
           or
@@ -160,9 +156,9 @@ module StringOps {
         )
       }
 
-      override DataFlow::Node getBaseString() { result = getArgument(0) }
+      override DataFlow::Node getBaseString() { result = this.getArgument(0) }
 
-      override DataFlow::Node getSubstring() { result = getArgument(1) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(1) }
     }
 
     /**
@@ -228,29 +224,25 @@ module StringOps {
    */
   class Includes extends InclusionTest {
     /** Gets the `A` in `A.includes(B)`. */
-    DataFlow::Node getBaseString() { result = getContainerNode() }
+    DataFlow::Node getBaseString() { result = this.getContainerNode() }
 
     /** Gets the `B` in `A.includes(B)`. */
-    DataFlow::Node getSubstring() { result = getContainedNode() }
+    DataFlow::Node getSubstring() { result = this.getContainedNode() }
   }
 
   /**
    * An expression that is equivalent to `A.endsWith(B)` or `!A.endsWith(B)`.
    */
-  class EndsWith extends DataFlow::Node {
-    EndsWith::Range range;
-
-    EndsWith() { this = range }
-
+  class EndsWith extends DataFlow::Node instanceof EndsWith::Range {
     /**
      * Gets the `A` in `A.startsWith(B)`.
      */
-    DataFlow::Node getBaseString() { result = range.getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.startsWith(B)`.
      */
-    DataFlow::Node getSubstring() { result = range.getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity if the check.
@@ -258,7 +250,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not end
      * with the given substring.
      */
-    boolean getPolarity() { result = range.getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   module EndsWith {
@@ -322,13 +314,13 @@ module StringOps {
      */
     private class EndsWith_Native extends Range, DataFlow::MethodCallNode {
       EndsWith_Native() {
-        getMethodName() = "endsWith" and
-        getNumArgument() = 1
+        this.getMethodName() = "endsWith" and
+        this.getNumArgument() = 1
       }
 
-      override DataFlow::Node getBaseString() { result = getReceiver() }
+      override DataFlow::Node getBaseString() { result = this.getReceiver() }
 
-      override DataFlow::Node getSubstring() { result = getArgument(0) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(0) }
     }
 
     /**
@@ -336,7 +328,7 @@ module StringOps {
      */
     private class EndsWith_Library extends Range, DataFlow::CallNode {
       EndsWith_Library() {
-        getNumArgument() = 2 and
+        this.getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
           callee = LodashUnderscore::member("endsWith")
           or
@@ -349,9 +341,9 @@ module StringOps {
         )
       }
 
-      override DataFlow::Node getBaseString() { result = getArgument(0) }
+      override DataFlow::Node getBaseString() { result = this.getArgument(0) }
 
-      override DataFlow::Node getSubstring() { result = getArgument(1) }
+      override DataFlow::Node getSubstring() { result = this.getArgument(1) }
     }
   }
 
@@ -520,7 +512,7 @@ module StringOps {
   }
 
   /**
-   * One of the operands in a string concatenation.
+   * An operand in a string concatenation.
    *
    * Examples:
    * ```
@@ -550,7 +542,7 @@ module StringOps {
    */
   class ConcatenationRoot extends Concatenation {
     pragma[inline]
-    ConcatenationRoot() { isRoot() }
+    ConcatenationRoot() { this.isRoot() }
 
     /**
      * Gets a leaf in this concatenation tree that this node is the root of.
@@ -569,9 +561,9 @@ module StringOps {
      * the result is `"Hello , how are you?"`
      */
     string getConstantStringParts() {
-      result = getStringValue()
+      result = this.getStringValue()
       or
-      not exists(getStringValue()) and
+      not exists(this.getStringValue()) and
       result =
         strictconcat(StringLiteralLike leaf |
           leaf = this.(SmallConcatenationRoot).getALeaf().asExpr()
@@ -589,7 +581,7 @@ module StringOps {
    */
   private class SmallConcatenationRoot extends ConcatenationRoot {
     SmallConcatenationRoot() {
-      sum(StringLiteralLike leaf | leaf = getALeaf().asExpr() | leaf.getStringValue().length()) <
+      sum(StringLiteralLike leaf | leaf = this.getALeaf().asExpr() | leaf.getStringValue().length()) <
         1000 * 1000
     }
   }
@@ -615,7 +607,7 @@ module StringOps {
    */
   class ConcatenationLeaf extends ConcatenationOperand {
     pragma[inline]
-    ConcatenationLeaf() { isLeaf() }
+    ConcatenationLeaf() { this.isLeaf() }
   }
 
   /**
@@ -624,7 +616,7 @@ module StringOps {
   class HtmlConcatenationRoot extends ConcatenationRoot {
     pragma[noinline]
     HtmlConcatenationRoot() {
-      getConstantStringParts().regexpMatch("(?s).*</?[a-zA-Z][^\\r\\n<>/]*/?>.*")
+      this.getConstantStringParts().regexpMatch("(?s).*</?[a-zA-Z][^\\r\\n<>/]*/?>.*")
     }
   }
 
@@ -632,7 +624,7 @@ module StringOps {
    * A data flow node that is part of an HTML string concatenation.
    */
   class HtmlConcatenationNode extends ConcatenationNode {
-    HtmlConcatenationNode() { getRoot() instanceof HtmlConcatenationRoot }
+    HtmlConcatenationNode() { this.getRoot() instanceof HtmlConcatenationRoot }
   }
 
   /**
@@ -640,7 +632,7 @@ module StringOps {
    * and is not itself a concatenation operator.
    */
   class HtmlConcatenationLeaf extends ConcatenationLeaf {
-    HtmlConcatenationLeaf() { getRoot() instanceof HtmlConcatenationRoot }
+    HtmlConcatenationLeaf() { this.getRoot() instanceof HtmlConcatenationRoot }
   }
 
   /**
@@ -662,18 +654,14 @@ module StringOps {
    * if (!match) { ... } // <--- 'match' is the RegExpTest
    * ```
    */
-  class RegExpTest extends DataFlow::Node {
-    RegExpTest::Range range;
-
-    RegExpTest() { this = range }
-
+  class RegExpTest extends DataFlow::Node instanceof RegExpTest::Range {
     /**
      * Gets the AST of the regular expression used in the test, if it can be seen locally.
      */
     RegExpTerm getRegExp() {
-      result = getRegExpOperand().getALocalSource().(DataFlow::RegExpCreationNode).getRoot()
+      result = this.getRegExpOperand().getALocalSource().(DataFlow::RegExpCreationNode).getRoot()
       or
-      result = range.getRegExpOperand(true).asExpr().(StringLiteral).asRegExp()
+      result = super.getRegExpOperand(true).asExpr().(StringLiteral).asRegExp()
     }
 
     /**
@@ -681,12 +669,12 @@ module StringOps {
      *
      * In some cases this represents a string value being coerced to a RegExp object.
      */
-    DataFlow::Node getRegExpOperand() { result = range.getRegExpOperand(_) }
+    DataFlow::Node getRegExpOperand() { result = super.getRegExpOperand(_) }
 
     /**
      * Gets the data flow node corresponding to the string being tested against the regular expression.
      */
-    DataFlow::Node getStringOperand() { result = range.getStringOperand() }
+    DataFlow::Node getStringOperand() { result = super.getStringOperand() }
 
     /**
      * Gets the return value indicating that the string matched the regular expression.
@@ -694,7 +682,7 @@ module StringOps {
      * For example, for `regexp.exec(str) == null`, the polarity is `false`, and for
      * `regexp.exec(str) != null` the polarity is `true`.
      */
-    boolean getPolarity() { result = range.getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   /**
@@ -724,21 +712,21 @@ module StringOps {
     }
 
     private class TestCall extends Range, DataFlow::MethodCallNode {
-      TestCall() { getMethodName() = "test" }
+      TestCall() { this.getMethodName() = "test" }
 
       override DataFlow::Node getRegExpOperand(boolean coerced) {
-        result = getReceiver() and coerced = false
+        result = this.getReceiver() and coerced = false
       }
 
-      override DataFlow::Node getStringOperand() { result = getArgument(0) }
+      override DataFlow::Node getStringOperand() { result = this.getArgument(0) }
     }
 
     private class MatchCall extends DataFlow::MethodCallNode {
-      MatchCall() { getMethodName() = "match" }
+      MatchCall() { this.getMethodName() = "match" }
     }
 
     private class ExecCall extends DataFlow::MethodCallNode {
-      ExecCall() { getMethodName() = "exec" }
+      ExecCall() { this.getMethodName() = "exec" }
     }
 
     private predicate isCoercedToBoolean(Expr e) {

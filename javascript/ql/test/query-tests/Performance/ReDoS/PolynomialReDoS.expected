@@ -3,6 +3,10 @@ nodes
 | lib/closure.js:3:21:3:21 | x |
 | lib/closure.js:4:16:4:16 | x |
 | lib/closure.js:4:16:4:16 | x |
+| lib/indirect.js:1:32:1:32 | x |
+| lib/indirect.js:1:32:1:32 | x |
+| lib/indirect.js:2:16:2:16 | x |
+| lib/indirect.js:2:16:2:16 | x |
 | lib/lib.js:3:28:3:31 | name |
 | lib/lib.js:3:28:3:31 | name |
 | lib/lib.js:4:14:4:17 | name |
@@ -11,6 +15,13 @@ nodes
 | lib/lib.js:7:19:7:22 | name |
 | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:8:13:8:16 | name |
+| lib/lib.js:21:14:21:14 | x |
+| lib/lib.js:21:14:21:14 | x |
+| lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:27:6:27:19 | y |
+| lib/lib.js:27:10:27:19 | id("safe") |
+| lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:28:13:28:13 | y |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name |
 | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
@@ -170,6 +181,10 @@ edges
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
+| lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x |
+| lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x |
+| lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x |
+| lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x |
 | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name |
 | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name |
 | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name |
@@ -178,6 +193,12 @@ edges
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name |
+| lib/lib.js:21:14:21:14 | x | lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:21:14:21:14 | x | lib/lib.js:22:9:22:9 | x |
+| lib/lib.js:22:9:22:9 | x | lib/lib.js:27:10:27:19 | id("safe") |
+| lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
+| lib/lib.js:27:10:27:19 | id("safe") | lib/lib.js:27:6:27:19 | y |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |
@@ -329,6 +350,7 @@ edges
 | polynomial-redos.js:123:13:123:20 | replaced | polynomial-redos.js:123:3:123:20 | result |
 #select
 | lib/closure.js:4:5:4:17 | /u*o/.test(x) | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x | This $@ that depends on $@ may run slow on strings with many repetitions of 'u'. | lib/closure.js:4:6:4:7 | u* | regular expression | lib/closure.js:3:21:3:21 | x | library input |
+| lib/indirect.js:2:5:2:17 | /k*h/.test(x) | lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x | This $@ that depends on $@ may run slow on strings with many repetitions of 'k'. | lib/indirect.js:2:6:2:7 | k* | regular expression | lib/indirect.js:1:32:1:32 | x | library input |
 | lib/lib.js:4:2:4:18 | regexp.test(name) | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/lib.js:1:15:1:16 | a* | regular expression | lib/lib.js:3:28:3:31 | name | library input |
 | lib/lib.js:8:2:8:17 | /f*g/.test(name) | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'f'. | lib/lib.js:8:3:8:4 | f* | regular expression | lib/lib.js:7:19:7:22 | name | library input |
 | lib/moduleLib/moduleLib.js:2:2:2:17 | /a*b/.test(name) | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name | This $@ that depends on $@ may run slow on strings with many repetitions of 'a'. | lib/moduleLib/moduleLib.js:2:3:2:4 | a* | regular expression | lib/moduleLib/moduleLib.js:1:28:1:31 | name | library input |

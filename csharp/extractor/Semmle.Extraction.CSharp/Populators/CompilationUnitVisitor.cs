@@ -59,8 +59,15 @@ namespace Semmle.Extraction.CSharp.Populators
                 return;
             }
 
-            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None)!;
+            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None);
             var entryMethod = Method.Create(Cx, entryPoint);
+            if (entryMethod is null)
+            {
+                Cx.ExtractionError("No entry method found. Skipping the extraction of global statements.",
+                    null, Cx.CreateLocation(globalStatements[0].GetLocation()), null, Severity.Info);
+                return;
+            }
+
             var block = GlobalStatementsBlock.Create(Cx, entryMethod);
 
             for (var i = 0; i < globalStatements.Count; i++)

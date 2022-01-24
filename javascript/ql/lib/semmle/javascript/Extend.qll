@@ -47,12 +47,7 @@ private DataFlow::SourceNode localDollar() {
  */
 private class ExtendCallWithFlag extends ExtendCall {
   ExtendCallWithFlag() {
-    exists(string name | this = DataFlow::moduleImport(name).getACall() |
-      name = "extend" or
-      name = "extend2" or
-      name = "just-extend" or
-      name = "node.extend"
-    )
+    this = DataFlow::moduleImport(["extend", "extend2", "just-extend", "node.extend"]).getACall()
     or
     this = localDollar().getAMemberCall("extend")
   }

@@ -84,8 +84,8 @@ class VariableAccess extends Access, @varaccess {
     exists(Assignment a | a.getLValue() = this) or
     exists(CrementOperation c | c.getOperand() = this) or
     exists(AddressOfExpr addof | addof.getOperand() = this) or
-    exists(ReferenceToExpr rte | this.getConversion() = rte) or
-    exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
+    this.getConversion() instanceof ReferenceToExpr or
+    this.getConversion() instanceof ArrayToPointerConversion
   }
 
   /**
@@ -104,8 +104,8 @@ class VariableAccess extends Access, @varaccess {
   predicate isRValue() {
     not exists(AssignExpr ae | ae.getLValue() = this) and
     not exists(AddressOfExpr addof | addof.getOperand() = this) and
-    not exists(ReferenceToExpr rte | this.getConversion() = rte) and
-    not exists(ArrayToPointerConversion atpc | this.getConversion() = atpc)
+    not this.getConversion() instanceof ReferenceToExpr and
+    not this.getConversion() instanceof ArrayToPointerConversion
   }
 
   /**
@@ -203,7 +203,7 @@ class PointerFieldAccess extends FieldAccess {
 
   PointerFieldAccess() {
     exists(PointerType t |
-      t = getQualifier().getFullyConverted().getUnspecifiedType() and
+      t = this.getQualifier().getFullyConverted().getUnspecifiedType() and
       t.getBaseType() instanceof Class
     )
   }
@@ -218,7 +218,7 @@ class PointerFieldAccess extends FieldAccess {
 class DotFieldAccess extends FieldAccess {
   override string getAPrimaryQlClass() { result = "DotFieldAccess" }
 
-  DotFieldAccess() { exists(Class c | c = getQualifier().getFullyConverted().getUnspecifiedType()) }
+  DotFieldAccess() { this.getQualifier().getFullyConverted().getUnspecifiedType() instanceof Class }
 }
 
 /**

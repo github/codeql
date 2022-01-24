@@ -130,7 +130,7 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if `r` can be modelled as `r = root * sign + bias`.
+   * Holds if `r` can be modeled as `r = root * sign + bias`.
    *
    * Only looks "one step", that is, does not follow data flow and does not recursively
    * unfold nested arithmetic expressions.
@@ -203,7 +203,7 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if `r` can be modelled as `r = root * sign + bias`.
+   * Holds if `r` can be modeled as `r = root * sign + bias`.
    */
   predicate linearDefinition(DataFlow::Node r, DataFlow::Node root, int sign, Bias bias) {
     if exists(r.getImmediatePredecessor())
@@ -229,17 +229,16 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if `r` can be modelled as `r = xroot * xsign + yroot * ysign + bias`.
+   * Holds if `r` can be modeled as `r = xroot * xsign + yroot * ysign + bias`.
    */
   predicate linearDefinitionSum(
     DataFlow::Node r, DataFlow::Node xroot, int xsign, DataFlow::Node yroot, int ysign, Bias bias
   ) {
     if exists(r.getImmediatePredecessor())
     then linearDefinitionSum(r.getImmediatePredecessor(), xroot, xsign, yroot, ysign, bias)
-    else
-      if exists(r.asExpr().getIntValue())
-      then none() // do not model constants as sums
-      else (
+    else (
+      not exists(r.asExpr().getIntValue()) and // do not model constants as sums
+      (
         exists(AddExpr add, int bias1, int bias2 | r.asExpr() = add |
           // r = r1 + r2
           linearDefinition(add.getLeftOperand().flow(), xroot, xsign, bias1) and
@@ -257,10 +256,11 @@ module RangeAnalysis {
         linearDefinitionSum(r.asExpr().(NegExpr).getOperand().flow(), xroot, -xsign, yroot, -ysign,
           -bias)
       )
+    )
   }
 
   /**
-   * Holds if the given comparison can be modelled as `A <op> B + bias` where `<op>` is the comparison operator,
+   * Holds if the given comparison can be modeled as `A <op> B + bias` where `<op>` is the comparison operator,
    * and `A` is `a * asign` and likewise `B` is `b * bsign`.
    */
   predicate linearComparison(

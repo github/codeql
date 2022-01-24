@@ -18,7 +18,14 @@ Python:
   - python/**/*
   - change-notes/**/*python*
 
+Ruby:
+  - ruby/**/*
+  - change-notes/**/*ruby*
+
 documentation:
   - "**/*.qhelp"
   - "**/*.md"
   - docs/**/*
+
+"QL-for-QL": 
+  - ql/**/*

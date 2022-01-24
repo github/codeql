@@ -40,12 +40,12 @@ class Parameter extends LocalScopeVariable, @parameter {
    */
   override string getName() {
     exists(VariableDeclarationEntry vde |
-      vde = getANamedDeclarationEntry() and result = vde.getName()
+      vde = this.getANamedDeclarationEntry() and result = vde.getName()
     |
-      vde.isDefinition() or not getANamedDeclarationEntry().isDefinition()
+      vde.isDefinition() or not this.getANamedDeclarationEntry().isDefinition()
     )
     or
-    not exists(getANamedDeclarationEntry()) and
+    not exists(this.getANamedDeclarationEntry()) and
     result = "(unnamed parameter " + this.getIndex().toString() + ")"
   }
 
@@ -58,8 +58,12 @@ class Parameter extends LocalScopeVariable, @parameter {
    */
   string getTypedName() {
     exists(string typeString, string nameString |
-      (if exists(getType().getName()) then typeString = getType().getName() else typeString = "") and
-      (if exists(getName()) then nameString = getName() else nameString = "") and
+      (
+        if exists(this.getType().getName())
+        then typeString = this.getType().getName()
+        else typeString = ""
+      ) and
+      (if exists(this.getName()) then nameString = this.getName() else nameString = "") and
       (
         if typeString != "" and nameString != ""
         then result = typeString + " " + nameString
@@ -69,7 +73,7 @@ class Parameter extends LocalScopeVariable, @parameter {
   }
 
   private VariableDeclarationEntry getANamedDeclarationEntry() {
-    result = getAnEffectiveDeclarationEntry() and result.getName() != ""
+    result = this.getAnEffectiveDeclarationEntry() and result.getName() != ""
   }
 
   /**
@@ -82,13 +86,13 @@ class Parameter extends LocalScopeVariable, @parameter {
    * own).
    */
   private VariableDeclarationEntry getAnEffectiveDeclarationEntry() {
-    if getFunction().isConstructedFrom(_)
+    if this.getFunction().isConstructedFrom(_)
     then
       exists(Function prototypeInstantiation |
-        prototypeInstantiation.getParameter(getIndex()) = result.getVariable() and
-        getFunction().isConstructedFrom(prototypeInstantiation)
+        prototypeInstantiation.getParameter(this.getIndex()) = result.getVariable() and
+        this.getFunction().isConstructedFrom(prototypeInstantiation)
       )
-    else result = getADeclarationEntry()
+    else result = this.getADeclarationEntry()
   }
 
   /**
@@ -114,7 +118,7 @@ class Parameter extends LocalScopeVariable, @parameter {
    * `getName()` is not "(unnamed parameter i)" (where `i` is the index
    * of the parameter).
    */
-  predicate isNamed() { exists(getANamedDeclarationEntry()) }
+  predicate isNamed() { exists(this.getANamedDeclarationEntry()) }
 
   /**
    * Gets the function to which this parameter belongs, if it is a function
@@ -157,9 +161,9 @@ class Parameter extends LocalScopeVariable, @parameter {
    */
   override Location getLocation() {
     exists(VariableDeclarationEntry vde |
-      vde = getAnEffectiveDeclarationEntry() and result = vde.getLocation()
+      vde = this.getAnEffectiveDeclarationEntry() and result = vde.getLocation()
     |
-      vde.isDefinition() or not getAnEffectiveDeclarationEntry().isDefinition()
+      vde.isDefinition() or not this.getAnEffectiveDeclarationEntry().isDefinition()
     )
   }
 }

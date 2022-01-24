@@ -128,3 +128,111 @@ module TS43 {
     }
   } 
 }
+
+module TS44 {
+  function foo(arg: unknown) {
+    const argIsString = typeof arg === "string";
+    if (argIsString) {
+        const upper = arg.toUpperCase();
+    }
+  }
+
+  type Shape =
+      | { kind: "circle", radius: number }
+      | { kind: "square", sideLength: number };
+
+  function side(shape: Shape): number {
+      const { kind } = shape;
+
+      if (kind === "circle") { return shape.radius;}
+      else { return shape.sideLength; }
+  }
+
+  function symbolIndex() {
+    interface Colors {
+      [sym: symbol]: number;
+      [key: string]: string;
+      [num: number]: boolean;
+    }
+    
+    let colors: Colors = {};
+    const red = colors[Symbol("red")];
+    const green = colors["green"];
+    const blue = colors[2];
+  }
+
+  function stringPatternIndex() {
+    interface Foo {
+      [key: `foo-${number}`]: number;
+    }
+    var bla : Foo = {};
+    const bar = bla[`foo-1`];
+
+    interface Data {
+      [optName: string | symbol]: boolean;
+    }
+
+    const data: Data = {};
+    const baz = data["foo"];
+  }
+
+  class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+    static {
+      Foo.#count += 3;
+    }
+    static {
+      var count = Foo.#count;
+    }
+    
+  }
+}
+
+module TS45 {
+  // A = string
+  type A = Awaited<Promise<string>>;
+
+  // B = number
+  type B = Awaited<Promise<Promise<number>>>;
+
+  // C = boolean | number
+  type C = Awaited<boolean | Promise<number>>;
+
+  export interface Success {
+    type: `${string}Success`;
+    body: string;
+  }
+
+  export interface Error {
+      type: `${string}Error`;
+      message: string;
+  }
+
+  export function handler(r: Success | Error) {
+      if (r.type === "HttpSuccess") {
+          // 'r' has type 'Success'
+          let token = r.body;
+      }
+  }
+
+  class Person {
+    #name: string;
+    constructor(name: string) {
+        this.#name = name;
+    }
+
+    equals(other: unknown) {
+        return other &&
+            typeof other === "object" &&
+            #name in other && // <- this is new!
+            this.#name === other.#name; // <- other has type Person here.
+    }
+  }
+}
+
+import * as Foo3 from "./something.json" assert { type: "json" };
+var foo = Foo3.foo;

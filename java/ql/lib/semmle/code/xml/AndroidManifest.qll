@@ -36,7 +36,7 @@ class AndroidManifestXmlElement extends XMLElement {
   /**
    * Gets the value of the `package` attribute of this `<manifest>` element.
    */
-  string getPackageAttributeValue() { result = getAttributeValue("package") }
+  string getPackageAttributeValue() { result = this.getAttributeValue("package") }
 }
 
 /**
@@ -75,10 +75,66 @@ class AndroidReceiverXmlElement extends AndroidComponentXmlElement {
 }
 
 /**
+ * An XML attribute with the `android:` prefix.
+ */
+class AndroidXmlAttribute extends XMLAttribute {
+  AndroidXmlAttribute() { this.getNamespace().getPrefix() = "android" }
+}
+
+/**
  * A `<provider>` element in an Android manifest file.
  */
 class AndroidProviderXmlElement extends AndroidComponentXmlElement {
   AndroidProviderXmlElement() { this.getName() = "provider" }
+
+  /**
+   * Holds if this provider element has explicitly set a value for either its
+   * `android:permission` attribute or its `android:readPermission` and `android:writePermission`
+   * attributes.
+   */
+  predicate requiresPermissions() {
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull()
+    or
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() and
+    this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
+  }
+
+  predicate grantsUriPermissions() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "grantUriPermissions" and
+      attr.getValue() = "true"
+    )
+  }
+}
+
+/**
+ * The attribute `android:perrmission`, `android:readPermission`, or `android:writePermission`.
+ */
+class AndroidPermissionXmlAttribute extends XMLAttribute {
+  AndroidPermissionXmlAttribute() {
+    this.getNamespace().getPrefix() = "android" and
+    this.getName() = ["permission", "readPermission", "writePermission"]
+  }
+
+  /** Holds if this is an `android:permission` attribute. */
+  predicate isFull() { this.getName() = "permission" }
+
+  /** Holds if this is an `android:readPermission` attribute. */
+  predicate isRead() { this.getName() = "readPermission" }
+
+  /** Holds if this is an `android:writePermission` attribute. */
+  predicate isWrite() { this.getName() = "writePermission" }
+}
+
+/**
+ * The `<path-permission`> element of a `<provider>` in an Android manifest file.
+ */
+class AndroidPathPermissionXmlElement extends XMLElement {
+  AndroidPathPermissionXmlElement() {
+    this.getParent() instanceof AndroidProviderXmlElement and
+    this.hasName("path-permission")
+  }
 }
 
 /**
@@ -100,7 +156,7 @@ class AndroidComponentXmlElement extends XMLElement {
    */
   string getComponentName() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
     |
@@ -112,12 +168,15 @@ class AndroidComponentXmlElement extends XMLElement {
    * Gets the resolved value of the `android:name` attribute of this component element.
    */
   string getResolvedComponentName() {
-    if getComponentName().matches(".%")
+    if this.getComponentName().matches(".%")
     then
       result =
-        getParent().(XMLElement).getParent().(AndroidManifestXmlElement).getPackageAttributeValue() +
-          getComponentName()
-    else result = getComponentName()
+        this.getParent()
+              .(XMLElement)
+              .getParent()
+              .(AndroidManifestXmlElement)
+              .getPackageAttributeValue() + this.getComponentName()
+    else result = this.getComponentName()
   }
 
   /**
@@ -125,7 +184,7 @@ class AndroidComponentXmlElement extends XMLElement {
    */
   string getExportedAttributeValue() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "exported"
     |
@@ -136,12 +195,12 @@ class AndroidComponentXmlElement extends XMLElement {
   /**
    * Holds if the `android:exported` attribute of this component element is `true`.
    */
-  predicate isExported() { getExportedAttributeValue() = "true" }
+  predicate isExported() { this.getExportedAttributeValue() = "true" }
 
   /**
    * Holds if the `android:exported` attribute of this component element is explicitly set to `false`.
    */
-  predicate isNotExported() { getExportedAttributeValue() = "false" }
+  predicate isNotExported() { this.getExportedAttributeValue() = "false" }
 }
 
 /**
@@ -171,7 +230,7 @@ class AndroidActionXmlElement extends XMLElement {
    */
   string getActionName() {
     exists(XMLAttribute attr |
-      attr = getAnAttribute() and
+      attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
     |

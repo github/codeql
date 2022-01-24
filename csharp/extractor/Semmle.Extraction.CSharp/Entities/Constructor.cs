@@ -113,11 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.expr_call(init, target);
 
-            var child = 0;
-            foreach (var arg in initializer.ArgumentList.Arguments)
-            {
-                Expression.Create(Context, arg.Expression, init, child++);
-            }
+            init.PopulateArguments(trapFile, initializer.ArgumentList, 0);
         }
 
         private ConstructorDeclarationSyntax? Syntax

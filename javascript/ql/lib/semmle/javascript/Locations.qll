@@ -6,7 +6,7 @@ import javascript
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
  *
- * For more information about locations see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 class Location extends @location {
   /** Gets the file for this location. */
@@ -25,7 +25,7 @@ class Location extends @location {
   int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
-  int getNumLines() { result = getEndLine() - getStartLine() + 1 }
+  int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
 
   /** Holds if this location starts before location `that`. */
   pragma[inline]
@@ -70,7 +70,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -85,7 +85,7 @@ class Location extends @location {
 /** A program element with a location. */
 class Locatable extends @locatable {
   /** Gets the file this program element comes from. */
-  File getFile() { result = getLocation().getFile() }
+  File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
   Location getLocation() {
@@ -124,7 +124,7 @@ class Locatable extends @locatable {
   }
 
   /** Gets the number of lines covered by this element. */
-  int getNumLines() { result = getLocation().getNumLines() }
+  int getNumLines() { result = this.getLocation().getNumLines() }
 
   /** Gets a textual representation of this element. */
   string toString() {
@@ -135,7 +135,7 @@ class Locatable extends @locatable {
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /**
    * Gets the primary QL class for the Locatable.

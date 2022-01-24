@@ -18,7 +18,7 @@ class Function extends Function_, Scope, AstNode {
   override Scope getScope() { result = this.getEnclosingScope() }
 
   /** Whether this function is declared in a class */
-  predicate isMethod() { exists(Class cls | this.getEnclosingScope() = cls) }
+  predicate isMethod() { this.getEnclosingScope() instanceof Class }
 
   /** Whether this is a special method, that is does its name have the form `__xxx__` (except `__init__`) */
   predicate isSpecialMethod() {
@@ -58,6 +58,7 @@ class Function extends Function_, Scope, AstNode {
   /** Gets the name of the nth argument (for simple arguments) */
   string getArgName(int index) { result = this.getArg(index).(Name).getId() }
 
+  /** Gets the parameter of this function with the name `name`. */
   Parameter getArgByName(string name) {
     (
       result = this.getAnArg()

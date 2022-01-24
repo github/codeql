@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import semmle.code.java.security.UrlRedirect
-import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:frameworks:apache-http" }
@@ -23,17 +23,8 @@ class Conf extends TaintTracking::Configuration {
   }
 }
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+class HasFlowTest extends InlineFlowTest {
+  override DataFlow::Configuration getValueFlowConfig() { none() }
 
-  override string getARelevantTag() { result = "hasTaintFlow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, Conf conf | conf.hasFlow(src, sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      value = ""
-    )
-  }
+  override DataFlow::Configuration getTaintFlowConfig() { result = any(Conf c) }
 }

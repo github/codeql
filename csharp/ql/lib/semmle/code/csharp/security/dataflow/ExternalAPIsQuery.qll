@@ -54,7 +54,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
     // Defined outside the source archive
     not call.getTarget().fromSource() and
     // Not a call to a method which is overridden in source
-    not exists(Virtualizable m |
+    not exists(Overridable m |
       m.overridesOrImplementsOrEquals(call.getTarget().getUnboundDeclaration()) and
       m.fromSource()
     ) and
@@ -69,7 +69,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the callable being called. */
-  string getCallableDescription() { result = getCallable().getQualifiedName() }
+  string getCallableDescription() { result = this.getCallable().getQualifiedName() }
 }
 
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
@@ -108,7 +108,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */

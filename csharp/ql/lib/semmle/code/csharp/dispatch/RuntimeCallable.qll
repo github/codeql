@@ -15,7 +15,10 @@ private import dotnet
 class RuntimeCallable extends DotNet::Callable {
   RuntimeCallable() {
     not this.(Modifiable).isAbstract() and
-    not getDeclaringType() instanceof Interface
+    (
+      not getDeclaringType() instanceof Interface or
+      this.(Virtualizable).isVirtual()
+    )
   }
 }
 

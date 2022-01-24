@@ -55,7 +55,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = getReturn().getAnImmediateUse() }
+    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -67,21 +67,21 @@ module API {
      */
     bindingset[m]
     bindingset[result]
-    Node getMember(string m) { result = getASuccessor(Label::member(m)) }
+    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member is
      * not known statically.
      */
-    Node getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
+    Node getUnknownMember() { result = this.getASuccessor(Label::unknownMember()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
     Node getAMember() {
-      result = getASuccessor(Label::member(_)) or
-      result = getUnknownMember()
+      result = this.getASuccessor(Label::member(_)) or
+      result = this.getUnknownMember()
     }
 
     /**
@@ -90,23 +90,25 @@ module API {
      * This predicate may have multiple results when there are multiple invocations of this API component.
      * Consider using `getACall()` if there is a need to distinguish between individual calls.
      */
-    Node getReturn() { result = getASuccessor(Label::return()) }
+    Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
      * Gets a node representing a subclass of the class represented by this node.
      */
-    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+    Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
      * Gets a node representing the result from awaiting this node.
      */
-    Node getAwaited() { result = getASuccessor(Label::await()) }
+    Node getAwaited() { result = this.getASuccessor(Label::await()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
+    string getPath() {
+      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
+    }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -124,13 +126,13 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one.
      */
-    Node getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -142,16 +144,16 @@ module API {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
-      not exists(getInducingNode()) and
+      not exists(this.getInducingNode()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -202,7 +204,7 @@ module API {
         or
         this = Impl::MkModuleImport(_) and type = "ModuleImport "
       |
-        result = type + getPath()
+        result = type + this.getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
       )
@@ -302,6 +304,8 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
+    private import semmle.python.internal.Awaited
+
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -354,95 +358,27 @@ module API {
       )
     }
 
-    /** Gets the name of a known built-in. */
-    private string getBuiltInName() {
-      // These lists were created by inspecting the `builtins` and `__builtin__` modules in
-      // Python 3 and 2 respectively, using the `dir` built-in.
-      // Built-in functions and exceptions shared between Python 2 and 3
-      result in [
-          "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
-          "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "filter",
-          "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex",
-          "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map",
-          "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print",
-          "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
-          "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
-          // Exceptions
-          "ArithmeticError", "AssertionError", "AttributeError", "BaseException", "BufferError",
-          "BytesWarning", "DeprecationWarning", "EOFError", "EnvironmentError", "Exception",
-          "FloatingPointError", "FutureWarning", "GeneratorExit", "IOError", "ImportError",
-          "ImportWarning", "IndentationError", "IndexError", "KeyError", "KeyboardInterrupt",
-          "LookupError", "MemoryError", "NameError", "NotImplemented", "NotImplementedError",
-          "OSError", "OverflowError", "PendingDeprecationWarning", "ReferenceError", "RuntimeError",
-          "RuntimeWarning", "StandardError", "StopIteration", "SyntaxError", "SyntaxWarning",
-          "SystemError", "SystemExit", "TabError", "TypeError", "UnboundLocalError",
-          "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError", "UnicodeTranslateError",
-          "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError",
-          // Added for compatibility
-          "exec"
-        ]
-      or
-      // Built-in constants shared between Python 2 and 3
-      result in ["False", "True", "None", "NotImplemented", "Ellipsis", "__debug__"]
-      or
-      // Python 3 only
-      result in [
-          "ascii", "breakpoint", "bytes", "exec",
-          // Exceptions
-          "BlockingIOError", "BrokenPipeError", "ChildProcessError", "ConnectionAbortedError",
-          "ConnectionError", "ConnectionRefusedError", "ConnectionResetError", "FileExistsError",
-          "FileNotFoundError", "InterruptedError", "IsADirectoryError", "ModuleNotFoundError",
-          "NotADirectoryError", "PermissionError", "ProcessLookupError", "RecursionError",
-          "ResourceWarning", "StopAsyncIteration", "TimeoutError"
-        ]
-      or
-      // Python 2 only
-      result in [
-          "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
-          "unichr", "unicode", "xrange"
-        ]
-    }
+    private import semmle.python.dataflow.new.internal.Builtins
+    private import semmle.python.dataflow.new.internal.ImportStar
 
     /**
-     * Gets a data flow node that is likely to refer to a built-in with the name `name`.
+     * Gets the API graph node for all modules imported with `from ... import *` inside the scope `s`.
      *
-     * Currently this is an over-approximation, and may not account for things like overwriting a
-     * built-in with a different value.
+     * For example, given
+     *
+     * ```python
+     * from foo.bar import *
+     * ```
+     *
+     * this would be the API graph node with the path
+     *
+     * `moduleImport("foo").getMember("bar")`
      */
-    private DataFlow::Node likely_builtin(string name) {
-      exists(Module m |
-        result.asCfgNode() =
-          any(NameNode n |
-            possible_builtin_accessed_in_module(n, name, m) and
-            not possible_builtin_defined_in_module(name, m)
-          )
+    private TApiNode potential_import_star_base(Scope s) {
+      exists(DataFlow::Node n |
+        n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
+        use(result, n)
       )
-    }
-
-    /**
-     * Holds if a global variable called `name` (which is also the name of a built-in) is assigned
-     * a value in the module `m`.
-     */
-    private predicate possible_builtin_defined_in_module(string name, Module m) {
-      exists(NameNode n |
-        not exists(LocalVariable v | n.defines(v)) and
-        n.isStore() and
-        name = n.getId() and
-        name = getBuiltInName() and
-        m = n.getEnclosingModule()
-      )
-    }
-
-    /**
-     * Holds if `n` is an access of a global variable called `name` (which is also the name of a
-     * built-in) inside the module `m`.
-     */
-    private predicate possible_builtin_accessed_in_module(NameNode n, string name, Module m) {
-      n.isGlobal() and
-      n.isLoad() and
-      name = n.getId() and
-      name = getBuiltInName() and
-      m = n.getEnclosingModule()
     }
 
     /**
@@ -476,17 +412,25 @@ module API {
         )
         or
         // awaiting
-        exists(Await await, DataFlow::Node awaitedValue |
+        exists(DataFlow::Node awaitedValue |
           lbl = Label::await() and
-          ref.asExpr() = await and
-          await.getValue() = awaitedValue.asExpr() and
+          ref = awaited(awaitedValue) and
           pred.flowsTo(awaitedValue)
         )
       )
       or
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
-      lbl = Label::member(any(string name | ref = likely_builtin(name)))
+      lbl = Label::member(any(string name | ref = Builtins::likelyBuiltin(name)))
+      or
+      // Unknown variables that may belong to a module imported with `import *`
+      exists(Scope s |
+        base = potential_import_star_base(s) and
+        lbl =
+          Label::member(any(string name |
+              ImportStar::namePossiblyDefinedInImportStar(ref.asCfgNode(), name, s)
+            ))
+      )
     }
 
     /**

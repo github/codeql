@@ -1086,7 +1086,7 @@ module Internal {
      */
     private Callable customNullCheck(Parameter p, BooleanValue retVal, boolean isNull) {
       result.getReturnType() instanceof BoolType and
-      not result.(Virtualizable).isOverridableOrImplementable() and
+      not result.(Overridable).isOverridableOrImplementable() and
       p.getCallable() = result and
       not p.isParams() and
       p.getType() = any(Type t | t instanceof RefType or t instanceof NullableType) and
@@ -1740,7 +1740,7 @@ module Internal {
       e = this.getAChildExpr()
       or
       exists(Expr mid |
-        descendant(mid) and
+        this.descendant(mid) and
         not interestingDescendantCandidate(mid) and
         e = mid.getAChildExpr()
       )
@@ -1748,7 +1748,7 @@ module Internal {
 
     /** Holds if `e` is an interesting descendant of this descendant. */
     predicate interestingDescendant(Expr e) {
-      descendant(e) and
+      this.descendant(e) and
       interestingDescendantCandidate(e)
     }
   }
@@ -1797,7 +1797,7 @@ module Internal {
 
     override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
       exists(BasicBlock bb, Declaration d |
-        candidateAux(x, d, bb) and
+        this.candidateAux(x, d, bb) and
         y =
           any(AccessOrCallExpr e |
             e.getAControlFlowNode().getBasicBlock() = bb and

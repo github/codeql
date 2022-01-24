@@ -7,6 +7,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.security.dataflow.flowsources.Local
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.security.Sanitizers
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /**
  * A source specific to SQL injection vulnerabilities.
@@ -49,6 +50,11 @@ class LocalSource extends Source {
 /** An SQL expression passed to an API call that executes SQL. */
 class SqlInjectionExprSink extends Sink {
   SqlInjectionExprSink() { exists(SqlExpr s | this.getExpr() = s.getSql()) }
+}
+
+/** SQL sinks defined through CSV models. */
+private class ExternalSqlInjectionExprSink extends Sink {
+  ExternalSqlInjectionExprSink() { sinkNode(this, "sql") }
 }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }

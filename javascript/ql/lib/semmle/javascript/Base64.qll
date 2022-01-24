@@ -6,16 +6,12 @@ import javascript
 
 module Base64 {
   /** A call to a base64 encoder. */
-  class Encode extends DataFlow::Node {
-    Encode::Range encode;
-
-    Encode() { this = encode }
-
+  class Encode extends DataFlow::Node instanceof Encode::Range {
     /** Gets the input passed to the encoder. */
-    DataFlow::Node getInput() { result = encode.getInput() }
+    DataFlow::Node getInput() { result = super.getInput() }
 
     /** Gets the base64-encoded output of the encoder. */
-    DataFlow::Node getOutput() { result = encode.getOutput() }
+    DataFlow::Node getOutput() { result = super.getOutput() }
   }
 
   module Encode {
@@ -34,16 +30,12 @@ module Base64 {
   }
 
   /** A call to a base64 decoder. */
-  class Decode extends DataFlow::Node {
-    Decode::Range encode;
-
-    Decode() { this = encode }
-
+  class Decode extends DataFlow::Node instanceof Decode::Range {
     /** Gets the base64-encoded input passed to the decoder. */
-    DataFlow::Node getInput() { result = encode.getInput() }
+    DataFlow::Node getInput() { result = super.getInput() }
 
     /** Gets the output of the decoder. */
-    DataFlow::Node getOutput() { result = encode.getOutput() }
+    DataFlow::Node getOutput() { result = super.getOutput() }
   }
 
   module Decode {

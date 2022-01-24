@@ -41,14 +41,15 @@ class Git:
         return (parent_sha, parent_date)
 
 
-def get_packages(lang, query, search_path):
+def get_packages(config, search_path):
     try:
-        db = "empty_" + lang
-        ql_output = "output-" + lang + ".csv"
+        db = "empty_" + config.lang
+        ql_output = "output-" + config.lang + ".csv"
         if os.path.isdir(db):
             shutil.rmtree(db)
-        utils.create_empty_database(lang, ".java", db)
-        utils.run_codeql_query(query, db, ql_output, search_path)
+        utils.create_empty_database(
+            config.lang, config.ext, db, config.dbscheme)
+        utils.run_codeql_query(config.ql_path, db, ql_output, search_path)
 
         return pack.PackageCollection(ql_output)
     except:
@@ -71,9 +72,9 @@ else:
 
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql"),
+        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql", ["java/ql/lib/config/semmlecode.dbscheme", "java/ql/src/config/semmlecode.dbscheme"]),
     utils.LanguageConfig(
-        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql")
+        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql", ["csharp/ql/lib/semmlecode.csharp.dbscheme", "csharp/ql/src/semmlecode.csharp.dbscheme"])
 ]
 
 output_prefix = "framework-coverage-timeseries-"
@@ -102,7 +103,8 @@ for lang in settings.languages:
             "file_total": file_total,
             "file_packages": file_packages,
             "csvwriter_total": csvwriter_total,
-            "csvwriter_packages": csvwriter_packages
+            "csvwriter_packages": csvwriter_packages,
+            "last_row": (None, None, None)
         }
 
 try:
@@ -141,15 +143,20 @@ try:
                 frameworks: fr.FrameworkCollection = language_utils[lang]["frameworks"]
                 csvwriter_total = language_utils[lang]["csvwriter_total"]
                 csvwriter_packages = language_utils[lang]["csvwriter_packages"]
+                last_row = language_utils[lang]["last_row"]
 
-                packages = get_packages(lang, config.ql_path, ".")
+                packages = get_packages(config, ".")
 
-                csvwriter_total.writerow([
-                    current_sha,
-                    current_date,
-                    packages.get_part_count("source"),
-                    packages.get_part_count("sink"),
-                    packages.get_part_count("summary")])
+                new_row = (packages.get_part_count("source"),
+                           packages.get_part_count("sink"),
+                           packages.get_part_count("summary"))
+
+                if last_row != new_row:
+                    csvwriter_total.writerow([
+                        current_sha,
+                        current_date,
+                        new_row[0], new_row[1], new_row[2]])
+                    language_utils[lang]["last_row"] = new_row
 
                 matched_packages = set()
 
@@ -158,7 +165,7 @@ try:
                     framework: fr.Framework = framework
 
                     row = [current_sha, current_date,
-                           framework.name, framework.package_pattern]
+                           framework.name, ", ".join(sorted(framework.package_pattern.split(" ")))]
 
                     sources = 0
                     sinks = 0

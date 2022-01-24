@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.SqlAlchemy
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -40,6 +41,13 @@ module SqlInjection {
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+
+  /**
+   * A SQL statement of a SQL construction, considered as a flow sink.
+   */
+  class SqlConstructionAsSink extends Sink {
+    SqlConstructionAsSink() { this = any(SqlConstruction c).getSql() }
+  }
 
   /**
    * A SQL statement of a SQL execution, considered as a flow sink.

@@ -11,6 +11,7 @@ private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -42,11 +43,28 @@ private module Cached {
    */
   cached
   predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    DataFlow::localFlowStep(src, sink) or
-    localAdditionalTaintStep(src, sink) or
+    DataFlow::localFlowStep(src, sink)
+    or
+    localAdditionalTaintStep(src, sink)
+    or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    or
+    // Treat container flow as taint for the local taint flow relation
+    exists(DataFlow::Content c | containerContent(c) |
+      readStep(src, c, sink) or
+      storeStep(src, c, sink) or
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+    )
+  }
+
+  private predicate containerContent(DataFlow::Content c) {
+    c instanceof DataFlow::ArrayContent or
+    c instanceof DataFlow::CollectionContent or
+    c instanceof DataFlow::MapKeyContent or
+    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -65,12 +83,12 @@ private module Cached {
       readStep(src, f, sink) and
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
-      not sink.getTypeBound() instanceof NumberType
-    |
-      f instanceof DataFlow::ArrayContent or
-      f instanceof DataFlow::CollectionContent or
-      f instanceof DataFlow::MapKeyContent or
-      f instanceof DataFlow::MapValueContent
+      not sink.getTypeBound() instanceof NumberType and
+      (
+        containerContent(f)
+        or
+        f instanceof TaintInheritingContent
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
@@ -83,6 +101,7 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     localAdditionalTaintStep(src, sink) or
+    entrypointFieldStep(src, sink) or
     any(AdditionalTaintStep a).step(src, sink)
   }
 
@@ -97,6 +116,12 @@ private module Cached {
     node.asExpr() instanceof ValidatedVariableAccess
   }
 }
+
+/**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 import Cached
 
@@ -146,8 +171,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   argToMethodStep(src, sink)
   or
   comparisonStep(src, sink)
-  or
-  stringBuilderStep(src, sink)
   or
   serializationStep(src, sink)
   or
@@ -254,7 +277,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "toString"
   )
   or
-  m.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
+  m.getDeclaringType() instanceof TypeObjectInputStream and
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and
@@ -270,11 +293,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
 
 private class StringReplaceMethod extends TaintPreservingCallable {
   StringReplaceMethod() {
-    getDeclaringType() instanceof TypeString and
+    this.getDeclaringType() instanceof TypeString and
     (
-      hasName("replace") or
-      hasName("replaceAll") or
-      hasName("replaceFirst")
+      this.hasName("replace") or
+      this.hasName("replaceAll") or
+      this.hasName("replaceFirst")
     )
   }
 
@@ -285,8 +308,8 @@ private predicate unsafeEscape(MethodAccess ma) {
   // Removing `<script>` tags using a string-replace method is
   // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
   exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getRepresentedString() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getRepresentedString() = ""
+    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
+    ma.getArgument(1).(StringLiteral).getValue() = ""
   )
 }
 
@@ -361,13 +384,6 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * `arg` is the index of the argument.
  */
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  exists(Method write |
-    method.overrides*(write) and
-    write.hasName("write") and
-    arg = 0 and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
-  )
-  or
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
 }
 
@@ -389,15 +405,6 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
     )
   |
     other.isCompileTimeConstant() or other instanceof NullLiteral
-  )
-}
-
-/** Flow through a `StringBuilder`. */
-private predicate stringBuilderStep(Expr tracked, Expr sink) {
-  exists(StringBuilderVar sbvar, MethodAccess input, int arg |
-    input = sbvar.getAnInput(arg) and
-    tracked = input.getArgument(arg) and
-    sink = sbvar.getToStringCall()
   )
 }
 
@@ -437,7 +444,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
   }
 
   MethodAccess getAWriteObjectMethodAccess() {
-    result.getQualifier() = getAnAccess() and
+    result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
 }
@@ -482,7 +489,7 @@ private class FormatterVar extends LocalVariableDecl {
   }
 
   MethodAccess getAFormatMethodAccess() {
-    result.getQualifier() = getAnAccess() and
+    result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("format")
   }
 }
@@ -507,13 +514,13 @@ private class FormatterCallable extends TaintPreservingCallable {
   }
 
   override predicate returnsTaintFrom(int arg) {
-    if this instanceof Constructor then arg = 0 else arg = [-1 .. getNumberOfParameters()]
+    if this instanceof Constructor then arg = 0 else arg = [-1 .. this.getNumberOfParameters()]
   }
 
   override predicate transfersTaint(int src, int sink) {
     this.hasName("format") and
     sink = -1 and
-    src = [0 .. getNumberOfParameters()]
+    src = [0 .. this.getNumberOfParameters()]
   }
 }
 
@@ -526,13 +533,13 @@ module StringBuilderVarModule {
    * build up a query using string concatenation.
    */
   class StringBuilderVar extends LocalVariableDecl {
-    StringBuilderVar() { getType() instanceof StringBuildingType }
+    StringBuilderVar() { this.getType() instanceof StringBuildingType }
 
     /**
      * Gets a call that adds something to this string builder, from the argument at the given index.
      */
     MethodAccess getAnInput(int arg) {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       (
         result.getMethod().getName() = "append" and arg = 0
         or
@@ -546,20 +553,20 @@ module StringBuilderVarModule {
      * Gets a call that appends something to this string builder.
      */
     MethodAccess getAnAppend() {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "append"
     }
 
     MethodAccess getNextAppend(MethodAccess append) {
-      result = getAnAppend() and
-      append = getAnAppend() and
+      result = this.getAnAppend() and
+      append = this.getAnAppend() and
       (
         result.getQualifier() = append
         or
         not exists(MethodAccess chainAccess | chainAccess.getQualifier() = append) and
         exists(RValue sbva1, RValue sbva2 |
           adjacentUseUse(sbva1, sbva2) and
-          append.getQualifier() = getAChainedReference(sbva1) and
+          append.getQualifier() = this.getAChainedReference(sbva1) and
           result.getQualifier() = sbva2
         )
       )
@@ -569,7 +576,7 @@ module StringBuilderVarModule {
      * Gets a call that converts this string builder to a string.
      */
     MethodAccess getToStringCall() {
-      result.getQualifier() = getAChainedReference() and
+      result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "toString"
     }
 
@@ -584,11 +591,27 @@ module StringBuilderVarModule {
     /**
      * Gets an expression that refers to this `StringBuilder`, possibly after some chained calls.
      */
-    Expr getAChainedReference() { result = getAChainedReference(_) }
+    Expr getAChainedReference() { result = this.getAChainedReference(_) }
   }
 }
 
 private MethodAccess callReturningSameType(Expr ref) {
   ref = result.getQualifier() and
   result.getMethod().getReturnType() = ref.getType()
+}
+
+private SrcRefType entrypointType() {
+  exists(RemoteFlowSource s, RefType t |
+    s instanceof DataFlow::ExplicitParameterNode and
+    t = pragma[only_bind_out](s).getType() and
+    not t instanceof TypeObject and
+    result = t.getASubtype*().getSourceDeclaration()
+  )
+  or
+  result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+}
+
+private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
+  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
+  src.getType().(RefType).getSourceDeclaration() = entrypointType()
 }

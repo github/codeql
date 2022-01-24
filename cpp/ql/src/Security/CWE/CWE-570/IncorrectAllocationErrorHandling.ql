@@ -4,10 +4,13 @@
  * @kind problem
  * @id cpp/incorrect-allocation-error-handling
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @tags correctness
  *       security
  *       external/cwe/cwe-570
+ *       external/cwe/cwe-252
+ *       external/cwe/cwe-755
  */
 
 import cpp

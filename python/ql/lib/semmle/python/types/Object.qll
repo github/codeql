@@ -69,7 +69,7 @@ class Object extends @py_object {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -130,7 +130,7 @@ class Object extends @py_object {
    * class S, both attributes having the same name, and S is a super class of C.
    */
   predicate overrides(Object o) {
-    exists(string name | declaringClass(name).getASuperType() = o.declaringClass(name))
+    exists(string name | this.declaringClass(name).getASuperType() = o.declaringClass(name))
   }
 
   private boolean booleanFromValue() {
@@ -148,8 +148,8 @@ class Object extends @py_object {
   }
 
   final predicate maybe() {
-    booleanFromValue() = true and
-    booleanFromValue() = false
+    this.booleanFromValue() = true and
+    this.booleanFromValue() = false
   }
 
   predicate notClass() { any() }

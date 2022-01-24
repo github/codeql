@@ -165,7 +165,7 @@ methods.cs:
 #   70|             -1: [TypeAccess] access to type Console
 #   70|               0: [TypeMention] Console
 #   70|             0: [StringLiteral] "F(double)"
-#   73|     9: [Method] F
+#   73|     9: [Method] F<>
 #   73|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   73|         0: [TypeParameter] T
@@ -203,7 +203,7 @@ methods.cs:
 #   87|           0: [MethodCall] call to method F
 #   87|             0: [DoubleLiteral] 1
 #   88|         3: [ExprStmt] ...;
-#   88|           0: [MethodCall] call to method F
+#   88|           0: [MethodCall] call to method F<String>
 #   88|             0: [StringLiteral] "abc"
 #   89|         4: [ExprStmt] ...;
 #   89|           0: [MethodCall] call to method F
@@ -218,7 +218,7 @@ methods.cs:
 #   90|                 0: [TypeMention] object
 #   90|               1: [IntLiteral] 1
 #   91|         6: [ExprStmt] ...;
-#   91|           0: [MethodCall] call to method F
+#   91|           0: [MethodCall] call to method F<Int32>
 #   91|             0: [IntLiteral] 1
 #   92|         7: [ExprStmt] ...;
 #   92|           0: [MethodCall] call to method F
@@ -244,7 +244,7 @@ methods.cs:
 #  105|         0: [Parameter] s
 #  105|           -1: [TypeMention] string
 #  105|         1: [Parameter] f
-#  105|           -1: [TypeMention] Func<String, Boolean>
+#  105|           -1: [TypeMention] Func<string, bool>
 #  105|             1: [TypeMention] string
 #  105|             2: [TypeMention] bool
 #  106|       4: [BlockStmt] {...}
@@ -252,7 +252,7 @@ methods.cs:
 #  107|           0: [DelegateCall] delegate call
 #  107|             -1: [ParameterAccess] access to parameter f
 #  107|             0: [ParameterAccess] access to parameter s
-#  110|     6: [ExtensionMethod] Slice
+#  110|     6: [ExtensionMethod] Slice<>
 #  110|       -1: [TypeMention] T[]
 #  110|         1: [TypeMention] T
 #-----|       1: (Type parameters)
@@ -326,7 +326,7 @@ methods.cs:
 #  128|         1: [ForeachStmt] foreach (... ... in ...) ...
 #  128|           0: [LocalVariableDeclExpr] String s
 #  128|             0: [TypeMention] string
-#  128|           1: [MethodCall] call to method Slice
+#  128|           1: [MethodCall] call to method Slice<String>
 #  128|             -1: [LocalVariableAccess] access to local variable strings
 #  128|             0: [IntLiteral] 1
 #  128|             1: [IntLiteral] 2
@@ -444,7 +444,7 @@ methods.cs:
 #  171|           0: [AddExpr] ... + ...
 #  171|             0: [ParameterAccess] access to parameter left
 #  171|             1: [ParameterAccess] access to parameter right
-#  174|     5: [ExtensionMethod] SkipTwo
+#  174|     5: [ExtensionMethod] SkipTwo<>
 #  174|       -1: [TypeMention] IEnumerable<T>
 #  174|         1: [TypeMention] T
 #-----|       1: (Type parameters)
@@ -460,18 +460,18 @@ methods.cs:
 #  176|         0: [ReturnStmt] return ...;
 #  176|           0: [ParameterAccess] access to parameter list
 #  179|     7: [ExtensionMethod] SkipTwoInt
-#  179|       -1: [TypeMention] IEnumerable<Int32>
+#  179|       -1: [TypeMention] IEnumerable<int>
 #  179|         1: [TypeMention] int
 #-----|       2: (Parameters)
 #  179|         0: [Parameter] list
-#  179|           -1: [TypeMention] IEnumerable<Int32>
+#  179|           -1: [TypeMention] IEnumerable<int>
 #  179|             1: [TypeMention] int
 #  179|         1: [Parameter] i
 #  179|           -1: [TypeMention] int
 #  179|           1: [IntLiteral] 1
 #  180|       4: [BlockStmt] {...}
 #  181|         0: [ReturnStmt] return ...;
-#  181|           0: [MethodCall] call to method SkipTwo
+#  181|           0: [MethodCall] call to method SkipTwo<Int32>
 #  181|             -1: [ParameterAccess] access to parameter list
 #  181|             0: [ParameterAccess] access to parameter i
 #  185|   9: [Class] TestCollidingMethods<>
@@ -498,10 +498,10 @@ methods.cs:
 #  191|       4: [BlockStmt] {...}
 #  192|         0: [LocalVariableDeclStmt] ... ...;
 #  192|           0: [LocalVariableDeclAndInitExpr] TestCollidingMethods<Int32> x = ...
-#  192|             -1: [TypeMention] TestCollidingMethods<Int32>
+#  192|             -1: [TypeMention] TestCollidingMethods<int>
 #  192|             0: [LocalVariableAccess] access to local variable x
 #  192|             1: [ObjectCreation] object creation of type TestCollidingMethods<Int32>
-#  192|               0: [TypeMention] TestCollidingMethods<Int32>
+#  192|               0: [TypeMention] TestCollidingMethods<int>
 #  192|                 1: [TypeMention] int
 #  193|         1: [ExprStmt] ...;
 #  193|           0: [MethodCall] call to method M
@@ -510,10 +510,10 @@ methods.cs:
 #  193|             1: [IntLiteral] 1
 #  195|         2: [LocalVariableDeclStmt] ... ...;
 #  195|           0: [LocalVariableDeclAndInitExpr] TestCollidingMethods<Double> y = ...
-#  195|             -1: [TypeMention] TestCollidingMethods<Double>
+#  195|             -1: [TypeMention] TestCollidingMethods<double>
 #  195|             0: [LocalVariableAccess] access to local variable y
 #  195|             1: [ObjectCreation] object creation of type TestCollidingMethods<Double>
-#  195|               0: [TypeMention] TestCollidingMethods<Double>
+#  195|               0: [TypeMention] TestCollidingMethods<double>
 #  195|                 1: [TypeMention] double
 #  196|         3: [ExprStmt] ...;
 #  196|           0: [MethodCall] call to method M
@@ -542,7 +542,7 @@ methods.cs:
 #  205|               0: [LocalVariableAccess] access to local variable x
 #  205|               1: [ObjectCreation] object creation of type Nested
 #  205|                 -1: [TypeMention] Nested
-#  205|                   1: [TypeMention] TestCollidingMethods<Int32>
+#  205|                   1: [TypeMention] TestCollidingMethods<int>
 #  205|                     1: [TypeMention] int
 #  205|                 0: [IntLiteral] 1
 #  206|           1: [LocalVariableDeclStmt] ... ...;
@@ -551,7 +551,7 @@ methods.cs:
 #  206|               0: [LocalVariableAccess] access to local variable y
 #  206|               1: [ObjectCreation] object creation of type Nested
 #  206|                 -1: [TypeMention] Nested
-#  206|                   1: [TypeMention] TestCollidingMethods<Double>
+#  206|                   1: [TypeMention] TestCollidingMethods<double>
 #  206|                     1: [TypeMention] double
 #  206|                 0: [DoubleLiteral] 1
 #  207|           2: [LocalVariableDeclStmt] ... ...;
@@ -560,6 +560,6 @@ methods.cs:
 #  207|               0: [LocalVariableAccess] access to local variable z
 #  207|               1: [ObjectCreation] object creation of type Nested
 #  207|                 -1: [TypeMention] Nested
-#  207|                   1: [TypeMention] TestCollidingMethods<Double>
+#  207|                   1: [TypeMention] TestCollidingMethods<double>
 #  207|                     1: [TypeMention] double
 #  207|                 0: [IntLiteral] 1

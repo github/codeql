@@ -24,7 +24,7 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class GatewayIPAddressInformationCollection : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.GatewayIPAddressInformation>, System.Collections.Generic.ICollection<System.Net.NetworkInformation.GatewayIPAddressInformation>
+            public class GatewayIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.GatewayIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.GatewayIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.GatewayIPAddressInformation address) => throw null;
                 public virtual void Clear() => throw null;
@@ -49,7 +49,7 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.IPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class IPAddressInformationCollection : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.IPAddressInformation>, System.Collections.Generic.ICollection<System.Net.NetworkInformation.IPAddressInformation>
+            public class IPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.IPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.IPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.IPAddressInformation address) => throw null;
                 public virtual void Clear() => throw null;
@@ -277,7 +277,7 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.MulticastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class MulticastIPAddressInformationCollection : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.MulticastIPAddressInformation>, System.Collections.Generic.ICollection<System.Net.NetworkInformation.MulticastIPAddressInformation>
+            public class MulticastIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.MulticastIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.MulticastIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.MulticastIPAddressInformation address) => throw null;
                 public virtual void Clear() => throw null;
@@ -327,9 +327,9 @@ namespace System
             public class NetworkInformationException : System.ComponentModel.Win32Exception
             {
                 public override int ErrorCode { get => throw null; }
-                public NetworkInformationException(int errorCode) => throw null;
                 public NetworkInformationException() => throw null;
                 protected NetworkInformationException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+                public NetworkInformationException(int errorCode) => throw null;
             }
 
             // Generated from `System.Net.NetworkInformation.NetworkInterface` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -414,12 +414,12 @@ namespace System
                 public System.Byte[] GetAddressBytes() => throw null;
                 public override int GetHashCode() => throw null;
                 public static System.Net.NetworkInformation.PhysicalAddress None;
-                public static System.Net.NetworkInformation.PhysicalAddress Parse(string address) => throw null;
                 public static System.Net.NetworkInformation.PhysicalAddress Parse(System.ReadOnlySpan<System.Char> address) => throw null;
+                public static System.Net.NetworkInformation.PhysicalAddress Parse(string address) => throw null;
                 public PhysicalAddress(System.Byte[] address) => throw null;
                 public override string ToString() => throw null;
-                public static bool TryParse(string address, out System.Net.NetworkInformation.PhysicalAddress value) => throw null;
                 public static bool TryParse(System.ReadOnlySpan<System.Char> address, out System.Net.NetworkInformation.PhysicalAddress value) => throw null;
+                public static bool TryParse(string address, out System.Net.NetworkInformation.PhysicalAddress value) => throw null;
             }
 
             // Generated from `System.Net.NetworkInformation.PrefixOrigin` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -529,7 +529,7 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.UnicastIPAddressInformationCollection` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class UnicastIPAddressInformationCollection : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.UnicastIPAddressInformation>, System.Collections.Generic.ICollection<System.Net.NetworkInformation.UnicastIPAddressInformation>
+            public class UnicastIPAddressInformationCollection : System.Collections.Generic.ICollection<System.Net.NetworkInformation.UnicastIPAddressInformation>, System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.UnicastIPAddressInformation>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.NetworkInformation.UnicastIPAddressInformation address) => throw null;
                 public virtual void Clear() => throw null;

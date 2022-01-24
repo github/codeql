@@ -13,16 +13,15 @@ class Modifier extends Element, @modifier {
   predicate hasName(string name) { name = this.getName() }
 
   override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "Modifier" }
 }
 
 /**
  * An access modifier: `public`, `private`, `internal` or `protected`.
  */
 class AccessModifier extends Modifier {
-  AccessModifier() {
-    hasName("public") or
-    hasName("private") or
-    hasName("internal") or
-    hasName("protected")
-  }
+  AccessModifier() { this.hasName(["public", "private", "internal", "protected"]) }
+
+  override string getAPrimaryQlClass() { result = "AccessModifier" }
 }

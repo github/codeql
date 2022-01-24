@@ -77,8 +77,8 @@ namespace System
             {
                 public EventCounter(string name, System.Diagnostics.Tracing.EventSource eventSource) => throw null;
                 public override string ToString() => throw null;
-                public void WriteMetric(float value) => throw null;
                 public void WriteMetric(double value) => throw null;
+                public void WriteMetric(float value) => throw null;
             }
 
             // Generated from `System.Diagnostics.Tracing.EventDataAttribute` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -153,9 +153,9 @@ namespace System
             {
                 public void DisableEvents(System.Diagnostics.Tracing.EventSource eventSource) => throw null;
                 public virtual void Dispose() => throw null;
-                public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword, System.Collections.Generic.IDictionary<string, string> arguments) => throw null;
-                public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword) => throw null;
                 public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level) => throw null;
+                public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword) => throw null;
+                public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword, System.Collections.Generic.IDictionary<string, string> arguments) => throw null;
                 protected EventListener() => throw null;
                 public event System.EventHandler<System.Diagnostics.Tracing.EventSourceCreatedEventArgs> EventSourceCreated;
                 protected static int EventSourceIndex(System.Diagnostics.Tracing.EventSource eventSource) => throw null;
@@ -194,11 +194,6 @@ namespace System
             // Generated from `System.Diagnostics.Tracing.EventSource` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSource : System.IDisposable
             {
-                public System.Exception ConstructionException { get => throw null; }
-                public static System.Guid CurrentThreadActivityId { get => throw null; }
-                public void Dispose() => throw null;
-                protected virtual void Dispose(bool disposing) => throw null;
-                public event System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs> EventCommandExecuted;
                 // Generated from `System.Diagnostics.Tracing.EventSource+EventData` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected internal struct EventData
                 {
@@ -208,54 +203,59 @@ namespace System
                 }
 
 
-                public EventSource(string eventSourceName, System.Diagnostics.Tracing.EventSourceSettings config, params string[] traits) => throw null;
-                public EventSource(string eventSourceName, System.Diagnostics.Tracing.EventSourceSettings config) => throw null;
-                public EventSource(string eventSourceName) => throw null;
-                protected EventSource(bool throwOnEventWriteErrors) => throw null;
-                protected EventSource(System.Diagnostics.Tracing.EventSourceSettings settings, params string[] traits) => throw null;
-                protected EventSource(System.Diagnostics.Tracing.EventSourceSettings settings) => throw null;
+                public System.Exception ConstructionException { get => throw null; }
+                public static System.Guid CurrentThreadActivityId { get => throw null; }
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public event System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs> EventCommandExecuted;
                 protected EventSource() => throw null;
-                public static string GenerateManifest(System.Type eventSourceType, string assemblyPathToIncludeInManifest, System.Diagnostics.Tracing.EventManifestOptions flags) => throw null;
+                protected EventSource(System.Diagnostics.Tracing.EventSourceSettings settings) => throw null;
+                protected EventSource(System.Diagnostics.Tracing.EventSourceSettings settings, params string[] traits) => throw null;
+                protected EventSource(bool throwOnEventWriteErrors) => throw null;
+                public EventSource(string eventSourceName) => throw null;
+                public EventSource(string eventSourceName, System.Diagnostics.Tracing.EventSourceSettings config) => throw null;
+                public EventSource(string eventSourceName, System.Diagnostics.Tracing.EventSourceSettings config, params string[] traits) => throw null;
                 public static string GenerateManifest(System.Type eventSourceType, string assemblyPathToIncludeInManifest) => throw null;
+                public static string GenerateManifest(System.Type eventSourceType, string assemblyPathToIncludeInManifest, System.Diagnostics.Tracing.EventManifestOptions flags) => throw null;
                 public static System.Guid GetGuid(System.Type eventSourceType) => throw null;
                 public static string GetName(System.Type eventSourceType) => throw null;
                 public static System.Collections.Generic.IEnumerable<System.Diagnostics.Tracing.EventSource> GetSources() => throw null;
                 public string GetTrait(string key) => throw null;
                 public System.Guid Guid { get => throw null; }
-                public bool IsEnabled(System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords keywords, System.Diagnostics.Tracing.EventChannel channel) => throw null;
-                public bool IsEnabled(System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords keywords) => throw null;
                 public bool IsEnabled() => throw null;
+                public bool IsEnabled(System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords keywords) => throw null;
+                public bool IsEnabled(System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords keywords, System.Diagnostics.Tracing.EventChannel channel) => throw null;
                 public string Name { get => throw null; }
                 protected virtual void OnEventCommand(System.Diagnostics.Tracing.EventCommandEventArgs command) => throw null;
                 public static void SendCommand(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventCommand command, System.Collections.Generic.IDictionary<string, string> commandArguments) => throw null;
-                public static void SetCurrentThreadActivityId(System.Guid activityId, out System.Guid oldActivityThatWillContinue) => throw null;
                 public static void SetCurrentThreadActivityId(System.Guid activityId) => throw null;
+                public static void SetCurrentThreadActivityId(System.Guid activityId, out System.Guid oldActivityThatWillContinue) => throw null;
                 public System.Diagnostics.Tracing.EventSourceSettings Settings { get => throw null; }
                 public override string ToString() => throw null;
-                public void Write<T>(string eventName, ref System.Diagnostics.Tracing.EventSourceOptions options, ref T data) => throw null;
-                public void Write<T>(string eventName, ref System.Diagnostics.Tracing.EventSourceOptions options, ref System.Guid activityId, ref System.Guid relatedActivityId, ref T data) => throw null;
-                public void Write<T>(string eventName, T data) => throw null;
-                public void Write<T>(string eventName, System.Diagnostics.Tracing.EventSourceOptions options, T data) => throw null;
-                public void Write(string eventName, System.Diagnostics.Tracing.EventSourceOptions options) => throw null;
                 public void Write(string eventName) => throw null;
-                protected void WriteEvent(int eventId, string arg1, string arg2, string arg3) => throw null;
-                protected void WriteEvent(int eventId, string arg1, string arg2) => throw null;
-                protected void WriteEvent(int eventId, string arg1, int arg2, int arg3) => throw null;
-                protected void WriteEvent(int eventId, string arg1, int arg2) => throw null;
-                protected void WriteEvent(int eventId, string arg1, System.Int64 arg2) => throw null;
-                protected void WriteEvent(int eventId, string arg1) => throw null;
-                protected void WriteEvent(int eventId, params object[] args) => throw null;
-                protected void WriteEvent(int eventId, int arg1, string arg2) => throw null;
-                protected void WriteEvent(int eventId, int arg1, int arg2, int arg3) => throw null;
-                protected void WriteEvent(int eventId, int arg1, int arg2) => throw null;
-                protected void WriteEvent(int eventId, int arg1) => throw null;
-                protected void WriteEvent(int eventId, System.Int64 arg1, string arg2) => throw null;
-                protected void WriteEvent(int eventId, System.Int64 arg1, System.Int64 arg2, System.Int64 arg3) => throw null;
-                protected void WriteEvent(int eventId, System.Int64 arg1, System.Int64 arg2) => throw null;
-                protected void WriteEvent(int eventId, System.Int64 arg1, System.Byte[] arg2) => throw null;
-                protected void WriteEvent(int eventId, System.Int64 arg1) => throw null;
-                protected void WriteEvent(int eventId, System.Byte[] arg1) => throw null;
+                public void Write(string eventName, System.Diagnostics.Tracing.EventSourceOptions options) => throw null;
+                public void Write<T>(string eventName, System.Diagnostics.Tracing.EventSourceOptions options, T data) => throw null;
+                public void Write<T>(string eventName, T data) => throw null;
+                public void Write<T>(string eventName, ref System.Diagnostics.Tracing.EventSourceOptions options, ref System.Guid activityId, ref System.Guid relatedActivityId, ref T data) => throw null;
+                public void Write<T>(string eventName, ref System.Diagnostics.Tracing.EventSourceOptions options, ref T data) => throw null;
                 protected void WriteEvent(int eventId) => throw null;
+                protected void WriteEvent(int eventId, System.Byte[] arg1) => throw null;
+                protected void WriteEvent(int eventId, int arg1) => throw null;
+                protected void WriteEvent(int eventId, int arg1, int arg2) => throw null;
+                protected void WriteEvent(int eventId, int arg1, int arg2, int arg3) => throw null;
+                protected void WriteEvent(int eventId, int arg1, string arg2) => throw null;
+                protected void WriteEvent(int eventId, System.Int64 arg1) => throw null;
+                protected void WriteEvent(int eventId, System.Int64 arg1, System.Byte[] arg2) => throw null;
+                protected void WriteEvent(int eventId, System.Int64 arg1, System.Int64 arg2) => throw null;
+                protected void WriteEvent(int eventId, System.Int64 arg1, System.Int64 arg2, System.Int64 arg3) => throw null;
+                protected void WriteEvent(int eventId, System.Int64 arg1, string arg2) => throw null;
+                protected void WriteEvent(int eventId, params object[] args) => throw null;
+                protected void WriteEvent(int eventId, string arg1) => throw null;
+                protected void WriteEvent(int eventId, string arg1, int arg2) => throw null;
+                protected void WriteEvent(int eventId, string arg1, int arg2, int arg3) => throw null;
+                protected void WriteEvent(int eventId, string arg1, System.Int64 arg2) => throw null;
+                protected void WriteEvent(int eventId, string arg1, string arg2) => throw null;
+                protected void WriteEvent(int eventId, string arg1, string arg2, string arg3) => throw null;
                 unsafe protected void WriteEventCore(int eventId, int eventDataCount, System.Diagnostics.Tracing.EventSource.EventData* data) => throw null;
                 protected void WriteEventWithRelatedActivityId(int eventId, System.Guid relatedActivityId, params object[] args) => throw null;
                 unsafe protected void WriteEventWithRelatedActivityIdCore(int eventId, System.Guid* relatedActivityId, int eventDataCount, System.Diagnostics.Tracing.EventSource.EventData* data) => throw null;
@@ -281,10 +281,10 @@ namespace System
             // Generated from `System.Diagnostics.Tracing.EventSourceException` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSourceException : System.Exception
             {
-                public EventSourceException(string message, System.Exception innerException) => throw null;
-                public EventSourceException(string message) => throw null;
                 public EventSourceException() => throw null;
                 protected EventSourceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public EventSourceException(string message) => throw null;
+                public EventSourceException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Diagnostics.Tracing.EventSourceOptions` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -4,7 +4,7 @@
  * Provides logic for determining interface member implementations.
  *
  * Do not use the predicates in this library directly; use the methods
- * of the class `Virtualizable` instead.
+ * of the class `Overridable` instead.
  */
 
 import csharp
@@ -35,7 +35,26 @@ private import Conversion
  * `implements(A.M, I.M, B)` and `implements(C.M, I.M, C)`.
  */
 cached
-predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
+predicate implements(Overridable m1, Overridable m2, ValueOrRefType t) {
+  implementsVirtualizable(m1, m2, t)
+  or
+  exists(DeclarationWithAccessors d1, DeclarationWithAccessors d2, int kind |
+    implementsVirtualizable(d1, d2, t) and
+    hasAccessor(d1, m1, pragma[only_bind_into](kind)) and
+    hasAccessor(d2, m2, pragma[only_bind_into](kind))
+  )
+}
+
+pragma[noinline]
+private predicate hasAccessor(DeclarationWithAccessors d, Accessor a, int kind) {
+  a = d.getAnAccessor() and
+  (
+    accessors(a, kind, _, _, _) or
+    event_accessors(a, kind, _, _, _)
+  )
+}
+
+private predicate implementsVirtualizable(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
   exists(Interface i |
     i = m2.getDeclaringType() and
     t.getABaseInterface+() = i and
@@ -125,7 +144,7 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessor(DeclarationWith
 }
 
 private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(DeclarationWithAccessors d) {
-  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getName()) and
+  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getUndecoratedName()) and
   not d instanceof Indexer and
   d.isPublic()
 }
@@ -135,7 +154,7 @@ private predicate getACompatibleInterfaceAccessorAux(
   DeclarationWithAccessors d, ValueOrRefType t, string name
 ) {
   t = getAPossibleImplementor(d.getDeclaringType()) and
-  name = d.getName()
+  name = d.getUndecoratedName()
 }
 
 /**
@@ -215,7 +234,7 @@ private Method getACompatibleInterfaceMethod(Method m) {
  * in a type that is a possible implementor type for the interface type.
  */
 private Method getAnInterfaceMethodCandidate(Method m) {
-  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getName(),
+  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getUndecoratedName(),
     m.getNumberOfParameters()) and
   m.isPublic()
 }
@@ -225,7 +244,7 @@ private predicate getAPotentialInterfaceMethodAux(
   Method m, ValueOrRefType t, string name, int params
 ) {
   t = getAPossibleImplementor(m.getDeclaringType()) and
-  name = m.getName() and
+  name = m.getUndecoratedName() and
   params = m.getNumberOfParameters()
 }
 
@@ -398,6 +417,15 @@ private module Gvn {
       )
     }
 
+    pragma[noinline]
+    private predicate toStringPart(int i, int j) {
+      exists(Unification::GenericType t, int children |
+        t = this.getConstructedGenericDeclaringTypeAt(i) and
+        children = t.getNumberOfArgumentsSelf() and
+        if children = 0 then j = 0 else j in [0 .. 2 * children]
+      )
+    }
+
     language[monotonicAggregates]
     string toString() {
       this.isFullyConstructed() and
@@ -406,11 +434,7 @@ private module Gvn {
         or
         result =
           strictconcat(int i, int j |
-            exists(Unification::GenericType t, int children |
-              t = this.getConstructedGenericDeclaringTypeAt(i) and
-              children = t.getNumberOfArgumentsSelf() and
-              if children = 0 then j = 0 else j in [0 .. 2 * children]
-            )
+            this.toStringPart(i, j)
           |
             this.toStringConstructedPart(i, j) order by i desc, j
           )

@@ -8,8 +8,8 @@ import semmle.code.xml.MavenPom
  */
 library class Struts2ConventionDependency extends Dependency {
   Struts2ConventionDependency() {
-    getGroup().getValue() = "org.apache.struts" and
-    getArtifact().getValue() = "struts2-convention-plugin"
+    this.getGroup().getValue() = "org.apache.struts" and
+    this.getArtifact().getValue() = "struts2-convention-plugin"
   }
 }
 
@@ -100,16 +100,11 @@ class Struts2ConventionActionClass extends Class {
     isStrutsConventionPluginUsed(this) and
     exists(string ancestorPackage |
       // Has an ancestor package on the whitelist
-      ancestorPackage = getPackage().getName().splitAt(".") and
-      (
-        ancestorPackage = "struts" or
-        ancestorPackage = "struts2" or
-        ancestorPackage = "action" or
-        ancestorPackage = "actions"
-      )
+      ancestorPackage = this.getPackage().getName().splitAt(".") and
+      ancestorPackage = ["struts", "struts2", "action", "actions"]
     ) and
     (
-      getName().matches("%" + getConventionSuffix(this)) or
+      this.getName().matches("%" + getConventionSuffix(this)) or
       this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
     )
   }

@@ -18,10 +18,11 @@ Overlap getOverlap(IntValue defStart, IntValue defEnd, IntValue useStart, IntVal
   else
     if isLE(defStart, useStart) and isGE(defEnd, useEnd)
     then result instanceof MustTotallyOverlap
-    else
-      if isLE(defEnd, useStart) or isGE(defStart, useEnd)
-      then none()
-      else result instanceof MayPartiallyOverlap
+    else (
+      not isLE(defEnd, useStart) and
+      not isGE(defStart, useEnd) and
+      result instanceof MayPartiallyOverlap
+    )
 }
 
 /**

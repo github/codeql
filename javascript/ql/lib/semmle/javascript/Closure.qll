@@ -8,15 +8,11 @@ module Closure {
   /**
    * A reference to a Closure namespace.
    */
-  class ClosureNamespaceRef extends DataFlow::Node {
-    ClosureNamespaceRef::Range range;
-
-    ClosureNamespaceRef() { this = range }
-
+  class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
     /**
      * Gets the namespace being referenced.
      */
-    string getClosureNamespace() { result = range.getClosureNamespace() }
+    string getClosureNamespace() { result = super.getClosureNamespace() }
   }
 
   module ClosureNamespaceRef {
@@ -36,8 +32,7 @@ module Closure {
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  class ClosureNamespaceAccess extends ClosureNamespaceRef {
-    override ClosureNamespaceAccess::Range range;
+  class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range {
   }
 
   module ClosureNamespaceAccess {
@@ -81,7 +76,7 @@ module Closure {
    * A top-level call to `goog.provide`.
    */
   class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode {
-    override DefaultClosureProvideCall range;
+    ClosureProvideCall() { this instanceof DefaultClosureProvideCall }
   }
 
   /**
@@ -95,7 +90,7 @@ module Closure {
    * A call to `goog.require`.
    */
   class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode {
-    override DefaultClosureRequireCall range;
+    ClosureRequireCall() { this instanceof DefaultClosureRequireCall }
   }
 
   /**
@@ -112,7 +107,7 @@ module Closure {
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
   class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode {
-    override DefaultClosureModuleDeclaration range;
+    ClosureModuleDeclaration() { this instanceof DefaultClosureModuleDeclaration }
   }
 
   private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
@@ -176,6 +171,10 @@ module Closure {
           base = getExportsVariable().getAnAssignedExpr()
         )
       )
+    }
+
+    override DataFlow::Node getABulkExportedNode() {
+      result = getExportsVariable().getAnAssignedExpr().flow()
     }
   }
 

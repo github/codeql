@@ -16,7 +16,7 @@ class StrutsActionAnnotation extends StrutsAnnotation {
   StrutsActionAnnotation() { this.getType().hasName("Action") }
 
   Callable getActionCallable() {
-    result = getAnnotatedElement()
+    result = this.getAnnotatedElement()
     or
     exists(StrutsActionsAnnotation actions | this = actions.getAnAction() |
       result = actions.getAnnotatedElement()

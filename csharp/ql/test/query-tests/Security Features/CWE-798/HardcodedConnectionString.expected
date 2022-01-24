@@ -14,6 +14,7 @@ nodes
 | TestHardcodedCredentials.cs:21:31:21:42 | "myusername" | semmle.label | "myusername" |
 | TestHardcodedCredentials.cs:21:45:21:56 | "mypassword" | semmle.label | "mypassword" |
 | TestHardcodedCredentials.cs:26:19:26:28 | "username" | semmle.label | "username" |
+subpaths
 #select
 | HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | HardcodedCredentials.cs:54:48:54:63 | "Password=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:54:30:54:64 | object creation of type SqlConnection | object creation of type SqlConnection |
 | HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | HardcodedCredentials.cs:56:49:56:63 | "User Id=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:56:31:56:64 | object creation of type SqlConnection | object creation of type SqlConnection |

@@ -22,15 +22,15 @@ module XssThroughDom {
    */
   bindingset[result]
   string unsafeAttributeName() {
-    result.regexpMatch("data-.*") or
-    result.regexpMatch("aria-.*") or
+    result.matches("data-%") or
+    result.matches("aria-%") or
     result = ["name", "value", "title", "alt"]
   }
 
   /**
    * Gets a DOM property name that could store user-controlled data.
    */
-  string unsafeDomPropertyName() { result = ["innerText", "textContent", "value", "name"] }
+  string unsafeDomPropertyName() { result = ["innerText", "textContent", "value", "name", "src"] }
 
   /**
    * A source for text from the DOM from a JQuery method call.

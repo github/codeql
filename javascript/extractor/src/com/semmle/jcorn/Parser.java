@@ -83,6 +83,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -1645,6 +1646,15 @@ public class Parser {
       node = new ThisExpression(new SourceLocation(this.startLoc));
       this.next();
       return this.finishNode(node);
+    } else if (this.type == TokenType.pound) {
+      Position startLoc = this.startLoc;
+      // there is only one case where this is valid, and that is "Ergonomic brand checks for Private Fields", i.e. `#name in obj`. 
+      Identifier id = parseIdent(true);
+      String op = String.valueOf(this.value);
+      if (!op.equals("in")) {
+        this.unexpected(startLoc);
+      }
+      return this.parseExprOp(id, this.start, startLoc, -1, false); 
     } else if (this.type == TokenType.name) {
       Position startLoc = this.startLoc;
       Identifier id = this.parseIdent(this.type != TokenType.name);
@@ -3244,6 +3254,10 @@ public class Parser {
     PropertyInfo pi = new PropertyInfo(false, isGenerator, methodStartLoc);
     this.parsePropertyName(pi);
     boolean isStatic = isMaybeStatic && this.type != TokenType.parenL;
+    if (isStatic && this.type == TokenType.braceL) {
+      BlockStatement block = parseBlock(false);
+      return new StaticInitializer(block.getLoc(), block);
+    }
     if (isStatic) {
       if (isGenerator) this.unexpected();
       isGenerator = this.eat(TokenType.star);
@@ -3308,9 +3322,6 @@ public class Parser {
       }
       if (pi.kind.equals("set") && node.getValue().hasRest())
         this.raiseRecoverable(params.get(params.size() - 1), "Setter cannot use rest params");
-    }
-    if (pi.key instanceof Identifier && ((Identifier)pi.key).getName().startsWith("#")) {
-      raiseRecoverable(pi.key, "Only fields, not methods, can be declared private.");
     }
     return node;
   }

@@ -8,7 +8,16 @@ import sys
 def subprocess_run(cmd):
     """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
     print(shlex.join(cmd))
-    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
+    try:
+        ret = subprocess.run(cmd, capture_output=True,
+                             text=True, env=os.environ.copy(), check=True)
+        if (ret.stdout):
+            print(ret.stdout)
+        return ret
+    except subprocess.CalledProcessError as e:
+        if (e.stderr):
+            print(e.stderr)
+        raise e
 
 
 def subprocess_check_output(cmd):
@@ -17,14 +26,23 @@ def subprocess_check_output(cmd):
     return subprocess.check_output(cmd, text=True, env=os.environ.copy())
 
 
-def create_empty_database(lang, extension, database):
+def create_empty_database(lang, extension, database, dbscheme=None):
     """Creates an empty database for the given language."""
     subprocess_run(["codeql", "database", "init", "--language=" + lang,
                    "--source-root=/tmp/empty", "--allow-missing-source-root", database])
     subprocess_run(["mkdir", "-p", database + "/src/tmp/empty"])
     subprocess_run(["touch", database + "/src/tmp/empty/empty" + extension])
-    subprocess_run(["codeql", "database", "finalize",
-                   database, "--no-pre-finalize"])
+
+    finalize_cmd = ["codeql", "database", "finalize",
+                    database, "--no-pre-finalize"]
+    if dbscheme is not None:
+        for scheme in dbscheme:
+            if os.path.exists(scheme):
+                finalize_cmd.append("--dbscheme")
+                finalize_cmd.append(scheme)
+                break
+
+    subprocess_run(finalize_cmd)
 
 
 def run_codeql_query(query, database, output, search_path):
@@ -38,11 +56,12 @@ def run_codeql_query(query, database, output, search_path):
 
 
 class LanguageConfig:
-    def __init__(self, lang, capitalized_lang, ext, ql_path):
+    def __init__(self, lang, capitalized_lang, ext, ql_path, dbscheme=None):
         self.lang = lang
         self.capitalized_lang = capitalized_lang
         self.ext = ext
         self.ql_path = ql_path
+        self.dbscheme = dbscheme
 
 
 def read_cwes(path):

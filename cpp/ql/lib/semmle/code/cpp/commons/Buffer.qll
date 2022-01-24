@@ -2,53 +2,19 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
 /**
- * Holds if `v` is a member variable of `c` that looks like it might be variable sized in practice.  For
- * example:
+ * Holds if `v` is a member variable of `c` that looks like it might be variable sized
+ * in practice. For example:
  * ```
  * struct myStruct { // c
  *   int amount;
  *   char data[1]; // v
  * };
  * ```
- * This requires that `v` is an array of size 0 or 1, and `v` is the last member of `c`.  In addition,
- * there must be at least one instance where a `c` pointer is allocated with additional space.  For
- * example, holds for `c` if it occurs as
- * ```
- * malloc(sizeof(c) + 100 * sizeof(char))
- * ```
- * but not if it only ever occurs as
- * ```
- * malloc(sizeof(c))
- * ```
+ * This requires that `v` is an array of size 0 or 1.
  */
 predicate memberMayBeVarSize(Class c, MemberVariable v) {
-  exists(int i |
-    // `v` is the last field in `c`
-    i = max(int j | c.getCanonicalMember(j) instanceof Field | j) and
-    v = c.getCanonicalMember(i) and
-    // v is an array of size at most 1
-    v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
-  ) and
-  (
-    exists(SizeofOperator so |
-      // `sizeof(c)` is taken
-      so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
-      so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c
-    |
-      // arithmetic is performed on the result
-      so.getParent*() instanceof AddExpr
-    )
-    or
-    exists(AddressOfExpr aoe |
-      // `&(c.v)` is taken
-      aoe.getAddressable() = v
-    )
-    or
-    exists(BuiltInOperationBuiltInOffsetOf oo |
-      // `offsetof(c, v)` using a builtin
-      oo.getAChild().(VariableAccess).getTarget() = v
-    )
-  )
+  c = v.getDeclaringType() and
+  v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
 }
 
 /**

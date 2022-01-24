@@ -1,5 +1,5 @@
 /**
- * Provides classes modelling the [live-server](https://npmjs.com/package/live-server) package.
+ * Provides classes modeling the [live-server](https://npmjs.com/package/live-server) package.
  */
 
 import javascript
@@ -10,14 +10,9 @@ private module LiveServer {
    * An expression that imports the live-server package, seen as a server-definition.
    */
   class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
-    API::Node imp;
+    ServerDefinition() { this = DataFlow::moduleImport("live-server").asExpr() }
 
-    ServerDefinition() {
-      imp = API::moduleImport("live-server") and
-      this = imp.getAnImmediateUse().asExpr()
-    }
-
-    API::Node getImportNode() { result = imp }
+    API::Node getImportNode() { result.getAnImmediateUse().asExpr() = this }
   }
 
   /**

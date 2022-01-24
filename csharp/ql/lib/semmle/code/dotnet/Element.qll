@@ -14,6 +14,7 @@ class Element extends @dotnet_element {
   string toString() { none() }
 
   /** Gets the location of this element. */
+  pragma[nomagic]
   Location getLocation() { none() }
 
   /**
@@ -35,15 +36,22 @@ class Element extends @dotnet_element {
    * Gets the "language" of this program element, as defined by the extension of the filename.
    * For example, C# has language "cs", and Visual Basic has language "vb".
    */
-  final string getLanguage() { result = getLocation().getFile().getExtension() }
+  final string getLanguage() { result = this.getLocation().getFile().getExtension() }
 
   /** Gets the full textual representation of this element, including type information. */
   string toStringWithTypes() { result = this.toString() }
 
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+   *
+   * If no primary class can be determined, the result is `"???"`.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() {
+    result = strictconcat(this.getAPrimaryQlClass(), ",")
+    or
+    not exists(this.getAPrimaryQlClass()) and
+    result = "???"
+  }
 
   /**
    * Gets the name of a primary CodeQL class to which this element belongs.
@@ -52,11 +60,12 @@ class Element extends @dotnet_element {
    * which they belong; for example, `AddExpr` is a primary class, but
    * `BinaryOperation` is not.
    *
-   * This predicate always has a result. If no primary class can be
-   * determined, the result is `"???"`. If multiple primary classes match,
-   * this predicate can have multiple results.
+   * If no primary classes match, this predicate has no result. If multiple
+   * primary classes match, this predicate can have multiple results.
+   *
+   * See also `getPrimaryQlClasses`, which is better to use in most cases.
    */
-  string getAPrimaryQlClass() { result = "???" }
+  string getAPrimaryQlClass() { none() }
 }
 
 /** An element that has a name. */
@@ -66,7 +75,7 @@ class NamedElement extends Element, @dotnet_named_element {
   string getName() { none() }
 
   /** Holds if this element has name 'name'. */
-  final predicate hasName(string name) { name = getName() }
+  final predicate hasName(string name) { name = this.getName() }
 
   /**
    * Gets the fully qualified name of this element, for example the

@@ -102,6 +102,7 @@ nodes
 | InsecureLdapAuth.java:152:16:152:26 | environment [post update] : Hashtable | semmle.label | environment [post update] : Hashtable |
 | InsecureLdapAuth.java:153:50:153:60 | environment | semmle.label | environment |
 | InsecureLdapAuth.java:153:50:153:60 | environment | semmle.label | environment |
+subpaths
 #select
 | InsecureLdapAuth.java:20:49:20:59 | environment | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:20:49:20:59 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
 | InsecureLdapAuth.java:34:49:34:59 | environment | InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:34:49:34:59 | environment | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:25:20:25:39 | ... + ... | LDAP connection string |

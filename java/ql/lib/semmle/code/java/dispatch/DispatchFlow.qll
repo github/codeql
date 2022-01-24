@@ -142,8 +142,8 @@ private predicate viableParamCand(Call call, int i, ParameterNode p) {
  * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
  */
 private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
-  exists(int i, Call call |
-    viableParamCand(call, i, p) and
+  exists(int i, DataFlowCall call |
+    viableParamCand(call.asCall(), i, p) and
     arg.argumentOf(call, i)
   )
 }
@@ -189,10 +189,9 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
   )
   or
-  exists(Field f |
-    f.getAnAssignedValue() = n1.asExpr() and
-    n2.asExpr().(FieldRead).getField() = f
-  )
+  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
+  or
+  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
   or
   exists(EnumType enum, Method getValue |
     enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and

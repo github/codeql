@@ -94,13 +94,13 @@ class AugAssign extends AugAssign_ {
    * Gets the target of this augmented assignment statement.
    * That is, the `a` in `a += b`.
    */
-  Expr getTarget() { result = this.getOperation().(BinaryExpr).getLeft() }
+  Expr getTarget() { result = this.getOperation().getLeft() }
 
   /**
    * Gets the value of this augmented assignment statement.
    * That is, the `b` in `a += b`.
    */
-  Expr getValue() { result = this.getOperation().(BinaryExpr).getRight() }
+  Expr getValue() { result = this.getOperation().getRight() }
 
   override Stmt getASubStatement() { none() }
 }
@@ -153,6 +153,12 @@ class ExceptStmt extends ExceptStmt_ {
   override Stmt getASubStatement() { result = this.getAStmt() }
 
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
+
+  override Expr getType() {
+    result = super.getType() and not result instanceof Tuple
+    or
+    result = super.getType().(Tuple).getAnElt()
+  }
 }
 
 /** An assert statement, such as `assert a == b, "A is not equal to b"` */

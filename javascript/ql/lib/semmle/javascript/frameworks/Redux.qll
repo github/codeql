@@ -54,13 +54,9 @@ module Redux {
   }
 
   /**
-   * Creation of a redux store, usually via a call to `createStore`.
+   * A creation of a redux store, usually via a call to `createStore`.
    */
-  class StoreCreation extends DataFlow::SourceNode {
-    StoreCreation::Range range;
-
-    StoreCreation() { this = range }
-
+  class StoreCreation extends DataFlow::SourceNode instanceof StoreCreation::Range {
     /** Gets a reference to the store. */
     DataFlow::SourceNode ref() { result = asApiNode().getAUse() }
 
@@ -68,7 +64,7 @@ module Redux {
     API::Node asApiNode() { result.getAnImmediateUse() = this }
 
     /** Gets the data flow node holding the root reducer for this store. */
-    DataFlow::Node getReducerArg() { result = range.getReducerArg() }
+    DataFlow::Node getReducerArg() { result = super.getReducerArg() }
 
     /** Gets a data flow node referring to the root reducer. */
     DataFlow::SourceNode getAReducerSource() { result = getReducerArg().(ReducerArg).getASource() }
@@ -292,7 +288,7 @@ module Redux {
     }
 
     /**
-     * A call to `reduce-reducers`, modelled as a reducer that dispatches to an arbitrary subreducer.
+     * A call to `reduce-reducers`, modeled as a reducer that dispatches to an arbitrary subreducer.
      *
      * In reality, this function chains together all of the reducers, but in practice it is only used
      * when the reducers handle a disjoint set of action types, which makes it behave as if it
@@ -423,13 +419,9 @@ module Redux {
    * Some action creators dispatch the action to a store, while for others, the value is returned and it is simply assumed to be dispatched
    * at some point. We model all action creators as if they dispatch the action they create.
    */
-  class ActionCreator extends DataFlow::SourceNode {
-    ActionCreator::Range range;
-
-    ActionCreator() { this = range }
-
+  class ActionCreator extends DataFlow::SourceNode instanceof ActionCreator::Range {
     /** Gets the `type` property of actions created by this action creator, if it is known. */
-    string getTypeTag() { result = range.getTypeTag() }
+    string getTypeTag() { result = super.getTypeTag() }
 
     /**
      * Gets the middleware function that transforms arguments passed to this function into the
@@ -442,7 +434,7 @@ module Redux {
      * the action payload. Otherwise, the return value is the payload itself.
      */
     DataFlow::FunctionNode getMiddlewareFunction(boolean async) {
-      result = range.getMiddlewareFunction(async)
+      result = super.getMiddlewareFunction(async)
     }
 
     /** Gets a data flow node referring to this action creator. */
@@ -574,7 +566,7 @@ module Redux {
     }
 
     /**
-     * One of the action creators made by a call to `createActions`:
+     * An action creator made by a call to `createActions`:
      * ```js
      * let { actionOne, actionTwo } = createActions({
      *   ACTION_ONE: (x, y) => { x, y },
@@ -996,7 +988,7 @@ module Redux {
     API::Node useSelector() { result = API::moduleImport("react-redux").getMember("useSelector") }
 
     /**
-     * Step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
+     * A step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
      */
     class UseSelectorStep extends StateStep {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -1119,9 +1111,7 @@ module Redux {
 
     /** A heuristic call to `connect`, recognized by it taking arguments named `mapStateToProps` and `mapDispatchToProps`. */
     private class HeuristicConnectFunction extends ConnectCall {
-      HeuristicConnectFunction() {
-        this = API::root().getASuccessor(any(HeuristicConnectEntryPoint e)).getACall()
-      }
+      HeuristicConnectFunction() { this = any(HeuristicConnectEntryPoint e).getNode().getACall() }
 
       override API::Node getMapStateToProps() {
         result = getAParameter() and

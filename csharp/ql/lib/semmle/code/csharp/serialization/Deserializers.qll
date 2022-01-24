@@ -98,7 +98,7 @@ private class BinaryFormatterClass extends Class {
 class BinaryFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   BinaryFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -106,7 +106,7 @@ class BinaryFormatterDeserializeMethod extends Method, UnsafeDeserializer {
 class BinaryFormatterUnsafeDeserializeMethod extends Method, UnsafeDeserializer {
   BinaryFormatterUnsafeDeserializeMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
-    this.hasName("UnsafeDeserialize")
+    this.hasUndecoratedName("UnsafeDeserialize")
   }
 }
 
@@ -114,7 +114,7 @@ class BinaryFormatterUnsafeDeserializeMethod extends Method, UnsafeDeserializer 
 class BinaryFormatterUnsafeDeserializeMethodResponseMethod extends Method, UnsafeDeserializer {
   BinaryFormatterUnsafeDeserializeMethodResponseMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
-    this.hasName("UnsafeDeserializeMethodResponse")
+    this.hasUndecoratedName("UnsafeDeserializeMethodResponse")
   }
 }
 
@@ -129,7 +129,7 @@ private class SoapFormatterClass extends Class {
 class SoapFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   SoapFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof SoapFormatterClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -142,7 +142,7 @@ private class ObjectStateFormatterClass extends Class {
 class ObjectStateFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   ObjectStateFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof ObjectStateFormatterClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -157,7 +157,7 @@ class NetDataContractSerializerClass extends Class {
 class NetDataContractSerializerDeserializeMethod extends Method, UnsafeDeserializer {
   NetDataContractSerializerDeserializeMethod() {
     this.getDeclaringType() instanceof NetDataContractSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -165,7 +165,7 @@ class NetDataContractSerializerDeserializeMethod extends Method, UnsafeDeseriali
 class NetDataContractSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   NetDataContractSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof NetDataContractSerializerClass and
-    this.hasName("ReadObject")
+    this.hasUndecoratedName("ReadObject")
   }
 }
 
@@ -180,7 +180,7 @@ class DataContractJsonSerializerClass extends Class {
 class DataContractJsonSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   DataContractJsonSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof DataContractJsonSerializerClass and
-    this.hasName("ReadObject")
+    this.hasUndecoratedName("ReadObject")
   }
 }
 
@@ -195,7 +195,7 @@ class JavaScriptSerializerClass extends Class {
 class JavaScriptSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   JavaScriptSerializerClassDeserializeMethod() {
     this.getDeclaringType() instanceof JavaScriptSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -203,7 +203,7 @@ class JavaScriptSerializerClassDeserializeMethod extends Method, UnsafeDeseriali
 class JavaScriptSerializerClassDeserializeObjectMethod extends Method, UnsafeDeserializer {
   JavaScriptSerializerClassDeserializeObjectMethod() {
     this.getDeclaringType() instanceof JavaScriptSerializerClass and
-    this.hasName("DeserializeObject")
+    this.hasUndecoratedName("DeserializeObject")
   }
 }
 
@@ -218,7 +218,7 @@ class XmlObjectSerializerClass extends Class {
 class XmlObjectSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   XmlObjectSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof XmlObjectSerializerClass and
-    this.hasName("ReadObject")
+    this.hasUndecoratedName("ReadObject")
   }
 }
 
@@ -231,7 +231,7 @@ class XmlSerializerClass extends Class {
 class XmlSerializerDeserializeMethod extends Method, UnsafeDeserializer {
   XmlSerializerDeserializeMethod() {
     this.getDeclaringType() instanceof XmlSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -246,7 +246,7 @@ class DataContractSerializerClass extends Class {
 class DataContractSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   DataContractSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof DataContractSerializerClass and
-    this.hasName("ReadObject")
+    this.hasUndecoratedName("ReadObject")
   }
 }
 
@@ -259,7 +259,7 @@ class XmlMessageFormatterClass extends Class {
 class XmlMessageFormatterReadMethod extends Method, UnsafeDeserializer {
   XmlMessageFormatterReadMethod() {
     this.getDeclaringType() instanceof XmlMessageFormatterClass and
-    this.hasName("Read")
+    this.hasUndecoratedName("Read")
   }
 }
 
@@ -272,7 +272,7 @@ private class LosFormatterClass extends Class {
 class LosFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   LosFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof LosFormatterClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -285,7 +285,7 @@ private class FastJsonClass extends Class {
 class FastJsonClassToObjectMethod extends Method, UnsafeDeserializer {
   FastJsonClassToObjectMethod() {
     this.getDeclaringType() instanceof FastJsonClass and
-    this.hasName("ToObject") and
+    this.hasUndecoratedName("ToObject") and
     this.isStatic()
   }
 }
@@ -299,7 +299,7 @@ private class ActivityClass extends Class {
 class ActivityLoadMethod extends Method, UnsafeDeserializer {
   ActivityLoadMethod() {
     this.getDeclaringType() instanceof ActivityClass and
-    this.hasName("Load")
+    this.hasUndecoratedName("Load")
   }
 }
 
@@ -325,7 +325,7 @@ private class BinaryMessageFormatterClass extends Class {
 class BinaryMessageFormatterReadMethod extends Method, UnsafeDeserializer {
   BinaryMessageFormatterReadMethod() {
     this.getDeclaringType() instanceof BinaryMessageFormatterClass and
-    this.hasName("Read")
+    this.hasUndecoratedName("Read")
   }
 }
 
@@ -338,7 +338,7 @@ private class XamlReaderClass extends Class {
 class XamlReaderParseMethod extends Method, UnsafeDeserializer {
   XamlReaderParseMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
-    this.hasName("Parse") and
+    this.hasUndecoratedName("Parse") and
     this.isStatic()
   }
 }
@@ -347,7 +347,7 @@ class XamlReaderParseMethod extends Method, UnsafeDeserializer {
 class XamlReaderLoadMethod extends Method, UnsafeDeserializer {
   XamlReaderLoadMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
-    this.hasName("Load") and
+    this.hasUndecoratedName("Load") and
     this.isStatic()
   }
 }
@@ -356,7 +356,7 @@ class XamlReaderLoadMethod extends Method, UnsafeDeserializer {
 class XamlReaderLoadAsyncMethod extends Method, UnsafeDeserializer {
   XamlReaderLoadAsyncMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
-    this.hasName("LoadAsync")
+    this.hasUndecoratedName("LoadAsync")
   }
 }
 
@@ -369,7 +369,7 @@ private class ProxyObjectClass extends Class {
 class ProxyObjectDecodeValueMethod extends Method, UnsafeDeserializer {
   ProxyObjectDecodeValueMethod() {
     this.getDeclaringType() instanceof ProxyObjectClass and
-    this.hasName("DecodeValue")
+    this.hasUndecoratedName("DecodeValue")
   }
 }
 
@@ -377,7 +377,7 @@ class ProxyObjectDecodeValueMethod extends Method, UnsafeDeserializer {
 class ProxyObjectDecodeSerializedObjectMethod extends Method, UnsafeDeserializer {
   ProxyObjectDecodeSerializedObjectMethod() {
     this.getDeclaringType() instanceof ProxyObjectClass and
-    this.hasName("DecodeSerializedObject")
+    this.hasUndecoratedName("DecodeSerializedObject")
   }
 }
 
@@ -390,7 +390,7 @@ private class JaysonConverterClass extends Class {
 class JaysonConverterToObjectMethod extends Method, UnsafeDeserializer {
   JaysonConverterToObjectMethod() {
     this.getDeclaringType() instanceof JaysonConverterClass and
-    this.hasName("ToObject") and
+    this.hasUndecoratedName("ToObject") and
     this.isStatic()
   }
 }
@@ -406,7 +406,7 @@ private class ServiceStackTextJsonSerializerClass extends Class {
 class ServiceStackTextJsonSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
-    this.hasName("DeserializeFromString") and
+    this.hasUndecoratedName("DeserializeFromString") and
     this.isStatic()
   }
 }
@@ -415,7 +415,7 @@ class ServiceStackTextJsonSerializerDeserializeFromStringMethod extends Method, 
 class ServiceStackTextJsonSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
-    this.hasName("DeserializeFromReader") and
+    this.hasUndecoratedName("DeserializeFromReader") and
     this.isStatic()
   }
 }
@@ -424,7 +424,7 @@ class ServiceStackTextJsonSerializerDeserializeFromReaderMethod extends Method, 
 class ServiceStackTextJsonSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
-    this.hasName("DeserializeFromStream") and
+    this.hasUndecoratedName("DeserializeFromStream") and
     this.isStatic()
   }
 }
@@ -440,7 +440,7 @@ private class ServiceStackTextTypeSerializerClass extends Class {
 class ServiceStackTextTypeSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
-    this.hasName("DeserializeFromString") and
+    this.hasUndecoratedName("DeserializeFromString") and
     this.isStatic()
   }
 }
@@ -449,7 +449,7 @@ class ServiceStackTextTypeSerializerDeserializeFromStringMethod extends Method, 
 class ServiceStackTextTypeSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
-    this.hasName("DeserializeFromReader") and
+    this.hasUndecoratedName("DeserializeFromReader") and
     this.isStatic()
   }
 }
@@ -458,7 +458,7 @@ class ServiceStackTextTypeSerializerDeserializeFromReaderMethod extends Method, 
 class ServiceStackTextTypeSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
-    this.hasName("DeserializeFromStream") and
+    this.hasUndecoratedName("DeserializeFromStream") and
     this.isStatic()
   }
 }
@@ -472,7 +472,7 @@ private class ServiceStackTextCsvSerializerClass extends Class {
 class ServiceStackTextCsvSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
-    this.hasName("DeserializeFromString") and
+    this.hasUndecoratedName("DeserializeFromString") and
     this.isStatic()
   }
 }
@@ -481,7 +481,7 @@ class ServiceStackTextCsvSerializerDeserializeFromStringMethod extends Method, U
 class ServiceStackTextCsvSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
-    this.hasName("DeserializeFromReader") and
+    this.hasUndecoratedName("DeserializeFromReader") and
     this.isStatic()
   }
 }
@@ -490,7 +490,7 @@ class ServiceStackTextCsvSerializerDeserializeFromReaderMethod extends Method, U
 class ServiceStackTextCsvSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
-    this.hasName("DeserializeFromStream") and
+    this.hasUndecoratedName("DeserializeFromStream") and
     this.isStatic()
   }
 }
@@ -504,7 +504,7 @@ private class ServiceStackTextXmlSerializerClass extends Class {
 class ServiceStackTextXmlSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
-    this.hasName("DeserializeFromString") and
+    this.hasUndecoratedName("DeserializeFromString") and
     this.isStatic()
   }
 }
@@ -513,7 +513,7 @@ class ServiceStackTextXmlSerializerDeserializeFromStringMethod extends Method, U
 class ServiceStackTextXmlSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
-    this.hasName("DeserializeFromReader") and
+    this.hasUndecoratedName("DeserializeFromReader") and
     this.isStatic()
   }
 }
@@ -522,7 +522,7 @@ class ServiceStackTextXmlSerializerDeserializeFromReaderMethod extends Method, U
 class ServiceStackTextXmlSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
-    this.hasName("DeserializeFromStream") and
+    this.hasUndecoratedName("DeserializeFromStream") and
     this.isStatic()
   }
 }
@@ -536,7 +536,7 @@ private class FsPicklerSerializerClass extends Class {
 class FsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassDeserializeMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -544,7 +544,7 @@ class FsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializ
 class FsPicklerSerializerClassDeserializeSequenceMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassDeserializeSequenceMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("DeserializeSequence")
+    this.hasUndecoratedName("DeserializeSequence")
   }
 }
 
@@ -552,7 +552,7 @@ class FsPicklerSerializerClassDeserializeSequenceMethod extends Method, UnsafeDe
 class FsPicklerSerializerClasDeserializeSiftedMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClasDeserializeSiftedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("DeserializeSifted")
+    this.hasUndecoratedName("DeserializeSifted")
   }
 }
 
@@ -560,7 +560,7 @@ class FsPicklerSerializerClasDeserializeSiftedMethod extends Method, UnsafeDeser
 class FsPicklerSerializerClassUnPickleMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassUnPickleMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("UnPickle")
+    this.hasUndecoratedName("UnPickle")
   }
 }
 
@@ -568,7 +568,7 @@ class FsPicklerSerializerClassUnPickleMethod extends Method, UnsafeDeserializer 
 class FsPicklerSerializerClassUnPickleSiftedMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassUnPickleSiftedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("UnPickleSifted")
+    this.hasUndecoratedName("UnPickleSifted")
   }
 }
 
@@ -576,7 +576,7 @@ class FsPicklerSerializerClassUnPickleSiftedMethod extends Method, UnsafeDeseria
 class FsPicklerSerializerClassDeserializeUntypedMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassDeserializeUntypedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("DeserializeUntyped")
+    this.hasUndecoratedName("DeserializeUntyped")
   }
 }
 
@@ -584,7 +584,7 @@ class FsPicklerSerializerClassDeserializeUntypedMethod extends Method, UnsafeDes
 class FsPicklerSerializerClassDeserializeSequenceUntypedMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassDeserializeSequenceUntypedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("DeserializeSequenceUntyped")
+    this.hasUndecoratedName("DeserializeSequenceUntyped")
   }
 }
 
@@ -592,7 +592,7 @@ class FsPicklerSerializerClassDeserializeSequenceUntypedMethod extends Method, U
 class FsPicklerSerializerClassUnPickleUntypedMethod extends Method, UnsafeDeserializer {
   FsPicklerSerializerClassUnPickleUntypedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
-    this.hasName("UnPickleUntyped")
+    this.hasUndecoratedName("UnPickleUntyped")
   }
 }
 
@@ -605,7 +605,7 @@ private class CsPicklerSerializerClass extends Class {
 class CsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   CsPicklerSerializerClassDeserializeMethod() {
     this.getDeclaringType().getBaseClass*() instanceof CsPicklerSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -613,7 +613,7 @@ class CsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializ
 class CsPicklerSerializerClassUnPickleMethod extends Method, UnsafeDeserializer {
   CsPicklerSerializerClassUnPickleMethod() {
     this.getDeclaringType().getBaseClass*() instanceof CsPicklerSerializerClass and
-    this.hasName("UnPickle")
+    this.hasUndecoratedName("UnPickle")
   }
 }
 
@@ -628,7 +628,7 @@ private class CsPicklerTextSerializerClass extends Class {
 class CsPicklerSerializerClassUnPickleOfStringMethod extends Method, UnsafeDeserializer {
   CsPicklerSerializerClassUnPickleOfStringMethod() {
     this.getDeclaringType().getBaseClass*() instanceof CsPicklerTextSerializerClass and
-    this.hasName("UnPickleOfString")
+    this.hasUndecoratedName("UnPickleOfString")
   }
 }
 
@@ -641,7 +641,7 @@ private class SharpSerializerClass extends Class {
 class SharpSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   SharpSerializerClassDeserializeMethod() {
     this.getDeclaringType().getBaseClass*() instanceof SharpSerializerClass and
-    this.hasName("Deserialize")
+    this.hasUndecoratedName("Deserialize")
   }
 }
 
@@ -655,7 +655,7 @@ class YamlDotNetDeserializerClasseserializeMethod extends Method, UnsafeDeserial
   YamlDotNetDeserializerClasseserializeMethod() {
     exists(YamlDotNetDeserializerClass c |
       this.getDeclaringType().getBaseClass*() = c and
-      this.hasName("Deserialize") and
+      this.hasUndecoratedName("Deserialize") and
       c.getALocation().(Assembly).getVersion().getMajor() < 5
     )
   }
@@ -665,7 +665,7 @@ class YamlDotNetDeserializerClasseserializeMethod extends Method, UnsafeDeserial
 class NewtonsoftJsonConvertClassDeserializeObjectMethod extends Method, UnsafeDeserializer {
   NewtonsoftJsonConvertClassDeserializeObjectMethod() {
     this.getDeclaringType() instanceof JsonConvertClass and
-    this.hasName("DeserializeObject") and
+    this.hasUndecoratedName("DeserializeObject") and
     this.isStatic()
   }
 }

@@ -122,8 +122,8 @@ where
   not abortsControlFlow(s) and
   // Exclude the double semicolon case `if (cond) s;;`.
   not t instanceof EmptyStmt and
-  // `LocalClassDeclStmt`s yield false positives since their `Location` doesn't include the `class` keyword.
-  not t instanceof LocalClassDeclStmt
+  // `LocalTypeDeclStmt`s yield false positives since their `Location` doesn't include the `class` keyword.
+  not t instanceof LocalTypeDeclStmt
 select s,
   "Indentation suggests that $@ belongs to $@, but this is not the case; consider adding braces or adjusting indentation.",
   t, "the next statement", c, "the control structure"

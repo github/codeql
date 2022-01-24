@@ -13,18 +13,11 @@ import semmle.python.security.strings.Untrusted
 /** Abstract taint sink that is potentially vulnerable to malicious shell commands. */
 abstract class CommandSink extends TaintSink { }
 
-private ModuleObject osOrPopenModule() {
-  result.getName() = "os" or
-  result.getName() = "popen2"
-}
+private ModuleObject osOrPopenModule() { result.getName() = ["os", "popen2"] }
 
 private Object makeOsCall() {
   exists(string name | result = ModuleObject::named("subprocess").attr(name) |
-    name = "Popen" or
-    name = "call" or
-    name = "check_call" or
-    name = "check_output" or
-    name = "run"
+    name = ["Popen", "call", "check_call", "check_output", "run"]
   )
 }
 
@@ -65,8 +58,7 @@ class ShellCommand extends CommandSink {
       call.getAnArg() = this and
       call.getFunction().refersTo(osOrPopenModule().attr(name))
     |
-      name = "system" or
-      name = "popen" or
+      name = ["system", "popen"] or
       name.matches("popen_")
     )
     or

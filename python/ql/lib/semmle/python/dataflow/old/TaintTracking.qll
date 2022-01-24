@@ -384,7 +384,7 @@ abstract class TaintSource extends @py_flow_node {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -498,7 +498,7 @@ abstract class TaintSink extends @py_flow_node {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -639,16 +639,14 @@ module DataFlow {
     }
   }
 
-  deprecated private class ConfigurationAdapter extends TaintTracking::Configuration {
-    ConfigurationAdapter() { this instanceof Configuration }
-
+  deprecated private class ConfigurationAdapter extends TaintTracking::Configuration instanceof Configuration {
     override predicate isSource(DataFlow::Node node, TaintKind kind) {
-      this.(Configuration).isSource(node.asCfgNode()) and
+      Configuration.super.isSource(node.asCfgNode()) and
       kind instanceof DataFlowType
     }
 
     override predicate isSink(DataFlow::Node node, TaintKind kind) {
-      this.(Configuration).isSink(node.asCfgNode()) and
+      Configuration.super.isSink(node.asCfgNode()) and
       kind instanceof DataFlowType
     }
   }

@@ -397,7 +397,7 @@ CSharp7.cs:
 #  131|               0: [ParameterAccess] access to parameter t
 #  133|       2: [LocalVariableDeclStmt] ... ...;
 #  133|         0: [LocalVariableDeclAndInitExpr] Func<Int32> f4 = ...
-#  133|           -1: [TypeMention] Func<Int32>
+#  133|           -1: [TypeMention] Func<int>
 #  133|             1: [TypeMention] int
 #  133|           0: [LocalVariableAccess] access to local variable f4
 #  133|           1: [ImplicitDelegateCreation] delegate creation of type Func<Int32>
@@ -407,7 +407,7 @@ CSharp7.cs:
 #  135|           4: [IntLiteral] 2
 #  137|       4: [LocalVariableDeclStmt] ... ...;
 #  137|         0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f5 = ...
-#  137|           -1: [TypeMention] Func<Int32, Int32>
+#  137|           -1: [TypeMention] Func<int, int>
 #  137|             1: [TypeMention] int
 #  137|             2: [TypeMention] int
 #  137|           0: [LocalVariableAccess] access to local variable f5
@@ -846,17 +846,17 @@ CSharp7.cs:
 #  281|     4: [BlockStmt] {...}
 #  282|       0: [LocalVariableDeclStmt] ... ...;
 #  282|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...
-#  282|           -1: [TypeMention] Dictionary<Int32, String>
+#  282|           -1: [TypeMention] Dictionary<int, string>
 #  282|           0: [LocalVariableAccess] access to local variable dict
 #  282|           1: [ObjectCreation] object creation of type Dictionary<Int32,String>
-#  282|             0: [TypeMention] Dictionary<Int32, String>
+#  282|             0: [TypeMention] Dictionary<int, string>
 #  282|               1: [TypeMention] int
 #  282|               2: [TypeMention] string
 #  283|       1: [LocalVariableDeclStmt] ... ...;
 #  283|         0: [LocalVariableDeclAndInitExpr] IEnumerable<(Int32,String)> list = ...
-#  283|           -1: [TypeMention] IEnumerable<(Int32,String)>
+#  283|           -1: [TypeMention] IEnumerable<(int, string)>
 #  283|           0: [LocalVariableAccess] access to local variable list
-#  283|           1: [MethodCall] call to method Select
+#  283|           1: [MethodCall] call to method Select<KeyValuePair<Int32,String>,(Int32,String)>
 #  283|             -1: [LocalVariableAccess] access to local variable dict
 #  283|             0: [LambdaExpr] (...) => ...
 #-----|               2: (Parameters)

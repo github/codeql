@@ -44,7 +44,7 @@ class FunctionInput extends TFunctionInput {
    * Holds if this is the input value of the parameter with index `index`.
    * DEPRECATED: Use `isParameter(index)` instead.
    */
-  deprecated final predicate isInParameter(ParameterIndex index) { isParameter(index) }
+  deprecated final predicate isInParameter(ParameterIndex index) { this.isParameter(index) }
 
   /**
    * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
@@ -70,7 +70,9 @@ class FunctionInput extends TFunctionInput {
    * `index`.
    * DEPRECATED: Use `isParameterDeref(index)` instead.
    */
-  deprecated final predicate isInParameterPointer(ParameterIndex index) { isParameterDeref(index) }
+  deprecated final predicate isInParameterPointer(ParameterIndex index) {
+    this.isParameterDeref(index)
+  }
 
   /**
    * Holds if this is the input value pointed to by the `this` pointer of an instance member
@@ -92,7 +94,7 @@ class FunctionInput extends TFunctionInput {
    * function.
    * DEPRECATED: Use `isQualifierObject()` instead.
    */
-  deprecated final predicate isInQualifier() { isQualifierObject() }
+  deprecated final predicate isInQualifier() { this.isQualifierObject() }
 
   /**
    * Holds if this is the input value of the `this` pointer of an instance member function.
@@ -314,7 +316,9 @@ class FunctionOutput extends TFunctionOutput {
    * index `index`.
    * DEPRECATED: Use `isParameterDeref(index)` instead.
    */
-  deprecated final predicate isOutParameterPointer(ParameterIndex index) { isParameterDeref(index) }
+  deprecated final predicate isOutParameterPointer(ParameterIndex index) {
+    this.isParameterDeref(index)
+  }
 
   /**
    * Holds if this is the output value pointed to by the `this` pointer of an instance member
@@ -336,7 +340,7 @@ class FunctionOutput extends TFunctionOutput {
    * function.
    * DEPRECATED: Use `isQualifierObject()` instead.
    */
-  deprecated final predicate isOutQualifier() { isQualifierObject() }
+  deprecated final predicate isOutQualifier() { this.isQualifierObject() }
 
   /**
    * Holds if this is the value returned by a function.
@@ -361,7 +365,7 @@ class FunctionOutput extends TFunctionOutput {
    * Holds if this is the value returned by a function.
    * DEPRECATED: Use `isReturnValue()` instead.
    */
-  deprecated final predicate isOutReturnValue() { isReturnValue() }
+  deprecated final predicate isOutReturnValue() { this.isReturnValue() }
 
   /**
    * Holds if this is the output value pointed to by the return value of a function, if the function
@@ -389,7 +393,7 @@ class FunctionOutput extends TFunctionOutput {
    * function returns a reference.
    * DEPRECATED: Use `isReturnValueDeref()` instead.
    */
-  deprecated final predicate isOutReturnPointer() { isReturnValueDeref() }
+  deprecated final predicate isOutReturnPointer() { this.isReturnValueDeref() }
 
   /**
    * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is the value, or

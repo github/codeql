@@ -30,7 +30,15 @@ class Configuration extends TaintTrackingConfiguration {
   }
 
   override predicate isBarrier(Expr e) {
-    super.isBarrier(e) or e.getUnspecifiedType() instanceof IntegralType
+    super.isBarrier(e)
+    or
+    e.getUnspecifiedType() instanceof IntegralType
+    or
+    exists(SqlBarrierFunction sql, int arg, FunctionInput input |
+      e = sql.getACallToThisFunction().getArgument(arg) and
+      input.isParameterDeref(arg) and
+      sql.barrierSqlArgument(input, _)
+    )
   }
 }
 

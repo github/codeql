@@ -1,0 +1,73 @@
+consistencyIssue
+taintFlow
+| test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
+| test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
+| test.js:7:41:7:48 | source() | test.js:7:8:7:49 | require ... urce()) |
+| test.js:11:38:11:45 | source() | test.js:11:8:11:55 | testlib ... , 1, 1) |
+| test.js:13:44:13:51 | source() | test.js:13:8:13:55 | testlib ... e(), 1) |
+| test.js:17:47:17:54 | source() | test.js:17:8:17:61 | testlib ... , 1, 1) |
+| test.js:18:50:18:57 | source() | test.js:18:8:18:61 | testlib ... e(), 1) |
+| test.js:19:53:19:60 | source() | test.js:19:8:19:61 | testlib ... urce()) |
+| test.js:21:34:21:41 | source() | test.js:21:8:21:51 | testlib ... , 1, 1) |
+| test.js:22:37:22:44 | source() | test.js:22:8:22:51 | testlib ... , 1, 1) |
+| test.js:23:40:23:47 | source() | test.js:23:8:23:51 | testlib ... e(), 1) |
+| test.js:24:43:24:50 | source() | test.js:24:8:24:51 | testlib ... urce()) |
+| test.js:31:29:31:36 | source() | test.js:32:10:32:10 | y |
+| test.js:37:29:37:36 | source() | test.js:38:10:38:10 | y |
+| test.js:46:18:46:25 | source() | test.js:46:18:46:25 | source() |
+| test.js:47:22:47:29 | source() | test.js:47:22:47:29 | source() |
+| test.js:49:24:49:31 | source() | test.js:49:24:49:31 | source() |
+| test.js:53:27:53:34 | source() | test.js:53:27:53:34 | source() |
+| test.js:58:31:58:38 | source() | test.js:58:31:58:38 | source() |
+| test.js:62:34:62:41 | source() | test.js:62:34:62:41 | source() |
+| test.js:67:31:67:38 | source() | test.js:67:31:67:38 | source() |
+| test.js:68:34:68:41 | source() | test.js:68:34:68:41 | source() |
+| test.js:72:36:72:43 | source() | test.js:72:36:72:43 | source() |
+| test.js:73:39:73:46 | source() | test.js:73:39:73:46 | source() |
+| test.js:75:28:75:35 | source() | test.js:75:28:75:35 | source() |
+| test.js:76:31:76:38 | source() | test.js:76:31:76:38 | source() |
+| test.js:77:34:77:41 | source() | test.js:77:34:77:41 | source() |
+| test.js:81:28:81:35 | source() | test.js:81:28:81:35 | source() |
+isSink
+| test.js:46:18:46:25 | source() | test-sink |
+| test.js:47:22:47:29 | source() | test-sink |
+| test.js:49:24:49:31 | source() | test-sink |
+| test.js:53:27:53:34 | source() | test-sink |
+| test.js:55:38:55:38 | 4 | test-sink |
+| test.js:56:38:56:38 | 4 | test-sink |
+| test.js:57:38:57:38 | 4 | test-sink |
+| test.js:58:31:58:38 | source() | test-sink |
+| test.js:60:41:60:41 | 3 | test-sink |
+| test.js:61:41:61:41 | 3 | test-sink |
+| test.js:62:34:62:41 | source() | test-sink |
+| test.js:63:34:63:34 | 3 | test-sink |
+| test.js:65:38:65:38 | 3 | test-sink |
+| test.js:65:41:65:41 | 4 | test-sink |
+| test.js:66:38:66:38 | 3 | test-sink |
+| test.js:66:41:66:41 | 4 | test-sink |
+| test.js:67:31:67:38 | source() | test-sink |
+| test.js:67:41:67:41 | 4 | test-sink |
+| test.js:68:31:68:31 | 3 | test-sink |
+| test.js:68:34:68:41 | source() | test-sink |
+| test.js:70:43:70:43 | 3 | test-sink |
+| test.js:70:46:70:46 | 4 | test-sink |
+| test.js:71:43:71:43 | 3 | test-sink |
+| test.js:71:46:71:46 | 4 | test-sink |
+| test.js:72:36:72:43 | source() | test-sink |
+| test.js:72:46:72:46 | 4 | test-sink |
+| test.js:73:36:73:36 | 3 | test-sink |
+| test.js:73:39:73:46 | source() | test-sink |
+| test.js:75:28:75:35 | source() | test-sink |
+| test.js:75:38:75:38 | 2 | test-sink |
+| test.js:75:41:75:41 | 3 | test-sink |
+| test.js:76:28:76:28 | 1 | test-sink |
+| test.js:76:31:76:38 | source() | test-sink |
+| test.js:76:41:76:41 | 3 | test-sink |
+| test.js:77:28:77:28 | 1 | test-sink |
+| test.js:77:31:77:31 | 2 | test-sink |
+| test.js:77:34:77:41 | source() | test-sink |
+| test.js:78:28:78:28 | 1 | test-sink |
+| test.js:78:31:78:31 | 2 | test-sink |
+| test.js:78:34:78:34 | 3 | test-sink |
+| test.js:81:28:81:35 | source() | test-sink |
+| test.js:82:28:82:28 | 1 | test-sink |

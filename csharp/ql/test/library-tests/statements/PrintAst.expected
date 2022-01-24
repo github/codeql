@@ -476,7 +476,7 @@ statements.cs:
 #  179|               1: [IntLiteral] 2
 #  180|         1: [ReturnStmt] return ...;
 #  183|     22: [Method] Range
-#  183|       -1: [TypeMention] IEnumerable<Int32>
+#  183|       -1: [TypeMention] IEnumerable<int>
 #  183|         1: [TypeMention] int
 #-----|       2: (Parameters)
 #  183|         0: [Parameter] from

@@ -48,7 +48,7 @@ class CamelToBeanURI extends CamelToURI {
   /**
    * Gets the bean referenced by this URI.
    */
-  SpringBean getRefBean() { result.getBeanIdentifier() = getBeanIdentifier() }
+  SpringBean getRefBean() { result.getBeanIdentifier() = this.getBeanIdentifier() }
 }
 
 /**

@@ -14,13 +14,9 @@ module ShellJS {
   }
 
   /** A member of the `shelljs` library. */
-  class Member extends DataFlow::SourceNode {
-    Member::Range range;
-
-    Member() { this = range }
-
+  class Member extends DataFlow::SourceNode instanceof Member::Range {
     /** Gets the name of `shelljs` member being referenced, such as `cat` in `shelljs.cat`. */
-    string getName() { result = range.getName() }
+    string getName() { result = super.getName() }
   }
 
   module Member {
@@ -41,7 +37,7 @@ module ShellJS {
       override string getName() { result = name }
     }
 
-    /** The `shelljs.exec` library modelled as a `shelljs` member. */
+    /** The `shelljs.exec` library modeled as a `shelljs` member. */
     private class ShellJsExec extends Range {
       ShellJsExec() { this = DataFlow::moduleImport("shelljs.exec") }
 
@@ -80,21 +76,11 @@ module ShellJS {
   }
 
   /**
-   * A file system access that can't be modelled as a read or a write.
+   * A file system access that can't be modeled as a read or a write.
    */
   private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
     ShellJSGenericFileAccess() {
-      name = "cd" or
-      name = "cp" or
-      name = "chmod" or
-      name = "pushd" or
-      name = "find" or
-      name = "ls" or
-      name = "ln" or
-      name = "mkdir" or
-      name = "mv" or
-      name = "rm" or
-      name = "touch"
+      name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
     }
 
     override DataFlow::Node getAPathArgument() { result = getAnArgument() }
@@ -114,13 +100,7 @@ module ShellJS {
    * A file system access that returns the contents of a file.
    */
   private class ShellJSRead extends FileSystemReadAccess, ShellJSCall {
-    ShellJSRead() {
-      name = "cat" or
-      name = "head" or
-      name = "sort" or
-      name = "tail" or
-      name = "uniq"
-    }
+    ShellJSRead() { name = ["cat", "head", "sort", "tail", "uniq"] }
 
     override DataFlow::Node getAPathArgument() { result = getAnArgument() }
 
@@ -152,7 +132,7 @@ module ShellJS {
   }
 
   /**
-   * A call to `shelljs.exec()` modelled as command execution.
+   * A call to `shelljs.exec()` modeled as command execution.
    */
   private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
     ShellJSExec() { name = "exec" }

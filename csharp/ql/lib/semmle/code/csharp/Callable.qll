@@ -117,7 +117,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   final BlockStmt getAStatementBody() { result = this.getStatementBody() }
 
   /** Holds if this callable has a statement body. */
-  final predicate hasStatementBody() { exists(getStatementBody()) }
+  final predicate hasStatementBody() { exists(this.getStatementBody()) }
 
   /**
    * Gets the expression body of this callable (if any), specified by `=>`.
@@ -157,7 +157,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   deprecated final Expr getAnExpressionBody() { result = this.getExpressionBody() }
 
   /** Holds if this callable has an expression body. */
-  final predicate hasExpressionBody() { exists(getExpressionBody()) }
+  final predicate hasExpressionBody() { exists(this.getExpressionBody()) }
 
   /** Gets the entry point in the control graph for this callable. */
   ControlFlow::Nodes::EntryNode getEntryPoint() { result.getCallable() = this }
@@ -218,7 +218,9 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     exists(YieldReturnStmt yield | yield.getEnclosingCallable() = this | e = yield.getExpr())
   }
 
-  override string toStringWithTypes() { result = getName() + "(" + parameterTypesToString() + ")" }
+  override string toStringWithTypes() {
+    result = this.getName() + "(" + this.parameterTypesToString() + ")"
+  }
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
@@ -242,6 +244,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 class Method extends Callable, Virtualizable, Attributable, @method {
   /** Gets the name of this method. */
   override string getName() { methods(this, result, _, _, _) }
+
+  override string getUndecoratedName() { methods(this, result, _, _, _) }
 
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
@@ -268,18 +272,18 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override Location getALocation() { method_location(this, result) }
 
   /** Holds if this method is an extension method. */
-  predicate isExtensionMethod() { getParameter(0).hasExtensionMethodModifier() }
+  predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
 
   /** Gets the type of the `params` parameter of this method, if any. */
   Type getParamsType() {
-    exists(Parameter last | last = getParameter(getNumberOfParameters() - 1) |
+    exists(Parameter last | last = this.getParameter(this.getNumberOfParameters() - 1) |
       last.isParams() and
       result = last.getType().(ArrayType).getElementType()
     )
   }
 
   /** Holds if this method has a `params` parameter. */
-  predicate hasParams() { exists(getParamsType()) }
+  predicate hasParams() { exists(this.getParamsType()) }
 
   // Remove when `Callable.isOverridden()` is removed
   override predicate isOverridden() { Virtualizable.super.isOverridden() }
@@ -314,7 +318,7 @@ class ExtensionMethod extends Method {
 
   /** Gets the type being extended by this method. */
   pragma[noinline]
-  Type getExtendedType() { result = getParameter(0).getType() }
+  Type getExtendedType() { result = this.getParameter(0).getType() }
 
   override string getAPrimaryQlClass() { result = "ExtensionMethod" }
 }
@@ -353,7 +357,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
   ConstructorInitializer getInitializer() { result = this.getChildExpr(-1) }
 
   /** Holds if this constructor has an initializer. */
-  predicate hasInitializer() { exists(getInitializer()) }
+  predicate hasInitializer() { exists(this.getInitializer()) }
 
   override ValueOrRefType getDeclaringType() { constructors(this, _, result, _) }
 
@@ -448,6 +452,8 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override string getName() { operators(this, _, result, _, _, _) }
 
+  override string getUndecoratedName() { operators(this, _, result, _, _, _) }
+
   /**
    * Gets the metadata name of the operator, such as `op_implicit` or `op_RightShift`.
    */
@@ -463,7 +469,7 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override string toString() { result = Callable.super.toString() }
 
-  override Parameter getRawParameter(int i) { result = getParameter(i) }
+  override Parameter getRawParameter(int i) { result = this.getParameter(i) }
 }
 
 /** A clone method on a record. */
@@ -989,14 +995,16 @@ class ExplicitConversionOperator extends ConversionOperator {
 class LocalFunction extends Callable, Modifiable, Attributable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
 
+  override string getUndecoratedName() { local_functions(this, result, _, _) }
+
   override LocalFunction getUnboundDeclaration() { local_functions(this, _, _, result) }
 
   override Type getReturnType() { local_functions(this, _, result, _) }
 
-  override Element getParent() { result = getStatement().getParent() }
+  override Element getParent() { result = this.getStatement().getParent() }
 
   /** Gets the local function statement defining this function. */
-  LocalFunctionStmt getStatement() { result.getLocalFunction() = getUnboundDeclaration() }
+  LocalFunctionStmt getStatement() { result.getLocalFunction() = this.getUnboundDeclaration() }
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
 
@@ -1005,9 +1013,9 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
     name = this.getName()
   }
 
-  override Location getALocation() { result = getStatement().getALocation() }
+  override Location getALocation() { result = this.getStatement().getALocation() }
 
-  override Parameter getRawParameter(int i) { result = getParameter(i) }
+  override Parameter getRawParameter(int i) { result = this.getParameter(i) }
 
   override string getAPrimaryQlClass() { result = "LocalFunction" }
 

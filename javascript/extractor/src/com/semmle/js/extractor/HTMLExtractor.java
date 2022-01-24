@@ -89,18 +89,23 @@ public class HTMLExtractor implements IExtractor {
         }
       } else {
         Attributes attributes = elt.getAttributes();
+        boolean attributesAreExtracted = shouldExtractAttributes(elt);
         // attributes can be null for directives
         if (attributes != null)
           for (Attribute attr : attributes) {
             // ignore empty attributes
             if (attr.getValue() == null || attr.getValue().isEmpty()) continue;
 
+            // If attributes are not extracted we can't use the attribute as the parent node.
+            // In this case, use the enclosing element as the node.
+            Segment parentSegment = attributesAreExtracted ? attr : elt;
+
             extractTemplateTags(
                 textualExtractor,
                 attr.getSource(),
                 attr.getBegin(),
                 attr.getEnd(),
-                () -> context.getNodeLabel(attr));
+                () -> context.getNodeLabel(parentSegment));
 
             String source = attr.getValue();
             int valueStart = attr.getValueSegment().getBegin();
@@ -113,7 +118,7 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart,
                   false /* isTypeScript */,
-                  context.getNodeLabel(attr));
+                  context.getNodeLabel(parentSegment));
             } else if (isAngularTemplateAttributeName(attr.getName())) {
               // For an attribute *ngFor="let var of EXPR", start parsing at EXPR
               int offset = 0;
@@ -133,7 +138,7 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart + offset,
                   false /* isTypeScript */,
-                  context.getNodeLabel(attr));
+                  context.getNodeLabel(parentSegment));
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
               extractSnippet(
@@ -144,7 +149,7 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart + 11,
                   false /* isTypeScript */,
-                  context.getNodeLabel(attr));
+                  context.getNodeLabel(parentSegment));
             }
           }
       }

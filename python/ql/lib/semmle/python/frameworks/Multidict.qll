@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * INTERNAL: Do not use.
@@ -60,27 +61,28 @@ module Multidict {
 
     /**
      * Taint propagation for `multidict.MultiDictProxy`.
-     *
-     * See https://multidict.readthedocs.io/en/stable/multidict.html#multidictproxy
      */
-    class MultiDictProxyAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "multidict.MultiDictProxy" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { none() }
+
+      override string getMethodName() { result in ["getone", "getall"] }
+
+      override string getAsyncMethodName() { none() }
+    }
+
+    /**
+     * Extra taint propagation for `multidict.MultiDictProxy`, not covered by `InstanceTaintSteps`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
         exists(ClassInstantiation call |
           nodeFrom = call.getArg(0) and
           nodeTo = call
-        )
-        or
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
-        nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // methods (non-async)
-          attr.getAttributeName() in ["getone", "getall"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
         )
       }
     }

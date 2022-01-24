@@ -6,39 +6,53 @@ import semmle.code.java.Type
 
 /** The type `java.net.URLConnection`. */
 class TypeUrlConnection extends RefType {
-  TypeUrlConnection() { hasQualifiedName("java.net", "URLConnection") }
+  TypeUrlConnection() { this.hasQualifiedName("java.net", "URLConnection") }
 }
 
 /** The type `java.net.Socket`. */
 class TypeSocket extends RefType {
-  TypeSocket() { hasQualifiedName("java.net", "Socket") }
+  TypeSocket() { this.hasQualifiedName("java.net", "Socket") }
+}
+
+/** The type `javax.net.SocketFactory` */
+class TypeSocketFactory extends RefType {
+  TypeSocketFactory() { this.hasQualifiedName("javax.net", "SocketFactory") }
 }
 
 /** The type `java.net.URL`. */
 class TypeUrl extends RefType {
-  TypeUrl() { hasQualifiedName("java.net", "URL") }
+  TypeUrl() { this.hasQualifiedName("java.net", "URL") }
 }
 
 /** The type `java.net.URI`. */
 class TypeUri extends RefType {
-  TypeUri() { hasQualifiedName("java.net", "URI") }
+  TypeUri() { this.hasQualifiedName("java.net", "URI") }
 }
 
 /** The method `java.net.URLConnection::getInputStream`. */
 class URLConnectionGetInputStreamMethod extends Method {
   URLConnectionGetInputStreamMethod() {
-    getDeclaringType() instanceof TypeUrlConnection and
-    hasName("getInputStream") and
-    hasNoParameters()
+    this.getDeclaringType() instanceof TypeUrlConnection and
+    this.hasName("getInputStream") and
+    this.hasNoParameters()
   }
 }
 
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {
   SocketGetInputStreamMethod() {
-    getDeclaringType() instanceof TypeSocket and
-    hasName("getInputStream") and
-    hasNoParameters()
+    this.getDeclaringType() instanceof TypeSocket and
+    this.hasName("getInputStream") and
+    this.hasNoParameters()
+  }
+}
+
+/** The method `java.net.Socket::getOutputStream`. */
+class SocketGetOutputStreamMethod extends Method {
+  SocketGetOutputStreamMethod() {
+    this.getDeclaringType() instanceof TypeSocket and
+    this.hasName("getOutputStream") and
+    this.hasNoParameters()
   }
 }
 
@@ -52,11 +66,20 @@ class UriCreation extends Call {
   /**
    * Gets the host argument of the newly created URI. In the case where the
    * host is specified separately, this is only the host. In the case where the
-   * uri is parsed from an input string, such as in
+   * URI is parsed from an input string, such as in
    * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
    * that is `"http://foo.com/mypath"`.
    */
-  Expr getHostArg() { none() }
+  abstract Expr getHostArg();
+
+  /**
+   * Gets the scheme argument of the newly created URI. In the case where the
+   * scheme is specified separately, this is only the scheme. In the case where the
+   * URI is parsed from an input string, such as in
+   * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
+   * that is `"http://foo.com/mypath"`.
+   */
+  abstract Expr getSchemeArg();
 }
 
 /** A `java.net.URI` constructor call. */
@@ -74,6 +97,8 @@ class UriConstructorCall extends ClassInstanceExpr, UriCreation {
     //    String fragment)
     result = this.getArgument(2) and this.getNumArgument() = 7
   }
+
+  override Expr getSchemeArg() { result = this.getArgument(0) }
 }
 
 /** A call to `java.net.URI::create`. */
@@ -81,6 +106,8 @@ class UriCreate extends UriCreation {
   UriCreate() { this.getCallee().hasName("create") }
 
   override Expr getHostArg() { result = this.getArgument(0) }
+
+  override Expr getSchemeArg() { result = this.getArgument(0) }
 }
 
 /** A `java.net.URL` constructor call. */
@@ -105,7 +132,7 @@ class UrlConstructorCall extends ClassInstanceExpr {
   }
 
   /** Gets the argument that corresponds to the protocol of the URL. */
-  Expr protocolArg() {
+  Expr getProtocolArg() {
     // In all cases except where the first parameter is a URL, the argument
     // containing the protocol is the first one, otherwise it is the second.
     if this.getConstructor().getParameterType(0) instanceof TypeUrl
@@ -127,6 +154,22 @@ class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and
     this.getName() = "openConnection"
+  }
+}
+
+/** The method `javax.net.SocketFactory::createSocket`. */
+class CreateSocketMethod extends Method {
+  CreateSocketMethod() {
+    this.hasName("createSocket") and
+    this.getDeclaringType().getASupertype*() instanceof TypeSocketFactory
+  }
+}
+
+/** The method `javax.net.Socket::connect`. */
+class SocketConnectMethod extends Method {
+  SocketConnectMethod() {
+    this.hasName("connect") and
+    this.getDeclaringType() instanceof TypeSocket
   }
 }
 

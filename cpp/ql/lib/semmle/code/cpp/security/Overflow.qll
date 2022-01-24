@@ -9,6 +9,7 @@ import semmle.code.cpp.controlflow.Dominance
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+import semmle.code.cpp.controlflow.Guards
 
 /**
  * Holds if the value of `use` is guarded using `abs`.
@@ -16,78 +17,26 @@ import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 predicate guardedAbs(Operation e, Expr use) {
   exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
-    guardedLesser(e, fc)
+    exists(GuardCondition c | c.ensuresLt(fc, _, _, e.getBasicBlock(), true))
   )
 }
 
 /**
- * Gets the position of `stmt` in basic block `block` (this is a thin layer
- * over `BasicBlock.getNode`, intended to improve performance).
+ * Holds if the value of `use` is guarded to be less than something, and `e`
+ * is in code controlled by that guard (where the guard condition held).
  */
-pragma[noinline]
-private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
-
-pragma[inline]
-private predicate stmtDominates(Stmt dominator, Stmt dominated) {
-  // In same block
-  exists(BasicBlock block, int dominatorIndex, int dominatedIndex |
-    dominatorIndex = getStmtIndexInBlock(block, dominator) and
-    dominatedIndex = getStmtIndexInBlock(block, dominated) and
-    dominatedIndex >= dominatorIndex
-  )
-  or
-  // In (possibly) different blocks
-  bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
-}
-
-/**
- * Holds if the value of `use` is guarded to be less than something.
- */
-pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
-  exists(IfStmt c, RelationalOperation guard |
-    use = guard.getLesserOperand().getAChild*() and
-    guard = c.getControllingExpr().getAChild*() and
-    stmtDominates(c.getThen(), e.getEnclosingStmt())
-  )
-  or
-  exists(Loop c, RelationalOperation guard |
-    use = guard.getLesserOperand().getAChild*() and
-    guard = c.getControllingExpr().getAChild*() and
-    stmtDominates(c.getStmt(), e.getEnclosingStmt())
-  )
-  or
-  exists(ConditionalExpr c, RelationalOperation guard |
-    use = guard.getLesserOperand().getAChild*() and
-    guard = c.getCondition().getAChild*() and
-    c.getThen().getAChild*() = e
-  )
+  exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), true))
   or
   guardedAbs(e, use)
 }
 
 /**
- * Holds if the value of `use` is guarded to be greater than something.
+ * Holds if the value of `use` is guarded to be greater than something, and `e`
+ * is in code controlled by that guard (where the guard condition held).
  */
-pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
-  exists(IfStmt c, RelationalOperation guard |
-    use = guard.getGreaterOperand().getAChild*() and
-    guard = c.getControllingExpr().getAChild*() and
-    stmtDominates(c.getThen(), e.getEnclosingStmt())
-  )
-  or
-  exists(Loop c, RelationalOperation guard |
-    use = guard.getGreaterOperand().getAChild*() and
-    guard = c.getControllingExpr().getAChild*() and
-    stmtDominates(c.getStmt(), e.getEnclosingStmt())
-  )
-  or
-  exists(ConditionalExpr c, RelationalOperation guard |
-    use = guard.getGreaterOperand().getAChild*() and
-    guard = c.getCondition().getAChild*() and
-    c.getThen().getAChild*() = e
-  )
+  exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), false))
   or
   guardedAbs(e, use)
 }
@@ -120,6 +69,10 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
     // overflow possible if large or small
     e instanceof MulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // overflow possible if large or small
+    e instanceof AssignMulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }
 
@@ -146,6 +99,10 @@ predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
     or
     // underflow possible if large or small
     e instanceof MulExpr and
+    not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
+    or
+    // underflow possible if large or small
+    e instanceof AssignMulExpr and
     not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v)))
   )
 }

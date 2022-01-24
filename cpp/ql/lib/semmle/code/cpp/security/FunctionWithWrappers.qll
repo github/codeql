@@ -17,7 +17,7 @@
 
 import cpp
 import PrintfLike
-private import TaintTracking
+private import semmle.code.cpp.ir.dataflow.ResolveCall
 
 bindingset[index]
 private string toCause(Function func, int index) {
@@ -77,7 +77,7 @@ abstract class FunctionWithWrappers extends Function {
   ) {
     // base case
     func = this and
-    interestingArg(paramIndex) and
+    this.interestingArg(paramIndex) and
     callChain = toCause(func, paramIndex) and
     depth = 0
     or
@@ -101,7 +101,7 @@ abstract class FunctionWithWrappers extends Function {
   private predicate wrapperFunctionAnyDepth(Function func, int paramIndex, string cause) {
     // base case
     func = this and
-    interestingArg(paramIndex) and
+    this.interestingArg(paramIndex) and
     cause = toCause(func, paramIndex)
     or
     // recursive step
@@ -147,7 +147,7 @@ abstract class FunctionWithWrappers extends Function {
       )
     or
     not this.wrapperFunctionLimitedDepth(func, paramIndex, _, _) and
-    cause = wrapperFunctionAnyDepthUnique(func, paramIndex)
+    cause = this.wrapperFunctionAnyDepthUnique(func, paramIndex)
   }
 
   /**

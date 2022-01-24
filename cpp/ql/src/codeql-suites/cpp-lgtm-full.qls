@@ -3,7 +3,7 @@
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
-  from: codeql-cpp
+  from: codeql/cpp-queries
 # These are only for IDE use.
 - exclude:
     tags contain:

@@ -1,5 +1,5 @@
 /**
- * Provides a class for modelling expressions used to supply
+ * Provides a class for modeling expressions used to supply
  * credentials.
  */
 
@@ -15,4 +15,14 @@ abstract class CredentialsExpr extends Expr {
    * such as `"user name"`, `"password"`, `"key"`.
    */
   abstract string getCredentialsKind();
+}
+
+private class CredentialsFromModel extends CredentialsExpr {
+  string kind;
+
+  CredentialsFromModel() {
+    this = ModelOutput::getASinkNode("credentials[" + kind + "]").getARhs().asExpr()
+  }
+
+  override string getCredentialsKind() { result = kind }
 }

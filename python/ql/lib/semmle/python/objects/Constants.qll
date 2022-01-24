@@ -248,7 +248,7 @@ class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("unicode")) }
 
   override Builtin getBuiltin() {
-    result.(Builtin).strValue() = this.strValue() and
+    result.strValue() = this.strValue() and
     result.getClass() = Builtin::special("unicode")
   }
 
@@ -281,7 +281,7 @@ class BytesObjectInternal extends ConstantObjectInternal, TBytes {
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("bytes")) }
 
   override Builtin getBuiltin() {
-    result.(Builtin).strValue() = this.strValue() and
+    result.strValue() = this.strValue() and
     result.getClass() = Builtin::special("bytes")
   }
 

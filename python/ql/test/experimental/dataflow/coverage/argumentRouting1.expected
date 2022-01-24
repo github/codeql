@@ -14,6 +14,8 @@ edges
 | argumentPassing.py:120:59:120:69 | ControlFlowNode for Dict [Dictionary element at key a] | argumentPassing.py:120:5:120:70 | KwUnpacked a |
 | argumentPassing.py:120:65:120:68 | ControlFlowNode for arg1 | argumentPassing.py:120:59:120:69 | ControlFlowNode for Dict [Dictionary element at key a] |
 | argumentPassing.py:123:28:123:28 | ControlFlowNode for a | argumentPassing.py:124:11:124:11 | ControlFlowNode for a |
+| argumentPassing.py:123:28:123:28 | ControlFlowNode for a | argumentPassing.py:124:11:124:11 | ControlFlowNode for a |
+| argumentPassing.py:123:30:123:33 | ControlFlowNode for arg1 | argumentPassing.py:123:28:123:28 | ControlFlowNode for a |
 | argumentPassing.py:132:28:132:31 | ControlFlowNode for arg1 | argumentPassing.py:123:28:123:28 | ControlFlowNode for a |
 | argumentPassing.py:138:22:138:24 | ControlFlowNode for foo | argumentPassing.py:139:11:139:13 | ControlFlowNode for foo |
 | argumentPassing.py:160:46:160:49 | ControlFlowNode for arg1 | argumentPassing.py:138:22:138:24 | ControlFlowNode for foo |
@@ -102,6 +104,8 @@ nodes
 | argumentPassing.py:120:59:120:69 | ControlFlowNode for Dict [Dictionary element at key a] | semmle.label | ControlFlowNode for Dict [Dictionary element at key a] |
 | argumentPassing.py:120:65:120:68 | ControlFlowNode for arg1 | semmle.label | ControlFlowNode for arg1 |
 | argumentPassing.py:123:28:123:28 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| argumentPassing.py:123:28:123:28 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| argumentPassing.py:123:30:123:33 | ControlFlowNode for arg1 | semmle.label | ControlFlowNode for arg1 |
 | argumentPassing.py:124:11:124:11 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | argumentPassing.py:132:28:132:31 | ControlFlowNode for arg1 | semmle.label | ControlFlowNode for arg1 |
 | argumentPassing.py:138:22:138:24 | ControlFlowNode for foo | semmle.label | ControlFlowNode for foo |
@@ -196,6 +200,7 @@ nodes
 | classes.py:860:15:860:18 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
 | classes.py:866:5:866:11 | SSA variable with_or | semmle.label | SSA variable with_or |
 | classes.py:868:5:868:11 | ControlFlowNode for with_or | semmle.label | ControlFlowNode for with_or |
+subpaths
 #select
 | argumentPassing.py:89:22:89:25 | ControlFlowNode for arg1 | argumentPassing.py:89:22:89:25 | ControlFlowNode for arg1 | argumentPassing.py:75:11:75:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:94:22:94:25 | ControlFlowNode for arg1 | argumentPassing.py:94:22:94:25 | ControlFlowNode for arg1 | argumentPassing.py:75:11:75:11 | ControlFlowNode for a | Flow found |
@@ -206,6 +211,7 @@ nodes
 | argumentPassing.py:118:27:118:30 | ControlFlowNode for arg1 | argumentPassing.py:118:27:118:30 | ControlFlowNode for arg1 | argumentPassing.py:110:11:110:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:119:27:119:30 | ControlFlowNode for arg1 | argumentPassing.py:119:27:119:30 | ControlFlowNode for arg1 | argumentPassing.py:110:11:110:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:120:65:120:68 | ControlFlowNode for arg1 | argumentPassing.py:120:65:120:68 | ControlFlowNode for arg1 | argumentPassing.py:110:11:110:11 | ControlFlowNode for a | Flow found |
+| argumentPassing.py:123:30:123:33 | ControlFlowNode for arg1 | argumentPassing.py:123:30:123:33 | ControlFlowNode for arg1 | argumentPassing.py:124:11:124:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:132:28:132:31 | ControlFlowNode for arg1 | argumentPassing.py:132:28:132:31 | ControlFlowNode for arg1 | argumentPassing.py:124:11:124:11 | ControlFlowNode for a | Flow found |
 | argumentPassing.py:160:46:160:49 | ControlFlowNode for arg1 | argumentPassing.py:160:46:160:49 | ControlFlowNode for arg1 | argumentPassing.py:139:11:139:13 | ControlFlowNode for foo | Flow found |
 | argumentPassing.py:168:14:168:17 | ControlFlowNode for arg1 | argumentPassing.py:168:14:168:17 | ControlFlowNode for arg1 | argumentPassing.py:166:15:166:15 | ControlFlowNode for a | Flow found |

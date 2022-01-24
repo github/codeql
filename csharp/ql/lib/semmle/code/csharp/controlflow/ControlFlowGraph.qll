@@ -25,7 +25,7 @@ module ControlFlow {
    * Only nodes that can be reached from the callable entry point are included in
    * the CFG.
    */
-  class Node extends TNode {
+  class Node extends TCfgNode {
     /** Gets a textual representation of this control flow node. */
     string toString() { none() }
 
@@ -33,10 +33,10 @@ module ControlFlow {
     ControlFlowElement getElement() { none() }
 
     /** Gets the location of this control flow node. */
-    Location getLocation() { result = getElement().getLocation() }
+    Location getLocation() { result = this.getElement().getLocation() }
 
     /** Holds if this control flow node has conditional successors. */
-    predicate isCondition() { exists(getASuccessorByType(any(ConditionalSuccessor e))) }
+    predicate isCondition() { exists(this.getASuccessorByType(any(ConditionalSuccessor e))) }
 
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }
@@ -67,7 +67,7 @@ module ControlFlow {
     // potentially very large predicate, so must be inlined
     pragma[inline]
     predicate dominates(Node that) {
-      strictlyDominates(that)
+      this.strictlyDominates(that)
       or
       this = that
     }
@@ -138,7 +138,7 @@ module ControlFlow {
     // potentially very large predicate, so must be inlined
     pragma[inline]
     predicate postDominates(Node that) {
-      strictlyPostDominates(that)
+      this.strictlyPostDominates(that)
       or
       this = that
     }
@@ -186,13 +186,13 @@ module ControlFlow {
     Node getASuccessorByType(SuccessorType t) { result = getASuccessor(this, t) }
 
     /** Gets an immediate successor, if any. */
-    Node getASuccessor() { result = getASuccessorByType(_) }
+    Node getASuccessor() { result = this.getASuccessorByType(_) }
 
     /** Gets an immediate predecessor node of a given flow type, if any. */
     Node getAPredecessorByType(SuccessorType t) { result.getASuccessorByType(t) = this }
 
     /** Gets an immediate predecessor, if any. */
-    Node getAPredecessor() { result = getAPredecessorByType(_) }
+    Node getAPredecessor() { result = this.getAPredecessorByType(_) }
 
     /**
      * Gets an immediate `true` successor, if any.
@@ -211,7 +211,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getATrueSuccessor() {
-      result = getASuccessorByType(any(BooleanSuccessor t | t.getValue() = true))
+      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = true))
     }
 
     /**
@@ -231,7 +231,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getAFalseSuccessor() {
-      result = getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
+      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
     }
 
     /** Holds if this node has more than one predecessor. */
@@ -241,7 +241,7 @@ module ControlFlow {
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
     /** Gets the enclosing callable of this control flow node. */
-    Callable getEnclosingCallable() { none() }
+    final Callable getEnclosingCallable() { result = getNodeCfgScope(this) }
   }
 
   /** Provides different types of control flow nodes. */
@@ -252,8 +252,6 @@ module ControlFlow {
       Callable getCallable() { this = TEntryNode(result) }
 
       override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
-
-      override Callable getEnclosingCallable() { result = this.getCallable() }
 
       private Assignable getAssignable() { this = TEntryNode(result) }
 
@@ -268,13 +266,13 @@ module ControlFlow {
 
     /** A node for a callable exit point, annotated with the type of exit. */
     class AnnotatedExitNode extends Node, TAnnotatedExitNode {
-      private Callable c;
+      private CfgScope scope;
       private boolean normal;
 
-      AnnotatedExitNode() { this = TAnnotatedExitNode(c, normal) }
+      AnnotatedExitNode() { this = TAnnotatedExitNode(scope, normal) }
 
       /** Gets the callable that this exit applies to. */
-      Callable getCallable() { result = c }
+      CfgScope getCallable() { result = scope }
 
       /** Holds if this node represents a normal exit. */
       predicate isNormal() { normal = true }
@@ -283,9 +281,7 @@ module ControlFlow {
         result = Node.super.getBasicBlock()
       }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
-
-      override Location getLocation() { result = getCallable().getLocation() }
+      override Location getLocation() { result = scope.getLocation() }
 
       override string toString() {
         exists(string s |
@@ -293,23 +289,25 @@ module ControlFlow {
           or
           normal = false and s = "abnormal"
         |
-          result = "exit " + getCallable() + " (" + s + ")"
+          result = "exit " + scope + " (" + s + ")"
         )
       }
     }
 
     /** A node for a callable exit point. */
     class ExitNode extends Node, TExitNode {
+      private CfgScope scope;
+
+      ExitNode() { this = TExitNode(scope) }
+
       /** Gets the callable that this exit applies to. */
-      Callable getCallable() { this = TExitNode(result) }
+      Callable getCallable() { result = scope }
 
       override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
+      override Location getLocation() { result = scope.getLocation() }
 
-      override Location getLocation() { result = getCallable().getLocation() }
-
-      override string toString() { result = "exit " + getCallable().toString() }
+      override string toString() { result = "exit " + scope }
     }
 
     /**
@@ -323,14 +321,7 @@ module ControlFlow {
       private Splits splits;
       private ControlFlowElement cfe;
 
-      ElementNode() { this = TElementNode(cfe, splits) }
-
-      override Callable getEnclosingCallable() {
-        result = cfe.getEnclosingCallable()
-        or
-        result =
-          this.getASplit().(Splitting::InitializerSplitting::InitializerSplit).getConstructor()
-      }
+      ElementNode() { this = TElementNode(_, cfe, splits) }
 
       override ControlFlowElement getElement() { result = cfe }
 

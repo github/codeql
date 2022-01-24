@@ -12,6 +12,7 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-094
  *       external/cwe/cwe-400
+ *       external/cwe/cwe-471
  *       external/cwe/cwe-915
  */
 
@@ -192,7 +193,7 @@ string unsafePropName() {
 }
 
 /**
- * Flow label representing an unsafe property name, or an object obtained
+ * A flow label representing an unsafe property name, or an object obtained
  * by using such a property in a dynamic read.
  */
 class UnsafePropLabel extends FlowLabel {
@@ -294,7 +295,7 @@ class PropNameTracking extends DataFlow::Configuration {
 }
 
 /**
- * Sanitizer guard of form `x === "__proto__"` or `x === "constructor"`.
+ * A sanitizer guard of form `x === "__proto__"` or `x === "constructor"`.
  */
 class DenyListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
   override EqualityTest astNode;
@@ -354,7 +355,7 @@ class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
 }
 
 /**
- * Sanitizer guard for `key in dst`.
+ * A sanitizer guard for `key in dst`.
  *
  * Since `"__proto__" in obj` and `"constructor" in obj` is true for most objects,
  * this is seen as a sanitizer for `key` in the false outcome.
@@ -373,7 +374,7 @@ class InExprGuard extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
 }
 
 /**
- * Sanitizer guard for `instanceof` expressions.
+ * A sanitizer guard for `instanceof` expressions.
  *
  * `Object.prototype instanceof X` is never true, so this blocks the `__proto__` label.
  *

@@ -65,6 +65,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -1163,10 +1164,11 @@ public class CFGExtractor {
     private Map<Expression, AClass> constructor2Class = new LinkedHashMap<>();
 
     private Void visit(Node nd, AClass ac, SuccessorInfo i) {
-      for (MemberDefinition<?> m : ac.getBody().getBody())
-        if (m.isConstructor() && m.isConcrete()) constructor2Class.put(m.getValue(), ac);
+      for (MemberDefinition<?> md : ac.getBody().getBody()) {
+        if (md.isConstructor() && md.isConcrete()) constructor2Class.put((Expression)md.getValue(), ac);
+      }
       visitSequence(ac.getId(), ac.getSuperClass(), ac.getBody(), nd);
-      writeSuccessors(nd, visitSequence(getStaticFields(ac.getBody()), getDecoratorsOfClass(ac), i.getAllSuccessors()));
+      writeSuccessors(nd, visitSequence(getStaticInitializers(ac.getBody()), getDecoratorsOfClass(ac), i.getAllSuccessors()));
       return null;
     }
 
@@ -1618,19 +1620,24 @@ public class CFGExtractor {
       return mds;
     }
 
-    private List<MemberDefinition<?>> getStaticFields(ClassBody nd) {
-      List<MemberDefinition<?>> mds = new ArrayList<>();
-      for (MemberDefinition<?> md : nd.getBody()) {
-        if (md instanceof FieldDefinition && md.isStatic()) mds.add(md);
+    /**
+     * Gets the static fields, and static initializer blocks, from `nd`.
+     */
+    private List<Node> getStaticInitializers(ClassBody nd) {
+      List<Node> nodes = new ArrayList<>();
+      for (MemberDefinition<?> node : nd.getBody()) {
+        if (node instanceof FieldDefinition && ((FieldDefinition)node).isStatic()) nodes.add(node);
+        if (node instanceof StaticInitializer) nodes.add(node.getValue());
       }
-      return mds;
+      return nodes;
     }
 
     private List<FieldDefinition> getConcreteInstanceFields(ClassBody nd) {
       List<FieldDefinition> fds = new ArrayList<>();
-      for (MemberDefinition<?> md : nd.getBody())
+      for (MemberDefinition<?> md : nd.getBody()) {
         if (md instanceof FieldDefinition && !md.isStatic() && md.isConcrete())
           fds.add((FieldDefinition) md);
+      }
       return fds;
     }
 

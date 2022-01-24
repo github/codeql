@@ -38,7 +38,7 @@ class Container extends Locatable, @container {
    * DEPRECATED: Use `getLocation` instead.
    * Gets a URL representing the location of this container.
    *
-   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
+   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
    */
   deprecated string getURL() { none() } // overridden by subclasses
 
@@ -52,7 +52,7 @@ class Container extends Locatable, @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -79,7 +79,7 @@ class Container extends Locatable, @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
   }
 
   /**
@@ -105,7 +105,9 @@ class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3)
+  }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -124,7 +126,9 @@ class Container extends Locatable, @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() {
+    result = this.getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1)
+  }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() {
@@ -135,20 +139,20 @@ class Container extends Locatable, @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = getAChildContainer() }
+  File getAFile() { result = this.getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = getAFile() and
+    result = this.getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = getAChildContainer() }
+  Folder getAFolder() { result = this.getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = getAFolder() and
+    result = this.getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -157,7 +161,7 @@ class Container extends Locatable, @container {
    *
    * This is the absolute path of the container.
    */
-  override string toString() { result = getAbsolutePath() }
+  override string toString() { result = this.getAbsolutePath() }
 }
 
 /**
@@ -171,7 +175,7 @@ class Container extends Locatable, @container {
  * To get the full path, use `getAbsolutePath`.
  */
 class Folder extends Container, @folder {
-  override string getAbsolutePath() { folders(underlyingElement(this), result, _) }
+  override string getAbsolutePath() { folders(underlyingElement(this), result) }
 
   override Location getLocation() {
     result.getContainer() = this and
@@ -190,7 +194,7 @@ class Folder extends Container, @folder {
    * DEPRECATED: use `getAbsolutePath` instead.
    * Gets the name of this folder.
    */
-  deprecated string getName() { folders(underlyingElement(this), result, _) }
+  deprecated string getName() { folders(underlyingElement(this), result) }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
@@ -208,17 +212,7 @@ class Folder extends Container, @folder {
    * DEPRECATED: use `getBaseName` instead.
    * Gets the last part of the folder name.
    */
-  deprecated string getShortName() {
-    exists(string longnameRaw, string longname |
-      folders(underlyingElement(this), _, longnameRaw) and
-      longname = longnameRaw.replaceAll("\\", "/")
-    |
-      exists(int index |
-        result = longname.splitAt("/", index) and
-        not exists(longname.splitAt("/", index + 1))
-      )
-    )
-  }
+  deprecated string getShortName() { result = this.getBaseName() }
 
   /**
    * DEPRECATED: use `getParentContainer` instead.
@@ -242,7 +236,7 @@ class Folder extends Container, @folder {
  * `getStem` and `getExtension`. To get the full path, use `getAbsolutePath`.
  */
 class File extends Container, @file {
-  override string getAbsolutePath() { files(underlyingElement(this), result, _, _, _) }
+  override string getAbsolutePath() { files(underlyingElement(this), result) }
 
   override string toString() { result = Container.super.toString() }
 
@@ -336,7 +330,13 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "tar.gz", while `getExtension` will have the result "gz".
    */
-  string getExtensions() { files(underlyingElement(this), _, _, result, _) }
+  string getExtensions() {
+    exists(string name, int firstDotPos |
+      name = this.getBaseName() and
+      firstDotPos = min([name.indexOf("."), name.length() - 1]) and
+      result = name.suffix(firstDotPos + 1)
+    )
+  }
 
   /**
    * Gets the short name of this file, that is, the prefix of its base name up
@@ -351,7 +351,16 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "file", while `getStem` will have the result "file.tar".
    */
-  string getShortName() { files(underlyingElement(this), _, result, _, _) }
+  string getShortName() {
+    exists(string name, int firstDotPos |
+      name = this.getBaseName() and
+      firstDotPos = min([name.indexOf("."), name.length()]) and
+      result = name.prefix(firstDotPos)
+    )
+    or
+    this.getAbsolutePath() = "" and
+    result = ""
+  }
 }
 
 /**

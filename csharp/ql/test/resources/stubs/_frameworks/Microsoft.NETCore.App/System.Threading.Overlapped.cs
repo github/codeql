@@ -27,14 +27,14 @@ namespace System
             unsafe public static void Free(System.Threading.NativeOverlapped* nativeOverlappedPtr) => throw null;
             public int OffsetHigh { get => throw null; set => throw null; }
             public int OffsetLow { get => throw null; set => throw null; }
-            public Overlapped(int offsetLo, int offsetHi, int hEvent, System.IAsyncResult ar) => throw null;
-            public Overlapped(int offsetLo, int offsetHi, System.IntPtr hEvent, System.IAsyncResult ar) => throw null;
             public Overlapped() => throw null;
-            unsafe public System.Threading.NativeOverlapped* Pack(System.Threading.IOCompletionCallback iocb, object userData) => throw null;
+            public Overlapped(int offsetLo, int offsetHi, System.IntPtr hEvent, System.IAsyncResult ar) => throw null;
+            public Overlapped(int offsetLo, int offsetHi, int hEvent, System.IAsyncResult ar) => throw null;
             unsafe public System.Threading.NativeOverlapped* Pack(System.Threading.IOCompletionCallback iocb) => throw null;
+            unsafe public System.Threading.NativeOverlapped* Pack(System.Threading.IOCompletionCallback iocb, object userData) => throw null;
             unsafe public static System.Threading.Overlapped Unpack(System.Threading.NativeOverlapped* nativeOverlappedPtr) => throw null;
-            unsafe public System.Threading.NativeOverlapped* UnsafePack(System.Threading.IOCompletionCallback iocb, object userData) => throw null;
             unsafe public System.Threading.NativeOverlapped* UnsafePack(System.Threading.IOCompletionCallback iocb) => throw null;
+            unsafe public System.Threading.NativeOverlapped* UnsafePack(System.Threading.IOCompletionCallback iocb, object userData) => throw null;
         }
 
         // Generated from `System.Threading.PreAllocatedOverlapped` in `System.Threading.Overlapped, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -48,8 +48,8 @@ namespace System
         // Generated from `System.Threading.ThreadPoolBoundHandle` in `System.Threading.Overlapped, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThreadPoolBoundHandle : System.IDisposable
         {
-            unsafe public System.Threading.NativeOverlapped* AllocateNativeOverlapped(System.Threading.PreAllocatedOverlapped preAllocated) => throw null;
             unsafe public System.Threading.NativeOverlapped* AllocateNativeOverlapped(System.Threading.IOCompletionCallback callback, object state, object pinData) => throw null;
+            unsafe public System.Threading.NativeOverlapped* AllocateNativeOverlapped(System.Threading.PreAllocatedOverlapped preAllocated) => throw null;
             public static System.Threading.ThreadPoolBoundHandle BindHandle(System.Runtime.InteropServices.SafeHandle handle) => throw null;
             public void Dispose() => throw null;
             unsafe public void FreeNativeOverlapped(System.Threading.NativeOverlapped* overlapped) => throw null;

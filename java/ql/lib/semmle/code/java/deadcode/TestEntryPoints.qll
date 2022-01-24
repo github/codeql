@@ -18,7 +18,7 @@ class TestMethodEntry extends CallableEntryPoint {
     or
     exists(AnnotationType a | a = this.getAnAnnotation().getType() |
       a.hasQualifiedName("org.junit.runners", "Parameterized$Parameters") and
-      getDeclaringType() instanceof ParameterizedJUnitTest
+      this.getDeclaringType() instanceof ParameterizedJUnitTest
     )
   }
 }
@@ -28,12 +28,12 @@ class TestMethodEntry extends CallableEntryPoint {
  */
 class BeforeOrAfterEntry extends CallableEntryPoint {
   BeforeOrAfterEntry() {
-    getAnAnnotation() instanceof TestNGBeforeAnnotation or
-    getAnAnnotation() instanceof TestNGAfterAnnotation or
-    getAnAnnotation() instanceof BeforeAnnotation or
-    getAnAnnotation() instanceof BeforeClassAnnotation or
-    getAnAnnotation() instanceof AfterAnnotation or
-    getAnAnnotation() instanceof AfterClassAnnotation
+    this.getAnAnnotation() instanceof TestNGBeforeAnnotation or
+    this.getAnAnnotation() instanceof TestNGAfterAnnotation or
+    this.getAnAnnotation() instanceof BeforeAnnotation or
+    this.getAnAnnotation() instanceof BeforeClassAnnotation or
+    this.getAnAnnotation() instanceof AfterAnnotation or
+    this.getAnAnnotation() instanceof AfterClassAnnotation
   }
 }
 
@@ -44,7 +44,7 @@ class JUnitTheories extends CallableEntryPoint {
   JUnitTheories() {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
-      getDeclaringType() instanceof JUnitTheoryTest
+      this.getDeclaringType() instanceof JUnitTheoryTest
     |
       a.hasQualifiedName("org.junit.experimental.theories", "Theory") or
       a.hasQualifiedName("org.junit.experimental.theories", "DataPoint") or
@@ -63,7 +63,7 @@ class JUnitDataPointField extends ReflectivelyReadField {
         a.hasQualifiedName("org.junit.experimental.theories", "DataPoint") or
         a.hasQualifiedName("org.junit.experimental.theories", "DataPoints")
       ) and
-      getDeclaringType() instanceof JUnitTheoryTest
+      this.getDeclaringType() instanceof JUnitTheoryTest
     )
   }
 }
@@ -152,7 +152,7 @@ class CucumberConstructedClass extends ReflectivelyConstructedClass {
     // Consider any constructor to be live - Cucumber calls a runtime-specified dependency
     // injection framework (possibly an in-built one) to construct these instances, so any
     // constructor could be called.
-    result = getAConstructor()
+    result = this.getAConstructor()
   }
 }
 

@@ -6,16 +6,16 @@ private import semmle.code.csharp.frameworks.system.Web
 /** The `System.Web.WebPages` namespace. */
 class SystemWebWebPagesNamespace extends Namespace {
   SystemWebWebPagesNamespace() {
-    getParentNamespace() instanceof SystemWebNamespace and
-    hasName("WebPages")
+    this.getParentNamespace() instanceof SystemWebNamespace and
+    this.hasName("WebPages")
   }
 }
 
 /** The `System.Web.WebPages.WebPageExecutingBase` class. */
 class SystemWebWebPagesWebPageExecutingBaseClass extends Class {
   SystemWebWebPagesWebPageExecutingBaseClass() {
-    getNamespace() instanceof SystemWebWebPagesNamespace and
-    hasName("WebPageExecutingBase")
+    this.getNamespace() instanceof SystemWebWebPagesNamespace and
+    this.hasName("WebPageExecutingBase")
   }
 }
 
@@ -24,8 +24,8 @@ class WebPageClass extends Class {
   WebPageClass() { this.getBaseClass*() instanceof SystemWebWebPagesWebPageExecutingBaseClass }
 
   /** Gets the `WriteLiteral` method. */
-  Method getWriteLiteralMethod() { result = getAMethod("WriteLiteral") }
+  Method getWriteLiteralMethod() { result = this.getAMethod("WriteLiteral") }
 
   /** Gets the `WriteLiteralTo` method. */
-  Method getWriteLiteralToMethod() { result = getAMethod("WriteLiteralTo") }
+  Method getWriteLiteralToMethod() { result = this.getAMethod("WriteLiteralTo") }
 }

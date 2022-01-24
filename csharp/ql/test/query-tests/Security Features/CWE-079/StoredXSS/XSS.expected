@@ -44,6 +44,7 @@ nodes
 | script.aspx:12:1:12:14 | <%= ... %> | semmle.label | <%= ... %> |
 | script.aspx:16:1:16:34 | <%= ... %> | semmle.label | <%= ... %> |
 | script.aspx:20:1:20:41 | <%= ... %> | semmle.label | <%= ... %> |
+subpaths
 #select
 | XSS.cs:26:32:26:51 | call to method ToString | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | XSS.cs:26:32:26:51 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | User-provided value |
 | XSS.cs:27:29:27:48 | call to method ToString | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | XSS.cs:27:29:27:48 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | User-provided value |

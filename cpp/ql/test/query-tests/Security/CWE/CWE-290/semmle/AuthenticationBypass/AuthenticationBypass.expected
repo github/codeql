@@ -17,6 +17,7 @@ edges
 | test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address |
 | test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address |
 | test.cpp:38:25:38:42 | (const char *)... | test.cpp:42:14:42:20 | address indirection |
+subpaths
 nodes
 | test.cpp:16:25:16:30 | call to getenv | semmle.label | call to getenv |
 | test.cpp:16:25:16:42 | (const char *)... | semmle.label | (const char *)... |

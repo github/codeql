@@ -1,88 +1,10 @@
 /**
  * Provides classes modeling cryptographic algorithms, separated into strong and weak variants.
  *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
+ * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
-/**
- * Names of cryptographic algorithms, separated into strong and weak variants.
- *
- * The names are normalized: upper-case, no spaces, dashes or underscores.
- *
- * The names are inspired by the names used in real world crypto libraries.
- *
- * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
- */
-private module AlgorithmNames {
-  predicate isStrongHashingAlgorithm(string name) {
-    name = "DSA" or
-    name = "ED25519" or
-    name = "ES256" or
-    name = "ECDSA256" or
-    name = "ES384" or
-    name = "ECDSA384" or
-    name = "ES512" or
-    name = "ECDSA512" or
-    name = "SHA2" or
-    name = "SHA224" or
-    name = "SHA256" or
-    name = "SHA384" or
-    name = "SHA512" or
-    name = "SHA3"
-  }
-
-  predicate isWeakHashingAlgorithm(string name) {
-    name = "HAVEL128" or
-    name = "MD2" or
-    name = "MD4" or
-    name = "MD5" or
-    name = "PANAMA" or
-    name = "RIPEMD" or
-    name = "RIPEMD128" or
-    name = "RIPEMD256" or
-    name = "RIPEMD160" or
-    name = "RIPEMD320" or
-    name = "SHA0" or
-    name = "SHA1"
-  }
-
-  predicate isStrongEncryptionAlgorithm(string name) {
-    name = "AES" or
-    name = "AES128" or
-    name = "AES192" or
-    name = "AES256" or
-    name = "AES512" or
-    name = "RSA" or
-    name = "RABBIT" or
-    name = "BLOWFISH"
-  }
-
-  predicate isWeakEncryptionAlgorithm(string name) {
-    name = "DES" or
-    name = "3DES" or
-    name = "TRIPLEDES" or
-    name = "TDEA" or
-    name = "TRIPLEDEA" or
-    name = "ARC2" or
-    name = "RC2" or
-    name = "ARC4" or
-    name = "RC4" or
-    name = "ARCFOUR" or
-    name = "ARC5" or
-    name = "RC5"
-  }
-
-  predicate isStrongPasswordHashingAlgorithm(string name) {
-    name = "ARGON2" or
-    name = "PBKDF2" or
-    name = "BCRYPT" or
-    name = "SCRYPT"
-  }
-
-  predicate isWeakPasswordHashingAlgorithm(string name) { none() }
-}
-
-private import AlgorithmNames
+private import internal.CryptoAlgorithmNames
 
 /**
  * A cryptographic algorithm.
@@ -118,11 +40,13 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
 
   /**
    * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes, and underscores.
+   * white space, dashes, underscores, and anything after a dash in the name
+   * (to ignore modes of operation, such as CBC or ECB).
    */
   bindingset[name]
   predicate matchesName(string name) {
-    name.toUpperCase().regexpReplaceAll("[-_ ]", "") = getName()
+    [name.toUpperCase(), name.toUpperCase().regexpCapture("^(\\w+)(?:-.*)?$", 1)]
+        .regexpReplaceAll("[-_ ]", "") = getName()
   }
 
   /**

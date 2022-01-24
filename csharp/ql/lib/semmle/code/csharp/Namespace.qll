@@ -19,9 +19,6 @@ class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
  * ```
  */
 class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespace {
-  /** Gets the simple name of this namespace, for example `IO` in `System.IO`. */
-  override string getName() { namespaces(this, result) }
-
   override Namespace getParent() { result = this.getParentNamespace() }
 
   override Namespace getParentNamespace() { parent_namespace(this, result) }

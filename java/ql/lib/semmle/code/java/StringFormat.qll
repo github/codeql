@@ -152,15 +152,15 @@ class FormattingCall extends Call {
   private Expr getLastArg() {
     exists(Expr last | last = this.getArgument(this.getNumArgument() - 1) |
       if this.hasExplicitVarargsArray()
-      then result = last.(ArrayCreationExpr).getInit().getInit(getVarargsCount() - 1)
+      then result = last.(ArrayCreationExpr).getInit().getInit(this.getVarargsCount() - 1)
       else result = last
     )
   }
 
   /** Holds if this uses the "logger ({})" format syntax and the last argument is a `Throwable`. */
   predicate hasTrailingThrowableArgument() {
-    getSyntax() = TFmtLogger() and
-    getLastArg().getType().(RefType).getASourceSupertype*() instanceof TypeThrowable
+    this.getSyntax() = TFmtLogger() and
+    this.getLastArg().getType().(RefType).getASourceSupertype*() instanceof TypeThrowable
   }
 
   /** Gets the argument to this call in the position of the format string */
@@ -171,7 +171,7 @@ class FormattingCall extends Call {
     exists(int i |
       result = this.getArgument(i) and
       i > this.getFormatStringIndex() and
-      not hasExplicitVarargsArray()
+      not this.hasExplicitVarargsArray()
     )
   }
 
@@ -279,7 +279,7 @@ private predicate formatStringFragment(Expr fmt) {
 private predicate formatStringValue(Expr e, string fmtvalue) {
   formatStringFragment(e) and
   (
-    e.(StringLiteral).getRepresentedString() = fmtvalue
+    e.(StringLiteral).getValue() = fmtvalue
     or
     e.getType() instanceof IntegralType and fmtvalue = "1" // dummy value
     or
@@ -318,7 +318,7 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
       getprop.hasName("getProperty") and
       getprop.getDeclaringType().hasQualifiedName("java.lang", "System") and
       getprop.getNumberOfParameters() = 1 and
-      ma.getAnArgument().(StringLiteral).getRepresentedString() = prop and
+      ma.getAnArgument().(StringLiteral).getValue() = prop and
       (prop = "line.separator" or prop = "file.separator" or prop = "path.separator") and
       fmtvalue = "x" // dummy value
     )
@@ -433,15 +433,15 @@ private class PrintfFormatString extends FormatString {
   override int getMaxFmtSpecIndex() {
     result =
       max(int ix |
-        ix = fmtSpecRefersToSpecificIndex(_) or
-        ix = count(int i | fmtSpecRefersToSequentialIndex(i))
+        ix = this.fmtSpecRefersToSpecificIndex(_) or
+        ix = count(int i | this.fmtSpecRefersToSequentialIndex(i))
       )
   }
 
   override int getASkippedFmtSpecIndex() {
-    result in [1 .. getMaxFmtSpecIndex()] and
-    result > count(int i | fmtSpecRefersToSequentialIndex(i)) and
-    not result = fmtSpecRefersToSpecificIndex(_)
+    result in [1 .. this.getMaxFmtSpecIndex()] and
+    result > count(int i | this.fmtSpecRefersToSequentialIndex(i)) and
+    not result = this.fmtSpecRefersToSpecificIndex(_)
   }
 
   private int getFmtSpecRank(int specOffset) {
@@ -449,14 +449,14 @@ private class PrintfFormatString extends FormatString {
   }
 
   override int getAnArgUsageOffset(int argNo) {
-    argNo = fmtSpecRefersToSpecificIndex(result)
+    argNo = this.fmtSpecRefersToSpecificIndex(result)
     or
-    result = rank[argNo](int i | fmtSpecRefersToSequentialIndex(i))
+    result = rank[argNo](int i | this.fmtSpecRefersToSequentialIndex(i))
     or
-    fmtSpecRefersToPrevious(result) and
+    this.fmtSpecRefersToPrevious(result) and
     exists(int previousOffset |
-      getFmtSpecRank(previousOffset) = getFmtSpecRank(result) - 1 and
-      previousOffset = getAnArgUsageOffset(argNo)
+      this.getFmtSpecRank(previousOffset) = this.getFmtSpecRank(result) - 1 and
+      previousOffset = this.getAnArgUsageOffset(argNo)
     )
   }
 }
@@ -479,10 +479,12 @@ private class LoggerFormatString extends FormatString {
   private predicate fmtPlaceholder(int i) {
     this.charAt(i) = "{" and
     this.charAt(i + 1) = "}" and
-    not true = isUnescapedBackslash(i - 1)
+    not true = this.isUnescapedBackslash(i - 1)
   }
 
-  override int getMaxFmtSpecIndex() { result = count(int i | fmtPlaceholder(i)) }
+  override int getMaxFmtSpecIndex() { result = count(int i | this.fmtPlaceholder(i)) }
 
-  override int getAnArgUsageOffset(int argNo) { result = rank[argNo](int i | fmtPlaceholder(i)) }
+  override int getAnArgUsageOffset(int argNo) {
+    result = rank[argNo](int i | this.fmtPlaceholder(i))
+  }
 }

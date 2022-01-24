@@ -5,6 +5,7 @@ edges
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input indirection |
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input indirection |
+subpaths
 nodes
 | test.cpp:54:17:54:20 | argv | semmle.label | argv |
 | test.cpp:54:17:54:20 | argv | semmle.label | argv |

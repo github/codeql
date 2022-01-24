@@ -8,7 +8,7 @@
  * @precision medium
  * @id java/insecure-ldaps-endpoint
  * @tags security
- *       external/cwe-297
+ *       external/cwe/cwe-297
  */
 
 import java

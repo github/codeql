@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
@@ -25,6 +26,7 @@ import semmle.code.java.frameworks.spring.SpringWebClient
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
+import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
@@ -44,8 +46,8 @@ private class RmiMethodParameterSource extends RemoteFlowSource {
     exists(RemoteCallableMethod method |
       method.getAParameter() = this.asParameter() and
       (
-        getType() instanceof PrimitiveType or
-        getType() instanceof TypeString
+        this.getType() instanceof PrimitiveType or
+        this.getType() instanceof TypeString
       )
     )
   }
@@ -108,7 +110,7 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
 }
 
 private class PlayParameterSource extends RemoteFlowSource {
-  PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
+  PlayParameterSource() { this.asParameter() instanceof PlayActionMethodQueryParameter }
 
   override string getSourceType() { result = "Play Query Parameters" }
 }
@@ -245,4 +247,31 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
   ExportedAndroidIntentInput() { receiverType.(ExportableAndroidComponent).isExported() }
 
   override string getSourceType() { result = "Exported Android intent source" }
+}
+
+/** A parameter of an entry-point method declared in a `ContentProvider` class. */
+class AndroidContentProviderInput extends DataFlow::Node {
+  AndroidContentProvider declaringType;
+
+  AndroidContentProviderInput() {
+    sourceNode(this, "contentprovider") and
+    this.getEnclosingCallable().getDeclaringType() = declaringType
+  }
+}
+
+/** A parameter of an entry-point method declared in an exported `ContentProvider` class. */
+class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidContentProviderInput {
+  ExportedAndroidContentProviderInput() { declaringType.isExported() }
+
+  override string getSourceType() { result = "Exported Android content provider source" }
+}
+
+/**
+ * The data Intent parameter in the `onActivityResult` method in an Activity or Fragment that
+ * calls `startActivityForResult` with an implicit Intent.
+ */
+class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, RemoteFlowSource {
+  OnActivityResultIntentSource() { this.isRemoteSource() }
+
+  override string getSourceType() { result = "Android onActivityResult incoming Intent" }
 }

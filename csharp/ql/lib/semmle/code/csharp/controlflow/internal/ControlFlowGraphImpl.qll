@@ -71,7 +71,7 @@ newtype CompilationExt =
   TBuildless() { extractionIsStandalone() }
 
 /** Gets the compilation that source file `f` belongs to. */
-CompilationExt getCompilation(SourceFile f) {
+CompilationExt getCompilation(File f) {
   exists(Compilation c |
     f = c.getAFileCompiled() and
     result = TCompilation(c)
@@ -97,6 +97,24 @@ module ControlFlowTree {
   predicate idOf(Range_ x, int y) = equivalenceRelation(id/2)(x, y)
 }
 
+/**
+ * The `expr_parent_top_level_adjusted()` relation restricted to exclude relations
+ * between properties and their getters' expression bodies in properties such as
+ * `int P => 0`.
+ *
+ * This is in order to only associate the expression body with one CFG scope, namely
+ * the getter (and not the declaration itself).
+ */
+private predicate expr_parent_top_level_adjusted2(
+  Expr child, int i, @top_level_exprorstmt_parent parent
+) {
+  expr_parent_top_level_adjusted(child, i, parent) and
+  not exists(Getter g |
+    g.getDeclaration() = parent and
+    i = 0
+  )
+}
+
 /** Holds if `first` is first executed when entering `scope`. */
 predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
   scope =
@@ -109,17 +127,23 @@ predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
         else first(c.getBody(), first)
     )
   or
-  expr_parent_top_level_adjusted(any(Expr e | first(e, first)), _, scope) and
+  expr_parent_top_level_adjusted2(any(Expr e | first(e, first)), _, scope) and
   not scope instanceof Callable
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-predicate scopeLast(Callable scope, ControlFlowElement last, Completion c) {
-  last(scope.getBody(), last, c) and
-  not c instanceof GotoCompletion
+predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
+  scope =
+    any(Callable callable |
+      last(callable.getBody(), last, c) and
+      not c instanceof GotoCompletion
+      or
+      last(InitializerSplitting::lastConstructorInitializer(scope, _), last, c) and
+      not callable.hasBody()
+    )
   or
-  last(InitializerSplitting::lastConstructorInitializer(scope, _), last, c) and
-  not scope.hasBody()
+  expr_parent_top_level_adjusted2(any(Expr e | last(e, last, c)), _, scope) and
+  not scope instanceof Callable
 }
 
 private class ConstructorTree extends ControlFlowTree, Constructor {
@@ -495,7 +519,7 @@ module Expressions {
       // Flow from last element of left operand to first element of right operand
       last(this.getLeftOperand(), pred, c) and
       c.(NullnessCompletion).isNull() and
-      first(getRightOperand(), succ)
+      first(this.getRightOperand(), succ)
       or
       // Post-order: flow from last element of left operand to element itself
       last(this.getLeftOperand(), pred, c) and
@@ -504,7 +528,7 @@ module Expressions {
       not c.(NullnessCompletion).isNull()
       or
       // Post-order: flow from last element of right operand to element itself
-      last(getRightOperand(), pred, c) and
+      last(this.getRightOperand(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
@@ -575,7 +599,7 @@ module Expressions {
       PostOrderTree.super.last(last, c)
       or
       // Qualifier exits with a `null` completion
-      lastQualifier(last, c) and
+      this.lastQualifier(last, c) and
       c.(NullnessCompletion).isNull()
     }
 
@@ -1483,7 +1507,7 @@ module Statements {
       )
       or
       // Flow into `finally` block
-      pred = getAFinallyPredecessor(c, true) and
+      pred = this.getAFinallyPredecessor(c, true) and
       first(this.getFinally(), succ)
     }
   }
@@ -1540,7 +1564,7 @@ module Statements {
       c =
         any(NestedCompletion nc |
           nc.getNestLevel() = 0 and
-          this.throwMayBeUncaught(nc.getOuterCompletion().(ThrowCompletion)) and
+          this.throwMayBeUncaught(nc.getOuterCompletion()) and
           (
             // Incompatible exception type: clause itself
             last = this and

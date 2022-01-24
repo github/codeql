@@ -52,6 +52,8 @@ def test_access(x, y, z):
         reversed(tainted_list), # $ tainted
         iter(tainted_list), # $ tainted
         next(iter(tainted_list)), # $ tainted
+        [i for i in tainted_list], # $ tainted
+        [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
     )
 
     a, b, c = tainted_list[0:3]

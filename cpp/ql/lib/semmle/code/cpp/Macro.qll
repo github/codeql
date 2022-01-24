@@ -44,10 +44,10 @@ class Macro extends PreprocessorDirective, @ppd_define {
    * Gets the name of the macro.  For example, `MAX` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getName() { result = getHead().splitAt("(", 0) }
+  string getName() { result = this.getHead().splitAt("(", 0) }
 
   /** Holds if the macro has name `name`. */
-  predicate hasName(string name) { getName() = name }
+  predicate hasName(string name) { this.getName() = name }
 }
 
 /**
@@ -130,7 +130,7 @@ class MacroAccess extends Locatable, @macroinvocation {
   override string toString() { result = this.getMacro().getHead() }
 
   /** Gets the name of the accessed macro. */
-  string getMacroName() { result = getMacro().getName() }
+  string getMacroName() { result = this.getMacro().getName() }
 }
 
 /**
@@ -197,8 +197,8 @@ class MacroInvocation extends MacroAccess {
    * expression. In other cases, it may have multiple results or no results.
    */
   Expr getExpr() {
-    result = getAnExpandedElement() and
-    not result.getParent() = getAnExpandedElement() and
+    result = this.getAnExpandedElement() and
+    not result.getParent() = this.getAnExpandedElement() and
     not result instanceof Conversion
   }
 
@@ -208,8 +208,8 @@ class MacroInvocation extends MacroAccess {
    * element is not a statement (for example if it is an expression).
    */
   Stmt getStmt() {
-    result = getAnExpandedElement() and
-    not result.getParent() = getAnExpandedElement()
+    result = this.getAnExpandedElement() and
+    not result.getParent() = this.getAnExpandedElement()
   }
 
   /**
@@ -278,7 +278,7 @@ deprecated class MacroInvocationExpr extends Expr {
   MacroInvocation getInvocation() { result.getExpr() = this }
 
   /** Gets the name of the invoked macro. */
-  string getMacroName() { result = getInvocation().getMacroName() }
+  string getMacroName() { result = this.getInvocation().getMacroName() }
 }
 
 /**
@@ -298,7 +298,7 @@ deprecated class MacroInvocationStmt extends Stmt {
   MacroInvocation getInvocation() { result.getStmt() = this }
 
   /** Gets the name of the invoked macro. */
-  string getMacroName() { result = getInvocation().getMacroName() }
+  string getMacroName() { result = this.getInvocation().getMacroName() }
 }
 
 /** Holds if `l` is the location of a macro. */

@@ -403,6 +403,7 @@
 | LocalDataFlow.cs:235:9:235:14 | access to local variable sink36 | LocalDataFlow.cs:235:9:235:33 | call to method AppendLine |
 | LocalDataFlow.cs:235:9:235:14 | access to local variable sink36 | LocalDataFlow.cs:236:15:236:20 | access to local variable sink36 |
 | LocalDataFlow.cs:235:27:235:32 | access to local variable sink35 | LocalDataFlow.cs:235:9:235:14 | [post] access to local variable sink36 |
+| LocalDataFlow.cs:235:27:235:32 | access to local variable sink35 | LocalDataFlow.cs:235:9:235:33 | call to method AppendLine |
 | LocalDataFlow.cs:239:13:239:51 | SSA def(nonSink10) | LocalDataFlow.cs:240:15:240:23 | access to local variable nonSink10 |
 | LocalDataFlow.cs:239:25:239:51 | object creation of type StringBuilder | LocalDataFlow.cs:239:13:239:51 | SSA def(nonSink10) |
 | LocalDataFlow.cs:239:43:239:50 | access to local variable nonSink0 | LocalDataFlow.cs:239:25:239:51 | object creation of type StringBuilder |
@@ -419,6 +420,7 @@
 | LocalDataFlow.cs:243:9:243:17 | access to local variable nonSink10 | LocalDataFlow.cs:243:9:243:38 | call to method AppendLine |
 | LocalDataFlow.cs:243:9:243:17 | access to local variable nonSink10 | LocalDataFlow.cs:244:15:244:23 | access to local variable nonSink10 |
 | LocalDataFlow.cs:243:30:243:37 | access to local variable nonSink0 | LocalDataFlow.cs:243:9:243:17 | [post] access to local variable nonSink10 |
+| LocalDataFlow.cs:243:30:243:37 | access to local variable nonSink0 | LocalDataFlow.cs:243:9:243:38 | call to method AppendLine |
 | LocalDataFlow.cs:247:13:247:52 | SSA def(taintedDataContract) | LocalDataFlow.cs:248:22:248:40 | access to local variable taintedDataContract |
 | LocalDataFlow.cs:247:13:247:52 | SSA qualifier def(taintedDataContract.AList) | LocalDataFlow.cs:250:22:250:46 | access to property AList |
 | LocalDataFlow.cs:247:13:247:52 | SSA qualifier def(taintedDataContract.AString) | LocalDataFlow.cs:248:22:248:48 | access to property AString |

@@ -1,10 +1,11 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TypeTracker
+import semmle.python.ApiGraphs
 
 private DataFlow::TypeTrackingNode module_tracker(TypeTracker t) {
   t.start() and
-  result = DataFlow::importNode("module")
+  result = API::moduleImport("module").getAUse()
   or
   exists(TypeTracker t2 | result = module_tracker(t2).track(t2, t))
 }

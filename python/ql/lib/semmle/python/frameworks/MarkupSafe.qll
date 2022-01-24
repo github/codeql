@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
  * Provides models for the `MarkupSafe` PyPI package.
@@ -82,7 +83,7 @@ private module MarkupSafeModel {
     }
 
     /** Taint propagation for `markupsafe.Markup`. */
-    class AddtionalTaintSteps extends TaintTracking::AdditionalTaintStep {
+    private class AddtionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeTo.(ClassInstantiation).getArg(0) = nodeFrom
       }

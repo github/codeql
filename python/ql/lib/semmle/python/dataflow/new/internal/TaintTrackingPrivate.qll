@@ -11,6 +11,12 @@ private import semmle.python.ApiGraphs
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
+
+/**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
  */
@@ -46,9 +52,15 @@ private module Cached {
     or
     copyStep(nodeFrom, nodeTo)
     or
-    forStep(nodeFrom, nodeTo)
+    DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
     or
-    unpackingAssignmentStep(nodeFrom, nodeTo)
+    DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
+    or
+    DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
+    or
+    awaitStep(nodeFrom, nodeTo)
+    or
+    asyncWithStep(nodeFrom, nodeTo)
   }
 }
 
@@ -201,26 +213,30 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to `for`-iteration,
- * for example `for x in xs`, or `for x,y in points`.
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with an `await`-step,
+ * such that the whole expression `await x` is tainted if `x` is tainted.
  */
-predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
-  exists(EssaNodeDefinition defn, For for |
-    for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
-    nodeTo.getVar() = defn and
-    nodeFrom.asExpr() = for.getIter()
-  )
+predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  nodeTo.asExpr().(Await).getValue() = nodeFrom.asExpr()
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to iterable unpacking.
- * Only handles normal assignment (`x,y = calc_point()`), since `for x,y in points` is handled by `forStep`.
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` inside an `async with` statement.
+ *
+ * For example in
+ * ```python
+ * async with open("foo") as f:
+ * ```
+ * the variable `f` is tainted if the result of `open("foo")` is tainted.
  */
-predicate unpackingAssignmentStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
-  // `a, b = myiterable` or `head, *tail = myiterable` (only Python 3)
-  exists(MultiAssignmentDefinition defn, Assign assign |
-    assign.getATarget().contains(defn.getDefiningNode().getNode()) and
-    nodeTo.getVar() = defn and
-    nodeFrom.asExpr() = assign.getValue()
+predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    nodeFrom.(DataFlow::CfgNode).getNode() = contextManager and
+    nodeTo.(DataFlow::EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+    // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
+    with.getContextExpr() = contextManager.getNode() and
+    with.getOptionalVars() = var.getNode() and
+    with.isAsync() and
+    contextManager.strictlyDominates(var)
   )
 }

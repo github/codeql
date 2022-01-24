@@ -33,7 +33,7 @@ import TaintedWithPath
  *    hasExplicitLimit()    exists(getMaxData())  exists(getBufferSize(bw.getDest(), _))) handled by
  *    NO                    NO                    either                                  UnboundedWrite.ql isUnboundedWrite()
  *    NO                    YES                   NO                                      UnboundedWrite.ql isMaybeUnboundedWrite()
- *    NO                    YES                   YES                                     OverrunWrite.ql, OverrunWriteFloat.ql
+ *    NO                    YES                   YES                                     VeryLikelyOverrunWrite.ql, OverrunWrite.ql, OverrunWriteFloat.ql
  *    YES                   either                YES                                     BadlyBoundedWrite.ql
  *    YES                   either                NO                                      (assumed OK)
  */
@@ -44,7 +44,7 @@ import TaintedWithPath
 
 predicate isUnboundedWrite(BufferWrite bw) {
   not bw.hasExplicitLimit() and // has no explicit size limit
-  not exists(bw.getMaxData()) // and we can't deduce an upper bound to the amount copied
+  not exists(bw.getMaxData(_)) // and we can't deduce an upper bound to the amount copied
 }
 
 /*

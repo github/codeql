@@ -9,6 +9,31 @@ private import tainttracking1.TaintTrackingParameter::Private
 private import tainttracking1.TaintTrackingParameter::Public
 
 module Consistency {
+  private newtype TConsistencyConfiguration = MkConsistencyConfiguration()
+
+  /** A class for configuring the consistency queries. */
+  class ConsistencyConfiguration extends TConsistencyConfiguration {
+    string toString() { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
+    predicate uniqueEnclosingCallableExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
+    predicate uniqueNodeLocationExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
+    predicate missingLocationExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
+    predicate postWithInFlowExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `argHasPostUpdate`. */
+    predicate argHasPostUpdateExclude(ArgumentNode n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
+    predicate reverseReadExclude(Node n) { none() }
+  }
+
   private class RelevantNode extends Node {
     RelevantNode() {
       this instanceof ArgumentNode or
@@ -31,8 +56,9 @@ module Consistency {
   query predicate uniqueEnclosingCallable(Node n, string msg) {
     exists(int c |
       n instanceof RelevantNode and
-      c = count(n.getEnclosingCallable()) and
+      c = count(nodeGetEnclosingCallable(n)) and
       c != 1 and
+      not any(ConsistencyConfiguration conf).uniqueEnclosingCallableExclude(n) and
       msg = "Node should have one enclosing callable but has " + c + "."
     )
   }
@@ -53,6 +79,7 @@ module Consistency {
           n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
         ) and
       c != 1 and
+      not any(ConsistencyConfiguration conf).uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
     )
   }
@@ -63,7 +90,8 @@ module Consistency {
         strictcount(Node n |
           not exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
             n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-          )
+          ) and
+          not any(ConsistencyConfiguration conf).missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
     )
@@ -85,13 +113,13 @@ module Consistency {
   }
 
   query predicate parameterCallable(ParameterNode p, string msg) {
-    exists(DataFlowCallable c | p.isParameterOf(c, _) and c != p.getEnclosingCallable()) and
+    exists(DataFlowCallable c | isParameterNode(p, c, _) and c != nodeGetEnclosingCallable(p)) and
     msg = "Callable mismatch for parameter."
   }
 
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
     simpleLocalFlowStep(n1, n2) and
-    n1.getEnclosingCallable() != n2.getEnclosingCallable() and
+    nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
 
@@ -106,7 +134,7 @@ module Consistency {
   query predicate unreachableNodeCCtx(Node n, DataFlowCall call, string msg) {
     isUnreachableInCall(n, call) and
     exists(DataFlowCallable c |
-      c = n.getEnclosingCallable() and
+      c = nodeGetEnclosingCallable(n) and
       not viableCallable(call) = c
     ) and
     msg = "Call context for isUnreachableInCall is inconsistent with call graph."
@@ -120,7 +148,7 @@ module Consistency {
       n.(ArgumentNode).argumentOf(call, _) and
       msg = "ArgumentNode and call does not share enclosing callable."
     ) and
-    n.getEnclosingCallable() != call.getEnclosingCallable()
+    nodeGetEnclosingCallable(n) != call.getEnclosingCallable()
   }
 
   // This predicate helps the compiler forget that in some languages
@@ -151,7 +179,7 @@ module Consistency {
   }
 
   query predicate postIsInSameCallable(PostUpdateNode n, string msg) {
-    n.getEnclosingCallable() != n.getPreUpdateNode().getEnclosingCallable() and
+    nodeGetEnclosingCallable(n) != nodeGetEnclosingCallable(n.getPreUpdateNode()) and
     msg = "PostUpdateNode does not share callable with its pre-update node."
   }
 
@@ -159,12 +187,13 @@ module Consistency {
 
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
+    not any(ConsistencyConfiguration conf).reverseReadExclude(n) and
     msg = "Origin of readStep is missing a PostUpdateNode."
   }
 
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
-    not isImmutableOrUnobservable(n) and
+    not any(ConsistencyConfiguration c).argHasPostUpdateExclude(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
   }
 
@@ -175,7 +204,9 @@ module Consistency {
 
   query predicate postWithInFlow(Node n, string msg) {
     isPostUpdateNode(n) and
+    not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
+    not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
 }

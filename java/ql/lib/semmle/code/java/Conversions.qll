@@ -27,7 +27,7 @@ abstract class ConversionSite extends Expr {
   /**
    * Whether this conversion site actually induces a conversion.
    */
-  predicate isTrivial() { getConversionTarget() = getConversionSource() }
+  predicate isTrivial() { this.getConversionTarget() = this.getConversionSource() }
 
   /**
    * Whether this conversion is implicit.

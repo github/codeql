@@ -16,16 +16,12 @@ private import javascript
  * ~A.indexOf(B)
  * ```
  */
-class InclusionTest extends DataFlow::Node {
-  InclusionTest::Range range;
-
-  InclusionTest() { this = range }
-
+class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
   /** Gets the `A` in `A.includes(B)`. */
-  DataFlow::Node getContainerNode() { result = range.getContainerNode() }
+  DataFlow::Node getContainerNode() { result = super.getContainerNode() }
 
   /** Gets the `B` in `A.includes(B)`. */
-  DataFlow::Node getContainedNode() { result = range.getContainedNode() }
+  DataFlow::Node getContainedNode() { result = super.getContainedNode() }
 
   /**
    * Gets the polarity of the check.
@@ -33,7 +29,7 @@ class InclusionTest extends DataFlow::Node {
    * If the polarity is `false` the check returns `true` if the container does not contain
    * the given element.
    */
-  boolean getPolarity() { result = range.getPolarity() }
+  boolean getPolarity() { result = super.getPolarity() }
 }
 
 module InclusionTest {
@@ -98,13 +94,13 @@ module InclusionTest {
    */
   private class Includes_Native extends Range, DataFlow::MethodCallNode {
     Includes_Native() {
-      getMethodName() = "includes" and
-      getNumArgument() = 1
+      this.getMethodName() = "includes" and
+      this.getNumArgument() = 1
     }
 
-    override DataFlow::Node getContainerNode() { result = getReceiver() }
+    override DataFlow::Node getContainerNode() { result = this.getReceiver() }
 
-    override DataFlow::Node getContainedNode() { result = getArgument(0) }
+    override DataFlow::Node getContainedNode() { result = this.getArgument(0) }
   }
 
   /**
@@ -121,9 +117,9 @@ module InclusionTest {
       )
     }
 
-    override DataFlow::Node getContainerNode() { result = getArgument(0) }
+    override DataFlow::Node getContainerNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getContainedNode() { result = getArgument(1) }
+    override DataFlow::Node getContainedNode() { result = this.getArgument(1) }
   }
 
   /**

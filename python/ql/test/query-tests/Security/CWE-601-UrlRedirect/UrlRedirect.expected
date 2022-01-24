@@ -40,6 +40,7 @@ nodes
 | test.py:81:17:81:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:81:17:81:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:83:21:83:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+subpaths
 #select
 | test.py:8:21:8:26 | ControlFlowNode for target | test.py:7:14:7:20 | ControlFlowNode for request | test.py:8:21:8:26 | ControlFlowNode for target | Untrusted URL redirection due to $@. | test.py:7:14:7:20 | ControlFlowNode for request | A user-provided value |
 | test.py:32:21:32:24 | ControlFlowNode for safe | test.py:30:17:30:23 | ControlFlowNode for request | test.py:32:21:32:24 | ControlFlowNode for safe | Untrusted URL redirection due to $@. | test.py:30:17:30:23 | ControlFlowNode for request | A user-provided value |

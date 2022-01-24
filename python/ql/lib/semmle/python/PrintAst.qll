@@ -52,8 +52,7 @@ private newtype TPrintAstNode =
   TStmtListNode(StmtList list) {
     shouldPrint(list.getAnItem(), _) and
     not list = any(Module mod).getBody() and
-    not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child)) and
-    exists(list.getAnItem())
+    not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child))
   } or
   TRegExpTermNode(RegExpTerm term) {
     exists(StrConst str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
@@ -77,7 +76,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets a child of this node.
    */
-  final PrintAstNode getAChild() { result = getChild(_) }
+  final PrintAstNode getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the parent of this node, if any.
@@ -95,7 +94,7 @@ class PrintAstNode extends TPrintAstNode {
    */
   string getProperty(string key) {
     key = "semmle.label" and
-    result = toString()
+    result = this.toString()
   }
 
   /**
@@ -104,7 +103,7 @@ class PrintAstNode extends TPrintAstNode {
    * this.
    */
   string getChildEdgeLabel(int childIndex) {
-    exists(getChild(childIndex)) and
+    exists(this.getChild(childIndex)) and
     result = childIndex.toString()
   }
 }
@@ -158,13 +157,13 @@ class AstElementNode extends PrintAstNode, TElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     exists(AstNode el | result.(AstElementNode).getAstNode() = el |
-      el = this.getChildNode(childIndex) and not el = getStmtList(_, _).getAnItem()
+      el = this.getChildNode(childIndex) and not el = this.getStmtList(_, _).getAnItem()
     )
     or
     // displaying all `StmtList` after the other children.
     exists(int offset | offset = 1 + max([0, any(int index | exists(this.getChildNode(index)))]) |
       exists(int index | childIndex = index + offset |
-        result.(StmtListNode).getList() = getStmtList(index, _)
+        result.(StmtListNode).getList() = this.getStmtList(index, _)
       )
     )
   }
@@ -300,7 +299,7 @@ class StmtListNode extends PrintAstNode, TStmtListNode {
 
   private string getLabel() { this.getList() = any(AstElementNode node).getStmtList(_, result) }
 
-  override string toString() { result = "(StmtList) " + getLabel() }
+  override string toString() { result = "(StmtList) " + this.getLabel() }
 
   override PrintAstNode getChild(int childIndex) {
     exists(AstNode el | result.(AstElementNode).getAstNode() = el | el = list.getItem(childIndex))

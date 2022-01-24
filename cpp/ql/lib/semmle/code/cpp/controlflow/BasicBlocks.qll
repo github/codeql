@@ -194,14 +194,14 @@ class BasicBlock extends ControlFlowNodeBase {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    *
    * Yields no result if this basic block spans multiple source files.
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    hasLocationInfoInternal(filepath, startline, startcolumn, filepath, endline, endcolumn)
+    this.hasLocationInfoInternal(filepath, startline, startcolumn, filepath, endline, endcolumn)
   }
 
   pragma[noinline]
@@ -276,7 +276,7 @@ class EntryBasicBlock extends BasicBlock {
  */
 class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() {
-    getEnd() instanceof Function or
-    aborting(getEnd())
+    this.getEnd() instanceof Function or
+    aborting(this.getEnd())
   }
 }

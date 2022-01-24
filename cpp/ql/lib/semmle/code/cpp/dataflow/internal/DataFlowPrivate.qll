@@ -2,6 +2,20 @@ private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
+private import DataFlowImplConsistency
+
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
+}
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
@@ -34,7 +48,7 @@ private class Argument extends Expr {
  */
 class ArgumentNode extends Node {
   ArgumentNode() {
-    exists(Argument arg | this.asExpr() = arg) or
+    this.asExpr() instanceof Argument or
     this = getInstanceArgument(_)
   }
 
@@ -219,15 +233,13 @@ class DataFlowExpr = Expr;
 class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends Expr {
-  DataFlowCall() { this instanceof Call }
-
+class DataFlowCall extends Expr instanceof Call {
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Expr getArgument(int n) { result = this.(Call).getArgument(n) }
+  Expr getArgument(int n) { result = super.getArgument(n) }
 
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
@@ -240,6 +252,12 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub impl
 
 int accessPathLimit() { result = 5 }
 
+/**
+ * Holds if access paths with `c` at their head always should be tracked at high
+ * precision. This disables adaptive access path precision for such access paths.
+ */
+predicate forceHighPrecision(Content c) { none() }
+
 /** The unit type. */
 private newtype TUnit = TMkUnit()
 
@@ -247,27 +265,6 @@ private newtype TUnit = TMkUnit()
 class Unit extends TUnit {
   /** Gets a textual representation of this element. */
   string toString() { result = "unit" }
-}
-
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  // Is the null pointer (or something that's not really a pointer)
-  exists(n.asExpr().getValue())
-  or
-  // Isn't a pointer or is a pointer to const
-  forall(DerivedType dt | dt = n.asExpr().getActualType() |
-    dt.getBaseType().isConst()
-    or
-    dt.getBaseType() instanceof RoutineType
-  )
-  // The above list of cases isn't exhaustive, but it narrows down the
-  // consistency alerts enough that most of them are interesting.
 }
 
 /** Holds if `n` should be hidden from path explanations. */
@@ -283,3 +280,28 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Holds if flow is allowed to pass from parameter `p` and back to itself as a
+ * side-effect, resulting in a summary from `p` to itself.
+ *
+ * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
+ * by default as a heuristic.
+ */
+predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    // Is the null pointer (or something that's not really a pointer)
+    exists(n.asExpr().getValue())
+    or
+    // Isn't a pointer or is a pointer to const
+    forall(DerivedType dt | dt = n.asExpr().getActualType() |
+      dt.getBaseType().isConst()
+      or
+      dt.getBaseType() instanceof RoutineType
+    )
+    // The above list of cases isn't exhaustive, but it narrows down the
+    // consistency alerts enough that most of them are interesting.
+  }
+}
