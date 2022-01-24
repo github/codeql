@@ -1,7 +1,7 @@
 import re
 import subprocess
 
-many_versions = [ '1.4.32', '1.5.31', '1.6.0-RC2' ]
+many_versions = [ '1.4.32', '1.5.31', '1.6.10' ]
 
 def get_single_version():
     versionOutput = subprocess.run(['kotlinc', '-version'], capture_output=True, text=True)
