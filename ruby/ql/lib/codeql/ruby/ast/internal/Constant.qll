@@ -15,6 +15,10 @@ newtype TConstantValue =
 
 private newtype TRequiredConstantValue = MkRequiredConstantValue()
 
+/**
+ * A class that exists for QL technical reasons only (the IPA type used
+ * to represent constant values needs to be bounded).
+ */
 class RequiredConstantValue extends MkRequiredConstantValue {
   string toString() { none() }
 

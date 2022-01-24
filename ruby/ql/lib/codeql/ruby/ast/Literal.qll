@@ -77,12 +77,12 @@ private int parseInteger(Ruby::Integer i) {
         v = values.indexOf(c.toLowerCase()) and
         exp = str.replaceAll("_", "").length() - index - 1
       |
-        v * values.length().pow(exp)
+        v * values.length().pow(exp).floor()
       )
   )
 }
 
-private class RequiredIntegerConstantValue extends RequiredConstantValue {
+private class RequiredIntegerLiteralConstantValue extends RequiredConstantValue {
   override predicate requiredInt(int i) { i = any(IntegerLiteral il).getValue() }
 }
 
@@ -277,7 +277,7 @@ private class FalseLiteral extends BooleanLiteral, TFalseLiteral {
   final override predicate isFalse() { any() }
 }
 
-private class RequiredStringConstantValue extends RequiredConstantValue {
+private class RequiredEncodingLiteralConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) { s = "UTF-8" }
 }
 
@@ -293,7 +293,7 @@ class EncodingLiteral extends Literal, TEncoding {
   override ConstantValue::ConstantStringValue getConstantValue() { result.isString("UTF-8") }
 }
 
-private class RequiredIntegerConstantValue2 extends RequiredConstantValue {
+private class RequiredLineLiteralConstantValue extends RequiredConstantValue {
   override predicate requiredInt(int i) { i = any(LineLiteral ll).getLocation().getStartLine() }
 }
 
@@ -310,7 +310,7 @@ class LineLiteral extends Literal, TLine {
   }
 }
 
-private class RequiredStringConstantValue2 extends RequiredConstantValue {
+private class RequiredFileLiteralConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
     s = any(FileLiteral fl).getLocation().getFile().getAbsolutePath()
   }
@@ -346,7 +346,7 @@ class StringComponent extends AstNode, TStringComponent {
   ConstantValue::ConstantStringValue getConstantValue() { none() }
 }
 
-private class RequiredStringConstantValue3 extends RequiredConstantValue {
+private class RequiredStringTextComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
     s = any(Ruby::Token t | exists(TStringTextComponentNonRegexp(t))).getValue()
   }
@@ -378,7 +378,7 @@ class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp
   final override string getAPrimaryQlClass() { result = "StringTextComponent" }
 }
 
-private class RequiredStringConstantValue4 extends RequiredConstantValue {
+private class RequiredStringEscapeSequenceComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) {
     s = any(Ruby::Token t | exists(TStringEscapeSequenceComponentNonRegexp(t))).getValue()
   }
@@ -450,7 +450,7 @@ private string getRegExpTextComponentValue(RegExpTextComponent c) {
   )
 }
 
-private class RequiredStringConstantValue5 extends RequiredConstantValue {
+private class RequiredRegExpTextComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) { s = getRegExpTextComponentValue(_) }
 }
 
@@ -490,7 +490,7 @@ private string getRegExpEscapeSequenceComponentValue(RegExpEscapeSequenceCompone
   )
 }
 
-private class RequiredStringConstantValue6 extends RequiredConstantValue {
+private class RequiredRegExpEscapeSequenceComponentConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) { s = getRegExpEscapeSequenceComponentValue(_) }
 }
 
@@ -761,7 +761,7 @@ class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
 // Tree-sitter gives us value text including the colon, which we skip.
 private string getSimpleSymbolValue(Ruby::SimpleSymbol ss) { result = ss.getValue().suffix(1) }
 
-private class RequiredSymbolConstantValue extends RequiredConstantValue {
+private class RequiredSimpleSymbolConstantValue extends RequiredConstantValue {
   override predicate requiredSymbol(string s) { s = getSimpleSymbolValue(_) }
 }
 
@@ -795,7 +795,7 @@ private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
-private class RequiredSymbolConstantValue2 extends RequiredConstantValue {
+private class RequiredHashKeySymbolConstantValue extends RequiredConstantValue {
   override predicate requiredSymbol(string s) { s = any(Ruby::HashKeySymbol h).getValue() }
 }
 
@@ -829,7 +829,7 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
-private class RequiredStringConstantValue7 extends RequiredConstantValue {
+private class RequiredCharacterConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) { s = any(Ruby::Character c).getValue() }
 }
 
@@ -1131,7 +1131,7 @@ private string getMethodName(MethodName::Token t) {
   result = t.(Ruby::Setter).getName().getValue() + "="
 }
 
-private class RequiredStringConstantValue8 extends RequiredConstantValue {
+private class RequiredMethodNameConstantValue extends RequiredConstantValue {
   override predicate requiredString(string s) { s = getMethodName(_) }
 }
 

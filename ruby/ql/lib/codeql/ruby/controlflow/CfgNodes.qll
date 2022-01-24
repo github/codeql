@@ -272,6 +272,7 @@ module ExprNodes {
     final ExprCfgNode getOperand() { e.hasCfgChild(uo.getOperand(), this, result) }
 
     final override ConstantValue getConstantValue() {
+      // TODO: Implement support for complex numbers and rational numbers
       exists(string op, ConstantValue value | unaryConstFold(this, op, value) |
         op = "+" and
         result = value
@@ -373,6 +374,7 @@ module ExprNodes {
     final ExprCfgNode getRightOperand() { e.hasCfgChild(bo.getRightOperand(), this, result) }
 
     final override ConstantValue getConstantValue() {
+      // TODO: Implement support for complex numbers and rational numbers
       exists(string op, ConstantValue left, ConstantValue right |
         binaryConstFold(this, op, left, right)
       |
@@ -642,7 +644,7 @@ module ExprNodes {
       )
   }
 
-  private class RequiredStringConstantValue extends RequiredConstantValue {
+  private class RequiredStringlikeLiteralConstantValue extends RequiredConstantValue {
     override predicate requiredString(string s) {
       exists(StringlikeLiteralCfgNode n |
         s = getStringlikeLiteralCfgNodeValue(n) and
@@ -703,7 +705,7 @@ module ExprNodes {
       )
   }
 
-  private class RequiredStringConstantValue2 extends RequiredConstantValue {
+  private class RequiredRexExpLiteralConstantValue extends RequiredConstantValue {
     override predicate requiredString(string s) { s = getRegExpLiteralCfgNodeValue(_) }
   }
 
