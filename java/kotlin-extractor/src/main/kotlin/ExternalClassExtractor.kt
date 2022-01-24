@@ -66,8 +66,7 @@ class ExternalClassExtractor(val logger: FileLogger, val invocationTrapFile: Str
 
                             } catch (e: Exception) {
                                 manager.setHasError()
-                                trapTmpFile.delete()
-                                logger.error("Failed to extract '$binaryPath'", e)
+                                logger.error("Failed to extract '$binaryPath'. Partial TRAP file location is $trapTmpFile", e)
                             }
                         }
                     }

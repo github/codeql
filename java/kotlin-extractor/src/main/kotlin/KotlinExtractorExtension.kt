@@ -151,10 +151,7 @@ fun doFile(invocationTrapFile: String,
                 }
             }
         } catch (e: Exception) {
-            logger.error("Failed to extract '$srcFilePath'", e)
-            if (!trapTmpFile.delete()) {
-                logger.warn(Severity.WarnLow, "Failed to delete $trapTmpFile")
-            }
+            logger.error("Failed to extract '$srcFilePath'. Partial TRAP file location is $trapTmpFile", e)
         }
     }
 }
