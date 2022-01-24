@@ -511,8 +511,11 @@ open class KotlinFileExtractor(
 
     fun extractFunctionIfReal(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("function if real", f) {
-            if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
-                return
+            // TODO: We want to skip these, and use `.target` for
+            // functions, but that causes our type parameter mapping
+            // to go wrong and gives us IndexOutOfBoundsExceptions
+            // if (f.origin == IrDeclarationOrigin.FAKE_OVERRIDE)
+            //     return
             extractFunction(f, parentId, extractBody, typeSubstitution, classTypeArgsIncludingOuterClasses)
         }
     }
@@ -971,7 +974,11 @@ open class KotlinFileExtractor(
             }
     
             fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
-                val callTarget = syntacticCallTarget.target
+                // TODO: We want to say
+                //     callTarget = syntacticCallTarget.target
+                // but that causes our type parameter mapping
+                // to go wrong and gives us IndexOutOfBoundsExceptions
+                val callTarget = syntacticCallTarget // .target
                 val id = tw.getFreshIdLabel<DbMethodaccess>()
                 val type = useType(c.type)
                 val locId = tw.getLocation(c)
