@@ -59,7 +59,7 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 
-  override predicate hasSocketInput(FunctionInput input) { input.isParameter(2) }
+  override predicate hasSocketInput(FunctionInput input) { input.isParameterDeref(2) }
 }
 
 
