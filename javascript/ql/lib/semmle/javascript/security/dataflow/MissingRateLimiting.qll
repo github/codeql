@@ -47,7 +47,7 @@ abstract class ExpensiveRouteHandler extends DataFlow::Node {
  */
 deprecated class RateLimitedRouteHandlerExpr extends Express::RouteHandlerExpr {
   RateLimitedRouteHandlerExpr() {
-    Routing::getNode(flow()).isGuardedBy(any(RateLimitingMiddleware m))
+    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
   }
 }
 

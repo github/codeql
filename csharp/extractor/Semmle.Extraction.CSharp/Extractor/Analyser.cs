@@ -178,7 +178,7 @@ namespace Semmle.Extraction.CSharp
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            CIL.Analyser.ExtractCIL(layout, r.FilePath!, Logger, !options.Cache, options.PDB, options.TrapCompression, out var trapFile, out var extracted);
+            CIL.Analyser.ExtractCIL(layout, r.FilePath!, Logger, options, out var trapFile, out var extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }

@@ -11,7 +11,7 @@ import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 
-// This Content Provider isn't exported, so there shouldn't be any flow
+// This content provider isn't exported, so there shouldn't be any flow
 public class Safe extends ContentProvider {
 
 	void sink(Object o) {}

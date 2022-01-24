@@ -372,6 +372,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     nested_types(this, _, result)
   }
 
+  override predicate isRecord() { this.hasModifier("record") }
+
   override string toString() { result = Type.super.toString() }
 }
 
@@ -447,6 +449,14 @@ class SimpleType extends ValueType, @simple_type {
   int maxValue() { none() }
 
   override SystemNamespace getDeclaringNamespace() { any() }
+}
+
+/**
+ * A `record` like type.
+ * This can be either a `class` or a `struct`.
+ */
+class RecordType extends ValueOrRefType {
+  RecordType() { this.isRecord() }
 }
 
 /**
@@ -712,6 +722,18 @@ class Struct extends ValueType, @struct_type {
 }
 
 /**
+ * A `record struct`, for example
+ * ```csharp
+ * record struct RS {
+ *   ...
+ * }
+ * ```
+ */
+class RecordStruct extends RecordType, Struct {
+  override string getAPrimaryQlClass() { result = "RecordStruct" }
+}
+
+/**
  * A reference type.
  *
  * Either a `class` (`Class`), an `interface` (`Interface`), a `delegate` (`DelegateType`),
@@ -766,6 +788,16 @@ class Class extends RefType, @class_type {
 }
 
 /**
+ * DEPRECATED: Use `RecordClass` instead.
+ */
+deprecated class Record extends Class {
+  Record() { this.isRecord() }
+
+  /** Gets the clone method of this record. */
+  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
+}
+
+/**
  * A `record`, for example
  *
  * ```csharp
@@ -774,13 +806,11 @@ class Class extends RefType, @class_type {
  * }
  * ```
  */
-class Record extends Class {
-  Record() { this.isRecord() }
-
+class RecordClass extends RecordType, Class {
   /** Gets the clone method of this record. */
   RecordCloneMethod getCloneMethod() { result = this.getAMember() }
 
-  override string getAPrimaryQlClass() { result = "Record" }
+  override string getAPrimaryQlClass() { result = "RecordClass" }
 }
 
 /**

@@ -12,6 +12,7 @@
     problem.severity:
     - error
     - warning
+    - recommendation
 - exclude:
     deprecated: //
 - exclude:

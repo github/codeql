@@ -582,3 +582,14 @@ regexp.rb:
 #   71| [RegExpConstant, RegExpNormalChar] f
 
 #   74| [RegExpNamedCharacterProperty] [:digit:]
+
+#   78| [RegExpConstant, RegExpNormalChar] a
+
+#   78| [RegExpSequence] abc
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#   78| [RegExpConstant, RegExpNormalChar] b
+
+#   78| [RegExpConstant, RegExpNormalChar] c

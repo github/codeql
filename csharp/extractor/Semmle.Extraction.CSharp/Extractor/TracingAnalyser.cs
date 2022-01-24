@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp
             this.layout = new Layout();
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer);
+            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
             LogDiagnostics();
 
             SetReferencePaths();
@@ -188,7 +188,7 @@ namespace Semmle.Extraction.CSharp
         {
             get
             {
-                return extractor is null || extractor.Standalone || compilation is null ? Enumerable.Empty<Diagnostic>() :
+                return extractor is null || extractor.Mode.HasFlag(ExtractorMode.Standalone) || compilation is null ? Enumerable.Empty<Diagnostic>() :
                     compilation.
                     GetDiagnostics().
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));

@@ -272,10 +272,25 @@ private module Cached {
     TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Ruby::StringArray g) or
     TStringConcatenation(Ruby::ChainedString g) or
-    TStringEscapeSequenceComponent(Ruby::EscapeSequence g) or
-    TStringInterpolationComponent(Ruby::Interpolation g) or
-    TStringTextComponent(Ruby::Token g) {
-      g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent
+    TStringEscapeSequenceComponentNonRegexp(Ruby::EscapeSequence g) {
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringEscapeSequenceComponentRegexp(Ruby::EscapeSequence g) {
+      g.getParent() instanceof Ruby::Regex
+    } or
+    TStringInterpolationComponentNonRegexp(Ruby::Interpolation g) {
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringInterpolationComponentRegexp(Ruby::Interpolation g) {
+      g.getParent() instanceof Ruby::Regex
+    } or
+    TStringTextComponentNonRegexp(Ruby::Token g) {
+      (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
+      not g.getParent() instanceof Ruby::Regex
+    } or
+    TStringTextComponentRegexp(Ruby::Token g) {
+      (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
+      g.getParent() instanceof Ruby::Regex
     } or
     TSubExprReal(Ruby::Binary g) { g instanceof @ruby_binary_minus } or
     TSubExprSynth(AST::AstNode parent, int i) { mkSynthChild(SubExprKind(), parent, i) } or
@@ -489,9 +504,12 @@ private module Cached {
     n = TSplatParameter(result) or
     n = TStringArrayLiteral(result) or
     n = TStringConcatenation(result) or
-    n = TStringEscapeSequenceComponent(result) or
-    n = TStringInterpolationComponent(result) or
-    n = TStringTextComponent(result) or
+    n = TStringEscapeSequenceComponentNonRegexp(result) or
+    n = TStringEscapeSequenceComponentRegexp(result) or
+    n = TStringInterpolationComponentNonRegexp(result) or
+    n = TStringInterpolationComponentRegexp(result) or
+    n = TStringTextComponentNonRegexp(result) or
+    n = TStringTextComponentRegexp(result) or
     n = TSubExprReal(result) or
     n = TSubshellLiteral(result) or
     n = TSymbolArrayLiteral(result) or
@@ -679,6 +697,14 @@ class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or 
 class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
+
+class TStringTextComponent = TStringTextComponentNonRegexp or TStringTextComponentRegexp;
+
+class TStringEscapeSequenceComponent =
+  TStringEscapeSequenceComponentNonRegexp or TStringEscapeSequenceComponentRegexp;
+
+class TStringInterpolationComponent =
+  TStringInterpolationComponentNonRegexp or TStringInterpolationComponentRegexp;
 
 class TStringComponent =
   TStringTextComponent or TStringEscapeSequenceComponent or TStringInterpolationComponent;

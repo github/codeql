@@ -32,9 +32,7 @@ class GetContentIntent extends ClassInstanceExpr {
 class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
 
-  override predicate isSource(DataFlow2::Node src) {
-    exists(GetContentIntent gi | src.asExpr() = gi)
-  }
+  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof GetContentIntent }
 
   override predicate isSink(DataFlow2::Node sink) {
     exists(MethodAccess ma |

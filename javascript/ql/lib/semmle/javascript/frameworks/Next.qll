@@ -44,7 +44,7 @@ module NextJS {
   }
 
   /**
-   * User defined path parameter in `Next.js`.
+   * A user defined path parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {

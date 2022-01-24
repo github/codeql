@@ -16,7 +16,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "x-frame-options" module.
+   * A header produced by a route handler of the "x-frame-options" module.
    */
   class XFrameOptionsRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     XFrameOptionsRouteHandlerHeader() { this instanceof XFrameOptionsRouteHandler }
@@ -29,7 +29,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "x-frame-options" module.
+   * A route handler from the "x-frame-options" module.
    */
   class XFrameOptionsRouteHandler extends HTTP::RouteHandler {
     XFrameOptionsRouteHandler() {
@@ -43,7 +43,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "frameguard" module.
+   * A header produced by a route handler of the "frameguard" module.
    */
   class FrameGuardRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     FrameGuardRouteHandlerHeader() { this instanceof FrameGuardRouteHandler }
@@ -56,7 +56,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "frameguard" module.
+   * A route handler from the "frameguard" module.
    */
   class FrameGuardRouteHandler extends HTTP::RouteHandler {
     FrameGuardRouteHandler() { this = DataFlow::moduleImport("frameguard").getAnInvocation() }
@@ -68,7 +68,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "helmet" module.
+   * A header produced by a route handler of the "helmet" module.
    */
   class HelmetRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     HelmetRouteHandlerHeader() { this instanceof HelmetRouteHandler }
@@ -81,7 +81,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "helmet" module.
+   * A route handler from the "helmet" module.
    */
   class HelmetRouteHandler extends HTTP::RouteHandler {
     HelmetRouteHandler() {

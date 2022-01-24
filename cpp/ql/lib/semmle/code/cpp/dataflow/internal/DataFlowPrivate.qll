@@ -48,7 +48,7 @@ private class Argument extends Expr {
  */
 class ArgumentNode extends Node {
   ArgumentNode() {
-    exists(Argument arg | this.asExpr() = arg) or
+    this.asExpr() instanceof Argument or
     this = getInstanceArgument(_)
   }
 

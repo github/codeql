@@ -227,15 +227,8 @@ module SocketIO {
         )
         or
         // invocation of a chainable getter method
-        exists(string m |
-          m = "broadcast" or
-          m = "json" or
-          m = "local" or
-          m = "volatile"
-        |
-          result = pred.getAPropertyRead(m) and
-          t = t2.continue()
-        )
+        result = pred.getAPropertyRead(["broadcast", "json", "local", "volatile"]) and
+        t = t2.continue()
       )
     }
 

@@ -88,7 +88,12 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
         // Spring
         "org.springframework.jndi;JndiTemplate;false;lookup;;;Argument[0];jndi-injection",
         // spring-ldap 1.2.x and newer
-        "org.springframework.ldap.core;LdapOperations;true;lookup;;;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name);;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name,ContextMapper);;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name,String[],ContextMapper);;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(String);;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(String,ContextMapper);;Argument[0];jndi-injection",
+        "org.springframework.ldap.core;LdapOperations;true;lookup;(String,String[],ContextMapper);;Argument[0];jndi-injection",
         "org.springframework.ldap.core;LdapOperations;true;lookupContext;;;Argument[0];jndi-injection",
         "org.springframework.ldap.core;LdapOperations;true;findByDn;;;Argument[0];jndi-injection",
         "org.springframework.ldap.core;LdapOperations;true;rename;;;Argument[0];jndi-injection",

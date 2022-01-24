@@ -29,7 +29,8 @@ private string isExtensible(RefType ref) {
 
 predicate isRelevantForModels(Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
-  not isJdkInternal(api.getCompilationUnit())
+  not isJdkInternal(api.getCompilationUnit()) and
+  not api instanceof MainMethod
 }
 
 private predicate isInTestFile(File file) {

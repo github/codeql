@@ -39,7 +39,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     exists(DataFlow::Node r | r = requestNode.getAMethodCall("body") | result = r)
     or
     // Otherwise, treat the response as the response body.
-    not exists(DataFlow::Node r | r = requestNode.getAMethodCall("body")) and
+    not exists(requestNode.getAMethodCall("body")) and
     result = requestUse
   }
 

@@ -23,6 +23,10 @@ query predicate regExpLiterals(RegExpLiteral l, string valueText, string flags) 
   stringlikeLiterals(l, valueText) and flags = l.getFlagString()
 }
 
+query predicate regExpInterpolations(RegExpInterpolationComponent c, int i, Expr e, string eClass) {
+  e = c.getStmt(i) and eClass = e.getAPrimaryQlClass()
+}
+
 query predicate symbolLiterals(SymbolLiteral l, string valueText) {
   stringlikeLiterals(l, valueText)
 }

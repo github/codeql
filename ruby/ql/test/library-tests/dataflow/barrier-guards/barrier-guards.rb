@@ -31,3 +31,11 @@ else
 end
 
 foo
+
+FOO = ["foo"]
+
+if FOO.include?(foo)
+    foo
+else
+    foo
+end

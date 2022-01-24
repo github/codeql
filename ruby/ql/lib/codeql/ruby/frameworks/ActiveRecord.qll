@@ -147,9 +147,7 @@ private Expr sqlFragmentArgument(MethodCall call) {
 // part of an argument to an SQL executing method
 private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
   // Literals containing an interpolated value
-  exists(StringInterpolationComponent interpolated |
-    interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
-  )
+  sqlFragmentExpr.(StringlikeLiteral).getComponent(_) instanceof StringInterpolationComponent
   or
   // String concatenations
   sqlFragmentExpr instanceof AddExpr

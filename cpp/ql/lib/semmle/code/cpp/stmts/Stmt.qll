@@ -271,7 +271,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * if (b) { x = 1; }
    * ```
    */
-  predicate hasElse() { exists(Stmt s | this.getElse() = s) }
+  predicate hasElse() { exists(this.getElse()) }
 
   override string toString() { result = "if (...) ... " }
 
@@ -357,7 +357,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * if constexpr (b) { x = 1; }
    * ```
    */
-  predicate hasElse() { exists(Stmt s | this.getElse() = s) }
+  predicate hasElse() { exists(this.getElse()) }
 
   override string toString() { result = "if constexpr (...) ... " }
 

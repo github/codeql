@@ -297,3 +297,23 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
 
   override boolean getVerificationSetting() { result = false }
 }
+
+/**
+ * A call to `protect_from_forgery`.
+ */
+private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetting::Range {
+  private ActionControllerContextCall callExpr;
+
+  ActionControllerProtectFromForgeryCall() {
+    callExpr = this.asExpr().getExpr() and
+    callExpr.getMethodName() = "protect_from_forgery"
+  }
+
+  private string getWithValueText() { result = callExpr.getKeywordArgument("with").getValueText() }
+
+  // Calls without `with: :exception` can allow for bypassing CSRF protection
+  // in some scenarios.
+  override boolean getVerificationSetting() {
+    if this.getWithValueText() = "exception" then result = true else result = false
+  }
+}

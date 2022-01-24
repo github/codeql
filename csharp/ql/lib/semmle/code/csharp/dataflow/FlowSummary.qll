@@ -111,7 +111,7 @@ module SummaryComponentStack {
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(Record r).getAMember() and
+  c = any(RecordType r).getAMember() and
   exists(string name |
     c.getParameter(i).getName() = name and
     c.getDeclaringType().getAMember(name) = p
@@ -153,15 +153,11 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
 private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-  private SummaryComponent head;
-
-  RecordConstructorFlowRequiredSummaryComponentStack() {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and
       head = SummaryComponent::property(p) and
-      this = SummaryComponentStack::return()
+      tail = SummaryComponentStack::return()
     )
   }
-
-  override predicate required(SummaryComponent c) { c = head }
 }

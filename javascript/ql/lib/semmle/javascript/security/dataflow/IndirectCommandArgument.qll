@@ -12,13 +12,13 @@ import javascript
  */
 private predicate shellCmd(Expr shell, string arg) {
   exists(string s | s = shell.getStringValue() |
-    (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash") and
+    s = ["sh", "bash", "/bin/sh", "/bin/bash"] and
     arg = "-c"
   )
   or
   exists(string s | s = shell.getStringValue().toLowerCase() |
-    (s = "cmd" or s = "cmd.exe") and
-    (arg = "/c" or arg = "/C")
+    s = ["cmd", "cmd.exe"] and
+    arg = ["/c", "/C"]
   )
 }
 

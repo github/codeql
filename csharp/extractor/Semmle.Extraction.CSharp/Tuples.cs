@@ -413,14 +413,20 @@ namespace Semmle.Extraction.CSharp
         internal static void directive_nullables(this TextWriter trapFile, NullableDirective directive, int setting, int target) =>
             trapFile.WriteTuple("directive_nullables", directive, setting, target);
 
-        internal static void directive_lines(this TextWriter trapFile, LineDirective directive, int kind) =>
-            trapFile.WriteTuple("directive_lines", directive, kind);
+        internal static void directive_lines<T>(this TextWriter trapFile, LineOrSpanDirective<T> directive, LineDirectiveKind kind) where T : LineOrSpanDirectiveTriviaSyntax =>
+            trapFile.WriteTuple("directive_lines", directive, (int)kind);
 
         internal static void directive_line_value(this TextWriter trapFile, LineDirective directive, int line) =>
             trapFile.WriteTuple("directive_line_value", directive, line);
 
-        internal static void directive_line_file(this TextWriter trapFile, LineDirective directive, Extraction.Entities.File file) =>
+        internal static void directive_line_file<T>(this TextWriter trapFile, LineOrSpanDirective<T> directive, Extraction.Entities.File file) where T : LineOrSpanDirectiveTriviaSyntax =>
             trapFile.WriteTuple("directive_line_file", directive, file);
+
+        internal static void directive_line_offset(this TextWriter trapFile, LineSpanDirective directive, int offset) =>
+            trapFile.WriteTuple("directive_line_offset", directive, offset);
+
+        internal static void directive_line_span(this TextWriter trapFile, LineSpanDirective directive, int startLine, int startColumn, int endLine, int endColumn) =>
+            trapFile.WriteTuple("directive_line_span", directive, startLine, startColumn, endLine, endColumn);
 
         internal static void directive_regions(this TextWriter trapFile, RegionDirective directive, string name) =>
             trapFile.WriteTuple("directive_regions", directive, name);
@@ -451,7 +457,7 @@ namespace Semmle.Extraction.CSharp
         internal static void locations_mapped(this System.IO.TextWriter trapFile, NonGeneratedSourceLocation l1, Location l2) =>
             trapFile.WriteTuple("locations_mapped", l1, l2);
 
-        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode) =>
+        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, ExtractorMode mode) =>
             trapFile.WriteTuple("file_extraction_mode", file, mode);
     }
 }

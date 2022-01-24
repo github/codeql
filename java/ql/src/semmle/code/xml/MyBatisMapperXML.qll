@@ -112,5 +112,5 @@ class MyBatisMapperInclude extends MyBatisMapperXMLElement {
  * A `<foreach>` element in a `MyBatisMapperXMLElement`.
  */
 class MyBatisMapperForeach extends MyBatisMapperXMLElement {
-  MyBatisMapperForeach() { getName() = "foreach" }
+  MyBatisMapperForeach() { this.getName() = "foreach" }
 }

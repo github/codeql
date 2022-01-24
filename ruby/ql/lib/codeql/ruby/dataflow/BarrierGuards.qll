@@ -64,7 +64,8 @@ class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   StringConstArrayInclusionCall() {
     exists(ArrayLiteral aLit |
       this.getExpr().getMethodName() = "include?" and
-      this.getExpr().getReceiver() = aLit
+      [this.getExpr().getReceiver(), this.getExpr().getReceiver().(ConstantReadAccess).getValue()] =
+        aLit
     |
       forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
       this.getArgument(0) = checkedNode

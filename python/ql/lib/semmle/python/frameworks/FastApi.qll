@@ -163,7 +163,7 @@ private module FastApi {
       exists(Class cls, API::Node base |
         base = getModeledResponseClass(_).getASubclass*() and
         cls.getABase() = base.getAUse().asExpr() and
-        responseClass.getAnImmediateUse().asExpr().(ClassExpr) = cls.getParent()
+        responseClass.getAnImmediateUse().asExpr() = cls.getParent()
       |
         exists(Assign assign | assign = cls.getAStmt() |
           assign.getATarget().(Name).getId() = "media_type" and

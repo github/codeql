@@ -544,7 +544,7 @@ class ExternalInterface extends ExternalType {
 }
 
 /**
- * Externs definition for the Function object.
+ * The externs definition for the Function object.
  *
  * Example:
  *
@@ -561,7 +561,7 @@ class FunctionExternal extends ExternalConstructor {
 }
 
 /**
- * Externs definition for the Object object.
+ * The externs definition for the Object object.
  *
  * Example:
  *
@@ -578,7 +578,7 @@ class ObjectExternal extends ExternalConstructor {
 }
 
 /**
- * Externs definition for the Array object.
+ * The externs definition for the Array object.
  *
  * Example:
  *

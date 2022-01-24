@@ -280,6 +280,21 @@ module Public {
     explicitInstanceArgument(call, result.asExpr()) or
     implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
   }
+
+  /** A node representing an `InstanceAccessExt`. */
+  class InstanceAccessNode extends Node {
+    InstanceAccessNode() {
+      this instanceof ImplicitInstanceAccess or this.asExpr() instanceof InstanceAccess
+    }
+
+    /** Gets the instance access corresponding to this node. */
+    InstanceAccessExt getInstanceAccess() {
+      result = this.(ImplicitInstanceAccess).getInstanceAccess() or result.isExplicit(this.asExpr())
+    }
+
+    /** Holds if this is an access to an object's own instance. */
+    predicate isOwnInstanceAccess() { this.getInstanceAccess().isOwnInstanceAccess() }
+  }
 }
 
 private import Public
