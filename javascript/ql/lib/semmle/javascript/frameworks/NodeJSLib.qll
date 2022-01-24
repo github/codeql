@@ -408,7 +408,7 @@ module NodeJSLib {
 
   /**
    * Holds if the `i`th parameter of method `methodName` of the Node.js
-   * `fs` module or the `fs-extra` might represent a file path.
+   * `fs` module or the `fs-extra` module might represent a file path.
    *
    * For `fs`, we determine this by looking for an externs declaration for
    * `fs.methodName` where the `i`th parameter's name is `filename` or
@@ -435,13 +435,13 @@ module NodeJSLib {
    * method might represent a file path.
    */
   private predicate fsExtraExtensionFileParam(string methodName, int i) {
-    methodName = ["copy", "copySync", "copyFile"] and i = [0 .. 1]
+    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
     or
-    methodName = ["move", "moveSync"] and i = [0 .. 1]
+    methodName = ["move", "moveSync"] and i = [0, 1]
     or
     methodName = ["createFile", "createFileSync"] and i = 0
     or
-    methodName = ["createSymLink", "createSymlinkSync"] and i = [0 .. 1]
+    methodName = ["createSymLink", "createSymlinkSync"] and i = [0, 1]
     or
     methodName = ["ensureDir", "ensureDirSync"] and i = 0
     or
