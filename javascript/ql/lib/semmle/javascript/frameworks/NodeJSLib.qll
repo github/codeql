@@ -414,7 +414,7 @@ module NodeJSLib {
    * `fs.methodName` where the `i`th parameter's name is `filename` or
    * `path` or a variation thereof.
    *
-   * For `fs-extra`, we use the `fsExtraExtensionFileParam` predicate.
+   * For `fs-extra`, we use a manually maintained list.
    */
   private predicate fsFileParam(string methodName, int i) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p, string n |
