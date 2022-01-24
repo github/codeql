@@ -374,3 +374,50 @@ void test_securezero()
 		SecureZeroBuffer(password, 256); // evidence we may have been doing decryption
 	}
 }
+
+struct encrypted_data
+{
+	char data[256];
+};
+
+void test_more_clues()
+{
+	{
+		char password[256];
+
+		recv(val(), password, 256, val()); // BAD: not encrypted
+	}
+
+	{
+		char encrypted_password[256];
+
+		recv(val(), encrypted_password, 256, val()); // GOOD: password is (probably) encrypted
+	}
+
+	{
+		encrypted_data password;
+
+		recv(val(), &password, sizeof(password), val()); // GOOD: password is (probably) encrypted
+	}
+}
+
+struct packet
+{
+	char password[256];
+};
+
+void test_member_password()
+{
+	{
+		packet p;
+
+		recv(val(), p.password, 256, val()); // BAD: not encrypted [NOT DETECTED]
+	}
+
+	{
+		packet p;
+
+		recv(val(), p.password, 256, val()); // GOOD: password is encrypted
+		decrypt_inplace(p.password); // proof that `password` was in fact encrypted
+	}
+}

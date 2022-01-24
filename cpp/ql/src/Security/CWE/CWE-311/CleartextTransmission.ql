@@ -171,6 +171,11 @@ class Encrypted extends Expr {
         this = fc.getAnArgument()
       )
     )
+    or
+    exists(Type t |
+      this.getType().refersTo(t) and
+      t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
+    )
   }
 }
 
