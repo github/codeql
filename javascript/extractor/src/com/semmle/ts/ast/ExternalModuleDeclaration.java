@@ -6,7 +6,7 @@ import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** A statement of form <tt>declare module "X" {...}</tt>. */
+/** A statement of form <code>declare module "X" {...}</code>. */
 public class ExternalModuleDeclaration extends Statement {
   private final Literal name;
   private final List<Statement> body;

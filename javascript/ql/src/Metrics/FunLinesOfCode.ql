@@ -5,7 +5,6 @@
  * @treemap.warnOn highValues
  * @metricType callable
  * @metricAggregate avg sum max
- * @precision very-high
  * @tags maintainability
  * @id js/lines-of-code-per-function
  */

@@ -1,4 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll
 using System.Web.Mvc;
 
 public class HomeController : Controller

@@ -5,1035 +5,485 @@
 /**
  * Provides a QL encoding of the list of unsupported JDK-internal APIs at:
  *
- * http://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdk8_internals.txt
+ * https://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdk8_internals.txt
  */
 predicate jdkInternalApi(string p) {
-  p = "apple.applescript" or
-  p = "apple.laf" or
-  p = "apple.launcher" or
-  p = "apple.security" or
-  p = "com.apple.concurrent" or
-  p = "com.apple.eawt" or
-  p = "com.apple.eawt.event" or
-  p = "com.apple.eio" or
-  p = "com.apple.laf" or
-  p = "com.apple.laf.resources" or
-  p = "com.oracle.jrockit.jfr" or
-  p = "com.oracle.jrockit.jfr.client" or
-  p = "com.oracle.jrockit.jfr.management" or
-  p = "com.oracle.security.ucrypto" or
-  p = "com.oracle.util" or
-  p = "com.oracle.webservices.internal.api" or
-  p = "com.oracle.webservices.internal.api.databinding" or
-  p = "com.oracle.webservices.internal.api.message" or
-  p = "com.oracle.webservices.internal.impl.encoding" or
-  p = "com.oracle.webservices.internal.impl.internalspi.encoding" or
-  p = "com.oracle.xmlns.internal.webservices.jaxws_databinding" or
-  p = "com.sun.accessibility.internal.resources" or
-  p = "com.sun.activation.registries" or
-  p = "com.sun.awt" or
-  p = "com.sun.beans" or
-  p = "com.sun.beans.decoder" or
-  p = "com.sun.beans.editors" or
-  p = "com.sun.beans.finder" or
-  p = "com.sun.beans.infos" or
-  p = "com.sun.beans.util" or
-  p = "com.sun.codemodel.internal" or
-  p = "com.sun.codemodel.internal.fmt" or
-  p = "com.sun.codemodel.internal.util" or
-  p = "com.sun.codemodel.internal.writer" or
-  p = "com.sun.corba.se.impl.activation" or
-  p = "com.sun.corba.se.impl.copyobject" or
-  p = "com.sun.corba.se.impl.corba" or
-  p = "com.sun.corba.se.impl.dynamicany" or
-  p = "com.sun.corba.se.impl.encoding" or
-  p = "com.sun.corba.se.impl.interceptors" or
-  p = "com.sun.corba.se.impl.io" or
-  p = "com.sun.corba.se.impl.ior" or
-  p = "com.sun.corba.se.impl.ior.iiop" or
-  p = "com.sun.corba.se.impl.javax.rmi" or
-  p = "com.sun.corba.se.impl.javax.rmi.CORBA" or
-  p = "com.sun.corba.se.impl.legacy.connection" or
-  p = "com.sun.corba.se.impl.logging" or
-  p = "com.sun.corba.se.impl.monitoring" or
-  p = "com.sun.corba.se.impl.naming.cosnaming" or
-  p = "com.sun.corba.se.impl.naming.namingutil" or
-  p = "com.sun.corba.se.impl.naming.pcosnaming" or
-  p = "com.sun.corba.se.impl.oa" or
-  p = "com.sun.corba.se.impl.oa.poa" or
-  p = "com.sun.corba.se.impl.oa.toa" or
-  p = "com.sun.corba.se.impl.orb" or
-  p = "com.sun.corba.se.impl.orbutil" or
-  p = "com.sun.corba.se.impl.orbutil.closure" or
-  p = "com.sun.corba.se.impl.orbutil.concurrent" or
-  p = "com.sun.corba.se.impl.orbutil.fsm" or
-  p = "com.sun.corba.se.impl.orbutil.graph" or
-  p = "com.sun.corba.se.impl.orbutil.threadpool" or
-  p = "com.sun.corba.se.impl.presentation.rmi" or
-  p = "com.sun.corba.se.impl.protocol" or
-  p = "com.sun.corba.se.impl.protocol.giopmsgheaders" or
-  p = "com.sun.corba.se.impl.resolver" or
-  p = "com.sun.corba.se.impl.transport" or
-  p = "com.sun.corba.se.impl.util" or
-  p = "com.sun.corba.se.internal.CosNaming" or
-  p = "com.sun.corba.se.internal.Interceptors" or
-  p = "com.sun.corba.se.internal.POA" or
-  p = "com.sun.corba.se.internal.corba" or
-  p = "com.sun.corba.se.internal.iiop" or
-  p = "com.sun.corba.se.org.omg.CORBA" or
-  p = "com.sun.corba.se.pept.broker" or
-  p = "com.sun.corba.se.pept.encoding" or
-  p = "com.sun.corba.se.pept.protocol" or
-  p = "com.sun.corba.se.pept.transport" or
-  p = "com.sun.corba.se.spi.activation" or
-  p = "com.sun.corba.se.spi.activation.InitialNameServicePackage" or
-  p = "com.sun.corba.se.spi.activation.LocatorPackage" or
-  p = "com.sun.corba.se.spi.activation.RepositoryPackage" or
-  p = "com.sun.corba.se.spi.copyobject" or
-  p = "com.sun.corba.se.spi.encoding" or
-  p = "com.sun.corba.se.spi.extension" or
-  p = "com.sun.corba.se.spi.ior" or
-  p = "com.sun.corba.se.spi.ior.iiop" or
-  p = "com.sun.corba.se.spi.legacy.connection" or
-  p = "com.sun.corba.se.spi.legacy.interceptor" or
-  p = "com.sun.corba.se.spi.logging" or
-  p = "com.sun.corba.se.spi.monitoring" or
-  p = "com.sun.corba.se.spi.oa" or
-  p = "com.sun.corba.se.spi.orb" or
-  p = "com.sun.corba.se.spi.orbutil.closure" or
-  p = "com.sun.corba.se.spi.orbutil.fsm" or
-  p = "com.sun.corba.se.spi.orbutil.proxy" or
-  p = "com.sun.corba.se.spi.orbutil.threadpool" or
-  p = "com.sun.corba.se.spi.presentation.rmi" or
-  p = "com.sun.corba.se.spi.protocol" or
-  p = "com.sun.corba.se.spi.resolver" or
-  p = "com.sun.corba.se.spi.servicecontext" or
-  p = "com.sun.corba.se.spi.transport" or
-  p = "com.sun.crypto.provider" or
-  p = "com.sun.demo.jvmti.hprof" or
-  p = "com.sun.deploy.uitoolkit.impl.fx" or
-  p = "com.sun.deploy.uitoolkit.impl.fx.ui" or
-  p = "com.sun.deploy.uitoolkit.impl.fx.ui.resources" or
-  p = "com.sun.glass.events" or
-  p = "com.sun.glass.events.mac" or
-  p = "com.sun.glass.ui" or
-  p = "com.sun.glass.ui.delegate" or
-  p = "com.sun.glass.ui.gtk" or
-  p = "com.sun.glass.ui.mac" or
-  p = "com.sun.glass.ui.win" or
-  p = "com.sun.glass.utils" or
-  p = "com.sun.image.codec.jpeg" or
-  p = "com.sun.imageio.plugins.bmp" or
-  p = "com.sun.imageio.plugins.common" or
-  p = "com.sun.imageio.plugins.gif" or
-  p = "com.sun.imageio.plugins.jpeg" or
-  p = "com.sun.imageio.plugins.png" or
-  p = "com.sun.imageio.plugins.wbmp" or
-  p = "com.sun.imageio.spi" or
-  p = "com.sun.imageio.stream" or
-  p = "com.sun.istack.internal" or
-  p = "com.sun.istack.internal.localization" or
-  p = "com.sun.istack.internal.logging" or
-  p = "com.sun.istack.internal.tools" or
-  p = "com.sun.java.accessibility" or
-  p = "com.sun.java.accessibility.util.java.awt" or
-  p = "com.sun.java.browser.dom" or
-  p = "com.sun.java.browser.net" or
-  p = "com.sun.java.swing" or
-  p = "com.sun.java.swing.plaf.gtk" or
-  p = "com.sun.java.swing.plaf.gtk.resources" or
-  p = "com.sun.java.swing.plaf.motif" or
-  p = "com.sun.java.swing.plaf.motif.resources" or
-  p = "com.sun.java.swing.plaf.nimbus" or
-  p = "com.sun.java.swing.plaf.windows" or
-  p = "com.sun.java.swing.plaf.windows.resources" or
-  p = "com.sun.java.util.jar.pack" or
-  p = "com.sun.java_cup.internal.runtime" or
-  p = "com.sun.javafx" or
-  p = "com.sun.javafx.animation" or
-  p = "com.sun.javafx.applet" or
-  p = "com.sun.javafx.application" or
-  p = "com.sun.javafx.beans" or
-  p = "com.sun.javafx.beans.event" or
-  p = "com.sun.javafx.binding" or
-  p = "com.sun.javafx.charts" or
-  p = "com.sun.javafx.collections" or
-  p = "com.sun.javafx.css" or
-  p = "com.sun.javafx.css.converters" or
-  p = "com.sun.javafx.css.parser" or
-  p = "com.sun.javafx.cursor" or
-  p = "com.sun.javafx.effect" or
-  p = "com.sun.javafx.embed" or
-  p = "com.sun.javafx.event" or
-  p = "com.sun.javafx.font" or
-  p = "com.sun.javafx.font.coretext" or
-  p = "com.sun.javafx.font.directwrite" or
-  p = "com.sun.javafx.font.freetype" or
-  p = "com.sun.javafx.font.t2k" or
-  p = "com.sun.javafx.fxml" or
-  p = "com.sun.javafx.fxml.builder" or
-  p = "com.sun.javafx.fxml.expression" or
-  p = "com.sun.javafx.geom" or
-  p = "com.sun.javafx.geom.transform" or
-  p = "com.sun.javafx.geometry" or
-  p = "com.sun.javafx.iio" or
-  p = "com.sun.javafx.iio.bmp" or
-  p = "com.sun.javafx.iio.common" or
-  p = "com.sun.javafx.iio.gif" or
-  p = "com.sun.javafx.iio.ios" or
-  p = "com.sun.javafx.iio.jpeg" or
-  p = "com.sun.javafx.iio.png" or
-  p = "com.sun.javafx.image" or
-  p = "com.sun.javafx.image.impl" or
-  p = "com.sun.javafx.jmx" or
-  p = "com.sun.javafx.logging" or
-  p = "com.sun.javafx.media" or
-  p = "com.sun.javafx.menu" or
-  p = "com.sun.javafx.perf" or
-  p = "com.sun.javafx.print" or
-  p = "com.sun.javafx.property" or
-  p = "com.sun.javafx.property.adapter" or
-  p = "com.sun.javafx.robot" or
-  p = "com.sun.javafx.robot.impl" or
-  p = "com.sun.javafx.runtime" or
-  p = "com.sun.javafx.runtime.async" or
-  p = "com.sun.javafx.runtime.eula" or
-  p = "com.sun.javafx.scene" or
-  p = "com.sun.javafx.scene.control" or
-  p = "com.sun.javafx.scene.control.behavior" or
-  p = "com.sun.javafx.scene.control.skin" or
-  p = "com.sun.javafx.scene.control.skin.resources" or
-  p = "com.sun.javafx.scene.input" or
-  p = "com.sun.javafx.scene.layout.region" or
-  p = "com.sun.javafx.scene.paint" or
-  p = "com.sun.javafx.scene.shape" or
-  p = "com.sun.javafx.scene.text" or
-  p = "com.sun.javafx.scene.transform" or
-  p = "com.sun.javafx.scene.traversal" or
-  p = "com.sun.javafx.scene.web" or
-  p = "com.sun.javafx.scene.web.behavior" or
-  p = "com.sun.javafx.scene.web.skin" or
-  p = "com.sun.javafx.sg.prism" or
-  p = "com.sun.javafx.sg.prism.web" or
-  p = "com.sun.javafx.stage" or
-  p = "com.sun.javafx.text" or
-  p = "com.sun.javafx.tk" or
-  p = "com.sun.javafx.tk.quantum" or
-  p = "com.sun.javafx.util" or
-  p = "com.sun.javafx.webkit" or
-  p = "com.sun.javafx.webkit.drt" or
-  p = "com.sun.javafx.webkit.prism" or
-  p = "com.sun.javafx.webkit.prism.theme" or
-  p = "com.sun.javafx.webkit.theme" or
-  p = "com.sun.jmx.defaults" or
-  p = "com.sun.jmx.interceptor" or
-  p = "com.sun.jmx.mbeanserver" or
-  p = "com.sun.jmx.remote.internal" or
-  p = "com.sun.jmx.remote.protocol.iiop" or
-  p = "com.sun.jmx.remote.protocol.rmi" or
-  p = "com.sun.jmx.remote.security" or
-  p = "com.sun.jmx.remote.util" or
-  p = "com.sun.jmx.snmp" or
-  p = "com.sun.jmx.snmp.IPAcl" or
-  p = "com.sun.jmx.snmp.agent" or
-  p = "com.sun.jmx.snmp.daemon" or
-  p = "com.sun.jmx.snmp.defaults" or
-  p = "com.sun.jmx.snmp.internal" or
-  p = "com.sun.jmx.snmp.mpm" or
-  p = "com.sun.jmx.snmp.tasks" or
-  p = "com.sun.jndi.cosnaming" or
-  p = "com.sun.jndi.dns" or
-  p = "com.sun.jndi.ldap" or
-  p = "com.sun.jndi.ldap.ext" or
-  p = "com.sun.jndi.ldap.pool" or
-  p = "com.sun.jndi.ldap.sasl" or
-  p = "com.sun.jndi.rmi.registry" or
-  p = "com.sun.jndi.toolkit.corba" or
-  p = "com.sun.jndi.toolkit.ctx" or
-  p = "com.sun.jndi.toolkit.dir" or
-  p = "com.sun.jndi.toolkit.url" or
-  p = "com.sun.jndi.url.corbaname" or
-  p = "com.sun.jndi.url.dns" or
-  p = "com.sun.jndi.url.iiop" or
-  p = "com.sun.jndi.url.iiopname" or
-  p = "com.sun.jndi.url.ldap" or
-  p = "com.sun.jndi.url.ldaps" or
-  p = "com.sun.jndi.url.rmi" or
-  p = "com.sun.management.jmx" or
-  p = "com.sun.media.jfxmedia" or
-  p = "com.sun.media.jfxmedia.control" or
-  p = "com.sun.media.jfxmedia.effects" or
-  p = "com.sun.media.jfxmedia.events" or
-  p = "com.sun.media.jfxmedia.locator" or
-  p = "com.sun.media.jfxmedia.logging" or
-  p = "com.sun.media.jfxmedia.track" or
-  p = "com.sun.media.jfxmediaimpl" or
-  p = "com.sun.media.jfxmediaimpl.platform" or
-  p = "com.sun.media.jfxmediaimpl.platform.gstreamer" or
-  p = "com.sun.media.jfxmediaimpl.platform.ios" or
-  p = "com.sun.media.jfxmediaimpl.platform.java" or
-  p = "com.sun.media.jfxmediaimpl.platform.osx" or
-  p = "com.sun.media.sound" or
-  p = "com.sun.naming.internal" or
-  p = "com.sun.net.ssl" or
-  p = "com.sun.net.ssl.internal.ssl" or
-  p = "com.sun.net.ssl.internal.www.protocol.https" or
-  p = "com.sun.nio.file" or
-  p = "com.sun.nio.zipfs" or
-  p = "com.sun.openpisces" or
-  p = "com.sun.org.apache.bcel.internal" or
-  p = "com.sun.org.apache.bcel.internal.classfile" or
-  p = "com.sun.org.apache.bcel.internal.generic" or
-  p = "com.sun.org.apache.bcel.internal.util" or
-  p = "com.sun.org.apache.regexp.internal" or
-  p = "com.sun.org.apache.xalan.internal" or
-  p = "com.sun.org.apache.xalan.internal.extensions" or
-  p = "com.sun.org.apache.xalan.internal.lib" or
-  p = "com.sun.org.apache.xalan.internal.res" or
-  p = "com.sun.org.apache.xalan.internal.templates" or
-  p = "com.sun.org.apache.xalan.internal.utils" or
-  p = "com.sun.org.apache.xalan.internal.xslt" or
-  p = "com.sun.org.apache.xalan.internal.xsltc" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.cmdline" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.compiler" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.compiler.util" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.dom" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.runtime" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.runtime.output" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.trax" or
-  p = "com.sun.org.apache.xalan.internal.xsltc.util" or
-  p = "com.sun.org.apache.xerces.internal.dom" or
-  p = "com.sun.org.apache.xerces.internal.dom.events" or
-  p = "com.sun.org.apache.xerces.internal.impl" or
-  p = "com.sun.org.apache.xerces.internal.impl.dtd" or
-  p = "com.sun.org.apache.xerces.internal.impl.dtd.models" or
-  p = "com.sun.org.apache.xerces.internal.impl.dv" or
-  p = "com.sun.org.apache.xerces.internal.impl.dv.dtd" or
-  p = "com.sun.org.apache.xerces.internal.impl.dv.util" or
-  p = "com.sun.org.apache.xerces.internal.impl.dv.xs" or
-  p = "com.sun.org.apache.xerces.internal.impl.io" or
-  p = "com.sun.org.apache.xerces.internal.impl.msg" or
-  p = "com.sun.org.apache.xerces.internal.impl.validation" or
-  p = "com.sun.org.apache.xerces.internal.impl.xpath" or
-  p = "com.sun.org.apache.xerces.internal.impl.xpath.regex" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs.identity" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs.models" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs.opti" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs.traversers" or
-  p = "com.sun.org.apache.xerces.internal.impl.xs.util" or
-  p = "com.sun.org.apache.xerces.internal.jaxp" or
-  p = "com.sun.org.apache.xerces.internal.jaxp.datatype" or
-  p = "com.sun.org.apache.xerces.internal.jaxp.validation" or
-  p = "com.sun.org.apache.xerces.internal.parsers" or
-  p = "com.sun.org.apache.xerces.internal.util" or
-  p = "com.sun.org.apache.xerces.internal.utils" or
-  p = "com.sun.org.apache.xerces.internal.xinclude" or
-  p = "com.sun.org.apache.xerces.internal.xni" or
-  p = "com.sun.org.apache.xerces.internal.xni.grammars" or
-  p = "com.sun.org.apache.xerces.internal.xni.parser" or
-  p = "com.sun.org.apache.xerces.internal.xpointer" or
-  p = "com.sun.org.apache.xerces.internal.xs" or
-  p = "com.sun.org.apache.xerces.internal.xs.datatypes" or
-  p = "com.sun.org.apache.xml.internal.dtm" or
-  p = "com.sun.org.apache.xml.internal.dtm.ref" or
-  p = "com.sun.org.apache.xml.internal.dtm.ref.dom2dtm" or
-  p = "com.sun.org.apache.xml.internal.dtm.ref.sax2dtm" or
-  p = "com.sun.org.apache.xml.internal.res" or
-  p = "com.sun.org.apache.xml.internal.resolver" or
-  p = "com.sun.org.apache.xml.internal.resolver.helpers" or
-  p = "com.sun.org.apache.xml.internal.resolver.readers" or
-  p = "com.sun.org.apache.xml.internal.resolver.tools" or
-  p = "com.sun.org.apache.xml.internal.security" or
-  p = "com.sun.org.apache.xml.internal.security.algorithms" or
-  p = "com.sun.org.apache.xml.internal.security.algorithms.implementations" or
-  p = "com.sun.org.apache.xml.internal.security.c14n" or
-  p = "com.sun.org.apache.xml.internal.security.c14n.helper" or
-  p = "com.sun.org.apache.xml.internal.security.c14n.implementations" or
-  p = "com.sun.org.apache.xml.internal.security.encryption" or
-  p = "com.sun.org.apache.xml.internal.security.exceptions" or
-  p = "com.sun.org.apache.xml.internal.security.keys" or
-  p = "com.sun.org.apache.xml.internal.security.keys.content" or
-  p = "com.sun.org.apache.xml.internal.security.keys.content.keyvalues" or
-  p = "com.sun.org.apache.xml.internal.security.keys.content.x509" or
-  p = "com.sun.org.apache.xml.internal.security.keys.keyresolver" or
-  p = "com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations" or
-  p = "com.sun.org.apache.xml.internal.security.keys.storage" or
-  p = "com.sun.org.apache.xml.internal.security.keys.storage.implementations" or
-  p = "com.sun.org.apache.xml.internal.security.signature" or
-  p = "com.sun.org.apache.xml.internal.security.signature.reference" or
-  p = "com.sun.org.apache.xml.internal.security.transforms" or
-  p = "com.sun.org.apache.xml.internal.security.transforms.implementations" or
-  p = "com.sun.org.apache.xml.internal.security.transforms.params" or
-  p = "com.sun.org.apache.xml.internal.security.utils" or
-  p = "com.sun.org.apache.xml.internal.security.utils.resolver" or
-  p = "com.sun.org.apache.xml.internal.security.utils.resolver.implementations" or
-  p = "com.sun.org.apache.xml.internal.serialize" or
-  p = "com.sun.org.apache.xml.internal.serializer" or
-  p = "com.sun.org.apache.xml.internal.serializer.utils" or
-  p = "com.sun.org.apache.xml.internal.utils" or
-  p = "com.sun.org.apache.xml.internal.utils.res" or
-  p = "com.sun.org.apache.xpath.internal" or
-  p = "com.sun.org.apache.xpath.internal.axes" or
-  p = "com.sun.org.apache.xpath.internal.compiler" or
-  p = "com.sun.org.apache.xpath.internal.domapi" or
-  p = "com.sun.org.apache.xpath.internal.functions" or
-  p = "com.sun.org.apache.xpath.internal.jaxp" or
-  p = "com.sun.org.apache.xpath.internal.objects" or
-  p = "com.sun.org.apache.xpath.internal.operations" or
-  p = "com.sun.org.apache.xpath.internal.patterns" or
-  p = "com.sun.org.apache.xpath.internal.res" or
-  p = "com.sun.org.glassfish.external.amx" or
-  p = "com.sun.org.glassfish.external.arc" or
-  p = "com.sun.org.glassfish.external.probe.provider" or
-  p = "com.sun.org.glassfish.external.probe.provider.annotations" or
-  p = "com.sun.org.glassfish.external.statistics" or
-  p = "com.sun.org.glassfish.external.statistics.annotations" or
-  p = "com.sun.org.glassfish.external.statistics.impl" or
-  p = "com.sun.org.glassfish.gmbal" or
-  p = "com.sun.org.glassfish.gmbal.util" or
-  p = "com.sun.org.omg.CORBA" or
-  p = "com.sun.org.omg.CORBA.ValueDefPackage" or
-  p = "com.sun.org.omg.CORBA.portable" or
-  p = "com.sun.org.omg.SendingContext" or
-  p = "com.sun.org.omg.SendingContext.CodeBasePackage" or
-  p = "com.sun.pisces" or
-  p = "com.sun.prism" or
-  p = "com.sun.prism.d3d" or
-  p = "com.sun.prism.es2" or
-  p = "com.sun.prism.image" or
-  p = "com.sun.prism.impl" or
-  p = "com.sun.prism.impl.packrect" or
-  p = "com.sun.prism.impl.paint" or
-  p = "com.sun.prism.impl.ps" or
-  p = "com.sun.prism.impl.shape" or
-  p = "com.sun.prism.j2d" or
-  p = "com.sun.prism.j2d.paint" or
-  p = "com.sun.prism.j2d.print" or
-  p = "com.sun.prism.paint" or
-  p = "com.sun.prism.ps" or
-  p = "com.sun.prism.shader" or
-  p = "com.sun.prism.shape" or
-  p = "com.sun.prism.sw" or
-  p = "com.sun.rmi.rmid" or
-  p = "com.sun.rowset" or
-  p = "com.sun.rowset.internal" or
-  p = "com.sun.rowset.providers" or
-  p = "com.sun.scenario" or
-  p = "com.sun.scenario.animation" or
-  p = "com.sun.scenario.animation.shared" or
-  p = "com.sun.scenario.effect" or
-  p = "com.sun.scenario.effect.impl" or
-  p = "com.sun.scenario.effect.impl.es2" or
-  p = "com.sun.scenario.effect.impl.hw" or
-  p = "com.sun.scenario.effect.impl.hw.d3d" or
-  p = "com.sun.scenario.effect.impl.prism" or
-  p = "com.sun.scenario.effect.impl.prism.ps" or
-  p = "com.sun.scenario.effect.impl.prism.sw" or
-  p = "com.sun.scenario.effect.impl.state" or
-  p = "com.sun.scenario.effect.impl.sw" or
-  p = "com.sun.scenario.effect.impl.sw.java" or
-  p = "com.sun.scenario.effect.impl.sw.sse" or
-  p = "com.sun.scenario.effect.light" or
-  p = "com.sun.security.cert.internal.x509" or
-  p = "com.sun.security.ntlm" or
-  p = "com.sun.security.sasl" or
-  p = "com.sun.security.sasl.digest" or
-  p = "com.sun.security.sasl.gsskerb" or
-  p = "com.sun.security.sasl.ntlm" or
-  p = "com.sun.security.sasl.util" or
-  p = "com.sun.swing.internal.plaf.basic.resources" or
-  p = "com.sun.swing.internal.plaf.metal.resources" or
-  p = "com.sun.swing.internal.plaf.synth.resources" or
-  p = "com.sun.tools.classfile" or
-  p = "com.sun.tools.corba.se.idl" or
-  p = "com.sun.tools.corba.se.idl.constExpr" or
-  p = "com.sun.tools.corba.se.idl.som.cff" or
-  p = "com.sun.tools.corba.se.idl.som.idlemit" or
-  p = "com.sun.tools.corba.se.idl.toJavaPortable" or
-  p = "com.sun.tools.doclets.formats.html" or
-  p = "com.sun.tools.doclets.formats.html.markup" or
-  p = "com.sun.tools.doclets.formats.html.resources" or
-  p = "com.sun.tools.doclets.internal.toolkit" or
-  p = "com.sun.tools.doclets.internal.toolkit.builders" or
-  p = "com.sun.tools.doclets.internal.toolkit.resources" or
-  p = "com.sun.tools.doclets.internal.toolkit.taglets" or
-  p = "com.sun.tools.doclets.internal.toolkit.util" or
-  p = "com.sun.tools.doclets.internal.toolkit.util.links" or
-  p = "com.sun.tools.doclint" or
-  p = "com.sun.tools.doclint.resources" or
-  p = "com.sun.tools.example.debug.expr" or
-  p = "com.sun.tools.example.debug.tty" or
-  p = "com.sun.tools.extcheck" or
-  p = "com.sun.tools.hat" or
-  p = "com.sun.tools.hat.internal.model" or
-  p = "com.sun.tools.hat.internal.oql" or
-  p = "com.sun.tools.hat.internal.parser" or
-  p = "com.sun.tools.hat.internal.server" or
-  p = "com.sun.tools.hat.internal.util" or
-  p = "com.sun.tools.internal.jxc" or
-  p = "com.sun.tools.internal.jxc.ap" or
-  p = "com.sun.tools.internal.jxc.api" or
-  p = "com.sun.tools.internal.jxc.api.impl.j2s" or
-  p = "com.sun.tools.internal.jxc.gen.config" or
-  p = "com.sun.tools.internal.jxc.model.nav" or
-  p = "com.sun.tools.internal.ws" or
-  p = "com.sun.tools.internal.ws.api" or
-  p = "com.sun.tools.internal.ws.api.wsdl" or
-  p = "com.sun.tools.internal.ws.processor" or
-  p = "com.sun.tools.internal.ws.processor.generator" or
-  p = "com.sun.tools.internal.ws.processor.model" or
-  p = "com.sun.tools.internal.ws.processor.model.exporter" or
-  p = "com.sun.tools.internal.ws.processor.model.java" or
-  p = "com.sun.tools.internal.ws.processor.model.jaxb" or
-  p = "com.sun.tools.internal.ws.processor.modeler" or
-  p = "com.sun.tools.internal.ws.processor.modeler.annotation" or
-  p = "com.sun.tools.internal.ws.processor.modeler.wsdl" or
-  p = "com.sun.tools.internal.ws.processor.util" or
-  p = "com.sun.tools.internal.ws.resources" or
-  p = "com.sun.tools.internal.ws.spi" or
-  p = "com.sun.tools.internal.ws.util" or
-  p = "com.sun.tools.internal.ws.util.xml" or
-  p = "com.sun.tools.internal.ws.wscompile" or
-  p = "com.sun.tools.internal.ws.wscompile.plugin.at_generated" or
-  p = "com.sun.tools.internal.ws.wsdl.document" or
-  p = "com.sun.tools.internal.ws.wsdl.document.http" or
-  p = "com.sun.tools.internal.ws.wsdl.document.jaxws" or
-  p = "com.sun.tools.internal.ws.wsdl.document.mime" or
-  p = "com.sun.tools.internal.ws.wsdl.document.schema" or
-  p = "com.sun.tools.internal.ws.wsdl.document.soap" or
-  p = "com.sun.tools.internal.ws.wsdl.framework" or
-  p = "com.sun.tools.internal.ws.wsdl.parser" or
-  p = "com.sun.tools.internal.xjc" or
-  p = "com.sun.tools.internal.xjc.addon.accessors" or
-  p = "com.sun.tools.internal.xjc.addon.at_generated" or
-  p = "com.sun.tools.internal.xjc.addon.code_injector" or
-  p = "com.sun.tools.internal.xjc.addon.episode" or
-  p = "com.sun.tools.internal.xjc.addon.locator" or
-  p = "com.sun.tools.internal.xjc.addon.sync" or
-  p = "com.sun.tools.internal.xjc.api" or
-  p = "com.sun.tools.internal.xjc.api.impl.s2j" or
-  p = "com.sun.tools.internal.xjc.api.util" or
-  p = "com.sun.tools.internal.xjc.generator.annotation.spec" or
-  p = "com.sun.tools.internal.xjc.generator.bean" or
-  p = "com.sun.tools.internal.xjc.generator.bean.field" or
-  p = "com.sun.tools.internal.xjc.generator.util" or
-  p = "com.sun.tools.internal.xjc.model" or
-  p = "com.sun.tools.internal.xjc.model.nav" or
-  p = "com.sun.tools.internal.xjc.outline" or
-  p = "com.sun.tools.internal.xjc.reader" or
-  p = "com.sun.tools.internal.xjc.reader.dtd" or
-  p = "com.sun.tools.internal.xjc.reader.dtd.bindinfo" or
-  p = "com.sun.tools.internal.xjc.reader.gbind" or
-  p = "com.sun.tools.internal.xjc.reader.internalizer" or
-  p = "com.sun.tools.internal.xjc.reader.relaxng" or
-  p = "com.sun.tools.internal.xjc.reader.xmlschema" or
-  p = "com.sun.tools.internal.xjc.reader.xmlschema.bindinfo" or
-  p = "com.sun.tools.internal.xjc.reader.xmlschema.ct" or
-  p = "com.sun.tools.internal.xjc.reader.xmlschema.parser" or
-  p = "com.sun.tools.internal.xjc.runtime" or
-  p = "com.sun.tools.internal.xjc.util" or
-  p = "com.sun.tools.internal.xjc.writer" or
-  p = "com.sun.tools.javac.api" or
-  p = "com.sun.tools.javac.code" or
-  p = "com.sun.tools.javac.comp" or
-  p = "com.sun.tools.javac.file" or
-  p = "com.sun.tools.javac.jvm" or
-  p = "com.sun.tools.javac.main" or
-  p = "com.sun.tools.javac.model" or
-  p = "com.sun.tools.javac.nio" or
-  p = "com.sun.tools.javac.parser" or
-  p = "com.sun.tools.javac.processing" or
-  p = "com.sun.tools.javac.resources" or
-  p = "com.sun.tools.javac.sym" or
-  p = "com.sun.tools.javac.tree" or
-  p = "com.sun.tools.javac.util" or
-  p = "com.sun.tools.javadoc.api" or
-  p = "com.sun.tools.javadoc.resources" or
-  p = "com.sun.tools.javah" or
-  p = "com.sun.tools.javah.resources" or
-  p = "com.sun.tools.javap" or
-  p = "com.sun.tools.javap.resources" or
-  p = "com.sun.tools.jdeps" or
-  p = "com.sun.tools.jdeps.resources" or
-  p = "com.sun.tools.jdi" or
-  p = "com.sun.tools.jdi.resources" or
-  p = "com.sun.tools.script.shell" or
-  p = "com.sun.tracing" or
-  p = "com.sun.tracing.dtrace" or
-  p = "com.sun.webkit" or
-  p = "com.sun.webkit.dom" or
-  p = "com.sun.webkit.event" or
-  p = "com.sun.webkit.graphics" or
-  p = "com.sun.webkit.network" or
-  p = "com.sun.webkit.network.about" or
-  p = "com.sun.webkit.network.data" or
-  p = "com.sun.webkit.perf" or
-  p = "com.sun.webkit.plugin" or
-  p = "com.sun.webkit.text" or
-  p = "com.sun.xml.internal.bind" or
-  p = "com.sun.xml.internal.bind.annotation" or
-  p = "com.sun.xml.internal.bind.api" or
-  p = "com.sun.xml.internal.bind.api.impl" or
-  p = "com.sun.xml.internal.bind.marshaller" or
-  p = "com.sun.xml.internal.bind.unmarshaller" or
-  p = "com.sun.xml.internal.bind.util" or
-  p = "com.sun.xml.internal.bind.v2" or
-  p = "com.sun.xml.internal.bind.v2.bytecode" or
-  p = "com.sun.xml.internal.bind.v2.model.annotation" or
-  p = "com.sun.xml.internal.bind.v2.model.core" or
-  p = "com.sun.xml.internal.bind.v2.model.impl" or
-  p = "com.sun.xml.internal.bind.v2.model.nav" or
-  p = "com.sun.xml.internal.bind.v2.model.runtime" or
-  p = "com.sun.xml.internal.bind.v2.model.util" or
-  p = "com.sun.xml.internal.bind.v2.runtime" or
-  p = "com.sun.xml.internal.bind.v2.runtime.output" or
-  p = "com.sun.xml.internal.bind.v2.runtime.property" or
-  p = "com.sun.xml.internal.bind.v2.runtime.reflect" or
-  p = "com.sun.xml.internal.bind.v2.runtime.reflect.opt" or
-  p = "com.sun.xml.internal.bind.v2.runtime.unmarshaller" or
-  p = "com.sun.xml.internal.bind.v2.schemagen" or
-  p = "com.sun.xml.internal.bind.v2.schemagen.episode" or
-  p = "com.sun.xml.internal.bind.v2.schemagen.xmlschema" or
-  p = "com.sun.xml.internal.bind.v2.util" or
-  p = "com.sun.xml.internal.dtdparser" or
-  p = "com.sun.xml.internal.fastinfoset" or
-  p = "com.sun.xml.internal.fastinfoset.algorithm" or
-  p = "com.sun.xml.internal.fastinfoset.alphabet" or
-  p = "com.sun.xml.internal.fastinfoset.dom" or
-  p = "com.sun.xml.internal.fastinfoset.org.apache.xerces.util" or
-  p = "com.sun.xml.internal.fastinfoset.sax" or
-  p = "com.sun.xml.internal.fastinfoset.stax" or
-  p = "com.sun.xml.internal.fastinfoset.stax.events" or
-  p = "com.sun.xml.internal.fastinfoset.stax.factory" or
-  p = "com.sun.xml.internal.fastinfoset.stax.util" or
-  p = "com.sun.xml.internal.fastinfoset.tools" or
-  p = "com.sun.xml.internal.fastinfoset.util" or
-  p = "com.sun.xml.internal.fastinfoset.vocab" or
-  p = "com.sun.xml.internal.messaging.saaj" or
-  p = "com.sun.xml.internal.messaging.saaj.client.p2p" or
-  p = "com.sun.xml.internal.messaging.saaj.packaging.mime" or
-  p = "com.sun.xml.internal.messaging.saaj.packaging.mime.internet" or
-  p = "com.sun.xml.internal.messaging.saaj.packaging.mime.util" or
-  p = "com.sun.xml.internal.messaging.saaj.soap" or
-  p = "com.sun.xml.internal.messaging.saaj.soap.dynamic" or
-  p = "com.sun.xml.internal.messaging.saaj.soap.impl" or
-  p = "com.sun.xml.internal.messaging.saaj.soap.name" or
-  p = "com.sun.xml.internal.messaging.saaj.soap.ver1_1" or
-  p = "com.sun.xml.internal.messaging.saaj.soap.ver1_2" or
-  p = "com.sun.xml.internal.messaging.saaj.util" or
-  p = "com.sun.xml.internal.messaging.saaj.util.transform" or
-  p = "com.sun.xml.internal.org.jvnet.fastinfoset" or
-  p = "com.sun.xml.internal.org.jvnet.fastinfoset.sax" or
-  p = "com.sun.xml.internal.org.jvnet.fastinfoset.sax.helpers" or
-  p = "com.sun.xml.internal.org.jvnet.fastinfoset.stax" or
-  p = "com.sun.xml.internal.org.jvnet.mimepull" or
-  p = "com.sun.xml.internal.org.jvnet.staxex" or
-  p = "com.sun.xml.internal.rngom.ast.builder" or
-  p = "com.sun.xml.internal.rngom.ast.om" or
-  p = "com.sun.xml.internal.rngom.ast.util" or
-  p = "com.sun.xml.internal.rngom.binary" or
-  p = "com.sun.xml.internal.rngom.binary.visitor" or
-  p = "com.sun.xml.internal.rngom.digested" or
-  p = "com.sun.xml.internal.rngom.dt" or
-  p = "com.sun.xml.internal.rngom.dt.builtin" or
-  p = "com.sun.xml.internal.rngom.nc" or
-  p = "com.sun.xml.internal.rngom.parse" or
-  p = "com.sun.xml.internal.rngom.parse.compact" or
-  p = "com.sun.xml.internal.rngom.parse.host" or
-  p = "com.sun.xml.internal.rngom.parse.xml" or
-  p = "com.sun.xml.internal.rngom.util" or
-  p = "com.sun.xml.internal.rngom.xml.sax" or
-  p = "com.sun.xml.internal.rngom.xml.util" or
-  p = "com.sun.xml.internal.stream" or
-  p = "com.sun.xml.internal.stream.buffer" or
-  p = "com.sun.xml.internal.stream.buffer.sax" or
-  p = "com.sun.xml.internal.stream.buffer.stax" or
-  p = "com.sun.xml.internal.stream.dtd" or
-  p = "com.sun.xml.internal.stream.dtd.nonvalidating" or
-  p = "com.sun.xml.internal.stream.events" or
-  p = "com.sun.xml.internal.stream.util" or
-  p = "com.sun.xml.internal.stream.writers" or
-  p = "com.sun.xml.internal.txw2" or
-  p = "com.sun.xml.internal.txw2.annotation" or
-  p = "com.sun.xml.internal.txw2.output" or
-  p = "com.sun.xml.internal.ws" or
-  p = "com.sun.xml.internal.ws.addressing" or
-  p = "com.sun.xml.internal.ws.addressing.model" or
-  p = "com.sun.xml.internal.ws.addressing.policy" or
-  p = "com.sun.xml.internal.ws.addressing.v200408" or
-  p = "com.sun.xml.internal.ws.api" or
-  p = "com.sun.xml.internal.ws.api.addressing" or
-  p = "com.sun.xml.internal.ws.api.client" or
-  p = "com.sun.xml.internal.ws.api.config.management" or
-  p = "com.sun.xml.internal.ws.api.config.management.policy" or
-  p = "com.sun.xml.internal.ws.api.databinding" or
-  p = "com.sun.xml.internal.ws.api.fastinfoset" or
-  p = "com.sun.xml.internal.ws.api.ha" or
-  p = "com.sun.xml.internal.ws.api.handler" or
-  p = "com.sun.xml.internal.ws.api.message" or
-  p = "com.sun.xml.internal.ws.api.message.saaj" or
-  p = "com.sun.xml.internal.ws.api.message.stream" or
-  p = "com.sun.xml.internal.ws.api.model" or
-  p = "com.sun.xml.internal.ws.api.model.soap" or
-  p = "com.sun.xml.internal.ws.api.model.wsdl" or
-  p = "com.sun.xml.internal.ws.api.model.wsdl.editable" or
-  p = "com.sun.xml.internal.ws.api.pipe" or
-  p = "com.sun.xml.internal.ws.api.pipe.helper" or
-  p = "com.sun.xml.internal.ws.api.policy" or
-  p = "com.sun.xml.internal.ws.api.policy.subject" or
-  p = "com.sun.xml.internal.ws.api.server" or
-  p = "com.sun.xml.internal.ws.api.streaming" or
-  p = "com.sun.xml.internal.ws.api.wsdl.parser" or
-  p = "com.sun.xml.internal.ws.api.wsdl.writer" or
-  p = "com.sun.xml.internal.ws.assembler" or
-  p = "com.sun.xml.internal.ws.assembler.dev" or
-  p = "com.sun.xml.internal.ws.assembler.jaxws" or
-  p = "com.sun.xml.internal.ws.binding" or
-  p = "com.sun.xml.internal.ws.client" or
-  p = "com.sun.xml.internal.ws.client.dispatch" or
-  p = "com.sun.xml.internal.ws.client.sei" or
-  p = "com.sun.xml.internal.ws.commons.xmlutil" or
-  p = "com.sun.xml.internal.ws.config.management.policy" or
-  p = "com.sun.xml.internal.ws.config.metro.dev" or
-  p = "com.sun.xml.internal.ws.config.metro.util" or
-  p = "com.sun.xml.internal.ws.db" or
-  p = "com.sun.xml.internal.ws.db.glassfish" or
-  p = "com.sun.xml.internal.ws.developer" or
-  p = "com.sun.xml.internal.ws.dump" or
-  p = "com.sun.xml.internal.ws.encoding" or
-  p = "com.sun.xml.internal.ws.encoding.fastinfoset" or
-  p = "com.sun.xml.internal.ws.encoding.policy" or
-  p = "com.sun.xml.internal.ws.encoding.soap" or
-  p = "com.sun.xml.internal.ws.encoding.soap.streaming" or
-  p = "com.sun.xml.internal.ws.encoding.xml" or
-  p = "com.sun.xml.internal.ws.fault" or
-  p = "com.sun.xml.internal.ws.handler" or
-  p = "com.sun.xml.internal.ws.message" or
-  p = "com.sun.xml.internal.ws.message.jaxb" or
-  p = "com.sun.xml.internal.ws.message.saaj" or
-  p = "com.sun.xml.internal.ws.message.source" or
-  p = "com.sun.xml.internal.ws.message.stream" or
-  p = "com.sun.xml.internal.ws.model" or
-  p = "com.sun.xml.internal.ws.model.soap" or
-  p = "com.sun.xml.internal.ws.model.wsdl" or
-  p = "com.sun.xml.internal.ws.org.objectweb.asm" or
-  p = "com.sun.xml.internal.ws.policy" or
-  p = "com.sun.xml.internal.ws.policy.jaxws" or
-  p = "com.sun.xml.internal.ws.policy.jaxws.spi" or
-  p = "com.sun.xml.internal.ws.policy.privateutil" or
-  p = "com.sun.xml.internal.ws.policy.sourcemodel" or
-  p = "com.sun.xml.internal.ws.policy.sourcemodel.attach" or
-  p = "com.sun.xml.internal.ws.policy.sourcemodel.wspolicy" or
-  p = "com.sun.xml.internal.ws.policy.spi" or
-  p = "com.sun.xml.internal.ws.policy.subject" or
-  p = "com.sun.xml.internal.ws.protocol.soap" or
-  p = "com.sun.xml.internal.ws.protocol.xml" or
-  p = "com.sun.xml.internal.ws.resources" or
-  p = "com.sun.xml.internal.ws.runtime.config" or
-  p = "com.sun.xml.internal.ws.server" or
-  p = "com.sun.xml.internal.ws.server.provider" or
-  p = "com.sun.xml.internal.ws.server.sei" or
-  p = "com.sun.xml.internal.ws.spi" or
-  p = "com.sun.xml.internal.ws.spi.db" or
-  p = "com.sun.xml.internal.ws.streaming" or
-  p = "com.sun.xml.internal.ws.transport" or
-  p = "com.sun.xml.internal.ws.transport.http" or
-  p = "com.sun.xml.internal.ws.transport.http.client" or
-  p = "com.sun.xml.internal.ws.transport.http.server" or
-  p = "com.sun.xml.internal.ws.util" or
-  p = "com.sun.xml.internal.ws.util.exception" or
-  p = "com.sun.xml.internal.ws.util.pipe" or
-  p = "com.sun.xml.internal.ws.util.xml" or
-  p = "com.sun.xml.internal.ws.wsdl" or
-  p = "com.sun.xml.internal.ws.wsdl.parser" or
-  p = "com.sun.xml.internal.ws.wsdl.writer" or
-  p = "com.sun.xml.internal.ws.wsdl.writer.document" or
-  p = "com.sun.xml.internal.ws.wsdl.writer.document.http" or
-  p = "com.sun.xml.internal.ws.wsdl.writer.document.soap" or
-  p = "com.sun.xml.internal.ws.wsdl.writer.document.soap12" or
-  p = "com.sun.xml.internal.ws.wsdl.writer.document.xsd" or
-  p = "com.sun.xml.internal.xsom" or
-  p = "com.sun.xml.internal.xsom.impl" or
-  p = "com.sun.xml.internal.xsom.impl.parser" or
-  p = "com.sun.xml.internal.xsom.impl.parser.state" or
-  p = "com.sun.xml.internal.xsom.impl.scd" or
-  p = "com.sun.xml.internal.xsom.impl.util" or
-  p = "com.sun.xml.internal.xsom.parser" or
-  p = "com.sun.xml.internal.xsom.util" or
-  p = "com.sun.xml.internal.xsom.visitor" or
-  p = "java.awt.dnd.peer" or
-  p = "java.awt.peer" or
-  p = "javafx.embed.swt" or
-  p = "jdk" or
-  p = "jdk.internal.cmm" or
-  p = "jdk.internal.dynalink" or
-  p = "jdk.internal.dynalink.beans" or
-  p = "jdk.internal.dynalink.linker" or
-  p = "jdk.internal.dynalink.support" or
-  p = "jdk.internal.instrumentation" or
-  p = "jdk.internal.org.objectweb.asm" or
-  p = "jdk.internal.org.objectweb.asm.commons" or
-  p = "jdk.internal.org.objectweb.asm.signature" or
-  p = "jdk.internal.org.objectweb.asm.tree" or
-  p = "jdk.internal.org.objectweb.asm.tree.analysis" or
-  p = "jdk.internal.org.objectweb.asm.util" or
-  p = "jdk.internal.org.xml.sax" or
-  p = "jdk.internal.org.xml.sax.helpers" or
-  p = "jdk.internal.util.xml" or
-  p = "jdk.internal.util.xml.impl" or
-  p = "jdk.jfr.events" or
-  p = "jdk.management.resource.internal" or
-  p = "jdk.management.resource.internal.inst" or
-  p = "jdk.nashorn.internal" or
-  p = "jdk.nashorn.internal.codegen" or
-  p = "jdk.nashorn.internal.codegen.types" or
-  p = "jdk.nashorn.internal.ir" or
-  p = "jdk.nashorn.internal.ir.annotations" or
-  p = "jdk.nashorn.internal.ir.debug" or
-  p = "jdk.nashorn.internal.ir.visitor" or
-  p = "jdk.nashorn.internal.lookup" or
-  p = "jdk.nashorn.internal.objects" or
-  p = "jdk.nashorn.internal.objects.annotations" or
-  p = "jdk.nashorn.internal.parser" or
-  p = "jdk.nashorn.internal.runtime" or
-  p = "jdk.nashorn.internal.runtime.arrays" or
-  p = "jdk.nashorn.internal.runtime.events" or
-  p = "jdk.nashorn.internal.runtime.linker" or
-  p = "jdk.nashorn.internal.runtime.logging" or
-  p = "jdk.nashorn.internal.runtime.options" or
-  p = "jdk.nashorn.internal.runtime.regexp" or
-  p = "jdk.nashorn.internal.runtime.regexp.joni" or
-  p = "jdk.nashorn.internal.runtime.regexp.joni.ast" or
-  p = "jdk.nashorn.internal.runtime.regexp.joni.constants" or
-  p = "jdk.nashorn.internal.runtime.regexp.joni.encoding" or
-  p = "jdk.nashorn.internal.runtime.regexp.joni.exception" or
-  p = "jdk.nashorn.internal.scripts" or
-  p = "jdk.nashorn.tools" or
-  p = "oracle.jrockit.jfr" or
-  p = "oracle.jrockit.jfr.events" or
-  p = "oracle.jrockit.jfr.jdkevents" or
-  p = "oracle.jrockit.jfr.jdkevents.throwabletransform" or
-  p = "oracle.jrockit.jfr.openmbean" or
-  p = "oracle.jrockit.jfr.parser" or
-  p = "oracle.jrockit.jfr.settings" or
-  p = "oracle.jrockit.jfr.tools" or
-  p = "org.jcp.xml.dsig.internal" or
-  p = "org.jcp.xml.dsig.internal.dom" or
-  p = "org.omg.stub.javax.management.remote.rmi" or
-  p = "org.relaxng.datatype" or
-  p = "org.relaxng.datatype.helpers" or
-  p = "sun.applet" or
-  p = "sun.applet.resources" or
-  p = "sun.audio" or
-  p = "sun.awt" or
-  p = "sun.awt.X11" or
-  p = "sun.awt.datatransfer" or
-  p = "sun.awt.dnd" or
-  p = "sun.awt.event" or
-  p = "sun.awt.geom" or
-  p = "sun.awt.im" or
-  p = "sun.awt.image" or
-  p = "sun.awt.image.codec" or
-  p = "sun.awt.motif" or
-  p = "sun.awt.resources" or
-  p = "sun.awt.shell" or
-  p = "sun.awt.util" or
-  p = "sun.awt.windows" or
-  p = "sun.corba" or
-  p = "sun.dc" or
-  p = "sun.dc.path" or
-  p = "sun.dc.pr" or
-  p = "sun.font" or
-  p = "sun.instrument" or
-  p = "sun.invoke" or
-  p = "sun.invoke.anon" or
-  p = "sun.invoke.empty" or
-  p = "sun.invoke.util" or
-  p = "sun.io" or
-  p = "sun.java2d" or
-  p = "sun.java2d.cmm" or
-  p = "sun.java2d.cmm.kcms" or
-  p = "sun.java2d.cmm.lcms" or
-  p = "sun.java2d.d3d" or
-  p = "sun.java2d.jules" or
-  p = "sun.java2d.loops" or
-  p = "sun.java2d.opengl" or
-  p = "sun.java2d.pipe" or
-  p = "sun.java2d.pipe.hw" or
-  p = "sun.java2d.pisces" or
-  p = "sun.java2d.windows" or
-  p = "sun.java2d.x11" or
-  p = "sun.java2d.xr" or
-  p = "sun.jvmstat.monitor" or
-  p = "sun.jvmstat.monitor.event" or
-  p = "sun.jvmstat.monitor.remote" or
-  p = "sun.jvmstat.perfdata.monitor" or
-  p = "sun.jvmstat.perfdata.monitor.protocol.file" or
-  p = "sun.jvmstat.perfdata.monitor.protocol.local" or
-  p = "sun.jvmstat.perfdata.monitor.protocol.rmi" or
-  p = "sun.jvmstat.perfdata.monitor.v1_0" or
-  p = "sun.jvmstat.perfdata.monitor.v2_0" or
-  p = "sun.launcher" or
-  p = "sun.launcher.resources" or
-  p = "sun.lwawt" or
-  p = "sun.lwawt.macosx" or
-  p = "sun.management" or
-  p = "sun.management.counter" or
-  p = "sun.management.counter.perf" or
-  p = "sun.management.jdp" or
-  p = "sun.management.jmxremote" or
-  p = "sun.management.resources" or
-  p = "sun.management.snmp" or
-  p = "sun.management.snmp.jvminstr" or
-  p = "sun.management.snmp.jvmmib" or
-  p = "sun.management.snmp.util" or
-  p = "sun.misc" or
-  p = "sun.misc.resources" or
-  p = "sun.net" or
-  p = "sun.net.dns" or
-  p = "sun.net.ftp" or
-  p = "sun.net.ftp.impl" or
-  p = "sun.net.httpserver" or
-  p = "sun.net.idn" or
-  p = "sun.net.sdp" or
-  p = "sun.net.smtp" or
-  p = "sun.net.spi" or
-  p = "sun.net.spi.nameservice" or
-  p = "sun.net.spi.nameservice.dns" or
-  p = "sun.net.util" or
-  p = "sun.net.www" or
-  p = "sun.net.www.content.audio" or
-  p = "sun.net.www.content.image" or
-  p = "sun.net.www.content.text" or
-  p = "sun.net.www.http" or
-  p = "sun.net.www.protocol.file" or
-  p = "sun.net.www.protocol.ftp" or
-  p = "sun.net.www.protocol.http" or
-  p = "sun.net.www.protocol.http.logging" or
-  p = "sun.net.www.protocol.http.ntlm" or
-  p = "sun.net.www.protocol.http.spnego" or
-  p = "sun.net.www.protocol.https" or
-  p = "sun.net.www.protocol.jar" or
-  p = "sun.net.www.protocol.mailto" or
-  p = "sun.net.www.protocol.netdoc" or
-  p = "sun.nio" or
-  p = "sun.nio.ch" or
-  p = "sun.nio.ch.sctp" or
-  p = "sun.nio.cs" or
-  p = "sun.nio.cs.ext" or
-  p = "sun.nio.fs" or
-  p = "sun.print" or
-  p = "sun.print.resources" or
-  p = "sun.reflect" or
-  p = "sun.reflect.annotation" or
-  p = "sun.reflect.generics.factory" or
-  p = "sun.reflect.generics.parser" or
-  p = "sun.reflect.generics.reflectiveObjects" or
-  p = "sun.reflect.generics.repository" or
-  p = "sun.reflect.generics.scope" or
-  p = "sun.reflect.generics.tree" or
-  p = "sun.reflect.generics.visitor" or
-  p = "sun.reflect.misc" or
-  p = "sun.rmi.log" or
-  p = "sun.rmi.registry" or
-  p = "sun.rmi.rmic" or
-  p = "sun.rmi.rmic.iiop" or
-  p = "sun.rmi.rmic.newrmic" or
-  p = "sun.rmi.rmic.newrmic.jrmp" or
-  p = "sun.rmi.runtime" or
-  p = "sun.rmi.server" or
-  p = "sun.rmi.transport" or
-  p = "sun.rmi.transport.proxy" or
-  p = "sun.rmi.transport.tcp" or
-  p = "sun.security.acl" or
-  p = "sun.security.action" or
-  p = "sun.security.ec" or
-  p = "sun.security.internal.interfaces" or
-  p = "sun.security.internal.spec" or
-  p = "sun.security.jca" or
-  p = "sun.security.jgss" or
-  p = "sun.security.jgss.krb5" or
-  p = "sun.security.jgss.spi" or
-  p = "sun.security.jgss.spnego" or
-  p = "sun.security.jgss.wrapper" or
-  p = "sun.security.krb5" or
-  p = "sun.security.krb5.internal" or
-  p = "sun.security.krb5.internal.ccache" or
-  p = "sun.security.krb5.internal.crypto" or
-  p = "sun.security.krb5.internal.crypto.dk" or
-  p = "sun.security.krb5.internal.ktab" or
-  p = "sun.security.krb5.internal.rcache" or
-  p = "sun.security.krb5.internal.tools" or
-  p = "sun.security.krb5.internal.util" or
-  p = "sun.security.mscapi" or
-  p = "sun.security.pkcs" or
-  p = "sun.security.pkcs10" or
-  p = "sun.security.pkcs11" or
-  p = "sun.security.pkcs11.wrapper" or
-  p = "sun.security.pkcs12" or
-  p = "sun.security.provider" or
-  p = "sun.security.provider.certpath" or
-  p = "sun.security.provider.certpath.ldap" or
-  p = "sun.security.provider.certpath.ssl" or
-  p = "sun.security.rsa" or
-  p = "sun.security.smartcardio" or
-  p = "sun.security.ssl" or
-  p = "sun.security.ssl.krb5" or
-  p = "sun.security.timestamp" or
-  p = "sun.security.tools" or
-  p = "sun.security.tools.jarsigner" or
-  p = "sun.security.tools.keytool" or
-  p = "sun.security.tools.policytool" or
-  p = "sun.security.util" or
-  p = "sun.security.validator" or
-  p = "sun.security.x509" or
-  p = "sun.swing" or
-  p = "sun.swing.icon" or
-  p = "sun.swing.plaf" or
-  p = "sun.swing.plaf.synth" or
-  p = "sun.swing.plaf.windows" or
-  p = "sun.swing.table" or
-  p = "sun.swing.text" or
-  p = "sun.swing.text.html" or
-  p = "sun.text" or
-  p = "sun.text.bidi" or
-  p = "sun.text.normalizer" or
-  p = "sun.text.resources" or
-  p = "sun.text.resources.en" or
-  p = "sun.tools.asm" or
-  p = "sun.tools.attach" or
-  p = "sun.tools.jar" or
-  p = "sun.tools.jar.resources" or
-  p = "sun.tools.java" or
-  p = "sun.tools.javac" or
-  p = "sun.tools.jcmd" or
-  p = "sun.tools.jconsole" or
-  p = "sun.tools.jconsole.inspector" or
-  p = "sun.tools.jinfo" or
-  p = "sun.tools.jmap" or
-  p = "sun.tools.jps" or
-  p = "sun.tools.jstack" or
-  p = "sun.tools.jstat" or
-  p = "sun.tools.jstatd" or
-  p = "sun.tools.native2ascii" or
-  p = "sun.tools.native2ascii.resources" or
-  p = "sun.tools.serialver" or
-  p = "sun.tools.tree" or
-  p = "sun.tools.util" or
-  p = "sun.tracing" or
-  p = "sun.tracing.dtrace" or
-  p = "sun.usagetracker" or
-  p = "sun.util" or
-  p = "sun.util.calendar" or
-  p = "sun.util.cldr" or
-  p = "sun.util.locale" or
-  p = "sun.util.locale.provider" or
-  p = "sun.util.logging" or
-  p = "sun.util.logging.resources" or
-  p = "sun.util.resources" or
-  p = "sun.util.resources.en" or
-  p = "sun.util.spi" or
-  p = "sun.util.xml"
+  p =
+    [
+      "apple.applescript", "apple.laf", "apple.launcher", "apple.security", "com.apple.concurrent",
+      "com.apple.eawt", "com.apple.eawt.event", "com.apple.eio", "com.apple.laf",
+      "com.apple.laf.resources", "com.oracle.jrockit.jfr", "com.oracle.jrockit.jfr.client",
+      "com.oracle.jrockit.jfr.management", "com.oracle.security.ucrypto", "com.oracle.util",
+      "com.oracle.webservices.internal.api", "com.oracle.webservices.internal.api.databinding",
+      "com.oracle.webservices.internal.api.message",
+      "com.oracle.webservices.internal.impl.encoding",
+      "com.oracle.webservices.internal.impl.internalspi.encoding",
+      "com.oracle.xmlns.internal.webservices.jaxws_databinding",
+      "com.sun.accessibility.internal.resources", "com.sun.activation.registries", "com.sun.awt",
+      "com.sun.beans", "com.sun.beans.decoder", "com.sun.beans.editors", "com.sun.beans.finder",
+      "com.sun.beans.infos", "com.sun.beans.util", "com.sun.codemodel.internal",
+      "com.sun.codemodel.internal.fmt", "com.sun.codemodel.internal.util",
+      "com.sun.codemodel.internal.writer", "com.sun.corba.se.impl.activation",
+      "com.sun.corba.se.impl.copyobject", "com.sun.corba.se.impl.corba",
+      "com.sun.corba.se.impl.dynamicany", "com.sun.corba.se.impl.encoding",
+      "com.sun.corba.se.impl.interceptors", "com.sun.corba.se.impl.io", "com.sun.corba.se.impl.ior",
+      "com.sun.corba.se.impl.ior.iiop", "com.sun.corba.se.impl.javax.rmi",
+      "com.sun.corba.se.impl.javax.rmi.CORBA", "com.sun.corba.se.impl.legacy.connection",
+      "com.sun.corba.se.impl.logging", "com.sun.corba.se.impl.monitoring",
+      "com.sun.corba.se.impl.naming.cosnaming", "com.sun.corba.se.impl.naming.namingutil",
+      "com.sun.corba.se.impl.naming.pcosnaming", "com.sun.corba.se.impl.oa",
+      "com.sun.corba.se.impl.oa.poa", "com.sun.corba.se.impl.oa.toa", "com.sun.corba.se.impl.orb",
+      "com.sun.corba.se.impl.orbutil", "com.sun.corba.se.impl.orbutil.closure",
+      "com.sun.corba.se.impl.orbutil.concurrent", "com.sun.corba.se.impl.orbutil.fsm",
+      "com.sun.corba.se.impl.orbutil.graph", "com.sun.corba.se.impl.orbutil.threadpool",
+      "com.sun.corba.se.impl.presentation.rmi", "com.sun.corba.se.impl.protocol",
+      "com.sun.corba.se.impl.protocol.giopmsgheaders", "com.sun.corba.se.impl.resolver",
+      "com.sun.corba.se.impl.transport", "com.sun.corba.se.impl.util",
+      "com.sun.corba.se.internal.CosNaming", "com.sun.corba.se.internal.Interceptors",
+      "com.sun.corba.se.internal.POA", "com.sun.corba.se.internal.corba",
+      "com.sun.corba.se.internal.iiop", "com.sun.corba.se.org.omg.CORBA",
+      "com.sun.corba.se.pept.broker", "com.sun.corba.se.pept.encoding",
+      "com.sun.corba.se.pept.protocol", "com.sun.corba.se.pept.transport",
+      "com.sun.corba.se.spi.activation",
+      "com.sun.corba.se.spi.activation.InitialNameServicePackage",
+      "com.sun.corba.se.spi.activation.LocatorPackage",
+      "com.sun.corba.se.spi.activation.RepositoryPackage", "com.sun.corba.se.spi.copyobject",
+      "com.sun.corba.se.spi.encoding", "com.sun.corba.se.spi.extension", "com.sun.corba.se.spi.ior",
+      "com.sun.corba.se.spi.ior.iiop", "com.sun.corba.se.spi.legacy.connection",
+      "com.sun.corba.se.spi.legacy.interceptor", "com.sun.corba.se.spi.logging",
+      "com.sun.corba.se.spi.monitoring", "com.sun.corba.se.spi.oa", "com.sun.corba.se.spi.orb",
+      "com.sun.corba.se.spi.orbutil.closure", "com.sun.corba.se.spi.orbutil.fsm",
+      "com.sun.corba.se.spi.orbutil.proxy", "com.sun.corba.se.spi.orbutil.threadpool",
+      "com.sun.corba.se.spi.presentation.rmi", "com.sun.corba.se.spi.protocol",
+      "com.sun.corba.se.spi.resolver", "com.sun.corba.se.spi.servicecontext",
+      "com.sun.corba.se.spi.transport", "com.sun.crypto.provider", "com.sun.demo.jvmti.hprof",
+      "com.sun.deploy.uitoolkit.impl.fx", "com.sun.deploy.uitoolkit.impl.fx.ui",
+      "com.sun.deploy.uitoolkit.impl.fx.ui.resources", "com.sun.glass.events",
+      "com.sun.glass.events.mac", "com.sun.glass.ui", "com.sun.glass.ui.delegate",
+      "com.sun.glass.ui.gtk", "com.sun.glass.ui.mac", "com.sun.glass.ui.win", "com.sun.glass.utils",
+      "com.sun.image.codec.jpeg", "com.sun.imageio.plugins.bmp", "com.sun.imageio.plugins.common",
+      "com.sun.imageio.plugins.gif", "com.sun.imageio.plugins.jpeg", "com.sun.imageio.plugins.png",
+      "com.sun.imageio.plugins.wbmp", "com.sun.imageio.spi", "com.sun.imageio.stream",
+      "com.sun.istack.internal", "com.sun.istack.internal.localization",
+      "com.sun.istack.internal.logging", "com.sun.istack.internal.tools",
+      "com.sun.java.accessibility", "com.sun.java.accessibility.util.java.awt",
+      "com.sun.java.browser.dom", "com.sun.java.browser.net", "com.sun.java.swing",
+      "com.sun.java.swing.plaf.gtk", "com.sun.java.swing.plaf.gtk.resources",
+      "com.sun.java.swing.plaf.motif", "com.sun.java.swing.plaf.motif.resources",
+      "com.sun.java.swing.plaf.nimbus", "com.sun.java.swing.plaf.windows",
+      "com.sun.java.swing.plaf.windows.resources", "com.sun.java.util.jar.pack",
+      "com.sun.java_cup.internal.runtime", "com.sun.javafx", "com.sun.javafx.animation",
+      "com.sun.javafx.applet", "com.sun.javafx.application", "com.sun.javafx.beans",
+      "com.sun.javafx.beans.event", "com.sun.javafx.binding", "com.sun.javafx.charts",
+      "com.sun.javafx.collections", "com.sun.javafx.css", "com.sun.javafx.css.converters",
+      "com.sun.javafx.css.parser", "com.sun.javafx.cursor", "com.sun.javafx.effect",
+      "com.sun.javafx.embed", "com.sun.javafx.event", "com.sun.javafx.font",
+      "com.sun.javafx.font.coretext", "com.sun.javafx.font.directwrite",
+      "com.sun.javafx.font.freetype", "com.sun.javafx.font.t2k", "com.sun.javafx.fxml",
+      "com.sun.javafx.fxml.builder", "com.sun.javafx.fxml.expression", "com.sun.javafx.geom",
+      "com.sun.javafx.geom.transform", "com.sun.javafx.geometry", "com.sun.javafx.iio",
+      "com.sun.javafx.iio.bmp", "com.sun.javafx.iio.common", "com.sun.javafx.iio.gif",
+      "com.sun.javafx.iio.ios", "com.sun.javafx.iio.jpeg", "com.sun.javafx.iio.png",
+      "com.sun.javafx.image", "com.sun.javafx.image.impl", "com.sun.javafx.jmx",
+      "com.sun.javafx.logging", "com.sun.javafx.media", "com.sun.javafx.menu",
+      "com.sun.javafx.perf", "com.sun.javafx.print", "com.sun.javafx.property",
+      "com.sun.javafx.property.adapter", "com.sun.javafx.robot", "com.sun.javafx.robot.impl",
+      "com.sun.javafx.runtime", "com.sun.javafx.runtime.async", "com.sun.javafx.runtime.eula",
+      "com.sun.javafx.scene", "com.sun.javafx.scene.control",
+      "com.sun.javafx.scene.control.behavior", "com.sun.javafx.scene.control.skin",
+      "com.sun.javafx.scene.control.skin.resources", "com.sun.javafx.scene.input",
+      "com.sun.javafx.scene.layout.region", "com.sun.javafx.scene.paint",
+      "com.sun.javafx.scene.shape", "com.sun.javafx.scene.text", "com.sun.javafx.scene.transform",
+      "com.sun.javafx.scene.traversal", "com.sun.javafx.scene.web",
+      "com.sun.javafx.scene.web.behavior", "com.sun.javafx.scene.web.skin",
+      "com.sun.javafx.sg.prism", "com.sun.javafx.sg.prism.web", "com.sun.javafx.stage",
+      "com.sun.javafx.text", "com.sun.javafx.tk", "com.sun.javafx.tk.quantum",
+      "com.sun.javafx.util", "com.sun.javafx.webkit", "com.sun.javafx.webkit.drt",
+      "com.sun.javafx.webkit.prism", "com.sun.javafx.webkit.prism.theme",
+      "com.sun.javafx.webkit.theme", "com.sun.jmx.defaults", "com.sun.jmx.interceptor",
+      "com.sun.jmx.mbeanserver", "com.sun.jmx.remote.internal", "com.sun.jmx.remote.protocol.iiop",
+      "com.sun.jmx.remote.protocol.rmi", "com.sun.jmx.remote.security", "com.sun.jmx.remote.util",
+      "com.sun.jmx.snmp", "com.sun.jmx.snmp.IPAcl", "com.sun.jmx.snmp.agent",
+      "com.sun.jmx.snmp.daemon", "com.sun.jmx.snmp.defaults", "com.sun.jmx.snmp.internal",
+      "com.sun.jmx.snmp.mpm", "com.sun.jmx.snmp.tasks", "com.sun.jndi.cosnaming",
+      "com.sun.jndi.dns", "com.sun.jndi.ldap", "com.sun.jndi.ldap.ext", "com.sun.jndi.ldap.pool",
+      "com.sun.jndi.ldap.sasl", "com.sun.jndi.rmi.registry", "com.sun.jndi.toolkit.corba",
+      "com.sun.jndi.toolkit.ctx", "com.sun.jndi.toolkit.dir", "com.sun.jndi.toolkit.url",
+      "com.sun.jndi.url.corbaname", "com.sun.jndi.url.dns", "com.sun.jndi.url.iiop",
+      "com.sun.jndi.url.iiopname", "com.sun.jndi.url.ldap", "com.sun.jndi.url.ldaps",
+      "com.sun.jndi.url.rmi", "com.sun.management.jmx", "com.sun.media.jfxmedia",
+      "com.sun.media.jfxmedia.control", "com.sun.media.jfxmedia.effects",
+      "com.sun.media.jfxmedia.events", "com.sun.media.jfxmedia.locator",
+      "com.sun.media.jfxmedia.logging", "com.sun.media.jfxmedia.track",
+      "com.sun.media.jfxmediaimpl", "com.sun.media.jfxmediaimpl.platform",
+      "com.sun.media.jfxmediaimpl.platform.gstreamer", "com.sun.media.jfxmediaimpl.platform.ios",
+      "com.sun.media.jfxmediaimpl.platform.java", "com.sun.media.jfxmediaimpl.platform.osx",
+      "com.sun.media.sound", "com.sun.naming.internal", "com.sun.net.ssl",
+      "com.sun.net.ssl.internal.ssl", "com.sun.net.ssl.internal.www.protocol.https",
+      "com.sun.nio.file", "com.sun.nio.zipfs", "com.sun.openpisces",
+      "com.sun.org.apache.bcel.internal", "com.sun.org.apache.bcel.internal.classfile",
+      "com.sun.org.apache.bcel.internal.generic", "com.sun.org.apache.bcel.internal.util",
+      "com.sun.org.apache.regexp.internal", "com.sun.org.apache.xalan.internal",
+      "com.sun.org.apache.xalan.internal.extensions", "com.sun.org.apache.xalan.internal.lib",
+      "com.sun.org.apache.xalan.internal.res", "com.sun.org.apache.xalan.internal.templates",
+      "com.sun.org.apache.xalan.internal.utils", "com.sun.org.apache.xalan.internal.xslt",
+      "com.sun.org.apache.xalan.internal.xsltc", "com.sun.org.apache.xalan.internal.xsltc.cmdline",
+      "com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler.util",
+      "com.sun.org.apache.xalan.internal.xsltc.dom",
+      "com.sun.org.apache.xalan.internal.xsltc.runtime",
+      "com.sun.org.apache.xalan.internal.xsltc.runtime.output",
+      "com.sun.org.apache.xalan.internal.xsltc.trax",
+      "com.sun.org.apache.xalan.internal.xsltc.util", "com.sun.org.apache.xerces.internal.dom",
+      "com.sun.org.apache.xerces.internal.dom.events", "com.sun.org.apache.xerces.internal.impl",
+      "com.sun.org.apache.xerces.internal.impl.dtd",
+      "com.sun.org.apache.xerces.internal.impl.dtd.models",
+      "com.sun.org.apache.xerces.internal.impl.dv",
+      "com.sun.org.apache.xerces.internal.impl.dv.dtd",
+      "com.sun.org.apache.xerces.internal.impl.dv.util",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs", "com.sun.org.apache.xerces.internal.impl.io",
+      "com.sun.org.apache.xerces.internal.impl.msg",
+      "com.sun.org.apache.xerces.internal.impl.validation",
+      "com.sun.org.apache.xerces.internal.impl.xpath",
+      "com.sun.org.apache.xerces.internal.impl.xpath.regex",
+      "com.sun.org.apache.xerces.internal.impl.xs",
+      "com.sun.org.apache.xerces.internal.impl.xs.identity",
+      "com.sun.org.apache.xerces.internal.impl.xs.models",
+      "com.sun.org.apache.xerces.internal.impl.xs.opti",
+      "com.sun.org.apache.xerces.internal.impl.xs.traversers",
+      "com.sun.org.apache.xerces.internal.impl.xs.util", "com.sun.org.apache.xerces.internal.jaxp",
+      "com.sun.org.apache.xerces.internal.jaxp.datatype",
+      "com.sun.org.apache.xerces.internal.jaxp.validation",
+      "com.sun.org.apache.xerces.internal.parsers", "com.sun.org.apache.xerces.internal.util",
+      "com.sun.org.apache.xerces.internal.utils", "com.sun.org.apache.xerces.internal.xinclude",
+      "com.sun.org.apache.xerces.internal.xni", "com.sun.org.apache.xerces.internal.xni.grammars",
+      "com.sun.org.apache.xerces.internal.xni.parser",
+      "com.sun.org.apache.xerces.internal.xpointer", "com.sun.org.apache.xerces.internal.xs",
+      "com.sun.org.apache.xerces.internal.xs.datatypes", "com.sun.org.apache.xml.internal.dtm",
+      "com.sun.org.apache.xml.internal.dtm.ref", "com.sun.org.apache.xml.internal.dtm.ref.dom2dtm",
+      "com.sun.org.apache.xml.internal.dtm.ref.sax2dtm", "com.sun.org.apache.xml.internal.res",
+      "com.sun.org.apache.xml.internal.resolver",
+      "com.sun.org.apache.xml.internal.resolver.helpers",
+      "com.sun.org.apache.xml.internal.resolver.readers",
+      "com.sun.org.apache.xml.internal.resolver.tools", "com.sun.org.apache.xml.internal.security",
+      "com.sun.org.apache.xml.internal.security.algorithms",
+      "com.sun.org.apache.xml.internal.security.algorithms.implementations",
+      "com.sun.org.apache.xml.internal.security.c14n",
+      "com.sun.org.apache.xml.internal.security.c14n.helper",
+      "com.sun.org.apache.xml.internal.security.c14n.implementations",
+      "com.sun.org.apache.xml.internal.security.encryption",
+      "com.sun.org.apache.xml.internal.security.exceptions",
+      "com.sun.org.apache.xml.internal.security.keys",
+      "com.sun.org.apache.xml.internal.security.keys.content",
+      "com.sun.org.apache.xml.internal.security.keys.content.keyvalues",
+      "com.sun.org.apache.xml.internal.security.keys.content.x509",
+      "com.sun.org.apache.xml.internal.security.keys.keyresolver",
+      "com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations",
+      "com.sun.org.apache.xml.internal.security.keys.storage",
+      "com.sun.org.apache.xml.internal.security.keys.storage.implementations",
+      "com.sun.org.apache.xml.internal.security.signature",
+      "com.sun.org.apache.xml.internal.security.signature.reference",
+      "com.sun.org.apache.xml.internal.security.transforms",
+      "com.sun.org.apache.xml.internal.security.transforms.implementations",
+      "com.sun.org.apache.xml.internal.security.transforms.params",
+      "com.sun.org.apache.xml.internal.security.utils",
+      "com.sun.org.apache.xml.internal.security.utils.resolver",
+      "com.sun.org.apache.xml.internal.security.utils.resolver.implementations",
+      "com.sun.org.apache.xml.internal.serialize", "com.sun.org.apache.xml.internal.serializer",
+      "com.sun.org.apache.xml.internal.serializer.utils", "com.sun.org.apache.xml.internal.utils",
+      "com.sun.org.apache.xml.internal.utils.res", "com.sun.org.apache.xpath.internal",
+      "com.sun.org.apache.xpath.internal.axes", "com.sun.org.apache.xpath.internal.compiler",
+      "com.sun.org.apache.xpath.internal.domapi", "com.sun.org.apache.xpath.internal.functions",
+      "com.sun.org.apache.xpath.internal.jaxp", "com.sun.org.apache.xpath.internal.objects",
+      "com.sun.org.apache.xpath.internal.operations", "com.sun.org.apache.xpath.internal.patterns",
+      "com.sun.org.apache.xpath.internal.res", "com.sun.org.glassfish.external.amx",
+      "com.sun.org.glassfish.external.arc", "com.sun.org.glassfish.external.probe.provider",
+      "com.sun.org.glassfish.external.probe.provider.annotations",
+      "com.sun.org.glassfish.external.statistics",
+      "com.sun.org.glassfish.external.statistics.annotations",
+      "com.sun.org.glassfish.external.statistics.impl", "com.sun.org.glassfish.gmbal",
+      "com.sun.org.glassfish.gmbal.util", "com.sun.org.omg.CORBA",
+      "com.sun.org.omg.CORBA.ValueDefPackage", "com.sun.org.omg.CORBA.portable",
+      "com.sun.org.omg.SendingContext", "com.sun.org.omg.SendingContext.CodeBasePackage",
+      "com.sun.pisces", "com.sun.prism", "com.sun.prism.d3d", "com.sun.prism.es2",
+      "com.sun.prism.image", "com.sun.prism.impl", "com.sun.prism.impl.packrect",
+      "com.sun.prism.impl.paint", "com.sun.prism.impl.ps", "com.sun.prism.impl.shape",
+      "com.sun.prism.j2d", "com.sun.prism.j2d.paint", "com.sun.prism.j2d.print",
+      "com.sun.prism.paint", "com.sun.prism.ps", "com.sun.prism.shader", "com.sun.prism.shape",
+      "com.sun.prism.sw", "com.sun.rmi.rmid", "com.sun.rowset", "com.sun.rowset.internal",
+      "com.sun.rowset.providers", "com.sun.scenario", "com.sun.scenario.animation",
+      "com.sun.scenario.animation.shared", "com.sun.scenario.effect",
+      "com.sun.scenario.effect.impl", "com.sun.scenario.effect.impl.es2",
+      "com.sun.scenario.effect.impl.hw", "com.sun.scenario.effect.impl.hw.d3d",
+      "com.sun.scenario.effect.impl.prism", "com.sun.scenario.effect.impl.prism.ps",
+      "com.sun.scenario.effect.impl.prism.sw", "com.sun.scenario.effect.impl.state",
+      "com.sun.scenario.effect.impl.sw", "com.sun.scenario.effect.impl.sw.java",
+      "com.sun.scenario.effect.impl.sw.sse", "com.sun.scenario.effect.light",
+      "com.sun.security.cert.internal.x509", "com.sun.security.ntlm", "com.sun.security.sasl",
+      "com.sun.security.sasl.digest", "com.sun.security.sasl.gsskerb", "com.sun.security.sasl.ntlm",
+      "com.sun.security.sasl.util", "com.sun.swing.internal.plaf.basic.resources",
+      "com.sun.swing.internal.plaf.metal.resources", "com.sun.swing.internal.plaf.synth.resources",
+      "com.sun.tools.classfile", "com.sun.tools.corba.se.idl",
+      "com.sun.tools.corba.se.idl.constExpr", "com.sun.tools.corba.se.idl.som.cff",
+      "com.sun.tools.corba.se.idl.som.idlemit", "com.sun.tools.corba.se.idl.toJavaPortable",
+      "com.sun.tools.doclets.formats.html", "com.sun.tools.doclets.formats.html.markup",
+      "com.sun.tools.doclets.formats.html.resources", "com.sun.tools.doclets.internal.toolkit",
+      "com.sun.tools.doclets.internal.toolkit.builders",
+      "com.sun.tools.doclets.internal.toolkit.resources",
+      "com.sun.tools.doclets.internal.toolkit.taglets",
+      "com.sun.tools.doclets.internal.toolkit.util",
+      "com.sun.tools.doclets.internal.toolkit.util.links", "com.sun.tools.doclint",
+      "com.sun.tools.doclint.resources", "com.sun.tools.example.debug.expr",
+      "com.sun.tools.example.debug.tty", "com.sun.tools.extcheck", "com.sun.tools.hat",
+      "com.sun.tools.hat.internal.model", "com.sun.tools.hat.internal.oql",
+      "com.sun.tools.hat.internal.parser", "com.sun.tools.hat.internal.server",
+      "com.sun.tools.hat.internal.util", "com.sun.tools.internal.jxc",
+      "com.sun.tools.internal.jxc.ap", "com.sun.tools.internal.jxc.api",
+      "com.sun.tools.internal.jxc.api.impl.j2s", "com.sun.tools.internal.jxc.gen.config",
+      "com.sun.tools.internal.jxc.model.nav", "com.sun.tools.internal.ws",
+      "com.sun.tools.internal.ws.api", "com.sun.tools.internal.ws.api.wsdl",
+      "com.sun.tools.internal.ws.processor", "com.sun.tools.internal.ws.processor.generator",
+      "com.sun.tools.internal.ws.processor.model",
+      "com.sun.tools.internal.ws.processor.model.exporter",
+      "com.sun.tools.internal.ws.processor.model.java",
+      "com.sun.tools.internal.ws.processor.model.jaxb",
+      "com.sun.tools.internal.ws.processor.modeler",
+      "com.sun.tools.internal.ws.processor.modeler.annotation",
+      "com.sun.tools.internal.ws.processor.modeler.wsdl",
+      "com.sun.tools.internal.ws.processor.util", "com.sun.tools.internal.ws.resources",
+      "com.sun.tools.internal.ws.spi", "com.sun.tools.internal.ws.util",
+      "com.sun.tools.internal.ws.util.xml", "com.sun.tools.internal.ws.wscompile",
+      "com.sun.tools.internal.ws.wscompile.plugin.at_generated",
+      "com.sun.tools.internal.ws.wsdl.document", "com.sun.tools.internal.ws.wsdl.document.http",
+      "com.sun.tools.internal.ws.wsdl.document.jaxws",
+      "com.sun.tools.internal.ws.wsdl.document.mime",
+      "com.sun.tools.internal.ws.wsdl.document.schema",
+      "com.sun.tools.internal.ws.wsdl.document.soap", "com.sun.tools.internal.ws.wsdl.framework",
+      "com.sun.tools.internal.ws.wsdl.parser", "com.sun.tools.internal.xjc",
+      "com.sun.tools.internal.xjc.addon.accessors", "com.sun.tools.internal.xjc.addon.at_generated",
+      "com.sun.tools.internal.xjc.addon.code_injector", "com.sun.tools.internal.xjc.addon.episode",
+      "com.sun.tools.internal.xjc.addon.locator", "com.sun.tools.internal.xjc.addon.sync",
+      "com.sun.tools.internal.xjc.api", "com.sun.tools.internal.xjc.api.impl.s2j",
+      "com.sun.tools.internal.xjc.api.util", "com.sun.tools.internal.xjc.generator.annotation.spec",
+      "com.sun.tools.internal.xjc.generator.bean",
+      "com.sun.tools.internal.xjc.generator.bean.field",
+      "com.sun.tools.internal.xjc.generator.util", "com.sun.tools.internal.xjc.model",
+      "com.sun.tools.internal.xjc.model.nav", "com.sun.tools.internal.xjc.outline",
+      "com.sun.tools.internal.xjc.reader", "com.sun.tools.internal.xjc.reader.dtd",
+      "com.sun.tools.internal.xjc.reader.dtd.bindinfo", "com.sun.tools.internal.xjc.reader.gbind",
+      "com.sun.tools.internal.xjc.reader.internalizer", "com.sun.tools.internal.xjc.reader.relaxng",
+      "com.sun.tools.internal.xjc.reader.xmlschema",
+      "com.sun.tools.internal.xjc.reader.xmlschema.bindinfo",
+      "com.sun.tools.internal.xjc.reader.xmlschema.ct",
+      "com.sun.tools.internal.xjc.reader.xmlschema.parser", "com.sun.tools.internal.xjc.runtime",
+      "com.sun.tools.internal.xjc.util", "com.sun.tools.internal.xjc.writer",
+      "com.sun.tools.javac.api", "com.sun.tools.javac.code", "com.sun.tools.javac.comp",
+      "com.sun.tools.javac.file", "com.sun.tools.javac.jvm", "com.sun.tools.javac.main",
+      "com.sun.tools.javac.model", "com.sun.tools.javac.nio", "com.sun.tools.javac.parser",
+      "com.sun.tools.javac.processing", "com.sun.tools.javac.resources", "com.sun.tools.javac.sym",
+      "com.sun.tools.javac.tree", "com.sun.tools.javac.util", "com.sun.tools.javadoc.api",
+      "com.sun.tools.javadoc.resources", "com.sun.tools.javah", "com.sun.tools.javah.resources",
+      "com.sun.tools.javap", "com.sun.tools.javap.resources", "com.sun.tools.jdeps",
+      "com.sun.tools.jdeps.resources", "com.sun.tools.jdi", "com.sun.tools.jdi.resources",
+      "com.sun.tools.script.shell", "com.sun.tracing", "com.sun.tracing.dtrace", "com.sun.webkit",
+      "com.sun.webkit.dom", "com.sun.webkit.event", "com.sun.webkit.graphics",
+      "com.sun.webkit.network", "com.sun.webkit.network.about", "com.sun.webkit.network.data",
+      "com.sun.webkit.perf", "com.sun.webkit.plugin", "com.sun.webkit.text",
+      "com.sun.xml.internal.bind", "com.sun.xml.internal.bind.annotation",
+      "com.sun.xml.internal.bind.api", "com.sun.xml.internal.bind.api.impl",
+      "com.sun.xml.internal.bind.marshaller", "com.sun.xml.internal.bind.unmarshaller",
+      "com.sun.xml.internal.bind.util", "com.sun.xml.internal.bind.v2",
+      "com.sun.xml.internal.bind.v2.bytecode", "com.sun.xml.internal.bind.v2.model.annotation",
+      "com.sun.xml.internal.bind.v2.model.core", "com.sun.xml.internal.bind.v2.model.impl",
+      "com.sun.xml.internal.bind.v2.model.nav", "com.sun.xml.internal.bind.v2.model.runtime",
+      "com.sun.xml.internal.bind.v2.model.util", "com.sun.xml.internal.bind.v2.runtime",
+      "com.sun.xml.internal.bind.v2.runtime.output",
+      "com.sun.xml.internal.bind.v2.runtime.property",
+      "com.sun.xml.internal.bind.v2.runtime.reflect",
+      "com.sun.xml.internal.bind.v2.runtime.reflect.opt",
+      "com.sun.xml.internal.bind.v2.runtime.unmarshaller", "com.sun.xml.internal.bind.v2.schemagen",
+      "com.sun.xml.internal.bind.v2.schemagen.episode",
+      "com.sun.xml.internal.bind.v2.schemagen.xmlschema", "com.sun.xml.internal.bind.v2.util",
+      "com.sun.xml.internal.dtdparser", "com.sun.xml.internal.fastinfoset",
+      "com.sun.xml.internal.fastinfoset.algorithm", "com.sun.xml.internal.fastinfoset.alphabet",
+      "com.sun.xml.internal.fastinfoset.dom",
+      "com.sun.xml.internal.fastinfoset.org.apache.xerces.util",
+      "com.sun.xml.internal.fastinfoset.sax", "com.sun.xml.internal.fastinfoset.stax",
+      "com.sun.xml.internal.fastinfoset.stax.events",
+      "com.sun.xml.internal.fastinfoset.stax.factory", "com.sun.xml.internal.fastinfoset.stax.util",
+      "com.sun.xml.internal.fastinfoset.tools", "com.sun.xml.internal.fastinfoset.util",
+      "com.sun.xml.internal.fastinfoset.vocab", "com.sun.xml.internal.messaging.saaj",
+      "com.sun.xml.internal.messaging.saaj.client.p2p",
+      "com.sun.xml.internal.messaging.saaj.packaging.mime",
+      "com.sun.xml.internal.messaging.saaj.packaging.mime.internet",
+      "com.sun.xml.internal.messaging.saaj.packaging.mime.util",
+      "com.sun.xml.internal.messaging.saaj.soap",
+      "com.sun.xml.internal.messaging.saaj.soap.dynamic",
+      "com.sun.xml.internal.messaging.saaj.soap.impl",
+      "com.sun.xml.internal.messaging.saaj.soap.name",
+      "com.sun.xml.internal.messaging.saaj.soap.ver1_1",
+      "com.sun.xml.internal.messaging.saaj.soap.ver1_2", "com.sun.xml.internal.messaging.saaj.util",
+      "com.sun.xml.internal.messaging.saaj.util.transform",
+      "com.sun.xml.internal.org.jvnet.fastinfoset",
+      "com.sun.xml.internal.org.jvnet.fastinfoset.sax",
+      "com.sun.xml.internal.org.jvnet.fastinfoset.sax.helpers",
+      "com.sun.xml.internal.org.jvnet.fastinfoset.stax", "com.sun.xml.internal.org.jvnet.mimepull",
+      "com.sun.xml.internal.org.jvnet.staxex", "com.sun.xml.internal.rngom.ast.builder",
+      "com.sun.xml.internal.rngom.ast.om", "com.sun.xml.internal.rngom.ast.util",
+      "com.sun.xml.internal.rngom.binary", "com.sun.xml.internal.rngom.binary.visitor",
+      "com.sun.xml.internal.rngom.digested", "com.sun.xml.internal.rngom.dt",
+      "com.sun.xml.internal.rngom.dt.builtin", "com.sun.xml.internal.rngom.nc",
+      "com.sun.xml.internal.rngom.parse", "com.sun.xml.internal.rngom.parse.compact",
+      "com.sun.xml.internal.rngom.parse.host", "com.sun.xml.internal.rngom.parse.xml",
+      "com.sun.xml.internal.rngom.util", "com.sun.xml.internal.rngom.xml.sax",
+      "com.sun.xml.internal.rngom.xml.util", "com.sun.xml.internal.stream",
+      "com.sun.xml.internal.stream.buffer", "com.sun.xml.internal.stream.buffer.sax",
+      "com.sun.xml.internal.stream.buffer.stax", "com.sun.xml.internal.stream.dtd",
+      "com.sun.xml.internal.stream.dtd.nonvalidating", "com.sun.xml.internal.stream.events",
+      "com.sun.xml.internal.stream.util", "com.sun.xml.internal.stream.writers",
+      "com.sun.xml.internal.txw2", "com.sun.xml.internal.txw2.annotation",
+      "com.sun.xml.internal.txw2.output", "com.sun.xml.internal.ws",
+      "com.sun.xml.internal.ws.addressing", "com.sun.xml.internal.ws.addressing.model",
+      "com.sun.xml.internal.ws.addressing.policy", "com.sun.xml.internal.ws.addressing.v200408",
+      "com.sun.xml.internal.ws.api", "com.sun.xml.internal.ws.api.addressing",
+      "com.sun.xml.internal.ws.api.client", "com.sun.xml.internal.ws.api.config.management",
+      "com.sun.xml.internal.ws.api.config.management.policy",
+      "com.sun.xml.internal.ws.api.databinding", "com.sun.xml.internal.ws.api.fastinfoset",
+      "com.sun.xml.internal.ws.api.ha", "com.sun.xml.internal.ws.api.handler",
+      "com.sun.xml.internal.ws.api.message", "com.sun.xml.internal.ws.api.message.saaj",
+      "com.sun.xml.internal.ws.api.message.stream", "com.sun.xml.internal.ws.api.model",
+      "com.sun.xml.internal.ws.api.model.soap", "com.sun.xml.internal.ws.api.model.wsdl",
+      "com.sun.xml.internal.ws.api.model.wsdl.editable", "com.sun.xml.internal.ws.api.pipe",
+      "com.sun.xml.internal.ws.api.pipe.helper", "com.sun.xml.internal.ws.api.policy",
+      "com.sun.xml.internal.ws.api.policy.subject", "com.sun.xml.internal.ws.api.server",
+      "com.sun.xml.internal.ws.api.streaming", "com.sun.xml.internal.ws.api.wsdl.parser",
+      "com.sun.xml.internal.ws.api.wsdl.writer", "com.sun.xml.internal.ws.assembler",
+      "com.sun.xml.internal.ws.assembler.dev", "com.sun.xml.internal.ws.assembler.jaxws",
+      "com.sun.xml.internal.ws.binding", "com.sun.xml.internal.ws.client",
+      "com.sun.xml.internal.ws.client.dispatch", "com.sun.xml.internal.ws.client.sei",
+      "com.sun.xml.internal.ws.commons.xmlutil", "com.sun.xml.internal.ws.config.management.policy",
+      "com.sun.xml.internal.ws.config.metro.dev", "com.sun.xml.internal.ws.config.metro.util",
+      "com.sun.xml.internal.ws.db", "com.sun.xml.internal.ws.db.glassfish",
+      "com.sun.xml.internal.ws.developer", "com.sun.xml.internal.ws.dump",
+      "com.sun.xml.internal.ws.encoding", "com.sun.xml.internal.ws.encoding.fastinfoset",
+      "com.sun.xml.internal.ws.encoding.policy", "com.sun.xml.internal.ws.encoding.soap",
+      "com.sun.xml.internal.ws.encoding.soap.streaming", "com.sun.xml.internal.ws.encoding.xml",
+      "com.sun.xml.internal.ws.fault", "com.sun.xml.internal.ws.handler",
+      "com.sun.xml.internal.ws.message", "com.sun.xml.internal.ws.message.jaxb",
+      "com.sun.xml.internal.ws.message.saaj", "com.sun.xml.internal.ws.message.source",
+      "com.sun.xml.internal.ws.message.stream", "com.sun.xml.internal.ws.model",
+      "com.sun.xml.internal.ws.model.soap", "com.sun.xml.internal.ws.model.wsdl",
+      "com.sun.xml.internal.ws.org.objectweb.asm", "com.sun.xml.internal.ws.policy",
+      "com.sun.xml.internal.ws.policy.jaxws", "com.sun.xml.internal.ws.policy.jaxws.spi",
+      "com.sun.xml.internal.ws.policy.privateutil", "com.sun.xml.internal.ws.policy.sourcemodel",
+      "com.sun.xml.internal.ws.policy.sourcemodel.attach",
+      "com.sun.xml.internal.ws.policy.sourcemodel.wspolicy", "com.sun.xml.internal.ws.policy.spi",
+      "com.sun.xml.internal.ws.policy.subject", "com.sun.xml.internal.ws.protocol.soap",
+      "com.sun.xml.internal.ws.protocol.xml", "com.sun.xml.internal.ws.resources",
+      "com.sun.xml.internal.ws.runtime.config", "com.sun.xml.internal.ws.server",
+      "com.sun.xml.internal.ws.server.provider", "com.sun.xml.internal.ws.server.sei",
+      "com.sun.xml.internal.ws.spi", "com.sun.xml.internal.ws.spi.db",
+      "com.sun.xml.internal.ws.streaming", "com.sun.xml.internal.ws.transport",
+      "com.sun.xml.internal.ws.transport.http", "com.sun.xml.internal.ws.transport.http.client",
+      "com.sun.xml.internal.ws.transport.http.server", "com.sun.xml.internal.ws.util",
+      "com.sun.xml.internal.ws.util.exception", "com.sun.xml.internal.ws.util.pipe",
+      "com.sun.xml.internal.ws.util.xml", "com.sun.xml.internal.ws.wsdl",
+      "com.sun.xml.internal.ws.wsdl.parser", "com.sun.xml.internal.ws.wsdl.writer",
+      "com.sun.xml.internal.ws.wsdl.writer.document",
+      "com.sun.xml.internal.ws.wsdl.writer.document.http",
+      "com.sun.xml.internal.ws.wsdl.writer.document.soap",
+      "com.sun.xml.internal.ws.wsdl.writer.document.soap12",
+      "com.sun.xml.internal.ws.wsdl.writer.document.xsd", "com.sun.xml.internal.xsom",
+      "com.sun.xml.internal.xsom.impl", "com.sun.xml.internal.xsom.impl.parser",
+      "com.sun.xml.internal.xsom.impl.parser.state", "com.sun.xml.internal.xsom.impl.scd",
+      "com.sun.xml.internal.xsom.impl.util", "com.sun.xml.internal.xsom.parser",
+      "com.sun.xml.internal.xsom.util", "com.sun.xml.internal.xsom.visitor", "java.awt.dnd.peer",
+      "java.awt.peer", "javafx.embed.swt", "jdk", "jdk.internal.cmm", "jdk.internal.dynalink",
+      "jdk.internal.dynalink.beans", "jdk.internal.dynalink.linker",
+      "jdk.internal.dynalink.support", "jdk.internal.instrumentation",
+      "jdk.internal.org.objectweb.asm", "jdk.internal.org.objectweb.asm.commons",
+      "jdk.internal.org.objectweb.asm.signature", "jdk.internal.org.objectweb.asm.tree",
+      "jdk.internal.org.objectweb.asm.tree.analysis", "jdk.internal.org.objectweb.asm.util",
+      "jdk.internal.org.xml.sax", "jdk.internal.org.xml.sax.helpers", "jdk.internal.util.xml",
+      "jdk.internal.util.xml.impl", "jdk.jfr.events", "jdk.management.resource.internal",
+      "jdk.management.resource.internal.inst", "jdk.nashorn.internal",
+      "jdk.nashorn.internal.codegen", "jdk.nashorn.internal.codegen.types",
+      "jdk.nashorn.internal.ir", "jdk.nashorn.internal.ir.annotations",
+      "jdk.nashorn.internal.ir.debug", "jdk.nashorn.internal.ir.visitor",
+      "jdk.nashorn.internal.lookup", "jdk.nashorn.internal.objects",
+      "jdk.nashorn.internal.objects.annotations", "jdk.nashorn.internal.parser",
+      "jdk.nashorn.internal.runtime", "jdk.nashorn.internal.runtime.arrays",
+      "jdk.nashorn.internal.runtime.events", "jdk.nashorn.internal.runtime.linker",
+      "jdk.nashorn.internal.runtime.logging", "jdk.nashorn.internal.runtime.options",
+      "jdk.nashorn.internal.runtime.regexp", "jdk.nashorn.internal.runtime.regexp.joni",
+      "jdk.nashorn.internal.runtime.regexp.joni.ast",
+      "jdk.nashorn.internal.runtime.regexp.joni.constants",
+      "jdk.nashorn.internal.runtime.regexp.joni.encoding",
+      "jdk.nashorn.internal.runtime.regexp.joni.exception", "jdk.nashorn.internal.scripts",
+      "jdk.nashorn.tools", "oracle.jrockit.jfr", "oracle.jrockit.jfr.events",
+      "oracle.jrockit.jfr.jdkevents", "oracle.jrockit.jfr.jdkevents.throwabletransform",
+      "oracle.jrockit.jfr.openmbean", "oracle.jrockit.jfr.parser", "oracle.jrockit.jfr.settings",
+      "oracle.jrockit.jfr.tools", "org.jcp.xml.dsig.internal", "org.jcp.xml.dsig.internal.dom",
+      "org.omg.stub.javax.management.remote.rmi", "org.relaxng.datatype",
+      "org.relaxng.datatype.helpers", "sun.applet", "sun.applet.resources", "sun.audio", "sun.awt",
+      "sun.awt.X11", "sun.awt.datatransfer", "sun.awt.dnd", "sun.awt.event", "sun.awt.geom",
+      "sun.awt.im", "sun.awt.image", "sun.awt.image.codec", "sun.awt.motif", "sun.awt.resources",
+      "sun.awt.shell", "sun.awt.util", "sun.awt.windows", "sun.corba", "sun.dc", "sun.dc.path",
+      "sun.dc.pr", "sun.font", "sun.instrument", "sun.invoke", "sun.invoke.anon",
+      "sun.invoke.empty", "sun.invoke.util", "sun.io", "sun.java2d", "sun.java2d.cmm",
+      "sun.java2d.cmm.kcms", "sun.java2d.cmm.lcms", "sun.java2d.d3d", "sun.java2d.jules",
+      "sun.java2d.loops", "sun.java2d.opengl", "sun.java2d.pipe", "sun.java2d.pipe.hw",
+      "sun.java2d.pisces", "sun.java2d.windows", "sun.java2d.x11", "sun.java2d.xr",
+      "sun.jvmstat.monitor", "sun.jvmstat.monitor.event", "sun.jvmstat.monitor.remote",
+      "sun.jvmstat.perfdata.monitor", "sun.jvmstat.perfdata.monitor.protocol.file",
+      "sun.jvmstat.perfdata.monitor.protocol.local", "sun.jvmstat.perfdata.monitor.protocol.rmi",
+      "sun.jvmstat.perfdata.monitor.v1_0", "sun.jvmstat.perfdata.monitor.v2_0", "sun.launcher",
+      "sun.launcher.resources", "sun.lwawt", "sun.lwawt.macosx", "sun.management",
+      "sun.management.counter", "sun.management.counter.perf", "sun.management.jdp",
+      "sun.management.jmxremote", "sun.management.resources", "sun.management.snmp",
+      "sun.management.snmp.jvminstr", "sun.management.snmp.jvmmib", "sun.management.snmp.util",
+      "sun.misc", "sun.misc.resources", "sun.net", "sun.net.dns", "sun.net.ftp", "sun.net.ftp.impl",
+      "sun.net.httpserver", "sun.net.idn", "sun.net.sdp", "sun.net.smtp", "sun.net.spi",
+      "sun.net.spi.nameservice", "sun.net.spi.nameservice.dns", "sun.net.util", "sun.net.www",
+      "sun.net.www.content.audio", "sun.net.www.content.image", "sun.net.www.content.text",
+      "sun.net.www.http", "sun.net.www.protocol.file", "sun.net.www.protocol.ftp",
+      "sun.net.www.protocol.http", "sun.net.www.protocol.http.logging",
+      "sun.net.www.protocol.http.ntlm", "sun.net.www.protocol.http.spnego",
+      "sun.net.www.protocol.https", "sun.net.www.protocol.jar", "sun.net.www.protocol.mailto",
+      "sun.net.www.protocol.netdoc", "sun.nio", "sun.nio.ch", "sun.nio.ch.sctp", "sun.nio.cs",
+      "sun.nio.cs.ext", "sun.nio.fs", "sun.print", "sun.print.resources", "sun.reflect",
+      "sun.reflect.annotation", "sun.reflect.generics.factory", "sun.reflect.generics.parser",
+      "sun.reflect.generics.reflectiveObjects", "sun.reflect.generics.repository",
+      "sun.reflect.generics.scope", "sun.reflect.generics.tree", "sun.reflect.generics.visitor",
+      "sun.reflect.misc", "sun.rmi.log", "sun.rmi.registry", "sun.rmi.rmic", "sun.rmi.rmic.iiop",
+      "sun.rmi.rmic.newrmic", "sun.rmi.rmic.newrmic.jrmp", "sun.rmi.runtime", "sun.rmi.server",
+      "sun.rmi.transport", "sun.rmi.transport.proxy", "sun.rmi.transport.tcp", "sun.security.acl",
+      "sun.security.action", "sun.security.ec", "sun.security.internal.interfaces",
+      "sun.security.internal.spec", "sun.security.jca", "sun.security.jgss",
+      "sun.security.jgss.krb5", "sun.security.jgss.spi", "sun.security.jgss.spnego",
+      "sun.security.jgss.wrapper", "sun.security.krb5", "sun.security.krb5.internal",
+      "sun.security.krb5.internal.ccache", "sun.security.krb5.internal.crypto",
+      "sun.security.krb5.internal.crypto.dk", "sun.security.krb5.internal.ktab",
+      "sun.security.krb5.internal.rcache", "sun.security.krb5.internal.tools",
+      "sun.security.krb5.internal.util", "sun.security.mscapi", "sun.security.pkcs",
+      "sun.security.pkcs10", "sun.security.pkcs11", "sun.security.pkcs11.wrapper",
+      "sun.security.pkcs12", "sun.security.provider", "sun.security.provider.certpath",
+      "sun.security.provider.certpath.ldap", "sun.security.provider.certpath.ssl",
+      "sun.security.rsa", "sun.security.smartcardio", "sun.security.ssl", "sun.security.ssl.krb5",
+      "sun.security.timestamp", "sun.security.tools", "sun.security.tools.jarsigner",
+      "sun.security.tools.keytool", "sun.security.tools.policytool", "sun.security.util",
+      "sun.security.validator", "sun.security.x509", "sun.swing", "sun.swing.icon",
+      "sun.swing.plaf", "sun.swing.plaf.synth", "sun.swing.plaf.windows", "sun.swing.table",
+      "sun.swing.text", "sun.swing.text.html", "sun.text", "sun.text.bidi", "sun.text.normalizer",
+      "sun.text.resources", "sun.text.resources.en", "sun.tools.asm", "sun.tools.attach",
+      "sun.tools.jar", "sun.tools.jar.resources", "sun.tools.java", "sun.tools.javac",
+      "sun.tools.jcmd", "sun.tools.jconsole", "sun.tools.jconsole.inspector", "sun.tools.jinfo",
+      "sun.tools.jmap", "sun.tools.jps", "sun.tools.jstack", "sun.tools.jstat", "sun.tools.jstatd",
+      "sun.tools.native2ascii", "sun.tools.native2ascii.resources", "sun.tools.serialver",
+      "sun.tools.tree", "sun.tools.util", "sun.tracing", "sun.tracing.dtrace", "sun.usagetracker",
+      "sun.util", "sun.util.calendar", "sun.util.cldr", "sun.util.locale",
+      "sun.util.locale.provider", "sun.util.logging", "sun.util.logging.resources",
+      "sun.util.resources", "sun.util.resources.en", "sun.util.spi", "sun.util.xml"
+    ]
 }

@@ -6,7 +6,6 @@ namespace Events
 {
     public delegate void EventHandler(object sender, object e);
 
-
     public class Button
     {
 

@@ -1,10 +1,15 @@
 /**
  * @name Directories and files exposure
- * @description A directory listing provides an attacker with the complete index of all the resources located inside of the complete web directory, which could yield files containing sensitive information like source code and credentials to the attacker.
+ * @description A directory listing provides an attacker with the complete
+ *              index of all the resources located inside of the complete web
+ *              directory, which could yield files containing sensitive
+ *              information like source code and credentials to the attacker.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/server-directory-listing
  * @tags security
- *       external/cwe-548
+ *       external/cwe/cwe-548
  */
 
 import java
@@ -24,17 +29,20 @@ private class DefaultTomcatServlet extends WebServletClass {
  */
 class DirectoryListingInitParam extends WebXMLElement {
   DirectoryListingInitParam() {
-    getName() = "init-param" and
-    getAChild("param-name").getTextValue() = "listings" and
+    this.getName() = "init-param" and
+    this.getAChild("param-name").getTextValue() = "listings" and
     exists(WebServlet servlet |
-      getParent() = servlet and servlet.getAChild("servlet-class") instanceof DefaultTomcatServlet
+      this.getParent() = servlet and
+      servlet.getAChild("servlet-class") instanceof DefaultTomcatServlet
     )
   }
 
   /**
    * Check the `<param-value>` element (true - enabled, false - disabled)
    */
-  predicate isListingEnabled() { getAChild("param-value").getTextValue().toLowerCase() = "true" }
+  predicate isListingEnabled() {
+    this.getAChild("param-value").getTextValue().toLowerCase() = "true"
+  }
 }
 
 from DirectoryListingInitParam initp

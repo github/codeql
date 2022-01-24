@@ -54,17 +54,17 @@
   sink(map.get("nonExistingKey")); // OK. 
 
   // unknown write, known read
-  var map2 = new map();
+  var map2 = new Map();
   map2.set(unknown(), source); 
-  sink(map2.get("foo")); // NOT OK (for data-flow). OK for type-tracking.
+  sink(map2.get("foo")); // NOT OK (for data-flow).
 
   // unknown write, unknown read
-  var map3 = new map();
+  var map3 = new Map();
   map3.set(unknown(), source); 
-  sink(map3.get(unknown())); // NOT OK (for data-flow). OK for type-tracking.
+  sink(map3.get(unknown())); // NOT OK (for data-flow).
 
   // known write, unknown read
-  var map4 = new map();
+  var map4 = new Map();
   map4.set("foo", source); 
-  sink(map3.get(unknown())); // NOT OK (for data-flow). OK for type-tracking.
+  sink(map3.get(unknown())); // NOT OK (for data-flow).
 })();

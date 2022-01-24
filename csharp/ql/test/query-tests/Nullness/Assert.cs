@@ -51,5 +51,3 @@ class AssertTests
         Console.WriteLine(s.Length); // BAD (always)
     }
 }
-
-// semmle-extractor-options: ${testdir}/../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

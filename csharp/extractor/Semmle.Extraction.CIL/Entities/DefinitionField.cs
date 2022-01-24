@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL.Entities
         public DefinitionField(Context cx, FieldDefinitionHandle handle) : base(cx)
         {
             this.handle = handle;
-            fd = Cx.MdReader.GetFieldDefinition(handle);
+            fd = Context.MdReader.GetFieldDefinition(handle);
         }
 
         public override bool Equals(object? obj)
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
+                yield return Tuples.metadata_handle(this, Context.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var c in base.Contents)
                     yield return c;
@@ -48,16 +48,16 @@ namespace Semmle.Extraction.CIL.Entities
                 if (fd.Attributes.HasFlag(FieldAttributes.Assembly))
                     yield return Tuples.cil_internal(this);
 
-                foreach (var c in Attribute.Populate(Cx, this, fd.GetCustomAttributes()))
+                foreach (var c in Attribute.Populate(Context, this, fd.GetCustomAttributes()))
                     yield return c;
             }
         }
 
-        public override string Name => Cx.GetString(fd.Name);
+        public override string Name => Context.GetString(fd.Name);
 
-        public override Type DeclaringType => (Type)Cx.Create(fd.GetDeclaringType());
+        public override Type DeclaringType => (Type)Context.Create(fd.GetDeclaringType());
 
-        public override Type Type => fd.DecodeSignature(Cx.TypeSignatureDecoder, DeclaringType);
+        public override Type Type => fd.DecodeSignature(Context.TypeSignatureDecoder, DeclaringType);
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 

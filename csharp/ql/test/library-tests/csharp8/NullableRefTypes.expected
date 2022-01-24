@@ -1,4 +1,5 @@
 suppressNullableWarnings
+| NameResolutionSuppressNullable.cs:8:110:8:112 | ...! | NameResolutionSuppressNullable.cs:8:110:8:111 | access to method M1 |
 | NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
 | NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:13:88:13 | access to local variable x |
@@ -169,14 +170,14 @@ returnTypes
 | NullableRefTypes.cs:47:23:47:25 | Invoke | MyClass? |
 | NullableRefTypes.cs:48:16:48:16 | add_P | Void! |
 | NullableRefTypes.cs:48:16:48:16 | remove_P | Void! |
-| NullableRefTypes.cs:51:12:51:15 | Q | object |
-| NullableRefTypes.cs:51:12:51:15 | Q | object! |
-| NullableRefTypes.cs:51:12:51:15 | Q | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q<> | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object! |
 | NullableRefTypes.cs:54:11:54:33 | Generic | Void! |
 | NullableRefTypes.cs:58:11:58:26 | Generic2 | Void! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | Void! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<> | Void! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:71:14:71:18 | CallF | MyStruct! |
 | NullableRefTypes.cs:80:7:80:22 | NullableRefTypes | Void! |
 | NullableRefTypes.cs:82:10:82:40 | TestSuppressNullableWarningExpr | Void! |
@@ -206,10 +207,11 @@ returnTypes
 | NullableRefTypes.cs:215:10:215:20 | ElementTest | Void! |
 | NullableRefTypes.cs:223:48:223:54 | GetSelf | TestNullableFlowStates? |
 methodTypeArguments
-| NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass! |
-| NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass? |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass? |
+| NameResolutionSuppressNullable.cs:10:21:10:40 | EnsureInitialized<WaitCallback> | 0 | WaitCallback |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | 0 | MyClass! |
+| NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | 0 | MyClass? |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | 0 | MyClass! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | 0 | MyClass? |
 constructedTypes
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 0 | MyClass | _ |
 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass, MyClass, IDisposable, MyClass> | 1 | MyClass | _ |
@@ -266,10 +268,10 @@ expressionTypes
 | NullableRefTypes.cs:73:18:73:18 | access to local variable x | MyClass! |
 | NullableRefTypes.cs:73:18:73:25 | MyClass x = ... | MyClass! |
 | NullableRefTypes.cs:73:22:73:25 | null | null |
-| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn | Void! |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:74:9:74:20 | this access | MyClass |
 | NullableRefTypes.cs:74:19:74:19 | access to local variable x | MyClass? |
-| NullableRefTypes.cs:75:9:75:12 | call to method Q | object! |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q<MyClass> | object! |
 | NullableRefTypes.cs:75:9:75:12 | this access | MyClass |
 | NullableRefTypes.cs:75:11:75:11 | access to local variable x | MyClass? |
 | NullableRefTypes.cs:76:16:76:32 | default(...) | MyStruct! |
@@ -297,7 +299,7 @@ expressionTypes
 | NullableRefTypes.cs:93:21:93:28 | "source" | string! |
 | NullableRefTypes.cs:94:13:94:13 | access to local variable y | string? |
 | NullableRefTypes.cs:94:13:94:25 | String y = ... | string? |
-| NullableRefTypes.cs:94:17:94:17 | access to local variable x | string! |
+| NullableRefTypes.cs:94:17:94:17 | access to local variable x | string? |
 | NullableRefTypes.cs:94:17:94:25 | ... ?? ... | string? |
 | NullableRefTypes.cs:94:22:94:25 | null | null |
 | NullableRefTypes.cs:95:16:95:16 | access to local variable z | string! |
@@ -324,11 +326,11 @@ expressionTypes
 | NullableRefTypes.cs:113:36:113:43 | access to field Property | MyClass? |
 | NullableRefTypes.cs:113:36:113:43 | this access | RefTypes |
 | NullableRefTypes.cs:113:36:113:44 | ...! | MyClass? |
-| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass! |
-| NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass! |
-| NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass! |
-| NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass! |
-| NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass! |
+| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass |
+| NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass |
+| NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass |
+| NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass |
+| NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass |
 | NullableRefTypes.cs:181:17:181:17 | access to local variable x | string! |
 | NullableRefTypes.cs:181:17:181:31 | String x = ... | string! |
 | NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | string? |
@@ -405,9 +407,9 @@ exprFlowState
 | NullableRefTypes.cs:40:30:40:30 | access to local variable b | Maybe null |
 | NullableRefTypes.cs:51:44:51:47 | null | Maybe null |
 | NullableRefTypes.cs:73:22:73:25 | null | Maybe null |
-| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn | Not null |
+| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn<MyClass> | Not null |
 | NullableRefTypes.cs:74:19:74:19 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:75:9:75:12 | call to method Q | Not null |
+| NullableRefTypes.cs:75:9:75:12 | call to method Q<MyClass> | Not null |
 | NullableRefTypes.cs:75:11:75:11 | access to local variable x | Maybe null |
 | NullableRefTypes.cs:76:16:76:32 | default(...) | Not null |
 | NullableRefTypes.cs:84:21:84:28 | "source" | Not null |
@@ -442,9 +444,6 @@ exprFlowState
 | NullableRefTypes.cs:110:64:110:67 | null | Maybe null |
 | NullableRefTypes.cs:113:36:113:43 | access to field Property | Not null |
 | NullableRefTypes.cs:113:36:113:44 | ...! | Not null |
-| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | Not null |
-| NullableRefTypes.cs:160:21:160:21 | access to parameter p | Not null |
-| NullableRefTypes.cs:161:16:161:16 | access to local variable a | Not null |
 | NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | Maybe null |
 | NullableRefTypes.cs:183:9:183:16 | call to method Check | Not null |
 | NullableRefTypes.cs:183:15:183:15 | access to local variable x | Maybe null |

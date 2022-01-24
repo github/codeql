@@ -1,6 +1,6 @@
 /**
- * @name __init__ method returns a value
- * @description Explicitly returning a value from an __init__ method will raise a TypeError.
+ * @name `__init__` method returns a value
+ * @description Explicitly returning a value from an `__init__` method will raise a TypeError.
  * @kind problem
  * @tags reliability
  *       correctness

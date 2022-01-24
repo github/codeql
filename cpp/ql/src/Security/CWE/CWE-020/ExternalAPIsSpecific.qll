@@ -38,7 +38,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the function being called. */
-  string getFunctionDescription() { result = getExternalFunction().toString() }
+  string getFunctionDescription() { result = this.getExternalFunction().toString() }
 }
 
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
@@ -46,7 +46,7 @@ class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(RemoteFlowFunction remoteFlow |
+    exists(RemoteFlowSourceFunction remoteFlow |
       remoteFlow = source.asExpr().(Call).getTarget() and
       remoteFlow.hasRemoteFlowSource(_, _)
     )

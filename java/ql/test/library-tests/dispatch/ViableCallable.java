@@ -36,7 +36,7 @@ class ViableCallable {
 		i2.f("", 0l);
 	}
 
-	<TMock> TMock Mock() { throw new Exception(); }
+	<TMock> TMock Mock() { throw new Error(); }
 
 	void CreateTypeInstance() {
 		Run(new C2<Boolean>(), null, null, null);
@@ -63,7 +63,7 @@ abstract class C1<T1_C1, T2_C1> {
 		M(x, 8);
 	}
 
-	public void f(T1_C1 x, T2_C1 y) { throw new Exception(); }
+	public void f(T1_C1 x, T2_C1 y) { throw new Error(); }
 }
 
 interface I1<T_I1> {
@@ -80,27 +80,27 @@ interface I2<T_I2> {
 
 class C2<T_C2> extends C1<String, T_C2> implements I1<T_C2> {
 	@Override
-	public <T3_C2> T_C2 M(String x, T3_C2 y) { throw new Exception(); }
+	public <T3_C2> T_C2 M(String x, T3_C2 y) { throw new Error(); }
 }
 
 class C3 extends C1<String, Long> implements I2<Long> {
 	@Override
-	public <T3_C3> Long M(String x, T3_C3 y) { throw new Exception(); }
+	public <T3_C3> Long M(String x, T3_C3 y) { throw new Error(); }
 }
 
 class C4<T_C4> extends C1<T_C4[], Boolean> {
 	@Override
-	public <T3_C4> Boolean M(T_C4[] x, T3_C4 y) { throw new Exception(); }
+	public <T3_C4> Boolean M(T_C4[] x, T3_C4 y) { throw new Error(); }
 }
 
 class C5 extends C1<String, Boolean> {
 	@Override
-	public <T3_C5> Boolean M(String x, T3_C5 y) { throw new Exception(); }
+	public <T3_C5> Boolean M(String x, T3_C5 y) { throw new Error(); }
 }
 
 class C6<T1_C6, T2_C6> extends C1<T1_C6, T2_C6> {
 	@Override
-	public <T3_C6> T2_C6 M(T1_C6 x, T3_C6 y) { throw new Exception(); }
+	public <T3_C6> T2_C6 M(T1_C6 x, T3_C6 y) { throw new Error(); }
 
 	public void Run(T1_C6 x) {
 		// Viable callables: C6.M(), C7.M()
@@ -113,7 +113,7 @@ class C6<T1_C6, T2_C6> extends C1<T1_C6, T2_C6> {
 
 class C7<T1_C7> extends C6<T1_C7, Byte> {
 	@Override
-	public <T3_C7> Byte M(T1_C7 x, T3_C7 y) { throw new Exception(); }
+	public <T3_C7> Byte M(T1_C7 x, T3_C7 y) { throw new Error(); }
 
 	public void Run(T1_C7 x) {
 		// Viable callables: C7.M()
@@ -129,11 +129,11 @@ class C7<T1_C7> extends C6<T1_C7, Byte> {
 
 class C8<T_C8, T2_C8> extends C1<String, T2_C8> {
 	@Override
-	public <T3_C8> T2_C8 M(String x, T3_C8 y) { throw new Exception(); }
+	public <T3_C8> T2_C8 M(String x, T3_C8 y) { throw new Error(); }
 }
 
 class C9<T_C9> extends C8<Boolean, Boolean> {
 	@Override
-	public <T3_C9> Boolean M(String x, T3_C9 y) { throw new Exception(); }
+	public <T3_C9> Boolean M(String x, T3_C9 y) { throw new Error(); }
 }
 

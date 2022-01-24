@@ -13,20 +13,6 @@ on the query and the expected results until the actual results and the expected
 results exactly match. This topic shows you how to create test files and execute
 tests on them using the ``test run`` subcommand.
 
-.. container:: toggle
-
-   .. container:: name
-
-      **Information for LGTM Enterprise 1.23 users**
-
-   CodeQL tests are a new feature in CodeQL CLI version 2.0.2.
-   
-   If you are an LGTM Enterprise 1.23 user, you should still use CodeQL CLI
-   version 2.0.1 to prepare databases to upload to your instance of LGTM. You
-   can use version 2.0.2 (or newer) to test your custom queries, but databases
-   created with versions newer than 2.0.1 are not compatible with LGTM
-   Enterprise 1.23. For more information, see ":ref:`Getting started with the CodeQL CLI <using-two-versions-of-the-codeql-cli>`."
-
 Setting up a test QL pack for custom queries
 --------------------------------------------
 

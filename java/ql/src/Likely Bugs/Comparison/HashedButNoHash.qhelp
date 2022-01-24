@@ -43,12 +43,12 @@ in the <code>equals</code> method. Therefore, the contract of the <code>hashCode
   J. Bloch, <em>Effective Java (second edition)</em>, Item 9. Addison-Wesley, 2008.
 </li>
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#equals%28java.lang.Object%29">Object.equals</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#hashCode%28%29">Object.hashCode</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#hashCode()">Object.hashCode</a>.
 </li>
 <li>
-  IBM developerWorks: <a href="http://www.ibm.com/developerworks/java/library/j-jtp05273/index.html">Java theory and practice: Hashing it out</a>.
+  IBM developerWorks: <a href="https://www.ibm.com/developerworks/java/library/j-jtp05273/index.html">Java theory and practice: Hashing it out</a>.
 </li>
 
 

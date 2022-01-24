@@ -3,6 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind problem
  * @problem.severity error
+ * @security-severity 8.1
  * @precision very-high
  * @id java/maven/non-https-url
  * @tags security
@@ -15,22 +16,12 @@
 import java
 import semmle.code.xml.MavenPom
 
-private class DeclaredRepository extends PomElement {
-  DeclaredRepository() {
-    this.getName() = "repository" or
-    this.getName() = "snapshotRepository" or
-    this.getName() = "pluginRepository"
-  }
-
-  string getUrl() { result = getAChild("url").(PomElement).getValue() }
-
-  predicate isInsecureRepositoryUsage() {
-    getUrl().regexpMatch("(?i)^(http|ftp)://(?!localhost[:/]).*")
-  }
+predicate isInsecureRepositoryUsage(DeclaredRepository repository) {
+  repository.getUrl().regexpMatch("(?i)^(http|ftp)://(?!localhost[:/]).*")
 }
 
 from DeclaredRepository repository
-where repository.isInsecureRepositoryUsage()
+where isInsecureRepositoryUsage(repository)
 select repository,
   "Downloading or uploading artifacts over insecure protocol (eg. http or ftp) to/from repository " +
     repository.getUrl()

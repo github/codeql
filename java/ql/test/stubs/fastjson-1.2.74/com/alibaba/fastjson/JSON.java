@@ -26,6 +26,10 @@ import com.alibaba.fastjson.parser.*;
 import com.alibaba.fastjson.parser.deserializer.ParseProcess;
 
 public abstract class JSON {
+    public static String toJSONString(Object object) {
+        return null;
+    }
+
     public static Object parse(String text) {
         return null;
     }

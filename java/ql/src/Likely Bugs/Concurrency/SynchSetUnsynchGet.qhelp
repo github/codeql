@@ -23,8 +23,8 @@ Synchronize read operations as well as write operations. You should usually sync
 
 
 <li>
-  The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.1">Synchronization</a>.
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.1">Synchronization</a>.
 </li>
 
 

@@ -247,7 +247,13 @@ namespace Semmle.Extraction
             }
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(nested));
+                var directoryName = Path.GetDirectoryName(nested);
+                if (directoryName is null)
+                {
+                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
+                    throw new InvalidOperationException();
+                }
+                Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {

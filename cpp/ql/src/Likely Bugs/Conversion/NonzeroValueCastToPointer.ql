@@ -13,14 +13,15 @@
 import cpp
 
 predicate commonErrorCode(string value) {
-  value = "0" or
-  value = "1" or
-  value = "-1" or
-  value = "18446744073709551615" or // 2^64-1, i.e. -1 as an unsigned int64
-  value = "4294967295" or // 2^32-1, i.e. -1 as an unsigned int32
-  value = "3735928559" or // 0xdeadbeef
-  value = "3735929054" or // 0xdeadc0de
-  value = "3405691582" // 0xcafebabe
+  value =
+    [
+      "0", "1", "-1", // common error codes
+      "18446744073709551615", // 2^64-1, i.e. -1 as an unsigned int64
+      "4294967295", // 2^32-1, i.e. -1 as an unsigned int32
+      "3735928559", // 0xdeadbeef
+      "3735929054", // 0xdeadc0de
+      "3405691582" // 0xcafebabe
+    ]
 }
 
 from Expr e

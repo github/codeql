@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<include src="FLinesOfCodeOverview.qhelp" />
+<include src="FLinesOfCodeOverview.inc.qhelp" />
 </overview>
   
 <recommendation>
@@ -36,5 +36,5 @@ will not be maintained by a programmer.
 </ul>
 
 </recommendation>
-<include src="FLinesOfCodeReferences.qhelp" />
+<include src="FLinesOfCodeReferences.inc.qhelp" />
 </qhelp>

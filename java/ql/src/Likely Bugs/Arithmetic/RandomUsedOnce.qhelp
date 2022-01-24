@@ -11,7 +11,7 @@ every time a new pseudo-random number is required (for example, <code>new Random
 </p>
 
 <p> 
-According to the Java API specification:</p>
+According to the Java API Specification:</p>
 
 <blockquote>
 <p>If two instances of <code>Random</code> are created with the same seed, and the same sequence of method calls is made for each, they will generate and return 
@@ -48,8 +48,8 @@ the numbers are based on only one <code>Random</code> object.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Random.html">Random</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Random.html">Random</a>.
 </li>
 
 

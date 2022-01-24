@@ -5,6 +5,7 @@
  *              or data representation problems.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @id cpp/tainted-format-string-through-global
  * @tags reliability

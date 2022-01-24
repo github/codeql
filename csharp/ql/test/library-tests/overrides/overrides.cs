@@ -287,5 +287,3 @@ namespace overrides
         class A11 : A10, I6 { }
     }
 }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll

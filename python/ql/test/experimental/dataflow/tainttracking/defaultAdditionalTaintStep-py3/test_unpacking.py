@@ -15,12 +15,12 @@ if TYPE_CHECKING:
 
 def extended_unpacking():
     first, *rest, last = TAINTED_LIST
-    ensure_tainted(first, rest, last)
+    ensure_tainted(first, rest, last) # $ tainted
 
 
 def also_allowed():
     *a, = TAINTED_LIST
-    ensure_tainted(a)
+    ensure_tainted(a) # $ tainted
 
     # for b, *c in [(1, 2, 3), (4, 5, 6, 7)]:
         # print(c)
@@ -28,7 +28,7 @@ def also_allowed():
         # i=1; c=[5,6,7]
 
     for b, *c in [TAINTED_LIST, TAINTED_LIST]:
-        ensure_tainted(b, c)
+        ensure_tainted(b, c) # $ tainted
 
 
 def nested():
@@ -36,7 +36,7 @@ def nested():
     ll = [l,l]
 
     [[x, *xs], ys] = ll
-    ensure_tainted(x, xs, ys)
+    ensure_tainted(x, xs, ys) # $ tainted
 
 
 # Make tests runable

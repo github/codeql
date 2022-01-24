@@ -69,25 +69,14 @@ of the active database schema (for example, ``<queries
 language="java"/>``).
 
 A ``qlpack.yml`` file defines a :ref:`QL pack <about-ql-packs>`.
-The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
-will not be recognized when using legacy tools that are not based
-on the CodeQL CLI (that is, LGTM.com, LGTM Enterprise, ODASA, CodeQL for
-Eclipse, and CodeQL for Visual Studio).
+The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 
 If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
 directory, the latter takes precedence (and the former is assumed to
 exist for compatibility with older tooling).
 
-In legacy QL tools that don't recognize ``qlpack.yml`` files, the default
-value of the library path for
-each supported language is hard-coded. The tools contain directories within the ODASA
-distribution that define the default CodeQL libraries for the selected
-language. Which language to use depends on the ``language`` attribute
-of the ``queries.xml`` file if not overridden with a ``--language``
-option to the ODASA CLI.
-
-On the other hand, the CodeQL CLI and newer tools based on it (such as
-GitHub Code Scanning and the CodeQL extension for Visual Studio Code)
+The CodeQL CLI and newer tools based on it (such as,
+GitHub code scanning and the CodeQL extension for Visual Studio Code)
 construct a library path using QL packs. For each QL pack
 added to the library path, the QL packs named in its
 ``libraryPathDependencies`` will be subsequently added to the library
@@ -374,7 +363,7 @@ A *variable declaration list* provides a sequence of variables and a type for ea
 
 ::
 
-   var_decls ::= var_decl ("," var_decl)*
+   var_decls ::= (var_decl ("," var_decl)*)?
    var_decl ::= type simpleId
 
 A valid variable declaration list must not include two declarations with the same variable name. Moreover, if the declaration has a typing environment that applies, it must not use a variable name that is already present in that typing environment.
@@ -470,6 +459,8 @@ A QLDoc comment is a *qldoc comment start*, followed by a *qldoc comment body*, 
 
 The "content" of a QLDoc comment is the comment body of the comment, omitting the initial ``/**``, the trailing ``*/``, and the leading whitespace followed by ``*`` on each internal line.
 
+For more information about how the content is interpreted, see "`QLDoc <#qldoc>`__" below.
+
 Keywords
 ~~~~~~~~
 
@@ -506,6 +497,7 @@ The following sequences of characters are keyword tokens:
    max
    min
    module
+   newtype
    none
    not
    or
@@ -523,6 +515,7 @@ The following sequences of characters are keyword tokens:
    then
    this
    true
+   unique
    where
 
 Operators
@@ -818,7 +811,7 @@ The head of the predicate gives a name, an optional *result type*, and a sequenc
 
 ::
 
-   head ::= ("predicate" | type) predicateName "(" (var_decls)? ")"
+   head ::= ("predicate" | type) predicateName "(" var_decls ")"
 
 The body of a predicate is of one of three forms:
 
@@ -1114,8 +1107,6 @@ A super expression may only occur in a QL program as the receiver expression for
 
 If a super expression includes a ``type``, then that type must be a class that the enclosing class inherits from.
 
-If the super expression does not include a type, then the enclosing class must have a single declared base type, and that base type must be a class.
-
 The value of a super expression is the same as the value of ``this`` in the named tuple.
 
 Casts
@@ -1167,7 +1158,12 @@ A valid call with results *resolves* to a set of predicates. The ways a call can
 
 -  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
 
--  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
+-  If the call has a super expression as the receiver, then it resolves to a member predicate in a class that the enclosing class inherits from:
+    -  If the super expression is unqualified and there is a single class that the current class inherits from, then the super-class is that class. 
+    -  If the super expression is unqualified and there are multiple classes that the current class inherits from, then the super-class is the domain type.
+    -  Otherwise, the super-class is the class named by the qualifier of the super expression. 
+
+   The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
 
 -  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
 
@@ -1207,7 +1203,7 @@ An aggregation can be written in one of two forms:
 
 ::
 
-   aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
+   aggregation ::= aggid ("[" expr "]")? "(" var_decls ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
 
@@ -1329,13 +1325,15 @@ Set literals denote a choice from a collection of values.
 
 ::
 
-   setliteral ::= "[" expr ("," expr)* "]"
+   setliteral ::= "[" expr ("," expr)* ","? "]"
 
 Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion.
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
 Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
+
+Since release 2.7.1 of the CodeQL CLI, and release 1.30 of LGTM Enterprise, a trailing comma is allowed in a set literal.
 
 Disambiguation of expressions
 -----------------------------
@@ -1780,6 +1778,8 @@ The following built-in predicates are members of type ``int``:
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toString``            | string      |                | The result is the decimal representation of the number as a string.                                            |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.
 
@@ -2044,7 +2044,7 @@ The complete grammar for QL is as follows:
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
-   head ::= ("predicate" | type) predicateName "(" (var_decls)? ")"
+   head ::= ("predicate" | type) predicateName "(" var_decls ")"
 
    optbody ::= ";"
            |  "{" formula "}" 
@@ -2064,11 +2064,11 @@ The complete grammar for QL is as follows:
 
    exprs ::= expr ("," expr)*
 
-   alias := qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
+   alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |  qldoc? annotations "class" classname "=" type ";"
          |  qldoc? annotations "module" modulename "=" moduleId ";"
          
-   var_decls ::= var_decl ("," var_decl)*
+   var_decls ::= (var_decl ("," var_decl)*)?
 
    var_decl ::= type simpleId
 
@@ -2155,7 +2155,7 @@ The complete grammar for QL is as follows:
 
    postfix_cast ::= primary "." "(" type ")"
 
-   aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
+   aggregation ::= aggid ("[" expr "]")? "(" var_decls ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
  
@@ -2172,7 +2172,7 @@ The complete grammar for QL is as follows:
                    
    range ::= "[" expr ".." expr "]"
    
-   setliteral ::= "[" expr ("," expr)* "]"
+   setliteral ::= "[" expr ("," expr)* ","? "]"
 
    simpleId ::= lowerId | upperId
 

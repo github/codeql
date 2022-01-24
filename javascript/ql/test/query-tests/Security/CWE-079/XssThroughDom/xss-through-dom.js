@@ -77,4 +77,35 @@
 	$(selector); // NOT OK
 	
 	$(document.my_form.my_input.value); // NOT OK
+
+	$("#id").html( $('#foo').prop('innerText') ); // NOT OK
+
+	const anser = require("anser");
+	const text = $("text").text();
+
+	$("#id").html(anser.ansiToHtml(text)); // NOT OK
+	$("#id").html(new anser().process(text)); // NOT OK
+	
+	$("section h1").each(function(){
+		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
+	});
+
+	$("#id").html($("#foo").find(".bla")[0].value); // NOT OK.
+
+	for (var i = 0; i < foo.length; i++) {
+		$("#id").html($("#foo").find(".bla")[i].value); // NOT OK.
+	}
 })();
+
+class Super {
+	constructor() {
+		this.el = $("#id").get(0);
+	}
+}
+
+class Sub extends Super {
+	constructor() {
+		super();
+		$("#id").get(0).innerHTML = "<a src=\"" + this.el.src + "\">foo</a>"; // NOT OK. Attack: `<mytag id="id" src="x:&quot;&gt;&lt;img src=1 onerror=&quot;alert(1)&quot;&gt;" />`
+	}
+}

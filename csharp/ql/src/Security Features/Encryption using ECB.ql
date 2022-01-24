@@ -3,6 +3,7 @@
  * @description Highlights uses of the encryption mode 'CipherMode.ECB'. This mode should normally not be used because it is vulnerable to replay attacks.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id cs/ecb-encryption
  * @tags security

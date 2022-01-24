@@ -8,7 +8,7 @@ package com.semmle.ts.ast;
  */
 public interface INodeWithSymbol {
   /**
-   * Gets a number identifying the symbol associated with this AST node, or <tt>-1</tt> if there is
+   * Gets a number identifying the symbol associated with this AST node, or <code>-1</code> if there is
    * no such symbol.
    */
   int getSymbol();

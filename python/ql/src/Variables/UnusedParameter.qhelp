@@ -9,7 +9,7 @@
 <p> A parameter is never used.
 </p>
 
-<include src="UnusedVariableNaming.qhelp" />
+<include src="UnusedVariableNaming.inc.qhelp" />
 
 </overview>
 <recommendation>

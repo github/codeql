@@ -4,7 +4,6 @@
  *              in the documentation, queries that rely on the contract may yield unexpected
  *              results.
  * @kind table
- * @problem.severity error
  * @id js/consistency/api-contracts
  * @tags consistency
  */
@@ -38,22 +37,12 @@ predicate exprWithoutEnclosingStmt(Expr e) {
  * `"3 results for toString()"`.
  */
 predicate uniqueness_error(int number, string what, string problem) {
-  (
-    what = "toString" or
-    what = "getLocation" or
-    what = "getTopLevel" or
-    what = "getEnclosingStmt" or
-    what = "getContainer" or
-    what = "getEnclosingContainer" or
-    what = "getEntry" or
-    what = "getExit" or
-    what = "getFirstControlFlowNode" or
-    what = "getOuterScope" or
-    what = "getScopeElement" or
-    what = "getBaseName" or
-    what = "getOperator" or
-    what = "getTest"
-  ) and
+  what =
+    [
+      "toString", "getLocation", "getTopLevel", "getEnclosingStmt", "getContainer",
+      "getEnclosingContainer", "getEntry", "getExit", "getFirstControlFlowNode", "getOuterScope",
+      "getScopeElement", "getBaseName", "getOperator", "getTest"
+    ] and
   (
     number = 0 and problem = "no results for " + what + "()"
     or

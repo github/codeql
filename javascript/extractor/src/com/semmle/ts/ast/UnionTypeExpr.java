@@ -4,7 +4,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** A union type such as <tt>number | string | boolean</tt>. */
+/** A union type such as <code>number | string | boolean</code>. */
 public class UnionTypeExpr extends TypeExpression {
   private final List<ITypeExpression> elementTypes;
 

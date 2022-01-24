@@ -1,0 +1,4 @@
+| ForeachExtension.cs:24:9:26:9 | foreach (... ... in ...) ... | Int32 | sync | Extensions | ForeachExtension.cs:8:34:8:49 | System.Collections.Generic.IEnumerator<System.Int32> | - | System.Collections.IEnumerator | - |
+| ForeachExtension.cs:29:9:31:9 | foreach (... ... in ...) ... | Int32 | async | Extensions | ForeachExtension.cs:9:39:9:59 | System.Collections.Generic.IAsyncEnumerator<System.Int32> | - | System.Collections.Generic.IAsyncEnumerator<System.Int32> | - |
+| ForeachExtension.cs:33:9:35:9 | foreach (... ... in ...) ... | Int32 | sync | Extensions | ForeachExtension.cs:10:36:10:48 | System.Collections.Generic.IEnumerator<System.Int32> | - | System.Collections.IEnumerator | - |
+| ForeachExtension.cs:37:9:39:9 | foreach (... ... in ...) ... | Int32 | sync | System.Collections.IEnumerable | - | System.Collections.IEnumerator | - | System.Collections.IEnumerator | - |

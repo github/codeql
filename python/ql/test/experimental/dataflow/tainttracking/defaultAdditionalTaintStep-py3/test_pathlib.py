@@ -23,20 +23,20 @@ def test_basic():
     tainted_pure_windows_path = pathlib.PureWindowsPath(ts)
 
     ensure_tainted(
-        tainted_path,
+        tainted_path, # $ tainted
 
-        tainted_pure_path,
-        tainted_pure_posix_path,
-        tainted_pure_windows_path,
+        tainted_pure_path, # $ tainted
+        tainted_pure_posix_path, # $ tainted
+        tainted_pure_windows_path, # $ tainted
 
-        pathlib.Path("foo") / ts,
-        ts / pathlib.Path("foo"),
+        pathlib.Path("foo") / ts, # $ tainted
+        ts / pathlib.Path("foo"), # $ tainted
 
-        tainted_path.joinpath("foo", "bar"),
-        pathlib.Path("foo").joinpath(tainted_path, "bar"),
-        pathlib.Path("foo").joinpath("bar", tainted_path),
+        tainted_path.joinpath("foo", "bar"), # $ tainted
+        pathlib.Path("foo").joinpath(tainted_path, "bar"), # $ tainted
+        pathlib.Path("foo").joinpath("bar", tainted_path), # $ tainted
 
-        str(tainted_path),
+        str(tainted_path), # $ tainted
 
         # TODO: Tainted methods and attributes
         # https://docs.python.org/3.8/library/pathlib.html#methods-and-properties
@@ -46,13 +46,13 @@ def test_basic():
         tainted_posix_path = pathlib.PosixPath(ts)
 
         ensure_tainted(
-            tainted_posix_path,
+            tainted_posix_path, # $ tainted
         )
 
     if os.name == "nt":
         tainted_windows_path = pathlib.WindowsPath(ts)
         ensure_tainted(
-            tainted_windows_path,
+            tainted_windows_path, # $ tainted
         )
 
 # Make tests runable

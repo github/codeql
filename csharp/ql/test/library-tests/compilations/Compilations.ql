@@ -39,3 +39,5 @@ query predicate timings(Compilation c) {
   c.getCpuSeconds() > 0 and
   c.getElapsedSeconds() > 0
 }
+
+query predicate assembly(Compilation c, Assembly a) { c.getOutputAssembly() = a }

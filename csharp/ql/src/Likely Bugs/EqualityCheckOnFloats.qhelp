@@ -29,8 +29,8 @@ example.</p>
 </example>
 <references>
 
-  <li>Oracle Numerical Computation Guide: <a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>.</li>
-  <li>Bruce Dawson: <a href="http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm">Comparing floating point numbers</a>.</li>
+  <li>Oracle Numerical Computation Guide: <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>.</li>
+  <li>Bruce Dawson: <a href="https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/">Comparing Floating Point Numbers</a>.</li>
 
 
 </references>

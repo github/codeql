@@ -18,4 +18,4 @@ CodeQL CLI
 
    using-the-codeql-cli
    codeql-cli-reference
-   
+   CodeQL CLI manual <https://codeql.github.com/docs/codeql-cli/manual>

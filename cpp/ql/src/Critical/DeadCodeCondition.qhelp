@@ -9,7 +9,7 @@
 It is likely that these conditions indicate an error in the branching condition. 
 Alternatively, the conditions may have been left behind after debugging.</p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

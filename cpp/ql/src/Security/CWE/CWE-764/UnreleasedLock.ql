@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/unreleased-lock
  * @problem.severity error
+ * @security-severity 5.0
  * @precision low
  * @tags security
  *       external/cwe/cwe-764

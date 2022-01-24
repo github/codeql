@@ -14,7 +14,7 @@ Buffer overflows can lead to anything from a segmentation fault to a security vu
 Ensure that the size parameter is derived from the size of the destination buffer, and 
 not the source buffer.</p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 </recommendation>
 
 

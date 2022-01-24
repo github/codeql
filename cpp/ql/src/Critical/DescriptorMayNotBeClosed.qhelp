@@ -10,7 +10,7 @@ This query looks at functions that return file or socket descriptors, but may re
 This can occur when an operation performed on the open descriptor fails, and the function returns with an error before it closes the open resource. An improperly handled error could cause the function to leak resource descriptors. Failing to close resources in the function that opened them also makes it more difficult to detect leaks.
 </p> 
 
-<include src="dataFlowWarning.qhelp" />
+<include src="dataFlowWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

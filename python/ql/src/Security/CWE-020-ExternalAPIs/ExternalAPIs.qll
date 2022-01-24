@@ -41,6 +41,7 @@ private import semmle.python.objects.ObjectInternal
  * A callable that is considered a "safe" external API from a security perspective.
  */
 class SafeExternalAPI extends Unit {
+  /** Gets a callable that is considered a "safe" external API from a security perspective. */
   abstract DataFlowPrivate::DataFlowCallable getSafeCallable();
 }
 

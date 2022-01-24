@@ -16,10 +16,7 @@
  */
 
 import java
-import CodeDuplication
 
 from Class c, string message, Class link
-where
-  mostlyDuplicateClass(c, link, message) and
-  not fileLevelDuplication(c.getCompilationUnit(), _)
+where none()
 select c, message, link, link.getQualifiedName()

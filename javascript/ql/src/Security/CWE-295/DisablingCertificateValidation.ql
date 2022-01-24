@@ -3,10 +3,12 @@
  * @description Disabling cryptographic certificate validation can cause security vulnerabilities.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision very-high
  * @id js/disabling-certificate-validation
  * @tags security
- *       external/cwe-295
+ *       external/cwe/cwe-295
+ *       external/cwe/cwe-297
  */
 
 import javascript
@@ -16,7 +18,7 @@ import javascript
  */
 DataFlow::ObjectLiteralNode tlsOptions() {
   exists(DataFlow::InvokeNode invk | result.flowsTo(invk.getAnArgument()) |
-    invk instanceof NodeJSLib::NodeJSClientRequest
+    invk instanceof ClientRequest
     or
     invk = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
     or

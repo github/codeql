@@ -1,13 +1,14 @@
 using System;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
     /// Decodes a type signature and produces a Type, for use by DecodeSignature() and friends.
     /// </summary>
-    public class TypeSignatureDecoder : ISignatureTypeProvider<Type, GenericContext>
+    internal class TypeSignatureDecoder : ISignatureTypeProvider<Type, IGenericContext>
     {
         private readonly Context cx;
 
@@ -20,25 +21,24 @@ namespace Semmle.Extraction.CIL.Entities
             cx.Populate(new ArrayType(cx, elementType, shape.Rank));
 
         Type IConstructedTypeProvider<Type>.GetByReferenceType(Type elementType) =>
-            elementType;  // ??
+            new ByRefType(cx, elementType);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetFunctionPointerType(MethodSignature<Type> signature) =>
-            cx.ErrorType; // Don't know what to do !!
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetFunctionPointerType(MethodSignature<Type> signature) =>
+            cx.Populate(new FunctionPointerType(cx, signature));
 
         Type IConstructedTypeProvider<Type>.GetGenericInstantiation(Type genericType, ImmutableArray<Type> typeArguments) =>
             genericType.Construct(typeArguments);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetGenericMethodParameter(GenericContext genericContext, int index) =>
-            genericContext.GetGenericMethodParameter(index);
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetGenericMethodParameter(IGenericContext genericContext, int index) =>
+            genericContext.MethodParameters.ElementAt(index);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetGenericTypeParameter(GenericContext genericContext, int index) =>
-            genericContext.GetGenericTypeParameter(index);
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetGenericTypeParameter(IGenericContext genericContext, int index) =>
+            genericContext.TypeParameters.ElementAt(index);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
             new ModifiedType(cx, unmodifiedType, modifier, isRequired);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetPinnedType(Type elementType) =>
-            cx.Populate(new PointerType(cx, elementType));
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetPinnedType(Type elementType) => elementType;
 
         Type IConstructedTypeProvider<Type>.GetPointerType(Type elementType) =>
             cx.Populate(new PointerType(cx, elementType));
@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CIL.Entities
         Type ISimpleTypeProvider<Type>.GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) =>
             (Type)cx.Create(handle);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetTypeFromSpecification(MetadataReader reader, GenericContext genericContext, TypeSpecificationHandle handle, byte rawTypeKind) =>
+        Type ISignatureTypeProvider<Type, IGenericContext>.GetTypeFromSpecification(MetadataReader reader, IGenericContext genericContext, TypeSpecificationHandle handle, byte rawTypeKind) =>
             throw new NotImplementedException();
     }
 }

@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal class LocalFunction : Statement<LocalFunctionStatementSyntax>
     {
         private LocalFunction(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
-            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static LocalFunction Create(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
         {
@@ -22,23 +22,25 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the IMethodSymbol for this local function statement.
         /// </summary>
-        private IMethodSymbol Symbol
+        private IMethodSymbol? Symbol
         {
             get
             {
-                var m = cx.GetModel(Stmt);
+                var m = Context.GetModel(Stmt);
                 return m.GetDeclaredSymbol(Stmt) as IMethodSymbol;
             }
         }
 
-        /// <summary>
-        /// Gets the function defined by this local statement.
-        /// </summary>
-        private Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
-
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.local_function_stmts(this, Function);
+            if (Symbol is null)
+            {
+                Context.ExtractionError("Could not get local function symbol", null, Context.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Warning);
+                return;
+            }
+
+            var function = Entities.LocalFunction.Create(Context, Symbol);
+            trapFile.local_function_stmts(this, function);
         }
     }
 }

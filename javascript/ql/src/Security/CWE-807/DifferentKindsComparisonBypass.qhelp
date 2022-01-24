@@ -22,11 +22,11 @@
 	</overview>
 
 	<recommendation>
-		<include src="recommendation.qhelp" />
+		<include src="recommendation.inc.qhelp" />
 	</recommendation>
 
 	<example>
-		<include src="example.qhelp" />
+		<include src="example.inc.qhelp" />
 	</example>
 
 	<references>

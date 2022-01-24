@@ -155,4 +155,46 @@ int overloadedNew() {
 
   new(std::nothrow) int(3); // BAD
   new(std::nothrow) int[2]; // BAD
+
+  return 0;
+}
+
+// --- strdup ---
+
+char *strdup(const char *s1);
+void output_msg(const char *msg);
+
+void test_strdup() {
+	char msg[] = "OctoCat";
+	char *cpy = strdup(msg); // BAD
+
+	output_msg(cpy);
+}
+
+// --- strdupa ---
+char *strdupa(const char *s1);
+
+void test_strdupa_no_dealloc() {
+	char msg[] = "OctoCat";
+	char *cpy = strdupa(msg); // GOOD
+}
+
+void test_strdupa_dealloc() {
+	char msg[] = "OctoCat";
+	char *cpy = strdupa(msg);
+    free(cpy); // BAD [NOT DETECTED]
+}
+
+// --- strndupa ---
+char *strndupa(const char *s1, size_t maxsize);
+
+void test_strndupa_no_dealloc() {
+	char msg[] = "OctoCat";
+	char *cpy = strndupa(msg, 4); // GOOD
+}
+
+void test_strndupa_dealloc() {
+	char msg[] = "OctoCat";
+	char *cpy = strndupa(msg, 4);
+    free(cpy); // BAD [NOT DETECTED]
 }

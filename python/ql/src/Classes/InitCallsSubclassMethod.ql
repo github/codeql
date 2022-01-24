@@ -1,6 +1,6 @@
 /**
- * @name __init__ method calls overridden method
- * @description Calling a method from __init__ that is overridden by a subclass may result in a partially
+ * @name `__init__` method calls overridden method
+ * @description Calling a method from `__init__` that is overridden by a subclass may result in a partially
  *              initialized instance being observed.
  * @kind problem
  * @tags reliability

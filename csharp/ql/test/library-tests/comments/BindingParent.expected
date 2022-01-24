@@ -1,7 +1,7 @@
-| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:35:7:35:9 | Foo |  |
-| comments1.cs:40:13:41:51 | // ... | comments1.cs:35:7:35:9 | Foo | as this line |
-| comments1.cs:43:15:43:36 | // ... | comments1.cs:35:7:35:9 | Foo | These are different |
-| comments1.cs:44:15:44:32 | // ... | comments1.cs:35:7:35:9 | Foo | comment blocks. |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:34:7:34:9 | Foo |  |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:34:7:34:9 | Foo | as this line |
+| comments1.cs:42:15:42:36 | // ... | comments1.cs:34:7:34:9 | Foo | These are different |
+| comments1.cs:43:15:43:32 | // ... | comments1.cs:34:7:34:9 | Foo | comment blocks. |
 | comments2.cs:13:17:13:25 | // ... | comments2.cs:11:7:11:8 | C2 | field1 |
 | comments2.cs:14:17:14:25 | // ... | comments2.cs:11:7:11:8 | C2 | field2 |
 | comments2.cs:16:5:16:9 | // ... | comments2.cs:11:7:11:8 | C2 | C2 |
@@ -47,3 +47,13 @@
 | comments2.cs:121:17:121:20 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | f |
 | comments2.cs:124:5:124:16 | // ... | comments2.cs:11:7:11:8 | C2 | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:126:5:129:5 | {...} | x |
+| trivia.cs:25:14:25:38 | // ... | trivia.cs:17:5:29:5 | {...} | numbering not affected |
+| trivia.cs:49:18:49:82 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation and warning contexts to disabled. |
+| trivia.cs:50:17:50:80 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation and warning contexts to enabled. |
+| trivia.cs:51:18:51:94 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable annotation and warning contexts to project settings. |
+| trivia.cs:52:30:52:81 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation context to disabled. |
+| trivia.cs:53:29:53:79 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable annotation context to enabled. |
+| trivia.cs:54:30:54:93 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable annotation context to project settings. |
+| trivia.cs:55:27:55:75 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to disabled. |
+| trivia.cs:56:26:56:73 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to enabled. |
+| trivia.cs:57:27:57:87 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable warning context to project settings. |

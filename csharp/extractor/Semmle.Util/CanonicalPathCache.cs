@@ -42,7 +42,7 @@ namespace Semmle.Util
         {
             var parent = Directory.GetParent(path);
 
-            return parent != null ?
+            return parent is not null ?
                 Path.Combine(cache.GetCanonicalPath(parent.FullName), Path.GetFileName(path)) :
                 path.ToUpperInvariant();
         }
@@ -122,7 +122,7 @@ namespace Semmle.Util
         {
             var parent = Directory.GetParent(path);
 
-            if (parent == null)
+            if (parent is null)
             {
                 // We are at a root of the filesystem.
                 // Convert drive letters, UNC paths etc. to uppercase.

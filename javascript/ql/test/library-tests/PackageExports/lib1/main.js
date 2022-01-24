@@ -3,9 +3,9 @@ module.exports = function isExported() {}
 module.exports.foo = require("./foo.js")
 
 module.exports.bar = class Bar {
-    constructor() {} // all are exported
-    static staticMethod() {}
-    instanceMethod() {}
+    constructor(a) {} // all are exported
+    static staticMethod(b) {}
+    instanceMethod(c) {}
 }
 
 class Baz {

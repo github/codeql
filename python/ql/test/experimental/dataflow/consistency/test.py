@@ -249,3 +249,10 @@ def synth_arg_kwOverflow():
 
 def synth_arg_kwUnpacked():
     overflowCallee(**{"p": "42"})
+
+def split_lambda(cond):
+    if cond:
+        pass
+    foo = lambda x: False
+    if cond:
+        pass

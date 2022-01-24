@@ -34,6 +34,7 @@ namespace Semmle.Extraction.Kinds  // lgtm[cs/similar-file]
         DYNAMIC = 29,
         ARGLIST = 30,
         UNKNOWN = 31,
-        TUPLE = 32
+        TUPLE = 32,
+        FUNCTION_POINTER = 33
     }
 }

@@ -3,6 +3,7 @@
  * @description Finds cookies with an overly broad path.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @id cs/web/broad-cookie-path
  * @tags security

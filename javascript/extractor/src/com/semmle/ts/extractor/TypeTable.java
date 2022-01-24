@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
- * Holds the output of the <tt>get-type-table</tt> command.
+ * Holds the output of the <code>get-type-table</code> command.
  *
- * <p>See documentation in <tt>parser-wrapper/src/type_table.ts</tt>.
+ * <p>See documentation in <code>parser-wrapper/src/type_table.ts</code>.
  */
 public class TypeTable {
   private final JsonArray typeStrings;

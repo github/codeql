@@ -115,7 +115,7 @@ int twoReasons(int a, int b) {
   if (a <= 0 && b > 5) {
     return a < b;
   }
-  if (a <= 100 && b > 105) {
+  if (a <= 100 && b > 105) { // BUG [Not detected - this clause is always false]
     return a > b;
   }
   return 0;

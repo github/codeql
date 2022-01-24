@@ -3,7 +3,7 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class ImplicitCast : Expression
+    internal sealed class ImplicitCast : Expression
     {
         public Expression Expr
         {
@@ -12,21 +12,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
         {
-            Expr = Factory.Create(new ExpressionNodeInfo(cx, info.Node, this, 0));
+            Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
         public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
-            var target = Method.Create(cx, method);
-            if (target != null)
-                cx.TrapWriter.Writer.expr_call(this, target);
+            var target = Method.Create(Context, method);
+            if (target is not null)
+                Context.TrapWriter.Writer.expr_call(this, target);
             else
-                cx.ModelError(info.Node, "Failed to resolve target for operator invocation");
+                Context.ModelError(info.Node, "Failed to resolve target for operator invocation");
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var convertedType = info.ConvertedType;
             var conversion = info.Conversion;
 
-            if (conversion.MethodSymbol != null)
+            if (conversion.MethodSymbol is not null)
             {
                 var convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
 
@@ -65,15 +65,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return Factory.Create(info);
                 }
 
-                if (resolvedType.Symbol != null)
+                if (resolvedType.Symbol is not null)
                     return new ImplicitCast(info, conversion.MethodSymbol);
             }
 
             var implicitUpcast = conversion.IsImplicit &&
-                convertedType.Symbol != null &&
+                convertedType.Symbol is not null &&
                 !conversion.IsBoxing &&
                 (
-                    resolvedType.Symbol == null ||
+                    resolvedType.Symbol is null ||
                     conversion.IsReference ||
                     convertedType.Symbol.SpecialType == SpecialType.System_Object)
                 ;

@@ -53,3 +53,23 @@ function foo() {
         self.importScripts(e); // NOT OK
     }
 })();
+
+function bar() {
+    const history = require('history').createBrowserHistory();
+    var payload = document.location.search.substr(1);
+
+    history.push(payload); // NOT OK
+}
+function baz() {
+    const history = require('history').createBrowserHistory();
+    var payload = history.location.hash.substr(1);
+
+    history.replace(payload); // NOT OK
+}
+
+function quz() {
+    const history = HistoryLibrary.createBrowserHistory();
+    var payload = history.location.hash.substr(1);
+
+    history.replace(payload); // NOT OK
+}

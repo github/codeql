@@ -46,3 +46,24 @@ DomObjectStub.prototype.value;
  * @type {!DomObjectStub}
  */
 var document;
+
+/**
+ * @constructor
+ * @implements {EventTarget}
+ */
+function Node() {}
+
+/**
+ * @type {Node}
+ */
+Node.prototype.parentNode;
+
+/**
+ * @return {DomObjectStub}
+ */
+DomObjectStub.prototype.insertRow = function() {};
+
+/**
+ * @return {DomObjectStub}
+ */
+DomObjectStub.prototype.insertCell = function() {};

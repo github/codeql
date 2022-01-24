@@ -4,6 +4,7 @@
  *              attacks and leak password reset tokens.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id js/host-header-forgery-in-email-generation
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.HostHeaderPoisoningInEmailGeneration::HostHeaderPoisoningInEmailGeneration
+import semmle.javascript.security.dataflow.HostHeaderPoisoningInEmailGenerationQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

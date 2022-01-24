@@ -38,3 +38,9 @@ pool.connect(function(err, client, done) {
     //output: 1 
   });
 });
+
+let client2 = await pool.connect();
+client2.query('SELECT 123');
+
+const Cursor = require('pg-cursor');
+client2.query(new Cursor('SELECT * from users'));

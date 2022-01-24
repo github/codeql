@@ -4,6 +4,7 @@
  *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @precision high
  * @id js/xss-through-exception
  * @tags security
@@ -12,11 +13,11 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ExceptionXss::ExceptionXss
+import semmle.javascript.security.dataflow.ExceptionXssQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(),
-  "Exception text"
+  source.getNode().(Source).getDescription()

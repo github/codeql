@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args --enable-preview -source 15 -target 15
+//semmle-extractor-options: --javac-args --enable-preview -source 16 -target 16

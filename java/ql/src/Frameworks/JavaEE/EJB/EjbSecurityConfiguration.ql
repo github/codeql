@@ -5,6 +5,7 @@
  *              This functionality is reserved for the EJB container for security reasons.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.8
  * @precision low
  * @id java/ejb/security-configuration-access
  * @tags external/cwe/cwe-573

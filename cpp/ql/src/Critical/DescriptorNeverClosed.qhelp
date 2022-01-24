@@ -10,7 +10,7 @@ This rule finds calls to <code>socket</code> where there is no corresponding <co
 Leaving descriptors open will cause a resource leak that will persist even after the program terminates.
 </p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

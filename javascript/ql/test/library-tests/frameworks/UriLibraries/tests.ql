@@ -12,8 +12,8 @@ query predicate uridashjs(DataFlow::Node n) { n = uridashjs::uridashjsMember(_) 
 
 query predicate urijs(DataFlow::Node n) { n = urijs::urijs() }
 
-query predicate uriLibraryStep(UriLibraryStep step, DataFlow::Node pred, DataFlow::Node succ) {
-  step.step(pred, succ)
+query predicate uriLibraryStep(DataFlow::Node pred, DataFlow::Node succ) {
+  TaintTracking::uriStep(pred, succ)
 }
 
 query predicate url(DataFlow::Node n) { n = url::urlMember(_) }

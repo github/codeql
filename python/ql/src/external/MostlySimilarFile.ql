@@ -16,8 +16,7 @@
  */
 
 import python
-import CodeDuplication
 
 from Module m, Module other, string message
-where similarScopes(m, other, _, message)
+where none()
 select m, message, other, other.getName()

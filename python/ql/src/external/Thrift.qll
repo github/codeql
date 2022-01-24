@@ -13,9 +13,9 @@ class ThriftElement extends ExternalData {
 
   string getKind() { result = kind }
 
-  string getId() { result = getField(0) }
+  string getId() { result = this.getField(0) }
 
-  int getIndex() { result = getFieldAsInt(1) }
+  int getIndex() { result = this.getFieldAsInt(1) }
 
   ThriftElement getParent() { result.getId() = this.getField(2) }
 
@@ -38,7 +38,7 @@ class ThriftElement extends ExternalData {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

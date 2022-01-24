@@ -15,9 +15,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <param name="syntax">The syntax node of the recursive pattern.</param>
         /// <param name="parent">The parent pattern/expression.</param>
         /// <param name="child">The child index of this pattern.</param>
-        /// <param name="isTopLevel">If this pattern is in the top level of a case/is. In that case, the variable and type access are populated elsewhere.</param>
         public RecursivePattern(Context cx, RecursivePatternSyntax syntax, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, Entities.NullType.Create(cx), cx.Create(syntax.GetLocation()), ExprKind.RECURSIVE_PATTERN, parent, child, false, null))
+            base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), ExprKind.RECURSIVE_PATTERN, parent, child, false, null))
         {
             // Extract the type access
             if (syntax.Type is TypeSyntax t)
@@ -26,9 +25,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             // Extract the local variable declaration
             if (syntax.Designation is VariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
-                var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
+                var type = symbol.GetAnnotatedType();
 
-                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), false, this, 0);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)

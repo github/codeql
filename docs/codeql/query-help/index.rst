@@ -9,7 +9,7 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 - :doc:`CodeQL query help for Java <java>`
 - :doc:`CodeQL query help for JavaScript <javascript>`
 - :doc:`CodeQL query help for Python <python>`
-
+- :doc:`CodeQL query help for Ruby <ruby>`
 
 .. pull-quote:: Information
 
@@ -19,6 +19,11 @@ View the query help for the queries included in the ``code-scanning``, ``securit
    - Information about which query suites the query is included in.
    - A link to the query in the `CodeQL repository <https://github.com/github/codeql>`__.
    - A description of the potential vulnerability that the query identifies and a recommendation for how to avoid introducing the problem to your code.
+
+
+For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE coverage <codeql-cwe-coverage>`." 
+
+.. include:: ../reusables/ruby-beta-note.rst
 
 .. toctree::
    :hidden:
@@ -30,4 +35,6 @@ View the query help for the queries included in the ``code-scanning``, ``securit
    java
    javascript
    python
+   ruby
+   codeql-cwe-coverage
    

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Methods
 {
@@ -178,6 +179,33 @@ namespace Methods
         public static System.Collections.Generic.IEnumerable<int> SkipTwoInt(this System.Collections.Generic.IEnumerable<int> list, int i = 1)
         {
             return list.SkipTwo<int>(i);
+        }
+    }
+
+    public class TestCollidingMethods<T>
+    {
+        public void M(T p1, int p2) { }
+        public void M(int p1, int p2) { }
+
+        public void Calls()
+        {
+            var x = new TestCollidingMethods<int>();
+            x.M(1, 1);
+
+            var y = new TestCollidingMethods<double>();
+            y.M(1.0, 1);
+            y.M(1, 1);
+        }
+
+        public class Nested
+        {
+            public Nested(int p1) { }
+            public Nested(T p1)
+            {
+                var x = new TestCollidingMethods<int>.Nested(1);
+                var y = new TestCollidingMethods<double>.Nested(1.0);
+                var z = new TestCollidingMethods<double>.Nested(1);
+            }
         }
     }
 }

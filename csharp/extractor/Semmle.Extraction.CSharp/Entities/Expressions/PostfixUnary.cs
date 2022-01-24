@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, operand, this, 0);
+            Create(Context, operand, this, 0);
             OperatorCall(trapFile, Syntax);
 
             if ((operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR) &&

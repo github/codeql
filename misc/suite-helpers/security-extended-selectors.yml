@@ -19,6 +19,14 @@
     - warning
     tags contain:
     - security
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
 - exclude:
     deprecated: //
 - exclude:

@@ -182,15 +182,21 @@ abstract class TranslatedCompilerGeneratedVariableAccess extends TranslatedCompi
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
+  /**
+   * Returns the type of the accessed variable. Can be overriden when the return
+   * type is different than the type of the underlying variable.
+   */
+  Type getVariableType() { result = getResultType() }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = AddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getResultType())
+    resultType = getTypeForGLValue(getVariableType())
     or
     needsLoad() and
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(getResultType())
+    resultType = getTypeForPRValue(getVariableType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

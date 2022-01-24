@@ -24,6 +24,9 @@ Avoid deserialization of untrusted data if at all possible.  If the
 architecture permits it then use other formats instead of serialized objects,
 for example JSON.
 </p>
+<p>
+If you need to use YAML, use the <code>yaml.safe_load</code> function.
+</p>
 </recommendation>
 
 <example>

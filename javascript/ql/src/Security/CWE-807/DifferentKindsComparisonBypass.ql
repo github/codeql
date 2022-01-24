@@ -3,6 +3,7 @@
  * @description Comparing different kinds of HTTP request data may be a symptom of an insufficient security check.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision low
  * @id js/different-kinds-comparison-bypass
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.DifferentKindsComparisonBypass::DifferentKindsComparisonBypass
+import semmle.javascript.security.dataflow.DifferentKindsComparisonBypassQuery
 
 from DifferentKindsComparison cmp, DataFlow::Node lSource, DataFlow::Node rSource
 where

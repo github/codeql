@@ -113,6 +113,12 @@ namespace Semmle.BuildAnalyser
             {
                 using var p = Process.Start(pi);
 
+                if (p is null)
+                {
+                    pm.FailedNugetCommand(pi.FileName, pi.Arguments, "Couldn't start process.");
+                    return;
+                }
+
                 var output = p.StandardOutput.ReadToEnd();
                 var error = p.StandardError.ReadToEnd();
 

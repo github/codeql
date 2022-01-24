@@ -44,4 +44,6 @@ function test() {
   } else {
     elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
   }
+
+  elt.innerHTML = tainted.replace(/<\w+/g, ''); // NOT OK
 }

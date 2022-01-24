@@ -7,11 +7,14 @@
  *              undefined data.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.0
  * @precision very-high
  * @id cpp/too-few-arguments
  * @tags correctness
  *       maintainability
  *       security
+ *       external/cwe/cwe-234
+ *       external/cwe/cwe-685
  */
 
 import cpp

@@ -6,7 +6,6 @@ using Microsoft.DiaSymReader;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.Metadata;
 using System.IO;
-using System.Reflection;
 
 namespace Semmle.Extraction.PDB
 {
@@ -60,7 +59,7 @@ namespace Semmle.Extraction.PDB
         {
             var methodToken = MetadataTokens.GetToken(h.ToDefinitionHandle());
             var method = reader.GetMethod(methodToken);
-            if (method != null)
+            if (method is not null)
             {
                 if (method.GetSequencePointCount(out var count) != 0 || count == 0)
                     return null;
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.PDB
                 .Select(cv => cv.Path)
                 .FirstOrDefault(File.Exists);
 
-            if (path is object)
+            if (path is not null)
             {
                 return new NativePdbReader(path);
             }

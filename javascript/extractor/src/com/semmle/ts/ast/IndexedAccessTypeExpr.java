@@ -3,7 +3,7 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A type of form <tt>T[K]</tt> where <tt>T</tt> and <tt>K</tt> are types. */
+/** A type of form <code>T[K]</code> where <code>T</code> and <code>K</code> are types. */
 public class IndexedAccessTypeExpr extends TypeExpression {
   private final ITypeExpression objectType;
   private final ITypeExpression indexType;

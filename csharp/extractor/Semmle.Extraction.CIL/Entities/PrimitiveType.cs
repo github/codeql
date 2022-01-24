@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public sealed class PrimitiveType : Type
+    internal sealed class PrimitiveType : Type
     {
         private readonly PrimitiveTypeCode typeCode;
         public PrimitiveType(Context cx, PrimitiveTypeCode tc) : base(cx)
@@ -20,14 +20,14 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode() => typeCode.GetHashCode();
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             Type.WritePrimitiveTypeId(trapFile, Name);
         }
 
         public override string Name => typeCode.Id();
 
-        public override Namespace ContainingNamespace => Cx.SystemNamespace;
+        public override Namespace ContainingNamespace => Context.SystemNamespace;
 
         public override Type? ContainingType => null;
 

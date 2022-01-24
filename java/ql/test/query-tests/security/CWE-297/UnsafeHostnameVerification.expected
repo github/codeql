@@ -1,0 +1,24 @@
+edges
+| UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:81:55:81:62 | verifier |
+| UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:94:55:94:62 | verifier |
+| UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:34:59:34:85 | ALLOW_ALL_HOSTNAME_VERIFIER |
+| UnsafeHostnameVerification.java:97:72:102:5 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } |
+nodes
+| UnsafeHostnameVerification.java:14:55:19:9 | new (...) | semmle.label | new (...) |
+| UnsafeHostnameVerification.java:26:55:26:71 | ...->... | semmle.label | ...->... |
+| UnsafeHostnameVerification.java:34:59:34:85 | ALLOW_ALL_HOSTNAME_VERIFIER | semmle.label | ALLOW_ALL_HOSTNAME_VERIFIER |
+| UnsafeHostnameVerification.java:47:55:47:71 | ...->... | semmle.label | ...->... |
+| UnsafeHostnameVerification.java:59:59:59:85 | ...->... | semmle.label | ...->... |
+| UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | semmle.label | new (...) : new HostnameVerifier(...) { ... } |
+| UnsafeHostnameVerification.java:81:55:81:62 | verifier | semmle.label | verifier |
+| UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | semmle.label | new (...) : new HostnameVerifier(...) { ... } |
+| UnsafeHostnameVerification.java:94:55:94:62 | verifier | semmle.label | verifier |
+| UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } | semmle.label | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } |
+| UnsafeHostnameVerification.java:97:72:102:5 | new (...) : new HostnameVerifier(...) { ... } | semmle.label | new (...) : new HostnameVerifier(...) { ... } |
+subpaths
+#select
+| UnsafeHostnameVerification.java:14:55:19:9 | new (...) | UnsafeHostnameVerification.java:14:55:19:9 | new (...) | UnsafeHostnameVerification.java:14:55:19:9 | new (...) | $@ that is defined $@ and accepts any certificate as valid, is used here. | UnsafeHostnameVerification.java:14:55:19:9 | new (...) | This hostname verifier | UnsafeHostnameVerification.java:14:59:14:74 | new HostnameVerifier(...) { ... } | here |
+| UnsafeHostnameVerification.java:26:55:26:71 | ...->... | UnsafeHostnameVerification.java:26:55:26:71 | ...->... | UnsafeHostnameVerification.java:26:55:26:71 | ...->... | $@ that is defined $@ and accepts any certificate as valid, is used here. | UnsafeHostnameVerification.java:26:55:26:71 | ...->... | This hostname verifier | UnsafeHostnameVerification.java:26:55:26:71 | new HostnameVerifier(...) { ... } | here |
+| UnsafeHostnameVerification.java:47:55:47:71 | ...->... | UnsafeHostnameVerification.java:47:55:47:71 | ...->... | UnsafeHostnameVerification.java:47:55:47:71 | ...->... | $@ that is defined $@ and accepts any certificate as valid, is used here. | UnsafeHostnameVerification.java:47:55:47:71 | ...->... | This hostname verifier | UnsafeHostnameVerification.java:47:55:47:71 | new HostnameVerifier(...) { ... } | here |
+| UnsafeHostnameVerification.java:81:55:81:62 | verifier | UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:81:55:81:62 | verifier | $@ that is defined $@ and accepts any certificate as valid, is used here. | UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | This hostname verifier | UnsafeHostnameVerification.java:66:41:66:56 | new HostnameVerifier(...) { ... } | here |
+| UnsafeHostnameVerification.java:94:55:94:62 | verifier | UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:94:55:94:62 | verifier | $@ that is defined $@ and accepts any certificate as valid, is used here. | UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | This hostname verifier | UnsafeHostnameVerification.java:88:41:88:56 | new HostnameVerifier(...) { ... } | here |

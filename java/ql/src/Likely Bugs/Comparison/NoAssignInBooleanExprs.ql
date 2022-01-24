@@ -17,8 +17,8 @@ import semmle.code.java.Statement
 /** An expression that is used as a condition. */
 class BooleanExpr extends Expr {
   BooleanExpr() {
-    exists(ConditionalStmt s | s.getCondition() = this) or
-    exists(ConditionalExpr s | s.getCondition() = this)
+    this = any(ConditionalStmt s).getCondition() or
+    this = any(ConditionalExpr s).getCondition()
   }
 }
 

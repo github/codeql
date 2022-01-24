@@ -1,0 +1,92 @@
+edges
+| Async.cs:9:37:9:41 | input : String | Async.cs:11:21:11:25 | access to parameter input : String |
+| Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:11:14:11:26 | call to method Return |
+| Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:14:34:14:34 | x : String |
+| Async.cs:14:34:14:34 | x : String | Async.cs:16:16:16:16 | access to parameter x : String |
+| Async.cs:14:34:14:34 | x : String | Async.cs:16:16:16:16 | access to parameter x : String |
+| Async.cs:16:16:16:16 | access to parameter x : String | Async.cs:11:14:11:26 | call to method Return |
+| Async.cs:19:41:19:45 | input : String | Async.cs:21:32:21:36 | access to parameter input : String |
+| Async.cs:21:20:21:37 | call to method ReturnAwait [property Result] : String | Async.cs:21:14:21:37 | await ... |
+| Async.cs:21:32:21:36 | access to parameter input : String | Async.cs:21:20:21:37 | call to method ReturnAwait [property Result] : String |
+| Async.cs:21:32:21:36 | access to parameter input : String | Async.cs:35:51:35:51 | x : String |
+| Async.cs:24:41:24:45 | input : String | Async.cs:26:35:26:39 | access to parameter input : String |
+| Async.cs:26:17:26:40 | await ... : String | Async.cs:27:14:27:14 | access to local variable x |
+| Async.cs:26:23:26:40 | call to method ReturnAwait [property Result] : String | Async.cs:26:17:26:40 | await ... : String |
+| Async.cs:26:35:26:39 | access to parameter input : String | Async.cs:26:23:26:40 | call to method ReturnAwait [property Result] : String |
+| Async.cs:26:35:26:39 | access to parameter input : String | Async.cs:35:51:35:51 | x : String |
+| Async.cs:30:35:30:39 | input : String | Async.cs:32:27:32:31 | access to parameter input : String |
+| Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String | Async.cs:32:14:32:39 | access to property Result |
+| Async.cs:32:27:32:31 | access to parameter input : String | Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String |
+| Async.cs:32:27:32:31 | access to parameter input : String | Async.cs:51:52:51:52 | x : String |
+| Async.cs:35:51:35:51 | x : String | Async.cs:38:16:38:16 | access to parameter x : String |
+| Async.cs:35:51:35:51 | x : String | Async.cs:38:16:38:16 | access to parameter x : String |
+| Async.cs:38:16:38:16 | access to parameter x : String | Async.cs:21:20:21:37 | call to method ReturnAwait [property Result] : String |
+| Async.cs:38:16:38:16 | access to parameter x : String | Async.cs:26:23:26:40 | call to method ReturnAwait [property Result] : String |
+| Async.cs:41:33:41:37 | input : String | Async.cs:43:25:43:29 | access to parameter input : String |
+| Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String | Async.cs:43:14:43:37 | access to property Result |
+| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
+| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:46:44:46:44 | x : String |
+| Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String |
+| Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String |
+| Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String |
+| Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String |
+| Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String |
+| Async.cs:51:58:51:58 | access to parameter x : String | Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String |
+nodes
+| Async.cs:9:37:9:41 | input : String | semmle.label | input : String |
+| Async.cs:11:14:11:26 | call to method Return | semmle.label | call to method Return |
+| Async.cs:11:21:11:25 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:14:34:14:34 | x : String | semmle.label | x : String |
+| Async.cs:14:34:14:34 | x : String | semmle.label | x : String |
+| Async.cs:16:16:16:16 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:16:16:16:16 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:19:41:19:45 | input : String | semmle.label | input : String |
+| Async.cs:21:14:21:37 | await ... | semmle.label | await ... |
+| Async.cs:21:20:21:37 | call to method ReturnAwait [property Result] : String | semmle.label | call to method ReturnAwait [property Result] : String |
+| Async.cs:21:32:21:36 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:24:41:24:45 | input : String | semmle.label | input : String |
+| Async.cs:26:17:26:40 | await ... : String | semmle.label | await ... : String |
+| Async.cs:26:23:26:40 | call to method ReturnAwait [property Result] : String | semmle.label | call to method ReturnAwait [property Result] : String |
+| Async.cs:26:35:26:39 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:27:14:27:14 | access to local variable x | semmle.label | access to local variable x |
+| Async.cs:30:35:30:39 | input : String | semmle.label | input : String |
+| Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String | semmle.label | call to method ReturnAwait2 [property Result] : String |
+| Async.cs:32:14:32:39 | access to property Result | semmle.label | access to property Result |
+| Async.cs:32:27:32:31 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:35:51:35:51 | x : String | semmle.label | x : String |
+| Async.cs:35:51:35:51 | x : String | semmle.label | x : String |
+| Async.cs:38:16:38:16 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:38:16:38:16 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:41:33:41:37 | input : String | semmle.label | input : String |
+| Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String | semmle.label | call to method ReturnTask [property Result] : String |
+| Async.cs:43:14:43:37 | access to property Result | semmle.label | access to property Result |
+| Async.cs:43:25:43:29 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:46:44:46:44 | x : String | semmle.label | x : String |
+| Async.cs:46:44:46:44 | x : String | semmle.label | x : String |
+| Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | semmle.label | call to method FromResult<String> [property Result] : String |
+| Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | semmle.label | call to method FromResult<String> [property Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:51:52:51:52 | x : String | semmle.label | x : String |
+| Async.cs:51:52:51:52 | x : String | semmle.label | x : String |
+| Async.cs:51:58:51:58 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:51:58:51:58 | access to parameter x : String | semmle.label | access to parameter x : String |
+subpaths
+| Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:14:34:14:34 | x : String | Async.cs:16:16:16:16 | access to parameter x : String | Async.cs:11:14:11:26 | call to method Return |
+| Async.cs:21:32:21:36 | access to parameter input : String | Async.cs:35:51:35:51 | x : String | Async.cs:38:16:38:16 | access to parameter x : String | Async.cs:21:20:21:37 | call to method ReturnAwait [property Result] : String |
+| Async.cs:26:35:26:39 | access to parameter input : String | Async.cs:35:51:35:51 | x : String | Async.cs:38:16:38:16 | access to parameter x : String | Async.cs:26:23:26:40 | call to method ReturnAwait [property Result] : String |
+| Async.cs:32:27:32:31 | access to parameter input : String | Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String | Async.cs:32:14:32:32 | call to method ReturnAwait2 [property Result] : String |
+| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:46:44:46:44 | x : String | Async.cs:48:16:48:33 | call to method FromResult<String> [property Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask [property Result] : String |
+#select
+| Async.cs:11:14:11:26 | call to method Return | Async.cs:9:37:9:41 | input : String | Async.cs:11:14:11:26 | call to method Return | $@ flows to here and is used. | Async.cs:9:37:9:41 | input | User-provided value |
+| Async.cs:11:14:11:26 | call to method Return | Async.cs:14:34:14:34 | x : String | Async.cs:11:14:11:26 | call to method Return | $@ flows to here and is used. | Async.cs:14:34:14:34 | x | User-provided value |
+| Async.cs:21:14:21:37 | await ... | Async.cs:19:41:19:45 | input : String | Async.cs:21:14:21:37 | await ... | $@ flows to here and is used. | Async.cs:19:41:19:45 | input | User-provided value |
+| Async.cs:21:14:21:37 | await ... | Async.cs:35:51:35:51 | x : String | Async.cs:21:14:21:37 | await ... | $@ flows to here and is used. | Async.cs:35:51:35:51 | x | User-provided value |
+| Async.cs:27:14:27:14 | access to local variable x | Async.cs:24:41:24:45 | input : String | Async.cs:27:14:27:14 | access to local variable x | $@ flows to here and is used. | Async.cs:24:41:24:45 | input | User-provided value |
+| Async.cs:27:14:27:14 | access to local variable x | Async.cs:35:51:35:51 | x : String | Async.cs:27:14:27:14 | access to local variable x | $@ flows to here and is used. | Async.cs:35:51:35:51 | x | User-provided value |
+| Async.cs:32:14:32:39 | access to property Result | Async.cs:30:35:30:39 | input : String | Async.cs:32:14:32:39 | access to property Result | $@ flows to here and is used. | Async.cs:30:35:30:39 | input | User-provided value |
+| Async.cs:32:14:32:39 | access to property Result | Async.cs:51:52:51:52 | x : String | Async.cs:32:14:32:39 | access to property Result | $@ flows to here and is used. | Async.cs:51:52:51:52 | x | User-provided value |
+| Async.cs:43:14:43:37 | access to property Result | Async.cs:41:33:41:37 | input : String | Async.cs:43:14:43:37 | access to property Result | $@ flows to here and is used. | Async.cs:41:33:41:37 | input | User-provided value |
+| Async.cs:43:14:43:37 | access to property Result | Async.cs:46:44:46:44 | x : String | Async.cs:43:14:43:37 | access to property Result | $@ flows to here and is used. | Async.cs:46:44:46:44 | x | User-provided value |

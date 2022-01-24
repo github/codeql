@@ -19,8 +19,8 @@ reflection/ReflectiveAccess.java:
 #   13|         1: [Parameter] annotationClass
 #   13|           0: [TypeAccess] Class<A>
 #   13|             0: [TypeAccess] A
-#   13|       5: [BlockStmt] stmt
-#   14|         0: [ReturnStmt] stmt
+#   13|       5: [BlockStmt] { ... }
+#   14|         0: [ReturnStmt] return ...
 #   14|           0: [MethodAccess] getAnnotation(...)
 #   14|             -1: [VarAccess] classContainingAnnotation
 #   14|             0: [VarAccess] annotationClass
@@ -30,18 +30,18 @@ reflection/ReflectiveAccess.java:
 #   17|         0: [Parameter] args
 #   17|           0: [ArrayTypeAccess] ...[]
 #   17|             0: [TypeAccess] String
-#   17|       5: [BlockStmt] stmt
-#   18|         0: [LocalVariableDeclStmt] stmt
+#   17|       5: [BlockStmt] { ... }
+#   18|         0: [LocalVariableDeclStmt] var ...;
 #   18|           0: [TypeAccess] Class<?>
 #   18|             0: [WildcardTypeAccess] ? ...
 #   18|           1: [LocalVariableDeclExpr] testClass
 #   18|             0: [MethodAccess] forName(...)
 #   18|               -1: [TypeAccess] Class<>
 #   18|               0: [StringLiteral] "reflection.ReflectiveAccess$TestClass"
-#   20|         1: [ExprStmt] stmt
+#   20|         1: [ExprStmt] <Expr>;
 #   20|           0: [MethodAccess] newInstance(...)
 #   20|             -1: [VarAccess] testClass
-#   22|         2: [ExprStmt] stmt
+#   22|         2: [ExprStmt] <Expr>;
 #   22|           0: [MethodAccess] getAnnotation(...)
 #   22|             0: [TypeLiteral] TestClass.class
 #   22|               0: [TypeAccess] TestClass

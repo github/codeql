@@ -1,0 +1,1 @@
+| test.cs:31:9:31:74 | call to method InitiateSystemShutdownExW | Call to an external method 'InitiateSystemShutdownExW'. |

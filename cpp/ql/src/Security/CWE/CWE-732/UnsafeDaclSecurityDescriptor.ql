@@ -7,6 +7,7 @@
  * @id cpp/unsafe-dacl-security-descriptor
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-732
@@ -33,9 +34,7 @@ class SetSecurityDescriptorDaclFunctionCall extends FunctionCall {
 class NullDaclConfig extends DataFlow::Configuration {
   NullDaclConfig() { this = "NullDaclConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(NullValue nullExpr | source.asExpr() = nullExpr)
-  }
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof NullValue }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(SetSecurityDescriptorDaclFunctionCall call, VariableAccess val | val = sink.asExpr() |

@@ -5,7 +5,7 @@
  *              user-controlled exit node of portal `p1` to an escaping entry node of portal `p2`,
  *              and have label `lbl2` at that point. Moreover, the path from `p1` to `p2` contains
  *              no sanitizers specified by configuration `cfg`.
- * @kind flow-step-summary
+ * @kind table
  * @id js/step-summary-extraction
  */
 

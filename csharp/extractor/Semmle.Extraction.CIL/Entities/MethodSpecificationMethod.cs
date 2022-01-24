@@ -18,15 +18,15 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Method unboundMethod;
         private readonly ImmutableArray<Type> typeParams;
 
-        public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
+        public MethodSpecificationMethod(IGenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {
             this.handle = handle;
-            ms = Cx.MdReader.GetMethodSpecification(handle);
-            typeParams = ms.DecodeSignature(Cx.TypeSignatureDecoder, gc);
-            unboundMethod = (Method)Cx.CreateGeneric(gc, ms.Method);
+            ms = Context.MdReader.GetMethodSpecification(handle);
+            typeParams = ms.DecodeSignature(Context.TypeSignatureDecoder, gc);
+            unboundMethod = (Method)Context.CreateGeneric(gc, ms.Method);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             unboundMethod.WriteId(trapFile);
             trapFile.Write('<');
@@ -66,12 +66,12 @@ namespace Semmle.Extraction.CIL.Entities
                 switch (ms.Method.Kind)
                 {
                     case HandleKind.MemberReference:
-                        var mr = Cx.MdReader.GetMemberReference((MemberReferenceHandle)ms.Method);
-                        constructedTypeSignature = mr.DecodeMethodSignature(Cx.TypeSignatureDecoder, this);
+                        var mr = Context.MdReader.GetMemberReference((MemberReferenceHandle)ms.Method);
+                        constructedTypeSignature = mr.DecodeMethodSignature(Context.TypeSignatureDecoder, this);
                         break;
                     case HandleKind.MethodDefinition:
-                        var md = Cx.MdReader.GetMethodDefinition((MethodDefinitionHandle)ms.Method);
-                        constructedTypeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
+                        var md = Context.MdReader.GetMethodDefinition((MethodDefinitionHandle)ms.Method);
+                        constructedTypeSignature = md.DecodeSignature(Context.TypeSignatureDecoder, this);
                         break;
                     default:
                         throw new InternalError($"Unexpected constructed method handle kind {ms.Method.Kind}");

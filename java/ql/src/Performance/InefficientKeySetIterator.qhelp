@@ -38,8 +38,8 @@ using the entry set because the loop body needs both the key and the value for e
 
 
 <li>
-  Java Platform, Standard Edition 6, API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html#entrySet%28%29">Map.entrySet()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html#entrySet()">Map.entrySet()</a>.
 </li>
 
 

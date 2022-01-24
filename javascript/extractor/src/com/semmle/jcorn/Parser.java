@@ -3,9 +3,21 @@ package com.semmle.jcorn;
 import static com.semmle.jcorn.Whitespace.isNewLine;
 import static com.semmle.jcorn.Whitespace.lineBreak;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.Stack;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.semmle.jcorn.Identifiers.Dialect;
 import com.semmle.jcorn.Options.AllowReserved;
-import com.semmle.jcorn.TokenType.Properties;
 import com.semmle.js.ast.ArrayExpression;
 import com.semmle.js.ast.ArrayPattern;
 import com.semmle.js.ast.ArrowFunctionExpression;
@@ -40,12 +52,12 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.GeneratedCodeExpr;
 import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.IfStatement;
-import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
@@ -71,6 +83,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -95,18 +108,6 @@ import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.io.WholeIO;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Stack;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Java port of Acorn.
@@ -538,7 +539,7 @@ public class Parser {
         }
         return this.finishOp(TokenType.questionquestion, 2);
       }
-      
+
     }
     return this.finishOp(TokenType.question, 1);
   }
@@ -617,6 +618,15 @@ public class Parser {
       this.skipLineComment(4);
       this.skipSpace();
       return this.nextToken();
+    }
+    if (next == '%' && code == '<' && this.options.allowGeneratedCodeExprs()) {
+      // `<%`, the beginning of an EJS-style template tag
+      size = 2;
+      int nextNext = charAt(this.pos + 2);
+      if (nextNext == '=' || nextNext == '-') {
+        ++size;
+      }
+      return this.finishOp(TokenType.generatedCodeDelimiterEJS, size);
     }
     if (next == 61) size = 2;
     return this.finishOp(TokenType.relational, size);
@@ -1462,7 +1472,7 @@ public class Parser {
     return left;
   }
 
-  private Expression buildBinary(
+  protected Expression buildBinary(
       int startPos,
       Position startLoc,
       Expression left,
@@ -1636,6 +1646,15 @@ public class Parser {
       node = new ThisExpression(new SourceLocation(this.startLoc));
       this.next();
       return this.finishNode(node);
+    } else if (this.type == TokenType.pound) {
+      Position startLoc = this.startLoc;
+      // there is only one case where this is valid, and that is "Ergonomic brand checks for Private Fields", i.e. `#name in obj`. 
+      Identifier id = parseIdent(true);
+      String op = String.valueOf(this.value);
+      if (!op.equals("in")) {
+        this.unexpected(startLoc);
+      }
+      return this.parseExprOp(id, this.start, startLoc, -1, false); 
     } else if (this.type == TokenType.name) {
       Position startLoc = this.startLoc;
       Identifier id = this.parseIdent(this.type != TokenType.name);
@@ -1689,6 +1708,9 @@ public class Parser {
       return this.parseNew();
     } else if (this.type == TokenType.backQuote) {
       return this.parseTemplate(false);
+    } else if (this.type == TokenType.generatedCodeDelimiterEJS) {
+      String openingDelimiter = (String) this.value;
+      return this.parseGeneratedCodeExpr(this.startLoc, openingDelimiter, "%>");
     } else {
       this.unexpected();
       return null;
@@ -1930,10 +1952,16 @@ public class Parser {
   // Parse an object literal or binding pattern.
   protected Expression parseObj(boolean isPattern, DestructuringErrors refDestructuringErrors) {
     Position startLoc = this.startLoc;
+    if (!isPattern && options.allowGeneratedCodeExprs() && charAt(pos) == '{') {
+      // Parse mustache-style placeholder expression: {{ ... }} or {{{ ... }}}
+      return charAt(pos + 1) == '{'
+          ? parseGeneratedCodeExpr(startLoc, "{{{", "}}}")
+          : parseGeneratedCodeExpr(startLoc, "{{", "}}");
+    }
     boolean first = true;
     Map<String, PropInfo> propHash = new LinkedHashMap<>();
     List<Property> properties = new ArrayList<Property>();
-    this.next();
+    this.next(); // skip '{'
     while (!this.eat(TokenType.braceR)) {
       if (!first) {
         this.expect(TokenType.comma);
@@ -1948,6 +1976,42 @@ public class Parser {
     Expression node =
         isPattern ? new ObjectPattern(loc, properties) : new ObjectExpression(loc, properties);
     return this.finishNode(node);
+  }
+
+  /** Emit a token ranging from the current position until <code>endOfToken</code>. */
+  private Token generateTokenEndingAt(int endOfToken, TokenType tokenType) {
+    this.lastTokEnd = this.end;
+    this.lastTokStart = this.start;
+    this.lastTokEndLoc = this.endLoc;
+    this.lastTokStartLoc = this.startLoc;
+    this.start = this.pos;
+    this.startLoc = this.curPosition();
+    this.pos = endOfToken;
+    return finishToken(tokenType);
+  }
+
+  /** Parse a generated expression. The current token refers to the opening delimiter. */
+  protected Expression parseGeneratedCodeExpr(Position startLoc, String openingDelimiter, String closingDelimiter) {
+    // Emit a token for what's left of the opening delimiter, if there are any remaining characters
+    int startOfBody = startLoc.getOffset() + openingDelimiter.length();
+    if (this.pos != startOfBody) {
+      this.generateTokenEndingAt(startOfBody, TokenType.generatedCodeDelimiter);
+    }
+
+    // Emit a token for the generated code body
+    int endOfBody = this.input.indexOf(closingDelimiter, startOfBody);
+    if (endOfBody == -1) {
+    	this.unexpected(startLoc);
+    }
+    Token bodyToken = this.generateTokenEndingAt(endOfBody, TokenType.generatedCodeExpr);
+
+    // Emit a token for the closing delimiter
+    this.generateTokenEndingAt(endOfBody + closingDelimiter.length(), TokenType.generatedCodeDelimiter);
+
+    this.next(); // produce lookahead token
+
+    return finishNode(new GeneratedCodeExpr(new SourceLocation(startLoc), openingDelimiter, closingDelimiter,
+        bodyToken.getValue()));
   }
 
   protected Property parseProperty(
@@ -3190,6 +3254,10 @@ public class Parser {
     PropertyInfo pi = new PropertyInfo(false, isGenerator, methodStartLoc);
     this.parsePropertyName(pi);
     boolean isStatic = isMaybeStatic && this.type != TokenType.parenL;
+    if (isStatic && this.type == TokenType.braceL) {
+      BlockStatement block = parseBlock(false);
+      return new StaticInitializer(block.getLoc(), block);
+    }
     if (isStatic) {
       if (isGenerator) this.unexpected();
       isGenerator = this.eat(TokenType.star);
@@ -3254,9 +3322,6 @@ public class Parser {
       }
       if (pi.kind.equals("set") && node.getValue().hasRest())
         this.raiseRecoverable(params.get(params.size() - 1), "Setter cannot use rest params");
-    }
-    if (pi.key instanceof Identifier && ((Identifier)pi.key).getName().startsWith("#")) {
-      raiseRecoverable(pi.key, "Only fields, not methods, can be declared private.");
     }
     return node;
   }

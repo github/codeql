@@ -3,10 +3,12 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id java/potentially-weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
+ *       external/cwe/cwe-328
  */
 
 import java
@@ -17,14 +19,14 @@ import semmle.code.java.dispatch.VirtualDispatch
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getLiteral().length() < 100 }
+  ShortStringLiteral() { this.getValue().length() < 100 }
 }
 
 class InsecureAlgoLiteral extends ShortStringLiteral {
   InsecureAlgoLiteral() {
     // Algorithm identifiers should be at least two characters.
-    getValue().length() > 1 and
-    exists(string s | s = getLiteral() |
+    this.getValue().length() > 1 and
+    exists(string s | s = this.getValue() |
       not s.regexpMatch(getSecureAlgorithmRegex()) and
       // Exclude results covered by another query.
       not s.regexpMatch(getInsecureAlgorithmRegex())
@@ -33,9 +35,8 @@ class InsecureAlgoLiteral extends ShortStringLiteral {
 }
 
 predicate objectToString(MethodAccess ma) {
-  exists(Method m |
+  exists(ToStringMethod m |
     m = ma.getMethod() and
-    m.hasName("toString") and
     m.getDeclaringType() instanceof TypeObject and
     variableTrack(ma.getQualifier()).getType().getErasure() instanceof TypeObject
   )
@@ -44,8 +45,7 @@ predicate objectToString(MethodAccess ma) {
 class StringContainer extends RefType {
   StringContainer() {
     this instanceof TypeString or
-    this.hasQualifiedName("java.lang", "StringBuilder") or
-    this.hasQualifiedName("java.lang", "StringBuffer") or
+    this instanceof StringBuildingType or
     this.hasQualifiedName("java.util", "StringTokenizer") or
     this.(Array).getComponentType() instanceof StringContainer
   }
@@ -73,4 +73,4 @@ where
   conf.hasFlowPath(source, sink)
 select c, source, sink,
   "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
-  s.getLiteral()
+  s.getValue()

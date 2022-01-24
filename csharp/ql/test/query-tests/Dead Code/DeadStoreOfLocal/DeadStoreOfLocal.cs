@@ -194,7 +194,7 @@ public class Captured
 
     void M2()
     {
-        var x = M6(); // BAD
+        var x = M6(); // BAD [FALSE NEGATIVE]
         Action a = () =>
         {
             x = 1; // GOOD
@@ -208,7 +208,7 @@ public class Captured
         int x;
         Action a = () =>
         {
-            x = 1; // BAD
+            x = 1; // BAD [FALSE NEGATIVE]
         };
         a();
     }
@@ -274,6 +274,17 @@ public class Captured
     void M9()
     {
         A();
+    }
+
+    void M10(bool b)
+    {
+        var x = ""; // GOOD
+        Action action;
+        if (b)
+            action = () => System.Console.WriteLine(x);
+        else
+            action = () => { };
+        action();
     }
 }
 
@@ -448,5 +459,18 @@ public static class AnonymousVariable
         foreach (var _ in items) // GOOD
             count++;
         return count;
+    }
+}
+
+public static class Using
+{
+    public static void M()
+    {
+        using var x = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
+        using var _ = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
+
+        using (var y = new System.IO.FileStream("", System.IO.FileMode.Open)) // BAD
+        {
+        }
     }
 }

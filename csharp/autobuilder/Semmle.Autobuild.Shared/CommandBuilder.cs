@@ -145,7 +145,7 @@ namespace Semmle.Autobuild.Shared
 
         public CommandBuilder QuoteArgument(string argumentsOpt)
         {
-            if (argumentsOpt != null)
+            if (argumentsOpt is not null)
             {
                 NextArgument();
                 ArgvQuote(argumentsOpt, false);
@@ -161,7 +161,7 @@ namespace Semmle.Autobuild.Shared
 
         public CommandBuilder Argument(string? argumentsOpt)
         {
-            if (argumentsOpt != null)
+            if (argumentsOpt is not null)
             {
                 NextArgument();
                 arguments.Append(argumentsOpt);
@@ -185,7 +185,7 @@ namespace Semmle.Autobuild.Shared
                                           : (exe, null);
 
             NextCommand();
-            if (executable == null)
+            if (executable is null)
             {
                 executable = exe0;
             }

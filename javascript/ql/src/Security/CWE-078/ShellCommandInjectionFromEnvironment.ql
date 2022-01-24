@@ -4,6 +4,7 @@
  *              environment may cause subtle bugs or vulnerabilities.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.3
  * @precision high
  * @id js/shell-command-injection-from-environment
  * @tags correctness
@@ -14,7 +15,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironment::ShellCommandInjectionFromEnvironment
+import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery
 
 from
   Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight,

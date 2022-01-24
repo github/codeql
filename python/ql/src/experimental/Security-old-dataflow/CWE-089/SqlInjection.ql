@@ -1,14 +1,10 @@
 /**
- * @name SQL query built from user-controlled sources
+ * @name OLD QUERY: SQL query built from user-controlled sources
  * @description Building a SQL query from user-controlled sources is vulnerable to insertion of
  *              malicious SQL code by the user.
  * @kind path-problem
  * @problem.severity error
- * @precision high
- * @id py/sql-injection
- * @tags security
- *       external/cwe/cwe-089
- *       external/owasp/owasp-a1
+ * @id py/old/sql-injection
  */
 
 import python

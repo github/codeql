@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id js/client-side-unvalidated-url-redirection
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ClientSideUrlRedirect::ClientSideUrlRedirect
+import semmle.javascript.security.dataflow.ClientSideUrlRedirectQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

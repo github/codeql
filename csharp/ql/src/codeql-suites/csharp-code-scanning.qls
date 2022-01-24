@@ -1,6 +1,4 @@
 - description: Standard Code Scanning queries for C#
-- qlpack: codeql-csharp
+- queries: .
 - apply: code-scanning-selectors.yml
-  from: codeql-suite-helpers
-- apply: codeql-suites/exclude-dependency-queries.yml
-  from: codeql-csharp
+  from: codeql/suite-helpers

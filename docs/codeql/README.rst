@@ -8,7 +8,7 @@ The CodeQL documentation in this repository is written in reStructuredText and c
 HTML using Sphinx. 
 
 For more information on writing in reStructuredText, 
-see http://docutils.sourceforge.net/rst.html.
+see https://docutils.sourceforge.io/rst.html.
 
 For more information on Sphinx, see https://www.sphinx-doc.org.
 
@@ -99,12 +99,12 @@ generates html slide shows in the ``<slides-output>`` directory when run from
 the ``ql-training`` source directory.
 
 For more information about creating slides for QL training and variant analysis 
-examples, see the `template slide deck <https://github.com/github/codeql/blob/main/docs/language/ql-training/template.rst>`__.
+examples, see the `template slide deck <https://github.com/github/codeql/blob/main/docs/codeql/ql-training/template.rst>`__.
 
 Viewing the current version of the CodeQL documentation
 *******************************************************
 
 The documentation for the most recent release is 
-published to `help.semmle.com <https://help.semmle.com>`__. 
+published to `codeql.github.com <https://codeql.github.com>`__. 
 There, you can find the documentation for the CodeQL queries,
-the CodeQL standard libraries, and LGTM Enterprise. 
+the CodeQL standard libraries, and can learn about CodeQL. 

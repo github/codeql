@@ -136,7 +136,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="path">The absolute path of the file to query.</param>
         /// <returns>True iff there is no layout file or the layout file specifies the file.</returns>
-        public bool FileInLayout(PathTransformer.ITransformedPath path) => LookupProjectOrNull(path) != null;
+        public bool FileInLayout(PathTransformer.ITransformedPath path) => LookupProjectOrNull(path) is not null;
 
         private void ReadLayoutFile(string layout)
         {

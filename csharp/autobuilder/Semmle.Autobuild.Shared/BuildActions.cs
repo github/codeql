@@ -157,12 +157,15 @@ namespace Semmle.Autobuild.Shared
                 UseShellExecute = false,
                 RedirectStandardOutput = redirectStandardOutput
             };
-            if (workingDirectory != null)
+            if (workingDirectory is not null)
                 pi.WorkingDirectory = workingDirectory;
 
             // Environment variables can only be used when not redirecting stdout
-            if (!redirectStandardOutput && environment != null)
-                environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
+            if (!redirectStandardOutput)
+            {
+                if (environment is not null)
+                    environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
+            }
             return pi;
         }
 
@@ -170,6 +173,10 @@ namespace Semmle.Autobuild.Shared
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, false);
             using var p = Process.Start(pi);
+            if (p is null)
+            {
+                return -1;
+            }
             p.WaitForExit();
             return p.ExitCode;
         }

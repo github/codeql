@@ -35,3 +35,11 @@ query predicate unknownType(Expr e, Type type) {
   type = e.getType() and
   e.getType() instanceof UnknownType
 }
+
+query CallSignatureType abstractSignature() { result.isAbstract() }
+
+query UnionType unionIndex(Type element, int i) { result.getElementType(i) = element }
+
+query BlockStmt getAStaticInitializerBlock(ClassDefinition cls) {
+  result = cls.getAStaticInitializerBlock()
+}

@@ -1,6 +1,6 @@
 /**
- * @name Overly complex __del__ method
- * @description __del__ methods may be called at arbitrary times, perhaps never called at all, and should be simple.
+ * @name Overly complex `__del__` method
+ * @description `__del__` methods may be called at arbitrary times, perhaps never called at all, and should be simple.
  * @kind problem
  * @tags efficiency
  *       maintainability

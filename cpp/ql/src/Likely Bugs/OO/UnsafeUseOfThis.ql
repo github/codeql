@@ -6,10 +6,12 @@
  * @kind path-problem
  * @id cpp/unsafe-use-of-this
  * @problem.severity error
+ * @security-severity 7.5
  * @precision very-high
  * @tags correctness
  *       language-features
  *       security
+ *       external/cwe/cwe-670
  */
 
 import cpp

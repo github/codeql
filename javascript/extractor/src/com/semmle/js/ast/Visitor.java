@@ -54,6 +54,8 @@ import com.semmle.ts.ast.UnionTypeExpr;
  * <p>Visit methods take a context argument of type {@link C} and return a result of type {@link R}.
  */
 public interface Visitor<C, R> {
+  public R visit(AngularPipeRef nd, C q);
+
   public R visit(AssignmentExpression nd, C q);
 
   public R visit(AssignmentPattern nd, C q);
@@ -311,4 +313,8 @@ public interface Visitor<C, R> {
   public R visit(XMLQualifiedIdentifier nd, C c);
 
   public R visit(XMLDotDotExpression nd, C c);
+
+  public R visit(GeneratedCodeExpr generatedCodeExpr, C c);
+
+  public R visit(StaticInitializer nd, C c);
 }

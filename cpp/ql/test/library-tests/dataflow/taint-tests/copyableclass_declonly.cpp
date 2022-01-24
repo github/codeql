@@ -64,6 +64,6 @@ void test_copyableclass_declonly()
 
 		sink(s1); // $ ast,ir
 		sink(s2); // $ ast,ir
-		sink(s3 = source()); // $ ast MISSING: ir
+		sink(s3 = source()); // $ ast,ir
 	}
 }

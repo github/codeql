@@ -11,7 +11,7 @@ private predicate flowsInto(Expr e, Variable v) {
   or
   exists(CastExpr c | flowsInto(c, v) | e = c.getExpr())
   or
-  exists(ConditionalExpr c | flowsInto(c, v) | e = c.getTrueExpr() or e = c.getFalseExpr())
+  exists(ConditionalExpr c | flowsInto(c, v) | e = c.getABranchExpr())
 }
 
 /**
@@ -45,7 +45,7 @@ private predicate closeableType(RefType t) {
 class SqlResourceOpeningMethodAccess extends MethodAccess {
   SqlResourceOpeningMethodAccess() {
     exists(Method m | this.getMethod() = m |
-      m.getDeclaringType().(RefType).hasQualifiedName("java.sql", _) and
+      m.getDeclaringType().hasQualifiedName("java.sql", _) and
       m.getReturnType().(RefType).hasQualifiedName("java.sql", _) and
       m.getName().regexpMatch("(create|prepare|execute).*") and
       closeableType(m.getReturnType()) and
@@ -228,8 +228,8 @@ private predicate closeCalled(Variable v) {
     )
     or
     // The "close" call could happen indirectly inside a helper method of unknown name.
-    exists(int i | exprs(v.getAnAccess(), _, _, e, i) |
-      exists(Parameter p, int j | params(p, _, j, e.getMethod(), _) |
+    exists(int i | e.getArgument(i) = v.getAnAccess() |
+      exists(Parameter p, int j | p.getPosition() = j and p.getCallable() = e.getMethod() |
         closeCalled(p) and i = j
         or
         // The helper method could be iterating over a varargs parameter.

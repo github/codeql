@@ -46,8 +46,8 @@ which means that native resources are not disposed of. However, <code>RightCache
 
 
 <li>
-  Java 7 API Documentation:
-  <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#finalize%28%29">Object.finalize()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#finalize()">Object.finalize()</a>.
 </li>
 <li>
   J. Bloch, <em>Effective Java (second edition)</em>, Item 7. Addison-Wesley, 2008.

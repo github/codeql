@@ -21,13 +21,7 @@ class InstanceFieldWrite extends FieldWrite {
     not getEnclosingCallable().isStatic() and
     // Must be declared in this type or a supertype.
     getEnclosingCallable().getDeclaringType().inherits(getField()) and
-    (
-      // There must either be no qualifier - implied "this"
-      not exists(getQualifier()) or
-      // Or the qualifier implies we are accessing this or the super type
-      getQualifier() instanceof ThisAccess or
-      getQualifier() instanceof SuperAccess
-    )
+    isOwnFieldAccess()
   }
 }
 

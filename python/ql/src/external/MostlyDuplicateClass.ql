@@ -16,11 +16,7 @@
  */
 
 import python
-import CodeDuplication
 
 from Class c, Class other, string message
-where
-  duplicateScopes(c, other, _, message) and
-  count(c.getAStmt()) > 3 and
-  not duplicateScopes(c.getEnclosingModule(), _, _, _)
+where none()
 select c, message, other, other.getName()

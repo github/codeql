@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Java EXpression Language (JEXL) is a simple expression language
+provided by the Apache Commons JEXL library.
+The syntax is close to a mix of ECMAScript and shell-script. 
+The language allows invocation of methods available in the JVM.
+If a JEXL expression is built using attacker-controlled data, 
+and then evaluated, then it may allow the attacker to run arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is generally recommended to avoid using untrusted input in a JEXL expression.
+If it is not possible, JEXL expressions should be run in a sandbox that allows accessing only
+explicitly allowed classes.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses untrusted data to build and run a JEXL expression.
+</p>
+<sample src="UnsafeJexlExpressionEvaluation.java" />
+
+<p>
+The next example shows how an untrusted JEXL expression can be run
+in a sandbox that allows accessing only methods in the <code>java.lang.Math</code> class.
+The sandbox is implemented using <code>JexlSandbox</code> class that is provided by
+Apache Commons JEXL 3.
+</p>
+<sample src="SaferJexlExpressionEvaluationWithSandbox.java" />
+
+<p>
+The next example shows another way how a sandbox can be implemented.
+It uses a custom implementation of <code>JexlUberspect</code>
+that checks if callees are instances of allowed classes.
+</p>
+<sample src="SaferJexlExpressionEvaluationWithUberspectSandbox.java" />
+</example>
+
+<references>
+<li>
+  Apache Commons JEXL:
+  <a href="https://commons.apache.org/proper/commons-jexl/">Project page</a>.
+</li>
+<li>
+  Apache Commons JEXL documentation:
+  <a href="https://commons.apache.org/proper/commons-jexl/javadocs/apidocs-2.1.1/">JEXL 2.1.1 API</a>.
+</li>
+<li>
+  Apache Commons JEXL documentation:
+  <a href="https://commons.apache.org/proper/commons-jexl/apidocs/index.html">JEXL 3.1 API</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.
+</li>
+</references>
+</qhelp>

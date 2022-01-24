@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<references>
+		<li>
+			OWASP:
+			<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+		</li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.</li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Time_complexity">Time complexity</a>.</li>
+		<li>James Kirrage, Asiri Rathnayake, Hayo Thielecke:
+		<a href="http://www.cs.bham.ac.uk/~hxt/research/reg-exp-sec.pdf">Static Analysis for Regular Expression Denial-of-Service Attack</a>.
+		</li>
+	</references>
+</qhelp>

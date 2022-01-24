@@ -4,6 +4,7 @@
  *              insertion of malicious LDAP code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id cs/stored-ldap-injection
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.LDAPInjection::LDAPInjection
+import semmle.code.csharp.security.dataflow.LDAPInjectionQuery
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

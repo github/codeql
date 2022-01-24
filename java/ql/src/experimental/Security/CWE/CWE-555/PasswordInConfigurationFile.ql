@@ -2,6 +2,8 @@
  * @name Password in configuration file
  * @description Finds passwords in configuration files.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/password-in-configuration
  * @tags security
  *       external/cwe/cwe-555

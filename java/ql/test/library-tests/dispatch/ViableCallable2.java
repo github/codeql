@@ -20,10 +20,10 @@ class ViableCallable2 {
 }
 
 class A {
-    public void m() { throw new Exception(); }
+    public void m() { throw new Error(); }
 }
 
 class B extends A {
     @Override
-    public void m() { throw new Exception(); }
+    public void m() { throw new Error(); }
 }

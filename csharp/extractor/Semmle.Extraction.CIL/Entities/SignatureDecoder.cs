@@ -1,7 +1,6 @@
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -18,7 +17,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.shape = shape;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
@@ -39,19 +38,29 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
-                trapFile.Write("ref ");
                 elementType.WriteId(trapFile, gc);
+                trapFile.Write('&');
             }
         }
 
         private struct FnPtr : ITypeSignature
         {
+            private readonly MethodSignature<ITypeSignature> signature;
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public FnPtr(MethodSignature<ITypeSignature> signature)
             {
-                trapFile.Write("<method signature>");
+                this.signature = signature;
+            }
+
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
+            {
+                FunctionPointerType.WriteName(
+                    trapFile.Write,
+                    t => t.WriteId(trapFile, gc),
+                    signature
+                );
             }
         }
 
@@ -62,7 +71,7 @@ namespace Semmle.Extraction.CIL.Entities
             new ByRef(elementType);
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetFunctionPointerType(MethodSignature<ITypeSignature> signature) =>
-            new FnPtr();
+            new FnPtr(signature);
 
         private class Instantiation : ITypeSignature
         {
@@ -75,7 +84,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.typeArguments = typeArguments;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 genericType.WriteId(trapFile, gc);
                 trapFile.Write('<');
@@ -103,7 +112,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.index = index;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext outerGc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext outerGc)
             {
                 if (!ReferenceEquals(innerGc, outerGc) && innerGc is Method method)
                 {
@@ -123,7 +132,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.index = index;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 trapFile.Write("T!");
                 trapFile.Write(index);
@@ -149,7 +158,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.isRequired = isRequired;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 unmodifiedType.WriteId(trapFile, gc);
                 trapFile.Write(isRequired ? " modreq(" : " modopt(");
@@ -163,25 +172,9 @@ namespace Semmle.Extraction.CIL.Entities
             return new Modified(unmodifiedType, modifier, isRequired);
         }
 
-        private class Pinned : ITypeSignature
-        {
-            private readonly ITypeSignature elementType;
-
-            public Pinned(ITypeSignature elementType)
-            {
-                this.elementType = elementType;
-            }
-
-            public void WriteId(TextWriter trapFile, GenericContext gc)
-            {
-                trapFile.Write("pinned ");
-                elementType.WriteId(trapFile, gc);
-            }
-        }
-
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetPinnedType(ITypeSignature elementType)
         {
-            return new Pinned(elementType);
+            return elementType;
         }
 
         private class PointerType : ITypeSignature
@@ -193,7 +186,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('*');
@@ -214,7 +207,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.typeCode = typeCode;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 trapFile.Write(typeCode.Id());
             }
@@ -234,7 +227,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write("[]");
@@ -255,9 +248,9 @@ namespace Semmle.Extraction.CIL.Entities
                 this.handle = handle;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }
@@ -276,9 +269,9 @@ namespace Semmle.Extraction.CIL.Entities
                 this.handle = handle;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(EscapingTextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }

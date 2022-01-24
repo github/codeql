@@ -13,14 +13,20 @@ namespace Semmle.Util
         {
             stdout = new List<string>();
             using var process = Process.Start(pi);
+
+            if (process is null)
+            {
+                return -1;
+            }
+
             string? s;
             do
             {
                 s = process.StandardOutput.ReadLine();
-                if (s != null)
+                if (s is not null)
                     stdout.Add(s);
             }
-            while (s != null);
+            while (s is not null);
             process.WaitForExit();
             return process.ExitCode;
         }

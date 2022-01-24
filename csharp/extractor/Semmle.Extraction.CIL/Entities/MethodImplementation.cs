@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CIL.Entities
     {
         private readonly Method m;
 
-        public MethodImplementation(Method m) : base(m.Cx)
+        public MethodImplementation(Method m) : base(m.Context)
         {
             this.m = m;
         }
@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_method_implementation(this, m, Cx.Assembly);
+                yield return Tuples.cil_method_implementation(this, m, Context.Assembly);
             }
         }
     }

@@ -1,10 +1,9 @@
-// semmle-extractor-options: /r:System.Collections.Specialized.dll /r:System.Collections.dll /r:System.Linq.dll
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-
+#nullable enable
 public class Collections
 {
     void M1(string[] args)
@@ -103,4 +102,3 @@ public class Collections
         Console.WriteLine(args);
     }
 }
-

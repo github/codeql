@@ -28,3 +28,10 @@ query predicate noBasicBlock(DataFlow::Node node) { not exists(node.getBasicBloc
 query predicate parameters(DataFlow::ParameterNode param) { any() }
 
 query predicate sources(DataFlow::SourceNode src) { any() }
+
+query predicate stress_getAQlClass(string msg) {
+  // Compile and evaluate `getAQlClass` so we get notified of potential problems with BDD size.
+  // Avoid outputting its result, however, as the output would constantly need to be updated.
+  count(DataFlow::Node node, string cls | cls = node.getAQlClass()) >= 42 and
+  msg = "OK"
+}

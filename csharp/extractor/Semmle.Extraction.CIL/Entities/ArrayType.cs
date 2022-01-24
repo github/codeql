@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode() => HashCode.Combine(elementType, rank);
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             elementType.WriteId(trapFile, inContext);
             trapFile.Write('[');
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => elementType.Name + "[]";
 
-        public override Namespace ContainingNamespace => Cx.SystemNamespace;
+        public override Namespace ContainingNamespace => Context.SystemNamespace;
 
         public override Type? ContainingType => null;
 
@@ -50,9 +50,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.Array;
 
-        public override Type Construct(IEnumerable<Type> typeArguments) => Cx.Populate(new ArrayType(Cx, elementType.Construct(typeArguments)));
+        public override Type Construct(IEnumerable<Type> typeArguments) => Context.Populate(new ArrayType(Context, elementType.Construct(typeArguments)));
 
-        public override Type SourceDeclaration => Cx.Populate(new ArrayType(Cx, elementType.SourceDeclaration));
+        public override Type SourceDeclaration => Context.Populate(new ArrayType(Context, elementType.SourceDeclaration));
 
         public override IEnumerable<IExtractionProduct> Contents
         {

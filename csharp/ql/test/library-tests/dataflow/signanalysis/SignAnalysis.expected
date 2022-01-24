@@ -119,11 +119,11 @@
 | SignAnalysis.cs:187:31:187:31 | 2 | strictlyPositive |
 | SignAnalysis.cs:187:34:187:34 | 3 | strictlyPositive |
 | SignAnalysis.cs:188:34:188:44 | access to property Length | strictlyPositive |
-| SignAnalysis.cs:189:34:189:45 | call to method Count | positive |
-| SignAnalysis.cs:190:34:190:55 | call to method Count | positive |
+| SignAnalysis.cs:189:34:189:45 | call to method Count<Int32> | positive |
+| SignAnalysis.cs:190:34:190:55 | call to method Count<Int32> | positive |
 | SignAnalysis.cs:190:54:190:54 | 1 | strictlyPositive |
 | SignAnalysis.cs:193:34:193:41 | access to property Length | positive |
-| SignAnalysis.cs:196:34:196:51 | call to method Count | positive |
+| SignAnalysis.cs:196:34:196:51 | call to method Count<Int32> | positive |
 | SignAnalysis.cs:198:17:198:59 | 2 | strictlyPositive |
 | SignAnalysis.cs:198:17:198:59 | 3 | strictlyPositive |
 | SignAnalysis.cs:198:32:198:32 | 1 | strictlyPositive |
@@ -199,8 +199,6 @@
 | SignAnalysis.cs:377:21:377:22 | &... | positive |
 | SignAnalysis.cs:378:18:378:19 | access to local variable dp | positive |
 | SignAnalysis.cs:381:38:381:38 | access to local variable x | strictlyNegative |
-| SignAnalysis.cs:385:50:385:99 | access to constant Explicit | strictlyPositive |
-| SignAnalysis.cs:385:109:385:110 | 15 | strictlyPositive |
 | SignAnalysis.cs:390:13:390:32 | Int32 x = ... | strictlyPositive |
 | SignAnalysis.cs:390:17:390:32 | sizeof(..) | strictlyPositive |
 | SignAnalysis.cs:391:34:391:34 | access to local variable x | strictlyPositive |

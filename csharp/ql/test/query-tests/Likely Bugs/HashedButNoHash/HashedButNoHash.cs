@@ -16,5 +16,3 @@ public class Test
         return false;
     }
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll

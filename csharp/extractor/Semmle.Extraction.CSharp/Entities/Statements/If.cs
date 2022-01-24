@@ -18,12 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Condition, this, 0);
+            Expression.Create(Context, Stmt.Condition, this, 0);
 
-            Create(cx, Stmt.Statement, this, 1);
+            Create(Context, Stmt.Statement, this, 1);
 
-            if (Stmt.Else != null)
-                Create(cx, Stmt.Else.Statement, this, 2);
+            if (Stmt.Else is not null)
+                Create(Context, Stmt.Else.Statement, this, 2);
         }
     }
 }

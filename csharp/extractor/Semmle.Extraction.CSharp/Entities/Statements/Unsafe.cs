@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Create(cx, Stmt.Block, this, 0);
+            Create(Context, Stmt.Block, this, 0);
         }
     }
 }

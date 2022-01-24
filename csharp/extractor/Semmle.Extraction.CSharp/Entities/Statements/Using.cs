@@ -19,14 +19,14 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            if (Stmt.Declaration != null)
-                VariableDeclarations.Populate(cx, Stmt.Declaration, this, -1, childIncrement: -1);
+            if (Stmt.Declaration is not null)
+                VariableDeclarations.Populate(Context, Stmt.Declaration, this, -1, childIncrement: -1);
 
-            if (Stmt.Expression != null)
-                Expression.Create(cx, Stmt.Expression, this, 0);
+            if (Stmt.Expression is not null)
+                Expression.Create(Context, Stmt.Expression, this, 0);
 
-            if (Stmt.Statement != null)
-                Statement.Create(cx, Stmt.Statement, this, 1);
+            if (Stmt.Statement is not null)
+                Statement.Create(Context, Stmt.Statement, this, 1);
         }
     }
 }

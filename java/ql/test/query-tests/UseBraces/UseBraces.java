@@ -7,9 +7,9 @@ class UseBraces
 	void f() { }
 	void g() { }
 	void h() { }
-	void test()
+	void test(boolean bb)
 	{
-		int x, y;
+		int x = 0, y;
 		int[] branches = new int[10];
 		
 		// If-then statement
@@ -67,27 +67,27 @@ class UseBraces
 
 		// While statement
 
-		while(false)
+		while(bb)
 		{
 			f();
 		}
 			g();		// No alert
 
 
-		while(false)
+		while(bb)
 			f();
 		g();
 
-		while(false)
+		while(bb   )
 			f();
 			g();		// Alert
 			g();		// No alert
 
-		while(false)
+		while(bb   )
 			f();	g();		// Alert
 
 
-		while(false)
+		while(bb)
 			if (x != 0) x = 1;
 
 		// Do-while statement

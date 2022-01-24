@@ -1,7 +1,11 @@
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking
 
-from Expr source, Element tainted, string globalVar
+class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
+  override predicate isSink(Element e) { any() }
+}
+
+from Expr source, Element tainted
 where
-  taintedIncludingGlobalVars(source, tainted, globalVar) and
+  TaintedWithPath::taintedWithPath(source, tainted, _, _) and
   not tainted.getLocation().getFile().getExtension() = "h"
-select source, tainted, globalVar
+select source, tainted

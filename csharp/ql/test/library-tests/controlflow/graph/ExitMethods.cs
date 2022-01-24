@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.ExceptionServices;
 
 class ExitMethods
 {
@@ -135,6 +136,13 @@ class ExitMethods
         AssertFalse(true);
         var x = 0; // dead
     }
-}
 
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs  ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
+    public void ExceptionDispatchInfoThrow(bool b, ArgumentException e)
+    {
+        if (b)
+            ExceptionDispatchInfo.Throw(e);
+        else
+            ExceptionDispatchInfo.Capture(e).Throw();
+        Console.WriteLine("dead");
+    }
+}

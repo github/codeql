@@ -7,7 +7,7 @@
 <p>
 Classes that are never used at runtime are redundant and should be removed.
 </p>
-<include src="DeadCodeSummary.qhelp"/>
+<include src="DeadCodeSummary.inc.qhelp"/>
 <p>
 Classes are considered dead if at runtime:
 </p>
@@ -26,7 +26,7 @@ fields, methods and nested classes - it is never instantiated, has no public con
 instance methods. If a class is considered to be a namespace class, then it is live if at least one
 of the static members of that class is live - including static nested classes.
 </p>
-<include src="DeadCodeDetails.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
 </overview>
 <recommendation>
 <p>
@@ -48,7 +48,7 @@ if there are some live nested classes within the dead class, the class can be re
 converting all live nested classes to static members, and removing all instance methods and fields,
 and all dead static members (see Example 2).
 </p>
-<include src="DeadCodeExtraEntryPoints.qhelp"/>
+<include src="DeadCodeExtraEntryPoints.inc.qhelp"/>
 </recommendation>
 <section title="Example 1">
 <p>
@@ -95,5 +95,5 @@ Taking the second approach, this is the final result.
 </p>
 <sample src="NamespaceClass2.java" />
 </section>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

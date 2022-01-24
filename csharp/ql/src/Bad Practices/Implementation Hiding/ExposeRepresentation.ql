@@ -29,15 +29,20 @@ predicate returnsCollection(Callable c, Field f) {
   not c.(Modifiable).isStatic()
 }
 
-predicate mayWriteToCollection(Expr modified) {
-  modified instanceof CollectionModificationAccess
+predicate nodeMayWriteToCollection(Node modified) {
+  modified.asExpr() instanceof CollectionModificationAccess
   or
-  exists(Expr mid | mayWriteToCollection(mid) | localExprFlow(modified, mid))
+  exists(Node mid | nodeMayWriteToCollection(mid) | localFlowStep(modified, mid))
   or
-  exists(MethodCall mid, Callable c | mayWriteToCollection(mid) |
-    mid.getTarget() = c and
-    c.canReturn(modified)
+  exists(Node mid, MethodCall mc, Callable c | nodeMayWriteToCollection(mid) |
+    mc = mid.asExpr() and
+    mc.getTarget() = c and
+    c.canReturn(modified.asExpr())
   )
+}
+
+predicate mayWriteToCollection(Expr modified) {
+  nodeMayWriteToCollection(any(ExprNode n | n.getExpr() = modified))
 }
 
 predicate modificationAfter(Expr before, Expr after) {

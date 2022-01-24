@@ -1,6 +1,6 @@
 # C/C++ CodeQL tests
 
-This document provides additional information about the C/C++ CodeQL Tests located in `cpp/ql/test`.  See [Contributing to CodeQL](/CONTRIBUTING.md) for general information about contributing to this repository.
+This document provides additional information about the C/C++ CodeQL tests located in `cpp/ql/test`.  The principles under "Copying code", below, also apply to any other C/C++ code in this repository, such as examples linked from query `.qhelp` files in `cpp/ql/src`.  For more general information about contributing to this repository, see [Contributing to CodeQL](/CONTRIBUTING.md).
 
 The tests can be run through Visual Studio Code.  Advanced users may also use the `codeql test run` command.
 

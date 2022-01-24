@@ -28,9 +28,9 @@ def test_basic():
     s2 = s
 
     if is_safe(s):
-        ensure_not_tainted(s, s2)
+        ensure_not_tainted(s, s2) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(s, s2)
+        ensure_tainted(s, s2) # $ tainted
 
 
 def test_identical_call():
@@ -38,9 +38,9 @@ def test_identical_call():
     s = TAINTED_STRING
 
     if is_safe(s.strip()):
-        ensure_not_tainted(s.strip())
+        ensure_not_tainted(s.strip()) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(s.strip())
+        ensure_tainted(s.strip()) # $ tainted
 
 
 class C(object):
@@ -53,9 +53,9 @@ def test_class_attribute_access():
     c = C(s)
 
     if is_safe(c.foo):
-        ensure_not_tainted(c.foo)
+        ensure_not_tainted(c.foo) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(c.foo)
+        ensure_tainted(c.foo) # $ tainted
 
 
 # Make tests runable

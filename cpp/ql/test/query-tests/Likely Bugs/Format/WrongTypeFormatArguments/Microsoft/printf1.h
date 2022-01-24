@@ -150,10 +150,10 @@ void test_chars(char c, wchar_t wc, wint_t wt)
 
 void test_ws(char *c, wchar_t *wc, wint_t *wt)
 {
-  wprintf(L"%s", c); // BAD
+  wprintf(L"%s", c); // BAD [NOT DETECTED; correct on non-Microsoft platforms]
   wprintf(L"%s", wc); // GOOD
   wprintf(L"%S", c); // GOOD
-  wprintf(L"%S", wc); // BAD
+  wprintf(L"%S", wc); // BAD [NOT DETECTED; correct on non-Microsoft platforms]
 }
 
 void fun4()

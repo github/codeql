@@ -8,11 +8,11 @@ namespace Semmle.Extraction.CSharp.Entities
         private Modifier(Context cx, string init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Location? ReportingLocation => null;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.Write(symbol);
+            trapFile.Write(Symbol);
             trapFile.Write(";modifier");
         }
 
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.modifiers(Label, symbol);
+            trapFile.modifiers(Label, Symbol);
         }
 
         public static string AccessbilityModifier(Accessibility access)
@@ -72,15 +72,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            var interfaceDefinition = symbol.ContainingType != null
-                && symbol.ContainingType.Kind == SymbolKind.NamedType
-                && symbol.ContainingType.TypeKind == TypeKind.Interface;
-
             HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
             if (symbol.Kind == SymbolKind.ErrorType)
                 trapFile.has_modifiers(key, Modifier.Create(cx, Accessibility.Public));
 
-            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface) && !interfaceDefinition)
+            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface))
                 HasModifier(cx, trapFile, key, "abstract");
 
             if (symbol.IsSealed)
@@ -92,10 +88,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 HasModifier(cx, trapFile, key, "static");
 
             if (symbol.IsVirtual)
-                HasModifier(cx, trapFile, key, "virtual");
-
-            // For some reason, method in interfaces are "virtual", not "abstract"
-            if (symbol.IsAbstract && interfaceDefinition)
                 HasModifier(cx, trapFile, key, "virtual");
 
             if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)
@@ -119,6 +111,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (nt is null)
                     throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
 
+                if (nt.IsRecord)
+                    HasModifier(cx, trapFile, key, "record");
+
                 if (nt.TypeKind == TypeKind.Struct)
                 {
                     if (nt.IsReadOnly)
@@ -140,11 +135,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
         }
 
-        private class ModifierFactory : ICachedEntityFactory<string, Modifier>
+        private class ModifierFactory : CachedEntityFactory<string, Modifier>
         {
             public static ModifierFactory Instance { get; } = new ModifierFactory();
 
-            public Modifier Create(Context cx, string init) => new Modifier(cx, init);
+            public override Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

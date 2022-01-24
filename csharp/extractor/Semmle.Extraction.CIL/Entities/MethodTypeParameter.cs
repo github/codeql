@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Method method;
         private readonly int index;
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             if (!(inContext && method == gc))
             {
@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => "!" + index;
 
-        public MethodTypeParameter(GenericContext gc, Method m, int index) : base(gc)
+        public MethodTypeParameter(IGenericContext gc, Method m, int index) : base(gc)
         {
             method = m;
             this.index = index;

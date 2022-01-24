@@ -30,21 +30,21 @@ public class A {
         break;
     } while (c.cond());
 
-    // --- while, for loops ---
 
-    while (false) {
-      if (c.cond())
-        continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
-      if (c.cond())
-        break;
-    }
 
-    for (i = 0; false; i++) {
-      if (c.cond())
-        continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
-      if (c.cond())
-        break;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // --- nested loops ---
 

@@ -4,6 +4,7 @@
  *              the file may be modified or removed by external actors.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id java/world-writable-file-read
  * @tags security

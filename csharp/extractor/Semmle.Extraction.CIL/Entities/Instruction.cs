@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    internal class Instruction : UnlabelledEntity, IEntity
+    internal class Instruction : UnlabelledEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -289,11 +289,6 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        Label IEntity.Label
-        {
-            get; set;
-        }
-
         private readonly byte[] data;
 
         private int PayloadSize => payloadSizes[(int)PayloadType];
@@ -361,7 +356,7 @@ namespace Semmle.Extraction.CIL.Entities
                 switch (PayloadType)
                 {
                     case Payload.String:
-                        yield return Tuples.cil_value(this, Cx.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
+                        yield return Tuples.cil_value(this, Context.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
                         break;
                     case Payload.Float32:
                         yield return Tuples.cil_value(this, BitConverter.ToSingle(data, offset).ToString());
@@ -390,29 +385,31 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Type:
                     case Payload.Field:
                     case Payload.ValueType:
-                        // A generic EntityHandle.
-                        var handle = MetadataTokens.EntityHandle(payloadValue);
-                        var target = Cx.CreateGeneric(Method, handle);
-                        yield return target;
-                        if (target != null)
                         {
-                            yield return Tuples.cil_access(this, target);
+                            // A generic EntityHandle.
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            var target = Context.CreateGeneric(Method, handle);
+                            yield return target;
+                            if (target is not null)
+                            {
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
                         }
-                        else
-                        {
-                            throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
-                        }
-                        break;
                     case Payload.Arg8:
                     case Payload.Arg16:
-                        if (Method.Parameters is object)
+                        if (Method.Parameters is not null)
                         {
                             yield return Tuples.cil_access(this, Method.Parameters[(int)unsignedPayloadValue]);
                         }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
-                        if (Method.LocalVariables is object)
+                        if (Method.LocalVariables is not null)
                         {
                             yield return Tuples.cil_access(this, Method.LocalVariables[(int)unsignedPayloadValue]);
                         }
@@ -422,10 +419,33 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Target32:
                     case Payload.Switch:
                     case Payload.Ignore8:
-                    case Payload.CallSiteDesc:
                         // These are not handled here.
                         // Some of these are handled by JumpContents().
                         break;
+                    case Payload.CallSiteDesc:
+                        {
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            IExtractedEntity? target = null;
+                            try
+                            {
+                                target = Context.CreateGeneric(Method, handle);
+                            }
+                            catch (Exception exc)
+                            {
+                                Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
+                            }
+
+                            if (target is not null)
+                            {
+                                yield return target;
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
+                        }
                     default:
                         throw new InternalError($"Unhandled payload type {PayloadType}");
                 }
@@ -481,7 +501,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
+                Context.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Context), "", Util.Logging.Severity.Warning);
             }
         }
     }

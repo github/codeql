@@ -9,7 +9,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedData::ExternalAPIUsedWithUntrustedData
+import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery
 
 from ExternalAPIUsedWithUntrustedData externalAPI
 select externalAPI, count(externalAPI.getUntrustedDataNode()) as numberOfUses,

@@ -68,5 +68,7 @@ where
       not exists(SsaImplicitInit init | init.getVariable().getSourceVariable() = v) // the variable is dead at the hoisted implicit initialization.
     then msg = "The initial value of " + v.getName() + " is unused, since it is always overwritten."
     else msg = "The value assigned to " + v.getName() + " here is unused."
-  )
+  ) and
+  // ignore Angular templates
+  not dead.(ASTNode).getTopLevel() instanceof Angular2::TemplateTopLevel
 select dead, msg

@@ -13,11 +13,11 @@ namespace Semmle.Autobuild.CSharp
             BuildScript GetCommand(string? solution)
             {
                 string standalone;
-                if (builder.CodeQLExtractorLangRoot is object && builder.CodeQlPlatform is object)
+                if (builder.CodeQLExtractorLangRoot is not null && builder.CodeQlPlatform is not null)
                 {
                     standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
                 }
-                else if (builder.SemmlePlatformTools is object)
+                else if (builder.SemmlePlatformTools is not null)
                 {
                     standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
                 }
@@ -29,7 +29,7 @@ namespace Semmle.Autobuild.CSharp
                 var cmd = new CommandBuilder(builder.Actions);
                 cmd.RunCommand(standalone);
 
-                if (solution != null)
+                if (solution is not null)
                     cmd.QuoteArgument(solution);
 
                 cmd.Argument("--references:.");

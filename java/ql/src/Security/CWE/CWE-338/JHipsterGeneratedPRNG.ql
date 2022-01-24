@@ -3,6 +3,7 @@
  * @description Using a vulnerable version of JHipster to generate random numbers makes it easier for attackers to take over accounts.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision very-high
  * @id java/jhipster-prng
  * @tags security
@@ -29,7 +30,7 @@ private class PredictableApacheRandomStringUtilsMethodAccess extends MethodAcces
 private class VulnerableJHipsterRandomUtilClass extends Class {
   VulnerableJHipsterRandomUtilClass() {
     // The package name that JHipster generated the 'RandomUtil' class in was dynamic. Thus 'hasQualifiedName' can not be used here.
-    getName() = "RandomUtil"
+    this.getName() = "RandomUtil"
   }
 }
 

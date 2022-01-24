@@ -9,13 +9,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method entity.
     /// </summary>
-    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver
+    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver, IParameterizable
     {
         protected MethodTypeParameter[]? genericParams;
-        protected GenericContext gc;
+        protected IGenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
 
-        protected Method(GenericContext gc) : base(gc.Cx)
+        protected Method(IGenericContext gc) : base(gc.Context)
         {
             this.gc = gc;
         }
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL.Entities
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(DeclaringType.TypeParameters);
 
         public override IEnumerable<Type> MethodParameters =>
-            genericParams == null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
+            genericParams is null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
 
         public int GenericParameterCount => signature.GenericParameterCount;
 
@@ -37,17 +37,15 @@ namespace Semmle.Extraction.CIL.Entities
         public virtual IList<LocalVariable>? LocalVariables => throw new NotImplementedException();
         public IList<Parameter>? Parameters { get; protected set; }
 
-        public override void WriteId(TextWriter trapFile) => WriteMethodId(trapFile, DeclaringType, NameLabel);
-
         public abstract string NameLabel { get; }
 
-        protected internal void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             signature.ReturnType.WriteId(trapFile, this);
             trapFile.Write(' ');
-            parent.WriteId(trapFile);
+            DeclaringType.WriteId(trapFile);
             trapFile.Write('.');
-            trapFile.Write(methodName);
+            trapFile.Write(NameLabel);
 
             if (signature.GenericParameterCount > 0)
             {
@@ -61,10 +59,8 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile.WriteSeparator(",", ref index);
                 param.WriteId(trapFile, this);
             }
-            trapFile.Write(')');
+            trapFile.Write(");cil-method");
         }
-
-        public override string IdSuffix => ";cil-method";
 
         protected IEnumerable<IExtractionProduct> PopulateFlags
         {
@@ -83,18 +79,37 @@ namespace Semmle.Extraction.CIL.Entities
 
             if (!IsStatic)
             {
-                yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
+                yield return Context.Populate(new Parameter(Context, this, i++, DeclaringType));
             }
 
+            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Context, i))
+            {
+                yield return p;
+            }
+        }
+
+        internal static IEnumerable<IExtractionProduct> GetParameterExtractionProducts(IEnumerable<Type> parameterTypes, IParameterizable parameterizable, ICustomModifierReceiver receiver, Context cx, int firstChildIndex)
+        {
+            var i = firstChildIndex;
             foreach (var p in parameterTypes)
             {
                 var t = p;
                 if (t is ModifiedType mt)
                 {
                     t = mt.Unmodified;
-                    yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                    yield return Tuples.cil_custom_modifiers(receiver, mt.Modifier, mt.IsRequired);
                 }
-                yield return Cx.Populate(new Parameter(Cx, this, i++, t));
+                if (t is ByRefType brt)
+                {
+                    t = brt.ElementType;
+                    var parameter = cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                    yield return parameter;
+                    yield return Tuples.cil_type_annotation(parameter, TypeAnnotation.Ref);
+                }
+                else
+                {
+                    yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                }
             }
         }
 
@@ -105,6 +120,11 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 t = mt.Unmodified;
                 yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+            }
+            if (t is ByRefType brt)
+            {
+                t = brt.ElementType;
+                yield return Tuples.cil_type_annotation(this, TypeAnnotation.Ref);
             }
             yield return Tuples.cil_method(this, name, declaringType, t);
         }

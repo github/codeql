@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../../resources/stubs/System.Web.cs /r:System.Text.RegularExpressions.dll /r:System.Collections.Specialized.dll
-
 using System;
 using System.Web;
 using System.Text.RegularExpressions;

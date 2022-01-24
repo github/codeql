@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/Header.java $
- * $Revision: 569636 $
- * $Date: 2007-08-25 00:34:47 -0700 (Sat, 25 Aug 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,38 +29,25 @@ package org.apache.http;
 
 /**
  * Represents an HTTP header field.
- * 
- * <p>
- * The HTTP header fields follow the same generic format as that given in
- * Section 3.1 of RFC 822. Each header field consists of a name followed by a
- * colon (":") and the field value. Field names are case-insensitive. The field
- * value MAY be preceded by any amount of LWS, though a single SP is preferred.
  *
- * <pre>
+ * <p>The HTTP header fields follow the same generic format as
+ * that given in Section 3.1 of RFC 822. Each header field consists
+ * of a name followed by a colon (":") and the field value. Field names
+ * are case-insensitive. The field value MAY be preceded by any amount
+ * of LWS, though a single SP is preferred.
+ *
+ *<pre>
  *     message-header = field-name ":" [ field-value ]
  *     field-name     = token
  *     field-value    = *( field-content | LWS )
  *     field-content  = &lt;the OCTETs making up the field-value
  *                      and consisting of either *TEXT or combinations
  *                      of token, separators, and quoted-string&gt;
- * </pre>
- * 
- * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * @version $Revision: 569636 $
+ *</pre>
  *
- * @deprecated Please use {@link java.net.URL#openConnection} instead. Please
- *             visit <a href=
- *             "http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
- *             webpage</a> for further details.
+ * @since 4.0
  */
-@Deprecated
-public interface Header {
-
-    String getName();
-
-    String getValue();
-
+public interface Header extends NameValuePair {
     HeaderElement[] getElements() throws ParseException;
 
 }

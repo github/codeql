@@ -39,11 +39,11 @@ clause should normally catch <code>IOException</code> instead. This is shown in 
   Addison-Wesley, 2005.
 </li>
 <li>
-  Java Platform, Standard Edition 6, API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html">Throwable</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Error.html">Error</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Exception.html">Exception</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/RuntimeException.html">RuntimeException</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html">Throwable</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Error.html">Error</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Exception.html">Exception</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/RuntimeException.html">RuntimeException</a>.
 </li>
 
 

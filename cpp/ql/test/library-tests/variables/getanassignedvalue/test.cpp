@@ -50,6 +50,6 @@ myStruct2 v3 = {{4, "Four"}}; // assigments to `v3`, `ms2`, `num`, `str`
 // ---
 
 int myArray[10] = {1, 2, 3}; // assigment to `myArray`
-char chars1[] = "abc"; // assignment to `chars1` (literal "abc" has no location)
+char chars1[] = "abc"; // assignment to `chars1`
 char chars2[] = {'a', 'b', 'c'}; // assigment to `chars2`
 char *chars3 = "abc"; // assigment to `chars3`

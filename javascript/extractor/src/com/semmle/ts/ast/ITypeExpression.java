@@ -8,6 +8,6 @@ import com.semmle.js.ast.Literal;
  *
  * <p>At the QL level, expressions and type annotations are completely separate. In the extractor,
  * however, some expressions such as {@link Literal} type may occur in a type annotation because the
- * TypeScript AST does not distinguish <tt>null</tt> literals from the <tt>null</tt> type.
+ * TypeScript AST does not distinguish <code>null</code> literals from the <code>null</code> type.
  */
 public interface ITypeExpression extends INode, ITypedAstNode {}

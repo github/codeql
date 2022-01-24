@@ -4,6 +4,7 @@
  *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.3
  * @precision high
  * @id js/shell-command-constructed-from-input
  * @tags correctness
@@ -13,11 +14,11 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsafeShellCommandConstruction::UnsafeShellCommandConstruction
+import semmle.javascript.security.dataflow.UnsafeShellCommandConstructionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
-select sinkNode.getAlertLocation(), source, sink, "$@ based on library input is later used in $@.",
-  sinkNode.getAlertLocation(), sinkNode.getSinkType(), sinkNode.getCommandExecution(),
-  "shell command"
+select sinkNode.getAlertLocation(), source, sink, "$@ based on $@ is later used in $@.",
+  sinkNode.getAlertLocation(), sinkNode.getSinkType(), source.getNode(), "library input",
+  sinkNode.getCommandExecution(), "shell command"

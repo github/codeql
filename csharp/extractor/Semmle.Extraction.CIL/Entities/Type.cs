@@ -9,9 +9,8 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type.
     /// </summary>
-    public abstract class Type : TypeContainer, IMember
+    internal abstract class Type : TypeContainer, IMember
     {
-        public override string IdSuffix => ";cil-type";
         internal const string AssemblyTypeNameSeparator = "::";
         internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";
 
@@ -44,9 +43,13 @@ namespace Semmle.Extraction.CIL.Entities
         /// (This is to avoid infinite recursion generating a method ID that returns a
         /// type parameter.)
         /// </param>
-        public abstract void WriteId(TextWriter trapFile, bool inContext);
+        public abstract void WriteId(EscapingTextWriter trapFile, bool inContext);
 
-        public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
+        public sealed override void WriteId(EscapingTextWriter trapFile)
+        {
+            WriteId(trapFile, false);
+            trapFile.Write(";cil-type");
+        }
 
         /// <summary>
         /// Returns the friendly qualified name of types, such as
@@ -57,10 +60,12 @@ namespace Semmle.Extraction.CIL.Entities
         /// </summary>
         public string GetQualifiedName()
         {
-            using var writer = new StringWriter();
+            using var writer = new EscapingTextWriter();
             WriteId(writer, false);
             var name = writer.ToString();
-            return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2);
+            return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2).
+                Replace(";namespace", "").
+                Replace(";cil-type", "");
         }
 
         public abstract CilTypeKind Kind { get; }
@@ -123,7 +128,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (ContainingType != null)
+                if (ContainingType is not null)
                 {
                     foreach (var t in ContainingType.GenericArguments)
                         yield return t;
@@ -173,7 +178,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (TryGetPrimitiveTypeCode(out var code))
             {
-                t = Cx.Create(code);
+                t = Context.Create(code);
                 return true;
             }
 
@@ -183,8 +188,8 @@ namespace Semmle.Extraction.CIL.Entities
 
         private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
         {
-            if (ContainingType == null &&
-                ContainingNamespace?.Name == Cx.SystemNamespace.Name &&
+            if (ContainingType is null &&
+                ContainingNamespace?.Name == Context.SystemNamespace.Name &&
                 primitiveTypeCodeMapping.TryGetValue(Name, out code))
             {
                 return true;
@@ -198,7 +203,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
-        public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
-            gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);
+        public static Type DecodeType(IGenericContext gc, TypeSpecificationHandle handle) =>
+            gc.Context.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Context.TypeSignatureDecoder, gc);
     }
 }

@@ -12,7 +12,7 @@ Dereferencing a null pointer and attempting to modify its contents can lead to a
 important system data (including the interrupt table in some architectures).
 </p>
 
-<include src="pointsToWarning.qhelp" />
+<include src="pointsToWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

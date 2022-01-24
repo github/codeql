@@ -4,6 +4,6 @@
 
 <qhelp>
 
-	<include src="DeadStore.qhelp" />
+	<include src="DeadStore.inc.qhelp" />
 
 </qhelp>

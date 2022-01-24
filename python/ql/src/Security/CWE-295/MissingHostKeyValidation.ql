@@ -3,6 +3,7 @@
  * @description Accepting unknown host keys can allow man-in-the-middle attacks.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/paramiko-missing-host-key-validation
  * @tags security
@@ -10,25 +11,25 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
-private ModuleValue theParamikoClientModule() { result = Value::named("paramiko.client") }
-
-private ClassValue theParamikoSSHClientClass() {
-  result = theParamikoClientModule().attr("SSHClient")
+private API::Node unsafe_paramiko_policy(string name) {
+  name in ["AutoAddPolicy", "WarningPolicy"] and
+  result = API::moduleImport("paramiko").getMember("client").getMember(name)
 }
 
-private ClassValue unsafe_paramiko_policy(string name) {
-  (name = "AutoAddPolicy" or name = "WarningPolicy") and
-  result = theParamikoClientModule().attr(name)
+private API::Node paramikoSSHClientInstance() {
+  result = API::moduleImport("paramiko").getMember("client").getMember("SSHClient").getReturn()
 }
 
-from CallNode call, ControlFlowNode arg, string name
+from DataFlow::CallCfgNode call, DataFlow::Node arg, string name
 where
-  call =
-    theParamikoSSHClientClass().lookup("set_missing_host_key_policy").(FunctionValue).getACall() and
-  arg = call.getAnArg() and
+  // see http://docs.paramiko.org/en/stable/api/client.html#paramiko.client.SSHClient.set_missing_host_key_policy
+  call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall() and
+  arg in [call.getArg(0), call.getArgByName("policy")] and
   (
-    arg.pointsTo(unsafe_paramiko_policy(name)) or
-    arg.pointsTo().getClass() = unsafe_paramiko_policy(name)
+    arg = unsafe_paramiko_policy(name).getAUse() or
+    arg = unsafe_paramiko_policy(name).getReturn().getAUse()
   )
 select call, "Setting missing host key policy to " + name + " may be unsafe."

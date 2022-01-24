@@ -1,0 +1,1 @@
+| test.cpp:23:3:23:8 | call to fclose | Consider changing the call to $@ | test.cpp:9:6:9:13 | myFclose | myFclose |

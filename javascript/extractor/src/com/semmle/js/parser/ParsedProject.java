@@ -14,14 +14,14 @@ public class ParsedProject {
     this.allFiles = allFiles;
   }
 
-  /** Returns the <tt>tsconfig.json</tt> file that defines this project. */
+  /** Returns the <code>tsconfig.json</code> file that defines this project. */
   public File getTsConfigFile() {
     return tsConfigFile;
   }
 
   /** Absolute paths to the files included in this project. */
   public Set<File> getOwnFiles() {
-    return allFiles;
+    return ownFiles;
   }
 
   /** Absolute paths to the files included in or referenced by this project. */

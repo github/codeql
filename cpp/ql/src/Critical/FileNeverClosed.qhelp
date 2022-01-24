@@ -10,7 +10,7 @@ This rule finds calls to <code>fopen</code> with no corresponding <code>fclose</
 Leaving files open will cause a resource leak that will persist even after the program terminates.
 </p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 
 </overview>
 <recommendation>

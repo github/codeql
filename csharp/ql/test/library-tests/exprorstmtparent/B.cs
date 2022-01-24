@@ -1,5 +1,3 @@
-// semmle-extractor-options: /out:test.dll
-
 class C1
 {
     public int P1 => 0;

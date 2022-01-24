@@ -2,6 +2,7 @@
  * @name Template injection
  * @description Tracks user-controlled values to an unescaped lodash template placeholder.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/template-injection
  */

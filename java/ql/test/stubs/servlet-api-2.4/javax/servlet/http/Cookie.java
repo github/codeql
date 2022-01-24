@@ -24,61 +24,61 @@
 package javax.servlet.http;
 
 public class Cookie implements Cloneable {
-    private String name; // NAME= ... "$Name" style is reserved
-    private String value; // value of NAME
-    private String comment; // ;Comment=VALUE ... describes cookie's use
-    private String domain; // ;Domain=VALUE ... domain that sees cookie
-    private int maxAge = -1; // ;Max-Age=VALUE ... cookies auto-expire
-    private String path; // ;Path=VALUE ... URLs that see the cookie
-    private boolean secure; // ;Secure ... e.g. use SSL
-    private int version = 0; // ;Version=1 ... means RFC 2109++ style
 
     public Cookie(String name, String value) {
-        this.name = name;
-        this.value = value;
     }
     public void setComment(String purpose) {
-        comment = purpose;
     }
     public String getComment() {
-        return comment;
+        return null;
     }
     public void setDomain(String pattern) {
-        domain = pattern.toLowerCase(); // IE allegedly needs this
     }
     public String getDomain() {
-        return domain;
+        return null;
     }
     public void setMaxAge(int expiry) {
-        maxAge = expiry;
     }
     public int getMaxAge() {
-        return maxAge;
+        return -1;
     }
     public void setPath(String uri) {
-        path = uri;
     }
     public String getPath() {
-        return path;
+        return null;
     }
     public void setSecure(boolean flag) {
-        secure = flag;
     }
     public boolean getSecure() {
-        return secure;
+        return false;
     }
     public String getName() {
-        return name;
+        return null;
     }
     public void setValue(String newValue) {
-        value = newValue;
     }
     public String getValue() {
-        return value;
+        return null;
     }
     public int getVersion() {
-        return version;
+        return -1;
     }
     public void setVersion(int v) {
     }
+    public void setHttpOnly(boolean isHttpOnly) {
+    }
+    public boolean isHttpOnly() {
+        return false;
+    }
+
+    /**
+     * Convert the cookie to a string suitable for use as the value of the
+     * corresponding HTTP header.
+     *
+     * @return a stringified cookie.
+     */
+    @Override
+    public String toString() {
+        return null;
+    }    
 }

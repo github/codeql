@@ -282,11 +282,18 @@ public class RegExpParser {
     if (this.match("+")) return this.finishTerm(new Plus(loc, atom, !this.match("?")));
     if (this.match("?")) return this.finishTerm(new Opt(loc, atom, !this.match("?")));
     if (this.match("{")) {
-      Double lo = toNumber(this.readDigits(false)), hi;
+      String matched = "{"; // keeping track of the string matched so far, in case this turns out not to be a quantifier.
+      String digits = this.readDigits(false);
+      matched += digits;
+      Double lo = toNumber(digits), hi;
+      int prevPos = this.pos;
       if (this.match(",")) {
+        matched += ",";
         if (!this.lookahead("}")) {
           // atom{lo, hi}
-          hi = toNumber(this.readDigits(false));
+          digits = this.readDigits(false);
+          matched += digits;
+          hi = toNumber(digits);
         } else {
           // atom{lo,}
           hi = null;
@@ -295,7 +302,11 @@ public class RegExpParser {
         // atom{lo}
         hi = lo;
       }
-      this.expectRBrace();
+      if (!this.match("}")) {
+        // Not a quantifier, just parsing it as a constant. 
+        // E.g. a Regexp such as `/a{|X/`, where there is no matching `}`. 
+        return this.finishTerm(new Sequence(loc, Arrays.asList(atom, new Constant(loc, matched))));
+      }
       return this.finishTerm(new Range(loc, atom, !this.match("?"), lo, hi));
     }
     return atom;

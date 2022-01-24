@@ -4,6 +4,7 @@
  *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id cs/stored-command-line-injection
  * @tags correctness
@@ -14,7 +15,7 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.CommandInjection::CommandInjection
+import semmle.code.csharp.security.dataflow.CommandInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {

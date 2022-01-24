@@ -35,10 +35,10 @@ because the annotation cannot be observed using reflection.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/annotation/Retention.html">Annotation Type Retention</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME">RetentionPolicy.RUNTIME</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/AnnotatedElement.html#isAnnotationPresent%28java.lang.Class%29">AnnotatedElement.isAnnotationPresent()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Retention.html">Annotation Type Retention</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/RetentionPolicy.html#RUNTIME">RetentionPolicy.RUNTIME</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html#isAnnotationPresent(java.lang.Class)">AnnotatedElement.isAnnotationPresent()</a>.
 </li>
 
 

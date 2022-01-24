@@ -38,6 +38,8 @@ You are most likely to need to restart the query server if you make external cha
 To see the logs from running a particular query, right-click the query in the Query History and select **Show Query Log**.
 If the log file is too large for the extension to open in the VS Code editor, the file will be displayed in your file explorer so you can open it with an external program.
 
+By default, the extension deletes logs after each workspace session. To override this behavior, you can specify a custom directory for query server logs. For more information, see ":ref:`Customizing settings <configuring-settings-for-running-queries>`."
+
 Exploring problems with running tests
 ----------------------------------------------
 

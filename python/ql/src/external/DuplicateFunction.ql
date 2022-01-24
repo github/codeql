@@ -16,15 +16,7 @@
  */
 
 import python
-import CodeDuplication
 
-predicate relevant(Function m) { m.getMetrics().getNumberOfLinesOfCode() > 5 }
-
-from Function m, Function other, string message, int percent
-where
-  duplicateScopes(m, other, percent, message) and
-  relevant(m) and
-  percent > 95.0 and
-  not duplicateScopes(m.getEnclosingModule(), other.getEnclosingModule(), _, _) and
-  not duplicateScopes(m.getScope(), other.getScope(), _, _)
+from Function m, Function other, string message
+where none()
 select m, message, other, other.getName()

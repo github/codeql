@@ -98,10 +98,6 @@ Recommendations:
   also work, but the upside of `use-use` steps is that sources defined in terms
   of variable reads just work out of the box. It also makes certain
   barrier-implementations simpler.
-* A predicate `DataFlowCallable Node::getEnclosingCallable()` is required, and in
-  order to ensure appropriate join-orders, it is important that the QL compiler knows
-  that this predicate is functional. It can therefore be necessary to enclose the body
-  of this predicate in a `unique` aggregate.
 
 The shared library does not use `localFlowStep` nor `localFlow` but users of
 `DataFlow.qll` may expect the existence of `DataFlow::localFlowStep` and
@@ -152,18 +148,31 @@ methods, constructors, lambdas, etc.). It can also be useful to represent
 `DataFlowCall` as an IPA type if implicit calls need to be modelled. The
 call-graph should be defined as a predicate:
 ```ql
+/** Gets a viable target for the call `c`. */
 DataFlowCallable viableCallable(DataFlowCall c)
+```
+Furthermore, each `Node` must be associated with exactly one callable and this
+relation should be defined as:
+```ql
+/** Gets the callable in which node `n` occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n)
 ```
 
 In order to connect data-flow across calls, the 4 `Node` subclasses
 `ArgumentNode`, `ParameterNode`, `ReturnNode`, and `OutNode` are used.
-Flow into callables from arguments to parameters are matched up using an
-integer position, so these two classes must define:
+Flow into callables from arguments to parameters are matched up using
+language-defined classes `ParameterPosition` and `ArgumentPosition`,
+so these three predicates must be defined:
 ```ql
-ArgumentNode::argumentOf(DataFlowCall call, int pos)
-ParameterNode::isParameterOf(DataFlowCallable c, int pos)
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos)
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos)
 ```
-It is typical to use `pos = -1` for an implicit `this`-parameter.
 
 For most languages return-flow is simpler and merely consists of matching up a
 `ReturnNode` with the data-flow node corresponding to the value of the call,
@@ -173,8 +182,13 @@ calls and `OutNode`s:
 ```ql
 private newtype TReturnKind = TNormalReturnKind()
 
+/** Gets the kind of this return node. */
 ReturnKind ReturnNode::getKind() { any() }
 
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result = call.getNode() and
   kind = TNormalReturnKind()
@@ -185,6 +199,45 @@ For more complex use-cases when a language allows a callable to return multiple
 values, for example through `out` parameters in C#, the `ReturnKind` class can
 be defined and used to match up different kinds of `ReturnNode`s with the
 corresponding `OutNode`s.
+
+#### First-class functions
+
+For calls to first-class functions, the library supports built-in call resolution based on data flow between a function creation expression and a call. The interface that needs to be implemented is
+
+```ql
+class LambdaCallKind
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver)
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue)
+```
+
+with the semantics that `call` will resolve to `c` if there is a data-flow path from `creation` to `receiver`, with matching `kind`s.
+
+The implementation keeps track of a one-level call context, which means that we are able to handle situations like this:
+```csharp
+Apply(f, x) { f(x); }
+
+Apply(x => NonSink(x), "tainted"); // GOOD
+
+Apply(x => Sink(x), "not tainted"); // GOOD
+```
+
+However, since we only track one level the following example will have false-positive flow:
+```csharp
+Apply(f, x) { f(x); }
+
+ApplyWrapper(f, x) { Apply(f, x) }
+
+ApplyWrapper(x => NonSink(x), "tainted"); // GOOD (FALSE POSITIVE)
+
+ApplyWrapper(x => Sink(x), "not tainted"); // GOOD (FALSE POSITIVE)
+```
 
 ## Flow through global variables
 

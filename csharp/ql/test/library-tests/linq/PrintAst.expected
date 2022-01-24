@@ -5,11 +5,11 @@ queries.cs:
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] IList<Int32> list1 = ...
-#    9|           -1: [TypeMention] IList<Int32>
+#    9|           -1: [TypeMention] IList<int>
 #    9|             1: [TypeMention] int
 #    9|           0: [LocalVariableAccess] access to local variable list1
 #    9|           1: [ObjectCreation] object creation of type List<Int32>
-#    9|             -2: [TypeMention] List<Int32>
+#    9|             -2: [TypeMention] List<int>
 #    9|               1: [TypeMention] int
 #    9|             -1: [CollectionInitializer] { ..., ... }
 #    9|               0: [ElementInitializer] call to method Add
@@ -20,13 +20,13 @@ queries.cs:
 #    9|                 0: [IntLiteral] 3
 #   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] IList<IList<Int32>> list2 = ...
-#   10|           -1: [TypeMention] IList<IList<Int32>>
-#   10|             1: [TypeMention] IList<Int32>
+#   10|           -1: [TypeMention] IList<IList<int>>
+#   10|             1: [TypeMention] IList<int>
 #   10|               1: [TypeMention] int
 #   10|           0: [LocalVariableAccess] access to local variable list2
 #   10|           1: [ObjectCreation] object creation of type List<IList<Int32>>
-#   10|             -2: [TypeMention] List<IList<Int32>>
-#   10|               1: [TypeMention] IList<Int32>
+#   10|             -2: [TypeMention] List<IList<int>>
+#   10|               1: [TypeMention] IList<int>
 #   10|                 1: [TypeMention] int
 #   10|             -1: [CollectionInitializer] { ..., ... }
 #   10|               0: [ElementInitializer] call to method Add
@@ -35,11 +35,11 @@ queries.cs:
 #   10|                 0: [LocalVariableAccess] access to local variable list1
 #   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list3 = ...
-#   12|           -1: [TypeMention] IEnumerable<Int32>
+#   12|           -1: [TypeMention] IEnumerable<int>
 #   12|           0: [LocalVariableAccess] access to local variable list3
-#   16|           1: [MethodCall] call to method Select
-#   15|             0: [MethodCall] call to method OrderBy
-#   14|               0: [MethodCall] call to method Where
+#   16|           1: [MethodCall] call to method Select<Int32,Int32>
+#   15|             0: [MethodCall] call to method OrderBy<Int32,Int32>
+#   14|               0: [MethodCall] call to method Where<Int32>
 #   13|                 0: [LocalVariableDeclAndInitExpr] Int32 a = ...
 #   13|                   0: [LocalVariableAccess] access to local variable a
 #   13|                   1: [LocalVariableAccess] access to local variable list1
@@ -56,11 +56,11 @@ queries.cs:
 #   16|               1: [IntLiteral] 1
 #   18|       3: [LocalVariableDeclStmt] ... ...;
 #   18|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list4 = ...
-#   18|           -1: [TypeMention] IEnumerable<Int32>
+#   18|           -1: [TypeMention] IEnumerable<int>
 #   18|           0: [LocalVariableAccess] access to local variable list4
-#   18|           1: [MethodCall] call to method Select
-#   18|             -1: [MethodCall] call to method OrderBy
-#   18|               -1: [MethodCall] call to method Where
+#   18|           1: [MethodCall] call to method Select<Int32,Int32>
+#   18|             -1: [MethodCall] call to method OrderBy<Int32,Int32>
+#   18|               -1: [MethodCall] call to method Where<Int32>
 #   18|                 -1: [LocalVariableAccess] access to local variable list1
 #   19|                 0: [LambdaExpr] (...) => ...
 #-----|                   2: (Parameters)
@@ -84,12 +84,12 @@ queries.cs:
 #   21|                 1: [IntLiteral] 1
 #   23|       4: [LocalVariableDeclStmt] ... ...;
 #   23|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list5 = ...
-#   23|           -1: [TypeMention] IEnumerable<Int32>
+#   23|           -1: [TypeMention] IEnumerable<int>
 #   23|           0: [LocalVariableAccess] access to local variable list5
 #   28|           1: [MethodCall] call to method 
-#   27|             0: [MethodCall] call to method Join
-#   26|               0: [MethodCall] call to method Select
-#   25|                 0: [MethodCall] call to method SelectMany
+#   27|             0: [MethodCall] call to method Join<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32,Int32>
+#   26|               0: [MethodCall] call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>>
+#   25|                 0: [MethodCall] call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>>
 #   24|                   0: [LocalVariableDeclAndInitExpr] IList<Int32> a = ...
 #   24|                     0: [LocalVariableAccess] access to local variable a
 #   24|                     1: [LocalVariableAccess] access to local variable list2
@@ -114,12 +114,12 @@ queries.cs:
 #   28|             1: [IntLiteral] 1
 #   30|       5: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] IEnumerable<IGrouping<Int32,Int32>> list6 = ...
-#   30|           -1: [TypeMention] IEnumerable<IGrouping<Int32,Int32>>
+#   30|           -1: [TypeMention] IEnumerable<IGrouping<int, int>>
 #   30|           0: [LocalVariableAccess] access to local variable list6
-#   35|           1: [MethodCall] call to method GroupBy
-#   34|             0: [MethodCall] call to method OrderByDescending
-#   33|               0: [MethodCall] call to method Select
-#   32|                 0: [MethodCall] call to method SelectMany
+#   35|           1: [MethodCall] call to method GroupBy<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32,Int32>
+#   34|             0: [MethodCall] call to method OrderByDescending<<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>,Int32>
+#   33|               0: [MethodCall] call to method Select<<>__AnonType0<IList,Int32>,<>__AnonType0<<>__AnonType0<IList,Int32>,Int32>>
+#   32|                 0: [MethodCall] call to method SelectMany<IList<Int32>,Int32,<>__AnonType0<IList,Int32>>
 #   31|                   0: [LocalVariableDeclAndInitExpr] IList<Int32> a = ...
 #   31|                     0: [LocalVariableAccess] access to local variable a
 #   31|                     1: [LocalVariableAccess] access to local variable list2
@@ -148,9 +148,9 @@ queries.cs:
 #   37|             0: [TypeMention] B
 #   39|       7: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Object> list8 = ...
-#   39|           -1: [TypeMention] IEnumerable<Object>
+#   39|           -1: [TypeMention] IEnumerable<object>
 #   39|           0: [LocalVariableAccess] access to local variable list8
-#   41|           1: [MethodCall] call to method Select
+#   41|           1: [MethodCall] call to method Select<Object,Object>
 #   40|             0: [LocalVariableDeclAndInitExpr] Object a = ...
 #   40|               -1: [TypeMention] object
 #   40|               0: [LocalVariableAccess] access to local variable a
@@ -164,18 +164,18 @@ queries.cs:
 #   43|             0: [TypeMention] C
 #   45|       9: [LocalVariableDeclStmt] ... ...;
 #   45|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list10 = ...
-#   45|           -1: [TypeMention] IEnumerable<Int32>
+#   45|           -1: [TypeMention] IEnumerable<int>
 #   45|           0: [LocalVariableAccess] access to local variable list10
-#   47|           1: [MethodCall] call to method Select
+#   47|           1: [MethodCall] call to method Select<Int32,Int32>
 #   46|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
 #   46|               0: [LocalVariableAccess] access to local variable a
 #   46|               1: [LocalVariableAccess] access to local variable list9
 #   47|             1: [LocalVariableAccess] access to local variable a
 #   49|       10: [LocalVariableDeclStmt] ... ...;
 #   49|         0: [LocalVariableDeclAndInitExpr] IEnumerable<String> list11 = ...
-#   49|           -1: [TypeMention] IEnumerable<String>
+#   49|           -1: [TypeMention] IEnumerable<string>
 #   49|           0: [LocalVariableAccess] access to local variable list11
-#   51|           1: [MethodCall] call to method Select
+#   51|           1: [MethodCall] call to method Select<String,String>
 #   50|             0: [LocalVariableDeclAndInitExpr] String a = ...
 #   50|               -1: [TypeMention] string
 #   50|               0: [LocalVariableAccess] access to local variable a
@@ -183,10 +183,10 @@ queries.cs:
 #   51|             1: [LocalVariableAccess] access to local variable a
 #   53|       11: [LocalVariableDeclStmt] ... ...;
 #   53|         0: [LocalVariableDeclAndInitExpr] IEnumerable<(Int32,IEnumerable<IList<Int32>>)> list12 = ...
-#   53|           -1: [TypeMention] IEnumerable<(Int32,IEnumerable<IList<Int32>>)>
+#   53|           -1: [TypeMention] IEnumerable<(int, IEnumerable<IList<int>>)>
 #   53|           0: [LocalVariableAccess] access to local variable list12
 #   56|           1: [MethodCall] call to method 
-#   55|             0: [MethodCall] call to method GroupJoin
+#   55|             0: [MethodCall] call to method GroupJoin<Int32,IList<Int32>,Int32,(Int32,IEnumerable<IList<Int32>>)>
 #   54|               0: [LocalVariableDeclAndInitExpr] Int32 a = ...
 #   54|                 0: [LocalVariableAccess] access to local variable a
 #   54|                 1: [LocalVariableAccess] access to local variable list1
@@ -218,5 +218,5 @@ queries.cs:
 #   67|       0: [TypeMention] A
 #   69|   8: [Class] C
 #-----|     3: (Base types)
-#   69|       0: [TypeMention] List<Int32>
+#   69|       0: [TypeMention] List<int>
 #   69|         1: [TypeMention] int

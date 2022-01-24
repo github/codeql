@@ -150,13 +150,13 @@ namespace Semmle.Autobuild.Shared
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {
                 int ret1;
-                if (s2a != null)
+                if (s2a is not null)
                 {
                     ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
                     return s2a(stdout1, ret1).Run(actions, startCallback, exitCallBack);
                 }
 
-                if (s2b != null)
+                if (s2b is not null)
                 {
                     ret1 = s1.Run(actions, startCallback, exitCallBack);
                     return s2b(ret1).Run(actions, startCallback, exitCallBack);
@@ -168,7 +168,7 @@ namespace Semmle.Autobuild.Shared
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
                 var ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
-                var ret2 = (s2a != null ? s2a(stdout1, ret1) : s2b!(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
+                var ret2 = (s2a is not null ? s2a(stdout1, ret1) : s2b!(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
                 var @out = new List<string>();
                 @out.AddRange(stdout1);
                 @out.AddRange(stdout2);

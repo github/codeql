@@ -50,8 +50,8 @@ of queues to be used by clients of this method.</p>
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java 6 API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html">Collection</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collection.html">Collection</a>.
 </li>
 
 

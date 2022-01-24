@@ -6,15 +6,15 @@
 
 <overview>
 <p>
-Javadoc comments for public methods and constructors should use the <code>@param</code> tag to describe the available
-parameters. If the comment includes any empty, incorrect or outdated parameter names then this will make 
+Javadoc comments for public methods, constructors and generic classes should use the <code>@param</code> tag to describe the available
+parameters and type parameters. If the comment includes any empty, incorrect or outdated parameter names then this will make 
 the documentation more difficult to read.
 </p>
 
 </overview>
 <recommendation>
 
-<p>The Javadoc comment for a method or constructor should always use non-empty <code>@param</code> values that match actual parameter or type parameter names.</p>
+<p>The Javadoc comment for a method, constructor or generic class should always use non-empty <code>@param</code> values that match actual parameter or type parameter names.</p>
 
 </recommendation>
 <example>
@@ -29,12 +29,12 @@ the documentation more difficult to read.
 
 <li>
   Help - Eclipse Platform:
-  <a href="http://help.eclipse.org/indigo/topic/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
+  <a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
 </li>
 <li>
   Java SE Documentation:
-  <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#@param">How to Write Doc Comments for the Javadoc Tool</a>,
-  <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javadoc.html#param">The Java API Documentation Generator</a>
+  <a href="https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html#@param">How to Write Doc Comments for the Javadoc Tool</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/specs/doc-comment-spec.html#param">Documentation Comment Specification for the Standard Doclet</a>
 </li>
 
 

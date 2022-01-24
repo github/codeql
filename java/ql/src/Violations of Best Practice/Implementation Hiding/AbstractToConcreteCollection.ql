@@ -16,9 +16,9 @@ import java
 import semmle.code.java.Collections
 
 predicate guardedByInstanceOf(VarAccess e, RefType t) {
-  exists(IfStmt s, InstanceOfExpr instanceCheck, Type checkType |
+  exists(IfStmt s, InstanceOfExpr instanceCheck, RefType checkType |
     s.getCondition() = instanceCheck and
-    instanceCheck.getTypeName().getType() = checkType and
+    instanceCheck.getCheckedType() = checkType and
     // The same variable appears as the subject of the `instanceof`.
     instanceCheck.getExpr() = e.getVariable().getAnAccess() and
     // The checked type is either the type itself, or a raw version. For example, it is usually

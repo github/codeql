@@ -121,5 +121,3 @@ class FormatInvalid
 
     System.IO.StringWriter sw;
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Diagnostics.TraceSource.dll

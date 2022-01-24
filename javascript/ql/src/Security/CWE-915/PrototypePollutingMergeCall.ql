@@ -5,6 +5,7 @@
  *              and possibly escalate to remote code execution or cross-site scripting.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id js/prototype-pollution
  * @tags security
@@ -12,11 +13,12 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-094
  *       external/cwe/cwe-400
+ *       external/cwe/cwe-471
  *       external/cwe/cwe-915
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PrototypePollution::PrototypePollution
+import semmle.javascript.security.dataflow.PrototypePollutionQuery
 import DataFlow::PathGraph
 import semmle.javascript.dependencies.Dependencies
 

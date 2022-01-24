@@ -50,10 +50,7 @@ where
     // If either of the operands is constant, then don't include it.
     (
       if cmp.getLeftOperand().isConstant()
-      then
-        if cmp.getRightOperand().isConstant()
-        then none() // Both operands are constant so don't create a message.
-        else reason = rightReason
+      then not cmp.getRightOperand().isConstant() and reason = rightReason
       else
         if cmp.getRightOperand().isConstant()
         then reason = leftReason

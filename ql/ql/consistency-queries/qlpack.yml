@@ -1,0 +1,5 @@
+name: codeql-ql-consistency-queries
+version: 0.0.0
+libraryPathDependencies:
+  - codeql-ql
+extractor: ql

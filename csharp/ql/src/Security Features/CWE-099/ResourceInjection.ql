@@ -4,6 +4,7 @@
  *              malicious user providing an unintended resource.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id cs/resource-injection
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ResourceInjection::ResourceInjection
+import semmle.code.csharp.security.dataflow.ResourceInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

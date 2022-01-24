@@ -38,8 +38,8 @@ memory churn.</p>
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java Platform, Standard Edition 6, API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#String%28java.lang.String%29">String(String)</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#%3Cinit%3E(java.lang.String)">String(String)</a>.
 </li>
 
 

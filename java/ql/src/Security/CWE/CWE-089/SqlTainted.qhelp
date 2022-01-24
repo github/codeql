@@ -11,7 +11,7 @@ SQL and the Java Persistence Query Language.</p>
 </overview>
 <recommendation>
 
-<include src="HowToAddress.qhelp" />
+<include src="HowToAddress.inc.qhelp" />
 
 </recommendation>
 <example>
@@ -70,9 +70,9 @@ OWASP:
 <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL
 Injection Prevention Cheat Sheet</a>.
 </li>
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/IDS00-J.+Prevent+SQL+injection">IDS00-J. Prevent SQL injection</a>.</li>
-<li>The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html">Using Prepared Statements</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS00-J.+Prevent+SQL+injection">IDS00-J. Prevent SQL injection</a>.</li>
+<li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html">Using Prepared Statements</a>.</li>
 <li>The Java EE Tutorial: <a href="https://docs.oracle.com/javaee/7/tutorial/persistence-querylanguage.htm">The Java Persistence Query Language</a>.</li>
 
 

@@ -13,3 +13,20 @@ const tls = require('tls');
 const server = (isSecure ? tls : net).createServer(options, (socket) => {
     socket.on("data", (data) => {})
 });
+
+
+const http = require("http");
+
+(function () {
+    function MyApp(data) {this.data = data};
+    MyApp.prototype.getRequestHandler = function () {
+        return this.handleRequest.bind(this)
+    }
+    MyApp.prototype.handleRequest = function (req, res) {
+        res.end(this.data);
+    }
+
+    var app = new MyApp("data");
+
+    const srv = http.createServer(app.getRequestHandler());
+})();

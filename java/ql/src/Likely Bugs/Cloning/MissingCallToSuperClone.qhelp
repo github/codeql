@@ -12,7 +12,7 @@ the contract for <code>Cloneable</code>.
 </p>
 
 </overview>
-<include src="MissingCloneDetails.qhelp" />
+<include src="MissingCloneDetails.inc.qhelp" />
 
 <recommendation>
 <p>
@@ -42,7 +42,7 @@ because <code>super.clone</code> is implemented correctly in its superclass <cod
   J. Bloch, <em>Effective Java (second edition)</em>, Item 11. Addison-Wesley, 2008.
 </li>
 <li>
-  Java 6 API Specification: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#clone%28%29">Object.clone()</a>.
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#clone()">Object.clone()</a>.
 </li>
 
 

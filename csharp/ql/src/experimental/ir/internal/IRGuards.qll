@@ -24,7 +24,7 @@ class GuardCondition extends Expr {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
     or
     // the IR short-circuits if(!x)
     // don't produce a guard condition for `y = !x` and other non-short-circuited cases
@@ -107,7 +107,7 @@ private predicate impliesValue(
     wholeIsTrue = true and partIsTrue = true and part = blo.getAnOperand()
     or
     wholeIsTrue = true and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, true)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, true)
   )
   or
   blo instanceof LogicalOrExpr and
@@ -115,7 +115,7 @@ private predicate impliesValue(
     wholeIsTrue = false and partIsTrue = false and part = blo.getAnOperand()
     or
     wholeIsTrue = false and
-    impliesValue(blo.getAnOperand().(BinaryLogicalOperation), part, partIsTrue, false)
+    impliesValue(blo.getAnOperand(), part, partIsTrue, false)
   )
 }
 
@@ -124,7 +124,7 @@ private predicate impliesValue(
  */
 private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
-    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
+    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
@@ -139,7 +139,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
       part.comparesLt(left, right, k, isLessThan, partIsTrue)
     )
@@ -147,21 +147,21 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
-      comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
-  override predicate comparesEq(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
-      impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
+      impliesValue(this, part, partIsTrue, testIsTrue)
     |
-      part.comparesEq(left, right, k, isLessThan, partIsTrue)
+      part.comparesEq(left, right, k, areEqual, partIsTrue)
     )
   }
 
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
-      comparesEq(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+      this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 }
@@ -173,27 +173,29 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 private class GuardConditionFromShortCircuitNot extends GuardCondition, LogicalNotExpr {
   GuardConditionFromShortCircuitNot() {
     not exists(Instruction inst | this = inst.getAST()) and
-    exists(IRGuardCondition ir | getOperand() = ir.getAST())
+    exists(IRGuardCondition ir | this.getOperand() = ir.getAST())
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
+    this.getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
   }
 
-  override predicate comparesLt(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    getOperand().(GuardCondition).comparesLt(left, right, k, areEqual, testIsTrue.booleanNot())
+  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+    this.getOperand()
+        .(GuardCondition)
+        .comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
   }
 
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean testIsTrue) {
-    getOperand().(GuardCondition).ensuresLt(left, right, k, block, testIsTrue.booleanNot())
+  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+    this.getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
   }
 
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
+    this.getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
   }
 
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean testIsTrue) {
-    getOperand().(GuardCondition).ensuresEq(left, right, k, block, testIsTrue.booleanNot())
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+    this.getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
   }
 }
 
@@ -326,9 +328,9 @@ class IRGuardCondition extends Instruction {
   cached
   predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
     pred.getASuccessor() = succ and
-    controls(pred, testIsTrue)
+    this.controls(pred, testIsTrue)
     or
-    hasBranchEdge(succ, testIsTrue) and
+    this.hasBranchEdge(succ, testIsTrue) and
     branch.getCondition() = this and
     branch.getBlock() = pred
   }

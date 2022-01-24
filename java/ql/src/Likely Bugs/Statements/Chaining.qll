@@ -47,10 +47,7 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
     not hasSubtype*(m.getReturnType(), delegate.getReturnType())
     or
     // A method on the wrong object is called.
-    not (
-      delegateCall.getQualifier() instanceof ThisAccess or
-      not exists(delegateCall.getQualifier())
-    )
+    not delegateCall.isOwnMethodAccess()
     or
     nonChaining(delegate)
   )

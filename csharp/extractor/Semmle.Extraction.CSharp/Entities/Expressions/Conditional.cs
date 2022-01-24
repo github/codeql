@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Condition, this, 0);
-            Create(cx, Syntax.WhenTrue, this, 1);
-            Create(cx, Syntax.WhenFalse, this, 2);
+            Create(Context, Syntax.Condition, this, 0);
+            Create(Context, Syntax.WhenTrue, this, 1);
+            Create(Context, Syntax.WhenFalse, this, 2);
         }
     }
 }

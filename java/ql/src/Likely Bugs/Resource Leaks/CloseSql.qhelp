@@ -40,10 +40,10 @@ by the code that created it or by a server shutdown procedure, as appropriate.</
 
 
 <li>
-  IBM developerWorks: <a href="http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>.
+  IBM developerWorks: <a href="https://web.archive.org/web/20201109041839/http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>.
 </li>
 <li>
-  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
 </li>
 
 

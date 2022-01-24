@@ -7,7 +7,7 @@
 <p>
 Encryption is key to the security of most, if not all, online communication.
 Using Transport Layer Security (TLS) can ensure that communication cannot be interrupted by an interloper.
-For this reason, is is unwise to disable the verification that TLS provides.
+For this reason, it is unwise to disable the verification that TLS provides.
 Functions in the <code>requests</code> module provide verification by default, and it is only when
 explicitly turned off using <code>verify=False</code> that no verification occurs.
 </p>

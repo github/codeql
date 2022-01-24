@@ -23,12 +23,12 @@ within the synchronized block.
 <references>
 
 <li>
-  The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.19">The synchronized Statement</a>.
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.19">The synchronized Statement</a>.
 </li>
 <li>
   The Java Tutorials:
-    <a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/sync.html">Synchronization</a>.
+    <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/sync.html">Synchronization</a>.
 </li>
 
 

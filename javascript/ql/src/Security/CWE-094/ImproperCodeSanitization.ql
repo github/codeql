@@ -3,6 +3,7 @@
  * @description Escaping code as HTML does not provide protection against code injection.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision high
  * @id js/bad-code-sanitization
  * @tags security
@@ -12,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ImproperCodeSanitization::ImproperCodeSanitization
+import semmle.javascript.security.dataflow.ImproperCodeSanitizationQuery
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
@@ -27,7 +28,7 @@ private DataFlow::Node remoteFlow(DataFlow::TypeTracker t) {
   exists(DataFlow::TypeTracker t2, DataFlow::Node prev | prev = remoteFlow(t2) |
     t2 = t.smallstep(prev, result)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(prev, result) and
+    TaintTracking::sharedTaintStep(prev, result) and
     t = t2
   )
 }

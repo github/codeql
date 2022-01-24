@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="anotherBookingService" class="com.gypsyengineer.server.CabBookingServiceImpl"/>
+
+    <bean name="/unsafeBooking" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+        <property name="service" ref="anotherBookingService"/>
+        <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
+    </bean>
+
+    <bean class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+        <property name="service" ref="anotherBookingService"/>
+        <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
+    </bean>
+
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <property name="service" ref="oneMoreBookingService"/>
+        <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
+        <property name="registryPort" value="1199"/>
+    </bean>
+
+    <bean class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="oneMoreBookingService"/>
+        <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
+    </bean>
+</beans>

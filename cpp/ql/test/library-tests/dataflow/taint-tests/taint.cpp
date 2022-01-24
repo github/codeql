@@ -38,9 +38,9 @@ void do_source()
 	global10 = zero(source());
 
 	sink(global6);
-	sink(global7); // $ ast MISSING: ir
-	sink(global8); // $ ast MISSING: ir
-	sink(global9); // $ ast MISSING: ir
+	sink(global7); // $ ast,ir
+	sink(global8); // $ ast,ir
+	sink(global9); // $ ast,ir
 	sink(global10);
 }
 
@@ -87,11 +87,11 @@ void class_field_test() {
 
 	sink(mc1.a);
 	sink(mc1.b); // $ ast,ir
-	sink(mc1.c); // $ ast,ir
+	sink(mc1.c); // $ ast MISSING: ir
 	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
 	sink(mc2.b); // $ ast,ir
-	sink(mc2.c); // $ ast,ir
+	sink(mc2.c); // $ ast MISSING: ir
 	sink(mc2.d);
 }
 
@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
@@ -192,7 +192,7 @@ void *memcpy(void *dest, void *src, int len);
 void test_memcpy(int *source) {
 	int x;
 	memcpy(&x, source, sizeof(int));
-	sink(x); // $ ast=192:23 MISSING: ir SPURIOUS: ast=193:6
+	sink(x); // $ ast=192:23 ir SPURIOUS: ast=193:6
 }
 
 // --- std::swap ---
@@ -233,7 +233,7 @@ void test_lambdas()
 	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ast MISSING: ir
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
@@ -361,6 +361,8 @@ typedef unsigned long size_t;
 char *strdup(const char *s1);
 char *strndup(const char *s1, size_t n);
 wchar_t* wcsdup(const wchar_t* s1);
+char *strdupa(const char *s1);
+char *strndupa(const char *s1, size_t n);
 
 void test_strdup(char *source)
 {
@@ -369,9 +371,9 @@ void test_strdup(char *source)
 	a = strdup(source);
 	b = strdup("hello, world");
 	c = strndup(source, 100);
-	sink(a); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
 	sink(b);
-	sink(c); // $ ast MISSING: ir
+	sink(c); // $ ast,ir
 }
 
 void test_strndup(int source)
@@ -388,8 +390,28 @@ void test_wcsdup(wchar_t *source)
 
 	a = wcsdup(source);
 	b = wcsdup(L"hello, world");
-	sink(a); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
 	sink(b);
+}
+
+void test_strdupa(char *source)
+{
+	char *a, *b, *c;
+
+	a = strdupa(source);
+	b = strdupa("hello, world");
+	c = strndupa(source, 100);
+	sink(a); // $ ast,ir
+	sink(b);
+	sink(c); // $ ast,ir
+}
+
+void test_strndupa(int source)
+{
+	char *a;
+
+	a = strndupa("hello, world", source);
+	sink(a); // $ ast,ir
 }
 
 // --- qualifiers ---
@@ -426,9 +448,9 @@ void test_qualifiers()
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ ir MISSING: ast
+	sink(b); // $ MISSING: ast,ir
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ ir MISSING: ast
+	sink(b.getMember()); // $ MISSING: ast,ir
 
 	c = new MyClass2(0);
 
@@ -444,7 +466,7 @@ void test_qualifiers()
 	sink(d.getString());
 	d.setString(strings::source());
 	sink(d); // $ ast,ir
-	sink(d.getString()); // $ ast MISSING: ir
+	sink(d.getString()); // $ ast,ir
 }
 
 // --- non-standard swap ---
@@ -483,4 +505,192 @@ void test_getdelim(FILE* source1) {
 	getdelim(&line, &n, '\n', source1);
 
 	sink(line); // $ ir,ast
+}
+
+// --- strtok ---
+
+char *strtok(char *str, const char *delim);
+
+void test_strtok(char *source) {
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(tokenized); // $ ast,ir
+	sink(delim);
+}
+
+// --- strset ---
+
+char *_strset(char *str, int c);
+
+void test_strset_1(char* ptr, char source) {
+	_strset(ptr, source);
+	sink(ptr); // $ SPURIOUS: ast,ir
+	sink(*ptr); // $ ast,ir
+}
+
+void test_strset_2(char* source) {
+	_strset(source, 0);
+	sink(source); // $ ast,ir
+}
+
+// --- mempcpy ---
+
+void *mempcpy(void *dest, const void *src, size_t n);
+
+void test_mempcpy(int *source) {
+	int x;
+	mempcpy(&x, source, sizeof(int));
+	sink(x); // $ ast=540:24 ir SPURIOUS: ast=541:6
+}
+
+// --- memccpy ---
+
+void *memccpy(void *dest, const void *src, int c, size_t n);
+
+void test_memccpy(int *source) {
+	int dest[16];
+	memccpy(dest, source, 42, sizeof(dest));
+	sink(dest); // $ ast=550:24 ir SPURIOUS: ast=551:6
+}
+
+// --- strcat and related functions ---
+
+char* strcat (char*, const char*);
+
+void test_strcat(char* dest1, char* dest2, char* clean, char* source) {
+	strcat(dest1, source);
+	sink(dest1); // $ ast,ir
+
+	strcat(dest2, clean);
+	sink(dest2);
+}
+
+typedef void* _locale_t;
+
+unsigned char *_mbsncat_l(unsigned char *, const unsigned char *, int, _locale_t);
+
+void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned char* dest3,
+                     _locale_t clean, _locale_t source, int n) {
+	unsigned char* dest2 = _mbsncat_l(dest1, ptr, n, source);
+	sink(dest1); // $ SPURIOUS: ast,ir
+	sink(*dest1); // $ ast,ir
+	sink(dest2); // $ SPURIOUS: ir
+	sink(*dest2); // $ ir
+
+	unsigned char* dest4 = _mbsncat_l(dest3, ptr, n, clean);
+	sink(dest3);
+	sink(*dest3);
+	sink(dest4);
+	sink(*dest4);
+}
+
+// --- strsep ---
+
+char *strsep(char**, const char *);
+
+void test_strsep(char *source) {
+  const char* delim = ",.-;:_";
+  char* tokenized;
+  while(tokenized = strsep(&source, delim)) {
+    sink(tokenized); // $ ast,ir
+    sink(*tokenized); // $ ast,ir
+  }
+}
+
+// --- _strinc and related functions ---
+
+char* _strinc(const char*, _locale_t);
+unsigned char* _mbsinc(const unsigned char*);
+unsigned char *_strdec(const unsigned char*, const unsigned char*);
+
+void test__strinc(char* source, char* clean, char* dest1, char* dest2, _locale_t locale) {
+	dest1 = _strinc(source, locale);
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
+
+	dest2 = _strinc(clean, locale);
+	sink(dest2);
+	sink(*dest2);
+}
+
+void test__mbsinc(unsigned char* source_unsigned, char* source, unsigned char* dest_unsigned, char* dest) {
+	dest_unsigned = _mbsinc(source_unsigned);
+	sink(dest_unsigned); // $ ast,ir
+	sink(*dest_unsigned); // $ ast,ir
+
+	dest = (char*)_mbsinc((unsigned char*)source);
+	sink(dest); // $ ast,ir
+	sink(*dest); // $ ast,ir
+}
+
+void test__strdec(const unsigned char* source, unsigned char* clean, unsigned char* dest1, unsigned char* dest2, unsigned char* dest3) {
+	dest1 = _strdec(source + 12, source);
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
+
+	// If `clean` does not precede `source` this technically breaks the precondition of _strdec.
+	// We would still like to have taint, though.
+	dest2 = _strdec(clean, source);
+	sink(dest2); // $ ast,ir
+	sink(*dest2); // $ ast,ir
+
+	// Also breaks the precondition on _strdec.
+	dest3 = _strdec(source, clean);
+	sink(dest3); // $ ast,ir
+	sink(*dest3); // $ ast,ir
+}
+
+// --- strnextc ---
+
+unsigned int _strnextc(const char*);
+
+void test__strnextc(const char* source) {
+	unsigned c = 0;
+	do {
+		c = _strnextc(source++);
+		sink(c); // $ ast,ir
+	} while(c != '\0');
+	c = _strnextc("");
+	sink(c);
+}
+
+// --- taint through const specified function ---
+
+class C_no_const_member_function {
+  char* data_;
+public:
+  char* data() { return data_; }
+};
+
+void test_no_const_member(char* source) {
+  C_no_const_member_function c;
+  memcpy(c.data(), source, 16);
+  sink(c.data()); // $ ast,ir
+}
+
+class C_const_member_function {
+  char* data_;
+public:
+  char* data() const { return data_; }
+};
+
+void test_with_const_member(char* source) {
+  C_const_member_function c;
+  memcpy(c.data(), source, 16);
+  sink(c.data()); // $ ast MISSING: ir
+}
+
+void argument_source(void*);
+
+struct two_members {
+	char *x, *y;
+};
+
+void test_argument_source_field_to_obj() {
+	two_members s;
+	argument_source(s.x);
+
+	sink(s); // $ SPURIOUS: ast
+	sink(s.x); // $ ast,ir
+	sink(s.y); // clean
 }

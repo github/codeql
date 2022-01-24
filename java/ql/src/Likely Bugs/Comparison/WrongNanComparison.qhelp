@@ -25,7 +25,7 @@ by <code>Double.isNaN(x)</code>, which accurately identifies whether <code>x</co
 
 <li>
 Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.21.1">Numerical Equality Operators == and !=</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.21.1">Numerical Equality Operators == and !=</a>.
 </li>
 
 </references>

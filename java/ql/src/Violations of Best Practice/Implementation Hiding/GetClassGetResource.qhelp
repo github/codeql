@@ -50,8 +50,8 @@ so that it always calls <code>getResource</code> on the same class.</p>
 </example>
 <references>
 
-<li>Java Platform, Standard Edition 7, API Specification:
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html#getResource(java.lang.String)">class.getResource()</a>.</li>
+<li>Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html#getResource(java.lang.String)">Class.getResource()</a>.</li>
 
 
 

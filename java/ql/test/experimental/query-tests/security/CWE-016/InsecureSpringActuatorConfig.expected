@@ -1,0 +1,1 @@
+| pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |

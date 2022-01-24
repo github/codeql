@@ -1,5 +1,4 @@
 using System;
-using Microsoft.CodeAnalysis;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A constructed type.
     /// </summary>
-    public sealed class ConstructedType : Type
+    internal sealed class ConstructedType : Type
     {
         private readonly Type unboundGenericType;
 
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.CIL.Entities
             throw new NotImplementedException();
         }
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             idWriter.WriteId(trapFile, inContext);
         }

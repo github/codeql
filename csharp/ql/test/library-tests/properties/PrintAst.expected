@@ -3,7 +3,7 @@ properties.cs:
 #    7|   1: [Class] Button
 #   10|     5: [Field] caption
 #   10|       -1: [TypeMention] string
-#   12|     6: [IndexerProperty] Caption
+#   12|     6: [Property] Caption
 #   12|       -1: [TypeMention] string
 #   15|       3: [Getter] get_Caption
 #   15|         4: [BlockStmt] {...}
@@ -178,19 +178,19 @@ properties.cs:
 #   95|       4: [BlockStmt] {...}
 #   96|         0: [LocalVariableDeclStmt] ... ...;
 #   96|           0: [LocalVariableDeclAndInitExpr] List<Double> ds = ...
-#   96|             -1: [TypeMention] List<Double>
+#   96|             -1: [TypeMention] List<double>
 #   96|               1: [TypeMention] double
 #   96|             0: [LocalVariableAccess] access to local variable ds
 #   96|             1: [ObjectCreation] object creation of type List<Double>
-#   96|               0: [TypeMention] List<Double>
+#   96|               0: [TypeMention] List<double>
 #   96|                 1: [TypeMention] double
 #   97|         1: [LocalVariableDeclStmt] ... ...;
 #   97|           0: [LocalVariableDeclAndInitExpr] List<Object> os = ...
-#   97|             -1: [TypeMention] List<Object>
+#   97|             -1: [TypeMention] List<object>
 #   97|               1: [TypeMention] object
 #   97|             0: [LocalVariableAccess] access to local variable os
 #   97|             1: [ObjectCreation] object creation of type List<Object>
-#   97|               0: [TypeMention] List<Object>
+#   97|               0: [TypeMention] List<object>
 #   97|                 1: [TypeMention] object
 #   98|         2: [IfStmt] if (...) ...
 #   98|           0: [EQExpr] ... == ...

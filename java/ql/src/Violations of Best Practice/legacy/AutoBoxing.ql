@@ -45,9 +45,7 @@ predicate unboxed(BoxedExpr e) {
   or
   flowTarget(e).getType() instanceof PrimitiveType
   or
-  exists(ConditionalExpr cond | cond instanceof PrimitiveExpr |
-    cond.getTrueExpr() = e or cond.getFalseExpr() = e
-  )
+  exists(ConditionalExpr cond | cond instanceof PrimitiveExpr | cond.getABranchExpr() = e)
 }
 
 /**

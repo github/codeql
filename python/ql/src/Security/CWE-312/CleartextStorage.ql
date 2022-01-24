@@ -4,6 +4,7 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/clear-text-storage-sensitive-data
  * @tags security
@@ -13,25 +14,13 @@
  */
 
 import python
-import semmle.python.security.Paths
-import semmle.python.dataflow.TaintTracking
-import semmle.python.security.SensitiveData
-import semmle.python.security.ClearText
+private import semmle.python.dataflow.new.DataFlow
+import DataFlow::PathGraph
+import semmle.python.security.dataflow.CleartextStorage::CleartextStorage
 
-class CleartextStorageConfiguration extends TaintTracking::Configuration {
-  CleartextStorageConfiguration() { this = "ClearTextStorage" }
-
-  override predicate isSource(DataFlow::Node src, TaintKind kind) {
-    src.asCfgNode().(SensitiveData::Source).isSourceOf(kind)
-  }
-
-  override predicate isSink(DataFlow::Node sink, TaintKind kind) {
-    sink.asCfgNode() instanceof ClearTextStorage::Sink and
-    kind instanceof SensitiveData
-  }
-}
-
-from CleartextStorageConfiguration config, TaintedPathSource source, TaintedPathSink sink
-where config.hasFlowPath(source, sink)
-select sink.getSink(), source, sink, "Sensitive data from $@ is stored here.", source.getSource(),
-  source.getCfgNode().(SensitiveData::Source).repr()
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, string classification
+where
+  config.hasFlowPath(source, sink) and
+  classification = source.getNode().(Source).getClassification()
+select sink.getNode(), source, sink, "$@ is stored here.", source.getNode(),
+  "Sensitive data (" + classification + ")"

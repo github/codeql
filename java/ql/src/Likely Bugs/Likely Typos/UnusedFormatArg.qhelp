@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 
-<include src="FormatStringsOverview.qhelp" />
+<include src="FormatStringsOverview.inc.qhelp" />
 
 <recommendation>
 <p>
@@ -21,6 +21,6 @@ third argument.
 
 </example>
 
-<include src="FormatStringsRefs.qhelp" />
+<include src="FormatStringsRefs.inc.qhelp" />
 
 </qhelp>

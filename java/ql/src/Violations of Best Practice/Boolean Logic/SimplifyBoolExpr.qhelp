@@ -78,12 +78,12 @@ In any case, care should be taken to ensure correct behavior for
 <references>
 
 <li>
-The Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.6">Logical Complement Operator !</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.21.2">Boolean Equality Operators == and !=</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.23">Conditional-And Operator &amp;&amp;</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.24">Conditional-Or Operator ||</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.25">Conditional Operator ? :</a>.
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.15.6">Logical Complement Operator !</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.21.2">Boolean Equality Operators == and !=</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.23">Conditional-And Operator &amp;&amp;</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.24">Conditional-Or Operator ||</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.25">Conditional Operator ? :</a>.
 </li>
 
 </references>

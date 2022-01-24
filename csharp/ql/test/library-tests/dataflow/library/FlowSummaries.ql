@@ -1,6 +1,5 @@
-import semmle.code.csharp.dataflow.FlowSummary
-import semmle.code.csharp.dataflow.FlowSummary::TestOutput
+import shared.FlowSummaries
 
-private class IncludeEFSummarizedCallable extends RelevantSummarizedCallable {
-  IncludeEFSummarizedCallable() { this instanceof SummarizedCallable }
+private class IncludeAllSummarizedCallable extends IncludeSummarizedCallable {
+  IncludeAllSummarizedCallable() { this instanceof SummarizedCallable }
 }

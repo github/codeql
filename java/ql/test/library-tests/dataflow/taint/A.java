@@ -15,7 +15,7 @@ public class A {
     sink(b2);
   }
 
-  void test2() {
+  void test2() throws IOException {
     ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
     bOutput.write(taint());
     byte[] b = bOutput.toByteArray();
@@ -25,11 +25,11 @@ public class A {
     sink(b2);
   }
 
-  void streamWrite(ByteArrayOutputStream baos, byte[] data) {
+  void streamWrite(ByteArrayOutputStream baos, byte[] data) throws IOException {
     baos.write(data);
   }
 
-  void test3(ByteArrayOutputStream baos) {
+  void test3(ByteArrayOutputStream baos) throws IOException {
     streamWrite(baos, taint());
     sink(baos.toByteArray());
   }
@@ -38,11 +38,11 @@ public class A {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
   }
 
-  void streamWriteHolder(BaosHolder bh, byte[] data) {
+  void streamWriteHolder(BaosHolder bh, byte[] data) throws IOException {
     bh.baos.write(data);
   }
 
-  void test4(BaosHolder bh) {
+  void test4(BaosHolder bh) throws IOException {
     streamWriteHolder(bh, taint());
     sink(bh.baos.toByteArray());
   }
@@ -51,7 +51,7 @@ public class A {
     byte[] data = new byte[10];
   }
 
-  void test5_a(DataHolder dh) {
+  void test5_a(DataHolder dh) throws IOException {
     ByteArrayInputStream bais = new ByteArrayInputStream(taint());
     bais.read(dh.data);
     test5_b(dh);
@@ -72,4 +72,13 @@ public class A {
     arrayWrite(taint(), b);
     sink(b);
   }
+
+  void testFilterOutputStream() throws IOException {
+    ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+    bOutput.write(taint());
+    FilterOutputStream filterOutput = new FilterOutputStream(bOutput) {
+    };
+    sink(filterOutput);
+  }
+
 }

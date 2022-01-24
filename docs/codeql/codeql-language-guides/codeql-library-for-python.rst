@@ -8,7 +8,7 @@ When you need to analyze a Python program, you can make use of the large collect
 About the CodeQL library for Python
 -----------------------------------
 
-The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form. 
+The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form.
 
 Each CodeQL library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
 
@@ -20,8 +20,12 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
--  **Type inference** - classes that represent the inferred values and types of entities in the Python source code.
--  **Taint tracking** - classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
+-  **Data flow** - classes that represent entities from the data flow graphs.
+-  **API graphs** - classes that represent entities from the API graphs.
+
+The first two categories are described below. 
+For a description of data flow and associated classes, see ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`".
+For a description of API graphs and their use, see ":doc:`Using API graphs in Python <using-api-graphs-in-python>`."
 
 Syntactic classes
 -----------------
@@ -291,57 +295,8 @@ The classes in the control-flow part of the library are:
 -  `BasicBlock <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/Flow.qll/type.Flow$BasicBlock.html>`__ – A non branching list of control-flow nodes.
 
 
-Type-inference classes
-----------------------
-
-The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. 
-
-Example
-^^^^^^^
-
-For example, which ``ClassValue``\ s are iterable can be determined using the query:
-
-**Find iterable "ClassValue"s**
-
-.. code-block:: ql
-
-   import python
-
-   from ClassValue cls
-   where cls.hasAttribute("__iter__")
-   select cls
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <https://docs.python.org/3/library/stdtypes.html>`__ in the Python documentation.
-
-Summary
-^^^^^^^
-
--  `Value <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
-
-   -  ``ClassValue``
-   -  ``CallableValue``
-   -  ``ModuleValue``
-
-For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointer-analysis-and-type-inference-in-python>`."
-
-Taint-tracking classes
-----------------------
-
-The CodeQL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
-
-
-Summary
-^^^^^^^
-
-- `TaintKind <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
-- `Configuration <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
-
-For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`."
-
-
 Further reading
 ---------------
 
 .. include:: ../reusables/python-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
-

@@ -1,5 +1,7 @@
 package com.semmle.js.extractor;
 
+import java.util.List;
+
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceElement;
@@ -7,7 +9,6 @@ import com.semmle.js.ast.Token;
 import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.List;
 
 /**
  * Extractor for populating lexical information about a JavaScript file, including comments and
@@ -28,7 +29,11 @@ public class LexicalExtractor {
     this.tokens = tokens;
     this.comments = comments;
   }
-
+  
+  public TextualExtractor getTextualExtractor() {
+    return textualExtractor;
+  }
+  
   public TrapWriter getTrapwriter() {
     return trapwriter;
   }

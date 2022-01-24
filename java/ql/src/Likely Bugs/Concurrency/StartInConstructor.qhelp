@@ -41,7 +41,7 @@ initialized. This results in the program outputting "hello my friend".</p>
 
 <li>
   IBM developerWorks:
-  <a href="http://www.ibm.com/developerworks/java/library/j-jtp0618/index.html#4">Don't start threads from within constructors</a>.
+  <a href="https://web.archive.org/web/20200417101823/http://www.ibm.com/developerworks/java/library/j-jtp0618/index.html#4">Don't start threads from within constructors</a>.
 </li>
 
 

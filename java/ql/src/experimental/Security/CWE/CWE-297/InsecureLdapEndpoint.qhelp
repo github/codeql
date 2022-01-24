@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Java versions 8u181 or greater have enabled LDAPS endpoint identification by default. Nowadays 
+  infrastructure services like LDAP are commonly deployed behind load balancers therefore the LDAP 
+  server name can be different from the FQDN of the LDAPS endpoint. If a service certificate does not 
+  properly contain a matching DNS name as part of the certificate, Java will reject it by default.</p>
+<p>Instead of addressing the issue properly by having a compliant certificate deployed, frequently 
+  developers simply disable the LDAPS endpoint check.</p>
+<p>Failing to validate the certificate makes the SSL session susceptible to a man-in-the-middle attack. 
+  This query checks whether the LDAPS endpoint check is disabled in system properties.</p>
+</overview>
+
+<recommendation>
+<p>Replace any non-conforming LDAP server certificates to include a DNS name in the subjectAltName field 
+  of the certificate that matches the FQDN of the service.</p>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of configuring LDAPS endpoint. In the 'BAD' case, 
+  endpoint check is disabled. In the 'GOOD' case, endpoint check is left enabled through the 
+  default Java configuration.</p>
+<sample src="InsecureLdapEndpoint.java" />
+<sample src="InsecureLdapEndpoint2.java" />
+</example>
+
+<references>
+<li>
+  Oracle Java 8 Update 181 (8u181):
+  <a href="https://www.java.com/en/download/help/release_changes.html">Endpoint identification enabled on LDAPS connections</a>
+</li>
+<li>
+  IBM:
+  <a href="https://www.ibm.com/support/pages/how-do-i-fix-ldap-ssl-error-%E2%80%9Cjavasecuritycertcertificateexception-no-subject-alternative-names-present%E2%80%9D-websphere-application-server">Fix this LDAP SSL error</a>
+</li>
+</references>
+</qhelp>

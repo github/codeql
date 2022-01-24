@@ -3,10 +3,10 @@
 package test.cwe22.semmle.tests;
 
 
+import javax.servlet.http.*;
+import javax.servlet.ServletException;
 
-
-import java.io.IOException;
-import java.io.File;
+import java.io.*;
 import java.net.InetAddress;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +28,11 @@ class Test {
 					
 			// BAD: construct a path with user input
 			path = FileSystems.getDefault().getPath(temp);
+
+			// BAD: insufficient check
+			if (temp.startsWith("/some_safe_dir/")) {
+				file = new File(temp);
+			}
 	}
 	
 	void doGet2(InetAddress address)
@@ -68,4 +73,13 @@ class Test {
 			return false;
 		return true;
 	}
+
+    public class MyServlet extends HttpServlet {
+        public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            String filename = br.readLine();
+            // BAD: construct a file path with user input
+            BufferedWriter bw = new BufferedWriter(new FileWriter("dir/"+filename, true));
+        }
+    }
 }

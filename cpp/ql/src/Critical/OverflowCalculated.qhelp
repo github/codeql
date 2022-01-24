@@ -19,7 +19,7 @@ the data being copied. Buffer overflows can result to anything from a segmentati
 if the array is on stack-allocated memory).
 </p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

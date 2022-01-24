@@ -35,7 +35,7 @@ Instead, the expression should be <code>t % (60 * 1000)</code>.
   J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 35. Addison-Wesley, 2005.
 </li>
 <li>
-  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html">Operators</a>.
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html">Operators</a>.
 </li>
 
 

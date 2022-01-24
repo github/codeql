@@ -96,6 +96,5 @@ class ModulusAnalysis
             System.Console.WriteLine(k); // congruent 0 mod 3
     }
 
-
     int[] GetArray() { return new int[42]; }
 }

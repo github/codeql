@@ -17,37 +17,18 @@ import MagicConstants
 /**
  * Holds if the string is a standard system property as defined in:
  *
- * http://docs.oracle.com/javase/7/docs/api/java/lang/System.html#getProperties()
+ * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#getProperties()
  */
 predicate isSystemProperty(string e) {
-  e = "java.version" or
-  e = "java.vendor" or
-  e = "java.vendor.url" or
-  e = "java.home" or
-  e = "java.vm.specification.version" or
-  e = "java.vm.specification.vendor" or
-  e = "java.vm.specification.name" or
-  e = "java.vm.version" or
-  e = "java.vm.vendor" or
-  e = "java.vm.name" or
-  e = "java.specification.version" or
-  e = "java.specification.vendor" or
-  e = "java.specification.name" or
-  e = "java.class.version" or
-  e = "java.class.path" or
-  e = "java.library.path" or
-  e = "java.io.tmpdir" or
-  e = "java.compiler" or
-  e = "java.ext.dirs" or
-  e = "os.name" or
-  e = "os.arch" or
-  e = "os.version" or
-  e = "file.separator" or
-  e = "path.separator" or
-  e = "line.separator" or
-  e = "user.name" or
-  e = "user.home" or
-  e = "user.dir"
+  e =
+    [
+      "java.version", "java.vendor", "java.specification.version", "java.specification.vendor",
+      "java.specification.name", "java.class.version", "java.class.path", "java.library.path",
+      "java.io.tmpdir", "java.compiler", "java.ext.dirs", "os.name", "java.vendor.url", "os.arch",
+      "os.version", "file.separator", "path.separator", "line.separator", "user.name", "user.home",
+      "user.dir", "java.home", "java.vm.specification.version", "java.vm.specification.vendor",
+      "java.vm.specification.name", "java.vm.version", "java.vm.vendor", "java.vm.name"
+    ]
 }
 
 predicate trivialContext(Literal e) {

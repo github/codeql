@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CIL.Entities
     {
         private readonly CustomAttributeHandle handle;
         private readonly CustomAttribute attrib;
-        private readonly IEntity @object;
+        private readonly IExtractedEntity @object;
 
-        public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
+        public Attribute(Context cx, IExtractedEntity @object, CustomAttributeHandle handle) : base(cx)
         {
             attrib = cx.MdReader.GetCustomAttribute(handle);
             this.handle = handle;
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var constructor = (Method)Cx.Create(attrib.Constructor);
+                var constructor = (Method)Context.Create(attrib.Constructor);
                 yield return constructor;
 
                 yield return Tuples.cil_attribute(this, @object, constructor);
@@ -41,11 +41,11 @@ namespace Semmle.Extraction.CIL.Entities
 
                 try
                 {
-                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
+                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(Context));
                 }
                 catch
                 {
-                    Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                    Context.Extractor.Logger.Log(Util.Logging.Severity.Info,
                         $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
                     yield break;
                 }
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CIL.Entities
             return value?.ToString() ?? "null";
         }
 
-        public static IEnumerable<IExtractionProduct> Populate(Context cx, IEntity @object, CustomAttributeHandleCollection attributes)
+        public static IEnumerable<IExtractionProduct> Populate(Context cx, IExtractedEntity @object, CustomAttributeHandleCollection attributes)
         {
             foreach (var attrib in attributes)
             {

@@ -47,7 +47,7 @@ Types
 
 The database also includes information about the types used in a program:
 
-- ``PrimitiveType`` represents a `primitive type <http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html>`__, that is, one of ``boolean``, ``byte``, ``char``, ``double``, ``float``, ``int``, ``long``, ``short``. CodeQL also classifies ``void`` and ``<nulltype>`` (the type of the ``null`` literal) as primitive types.
+- ``PrimitiveType`` represents a `primitive type <https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html>`__, that is, one of ``boolean``, ``byte``, ``char``, ``double``, ``float``, ``int``, ``long``, ``short``. CodeQL also classifies ``void`` and ``<nulltype>`` (the type of the ``null`` literal) as primitive types.
 - ``RefType`` represents a reference type; it has several subclasses:
 
   - ``Class`` represents a Java class.

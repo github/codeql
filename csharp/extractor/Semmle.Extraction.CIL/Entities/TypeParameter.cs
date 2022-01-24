@@ -9,9 +9,9 @@ namespace Semmle.Extraction.CIL.Entities
 {
     internal abstract class TypeParameter : Type
     {
-        protected readonly GenericContext gc;
+        protected readonly IGenericContext gc;
 
-        protected TypeParameter(GenericContext gc) : base(gc.Cx)
+        protected TypeParameter(IGenericContext gc) : base(gc.Context)
         {
             this.gc = gc;
         }
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (!parameterHandle.IsNil)
             {
-                var tp = Cx.MdReader.GetGenericParameter(parameterHandle);
+                var tp = Context.MdReader.GetGenericParameter(parameterHandle);
 
                 if (tp.Attributes.HasFlag(GenericParameterAttributes.Contravariant))
                     yield return Tuples.cil_typeparam_contravariant(this);
@@ -45,9 +45,9 @@ namespace Semmle.Extraction.CIL.Entities
                 if (tp.Attributes.HasFlag(GenericParameterAttributes.NotNullableValueTypeConstraint))
                     yield return Tuples.cil_typeparam_struct(this);
 
-                foreach (var constraint in tp.GetConstraints().Select(h => Cx.MdReader.GetGenericParameterConstraint(h)))
+                foreach (var constraint in tp.GetConstraints().Select(h => Context.MdReader.GetGenericParameterConstraint(h)))
                 {
-                    var t = (Type)Cx.CreateGeneric(this.gc, constraint.Type);
+                    var t = (Type)Context.CreateGeneric(this.gc, constraint.Type);
                     yield return t;
                     yield return Tuples.cil_typeparam_constraint(this, t);
                 }

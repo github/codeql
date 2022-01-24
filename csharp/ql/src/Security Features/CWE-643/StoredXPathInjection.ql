@@ -4,6 +4,7 @@
  *              user is vulnerable to insertion of malicious code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id cs/xml/stored-xpath-injection
  * @tags security
@@ -12,7 +13,7 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.XPathInjection
+import semmle.code.csharp.security.dataflow.XPathInjectionQuery as XPathInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends XPathInjection::TaintTrackingConfiguration {

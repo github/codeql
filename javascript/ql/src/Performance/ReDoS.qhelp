@@ -4,7 +4,7 @@
 
 <qhelp>
 
-	<include src="ReDoSIntroduction.qhelp" />
+	<include src="ReDoSIntroduction.inc.qhelp" />
 
 	<example>
 		<p>
@@ -29,6 +29,6 @@
 		</sample>
 	</example>
 
-	<include src="ReDoSReferences.qhelp"/>
+	<include src="ReDoSReferences.inc.qhelp"/>
 
 </qhelp>

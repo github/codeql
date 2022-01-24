@@ -17,7 +17,16 @@
 # Byte-compiled python files
 *.pyc
 
+# python virtual environment folder 
+.venv/
+
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 
 csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
+
+# Avoid committing cached package components
+.codeql
+
+# Compiled class file
+*.class

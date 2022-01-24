@@ -34,7 +34,7 @@ To guard against XXE attacks, the <code>noent</code> option should be omitted or
 internal entities such as <code>&amp;amp;</code> or <code>&amp;gt;</code>. If desired, these
 entities can be expanded in a separate step using utility functions provided by libraries such
 as <a href="http://underscorejs.org/#unescape">underscore</a>,
-<a href="https://lodash.com/docs/latest#unescape">lodash</a> or
+<a href="https://lodash.com/docs/4.17.15#unescape">lodash</a> or
 <a href="https://github.com/mathiasbynens/he">he</a>.
 </p>
 <sample src="examples/XxeGood.js"/>
@@ -47,11 +47,11 @@ OWASP:
 </li>
 <li>
 Timothy Morgen:
-<a href="https://www.vsecurity.com//download/publications/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks</a>.
+<a href="https://research.nccgroup.com/2014/05/19/xml-schema-dtd-and-entity-attacks-a-compendium-of-known-techniques/">XML Schema, DTD, and Entity Attacks</a>.
 </li>
 <li>
 Timur Yunusov, Alexey Osipov:
-<a href="https://media.blackhat.com/eu-13/briefings/Osipov/bh-eu-13-XML-data-osipov-slides.pdf">XML Out-Of-Band Data Retrieval</a>.
+<a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.
 </li>
 </references>
 </qhelp>

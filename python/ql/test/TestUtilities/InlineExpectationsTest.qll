@@ -1,9 +1,10 @@
 /**
  * Provides a library for writing QL tests whose success or failure is based on expected results
- * embedded in the test source code as comments, rather than a `.expected` file.
+ * embedded in the test source code as comments, rather than the contents of an `.expected` file
+ * (in that the `.expected` file should always be empty).
  *
  * To add this framework to a new language:
- * - Add a file `InlineExpectationsTestPrivate.qll` that defines a `LineComment` class. This class
+ * - Add a file `InlineExpectationsTestPrivate.qll` that defines a `ExpectationComment` class. This class
  *   must support a `getContents` method that returns the contents of the given comment, _excluding_
  *   the comment indicator itself. It should also define `toString` and `getLocation` as usual.
  *
@@ -59,8 +60,8 @@
  *
  * Example:
  * ```cpp
- * int i = x + 5;  // $const=5
- * int j = y + (7 - 3)  // $const=7 const=3 const=4  // The result of the subtraction is a constant.
+ * int i = x + 5;  // $ const=5
+ * int j = y + (7 - 3)  // $ const=7 const=3 const=4  // The result of the subtraction is a constant.
  * ```
  *
  * For tests that contain known missing and spurious results, it is possible to further
@@ -180,20 +181,20 @@ private int getEndOfColumnPosition(int start, string content) {
     min(string name, int cand |
       exists(TNamedColumn(name)) and
       cand = content.indexOf(name + ":") and
-      cand > start
+      cand >= start
     |
       cand
     )
   or
   not exists(string name |
     exists(TNamedColumn(name)) and
-    content.indexOf(name + ":") > start
+    content.indexOf(name + ":") >= start
   ) and
   result = content.length()
 }
 
 private predicate getAnExpectation(
-  LineComment comment, TColumn column, string expectation, string tags, string value
+  ExpectationComment comment, TColumn column, string expectation, string tags, string value
 ) {
   exists(string content |
     content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
@@ -233,7 +234,9 @@ private string expectationPattern() {
   exists(string tag, string tags, string value |
     tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
     tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
-    value = "((?:\"[^\"]*\"|'[^']*'|\\S+)*)" and
+    // In Python, we allow both `"` and `'` for strings, as well as the prefixes `bru`.
+    // For example, `b"foo"`.
+    value = "((?:[bru]*\"[^\"]*\"|[bru]*'[^']*'|\\S+)*)" and
     result = tags + "(?:=" + value + ")?"
   )
 }
@@ -244,14 +247,14 @@ private newtype TFailureLocatable =
   ) {
     test.hasActualResult(location, element, tag, value)
   } or
-  TValidExpectation(LineComment comment, string tag, string value, string knownFailure) {
+  TValidExpectation(ExpectationComment comment, string tag, string value, string knownFailure) {
     exists(TColumn column, string tags |
       getAnExpectation(comment, column, _, tags, value) and
       tag = tags.splitAt(",") and
       knownFailure = getColumnString(column)
     )
   } or
-  TInvalidExpectation(LineComment comment, string expectation) {
+  TInvalidExpectation(ExpectationComment comment, string expectation) {
     getAnExpectation(comment, _, expectation, _, _) and
     not expectation.regexpMatch(expectationPattern())
   }
@@ -289,7 +292,7 @@ class ActualResult extends FailureLocatable, TActualResult {
 }
 
 abstract private class Expectation extends FailureLocatable {
-  LineComment comment;
+  ExpectationComment comment;
 
   override string toString() { result = comment.toString() }
 

@@ -123,7 +123,7 @@ void test1()
 	{
 		int i = 0;
 		sink(sscanf(string::source(), "%i", &i));
-		sink(i); // $ MISSING: ast,ir
+		sink(i); // $ ast,ir
 	}
 	{
 		char buffer[256] = {0};
@@ -133,7 +133,7 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(sscanf(string::source(), "%s", &buffer));
-		sink(buffer); // $ MISSING: ast,ir
+		sink(buffer); // $ ast,ir
 	}
 }
 

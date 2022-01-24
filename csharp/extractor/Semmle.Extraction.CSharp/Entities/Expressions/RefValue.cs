@@ -12,8 +12,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, 0);
-            Create(cx, Syntax.Type, this, 1);   // A type-access
+            Create(Context, Syntax.Expression, this, 0);
+            Create(Context, Syntax.Type, this, 1);   // A type-access
         }
     }
 }

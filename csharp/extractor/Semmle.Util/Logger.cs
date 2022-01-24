@@ -45,7 +45,7 @@ namespace Semmle.Util.Logging
         /// <summary>
         /// Log the given text with the given severity.
         /// </summary>
-        public static void Log(this ILogger logger, Severity s, string text, params object[] args)
+        public static void Log(this ILogger logger, Severity s, string text, params object?[] args)
         {
             logger.Log(s, string.Format(text, args));
         }

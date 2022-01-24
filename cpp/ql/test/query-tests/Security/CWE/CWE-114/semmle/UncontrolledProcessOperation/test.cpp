@@ -61,8 +61,8 @@ void testReferencePointer1()
 
 		system(buffer); // BAD
 		system(data); // BAD
-		system(dataref); // BAD [NOT DETECTED]
-		system(data2); // BAD [NOT DETECTED]
+		system(dataref); // BAD
+		system(data2); // BAD
 	}
 }
 
@@ -79,5 +79,31 @@ void testReferencePointer2()
 		system(data); // BAD
 		system(dataref); // BAD [NOT DETECTED]
 		system(data2); // BAD [NOT DETECTED]
+	}
+}
+
+// ---
+
+typedef unsigned long size_t;
+
+void accept(int arg, char *buf, size_t *bufSize);
+void recv(int arg, char *buf, size_t bufSize);
+void LoadLibrary(const char *arg);
+
+void testAcceptRecv(int socket1, int socket2)
+{
+	{
+		char buffer[1024];
+
+		recv(socket1, buffer, 1024);
+		LoadLibrary(buffer); // BAD: using data from recv
+	}
+	
+	{
+		char buffer[1024];
+
+		accept(socket2, 0, 0);
+		recv(socket2, buffer, 1024);
+		LoadLibrary(buffer); // BAD: using data from recv
 	}
 }

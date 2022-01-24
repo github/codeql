@@ -1,24 +1,29 @@
 attrNoArg
 | !0 System.ReadOnlySpan`1.Enumerator.Current | [IsReadOnlyAttribute(...)] |
 | !0 System.ReadOnlySpan`1.Item | [IsReadOnlyAttribute(...)] |
-| <>f__AnonymousType0`1 | [CompilerGeneratedAttribute(...)] |
 | <PrivateImplementationDetails> | [CompilerGeneratedAttribute(...)] |
-| Internal.Runtime.InteropServices.ComponentActivator.<>c__DisplayClass6_0 | [CompilerGeneratedAttribute(...)] |
-| Interop.Sys.<>c__DisplayClass39_0 | [CompilerGeneratedAttribute(...)] |
+| Internal.Runtime.InteropServices.ComponentActivator.<>c__DisplayClass7_0 | [CompilerGeneratedAttribute(...)] |
+| Interop.HostPolicy.corehost_error_writer_fn | [UnmanagedFunctionPointerAttribute(...)] |
+| Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn | [UnmanagedFunctionPointerAttribute(...)] |
+| Interop.PollEvents | [FlagsAttribute(...)] |
+| Interop.Sys.<>c__DisplayClass37_0 | [CompilerGeneratedAttribute(...)] |
 | Interop.Sys.FileStatusFlags | [FlagsAttribute(...)] |
 | Interop.Sys.OpenFlags | [FlagsAttribute(...)] |
-| Interop.Sys.PollEvents | [FlagsAttribute(...)] |
 | InteropErrorExtensions | [ExtensionAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [CompilerGeneratedAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [EmbeddedAttribute(...)] |
-| Microsoft.Reflection.ReflectionExtensions | [ExtensionAttribute(...)] |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.<>c | [CompilerGeneratedAttribute(...)] |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.<IsAsync>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| Microsoft.Win32.SafeHandles.SafeFileHandle.t_lastCloseErrorInfo | [ThreadStaticAttribute(...)] |
 | System.AppContext.FirstChanceException | [CompilerGeneratedAttribute(...)] |
 | System.AppContext.ProcessExit | [CompilerGeneratedAttribute(...)] |
 | System.AppContext.UnhandledException | [CompilerGeneratedAttribute(...)] |
 | System.AppDomain.DomainUnload | [CompilerGeneratedAttribute(...)] |
 | System.AppDomain.ReflectionOnlyAssemblyResolve | [CompilerGeneratedAttribute(...)] |
+| System.ApplicationId.<Culture>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ApplicationId.<Name>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ApplicationId.<ProcessorArchitecture>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ApplicationId.<Version>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.ArgIterator | [IsByRefLikeAttribute(...)] |
 | System.Array.SorterGenericArray | [IsReadOnlyAttribute(...)] |
 | System.Array.SorterObjectArray | [IsReadOnlyAttribute(...)] |
@@ -35,30 +40,19 @@ attrNoArg
 | System.ByReference`1 | [IsByRefLikeAttribute(...)] |
 | System.ByReference`1 | [IsReadOnlyAttribute(...)] |
 | System.ByReference`1 | [NonVersionableAttribute(...)] |
-| System.Collections.Concurrent.ConcurrentQueueSegment`1.Slot.Item | [AllowNullAttribute(...)] |
-| System.Collections.Concurrent.ConcurrentQueueSegment`1.Slot.Item | [MaybeNullAttribute(...)] |
 | System.Collections.Concurrent.ConcurrentQueue`1.<Enumerate>d__26 | [CompilerGeneratedAttribute(...)] |
+| System.Collections.Generic.BitHelper | [IsByRefLikeAttribute(...)] |
 | System.Collections.Generic.Comparer`1.<Default>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Collections.Generic.Dictionary`2.KeyCollection.Enumerator._currentKey | [AllowNullAttribute(...)] |
-| System.Collections.Generic.Dictionary`2.KeyCollection.Enumerator._currentKey | [MaybeNullAttribute(...)] |
-| System.Collections.Generic.Dictionary`2.ValueCollection.Enumerator._currentValue | [AllowNullAttribute(...)] |
-| System.Collections.Generic.Dictionary`2.ValueCollection.Enumerator._currentValue | [MaybeNullAttribute(...)] |
 | System.Collections.Generic.EqualityComparer`1.<Default>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Collections.Generic.KeyValuePair`2 | [IsReadOnlyAttribute(...)] |
-| System.Collections.Generic.List`1.Enumerator._current | [AllowNullAttribute(...)] |
-| System.Collections.Generic.List`1.Enumerator._current | [MaybeNullAttribute(...)] |
-| System.Collections.Generic.NonRandomizedStringEqualityComparer.<Default>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Collections.Generic.ReferenceEqualityComparer.<Instance>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Collections.Generic.ValueListBuilder`1 | [IsByRefLikeAttribute(...)] |
-| System.CommonlyUsedGenericInstantiations.<AsyncHelper2>d__4`1 | [CompilerGeneratedAttribute(...)] |
-| System.CommonlyUsedGenericInstantiations.<AsyncHelper3>d__5 | [CompilerGeneratedAttribute(...)] |
-| System.CommonlyUsedGenericInstantiations.<AsyncHelper>d__3`1 | [CompilerGeneratedAttribute(...)] |
 | System.ComponentModel.EditorBrowsableAttribute.<State>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Console.<>c | [CompilerGeneratedAttribute(...)] |
 | System.ConsoleCancelEventArgs.<Cancel>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.ConsoleKeyInfo | [IsReadOnlyAttribute(...)] |
 | System.ConsoleModifiers | [FlagsAttribute(...)] |
 | System.ConsolePal.<>c | [CompilerGeneratedAttribute(...)] |
-| System.ConsolePal.<>c__DisplayClass115_0 | [CompilerGeneratedAttribute(...)] |
+| System.ConsolePal.<>c__DisplayClass112_0 | [CompilerGeneratedAttribute(...)] |
 | System.ConsolePal.ControlCHandlerRegistrar.<>c | [CompilerGeneratedAttribute(...)] |
 | System.ConsolePal.TerminalFormatStrings.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Convert | [ExtensionAttribute(...)] |
@@ -68,15 +62,35 @@ attrNoArg
 | System.DateTimeResult | [IsByRefLikeAttribute(...)] |
 | System.DefaultBinder.Primitives | [FlagsAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute.<ParameterValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<AssemblyName>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<Condition>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<MemberSignature>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<MemberTypes>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<Type>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute.<TypeName>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes | [FlagsAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute.<MemberTypes>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.<Justification>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute.<ReturnValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute.<Members>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.<Members>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.<ReturnValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute.<ParameterName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.<ReturnValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.<Message>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.<Url>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<Category>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<CheckId>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<Justification>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<MessageId>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<Scope>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.<Target>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<Category>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<CheckId>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<Justification>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<MessageId>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<Scope>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.<Target>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.ConditionalAttribute.<ConditionString>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Debug.t_indentLevel | [ThreadStaticAttribute(...)] |
 | System.Diagnostics.DebuggableAttribute.<DebuggingFlags>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -93,6 +107,7 @@ attrNoArg
 | System.Diagnostics.DebuggerVisualizerAttribute.<VisualizerObjectSourceTypeName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.DebuggerVisualizerAttribute.<VisualizerTypeName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.StackFrameHelper.t_reentrancy | [ThreadStaticAttribute(...)] |
+| System.Diagnostics.Tracing.CounterGroup.<>c__DisplayClass21_0 | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.CounterPayload | [EventDataAttribute(...)] |
 | System.Diagnostics.Tracing.CounterPayload.<Count>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.CounterPayload.<CounterType>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -139,11 +154,11 @@ attrNoArg
 | System.Diagnostics.Tracing.EventListener._EventSourceCreated | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventManifestOptions | [FlagsAttribute(...)] |
 | System.Diagnostics.Tracing.EventPayload.<GetEnumerator>d__17 | [CompilerGeneratedAttribute(...)] |
-| System.Diagnostics.Tracing.EventPipeController.<IsControllerInitialized>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventPipeEventDispatcher.EventListenerSubscription.<Level>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventPipeEventDispatcher.EventListenerSubscription.<MatchAnyKeywords>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventProvider.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventProvider.s_returnCode | [ThreadStaticAttribute(...)] |
+| System.Diagnostics.Tracing.EventSource.<IsSupported>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Diagnostics.Tracing.EventSource.m_EventSourceExceptionRecurenceCount | [ThreadStaticAttribute(...)] |
 | System.Diagnostics.Tracing.EventSource.m_EventSourceInDecodeObject | [ThreadStaticAttribute(...)] |
 | System.Diagnostics.Tracing.EventSourceAttribute.<Guid>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -207,17 +222,14 @@ attrNoArg
 | System.Diagnostics.Tracing.TraceLoggingTypeInfo.threadCache | [ThreadStaticAttribute(...)] |
 | System.Diagnostics.Tracing.XplatEventLogger.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Environment.<>c | [CompilerGeneratedAttribute(...)] |
+| System.Environment.<ProcessorCount>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Exception.DispatchState | [IsReadOnlyAttribute(...)] |
-| System.GC.MemoryLoadChangeNotification | [IsReadOnlyAttribute(...)] |
-| System.GC.MemoryLoadChangeNotification.<HighMemoryPercent>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GC.MemoryLoadChangeNotification.<LowMemoryPercent>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GC.MemoryLoadChangeNotification.<Notification>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.GCGenerationInfo | [IsReadOnlyAttribute(...)] |
+| System.GCGenerationInfo.<FragmentationAfterBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.GCGenerationInfo.<FragmentationBeforeBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.GCGenerationInfo.<SizeAfterBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.GCGenerationInfo.<SizeBeforeBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.GCMemoryInfo | [IsReadOnlyAttribute(...)] |
-| System.GCMemoryInfo.<FragmentedBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GCMemoryInfo.<HeapSizeBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GCMemoryInfo.<HighMemoryLoadThresholdBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GCMemoryInfo.<MemoryLoadBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.GCMemoryInfo.<TotalAvailableMemoryBytes>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Globalization.CalendarData.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Globalization.CompareOptions | [FlagsAttribute(...)] |
 | System.Globalization.CultureInfo.s_currentThreadCulture | [ThreadStaticAttribute(...)] |
@@ -230,6 +242,7 @@ attrNoArg
 | System.Globalization.GlobalizationMode.<Invariant>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Globalization.MonthNameStyles | [FlagsAttribute(...)] |
 | System.Globalization.NumberStyles | [FlagsAttribute(...)] |
+| System.Globalization.OrdinalCasing | [ExtensionAttribute(...)] |
 | System.Globalization.TextInfo.ToLowerConversion | [IsReadOnlyAttribute(...)] |
 | System.Globalization.TextInfo.ToUpperConversion | [IsReadOnlyAttribute(...)] |
 | System.Globalization.TimeSpanParse.StringParser | [IsByRefLikeAttribute(...)] |
@@ -240,6 +253,15 @@ attrNoArg
 | System.Globalization.TimeSpanParse.TimeSpanTokenizer | [IsByRefLikeAttribute(...)] |
 | System.Globalization.TimeSpanStyles | [FlagsAttribute(...)] |
 | System.Guid | [NonVersionableAttribute(...)] |
+| System.Half | [IsReadOnlyAttribute(...)] |
+| System.HexConverter.<>c | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<>c | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<CopyToAsyncCore>d__70 | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<DisposeAsync>d__35 | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<FlushAsyncInternal>d__38 | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<FlushWriteAsync>d__42 | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<ReadFromUnderlyingStreamAsync>d__51 | [CompilerGeneratedAttribute(...)] |
+| System.IO.BufferedStream.<WriteToUnderlyingStreamAsync>d__62 | [CompilerGeneratedAttribute(...)] |
 | System.IO.FileAccess | [FlagsAttribute(...)] |
 | System.IO.FileAttributes | [FlagsAttribute(...)] |
 | System.IO.FileLoadException.<FileName>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -250,10 +272,10 @@ attrNoArg
 | System.IO.FileShare | [FlagsAttribute(...)] |
 | System.IO.FileStream.<>c | [CompilerGeneratedAttribute(...)] |
 | System.IO.Path.<>c | [CompilerGeneratedAttribute(...)] |
-| System.IO.Stream.<<ReadAsync>g__FinishReadAsync\|47_0>d | [CompilerGeneratedAttribute(...)] |
+| System.IO.Stream.<<ReadAsync>g__FinishReadAsync\|46_0>d | [CompilerGeneratedAttribute(...)] |
 | System.IO.Stream.<>c | [CompilerGeneratedAttribute(...)] |
-| System.IO.Stream.<CopyToAsyncInternal>d__30 | [CompilerGeneratedAttribute(...)] |
-| System.IO.Stream.<FinishWriteAsync>d__60 | [CompilerGeneratedAttribute(...)] |
+| System.IO.Stream.<CopyToAsyncInternal>d__29 | [CompilerGeneratedAttribute(...)] |
+| System.IO.Stream.<FinishWriteAsync>d__59 | [CompilerGeneratedAttribute(...)] |
 | System.IO.Stream.SynchronousAsyncResult.<>c | [CompilerGeneratedAttribute(...)] |
 | System.IO.StreamReader.<ReadAsyncInternal>d__64 | [CompilerGeneratedAttribute(...)] |
 | System.IO.StreamReader.<ReadBufferAsync>d__67 | [CompilerGeneratedAttribute(...)] |
@@ -298,8 +320,19 @@ attrNoArg
 | System.Number.FloatingPointInfo.<OverflowDecimalExponent>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Number.FloatingPointInfo.<ZeroBits>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Number.NumberBuffer | [IsByRefLikeAttribute(...)] |
+| System.Numerics.Matrix3x2 | [IntrinsicAttribute(...)] |
+| System.Numerics.Matrix4x4 | [IntrinsicAttribute(...)] |
+| System.Numerics.Plane | [IntrinsicAttribute(...)] |
+| System.Numerics.Quaternion | [IntrinsicAttribute(...)] |
 | System.Numerics.Vector | [IntrinsicAttribute(...)] |
+| System.Numerics.Vector2 | [IntrinsicAttribute(...)] |
+| System.Numerics.Vector3 | [IntrinsicAttribute(...)] |
+| System.Numerics.Vector4 | [IntrinsicAttribute(...)] |
 | System.Numerics.Vector`1 | [IntrinsicAttribute(...)] |
+| System.ObsoleteAttribute.<DiagnosticId>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ObsoleteAttribute.<IsError>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ObsoleteAttribute.<Message>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.ObsoleteAttribute.<UrlFormat>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.ParamsArray | [IsReadOnlyAttribute(...)] |
 | System.ParseFlags | [FlagsAttribute(...)] |
 | System.Progress`1.ProgressChanged | [CompilerGeneratedAttribute(...)] |
@@ -404,15 +437,14 @@ attrNoArg
 | System.Resources.NeutralResourcesLanguageAttribute.<Location>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Resources.ResourceFallbackManager.<GetEnumerator>d__5 | [CompilerGeneratedAttribute(...)] |
 | System.Resources.ResourceReader.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Resources.ResourceReader.<>c__DisplayClass49_0`1 | [CompilerGeneratedAttribute(...)] |
+| System.Resources.ResourceReader.<>c__DisplayClass7_0`1 | [CompilerGeneratedAttribute(...)] |
 | System.Resources.SatelliteContractVersionAttribute.<Version>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.AssemblyTargetedPatchBandAttribute.<TargetedPatchBand>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.AccessedThroughPropertyAttribute.<PropertyName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.AsyncMethodBuilderAttribute.<BuilderType>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.StateMachine | [AllowNullAttribute(...)] |
-| System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.StateMachine | [MaybeNullAttribute(...)] |
 | System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.<ParameterName>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.CompilerServices.CastHelpers.CastCacheEntry._source | [NativeIntegerAttribute(...)] |
+| System.Runtime.CompilerServices.CastHelpers.CastCacheEntry._targetAndResult | [NativeIntegerAttribute(...)] |
 | System.Runtime.CompilerServices.CompilationRelaxations | [FlagsAttribute(...)] |
 | System.Runtime.CompilerServices.CompilationRelaxationsAttribute.<CompilationRelaxations>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.ConditionalWeakTable`2.<>c | [CompilerGeneratedAttribute(...)] |
@@ -431,27 +463,34 @@ attrNoArg
 | System.Runtime.CompilerServices.DefaultDependencyAttribute.<LoadHint>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.DependencyAttribute.<DependentAssembly>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.DependencyAttribute.<LoadHint>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.FixedBufferAttribute.<ElementType>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.FixedBufferAttribute.<Length>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute.<AllInternalsVisible>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute.<AssemblyName>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.CompilerServices.JitHelpers | [ExtensionAttribute(...)] |
+| System.Runtime.CompilerServices.IsUnmanagedAttribute | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.CompilerServices.IsUnmanagedAttribute | [EmbeddedAttribute(...)] |
 | System.Runtime.CompilerServices.MethodImplAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.MethodImplOptions | [FlagsAttribute(...)] |
-| System.Runtime.CompilerServices.NullableAttribute | [AttributeUsageAttribute(...)] |
+| System.Runtime.CompilerServices.NativeIntegerAttribute | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.CompilerServices.NativeIntegerAttribute | [EmbeddedAttribute(...)] |
 | System.Runtime.CompilerServices.NullableAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullableAttribute | [EmbeddedAttribute(...)] |
-| System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.NullableContextAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullableContextAttribute | [EmbeddedAttribute(...)] |
-| System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [EmbeddedAttribute(...)] |
+| System.Runtime.CompilerServices.ObjectHandleOnStack | [IsByRefLikeAttribute(...)] |
+| System.Runtime.CompilerServices.QCallAssembly | [IsByRefLikeAttribute(...)] |
+| System.Runtime.CompilerServices.QCallModule | [IsByRefLikeAttribute(...)] |
+| System.Runtime.CompilerServices.QCallTypeHandle | [IsByRefLikeAttribute(...)] |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute.<Description>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute.<WrapNonExceptionThrows>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.CompilerServices.RuntimeHelpers | [ExtensionAttribute(...)] |
+| System.Runtime.CompilerServices.StackCrawlMarkHandle | [IsByRefLikeAttribute(...)] |
 | System.Runtime.CompilerServices.StateMachineAttribute.<StateMachineType>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.CompilerServices.StringHandleOnStack | [IsByRefLikeAttribute(...)] |
 | System.Runtime.CompilerServices.StrongBox`1.Value | [MaybeNullAttribute(...)] |
+| System.Runtime.CompilerServices.SwitchExpressionException.<UnmatchedValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.TaskAwaiter | [IsReadOnlyAttribute(...)] |
 | System.Runtime.CompilerServices.TaskAwaiter.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.TaskAwaiter`1 | [IsReadOnlyAttribute(...)] |
@@ -463,7 +502,6 @@ attrNoArg
 | System.Runtime.CompilerServices.YieldAwaitable | [IsReadOnlyAttribute(...)] |
 | System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter | [IsReadOnlyAttribute(...)] |
 | System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.<Cer>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.<ConsistencyGuarantee>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs.<Exception>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -484,6 +522,8 @@ attrNoArg
 | System.Runtime.InteropServices.ComTypes.TYPEFLAGS | [FlagsAttribute(...)] |
 | System.Runtime.InteropServices.ComTypes.VARFLAGS | [FlagsAttribute(...)] |
 | System.Runtime.InteropServices.ComVisibleAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.InteropServices.CreateComInterfaceFlags | [FlagsAttribute(...)] |
+| System.Runtime.InteropServices.CreateObjectFlags | [FlagsAttribute(...)] |
 | System.Runtime.InteropServices.CurrencyWrapper.<WrappedObject>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.DefaultCharSetAttribute.<CharSet>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute.<Paths>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -500,14 +540,17 @@ attrNoArg
 | System.Runtime.InteropServices.LCIDConversionAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.Marshal.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.MarshalAsAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.InteropServices.MemoryMarshal.<ToEnumerable>d__3`1 | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.InteropServices.MemoryMarshal.<ToEnumerable>d__15`1 | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.ProgIdAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.InteropServices.SafeBuffer._numBytes | [NativeIntegerAttribute(...)] |
 | System.Runtime.InteropServices.StructLayoutAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.TypeIdentifierAttribute.<Identifier>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.TypeIdentifierAttribute.<Scope>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.UnknownWrapper.<WrappedObject>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute.<CallingConvention>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.InteropServices.VariantWrapper.<WrappedObject>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Intrinsics.Arm.Crc32 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.Arm.Crc32.Arm64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.Vector64 | [ExtensionAttribute(...)] |
 | System.Runtime.Intrinsics.Vector64DebugView`1 | [IsReadOnlyAttribute(...)] |
 | System.Runtime.Intrinsics.Vector64`1 | [IntrinsicAttribute(...)] |
@@ -521,33 +564,40 @@ attrNoArg
 | System.Runtime.Intrinsics.Vector256`1 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.Vector256`1 | [IsReadOnlyAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Aes | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Aes.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Avx | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Avx2 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Avx2.X64 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Avx.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Bmi1 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Bmi1.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Bmi2 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Bmi2.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Fma | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Fma.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Lzcnt | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Lzcnt.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Pclmulqdq | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Pclmulqdq.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Popcnt | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Popcnt.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse2 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse2.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse3 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Sse3.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse41 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse41.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse42 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse42.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Sse.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Intrinsics.X86.Ssse3 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.Ssse3.X64 | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.X86Base | [IntrinsicAttribute(...)] |
+| System.Runtime.Intrinsics.X86.X86Base.X64 | [IntrinsicAttribute(...)] |
 | System.Runtime.Loader.AssemblyDependencyResolver.<>c__DisplayClass6_0 | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.Loader.AssemblyDependencyResolver.corehost_error_writer_fn | [UnmanagedFunctionPointerAttribute(...)] |
-| System.Runtime.Loader.AssemblyDependencyResolver.corehost_resolve_component_dependencies_result_fn | [UnmanagedFunctionPointerAttribute(...)] |
-| System.Runtime.Loader.AssemblyLoadContext.<get_All>d__88 | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.Loader.AssemblyLoadContext.<get_Assemblies>d__58 | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Loader.AssemblyLoadContext.<get_All>d__83 | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Loader.AssemblyLoadContext.<get_Assemblies>d__53 | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.Loader.AssemblyLoadContext.AssemblyLoad | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.Loader.AssemblyLoadContext.AssemblyResolve | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.Loader.AssemblyLoadContext.ResourceResolve | [CompilerGeneratedAttribute(...)] |
@@ -565,11 +615,36 @@ attrNoArg
 | System.Runtime.Serialization.SerializationInfo.<IsFullTypeNameSetExplicit>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.Serialization.StreamingContext | [IsReadOnlyAttribute(...)] |
 | System.Runtime.Serialization.StreamingContextStates | [FlagsAttribute(...)] |
-| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.TargetedPatchingOptOutAttribute.<Reason>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ComponentGuaranteesAttribute.<Guarantees>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ComponentGuaranteesOptions | [FlagsAttribute(...)] |
+| System.Runtime.Versioning.OSPlatformAttribute.<PlatformName>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ResourceConsumptionAttribute.<ConsumptionScope>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ResourceConsumptionAttribute.<ResourceScope>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ResourceExposureAttribute.<ResourceExposureLevel>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Runtime.Versioning.ResourceScope | [FlagsAttribute(...)] |
+| System.Runtime.Versioning.SxSRequirements | [FlagsAttribute(...)] |
 | System.RuntimeArgumentHandle | [IsByRefLikeAttribute(...)] |
 | System.RuntimeType.RuntimeTypeCache.Filter | [IsReadOnlyAttribute(...)] |
 | System.Security.AllowPartiallyTrustedCallersAttribute.<PartialTrustVisibilityLevel>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityAttribute.<Action>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityAttribute.<Unrestricted>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<Assertion>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<BindingRedirects>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlAppDomain>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlDomainPolicy>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlEvidence>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlPolicy>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlPrincipal>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<ControlThread>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<Execution>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<Flags>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<Infrastructure>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<RemotingConfiguration>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<SerializationFormatter>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<SkipVerification>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionAttribute.<UnmanagedCode>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Security.Permissions.SecurityPermissionFlag | [FlagsAttribute(...)] |
 | System.Security.SecurityCriticalAttribute.<Scope>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Security.SecurityElement.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Security.SecurityException.<Demanded>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -590,13 +665,13 @@ attrNoArg
 | System.Span`1 | [IsReadOnlyAttribute(...)] |
 | System.Span`1 | [NonVersionableAttribute(...)] |
 | System.Span`1.Enumerator | [IsByRefLikeAttribute(...)] |
+| System.StringNormalizationExtensions | [ExtensionAttribute(...)] |
 | System.StringSplitOptions | [FlagsAttribute(...)] |
 | System.TermInfo.ParameterizedStrings.FormatParam | [IsReadOnlyAttribute(...)] |
 | System.TermInfo.ParameterizedStrings.t_cachedOneElementArgsArray | [ThreadStaticAttribute(...)] |
 | System.TermInfo.ParameterizedStrings.t_cachedStack | [ThreadStaticAttribute(...)] |
 | System.TermInfo.ParameterizedStrings.t_cachedTwoElementArgsArray | [ThreadStaticAttribute(...)] |
 | System.Text.CodePageDataItem.<BodyName>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Text.CodePageDataItem.<CodePage>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.CodePageDataItem.<DisplayName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.CodePageDataItem.<Flags>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.CodePageDataItem.<HeaderName>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -606,10 +681,19 @@ attrNoArg
 | System.Text.EncodingInfo.<CodePage>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.EncodingInfo.<DisplayName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.EncodingInfo.<Name>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Text.EncodingInfo.<Provider>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Text.Latin1Encoding.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Text.Rune | [IsReadOnlyAttribute(...)] |
 | System.Text.SpanRuneEnumerator | [IsByRefLikeAttribute(...)] |
 | System.Text.StringBuilderCache.t_cachedInstance | [ThreadStaticAttribute(...)] |
 | System.Text.StringOrCharArray | [IsReadOnlyAttribute(...)] |
+| System.Text.TranscodingStream.<<DisposeAsync>g__DisposeAsyncCore\|30_0>d | [CompilerGeneratedAttribute(...)] |
+| System.Text.TranscodingStream.<<ReadAsync>g__ReadAsyncCore\|41_0>d | [CompilerGeneratedAttribute(...)] |
+| System.Text.TranscodingStream.<<WriteAsync>g__WriteAsyncCore\|50_0>d | [CompilerGeneratedAttribute(...)] |
+| System.Text.TrimType | [FlagsAttribute(...)] |
+| System.Text.Unicode.TextSegmentationUtility.Processor`1 | [IsByRefLikeAttribute(...)] |
+| System.Text.Unicode.TextSegmentationUtility.Processor`1.<CurrentCodeUnitOffset>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Text.Unicode.TextSegmentationUtility.Processor`1.<CurrentType>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Text.ValueStringBuilder | [IsByRefLikeAttribute(...)] |
 | System.Threading.AsyncLocalValueChangedArgs`1 | [IsReadOnlyAttribute(...)] |
 | System.Threading.AsyncLocalValueChangedArgs`1.<CurrentValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -622,6 +706,7 @@ attrNoArg
 | System.Threading.CancellationTokenSource.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.CancellationTokenSource.CallbackNode.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.CancellationTokenSource.LinkedNCancellationTokenSource.<>c | [CompilerGeneratedAttribute(...)] |
+| System.Threading.ProcessorIdCache.t_currentProcessorIdCache | [ThreadStaticAttribute(...)] |
 | System.Threading.QueueUserWorkItemCallback.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.ReaderWriterLockSlim.WaiterStates | [FlagsAttribute(...)] |
 | System.Threading.ReaderWriterLockSlim.t_rwc | [ThreadStaticAttribute(...)] |
@@ -636,14 +721,11 @@ attrNoArg
 | System.Threading.Tasks.SingleProducerSingleConsumerQueue`1.<GetEnumerator>d__11 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1.<RunContinuationsAsynchronously>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result | [AllowNullAttribute(...)] |
-| System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result | [MaybeNullAttribute(...)] |
 | System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags | [FlagsAttribute(...)] |
 | System.Threading.Tasks.SynchronizationContextAwaitTaskContinuation.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.SynchronizationContextAwaitTaskContinuation.<>c__DisplayClass6_0 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.SynchronizationContextTaskScheduler.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Task.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.Task.<CompletedTask>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Task.<Factory>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Task.DelayPromise.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Task.DelayPromiseWithCancellation.<>c | [CompilerGeneratedAttribute(...)] |
@@ -658,13 +740,11 @@ attrNoArg
 | System.Threading.Tasks.TaskFactory`1.<>c__DisplayClass38_0`1 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.TaskFactory`1.<>c__DisplayClass41_0`2 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.TaskFactory`1.<>c__DisplayClass44_0`3 | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.TaskFactory`1.FromAsyncTrimPromise`1.m_thisRef | [AllowNullAttribute(...)] |
-| System.Threading.Tasks.TaskFactory`1.FromAsyncTrimPromise`1.m_thisRef | [MaybeNullAttribute(...)] |
 | System.Threading.Tasks.TaskScheduler.UnobservedTaskException | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.TaskSchedulerAwaitTaskContinuation.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.TaskToApm.<>c__DisplayClass3_0 | [CompilerGeneratedAttribute(...)] |
+| System.Threading.Tasks.TaskToApm.TaskAsyncResult.<AsyncState>k__BackingField | [CompilerGeneratedAttribute(...)] |
+| System.Threading.Tasks.TaskToApm.TaskAsyncResult.<CompletedSynchronously>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.Task`1.TaskWhenAnyCast.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.Task`1.m_result | [MaybeNullAttribute(...)] |
 | System.Threading.Tasks.ThreadPoolTaskScheduler.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.ThreadPoolTaskScheduler.<FilterTasksFromWorkItems>d__6 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.UnwrapPromise`1.<>c | [CompilerGeneratedAttribute(...)] |
@@ -672,17 +752,13 @@ attrNoArg
 | System.Threading.Tasks.ValueTask.ValueTaskSourceAsTask.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.Tasks.ValueTask`1 | [IsReadOnlyAttribute(...)] |
 | System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Threading.Tasks.ValueTask`1._result | [AllowNullAttribute(...)] |
-| System.Threading.Thread.t_currentProcessorIdCache | [ThreadStaticAttribute(...)] |
 | System.Threading.Thread.t_currentThread | [ThreadStaticAttribute(...)] |
 | System.Threading.ThreadHandle | [IsReadOnlyAttribute(...)] |
-| System.Threading.ThreadLocal`1.LinkedSlot._value | [AllowNullAttribute(...)] |
-| System.Threading.ThreadLocal`1.LinkedSlot._value | [MaybeNullAttribute(...)] |
 | System.Threading.ThreadLocal`1.ts_finalizationHelper | [ThreadStaticAttribute(...)] |
 | System.Threading.ThreadLocal`1.ts_slotArray | [ThreadStaticAttribute(...)] |
-| System.Threading.ThreadPool.<GetLocallyQueuedWorkItems>d__51 | [CompilerGeneratedAttribute(...)] |
-| System.Threading.ThreadPool.<GetQueuedWorkItems>d__50 | [CompilerGeneratedAttribute(...)] |
-| System.Threading.ThreadPoolGlobals.<>c | [CompilerGeneratedAttribute(...)] |
+| System.Threading.ThreadPool.<>c | [CompilerGeneratedAttribute(...)] |
+| System.Threading.ThreadPool.<GetLocallyQueuedWorkItems>d__52 | [CompilerGeneratedAttribute(...)] |
+| System.Threading.ThreadPool.<GetQueuedWorkItems>d__51 | [CompilerGeneratedAttribute(...)] |
 | System.Threading.ThreadPoolWorkQueueThreadLocals.threadLocals | [ThreadStaticAttribute(...)] |
 | System.Threading.ThreadState | [FlagsAttribute(...)] |
 | System.Threading.TimerQueue.<ActiveCount>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -693,7 +769,7 @@ attrNoArg
 | System.ThrowHelper | [StackTraceHiddenAttribute(...)] |
 | System.TimeSpan | [IsReadOnlyAttribute(...)] |
 | System.TimeZoneInfo.<>c | [CompilerGeneratedAttribute(...)] |
-| System.TimeZoneInfo.<>c__DisplayClass125_0 | [CompilerGeneratedAttribute(...)] |
+| System.TimeZoneInfo.<>c__DisplayClass124_0 | [CompilerGeneratedAttribute(...)] |
 | System.TimeZoneInfo.TransitionTime | [IsReadOnlyAttribute(...)] |
 | System.TimeZoneInfoOptions | [FlagsAttribute(...)] |
 | System.TupleExtensions | [ExtensionAttribute(...)] |
@@ -701,6 +777,7 @@ attrNoArg
 | System.TypedReference | [IsByRefLikeAttribute(...)] |
 | System.TypedReference | [NonVersionableAttribute(...)] |
 | System.UIntPtr | [IsReadOnlyAttribute(...)] |
+| System.UIntPtr System.Runtime.InteropServices.SafeBuffer.Uninitialized | [NativeIntegerAttribute(...)] |
 | System.UIntPtr.Zero | [IntrinsicAttribute(...)] |
 | System.__DTString | [IsByRefLikeAttribute(...)] |
 | bool | [IsReadOnlyAttribute(...)] |
@@ -726,19 +803,34 @@ attrArgNamed
 | System.Buffers.ArrayPoolEventSource | [EventSourceAttribute(...)] | Name | System.Buffers.ArrayPoolEventSource |
 | System.CLSCompliantAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.CLSCompliantAttribute | [AttributeUsageAttribute(...)] | Inherited | True |
+| System.CodeDom.Compiler.GeneratedCodeAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.CodeDom.Compiler.GeneratedCodeAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Collections.KeyValuePairs | [DebuggerDisplayAttribute(...)] | Name | [{_key}] |
+| System.ContextStaticAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.AllowNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.DisallowNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.MaybeNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.NotNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.NotNullWhenAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Diagnostics.ConditionalAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Diagnostics.Contracts.ContractAbbreviatorAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Diagnostics.Contracts.ContractArgumentValidatorAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
@@ -805,6 +897,7 @@ attrArgNamed
 | System.Reflection.ObfuscationAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Resources.NeutralResourcesLanguageAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Resources.SatelliteContractVersionAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.AsyncMethodBuilderAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
@@ -823,6 +916,7 @@ attrArgNamed
 | System.Runtime.CompilerServices.DependencyAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.FixedBufferAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.IndexerNameAttribute | [AttributeUsageAttribute(...)] | Inherited | True |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
@@ -832,15 +926,21 @@ attrArgNamed
 | System.Runtime.CompilerServices.IteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.IteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.MethodImplAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.ModuleInitializerAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.NativeIntegerAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.CompilerServices.NativeIntegerAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.NullableAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.NullableAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.PreserveBaseOverridesAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.CompilerServices.PreserveBaseOverridesAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.SkipLocalsInitAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.StateMachineAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.StateMachineAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.StringFreezingAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -850,11 +950,22 @@ attrArgNamed
 | System.Runtime.CompilerServices.TypeForwardedFromAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.ConstrainedExecution.Cer | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0004 |
+| System.Runtime.ConstrainedExecution.Cer | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Runtime.ConstrainedExecution.Consistency | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0004 |
+| System.Runtime.ConstrainedExecution.Consistency | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0004 |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0004 |
+| System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Runtime.InteropServices.BestFitMappingAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.ClassInterfaceAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.CoClassAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -867,6 +978,8 @@ attrArgNamed
 | System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.InteropServices.DispIdAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.DllImportAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.FieldOffsetAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.GuidAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.InAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -878,8 +991,10 @@ attrArgNamed
 | System.Runtime.InteropServices.PreserveSigAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.ProgIdAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.StructLayoutAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.InteropServices.SuppressGCTransitionAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.TypeIdentifierAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.InteropServices.TypeIdentifierAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Serialization.OnDeserializedAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -887,12 +1002,50 @@ attrArgNamed
 | System.Runtime.Serialization.OnSerializedAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Serialization.OnSerializingAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Serialization.OptionalFieldAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.ComponentGuaranteesAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.Versioning.ComponentGuaranteesAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.ResourceConsumptionAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.ResourceExposureAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.SupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Runtime.Versioning.SupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.TargetPlatformAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.Versioning.TargetPlatformAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.Versioning.UnsupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Runtime.Versioning.UnsupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Security.AllowPartiallyTrustedCallersAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Security.AllowPartiallyTrustedCallersAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Security.IPermission | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.IPermission | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.IStackWalk | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.IStackWalk | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.PermissionSet | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.PermissionSet | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.PermissionSet System.AppDomain.PermissionSet | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.PermissionSet System.AppDomain.PermissionSet | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.PermissionState | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.PermissionState | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.SecurityAction | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.SecurityAction | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.SecurityAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Security.Permissions.SecurityAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Security.Permissions.SecurityAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.SecurityAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.SecurityPermissionAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
+| System.Security.Permissions.SecurityPermissionAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Security.Permissions.SecurityPermissionAttribute | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.SecurityPermissionAttribute | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| System.Security.Permissions.SecurityPermissionFlag | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0003 |
+| System.Security.Permissions.SecurityPermissionFlag | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Security.SecurityCriticalAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Security.SecurityCriticalAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Security.SecurityRulesAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
@@ -907,22 +1060,33 @@ attrArgNamed
 | System.Security.UnverifiableCodeAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Security.UnverifiableCodeAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.SerializableAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Text.Encoding System.Text.Encoding.UTF7 | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0001 |
+| System.Text.Encoding System.Text.Encoding.UTF7 | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 | System.Text.Encoding._isReadOnly | [OptionalFieldAttribute(...)] | VersionAdded | 2 |
 | System.ThreadStaticAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Threading.Tasks.TplEventSource | [EventSourceAttribute(...)] | Guid | 2e5dba47-a3d2-4d16-8ee0-6671ffdcd7b5 |
-| System.Threading.Tasks.TplEventSource | [EventSourceAttribute(...)] | LocalizationResources | System.Private.CoreLib.Resources.Strings |
+| System.Threading.Tasks.TplEventSource | [EventSourceAttribute(...)] | LocalizationResources | System.Private.CoreLib.Strings |
 | System.Threading.Tasks.TplEventSource | [EventSourceAttribute(...)] | Name | System.Threading.Tasks.TplEventSource |
+| bool System.Reflection.Assembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0005 |
+| bool System.Reflection.Assembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| bool System.Reflection.Emit.AssemblyBuilder.GlobalAssemblyCache | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0005 |
+| bool System.Reflection.Emit.AssemblyBuilder.GlobalAssemblyCache | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
+| bool System.Reflection.RuntimeAssembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | DiagnosticId | SYSLIB0005 |
+| bool System.Reflection.RuntimeAssembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | UrlFormat | https://aka.ms/dotnet-warnings/{0} |
 attrArgPositional
 | !0 System.ArraySegment`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Collections.Generic.Dictionary`2.KeyCollection.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
+| !0 System.Collections.Generic.HashSet`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Collections.Generic.IAsyncEnumerator`1.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Collections.Generic.IEnumerator`1.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Collections.Generic.List`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Lazy`1.Value | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
+| !0 System.Lazy`1.ValueForDebugDisplay | [NullableAttribute(...)] | 0 | 2 |
 | !0 System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Threading.Tasks.Task`1.Result | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
 | !0 System.Threading.Tasks.ValueTask`1.Result | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
 | !0 System.Threading.ThreadLocal`1.Value | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
+| !0 System.Threading.ThreadLocal`1.ValueForDebugDisplay | [NullableAttribute(...)] | 0 | 2 |
 | !0 System.Tuple`1.Item1 | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Tuple`2.Item1 | [NullableAttribute(...)] | 0 | 1 |
 | !0[] System.ArraySegment`1.Array | [NullableAttribute(...)] | 0 | [2,1] |
@@ -934,12 +1098,19 @@ attrArgPositional
 | !1 System.Collections.Generic.Dictionary`2.ValueCollection.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !1 System.Tuple`2.Item2 | [NullableAttribute(...)] | 0 | 1 |
 | !1[] System.Collections.Generic.DictionaryValueCollectionDebugView`2.Items | [DebuggerBrowsableAttribute(...)] | 0 | 3 |
-| <>f__AnonymousType0`1.<message>i__Field | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
 | Internal.Runtime.CompilerServices.Unsafe | [CLSCompliantAttribute(...)] | 0 | False |
 | Internal.Runtime.CompilerServices.Unsafe | [NullableAttribute(...)] | 0 | 0 |
 | Internal.Runtime.CompilerServices.Unsafe | [NullableContextAttribute(...)] | 0 | 1 |
-| Internal.Threading.Tasks.AsyncCausalitySupport | [NullableAttribute(...)] | 0 | 0 |
-| Internal.Threading.Tasks.AsyncCausalitySupport | [NullableContextAttribute(...)] | 0 | 1 |
+| Internal.Runtime.InteropServices.ComActivationContext | [NullableAttribute(...)] | 0 | 0 |
+| Internal.Runtime.InteropServices.ComActivationContext | [NullableContextAttribute(...)] | 0 | 1 |
+| Internal.Runtime.InteropServices.ComActivationContextInternal | [CLSCompliantAttribute(...)] | 0 | False |
+| Internal.Runtime.InteropServices.IClassFactory | [ComVisibleAttribute(...)] | 0 | False |
+| Internal.Runtime.InteropServices.IClassFactory | [GuidAttribute(...)] | 0 | 00000001-0000-0000-C000-000000000046 |
+| Internal.Runtime.InteropServices.IClassFactory | [InterfaceTypeAttribute(...)] | 0 | 1 |
+| Internal.Runtime.InteropServices.IClassFactory | [NullableContextAttribute(...)] | 0 | 2 |
+| Internal.Runtime.InteropServices.IClassFactory2 | [ComVisibleAttribute(...)] | 0 | False |
+| Internal.Runtime.InteropServices.IClassFactory2 | [GuidAttribute(...)] | 0 | B196B28F-BAB4-101A-B69C-00AA00341D07 |
+| Internal.Runtime.InteropServices.IClassFactory2 | [InterfaceTypeAttribute(...)] | 0 | 1 |
 | Interop.Sys.MountPointFound | [UnmanagedFunctionPointerAttribute(...)] | 0 | 2 |
 | System.AccessViolationException | [NullableAttribute(...)] | 0 | 0 |
 | System.AccessViolationException | [NullableContextAttribute(...)] | 0 | 2 |
@@ -981,15 +1152,26 @@ attrArgPositional
 | System.AppContext | [NullableContextAttribute(...)] | 0 | 2 |
 | System.AppContext.FirstChanceException | [NullableAttribute(...)] | 0 | [2,1] |
 | System.AppDomain | [NullableAttribute(...)] | 0 | 0 |
-| System.AppDomain | [NullableContextAttribute(...)] | 0 | 2 |
-| System.AppDomain System.AppDomain.CurrentDomain | [NullableAttribute(...)] | 0 | 1 |
+| System.AppDomain | [NullableContextAttribute(...)] | 0 | 1 |
+| System.AppDomain.AssemblyLoad | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.AssemblyResolve | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.DomainUnload | [NullableAttribute(...)] | 0 | 2 |
 | System.AppDomain.FirstChanceException | [NullableAttribute(...)] | 0 | [2,1] |
+| System.AppDomain.ProcessExit | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.ReflectionOnlyAssemblyResolve | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.ResourceResolve | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.TypeResolve | [NullableAttribute(...)] | 0 | 2 |
+| System.AppDomain.UnhandledException | [NullableAttribute(...)] | 0 | 2 |
 | System.AppDomainSetup | [NullableAttribute(...)] | 0 | 0 |
 | System.AppDomainSetup | [NullableContextAttribute(...)] | 0 | 2 |
-| System.AppDomainSetup System.AppDomain.SetupInformation | [NullableAttribute(...)] | 0 | 1 |
+| System.AppDomainUnloadedException | [NullableAttribute(...)] | 0 | 0 |
+| System.AppDomainUnloadedException | [NullableContextAttribute(...)] | 0 | 2 |
+| System.AppDomainUnloadedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.ApplicationException | [NullableAttribute(...)] | 0 | 0 |
 | System.ApplicationException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.ApplicationException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.ApplicationId | [NullableAttribute(...)] | 0 | 0 |
+| System.ApplicationId | [NullableContextAttribute(...)] | 0 | 1 |
 | System.ArgumentException | [NullableAttribute(...)] | 0 | 0 |
 | System.ArgumentException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.ArgumentException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -1037,6 +1219,11 @@ attrArgPositional
 | System.CannotUnloadAppDomainException | [NullableAttribute(...)] | 0 | 0 |
 | System.CannotUnloadAppDomainException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.CannotUnloadAppDomainException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.CodeDom.Compiler.GeneratedCodeAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
+| System.CodeDom.Compiler.GeneratedCodeAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.CodeDom.Compiler.GeneratedCodeAttribute | [NullableContextAttribute(...)] | 0 | 2 |
+| System.CodeDom.Compiler.IndentedTextWriter | [NullableAttribute(...)] | 0 | 0 |
+| System.CodeDom.Compiler.IndentedTextWriter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.ArrayList | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
 | System.Collections.ArrayList | [DebuggerTypeProxyAttribute(...)] | 0 | System.Collections.ArrayList.ArrayListDebugView |
 | System.Collections.ArrayList | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -1068,6 +1255,8 @@ attrArgPositional
 | System.Collections.EmptyReadOnlyDictionaryInternal | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.ArraySortHelper`1 | [TypeDependencyAttribute(...)] | 0 | System.Collections.Generic.GenericArraySortHelper`1 |
 | System.Collections.Generic.ArraySortHelper`2 | [TypeDependencyAttribute(...)] | 0 | System.Collections.Generic.GenericArraySortHelper`2 |
+| System.Collections.Generic.BitHelper | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Collections.Generic.BitHelper | [ObsoleteAttribute(...)] | 1 | True |
 | System.Collections.Generic.ByteEqualityComparer | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.Comparer`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.Comparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1094,18 +1283,24 @@ attrArgPositional
 | System.Collections.Generic.EqualityComparer`1 | [TypeDependencyAttribute(...)] | 0 | System.Collections.Generic.ObjectEqualityComparer`1 |
 | System.Collections.Generic.EqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.GenericComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
-| System.Collections.Generic.GenericComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.GenericComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.GenericComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.GenericEqualityComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
+| System.Collections.Generic.GenericEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.GenericEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Collections.Generic.HashSet`1 | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
+| System.Collections.Generic.HashSet`1 | [DebuggerTypeProxyAttribute(...)] | 0 | System.Collections.Generic.ICollectionDebugView`1 |
+| System.Collections.Generic.HashSet`1 | [NullableAttribute(...)] | 0 | 0 |
+| System.Collections.Generic.HashSet`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.HashSet`1 | [TypeForwardedFromAttribute(...)] | 0 | System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Collections.Generic.HashSet`1.Enumerator | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.IAsyncEnumerable`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.ICollection`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.Generic.IComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.IComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.IDictionary<System.String,System.String> System.Diagnostics.Tracing.EventCommandEventArgs.Arguments | [NullableAttribute(...)] | 0 | [2,1,2] |
 | System.Collections.Generic.IDictionary`2 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.IDictionary`2 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.Generic.IEqualityComparer<System.String> System.Collections.Generic.NonRandomizedStringEqualityComparer.Default | [NullableAttribute(...)] | 0 | [1,2] |
-| System.Collections.Generic.IEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.IEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.IList<System.String> System.Runtime.CompilerServices.TupleElementNamesAttribute.TransformNames | [NullableAttribute(...)] | 0 | [1,2] |
 | System.Collections.Generic.IList`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.IList`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1113,6 +1308,7 @@ attrArgPositional
 | System.Collections.Generic.IReadOnlyDictionary`2 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.IReadOnlyList`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.IReadOnlyList`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.IReadOnlySet`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.ISet`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.KeyNotFoundException | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.KeyNotFoundException | [NullableContextAttribute(...)] | 0 | 2 |
@@ -1122,6 +1318,8 @@ attrArgPositional
 | System.Collections.Generic.KeyValuePair`2 | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.KeyValuePair`2 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.KeyValuePair`2 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Collections.Generic.KeyValuePair`2.key | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
+| System.Collections.Generic.KeyValuePair`2.value | [DebuggerBrowsableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.List<!0> System.Threading.ThreadLocal`1.ValuesForDebugDisplay | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Collections.Generic.List`1 | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
 | System.Collections.Generic.List`1 | [DebuggerTypeProxyAttribute(...)] | 0 | System.Collections.Generic.ICollectionDebugView`1 |
@@ -1130,16 +1328,15 @@ attrArgPositional
 | System.Collections.Generic.List`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.List`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.List`1.Enumerator | [NullableContextAttribute(...)] | 0 | 0 |
-| System.Collections.Generic.NonRandomizedStringEqualityComparer | [NullableAttribute(...)] | 0 | [0,2] |
-| System.Collections.Generic.NonRandomizedStringEqualityComparer | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.NullableComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.NullableEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.ObjectComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Collections.Generic.ObjectComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.ObjectComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.ObjectEqualityComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
-| System.Collections.Generic.ObjectEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Collections.Generic.ObjectEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.ObjectEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Collections.Generic.ReferenceEqualityComparer System.Collections.Generic.ReferenceEqualityComparer.Instance | [NullableAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.ValueListBuilder`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.ValueListBuilder`1 | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.Collections.Generic.ValueListBuilder`1 | [ObsoleteAttribute(...)] | 1 | True |
@@ -1161,7 +1358,6 @@ attrArgPositional
 | System.Collections.IEnumerable | [ComVisibleAttribute(...)] | 0 | True |
 | System.Collections.IEnumerable | [GuidAttribute(...)] | 0 | 496B0ABE-CDEE-11d3-88E8-00902754C43A |
 | System.Collections.IEnumerable | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.IEnumerator | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.IEqualityComparer | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.IEqualityComparer System.Collections.Hashtable.EqualityComparer | [NullableAttribute(...)] | 0 | 2 |
 | System.Collections.IHashCodeProvider | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1198,6 +1394,16 @@ attrArgPositional
 | System.ComponentModel.DefaultValueAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.ComponentModel.DefaultValueAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.ComponentModel.EditorBrowsableAttribute | [AttributeUsageAttribute(...)] | 0 | 6140 |
+| System.Console | [NullableAttribute(...)] | 0 | 0 |
+| System.Console | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Console.CancelKeyPress | [NullableAttribute(...)] | 0 | 2 |
+| System.Console.CancelKeyPress | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| System.ConsoleColor System.Console.BackgroundColor | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| System.ConsoleColor System.Console.ForegroundColor | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| System.ContextMarshalException | [NullableAttribute(...)] | 0 | 0 |
+| System.ContextMarshalException | [NullableContextAttribute(...)] | 0 | 2 |
+| System.ContextMarshalException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.ContextStaticAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
 | System.Convert | [NullableAttribute(...)] | 0 | 0 |
 | System.Convert | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Convert.DBNull | [NullableAttribute(...)] | 0 | 1 |
@@ -1227,17 +1433,36 @@ attrArgPositional
 | System.Diagnostics.CodeAnalysis.DisallowNullAttribute | [AttributeUsageAttribute(...)] | 0 | 2432 |
 | System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute | [AttributeUsageAttribute(...)] | 0 | 352 |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute | [AttributeUsageAttribute(...)] | 0 | 27072 |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute | [AttributeUsageAttribute(...)] | 0 | 749 |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Diagnostics.CodeAnalysis.MaybeNullAttribute | [AttributeUsageAttribute(...)] | 0 | 10624 |
 | System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute | [AttributeUsageAttribute(...)] | 0 | 192 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullAttribute | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute | [AttributeUsageAttribute(...)] | 0 | 192 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.CodeAnalysis.NotNullAttribute | [AttributeUsageAttribute(...)] | 0 | 10624 |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute | [AttributeUsageAttribute(...)] | 0 | 10368 |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.CodeAnalysis.NotNullWhenAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [ConditionalAttribute(...)] | 0 | CODE_ANALYSIS |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.CodeAnalysis.SuppressMessageAttribute | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Diagnostics.ConditionalAttribute | [AttributeUsageAttribute(...)] | 0 | 68 |
 | System.Diagnostics.ConditionalAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.ConditionalAttribute | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1373,7 +1598,7 @@ attrArgPositional
 | System.Exception | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Exception | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Exception.SerializeObjectState | [NullableAttribute(...)] | 0 | [2,1] |
-| System.Exception[] System.Reflection.ReflectionTypeLoadException.LoaderExceptions | [NullableAttribute(...)] | 0 | 2 |
+| System.Exception[] System.Reflection.ReflectionTypeLoadException.LoaderExceptions | [NullableAttribute(...)] | 0 | [1,2] |
 | System.ExecutionEngineException | [NullableAttribute(...)] | 0 | 0 |
 | System.ExecutionEngineException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.ExecutionEngineException | [ObsoleteAttribute(...)] | 0 | This type previously indicated an unspecified fatal error in the runtime. The runtime no longer raises this exception so this type is obsolete. |
@@ -1440,8 +1665,6 @@ attrArgPositional
 | System.Globalization.EraInfo[] System.Globalization.TaiwanLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Globalization.GregorianCalendar | [NullableAttribute(...)] | 0 | 0 |
 | System.Globalization.GregorianCalendar | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Globalization.HebrewCalendar | [NullableAttribute(...)] | 0 | 0 |
-| System.Globalization.HebrewCalendar | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Globalization.HijriCalendar | [NullableAttribute(...)] | 0 | 0 |
 | System.Globalization.HijriCalendar | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Globalization.IdnMapping | [NullableAttribute(...)] | 0 | 0 |
@@ -1494,20 +1717,23 @@ attrArgPositional
 | System.Guid | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.HashCode | [NullableAttribute(...)] | 0 | 0 |
 | System.HashCode | [NullableContextAttribute(...)] | 0 | 1 |
+| System.HexConverter.<>c.<>9__4_0 | [TupleElementNamesAttribute(...)] | 0 | [Ptr,Length,casing] |
 | System.IAsyncResult | [NullableContextAttribute(...)] | 0 | 1 |
 | System.ICloneable | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IComparable | [NullableContextAttribute(...)] | 0 | 2 |
-| System.IComparable`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IComparable`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IConvertible | [CLSCompliantAttribute(...)] | 0 | False |
 | System.IConvertible | [NullableContextAttribute(...)] | 0 | 2 |
 | System.ICustomFormatter | [NullableContextAttribute(...)] | 0 | 2 |
-| System.IEquatable`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IEquatable`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IFormatProvider | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IFormattable | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IO.BinaryReader | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.BinaryReader | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IO.BinaryWriter | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.BinaryWriter | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IO.BufferedStream | [NullableAttribute(...)] | 0 | 0 |
+| System.IO.BufferedStream | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IO.DirectoryNotFoundException | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.DirectoryNotFoundException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IO.DirectoryNotFoundException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -1525,6 +1751,9 @@ attrArgPositional
 | System.IO.IOException | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.IOException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IO.IOException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.IO.InvalidDataException | [NullableAttribute(...)] | 0 | 0 |
+| System.IO.InvalidDataException | [NullableContextAttribute(...)] | 0 | 2 |
+| System.IO.InvalidDataException | [TypeForwardedFromAttribute(...)] | 0 | System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.IO.MemoryStream | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.MemoryStream | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IO.Path.<>c.<>9__37_0 | [TupleElementNamesAttribute(...)] | 0 | [First,FirstLength,Second,SecondLength,HasSeparator] |
@@ -1541,8 +1770,13 @@ attrArgPositional
 | System.IO.StreamReader | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IO.StreamWriter | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.StreamWriter | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IO.StringReader | [NullableAttribute(...)] | 0 | 0 |
+| System.IO.StringReader | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IO.StringWriter | [NullableAttribute(...)] | 0 | 0 |
+| System.IO.StringWriter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IO.TextReader | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.TextReader | [NullableContextAttribute(...)] | 0 | 1 |
+| System.IO.TextReader System.Console.In | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | System.IO.TextWriter | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.TextWriter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.IObservable`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1578,6 +1812,9 @@ attrArgPositional
 | System.Lazy`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Lazy`2 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Lazy`2 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.LoaderOptimization.DisallowBindings | [ObsoleteAttribute(...)] | 0 | This method has been deprecated. Please use Assembly.Load() instead. https://go.microsoft.com/fwlink/?linkid=14202 |
+| System.LoaderOptimization.DomainMask | [ObsoleteAttribute(...)] | 0 | This method has been deprecated. Please use Assembly.Load() instead. https://go.microsoft.com/fwlink/?linkid=14202 |
+| System.LoaderOptimizationAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.MTAThreadAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.MarshalByRefObject | [ClassInterfaceAttribute(...)] | 0 | 1 |
 | System.MarshalByRefObject | [ComVisibleAttribute(...)] | 0 | True |
@@ -1614,6 +1851,8 @@ attrArgPositional
 | System.MulticastNotSupportedException | [NullableAttribute(...)] | 0 | 0 |
 | System.MulticastNotSupportedException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.MulticastNotSupportedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Net.WebUtility | [NullableAttribute(...)] | 0 | 0 |
+| System.Net.WebUtility | [NullableContextAttribute(...)] | 0 | 2 |
 | System.NonSerializedAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
 | System.NotFiniteNumberException | [NullableAttribute(...)] | 0 | 0 |
 | System.NotFiniteNumberException | [NullableContextAttribute(...)] | 0 | 2 |
@@ -1636,6 +1875,12 @@ attrArgPositional
 | System.Number.DiyFp | [ObsoleteAttribute(...)] | 1 | True |
 | System.Number.NumberBuffer | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.Number.NumberBuffer | [ObsoleteAttribute(...)] | 1 | True |
+| System.Numerics.Vector2 | [NullableAttribute(...)] | 0 | 0 |
+| System.Numerics.Vector2 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Numerics.Vector3 | [NullableAttribute(...)] | 0 | 0 |
+| System.Numerics.Vector3 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Numerics.Vector4 | [NullableAttribute(...)] | 0 | 0 |
+| System.Numerics.Vector4 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Numerics.Vector`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.ObjectDisposedException | [NullableAttribute(...)] | 0 | 0 |
 | System.ObjectDisposedException | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1680,10 +1925,12 @@ attrArgPositional
 | System.ReadOnlyMemory`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.ReadOnlySpan<!0> System.ReadOnlyMemory`1.Span | [NullableAttribute(...)] | 0 | [0,1] |
 | System.ReadOnlySpan<!0> System.ReadOnlySpan`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
+| System.ReadOnlySpan<System.Boolean> System.Globalization.CompareInfo.HighCharTable | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan<System.Byte> System.Text.Encoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan<System.Byte> System.Text.UTF32Encoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan<System.Byte> System.Text.UnicodeEncoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
-| System.ReadOnlySpan<System.Byte> char.CategoryForLatin1 | [NullableAttribute(...)] | 0 | 0 |
+| System.ReadOnlySpan<System.Byte> char.Latin1CharInfo | [NullableAttribute(...)] | 0 | 0 |
+| System.ReadOnlySpan<System.SByte> System.Convert.DecodingMap | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan`1 | [DebuggerDisplayAttribute(...)] | 0 | {ToString(),raw} |
 | System.ReadOnlySpan`1 | [DebuggerTypeProxyAttribute(...)] | 0 | System.SpanDebugView`1 |
 | System.ReadOnlySpan`1 | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -1699,6 +1946,7 @@ attrArgPositional
 | System.Reflection.AmbiguousMatchException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Reflection.Assembly | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Assembly | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.Assembly System.ResolveEventArgs.RequestingAssembly | [NullableAttribute(...)] | 0 | 2 |
 | System.Reflection.Assembly.ModuleResolve | [NullableAttribute(...)] | 0 | 2 |
 | System.Reflection.AssemblyAlgorithmIdAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Reflection.AssemblyCompanyAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
@@ -1789,6 +2037,7 @@ attrArgPositional
 | System.Reflection.Emit.DynamicScope | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Reflection.Emit.EnumBuilder | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Emit.EnumBuilder | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.Emit.EnumBuilder.m_typeBuilder | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
 | System.Reflection.Emit.EventBuilder | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Emit.EventBuilder | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.Emit.FieldBuilder | [NullableAttribute(...)] | 0 | 0 |
@@ -1802,6 +2051,7 @@ attrArgPositional
 | System.Reflection.Emit.LocalBuilder | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.Emit.MethodBuilder | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Emit.MethodBuilder | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.Emit.MethodBuilder.m_containingType | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
 | System.Reflection.Emit.ModuleBuilder | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Emit.ModuleBuilder | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.Emit.OpCode | [NullableAttribute(...)] | 0 | 0 |
@@ -1816,6 +2066,9 @@ attrArgPositional
 | System.Reflection.Emit.SignatureHelper | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.Emit.TypeBuilder | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.Emit.TypeBuilder | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.Emit.TypeBuilder.m_bakedRuntimeType | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
+| System.Reflection.Emit.TypeBuilder.m_typeParent | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
+| System.Reflection.Emit.__ExceptionInfo[] System.Reflection.Emit.ILGenerator.CurrExcStack | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Reflection.EventInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.EventInfo | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Reflection.ExceptionHandlingClause | [NullableAttribute(...)] | 0 | 0 |
@@ -1833,7 +2086,7 @@ attrArgPositional
 | System.Reflection.LocalVariableInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.LocalVariableInfo | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.ManifestResourceInfo | [NullableAttribute(...)] | 0 | 0 |
-| System.Reflection.ManifestResourceInfo | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.ManifestResourceInfo | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Reflection.MemberInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.MemberInfo | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Reflection.MetadataEnumResult | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -1886,10 +2139,11 @@ attrArgPositional
 | System.Reflection.TargetParameterCountException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Reflection.TypeDelegator | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.TypeDelegator | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Reflection.TypeDelegator.typeImpl | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
 | System.Reflection.TypeInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Reflection.TypeInfo | [NullableContextAttribute(...)] | 0 | 1 |
 | System.ResolveEventArgs | [NullableAttribute(...)] | 0 | 0 |
-| System.ResolveEventArgs | [NullableContextAttribute(...)] | 0 | 2 |
+| System.ResolveEventArgs | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Resources.MissingManifestResourceException | [NullableAttribute(...)] | 0 | 0 |
 | System.Resources.MissingManifestResourceException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Resources.MissingManifestResourceException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -1902,6 +2156,7 @@ attrArgPositional
 | System.Resources.ResourceManager | [NullableAttribute(...)] | 0 | 0 |
 | System.Resources.ResourceManager | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Resources.ResourceManager.MainAssembly | [NullableAttribute(...)] | 0 | 2 |
+| System.Resources.ResourceManager._userResourceSet | [DynamicallyAccessedMembersAttribute(...)] | 0 | 7 |
 | System.Resources.ResourceSet | [NullableAttribute(...)] | 0 | 0 |
 | System.Resources.ResourceSet | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Resources.SatelliteContractVersionAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
@@ -1910,6 +2165,7 @@ attrArgPositional
 | System.Runtime.AmbiguousImplementationException | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.AmbiguousImplementationException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.AmbiguousImplementationException | [TypeForwardedFromAttribute(...)] | 0 | System.Runtime, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Runtime.AssemblyTargetedPatchBandAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.AssemblyTargetedPatchBandAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.AccessedThroughPropertyAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
@@ -1938,6 +2194,7 @@ attrArgPositional
 | System.Runtime.CompilerServices.CallerFilePathAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
 | System.Runtime.CompilerServices.CallerLineNumberAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
 | System.Runtime.CompilerServices.CallerMemberNameAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
+| System.Runtime.CompilerServices.CastHelpers.CastCacheEntry | [DebuggerDisplayAttribute(...)] | 0 | Source = {_source}; Target = {_targetAndResult & ~1}; Result = {_targetAndResult & 1}; VersionNum = {_version & ((1 << 29) - 1)}; Distance = {_version >> 29}; |
 | System.Runtime.CompilerServices.CompilationRelaxationsAttribute | [AttributeUsageAttribute(...)] | 0 | 71 |
 | System.Runtime.CompilerServices.CompilerGeneratedAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
 | System.Runtime.CompilerServices.CompilerGlobalScopeAttribute | [AttributeUsageAttribute(...)] | 0 | 4 |
@@ -1959,6 +2216,8 @@ attrArgPositional
 | System.Runtime.CompilerServices.DependencyAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.DependencyAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
+| System.Runtime.CompilerServices.DiscardableAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
+| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
 | System.Runtime.CompilerServices.ExtensionAttribute | [AttributeUsageAttribute(...)] | 0 | 69 |
 | System.Runtime.CompilerServices.FixedAddressValueTypeAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
 | System.Runtime.CompilerServices.FixedBufferAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
@@ -1977,13 +2236,25 @@ attrArgPositional
 | System.Runtime.CompilerServices.IntrinsicAttribute | [AttributeUsageAttribute(...)] | 0 | 364 |
 | System.Runtime.CompilerServices.IsByRefLikeAttribute | [AttributeUsageAttribute(...)] | 0 | 8 |
 | System.Runtime.CompilerServices.IsByRefLikeAttribute | [EditorBrowsableAttribute(...)] | 0 | 1 |
+| System.Runtime.CompilerServices.IsExternalInit | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.IsReadOnlyAttribute | [AttributeUsageAttribute(...)] | 0 | 32767 |
 | System.Runtime.CompilerServices.IsReadOnlyAttribute | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.IteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Runtime.CompilerServices.MethodImplAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
+| System.Runtime.CompilerServices.ModuleInitializerAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
+| System.Runtime.CompilerServices.NativeIntegerAttribute | [AttributeUsageAttribute(...)] | 0 | 27524 |
 | System.Runtime.CompilerServices.NullableAttribute | [AttributeUsageAttribute(...)] | 0 | 27524 |
-| System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] | 0 | 5198 |
+| System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] | 0 | 5196 |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [AttributeUsageAttribute(...)] | 0 | 2 |
+| System.Runtime.CompilerServices.ObjectHandleOnStack | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.ObjectHandleOnStack | [ObsoleteAttribute(...)] | 1 | True |
+| System.Runtime.CompilerServices.PreserveBaseOverridesAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
+| System.Runtime.CompilerServices.QCallAssembly | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.QCallAssembly | [ObsoleteAttribute(...)] | 1 | True |
+| System.Runtime.CompilerServices.QCallModule | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.QCallModule | [ObsoleteAttribute(...)] | 1 | True |
+| System.Runtime.CompilerServices.QCallTypeHandle | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.QCallTypeHandle | [ObsoleteAttribute(...)] | 1 | True |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute | [NullableContextAttribute(...)] | 0 | 2 |
@@ -1997,13 +2268,21 @@ attrArgPositional
 | System.Runtime.CompilerServices.RuntimeWrappedException | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.RuntimeWrappedException | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.RuntimeWrappedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Runtime.CompilerServices.SkipLocalsInitAttribute | [AttributeUsageAttribute(...)] | 0 | 1774 |
 | System.Runtime.CompilerServices.SpecialNameAttribute | [AttributeUsageAttribute(...)] | 0 | 972 |
+| System.Runtime.CompilerServices.StackCrawlMarkHandle | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.StackCrawlMarkHandle | [ObsoleteAttribute(...)] | 1 | True |
 | System.Runtime.CompilerServices.StateMachineAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Runtime.CompilerServices.StateMachineAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.StateMachineAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.StringFreezingAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
+| System.Runtime.CompilerServices.StringHandleOnStack | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Runtime.CompilerServices.StringHandleOnStack | [ObsoleteAttribute(...)] | 1 | True |
 | System.Runtime.CompilerServices.StrongBox`1.Value | [NullableAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.SuppressIldasmAttribute | [AttributeUsageAttribute(...)] | 0 | 3 |
+| System.Runtime.CompilerServices.SwitchExpressionException | [NullableAttribute(...)] | 0 | 0 |
+| System.Runtime.CompilerServices.SwitchExpressionException | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Runtime.CompilerServices.SwitchExpressionException | [TypeForwardedFromAttribute(...)] | 0 | System.Runtime.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | System.Runtime.CompilerServices.TupleElementNamesAttribute | [AttributeUsageAttribute(...)] | 0 | 11148 |
 | System.Runtime.CompilerServices.TupleElementNamesAttribute | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Runtime.CompilerServices.TypeDependencyAttribute | [AttributeUsageAttribute(...)] | 0 | 1036 |
@@ -2014,13 +2293,19 @@ attrArgPositional
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.UnsafeValueTypeAttribute | [AttributeUsageAttribute(...)] | 0 | 8 |
+| System.Runtime.ConstrainedExecution.Cer | [ObsoleteAttribute(...)] | 0 | The Constrained Execution Region (CER) feature is not supported. |
+| System.Runtime.ConstrainedExecution.Consistency | [ObsoleteAttribute(...)] | 0 | The Constrained Execution Region (CER) feature is not supported. |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [ObsoleteAttribute(...)] | 0 | The Constrained Execution Region (CER) feature is not supported. |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [AttributeUsageAttribute(...)] | 0 | 1133 |
+| System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [ObsoleteAttribute(...)] | 0 | The Constrained Execution Region (CER) feature is not supported. |
 | System.Runtime.ExceptionServices.ExceptionDispatchInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.ExceptionServices.ExceptionDispatchInfo | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
+| System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
 | System.Runtime.InteropServices.ArrayWithOffset | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.ArrayWithOffset | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.BStrWrapper | [NullableAttribute(...)] | 0 | 0 |
@@ -2041,6 +2326,7 @@ attrArgPositional
 | System.Runtime.InteropServices.ComEventInterfaceAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComEventsHelper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.ComEventsHelper | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Runtime.InteropServices.ComEventsHelper | [SupportedOSPlatformAttribute(...)] | 0 | windows |
 | System.Runtime.InteropServices.ComImportAttribute | [AttributeUsageAttribute(...)] | 0 | 1028 |
 | System.Runtime.InteropServices.ComSourceInterfacesAttribute | [AttributeUsageAttribute(...)] | 0 | 4 |
 | System.Runtime.InteropServices.ComSourceInterfacesAttribute | [NullableAttribute(...)] | 0 | 0 |
@@ -2073,6 +2359,7 @@ attrArgPositional
 | System.Runtime.InteropServices.ComTypes.IEnumVARIANT | [InterfaceTypeAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComTypes.IEnumVARIANT | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComTypes.IEnumerable | [GuidAttribute(...)] | 0 | 496B0ABE-CDEE-11d3-88E8-00902754C43A |
+| System.Runtime.InteropServices.ComTypes.IEnumerator | [GuidAttribute(...)] | 0 | 496B0ABF-CDEE-11d3-88E8-00902754C43A |
 | System.Runtime.InteropServices.ComTypes.IMoniker | [GuidAttribute(...)] | 0 | 0000000f-0000-0000-C000-000000000046 |
 | System.Runtime.InteropServices.ComTypes.IMoniker | [InterfaceTypeAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComTypes.IMoniker | [NullableContextAttribute(...)] | 0 | 1 |
@@ -2103,6 +2390,12 @@ attrArgPositional
 | System.Runtime.InteropServices.ComTypes.STATSTG.pwcsName | [NullableAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComTypes.VARDESC.lpstrSchema | [NullableAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.ComVisibleAttribute | [AttributeUsageAttribute(...)] | 0 | 5597 |
+| System.Runtime.InteropServices.ComWrappers | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.InteropServices.ComWrappers | [NullableAttribute(...)] | 0 | 0 |
+| System.Runtime.InteropServices.ComWrappers | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Runtime.InteropServices.ComWrappers | [SupportedOSPlatformAttribute(...)] | 0 | windows |
+| System.Runtime.InteropServices.ComWrappers.ComInterfaceDispatch | [NullableContextAttribute(...)] | 0 | 0 |
+| System.Runtime.InteropServices.ComWrappers.ComInterfaceEntry | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.DefaultCharSetAttribute | [AttributeUsageAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute | [AttributeUsageAttribute(...)] | 0 | 65 |
 | System.Runtime.InteropServices.DefaultParameterValueAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
@@ -2111,10 +2404,12 @@ attrArgPositional
 | System.Runtime.InteropServices.DispIdAttribute | [AttributeUsageAttribute(...)] | 0 | 960 |
 | System.Runtime.InteropServices.DispatchWrapper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.DispatchWrapper | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Runtime.InteropServices.DispatchWrapper | [SupportedOSPlatformAttribute(...)] | 0 | windows |
 | System.Runtime.InteropServices.DllImportAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Runtime.InteropServices.DllImportAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.DllImportAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.DllImportAttribute.EntryPoint | [NullableAttribute(...)] | 0 | 2 |
+| System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute | [AttributeUsageAttribute(...)] | 0 | 1024 |
 | System.Runtime.InteropServices.ErrorWrapper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.ErrorWrapper | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.Expando.IExpando | [GuidAttribute(...)] | 0 | AFBF15E6-C37C-11d2-B88E-00A0C9B471B8 |
@@ -2149,8 +2444,6 @@ attrArgPositional
 | System.Runtime.InteropServices.MarshalDirectiveException | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.MarshalDirectiveException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.MarshalDirectiveException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Runtime.InteropServices.NativeCallableAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
-| System.Runtime.InteropServices.NativeCallableAttribute.EntryPoint | [NullableAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.NativeLibrary | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.NativeLibrary | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.OptionalAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
@@ -2171,19 +2464,26 @@ attrArgPositional
 | System.Runtime.InteropServices.SafeHandle System.Threading.ThreadPoolBoundHandle.Handle | [NullableAttribute(...)] | 0 | 1 |
 | System.Runtime.InteropServices.StructLayoutAttribute | [AttributeUsageAttribute(...)] | 0 | 12 |
 | System.Runtime.InteropServices.StructLayoutAttribute System.Type.StructLayoutAttribute | [NullableAttribute(...)] | 0 | 2 |
+| System.Runtime.InteropServices.SuppressGCTransitionAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Runtime.InteropServices.TypeIdentifierAttribute | [AttributeUsageAttribute(...)] | 0 | 5144 |
 | System.Runtime.InteropServices.TypeIdentifierAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.TypeIdentifierAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.UnknownWrapper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.UnknownWrapper | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
+| System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute.CallConvs | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute.EntryPoint | [NullableAttribute(...)] | 0 | 2 |
 | System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute | [AttributeUsageAttribute(...)] | 0 | 4096 |
 | System.Runtime.InteropServices.VariantWrapper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.InteropServices.VariantWrapper | [NullableContextAttribute(...)] | 0 | 2 |
-| System.Runtime.Intrinsics.Arm.Arm64.Aes | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Runtime.Intrinsics.Arm.Arm64.Base | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Runtime.Intrinsics.Arm.Arm64.Sha1 | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Runtime.Intrinsics.Arm.Arm64.Sha256 | [CLSCompliantAttribute(...)] | 0 | False |
-| System.Runtime.Intrinsics.Arm.Arm64.Simd | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.AdvSimd | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Aes | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.ArmBase | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Crc32 | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Dp | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Rdm | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Sha1 | [CLSCompliantAttribute(...)] | 0 | False |
+| System.Runtime.Intrinsics.Arm.Sha256 | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Runtime.Intrinsics.Vector64`1 | [DebuggerDisplayAttribute(...)] | 0 | {DisplayString,nq} |
 | System.Runtime.Intrinsics.Vector64`1 | [DebuggerTypeProxyAttribute(...)] | 0 | System.Runtime.Intrinsics.Vector64DebugView`1 |
 | System.Runtime.Intrinsics.Vector128`1 | [DebuggerDisplayAttribute(...)] | 0 | {DisplayString,nq} |
@@ -2246,12 +2546,25 @@ attrArgPositional
 | System.Runtime.Serialization.SerializationInfoEnumerator | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.Serialization.StreamingContext | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.Serialization.StreamingContext | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
 | System.Runtime.TargetedPatchingOptOutAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.TargetedPatchingOptOutAttribute | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Runtime.Versioning.ComponentGuaranteesAttribute | [AttributeUsageAttribute(...)] | 0 | 5887 |
+| System.Runtime.Versioning.FrameworkName | [NullableAttribute(...)] | 0 | 0 |
+| System.Runtime.Versioning.FrameworkName | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | 0 | 108 |
+| System.Runtime.Versioning.OSPlatformAttribute | [NullableAttribute(...)] | 0 | 0 |
+| System.Runtime.Versioning.OSPlatformAttribute | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Runtime.Versioning.ResourceConsumptionAttribute | [AttributeUsageAttribute(...)] | 0 | 224 |
+| System.Runtime.Versioning.ResourceConsumptionAttribute | [ConditionalAttribute(...)] | 0 | RESOURCE_ANNOTATION_WORK |
+| System.Runtime.Versioning.ResourceExposureAttribute | [AttributeUsageAttribute(...)] | 0 | 480 |
+| System.Runtime.Versioning.ResourceExposureAttribute | [ConditionalAttribute(...)] | 0 | RESOURCE_ANNOTATION_WORK |
+| System.Runtime.Versioning.SupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | 0 | 1023 |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Runtime.Versioning.TargetPlatformAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
+| System.Runtime.Versioning.UnsupportedOSPlatformAttribute | [AttributeUsageAttribute(...)] | 0 | 1023 |
 | System.RuntimeType.ListBuilder`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.RuntimeTypeHandle | [NullableAttribute(...)] | 0 | 0 |
 | System.RuntimeTypeHandle | [NullableContextAttribute(...)] | 0 | 2 |
@@ -2261,10 +2574,22 @@ attrArgPositional
 | System.Security.Cryptography.CryptographicException | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Security.Cryptography.CryptographicException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Security.IPermission | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Security.IPermission | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
 | System.Security.ISecurityEncodable | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Security.IStackWalk | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
 | System.Security.PermissionSet | [NullableAttribute(...)] | 0 | 0 |
 | System.Security.PermissionSet | [NullableContextAttribute(...)] | 0 | 2 |
-| System.Security.PermissionSet System.AppDomain.PermissionSet | [NullableAttribute(...)] | 0 | 1 |
+| System.Security.PermissionSet | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.PermissionSet System.AppDomain.PermissionSet | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [AttributeUsageAttribute(...)] | 0 | 109 |
+| System.Security.Permissions.CodeAccessSecurityAttribute | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.PermissionState | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.SecurityAction | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.SecurityAttribute | [AttributeUsageAttribute(...)] | 0 | 109 |
+| System.Security.Permissions.SecurityAttribute | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.SecurityPermissionAttribute | [AttributeUsageAttribute(...)] | 0 | 109 |
+| System.Security.Permissions.SecurityPermissionAttribute | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
+| System.Security.Permissions.SecurityPermissionFlag | [ObsoleteAttribute(...)] | 0 | Code Access Security is not supported or honored by the runtime. |
 | System.Security.Principal.IIdentity | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Security.Principal.IPrincipal | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Security.Principal.IPrincipal System.Threading.Thread.CurrentPrincipal | [NullableAttribute(...)] | 0 | 2 |
@@ -2306,6 +2631,8 @@ attrArgPositional
 | System.StringComparer | [NullableAttribute(...)] | 0 | 0 |
 | System.StringComparer | [NullableContextAttribute(...)] | 0 | 1 |
 | System.StringComparer | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.StringNormalizationExtensions | [NullableAttribute(...)] | 0 | 0 |
+| System.StringNormalizationExtensions | [NullableContextAttribute(...)] | 0 | 1 |
 | System.SystemException | [NullableAttribute(...)] | 0 | 0 |
 | System.SystemException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.SystemException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -2331,10 +2658,15 @@ attrArgPositional
 | System.Text.EncoderReplacementFallback | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Text.Encoding | [NullableAttribute(...)] | 0 | 0 |
 | System.Text.Encoding | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Text.Encoding System.Console.InputEncoding | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| System.Text.Encoding System.Text.Encoding.UTF7 | [ObsoleteAttribute(...)] | 0 | The UTF-7 encoding is insecure and should not be used. Consider using UTF-8 instead. |
 | System.Text.EncodingInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Text.EncodingInfo | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Text.EncodingProvider | [NullableAttribute(...)] | 0 | 0 |
 | System.Text.EncodingProvider | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Text.EncodingProvider System.Text.EncodingInfo.Provider | [NullableAttribute(...)] | 0 | 2 |
+| System.Text.Latin1Encoding.<>c.<>9__29_0 | [TupleElementNamesAttribute(...)] | 0 | [encoding,bytes] |
+| System.Text.Latin1Encoding.<>c.<>9__30_0 | [TupleElementNamesAttribute(...)] | 0 | [encoding,bytes,index] |
 | System.Text.Rune | [DebuggerDisplayAttribute(...)] | 0 | {DebuggerDisplay,nq} |
 | System.Text.SpanRuneEnumerator | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.Text.SpanRuneEnumerator | [ObsoleteAttribute(...)] | 1 | True |
@@ -2347,6 +2679,8 @@ attrArgPositional
 | System.Text.UTF7Encoding | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Text.UTF32Encoding | [NullableAttribute(...)] | 0 | 0 |
 | System.Text.UTF32Encoding | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Text.Unicode.TextSegmentationUtility.Processor`1 | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
+| System.Text.Unicode.TextSegmentationUtility.Processor`1 | [ObsoleteAttribute(...)] | 1 | True |
 | System.Text.UnicodeEncoding | [NullableAttribute(...)] | 0 | 0 |
 | System.Text.UnicodeEncoding | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Text.ValueStringBuilder | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -2359,7 +2693,7 @@ attrArgPositional
 | System.Threading.ApartmentState System.Threading.Thread.ApartmentState | [ObsoleteAttribute(...)] | 0 | The ApartmentState property has been deprecated.  Use GetApartmentState, SetApartmentState or TrySetApartmentState instead. |
 | System.Threading.ApartmentState System.Threading.Thread.ApartmentState | [ObsoleteAttribute(...)] | 1 | False |
 | System.Threading.AsyncLocalValueChangedArgs`1 | [NullableAttribute(...)] | 0 | 0 |
-| System.Threading.AsyncLocalValueChangedArgs`1 | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Threading.AsyncLocalValueChangedArgs`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.AsyncLocal`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.AsyncLocal`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.CancellationToken | [DebuggerDisplayAttribute(...)] | 0 | IsCancellationRequested = {IsCancellationRequested} |
@@ -2371,6 +2705,8 @@ attrArgPositional
 | System.Threading.CompressedStack | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.EventWaitHandle | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.EventWaitHandle | [NullableContextAttribute(...)] | 0 | 1 |
+| System.Threading.ExecutionContext | [NullableAttribute(...)] | 0 | 0 |
+| System.Threading.ExecutionContext | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.ExecutionContext System.Threading.Tasks.Task.CapturedContext | [NullableAttribute(...)] | 0 | 2 |
 | System.Threading.ExecutionContext System.Threading.Thread.ExecutionContext | [NullableAttribute(...)] | 0 | 2 |
 | System.Threading.IOCompletionCallback | [CLSCompliantAttribute(...)] | 0 | False |
@@ -2388,6 +2724,7 @@ attrArgPositional
 | System.Threading.Mutex | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Overlapped | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Overlapped | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Threading.RegisteredWaitHandle | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | System.Threading.Semaphore | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Semaphore | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.SemaphoreFullException | [NullableAttribute(...)] | 0 | 0 |
@@ -2431,6 +2768,8 @@ attrArgPositional
 | System.Threading.Tasks.TaskCanceledException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.TaskCanceledException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.Tasks.TaskCanceledException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Threading.Tasks.TaskCompletionSource | [NullableAttribute(...)] | 0 | 0 |
+| System.Threading.Tasks.TaskCompletionSource | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.TaskCompletionSource`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.TaskCompletionSource`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.TaskExtensions | [NullableAttribute(...)] | 0 | 0 |
@@ -2456,7 +2795,7 @@ attrArgPositional
 | System.Threading.Tasks.Task`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.Task`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableAttribute(...)] | 0 | 0 |
-| System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.ValueTask | [AsyncMethodBuilderAttribute(...)] | 0 | System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder |
 | System.Threading.Tasks.ValueTask | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.ValueTask | [NullableContextAttribute(...)] | 0 | 1 |
@@ -2469,6 +2808,8 @@ attrArgPositional
 | System.Threading.ThreadAbortException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.ThreadAbortException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.ThreadAbortException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| System.Threading.ThreadExceptionEventArgs | [NullableAttribute(...)] | 0 | 0 |
+| System.Threading.ThreadExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.ThreadInterruptedException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.ThreadInterruptedException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.ThreadInterruptedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -2559,6 +2900,8 @@ attrArgPositional
 | System.Type System.Reflection.MemberInfo.ReflectedType | [NullableAttribute(...)] | 0 | 2 |
 | System.Type System.Reflection.PropertyInfo.PropertyType | [NullableAttribute(...)] | 0 | 1 |
 | System.Type System.Reflection.TypeDelegator.BaseType | [NullableAttribute(...)] | 0 | 2 |
+| System.Type System.Resources.ResourceManager.ResourceManagerMediator.UserResourceSet | [DynamicallyAccessedMembersAttribute(...)] | 0 | 7 |
+| System.Type System.Resources.ResourceManager.ResourceSetType | [DynamicallyAccessedMembersAttribute(...)] | 0 | 7 |
 | System.Type System.Type.BaseType | [NullableAttribute(...)] | 0 | 2 |
 | System.Type System.Type.DeclaringType | [NullableAttribute(...)] | 0 | 2 |
 | System.Type System.Type.ReflectedType | [NullableAttribute(...)] | 0 | 2 |
@@ -2574,7 +2917,7 @@ attrArgPositional
 | System.TypeUnloadedException | [NullableAttribute(...)] | 0 | 0 |
 | System.TypeUnloadedException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.TypeUnloadedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Type[] System.Reflection.ReflectionTypeLoadException.Types | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Type[] System.Reflection.ReflectionTypeLoadException.Types | [NullableAttribute(...)] | 0 | [1,2] |
 | System.TypedReference | [CLSCompliantAttribute(...)] | 0 | False |
 | System.TypedReference | [NullableAttribute(...)] | 0 | 0 |
 | System.TypedReference | [NullableContextAttribute(...)] | 0 | 1 |
@@ -2632,6 +2975,12 @@ attrArgPositional
 | System.__DTString | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.__DTString | [ObsoleteAttribute(...)] | 1 | True |
 | bool | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| bool System.Console.CapsLock | [SupportedOSPlatformAttribute(...)] | 0 | windows |
+| bool System.Console.NumberLock | [SupportedOSPlatformAttribute(...)] | 0 | windows |
+| bool System.Console.TreatControlCAsInput | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| bool System.Reflection.Assembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | 0 | The Global Assembly Cache is not supported. |
+| bool System.Reflection.Emit.AssemblyBuilder.GlobalAssemblyCache | [ObsoleteAttribute(...)] | 0 | The Global Assembly Cache is not supported. |
+| bool System.Reflection.RuntimeAssembly.GlobalAssemblyCache | [ObsoleteAttribute(...)] | 0 | The Global Assembly Cache is not supported. |
 | bool.FalseString | [NullableAttribute(...)] | 0 | 1 |
 | bool.TrueString | [NullableAttribute(...)] | 0 | 1 |
 | byte | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -2668,7 +3017,12 @@ attrArgPositional
 | double | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | float | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | int | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
+| int System.Console.CursorLeft | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| int System.Console.CursorTop | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| int System.Console.LargestWindowHeight | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
+| int System.Console.LargestWindowWidth | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | int System.Threading.Overlapped.EventHandle | [ObsoleteAttribute(...)] | 0 | This property is not 64-bit compatible.  Use EventHandleIntPtr instead.  http://go.microsoft.com/fwlink/?linkid=14202 |
+| int[] System.Globalization.HebrewCalendar.Eras | [NullableAttribute(...)] | 0 | 1 |
 | int[] System.Globalization.StringInfo.Indexes | [NullableAttribute(...)] | 0 | 2 |
 | long | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | object | [ClassInterfaceAttribute(...)] | 0 | 1 |
@@ -2688,6 +3042,7 @@ attrArgPositional
 | object System.Collections.Generic.Dictionary`2.KeyCollection.SyncRoot | [NullableAttribute(...)] | 0 | 1 |
 | object System.Collections.Generic.Dictionary`2.ValueCollection.Enumerator.Current | [NullableAttribute(...)] | 0 | 2 |
 | object System.Collections.Generic.Dictionary`2.ValueCollection.SyncRoot | [NullableAttribute(...)] | 0 | 1 |
+| object System.Collections.Generic.HashSet`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 2 |
 | object System.Collections.Generic.List`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 2 |
 | object System.Collections.Generic.List`1.Item | [NullableAttribute(...)] | 0 | 2 |
 | object System.Collections.Hashtable.Item | [NullableAttribute(...)] | 0 | 2 |
@@ -2734,15 +3089,22 @@ attrArgPositional
 | string | [NullableContextAttribute(...)] | 0 | 1 |
 | string | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | string System.AppContext.BaseDirectory | [NullableAttribute(...)] | 0 | 1 |
-| string System.AppDomain.FriendlyName | [NullableAttribute(...)] | 0 | 1 |
+| string System.AppDomain.DynamicDirectory | [NullableAttribute(...)] | 0 | 2 |
+| string System.AppDomain.RelativeSearchPath | [NullableAttribute(...)] | 0 | 2 |
+| string System.ApplicationId.Culture | [NullableAttribute(...)] | 0 | 2 |
+| string System.ApplicationId.ProcessorArchitecture | [NullableAttribute(...)] | 0 | 2 |
 | string System.ArgumentException.Message | [NullableAttribute(...)] | 0 | 1 |
 | string System.ArgumentOutOfRangeException.Message | [NullableAttribute(...)] | 0 | 1 |
 | string System.BadImageFormatException.Message | [NullableAttribute(...)] | 0 | 1 |
+| string System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.Url | [NullableAttribute(...)] | 0 | 2 |
 | string System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.Category | [NullableAttribute(...)] | 0 | 1 |
 | string System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.CheckId | [NullableAttribute(...)] | 0 | 1 |
+| string System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.Category | [NullableAttribute(...)] | 0 | 1 |
+| string System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute.CheckId | [NullableAttribute(...)] | 0 | 1 |
 | string System.Diagnostics.Contracts.ContractException.Failure | [NullableAttribute(...)] | 0 | 1 |
 | string System.Diagnostics.Contracts.ContractOptionAttribute.Value | [NullableAttribute(...)] | 0 | 2 |
 | string System.Diagnostics.DebuggerDisplayAttribute.Value | [NullableAttribute(...)] | 0 | 1 |
+| string System.Diagnostics.DebuggerTypeProxyAttribute.ProxyTypeName | [DynamicallyAccessedMembersAttribute(...)] | 0 | -1 |
 | string System.Diagnostics.DebuggerTypeProxyAttribute.ProxyTypeName | [NullableAttribute(...)] | 0 | 1 |
 | string System.Diagnostics.DebuggerVisualizerAttribute.VisualizerTypeName | [NullableAttribute(...)] | 0 | 1 |
 | string System.Diagnostics.Tracing.EventFieldAttribute.Name | [NullableAttribute(...)] | 0 | 2 |
@@ -2773,6 +3135,7 @@ attrArgPositional
 | string System.Reflection.TypeDelegator.AssemblyQualifiedName | [NullableAttribute(...)] | 0 | 2 |
 | string System.Reflection.TypeDelegator.FullName | [NullableAttribute(...)] | 0 | 2 |
 | string System.Reflection.TypeDelegator.Namespace | [NullableAttribute(...)] | 0 | 2 |
+| string System.Runtime.CompilerServices.SwitchExpressionException.Message | [NullableAttribute(...)] | 0 | 1 |
 | string System.Runtime.Intrinsics.Vector64`1.DisplayString | [NullableAttribute(...)] | 0 | 1 |
 | string System.Runtime.Intrinsics.Vector128`1.DisplayString | [NullableAttribute(...)] | 0 | 1 |
 | string System.Runtime.Intrinsics.Vector256`1.DisplayString | [NullableAttribute(...)] | 0 | 1 |

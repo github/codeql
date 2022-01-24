@@ -17,19 +17,6 @@ namespace Semmle.Extraction
             trapFile.WriteLabel(entity.Label.Value);
         }
 
-        public static void WriteSubId(this TextWriter trapFile, IEntity entity)
-        {
-            if (entity is null)
-            {
-                trapFile.Write("<null>");
-                return;
-            }
-
-            trapFile.Write('{');
-            trapFile.WriteLabel(entity);
-            trapFile.Write('}');
-        }
-
         public static void WriteSeparator(this TextWriter trapFile, string separator, ref int index)
         {
             if (index++ > 0)
@@ -130,7 +117,7 @@ namespace Semmle.Extraction
             return s;
         }
 
-        private static string EncodeString(string s) => s.Replace("\"", "\"\"");
+        public static string EncodeString(string s) => s.Replace("\"", "\"\"");
 
         /// <summary>
         /// Output a string to the trap file, such that the encoded output does not exceed
@@ -231,9 +218,9 @@ namespace Semmle.Extraction
         /// <param name="separator">The separator string (e.g. ",")</param>
         /// <param name="items">The list of items.</param>
         /// <returns>The original trap builder (fluent interface).</returns>
-        public static TextWriter AppendList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items) where T : IEntity
+        public static TextWriter AppendList<T>(this EscapingTextWriter trapFile, string separator, IEnumerable<T> items) where T : IEntity
         {
-            return trapFile.BuildList(separator, items, (x, tb0) => { tb0.WriteSubId(x); });
+            return trapFile.BuildList(separator, items, x => trapFile.WriteSubId(x));
         }
 
         /// <summary>
@@ -245,18 +232,33 @@ namespace Semmle.Extraction
         /// <param name="items">The list of items.</param>
         /// <param name="action">The action on each item.</param>
         /// <returns>The original trap builder (fluent interface).</returns>
-        public static TextWriter BuildList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items, Action<T, TextWriter> action)
+        public static T1 BuildList<T1, T2>(this T1 trapFile, string separator, IEnumerable<T2> items, Action<int, T2> action)
+            where T1 : TextWriter
         {
             var first = true;
+            var i = 0;
             foreach (var item in items)
             {
                 if (first)
                     first = false;
                 else
                     trapFile.Write(separator);
-                action(item, trapFile);
+                action(i++, item);
             }
             return trapFile;
         }
+
+        /// <summary>
+        /// Builds a trap builder using a separator and an action for each item in the list.
+        /// </summary>
+        /// <typeparam name="T">The type of the items.</typeparam>
+        /// <param name="trapFile">The trap builder to append to.</param>
+        /// <param name="separator">The separator string (e.g. ",")</param>
+        /// <param name="items">The list of items.</param>
+        /// <param name="action">The action on each item.</param>
+        /// <returns>The original trap builder (fluent interface).</returns>
+        public static T1 BuildList<T1, T2>(this T1 trapFile, string separator, IEnumerable<T2> items, Action<T2> action)
+            where T1 : TextWriter =>
+            trapFile.BuildList(separator, items, (_, item) => action(item));
     }
 }

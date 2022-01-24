@@ -9,7 +9,7 @@ information being thrown away.</p>
 
 <p>A return value is considered to be trivial if it is <code>None</code> or it is a parameter (parameters, usually <code>self</code> are often
 returned to assist with method chaining, but can be ignored).
-A return value is also assumed to be trivial if it is ignored for 75% or more of calls.
+A return value is also assumed to be trivial if it is ignored for more than 25% of calls.
 </p>
 
 </overview>

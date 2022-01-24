@@ -19,7 +19,7 @@ int main() {
 
   char untainted_buf[100] = "";
   char buf[100] = "VAR = ";
-  sink(strcat(buf, getenv("VAR"))); // $ ast,ir
+  sink(strcat(buf, getenv("VAR"))); // $ ast MISSING: ir
 
   sink(buf); // $ ast,ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
@@ -187,12 +187,12 @@ void test_pointers1()
 	ptr4 = &ptr3;
 
 	sink(buffer); // $ ast,ir
-	sink(ptr1); // $ ast,ir
+	sink(ptr1); // $ ast MISSING: ir
 	sink(ptr2); // $ SPURIOUS: ast
 	sink(*ptr2); // $ ast MISSING: ir
 	sink(ptr3); // $ ast,ir
-	sink(ptr4); // $ SPURIOUS: ast
-	sink(*ptr4); // $ ast MISSING: ir
+	sink(ptr4); // $ SPURIOUS: ast,ir
+	sink(*ptr4); // $ ast,ir
 }
 
 void test_pointers2()
@@ -210,9 +210,52 @@ void test_pointers2()
 
 	sink(buffer); // $ MISSING: ast,ir
 	sink(ptr1); // $ ast MISSING: ir
-	sink(ptr2); // $ SPURIOUS: ast
-	sink(*ptr2); // $ ast MISSING: ir
+	sink(ptr2); // $ SPURIOUS: ast,ir
+	sink(*ptr2); // $ ast,ir
 	sink(ptr3); // $ MISSING: ast,ir
 	sink(ptr4); // clean
 	sink(*ptr4); // $ MISSING: ast,ir
+}
+
+// --- recv ---
+
+int recv(int s, char* buf, int len, int flags);
+
+void test_recv() {
+	char buffer[1024];
+	recv(0, buffer, sizeof(buffer), 0);
+	sink(buffer); // $ ast,ir
+	sink(*buffer); // $ ast,ir
+}
+
+// --- send and related functions ---
+
+int send(int, const void*, int, int);
+
+void test_send(char* buffer, int length) {
+  send(0, buffer, length, 0); // $ remote
+}
+
+struct iovec {
+  void  *iov_base;
+  unsigned iov_len;
+};
+
+int readv(int, const struct iovec*, int);
+int writev(int, const struct iovec*, int);
+
+void sink(const iovec* iovs);
+void sink(iovec);
+
+int test_readv_and_writev(iovec* iovs) {
+  readv(0, iovs, 16);
+  sink(iovs); // $ast,ir
+  sink(iovs[0]); // $ast,ir
+  sink(*iovs); // $ast,ir
+
+  char* p = (char*)iovs[1].iov_base;
+  sink(p); // $ MISSING: ast,ir
+  sink(*p); // $ MISSING: ast,ir
+
+  writev(0, iovs, 16); // $ remote
 }

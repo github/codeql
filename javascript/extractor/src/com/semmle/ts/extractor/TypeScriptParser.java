@@ -97,7 +97,7 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_RETRIES_VAR = "SEMMLE_TYPESCRIPT_RETRIES";
 
   /**
-   * An environment variable (without the <tt>SEMMLE_</tt> or <tt>LGTM_</tt> prefix), that can be
+   * An environment variable (without the <code>SEMMLE_</code> or <code>LGTM_</code> prefix), that can be
    * set to indicate the maximum heap space usable by the Node.js process, in addition to its
    * "reserve memory".
    *
@@ -106,7 +106,7 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_RAM_SUFFIX = "TYPESCRIPT_RAM";
 
   /**
-   * An environment variable (without the <tt>SEMMLE_</tt> or <tt>LGTM_</tt> prefix), that can be
+   * An environment variable (without the <code>SEMMLE_</code> or <code>LGTM_</code> prefix), that can be
    * set to indicate the amount of heap space the Node.js process should reserve for extracting
    * individual files.
    *

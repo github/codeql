@@ -1,14 +1,22 @@
 import python
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
+    // Standard sources
     source.(DataFlow::CfgNode).getNode().(NameNode).getId() in [
         "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
       ]
+    or
+    // User defined sources
+    exists(CallNode call |
+      call.getFunction().(NameNode).getId() = "taint" and
+      source.(DataFlow::CfgNode).getNode() = call.getAnArg()
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -17,31 +25,6 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
-}
-
-private string repr(Expr e) {
-  not e instanceof Num and
-  not e instanceof StrConst and
-  not e instanceof Subscript and
-  not e instanceof Call and
-  not e instanceof Attribute and
-  result = e.toString()
-  or
-  result = e.(Num).getN()
-  or
-  result =
-    e.(StrConst).getPrefix() + e.(StrConst).getText() +
-      e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
-  or
-  result = repr(e.(Subscript).getObject()) + "[" + repr(e.(Subscript).getIndex()) + "]"
-  or
-  (
-    if exists(e.(Call).getAnArg()) or exists(e.(Call).getANamedArg())
-    then result = repr(e.(Call).getFunc()) + "(..)"
-    else result = repr(e.(Call).getFunc()) + "()"
-  )
-  or
-  result = repr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
 query predicate test_taint(string arg_location, string test_res, string scope_name, string repr) {
@@ -70,6 +53,6 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
     arg_location = arg.getLocation().toString() and
     test_res = test_res and
     scope_name = call.getScope().getName() and
-    repr = repr(arg)
+    repr = prettyExpr(arg)
   )
 }

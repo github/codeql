@@ -125,6 +125,14 @@ nodes
 | passwords.js:164:14:164:21 | password |
 | passwords.js:164:14:164:42 | passwor ... g, "*") |
 | passwords.js:164:14:164:42 | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password |
+| passwords.js:169:17:169:24 | password |
+| passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password |
+| passwords.js:170:11:170:18 | password |
+| passwords.js:170:11:170:39 | passwor ... g, "*") |
+| passwords.js:170:11:170:39 | passwor ... g, "*") |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
@@ -261,6 +269,14 @@ edges
 | passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
 | passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
 | passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
 | passwords_in_browser1.js:2:13:2:20 | password | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser2.js:2:13:2:20 | password | passwords_in_browser2.js:2:13:2:20 | password |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password |
@@ -304,6 +320,8 @@ edges
 | passwords.js:156:17:156:27 | process.env | passwords.js:156:17:156:27 | process.env | passwords.js:156:17:156:27 | process.env | Sensitive data returned by $@ is logged here. | passwords.js:156:17:156:27 | process.env | process environment |
 | passwords.js:163:14:163:41 | passwor ... g, "*") | passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") | Sensitive data returned by $@ is logged here. | passwords.js:163:14:163:21 | password | an access to password |
 | passwords.js:164:14:164:42 | passwor ... g, "*") | passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") | Sensitive data returned by $@ is logged here. | passwords.js:164:14:164:21 | password | an access to password |
+| passwords.js:169:17:169:45 | passwor ... g, "*") | passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") | Sensitive data returned by $@ is logged here. | passwords.js:169:17:169:24 | password | an access to password |
+| passwords.js:170:11:170:39 | passwor ... g, "*") | passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") | Sensitive data returned by $@ is logged here. | passwords.js:170:11:170:18 | password | an access to password |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
 | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
 | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |

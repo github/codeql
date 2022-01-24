@@ -65,50 +65,50 @@ nodes
 | C.cs:64:9:64:10 | access to local variable o1 |
 | C.cs:66:13:66:46 | SSA def(o2) |
 | C.cs:68:9:68:10 | access to local variable o2 |
-| C.cs:95:13:95:45 | SSA def(o) |
-| C.cs:96:15:96:15 | access to local variable o |
-| C.cs:97:13:97:13 | access to local variable o |
-| C.cs:103:13:103:23 | SSA def(list) |
-| C.cs:104:9:108:9 | foreach (... ... in ...) ... |
-| C.cs:104:22:104:22 | Int32 x |
-| C.cs:104:27:104:30 | access to parameter list |
-| C.cs:104:27:104:30 | access to parameter list |
-| C.cs:107:13:107:16 | access to parameter list |
-| C.cs:160:9:160:16 | SSA def(s) |
-| C.cs:163:13:163:13 | access to local variable s |
-| C.cs:168:9:168:16 | SSA def(s) |
-| C.cs:171:13:171:13 | access to local variable s |
-| C.cs:178:13:178:13 | access to local variable s |
-| C.cs:179:13:179:20 | SSA def(s) |
-| C.cs:194:9:194:16 | SSA def(s) |
-| C.cs:197:13:197:13 | access to local variable s |
-| C.cs:198:13:198:20 | [b (line 193): true] SSA def(s) |
-| C.cs:202:16:202:19 | true |
-| C.cs:204:13:204:13 | access to local variable s |
-| C.cs:205:13:205:20 | SSA def(s) |
-| C.cs:211:13:211:35 | SSA def(s) |
-| C.cs:215:13:215:20 | SSA def(s) |
-| C.cs:218:9:219:25 | if (...) ... |
-| C.cs:219:13:219:13 | access to local variable s |
-| C.cs:223:13:223:20 | SSA def(s) |
-| C.cs:224:9:224:9 | access to local variable s |
-| C.cs:230:22:230:22 | access to local variable s |
-| C.cs:230:33:230:40 | SSA def(s) |
-| C.cs:234:9:234:9 | access to local variable s |
-| C.cs:236:14:236:21 | SSA def(s) |
-| C.cs:236:24:236:24 | access to local variable s |
-| C.cs:236:35:236:42 | SSA def(s) |
-| C.cs:238:13:238:13 | access to local variable s |
-| C.cs:241:24:241:31 | SSA def(s) |
-| C.cs:243:13:243:13 | access to local variable s |
-| C.cs:249:15:249:22 | SSA def(a) |
-| C.cs:250:9:250:9 | access to local variable a |
-| C.cs:258:15:258:23 | SSA def(ia) |
-| C.cs:259:18:259:26 | SSA def(sa) |
-| C.cs:261:9:261:10 | access to local variable ia |
-| C.cs:262:20:262:21 | access to local variable sa |
-| C.cs:264:9:264:10 | access to local variable ia |
-| C.cs:265:16:265:17 | access to local variable sa |
+| C.cs:94:13:94:45 | SSA def(o) |
+| C.cs:95:15:95:15 | access to local variable o |
+| C.cs:96:13:96:13 | access to local variable o |
+| C.cs:102:13:102:23 | SSA def(list) |
+| C.cs:103:9:107:9 | foreach (... ... in ...) ... |
+| C.cs:103:22:103:22 | Int32 x |
+| C.cs:103:27:103:30 | access to parameter list |
+| C.cs:103:27:103:30 | access to parameter list |
+| C.cs:106:13:106:16 | access to parameter list |
+| C.cs:159:9:159:16 | SSA def(s) |
+| C.cs:162:13:162:13 | access to local variable s |
+| C.cs:167:9:167:16 | SSA def(s) |
+| C.cs:170:13:170:13 | access to local variable s |
+| C.cs:177:13:177:13 | access to local variable s |
+| C.cs:178:13:178:20 | SSA def(s) |
+| C.cs:193:9:193:16 | SSA def(s) |
+| C.cs:196:13:196:13 | access to local variable s |
+| C.cs:197:13:197:20 | [b (line 192): true] SSA def(s) |
+| C.cs:201:16:201:19 | true |
+| C.cs:203:13:203:13 | access to local variable s |
+| C.cs:204:13:204:20 | SSA def(s) |
+| C.cs:210:13:210:35 | SSA def(s) |
+| C.cs:214:13:214:20 | SSA def(s) |
+| C.cs:217:9:218:25 | if (...) ... |
+| C.cs:218:13:218:13 | access to local variable s |
+| C.cs:222:13:222:20 | SSA def(s) |
+| C.cs:223:9:223:9 | access to local variable s |
+| C.cs:229:22:229:22 | access to local variable s |
+| C.cs:229:33:229:40 | SSA def(s) |
+| C.cs:233:9:233:9 | access to local variable s |
+| C.cs:235:14:235:21 | SSA def(s) |
+| C.cs:235:24:235:24 | access to local variable s |
+| C.cs:235:35:235:42 | SSA def(s) |
+| C.cs:237:13:237:13 | access to local variable s |
+| C.cs:240:24:240:31 | SSA def(s) |
+| C.cs:242:13:242:13 | access to local variable s |
+| C.cs:248:15:248:22 | SSA def(a) |
+| C.cs:249:9:249:9 | access to local variable a |
+| C.cs:257:15:257:23 | SSA def(ia) |
+| C.cs:258:18:258:26 | SSA def(sa) |
+| C.cs:260:9:260:10 | access to local variable ia |
+| C.cs:261:20:261:21 | access to local variable sa |
+| C.cs:263:9:263:10 | access to local variable ia |
+| C.cs:264:16:264:17 | access to local variable sa |
 | D.cs:17:17:17:20 | null |
 | D.cs:23:9:23:13 | access to parameter param |
 | D.cs:26:32:26:36 | SSA param(param) |
@@ -191,6 +191,7 @@ nodes
 | D.cs:253:13:253:14 | access to local variable o2 |
 | D.cs:258:16:258:23 | SSA def(o) |
 | D.cs:266:9:267:25 | if (...) ... |
+| D.cs:266:13:266:27 | [true] ... is ... |
 | D.cs:267:13:267:13 | access to local variable o |
 | D.cs:269:9:269:16 | SSA def(o) |
 | D.cs:272:25:272:25 | access to local variable i |
@@ -345,6 +346,7 @@ nodes
 | E.cs:201:13:201:13 | access to local variable o |
 | E.cs:203:13:203:13 | access to local variable o |
 | E.cs:206:28:206:28 | SSA param(s) |
+| E.cs:208:13:208:23 | [false] ... is ... |
 | E.cs:210:16:210:16 | access to parameter s |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) |
 | E.cs:218:9:218:9 | access to local variable x |
@@ -364,6 +366,7 @@ nodes
 | E.cs:301:13:301:27 | SSA def(s) |
 | E.cs:302:9:302:9 | access to local variable s |
 | E.cs:319:29:319:30 | SSA param(s1) |
+| E.cs:321:13:321:30 | [true] ... is ... |
 | E.cs:321:14:321:21 | ... ?? ... |
 | E.cs:321:20:321:21 | access to parameter s2 |
 | E.cs:323:13:323:14 | access to parameter s1 |
@@ -486,36 +489,36 @@ edges
 | C.cs:55:13:55:36 | SSA def(o2) | C.cs:57:9:57:10 | access to local variable o2 |
 | C.cs:62:13:62:46 | SSA def(o1) | C.cs:64:9:64:10 | access to local variable o1 |
 | C.cs:66:13:66:46 | SSA def(o2) | C.cs:68:9:68:10 | access to local variable o2 |
-| C.cs:95:13:95:45 | SSA def(o) | C.cs:96:15:96:15 | access to local variable o |
-| C.cs:95:13:95:45 | SSA def(o) | C.cs:97:13:97:13 | access to local variable o |
-| C.cs:103:13:103:23 | SSA def(list) | C.cs:104:27:104:30 | access to parameter list |
-| C.cs:103:13:103:23 | SSA def(list) | C.cs:104:27:104:30 | access to parameter list |
-| C.cs:104:9:108:9 | foreach (... ... in ...) ... | C.cs:104:22:104:22 | Int32 x |
-| C.cs:104:9:108:9 | foreach (... ... in ...) ... | C.cs:107:13:107:16 | access to parameter list |
-| C.cs:104:22:104:22 | Int32 x | C.cs:104:9:108:9 | foreach (... ... in ...) ... |
-| C.cs:104:27:104:30 | access to parameter list | C.cs:104:9:108:9 | foreach (... ... in ...) ... |
-| C.cs:160:9:160:16 | SSA def(s) | C.cs:163:13:163:13 | access to local variable s |
-| C.cs:168:9:168:16 | SSA def(s) | C.cs:171:13:171:13 | access to local variable s |
-| C.cs:179:13:179:20 | SSA def(s) | C.cs:178:13:178:13 | access to local variable s |
-| C.cs:194:9:194:16 | SSA def(s) | C.cs:197:13:197:13 | access to local variable s |
-| C.cs:198:13:198:20 | [b (line 193): true] SSA def(s) | C.cs:197:13:197:13 | access to local variable s |
-| C.cs:202:16:202:19 | true | C.cs:204:13:204:13 | access to local variable s |
-| C.cs:205:13:205:20 | SSA def(s) | C.cs:202:16:202:19 | true |
-| C.cs:211:13:211:35 | SSA def(s) | C.cs:218:9:219:25 | if (...) ... |
-| C.cs:215:13:215:20 | SSA def(s) | C.cs:218:9:219:25 | if (...) ... |
-| C.cs:218:9:219:25 | if (...) ... | C.cs:219:13:219:13 | access to local variable s |
-| C.cs:223:13:223:20 | SSA def(s) | C.cs:224:9:224:9 | access to local variable s |
-| C.cs:230:22:230:22 | access to local variable s | C.cs:234:9:234:9 | access to local variable s |
-| C.cs:230:33:230:40 | SSA def(s) | C.cs:230:22:230:22 | access to local variable s |
-| C.cs:236:14:236:21 | SSA def(s) | C.cs:236:24:236:24 | access to local variable s |
-| C.cs:236:24:236:24 | access to local variable s | C.cs:238:13:238:13 | access to local variable s |
-| C.cs:236:35:236:42 | SSA def(s) | C.cs:236:24:236:24 | access to local variable s |
-| C.cs:241:24:241:31 | SSA def(s) | C.cs:243:13:243:13 | access to local variable s |
-| C.cs:249:15:249:22 | SSA def(a) | C.cs:250:9:250:9 | access to local variable a |
-| C.cs:258:15:258:23 | SSA def(ia) | C.cs:261:9:261:10 | access to local variable ia |
-| C.cs:258:15:258:23 | SSA def(ia) | C.cs:264:9:264:10 | access to local variable ia |
-| C.cs:259:18:259:26 | SSA def(sa) | C.cs:262:20:262:21 | access to local variable sa |
-| C.cs:259:18:259:26 | SSA def(sa) | C.cs:265:16:265:17 | access to local variable sa |
+| C.cs:94:13:94:45 | SSA def(o) | C.cs:95:15:95:15 | access to local variable o |
+| C.cs:94:13:94:45 | SSA def(o) | C.cs:96:13:96:13 | access to local variable o |
+| C.cs:102:13:102:23 | SSA def(list) | C.cs:103:27:103:30 | access to parameter list |
+| C.cs:102:13:102:23 | SSA def(list) | C.cs:103:27:103:30 | access to parameter list |
+| C.cs:103:9:107:9 | foreach (... ... in ...) ... | C.cs:103:22:103:22 | Int32 x |
+| C.cs:103:9:107:9 | foreach (... ... in ...) ... | C.cs:106:13:106:16 | access to parameter list |
+| C.cs:103:22:103:22 | Int32 x | C.cs:103:9:107:9 | foreach (... ... in ...) ... |
+| C.cs:103:27:103:30 | access to parameter list | C.cs:103:9:107:9 | foreach (... ... in ...) ... |
+| C.cs:159:9:159:16 | SSA def(s) | C.cs:162:13:162:13 | access to local variable s |
+| C.cs:167:9:167:16 | SSA def(s) | C.cs:170:13:170:13 | access to local variable s |
+| C.cs:178:13:178:20 | SSA def(s) | C.cs:177:13:177:13 | access to local variable s |
+| C.cs:193:9:193:16 | SSA def(s) | C.cs:196:13:196:13 | access to local variable s |
+| C.cs:197:13:197:20 | [b (line 192): true] SSA def(s) | C.cs:196:13:196:13 | access to local variable s |
+| C.cs:201:16:201:19 | true | C.cs:203:13:203:13 | access to local variable s |
+| C.cs:204:13:204:20 | SSA def(s) | C.cs:201:16:201:19 | true |
+| C.cs:210:13:210:35 | SSA def(s) | C.cs:217:9:218:25 | if (...) ... |
+| C.cs:214:13:214:20 | SSA def(s) | C.cs:217:9:218:25 | if (...) ... |
+| C.cs:217:9:218:25 | if (...) ... | C.cs:218:13:218:13 | access to local variable s |
+| C.cs:222:13:222:20 | SSA def(s) | C.cs:223:9:223:9 | access to local variable s |
+| C.cs:229:22:229:22 | access to local variable s | C.cs:233:9:233:9 | access to local variable s |
+| C.cs:229:33:229:40 | SSA def(s) | C.cs:229:22:229:22 | access to local variable s |
+| C.cs:235:14:235:21 | SSA def(s) | C.cs:235:24:235:24 | access to local variable s |
+| C.cs:235:24:235:24 | access to local variable s | C.cs:237:13:237:13 | access to local variable s |
+| C.cs:235:35:235:42 | SSA def(s) | C.cs:235:24:235:24 | access to local variable s |
+| C.cs:240:24:240:31 | SSA def(s) | C.cs:242:13:242:13 | access to local variable s |
+| C.cs:248:15:248:22 | SSA def(a) | C.cs:249:9:249:9 | access to local variable a |
+| C.cs:257:15:257:23 | SSA def(ia) | C.cs:260:9:260:10 | access to local variable ia |
+| C.cs:257:15:257:23 | SSA def(ia) | C.cs:263:9:263:10 | access to local variable ia |
+| C.cs:258:18:258:26 | SSA def(sa) | C.cs:261:20:261:21 | access to local variable sa |
+| C.cs:258:18:258:26 | SSA def(sa) | C.cs:264:16:264:17 | access to local variable sa |
 | D.cs:17:17:17:20 | null | D.cs:23:9:23:13 | access to parameter param |
 | D.cs:26:32:26:36 | SSA param(param) | D.cs:32:9:32:13 | access to parameter param |
 | D.cs:58:13:58:41 | SSA def(o5) | D.cs:61:9:62:26 | if (...) ... |
@@ -597,7 +600,8 @@ edges
 | D.cs:244:9:247:25 | if (...) ... | D.cs:247:13:247:13 | access to local variable o |
 | D.cs:249:13:249:38 | SSA def(o2) | D.cs:253:13:253:14 | access to local variable o2 |
 | D.cs:258:16:258:23 | SSA def(o) | D.cs:266:9:267:25 | if (...) ... |
-| D.cs:266:9:267:25 | if (...) ... | D.cs:267:13:267:13 | access to local variable o |
+| D.cs:266:9:267:25 | if (...) ... | D.cs:266:13:266:27 | [true] ... is ... |
+| D.cs:266:13:266:27 | [true] ... is ... | D.cs:267:13:267:13 | access to local variable o |
 | D.cs:269:9:269:16 | SSA def(o) | D.cs:272:25:272:25 | access to local variable i |
 | D.cs:272:25:272:25 | access to local variable i | D.cs:273:9:288:9 | {...} |
 | D.cs:272:25:272:25 | access to local variable i | D.cs:290:9:291:25 | if (...) ... |
@@ -744,7 +748,8 @@ edges
 | E.cs:190:29:190:29 | SSA param(o) | E.cs:192:17:192:17 | access to parameter o |
 | E.cs:198:13:198:29 | [b (line 196): false] SSA def(o) | E.cs:203:13:203:13 | access to local variable o |
 | E.cs:198:13:198:29 | [b (line 196): true] SSA def(o) | E.cs:201:13:201:13 | access to local variable o |
-| E.cs:206:28:206:28 | SSA param(s) | E.cs:210:16:210:16 | access to parameter s |
+| E.cs:206:28:206:28 | SSA param(s) | E.cs:208:13:208:23 | [false] ... is ... |
+| E.cs:208:13:208:23 | [false] ... is ... | E.cs:210:16:210:16 | access to parameter s |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) | E.cs:218:9:218:9 | access to local variable x |
 | E.cs:217:13:217:20 | [b (line 213): true] SSA def(x) | E.cs:220:13:220:13 | access to local variable x |
 | E.cs:227:13:227:20 | [b (line 223): true] SSA def(x) | E.cs:229:13:229:13 | access to local variable x |
@@ -756,7 +761,8 @@ edges
 | E.cs:283:13:283:22 | [b (line 279): true] SSA def(o) | E.cs:285:9:285:9 | access to local variable o |
 | E.cs:301:13:301:27 | SSA def(s) | E.cs:302:9:302:9 | access to local variable s |
 | E.cs:319:29:319:30 | SSA param(s1) | E.cs:321:20:321:21 | access to parameter s2 |
-| E.cs:321:14:321:21 | ... ?? ... | E.cs:323:13:323:14 | access to parameter s1 |
+| E.cs:321:13:321:30 | [true] ... is ... | E.cs:323:13:323:14 | access to parameter s1 |
+| E.cs:321:14:321:21 | ... ?? ... | E.cs:321:13:321:30 | [true] ... is ... |
 | E.cs:321:20:321:21 | access to parameter s2 | E.cs:321:14:321:21 | ... ?? ... |
 | E.cs:330:13:330:36 | SSA def(x) | E.cs:331:9:331:9 | access to local variable x |
 | E.cs:342:13:342:32 | SSA def(x) | E.cs:343:9:343:9 | access to local variable x |
@@ -822,12 +828,12 @@ edges
 #select
 | C.cs:64:9:64:10 | access to local variable o1 | C.cs:62:13:62:46 | SSA def(o1) | C.cs:64:9:64:10 | access to local variable o1 | Variable $@ may be null here because of $@ assignment. | C.cs:62:13:62:14 | o1 | o1 | C.cs:62:13:62:46 | Object o1 = ... | this |
 | C.cs:68:9:68:10 | access to local variable o2 | C.cs:66:13:66:46 | SSA def(o2) | C.cs:68:9:68:10 | access to local variable o2 | Variable $@ may be null here because of $@ assignment. | C.cs:66:13:66:14 | o2 | o2 | C.cs:66:13:66:46 | Object o2 = ... | this |
-| C.cs:96:15:96:15 | access to local variable o | C.cs:95:13:95:45 | SSA def(o) | C.cs:96:15:96:15 | access to local variable o | Variable $@ may be null here because of $@ assignment. | C.cs:95:13:95:13 | o | o | C.cs:95:13:95:45 | Object o = ... | this |
-| C.cs:104:27:104:30 | access to parameter list | C.cs:103:13:103:23 | SSA def(list) | C.cs:104:27:104:30 | access to parameter list | Variable $@ may be null here because of $@ assignment. | C.cs:100:42:100:45 | list | list | C.cs:103:13:103:23 | ... = ... | this |
-| C.cs:178:13:178:13 | access to local variable s | C.cs:179:13:179:20 | SSA def(s) | C.cs:178:13:178:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:152:13:152:13 | s | s | C.cs:179:13:179:20 | ... = ... | this |
-| C.cs:204:13:204:13 | access to local variable s | C.cs:205:13:205:20 | SSA def(s) | C.cs:204:13:204:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:186:13:186:13 | s | s | C.cs:205:13:205:20 | ... = ... | this |
-| C.cs:224:9:224:9 | access to local variable s | C.cs:223:13:223:20 | SSA def(s) | C.cs:224:9:224:9 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:211:13:211:13 | s | s | C.cs:223:13:223:20 | ... = ... | this |
-| C.cs:243:13:243:13 | access to local variable s | C.cs:241:24:241:31 | SSA def(s) | C.cs:243:13:243:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:229:16:229:16 | s | s | C.cs:241:24:241:31 | ... = ... | this |
+| C.cs:95:15:95:15 | access to local variable o | C.cs:94:13:94:45 | SSA def(o) | C.cs:95:15:95:15 | access to local variable o | Variable $@ may be null here because of $@ assignment. | C.cs:94:13:94:13 | o | o | C.cs:94:13:94:45 | Object o = ... | this |
+| C.cs:103:27:103:30 | access to parameter list | C.cs:102:13:102:23 | SSA def(list) | C.cs:103:27:103:30 | access to parameter list | Variable $@ may be null here because of $@ assignment. | C.cs:99:42:99:45 | list | list | C.cs:102:13:102:23 | ... = ... | this |
+| C.cs:177:13:177:13 | access to local variable s | C.cs:178:13:178:20 | SSA def(s) | C.cs:177:13:177:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:151:13:151:13 | s | s | C.cs:178:13:178:20 | ... = ... | this |
+| C.cs:203:13:203:13 | access to local variable s | C.cs:204:13:204:20 | SSA def(s) | C.cs:203:13:203:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:185:13:185:13 | s | s | C.cs:204:13:204:20 | ... = ... | this |
+| C.cs:223:9:223:9 | access to local variable s | C.cs:222:13:222:20 | SSA def(s) | C.cs:223:9:223:9 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:210:13:210:13 | s | s | C.cs:222:13:222:20 | ... = ... | this |
+| C.cs:242:13:242:13 | access to local variable s | C.cs:240:24:240:31 | SSA def(s) | C.cs:242:13:242:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | C.cs:228:16:228:16 | s | s | C.cs:240:24:240:31 | ... = ... | this |
 | D.cs:23:9:23:13 | access to parameter param | D.cs:17:17:17:20 | null | D.cs:23:9:23:13 | access to parameter param | Variable $@ may be null here because of $@ null argument. | D.cs:21:32:21:36 | param | param | D.cs:17:17:17:20 | null | this |
 | D.cs:32:9:32:13 | access to parameter param | D.cs:26:32:26:36 | SSA param(param) | D.cs:32:9:32:13 | access to parameter param | Variable $@ may be null here as suggested by $@ null check. | D.cs:26:32:26:36 | param | param | D.cs:28:13:28:25 | ... != ... | this |
 | D.cs:62:13:62:14 | access to local variable o5 | D.cs:58:13:58:41 | SSA def(o5) | D.cs:62:13:62:14 | access to local variable o5 | Variable $@ may be null here because of $@ assignment. | D.cs:58:13:58:14 | o5 | o5 | D.cs:58:13:58:41 | String o5 = ... | this |

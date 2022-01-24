@@ -4,12 +4,14 @@
  *              meta-character may be ineffective.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id js/incomplete-sanitization
  * @tags correctness
  *       security
- *       external/cwe/cwe-116
  *       external/cwe/cwe-020
+ *       external/cwe/cwe-080
+ *       external/cwe/cwe-116
  */
 
 import javascript
@@ -78,14 +80,11 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
   or
   // flow through string methods
   exists(DataFlow::MethodCallNode mc, string m |
-    m = "replace" or
-    m = "replaceAll" or
-    m = "slice" or
-    m = "substr" or
-    m = "substring" or
-    m = "toLowerCase" or
-    m = "toUpperCase" or
-    m = "trim"
+    m =
+      [
+        "replace", "replaceAll", "slice", "substr", "substring", "toLowerCase", "toUpperCase",
+        "trim"
+      ]
   |
     mc = nd and m = mc.getMethodName() and allBackslashesEscaped(mc.getReceiver())
   )

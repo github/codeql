@@ -8,6 +8,7 @@
 | test.py:187:1:187:53 | GSSA Variable SINK | test.py:189:5:189:8 | ControlFlowNode for SINK |
 | test.py:187:1:187:53 | GSSA Variable SOURCE | test.py:188:25:188:30 | ControlFlowNode for SOURCE |
 | test.py:188:5:188:5 | SSA variable x | test.py:189:10:189:10 | ControlFlowNode for x |
+| test.py:188:9:188:68 | ControlFlowNode for .0 | test.py:188:9:188:68 | SSA variable .0 |
 | test.py:188:9:188:68 | ControlFlowNode for ListComp | test.py:188:5:188:5 | SSA variable x |
 | test.py:188:9:188:68 | SSA variable .0 | test.py:188:9:188:68 | ControlFlowNode for .0 |
 | test.py:188:16:188:16 | SSA variable v | test.py:188:45:188:45 | ControlFlowNode for v |

@@ -13,7 +13,8 @@
 
 package org.dom4j;
 
-public interface Document {
+public interface Document extends Branch {
+
 }
 
 /*

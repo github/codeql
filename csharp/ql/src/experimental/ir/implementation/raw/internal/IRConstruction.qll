@@ -165,10 +165,10 @@ import Cached
 cached
 private module Cached {
   cached
-  Opcode getInstructionOpcode(TRawInstruction instr) {
+  predicate getInstructionOpcode(Opcode opcode, TRawInstruction instr) {
     exists(TranslatedElement element, InstructionTag tag |
       instructionOrigin(instr, element, tag) and
-      element.hasInstruction(result, tag, _)
+      element.hasInstruction(opcode, tag, _)
     )
   }
 
@@ -227,6 +227,9 @@ private module Cached {
    */
   cached
   predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
+
+  cached
+  predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) { none() }
 
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go

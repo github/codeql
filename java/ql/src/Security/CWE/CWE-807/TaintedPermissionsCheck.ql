@@ -4,6 +4,7 @@
  *              permissions being granted.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id java/tainted-permissions-check
  * @tags security
@@ -40,7 +41,7 @@ class PermissionsCheckMethodAccess extends MethodAccess, PermissionsConstruction
     )
   }
 
-  override Expr getInput() { result = getArgument(0) }
+  override Expr getInput() { result = this.getArgument(0) }
 }
 
 class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstruction {
@@ -48,7 +49,7 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
     this.getConstructor().getDeclaringType() instanceof TypeShiroWCPermission
   }
 
-  override Expr getInput() { result = getArgument(0) }
+  override Expr getInput() { result = this.getArgument(0) }
 }
 
 class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {

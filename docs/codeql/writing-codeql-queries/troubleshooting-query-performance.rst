@@ -12,7 +12,7 @@ This topic offers some simple tips on how to avoid common problems that can affe
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
 - CodeQL :ref:`predicates <predicates>` and :ref:`classes <classes>` are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
-- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For more information about query languages and databases, see ":ref:`About the QL language <about-the-ql-language>`.
+- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For more information about query languages and databases, see ":ref:`About the QL language <about-the-ql-language>`."
 - Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see ":ref:`Evaluation of QL programs <evaluation-of-ql-programs>`." 
 
 Performance tips

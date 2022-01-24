@@ -55,9 +55,9 @@ However, the class <code>Session</code> can be serialized because it is declared
 
 
 <li>
-  Java 6 Object Serialization Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/platform/serialization/spec/serial-arch.html#4539">1.10 The Serializable Interface</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#933">2.1 The ObjectOutputStream Class</a>.
+  Java Object Serialization Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/specs/serialization/serial-arch.html#the-serializable-interface">1.10 The Serializable Interface</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/specs/serialization/output.html#the-objectoutputstream-class">2.1 The ObjectOutputStream Class</a>.
 </li>
 
 

@@ -1,4 +1,5 @@
 import javascript
+import semmle.javascript.dependencies.Dependencies
 
 query predicate dependencies(PackageJSON pkgjson, string pkg, string version) {
   pkgjson.declaresDependency(pkg, version)
@@ -24,3 +25,7 @@ query predicate getMainModule(PackageJSON pkg, string name, Module mod) {
 }
 
 query predicate packageJSON(PackageJSON json) { any() }
+
+query predicate dependencyInfo(Dependency dep, string name, string version) {
+  dep.info(name, version)
+}

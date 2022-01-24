@@ -1,5 +1,5 @@
 import csharp
-import Useless_code.DefaultToString
+import Useless_code.DefaultToStringQuery
 
 class MyDefaultToStringType extends DefaultToStringType {
   // A workaround for generating empty URLs for non-source locations, because qltest

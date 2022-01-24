@@ -14,14 +14,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            TypeAccess.Create(cx, Syntax.Type, this, TypeAccessIndex);
+            TypeAccess.Create(Context, Syntax.Type, this, TypeAccessIndex);
         }
 
         public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Extraction.Entities.Location location)
         {
             var info = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.TYPEOF,
                 parent,

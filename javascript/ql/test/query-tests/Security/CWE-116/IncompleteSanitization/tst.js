@@ -214,7 +214,7 @@ function typicalBadHtmlSanitizers(s) {
 	var s = s().replace(/</g, '');
 	s = s.replace(/>/g, '');  // NOT OK
 	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/"/g, '&#34;'); // OK
-	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/'/g, '&#39;'); // NOT OK
+	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/'/g, '&#39;'); // OK - single quotes or double quotes both work
 
 	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(RE, function(match) {/* ... */ }); // OK (probably)
 
@@ -247,8 +247,8 @@ function incompleteHtmlAttributeSanitization() {
 	'="' + s().replace(/[&"]/g,'') + '"'; // OK
 
 	'="' + s().replace(/[<>&']/g,'') + '"'; // NOT OK
-	"='" + s().replace(/[<>&"]/g,'') + "'"; // OK (but given the context, it is probably not fine)
-	"='" + s().replace(/[<>&']/g,'') + "'"; // NOT OK (but given the context, it is probably fine)
+	"='" + s().replace(/[<>&"]/g,'') + "'"; // NOT OK
+	"='" + s().replace(/[<>&']/g,'') + "'"; // OK
 
 	'onFunkyEvent="' + s().replace(/[<>"]/g, '') + '"'; // NOT OK
 	'<div noise onFunkyEvent="' + s().replace(/[<>"]/g, '') + '"'; // NOT OK
@@ -294,4 +294,37 @@ function moreIncompleteHtmlAttributeSanitization() {
 		y = y.replace(/"/g, '&quot;');
 	}
 	'onclick="' + y + '"'; // OK
+}
+
+function incompleteHtmlAttributeSanitization2() {
+	'=\'' + s().replace(/[&<>]/g,'') + '\''; // NOT OK
+	'=\'' + s().replace(/[<>]/g,'') + '\''; // NOT OK
+	'=\'' + s().replace(/[&<>"]/g,'') + '\''; // NOT OK
+	'=\'' + s().replace(/[<>&]/g, '') + '\''; // NOT OK
+	'="' + s().replace(/[<>&"]/g,'') + '"'; // OK
+	'=\'' + s().replace(/[<>&']/g,'') + '\''; // OK
+}
+
+function incompleteComplexSanitizers() {
+	'=\'' + s().replace(/[&<>"]/gm, function (str) { // NOT OK
+		if (str === "&")
+			return "&amp;";
+		if (str === "<")
+			return "&lt;";
+		if (str === ">")
+			return "&gt;";
+		if (str === "\"")
+			return "&quot;";
+	}) + '\'';
+
+	'="' + s().replace(/[&<>"]/gm, function (str) { // OK
+		if (str === "&")
+			return "&amp;";
+		if (str === "<")
+			return "&lt;";
+		if (str === ">")
+			return "&gt;";
+		if (str === "\"")
+			return "&quot;";
+	}) + '"';
 }

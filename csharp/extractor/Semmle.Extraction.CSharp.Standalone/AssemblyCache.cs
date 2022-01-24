@@ -111,7 +111,7 @@ namespace Semmle.BuildAnalyser
             {
                 var loadedAssembly = System.Reflection.Assembly.ReflectionOnlyLoad(id);
 
-                if (loadedAssembly != null)
+                if (loadedAssembly is not null)
                 {
                     // The assembly was somewhere we haven't indexed before.
                     // Add this assembly to our index so that subsequent lookups are faster.

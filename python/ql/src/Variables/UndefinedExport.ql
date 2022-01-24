@@ -1,6 +1,6 @@
 /**
  * @name Explicit export is not defined
- * @description Including an undefined attribute in __all__ causes an exception when
+ * @description Including an undefined attribute in `__all__` causes an exception when
  *              the module is imported using '*'
  * @kind problem
  * @tags reliability
@@ -49,7 +49,7 @@ predicate mutates_globals(ModuleValue m) {
       or
       // In Python 3.8, Enum._convert_ is implemented using a metaclass, and our points-to
       // analysis doesn't handle that well enough. So we need a special case for this
-      not exists(Value enum_convert | enum_convert = enum_class.attr("_convert")) and
+      not exists(enum_class.attr("_convert")) and
       exists(CallNode call | call.getScope() = m.getScope() |
         call.getFunction().(AttrNode).getObject(["_convert", "_convert_"]).pointsTo() = enum_class
       )

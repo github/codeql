@@ -4,7 +4,8 @@
  *              may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @security-severity 9.3
+ * @precision high
  * @id cpp/static-buffer-overflow
  * @tags reliability
  *       security
@@ -14,6 +15,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Buffer
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import LoopBounds
 
 private predicate staticBufferBase(VariableAccess access, Variable v) {
@@ -51,6 +53,10 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
     loop.limit() >= bufaccess.bufferSize() and
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
+    // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
+    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
+    // The upper bounds analysis must not have been widended
+    not upperBoundMayBeWidened(bufaccess.getArrayOffset().getFullyConverted()) and
     msg =
       "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
@@ -94,17 +100,22 @@ class CallWithBufferSize extends FunctionCall {
   }
 
   int statedSizeValue() {
-    exists(Expr statedSizeSrc |
-      DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr()) and
-      result = statedSizeSrc.getValue().toInt()
-    )
+    // `upperBound(e)` defaults to `exprMaxVal(e)` when `e` isn't analyzable. So to get a meaningful
+    // result in this case we pick the minimum value obtainable from dataflow and range analysis.
+    result =
+      upperBound(this.statedSizeExpr())
+          .minimum(min(Expr statedSizeSrc |
+              DataFlow::localExprFlow(statedSizeSrc, this.statedSizeExpr())
+            |
+              statedSizeSrc.getValue().toInt()
+            ))
   }
 }
 
 predicate wrongBufferSize(Expr error, string msg) {
   exists(CallWithBufferSize call, int bufsize, Variable buf, int statedSize |
     staticBuffer(call.buffer(), buf, bufsize) and
-    statedSize = min(call.statedSizeValue()) and
+    statedSize = call.statedSizeValue() and
     statedSize > bufsize and
     error = call.statedSizeExpr() and
     msg =
@@ -121,11 +132,13 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
     (
       access > size
       or
-      access = size and not exists(AddressOfExpr addof | bufaccess = addof.getOperand())
+      access = size and
+      not exists(AddressOfExpr addof | bufaccess = addof.getOperand()) and
+      not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild() = bufaccess)
     ) and
     msg =
       "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
-        access.toString() + "]' is accessed here."
+        access.toString() + "]' may be accessed here."
   )
 }
 

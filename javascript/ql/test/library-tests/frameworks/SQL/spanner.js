@@ -17,6 +17,18 @@ db.runTransaction((err, tx) => {
   tx.runStream({ sql: "SQL code" });
   tx.runUpdate("SQL code");
   tx.runUpdate({ sql: "SQL code" });
+
+  const queries = [
+    {
+      sql: 'SELECT 123',
+    },
+    {
+      sql: 'UPDATE foo SET bar = @baz',
+      params: {key: 'baz', value: '123'}
+    }
+  ];
+  
+  tx.batchUpdate(queries, () => {});
 });
 
 exports.instance = instance;

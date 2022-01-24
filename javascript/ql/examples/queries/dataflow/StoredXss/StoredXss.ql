@@ -2,13 +2,13 @@
  * @name Extension of standard query: Stored XSS
  * @description Extends the standard Stored XSS query with an additional source.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/stored-xss
  */
 
 import javascript
-import DataFlow
-import semmle.javascript.security.dataflow.StoredXss
+import semmle.javascript.security.dataflow.StoredXssQuery
 import DataFlow::PathGraph
 
 /**
@@ -20,10 +20,10 @@ import DataFlow::PathGraph
  * connection.query(..., (e, data) => { ... });
  * ```
  */
-class MysqlSource extends StoredXss::Source {
+class MysqlSource extends Source {
   MysqlSource() {
     this =
-      moduleImport("mysql")
+      DataFlow::moduleImport("mysql")
           .getAMemberCall("createConnection")
           .getAMethodCall("query")
           .getCallback(1)
@@ -31,6 +31,6 @@ class MysqlSource extends StoredXss::Source {
   }
 }
 
-from StoredXss::Configuration cfg, PathNode source, PathNode sink
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Stored XSS from $@.", source.getNode(), "database value."

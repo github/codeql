@@ -10,7 +10,7 @@
 
 import javascript
 import semmle.javascript.dataflow.LocalObjects
-import UnusedVariable
+import Declarations.UnusedVariable
 import UnusedParameter
 import Expressions.ExprHasNoEffect
 

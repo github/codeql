@@ -16,7 +16,7 @@
 
 ##############################################################################
 #
-# Modified 22052019. 
+# Modified 22032021. 
 
 # The configuration values below are specific to the supported languages and frameworks project
 # To amend html_theme_options, update version/release number, or add more sphinx extensions,
@@ -41,9 +41,12 @@ project = u'Supported languages and frameworks for LGTM Enterprise'
 
 # The version info for this project, if different from version and release in main conf.py file.
 # The short X.Y version.
-version = u'1.26'
-# The full version, including alpha/beta/rc tags.
-release = u'1.26'
+
+# LGTM Enterprise release
+release = u'1.28'
+
+# CodeQL CLI version used by LGTM Enterprise release
+version = u'2.5.9'
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 
@@ -66,9 +69,9 @@ html_theme_options = {'font_size': '16px',
                       'body_text': '#333', 
                       'link': '#2F1695',
                       'link_hover': '#2F1695',
-                      'font_family': 'Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Segoe UI Symbol;',
                       'show_powered_by': False,
                       'nosidebar':True,
+                      'head_font_family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                       }
 
 html_favicon = '../images/site/favicon.ico'

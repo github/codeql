@@ -21,9 +21,9 @@ predicate argumentMayBeRoot(Expr e) {
 
 class SetuidLikeFunctionCall extends FunctionCall {
   SetuidLikeFunctionCall() {
-    (getTarget().hasGlobalName("setuid") or getTarget().hasGlobalName("setresuid")) and
+    (this.getTarget().hasGlobalName("setuid") or this.getTarget().hasGlobalName("setresuid")) and
     // setuid/setresuid with the root user are false positives.
-    not argumentMayBeRoot(getArgument(0))
+    not argumentMayBeRoot(this.getArgument(0))
   }
 }
 
@@ -44,16 +44,15 @@ class SetuidLikeWrapperCall extends FunctionCall {
 
 class CallBeforeSetuidFunctionCall extends FunctionCall {
   CallBeforeSetuidFunctionCall() {
-    (
-      getTarget().hasGlobalName("setgid") or
-      getTarget().hasGlobalName("setresgid") or
-      // Compatibility may require skipping initgroups and setgroups return checks.
-      // A stricter best practice is to check the result and errnor for EPERM.
-      getTarget().hasGlobalName("initgroups") or
-      getTarget().hasGlobalName("setgroups")
-    ) and
+    this.getTarget()
+        .hasGlobalName([
+            "setgid", "setresgid",
+            // Compatibility may require skipping initgroups and setgroups return checks.
+            // A stricter best practice is to check the result and errnor for EPERM.
+            "initgroups", "setgroups"
+          ]) and
     // setgid/setresgid/etc with the root group are false positives.
-    not argumentMayBeRoot(getArgument(0))
+    not argumentMayBeRoot(this.getArgument(0))
   }
 }
 

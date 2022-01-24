@@ -2,19 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
-
-string value_from_expr(Expr e) {
-  // TODO: This one is starting to look like `repr` predicate from TestTaintLib
-  result =
-    e.(StrConst).getPrefix() + e.(StrConst).getText() +
-      e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
-  or
-  result = e.(Name).getId()
-  or
-  not e instanceof StrConst and
-  not e instanceof Name and
-  result = e.toString()
-}
+private import semmle.python.dataflow.new.internal.PrintNode
 
 class SystemCommandExecutionTest extends InlineExpectationsTest {
   SystemCommandExecutionTest() { this = "SystemCommandExecutionTest" }
@@ -27,7 +15,7 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
       command = sce.getCommand() and
       location = command.getLocation() and
       element = command.toString() and
-      value = value_from_expr(command.asExpr()) and
+      value = prettyNodeForInlineTest(command) and
       tag = "getCommand"
     )
   }
@@ -46,7 +34,7 @@ class DecodingTest extends InlineExpectationsTest {
       exists(DataFlow::Node data |
         location = data.getLocation() and
         element = data.toString() and
-        value = value_from_expr(data.asExpr()) and
+        value = prettyNodeForInlineTest(data) and
         (
           data = d.getAnInput() and
           tag = "decodeInput"
@@ -84,7 +72,7 @@ class EncodingTest extends InlineExpectationsTest {
       exists(DataFlow::Node data |
         location = data.getLocation() and
         element = data.toString() and
-        value = value_from_expr(data.asExpr()) and
+        value = prettyNodeForInlineTest(data) and
         (
           data = e.getAnInput() and
           tag = "encodeInput"
@@ -105,19 +93,55 @@ class EncodingTest extends InlineExpectationsTest {
   }
 }
 
+class LoggingTest extends InlineExpectationsTest {
+  LoggingTest() { this = "LoggingTest" }
+
+  override string getARelevantTag() { result = "loggingInput" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Logging logging, DataFlow::Node data |
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      data = logging.getAnInput() and
+      tag = "loggingInput"
+    )
+  }
+}
+
 class CodeExecutionTest extends InlineExpectationsTest {
   CodeExecutionTest() { this = "CodeExecutionTest" }
 
   override string getARelevantTag() { result = "getCode" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(CodeExecution ce, DataFlow::Node code |
       exists(location.getFile().getRelativePath()) and
       code = ce.getCode() and
       location = code.getLocation() and
       element = code.toString() and
-      value = value_from_expr(code.asExpr()) and
+      value = prettyNodeForInlineTest(code) and
       tag = "getCode"
+    )
+  }
+}
+
+class SqlConstructionTest extends InlineExpectationsTest {
+  SqlConstructionTest() { this = "SqlConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedSql" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(SqlConstruction e, DataFlow::Node sql |
+      exists(location.getFile().getRelativePath()) and
+      sql = e.getSql() and
+      location = e.getLocation() and
+      element = sql.toString() and
+      value = prettyNodeForInlineTest(sql) and
+      tag = "constructedSql"
     )
   }
 }
@@ -128,13 +152,46 @@ class SqlExecutionTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "getSql" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(SqlExecution e, DataFlow::Node sql |
       exists(location.getFile().getRelativePath()) and
       sql = e.getSql() and
       location = e.getLocation() and
       element = sql.toString() and
-      value = value_from_expr(sql.asExpr()) and
+      value = prettyNodeForInlineTest(sql) and
       tag = "getSql"
+    )
+  }
+}
+
+class EscapingTest extends InlineExpectationsTest {
+  EscapingTest() { this = "EscapingTest" }
+
+  override string getARelevantTag() { result in ["escapeInput", "escapeOutput", "escapeKind"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Escaping esc |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = prettyNodeForInlineTest(data) and
+        (
+          data = esc.getAnInput() and
+          tag = "escapeInput"
+          or
+          data = esc.getOutput() and
+          tag = "escapeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = esc.getLocation() and
+        element = format and
+        value = format and
+        format = esc.getKind() and
+        tag = "escapeKind"
+      )
     )
   }
 }
@@ -142,9 +199,10 @@ class SqlExecutionTest extends InlineExpectationsTest {
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 
-  override string getARelevantTag() { result in ["routeSetup", "routeHandler", "routedParameter"] }
+  override string getARelevantTag() { result = "routeSetup" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(HTTP::Server::RouteSetup setup |
       location = setup.getLocation() and
       element = setup.toString() and
@@ -156,21 +214,31 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
       ) and
       tag = "routeSetup"
     )
-    or
-    exists(HTTP::Server::RouteSetup setup, Function func |
-      func = setup.getARouteHandler() and
-      location = func.getLocation() and
-      element = func.toString() and
-      value = "" and
-      tag = "routeHandler"
-    )
-    or
-    exists(HTTP::Server::RouteSetup setup, Parameter param |
-      param = setup.getARoutedParameter() and
-      location = param.getLocation() and
-      element = param.toString() and
-      value = param.asName().getId() and
-      tag = "routedParameter"
+  }
+}
+
+class HttpServerRequestHandlerTest extends InlineExpectationsTest {
+  HttpServerRequestHandlerTest() { this = "HttpServerRequestHandlerTest" }
+
+  override string getARelevantTag() { result in ["requestHandler", "routedParameter"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(HTTP::Server::RequestHandler handler |
+        location = handler.getLocation() and
+        element = handler.toString() and
+        value = "" and
+        tag = "requestHandler"
+      )
+      or
+      exists(HTTP::Server::RequestHandler handler, Parameter param |
+        param = handler.getARoutedParameter() and
+        location = param.getLocation() and
+        element = param.toString() and
+        value = param.asName().getId() and
+        tag = "routedParameter"
+      )
     )
   }
 }
@@ -191,6 +259,8 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // flask tests more readable since adding full annotations for HttpResponses in the
     // the tests for routing setup is both annoying and not very useful.
     location.getFile() = file and
+    exists(file.getRelativePath()) and
+    // we need to do this step since we expect subclasses could override getARelevantTag
     tag = getARelevantTag() and
     (
       exists(HTTP::Server::HttpResponse response |
@@ -203,7 +273,7 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
-        value = value_from_expr(response.getBody().asExpr()) and
+        value = prettyNodeForInlineTest(response.getBody()) and
         tag = "responseBody"
       )
       or
@@ -224,19 +294,93 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
   }
 }
 
+class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
+  HttpServerHttpRedirectResponseTest() { this = "HttpServerHttpRedirectResponseTest" }
+
+  override string getARelevantTag() { result in ["HttpRedirectResponse", "redirectLocation"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(HTTP::Server::HttpRedirectResponse redirect |
+        location = redirect.getLocation() and
+        element = redirect.toString() and
+        value = "" and
+        tag = "HttpRedirectResponse"
+      )
+      or
+      exists(HTTP::Server::HttpRedirectResponse redirect |
+        location = redirect.getLocation() and
+        element = redirect.toString() and
+        value = prettyNodeForInlineTest(redirect.getRedirectLocation()) and
+        tag = "redirectLocation"
+      )
+    )
+  }
+}
+
+class HttpServerCookieWriteTest extends InlineExpectationsTest {
+  HttpServerCookieWriteTest() { this = "HttpServerCookieWriteTest" }
+
+  override string getARelevantTag() {
+    result in ["CookieWrite", "CookieRawHeader", "CookieName", "CookieValue"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CookieWrite cookieWrite |
+      location = cookieWrite.getLocation() and
+      (
+        element = cookieWrite.toString() and
+        value = "" and
+        tag = "CookieWrite"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getHeaderArg()) and
+        tag = "CookieRawHeader"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getNameArg()) and
+        tag = "CookieName"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getValueArg()) and
+        tag = "CookieValue"
+      )
+    )
+  }
+}
+
 class FileSystemAccessTest extends InlineExpectationsTest {
   FileSystemAccessTest() { this = "FileSystemAccessTest" }
 
   override string getARelevantTag() { result = "getAPathArgument" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(FileSystemAccess a, DataFlow::Node path |
-      exists(location.getFile().getRelativePath()) and
       path = a.getAPathArgument() and
       location = a.getLocation() and
       element = path.toString() and
-      value = value_from_expr(path.asExpr()) and
+      value = prettyNodeForInlineTest(path) and
       tag = "getAPathArgument"
+    )
+  }
+}
+
+class FileSystemWriteAccessTest extends InlineExpectationsTest {
+  FileSystemWriteAccessTest() { this = "FileSystemWriteAccessTest" }
+
+  override string getARelevantTag() { result = "fileWriteData" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(FileSystemWriteAccess write, DataFlow::Node data |
+      data = write.getADataNode() and
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      tag = "fileWriteData"
     )
   }
 }
@@ -247,8 +391,8 @@ class PathNormalizationTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "pathNormalization" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(Path::PathNormalization n |
-      exists(location.getFile().getRelativePath()) and
       location = n.getLocation() and
       element = n.toString() and
       value = "" and
@@ -263,19 +407,99 @@ class SafeAccessCheckTest extends InlineExpectationsTest {
   override string getARelevantTag() { result in ["checks", "branch"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
-      exists(location.getFile().getRelativePath()) and
       c.checks(checks.asCfgNode(), branch) and
       location = c.getLocation() and
       (
         element = checks.toString() and
-        value = value_from_expr(checks.asExpr()) and
+        value = prettyNodeForInlineTest(checks) and
         tag = "checks"
         or
         element = branch.toString() and
         value = branch.toString() and
         tag = "branch"
       )
+    )
+  }
+}
+
+class PublicKeyGenerationTest extends InlineExpectationsTest {
+  PublicKeyGenerationTest() { this = "PublicKeyGenerationTest" }
+
+  override string getARelevantTag() { result in ["PublicKeyGeneration", "keySize"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Cryptography::PublicKey::KeyGeneration keyGen |
+      location = keyGen.getLocation() and
+      (
+        element = keyGen.toString() and
+        value = "" and
+        tag = "PublicKeyGeneration"
+        or
+        element = keyGen.toString() and
+        value = keyGen.getKeySizeWithOrigin(_).toString() and
+        tag = "keySize"
+      )
+    )
+  }
+}
+
+class CryptographicOperationTest extends InlineExpectationsTest {
+  CryptographicOperationTest() { this = "CryptographicOperationTest" }
+
+  override string getARelevantTag() {
+    result in [
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+      ]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Cryptography::CryptographicOperation cryptoOperation |
+      location = cryptoOperation.getLocation() and
+      (
+        element = cryptoOperation.toString() and
+        value = "" and
+        tag = "CryptographicOperation"
+        or
+        element = cryptoOperation.toString() and
+        value = prettyNodeForInlineTest(cryptoOperation.getAnInput()) and
+        tag = "CryptographicOperationInput"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getAlgorithm().getName() and
+        tag = "CryptographicOperationAlgorithm"
+      )
+    )
+  }
+}
+
+class HttpClientRequestTest extends InlineExpectationsTest {
+  HttpClientRequestTest() { this = "HttpClientRequestTest" }
+
+  override string getARelevantTag() {
+    result in ["clientRequestUrlPart", "clientRequestCertValidationDisabled"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req, DataFlow::Node url |
+      url = req.getAUrlPart() and
+      location = url.getLocation() and
+      element = url.toString() and
+      value = prettyNodeForInlineTest(url) and
+      tag = "clientRequestUrlPart"
+    )
+    or
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Client::Request req |
+      req.disablesCertificateValidation(_, _) and
+      location = req.getLocation() and
+      element = req.toString() and
+      value = "" and
+      tag = "clientRequestCertValidationDisabled"
     )
   }
 }

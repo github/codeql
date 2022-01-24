@@ -3,9 +3,13 @@ private import TestUtilities.InlineExpectationsTest
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private predicate ignoreAllocation(string name) {
-  name = "i" or
-  name = "p" or
-  name = "q"
+  name = ["i", "p", "q", "s", "t", "?{AllAliased}"]
+}
+
+private predicate ignoreFile(File file) {
+  // Ignore standard headers.
+  file.getBaseName() = ["memory.h", "type_traits.h", "utility.h"] or
+  not file.fromSource()
 }
 
 module Raw {
@@ -29,7 +33,8 @@ module Raw {
         not ignoreAllocation(memLocation.getAllocation().getAllocationString()) and
         value = memLocation.toString() and
         element = instr.toString() and
-        location = instr.getLocation()
+        location = instr.getLocation() and
+        not ignoreFile(location.getFile())
       )
     }
   }
@@ -52,13 +57,14 @@ module UnaliasedSSA {
     override predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(Instruction instr, MemoryLocation memLocation |
         memLocation = getAMemoryAccess(instr) and
-        not memLocation instanceof AliasedVirtualVariable and
+        not memLocation.getVirtualVariable() instanceof AliasedVirtualVariable and
         not memLocation instanceof AllNonLocalMemory and
         tag = "ussa" and
         not ignoreAllocation(memLocation.getAllocation().getAllocationString()) and
         value = memLocation.toString() and
         element = instr.toString() and
-        location = instr.getLocation()
+        location = instr.getLocation() and
+        not ignoreFile(location.getFile())
       )
     }
   }

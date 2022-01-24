@@ -2,7 +2,7 @@
 <qhelp>
   <overview>
     <p>
-      Even though the request-handling methods of <code>Servlet</code> are declared <code>throws IOException, ServletException</code>, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could leave a system in an unexpected state, possibly resulting in denial-of-service attacks, or could lead to exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. That information could be valuable to an attacker.
+      Even though the request-handling methods of <code>Servlet</code> are declared <code>throws IOException, ServletException</code>, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could lead to exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. That information could be valuable to an attacker.
     </p>
   </overview>
 

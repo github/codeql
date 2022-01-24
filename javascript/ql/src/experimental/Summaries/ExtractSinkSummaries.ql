@@ -3,7 +3,7 @@
  * @description Extracts sink summaries, that is, tuples `(p, lbl, cfg)` representing the fact
  *              that data with flow label `lbl` may flow from a user-controlled exit node of portal
  *              `p` to a known sink for configuration `cfg`.
- * @kind sink-summary
+ * @kind table
  * @id js/sink-summary-extraction
  */
 

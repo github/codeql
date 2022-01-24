@@ -35,7 +35,7 @@
 
 // CVE-2019-10767
 (function(id) {
-  id = id.replace(/\.\./g, ""); // NOT OK
+  id = id.replace(/\.\./g, ""); // OK (can not contain '..' afterwards)
   return id;
 });
 (function(id) {
@@ -73,13 +73,13 @@
   x = x.replace(/<li><\/li>/gi, ""); // OK
 
   x = x.replace(/<!--(.*?)-->/gm, ""); // NOT OK
-  x = x.replace(/\sng-[a-z-]+/, ""); // OK (single ng-attribute, should be flagged by some other query!)
+  x = x.replace(/\sng-[a-z-]+/, ""); // NOT OK
   x = x.replace(/\sng-[a-z-]+/g, ""); // NOT OK (ng-attributes)
 
   x = x.replace(/(<!--\[CDATA\[|\]\]-->)/g, "\n"); // OK: not a sanitizer
 
-  x = x.replace(/<script.+desktop\-only.+<\/script>/g, ""); // OK, but still flagged [INCONSISTENCY]
-  x = x.replace(/<script async.+?<\/script>/g, ""); // OK, but still flagged [INCONSISTENCY]
+  x = x.replace(/<script.+desktop\-only.+<\/script>/g, ""); // OK [INCONSISTENCY]
+  x = x.replace(/<script async.+?<\/script>/g, ""); // OK
   x = x.replace(/<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi, ""); // NOT OK
 
   x = x.replace(/\x2E\x2E\x2F\x2E\x2E\x2F/g, ""); // NOT OK (matches "../../")
@@ -97,7 +97,7 @@
 
   x = x.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, ""); // NOT OK [INCONSISTENCY]
 
-  x = x.replace(/\.\./g, ""); // NOT OK
+  x = x.replace(/\.\./g, ""); // OK
   x = x.replace(/\.\.\//g, ""); // NOT OK
   x = x.replace(/\/\.\./g, ""); // NOT OK
 
@@ -109,8 +109,39 @@
   x = x.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, ""); // NOT OK
   x = x.replace(/<script[\s\S]*?<\/script>/gi, ""); // NOT OK
   x = x.replace(/ ?<!-- ?/g, ""); // NOT OK
-  x = x.replace(/require\('\.\.\/common'\);/g, ""); // OK [INCONSISTENCY] permit alphanum-suffix after the dots?
-  x = x.replace(/\.\.\/\.\.\/lib\//g, ""); // OK [INCONSISTENCY] permit alphanum-suffix after the dots?
+  x = x.replace(/require\('\.\.\/common'\);/g, ""); // OK
+  x = x.replace(/\.\.\/\.\.\/lib\//g, ""); // OK
+
+  while (x.indexOf(".") !== -1) {
+    x = x
+      .replace(/^\.\//, "")
+      .replace(/\/\.\//, "/")
+      .replace(/[^\/]*\/\.\.\//, ""); // OK
+  }
+
+  x = x.replace(/([^.\s]+\.)+/, ""); // OK
+
+  x = x.replace(/<!\-\-DEVEL[\d\D]*?DEVEL\-\->/g, ""); // OK
+
+  x = x
+    .replace(/^\.\//, "")
+    .replace(/\/\.\//, "/")
+    .replace(/[^\/]*\/\.\.\//, ""); // NOT OK
 
   return x;
+});
+
+(function (content) {
+	content.replace(/<script.*\/script>/gi, ""); // NOT OK
+	content.replace(/<(script).*\/script>/gi, ""); // NOT OK
+	content.replace(/.+<(script).*\/script>/gi, ""); // NOT OK
+	content.replace(/.*<(script).*\/script>/gi, ""); // NOT OK
+});
+
+(function (content) {
+  content = content.replace(/<script[\s\S]*?<\/script>/gi, ""); // NOT OK
+  content = content.replace(/<[a-zA-Z\/](.|\n)*?>/g, '') || ' '; // NOT OK
+  content = content.replace(/<(script|iframe|video)[\s\S]*?<\/(script|iframe|video)>/g, '') // NOT OK
+  content = content.replace(/<(script|iframe|video)(.|\s)*?\/(script|iframe|video)>/g, '') // NOT OK
+  content = content.replace(/<[^<]*>/g, ""); // OK
 });

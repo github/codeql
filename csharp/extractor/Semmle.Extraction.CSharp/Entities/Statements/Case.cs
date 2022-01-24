@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
     {
         protected Case(Context cx, TSyntax node, Switch parent, int child)
-            : base(cx, node, StmtKind.CASE, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.CASE, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static Statement Create(Context cx, SwitchLabelSyntax node, Switch parent, int child)
         {
@@ -36,8 +36,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             var value = Stmt.Value;
-            Expression.Create(cx, value, this, 0);
-            Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(value).Value);
+            Expression.Create(Context, value, this, 0);
+            Switch.LabelForValue(Context.GetModel(Stmt).GetConstantValue(value).Value);
         }
 
         public static CaseLabel Create(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
@@ -70,11 +70,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expressions.Pattern.Create(cx, Stmt.Pattern, this, 0);
+            Expressions.Pattern.Create(Context, Stmt.Pattern, this, 0);
 
-            if (Stmt.WhenClause != null)
+            if (Stmt.WhenClause is not null)
             {
-                Expression.Create(cx, Stmt.WhenClause.Condition, this, 1);
+                Expression.Create(Context, Stmt.WhenClause.Condition, this, 1);
             }
         }
 

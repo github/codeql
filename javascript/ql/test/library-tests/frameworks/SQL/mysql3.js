@@ -21,3 +21,7 @@ pool.getConnection(function(err, connection) {
     // Don't use the connection here, it has been returned to the pool. 
   });
 });
+
+pool.on('connection', conn => {
+  conn.query('SELECT something');
+});

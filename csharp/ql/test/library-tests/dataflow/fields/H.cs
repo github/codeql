@@ -20,10 +20,10 @@ public class H
     void M1(object o)
     {
         var a = new A();
-        a.FieldA = new object();
+        a.FieldA = Source<object>(1);
         var clone = Clone(a);
-        Sink(clone.FieldA); // flow
-        
+        Sink(clone.FieldA); //  $ hasValueFlow=1
+
         a = new A();
         a.FieldA = o;
         clone = Clone(a);
@@ -40,9 +40,9 @@ public class H
     void M2(object o)
     {
         var a = new A();
-        a.FieldA = new object();
+        a.FieldA = Source<object>(2);
         var b = Transform(a);
-        Sink(b.FieldB); // flow
+        Sink(b.FieldB); // $ hasValueFlow=2
 
         a = new A();
         a.FieldA = o;
@@ -60,9 +60,9 @@ public class H
         var a = new A();
         var b1 = new B();
         var b2 = new B();
-        a.FieldA = new object();
+        a.FieldA = Source<object>(3);
         TransformArg(a, b1, b2);
-        Sink(b1.FieldB); // flow
+        Sink(b1.FieldB); // $ hasValueFlow=3
         Sink(b2.FieldB); // no flow
 
         a = new A();
@@ -85,9 +85,9 @@ public class H
         var a = new A();
         var b1 = new B();
         var b2 = new B();
-        SetArgs(a, new object(), b1, b2);
-        Sink(a.FieldA); // flow
-        Sink(b1.FieldB); // flow
+        SetArgs(a, Source<object>(4), b1, b2);
+        Sink(a.FieldA); // $ hasValueFlow=4
+        Sink(b1.FieldB); // $ hasValueFlow=4
         Sink(b2.FieldB); // no flow
 
         a = new A();
@@ -109,9 +109,9 @@ public class H
     void M5(object o)
     {
         var a = new A();
-        a.FieldA = new object();
+        a.FieldA = Source<object>(5);
         var b = TransformWrap(a);
-        Sink(b.FieldB); // flow
+        Sink(b.FieldB); // $ hasValueFlow=5
 
         a = new A();
         a.FieldA = o;
@@ -127,8 +127,8 @@ public class H
     void M6(object o)
     {
         var a = new A();
-        a.FieldA = new object();
-        Sink(Get(a)); // flow
+        a.FieldA = Source<object>(6);
+        Sink(Get(a)); // $ hasValueFlow=6
 
         a = new A();
         a.FieldA = o;
@@ -144,15 +144,15 @@ public class H
 
     void M7()
     {
-        var a = Through(new A());
-        Sink(a); // flow
-        var b = Through(new B());
+        var a = Through(Source<A>(7.1));
+        Sink(a); // $ hasValueFlow=7.1
+        var b = Through(Source<B>(7.2));
         Sink(b); // no flow
     }
 
     void SetNested(A a, object o)
     {
-        var b = new B();
+        var b = Source<B>(8.1);
         b.FieldB = o;
         a.FieldA = b;
     }
@@ -160,12 +160,14 @@ public class H
     void M8()
     {
         var a = new A();
-        var o = new object();
+        var o = Source<object>(8.2);
         SetNested(a, o);
-        var b = (B) a.FieldA;
-        Sink(b); // flow (from `new B()` inside `SetNested`)
-        Sink(b.FieldB); // flow
+        var b = (B)a.FieldA;
+        Sink(b); // $ hasValueFlow=8.1
+        Sink(b.FieldB); // $ hasValueFlow=8.2
     }
 
     public static void Sink(object o) { }
+
+    static T Source<T>(object source) => throw null;
 }

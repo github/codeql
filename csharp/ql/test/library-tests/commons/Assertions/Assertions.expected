@@ -16,8 +16,8 @@ assertTrue
 | Assertions.cs:39:9:39:34 | call to method MyAssert2 | Assertions.cs:39:30:39:33 | true |
 | Assertions.cs:44:9:44:36 | call to method Requires | Assertions.cs:44:27:44:35 | ... != ... |
 | Assertions.cs:45:9:45:58 | call to method Requires | Assertions.cs:45:27:45:35 | ... != ... |
-| Assertions.cs:46:9:46:47 | call to method Requires | Assertions.cs:46:38:46:46 | ... != ... |
-| Assertions.cs:47:9:47:69 | call to method Requires | Assertions.cs:47:38:47:46 | ... != ... |
+| Assertions.cs:46:9:46:47 | call to method Requires<Exception> | Assertions.cs:46:38:46:46 | ... != ... |
+| Assertions.cs:47:9:47:69 | call to method Requires<Exception> | Assertions.cs:47:38:47:46 | ... != ... |
 | Assertions.cs:48:9:48:34 | call to method Assert | Assertions.cs:48:25:48:33 | ... != ... |
 | Assertions.cs:49:9:49:51 | call to method Assert | Assertions.cs:49:25:49:33 | ... != ... |
 | Assertions.cs:50:9:50:34 | call to method Assume | Assertions.cs:50:25:50:33 | ... != ... |

@@ -59,7 +59,7 @@ namespace Semmle.Autobuild.Shared
     {
         public static bool AsBool(this string? value, string param, bool defaultValue)
         {
-            if (value == null)
+            if (value is null)
                 return defaultValue;
 
             switch (value.ToLower())
@@ -81,7 +81,7 @@ namespace Semmle.Autobuild.Shared
 
         public static string[] AsListWithExpandedEnvVars(this string? value, IBuildActions actions, string[] defaultValue)
         {
-            if (value == null)
+            if (value is null)
                 return defaultValue;
 
             return value.

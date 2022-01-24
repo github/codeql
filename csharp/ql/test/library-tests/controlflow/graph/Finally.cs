@@ -259,4 +259,17 @@ public class Finally
         }
         Console.WriteLine("Done");
     }
+
+    void M13(int i)
+    {
+        try
+        {
+            Console.WriteLine("1");
+        }
+        finally
+        {
+            Console.WriteLine("3");
+            i += 3;
+        }
+    }
 }

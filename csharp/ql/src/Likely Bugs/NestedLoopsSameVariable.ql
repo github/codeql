@@ -27,6 +27,13 @@ class NestedForConditions extends SC::StructuralComparisonConfiguration {
   }
 }
 
+private predicate hasChild(Stmt outer, Element child) {
+  outer = child.getParent() and
+  (outer instanceof ForStmt or outer = any(ForStmt f).getBody())
+  or
+  hasChild(outer, child.getParent())
+}
+
 /** A nested `for` statement that shares the same iteration variable as an outer `for` statement. */
 class NestedForLoopSameVariable extends ForStmt {
   ForStmt outer;
@@ -35,7 +42,7 @@ class NestedForLoopSameVariable extends ForStmt {
   MutatorOperation outerUpdate;
 
   NestedForLoopSameVariable() {
-    outer = this.getParent+() and
+    hasChild(outer, this) and
     innerUpdate = this.getAnUpdate() and
     outerUpdate = outer.getAnUpdate() and
     innerUpdate.getOperand() = iteration.getAnAccess() and
@@ -55,7 +62,7 @@ class NestedForLoopSameVariable extends ForStmt {
 
   private predicate haveSameCondition() {
     exists(NestedForConditions config |
-      config.same(getInnerForStmt().getCondition(), getOuterForStmt().getCondition())
+      config.same(this.getInnerForStmt().getCondition(), this.getOuterForStmt().getCondition())
     )
   }
 
@@ -67,7 +74,7 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Holds if the logic is deemed to be correct in limited circumstances. */
   predicate isSafe() {
-    haveSameUpdate() and haveSameCondition() and not exists(getAnUnguardedAccess())
+    this.haveSameUpdate() and this.haveSameCondition() and not exists(this.getAnUnguardedAccess())
   }
 
   /** Gets the result element. */
@@ -88,20 +95,20 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
   private ControlFlow::Node getAnUnguardedNode() {
-    result.getElement().getParent+() = getOuterForStmt().getBody() and
+    hasChild(this.getOuterForStmt().getBody(), result.getElement()) and
     (
       result =
         this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
       or
-      exists(ControlFlow::Node mid | mid = getAnUnguardedNode() |
+      exists(ControlFlow::Node mid | mid = this.getAnUnguardedNode() |
         mid.getASuccessor() = result and
-        not exists(getAComparisonTest(result.getElement()))
+        not exists(this.getAComparisonTest(result.getElement()))
       )
     )
   }
 
   private VariableAccess getAnUnguardedAccess() {
-    result = getAnUnguardedNode().getElement() and
+    result = this.getAnUnguardedNode().getElement() and
     result.getTarget() = iteration
   }
 }

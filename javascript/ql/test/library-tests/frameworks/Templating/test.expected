@@ -1,0 +1,99 @@
+getTemplateInstantiationSyntax
+| consolidate.js:3:1:3:83 | consoli ...  => {}) | ejs |
+| consolidate.js:4:1:4:90 | consoli ...  => {}) | mustache |
+getLikelyTemplateSyntax
+| projectA/views/main.ejs:0:0:0:0 | projectA/views/main.ejs | ejs |
+| projectA/views/subfolder/index.ejs:0:0:0:0 | projectA/views/subfolder/index.ejs | ejs |
+| projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs | ejs |
+| projectA/views/subfolder/subsub/index.ejs:0:0:0:0 | projectA/views/subfolder/subsub/index.ejs | ejs |
+| projectA/views/upward_traversal.ejs:0:0:0:0 | projectA/views/upward_traversal.ejs | ejs |
+| projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs | ejs |
+| projectB/views/subfolder/index.ejs:0:0:0:0 | projectB/views/subfolder/index.ejs | ejs |
+| projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs | ejs |
+| views/angularjs_include.ejs:0:0:0:0 | views/angularjs_include.ejs | ejs |
+| views/angularjs_sinks.ejs:0:0:0:0 | views/angularjs_sinks.ejs | ejs |
+| views/ejs_include1.ejs:0:0:0:0 | views/ejs_include1.ejs | ejs |
+| views/ejs_include2.ejs:0:0:0:0 | views/ejs_include2.ejs | ejs |
+| views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs | ejs |
+| views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs | mustache |
+| views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html | ejs |
+| views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html | mustache |
+| views/njk_sinks.njk:0:0:0:0 | views/njk_sinks.njk | mustache |
+getTargetFile
+| app.js:6:5:21:6 | res.ren ... \\n    }) | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs |
+| app.js:25:5:40:6 | res.ren ... \\n    }) | views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs |
+| app.js:44:5:60:6 | res.ren ... \\n    }) | views/njk_sinks.njk:0:0:0:0 | views/njk_sinks.njk |
+| app.js:64:5:67:6 | res.ren ... \\n    }) | views/angularjs_sinks.ejs:0:0:0:0 | views/angularjs_sinks.ejs |
+| consolidate.js:3:1:3:83 | consoli ...  => {}) | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html |
+| consolidate.js:4:1:4:90 | consoli ...  => {}) | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html |
+| projectA/src/index.js:11:5:14:6 | res.ren ... \\n    }) | projectA/views/main.ejs:0:0:0:0 | projectA/views/main.ejs |
+| projectA/src/index.js:16:5:19:6 | res.ren ... \\n    }) | projectA/views/main.ejs:0:0:0:0 | projectA/views/main.ejs |
+| projectA/src/index.js:21:5:24:6 | res.ren ... \\n    }) | projectA/views/subfolder/index.ejs:0:0:0:0 | projectA/views/subfolder/index.ejs |
+| projectA/src/index.js:36:5:39:6 | res.ren ... \\n    }) | projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs |
+| projectA/src/index.js:41:5:44:6 | res.ren ... \\n    }) | projectA/views/subfolder/other.ejs:0:0:0:0 | projectA/views/subfolder/other.ejs |
+| projectA/src/index.js:46:5:49:6 | res.ren ... \\n    }) | projectA/views/subfolder/subsub/index.ejs:0:0:0:0 | projectA/views/subfolder/subsub/index.ejs |
+| projectB/src/index.js:11:5:14:6 | res.ren ... \\n    }) | projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs |
+| projectB/src/index.js:16:5:19:6 | res.ren ... \\n    }) | projectB/views/main.ejs:0:0:0:0 | projectB/views/main.ejs |
+| projectB/src/index.js:21:5:24:6 | res.ren ... \\n    }) | projectB/views/subfolder/index.ejs:0:0:0:0 | projectB/views/subfolder/index.ejs |
+| projectB/src/index.js:36:5:39:6 | res.ren ... \\n    }) | projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs |
+| projectB/src/index.js:41:5:44:6 | res.ren ... \\n    }) | projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs |
+| views/ejs_sinks.ejs:24:13:24:53 | include ... Html }) | views/ejs_include1.ejs:0:0:0:0 | views/ejs_include1.ejs |
+xssSink
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:5:9:5:31 | <%- rawHtmlSafeValue %> |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:24:9:24:57 | <%- include('ejs_include1', { foo: rawHtml }) _%> |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:17:9:17:32 | {{{ rawHtmlSafeValue }}} |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/instantiated_as_ejs.html:4:9:4:23 | <%- xss_sink %> |
+| views/instantiated_as_hbs.html:7:9:7:24 | {{{ xss_sink }}} |
+| views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| views/njk_sinks.njk:5:12:5:27 | rawHtmlSafeValue |
+| views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+codeInjectionSink
+| views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:6:9:6:39 | <% include angularjs_include %> |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
+| views/njk_sinks.njk:15:46:15:91 | {{ dataInGeneratedCodeJsonRaw \| json \| safe }} |
+| views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} |
+| views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} |

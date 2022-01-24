@@ -10,7 +10,7 @@ Not all compilers generate code that zero-out memory, especially when optimizati
 is not compliant with the latest language standards. Accessing uninitialized memory will lead to undefined results.
 </p>
 
-<include src="dataFlowWarning.qhelp" />
+<include src="dataFlowWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

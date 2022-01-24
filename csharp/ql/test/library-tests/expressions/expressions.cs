@@ -128,8 +128,8 @@ namespace Expressions
 
         class Nested : Class
         {
-
-
+            static Nested() { }
+            Nested(bool b) { }
             Nested(int i) : base(i + 1) { }
 
             void OtherAccesses()

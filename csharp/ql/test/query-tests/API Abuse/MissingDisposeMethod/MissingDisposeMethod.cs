@@ -107,5 +107,3 @@ class C9 : C1
         Field.Dispose();
     }
 }
-
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll

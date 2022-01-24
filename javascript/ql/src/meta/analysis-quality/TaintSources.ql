@@ -9,6 +9,6 @@
  */
 
 import javascript
-import TaintMetrics
+import meta.internal.TaintMetrics
 
 select projectRoot(), count(relevantTaintSource())

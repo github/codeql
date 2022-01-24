@@ -14,10 +14,10 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_adder(Event member, Method method) =>
             new Tuple("cil_adder", member, method);
 
-        internal static Tuple cil_access(Instruction i, IEntity m) =>
+        internal static Tuple cil_access(Instruction i, IExtractedEntity m) =>
             new Tuple("cil_access", i, m);
 
-        internal static Tuple cil_attribute(Attribute attribute, IEntity @object, Method constructor) =>
+        internal static Tuple cil_attribute(Attribute attribute, IExtractedEntity @object, Method constructor) =>
             new Tuple("cil_attribute", attribute, @object, constructor);
 
         internal static Tuple cil_attribute_named_argument(Attribute attribute, string name, string value) =>
@@ -86,6 +86,12 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_method(Method method, string name, Type declType, Type returnType) =>
             new Tuple("cil_method", method, name, declType, returnType);
 
+        internal static Tuple cil_function_pointer_return_type(FunctionPointerType fnptr, Type returnType) =>
+            new Tuple("cil_function_pointer_return_type", fnptr, returnType);
+
+        internal static Tuple cil_function_pointer_calling_conventions(FunctionPointerType fnptr, System.Reflection.Metadata.SignatureCallingConvention callingConvention) =>
+            new Tuple("cil_function_pointer_calling_conventions", fnptr, (int)callingConvention);
+
         internal static Tuple cil_method_implementation(MethodImplementation impl, Method method, Assembly assembly) =>
             new Tuple("cil_method_implementation", impl, method, assembly);
 
@@ -101,7 +107,7 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_newslot(Method method) =>
             new Tuple("cil_newslot", method);
 
-        internal static Tuple cil_parameter(Parameter p, Method m, int i, Type t) =>
+        internal static Tuple cil_parameter(Parameter p, IParameterizable m, int i, Type t) =>
             new Tuple("cil_parameter", p, m, i, t);
 
         internal static Tuple cil_parameter_in(Parameter p) =>
@@ -191,22 +197,25 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_custom_modifiers(ICustomModifierReceiver receiver, Type modifier, bool isRequired) =>
             new Tuple("cil_custom_modifiers", receiver, modifier, isRequired ? 1 : 0);
 
+        internal static Tuple cil_type_annotation(IExtractedEntity receiver, TypeAnnotation annotation) =>
+            new Tuple("cil_type_annotation", receiver, (int)annotation);
+
         internal static Tuple containerparent(Folder parent, IFileOrFolder child) =>
             new Tuple("containerparent", parent, child);
 
-        internal static Tuple files(File file, string fullName, string name, string extension) =>
-            new Tuple("files", file, fullName, name, extension, 0);
+        internal static Tuple files(File file, string fullName) =>
+            new Tuple("files", file, fullName);
 
-        internal static Tuple file_extraction_mode(File file, int mode) =>
+        internal static Tuple file_extraction_mode(File file, ExtractorMode mode) =>
             new Tuple("file_extraction_mode", file, mode);
 
-        internal static Tuple folders(Folder folder, string path, string name) =>
-            new Tuple("folders", folder, path, name);
+        internal static Tuple folders(Folder folder, string path) =>
+            new Tuple("folders", folder, path);
 
         internal static Tuple locations_default(PdbSourceLocation label, File file, int startLine, int startCol, int endLine, int endCol) =>
             new Tuple("locations_default", label, file, startLine, startCol, endLine, endCol);
 
-        internal static Tuple metadata_handle(IEntity entity, Assembly assembly, int handleValue) =>
+        internal static Tuple metadata_handle(IExtractedEntity entity, Assembly assembly, int handleValue) =>
             new Tuple("metadata_handle", entity, assembly, handleValue);
 
         internal static Tuple namespaces(Namespace ns, string name) =>

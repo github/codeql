@@ -22,3 +22,11 @@ app.post("/find", (req, res) => {
   getMongooseModel().find({ id: v }); /* def (parameter 0 (member find (instance (member Model (member exports (module mongoose)))))) */
   getMongooseQuery().find({ id: v }); /* def (parameter 0 (member find (instance (member Query (member exports (module mongoose)))))) */
 });
+
+import * as puppeteer from 'puppeteer';
+class Renderer {
+    private browser: puppeteer.Browser;
+    foo(): void {
+        const page = this.browser.newPage(); /* use (instance (member Browser (member exports (module puppeteer)))) */
+    }
+}

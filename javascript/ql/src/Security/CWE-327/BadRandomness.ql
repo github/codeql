@@ -4,6 +4,7 @@
  *              the results and compromise security.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id js/biased-cryptographic-random
  * @tags security
@@ -86,11 +87,6 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
   )
   or
   exists(DataFlow::TypeTracker t2 | t = t2.smallstep(goodRandom(t2, source), result))
-  or
-  // re-using the collection steps for `Set`.
-  exists(DataFlow::TypeTracker t2 |
-    result = CollectionsTypeTracking::collectionStep(goodRandom(t2, source), t, t2)
-  )
   or
   InsecureRandomness::isAdditionalTaintStep(goodRandom(t.continue(), source), result) and
   // bit shifts and multiplication by powers of two are generally used for constructing larger numbers from smaller numbers.

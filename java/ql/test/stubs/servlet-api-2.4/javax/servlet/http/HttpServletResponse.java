@@ -24,6 +24,7 @@
 package javax.servlet.http;
 
 import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.ServletResponse;
 
 public interface HttpServletResponse extends ServletResponse {
@@ -44,6 +45,11 @@ public interface HttpServletResponse extends ServletResponse {
     public void addIntHeader(String name, int value);
     public void setStatus(int sc);
     public void setStatus(int sc, String sm);
+    public int getStatus();
+    public String getHeader(String name);
+    public Collection<String> getHeaders(String name);
+    public Collection<String> getHeaderNames();
+
 
     public static final int SC_CONTINUE = 100;
     public static final int SC_SWITCHING_PROTOCOLS = 101;

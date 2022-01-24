@@ -39,7 +39,7 @@ namespace Semmle.Autobuild.Shared
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             var scriptPath = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1).FirstOrDefault();
 
-            if (scriptPath == null)
+            if (scriptPath is null)
                 return BuildScript.Failure;
 
             var chmod = new CommandBuilder(builder.Actions);
@@ -55,7 +55,7 @@ namespace Semmle.Autobuild.Shared
 
                 // A specific Visual Studio version may be required
                 var vsTools = MsBuildRule.GetVcVarsBatFile(builder);
-                if (vsTools != null)
+                if (vsTools is not null)
                     command.CallBatFile(vsTools.Path);
 
                 builder.MaybeIndex(command, scriptPath);

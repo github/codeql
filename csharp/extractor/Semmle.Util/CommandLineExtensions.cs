@@ -20,7 +20,7 @@ namespace Semmle.Util
             {
                 string? line;
                 using var file = new StreamReader(arg);
-                while ((line = file.ReadLine()) != null)
+                while ((line = file.ReadLine()) is not null)
                     textWriter.WriteLine(line);
                 found = true;
             }

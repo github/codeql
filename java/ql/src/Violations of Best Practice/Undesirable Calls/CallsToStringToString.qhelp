@@ -33,8 +33,8 @@ Do not call <code>toString</code> on a <code>String</code> object.
 
 
 <li>
-  Java 6 API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#toString()">String.toString()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#toString()">String.toString()</a>.
 </li>
 
 

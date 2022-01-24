@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis;
 using System.Linq;
 using System.IO;
 
@@ -13,7 +12,7 @@ namespace Semmle.Extraction.CIL.Entities
             this.type = type;
         }
 
-        public void WriteId(TextWriter trapFile, bool inContext)
+        public void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             if (type.IsPrimitiveType)
             {
@@ -22,7 +21,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
 
             var ct = type.ContainingType;
-            if (ct != null)
+            if (ct is not null)
             {
                 ct.WriteId(trapFile, inContext);
                 trapFile.Write('.');
@@ -42,7 +41,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(type.Name);
 
             var thisTypeArguments = type.ThisTypeArguments;
-            if (thisTypeArguments != null && thisTypeArguments.Any())
+            if (thisTypeArguments is not null && thisTypeArguments.Any())
             {
                 trapFile.Write('<');
                 var index = 0;

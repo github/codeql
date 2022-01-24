@@ -3,6 +3,6 @@
   "qhelp.dtd">
 <qhelp>
 
-<include src="DoubleCheckedLockingShared.qhelp" />
+<include src="DoubleCheckedLockingShared.inc.qhelp" />
 
 </qhelp>

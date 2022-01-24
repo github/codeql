@@ -1,8 +1,11 @@
 import semmle.code.cil.Attribute
 import semmle.code.cil.Declaration
 
+private predicate isOsSpecific(Declaration d) { d.getQualifiedName().matches("%libobjc%") }
+
 query predicate attrNoArg(string dec, string attr) {
   exists(Declaration d, Attribute a |
+    not isOsSpecific(d) and
     a.getDeclaration() = d and
     not exists(a.getAnArgument())
   |
@@ -14,6 +17,7 @@ query predicate attrNoArg(string dec, string attr) {
 query predicate attrArgNamed(string dec, string attr, string name, string value) {
   exists(Declaration d, Attribute a |
     a.getDeclaration() = d and
+    not isOsSpecific(d) and
     a.getNamedArgument(name) = value
   |
     dec = d.toStringWithTypes() and
@@ -24,6 +28,7 @@ query predicate attrArgNamed(string dec, string attr, string name, string value)
 query predicate attrArgPositional(string dec, string attr, int index, string value) {
   exists(Declaration d, Attribute a |
     a.getDeclaration() = d and
+    not isOsSpecific(d) and
     a.getArgument(index) = value
   |
     dec = d.toStringWithTypes() and

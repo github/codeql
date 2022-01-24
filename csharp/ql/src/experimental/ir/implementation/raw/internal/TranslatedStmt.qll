@@ -79,7 +79,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
       child = this.getLocalDeclaration(index) and
-      if index = (getChildCount() - 1)
+      if index = (this.getChildCount() - 1)
       then result = this.getParent().getChildSuccessor(this)
       else result = this.getLocalDeclaration(index + 1).getFirstInstruction()
     )
@@ -89,7 +89,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 class TranslatedExprStmt extends TranslatedStmt {
   override ExprStmt stmt;
 
-  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.(ExprStmt).getExpr()) }
+  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
 
@@ -123,7 +123,7 @@ class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
   }
 
   override TranslatedExpr getExpr() {
-    result = getTranslatedExpr(stmt.(ExprStmt).getExpr().(AssignExpr).getLValue())
+    result = getTranslatedExpr(stmt.getExpr().(AssignExpr).getLValue())
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
@@ -276,14 +276,14 @@ class TranslatedBlock extends TranslatedStmt {
   override TranslatedElement getChild(int id) { result = this.getStmt(id) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
-    isEmpty() and
+    this.isEmpty() and
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
     resultType = getVoidType()
   }
 
   override Instruction getFirstInstruction() {
-    if isEmpty()
+    if this.isEmpty()
     then result = this.getInstruction(OnlyInstructionTag())
     else result = this.getStmt(0).getFirstInstruction()
   }
@@ -303,7 +303,7 @@ class TranslatedBlock extends TranslatedStmt {
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
       child = this.getStmt(index) and
-      if index = (getStmtCount() - 1)
+      if index = (this.getStmtCount() - 1)
       then result = this.getParent().getChildSuccessor(this)
       else result = this.getStmt(index + 1).getFirstInstruction()
     )
@@ -347,7 +347,7 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getParameter()
+    id = 0 and result = this.getParameter()
     or
     result = super.getChild(id)
   }
@@ -355,14 +355,14 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
   override Instruction getChildSuccessor(TranslatedElement child) {
     result = super.getChildSuccessor(child)
     or
-    child = getParameter() and result = this.getBlock().getFirstInstruction()
+    child = this.getParameter() and result = this.getBlock().getFirstInstruction()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = CatchTag() and
     (
       kind instanceof GotoEdge and
-      result = getParameter().getFirstInstruction()
+      result = this.getParameter().getFirstInstruction()
       or
       kind instanceof ExceptionEdge and
       result = this.getParent().(TranslatedTryStmt).getNextHandler(this)
@@ -559,8 +559,8 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   final TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getBody()) }
 
   final Instruction getFirstConditionInstruction() {
-    if hasCondition()
-    then result = getCondition().getFirstInstruction()
+    if this.hasCondition()
+    then result = this.getCondition().getFirstInstruction()
     else result = this.getBody().getFirstInstruction()
   }
 
@@ -611,13 +611,13 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    initializerIndex(id) and result = this.getDeclAndInit(id)
+    this.initializerIndex(id) and result = this.getDeclAndInit(id)
     or
-    result = this.getUpdate(updateIndex(id))
+    result = this.getUpdate(this.updateIndex(id))
     or
-    id = initializersNo() + updatesNo() and result = this.getCondition()
+    id = this.initializersNo() + this.updatesNo() and result = this.getCondition()
     or
-    id = initializersNo() + updatesNo() + 1 and result = this.getBody()
+    id = this.initializersNo() + this.updatesNo() + 1 and result = this.getBody()
   }
 
   private TranslatedElement getDeclAndInit(int index) {
@@ -636,11 +636,11 @@ class TranslatedForStmt extends TranslatedLoop {
 
   private int updatesNo() { result = count(stmt.getAnUpdate()) }
 
-  private predicate initializerIndex(int index) { index in [0 .. initializersNo() - 1] }
+  private predicate initializerIndex(int index) { index in [0 .. this.initializersNo() - 1] }
 
   private int updateIndex(int index) {
-    result in [0 .. updatesNo() - 1] and
-    index = initializersNo() + result
+    result in [0 .. this.updatesNo() - 1] and
+    index = this.initializersNo() + result
   }
 
   override Instruction getFirstInstruction() {
@@ -652,11 +652,11 @@ class TranslatedForStmt extends TranslatedLoop {
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
       child = this.getDeclAndInit(index) and
-      index < initializersNo() - 1 and
+      index < this.initializersNo() - 1 and
       result = this.getDeclAndInit(index + 1).getFirstInstruction()
     )
     or
-    child = this.getDeclAndInit(initializersNo() - 1) and
+    child = this.getDeclAndInit(this.initializersNo() - 1) and
     result = this.getFirstConditionInstruction()
     or
     (
@@ -671,7 +671,7 @@ class TranslatedForStmt extends TranslatedLoop {
       result = this.getUpdate(index + 1).getFirstInstruction()
     )
     or
-    child = this.getUpdate(updatesNo() - 1) and
+    child = this.getUpdate(this.updatesNo() - 1) and
     result = this.getFirstConditionInstruction()
   }
 }
@@ -693,7 +693,7 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
-    result = getTargetInstruction()
+    result = this.getTargetInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
@@ -832,7 +832,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     not exists(stmt.getDefaultCase()) and
     tag = SwitchBranchTag() and
     kind instanceof DefaultEdge and
-    result = getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this)
   }
 
   private EdgeKind getCaseEdge(CaseStmt caseStmt) {
@@ -862,19 +862,21 @@ class TranslatedEnumeratorForeach extends TranslatedLoop {
   override ForeachStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getTempEnumDecl()
+    id = 0 and result = this.getTempEnumDecl()
     or
-    id = 1 and result = getTry()
+    id = 1 and result = this.getTry()
   }
 
-  override Instruction getFirstInstruction() { result = getTempEnumDecl().getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    result = this.getTempEnumDecl().getFirstInstruction()
+  }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getTempEnumDecl() and
-    result = getTry().getFirstInstruction()
+    child = this.getTempEnumDecl() and
+    result = this.getTry().getFirstInstruction()
     or
-    child = getTry() and
-    result = getParent().getChildSuccessor(this)
+    child = this.getTry() and
+    result = this.getParent().getChildSuccessor(this)
   }
 
   private TranslatedElement getTry() { result = ForeachElements::getTry(stmt) }
@@ -909,9 +911,9 @@ class TranslatedFixedStmt extends TranslatedStmt {
   override FixedStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    result = getDecl(id)
+    result = this.getDecl(id)
     or
-    id = noDecls() and result = this.getBody()
+    id = this.noDecls() and result = this.getBody()
   }
 
   override Instruction getFirstInstruction() { result = this.getDecl(0).getFirstInstruction() }
@@ -947,24 +949,26 @@ class TranslatedLockStmt extends TranslatedStmt {
   override LockStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getLockedVarDecl()
+    id = 0 and result = this.getLockedVarDecl()
     or
-    id = 1 and result = getLockWasTakenDecl()
+    id = 1 and result = this.getLockWasTakenDecl()
     or
-    id = 2 and result = getTry()
+    id = 2 and result = this.getTry()
   }
 
-  override Instruction getFirstInstruction() { result = getLockedVarDecl().getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    result = this.getLockedVarDecl().getFirstInstruction()
+  }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getLockedVarDecl() and
-    result = getLockWasTakenDecl().getFirstInstruction()
+    child = this.getLockedVarDecl() and
+    result = this.getLockWasTakenDecl().getFirstInstruction()
     or
-    child = getLockWasTakenDecl() and
-    result = getTry().getFirstInstruction()
+    child = this.getLockWasTakenDecl() and
+    result = this.getTry().getFirstInstruction()
     or
-    child = getTry() and
-    result = getParent().getChildSuccessor(this)
+    child = this.getTry() and
+    result = this.getParent().getChildSuccessor(this)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
@@ -1017,13 +1021,13 @@ class TranslatedUsingBlockStmt extends TranslatedStmt {
   override UsingBlockStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    result = getDecl(id)
+    result = this.getDecl(id)
     or
-    id = getNumberOfDecls() and result = this.getBody()
+    id = this.getNumberOfDecls() and result = this.getBody()
   }
 
   override Instruction getFirstInstruction() {
-    if getNumberOfDecls() > 0
+    if this.getNumberOfDecls() > 0
     then result = this.getDecl(0).getFirstInstruction()
     else result = this.getBody().getFirstInstruction()
   }
@@ -1060,7 +1064,7 @@ class TranslatedUsingBlockStmt extends TranslatedStmt {
 class TranslatedUsingDeclStmt extends TranslatedStmt {
   override UsingDeclStmt stmt;
 
-  override TranslatedElement getChild(int id) { result = getDecl(id) }
+  override TranslatedElement getChild(int id) { result = this.getDecl(id) }
 
   override Instruction getFirstInstruction() { result = this.getDecl(0).getFirstInstruction() }
 

@@ -29,15 +29,15 @@
 
 
 <li>
-Java 2 Platform, Standard Edition 6.0, API Specification:
+Java API Specification:
 
-<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html#isEmpty()">
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collection.html#isEmpty()">
 Collection.isEmpty()</a>,
 
-<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html#isEmpty()">
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html#isEmpty()">
 Map.isEmpty()</a>,
 
-<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#isEmpty()">
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#isEmpty()">
 String.isEmpty()</a>.
 </li>
 

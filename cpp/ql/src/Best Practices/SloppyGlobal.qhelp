@@ -21,7 +21,7 @@ Review the purpose of the each global variable flagged by this rule and update e
 
 <li>
   Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 
-  Chapter 1: Naming, Rec 1.1 (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+  Chapter 1: Naming, Rec 1.1 (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">PDF</a>).
 </li>
 <li>
   <a href="http://www.learncpp.com/cpp-tutorial/42-global-variables/">Global variables</a>.

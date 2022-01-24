@@ -41,15 +41,15 @@ J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em
 Addison-Wesley, 2005.
 </li>
 <li>
-NetBeans IDE: <a href="http://wiki.netbeans.org/Java_Hints">Java Hints</a>
+NetBeans IDE: <a href="https://web.archive.org/web/20210117160808/http://wiki.netbeans.org/Java_Hints">Java Hints</a>
 </li>
 <li>
-PMD: <a href="http://pmd.sourceforge.net/pmd-4.2.6/rules/strings.html">Rule StringBufferInstantiationWithChar</a>
+PMD: <a href="https://pmd.github.io/latest/pmd_rules_java_errorprone.html#stringbufferinstantiationwithchar">Rule StringBufferInstantiationWithChar</a>
 </li>
 <li>
 Java API:
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/StringBuffer.html">java.lang.StringBuffer</a>,
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/StringBuilder.html">java.lang.StringBuilder</a>.
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StringBuffer.html">StringBuffer</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StringBuilder.html">java.lang.StringBuilder</a>.
 </li>
 
 

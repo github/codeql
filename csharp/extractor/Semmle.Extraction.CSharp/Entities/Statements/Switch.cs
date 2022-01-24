@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         // Sometimes, the literal "null" is used as a label.
         // This is inconveniently represented by the "null" object.
         // This cannot be stored in a Dictionary<>, so substitute an object which can be.
-        public static object LabelForValue(object label)
+        public static object LabelForValue(object? label)
         {
             return label ?? nullLabel;
         }
@@ -30,17 +30,17 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Expression, this, 0);
+            Expression.Create(Context, Stmt.Expression, this, 0);
             var childIndex = 0;
 
             foreach (var section in Stmt.Sections)
             {
-                foreach (var stmt in section.Labels.Select(label => Case<SwitchLabelSyntax>.Create(cx, label, this, childIndex)))
+                foreach (var stmt in section.Labels.Select(label => Case<SwitchLabelSyntax>.Create(Context, label, this, childIndex)))
                 {
                     childIndex += stmt.NumberOfStatements;
                 }
 
-                foreach (var stmt in section.Statements.Select(s => Create(cx, s, this, childIndex)))
+                foreach (var stmt in section.Statements.Select(s => Create(Context, s, this, childIndex)))
                 {
                     childIndex += stmt.NumberOfStatements;
                 }

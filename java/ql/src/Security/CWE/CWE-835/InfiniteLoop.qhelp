@@ -42,7 +42,7 @@ To fix the loop the condition is corrected to check the right variable.
 
 <li>
 Java Language Specification:
-<a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html">Blocks and Statements</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html">Blocks and Statements</a>.
 </li>
 
 </references>

@@ -14,4 +14,22 @@ function test() {
   elm.innerHTML = decodeURIComponent(window.location.hash); // NOT OK
   elm.innerHTML = decodeURIComponent(window.location.search); // NOT OK
   elm.innerHTML = decodeURIComponent(window.location.toString()); // NOT OK
+
+  let hash = window.location.hash;
+  $(hash); // OK - start with '#'
+
+  $(hash.substring(1)); // NOT OK
+  $(hash.substring(1, 10)); // NOT OK
+  $(hash.substr(1)); // NOT OK
+  $(hash.slice(1)); // NOT OK
+  $(hash.substring(0, 10)); // OK
+
+  $(hash.replace('#', '')); // NOT OK
+  $(window.location.search.replace('?', '')); // NOT OK
+  $(hash.replace('!', '')); // OK
+  $(hash.replace('blah', '')); // OK
+
+  $(hash + 'blah'); // OK
+  $('blah' + hash); // OK - does not start with '<'
+  $('<b>' + hash + '</b>'); // NOT OK
 }

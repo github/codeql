@@ -29,10 +29,10 @@
 		<p>
 			The issue has been fixed in the example below by replacing the HTTP protocol with the HTTPS protocol.
 		</p>
-		<sample src="examples/insecure-download.js" />
+		<sample src="examples/secure-download.js" />
 	</example>
 
 	<references>
-		<li>OWASP: <a href="https://owasp.org/www-community/attacks/Man-in-the-middle_attack">Man-in-the-middle attack</a>.</li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a></li>
 	</references>
 </qhelp>

@@ -35,7 +35,7 @@ module InstructionConsistency {
       // To avoid an overwhelming number of results when the extractor merges functions with the
       // same name, just pick a single location.
       result =
-        rank[1](Language::Location loc | loc = irFunc.getLocation() | loc order by loc.toString())
+        min(Language::Location loc | loc = irFunc.getLocation() | loc order by loc.toString())
     }
   }
 

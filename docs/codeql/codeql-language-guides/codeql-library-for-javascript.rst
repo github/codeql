@@ -694,7 +694,7 @@ Furthermore, there are three member predicates that indicate the quality of the 
 
 -  ``DataFlow::InvokeNode.isImprecise()``: holds for invocations where the call graph builder might infer spurious call targets.
 -  ``DataFlow::InvokeNode.isIncomplete()``: holds for invocations where the call graph builder might fail to infer possible call targets.
--  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
+-  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isIncomplete()`` holds.
 
 As an example of a call-graph-based query, here is a query to find invocations for which the call graph builder could not find any callees, despite the analysis being complete for this invocation:
 

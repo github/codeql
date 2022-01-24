@@ -41,7 +41,7 @@ public class Logic {
   }
 
   private static void checkTrue(boolean b, String msg) {
-    if (!b) throw new Exception(msg);
+    if (!b) throw new Error    (msg);
   }
 
   private static void checkFalse(boolean b, String msg) {

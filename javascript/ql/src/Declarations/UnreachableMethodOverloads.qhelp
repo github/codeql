@@ -61,7 +61,7 @@
 </example>
 <references>
 
-<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/7be7cba050799bc11c9411babd31f44c9ec087f0/doc/spec.md#4.15.1">Overload Resolution</a></li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/30cb20434a6b117e007a4959b2a7c16489f86069/doc/spec-ARCHIVED.md#4.15.1">Overload Resolution</a></li>
 
 </references>
 </qhelp>

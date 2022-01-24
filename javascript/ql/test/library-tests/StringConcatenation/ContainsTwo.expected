@@ -36,7 +36,10 @@
 | tst.js:53:10:53:34 | `one ${ ...  three` |
 | tst.js:53:19:53:23 |  two  |
 | tst.js:71:14:71:18 | "two" |
+| tst.js:77:15:77:37 | ["one", ... three"] |
 | tst.js:77:23:77:27 | "two" |
+| tst.js:79:12:79:16 | array |
+| tst.js:79:12:79:23 | array.join() |
 | tst.js:87:5:87:14 | x += 'two' |
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
