@@ -133,7 +133,7 @@ module LocalFlow {
       or
       nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
       or
-      nodeFrom.asExpr() = branch and branch instanceof CfgNodes::ExprCfgNode
+      nodeFrom.asExpr() = branch.(CfgNodes::ExprCfgNode)
     )
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |

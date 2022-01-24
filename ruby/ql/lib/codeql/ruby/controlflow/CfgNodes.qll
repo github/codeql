@@ -412,9 +412,7 @@ module ExprNodes {
   class InClauseCfgNode extends AstCfgNode {
     override InClauseChildMapping e;
 
-    /**
-     * Gets the pattern in this `in`-clause.
-     */
+    /** Gets the pattern in this `in`-clause. */
     final AstCfgNode getPattern() { e.hasCfgChild(e.getPattern(), this, result) }
 
     /** Gets the pattern guard condition in this `in` clause, if any. */
@@ -449,7 +447,7 @@ module ExprNodes {
     }
   }
 
-  /** A control-flow node that wraps a `ArrayPattern` node. */
+  /** A control-flow node that wraps an `ArrayPattern` node. */
   class ArrayPatternCfgNode extends CasePatternCfgNode {
     override ArrayPatternChildMapping e;
 
@@ -484,12 +482,12 @@ module ExprNodes {
     /** Gets the `n`th element of this find pattern. */
     final CasePatternCfgNode getElement(int n) { e.hasCfgChild(e.getElement(n), this, result) }
 
-    /** Gets the variable for the prefix of this list pattern, if any. */
+    /** Gets the variable for the prefix of this find pattern, if any. */
     final VariableWriteAccessCfgNode getPrefixVariableAccess() {
       e.hasCfgChild(e.getPrefixVariableAccess(), this, result)
     }
 
-    /** Gets the variable for the suffix of this list pattern, if any. */
+    /** Gets the variable for the suffix of this find pattern, if any. */
     final VariableWriteAccessCfgNode getSuffixVariableAccess() {
       e.hasCfgChild(e.getSuffixVariableAccess(), this, result)
     }
@@ -519,7 +517,7 @@ module ExprNodes {
     override predicate relevantChild(AstNode e) { e = this.getAnAlternative() }
   }
 
-  /** A control-flow node that wraps a `AlternativePattern` node. */
+  /** A control-flow node that wraps an `AlternativePattern` node. */
   class AlternativePatternCfgNode extends CasePatternCfgNode {
     override AlternativePatternChildMapping e;
 
@@ -535,7 +533,7 @@ module ExprNodes {
     }
   }
 
-  /** A control-flow node that wraps a `AsPattern` node. */
+  /** A control-flow node that wraps an `AsPattern` node. */
   class AsPatternCfgNode extends CasePatternCfgNode {
     override AsPatternChildMapping e;
 

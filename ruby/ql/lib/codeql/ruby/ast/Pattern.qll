@@ -210,7 +210,7 @@ class FindPattern extends CasePattern, TFindPattern {
   CasePattern getAnElement() { result = this.getElement(_) }
 
   /**
-   * Gets the variable for the prefix of this list pattern, if any. For example `init` in:
+   * Gets the variable for the prefix of this find pattern, if any. For example `init` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```
@@ -220,7 +220,7 @@ class FindPattern extends CasePattern, TFindPattern {
   }
 
   /**
-   * Gets the variable for the suffix of this list pattern, if any. For example `tail` in:
+   * Gets the variable for the suffix of this find pattern, if any. For example `tail` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```

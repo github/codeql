@@ -29,35 +29,41 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 ) {
   result = p
   or
-  exists(CfgNodes::ExprNodes::AsPatternCfgNode ap | p = ap |
-    result = variablesInPattern(ap.getPattern()) or
-    result = ap.getVariableAccess()
-  )
+  p =
+    any(CfgNodes::ExprNodes::AsPatternCfgNode ap |
+      result = variablesInPattern(ap.getPattern()) or
+      result = ap.getVariableAccess()
+    )
   or
-  exists(CfgNodes::ExprNodes::ParenthesizedPatternCfgNode pp | p = pp |
-    result = variablesInPattern(pp.getPattern())
-  )
+  p =
+    any(CfgNodes::ExprNodes::ParenthesizedPatternCfgNode pp |
+      result = variablesInPattern(pp.getPattern())
+    )
   or
-  exists(CfgNodes::ExprNodes::AlternativePatternCfgNode ap | p = ap |
-    result = variablesInPattern(ap.getAlternative(_))
-  )
+  p =
+    any(CfgNodes::ExprNodes::AlternativePatternCfgNode ap |
+      result = variablesInPattern(ap.getAlternative(_))
+    )
   or
-  exists(CfgNodes::ExprNodes::ArrayPatternCfgNode ap | p = ap |
-    result = variablesInPattern(ap.getPrefixElement(_)) or
-    result = variablesInPattern(ap.getSuffixElement(_)) or
-    result = ap.getRestVariableAccess()
-  )
+  p =
+    any(CfgNodes::ExprNodes::ArrayPatternCfgNode ap |
+      result = variablesInPattern(ap.getPrefixElement(_)) or
+      result = variablesInPattern(ap.getSuffixElement(_)) or
+      result = ap.getRestVariableAccess()
+    )
   or
-  exists(CfgNodes::ExprNodes::FindPatternCfgNode fp | p = fp |
-    result = variablesInPattern(fp.getElement(_)) or
-    result = fp.getPrefixVariableAccess() or
-    result = fp.getSuffixVariableAccess()
-  )
+  p =
+    any(CfgNodes::ExprNodes::FindPatternCfgNode fp |
+      result = variablesInPattern(fp.getElement(_)) or
+      result = fp.getPrefixVariableAccess() or
+      result = fp.getSuffixVariableAccess()
+    )
   or
-  exists(CfgNodes::ExprNodes::HashPatternCfgNode hp | p = hp |
-    result = variablesInPattern(hp.getValue(_)) or
-    result = hp.getRestVariableAccess()
-  )
+  p =
+    any(CfgNodes::ExprNodes::HashPatternCfgNode hp |
+      result = variablesInPattern(hp.getValue(_)) or
+      result = hp.getRestVariableAccess()
+    )
 }
 
 /**

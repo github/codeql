@@ -12,7 +12,7 @@ ret
 | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:51:3:51:15 | break |
 | local_dataflow.rb:52:3:52:10 | "normal" |
-| local_dataflow.rb:89:1:89:7 | call to sink |
+| local_dataflow.rb:89:3:89:9 | call to sink |
 arg
 | local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | self |
 | local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | position 0 |
@@ -51,27 +51,27 @@ arg
 | local_dataflow.rb:55:12:55:12 | 3 | local_dataflow.rb:55:5:55:13 | call to [] | position 2 |
 | local_dataflow.rb:78:12:78:20 | self | local_dataflow.rb:78:12:78:20 | call to source | self |
 | local_dataflow.rb:78:19:78:19 | 1 | local_dataflow.rb:78:12:78:20 | call to source | position 0 |
-| local_dataflow.rb:79:18:79:24 | self | local_dataflow.rb:79:18:79:24 | call to sink | self |
-| local_dataflow.rb:79:23:79:23 | b | local_dataflow.rb:79:18:79:24 | call to sink | position 0 |
-| local_dataflow.rb:80:11:80:11 | a | local_dataflow.rb:80:11:80:15 | ... > ... | self |
-| local_dataflow.rb:80:15:80:15 | 0 | local_dataflow.rb:80:11:80:15 | ... > ... | position 0 |
-| local_dataflow.rb:80:22:80:28 | self | local_dataflow.rb:80:22:80:28 | call to sink | self |
-| local_dataflow.rb:80:27:80:27 | a | local_dataflow.rb:80:22:80:28 | call to sink | position 0 |
-| local_dataflow.rb:81:23:84:13 | Array | local_dataflow.rb:81:23:84:13 | call to [] | self |
-| local_dataflow.rb:82:6:82:12 | call to sink | local_dataflow.rb:81:23:84:13 | call to [] | position 0 |
-| local_dataflow.rb:82:6:82:12 | self | local_dataflow.rb:82:6:82:12 | call to sink | self |
-| local_dataflow.rb:82:11:82:11 | c | local_dataflow.rb:82:6:82:12 | call to sink | position 0 |
-| local_dataflow.rb:83:6:83:12 | call to sink | local_dataflow.rb:81:23:84:13 | call to [] | position 1 |
-| local_dataflow.rb:83:6:83:12 | self | local_dataflow.rb:83:6:83:12 | call to sink | self |
-| local_dataflow.rb:83:11:83:11 | d | local_dataflow.rb:83:6:83:12 | call to sink | position 0 |
-| local_dataflow.rb:84:6:84:12 | call to sink | local_dataflow.rb:81:23:84:13 | call to [] | position 2 |
-| local_dataflow.rb:84:6:84:12 | self | local_dataflow.rb:84:6:84:12 | call to sink | self |
-| local_dataflow.rb:84:11:84:11 | e | local_dataflow.rb:84:6:84:12 | call to sink | position 0 |
-| local_dataflow.rb:85:20:85:26 | self | local_dataflow.rb:85:20:85:26 | call to sink | self |
-| local_dataflow.rb:85:25:85:25 | f | local_dataflow.rb:85:20:85:26 | call to sink | position 0 |
-| local_dataflow.rb:86:26:86:32 | self | local_dataflow.rb:86:26:86:32 | call to sink | self |
-| local_dataflow.rb:86:31:86:31 | g | local_dataflow.rb:86:26:86:32 | call to sink | position 0 |
-| local_dataflow.rb:87:18:87:24 | self | local_dataflow.rb:87:18:87:24 | call to sink | self |
-| local_dataflow.rb:87:23:87:23 | x | local_dataflow.rb:87:18:87:24 | call to sink | position 0 |
-| local_dataflow.rb:89:1:89:7 | self | local_dataflow.rb:89:1:89:7 | call to sink | self |
-| local_dataflow.rb:89:6:89:6 | z | local_dataflow.rb:89:1:89:7 | call to sink | position 0 |
+| local_dataflow.rb:79:20:79:26 | self | local_dataflow.rb:79:20:79:26 | call to sink | self |
+| local_dataflow.rb:79:25:79:25 | b | local_dataflow.rb:79:20:79:26 | call to sink | position 0 |
+| local_dataflow.rb:80:13:80:13 | a | local_dataflow.rb:80:13:80:17 | ... > ... | self |
+| local_dataflow.rb:80:17:80:17 | 0 | local_dataflow.rb:80:13:80:17 | ... > ... | position 0 |
+| local_dataflow.rb:80:24:80:30 | self | local_dataflow.rb:80:24:80:30 | call to sink | self |
+| local_dataflow.rb:80:29:80:29 | a | local_dataflow.rb:80:24:80:30 | call to sink | position 0 |
+| local_dataflow.rb:81:25:84:14 | Array | local_dataflow.rb:81:25:84:14 | call to [] | self |
+| local_dataflow.rb:82:7:82:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 0 |
+| local_dataflow.rb:82:7:82:13 | self | local_dataflow.rb:82:7:82:13 | call to sink | self |
+| local_dataflow.rb:82:12:82:12 | c | local_dataflow.rb:82:7:82:13 | call to sink | position 0 |
+| local_dataflow.rb:83:7:83:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 1 |
+| local_dataflow.rb:83:7:83:13 | self | local_dataflow.rb:83:7:83:13 | call to sink | self |
+| local_dataflow.rb:83:12:83:12 | d | local_dataflow.rb:83:7:83:13 | call to sink | position 0 |
+| local_dataflow.rb:84:7:84:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 2 |
+| local_dataflow.rb:84:7:84:13 | self | local_dataflow.rb:84:7:84:13 | call to sink | self |
+| local_dataflow.rb:84:12:84:12 | e | local_dataflow.rb:84:7:84:13 | call to sink | position 0 |
+| local_dataflow.rb:85:22:85:28 | self | local_dataflow.rb:85:22:85:28 | call to sink | self |
+| local_dataflow.rb:85:27:85:27 | f | local_dataflow.rb:85:22:85:28 | call to sink | position 0 |
+| local_dataflow.rb:86:28:86:34 | self | local_dataflow.rb:86:28:86:34 | call to sink | self |
+| local_dataflow.rb:86:33:86:33 | g | local_dataflow.rb:86:28:86:34 | call to sink | position 0 |
+| local_dataflow.rb:87:20:87:26 | self | local_dataflow.rb:87:20:87:26 | call to sink | self |
+| local_dataflow.rb:87:25:87:25 | x | local_dataflow.rb:87:20:87:26 | call to sink | position 0 |
+| local_dataflow.rb:89:3:89:9 | self | local_dataflow.rb:89:3:89:9 | call to sink | self |
+| local_dataflow.rb:89:8:89:8 | z | local_dataflow.rb:89:3:89:9 | call to sink | position 0 |
