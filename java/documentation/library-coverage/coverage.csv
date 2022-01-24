@@ -53,7 +53,7 @@ ognl,6,,,,,,,,,,,,,,6,,,,,,,,,,,,,,
 org.apache.commons.codec,,,6,,,,,,,,,,,,,,,,,,,,,,,,,6,
 org.apache.commons.collections,,,800,,,,,,,,,,,,,,,,,,,,,,,,,17,783
 org.apache.commons.collections4,,,800,,,,,,,,,,,,,,,,,,,,,,,,,17,783
-org.apache.commons.io,,,22,,,,,,,,,,,,,,,,,,,,,,,,,22,
+org.apache.commons.io,93,2,565,,78,,,,,,,,,,,15,,,,,,,,,,,2,551,14
 org.apache.commons.jexl2,15,,,,,,,,,15,,,,,,,,,,,,,,,,,,,
 org.apache.commons.jexl3,15,,,,,,,,,15,,,,,,,,,,,,,,,,,,,
 org.apache.commons.lang3,,,424,,,,,,,,,,,,,,,,,,,,,,,,,293,131
