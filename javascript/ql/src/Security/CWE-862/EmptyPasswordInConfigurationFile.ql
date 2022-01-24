@@ -1,6 +1,6 @@
 /**
- * @name Password in configuration file
- * @description Storing unencrypted passwords in configuration files is unsafe.
+ * @name Empty password in configuration file
+ * @description Failing to set a password reduces the security of your code.
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
