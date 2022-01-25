@@ -55,7 +55,7 @@ If there are still no results and performance is still useable, then it is best 
 Partial flow
 ------------
 
-A naive next step could be to change the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
+A naive next step could be to change the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
 
 To avoid these problems, a data-flow ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
 
