@@ -110,7 +110,7 @@ module EntityFramework {
         then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
         else input = SummaryComponentStack::argument(0)
       ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::argument(-1)) and
+      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
       preservesValue = true
     }
   }

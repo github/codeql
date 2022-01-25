@@ -7,26 +7,26 @@ private class SystemComponentModelPropertyDescriptorCollectionFlowModelCsv exten
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0];Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Element of Argument[-1];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0];Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Element of Argument[Qualifier];value",
         "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
         "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Object);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Object,System.Object);;Argument[1];Element of Argument[-1];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Object);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Object,System.Object);;Argument[1];Element of Argument[Qualifier];value",
       ]
   }
 }
@@ -36,12 +36,12 @@ private class SystemComponentModelEventDescriptorCollectionFlowModelCsv extends 
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Element of Argument[-1];value",
-        "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
-        "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Element of Argument[-1];value",
-        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Element of Argument[Qualifier];value",
+        "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Element of Argument[Qualifier];value",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Element of Argument[Qualifier];ReturnValue;value",
       ]
   }
 }
@@ -51,8 +51,8 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Element of Argument[-1];value",
+        "System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Element of Argument[Qualifier];value",
       ]
   }
 }
@@ -61,7 +61,7 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
 private class SystemComponentModelComponentCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+      "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value"
   }
 }
 
@@ -69,7 +69,7 @@ private class SystemComponentModelComponentCollectionFlowModelCsv extends Summar
 private class SystemComponentModelAttributeCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;AttributeCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
+      "System.ComponentModel;AttributeCollection;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value"
   }
 }
 
@@ -77,6 +77,6 @@ private class SystemComponentModelAttributeCollectionFlowModelCsv extends Summar
 private class SystemComponentModelIBindingListFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Element of Argument[-1];ReturnValue;value"
+      "System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Element of Argument[Qualifier];ReturnValue;value"
   }
 }

@@ -258,7 +258,7 @@ private class SystemLinqEnumerableFlowModelCsv extends ExternalFlow::SummaryMode
 private class SystemLinqEnumerableQueryFlowModelCsv extends ExternalFlow::SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Linq;EnumerableQuery<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
+      "System.Linq;EnumerableQuery<>;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
   }
 }
 
@@ -279,7 +279,7 @@ private class SystemLinqImmutableArrayExtensionsFlowModelCsv extends ExternalFlo
 private class SystemLinqLookupFlowModelCsv extends ExternalFlow::SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Linq;Lookup<,>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
+      "System.Linq;Lookup<,>;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
   }
 }
 
@@ -287,7 +287,7 @@ private class SystemLinqLookupFlowModelCsv extends ExternalFlow::SummaryModelCsv
 private class SystemLinqOrderedParallelQuery extends ExternalFlow::SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Linq;OrderedParallelQuery<>;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
+      "System.Linq;OrderedParallelQuery<>;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.Generic.IEnumerator<>.Current] of ReturnValue;value"
   }
 }
 
