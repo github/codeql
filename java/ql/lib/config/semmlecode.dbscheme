@@ -747,6 +747,7 @@ case @expr.kind of
 | 83  = @stringtemplateexpr
 | 84  = @varargexpr
 | 85  = @notnullexpr
+| 86  = @unsafecoerceexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */

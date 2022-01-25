@@ -1144,7 +1144,8 @@ class CastingExpr extends Expr {
     this instanceof @safecastexpr or
     this instanceof @implicitcastexpr or
     this instanceof @implicitnotnullexpr or
-    this instanceof @implicitcoerciontounitexpr
+    this instanceof @implicitcoerciontounitexpr or
+    this instanceof @unsafecoerceexpr
   }
 
   /** Gets the target type of this casting expression. */
@@ -1192,6 +1193,14 @@ class ImplicitCoercionToUnitExpr extends CastingExpr, @implicitcoerciontounitexp
   override string toString() { result = "<implicit coercion to unit>" }
 
   override string getAPrimaryQlClass() { result = "ImplicitCoercionToUnitExpr" }
+}
+
+/** An unsafe coerce expression. */
+class UnsafeCoerceExpr extends CastingExpr, @unsafecoerceexpr {
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "<unsafe coerce>" }
+
+  override string getAPrimaryQlClass() { result = "UnsafeCoerceExpr" }
 }
 
 /** A class instance creation expression. */

@@ -1437,6 +1437,28 @@ open class KotlinFileExtractor(
                         logger.warnElement(Severity.ErrorSevere, "Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
                     }
                 }
+                isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
+
+                    if (c.valueArgumentsCount != 1) {
+                        logger.warnElement(Severity.ErrorSevere, "Expected to find only one argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        return
+                    }
+
+                    if (c.typeArgumentsCount != 2) {
+                        logger.warnElement(Severity.ErrorSevere, "Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        return
+                    }
+
+                    val id = tw.getFreshIdLabel<DbUnsafecoerceexpr>()
+                    val locId = tw.getLocation(c)
+                    val type = useType(c.type)
+                    tw.writeExprs_unsafecoerceexpr(id, type.javaResult.id, type.kotlinResult.id, parent, idx)
+                    tw.writeHasLocation(id, locId)
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                    extractTypeAccess(c.getTypeArgument(1)!!, callable, id, 0, c, enclosingStmt)
+                    extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
+                }
                 else -> {
                     extractMethodAccess(c.symbol.owner, true, true)
                 }
