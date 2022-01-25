@@ -202,6 +202,21 @@ class ActionControllerRedirectResponse extends HTTP::Server::HttpRedirectRespons
   }
 }
 
+pragma[nomagic]
+private predicate isActionControllerMethod(Method m, string name, ActionControllerControllerClass c) {
+  m.getName() = name and
+  m.getEnclosingModule() = c
+}
+
+pragma[nomagic]
+private predicate actionControllerHasHelperMethodCall(ActionControllerControllerClass c, string name) {
+  exists(MethodCall mc |
+    mc.getMethodName() = "helper_method" and
+    mc.getAnArgument().getConstantValue().isStringOrSymbol(name) and
+    mc.getEnclosingModule() = c
+  )
+}
+
 /**
  * A method in an `ActionController` class that is accessible from within a
  * Rails view as a helper method. For instance, in:
@@ -222,11 +237,9 @@ class ActionControllerHelperMethod extends Method {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerHelperMethod() {
-    this.getEnclosingModule() = controllerClass and
-    exists(MethodCall helperMethodMarker |
-      helperMethodMarker.getMethodName() = "helper_method" and
-      helperMethodMarker.getAnArgument().getConstantValue().isStringOrSymbol(this.getName()) and
-      helperMethodMarker.getEnclosingModule() = controllerClass
+    exists(string name |
+      isActionControllerMethod(this, name, controllerClass) and
+      actionControllerHasHelperMethodCall(controllerClass, name)
     )
   }
 
