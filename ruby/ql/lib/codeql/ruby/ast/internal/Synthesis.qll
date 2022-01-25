@@ -794,14 +794,15 @@ private module ArrayLiteralDesugar {
     exists(ArrayLiteral al |
       parent = al and
       i = -1 and
-      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements() + 1))
+      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements()))
       or
-      exists(AstNode mc | mc = TMethodCallSynth(al, -1, _, _, _) |
-        parent = mc and
+      exists(AstNode mc |
+        mc = TMethodCallSynth(al, -1, _, _, _) and
+        parent = mc
+      |
         i = 0 and
         child = SynthChild(ConstantReadAccessKind("::Array"))
         or
-        parent = mc and
         child = childRef(al.getElement(i - 1))
       )
     )
@@ -825,10 +826,55 @@ private module ArrayLiteralDesugar {
     final override predicate methodCall(string name, boolean setter, int arity) {
       name = "[]" and
       setter = false and
-      arity = any(ArrayLiteral al).getNumberOfElements() + 1
+      arity = any(ArrayLiteral al).getNumberOfElements()
     }
 
     final override predicate constantReadAccess(string name) { name = "::Array" }
+  }
+}
+
+private module HashLiteralDesugar {
+  pragma[nomagic]
+  private predicate hashLiteralSynthesis(AstNode parent, int i, Child child) {
+    exists(HashLiteral hl |
+      parent = hl and
+      i = -1 and
+      child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
+      or
+      exists(AstNode mc |
+        mc = TMethodCallSynth(hl, -1, _, _, _) and
+        parent = mc
+      |
+        i = 0 and
+        child = SynthChild(ConstantReadAccessKind("::Hash"))
+        or
+        child = childRef(hl.getElement(i - 1))
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * { a: 1, **splat, b: 2 }
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * ::Hash.[](a: 1, **splat, b: 2)
+   * ```
+   */
+  private class HashLiteralSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      hashLiteralSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "[]" and
+      setter = false and
+      arity = any(HashLiteral hl).getNumberOfElements()
+    }
+
+    final override predicate constantReadAccess(string name) { name = "::Hash" }
   }
 }
 
