@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
+private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
@@ -568,5 +569,15 @@ module Flask {
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("filename_or_fp")]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * The attribute `logger` on a Flask application is a standard Python logger.
+   */
+  private class FlaskLogger extends Stdlib::Logger::LoggerInstance {
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger") }
   }
 }

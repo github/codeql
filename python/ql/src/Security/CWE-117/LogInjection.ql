@@ -11,7 +11,7 @@
  */
 
 import python
-import experimental.semmle.python.security.injection.LogInjection
+import semmle.python.security.dataflow.LogInjection
 import DataFlow::PathGraph
 
 from LogInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

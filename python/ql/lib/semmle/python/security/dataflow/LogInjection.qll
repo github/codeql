@@ -1,6 +1,6 @@
 import python
 import semmle.python.Concepts
-import experimental.semmle.python.Concepts
+import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -13,7 +13,7 @@ class LogInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(LogOutput logoutput).getAnInput() }
+  override predicate isSink(DataFlow::Node sink) { sink = any(Logging write).getAnInput() }
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(CallNode call |

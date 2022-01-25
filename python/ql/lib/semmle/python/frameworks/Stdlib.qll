@@ -237,6 +237,42 @@ module Stdlib {
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // logging
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `logging.Logger` class and subclasses.
+   *
+   * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
+   */
+  module Logger {
+    /**
+     * An instance of `logging.Logger`. Extend this class to model new instances.
+     * Most major frameworks will provide a logger instance as a class attribute.
+     */
+    abstract class LoggerInstance extends API::Node {
+      override string toString() { result = "logger" }
+    }
+
+    /** Gets a reference to the `logging.Logger` class or any subclass. */
+    API::Node subclassRef() {
+      result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+    }
+
+    /** Gets a reference to an instance of `logging.Logger` or any subclass. */
+    API::Node instance() {
+      result instanceof LoggerInstance
+      or
+      result = subclassRef().getReturn()
+      or
+      result = API::moduleImport("logging")
+      or
+      result = API::moduleImport("logging").getMember("root")
+      or
+      result = API::moduleImport("logging").getMember("getLogger").getReturn()
+    }
+  }
 }
 
 /**
@@ -2643,27 +2679,6 @@ private module StdlibPrivate {
   // logging
   // ---------------------------------------------------------------------------
   /**
-   * Provides models for the `logging.Logger` class and subclasses.
-   *
-   * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
-   */
-  module Logger {
-    /** Gets a reference to the `logging.Logger` class or any subclass. */
-    API::Node subclassRef() {
-      result = API::moduleImport("logging").getMember("Logger").getASubclass*()
-    }
-
-    /** Gets a reference to an instance of `logging.Logger` or any subclass. */
-    API::Node instance() {
-      result = subclassRef().getReturn()
-      or
-      result = API::moduleImport("logging").getMember("root")
-      or
-      result = API::moduleImport("logging").getMember("getLogger").getReturn()
-    }
-  }
-
-  /**
    * A call to one of the logging methods from `logging` or on a `logging.Logger`
    * subclass.
    *
@@ -2683,14 +2698,12 @@ private module StdlibPrivate {
         method = "log" and
         msgIndex = 1
       |
-        this = Logger::instance().getMember(method).getACall()
-        or
-        this = API::moduleImport("logging").getMember(method).getACall()
+        this = Stdlib::Logger::instance().getMember(method).getACall()
       )
     }
 
     override DataFlow::Node getAnInput() {
-      result = this.getArgByName("msg")
+      result = this.getArgByName(["msg", "extra"])
       or
       result = this.getArg(any(int i | i >= msgIndex))
     }
