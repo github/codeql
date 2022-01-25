@@ -13,21 +13,32 @@
 
 import cpp
 import semmle.code.cpp.security.BufferWrite
-import semmle.code.cpp.security.TaintTracking
 import semmle.code.cpp.security.SensitiveExprs
-import TaintedWithPath
+import semmle.code.cpp.security.Security
+import semmle.code.cpp.dataflow.TaintTracking
+import DataFlow::PathGraph
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element tainted) { exists(BufferWrite w | w.getASource() = tainted) }
+/**
+ * Taint flow from user input to a buffer write.
+ */
+class ToBufferConfiguration extends TaintTracking::Configuration {
+  ToBufferConfiguration() { this = "ToBufferConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(BufferWrite w | w.getASource() = sink.asExpr())
+  }
 }
 
 from
-  BufferWrite w, Expr taintedArg, Expr taintSource, PathNode sourceNode, PathNode sinkNode,
-  string taintCause, SensitiveExpr dest
+  ToBufferConfiguration config, BufferWrite w, Expr taintSource, DataFlow::PathNode sourceNode,
+  DataFlow::PathNode sinkNode, string taintCause, SensitiveExpr dest
 where
-  taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
+  config.hasFlowPath(sourceNode, sinkNode) and
+  taintSource = sourceNode.getNode().asExpr() and
+  w.getASource() = sinkNode.getNode().asExpr() and
   isUserInput(taintSource, taintCause) and
-  w.getASource() = taintedArg and
   dest = w.getDest()
 select w, sourceNode, sinkNode,
   "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@",
