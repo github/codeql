@@ -13,11 +13,11 @@ About CodeQL packs
 ------------------
 CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. For more information, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
-Installing dependencies for CodeQL packs in Visual Studio Code
+Using standard CodeQL packs in Visual Studio Code
 --------------------------------------------------------------
 To install dependencies for a CodeQL pack in your Visual Studio Code workspace, run the **CodeQL: Install Pack Dependencies** command from the Command Palette and select the packs you want to install dependencies for.
 
-In particular, installing pack dependencies lets you write and run query packs that depend on the CodeQL standard libraries, without needing to check out the standard libraries in your workspace.
+You can write and run query packs that depend on the CodeQL standard libraries, without needing to check out the standard libraries in your workspace. Instead, you can install only the dependencies required by the query packs you want to use.
 
 Creating and editing CodeQL packs in Visual Studio Code
 -------------------------------------------------------
