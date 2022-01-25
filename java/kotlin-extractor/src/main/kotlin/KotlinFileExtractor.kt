@@ -50,6 +50,15 @@ open class KotlinFileExtractor(
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
+
+            val exceptionOnFile = System.getenv("CODEQL_KOTLIN_INTERNAL_EXCEPTION_WHILE_EXTRACTING_FILE")
+            if(exceptionOnFile != null) {
+                @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
+                if(exceptionOnFile.lowercase() == file.name.lowercase()) {
+                    throw Exception("Internal testing exception")
+                }
+            }
+
             file.declarations.map { extractDeclaration(it) }
             CommentExtractor(this, file, tw.fileId).extract()
         }
