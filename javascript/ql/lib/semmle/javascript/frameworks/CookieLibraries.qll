@@ -110,6 +110,23 @@ private string getCookieValue(string s, string attribute) {
 }
 
 /**
+ * Gets the "SameSite" value for a given `node`.
+ * Converts boolean values to the corresponding string value.
+ *
+ * Not all libraries support boolean values for the `SameSite` attribute,
+ * but here we assume that they do.
+ */
+private string getSameSiteValue(DataFlow::Node node) {
+  node.mayHaveStringValue(result)
+  or
+  node.mayHaveBooleanValue(true) and
+  result = "Strict"
+  or
+  node.mayHaveBooleanValue(false) and
+  result = "Lax"
+}
+
+/**
  * A model of the `js-cookie` library (https://github.com/js-cookie/js-cookie).
  */
 private module JsCookie {
@@ -150,7 +167,7 @@ private module JsCookie {
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
 
     override string getSameSite() {
-      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
+      result = getSameSiteValue(this.getOptionArgument(2, "sameSite"))
     }
   }
 }
@@ -195,7 +212,7 @@ private module BrowserCookies {
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
 
     override string getSameSite() {
-      this.getOptionArgument(2, "samesite").mayHaveStringValue(result)
+      result = getSameSiteValue(this.getOptionArgument(2, "samesite"))
       or
       // or, an explicit default has been set
       DataFlow::moduleMember("browser-cookies", "defaults")
@@ -242,10 +259,7 @@ private module LibCookie {
     override predicate isSensitive() { canHaveSensitiveCookie(this.getArgument(0)) }
 
     override string getSameSite() {
-      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
-      or
-      this.getOptionArgument(2, "sameSite").mayHaveBooleanValue(true) and
-      result = "Strict"
+      result = getSameSiteValue(this.getOptionArgument(2, "sameSite"))
     }
   }
 }
@@ -280,10 +294,7 @@ private module ExpressCookies {
     }
 
     override string getSameSite() {
-      this.getOptionArgument(2, "sameSite").mayHaveStringValue(result)
-      or
-      this.getOptionArgument(2, "sameSite").mayHaveBooleanValue(true) and
-      result = "Strict"
+      result = getSameSiteValue(this.getOptionArgument(2, "sameSite"))
     }
   }
 
@@ -312,12 +323,7 @@ private module ExpressCookies {
       not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
     }
 
-    override string getSameSite() {
-      this.getCookieFlagValue("sameSite").mayHaveStringValue(result)
-      or
-      this.getCookieFlagValue("sameSite").mayHaveBooleanValue(true) and
-      result = "Strict"
-    }
+    override string getSameSite() { result = getSameSiteValue(this.getCookieFlagValue("sameSite")) }
   }
 
   /**
@@ -348,12 +354,7 @@ private module ExpressCookies {
       not this.getCookieFlagValue(CookieWrites::httpOnly()).mayHaveBooleanValue(false)
     }
 
-    override string getSameSite() {
-      this.getCookieFlagValue("sameSite").mayHaveStringValue(result)
-      or
-      this.getCookieFlagValue("sameSite").mayHaveBooleanValue(true) and
-      result = "Strict"
-    }
+    override string getSameSite() { result = getSameSiteValue(this.getCookieFlagValue("sameSite")) }
   }
 }
 
