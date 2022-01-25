@@ -87,7 +87,7 @@ org.springframework.http,14,,70,,,,,,,,,,,,,14,,,,,,,,,,,,60,10
 org.springframework.jdbc.core,10,,,,,,,,,,,,,,,,,,10,,,,,,,,,,
 org.springframework.jdbc.object,9,,,,,,,,,,,,,,,,,,9,,,,,,,,,,
 org.springframework.jndi,1,,,,,,,,,,1,,,,,,,,,,,,,,,,,,
-org.springframework.ldap,42,,,,,,,,,,28,14,,,,,,,,,,,,,,,,,
+org.springframework.ldap,47,,,,,,,,,,33,14,,,,,,,,,,,,,,,,,
 org.springframework.security.web.savedrequest,,6,,,,,,,,,,,,,,,,,,,,,,,,,6,,
 org.springframework.ui,,,32,,,,,,,,,,,,,,,,,,,,,,,,,,32
 org.springframework.util,,,139,,,,,,,,,,,,,,,,,,,,,,,,,87,52
