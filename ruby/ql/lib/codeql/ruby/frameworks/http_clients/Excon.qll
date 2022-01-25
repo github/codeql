@@ -119,7 +119,7 @@ private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean v
 
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verify_peer" and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_peer") and
     literal.flowsTo(node)
   )
 }

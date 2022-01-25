@@ -1,6 +1,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.security.performance.RegExpTreeView as RETV
 private import internal.AST
+private import internal.Constant
 private import internal.Scope
 private import internal.TreeSitter
 private import codeql.ruby.controlflow.CfgNodes
@@ -39,9 +40,54 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
   /** Gets the numerical value of this integer literal. */
   int getValue() { none() }
 
-  final override string toString() { result = this.getValueText() }
+  final override ConstantValue::ConstantIntegerValue getConstantValue() {
+    result.isInt(this.getValue())
+  }
 
   final override string getAPrimaryQlClass() { result = "IntegerLiteral" }
+}
+
+private int parseInteger(Ruby::Integer i) {
+  exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
+    s.charAt(0) != "0" and
+    result = s.toInt()
+    or
+    exists(string str, string values, int shift |
+      s.matches("0b%") and
+      values = "01" and
+      str = s.suffix(2) and
+      shift = 1
+      or
+      s.matches("0x%") and
+      values = "0123456789abcdef" and
+      str = s.suffix(2) and
+      shift = 4
+      or
+      s.charAt(0) = "0" and
+      not s.charAt(1) = ["b", "x", "o"] and
+      values = "01234567" and
+      str = s.suffix(1) and
+      shift = 3
+      or
+      s.matches("0o%") and
+      values = "01234567" and
+      str = s.suffix(2) and
+      shift = 3
+    |
+      result =
+        sum(int index, string c, int v, int exp |
+          c = str.charAt(index) and
+          v = values.indexOf(c.toLowerCase()) and
+          exp = str.length() - index - 1
+        |
+          v.bitShiftLeft((str.length() - index - 1) * shift)
+        )
+    )
+  )
+}
+
+private class RequiredIntegerLiteralConstantValue extends RequiredConstantValue {
+  override predicate requiredInt(int i) { i = any(IntegerLiteral il).getValue() }
 }
 
 private class IntegerLiteralReal extends IntegerLiteral, TIntegerLiteralReal {
@@ -49,42 +95,9 @@ private class IntegerLiteralReal extends IntegerLiteral, TIntegerLiteralReal {
 
   IntegerLiteralReal() { this = TIntegerLiteralReal(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override int getValue() { result = parseInteger(g) }
 
-  final override int getValue() {
-    exists(string s, string values, string str |
-      s = this.getValueText().toLowerCase() and
-      (
-        s.matches("0b%") and
-        values = "01" and
-        str = s.suffix(2)
-        or
-        s.matches("0x%") and
-        values = "0123456789abcdef" and
-        str = s.suffix(2)
-        or
-        s.charAt(0) = "0" and
-        not s.charAt(1) = ["b", "x", "o"] and
-        values = "01234567" and
-        str = s.suffix(1)
-        or
-        s.matches("0o%") and
-        values = "01234567" and
-        str = s.suffix(2)
-        or
-        s.charAt(0) != "0" and values = "0123456789" and str = s
-      )
-    |
-      result =
-        sum(int index, string c, int v, int exp |
-          c = str.replaceAll("_", "").charAt(index) and
-          v = values.indexOf(c.toLowerCase()) and
-          exp = str.replaceAll("_", "").length() - index - 1
-        |
-          v * values.length().pow(exp)
-        )
-    )
-  }
+  final override string toString() { result = g.getValue() }
 }
 
 private class IntegerLiteralSynth extends IntegerLiteral, TIntegerLiteralSynth {
@@ -92,9 +105,16 @@ private class IntegerLiteralSynth extends IntegerLiteral, TIntegerLiteralSynth {
 
   IntegerLiteralSynth() { this = TIntegerLiteralSynth(_, _, value) }
 
-  final override string getValueText() { result = value.toString() }
-
   final override int getValue() { result = value }
+
+  final override string toString() { result = value.toString() }
+}
+
+// TODO: implement properly
+private float parseFloat(Ruby::Float f) { result = f.getValue().toFloat() }
+
+private class RequiredFloatConstantValue extends RequiredConstantValue {
+  override predicate requiredFloat(float f) { f = parseFloat(_) }
 }
 
 /**
@@ -110,11 +130,33 @@ class FloatLiteral extends NumericLiteral, TFloatLiteral {
 
   FloatLiteral() { this = TFloatLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantFloatValue getConstantValue() {
+    result.isFloat(parseFloat(g))
+  }
 
-  final override string toString() { result = this.getValueText() }
+  final override string toString() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "FloatLiteral" }
+}
+
+private predicate isRationalValue(Ruby::Rational r, int numerator, int denominator) {
+  numerator = parseInteger(r.getChild()) and
+  denominator = 1
+  or
+  exists(Ruby::Float f, string regex, string before, string after |
+    f = r.getChild() and
+    regex = "([^.]*)\\.(.*)" and
+    before = f.getValue().regexpCapture(regex, 1) and
+    after = f.getValue().regexpCapture(regex, 2) and
+    numerator = before.toInt() * denominator + after.toInt() and
+    denominator = 10.pow(after.length())
+  )
+}
+
+private class RequiredRationalConstantValue extends RequiredConstantValue {
+  override predicate requiredRational(int numerator, int denominator) {
+    isRationalValue(_, numerator, denominator)
+  }
 }
 
 /**
@@ -129,11 +171,30 @@ class RationalLiteral extends NumericLiteral, TRationalLiteral {
 
   RationalLiteral() { this = TRationalLiteral(g) }
 
-  final override string getValueText() { result = g.getChild().(Ruby::Token).getValue() + "r" }
+  final override ConstantValue::ConstantRationalValue getConstantValue() {
+    exists(int numerator, int denominator |
+      isRationalValue(g, numerator, denominator) and
+      result.isRational(numerator, denominator)
+    )
+  }
 
-  final override string toString() { result = this.getValueText() }
+  final override string toString() { result = g.getChild().(Ruby::Token).getValue() + "r" }
 
   final override string getAPrimaryQlClass() { result = "RationalLiteral" }
+}
+
+private float getComplexValue(Ruby::Complex c) {
+  exists(string s |
+    s = c.getValue() and
+    result = s.prefix(s.length() - 1).toFloat()
+  )
+}
+
+private class RequiredComplexConstantValue extends RequiredConstantValue {
+  override predicate requiredComplex(float real, float imaginary) {
+    real = 0 and
+    imaginary = getComplexValue(_)
+  }
 }
 
 /**
@@ -148,9 +209,11 @@ class ComplexLiteral extends NumericLiteral, TComplexLiteral {
 
   ComplexLiteral() { this = TComplexLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantComplexValue getConstantValue() {
+    result.isComplex(0, getComplexValue(g))
+  }
 
-  final override string toString() { result = this.getValueText() }
+  final override string toString() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "ComplexLiteral" }
 }
@@ -161,9 +224,9 @@ class NilLiteral extends Literal, TNilLiteral {
 
   NilLiteral() { this = TNilLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantNilValue getConstantValue() { any() }
 
-  final override string toString() { result = this.getValueText() }
+  final override string toString() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "NilLiteral" }
 }
@@ -180,8 +243,6 @@ class NilLiteral extends Literal, TNilLiteral {
 class BooleanLiteral extends Literal, TBooleanLiteral {
   final override string getAPrimaryQlClass() { result = "BooleanLiteral" }
 
-  final override string toString() { result = this.getValueText() }
-
   /** Holds if the Boolean literal is `true` or `TRUE`. */
   predicate isTrue() { none() }
 
@@ -194,6 +255,10 @@ class BooleanLiteral extends Literal, TBooleanLiteral {
     or
     this.isFalse() and result = false
   }
+
+  final override ConstantValue::ConstantBooleanValue getConstantValue() {
+    result.isBoolean(this.getValue())
+  }
 }
 
 private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
@@ -201,7 +266,7 @@ private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
 
   TrueLiteral() { this = TTrueLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 
   final override predicate isTrue() { any() }
 }
@@ -211,9 +276,13 @@ private class FalseLiteral extends BooleanLiteral, TFalseLiteral {
 
   FalseLiteral() { this = TFalseLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 
   final override predicate isFalse() { any() }
+}
+
+private class RequiredEncodingLiteralConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = "UTF-8" }
 }
 
 /**
@@ -225,7 +294,11 @@ class EncodingLiteral extends Literal, TEncoding {
   final override string toString() { result = "__ENCODING__" }
 
   // TODO: return the encoding defined by a magic encoding: comment, if any.
-  override string getValueText() { result = "UTF-8" }
+  override ConstantValue::ConstantStringValue getConstantValue() { result.isString("UTF-8") }
+}
+
+private class RequiredLineLiteralConstantValue extends RequiredConstantValue {
+  override predicate requiredInt(int i) { i = any(LineLiteral ll).getLocation().getStartLine() }
 }
 
 /**
@@ -236,7 +309,15 @@ class LineLiteral extends Literal, TLine {
 
   final override string toString() { result = "__LINE__" }
 
-  override string getValueText() { result = this.getLocation().getStartLine().toString() }
+  final override ConstantValue::ConstantIntegerValue getConstantValue() {
+    result.isInt(this.getLocation().getStartLine())
+  }
+}
+
+private class RequiredFileLiteralConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) {
+    s = any(FileLiteral fl).getLocation().getFile().getAbsolutePath()
+  }
 }
 
 /**
@@ -247,7 +328,9 @@ class FileLiteral extends Literal, TFile {
 
   final override string toString() { result = "__FILE__" }
 
-  override string getValueText() { result = this.getLocation().getFile().getAbsolutePath() }
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(this.getLocation().getFile().getAbsolutePath())
+  }
 }
 
 /**
@@ -256,17 +339,28 @@ class FileLiteral extends Literal, TFile {
  */
 class StringComponent extends AstNode, TStringComponent {
   /**
+   * DEPRECATED: Use `getConstantValue` instead.
+   *
    * Gets the source text for this string component. Has no result if this is
    * a `StringInterpolationComponent`.
    */
-  string getValueText() { none() }
+  deprecated string getValueText() { result = this.getConstantValue().toString() }
+
+  /** Gets the constant value of this string component, if any. */
+  ConstantValue::ConstantStringValue getConstantValue() { none() }
+}
+
+private class RequiredStringTextComponentConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) {
+    s = any(Ruby::Token t | exists(TStringTextComponentNonRegexp(t))).getValue()
+  }
 }
 
 /**
  * A component of a string (or string-like) literal that is simply text.
  *
  * For example, the following string literals all contain `StringTextComponent`
- * components whose `getValueText()` returns `"foo"`:
+ * components whose `getConstantValue()` returns `"foo"`:
  *
  * ```rb
  * 'foo'
@@ -281,9 +375,17 @@ class StringTextComponent extends StringComponent, TStringTextComponentNonRegexp
 
   final override string toString() { result = g.getValue() }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(g.getValue())
+  }
 
   final override string getAPrimaryQlClass() { result = "StringTextComponent" }
+}
+
+private class RequiredStringEscapeSequenceComponentConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) {
+    s = any(Ruby::Token t | exists(TStringEscapeSequenceComponentNonRegexp(t))).getValue()
+  }
 }
 
 /**
@@ -296,7 +398,9 @@ class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequen
 
   final override string toString() { result = g.getValue() }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(g.getValue())
+  }
 
   final override string getAPrimaryQlClass() { result = "StringEscapeSequenceComponent" }
 }
@@ -314,7 +418,9 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
-  final override string getValueText() { none() }
+  deprecated final override string getValueText() { none() }
+
+  final override ConstantValue::ConstantStringValue getConstantValue() { none() }
 
   final override string getAPrimaryQlClass() { result = "StringInterpolationComponent" }
 }
@@ -327,15 +433,36 @@ private class TRegExpComponent =
  * The base class for a component of a regular expression literal.
  */
 class RegExpComponent extends AstNode, TRegExpComponent {
-  /** Gets the source text for this regex component, if any. */
-  string getValueText() { none() }
+  /**
+   * DEPRECATED: Use `getConstantValue` instead.
+   *
+   * Gets the source text for this regex component, if any.
+   */
+  deprecated string getValueText() { result = this.getConstantValue().toString() }
+
+  /** Gets the constant value of this regex component, if any. */
+  ConstantValue::ConstantStringValue getConstantValue() { none() }
+}
+
+// Exclude components that are children of a free-spacing regex.
+// We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+private string getRegExpTextComponentValue(RegExpTextComponent c) {
+  exists(Ruby::Token t |
+    c = TStringTextComponentRegexp(t) and
+    not c.getParent().(RegExpLiteral).hasFreeSpacingFlag() and
+    result = t.getValue()
+  )
+}
+
+private class RequiredRegExpTextComponentConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = getRegExpTextComponentValue(_) }
 }
 
 /**
  * A component of a regex literal that is simply text.
  *
  * For example, the following regex literals all contain `RegExpTextComponent`
- * components whose `getValueText()` returns `"foo"`:
+ * components whose `getConstantValue()` returns `"foo"`:
  *
  * ```rb
  * 'foo'
@@ -350,13 +477,25 @@ class RegExpTextComponent extends RegExpComponent, TStringTextComponentRegexp {
 
   final override string toString() { result = g.getValue() }
 
-  // Exclude components that are children of a free-spacing regex.
-  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
-  final override string getValueText() {
-    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(getRegExpTextComponentValue(this))
   }
 
   final override string getAPrimaryQlClass() { result = "RegExpTextComponent" }
+}
+
+// Exclude components that are children of a free-spacing regex.
+// We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
+private string getRegExpEscapeSequenceComponentValue(RegExpEscapeSequenceComponent c) {
+  exists(Ruby::EscapeSequence e |
+    c = TStringEscapeSequenceComponentRegexp(e) and
+    not c.getParent().(RegExpLiteral).hasFreeSpacingFlag() and
+    result = e.getValue()
+  )
+}
+
+private class RequiredRegExpEscapeSequenceComponentConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = getRegExpEscapeSequenceComponentValue(_) }
 }
 
 /**
@@ -369,10 +508,8 @@ class RegExpEscapeSequenceComponent extends RegExpComponent, TStringEscapeSequen
 
   final override string toString() { result = g.getValue() }
 
-  // Exclude components that are children of a free-spacing regex.
-  // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
-  final override string getValueText() {
-    not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and result = g.getValue()
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(getRegExpEscapeSequenceComponentValue(this))
   }
 
   final override string getAPrimaryQlClass() { result = "RegExpEscapeSequenceComponent" }
@@ -391,7 +528,9 @@ class RegExpInterpolationComponent extends RegExpComponent, StmtSequence,
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
-  final override string getValueText() { none() }
+  deprecated final override string getValueText() { none() }
+
+  final override ConstantValue::ConstantStringValue getConstantValue() { none() }
 
   final override string getAPrimaryQlClass() { result = "RegExpInterpolationComponent" }
 }
@@ -623,13 +762,21 @@ class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
   }
 }
 
+// Tree-sitter gives us value text including the colon, which we skip.
+private string getSimpleSymbolValue(Ruby::SimpleSymbol ss) { result = ss.getValue().suffix(1) }
+
+private class RequiredSimpleSymbolConstantValue extends RequiredConstantValue {
+  override predicate requiredSymbol(string s) { s = getSimpleSymbolValue(_) }
+}
+
 private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
   private Ruby::SimpleSymbol g;
 
   SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
 
-  // Tree-sitter gives us value text including the colon, which we skip.
-  final override string getValueText() { result = g.getValue().suffix(1) }
+  final override ConstantValue::ConstantSymbolValue getConstantValue() {
+    result.isSymbol(getSimpleSymbolValue(g))
+  }
 
   final override string toString() { result = g.getValue() }
 }
@@ -652,14 +799,20 @@ private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
+private class RequiredHashKeySymbolConstantValue extends RequiredConstantValue {
+  override predicate requiredSymbol(string s) { s = any(Ruby::HashKeySymbol h).getValue() }
+}
+
 private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral {
   private Ruby::HashKeySymbol g;
 
   HashKeySymbolLiteral() { this = THashKeySymbolLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantSymbolValue getConstantValue() {
+    result.isSymbol(g.getValue())
+  }
 
-  final override string toString() { result = ":" + this.getValueText() }
+  final override string toString() { result = ":" + g.getValue() }
 }
 
 /**
@@ -680,6 +833,10 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
+private class RequiredCharacterConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = any(Ruby::Character c).getValue() }
+}
+
 /**
  * A character literal.
  *
@@ -693,7 +850,9 @@ class CharacterLiteral extends Literal, TCharacterLiteral {
 
   CharacterLiteral() { this = TCharacterLiteral(g) }
 
-  final override string getValueText() { result = g.getValue() }
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(g.getValue())
+  }
 
   final override string toString() { result = g.getValue() }
 
@@ -970,16 +1129,24 @@ class MethodName extends Literal {
   final override string getAPrimaryQlClass() { result = "MethodName" }
 }
 
+private string getMethodName(MethodName::Token t) {
+  result = t.(Ruby::Token).getValue()
+  or
+  result = t.(Ruby::Setter).getName().getValue() + "="
+}
+
+private class RequiredMethodNameConstantValue extends RequiredConstantValue {
+  override predicate requiredString(string s) { s = getMethodName(_) }
+}
+
 private class TokenMethodName extends MethodName, TTokenMethodName {
   private MethodName::Token g;
 
   TokenMethodName() { this = TTokenMethodName(g) }
 
-  final override string getValueText() {
-    result = g.(Ruby::Token).getValue()
-    or
-    result = g.(Ruby::Setter).getName().getValue() + "="
+  final override ConstantValue::ConstantStringValue getConstantValue() {
+    result.isString(getMethodName(g))
   }
 
-  final override string toString() { result = this.getValueText() }
+  final override string toString() { result = getMethodName(g) }
 }

@@ -72,7 +72,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isVerifyLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = ["verify", "verify_peer"] and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(["verify", "verify_peer"]) and
     literal.flowsTo(node)
   )
 }

@@ -496,7 +496,7 @@ private class ArrayIndex extends int {
 module Array {
   bindingset[arg]
   private DataFlow::Content::KnownArrayElementContent getKnownArrayElementContent(Expr arg) {
-    result.getIndex() = arg.getValueText().toInt()
+    result.getIndex() = arg.getConstantValue().getInt()
   }
 
   bindingset[arg]
@@ -927,9 +927,9 @@ module Array {
   private string getDigArg(MethodCall dig, int i) {
     dig.getMethodName() = "dig" and
     exists(Expr arg | arg = dig.getArgument(i) |
-      result = arg.getValueText().toInt().toString()
+      result = arg.getConstantValue().getInt().toString()
       or
-      not exists(arg.getValueText()) and
+      not exists(arg.getConstantValue()) and
       result = "?"
     )
   }
@@ -1283,7 +1283,7 @@ module Enumerable {
 
     DropKnownSummary() {
       this = "drop(" + i + ")" and
-      i = mc.getArgument(0).getValueText().toInt()
+      i = mc.getArgument(0).getConstantValue().getInt()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1303,7 +1303,7 @@ module Enumerable {
   private class DropUnknownSummary extends DropSummary {
     DropUnknownSummary() {
       this = "drop(index)" and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1474,7 +1474,7 @@ module Enumerable {
     private int n;
 
     FirstArgKnownSummary() {
-      this = "first(" + n + ")" and n = mc.getArgument(0).getValueText().toInt()
+      this = "first(" + n + ")" and n = mc.getArgument(0).getConstantValue().getInt()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1496,7 +1496,7 @@ module Enumerable {
     FirstArgUnknownSummary() {
       this = "first(?)" and
       mc.getNumberOfArguments() > 0 and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {

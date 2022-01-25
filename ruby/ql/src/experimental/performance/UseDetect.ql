@@ -24,7 +24,7 @@ class EndCall extends MethodCall {
       this.getNumberOfArguments() = 0
       or
       this.getNumberOfArguments() = 1 and
-      this.getArgument(0).(IntegerLiteral).getValueText() = "0"
+      this.getArgument(0).getConstantValue().isInt(0)
     )
     or
     detect = "reverse_detect" and
@@ -33,7 +33,7 @@ class EndCall extends MethodCall {
       this.getNumberOfArguments() = 0
       or
       this.getNumberOfArguments() = 1 and
-      this.getArgument(0).(UnaryMinusExpr).getOperand().(IntegerLiteral).getValueText() = "1"
+      this.getArgument(0).getConstantValue().isInt(-1)
     )
   }
 

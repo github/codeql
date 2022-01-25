@@ -111,7 +111,7 @@ private predicate isSslVerifyModeNonePair(Pair p) {
 /** Holds if `node` can represent the symbol literal `:ssl_verify_mode`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "ssl_verify_mode" and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_mode") and
     literal.flowsTo(node)
   )
 }

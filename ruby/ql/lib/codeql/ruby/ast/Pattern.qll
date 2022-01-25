@@ -271,7 +271,9 @@ class HashPattern extends CasePattern, THashPattern {
 
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {
-    exists(int i | key = this.getKey(i).getValueText() and result = this.getValue(i))
+    exists(int i |
+      this.getKey(i).getConstantValue().isStringOrSymbol(key) and result = this.getValue(i)
+    )
   }
 
   /**
