@@ -33,8 +33,17 @@ class Compilation extends @compilation {
   /** Gets a file compiled during this invocation. */
   File getAFileCompiled() { result = getFileCompiled(_) }
 
-  /** Gets the `i`th file compiled during this invocation */
+  /** Gets the `i`th file compiled during this invocation. */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, result) }
+
+  /** Holds if the `i`th file during this invocation was successfully extracted. */
+  predicate fileCompiledSuccessful(int i) { compilation_compiling_files_completed(this, i, 0) }
+
+  /** Holds if the `i`th file during this invocation had recoverable extraction errors. */
+  predicate fileCompiledRecoverableErrors(int i) { compilation_compiling_files_completed(this, i, 1) }
+
+  /** Holds if the `i`th file during this invocation had non-recoverable extraction errors. */
+  predicate fileCompiledNonRecoverableErrors(int i) { compilation_compiling_files_completed(this, i, 2) }
 
   /**
    * Gets the amount of CPU time spent processing file number `i` in the
@@ -86,13 +95,13 @@ class Compilation extends @compilation {
    * Gets the total amount of CPU time spent processing all the files in the
    * front-end and extractor.
    */
-  float getTotalCpuSeconds() { compilation_finished(this, result, _) }
+  float getTotalCpuSeconds() { compilation_finished(this, result, _, _) }
 
   /**
    * Gets the total amount of elapsed time while processing all the files in
    * the front-end and extractor.
    */
-  float getTotalElapsedSeconds() { compilation_finished(this, _, result) }
+  float getTotalElapsedSeconds() { compilation_finished(this, _, result, _) }
 
   /**
    * Holds if this is a compilation of Java code.
@@ -114,5 +123,20 @@ class Compilation extends @compilation {
    * code indicating that an error occurred is considered normal
    * termination, but crashing due to something like a segfault is not.
    */
-  predicate normalTermination() { compilation_finished(this, _, _) }
+  predicate normalTermination() { compilation_finished(this, _, _, _) }
+
+  /**
+   * Holds if the extractor succeeded without error.
+   */
+  predicate extractionSuccessful() { compilation_finished(this, _, _, 0) }
+
+  /**
+   * Holds if the extractor encountered recoverable errors.
+   */
+  predicate recoverableErrors() { compilation_finished(this, _, _, 1) }
+
+  /**
+   * Holds if the extractor encountered non-recoverable errors.
+   */
+  predicate nonRecoverableErrors() { compilation_finished(this, _, _, 2) }
 }

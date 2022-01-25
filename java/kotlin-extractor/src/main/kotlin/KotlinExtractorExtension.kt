@@ -18,7 +18,23 @@ class KotlinExtractorExtension(
     : IrGenerationExtension {
 
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
+        try {
+            runExtractor(moduleFragment, pluginContext)
+        } catch(e: Exception) {
+            // If we get an exception at the top level, then we don't
+            // have many options. We just print it to stderr, and then
+            // return so the rest of the compilation can complete.
+            System.err.println("CodeQL Kotlin extractor: Top-level exception.")
+            e.printStackTrace(System.err)
+        }
+        if (exitAfterExtraction) {
+            exitProcess(0)
+        }
+    }
+
+    private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
+        val invocationExtractionProblems = ExtractionProblems()
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
@@ -43,9 +59,11 @@ class KotlinExtractorExtension(
             srcDir.mkdirs()
             val genericSpecialisationsExtracted = HashSet<String>()
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
+                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
                 fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
-                doFile(invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, logCounter, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, genericSpecialisationsExtracted)
+                fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
             logger.printLimitedWarningCounts()
             // We don't want the compiler to continue and generate class
@@ -53,12 +71,47 @@ class KotlinExtractorExtension(
             logger.info("Extraction completed")
             logger.flush()
             val compilationTimeMs = System.currentTimeMillis() - startTimeMs
-            tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000)
+            tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000, invocationExtractionProblems.extractionResult())
             tw.flush()
         }
-        if (exitAfterExtraction) {
-            exitProcess(0)
+    }
+}
+
+/*
+ExtractionProblems distinguish 2 kinds of problems:
+* Recoverable problems: e.g. if we check something that we expect to be
+  non-null and find that it is null.
+* Non-recoverable problems: if we catch an exception
+*/
+open class ExtractionProblems {
+    private var recoverableProblem = false
+    private var nonRecoverableProblem = false
+
+    open fun setRecoverableProblem() {
+        recoverableProblem = true
+    }
+    open fun setNonRecoverableProblem() {
+        nonRecoverableProblem = true
+    }
+    fun extractionResult(): Int {
+        if(nonRecoverableProblem) {
+            return 2
+        } else if(recoverableProblem) {
+            return 1
+        } else {
+            return 0
         }
+    }
+}
+
+class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblems): ExtractionProblems() {
+    override fun setRecoverableProblem() {
+        super.setRecoverableProblem()
+        invocationExtractionProblems.setRecoverableProblem()
+    }
+    override fun setNonRecoverableProblem() {
+        super.setNonRecoverableProblem()
+        invocationExtractionProblems.setNonRecoverableProblem()
     }
 }
 
@@ -84,7 +137,8 @@ private fun equivalentTrap(f1: File, f2: File): Boolean {
     }
 }
 
-fun doFile(invocationTrapFile: String,
+fun doFile(fileExtractionProblems: FileExtractionProblems,
+           invocationTrapFile: String,
            fileTrapWriter: FileTrapWriter,
            checkTrapIdentical: Boolean,
            logCounter: LogCounter,
@@ -152,6 +206,7 @@ fun doFile(invocationTrapFile: String,
             }
         } catch (e: Exception) {
             logger.error("Failed to extract '$srcFilePath'. Partial TRAP file location is $trapTmpFile", e)
+            fileExtractionProblems.setNonRecoverableProblem()
         }
     }
 }

@@ -76,6 +76,24 @@ compilation_compiling_files(
 );
 
 /**
+ * For each file recorded in `compilation_compiling_files`,
+ * there will be a corresponding row in
+ * `compilation_compiling_files_completed` once extraction
+ * of that file is complete. The `result` will indicate the
+ * extraction result:
+ *
+ *     0: Successfully extracted
+ *     1: Errors were encountered, but extraction recovered
+ *     2: Errors were encountered, and extraction could not recover
+ */
+#keyset[id, num]
+compilation_compiling_files_completed(
+    int id : @compilation ref,
+    int num : int ref,
+    int result : int ref
+);
+
+/**
  * The time taken by the extractor for a compiler invocation.
  *
  * For each file `num`, there will be rows for
@@ -131,11 +149,17 @@ compilation_compiler_times(
  * If extraction was successful, then `cpu_seconds` and
  * `elapsed_seconds` are the CPU time and elapsed time (respectively)
  * that extraction took for compiler invocation `id`.
+ * The `result` will indicate the extraction result:
+ *
+ *     0: Successfully extracted
+ *     1: Errors were encountered, but extraction recovered
+ *     2: Errors were encountered, and extraction could not recover
  */
 compilation_finished(
     unique int id : @compilation ref,
     float cpu_seconds : float ref,
-    float elapsed_seconds : float ref
+    float elapsed_seconds : float ref,
+    int result : int ref
 );
 
 diagnostics(
