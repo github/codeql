@@ -1,5 +1,5 @@
 name: codeql/cpp-queries
-version: 0.0.7-dev
+version: 0.0.8-dev
 groups: cpp
 dependencies:
     codeql/cpp-all: "*"
