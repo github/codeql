@@ -418,7 +418,7 @@ class VariableReferencePattern extends CasePattern, TVariableReferencePattern {
   VariableReferencePattern() { this = TVariableReferencePattern(g) }
 
   /** Gets the variable access corresponding to this variable reference pattern. */
-  LocalVariableReadAccess getVariableAccess() { toGenerated(result) = g.getName() }
+  VariableReadAccess getVariableAccess() { toGenerated(result) = g.getName() }
 
   final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
 
