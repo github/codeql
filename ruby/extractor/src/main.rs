@@ -2,6 +2,7 @@ mod extractor;
 
 extern crate num_cpus;
 
+use clap::arg;
 use flate2::write::GzEncoder;
 use rayon::prelude::*;
 use std::fs;
@@ -104,11 +105,9 @@ fn main() -> std::io::Result<()> {
         .version("1.0")
         .author("GitHub")
         .about("CodeQL Ruby extractor")
-        .args_from_usage(
-            "--source-archive-dir=<DIR> 'Sets a custom source archive folder'
-                    --output-dir=<DIR>         'Sets a custom trap folder'
-                    --file-list=<FILE_LIST>    'A text files containing the paths of the files to extract'",
-        )
+        .arg(arg!(--"source-archive-dir" <DIR> "Sets a custom source archive folder"))
+        .arg(arg!(--"output-dir" <DIR>         "Sets a custom trap folder"))
+        .arg(arg!(--"file-list" <FILE_LIST>    "A text file containing the paths of the files to extract"))
         .get_matches();
     let src_archive_dir = matches
         .value_of("source-archive-dir")
