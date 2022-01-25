@@ -634,7 +634,8 @@ open class KotlinFileExtractor(
             DeclarationStackAdjuster(p).use {
 
                 val visibility = p.visibility
-                if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+                if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake ||
+                        p.isFakeOverride) {
                     return
                 }
 
