@@ -1,7 +1,7 @@
 # NoSQL database query built from user-controlled sources (experimental)
-This is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
-
 If a database query (such as a SQL or NoSQL query) is built from user-provided data without sufficient sanitization, a malicious user may be able to run malicious database queries.
+
+Note: This CodeQL query is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
 
 
 ## Recommendation

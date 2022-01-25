@@ -1,9 +1,9 @@
 # Client-side cross-site scripting (experimental)
-This is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
-
 Directly writing user input (for example, a URL query parameter) to a webpage without properly sanitizing the input first, allows for a cross-site scripting vulnerability.
 
 This kind of vulnerability is also called *DOM-based* cross-site scripting, to distinguish it from other types of cross-site scripting.
+
+Note: This CodeQL query is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
 
 
 ## Recommendation
