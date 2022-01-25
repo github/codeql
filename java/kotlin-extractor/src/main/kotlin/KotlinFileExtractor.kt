@@ -51,7 +51,7 @@ open class KotlinFileExtractor(
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
             file.declarations.map { extractDeclaration(it) }
-            CommentExtractor(this, file).extract()
+            CommentExtractor(this, file, tw.fileId).extract()
         }
     }
 
@@ -98,7 +98,6 @@ open class KotlinFileExtractor(
 
     fun getLabel(element: IrElement) : String? {
         when (element) {
-            is IrFile -> return "@\"${element.path};sourcefile\"" // todo: remove copy-pasted code
             is IrClass -> return getClassLabel(element, listOf()).classLabel
             is IrTypeParameter -> return getTypeParameterLabel(element)
             is IrFunction -> return getFunctionLabel(element, null)

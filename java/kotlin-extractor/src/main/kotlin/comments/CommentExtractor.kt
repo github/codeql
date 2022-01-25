@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile) {
+class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
     private val ktFile = Psi2Ir().getKtFile(file)
@@ -89,14 +89,19 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 file.accept(IrVisitorLookup(ownerPsi, file), owners)
 
                 for (ownerIr in owners) {
-                    val label = fileExtractor.getLabel(ownerIr) ?: continue
-                    val existingLabel = tw.getExistingLabelFor<DbTop>(label)
-                    if (existingLabel == null) {
-                        logger.warn(Severity.Warn, "Couldn't get existing label for $label")
-                        continue
-                    }
-
-                    tw.writeKtCommentOwners(commentLabel, existingLabel)
+                    val ownerLabel =
+                        if (ownerIr == file)
+                            fileLabel
+                        else {
+                            val label = fileExtractor.getLabel(ownerIr) ?: continue
+                            val existingLabel = tw.getExistingLabelFor<DbTop>(label)
+                            if (existingLabel == null) {
+                                logger.warn(Severity.Warn, "Couldn't get existing label for $label")
+                                continue
+                            }
+                            existingLabel
+                        }
+                    tw.writeKtCommentOwners(commentLabel, ownerLabel)
                 }
             }
 
