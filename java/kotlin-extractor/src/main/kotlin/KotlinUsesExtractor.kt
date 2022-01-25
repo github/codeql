@@ -989,8 +989,11 @@ open class KotlinUsesExtractor(
         val parentId = parent ?: useDeclarationParent(vp.parent, false)
         val idx = vp.index
         if (idx < 0) {
-            // We're not extracting this and this@TYPE parameters of functions:
-            logger.warn(Severity.ErrorSevere, "Unexpected negative index for parameter")
+            val p = vp.parent
+            if (p !is IrFunction || p.extensionReceiverParameter != vp) {
+                // We're not extracting this and this@TYPE parameters of functions:
+                logger.warn(Severity.ErrorSevere, "Unexpected negative index for parameter")
+            }
         }
         return "@\"params;{$parentId};$idx\""
     }
