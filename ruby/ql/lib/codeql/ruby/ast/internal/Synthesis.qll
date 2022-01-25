@@ -996,3 +996,37 @@ private module ImplicitHashValueSynthesis {
     }
   }
 }
+
+private module AnonymousBlockParameterSynth {
+  private BlockParameter anonymousBlockParameter() {
+    exists(Ruby::BlockParameter p | not exists(p.getName()) and toGenerated(result) = p)
+  }
+
+  private BlockArgument anonymousBlockArgument() {
+    exists(Ruby::BlockArgument p | not exists(p.getChild()) and toGenerated(result) = p)
+  }
+
+  private class AnonymousBlockParameterSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockParameter() and
+      child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(parent, 0)))
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n = anonymousBlockParameter() and i = 0
+    }
+  }
+
+  private class AnonymousBlockArgumentSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      i = 0 and
+      parent = anonymousBlockArgument() and
+      exists(BlockParameter param |
+        param = anonymousBlockParameter() and
+        scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
+        child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      )
+    }
+  }
+}

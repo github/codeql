@@ -148,11 +148,19 @@ class BlockParameter extends NamedParameter, TBlockParameter {
 
   BlockParameter() { this = TBlockParameter(g) }
 
+  /** Gets the name of this parameter, if any. */
   final override string getName() { result = g.getName().getValue() }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result = TLocalVariableReal(_, _, g.getName()) or
+    result = TLocalVariableSynth(this, 0)
+  }
 
-  final override string toString() { result = "&" + this.getName() }
+  final override string toString() {
+    result = "&" + this.getName()
+    or
+    not exists(this.getName()) and result = "&"
+  }
 
   final override string getAPrimaryQlClass() { result = "BlockParameter" }
 }

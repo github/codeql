@@ -457,6 +457,9 @@ calls/calls.rb:
 #  267|     getArgument: [BlockArgument] &...
 #  267|       getValue: [MethodCall] call to bar
 #  267|         getReceiver: [ConstantReadAccess] X
+#  268|   getStmt: [MethodCall] call to foo
+#  268|     getReceiver: [Self, SelfVariableAccess] self
+#  268|     getArgument: [BlockArgument] &...
 #  270|   getStmt: [MethodCall] call to foo
 #  270|     getReceiver: [Self, SelfVariableAccess] self
 #  270|     getArgument: [SplatExpr] * ...
@@ -2694,6 +2697,19 @@ params/params.rb:
 #   77|       getParameter: [SimpleParameter] val
 #   77|         getDefiningAccess: [LocalVariableAccess] val
 #   77|       getParameter: [HashSplatNilParameter] **nil
+#   81|   getStmt: [Method] anonymous_block_parameter
+#   81|     getParameter: [SimpleParameter] array
+#   81|       getDefiningAccess: [LocalVariableAccess] array
+#   81|     getParameter: [BlockParameter] &
+#   81|       getDefiningAccess: [LocalVariableAccess] __synth__0
+#   82|     getStmt: [MethodCall] call to proc
+#   82|       getReceiver: [Self, SelfVariableAccess] self
+#   82|       getArgument: [BlockArgument] &...
+#   82|         getValue: [LocalVariableAccess] __synth__0
+#   83|     getStmt: [MethodCall] call to each
+#   83|       getReceiver: [LocalVariableAccess] array
+#   83|       getArgument: [BlockArgument] &...
+#   83|         getValue: [LocalVariableAccess] __synth__0
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"

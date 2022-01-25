@@ -265,7 +265,7 @@ X::foo rescue X::bar
 # block argument
 foo(&bar)
 foo(&X::bar)
-
+foo(&)
 # splat argument
 foo(*bar)
 foo(*X::bar)

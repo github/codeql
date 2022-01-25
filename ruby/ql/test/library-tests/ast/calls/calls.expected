@@ -26,6 +26,7 @@ callsWithArguments
 | calls.rb:249:1:249:32 | call to [] | [] | 1 | calls.rb:249:15:249:30 | Pair |
 | calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
 | calls.rb:267:1:267:12 | call to foo | foo | 0 | calls.rb:267:5:267:11 | &... |
+| calls.rb:268:1:268:6 | call to foo | foo | 0 | calls.rb:268:5:268:5 | &... |
 | calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | * ... |
 | calls.rb:271:1:271:12 | call to foo | foo | 0 | calls.rb:271:5:271:11 | * ... |
 | calls.rb:274:1:274:10 | call to foo | foo | 0 | calls.rb:274:5:274:9 | ** ... |
@@ -267,6 +268,7 @@ callsWithReceiver
 | calls.rb:266:6:266:8 | call to bar | calls.rb:266:6:266:8 | self |
 | calls.rb:267:1:267:12 | call to foo | calls.rb:267:1:267:12 | self |
 | calls.rb:267:6:267:11 | call to bar | calls.rb:267:6:267:6 | X |
+| calls.rb:268:1:268:6 | call to foo | calls.rb:268:1:268:6 | self |
 | calls.rb:270:1:270:9 | call to foo | calls.rb:270:1:270:9 | self |
 | calls.rb:270:5:270:8 | * ... | calls.rb:270:6:270:8 | call to bar |
 | calls.rb:270:6:270:8 | call to bar | calls.rb:270:6:270:8 | self |
