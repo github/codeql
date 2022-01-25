@@ -6,6 +6,7 @@
  * @kind path-problem
  * @id cpp/return-stack-allocated-memory
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @tags reliability
  *       security
