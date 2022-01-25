@@ -14,7 +14,7 @@ import python
 import semmle.python.security.dataflow.LogInjection
 import DataFlow::PathGraph
 
-from LogInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from LogInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to log entry.", source.getNode(),
   "User-provided value"

@@ -1,24 +1,35 @@
+/**
+ * Provides a taint-tracking configuration for tracking untrusted user input used in log entries.
+ *
+ * Note, for performance reasons: only import this file if
+ * `LogInjection::Configuration` is needed, otherwise
+ * `LogInjectionCustomizations` should be imported instead.
+ */
+
 import python
-import semmle.python.Concepts
-import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for tracking untrusted user input used in log entries.
+ * Provides a taint-tracking configuration for tracking untrusted user input used in log entries.
  */
-class LogInjectionFlowConfig extends TaintTracking::Configuration {
-  LogInjectionFlowConfig() { this = "LogInjectionFlowConfig" }
+module LogInjection {
+  import LogInjectionCustomizations::LogInjection
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  /**
+   * A taint-tracking configuration for tracking untrusted user input used in log entries.
+   */
+  class Configuration extends TaintTracking::Configuration {
+    Configuration() { this = "LogInjection" }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(Logging write).getAnInput() }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(CallNode call |
-      node.asCfgNode() = call.getFunction().(AttrNode).getObject("replace") and
-      call.getArg(0).getNode().(StrConst).getText() in ["\r\n", "\n"]
-    )
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }
