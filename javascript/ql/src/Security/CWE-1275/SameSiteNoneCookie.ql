@@ -1,7 +1,7 @@
 /**
  * @name Sensitive cookie without SameSite restrictions
  * @description Sensitive cookies where the SameSite attribute is set to "None" can
- *              in some cases allow for Cross-site request forgery (CSRF) attacks.
+ *              in some cases allow for Cross-Site Request Forgery (CSRF) attacks.
  * @kind problem
  * @problem.severity warning
  * @security-severity 5.0

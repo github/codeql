@@ -6,11 +6,11 @@
 <overview>
 <p>
 Authentication cookies where the SameSite attribute is set to "None" can 
-potentially be used to perform cross-site request forgery (CSRF) attacks 
+potentially be used to perform Cross-Site Request Forgery (CSRF) attacks 
 if no other CSRF protections are in place.
 </p>
 <p>
-With SameSite set to "None" a third party website may create an authorized cross-site request
+With SameSite set to "None", a third party website may create an authorized cross-site request
 that includes the cookie.
 Such a cross-site request can allow that website to perform actions on behalf of a user.
 </p>
