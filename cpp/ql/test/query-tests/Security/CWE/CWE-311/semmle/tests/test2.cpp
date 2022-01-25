@@ -70,8 +70,15 @@ void tests(FILE *log, myStruct &s)
 		char buf[1024];
 
 		strcpy(buf, s.password);
-		fprintf(log, "buf = %s\n", buf); // BAD [NOT DETECTED]
+		fprintf(log, "buf = %s\n", buf); // BAD
 		
+		strcpy(buf, s.password_hash);
+		fprintf(log, "buf = %s\n", buf); // GOOD [FALSE POSITIVE]
+	}
+
+	{
+		char buf[1024];
+
 		strcpy(buf, s.password_hash);
 		fprintf(log, "buf = %s\n", buf); // GOOD
 	}
@@ -89,6 +96,6 @@ void tests(FILE *log, myStruct &s)
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "password = %s", s.password);
-		fprintf(log, "log: %s", buffer); // BAD [NOT DETECTED]
+		fprintf(log, "log: %s", buffer); // BAD
 	}
 }
