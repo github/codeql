@@ -13,26 +13,6 @@
             <v>44691</v>
         </e>
         <e>
-            <k>@externalDefect</k>
-            <v>0</v>
-        </e>
-        <e>
-            <k>@externalMetric</k>
-            <v>0</v>
-        </e>
-        <e>
-            <k>@externalDataElement</k>
-            <v>0</v>
-        </e>
-        <e>
-            <k>@duplication</k>
-            <v>0</v>
-        </e>
-        <e>
-            <k>@similarity</k>
-            <v>0</v>
-        </e>
-        <e>
             <k>@assembly</k>
             <v>30136</v>
         </e>
