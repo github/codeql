@@ -12,11 +12,19 @@
  */
 
 import cpp
-import semmle.code.cpp.security.BufferWrite
+import semmle.code.cpp.security.BufferWrite as BufferWrite
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
+
+Expr exprForNode(DataFlow::Node n) {
+  n = DataFlow::exprNode(result)
+  or
+  // (similar to DefaultTaintTracking's `getNodeForExpr`)
+  n = DataFlow::definitionByReferenceNodeFromArgument(result) and
+  not argv(result.(VariableAccess).getTarget())
+}
 
 /**
  * Taint flow from user input to a buffer write.
@@ -24,19 +32,19 @@ import DataFlow::PathGraph
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+  override predicate isSource(DataFlow::Node source) { isUserInput(exprForNode(source), _) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(BufferWrite w | w.getASource() = sink.asExpr())
+    exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
   }
 }
 
 from
-  ToBufferConfiguration config, BufferWrite w, Expr taintSource, DataFlow::PathNode sourceNode,
+  ToBufferConfiguration config, BufferWrite::BufferWrite w, Expr taintSource, DataFlow::PathNode sourceNode,
   DataFlow::PathNode sinkNode, string taintCause, SensitiveExpr dest
 where
   config.hasFlowPath(sourceNode, sinkNode) and
-  taintSource = sourceNode.getNode().asExpr() and
+  taintSource = exprForNode(sourceNode.getNode()) and
   w.getASource() = sinkNode.getNode().asExpr() and
   isUserInput(taintSource, taintCause) and
   dest = w.getDest()
