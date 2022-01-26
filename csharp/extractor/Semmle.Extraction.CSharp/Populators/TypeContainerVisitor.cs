@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void DefaultVisit(SyntaxNode node)
         {
-            throw new InternalError(node, "Unhandled top-level syntax node");
+            throw new InternalError(node, $"Unhandled top-level syntax node of type  {node.GetType()}");
         }
 
         public override void VisitGlobalStatement(GlobalStatementSyntax node)

@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 else if (body is BlockSyntax blockBody)
                     Statements.Block.Create(Context, blockBody, this, 0);
                 else
-                    Context.ModelError(body, "Unhandled lambda body");
+                    Context.ModelError(body, $"Unhandled lambda body of type {body.GetType()}");
             });
         }
 
