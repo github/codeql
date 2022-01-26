@@ -47,9 +47,7 @@ module SummaryComponent {
    * index or known index. This predicate should never be used in the output specification
    * of a flow summary; use `arrayElementUnknown()` instead.
    */
-  SummaryComponent arrayElementAny() {
-    result in [arrayElementUnknown(), SC::content(TKnownArrayElementContent(_))]
-  }
+  SummaryComponent arrayElementAny() { result = SC::content(TAnyArrayElementContent()) }
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
