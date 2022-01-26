@@ -676,6 +676,29 @@ calls/calls.rb:
 #  341|         getArgument: [LocalVariableAccess] x
 #  341|         getArgument: [LocalVariableAccess] y
 #  341|         getArgument: [LocalVariableAccess] z
+#  344|   getStmt: [MethodCall] call to foo
+#  344|     getReceiver: [Self, SelfVariableAccess] self
+#  344|     getArgument: [Pair] Pair
+#  344|       getKey: [SymbolLiteral] :x
+#  344|       getValue: [IntegerLiteral] 42
+#  345|   getStmt: [MethodCall] call to foo
+#  345|     getReceiver: [Self, SelfVariableAccess] self
+#  345|     getArgument: [Pair] Pair
+#  345|       getKey: [SymbolLiteral] :x
+#  345|       getValue: [LocalVariableAccess] x
+#  345|     getArgument: [Pair] Pair
+#  345|       getKey: [SymbolLiteral] :novar
+#  345|       getValue: [MethodCall] call to novar
+#  346|   getStmt: [MethodCall] call to foo
+#  346|     getReceiver: [Self, SelfVariableAccess] self
+#  346|     getArgument: [Pair] Pair
+#  346|       getKey: [SymbolLiteral] :X
+#  346|       getValue: [IntegerLiteral] 42
+#  347|   getStmt: [MethodCall] call to foo
+#  347|     getReceiver: [Self, SelfVariableAccess] self
+#  347|     getArgument: [Pair] Pair
+#  347|       getKey: [SymbolLiteral] :X
+#  347|       getValue: [ConstantReadAccess] X
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -1963,6 +1986,23 @@ literals/literals.rb:
 #  180|       getComponent: [StringTextComponent] 
 #  180|        cat file.txt
 #  180|       
+#  184|   getStmt: [AssignExpr] ... = ...
+#  184|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
+#  184|     getAnOperand/getRightOperand: [IntegerLiteral] 42
+#  185|   getStmt: [HashLiteral] {...}
+#  185|     getElement: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :x
+#  185|       getValue: [LocalVariableAccess] x
+#  185|     getElement: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :y
+#  185|       getValue: [IntegerLiteral] 5
+#  186|   getStmt: [HashLiteral] {...}
+#  186|     getElement: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :y
+#  186|       getValue: [MethodCall] call to y
+#  186|     getElement: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :Z
+#  186|       getValue: [ConstantReadAccess] Z
 control/loops.rb:
 #    1| [Toplevel] loops.rb
 #    2|   getStmt: [AssignExpr] ... = ...

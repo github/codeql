@@ -477,6 +477,24 @@ literals/literals.rb:
 #  118|     getArgument: [HashSplatExpr] ** ...
 #  118|       getAnOperand/getOperand/getReceiver: [MethodCall] call to baz
 #  118|         getReceiver: [Self, SelfVariableAccess] self
+#  185| [HashLiteral] {...}
+#  185|   getDesugared: [MethodCall] call to []
+#  185|     getReceiver: [ConstantReadAccess] Hash
+#  185|     getArgument: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :x
+#  185|       getValue: [LocalVariableAccess] x
+#  185|     getArgument: [Pair] Pair
+#  185|       getKey: [SymbolLiteral] :y
+#  185|       getValue: [IntegerLiteral] 5
+#  186| [HashLiteral] {...}
+#  186|   getDesugared: [MethodCall] call to []
+#  186|     getReceiver: [ConstantReadAccess] Hash
+#  186|     getArgument: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :y
+#  186|       getValue: [MethodCall] call to y
+#  186|     getArgument: [Pair] Pair
+#  186|       getKey: [SymbolLiteral] :Z
+#  186|       getValue: [ConstantReadAccess] Z
 control/loops.rb:
 #    9| [ForExpr] for ... in ...
 #    9|   getDesugared: [MethodCall] call to each

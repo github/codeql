@@ -116,6 +116,11 @@ private string variableNameInScope(Ruby::AstNode i, Scope::Range scope) {
       result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
       result = i.(Ruby::HashKeySymbol).getValue()
     )
+    or
+    exists(Ruby::Pair p | i = p.getKey() and not exists(p.getValue()) |
+      result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+      result = i.(Ruby::HashKeySymbol).getValue()
+    )
   )
 }
 
