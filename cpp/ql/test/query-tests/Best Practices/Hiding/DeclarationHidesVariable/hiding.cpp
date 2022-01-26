@@ -30,3 +30,12 @@ void nestedRangeBasedFor() {
     for (auto y : ys) // GOOD
       x = y = 0;
 }
+
+void structuredBinding() {
+  int xs[1] = {1};
+  auto [x] = xs;
+  {
+    auto [x] = xs; // BAD
+    auto [y] = xs; // GOOD [FALSE POSITIVE]
+  }
+}
