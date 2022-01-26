@@ -15,3 +15,11 @@ query predicate lambdaDeclaration(string type, LocalVariable v, LambdaExpr lexp)
 query predicate lambdaDeclarationNatural(string type, LocalVariable v, LambdaExpr lexp) {
   exists(LocalVariableDeclAndInitExpr e | getLambda(e, type, v, lexp) and e.isImplicitlyTyped())
 }
+
+query predicate lambdaDeclarationExplicitReturnType(
+  string type, string explicit, string actual, LocalVariable v, LambdaExpr lexp
+) {
+  getLambda(_, type, v, lexp) and
+  explicit = lexp.getExplicitReturnType().toStringWithTypes() and
+  actual = lexp.getReturnType().toStringWithTypes()
+}
