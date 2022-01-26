@@ -207,15 +207,14 @@ module ActionDispatch {
     override Location getLocation() { result = call.getLocation() }
 
     override string getPathComponent() {
-      result = call.getKeywordArgument("path").getConstantValue().getStringOrSymbol()
+      call.getKeywordArgument("path").getConstantValue().isStringOrSymbol(result)
       or
       not exists(call.getKeywordArgument("path")) and
-      result = call.getArgument(0).getConstantValue().getStringOrSymbol()
+      call.getArgument(0).getConstantValue().isStringOrSymbol(result)
     }
 
     override string getControllerComponent() {
-      result = call.getKeywordArgument("controller").getConstantValue().getStringOrSymbol() or
-      result = call.getKeywordArgument("module").getConstantValue().getStringOrSymbol()
+      call.getKeywordArgument(["controller", "module"]).getConstantValue().isStringOrSymbol(result)
     }
   }
 
@@ -244,9 +243,7 @@ module ActionDispatch {
     MethodCall getDefiningMethodCall() { result = call }
 
     override string getPathComponent() {
-      exists(string resource |
-        resource = call.getArgument(0).getConstantValue().getStringOrSymbol()
-      |
+      exists(string resource | call.getArgument(0).getConstantValue().isStringOrSymbol(resource) |
         result = resource + "/:" + singularize(resource) + "_id"
       )
     }
@@ -309,7 +306,7 @@ module ActionDispatch {
     override string getControllerComponent() { result = this.getNamespace() }
 
     private string getNamespace() {
-      result = call.getArgument(0).getConstantValue().getStringOrSymbol()
+      call.getArgument(0).getConstantValue().isStringOrSymbol(result)
     }
 
     override string toString() { result = call.toString() }
@@ -508,11 +505,11 @@ module ActionDispatch {
     override RouteBlock getParentBlock() { result = parentBlock }
 
     override string getLastPathComponent() {
-      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+      method.getArgument(0).getConstantValue().isStringOrSymbol(result)
     }
 
     override string getLastControllerComponent() {
-      result = method.getKeywordArgument("controller").getConstantValue().getStringOrSymbol()
+      method.getKeywordArgument("controller").getConstantValue().isStringOrSymbol(result)
       or
       not exists(method.getKeywordArgument("controller")) and
       (
@@ -536,7 +533,7 @@ module ActionDispatch {
     }
 
     private string getActionString() {
-      result = method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()
+      method.getKeywordArgument("to").getConstantValue().isStringOrSymbol(result)
       or
       method.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
       result = "<redirect>#<redirect>"
@@ -544,7 +541,7 @@ module ActionDispatch {
 
     override string getAction() {
       // get "/photos", action: "index"
-      result = method.getKeywordArgument("action").getConstantValue().getStringOrSymbol()
+      method.getKeywordArgument("action").getConstantValue().isStringOrSymbol(result)
       or
       not exists(method.getKeywordArgument("action")) and
       (
@@ -559,7 +556,7 @@ module ActionDispatch {
         or
         // get :some_action
         not exists(this.getActionString()) and
-        result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+        method.getArgument(0).getConstantValue().isStringOrSymbol(result)
       )
     }
 
@@ -606,7 +603,7 @@ module ActionDispatch {
 
     ResourcesRoute() {
       this = TResourcesRoute(parent, method, action) and
-      resource = method.getArgument(0).getConstantValue().getStringOrSymbol() and
+      method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
       isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
     }
 
@@ -617,7 +614,7 @@ module ActionDispatch {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+      method.getArgument(0).getConstantValue().isStringOrSymbol(result)
     }
 
     override string getAction() { result = action }
@@ -643,7 +640,7 @@ module ActionDispatch {
 
     SingularResourceRoute() {
       this = TResourceRoute(parent, method, action) and
-      resource = method.getArgument(0).getConstantValue().getStringOrSymbol() and
+      method.getArgument(0).getConstantValue().isStringOrSymbol(resource) and
       isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
     }
 
@@ -654,7 +651,7 @@ module ActionDispatch {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+      method.getArgument(0).getConstantValue().isStringOrSymbol(result)
     }
 
     override string getAction() { result = action }
@@ -685,14 +682,15 @@ module ActionDispatch {
     override RouteBlock getParentBlock() { result = parent }
 
     override string getLastPathComponent() {
-      result = method.getArgument(0).getConstantValue().getStringOrSymbol() or
-      result = method.getArgument(0).(Pair).getKey().getConstantValue().getStringOrSymbol()
+      [method.getArgument(0), method.getArgument(0).(Pair).getKey()]
+          .getConstantValue()
+          .isStringOrSymbol(result)
     }
 
     override string getLastControllerComponent() {
       result =
         extractController(method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()) or
-      result = method.getKeywordArgument("controller").getConstantValue().getStringOrSymbol() or
+      method.getKeywordArgument("controller").getConstantValue().isStringOrSymbol(result) or
       result =
         extractController(method
               .getArgument(0)
@@ -704,7 +702,7 @@ module ActionDispatch {
 
     override string getHTTPMethod() {
       exists(string via |
-        via = method.getKeywordArgument("via").getConstantValue().getStringOrSymbol()
+        method.getKeywordArgument("via").getConstantValue().isStringOrSymbol(via)
       |
         via = "all" and result = anyHttpMethod()
         or
@@ -722,7 +720,7 @@ module ActionDispatch {
 
     override string getAction() {
       result = extractAction(method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()) or
-      result = method.getKeywordArgument("action").getConstantValue().getStringOrSymbol() or
+      method.getKeywordArgument("action").getConstantValue().isStringOrSymbol(result) or
       result =
         extractAction(method.getArgument(0).(Pair).getValue().getConstantValue().getStringOrSymbol())
     }
@@ -740,9 +738,7 @@ module ActionDispatch {
       not exists(m.getKeywordArgument("only"))
       or
       exists(Expr only | only = m.getKeywordArgument("only") |
-        [only.(ArrayLiteral).getElement(_), only.(StringlikeLiteral)]
-            .getConstantValue()
-            .getStringOrSymbol() = action
+        [only.(ArrayLiteral).getElement(_), only].getConstantValue().isStringOrSymbol(action)
       )
     ) and
     // Respect the `except` keyword argument, which removes actions from the default set.
@@ -750,9 +746,8 @@ module ActionDispatch {
       not exists(m.getKeywordArgument("except"))
       or
       exists(Expr except | except = m.getKeywordArgument("except") |
-        [except.(ArrayLiteral).getElement(_), except.(StringlikeLiteral)]
-            .getConstantValue()
-            .getStringOrSymbol() != action
+        [except.(ArrayLiteral).getElement(_), except].getConstantValue().getStringOrSymbol() !=
+          action
       )
     )
   }
