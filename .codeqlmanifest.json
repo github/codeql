@@ -4,6 +4,7 @@
         "*/ql/lib/qlpack.yml",
         "*/ql/test/qlpack.yml",
         "*/ql/examples/qlpack.yml",
+        "*/downgrades/qlpack.yml",
         "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
         "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml",
         "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",
