@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: -std=c++17
 void f(void) {
     if (1) {
         int i;
