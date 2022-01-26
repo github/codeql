@@ -386,7 +386,7 @@ open class KotlinFileExtractor(
                             tw.writeHasLocation(instance.id, innerLocId)
                             addModifiers(instance.id, "public", "static", "final")
                             @Suppress("UNCHECKED_CAST")
-                            tw.writeClass_companion_object(parentId as Label<DbClass>, instance.id, innerId as Label<DbClass>)
+                            tw.writeType_companion_object(parentId, instance.id, innerId as Label<DbClass>)
                         }
                     }
 

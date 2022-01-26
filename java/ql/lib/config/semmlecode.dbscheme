@@ -348,8 +348,8 @@ class_object(
   unique int instance: @field ref
 );
 
-class_companion_object(
-  unique int id: @class ref,
+type_companion_object(
+  unique int id: @classorinterface ref,
   unique int instance: @field ref,
   unique int companion_object: @class ref
 );

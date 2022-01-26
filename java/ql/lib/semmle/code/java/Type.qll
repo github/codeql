@@ -695,11 +695,6 @@ class Class extends ClassOrInterface, @class {
     )
   }
 
-  /** Get the companion object of this class, if any. */
-  ClassCompanionObject getCompanionObject() {
-    class_companion_object(this, _, result)
-  }
-
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
@@ -718,12 +713,12 @@ class ClassObject extends Class {
 /** A Kotlin `companion object`. */
 class ClassCompanionObject extends Class {
   ClassCompanionObject() {
-    class_companion_object(_, _, this)
+    type_companion_object(_, _, this)
   }
 
   /** Gets the instance variable that implements this `companion object`. */
   Field getInstance() {
-    class_companion_object(_, result, this)
+    type_companion_object(_, result, this)
   }
 }
 
@@ -964,6 +959,9 @@ class ClassOrInterface extends RefType, @classorinterface {
 
   /** Holds if this class or interface is explicitly or implicitly a sealed class (Java 17 feature). */
   predicate isSealed() { exists(this.getAPermittedSubtype()) }
+
+  /** Get the companion object of this class or interface, if any. */
+  ClassCompanionObject getCompanionObject() { type_companion_object(this, _, result) }
 }
 
 private string getAPublicObjectMethodSignature() {
