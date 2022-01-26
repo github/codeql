@@ -10,11 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        slug: []
-        ref: []
+        slug: ["placeholder"]
+        ref: ["placeholder"]
         include:
           - slug: "apache/commons-io"
             ref: "8985de8fe74f6622a419b37a6eed0dbc484dc128"
+        exclude:
+          - slug: "placeholder"
+            ref: "placeholder"
     steps:
       - name: Clone self (github/codeql)
         uses: actions/checkout@v2
