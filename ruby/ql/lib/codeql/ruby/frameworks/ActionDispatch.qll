@@ -207,15 +207,15 @@ module ActionDispatch {
     override Location getLocation() { result = call.getLocation() }
 
     override string getPathComponent() {
-      result = call.getKeywordArgument("path").(StringlikeLiteral).getValueText()
+      result = call.getKeywordArgument("path").getConstantValue().getStringOrSymbol()
       or
       not exists(call.getKeywordArgument("path")) and
-      result = call.getArgument(0).(StringlikeLiteral).getValueText()
+      result = call.getArgument(0).getConstantValue().getStringOrSymbol()
     }
 
     override string getControllerComponent() {
-      result = call.getKeywordArgument("controller").getValueText() or
-      result = call.getKeywordArgument("module").getValueText()
+      result = call.getKeywordArgument("controller").getConstantValue().getStringOrSymbol() or
+      result = call.getKeywordArgument("module").getConstantValue().getStringOrSymbol()
     }
   }
 
@@ -244,7 +244,9 @@ module ActionDispatch {
     MethodCall getDefiningMethodCall() { result = call }
 
     override string getPathComponent() {
-      exists(string resource | resource = call.getArgument(0).getValueText() |
+      exists(string resource |
+        resource = call.getArgument(0).getConstantValue().getStringOrSymbol()
+      |
         result = resource + "/:" + singularize(resource) + "_id"
       )
     }
@@ -306,7 +308,9 @@ module ActionDispatch {
 
     override string getControllerComponent() { result = this.getNamespace() }
 
-    private string getNamespace() { result = call.getArgument(0).getValueText() }
+    private string getNamespace() {
+      result = call.getArgument(0).getConstantValue().getStringOrSymbol()
+    }
 
     override string toString() { result = call.toString() }
 
@@ -504,11 +508,11 @@ module ActionDispatch {
     override RouteBlock getParentBlock() { result = parentBlock }
 
     override string getLastPathComponent() {
-      result = method.getArgument(0).(StringlikeLiteral).getValueText()
+      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
     }
 
     override string getLastControllerComponent() {
-      result = method.getKeywordArgument("controller").getValueText()
+      result = method.getKeywordArgument("controller").getConstantValue().getStringOrSymbol()
       or
       not exists(method.getKeywordArgument("controller")) and
       (
@@ -532,7 +536,7 @@ module ActionDispatch {
     }
 
     private string getActionString() {
-      result = method.getKeywordArgument("to").(StringlikeLiteral).getValueText()
+      result = method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()
       or
       method.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
       result = "<redirect>#<redirect>"
@@ -540,7 +544,7 @@ module ActionDispatch {
 
     override string getAction() {
       // get "/photos", action: "index"
-      result = method.getKeywordArgument("action").getValueText()
+      result = method.getKeywordArgument("action").getConstantValue().getStringOrSymbol()
       or
       not exists(method.getKeywordArgument("action")) and
       (
@@ -555,7 +559,7 @@ module ActionDispatch {
         or
         // get :some_action
         not exists(this.getActionString()) and
-        result = method.getArgument(0).(StringlikeLiteral).getValueText()
+        result = method.getArgument(0).getConstantValue().getStringOrSymbol()
       )
     }
 
@@ -602,7 +606,7 @@ module ActionDispatch {
 
     ResourcesRoute() {
       this = TResourcesRoute(parent, method, action) and
-      resource = method.getArgument(0).(StringlikeLiteral).getValueText() and
+      resource = method.getArgument(0).getConstantValue().getStringOrSymbol() and
       isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
     }
 
@@ -612,7 +616,9 @@ module ActionDispatch {
 
     override string getLastPathComponent() { result = pathComponent }
 
-    override string getLastControllerComponent() { result = method.getArgument(0).getValueText() }
+    override string getLastControllerComponent() {
+      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+    }
 
     override string getAction() { result = action }
 
@@ -637,7 +643,7 @@ module ActionDispatch {
 
     SingularResourceRoute() {
       this = TResourceRoute(parent, method, action) and
-      resource = method.getArgument(0).(StringlikeLiteral).getValueText() and
+      resource = method.getArgument(0).getConstantValue().getStringOrSymbol() and
       isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
     }
 
@@ -647,7 +653,9 @@ module ActionDispatch {
 
     override string getLastPathComponent() { result = pathComponent }
 
-    override string getLastControllerComponent() { result = method.getArgument(0).getValueText() }
+    override string getLastControllerComponent() {
+      result = method.getArgument(0).getConstantValue().getStringOrSymbol()
+    }
 
     override string getAction() { result = action }
 
@@ -676,25 +684,39 @@ module ActionDispatch {
     override RouteBlock getParentBlock() { result = parent }
 
     override string getLastPathComponent() {
-      result = method.getArgument(0).(StringlikeLiteral).getValueText() or
-      result = method.getArgument(0).(Pair).getKey().getValueText()
+      result = method.getArgument(0).getConstantValue().getStringOrSymbol() or
+      result = method.getArgument(0).(Pair).getKey().getConstantValue().getStringOrSymbol()
     }
 
     override string getLastControllerComponent() {
-      result = extractController(method.getKeywordArgument("to").getValueText()) or
-      result = method.getKeywordArgument("controller").getValueText() or
-      result = extractController(method.getArgument(0).(Pair).getValue().getValueText())
+      result =
+        extractController(method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()) or
+      result = method.getKeywordArgument("controller").getConstantValue().getStringOrSymbol() or
+      result =
+        extractController(method
+              .getArgument(0)
+              .(Pair)
+              .getValue()
+              .getConstantValue()
+              .getStringOrSymbol())
     }
 
     override string getHTTPMethod() {
-      result = method.getKeywordArgument("via").(StringlikeLiteral).getValueText() or
-      result = method.getKeywordArgument("via").(ArrayLiteral).getElement(_).getValueText()
+      result = method.getKeywordArgument("via").getConstantValue().getStringOrSymbol() or
+      result =
+        method
+            .getKeywordArgument("via")
+            .(ArrayLiteral)
+            .getElement(_)
+            .getConstantValue()
+            .getStringOrSymbol()
     }
 
     override string getAction() {
-      result = extractAction(method.getKeywordArgument("to").getValueText()) or
-      result = method.getKeywordArgument("action").getValueText() or
-      result = extractAction(method.getArgument(0).(Pair).getValue().getValueText())
+      result = extractAction(method.getKeywordArgument("to").getConstantValue().getStringOrSymbol()) or
+      result = method.getKeywordArgument("action").getConstantValue().getStringOrSymbol() or
+      result =
+        extractAction(method.getArgument(0).(Pair).getValue().getConstantValue().getStringOrSymbol())
     }
   }
 
@@ -710,7 +732,9 @@ module ActionDispatch {
       not exists(m.getKeywordArgument("only"))
       or
       exists(Expr only | only = m.getKeywordArgument("only") |
-        [only.(ArrayLiteral).getElement(_), only.(StringlikeLiteral)].getValueText() = action
+        [only.(ArrayLiteral).getElement(_), only.(StringlikeLiteral)]
+            .getConstantValue()
+            .getStringOrSymbol() = action
       )
     ) and
     // Respect the `except` keyword argument, which removes actions from the default set.
@@ -718,7 +742,9 @@ module ActionDispatch {
       not exists(m.getKeywordArgument("except"))
       or
       exists(Expr except | except = m.getKeywordArgument("except") |
-        [except.(ArrayLiteral).getElement(_), except.(StringlikeLiteral)].getValueText() != action
+        [except.(ArrayLiteral).getElement(_), except.(StringlikeLiteral)]
+            .getConstantValue()
+            .getStringOrSymbol() != action
       )
     )
   }
