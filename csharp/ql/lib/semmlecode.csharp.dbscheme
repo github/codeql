@@ -1269,6 +1269,10 @@ expr_argument_name(
   unique int id: @expr ref,
   string name: string ref);
 
+lambda_expr_return_type(
+  unique int id: @lambda_expr ref,
+  int type_id: @type_or_ref ref);
+  
 /** CONTROL/DATA FLOW **/
 
 @control_flow_element = @stmt | @expr;
