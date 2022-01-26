@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   match "photos/:id" => "photos#show", via: :get
   match "photos/:id", to: "photos#show", via: :get
   match "photos/:id", controller: "photos", action: "show", via: :get
+  match "photos/:id", to: "photos#show", via: :all
 
   scope controller: "users" do
     post "upgrade", action: "start_upgrade"

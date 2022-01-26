@@ -325,7 +325,7 @@ module ActionDispatch {
      * See `ExplicitRoute`
      */
     TExplicitRoute(RouteBlock b, MethodCall m) {
-      b.getAStmt() = m and m.getMethodName() in ["get", "post", "put", "patch", "delete"]
+      b.getAStmt() = m and m.getMethodName() = anyHttpMethod()
     } or
     /**
      * See `ResourcesRoute`
@@ -518,7 +518,7 @@ module ActionDispatch {
       (
         result = extractController(this.getActionString())
         or
-        // If not controller is specified, and we're in a `resources` route block, use the controller of that route.
+        // If controller is not specified, and we're in a `resources` route block, use the controller of that route.
         // For example, in
         //
         // resources :posts do
@@ -671,6 +671,7 @@ module ActionDispatch {
    * ```ruby
    * match 'photos/:id' => 'photos#show', via: :get
    * match 'photos/:id', to: 'photos#show', via: :get
+   * match 'photos/:id', to 'photos#show', via: [:get, :post]
    * match 'photos/:id', controller: 'photos', action: 'show', via: :get
    * ```
    */
@@ -702,7 +703,14 @@ module ActionDispatch {
     }
 
     override string getHTTPMethod() {
-      result = method.getKeywordArgument("via").getConstantValue().getStringOrSymbol() or
+      exists(string via |
+        via = method.getKeywordArgument("via").getConstantValue().getStringOrSymbol()
+      |
+        via = "all" and result = anyHttpMethod()
+        or
+        via != "all" and result = "via"
+      )
+      or
       result =
         method
             .getKeywordArgument("via")
@@ -816,10 +824,15 @@ module ActionDispatch {
   /**
    * Extract the action from a Rails routing string
    * ```
-   * extractController("posts#show") = "show"
+   * extractAction("posts#show") = "show"
    */
   bindingset[input]
   private string extractAction(string input) { result = input.regexpCapture("[^#]+#(.+)", 1) }
+
+  /**
+   * Returns the lowercase name of every HTTP method we support.
+   */
+  private string anyHttpMethod() { result = ["get", "post", "put", "patch", "delete"] }
 
   /**
    * The inverse of `pluralize`

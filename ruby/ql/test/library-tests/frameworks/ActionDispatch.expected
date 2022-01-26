@@ -17,17 +17,22 @@ actionDispatchRoutes
 | app/config/routes.rb:19:5:19:44 | call to get | get | admin/jobs | background_jobs | index |
 | app/config/routes.rb:23:5:23:64 | call to get | get | admin/secrets | secrets | view_secrets |
 | app/config/routes.rb:24:5:24:42 | call to delete | delete | admin/:user_id | users | destroy |
-| app/config/routes.rb:27:3:27:48 | call to match | get | photos/:id | photos | show |
-| app/config/routes.rb:28:3:28:50 | call to match | get | photos/:id | photos | show |
-| app/config/routes.rb:29:3:29:69 | call to match | get | photos/:id | photos | show |
-| app/config/routes.rb:32:5:32:43 | call to post | post | upgrade | users | start_upgrade |
-| app/config/routes.rb:36:5:36:31 | call to get | get | current_billing_cycle | billing/enterprise | current_billing_cycle |
-| app/config/routes.rb:39:3:39:40 | call to resource | get | global_config | global_config | show |
-| app/config/routes.rb:42:5:44:7 | call to resources | get | foo/bar | foo/bar | index |
-| app/config/routes.rb:42:5:44:7 | call to resources | get | foo/bar/:id | foo/bar | show |
-| app/config/routes.rb:43:7:43:39 | call to get | get | foo/bar/:bar_id/show_debug | foo/bar | show_debug |
-| app/config/routes.rb:48:5:48:95 | call to delete | delete | users/:user/notifications | users/notifications | destroy |
-| app/config/routes.rb:49:5:49:94 | call to post | post | users/:user/notifications/:notification_id/mark_as_read | users/notifications | mark_as_read |
+| app/config/routes.rb:27:3:27:48 | call to match | via | photos/:id | photos | show |
+| app/config/routes.rb:28:3:28:50 | call to match | via | photos/:id | photos | show |
+| app/config/routes.rb:29:3:29:69 | call to match | via | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:50 | call to match | delete | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:50 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:50 | call to match | patch | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:50 | call to match | post | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:50 | call to match | put | photos/:id | photos | show |
+| app/config/routes.rb:33:5:33:43 | call to post | post | upgrade | users | start_upgrade |
+| app/config/routes.rb:37:5:37:31 | call to get | get | current_billing_cycle | billing/enterprise | current_billing_cycle |
+| app/config/routes.rb:40:3:40:40 | call to resource | get | global_config | global_config | show |
+| app/config/routes.rb:43:5:45:7 | call to resources | get | foo/bar | foo/bar | index |
+| app/config/routes.rb:43:5:45:7 | call to resources | get | foo/bar/:id | foo/bar | show |
+| app/config/routes.rb:44:7:44:39 | call to get | get | foo/bar/:bar_id/show_debug | foo/bar | show_debug |
+| app/config/routes.rb:49:5:49:95 | call to delete | delete | users/:user/notifications | users/notifications | destroy |
+| app/config/routes.rb:50:5:50:94 | call to post | post | users/:user/notifications/:notification_id/mark_as_read | users/notifications | mark_as_read |
 actionDispatchControllerMethods
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:2:3:3:5 | index |
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:5:3:6:5 | show |
@@ -37,7 +42,8 @@ actionDispatchControllerMethods
 | app/config/routes.rb:27:3:27:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:28:3:28:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:29:3:29:69 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
-| app/config/routes.rb:49:5:49:94 | call to post | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+| app/config/routes.rb:30:3:30:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:50:5:50:94 | call to post | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
 underscore
 | Foo | foo |
 | Foo::Bar | foo/bar |
