@@ -16,13 +16,13 @@ infect the build artifacts and execute arbitrary code on the machine building th
 </overview>
 <recommendation>
 
-<p>Always use HTTPS or SFTP when downloading artifacts from an URL.</p>
+<p>Always use a secure protocol, such as HTTPS or SFTP, when downloading artifacts from an URL.</p>
 
 </recommendation>
 
 <example>
 <p>
-The below example shows a <code>package.json</code> file that downloads a dependency using unencrypted HTTP.
+The below example shows a <code>package.json</code> file that downloads a dependency using the insecure HTTP protocol.
 </p>
 <sample src="examples/bad-package.json" />
 <p>
