@@ -1,8 +1,109 @@
 private import codeql.ruby.AST
 private import internal.AST
+private import internal.Constant
 private import internal.Module
 private import internal.Variable
 private import internal.TreeSitter
+
+/** A constant value. */
+class ConstantValue extends TConstantValue {
+  /** Gets a textual representation of this constant value. */
+  final string toString() {
+    result = this.getInt().toString()
+    or
+    result = this.getFloat().toString()
+    or
+    exists(int numerator, int denominator |
+      this.isRational(numerator, denominator) and
+      result = numerator + "/" + denominator
+    )
+    or
+    exists(float real, float imaginary |
+      this.isComplex(real, imaginary) and
+      result = real + "+" + imaginary + "i"
+    )
+    or
+    result = this.getString()
+    or
+    result = ":" + this.getSymbol()
+    or
+    result = this.getBoolean().toString()
+    or
+    this.isNil() and result = "nil"
+  }
+
+  /** Gets the integer value, if this is an integer. */
+  int getInt() { this = TInt(result) }
+
+  /** Holds if this is the integer value `i`. */
+  predicate isInt(int i) { i = this.getInt() }
+
+  /** Gets the float value, if this is a float. */
+  float getFloat() { this = TFloat(result) }
+
+  /** Holds if this is the float value `f`. */
+  predicate isFloat(float f) { f = this.getFloat() }
+
+  /** Holds if this is the rational value `numerator / denominator`. */
+  predicate isRational(int numerator, int denominator) { this = TRational(numerator, denominator) }
+
+  /** Holds if this is the complex value `real + imaginary * i`. */
+  predicate isComplex(float real, float imaginary) { this = TComplex(real, imaginary) }
+
+  /** Gets the string value, if this is a string. */
+  string getString() { this = TString(result) }
+
+  /** Holds if this is the string value `s`. */
+  predicate isString(string s) { s = this.getString() }
+
+  /** Gets the symbol value (exluding the `:` prefix), if this is a symbol. */
+  string getSymbol() { this = TSymbol(result) }
+
+  /** Holds if this is the symbol value `:s`. */
+  predicate isSymbol(string s) { s = this.getSymbol() }
+
+  /** Gets the string or symbol value, if any. */
+  string getStringOrSymbol() { result = [this.getString(), this.getSymbol()] }
+
+  /** Holds if this is the string value `s` or the symbol value `:s`. */
+  predicate isStringOrSymbol(string s) { s = this.getStringOrSymbol() }
+
+  /** Gets the Boolean value, if this is a Boolean. */
+  boolean getBoolean() { this = TBoolean(result) }
+
+  /** Holds if this is the Boolean value `b`. */
+  predicate isBoolean(boolean b) { b = this.getBoolean() }
+
+  /** Holds if this is the `nil` value. */
+  predicate isNil() { this = TNil() }
+}
+
+/** Provides different sub classes of `ConstantValue`. */
+module ConstantValue {
+  /** A constant integer value. */
+  class ConstantIntegerValue extends ConstantValue, TInt { }
+
+  /** A constant float value. */
+  class ConstantFloatValue extends ConstantValue, TFloat { }
+
+  /** A constant rational value. */
+  class ConstantRationalValue extends ConstantValue, TRational { }
+
+  /** A constant complex value. */
+  class ConstantComplexValue extends ConstantValue, TComplex { }
+
+  /** A constant string value. */
+  class ConstantStringValue extends ConstantValue, TString { }
+
+  /** A constant symbol value. */
+  class ConstantSymbolValue extends ConstantValue, TSymbol { }
+
+  /** A constant Boolean value. */
+  class ConstantBooleanValue extends ConstantValue, TBoolean { }
+
+  /** A constant `nil` value. */
+  class ConstantNilValue extends ConstantValue, TNil { }
+}
 
 /** An access to a constant. */
 class ConstantAccess extends Expr, TConstantAccess {
@@ -139,7 +240,7 @@ class ConstantReadAccess extends ConstantAccess {
     result = lookupConst(resolveConstantReadAccess(this.getScopeExpr()), this.getName())
   }
 
-  override string getValueText() { result = this.getValue().getValueText() }
+  final override ConstantValue getConstantValue() { result = this.getValue().getConstantValue() }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
 }

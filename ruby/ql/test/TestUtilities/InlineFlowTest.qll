@@ -68,7 +68,7 @@ class DefaultTaintFlowConf extends TaintTracking::Configuration {
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
-  src.asExpr().getExpr().(MethodCall).getAnArgument().getValueText() = result
+  src.asExpr().getExpr().(MethodCall).getAnArgument().getConstantValue().toString() = result
 }
 
 class InlineFlowTest extends InlineExpectationsTest {
@@ -78,7 +78,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | this.getValueFlowConfig().hasFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
@@ -86,7 +86,8 @@ class InlineFlowTest extends InlineExpectationsTest {
     or
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
+      this.getTaintFlowConfig().hasFlow(src, sink) and
+      not this.getValueFlowConfig().hasFlow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and

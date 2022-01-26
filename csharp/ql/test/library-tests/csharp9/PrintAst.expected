@@ -776,7 +776,7 @@ ParenthesizedPattern.cs:
 #   26|                 0: [TypeMention] string
 #   26|               2: [IntLiteral] 5
 Record.cs:
-#    4| [Record] Person
+#    4| [RecordClass] Person
 #    4|   11: [NEOperator] !=
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] left
@@ -806,7 +806,7 @@ Record.cs:
 #    9|       1: [TupleExpr] (..., ...)
 #    9|         0: [ParameterAccess] access to parameter first
 #    9|         1: [ParameterAccess] access to parameter last
-#   12| [Record] Teacher
+#   12| [RecordClass] Teacher
 #   12|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   12|       0: [Parameter] left
@@ -834,7 +834,7 @@ Record.cs:
 #   17|     4: [AssignExpr] ... = ...
 #   17|       0: [PropertyCall] access to property Subject
 #   17|       1: [ParameterAccess] access to parameter sub
-#   20| [Record] Student
+#   20| [RecordClass] Student
 #   20|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   20|       0: [Parameter] left
@@ -862,7 +862,7 @@ Record.cs:
 #   24|     4: [AssignExpr] ... = ...
 #   24|       0: [PropertyCall] access to property Level
 #   24|       1: [ParameterAccess] access to parameter level
-#   27| [Record] Person1
+#   27| [RecordClass] Person1
 #   27|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] left
@@ -889,7 +889,7 @@ Record.cs:
 #   27|     4: [Setter] set_LastName
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] value
-#   29| [Record] Teacher1
+#   29| [RecordClass] Teacher1
 #   29|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] left
@@ -913,7 +913,7 @@ Record.cs:
 #   29|     4: [Setter] set_Subject
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] value
-#   32| [Record] Student1
+#   32| [RecordClass] Student1
 #   32|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] left
@@ -937,7 +937,7 @@ Record.cs:
 #   32|     4: [Setter] set_Level
 #-----|       2: (Parameters)
 #   32|         0: [Parameter] value
-#   35| [Record] Pet
+#   35| [RecordClass] Pet
 #   35|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] left
@@ -963,7 +963,7 @@ Record.cs:
 #   38|       -1: [TypeAccess] access to type Console
 #   38|         0: [TypeMention] Console
 #   38|       0: [StringLiteral] "Shredding furniture"
-#   41| [Record] Dog
+#   41| [RecordClass] Dog
 #   41|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] left
@@ -1002,7 +1002,7 @@ Record.cs:
 #   50|           0: [MethodCall] call to method ToString
 #   50|             -1: [LocalVariableAccess] access to local variable s
 #   50|           1: [StringLiteral] " is a dog"
-#   54| [Record] R1
+#   54| [RecordClass] R1
 #   54|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] left
@@ -1022,7 +1022,7 @@ Record.cs:
 #   54|     4: [Setter] set_A
 #-----|       2: (Parameters)
 #   54|         0: [Parameter] value
-#   56| [Record] R2
+#   56| [RecordClass] R2
 #   56|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   56|       0: [Parameter] left

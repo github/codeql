@@ -1750,7 +1750,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   Expr getQualifier() { result.isNthChildOf(this, -1) }
 
   /** Holds if this type access has a qualifier. */
-  predicate hasQualifier() { exists(Expr e | e = this.getQualifier()) }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /** Gets a type argument supplied to this type access. */
   Expr getATypeArgument() { result.getIndex() >= 0 and result.getParent() = this }
@@ -1762,7 +1762,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   }
 
   /** Holds if this type access has a type argument. */
-  predicate hasTypeArgument() { exists(Expr e | e = this.getATypeArgument()) }
+  predicate hasTypeArgument() { exists(this.getATypeArgument()) }
 
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }

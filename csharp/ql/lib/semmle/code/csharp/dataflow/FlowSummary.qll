@@ -40,7 +40,12 @@ module SummaryComponent {
   predicate return = SummaryComponentInternal::return/1;
 
   /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+  SummaryComponent qualifier() {
+    exists(ParameterPosition pos |
+      result = SummaryComponentInternal::argument(pos) and
+      pos.isThisParameter()
+    )
+  }
 
   /** Gets a summary component that represents an element in a collection. */
   SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
@@ -111,7 +116,7 @@ module SummaryComponentStack {
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(Record r).getAMember() and
+  c = any(RecordType r).getAMember() and
   exists(string name |
     c.getParameter(i).getName() = name and
     c.getDeclaringType().getAMember(name) = p
@@ -140,12 +145,17 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 
   // By default, we assume that all stores into arguments are definite
   override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-    exists(SummaryComponentStack output |
+    exists(SummaryComponentStack output, SummaryComponent target |
       this.propagatesFlow(_, output, _) and
       output.drop(_) =
         SummaryComponentStack::push(SummaryComponent::content(content),
-          SummaryComponentStack::argument(pos.getPosition())) and
+          SummaryComponentStack::singleton(target)) and
       not content instanceof DataFlow::ElementContent
+    |
+      target = SummaryComponent::argument(pos.getPosition())
+      or
+      target = SummaryComponent::qualifier() and
+      pos.isThisParameter()
     )
   }
 }
@@ -153,15 +163,11 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
 private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-  private SummaryComponent head;
-
-  RecordConstructorFlowRequiredSummaryComponentStack() {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and
       head = SummaryComponent::property(p) and
-      this = SummaryComponentStack::return()
+      tail = SummaryComponentStack::return()
     )
   }
-
-  override predicate required(SummaryComponent c) { c = head }
 }

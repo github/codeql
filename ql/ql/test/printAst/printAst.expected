@@ -121,8 +121,8 @@ nodes
 | Foo.qll:22:3:22:3 | f | semmle.order | 60 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
 | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 60 |
-| Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.label | [FullAggregate[any]] FullAggregate[any] |
-| Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.order | 62 |
+| Foo.qll:22:7:22:16 | Any | semmle.label | [Any] Any |
+| Foo.qll:22:7:22:16 | Any | semmle.order | 62 |
 | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 63 |
 | Foo.qll:22:11:22:15 | f | semmle.label | [VarDecl] f |
@@ -363,10 +363,10 @@ edges
 | Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:13:20:13 | f | semmle.order | 59 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.label | getLeftOperand() |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.order | 60 |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.label | getRightOperand() |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | FullAggregate[any] | semmle.order | 62 |
-| Foo.qll:22:7:22:16 | FullAggregate[any] | Foo.qll:22:11:22:15 | f | semmle.label | getArgument(_) |
-| Foo.qll:22:7:22:16 | FullAggregate[any] | Foo.qll:22:11:22:15 | f | semmle.order | 63 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Any | semmle.label | getRightOperand() |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Any | semmle.order | 62 |
+| Foo.qll:22:7:22:16 | Any | Foo.qll:22:11:22:15 | f | semmle.label | getArgument(_) |
+| Foo.qll:22:7:22:16 | Any | Foo.qll:22:11:22:15 | f | semmle.order | 63 |
 | Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | getTypeExpr() |
 | Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 63 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:3:24:3 | Integer | semmle.label | getLeftOperand() |

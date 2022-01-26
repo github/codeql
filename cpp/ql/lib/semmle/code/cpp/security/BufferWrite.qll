@@ -76,7 +76,7 @@ abstract class BufferWrite extends Expr {
    * can be found), specifying the reason for the estimation.
    */
   int getMaxData(BufferWriteEstimationReason reason) {
-    reason instanceof UnspecifiedEstimateReason and result = getMaxData()
+    reason instanceof UnspecifiedEstimateReason and result = this.getMaxData()
   }
 
   /**
@@ -85,7 +85,7 @@ abstract class BufferWrite extends Expr {
    * much smaller (8 bytes) than their true maximum length.  This can be
    * helpful in determining the cause of a buffer overflow issue.
    */
-  int getMaxDataLimited() { result = getMaxData() }
+  int getMaxDataLimited() { result = this.getMaxData() }
 
   /**
    * Gets an upper bound to the amount of data that's being written (if one
@@ -94,7 +94,7 @@ abstract class BufferWrite extends Expr {
    * than their true maximum length.  This can be helpful in determining the
    * cause of a buffer overflow issue.
    */
-  int getMaxDataLimited(BufferWriteEstimationReason reason) { result = getMaxData(reason) }
+  int getMaxDataLimited(BufferWriteEstimationReason reason) { result = this.getMaxData(reason) }
 
   /**
    * Gets the size of a single character of the type this
@@ -159,9 +159,11 @@ class StrCopyBW extends BufferWriteCall {
       this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 }
 
 /**
@@ -203,9 +205,11 @@ class StrCatBW extends BufferWriteCall {
       this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 }
 
 /**
@@ -269,9 +273,11 @@ class SprintfBW extends BufferWriteCall {
     )
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 
   private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
@@ -281,10 +287,10 @@ class SprintfBW extends BufferWriteCall {
   }
 
   override int getMaxDataLimited(BufferWriteEstimationReason reason) {
-    result = getMaxDataLimitedImpl(reason)
+    result = this.getMaxDataLimitedImpl(reason)
   }
 
-  override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
+  override int getMaxDataLimited() { result = max(this.getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -382,9 +388,11 @@ class SnprintfBW extends BufferWriteCall {
     )
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 
   private int getMaxDataLimitedImpl(BufferWriteEstimationReason reason) {
     exists(FormatLiteral fl |
@@ -394,10 +402,10 @@ class SnprintfBW extends BufferWriteCall {
   }
 
   override int getMaxDataLimited(BufferWriteEstimationReason reason) {
-    result = getMaxDataLimitedImpl(reason)
+    result = this.getMaxDataLimitedImpl(reason)
   }
 
-  override int getMaxDataLimited() { result = max(getMaxDataLimitedImpl(_)) }
+  override int getMaxDataLimited() { result = max(this.getMaxDataLimitedImpl(_)) }
 }
 
 /**
@@ -495,9 +503,11 @@ class ScanfBW extends BufferWrite {
     )
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 
   override string getBWDesc() {
     exists(FunctionCall fc |
@@ -536,7 +546,9 @@ class RealpathBW extends BufferWriteCall {
     this = this // Suppress a compiler warning
   }
 
-  override int getMaxData(BufferWriteEstimationReason reason) { result = getMaxDataImpl(reason) }
+  override int getMaxData(BufferWriteEstimationReason reason) {
+    result = this.getMaxDataImpl(reason)
+  }
 
-  override int getMaxData() { result = max(getMaxDataImpl(_)) }
+  override int getMaxData() { result = max(this.getMaxDataImpl(_)) }
 }

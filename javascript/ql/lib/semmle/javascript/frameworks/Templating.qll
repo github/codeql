@@ -161,12 +161,12 @@ module Templating {
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
     DataFlow::SourceNode getAnAccessPathUse(string accessPath) {
-      result = getAVariableUse(accessPath)
+      result = this.getAVariableUse(accessPath)
       or
       exists(string varName, string suffix |
         accessPath = varName + "." + suffix and
         suffix != "" and
-        result = AccessPath::getAReferenceTo(getAVariableUse(varName), suffix)
+        result = AccessPath::getAReferenceTo(this.getAVariableUse(varName), suffix)
       )
     }
   }

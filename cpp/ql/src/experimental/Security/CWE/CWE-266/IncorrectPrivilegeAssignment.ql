@@ -53,7 +53,15 @@ where
       fctmp.getTarget().hasGlobalOrStdName("fopen") or
       fctmp.getTarget().hasGlobalOrStdName("open")
     ) and
-    not fctmp.getArgument(1).getValue().matches("r%") and
+    (
+      fctmp.getArgument(1).getValue().matches("%a%") or
+      fctmp.getArgument(1).getValue().matches("%w%") or
+      // unfortunately cannot use numeric value here because // O_CREAT is defined differently on different OSes:
+      // https://github.com/red/red/blob/92feb0c0d5f91e087ab35fface6906afbf99b603/runtime/definitions.reds#L477-L491
+      // this may introduce false negatives
+      fctmp.getArgument(1).(BitwiseOrExpr).getAChild*().getValueText().matches("O_CREAT") or
+      fctmp.getArgument(1).getValueText().matches("%O_CREAT%")
+    ) and
     fctmp.getNumberOfArguments() = 2 and
     not fctmp.getArgument(0).getValue() = "/dev/null" and
     fcsnd = fctmp

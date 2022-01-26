@@ -137,16 +137,16 @@ private module Settings {
   }
 
   private class LiteralSetting extends Setting {
-    Literal valueLiteral;
+    ConstantValue value;
 
     LiteralSetting() {
       exists(DataFlow::LocalSourceNode lsn |
-        lsn.asExpr().getExpr() = valueLiteral and
+        lsn.asExpr().getConstantValue() = value and
         lsn.flowsTo(this.getArgument(0))
       )
     }
 
-    string getValueText() { result = valueLiteral.getValueText() }
+    string getValueText() { result = value.toString() }
 
     string getSettingString() { result = this.getMethodName() + this.getValueText() }
   }
@@ -155,16 +155,16 @@ private module Settings {
    * A node that sets a boolean value.
    */
   class BooleanSetting extends LiteralSetting {
-    override BooleanLiteral valueLiteral;
+    override ConstantValue::ConstantBooleanValue value;
 
-    boolean getValue() { result = valueLiteral.getValue() }
+    boolean getValue() { result = value.getBoolean() }
   }
 
   /**
    * A node that sets a Stringlike value.
    */
   class StringlikeSetting extends LiteralSetting {
-    override StringlikeLiteral valueLiteral;
+    override ConstantValue::ConstantStringValue value;
   }
 
   /**
@@ -172,13 +172,14 @@ private module Settings {
    */
   class NillableStringlikeSetting extends LiteralSetting {
     NillableStringlikeSetting() {
-      valueLiteral instanceof StringlikeLiteral or
-      valueLiteral instanceof NilLiteral
+      value instanceof ConstantValue::ConstantStringValue or
+      value instanceof ConstantValue::ConstantSymbolValue or
+      value instanceof ConstantValue::ConstantNilValue
     }
 
-    string getStringValue() { result = valueLiteral.(StringlikeLiteral).getValueText() }
+    string getStringValue() { result = value.getStringOrSymbol() }
 
-    predicate isNilValue() { valueLiteral instanceof NilLiteral }
+    predicate isNilValue() { value.isNil() }
   }
 }
 

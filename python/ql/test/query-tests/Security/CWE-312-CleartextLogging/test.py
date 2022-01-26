@@ -39,6 +39,36 @@ def print_password():
     sys.stdout.write(get_password()) # NOT OK
     sys.stderr.write(get_password()) # NOT OK
 
+
+def FPs(account, account_id):
+    # we assume that any account parameter is sensitive (id/username)
+    # https://github.com/github/codeql/issues/6363
+    print(account) # OK
+
+    # https://github.com/github/codeql/issues/6927
+    arn = f"arn:aws:iam::{account_id}:role/cfripper-access"
+    logging.info(f"Preparing to assume role: {arn}") # OK
+
+    # Harmless UUIDs
+    # https://github.com/github/codeql/issues/6726
+    # https://github.com/github/codeql/issues/7497
+    x = generate_uuid4()
+    print(x) # OK
+
+    # username not considered sensitive
+    # https://github.com/github/codeql/issues/7116
+    logging.error("Misc Exception. User %s: %s", request.user.username)
+
+    # dictionary taint-flow cross-talk
+    # https://github.com/github/codeql/issues/6380
+    import settings
+    config = {
+        "sleep_timer": 5,
+        "password": settings.password
+    }
+    print(config["sleep_timer"]) # OK
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     log_password()

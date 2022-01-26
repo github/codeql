@@ -711,7 +711,9 @@ module Trees {
       last(this.getPattern(), last, c) and
       c.(MatchingCompletion).getValue() = false
       or
-      last(this.getVariableAccess(), last, c)
+      last(this.getVariableAccess(), last, any(SimpleCompletion x)) and
+      c.(MatchingCompletion).getValue() = true and
+      not c instanceof NestedCompletion
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -753,7 +755,7 @@ module Trees {
       c.(MatchingCompletion).getValue() = false
       or
       exists(BooleanCompletion bc, boolean flag, MatchingCompletion mc |
-        lastCondition(last, bc, flag) and
+        this.lastCondition(last, bc, flag) and
         c =
           any(NestedMatchingCompletion nmc |
             nmc.getInnerCompletion() = bc and nmc.getOuterCompletion() = mc
@@ -790,7 +792,7 @@ module Trees {
       )
       or
       exists(boolean flag |
-        lastCondition(pred, c, flag) and
+        this.lastCondition(pred, c, flag) and
         c.(BooleanCompletion).getValue() = flag and
         first(this.getBody(), succ)
       )
@@ -1348,6 +1350,16 @@ module Trees {
     StringlikeLiteralTree() { not this instanceof HereDoc }
 
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
+  }
+
+  private class StringComponentTree extends LeafTree, StringComponent {
+    StringComponentTree() {
+      // Interpolations contain `StmtSequence`s, so they shouldn't be treated as leaf nodes.
+      not this instanceof StringInterpolationComponent and
+      // In the interests of brevity we treat regexes as string literals when constructing the CFG.
+      // Thus we must exclude regex interpolations here too.
+      not this instanceof RegExpInterpolationComponent
+    }
   }
 
   private class ToplevelTree extends BodyStmtTree, Toplevel {

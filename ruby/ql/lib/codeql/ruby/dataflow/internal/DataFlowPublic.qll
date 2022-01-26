@@ -189,9 +189,16 @@ module Content {
 
   /** An element in an array at an unknown index. */
   class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
-    UnknownArrayElementContent() { this = TUnknownArrayElementContent() }
-
     override string toString() { result = "array element" }
+  }
+
+  /**
+   * Used internally only, to represent the union of `KnownArrayElementContent`
+   * and `UnknownArrayElementContent`, to avoid combinatorial explosions in
+   * `SummaryComponentStack`s in flow summaries.
+   */
+  private class AnyArrayElementContent extends Content, TAnyArrayElementContent {
+    override string toString() { result = "any array element" }
   }
 }
 

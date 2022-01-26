@@ -292,7 +292,7 @@ private module Internal {
     pragma[nomagic]
     predicate hasSubsumedQualifierTypeOverridden(Gvn::GvnType t, OverridableCallable c) {
       this.hasSubsumedQualifierType(t) and
-      hasCallable(t, c, any(OverridableCallable oc | oc = this.getAStaticTargetExt()))
+      hasCallable(t, c, this.getAStaticTargetExt())
     }
 
     /**

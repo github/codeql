@@ -148,6 +148,31 @@ predicate allowIntentExtrasImplicitRead(DataFlow::Node node, DataFlow::Content c
   )
 }
 
+/**
+ * The fields to grant URI permissions of the class `android.content.Intent`:
+ *
+ * - `Intent.FLAG_GRANT_READ_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION`
+ * - `Intent.FLAG_GRANT_PREFIX_URI_PERMISSION`
+ */
+class GrantUriPermissionFlag extends Field {
+  GrantUriPermissionFlag() {
+    this.getDeclaringType() instanceof TypeIntent and
+    this.getName().matches("FLAG_GRANT_%_URI_PERMISSION")
+  }
+}
+
+/** The field `Intent.FLAG_GRANT_READ_URI_PERMISSION`. */
+class GrantReadUriPermissionFlag extends GrantUriPermissionFlag {
+  GrantReadUriPermissionFlag() { this.hasName("FLAG_GRANT_READ_URI_PERMISSION") }
+}
+
+/** The field `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. */
+class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
+  GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
+}
+
 private class IntentBundleFlowSteps extends SummaryModelCsv {
   override predicate row(string row) {
     row =

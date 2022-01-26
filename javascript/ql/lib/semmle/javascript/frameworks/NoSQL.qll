@@ -485,10 +485,7 @@ private module Mongoose {
        * Holds if Document method `name` returns a Document.
        */
       predicate returnsDocument(string name) {
-        name = "depopulate" or
-        name = "init" or
-        name = "populate" or
-        name = "overwrite"
+        name = ["depopulate", "init", "populate", "overwrite"]
       }
     }
   }

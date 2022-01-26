@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in GetLocations(Symbol))
                     yield return Context.CreateLocation(l);
 
-                if (!Context.Extractor.Standalone && Symbol.DeclaringSyntaxReferences.Any())
+                if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) && Symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);
             }
         }

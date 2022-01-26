@@ -378,3 +378,14 @@ bad88 = /X([[:digit:]]|\d)+Y/
 bad89 = /\G(a|\w)*$/
 bad90 = /\b(a|\w)*$/
 
+# NOT GOOD; attack: "0".repeat(30) + "!"
+# Adapated from addressable (https://github.com/sporkmonger/addressable)
+# which is licensed under the Apache License 2.0; see file addressable-LICENSE.
+module Bad91
+  ALPHA = "a-zA-Z"
+  DIGIT = "0-9"
+  var_char_class = ALPHA + DIGIT + '_'
+  var_char = "(?:(?:[#{var_char_class}]|%[a-fA-F0-9][a-fA-F0-9])+)"
+  var = "(?:#{var_char}(?:\\.?#{var_char})*)"
+  bad91 = /^#{var}$/
+end

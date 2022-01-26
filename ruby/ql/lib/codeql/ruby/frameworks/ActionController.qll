@@ -176,7 +176,7 @@ class RedirectToCall extends ActionControllerContextCall {
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string methodName |
-      methodName = this.getKeywordArgument("action").(StringlikeLiteral).getValueText() and
+      this.getKeywordArgument("action").getConstantValue().isStringOrSymbol(methodName) and
       methodName = result.getName() and
       result.getEnclosingModule() = this.getControllerClass()
     )
@@ -202,6 +202,21 @@ class ActionControllerRedirectResponse extends HTTP::Server::HttpRedirectRespons
   }
 }
 
+pragma[nomagic]
+private predicate isActionControllerMethod(Method m, string name, ActionControllerControllerClass c) {
+  m.getName() = name and
+  m.getEnclosingModule() = c
+}
+
+pragma[nomagic]
+private predicate actionControllerHasHelperMethodCall(ActionControllerControllerClass c, string name) {
+  exists(MethodCall mc |
+    mc.getMethodName() = "helper_method" and
+    mc.getAnArgument().getConstantValue().isStringOrSymbol(name) and
+    mc.getEnclosingModule() = c
+  )
+}
+
 /**
  * A method in an `ActionController` class that is accessible from within a
  * Rails view as a helper method. For instance, in:
@@ -222,11 +237,9 @@ class ActionControllerHelperMethod extends Method {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerHelperMethod() {
-    this.getEnclosingModule() = controllerClass and
-    exists(MethodCall helperMethodMarker |
-      helperMethodMarker.getMethodName() = "helper_method" and
-      helperMethodMarker.getAnArgument().(StringlikeLiteral).getValueText() = this.getName() and
-      helperMethodMarker.getEnclosingModule() = controllerClass
+    exists(string name |
+      isActionControllerMethod(this, name, controllerClass) and
+      actionControllerHasHelperMethodCall(controllerClass, name)
     )
   }
 
@@ -291,9 +304,31 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
       call.getMethodName() = "skip_forgery_protection"
       or
       call.getMethodName() = "skip_before_action" and
-      call.getAnArgument().(SymbolLiteral).getValueText() = "verify_authenticity_token"
+      call.getAnArgument().getConstantValue().isStringOrSymbol("verify_authenticity_token")
     )
   }
 
   override boolean getVerificationSetting() { result = false }
+}
+
+/**
+ * A call to `protect_from_forgery`.
+ */
+private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetting::Range {
+  private ActionControllerContextCall callExpr;
+
+  ActionControllerProtectFromForgeryCall() {
+    callExpr = this.asExpr().getExpr() and
+    callExpr.getMethodName() = "protect_from_forgery"
+  }
+
+  private string getWithValueText() {
+    result = callExpr.getKeywordArgument("with").getConstantValue().getSymbol()
+  }
+
+  // Calls without `with: :exception` can allow for bypassing CSRF protection
+  // in some scenarios.
+  override boolean getVerificationSetting() {
+    if this.getWithValueText() = "exception" then result = true else result = false
+  }
 }

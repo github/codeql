@@ -39,7 +39,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     exists(DataFlow::Node r | r = requestNode.getAMethodCall("body") | result = r)
     or
     // Otherwise, treat the response as the response body.
-    not exists(DataFlow::Node r | r = requestNode.getAMethodCall("body")) and
+    not exists(requestNode.getAMethodCall("body")) and
     result = requestUse
   }
 
@@ -72,7 +72,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isVerifyLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = ["verify", "verify_peer"] and
+    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(["verify", "verify_peer"]) and
     literal.flowsTo(node)
   )
 }

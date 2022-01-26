@@ -2,7 +2,7 @@
  * @name Redundant inline cast
  * @description Redundant inline casts
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id ql/redundant-inline-cast
  * @tags maintainability
  * @precision high

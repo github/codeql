@@ -2,7 +2,7 @@
  * @name Cleartext storage of sensitive information in file
  * @description Storing sensitive information in cleartext can expose it
  *              to an attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
  * @precision high
@@ -17,6 +17,19 @@ import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FileWrite
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.dataflow.TaintTracking
+import DataFlow::PathGraph
+
+/**
+ * Taint flow from a sensitive expression to a `FileWrite` sink.
+ */
+class FromSensitiveConfiguration extends TaintTracking::Configuration {
+  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+
+  override predicate isSink(DataFlow::Node sink) { any(FileWrite w).getASource() = sink.asExpr() }
+}
 
 /**
  * An operation on a filename.
@@ -43,12 +56,17 @@ predicate isFileName(GVN gvn) {
   )
 }
 
-from FileWrite w, SensitiveExpr source, Expr mid, Expr dest
+from
+  FromSensitiveConfiguration config, SensitiveExpr source, DataFlow::PathNode sourceNode, Expr mid,
+  DataFlow::PathNode midNode, FileWrite w, Expr dest
 where
-  DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(mid)) and
+  config.hasFlowPath(sourceNode, midNode) and
+  sourceNode.getNode().asExpr() = source and
+  midNode.getNode().asExpr() = mid and
   mid = w.getASource() and
   dest = w.getDest() and
   not isFileName(globalValueNumber(source)) and // file names are not passwords
   not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
-select w, "This write into file '" + dest.toString() + "' may contain unencrypted data from $@",
-  source, "this source."
+select w, sourceNode, midNode,
+  "This write into file '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "this source."

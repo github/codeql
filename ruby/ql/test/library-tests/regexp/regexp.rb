@@ -72,3 +72,7 @@
 
 # *Not* a POSIX bracket expression; just a regular character class.
 /[:digit:]/
+
+# Simple constant interpolation
+A = "a"
+/#{A}bc/

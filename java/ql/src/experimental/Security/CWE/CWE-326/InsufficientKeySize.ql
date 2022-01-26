@@ -52,7 +52,7 @@ class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(JavaxCryptoKeyGenerator jcg | jcg = source.asExpr())
+    source.asExpr() instanceof JavaxCryptoKeyGenerator
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -68,7 +68,7 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(JavaSecurityKeyPairGenerator jkg | jkg = source.asExpr())
+    source.asExpr() instanceof JavaSecurityKeyPairGenerator
   }
 
   override predicate isSink(DataFlow::Node sink) {

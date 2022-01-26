@@ -29,8 +29,8 @@ private class SystemCollectionsSpecializedNameValueCollectionFlowModelCsv extend
   override predicate row(string row) {
     row =
       [
-        "System.Collections.Specialized;NameValueCollection;false;Add;(System.Collections.Specialized.NameValueCollection);;Argument[0];Element of Argument[-1];value",
-        "System.Collections.Specialized;NameValueCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Collections.Specialized;NameValueCollection;false;Add;(System.Collections.Specialized.NameValueCollection);;Argument[0];Element of Argument[Qualifier];value",
+        "System.Collections.Specialized;NameValueCollection;false;CopyTo;(System.Array,System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value",
       ]
   }
 }
@@ -40,9 +40,9 @@ private class SystemCollectionsSpecializedIOrderedDictionaryFlowModelCsv extends
   override predicate row(string row) {
     row =
       [
-        "System.Collections.Specialized;IOrderedDictionary;true;get_Item;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];ReturnValue;value",
-        "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Specialized;IOrderedDictionary;true;get_Item;(System.Int32);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.Collections.Specialized;IOrderedDictionary;true;set_Item;(System.Int32,System.Object);;Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
       ]
   }
 }
@@ -60,13 +60,13 @@ private class SystemCollectionsSpecializedStringCollectionFlowModelCsv extends S
   override predicate row(string row) {
     row =
       [
-        "System.Collections.Specialized;StringCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value",
-        "System.Collections.Specialized;StringCollection;false;AddRange;(System.String[]);;Element of Argument[0];Element of Argument[-1];value",
-        "System.Collections.Specialized;StringCollection;false;CopyTo;(System.String[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
-        "System.Collections.Specialized;StringCollection;false;GetEnumerator;();;Element of Argument[-1];Property[System.Collections.Specialized.StringEnumerator.Current] of ReturnValue;value",
-        "System.Collections.Specialized;StringCollection;false;Insert;(System.Int32,System.String);;Argument[1];Element of Argument[-1];value",
-        "System.Collections.Specialized;StringCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.Collections.Specialized;StringCollection;false;set_Item;(System.Int32,System.String);;Argument[1];Element of Argument[-1];value",
+        "System.Collections.Specialized;StringCollection;false;Add;(System.String);;Argument[0];Element of Argument[Qualifier];value",
+        "System.Collections.Specialized;StringCollection;false;AddRange;(System.String[]);;Element of Argument[0];Element of Argument[Qualifier];value",
+        "System.Collections.Specialized;StringCollection;false;CopyTo;(System.String[],System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value",
+        "System.Collections.Specialized;StringCollection;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.Specialized.StringEnumerator.Current] of ReturnValue;value",
+        "System.Collections.Specialized;StringCollection;false;Insert;(System.Int32,System.String);;Argument[1];Element of Argument[Qualifier];value",
+        "System.Collections.Specialized;StringCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.Collections.Specialized;StringCollection;false;set_Item;(System.Int32,System.String);;Argument[1];Element of Argument[Qualifier];value",
       ]
   }
 }

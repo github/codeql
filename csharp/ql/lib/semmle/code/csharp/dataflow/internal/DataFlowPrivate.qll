@@ -22,13 +22,13 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-  exists(int i | pos = MkParameterPosition(i) and p.isParameterOf(c, i))
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
 predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
-  exists(int i | pos = MkArgumentPosition(i) and arg.argumentOf(c, i))
+  arg.argumentOf(c, pos)
 }
 
 abstract class NodeImpl extends Node {
@@ -469,18 +469,20 @@ private predicate isParamsArg(Call c, Expr arg, Parameter p) {
 /** An argument of a C# call (including qualifier arguments). */
 private class Argument extends Expr {
   private Expr call;
-  private int arg;
+  private ArgumentPosition arg;
 
   Argument() {
     call =
       any(DispatchCall dc |
-        this = dc.getArgument(arg) and
+        this = dc.getArgument(arg.getPosition()) and
         not isParamsArg(_, this, _)
         or
-        this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
+        this = dc.getQualifier() and
+        arg.isQualifier() and
+        not dc.getAStaticTarget().(Modifiable).isStatic()
       ).getCall()
     or
-    this = call.(DelegateLikeCall).getArgument(arg)
+    this = call.(DelegateLikeCall).getArgument(arg.getPosition())
   }
 
   /**
@@ -488,7 +490,7 @@ private class Argument extends Expr {
    *
    * Qualifier arguments have index `-1`.
    */
-  predicate isArgumentOf(Expr c, int i) { c = call and i = arg }
+  predicate isArgumentOf(Expr c, ArgumentPosition pos) { c = call and pos = arg }
 }
 
 /**
@@ -855,7 +857,7 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
 }
 
 abstract class ParameterNodeImpl extends NodeImpl {
-  abstract predicate isParameterOf(DataFlowCallable c, int i);
+  abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
 }
 
 private module ParameterNodes {
@@ -874,7 +876,9 @@ private module ParameterNodes {
         parameter
     }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) { c.getParameter(i) = parameter }
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.getParameter(pos.getPosition()) = parameter
+    }
 
     override DataFlowCallable getEnclosingCallableImpl() { result = parameter.getCallable() }
 
@@ -896,7 +900,9 @@ private module ParameterNodes {
     /** Gets the callable containing this implicit instance parameter. */
     Callable getCallable() { result = callable }
 
-    override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      callable = c and pos.isThisParameter()
+    }
 
     override DataFlowCallable getEnclosingCallableImpl() { result = callable }
 
@@ -909,41 +915,14 @@ private module ParameterNodes {
     override string toStringImpl() { result = "this" }
   }
 
-  module ImplicitCapturedParameterNodeImpl {
-    /** An implicit entry definition for a captured variable. */
-    class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
-      private LocalScopeVariable v;
+  /** An implicit entry definition for a captured variable. */
+  class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
+    private LocalScopeVariable v;
 
-      SsaCapturedEntryDefinition() { this.getSourceVariable().getAssignable() = v }
+    SsaCapturedEntryDefinition() { this.getSourceVariable().getAssignable() = v }
 
-      LocalScopeVariable getVariable() { result = v }
-    }
-
-    private class CapturedVariable extends LocalScopeVariable {
-      CapturedVariable() { this = any(SsaCapturedEntryDefinition d).getVariable() }
-    }
-
-    private predicate id(CapturedVariable x, CapturedVariable y) { x = y }
-
-    private predicate idOf(CapturedVariable x, int y) = equivalenceRelation(id/2)(x, y)
-
-    int getId(CapturedVariable v) { idOf(v, result) }
-
-    // we model implicit parameters for captured variables starting from index `-2`,
-    // the order is irrelevant
-    int getParameterPosition(SsaCapturedEntryDefinition def) {
-      exists(Callable c | c = def.getCallable() |
-        def =
-          rank[-result - 1](SsaCapturedEntryDefinition def0 |
-            def0.getCallable() = c
-          |
-            def0 order by getId(def0.getSourceVariable().getAssignable())
-          )
-      )
-    }
+    LocalScopeVariable getVariable() { result = v }
   }
-
-  private import ImplicitCapturedParameterNodeImpl
 
   /**
    * The value of an implicit captured variable parameter at function entry,
@@ -970,8 +949,8 @@ private module ParameterNodes {
     /** Gets the captured variable that this implicit parameter models. */
     LocalScopeVariable getVariable() { result = def.getVariable() }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      i = getParameterPosition(def) and
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      pos.isImplicitCapturedParameterPosition(def.getSourceVariable().getAssignable()) and
       c = this.getEnclosingCallable()
     }
   }
@@ -982,11 +961,13 @@ import ParameterNodes
 /** A data-flow node that represents a call argument. */
 class ArgumentNode extends Node instanceof ArgumentNodeImpl {
   /** Holds if this argument occurs at the given position in the given call. */
-  final predicate argumentOf(DataFlowCall call, int pos) { super.argumentOf(call, pos) }
+  final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    super.argumentOf(call, pos)
+  }
 }
 
 abstract private class ArgumentNodeImpl extends Node {
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 }
 
 private module ArgumentNodes {
@@ -1011,7 +992,7 @@ private module ArgumentNodes {
       this.asExpr() = any(CIL::Call call).getAnArgument()
     }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       exists(ArgumentConfiguration x, Expr c, Argument arg |
         arg = this.asExpr() and
         c = call.getExpr() and
@@ -1022,7 +1003,7 @@ private module ArgumentNodes {
       exists(CIL::Call c, CIL::Expr arg |
         arg = this.asExpr() and
         c = call.getExpr() and
-        arg = c.getArgument(pos)
+        arg = c.getArgument(pos.getPosition())
       )
     }
   }
@@ -1050,25 +1031,9 @@ private module ArgumentNodes {
 
     ImplicitCapturedArgumentNode() { this = TImplicitCapturedArgumentNode(cfn, v) }
 
-    /** Holds if the value at this node may flow into the implicit parameter `p`. */
-    private predicate flowsInto(ImplicitCapturedParameterNode p, boolean additionalCalls) {
-      exists(Ssa::ImplicitEntryDefinition def, Ssa::ExplicitDefinition edef |
-        def = p.getDefinition()
-      |
-        edef.isCapturedVariableDefinitionFlowIn(def, cfn, additionalCalls) and
-        v = def.getSourceVariable().getAssignable()
-      )
-    }
-
-    override predicate argumentOf(DataFlowCall call, int pos) {
-      exists(ImplicitCapturedParameterNode p, boolean additionalCalls |
-        this.flowsInto(p, additionalCalls) and
-        p.isParameterOf(call.getARuntimeTarget(), pos) and
-        call.getControlFlowNode() = cfn and
-        if call instanceof TransitiveCapturedDataFlowCall
-        then additionalCalls = true
-        else additionalCalls = false
-      )
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      pos.isImplicitCapturedArgumentPosition(v) and
+      call.getControlFlowNode() = cfn
     }
 
     override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
@@ -1091,9 +1056,9 @@ private module ArgumentNodes {
 
     MallocNode() { this = TMallocNode(cfn) }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call = TNonDelegateCall(cfn, _) and
-      pos = -1
+      pos.isQualifier()
     }
 
     override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
@@ -1130,9 +1095,9 @@ private module ArgumentNodes {
       callCfn = any(Call c | isParamsArg(c, _, result)).getAControlFlowNode()
     }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       callCfn = call.getControlFlowNode() and
-      pos = this.getParameter().getPosition()
+      pos.getPosition() = this.getParameter().getPosition()
     }
 
     override DataFlowCallable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
@@ -1149,11 +1114,8 @@ private module ArgumentNodes {
   private class SummaryArgumentNode extends SummaryNode, ArgumentNodeImpl {
     SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
-      exists(ArgumentPosition apos |
-        FlowSummaryImpl::Private::summaryArgumentNode(call, this, apos) and
-        apos.getPosition() = pos
-      )
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
     }
   }
 }
@@ -1481,6 +1443,8 @@ class FieldOrProperty extends Assignable, Modifiable {
           p.isAutoImplemented()
           or
           p.matchesHandle(any(CIL::TrivialProperty tp))
+          or
+          p.getDeclaringType() instanceof AnonymousClass
         )
       )
   }
@@ -1870,8 +1834,8 @@ private module PostUpdateNodes {
 
     override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
 
-    override predicate argumentOf(DataFlowCall call, int pos) {
-      pos = -1 and
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      pos.isQualifier() and
       any(ObjectOrCollectionInitializerConfiguration x)
           .hasExprPath(_, cfn, _, call.getControlFlowNode())
     }

@@ -38,7 +38,7 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
       this.getDeclaringType().hasQualifiedName(namespace, type) and
       result =
         namespace + ";" + type + ";" + this.getCallableOverride() + ";" + this.getName() + ";" + "("
-          + parameterQualifiedTypeNamesToString() + ")"
+          + this.parameterQualifiedTypeNamesToString() + ")"
     )
   }
 }

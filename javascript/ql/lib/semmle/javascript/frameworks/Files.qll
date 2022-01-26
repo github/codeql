@@ -159,7 +159,7 @@ private module FStream {
         or
         readOrWrite = "Writer" and writer = true
       ) and
-      (subMod = "File" or subMod = "Dir" or subMod = "Link" or subMod = "Proxy")
+      subMod = ["File", "Dir", "Link", "Proxy"]
     |
       result = mod.getAPropertyRead(readOrWrite) or
       result = mod.getAPropertyRead(readOrWrite).getAPropertyRead(subMod) or
@@ -433,9 +433,7 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
       or
       this =
         DataFlow::moduleMember("node-dir",
-          any(string s |
-            s = ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]
-          )).getACall()
+          ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]).getACall()
     )
     or
     pathArgument = 0 and

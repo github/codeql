@@ -137,12 +137,12 @@ module Routing {
      * this subtree, and subsequently passed on to the successor.
      */
     predicate mayResumeDispatch() {
-      getLastChild().mayResumeDispatch()
+      this.getLastChild().mayResumeDispatch()
       or
       exists(this.(RouteHandler).getAContinuationInvocation())
       or
       // Leaf nodes that aren't functions are assumed to invoke their continuation
-      not exists(getLastChild()) and
+      not exists(this.getLastChild()) and
       not this instanceof RouteHandler
       or
       this instanceof MkRouter
@@ -150,7 +150,7 @@ module Routing {
 
     /** Gets the parent of this node, provided that this node may invoke its continuation. */
     private Node getContinuationParent() {
-      result = getParent() and
+      result = this.getParent() and
       result.mayResumeDispatch()
     }
 
@@ -170,7 +170,7 @@ module Routing {
      */
     private predicate isFork() {
       exists(Node child |
-        child = getAChild() and
+        child = this.getAChild() and
         child.mayResumeDispatch() and
         exists(child.getNextSibling())
       )
@@ -184,11 +184,11 @@ module Routing {
      * that is, a node that has siblings (i.e. multiple children).
      */
     private string getPathFromFork(Node fork) {
-      isFork() and
+      this.isFork() and
       this = fork and
       result = ""
       or
-      exists(Node parent | parent = getParent() |
+      exists(Node parent | parent = this.getParent() |
         not exists(parent.getRelativePath()) and
         result = parent.getPathFromFork(fork)
         or
@@ -205,27 +205,27 @@ module Routing {
      * that is, a node that has siblings (i.e. multiple children).
      */
     private string getHttpMethodFromFork(Node fork) {
-      isFork() and
+      this.isFork() and
       this = fork and
       (
-        result = getOwnHttpMethod()
+        result = this.getOwnHttpMethod()
         or
-        not exists(getOwnHttpMethod()) and
+        not exists(this.getOwnHttpMethod()) and
         result = "*"
       )
       or
-      result = getParent().getHttpMethodFromFork(fork) and
+      result = this.getParent().getHttpMethodFromFork(fork) and
       (
         // Only the ancestor restricts the HTTP method
-        not exists(getOwnHttpMethod())
+        not exists(this.getOwnHttpMethod())
         or
         // Intersect permitted HTTP methods
-        result = getOwnHttpMethod()
+        result = this.getOwnHttpMethod()
       )
       or
       // The ancestor allows any HTTP method, but this node restricts it
-      getParent().getHttpMethodFromFork(fork) = "*" and
-      result = getOwnHttpMethod()
+      this.getParent().getHttpMethodFromFork(fork) = "*" and
+      result = this.getOwnHttpMethod()
     }
 
     /**
@@ -256,13 +256,15 @@ module Routing {
      * Holds if `node` has processed the incoming request strictly prior to this node.
      */
     pragma[inline]
-    predicate isGuardedByNode(Node node) { isGuardedByNodeInternal(pragma[only_bind_out](node)) }
+    predicate isGuardedByNode(Node node) {
+      this.isGuardedByNodeInternal(pragma[only_bind_out](node))
+    }
 
     /**
      * Holds if the middleware corresponding to `node` has processed the incoming request strictly prior to this node.
      */
     pragma[inline]
-    predicate isGuardedBy(DataFlow::Node node) { isGuardedByNode(getNode(node)) }
+    predicate isGuardedBy(DataFlow::Node node) { this.isGuardedByNode(getNode(node)) }
 
     /**
      * Gets an HTTP method name which this node will accept, or nothing if the node accepts all HTTP methods, not
@@ -271,16 +273,16 @@ module Routing {
     HTTP::RequestMethodName getOwnHttpMethod() { none() } // Overridden in subclass
 
     private Node getAUseSiteInRouteSetup() {
-      if getParent() instanceof RouteSetup
+      if this.getParent() instanceof RouteSetup
       then result = this
-      else result = getParent().getAUseSiteInRouteSetup()
+      else result = this.getParent().getAUseSiteInRouteSetup()
     }
 
     /** Gets a place where this route node is installed as a route handler. */
     Node getRouteInstallation() {
-      result = getAUseSiteInRouteSetup()
+      result = this.getAUseSiteInRouteSetup()
       or
-      not exists(getAUseSiteInRouteSetup()) and
+      not exists(this.getAUseSiteInRouteSetup()) and
       result = this
     }
 
@@ -352,7 +354,7 @@ module Routing {
       Node getChild(int n) { none() }
 
       /** Gets the number of children of this route node. */
-      final int getNumChild() { result = count(int n | exists(getChild(n))) }
+      final int getNumChild() { result = count(int n | exists(this.getChild(n))) }
 
       /**
        * Gets a path prefix to be matched against the path of incoming requests.
@@ -416,7 +418,7 @@ module Routing {
        * Gets a data flow node that flows to this use-site in one step.
        */
       DataFlow::Node getSource() {
-        result = getALocalSource()
+        result = this.getALocalSource()
         or
         StepSummary::smallstep(result, this, routeStepSummary())
         or
@@ -425,7 +427,7 @@ module Routing {
         RouteHandlerTrackingStep::step(result, this)
         or
         exists(string prop |
-          StepSummary::smallstep(result, getSourceProp(prop).getALocalUse(), StoreStep(prop))
+          StepSummary::smallstep(result, this.getSourceProp(prop).getALocalUse(), StoreStep(prop))
         )
         or
         this = getAnEnumeratedArrayElement(result)
@@ -435,32 +437,32 @@ module Routing {
       private DataFlow::SourceNode getSourceProp(string prop) {
         StepSummary::step(result, this, LoadStep(prop))
         or
-        StepSummary::step(result, getSourceProp(prop), routeStepSummary())
+        StepSummary::step(result, this.getSourceProp(prop), routeStepSummary())
         or
-        StepSummary::step(result, getSourceProp(prop), CopyStep(prop))
+        StepSummary::step(result, this.getSourceProp(prop), CopyStep(prop))
         or
         exists(string oldProp |
-          StepSummary::step(result, getSourceProp(oldProp), LoadStoreStep(prop, oldProp))
+          StepSummary::step(result, this.getSourceProp(oldProp), LoadStoreStep(prop, oldProp))
         )
       }
 
       private DataFlow::Node getStrictSource() {
-        result = getSource() and
+        result = this.getSource() and
         result != this
       }
 
       final override Routing::Node getChild(int n) {
         n = 0 and
-        result = MkValueNode(getStrictSource())
+        result = MkValueNode(this.getStrictSource())
         or
         // If we cannot find the source of the use-site, but we know it's somehow a reference to a router,
         // treat the router as the source. This is needed to handle chaining calls on the router, as the
         // specific framework model knows about chaining steps, but the general `getSource()` predicate doesn't.
         n = 0 and
-        not exists(getStrictSource()) and
+        not exists(this.getStrictSource()) and
         exists(Router::Range router |
           this = router.getAReference().getALocalUse() and
-          result = MkRouter(router, getContainer())
+          result = MkRouter(router, this.getContainer())
         )
       }
     }
@@ -483,7 +485,7 @@ module Routing {
        */
       abstract DataFlow::Node getArgumentNode(int n);
 
-      final override Node getChild(int n) { result = MkValueNode(getArgumentNode(n)) }
+      final override Node getChild(int n) { result = MkValueNode(this.getArgumentNode(n)) }
     }
 
     /** An argument to a `WithArguments` instance, seen as a use site. */
@@ -497,7 +499,7 @@ module Routing {
     private class ImpliedArrayRoute extends ValueNode::WithArguments, DataFlow::ArrayCreationNode {
       ImpliedArrayRoute() { this instanceof ValueNode::UseSite }
 
-      override DataFlow::Node getArgumentNode(int n) { result = getElement(n) }
+      override DataFlow::Node getArgumentNode(int n) { result = this.getElement(n) }
     }
   }
 
@@ -521,10 +523,10 @@ module Routing {
    * A node in the routing tree which has no parent.
    */
   class RootNode extends Node {
-    RootNode() { not exists(getParent()) }
+    RootNode() { not exists(this.getParent()) }
 
     /** Gets a node that is part of this subtree. */
-    final Node getADescendant() { result = getAChild*() }
+    final Node getADescendant() { result = this.getAChild*() }
   }
 
   /**
@@ -546,7 +548,7 @@ module Routing {
      *
      * This is an alias for `getParent`, but may be preferred for readability.
      */
-    final Node getRouter() { result = getParent() }
+    final Node getRouter() { result = this.getParent() }
   }
 
   /**
@@ -568,7 +570,7 @@ module Routing {
       Node getChild(int n) { none() }
 
       /** Gets the number of children of this route node. */
-      final int getNumChild() { result = count(int n | exists(getChild(n))) }
+      final int getNumChild() { result = count(int n | exists(this.getChild(n))) }
 
       /**
        * Gets a path prefix to be matched against the path of incoming requests.
@@ -630,13 +632,13 @@ module Routing {
      * This class can be extended to contribute new kinds of route handlers.
      */
     abstract class MethodCall extends RouteSetup::Range, DataFlow::MethodCallNode {
-      override Node getChild(int n) { result = MkValueNode(getChildNode(n)) }
+      override Node getChild(int n) { result = MkValueNode(this.getChildNode(n)) }
 
       /** Gets the `n`th child of this route setup. */
-      DataFlow::Node getChildNode(int n) { result = getArgument(n) }
+      DataFlow::Node getChildNode(int n) { result = this.getArgument(n) }
 
       override predicate isInstalledAt(Router::Range router, ControlFlowNode cfgNode) {
-        this = router.getAReference().getAMethodCall() and cfgNode = getEnclosingExpr()
+        this = router.getAReference().getAMethodCall() and cfgNode = this.getEnclosingExpr()
       }
     }
 
@@ -679,14 +681,14 @@ module Routing {
         result.isInstalledAt(router, any(ControlFlowNode cfg | cfg.getContainer() = container))
       }
 
-      override Node getAChild() { result = MkRouteSetup(getARouteSetup()) }
+      override Node getAChild() { result = MkRouteSetup(this.getARouteSetup()) }
 
       override Node getLastChild() {
         result = getMostRecentRouteSetupAt(router, container.getExit())
       }
 
       override Node getFirstChild() {
-        result = getAChild() and not exists(result.getPreviousSibling())
+        result = this.getAChild() and not exists(result.getPreviousSibling())
       }
     }
   }
@@ -753,14 +755,14 @@ module Routing {
     ImpliedRouteSetup() {
       FlowSteps::calls(this, target) and
       routerIsLiveInContainer(router, target) and
-      routerIsLiveInContainer(router, getContainer())
+      routerIsLiveInContainer(router, this.getContainer())
     }
 
     override Routing::Node getChild(int n) { result = MkRouter(router, target) and n = 0 }
 
     override predicate isInstalledAt(Router::Range r, ControlFlowNode cfgNode) {
       r = router and
-      cfgNode = getEnclosingExpr()
+      cfgNode = this.getEnclosingExpr()
     }
   }
 
@@ -799,11 +801,11 @@ module Routing {
      * if the default behavior is inadequate for that framework.
      */
     DataFlow::CallNode getAContinuationInvocation() {
-      result = getAParameter().ref().getAnInvocation() and
+      result = this.getAParameter().ref().getAnInvocation() and
       result.getNumArgument() = 0
       or
       result.(DataFlow::MethodCallNode).getMethodName() = "then" and
-      result.getArgument(0) = getAParameter().ref().getALocalUse()
+      result.getArgument(0) = this.getAParameter().ref().getALocalUse()
     }
   }
 
@@ -827,11 +829,11 @@ module Routing {
       t.start() and
       result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
     /** Gets a data flow node referring to this route handler parameter. */
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     /**
      * Gets the corresponding route handler, that is, the function on which this is a parameter.

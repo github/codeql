@@ -97,7 +97,10 @@ private class TPattern =
  * ```
  */
 class CasePattern extends AstNode, TPattern {
-  CasePattern() { casePattern(toGenerated(this)) }
+  CasePattern() {
+    casePattern(toGenerated(this)) or
+    synthChild(any(HashPattern p), _, this)
+  }
 }
 
 /**
@@ -135,7 +138,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
     (
       n < this.restIndex()
       or
-      not exists(restIndex())
+      not exists(this.restIndex())
     )
   }
 
@@ -156,7 +159,7 @@ class ArrayPattern extends CasePattern, TArrayPattern {
    * ```
    */
   LocalVariableWriteAccess getRestVariableAccess() {
-    toGenerated(result) = g.getChild(restIndex()).(Ruby::SplatParameter).getName()
+    toGenerated(result) = g.getChild(this.restIndex()).(Ruby::SplatParameter).getName()
   }
 
   /**
@@ -207,7 +210,7 @@ class FindPattern extends CasePattern, TFindPattern {
   CasePattern getAnElement() { result = this.getElement(_) }
 
   /**
-   * Gets the variable for the prefix of this list pattern, if any. For example `init` in:
+   * Gets the variable for the prefix of this find pattern, if any. For example `init` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```
@@ -217,7 +220,7 @@ class FindPattern extends CasePattern, TFindPattern {
   }
 
   /**
-   * Gets the variable for the suffix of this list pattern, if any. For example `tail` in:
+   * Gets the variable for the suffix of this find pattern, if any. For example `tail` in:
    * ```rb
    * in List[*init, "a", Integer => x, *tail]
    * ```
@@ -264,14 +267,19 @@ class HashPattern extends CasePattern, THashPattern {
   private Ruby::KeywordPattern keyValuePair(int n) { result = g.getChild(n) }
 
   /** Gets the key of the `n`th pair. */
-  StringlikeLiteral getKey(int n) { toGenerated(result) = keyValuePair(n).getKey() }
+  StringlikeLiteral getKey(int n) { toGenerated(result) = this.keyValuePair(n).getKey() }
 
   /** Gets the value of the `n`th pair. */
-  CasePattern getValue(int n) { toGenerated(result) = keyValuePair(n).getValue() }
+  CasePattern getValue(int n) {
+    toGenerated(result) = this.keyValuePair(n).getValue() or
+    synthChild(this, n, result)
+  }
 
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {
-    exists(int i | key = this.getKey(i).getValueText() and result = this.getValue(i))
+    exists(int i |
+      this.getKey(i).getConstantValue().isStringOrSymbol(key) and result = this.getValue(i)
+    )
   }
 
   /**
@@ -381,6 +389,7 @@ class ParenthesizedPattern extends CasePattern, TParenthesizedPattern {
 
   ParenthesizedPattern() { this = TParenthesizedPattern(g) }
 
+  /** Gets the underlying pattern. */
   final CasePattern getPattern() { toGenerated(result) = g.getChild() }
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }

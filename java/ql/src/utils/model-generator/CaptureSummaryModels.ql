@@ -223,7 +223,7 @@ string captureParameterToParameterFlow(TargetAPI api) {
   |
     result =
       asTaintModel(api, parameterAccess(source.asParameter()),
-        parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable().(Parameter)))
+        parameterAccess(sink.getPreUpdateNode().asExpr().(VarAccess).getVariable()))
   )
 }
 

@@ -179,7 +179,7 @@ module Firebase {
     /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode ref() { result = refBuilder(DataFlow::TypeTracker::end()) }
 
-    /** Gets a call that registers a listener on a `RefBuilder`, such as `ref.onCreate(...)`. */
+    /** A call that registers a listener on a `RefBuilder`, such as `ref.onCreate(...)`. */
     class RefBuilderListenCall extends DataFlow::MethodCallNode {
       RefBuilderListenCall() {
         this = ref().getAMethodCall() and

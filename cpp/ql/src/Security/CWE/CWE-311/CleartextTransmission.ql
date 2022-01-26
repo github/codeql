@@ -105,8 +105,8 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
  * practice it usually isn't very important which query reports a result as
  * long as its reported exactly once.
  *
- * We do exclude function calls that specify a constant socket, which is
- * likely to mean standard input, standard output or a similar channel.
+ * We do exclude function calls that specify an apparently constant socket,
+ * which is likely to mean standard input, standard output or a similar channel.
  */
 abstract class NetworkSendRecv extends FunctionCall {
   SendRecv target;
@@ -125,6 +125,13 @@ abstract class NetworkSendRecv extends FunctionCall {
           v.getInitializer().getExpr() instanceof Literal and
           g = globalValueNumber(v.getAnAccess())
         )
+        or
+        // result of a function call with literal inputs (likely constant)
+        exists(FunctionCall fc |
+          forex(Expr arg | arg = fc.getAnArgument() | arg instanceof Literal) and
+          g = globalValueNumber(fc)
+        )
+        // (this is far from exhaustive)
       )
     )
   }
@@ -147,17 +154,27 @@ class NetworkRecv extends NetworkSendRecv {
 }
 
 /**
- * An expression that is an argument or return value from an encryption or
- * decryption call.
+ * An expression that is an argument or return value from an encryption /
+ * decryption call. This is quite inclusive to minimize false positives, for
+ * example `SecureZeroMemory` is not an encryption routine but a clue that
+ * encryption may be present.
  */
 class Encrypted extends Expr {
   Encrypted() {
     exists(FunctionCall fc |
-      fc.getTarget().getName().toLowerCase().regexpMatch(".*(crypt|encode|decode).*") and
+      fc.getTarget()
+          .getName()
+          .toLowerCase()
+          .regexpMatch(".*(crypt|encode|decode|hash|securezero).*") and
       (
         this = fc or
         this = fc.getAnArgument()
       )
+    )
+    or
+    exists(Type t |
+      this.getType().refersTo(t) and
+      t.getName().toLowerCase().regexpMatch(".*(crypt|encode|decode|hash|securezero).*")
     )
   }
 }

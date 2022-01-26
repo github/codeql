@@ -8,6 +8,7 @@
  * @id js/exposure-of-private-files
  * @tags security
  *       external/cwe/cwe-200
+ *       external/cwe/cwe-219
  *       external/cwe/cwe-548
  * @precision high
  */

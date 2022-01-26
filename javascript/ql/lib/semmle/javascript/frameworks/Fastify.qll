@@ -161,7 +161,7 @@ module Fastify {
       if methodName = "route"
       then
         result = this.flow().(DataFlow::MethodCallNode).getOptionArgument(0, getNthHandlerName(_))
-      else result = getLastArgument().flow()
+      else result = this.getLastArgument().flow()
     }
   }
 
@@ -185,22 +185,23 @@ module Fastify {
 
   private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
     FullRoutingTreeSetup() {
-      asExpr() instanceof RouteSetup and
-      getMethodName() = "route"
+      this.asExpr() instanceof RouteSetup and
+      this.getMethodName() = "route"
     }
 
-    override string getRelativePath() { result = getOptionArgument(0, "url").getStringValue() }
+    override string getRelativePath() { result = this.getOptionArgument(0, "url").getStringValue() }
 
     override HTTP::RequestMethodName getHttpMethod() {
-      result = getOptionArgument(0, "method").getStringValue().toUpperCase()
+      result = this.getOptionArgument(0, "method").getStringValue().toUpperCase()
     }
 
     private DataFlow::Node getRawChild(int n) {
-      result = getOptionArgument(0, getNthHandlerName(n))
+      result = this.getOptionArgument(0, getNthHandlerName(n))
     }
 
     override DataFlow::Node getChildNode(int n) {
-      result = rank[n + 1](DataFlow::Node child, int k | child = getRawChild(k) | child order by k)
+      result =
+        rank[n + 1](DataFlow::Node child, int k | child = this.getRawChild(k) | child order by k)
     }
   }
 
@@ -209,34 +210,38 @@ module Fastify {
 
     private DataFlow::SourceNode pluginBody(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getArgument(0).getALocalSource()
+      result = this.getArgument(0).getALocalSource()
       or
       // step through calls to require('fastify-plugin')
-      result = pluginBody(t).(FastifyPluginCall).getArgument(0).getALocalSource()
+      result = this.pluginBody(t).(FastifyPluginCall).getArgument(0).getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = pluginBody(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = this.pluginBody(t2).backtrack(t2, t))
     }
 
     /** Gets a functino flowing into the first argument. */
-    DataFlow::FunctionNode pluginBody() { result = pluginBody(DataFlow::TypeBackTracker::end()) }
-
-    override HTTP::RequestMethodName getHttpMethod() {
-      result = getOptionArgument(1, "method").getStringValue().toUpperCase()
+    DataFlow::FunctionNode pluginBody() {
+      result = this.pluginBody(DataFlow::TypeBackTracker::end())
     }
 
-    override string getRelativePath() { result = getOptionArgument(1, "prefix").getStringValue() }
+    override HTTP::RequestMethodName getHttpMethod() {
+      result = this.getOptionArgument(1, "method").getStringValue().toUpperCase()
+    }
+
+    override string getRelativePath() {
+      result = this.getOptionArgument(1, "prefix").getStringValue()
+    }
 
     override DataFlow::Node getChildNode(int n) {
       n = 0 and
       (
         // If we can see the plugin body, use its server parameter as the child to ensure
         // plugins or routes installed in the plugin are ordered
-        result = pluginBody().getParameter(0)
+        result = this.pluginBody().getParameter(0)
         or
         // If we can't see the plugin body, just use the plugin expression so we can
         // check if something is guarded by that plugin.
-        not exists(pluginBody()) and
-        result = getArgument(0)
+        not exists(this.pluginBody()) and
+        result = this.getArgument(0)
       )
     }
   }

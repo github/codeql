@@ -94,3 +94,4 @@
 | tst.rb:375:11:375:27 | ([[:digit:]]\|\\d)+ | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of '0'. |
 | tst.rb:378:12:378:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:379:12:379:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.rb:390:66:390:67 | .? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '00\\\\'. |

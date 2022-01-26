@@ -67,6 +67,6 @@ string prettyNodeForInlineTest(DataFlow::Node node) {
   )
   or
   not exists(node.asExpr()) and
-  not exists(Expr e | e = node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) and
+  not exists(node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) and
   result = node.toString()
 }

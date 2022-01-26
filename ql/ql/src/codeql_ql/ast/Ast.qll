@@ -63,6 +63,9 @@ class AstNode extends TAstNode {
     pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 
+  /** Gets any child of this node. */
+  AstNode getAChild() { result = this.getAChild(_) }
+
   /**
    * Gets the primary QL class for the ast node.
    */
@@ -1238,14 +1241,7 @@ class Boolean extends Literal {
 
 /** A comparison symbol, such as `"<"` or `"="`. */
 class ComparisonSymbol extends string {
-  ComparisonSymbol() {
-    this = "=" or
-    this = "!=" or
-    this = "<" or
-    this = ">" or
-    this = "<=" or
-    this = ">="
-  }
+  ComparisonSymbol() { this = ["=", "!=", "<", ">", "<=", ">="] }
 }
 
 /** A comparison formula, such as `x < 3` or `y = true`. */
@@ -1287,10 +1283,7 @@ class Quantifier extends TQuantifier, Formula {
   }
 
   /** Gets the ith variable declaration of this quantifier. */
-  VarDecl getArgument(int i) {
-    i >= 1 and
-    toQL(result) = quant.getChild(i - 1)
-  }
+  VarDecl getArgument(int i) { toQL(result) = quant.getChild(i + 1) }
 
   /** Gets an argument of this quantifier. */
   VarDecl getAnArgument() { result = this.getArgument(_) }
@@ -1662,6 +1655,15 @@ class FullAggregate extends TFullAggregate, Aggregate {
 }
 
 /**
+ * A "any" expression, such as `any(int i | i > 0).toString()`.
+ */
+class Any extends FullAggregate {
+  Any() { this.getKind() = "any" }
+
+  override string getAPrimaryQlClass() { result = "Any" }
+}
+
+/**
  * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
  */
 class Rank extends Aggregate {
@@ -1855,7 +1857,7 @@ class ExprAnnotation extends TExprAnnotation, Expr {
 
 /** A function symbol, such as `+` or `*`. */
 class FunctionSymbol extends string {
-  FunctionSymbol() { this = "+" or this = "-" or this = "*" or this = "/" or this = "%" }
+  FunctionSymbol() { this = ["+", "-", "*", "/", "%"] }
 }
 
 /**

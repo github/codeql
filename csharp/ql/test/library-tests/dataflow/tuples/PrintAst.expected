@@ -281,7 +281,7 @@ Tuples.cs:
 #   81|           2: [ExprStmt] ...;
 #   81|             0: [MethodCall] call to method Sink<Int32>
 #   81|               0: [LocalVariableAccess] access to local variable q
-#   85|   9: [Record] R1
+#   85|   9: [RecordClass] R1
 #   85|     12: [NEOperator] !=
 #-----|       2: (Parameters)
 #   85|         0: [Parameter] left

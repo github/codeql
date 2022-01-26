@@ -203,7 +203,7 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   /** Gets the text of this regex */
-  string getText() { result = this.getValueText() }
+  string getText() { result = this.getConstantValue().getString() }
 
   string getChar(int i) { result = this.getText().charAt(i) }
 
