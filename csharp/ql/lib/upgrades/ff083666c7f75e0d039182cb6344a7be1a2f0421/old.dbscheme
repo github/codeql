@@ -166,8 +166,58 @@ compilation_assembly(
   int assembly: @assembly ref
 )
 
+/*
+ * External artifacts
+ */
+
+externalDefects(
+  unique int id: @externalDefect,
+  string queryPath: string ref,
+  int location: @location ref,
+  string message: string ref,
+  float severity: float ref);
+
+externalMetrics(
+  unique int id: @externalMetric,
+  string queryPath: string ref,
+  int location: @location ref,
+  float value: float ref);
+
+externalData(
+  int id: @externalDataElement,
+  string path: string ref,
+  int column: int ref,
+  string value: string ref);
+
+snapshotDate(
+  unique date snapshotDate: date ref);
+
 sourceLocationPrefix(
   string prefix: string ref);
+
+/*
+ * Duplicate code
+ */
+
+duplicateCode(
+  unique int id: @duplication,
+  string relativePath: string ref,
+  int equivClass: int ref);
+
+similarCode(
+  unique int id: @similarity,
+  string relativePath: string ref,
+  int equivClass: int ref);
+
+@duplication_or_similarity = @duplication | @similarity
+
+tokens(
+  int id: @duplication_or_similarity ref,
+  int offset: int ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref);
 
 /*
  * C# dbscheme
@@ -176,7 +226,7 @@ sourceLocationPrefix(
 /** ELEMENTS **/
 
 @element = @declaration | @stmt | @expr | @modifier | @attribute | @namespace_declaration
-         | @using_directive | @type_parameter_constraints
+         | @using_directive | @type_parameter_constraints | @external_element
          | @xmllocatable | @asp_element | @namespace | @preprocessor_directive;
 
 @declaration = @callable | @generic | @assignable | @namespace;
@@ -188,6 +238,8 @@ sourceLocationPrefix(
 @assignable = @variable | @assignable_with_accessors | @event;
 
 @assignable_with_accessors = @property | @indexer;
+
+@external_element = @externalMetric | @externalDefect | @externalDataElement;
 
 @attributable = @assembly | @field | @parameter | @operator | @method | @constructor
               | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors
