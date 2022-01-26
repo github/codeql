@@ -1,4 +1,2 @@
 | hiding.cpp:6:17:6:17 | i | Variable i hides another variable of the same name (on $@). | hiding.cpp:4:13:4:13 | i | line 4 |
 | hiding.cpp:18:15:18:15 | k | Variable k hides another variable of the same name (on $@). | hiding.cpp:15:11:15:11 | k | line 15 |
-| hiding.cpp:38:10:38:10 | (unnamed local variable) | Variable (unnamed local variable) hides another variable of the same name (on $@). | hiding.cpp:36:8:36:8 | (unnamed local variable) | line 36 |
-| hiding.cpp:39:10:39:10 | (unnamed local variable) | Variable (unnamed local variable) hides another variable of the same name (on $@). | hiding.cpp:36:8:36:8 | (unnamed local variable) | line 36 |
