@@ -1,0 +1,5 @@
+lambdaDeclaration
+| Func<int, string> | Lambda.cs:7:27:7:28 | f1 | Lambda.cs:7:32:7:54 | (...) => ... |
+| Func<int, string> | Lambda.cs:8:13:8:14 | f2 | Lambda.cs:8:18:8:40 | (...) => ... |
+lambdaDeclarationNatural
+| Func<int, string> | Lambda.cs:8:13:8:14 | f2 | Lambda.cs:8:18:8:40 | (...) => ... |
