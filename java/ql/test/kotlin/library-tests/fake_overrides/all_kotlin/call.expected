@@ -1,14 +1,3 @@
-| A.kt:2:1:6:1 | <obinit>(...) | A.kt:2:1:6:1 | <obinit> |
-| A.kt:4:21:4:29 | someFun(...) | A.kt:9:9:10:2 | someFun |
-| A.kt:8:1:11:1 | <obinit>(...) | A.kt:8:1:11:1 | <obinit> |
-| A.kt:9:2:10:2 | <obinit>(...) | A.kt:9:2:10:2 | <obinit> |
-| A.kt:13:1:19:1 | <obinit>(...) | A.kt:13:1:19:1 | <obinit> |
-| A.kt:14:2:18:2 | <obinit>(...) | A.kt:14:2:18:2 | <obinit> |
-| A.kt:21:1:21:11 | <obinit>(...) | A.kt:21:1:21:11 | <obinit> |
-| A.kt:22:1:22:11 | <obinit>(...) | A.kt:22:1:22:11 | <obinit> |
-| A.kt:24:1:24:11 | <obinit>(...) | A.kt:24:1:24:11 | <obinit> |
-| A.kt:25:1:25:11 | <obinit>(...) | A.kt:25:1:25:11 | <obinit> |
-| A.kt:27:1:27:11 | <obinit>(...) | A.kt:27:1:27:11 | <obinit> |
-| A.kt:28:1:28:11 | <obinit>(...) | A.kt:28:1:28:11 | <obinit> |
-| A.kt:30:1:30:11 | <obinit>(...) | A.kt:30:1:30:11 | <obinit> |
-| A.kt:31:1:31:11 | <obinit>(...) | A.kt:31:1:31:11 | <obinit> |
+| A.kt:4:21:4:29 | someFun(...) | A.kt:15:6:17:6 | someFun | A.kt:14:2:18:2 | C<D1,D2,E1,E2> | A.kt:13:1:19:1 | OC<F1,F2> |
+| A.kt:9:2:10:2 | <obinit>(...) | A.kt:9:2:10:2 | <obinit> | A.kt:9:2:10:2 | B | A.kt:8:1:11:1 | OB |
+| A.kt:14:2:18:2 | <obinit>(...) | A.kt:14:2:18:2 | <obinit> | A.kt:14:2:18:2 | C | A.kt:13:1:19:1 | OC |

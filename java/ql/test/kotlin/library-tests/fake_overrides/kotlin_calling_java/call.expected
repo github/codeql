@@ -1,6 +1,2 @@
-| A.kt:2:1:6:1 | <obinit>(...) | A.kt:2:1:6:1 | <obinit> |
-| A.kt:4:21:4:29 | someFun(...) | file:///!unknown-binary-location/OB$B.class:0:0:0:0 | someFun |
-| A.kt:8:1:8:11 | <obinit>(...) | A.kt:8:1:8:11 | <obinit> |
-| A.kt:9:1:9:11 | <obinit>(...) | A.kt:9:1:9:11 | <obinit> |
-| A.kt:11:1:11:11 | <obinit>(...) | A.kt:11:1:11:11 | <obinit> |
-| A.kt:12:1:12:11 | <obinit>(...) | A.kt:12:1:12:11 | <obinit> |
+| A.kt:4:21:4:29 | someFun(...) | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | someFun | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | C<D1,D2,E1,E2> | OC.class:0:0:0:0 | OC<F1,F2> |
+| A.kt:4:21:4:29 | someFun(...) | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | someFun | file:///!unknown-binary-location/OC$C.class:0:0:0:0 | C<D1,D2,E1,E2> | file:///!unknown-binary-location/OC.class:0:0:0:0 | OC<F1,F2> |
