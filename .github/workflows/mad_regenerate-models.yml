@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        frameworks:
-          [
-            '{"slug":"apache/commons-io", ref:"8985de8fe74f6622a419b37a6eed0dbc484dc128"}',
-          ]
+        slug: []
+        ref: []
+        include:
+          - slug: "apache/commons-io"
+            ref: "8985de8fe74f6622a419b37a6eed0dbc484dc128"
     steps:
       - name: Clone self (github/codeql)
         uses: actions/checkout@v2
@@ -22,13 +23,13 @@ jobs:
       - name: Clone repositories
         uses: actions/checkout@v2
         with:
-          path: repos/${{ fromJSON(matrix.frameworks).ref }}
-          ref: ${{ fromJSON(matrix.frameworks).ref }}
-          repository: ${{ fromJSON(matrix.frameworks).slug }}
+          path: repos/${{ matrix.ref }}
+          ref: ${{ matrix.ref }}
+          repository: ${{ matrix.slug }}
       - name: Build database
         env:
-          SLUG: ${{ fromJSON(matrix.frameworks).slug }}
-          REF: ${{ fromJSON(matrix.frameworks).ref }}
+          SLUG: ${{ matrix.slug }}
+          REF: ${{ matrix.ref }}
         run: |
           mkdir dbs
           cd repos/${REF}
@@ -36,7 +37,7 @@ jobs:
           codeql database create --language=java ../../dbs/${SHORTNAME}
       - name: Regenerate models in-place
         env:
-          SLUG: ${{ fromJSON(matrix.frameworks).slug }}
+          SLUG: ${{ matrix.slug }}
         run: |
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
           java/ql/src/utils/model-generator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
