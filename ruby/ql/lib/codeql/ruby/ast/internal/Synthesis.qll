@@ -7,6 +7,7 @@ private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
+private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
@@ -918,6 +919,38 @@ private module ForLoopDesugar {
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(ForExpr for).getBody()
+    }
+  }
+}
+
+/**
+ * ```rb
+ * { a: }
+ * ```
+ * desugars to,
+ * ```rb
+ * { a: a }
+ * ```
+ */
+private module ImplicitHashValueSynthesis {
+  private Ruby::AstNode keyWithoutValue(HashPattern parent, int i) {
+    exists(Ruby::KeywordPattern pair |
+      result = pair.getKey() and
+      result = toGenerated(parent.getKey(i)) and
+      not exists(pair.getValue())
+    )
+  }
+
+  private class ImplicitHashValueSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      exists(TVariableReal variable |
+        access(keyWithoutValue(parent, i), variable) and
+        child = SynthChild(LocalVariableAccessRealKind(variable))
+      )
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(HashPattern p, int i | n = p.getValue(i) and l = keyWithoutValue(p, i).getLocation())
     }
   }
 }

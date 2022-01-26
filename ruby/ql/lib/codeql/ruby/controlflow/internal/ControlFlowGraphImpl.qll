@@ -711,7 +711,9 @@ module Trees {
       last(this.getPattern(), last, c) and
       c.(MatchingCompletion).getValue() = false
       or
-      last(this.getVariableAccess(), last, c)
+      last(this.getVariableAccess(), last, any(SimpleCompletion x)) and
+      c.(MatchingCompletion).getValue() = true and
+      not c instanceof NestedCompletion
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
