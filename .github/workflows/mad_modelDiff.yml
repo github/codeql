@@ -24,10 +24,6 @@ jobs:
     if: github.repository == 'github/codeql' || github.repository == 'bmuskalla/codeql'
     strategy:
       matrix:
-        # large
-        # ["google/guava", "spring-projects/spring-framework", "apache/poi"]
-        # others
-        # ["FasterXML/jackson-core", "FasterXML/jackson-databind", "google/gson", "JodaOrg/joda-time"
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone github/codeql from PR
