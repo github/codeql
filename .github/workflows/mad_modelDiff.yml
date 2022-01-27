@@ -12,6 +12,10 @@ on:
       - main
     paths:
       - "java/ql/src/utils/model-generator/**/*.*"
+      - ".github/workflows/mad_modelDiff.yml"
+
+permissions:
+  contents: read
 
 jobs:
   model-diff:
@@ -26,18 +30,20 @@ jobs:
         # ["FasterXML/jackson-core", "FasterXML/jackson-databind", "google/gson", "JodaOrg/joda-time"
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
-      - name: Clone self (github/codeql) for prhead
+      - name: Clone github/codeql from PR
         uses: actions/checkout@v2
         if: github.event.pull_request
         with:
-          path: codeql-prhead
-          ref: ${{ github.base_ref }}
-      - name: Clone self (github/codeql) with main
+          repository: github/codeql
+          path: codeql-pr
+          ref: ${{ github.sha }}
+      - name: Clone github/codeql from main
         uses: actions/checkout@v2
         with:
-          path: codeql-head
-          ref: ${{ github.ref }}
-      - uses: ./codeql-head/.github/actions/fetch-codeql
+          repository: github/codeql
+          path: codeql-main
+          ref: main
+      - uses: ./codeql-main/.github/actions/fetch-codeql
       - name: Download database
         env:
           SLUG: ${{ matrix.slug }}
@@ -47,10 +53,10 @@ jobs:
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
           projectId=`curl -s https://lgtm.com/api/v1.0/projects/g/${SLUG} | jq .id`
           curl -L "https://lgtm.com/api/v1.0/snapshots/$projectId/java" -o "$SHORTNAME.zip"
-          unzip -q -d "$SHORTNAME-db" "$SHORTNAME.zip"
+          unzip -q -d "${SHORTNAME}-db" "${SHORTNAME}.zip"
           mkdir "lib-dbs/$SHORTNAME/"
-          mv "$SHORTNAME-db/"`ls -1 "$SHORTNAME-db"`/* "lib-dbs/$SHORTNAME/"
-      - name: Generate Models (PR and HEAD)
+          mv "${SHORTNAME}-db/"$(ls -1 "${SHORTNAME}"-db)/* "lib-dbs/${SHORTNAME}/"
+      - name: Generate Models (PR and main)
         run: |
           set -x
           mkdir tmp-models
@@ -63,17 +69,17 @@ jobs:
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
             python java/ql/src/utils/model-generator/GenerateFlowModel.py $DATABASE $MODELS/${SHORTNAME}.qll
-            mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}_${QL_VARIANT}.qll
+            mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.qll
             cd ..
           }
 
           for d in $DATABASES/*/ ; do
             ls -1 "$d"
 
-            analyzeDatabaseWithCheckout "head" $d
+            analyzeDatabaseWithCheckout "main" $d
             if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]
             then
-              analyzeDatabaseWithCheckout "prhead" $d
+              analyzeDatabaseWithCheckout "pr" $d
             fi
           done
       - name: Install diff2html
@@ -85,10 +91,10 @@ jobs:
           set -x
           MODELS=`pwd`/tmp-models
           ls -1 tmp-models/
-          for m in $MODELS/*_prhead.qll ; do
-            t="${m/prhead/"head"}"
+          for m in $MODELS/*_main.qll ; do
+            t="${m/main/"pr"}"
             basename=`basename $m`
-            name="diff_${basename/_prhead.qll/""}"
+            name="diff_${basename/_main.qll/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
       - uses: actions/upload-artifact@v2
