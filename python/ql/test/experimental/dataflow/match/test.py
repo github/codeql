@@ -46,6 +46,10 @@ def test_or_pattern():
             SINK(x) #$ flow="SOURCE, l:-3 -> x"
 
 # No flow for literal pattern
+def test_literal_pattern():
+    match SOURCE:
+        case 42 as x:
+            SINK(x) #$ flow="SOURCE, l:-2 -> x" flow="42, l:-1 -> x"
 
 def test_capture_pattern():
     match SOURCE:

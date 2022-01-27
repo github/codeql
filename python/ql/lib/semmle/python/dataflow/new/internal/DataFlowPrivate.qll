@@ -1595,10 +1595,10 @@ import IterableUnpacking
  *
  * - as pattern: subject flows to alias as well as to the interior pattern
  * - or pattern: subject flows to each alternative
- * - literal pattern: no flow
+ * - literal pattern: flow from the literal to the pattern, to add information
  * - capture pattern: subject flows to the variable
  * - wildcard pattern: no flow
- * - value pattern: no flow
+ * - value pattern: flow from the value to the pattern, to add information
  * - sequence pattern: each element reads from subject at the associated index
  * - star pattern: subject flows to the variable, possibly via a conversion
  * - mapping pattern: each value reads from subject at the associated key
@@ -1636,14 +1636,16 @@ module MatchUnpacking {
    */
   predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
     exists(MatchAsPattern subject, Name alias | alias = subject.getAlias() |
+      // We make the subject flow to the interior pattern via the alis.
+      // That way, information can propagate from the interior pattern to the alias.
+      //
+      // the subject flows to the interior pattern
       nodeFrom.asCfgNode().getNode() = subject and
-      (
-        // the subject flows to the alias
-        nodeTo.asVar().getDefinition().(PatternAliasDefinition).getDefiningNode().getNode() = alias
-        or
-        // the subject flows to the interior pattern
-        nodeTo.asCfgNode().getNode() = subject.getPattern()
-      )
+      nodeTo.asCfgNode().getNode() = subject.getPattern()
+      or
+      // the interior pattern flows to the alias
+      nodeFrom.asCfgNode().getNode() = subject.getPattern() and
+      nodeTo.asVar().getDefinition().(PatternAliasDefinition).getDefiningNode().getNode() = alias
     )
   }
 
@@ -1659,6 +1661,17 @@ module MatchUnpacking {
   }
 
   /**
+   * literal pattern: flow from the literal to the pattern, to add information
+   * syntax (toplevel): `case literal:`
+   */
+  predicate matchLiteralFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchLiteralPattern pattern, Expr literal | literal = pattern.getLiteral() |
+      nodeFrom.asExpr() = literal and
+      nodeTo.asCfgNode().getNode() = pattern
+    )
+  }
+
+  /**
    * capture pattern: subject flows to the variable
    * syntax (toplevel): `case var:`
    */
@@ -1666,6 +1679,17 @@ module MatchUnpacking {
     exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
       nodeFrom.asCfgNode().getNode() = capture and
       nodeTo.asVar().getDefinition().(PatternCaptureDefinition).getDefiningNode().getNode() = var
+    )
+  }
+
+  /**
+   * value pattern: flow from the value to the pattern, to add information
+   * syntax (toplevel): `case Dotted.value:`
+   */
+  predicate matchValueFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(MatchValuePattern pattern, Expr value | value = pattern.getValue() |
+      nodeFrom.asExpr() = value and
+      nodeTo.asCfgNode().getNode() = pattern
     )
   }
 
@@ -1814,7 +1838,11 @@ module MatchUnpacking {
     or
     matchOrFlowStep(nodeFrom, nodeTo)
     or
+    matchLiteralFlowStep(nodeFrom, nodeTo)
+    or
     matchCaptureFlowStep(nodeFrom, nodeTo)
+    or
+    matchValueFlowStep(nodeFrom, nodeTo)
     or
     matchMappingFlowStep(nodeFrom, nodeTo)
   }
