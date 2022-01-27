@@ -21,7 +21,7 @@ jobs:
   model-diff:
     name: Model Difference
     runs-on: ubuntu-latest
-    if: github.repository == 'github/codeql' || github.repository == 'bmuskalla/codeql'
+    if: github.repository == 'github/codeql'
     strategy:
       matrix:
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
