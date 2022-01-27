@@ -1,8 +1,8 @@
 def m0(i)
-    a = *source(0)
-    sink(a[0]) # $ hasValueFlow=0
+    a = *source(0.1)
+    sink(a[0]) # $ hasValueFlow=0.1
     sink(a[1])
-    sink(a[i]) # $ hasValueFlow=0
+    sink(a[i]) # $ hasValueFlow=0.1
 end
 
 def m1(i)
@@ -815,7 +815,7 @@ end
 def m86
     a = [0, 1, source(86)]
     b = a.pack 'ccc'
-    sink b # TODO hasTaintFlow=86
+    sink b # $ hasTaintFlow=86
 end
 
 def m87
