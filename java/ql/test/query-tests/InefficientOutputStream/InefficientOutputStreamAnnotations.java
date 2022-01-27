@@ -1,7 +1,7 @@
 import java.io.*;
 import java.lang.annotation.*;
 
-public class Test {
+public class InefficientOutputStreamAnnotations {
 
   @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE, ElementType.TYPE_USE})
   @interface NotNull { }
