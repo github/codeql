@@ -43,7 +43,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (Syntax.Initializer is not null)
             {
-                switch (Syntax.Initializer.Kind())
+                var kind = Syntax.Initializer.Kind();
+                switch (kind)
                 {
                     case SyntaxKind.CollectionInitializerExpression:
                         CollectionInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, -1).SetType(Type));
@@ -52,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         ObjectInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     default:
-                        Context.ModelError(Syntax.Initializer, "Unhandled initializer in object creation");
+                        Context.ModelError(Syntax.Initializer, $"Unhandled initializer in object creation of kind {kind}");
                         break;
                 }
             }
