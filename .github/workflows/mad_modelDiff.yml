@@ -34,12 +34,10 @@ jobs:
         uses: actions/checkout@v2
         if: github.event.pull_request
         with:
-          repository: github/codeql
           path: codeql-pr
       - name: Clone github/codeql from main
         uses: actions/checkout@v2
         with:
-          repository: github/codeql
           path: codeql-main
           ref: main
       - uses: ./codeql-main/.github/actions/fetch-codeql
