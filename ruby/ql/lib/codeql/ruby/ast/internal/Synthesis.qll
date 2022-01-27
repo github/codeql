@@ -796,10 +796,8 @@ private module ArrayLiteralDesugar {
       i = -1 and
       child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements()))
       or
-      exists(AstNode mc |
-        mc = TMethodCallSynth(al, -1, _, _, _) and
-        parent = mc
-      |
+      parent = TMethodCallSynth(al, -1, _, _, _) and
+      (
         i = 0 and
         child = SynthChild(ConstantReadAccessKind("::Array"))
         or
@@ -841,10 +839,8 @@ private module HashLiteralDesugar {
       i = -1 and
       child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
       or
-      exists(AstNode mc |
-        mc = TMethodCallSynth(hl, -1, _, _, _) and
-        parent = mc
-      |
+      parent = TMethodCallSynth(hl, -1, _, _, _) and
+      (
         i = 0 and
         child = SynthChild(ConstantReadAccessKind("::Hash"))
         or
