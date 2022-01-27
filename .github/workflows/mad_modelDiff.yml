@@ -83,6 +83,7 @@ jobs:
             fi
           done
       - name: Install diff2html
+        if: github.event.pull_request
         run: |
           npm install -g diff2html-cli
       - name: Generate Model Diff
