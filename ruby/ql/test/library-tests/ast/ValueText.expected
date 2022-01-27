@@ -244,6 +244,10 @@
 | control/cases.rb:144:11:144:11 | :a | :a |
 | control/cases.rb:144:14:144:14 | 1 | 1 |
 | control/cases.rb:148:7:148:9 | foo | 42 |
+| control/cases.rb:155:8:155:10 | foo | 42 |
+| control/cases.rb:157:8:157:8 | 1 | 1 |
+| control/cases.rb:157:8:157:12 | ... + ... | 2 |
+| control/cases.rb:157:12:157:12 | 1 | 1 |
 | control/conditionals.rb:2:5:2:5 | 0 | 0 |
 | control/conditionals.rb:3:5:3:5 | 0 | 0 |
 | control/conditionals.rb:4:5:4:5 | 0 | 0 |

@@ -150,3 +150,9 @@ case expr
   in ^@foo;
   in ^@@foo;
 end
+
+case expr 
+  in ^(foo);
+  in ^(@foo);
+  in ^(1 + 1);
+end

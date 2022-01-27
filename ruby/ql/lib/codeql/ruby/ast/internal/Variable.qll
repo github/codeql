@@ -312,6 +312,8 @@ private module Cached {
     i = any(Ruby::WhileModifier x).getCondition()
     or
     i = any(Ruby::WhileModifier x).getBody()
+    or
+    i = any(Ruby::ExpressionReferencePattern x).getValue()
   }
 
   pragma[nomagic]
