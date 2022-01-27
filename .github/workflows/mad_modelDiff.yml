@@ -1,4 +1,4 @@
-name: Models as Data
+name: Models as Data - Diff
 
 on:
   workflow_dispatch:
