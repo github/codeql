@@ -23,13 +23,13 @@ class AbstractDOMParser extends Class {
 
 class DisableDefaultEntityResolution extends Function {
   DisableDefaultEntityResolution() {
-    this.hasQualifiedName(_, "XercesDOMParser", "disableDefaultEntityResolution")
+    this.hasQualifiedName(_, "AbstractOMParser", "setDisableDefaultEntityResolution")
   }
 }
 
 class SetCreateEntityReferenceNodes extends Function {
   SetCreateEntityReferenceNodes() {
-    this.hasQualifiedName(_, "XercesDOMParser", "setCreateEntityReferenceNodes")
+    this.hasQualifiedName(_, "AbstractDOMParser", "setCreateEntityReferenceNodes")
   }
 }
 
@@ -39,18 +39,36 @@ class CreateLSParser extends Function {
   }
 }
 
+class SetSecurityManager extends Function {
+  SetSecurityManager() {
+    this.hasQualifiedName(_, "AbstractDOMParser", "setSecurityManager")
+  }
+}
+
+class SAXParser extends Class {
+  SAXParser() { this.hasName("SAXParser") }
+}
+
 class XercesXXEConfiguration extends DataFlow::Configuration {
   XercesXXEConfiguration() { this = "XercesXXEConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) {
+  override predicate isSource(DataFlow::Node node, string flowstate) {
     exists(CallInstruction call |
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() = call.getThisArgument() and
-      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof XercesDOMParser
+      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof XercesDOMParser and
+      flowstate = "XercesDOM"
     )
     or
     exists(Call call |
       call.getTarget() instanceof CreateLSParser and
-      call = node.asExpr()
+      call = node.asExpr() and
+      flowstate = "XercesDOM"
+    )
+    or
+    exists(CallInstruction call |
+      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() = call.getThisArgument() and
+      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof SAXParser and
+      flowstate = "SAXParser"
     )
   }
 
@@ -62,23 +80,40 @@ class XercesXXEConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(Call first, Call second |
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, string state1, DataFlow::Node node2, string state2) {
+    exists(Call call |
+      node1.asConvertedExpr() = call.getQualifier() and
+      node2.asDefiningArgument() = call.getQualifier() and
       (
-        first.getTarget() instanceof DisableDefaultEntityResolution and
-        second.getTarget() instanceof SetCreateEntityReferenceNodes
+        call.getTarget() instanceof DisableDefaultEntityResolution and
+        state1 = "XercesDOM" and
+        state2 = "XercesDOM-DDER"
         or
-        first.getTarget() instanceof SetCreateEntityReferenceNodes and
-        second.getTarget() instanceof DisableDefaultEntityResolution
+        call.getTarget() instanceof SetCreateEntityReferenceNodes and
+        state1 = "XercesDOM" and
+        state2 = "XercesDOM-SCERN"
+      )
+    )
+  }
+
+  override predicate isBarrier(DataFlow::Node node, string flowstate) {
+    exists(Call call |
+      (
+        flowstate = "XercesDOM-DDER" and
+        call.getTarget() instanceof SetCreateEntityReferenceNodes
+        or
+        flowstate = "XercesDOM-SCERN" and
+        call.getTarget() instanceof DisableDefaultEntityResolution
       ) and
-      DataFlow::localExprFlow(first.getQualifier(), second.getQualifier()) and
-      second.getQualifier() = node.asDefiningArgument()
+      call.getQualifier() = node.asDefiningArgument()
     )
     or
     exists(Call setSecurityManager |
       // todo: security manager setup
-      setSecurityManager.getQualifier() = node.asDefiningArgument()
+      setSecurityManager.getQualifier() = node.asDefiningArgument() and
+      setSecurityManager.getTarget() instanceof SetSecurityManager
     )
+    //or
   }
 }
 
