@@ -877,9 +877,24 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		kind = dbscheme.IndexExpr.Index()
+		switch tp := tw.Package.TypesInfo.TypeOf(expr.X).Underlying().(type) {
+		case *types.Signature:
+			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+		case *types.Map, *types.Array, *types.Slice, *types.Basic, *types.Pointer:
+			// map, array, slice, string or pointer to array
+			kind = dbscheme.IndexExpr.Index()
+		default:
+			log.Fatalf("unsupported IndexExpr: its base expression is a %s.", tp.String())
+		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExpr(tw, expr.Index, lbl, 1)
+	case *ast.IndexListExpr:
+		if expr == nil {
+			return
+		}
+		kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+		extractExpr(tw, expr.X, lbl, 0)
+		extractExprs(tw, expr.Indices, lbl, 1, 1)
 	case *ast.SliceExpr:
 		if expr == nil {
 			return

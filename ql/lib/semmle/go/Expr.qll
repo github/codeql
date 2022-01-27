@@ -626,11 +626,16 @@ class PromotedSelector extends SelectorExpr {
 
 /**
  * An index expression, that is, a base expression followed by an index.
+ * Expressions which represent generic type instantiations have been
+ * excluded.
  *
  * Examples:
  *
  * ```go
- * a[i]
+ * array[i]
+ * arrayptr[i]
+ * slice[i]
+ * map[key]
  * ```
  */
 class IndexExpr extends @indexexpr, Expr {
@@ -645,6 +650,34 @@ class IndexExpr extends @indexexpr, Expr {
   override string toString() { result = "index expression" }
 
   override string getAPrimaryQlClass() { result = "IndexExpr" }
+}
+
+/**
+ * A generic function instantiation, that is, a base expression that represents
+ * a generic function, followed by a list of type arguments.
+ *
+ * Examples:
+ *
+ * ```go
+ * genericfunction[type]
+ * genericfunction[type1, type2]
+ * ```
+ */
+class GenericFunctionInstantiationExpr extends @genericfunctioninstantiationexpr, Expr {
+  /** Gets the generic type expression. */
+  Expr getBase() { result = this.getChildExpr(0) }
+
+  /** Gets the `i`th type argument. */
+  Expr getTypeArgument(int i) {
+    i >= 0 and
+    result = this.getChildExpr(i + 1)
+  }
+
+  override predicate mayHaveOwnSideEffects() { any() }
+
+  override string toString() { result = "generic function instantiation expression" }
+
+  override string getAPrimaryQlClass() { result = "GenericFunctionInstantiationExpr" }
 }
 
 /**
@@ -797,11 +830,16 @@ class CallExpr extends CallOrConversionExpr {
       result = callee.(Ident).getName()
       or
       result = callee.(SelectorExpr).getSelector().getName()
+      or
+      result = callee.(GenericFunctionInstantiationExpr).getBase().(Ident).getName()
     )
   }
 
   /** Gets the declared target of this call. */
-  Function getTarget() { this.getCalleeExpr() = result.getAReference() }
+  Function getTarget() {
+    this.getCalleeExpr() = result.getAReference() or
+    this.getCalleeExpr().(GenericFunctionInstantiationExpr).getBase() = result.getAReference()
+  }
 
   /** Holds if this call has an ellipsis after its last argument. */
   predicate hasEllipsis() { has_ellipsis(this) }
