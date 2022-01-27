@@ -83,7 +83,7 @@ library class StrListParent extends StrListParent_ { }
 library class ExprParent extends ExprParent_ { }
 
 /** Internal implementation class */
-library class PatternListParent extends PatternListParent_ { }
+class PatternListParent extends PatternListParent_ { }
 
 /** Internal implementation class */
 library class PatternParent extends PatternParent_ { }

@@ -7,12 +7,7 @@ import python
 /** A pattern in a match statement */
 class Pattern extends Pattern_, AstNode {
   /** Gets the scope of this pattern */
-  override Scope getScope() {
-    // TODO: Should it be defined as
-    //   py_scopes(this, result)
-    // instead?
-    result = this.getCase().getScope()
-  }
+  override Scope getScope() { result = this.getCase().getScope() }
 
   /** Gets the case statement containing this pattern */
   Case getCase() { result.contains(this) }

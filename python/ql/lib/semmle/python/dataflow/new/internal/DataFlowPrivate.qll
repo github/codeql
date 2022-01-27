@@ -1590,8 +1590,8 @@ import IterableUnpacking
  *  case ('quit' as c) | ('go', ('up'|'down') as c):
  *   ...body
  * ```
- * `command` is the subject of the as-pattern, while the second component of `command` is the subject
- * of the first capture pattern. As such, 'subject' refers to the pattern under evaluation.
+ * `command` is the subject of first the as-pattern, while the second component of `command`
+ * is the subject of the second as-pattern. As such, 'subject' refers to the pattern under evaluation.
  *
  * - as pattern: subject flows to alias as well as to the interior pattern
  * - or pattern: subject flows to each alternative
