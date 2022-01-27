@@ -40,8 +40,8 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, Expr taintSource, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, string taintCause, SensitiveExpr dest
+  ToBufferConfiguration config, BufferWrite::BufferWrite w, Expr taintSource,
+  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string taintCause, SensitiveExpr dest
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   taintSource = exprForNode(sourceNode.getNode()) and
