@@ -36,7 +36,6 @@ jobs:
         with:
           repository: github/codeql
           path: codeql-pr
-          ref: ${{ github.sha }}
       - name: Clone github/codeql from main
         uses: actions/checkout@v2
         with:
