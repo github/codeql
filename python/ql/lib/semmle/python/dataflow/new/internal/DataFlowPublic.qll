@@ -485,7 +485,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 }
 
 /**
- * A synthetic node representing elemnt content of a star pattern.
+ * A synthetic node representing element content of a star pattern.
  */
 class StarPatternElementNode extends Node, TStarPatternElementNode {
   CfgNode consumer;

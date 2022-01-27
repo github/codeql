@@ -1563,7 +1563,7 @@ import IterableUnpacking
  * There are a number of patterns available for the match statement.
  * Each one transfers data and content differently to its parts.
  *
- * Furthermore, given a successful match, we can infer some daa about
+ * Furthermore, given a successful match, we can infer some data about
  * the subject. Consider the example:
  * ```python
  * match choice:
@@ -1581,7 +1581,7 @@ import IterableUnpacking
  * By the binding rules, there is data flow from `choice` to `c`. But we
  * can infer the value of `c` to be either `'y'` or `'Y'` if the match succeeds.
  *
- * We will treat such inference separately as guards. First we will model the data flow
+ * We will treat such inferences separately as guards. First we will model the data flow
  * stemming from the bindings and the matching of shape. Below, 'subject' is not necessarily the
  * top-level subject of the match, but rather the part recursively matched by the current pattern.
  * For instance, in the example:
@@ -1696,7 +1696,7 @@ module MatchUnpacking {
    * syntax (toplevel): `case *var:`
    *
    * We decompose this flow into a read step and a store step. The read step
-   * reads both tupe and list content, the store step only stores list content.
+   * reads both tuple and list content, the store step only stores list content.
    * This way, we convert all content to list content.
    *
    * This is the read step.
@@ -1724,7 +1724,7 @@ module MatchUnpacking {
    * syntax (toplevel): `case *var:`
    *
    * We decompose this flow into a read step and a store step. The read step
-   * reads both tupe and list content, the store step only stores list content.
+   * reads both tuple and list content, the store step only stores list content.
    * This way, we convert all content to list content.
    *
    * This is the store step.
