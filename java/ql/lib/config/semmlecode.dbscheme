@@ -621,10 +621,14 @@ exprs(
   unique int id: @expr,
   int kind: int ref,
   int typeid: @type ref,
-  int kttypeid: @kt_type ref,
   int parent: @exprparent ref,
   int idx: int ref
 );
+
+exprsKotlinType(
+  unique int id: @expr ref,
+  int kttypeid: @kt_type ref
+)
 
 callableEnclosingExpr(
   unique int id: @expr ref,

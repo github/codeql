@@ -17,19 +17,19 @@ class Expr extends ExprParent, @expr {
   Callable getEnclosingCallable() { callableEnclosingExpr(this, result) }
 
   /** Gets the index of this expression as a child of its parent. */
-  int getIndex() { exprs(this, _, _, _, _, result) }
+  int getIndex() { exprs(this, _, _, _, result) }
 
   /** Gets the parent of this expression. */
-  ExprParent getParent() { exprs(this, _, _, _, result, _) }
+  ExprParent getParent() { exprs(this, _, _, result, _) }
 
   /** Holds if this expression is the child of the specified parent at the specified (zero-based) position. */
-  predicate isNthChildOf(ExprParent parent, int index) { exprs(this, _, _, _, parent, index) }
+  predicate isNthChildOf(ExprParent parent, int index) { exprs(this, _, _, parent, index) }
 
   /** Gets the type of this expression. */
-  Type getType() { exprs(this, _, result, _, _, _) }
+  Type getType() { exprs(this, _, result, _, _) }
 
   /** Gets the Kotlin type of this expression. */
-  KotlinType getKotlinType() { exprs(this, _, _, result, _, _) }
+  KotlinType getKotlinType() { exprsKotlinType(this, result) }
 
   /** Gets the compilation unit in which this expression occurs. */
   CompilationUnit getCompilationUnit() { result = this.getFile() }
@@ -47,7 +47,7 @@ class Expr extends ExprParent, @expr {
    * comparing whether two expressions have the same kind (as opposed
    * to checking whether an expression has a particular kind).
    */
-  int getKind() { exprs(this, result, _, _, _, _) }
+  int getKind() { exprs(this, result, _, _, _) }
 
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
@@ -59,7 +59,7 @@ class Expr extends ExprParent, @expr {
   Stmt getAnEnclosingStmt() { result = this.getEnclosingStmt().getEnclosingStmt*() }
 
   /** Gets a child of this expression. */
-  Expr getAChildExpr() { exprs(result, _, _, _, this, _) }
+  Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
   /** Gets the basic block in which this expression occurs, if any. */
   BasicBlock getBasicBlock() { result.getANode() = this }
@@ -1786,7 +1786,7 @@ class MethodAccess extends Expr, Call, @methodaccess {
   override Expr getAnArgument() { result.getIndex() >= 0 and result.getParent() = this }
 
   /** Gets the argument at the specified (zero-based) position in this method access. */
-  override Expr getArgument(int index) { exprs(result, _, _, _, this, index) and index >= 0 }
+  override Expr getArgument(int index) { exprs(result, _, _, this, index) and index >= 0 }
 
   /** Gets a type argument supplied as part of this method access, if any. */
   Expr getATypeArgument() { result.getIndex() <= -2 and result.getParent() = this }
