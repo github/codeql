@@ -62,7 +62,6 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
   override predicate hasSocketInput(FunctionInput input) { input.isParameterDeref(2) }
 }
 
-
 /**
  * The standard functions `gets`.
  */
@@ -104,9 +103,7 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
     description = "String read by " + this.getName()
   }
 
-  override predicate hasArrayWithUnknownSize(int bufParam) {
-    bufParam = 0
-  }
+  override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 }
