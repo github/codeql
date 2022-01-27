@@ -790,6 +790,9 @@ var BasicTypes = map[gotypes.BasicKind]*BranchType{
 // CompositeType is the type of all composite (that is, non-basic) types
 var CompositeType = NewUnionType("@compositetype")
 
+// TypeParamType is the type of type parameter types
+var TypeParamType = TypeKind.NewBranch("@typeparamtype", CompositeType)
+
 // ElementContainerType is the type of types that have elements, such as arrays
 // and channels
 var ElementContainerType = NewUnionType("@containertype", CompositeType)
@@ -1170,4 +1173,10 @@ var HasEllipsisTable = NewTable("has_ellipsis",
 // VariadicTable is the table describing which functions are variadic
 var VariadicTable = NewTable("variadic",
 	EntityColumn(SignatureType, "id"),
+)
+
+var TypeParamTable = NewTable("typeparam",
+	EntityColumn(TypeParamType, "tp").Unique(),
+	StringColumn("name"),
+	EntityColumn(CompositeType, "bound"),
 )

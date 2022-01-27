@@ -1464,6 +1464,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
 			}
+		case *types.TypeParam:
+			kind = dbscheme.TypeParamType.Index()
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), extractType(tw, tp.Constraint()))
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
@@ -1578,6 +1581,11 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				extractObject(tw, origintp.Obj(), entitylbl)
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
+		case *types.TypeParam:
+			constraint := extractType(tw, tp.Constraint())
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s},{%s};typeparamtype", tp.Obj().Name(), constraint))
+		default:
+			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
 		tw.Labeler.TypeLabels[tp] = lbl
 	}

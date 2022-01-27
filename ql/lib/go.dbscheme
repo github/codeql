@@ -225,6 +225,8 @@ has_ellipsis(int id: @callorconversionexpr ref);
 
 variadic(int id: @signaturetype ref);
 
+typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound: @compositetype ref);
+
 @container = @file | @folder;
 
 @locatable = @xmllocatable | @node | @localscope;
@@ -476,18 +478,19 @@ case @type.kind of
 | 23 = @complexliteraltype
 | 24 = @stringliteraltype
 | 25 = @nilliteraltype
-| 26 = @arraytype
-| 27 = @slicetype
-| 28 = @structtype
-| 29 = @pointertype
-| 30 = @interfacetype
-| 31 = @tupletype
-| 32 = @signaturetype
-| 33 = @maptype
-| 34 = @sendchantype
-| 35 = @recvchantype
-| 36 = @sendrcvchantype
-| 37 = @namedtype;
+| 26 = @typeparamtype
+| 27 = @arraytype
+| 28 = @slicetype
+| 29 = @structtype
+| 30 = @pointertype
+| 31 = @interfacetype
+| 32 = @tupletype
+| 33 = @signaturetype
+| 34 = @maptype
+| 35 = @sendchantype
+| 36 = @recvchantype
+| 37 = @sendrcvchantype
+| 38 = @namedtype;
 
 @basictype = @booltype | @numerictype | @stringtype | @literaltype | @invalidtype | @unsafepointertype;
 
@@ -510,7 +513,8 @@ case @type.kind of
 @literaltype = @boolliteraltype | @intliteraltype | @runeliteraltype | @floatliteraltype | @complexliteraltype
              | @stringliteraltype | @nilliteraltype;
 
-@compositetype = @containertype | @structtype | @pointertype | @interfacetype | @tupletype | @signaturetype | @namedtype;
+@compositetype = @typeparamtype | @containertype | @structtype | @pointertype | @interfacetype | @tupletype
+               | @signaturetype | @namedtype;
 
 @containertype = @arraytype | @slicetype | @maptype | @chantype;
 
