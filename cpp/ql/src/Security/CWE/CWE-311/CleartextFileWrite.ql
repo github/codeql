@@ -65,6 +65,7 @@ where
   midNode.getNode().asExpr() = mid and
   mid = w.getASource() and
   dest = w.getDest() and
+  not dest.(VariableAccess).getTarget().getName() = ["stdin", "stdout", "stderr"] and // exclude calls with standard streams
   not isFileName(globalValueNumber(source)) and // file names are not passwords
   not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
 select w, sourceNode, midNode,
