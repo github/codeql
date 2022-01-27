@@ -1529,7 +1529,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   VarAccess getAnAccess() { variableBinding(result, this.getVariable()) }
 
   /** Gets the local variable declared by this local variable declaration expression. */
-  LocalVariableDecl getVariable() { localvars(result, _, _, _, this) }
+  LocalVariableDecl getVariable() { localvars(result, _, _, this) }
 
   /** Gets the type access of this local variable declaration expression. */
   Expr getTypeAccess() {

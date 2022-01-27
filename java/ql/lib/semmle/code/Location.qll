@@ -34,7 +34,7 @@ predicate hasName(Element e, string name) {
     name = "p" + pos
   )
   or
-  localvars(e, name, _, _, _)
+  localvars(e, name, _, _)
   or
   typeVars(e, name, _, _, _)
   or

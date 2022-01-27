@@ -406,7 +406,7 @@ fields(
 fieldsKotlinType(
   unique int id: @field ref,
   int kttypeid: @kt_type ref
-)
+);
 
 constrs(
   unique int id: @constructor,
@@ -420,7 +420,7 @@ constrs(
 constrsKotlinType(
   unique int id: @constructor ref,
   int kttypeid: @kt_type ref
-)
+);
 
 methods(
   unique int id: @method,
@@ -434,7 +434,7 @@ methods(
 methodsKotlinType(
   unique int id: @method ref,
   int kttypeid: @kt_type ref
-)
+);
 
 #keyset[parentid,pos]
 params(
@@ -448,7 +448,7 @@ params(
 paramsKotlinType(
   unique int id: @param ref,
   int kttypeid: @kt_type ref
-)
+);
 
 paramName(
   unique int id: @param ref,
@@ -644,7 +644,7 @@ exprs(
 exprsKotlinType(
   unique int id: @expr ref,
   int kttypeid: @kt_type ref
-)
+);
 
 callableEnclosingExpr(
   unique int id: @expr ref,
@@ -856,8 +856,12 @@ localvars(
   unique int id: @localvar,
   string nodeName: string ref,
   int typeid: @type ref,
-  int kttypeid: @kt_type ref,
   int parentid: @localvariabledeclexpr ref
+);
+
+localvarsKotlinType(
+  unique int id: @localvar ref,
+  int kttypeid: @kt_type ref
 );
 
 @namedexprorstmt = @breakstmt

@@ -38,16 +38,16 @@ class LocalScopeVariable extends Variable, @localscopevariable {
 /** A local variable declaration */
 class LocalVariableDecl extends @localvar, LocalScopeVariable {
   /** Gets the type of this local variable. */
-  override Type getType() { localvars(this, _, result, _, _) }
+  override Type getType() { localvars(this, _, result, _) }
 
   /** Gets the Kotlin type of this local variable. */
-  override KotlinType getKotlinType() { localvars(this, _, _, result, _) }
+  override KotlinType getKotlinType() { localvarsKotlinType(this, result) }
 
   /** Gets the expression declaring this variable. */
-  LocalVariableDeclExpr getDeclExpr() { localvars(this, _, _, _, result) }
+  LocalVariableDeclExpr getDeclExpr() { localvars(this, _, _, result) }
 
   /** Gets the parent of this declaration. */
-  Expr getParent() { localvars(this, _, _, _, result) }
+  Expr getParent() { localvars(this, _, _, result) }
 
   /** Gets the callable in which this declaration occurs. */
   override Callable getCallable() { result = this.getParent().getEnclosingCallable() }
