@@ -14,17 +14,9 @@
 import cpp
 import semmle.code.cpp.security.BufferWrite as BufferWrite
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.security.Security
+import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
-
-Expr exprForNode(DataFlow::Node n) {
-  n = DataFlow::exprNode(result)
-  or
-  // (similar to DefaultTaintTracking's `getNodeForExpr`)
-  n = DataFlow::definitionByReferenceNodeFromArgument(result) and
-  not argv(result.(VariableAccess).getTarget())
-}
 
 /**
  * Taint flow from user input to a buffer write.
@@ -32,7 +24,7 @@ Expr exprForNode(DataFlow::Node n) {
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(exprForNode(source), _) }
+  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
@@ -40,14 +32,13 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, Expr taintSource,
-  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string taintCause, SensitiveExpr dest
+  ToBufferConfiguration config, BufferWrite::BufferWrite w, DataFlow::PathNode sourceNode,
+  DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
 where
   config.hasFlowPath(sourceNode, sinkNode) and
-  taintSource = exprForNode(sourceNode.getNode()) and
+  sourceNode.getNode() = source and
   w.getASource() = sinkNode.getNode().asExpr() and
-  isUserInput(taintSource, taintCause) and
   dest = w.getDest()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@",
-  taintSource, "user input (" + taintCause + ")"
+  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "user input (" + source.getSourceType() + ")"
