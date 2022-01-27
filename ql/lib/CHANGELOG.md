@@ -1,3 +1,13 @@
+## 0.0.7
+
+### Deprecated APIs
+
+* The `codeql/go-upgrades` CodeQL pack has been removed. All database upgrade scripts have been merged into the `codeql/go-all` CodeQL pack.
+
+### Bug Fixes
+
+* `Function`'s predicate `getACall` now returns more results in some situations. It now always returns callers that may call a method indirectly via an interface method that it implements. Previously this only happened if the method was in the source code being analysed.
+
 ## 0.0.6
 
 ## 0.0.5
