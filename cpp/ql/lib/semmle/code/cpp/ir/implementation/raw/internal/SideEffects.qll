@@ -112,6 +112,45 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
 }
 
 /**
+ * A `Call` or `NewOrNewArrayExpr`.
+ *
+ * Both kinds of expression invoke a function as part of their evaluation. This class provides a
+ * way to treat both kinds of function similarly, and to get the invoked `Function`.
+ */
+class CallOrAllocationExpr extends Expr {
+  CallOrAllocationExpr() {
+    this instanceof Call
+    or
+    this instanceof NewOrNewArrayExpr
+  }
+
+  /** Gets the `Function` invoked by this expression, if known. */
+  final Function getTarget() {
+    result = this.(Call).getTarget()
+    or
+    result = this.(NewOrNewArrayExpr).getAllocator()
+  }
+}
+
+/**
+ * Returns the side effect opcode, if any, that represents any side effects not specifically modeled
+ * by an argument side effect.
+ */
+Opcode getCallSideEffectOpcode(CallOrAllocationExpr expr) {
+  not exists(expr.getTarget().(SideEffectFunction)) and result instanceof Opcode::CallSideEffect
+  or
+  exists(SideEffectFunction sideEffectFunction |
+    sideEffectFunction = expr.getTarget() and
+    if not sideEffectFunction.hasOnlySpecificWriteSideEffects()
+    then result instanceof Opcode::CallSideEffect
+    else (
+      not sideEffectFunction.hasOnlySpecificReadSideEffects() and
+      result instanceof Opcode::CallReadSideEffect
+    )
+  )
+}
+
+/**
  * Returns a side effect opcode for parameter index `i` of the specified call.
  *
  * This predicate will return at most two results: one read side effect, and one write side effect.

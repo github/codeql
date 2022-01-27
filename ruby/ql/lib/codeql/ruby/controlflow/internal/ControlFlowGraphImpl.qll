@@ -986,10 +986,6 @@ module Trees {
 
   private class GlobalVariableTree extends LeafTree, GlobalVariableAccess { }
 
-  private class HashLiteralTree extends StandardPostOrderTree, HashLiteral {
-    final override ControlFlowTree getChildElement(int i) { result = this.getElement(i) }
-  }
-
   private class HashSplatNilParameterTree extends LeafTree, HashSplatNilParameter { }
 
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }

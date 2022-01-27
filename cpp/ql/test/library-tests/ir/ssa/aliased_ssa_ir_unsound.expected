@@ -1392,13 +1392,13 @@ ssa.cpp:
 #  294|     v294_25(void)           = Call[A]                         : func:r294_9, this:r294_8, 0:r294_16
 #  294|     m294_26(unknown)        = ^CallSideEffect                 : ~m294_22
 #  294|     m294_27(unknown)        = Chi                             : total:m294_22, partial:m294_26
-#  294|     m294_28(A)              = ^IndirectMayWriteSideEffect[-1] : &:r294_8
-#  294|     m294_29(unknown)        = Chi                             : total:m294_7, partial:m294_28
-#  294|     v294_30(void)           = ^BufferReadSideEffect[0]        : &:r294_16, ~m294_24
+#  294|     v294_28(void)           = ^BufferReadSideEffect[0]        : &:r294_16, ~m294_24
+#  294|     m294_29(A)              = ^IndirectMayWriteSideEffect[-1] : &:r294_8
+#  294|     m294_30(unknown)        = Chi                             : total:m294_7, partial:m294_29
 #  294|     m294_31(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r294_16
 #  294|     m294_32(unknown)        = Chi                             : total:m294_24, partial:m294_31
 #  294|     r294_33(glval<int>)     = FieldAddress[i]                 : r294_8
-#  294|     r294_34(int)            = Load[?]                         : &:r294_33, ~m294_29
+#  294|     r294_34(int)            = Load[?]                         : &:r294_33, ~m294_30
 #  294|     m294_35(int)            = Store[j]                        : &:r294_1, r294_34
 #  295|     r295_1(glval<A *>)      = VariableAddress[a]              : 
 #  295|     r295_2(glval<unknown>)  = FunctionAddress[operator new]   : 
