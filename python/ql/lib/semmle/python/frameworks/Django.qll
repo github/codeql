@@ -577,6 +577,38 @@ module PrivateDjango {
         }
 
         /**
+         * Provides models for the `django.db.models.FileField` class and `ImageField` subclasses.
+         *
+         * See
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ImageField
+         */
+        module FileField {
+          /** Gets a reference to the `flask.views.View` class or any subclass. */
+          API::Node subclassRef() {
+            exists(string className | className in ["FileField", "ImageField"] |
+              // commonly used alias
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember(className)
+                    .getASubclass*()
+              or
+              // actual class definition
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember("fields")
+                    .getMember("files")
+                    .getMember(className)
+                    .getASubclass*()
+            )
+          }
+        }
+
+        /**
          * Gets a reference to the Manager (django.db.models.Manager) for a django Model,
          * accessed by `<ModelName>.objects`.
          */
@@ -2233,6 +2265,34 @@ module PrivateDjango {
 
     override string getSourceType() {
       result = "django routed param from self.args/kwargs in View class"
+    }
+  }
+
+  /**
+   * A parameter that accepts the filename used to upload a file. This is the second
+   * parameter in functions used for the `upload_to` argument to a `FileField`.
+   *
+   * See
+   *  - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
+   *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
+   */
+  private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
+    DataFlow::ParameterNode {
+    DjangoFileFieldUploadToFunctionFilenameParam() {
+      exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
+        this.getParameter() = func.getArg(1) and
+        call = django::db::models::FileField::subclassRef().getACall() and
+        (
+          uploadToArg = call.getArg(2)
+          or
+          uploadToArg = call.getArgByName("upload_to")
+        ) and
+        uploadToArg = poorMansFunctionTracker(func)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django filename parameter to function used in FileField.upload_to"
     }
   }
 
