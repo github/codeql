@@ -894,7 +894,7 @@ module TestOutput {
             p
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString()
           )
       ).toString()
   }
