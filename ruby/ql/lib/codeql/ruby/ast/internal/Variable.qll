@@ -3,6 +3,7 @@ private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter
+private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.internal.Synthesis
 
@@ -28,6 +29,18 @@ predicate explicitAssignmentNode(Ruby::AstNode n, Ruby::AstNode assignment) {
 
 /** Holds if `n` is inside an implicit assignment. */
 predicate implicitAssignmentNode(Ruby::AstNode n) {
+  casePattern(n) and n instanceof Ruby::Identifier
+  or
+  n = any(Ruby::AsPattern p).getName()
+  or
+  n = any(Ruby::ArrayPattern parent).getChild(_).(Ruby::SplatParameter).getName()
+  or
+  n = any(Ruby::FindPattern parent).getChild(_).(Ruby::SplatParameter).getName()
+  or
+  n = any(Ruby::HashPattern parent).getChild(_).(Ruby::HashSplatParameter).getName()
+  or
+  n = any(Ruby::KeywordPattern parent | not exists(parent.getValue())).getKey()
+  or
   n = any(Ruby::ExceptionVariable ev).getChild()
   or
   n = any(Ruby::For for).getPattern()
@@ -93,11 +106,23 @@ private predicate scopeDefinesParameterVariable(
   )
 }
 
+pragma[nomagic]
+private string variableNameInScope(Ruby::AstNode i, Scope::Range scope) {
+  scope = scopeOf(i) and
+  (
+    result = i.(Ruby::Identifier).getValue()
+    or
+    exists(Ruby::KeywordPattern p | i = p.getKey() and not exists(p.getValue()) |
+      result = i.(Ruby::String).getChild(0).(Ruby::StringContent).getValue() or
+      result = i.(Ruby::HashKeySymbol).getValue()
+    )
+  )
+}
+
 /** Holds if `name` is assigned in `scope` at `i`. */
-private predicate scopeAssigns(Scope::Range scope, string name, Ruby::Identifier i) {
+private predicate scopeAssigns(Scope::Range scope, string name, Ruby::AstNode i) {
   (explicitAssignmentNode(i, _) or implicitAssignmentNode(i)) and
-  name = i.getValue() and
-  scope = scopeOf(i)
+  name = variableNameInScope(i, scope)
 }
 
 cached
@@ -121,11 +146,11 @@ private module Cached {
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TLocalVariableReal(Scope::Range scope, string name, Ruby::Identifier i) {
+    TLocalVariableReal(Scope::Range scope, string name, Ruby::AstNode i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
       i =
-        min(Ruby::Identifier other |
+        min(Ruby::AstNode other |
           scopeAssigns(scope, name, other)
         |
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
@@ -176,6 +201,8 @@ private module Cached {
     i = any(Ruby::Call x).getReceiver()
     or
     i = any(Ruby::Case x).getValue()
+    or
+    i = any(Ruby::CaseMatch x).getValue()
     or
     i = any(Ruby::Class x).getChild(_)
     or
@@ -282,13 +309,18 @@ private module Cached {
     i = any(Ruby::WhileModifier x).getBody()
   }
 
+  pragma[nomagic]
+  private predicate hasScopeAndName(VariableReal variable, Scope::Range scope, string name) {
+    variable.getNameImpl() = name and
+    scope = variable.getDeclaringScopeImpl()
+  }
+
   cached
-  predicate access(Ruby::Identifier access, VariableReal variable) {
-    exists(string name |
-      variable.getNameImpl() = name and
-      name = access.getValue()
+  predicate access(Ruby::AstNode access, VariableReal variable) {
+    exists(string name, Scope::Range scope |
+      pragma[only_bind_into](name) = variableNameInScope(access, scope)
     |
-      variable.getDeclaringScopeImpl() = scopeOf(access) and
+      hasScopeAndName(variable, scope, name) and
       not access.getLocation().strictlyBefore(variable.getLocationImpl()) and
       // In case of overlapping parameter names, later parameters should not
       // be considered accesses to the first parameter
@@ -297,15 +329,15 @@ private module Cached {
       else any()
       or
       exists(Scope::Range declScope |
-        variable.getDeclaringScopeImpl() = declScope and
-        inherits(scopeOf(access), name, declScope)
+        hasScopeAndName(variable, declScope, pragma[only_bind_into](name)) and
+        inherits(scope, name, declScope)
       )
     )
   }
 
   private class Access extends Ruby::Token {
     Access() {
-      access(this, _) or
+      access(this.(Ruby::Identifier), _) or
       this instanceof Ruby::GlobalVariable or
       this instanceof Ruby::InstanceVariable or
       this instanceof Ruby::ClassVariable or
@@ -358,7 +390,7 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
     (
       scopeDefinesParameterVariable(outer, name, _)
       or
-      exists(Ruby::Identifier i |
+      exists(Ruby::AstNode i |
         scopeAssigns(outer, name, i) and
         i.getLocation().strictlyBefore(scope.getLocation())
       )
@@ -407,7 +439,7 @@ private class VariableRealAdapter extends VariableImpl, TVariableReal instanceof
 class LocalVariableReal extends VariableReal, TLocalVariableReal {
   private Scope::Range scope;
   private string name;
-  private Ruby::Identifier i;
+  private Ruby::AstNode i;
 
   LocalVariableReal() { this = TLocalVariableReal(scope, name, i) }
 
@@ -498,11 +530,10 @@ module LocalVariableAccess {
   predicate range(Ruby::Identifier id, TLocalVariableReal v) {
     access(id, v) and
     (
-      explicitWriteAccess(id, _)
-      or
-      implicitWriteAccess(id)
-      or
-      vcall(id)
+      explicitWriteAccess(id, _) or
+      implicitWriteAccess(id) or
+      vcall(id) or
+      id = any(Ruby::VariableReferencePattern vr).getName()
     )
   }
 }

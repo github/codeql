@@ -59,7 +59,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
     or
     // class Bar < Foo
     exists(ActiveRecordModelClass other |
-      other.getModule() = resolveScopeExpr(this.getSuperclassExpr())
+      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
     )
   }
 
@@ -101,7 +101,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
 
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveScopeExpr(this.getReceiver())
+    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
     or
     // e.g. Foo.joins(:bars).where(...)
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
@@ -147,9 +147,7 @@ private Expr sqlFragmentArgument(MethodCall call) {
 // part of an argument to an SQL executing method
 private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
   // Literals containing an interpolated value
-  exists(StringInterpolationComponent interpolated |
-    interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
-  )
+  sqlFragmentExpr.(StringlikeLiteral).getComponent(_) instanceof StringInterpolationComponent
   or
   // String concatenations
   sqlFragmentExpr instanceof AddExpr
@@ -278,7 +276,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
   ActiveRecordModelFinderCall() {
     call = this.asExpr().getExpr() and
     recv = getUltimateReceiver(call) and
-    resolveConstant(recv) = cls.getQualifiedName() and
+    resolveConstant(recv) = cls.getAQualifiedName() and
     call.getMethodName() = finderMethodName()
   }
 

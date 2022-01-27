@@ -21,7 +21,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var @event = EventSymbol;
             if (@event is null)
             {
-                Context.ModelError(Symbol, "Unhandled event accessor associated symbol");
+                var type = Symbol.AssociatedSymbol?.GetType().ToString() ?? "null";
+                Context.ModelError(Symbol, $"Unhandled event accessor associated symbol of type {type}");
                 return;
             }
 

@@ -17,3 +17,13 @@ module.exports.closure = require("./closure")
 module.exports.func = function (conf) {
 	return require("./indirect")
 }
+
+function id (x) {
+	return x;
+}
+module.exports.id = id;
+
+module.exports.safe = function (x) {
+	var y = id("safe");
+	/f*g/.test(y); // OK
+}

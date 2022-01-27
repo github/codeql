@@ -1,6 +1,27 @@
 private import codeql.ruby.ast.Literal as AST
 private import codeql.Locations
 private import ParseRegExp
+import codeql.Locations
+
+/**
+ * Holds if `term` is an ecape class representing e.g. `\d`.
+ * `clazz` is which character class it represents, e.g. "d" for `\d`.
+ */
+predicate isEscapeClass(RegExpTerm term, string clazz) {
+  exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+  or
+  // TODO: expand to cover more properties
+  exists(RegExpNamedCharacterProperty escape | term = escape |
+    escape.getName().toLowerCase() = "digit" and
+    if escape.isInverted() then clazz = "D" else clazz = "d"
+    or
+    escape.getName().toLowerCase() = "space" and
+    if escape.isInverted() then clazz = "S" else clazz = "s"
+    or
+    escape.getName().toLowerCase() = "word" and
+    if escape.isInverted() then clazz = "W" else clazz = "w"
+  )
+}
 
 /**
  * Holds if the regular expression should not be considered.
@@ -441,8 +462,8 @@ private int toHex(string hex) {
 /**
  * A word boundary, that is, a regular expression term of the form `\b`.
  */
-class RegExpWordBoundary extends RegExpEscape {
-  RegExpWordBoundary() { this.getUnescaped() = "b" }
+class RegExpWordBoundary extends RegExpSpecialChar {
+  RegExpWordBoundary() { this.getChar() = "\\b" }
 }
 
 /**

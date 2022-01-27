@@ -14,8 +14,8 @@ namespace System
         public class CancelEventArgs : System.EventArgs
         {
             public bool Cancel { get => throw null; set => throw null; }
-            public CancelEventArgs(bool cancel) => throw null;
             public CancelEventArgs() => throw null;
+            public CancelEventArgs(bool cancel) => throw null;
         }
 
         // Generated from `System.ComponentModel.IChangeTracking` in `System.ComponentModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

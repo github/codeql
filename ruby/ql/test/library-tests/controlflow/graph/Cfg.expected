@@ -103,16 +103,22 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] then ...
 
 #    9| self
-#-----|  -> "elements nil"
+#-----|  -> elements nil
 
 #    9| [ensure: raise] self
-#-----|  -> [ensure: raise] "elements nil"
+#-----|  -> [ensure: raise] elements nil
 
 #    9| "elements nil"
 #-----|  -> call to puts
 
 #    9| [ensure: raise] "elements nil"
 #-----|  -> [ensure: raise] call to puts
+
+#    9| elements nil
+#-----|  -> "elements nil"
+
+#    9| [ensure: raise] elements nil
+#-----|  -> [ensure: raise] "elements nil"
 
 #   13| enter m2
 #-----|  -> x
@@ -222,13 +228,13 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] then ...
 
 #   21| self
-#-----|  -> "y nil"
+#-----|  -> y nil
 
 #   21| [ensure: break] self
-#-----|  -> [ensure: break] "y nil"
+#-----|  -> [ensure: break] y nil
 
 #   21| [ensure: raise] self
-#-----|  -> [ensure: raise] "y nil"
+#-----|  -> [ensure: raise] y nil
 
 #   21| "y nil"
 #-----|  -> call to puts
@@ -238,6 +244,15 @@ break_ensure.rb:
 
 #   21| [ensure: raise] "y nil"
 #-----|  -> [ensure: raise] call to puts
+
+#   21| y nil
+#-----|  -> "y nil"
+
+#   21| [ensure: break] y nil
+#-----|  -> [ensure: break] "y nil"
+
+#   21| [ensure: raise] y nil
+#-----|  -> [ensure: raise] "y nil"
 
 #   27| enter m3
 #-----|  -> x
@@ -322,10 +337,13 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] ... < ...
 
 #   33| do ...
+#-----|  -> y
 
 #   33| [ensure: return] do ...
+#-----|  -> [ensure: return] y
 
 #   33| [ensure: raise] do ...
+#-----|  -> [ensure: raise] y
 
 #   35| if ...
 #-----|  -> do ...
@@ -379,10 +397,13 @@ break_ensure.rb:
 #-----|  -> exit m3 (normal)
 
 #   41| self
-#-----|  -> "Done"
+#-----|  -> Done
 
 #   41| "Done"
 #-----|  -> call to puts
+
+#   41| Done
+#-----|  -> "Done"
 
 #   44| enter m4
 #-----|  -> x
@@ -483,13 +504,13 @@ break_ensure.rb:
 
 case.rb:
 #    1| enter if_in_case
-#-----|  -> case ...
+#-----|  -> self
 
 #    1| enter case.rb
 #-----|  -> if_in_case
 
 #    1| if_in_case
-#-----|  -> exit case.rb (normal)
+#-----|  -> case_match
 
 #    1| exit if_in_case
 
@@ -502,7 +523,7 @@ case.rb:
 #-----|  -> exit case.rb
 
 #    2| case ...
-#-----|  -> self
+#-----|  -> exit if_in_case (normal)
 
 #    2| call to x1
 #-----|  -> when ...
@@ -518,7 +539,7 @@ case.rb:
 #-----| match -> self
 
 #    3| then ...
-#-----|  -> exit if_in_case (normal)
+#-----|  -> case ...
 
 #    3| ( ... )
 #-----|  -> then ...
@@ -540,29 +561,860 @@ case.rb:
 #-----|  -> then ...
 
 #    3| self
-#-----|  -> "x2"
+#-----|  -> x2
 
 #    3| "x2"
 #-----|  -> call to puts
+
+#    3| x2
+#-----|  -> "x2"
 
 #    4| when ...
 #-----|  -> 2
 
 #    4| 2
+#-----| no-match -> case ...
 #-----| match -> self
-#-----| no-match -> exit if_in_case (normal)
 
 #    4| then ...
-#-----|  -> exit if_in_case (normal)
+#-----|  -> case ...
 
 #    4| call to puts
 #-----|  -> then ...
 
 #    4| self
-#-----|  -> "2"
+#-----|  -> 2
 
 #    4| "2"
 #-----|  -> call to puts
+
+#    4| 2
+#-----|  -> "2"
+
+#    8| enter case_match
+#-----|  -> value
+
+#    8| case_match
+#-----|  -> case_match_no_match
+
+#    8| exit case_match
+
+#    8| exit case_match (normal)
+#-----|  -> exit case_match
+
+#    8| value
+#-----|  -> value
+
+#    9| case ...
+#-----|  -> exit case_match (normal)
+
+#    9| value
+#-----|  -> in ... then ...
+
+#   10| in ... then ...
+#-----|  -> 0
+
+#   10| 0
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   11| in ... then ...
+#-----|  -> 1
+
+#   11| 1
+#-----| no-match -> in ... then ...
+#-----| match -> 3
+
+#   11| then ...
+#-----|  -> case ...
+
+#   11| 3
+#-----|  -> then ...
+
+#   12| in ... then ...
+#-----|  -> 2
+
+#   12| 2
+#-----| no-match -> in ... then ...
+#-----| match -> 4
+
+#   12| then ...
+#-----|  -> case ...
+
+#   13| 4
+#-----|  -> then ...
+
+#   14| in ... then ...
+#-----|  -> x
+
+#   14| x
+#-----| match -> x
+
+#   14| ... == ...
+#-----| false -> in ... then ...
+#-----| true -> 6
+
+#   14| x
+#-----|  -> 5
+
+#   14| 5
+#-----|  -> ... == ...
+
+#   14| then ...
+#-----|  -> case ...
+
+#   14| 6
+#-----|  -> then ...
+
+#   15| in ... then ...
+#-----|  -> x
+
+#   15| x
+#-----| match -> x
+
+#   15| ... < ...
+#-----| false -> 7
+#-----| true -> 8
+
+#   15| x
+#-----|  -> 0
+
+#   15| 0
+#-----|  -> ... < ...
+
+#   15| then ...
+#-----|  -> case ...
+
+#   15| 7
+#-----|  -> then ...
+
+#   16| else ...
+#-----|  -> case ...
+
+#   16| 8
+#-----|  -> else ...
+
+#   20| enter case_match_no_match
+#-----|  -> value
+
+#   20| case_match_no_match
+#-----|  -> case_match_raise
+
+#   20| exit case_match_no_match
+
+#   20| exit case_match_no_match (abnormal)
+#-----|  -> exit case_match_no_match
+
+#   20| exit case_match_no_match (normal)
+#-----|  -> exit case_match_no_match
+
+#   20| value
+#-----|  -> value
+
+#   21| case ...
+#-----|  -> exit case_match_no_match (normal)
+
+#   21| value
+#-----|  -> in ... then ...
+
+#   22| in ... then ...
+#-----|  -> 1
+
+#   22| 1
+#-----| match -> case ...
+#-----| raise -> exit case_match_no_match (abnormal)
+
+#   26| enter case_match_raise
+#-----|  -> value
+
+#   26| case_match_raise
+#-----|  -> case_match_array
+
+#   26| exit case_match_raise
+
+#   26| exit case_match_raise (abnormal)
+#-----|  -> exit case_match_raise
+
+#   26| exit case_match_raise (normal)
+#-----|  -> exit case_match_raise
+
+#   26| value
+#-----|  -> value
+
+#   27| case ...
+#-----|  -> exit case_match_raise (normal)
+
+#   27| value
+#-----|  -> in ... then ...
+
+#   28| in ... then ...
+#-----|  -> -> { ... }
+
+#   28| enter -> { ... }
+#-----|  -> x
+
+#   28| -> { ... }
+#-----| match -> case ...
+#-----| raise -> exit case_match_raise (abnormal)
+
+#   28| exit -> { ... }
+
+#   28| exit -> { ... } (abnormal)
+#-----|  -> exit -> { ... }
+
+#   28| x
+#-----|  -> self
+
+#   28| call to raise
+#-----| raise -> exit -> { ... } (abnormal)
+
+#   28| self
+#-----|  -> oops
+
+#   28| "oops"
+#-----|  -> call to raise
+
+#   28| oops
+#-----|  -> "oops"
+
+#   32| enter case_match_array
+#-----|  -> value
+
+#   32| case_match_array
+#-----|  -> case_match_find
+
+#   32| exit case_match_array
+
+#   32| exit case_match_array (abnormal)
+#-----|  -> exit case_match_array
+
+#   32| exit case_match_array (normal)
+#-----|  -> exit case_match_array
+
+#   32| value
+#-----|  -> value
+
+#   33| case ...
+#-----|  -> exit case_match_array (normal)
+
+#   33| value
+#-----|  -> in ... then ...
+
+#   34| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   34| [ ..., * ]
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   35| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   35| [ ..., * ]
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   35| x
+#-----| match -> case ...
+
+#   36| in ... then ...
+#-----|  -> [ ..., * ]
+
+#   36| [ ..., * ]
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   36| x
+#-----| match -> case ...
+
+#   37| in ... then ...
+#-----|  -> Bar
+
+#   37| [ ..., * ]
+#-----| match -> a
+#-----| raise -> exit case_match_array (abnormal)
+
+#   37| Bar
+#-----| match -> [ ..., * ]
+#-----| raise -> exit case_match_array (abnormal)
+
+#   37| a
+#-----| match -> b
+
+#   37| b
+#-----| match -> c
+
+#   37| c
+#-----|  -> d
+
+#   37| d
+#-----| match -> e
+
+#   37| e
+#-----| match -> case ...
+
+#   41| enter case_match_find
+#-----|  -> value
+
+#   41| case_match_find
+#-----|  -> case_match_hash
+
+#   41| exit case_match_find
+
+#   41| exit case_match_find (abnormal)
+#-----|  -> exit case_match_find
+
+#   41| exit case_match_find (normal)
+#-----|  -> exit case_match_find
+
+#   41| value
+#-----|  -> value
+
+#   42| case ...
+#-----|  -> exit case_match_find (normal)
+
+#   42| value
+#-----|  -> in ... then ...
+
+#   43| in ... then ...
+#-----|  -> [ *,...,* ]
+
+#   43| [ *,...,* ]
+#-----| match -> x
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| x
+#-----|  -> 1
+
+#   43| 1
+#-----| match -> 2
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| 2
+#-----| match -> y
+#-----| raise -> exit case_match_find (abnormal)
+
+#   43| y
+#-----|  -> case ...
+
+#   47| enter case_match_hash
+#-----|  -> value
+
+#   47| case_match_hash
+#-----|  -> case_match_variable
+
+#   47| exit case_match_hash
+
+#   47| exit case_match_hash (abnormal)
+#-----|  -> exit case_match_hash
+
+#   47| exit case_match_hash (normal)
+#-----|  -> exit case_match_hash
+
+#   47| value
+#-----|  -> value
+
+#   48| case ...
+#-----|  -> exit case_match_hash (normal)
+
+#   48| value
+#-----|  -> in ... then ...
+
+#   49| in ... then ...
+#-----|  -> Foo
+
+#   49| { ..., ** }
+#-----| no-match -> in ... then ...
+#-----| match -> 1
+
+#   49| Foo
+#-----|  -> Bar
+
+#   49| Bar
+#-----| match -> { ..., ** }
+#-----| no-match -> in ... then ...
+
+#   49| 1
+#-----| no-match -> in ... then ...
+#-----| match -> a
+
+#   49| a
+#-----| match -> rest
+
+#   49| rest
+#-----|  -> case ...
+
+#   50| in ... then ...
+#-----|  -> Bar
+
+#   50| { ..., ** }
+#-----| no-match -> in ... then ...
+#-----| match -> 1
+
+#   50| Bar
+#-----| match -> { ..., ** }
+#-----| no-match -> in ... then ...
+
+#   50| 1
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   51| in ... then ...
+#-----|  -> Bar
+
+#   51| { ..., ** }
+#-----| match -> case ...
+#-----| raise -> exit case_match_hash (abnormal)
+
+#   51| Bar
+#-----| match -> { ..., ** }
+#-----| raise -> exit case_match_hash (abnormal)
+
+#   55| enter case_match_variable
+#-----|  -> value
+
+#   55| case_match_variable
+#-----|  -> case_match_underscore
+
+#   55| exit case_match_variable
+
+#   55| exit case_match_variable (normal)
+#-----|  -> exit case_match_variable
+
+#   55| value
+#-----|  -> value
+
+#   56| case ...
+#-----|  -> exit case_match_variable (normal)
+
+#   56| value
+#-----|  -> in ... then ...
+
+#   57| in ... then ...
+#-----|  -> 5
+
+#   57| 5
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   58| in ... then ...
+#-----|  -> var
+
+#   58| var
+#-----| match -> case ...
+
+#   63| enter case_match_underscore
+#-----|  -> value
+
+#   63| case_match_underscore
+#-----|  -> case_match_various
+
+#   63| exit case_match_underscore
+
+#   63| exit case_match_underscore (normal)
+#-----|  -> exit case_match_underscore
+
+#   63| value
+#-----|  -> value
+
+#   64| case ...
+#-----|  -> exit case_match_underscore (normal)
+
+#   64| value
+#-----|  -> in ... then ...
+
+#   65| in ... then ...
+#-----|  -> ... | ...
+
+#   65| ... | ...
+#-----|  -> 5
+
+#   65| 5
+#-----| match -> case ...
+#-----| no-match -> _
+
+#   65| _
+#-----| match -> case ...
+
+#   69| enter case_match_various
+#-----|  -> value
+
+#   69| case_match_various
+#-----|  -> case_match_guard_no_else
+
+#   69| exit case_match_various
+
+#   69| exit case_match_various (abnormal)
+#-----|  -> exit case_match_various
+
+#   69| exit case_match_various (normal)
+#-----|  -> exit case_match_various
+
+#   69| value
+#-----|  -> foo
+
+#   70| ... = ...
+#-----|  -> value
+
+#   70| foo
+#-----|  -> 42
+
+#   70| 42
+#-----|  -> ... = ...
+
+#   72| case ...
+#-----|  -> exit case_match_various (normal)
+
+#   72| value
+#-----|  -> in ... then ...
+
+#   73| in ... then ...
+#-----|  -> 5
+
+#   73| 5
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   74| in ... then ...
+#-----|  -> ^...
+
+#   74| ^...
+#-----|  -> foo
+
+#   74| foo
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   75| in ... then ...
+#-----|  -> string
+
+#   75| "string"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   75| string
+#-----|  -> "string"
+
+#   76| in ... then ...
+#-----|  -> Array
+
+#   76| call to []
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   76| Array
+#-----|  -> foo
+
+#   76| "foo"
+#-----|  -> bar
+
+#   76| foo
+#-----|  -> "foo"
+
+#   76| "bar"
+#-----|  -> call to []
+
+#   76| bar
+#-----|  -> "bar"
+
+#   77| in ... then ...
+#-----|  -> Array
+
+#   77| call to []
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   77| Array
+#-----|  -> foo
+
+#   77| :"foo"
+#-----|  -> bar
+
+#   77| foo
+#-----|  -> :"foo"
+
+#   77| :"bar"
+#-----|  -> call to []
+
+#   77| bar
+#-----|  -> :"bar"
+
+#   78| in ... then ...
+#-----|  -> .*abc[0-9]
+
+#   78| /.*abc[0-9]/
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   78| .*abc[0-9]
+#-----|  -> /.*abc[0-9]/
+
+#   79| in ... then ...
+#-----|  -> 5
+
+#   79| 5
+#-----|  -> 10
+
+#   79| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   79| 10
+#-----|  -> _ .. _
+
+#   80| in ... then ...
+#-----|  -> 10
+
+#   80| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   80| 10
+#-----|  -> _ .. _
+
+#   81| in ... then ...
+#-----|  -> 5
+
+#   81| 5
+#-----|  -> _ .. _
+
+#   81| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   82| in ... then ...
+#-----|  -> ... => ...
+
+#   82| ... => ...
+#-----|  -> 5
+
+#   82| 5
+#-----| no-match -> in ... then ...
+#-----| match -> x
+
+#   82| x
+#-----| match -> 1
+
+#   82| then ...
+#-----|  -> case ...
+
+#   82| 1
+#-----|  -> then ...
+
+#   83| in ... then ...
+#-----|  -> ... | ...
+
+#   83| ... | ...
+#-----|  -> 5
+
+#   83| 5
+#-----| match -> case ...
+#-----| no-match -> ^...
+
+#   83| ^...
+#-----|  -> foo
+
+#   83| foo
+#-----| match -> case ...
+#-----| no-match -> string
+
+#   83| "string"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   83| string
+#-----|  -> "string"
+
+#   84| in ... then ...
+#-----|  -> Foo
+
+#   84| Bar
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   84| Foo
+#-----|  -> Bar
+
+#   85| in ... then ...
+#-----|  -> -> { ... }
+
+#   85| enter -> { ... }
+#-----|  -> x
+
+#   85| -> { ... }
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   85| exit -> { ... }
+
+#   85| exit -> { ... } (normal)
+#-----|  -> exit -> { ... }
+
+#   85| x
+#-----|  -> x
+
+#   85| ... == ...
+#-----|  -> exit -> { ... } (normal)
+
+#   85| x
+#-----|  -> 10
+
+#   85| 10
+#-----|  -> ... == ...
+
+#   86| in ... then ...
+#-----|  -> :foo
+
+#   86| :foo
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   87| in ... then ...
+#-----|  -> foo bar
+
+#   87| :"foo bar"
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   87| foo bar
+#-----|  -> :"foo bar"
+
+#   88| in ... then ...
+#-----|  -> ... | ...
+
+#   88| ... | ...
+#-----|  -> 5
+
+#   88| - ...
+#-----| match -> case ...
+#-----| no-match -> 10
+
+#   88| 5
+#-----|  -> - ...
+
+#   88| + ...
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   88| 10
+#-----|  -> + ...
+
+#   89| in ... then ...
+#-----|  -> ... | ...
+
+#   89| ... | ...
+#-----|  -> nil
+
+#   89| nil
+#-----| match -> case ...
+#-----| no-match -> self
+
+#   89| self
+#-----| match -> case ...
+#-----| no-match -> true
+
+#   89| true
+#-----| match -> case ...
+#-----| no-match -> false
+
+#   89| false
+#-----| match -> case ...
+#-----| no-match -> __LINE__
+
+#   89| __LINE__
+#-----| match -> case ...
+#-----| no-match -> __FILE__
+
+#   89| __FILE__
+#-----| match -> case ...
+#-----| no-match -> __ENCODING__
+
+#   89| __ENCODING__
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   90| in ... then ...
+#-----|  -> ( ... )
+
+#   90| ( ... )
+#-----|  -> 1
+
+#   90| 1
+#-----|  -> _ .. _
+
+#   90| _ .. _
+#-----| match -> case ...
+#-----| no-match -> in ... then ...
+
+#   91| in ... then ...
+#-----|  -> ( ... )
+
+#   91| ( ... )
+#-----|  -> ... | ...
+
+#   91| ... | ...
+#-----|  -> 0
+
+#   91| 0
+#-----| match -> case ...
+#-----| no-match -> ""
+
+#   91| ""
+#-----| no-match -> [ ..., * ]
+#-----| match -> case ...
+
+#   91| [ ..., * ]
+#-----| no-match -> { ..., ** }
+#-----| match -> case ...
+
+#   91| { ..., ** }
+#-----| match -> case ...
+#-----| raise -> exit case_match_various (abnormal)
+
+#   95| enter case_match_guard_no_else
+#-----|  -> value
+
+#   95| case_match_guard_no_else
+#-----|  -> exit case.rb (normal)
+
+#   95| exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (abnormal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| exit case_match_guard_no_else (normal)
+#-----|  -> exit case_match_guard_no_else
+
+#   95| value
+#-----|  -> value
+
+#   96| case ...
+#-----|  -> exit case_match_guard_no_else (normal)
+
+#   96| value
+#-----|  -> in ... then ...
+
+#   97| in ... then ...
+#-----|  -> x
+
+#   97| x
+#-----| match -> x
+
+#   97| ... == ...
+#-----| true -> 6
+#-----| raise -> exit case_match_guard_no_else (abnormal)
+
+#   97| x
+#-----|  -> 5
+
+#   97| 5
+#-----|  -> ... == ...
+
+#   97| then ...
+#-----|  -> case ...
+
+#   97| 6
+#-----|  -> then ...
 
 cfg.html.erb:
 #    5| enter cfg.html.erb
@@ -580,28 +1432,37 @@ cfg.html.erb:
 #-----|  -> self
 
 #    6| self
-#-----|  -> "application"
+#-----|  -> application
 
 #    6| "application"
 #-----|  -> :media
+
+#    6| application
+#-----|  -> "application"
 
 #    6| Pair
 #-----|  -> call to stylesheet_link_tag
 
 #    6| :media
-#-----|  -> "all"
+#-----|  -> all
 
 #    6| "all"
 #-----|  -> Pair
+
+#    6| all
+#-----|  -> "all"
 
 #   12| call to link_to
 #-----|  -> self
 
 #   12| self
-#-----|  -> "A"
+#-----|  -> A
 
 #   12| "A"
 #-----|  -> self
+
+#   12| A
+#-----|  -> "A"
 
 #   12| call to a
 #-----|  -> :id
@@ -610,7 +1471,7 @@ cfg.html.erb:
 #-----|  -> call to a
 
 #   12| :id
-#-----|  -> "a"
+#-----|  -> a
 
 #   12| Pair
 #-----|  -> call to link_to
@@ -618,14 +1479,20 @@ cfg.html.erb:
 #   12| "a"
 #-----|  -> Pair
 
+#   12| a
+#-----|  -> "a"
+
 #   15| call to link_to
 #-----|  -> self
 
 #   15| self
-#-----|  -> "B"
+#-----|  -> B
 
 #   15| "B"
 #-----|  -> self
+
+#   15| B
+#-----|  -> "B"
 
 #   15| call to a
 #-----|  -> call to link_to
@@ -637,10 +1504,13 @@ cfg.html.erb:
 #-----|  -> self
 
 #   16| self
-#-----|  -> "C"
+#-----|  -> C
 
 #   16| "C"
 #-----|  -> self
+
+#   16| C
+#-----|  -> "C"
 
 #   16| call to b
 #-----|  -> call to link_to
@@ -665,10 +1535,13 @@ cfg.html.erb:
 #-----|  -> then ...
 
 #   19| self
-#-----|  -> "D"
+#-----|  -> D
 
 #   19| "D"
 #-----|  -> self
+
+#   19| D
+#-----|  -> "D"
 
 #   19| call to d
 #-----|  -> call to link_to
@@ -683,10 +1556,13 @@ cfg.html.erb:
 #-----|  -> else ...
 
 #   21| self
-#-----|  -> "E"
+#-----|  -> E
 
 #   21| "E"
 #-----|  -> self
+
+#   21| E
+#-----|  -> "E"
 
 #   21| call to e
 #-----|  -> call to link_to
@@ -760,10 +1636,13 @@ cfg.rb:
 #-----|  -> Array
 
 #    7| Array
-#-----|  -> b
+#-----|  -> one
 
 #    7| :"one#{...}"
-#-----|  -> :"another"
+#-----|  -> another
+
+#    7| one
+#-----|  -> b
 
 #    7| #{...}
 #-----|  -> :"one#{...}"
@@ -774,14 +1653,20 @@ cfg.rb:
 #    7| :"another"
 #-----|  -> call to []
 
+#    7| another
+#-----|  -> :"another"
+
 #    9| call to []
 #-----|  -> self
 
 #    9| Array
-#-----|  -> b
+#-----|  -> one
 
 #    9| "one#{...}"
-#-----|  -> "another"
+#-----|  -> another
+
+#    9| one
+#-----|  -> b
 
 #    9| #{...}
 #-----|  -> "one#{...}"
@@ -791,6 +1676,9 @@ cfg.rb:
 
 #    9| "another"
 #-----|  -> call to []
+
+#    9| another
+#-----|  -> "another"
 
 #   12| call to puts
 #-----|  -> END { ... }
@@ -808,10 +1696,13 @@ cfg.rb:
 #-----|  -> BEGIN { ... }
 
 #   16| self
-#-----|  -> "hello"
+#-----|  -> hello
 
 #   16| "hello"
 #-----|  -> call to puts
+
+#   16| hello
+#-----|  -> "hello"
 
 #   19| END { ... }
 #-----|  -> 41
@@ -911,7 +1802,7 @@ cfg.rb:
 #-----| false -> if ...
 
 #   39| call to puts
-#-----|  -> case ...
+#-----|  -> 10
 
 #   39| self
 #-----|  -> 42
@@ -920,7 +1811,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #   41| case ...
-#-----|  -> 10
+#-----|  -> when ...
 
 #   41| 10
 #-----|  -> when ...
@@ -939,10 +1830,13 @@ cfg.rb:
 #-----|  -> then ...
 
 #   42| self
-#-----|  -> "one"
+#-----|  -> one
 
 #   42| "one"
 #-----|  -> call to puts
+
+#   42| one
+#-----|  -> "one"
 
 #   43| when ...
 #-----|  -> 2
@@ -966,10 +1860,13 @@ cfg.rb:
 #-----|  -> then ...
 
 #   43| self
-#-----|  -> "some"
+#-----|  -> some
 
 #   43| "some"
 #-----|  -> call to puts
+
+#   43| some
+#-----|  -> "some"
 
 #   44| else ...
 #-----|  -> case ...
@@ -978,13 +1875,16 @@ cfg.rb:
 #-----|  -> else ...
 
 #   44| self
-#-----|  -> "many"
+#-----|  -> many
 
 #   44| "many"
 #-----|  -> call to puts
 
+#   44| many
+#-----|  -> "many"
+
 #   47| case ...
-#-----|  -> when ...
+#-----|  -> chained
 
 #   48| when ...
 #-----|  -> b
@@ -1000,16 +1900,19 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #   48| then ...
-#-----|  -> chained
+#-----|  -> case ...
 
 #   48| call to puts
 #-----|  -> then ...
 
 #   48| self
-#-----|  -> "one"
+#-----|  -> one
 
 #   48| "one"
 #-----|  -> call to puts
+
+#   48| one
+#-----|  -> "one"
 
 #   49| when ...
 #-----|  -> b
@@ -1025,7 +1928,7 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #   49| ... > ...
-#-----| false -> chained
+#-----| false -> case ...
 #-----| true -> self
 
 #   49| b
@@ -1035,28 +1938,37 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #   49| then ...
-#-----|  -> chained
+#-----|  -> case ...
 
 #   49| call to puts
 #-----|  -> then ...
 
 #   49| self
-#-----|  -> "some"
+#-----|  -> some
 
 #   49| "some"
 #-----|  -> call to puts
+
+#   49| some
+#-----|  -> "some"
 
 #   52| ... = ...
 #-----|  -> character
 
 #   52| chained
-#-----|  -> "a"
+#-----|  -> a
 
 #   52| "a"
 #-----|  -> chained
 
+#   52| "..." "..."
+#-----|  -> ... = ...
+
+#   52| a
+#-----|  -> "a"
+
 #   52| "#{...}"
-#-----|  -> "string"
+#-----|  -> string
 
 #   52| #{...}
 #-----|  -> "#{...}"
@@ -1065,7 +1977,10 @@ cfg.rb:
 #-----|  -> #{...}
 
 #   52| "string"
-#-----|  -> ... = ...
+#-----|  -> "..." "..."
+
+#   52| string
+#-----|  -> "string"
 
 #   54| ... = ...
 #-----|  -> Silly
@@ -1098,8 +2013,8 @@ cfg.rb:
 #-----|  -> self
 
 #   60| ... < ...
-#-----| true -> "hello"
-#-----| false -> "bye"
+#-----| true -> hello
+#-----| false -> bye
 
 #   60| ... ? ... : ...
 #-----|  -> ... = ...
@@ -1116,17 +2031,26 @@ cfg.rb:
 #   60| "hello"
 #-----|  -> ... ? ... : ...
 
+#   60| hello
+#-----|  -> "hello"
+
 #   60| "bye"
 #-----|  -> ... ? ... : ...
+
+#   60| bye
+#-----|  -> "bye"
 
 #   61| ... = ...
 #-----|  -> __synth__0
 
 #   61| C
-#-----|  -> "constant"
+#-----|  -> constant
 
 #   61| "constant"
 #-----|  -> ... = ...
+
+#   61| constant
+#-----|  -> "constant"
 
 #   62| ...
 #-----|  -> pattern
@@ -1149,11 +2073,11 @@ cfg.rb:
 #   62| call to []
 #-----|  -> * ...
 
-#   62| ...
-#-----|  -> ...
-
 #   62| 1
 #-----|  -> call to []
+
+#   62| ...
+#-----|  -> ...
 
 #   62| __synth__0
 #-----|  -> 1
@@ -1316,10 +2240,13 @@ cfg.rb:
 #-----|  -> exit print (normal)
 
 #   70| self
-#-----|  -> "silly"
+#-----|  -> silly
 
 #   70| "silly"
 #-----|  -> call to puts
+
+#   70| silly
+#-----|  -> "silly"
 
 #   74| ... = ...
 #-----|  -> x
@@ -1384,10 +2311,13 @@ cfg.rb:
 #-----|  -> else ...
 
 #   83| self
-#-----|  -> "ok"
+#-----|  -> ok
 
 #   83| "ok"
 #-----|  -> call to puts
+
+#   83| ok
+#-----|  -> "ok"
 
 #   84| ensure ...
 #-----|  -> escape
@@ -1396,25 +2326,34 @@ cfg.rb:
 #-----|  -> ensure ...
 
 #   85| self
-#-----|  -> "end"
+#-----|  -> end
 
 #   85| "end"
 #-----|  -> call to puts
+
+#   85| end
+#-----|  -> "end"
 
 #   88| ... = ...
 #-----|  -> Array
 
 #   88| escape
-#-----|  -> x
+#-----|  -> \u1234
 
 #   88| "\u1234#{...}\n"
 #-----|  -> ... = ...
 
+#   88| \u1234
+#-----|  -> x
+
 #   88| #{...}
-#-----|  -> "\u1234#{...}\n"
+#-----|  -> \n
 
 #   88| x
 #-----|  -> #{...}
+
+#   88| \n
+#-----|  -> "\u1234#{...}\n"
 
 #   90| enter { ... }
 #-----|  -> __synth__0__1
@@ -1495,49 +2434,70 @@ cfg.rb:
 #-----|  -> map2
 
 #   97| map1
-#-----|  -> "a"
+#-----|  -> Hash
 
-#   97| {...}
+#   97| call to []
 #-----|  -> ... = ...
 
+#   97| Hash
+#-----|  -> a
+
 #   97| Pair
-#-----|  -> "c"
+#-----|  -> c
 
 #   97| "a"
-#-----|  -> "b"
+#-----|  -> b
+
+#   97| a
+#-----|  -> "a"
 
 #   97| "b"
 #-----|  -> Pair
+
+#   97| b
+#-----|  -> "b"
 
 #   97| Pair
 #-----|  -> :e
 
 #   97| "c"
-#-----|  -> "d"
+#-----|  -> d
+
+#   97| c
+#-----|  -> "c"
 
 #   97| "d"
 #-----|  -> Pair
 
+#   97| d
+#-----|  -> "d"
+
 #   97| :e
-#-----|  -> "f"
+#-----|  -> f
 
 #   97| Pair
-#-----|  -> {...}
+#-----|  -> call to []
 
 #   97| "f"
 #-----|  -> Pair
+
+#   97| f
+#-----|  -> "f"
 
 #   98| ... = ...
 #-----|  -> parameters
 
 #   98| map2
-#-----|  -> map1
+#-----|  -> Hash
 
-#   98| {...}
+#   98| call to []
 #-----|  -> ... = ...
 
+#   98| Hash
+#-----|  -> map1
+
 #   98| ** ...
-#-----|  -> "x"
+#-----|  -> x
 
 #   98| map1
 #-----|  -> ** ...
@@ -1546,13 +2506,19 @@ cfg.rb:
 #-----|  -> map1
 
 #   98| "x"
-#-----|  -> "y"
+#-----|  -> y
+
+#   98| x
+#-----|  -> "x"
 
 #   98| "y"
 #-----|  -> Pair
 
+#   98| y
+#-----|  -> "y"
+
 #   98| ** ...
-#-----|  -> {...}
+#-----|  -> call to []
 
 #   98| map1
 #-----|  -> ** ...
@@ -1606,43 +2572,76 @@ cfg.rb:
 #-----|  -> table
 
 #  106| type
-#-----|  -> "healthy"
+#-----|  -> healthy
 
 #  106| "healthy"
 #-----|  -> ... = ...
+
+#  106| healthy
+#-----|  -> "healthy"
 
 #  107| ... = ...
 #-----|  -> self
 
 #  107| table
-#-----|  -> "food"
+#-----|  -> food
 
 #  107| "food"
 #-----|  -> ... = ...
+
+#  107| food
+#-----|  -> "food"
 
 #  108| call to puts
 #-----|  -> b
 
 #  108| self
-#-----|  -> <<SQL
+#-----|  -> 
+#-----| SELECT * FROM 
 
 #  108| ( ... )
 #-----|  -> call to puts
 
 #  108| <<SQL
+#-----|  -> ( ... )
+
+#  108| 
+#  108| SELECT * FROM 
 #-----|  -> table
 
 #  109| #{...}
-#-----|  -> type
+#-----|  ->  
 
 #  109| table
 #-----|  -> #{...}
 
+#  109|  
+#-----|  -> \n
+
+#  109| \n
+#-----|  -> 
+#-----| WHERE 
+
+#  109| 
+#  109| WHERE 
+#-----|  -> type
+
 #  110| #{...}
-#-----|  -> ( ... )
+#-----|  ->  = true 
 
 #  110| type
 #-----|  -> #{...}
+
+#  110|  = true 
+#-----|  -> \n
+
+#  110| \n
+#-----|  -> 
+#-----| 
+
+#  110| 
+#  110| 
+#-----|  -> <<SQL
 
 #  113| call to puts
 #-----|  -> ... if ...
@@ -1651,10 +2650,13 @@ cfg.rb:
 #-----|  -> C
 
 #  113| self
-#-----|  -> "hi"
+#-----|  -> hi
 
 #  113| "hi"
 #-----|  -> call to puts
+
+#  113| hi
+#-----|  -> "hi"
 
 #  113| ... > ...
 #-----| false -> ... if ...
@@ -1825,16 +2827,28 @@ cfg.rb:
 #-----|  -> Constant
 
 #  129| regex
-#-----|  -> range
+#-----|  -> hello
 
 #  129| /hello\s+[#{...}]/
 #-----|  -> ... = ...
 
+#  129| hello
+#-----|  -> \s
+
+#  129| \s
+#-----|  -> +[
+
+#  129| +[
+#-----|  -> range
+
 #  129| #{...}
-#-----|  -> /hello\s+[#{...}]/
+#-----|  -> ]
 
 #  129| range
 #-----|  -> #{...}
+
+#  129| ]
+#-----|  -> /hello\s+[#{...}]/
 
 #  130| ... = ...
 #-----|  -> EmptyClass
@@ -1849,29 +2863,32 @@ cfg.rb:
 #-----|  -> EmptyModule
 
 #  134| EmptyModule
-#-----|  -> ... rescue ...
+#-----|  -> 1
 
 #  136| ... / ...
+#-----|  -> ... rescue ...
 #-----| raise -> self
-#-----|  -> __synth__0
 
 #  136| 1
 #-----|  -> 0
 
 #  136| ... rescue ...
-#-----|  -> 1
+#-----|  -> __synth__0
 
 #  136| 0
 #-----|  -> ... / ...
 
 #  136| call to puts
-#-----|  -> __synth__0
+#-----|  -> ... rescue ...
 
 #  136| self
-#-----|  -> "div by zero"
+#-----|  -> div by zero
 
 #  136| "div by zero"
 #-----|  -> call to puts
+
+#  136| div by zero
+#-----|  -> "div by zero"
 
 #  138| ...
 #-----|  -> M
@@ -1912,6 +2929,9 @@ cfg.rb:
 #  138| __synth__0
 #-----|  -> -1
 
+#  138| ..., ...
+#-----|  -> * ...
+
 #  138| 1
 #-----|  -> 2
 
@@ -1928,7 +2948,7 @@ cfg.rb:
 #-----|  -> 3
 
 #  138| 3
-#-----|  -> * ...
+#-----|  -> ..., ...
 
 #  140| M
 #-----|  -> Constant
@@ -1972,10 +2992,13 @@ cfg.rb:
 #-----|  -> self
 
 #  146| self
-#-----|  -> "singleton"
+#-----|  -> singleton
 
 #  146| "singleton"
 #-----|  -> call to puts
+
+#  146| singleton
+#-----|  -> "singleton"
 
 #  147| call to puts
 #-----|  -> exit print (normal)
@@ -2069,19 +3092,25 @@ cfg.rb:
 #-----|  -> symbol
 
 #  160| scriptfile
-#-----|  -> self
+#-----|  -> cat "
 
 #  160| `cat "#{...}"`
 #-----|  -> ... = ...
 
+#  160| cat "
+#-----|  -> self
+
 #  160| #{...}
-#-----|  -> `cat "#{...}"`
+#-----|  -> "
 
 #  160| call to __FILE__
 #-----|  -> #{...}
 
 #  160| self
 #-----|  -> call to __FILE__
+
+#  160| "
+#-----|  -> `cat "#{...}"`
 
 #  162| ... = ...
 #-----|  -> delimited_symbol
@@ -2096,10 +3125,13 @@ cfg.rb:
 #-----|  -> x
 
 #  164| delimited_symbol
-#-----|  -> 12
+#-----|  -> goodbye-
 
 #  164| :"goodbye-#{...}"
 #-----|  -> ... = ...
+
+#  164| goodbye-
+#-----|  -> 12
 
 #  164| #{...}
 #-----|  -> :"goodbye-#{...}"
@@ -2172,10 +3204,13 @@ cfg.rb:
 #-----|  -> then ...
 
 #  172| self
-#-----|  -> "hi"
+#-----|  -> hi
 
 #  172| "hi"
 #-----|  -> call to puts
+
+#  172| hi
+#-----|  -> "hi"
 
 #  172| else ...
 #-----|  -> unless ...
@@ -2184,10 +3219,13 @@ cfg.rb:
 #-----|  -> else ...
 
 #  172| self
-#-----|  -> "bye"
+#-----|  -> bye
 
 #  172| "bye"
 #-----|  -> call to puts
+
+#  172| bye
+#-----|  -> "bye"
 
 #  174| call to puts
 #-----|  -> ... unless ...
@@ -2196,10 +3234,13 @@ cfg.rb:
 #-----|  -> x
 
 #  174| self
-#-----|  -> "hi"
+#-----|  -> hi
 
 #  174| "hi"
 #-----|  -> call to puts
+
+#  174| hi
+#-----|  -> "hi"
 
 #  174| ... == ...
 #-----| true -> ... unless ...
@@ -2246,10 +3287,13 @@ cfg.rb:
 #-----|  -> do ...
 
 #  176| self
-#-----|  -> "hello"
+#-----|  -> hello
 
 #  176| "hello"
 #-----|  -> call to puts
+
+#  176| hello
+#-----|  -> "hello"
 
 #  178| ... = ...
 #-----|  -> i
@@ -2270,10 +3314,13 @@ cfg.rb:
 #-----|  -> i
 
 #  179| self
-#-----|  -> "hello"
+#-----|  -> hello
 
 #  179| "hello"
 #-----|  -> call to puts
+
+#  179| hello
+#-----|  -> "hello"
 
 #  179| i
 #-----|  -> i
@@ -2375,10 +3422,13 @@ cfg.rb:
 #-----|  -> i
 
 #  188| self
-#-----|  -> "hello"
+#-----|  -> hello
 
 #  188| "hello"
 #-----|  -> call to puts
+
+#  188| hello
+#-----|  -> "hello"
 
 #  188| i
 #-----|  -> i
@@ -2478,6 +3528,9 @@ cfg.rb:
 #-----|  -> b
 
 #  197| b
+#-----|  -> ...
+
+#  197| ...
 #-----|  -> call to bar
 
 desugar.rb:
@@ -2834,11 +3887,11 @@ desugar.rb:
 #   22| call to []
 #-----|  -> ... = ...
 
-#   22| ...
-#-----|  -> ...
-
 #   22| -1
 #-----|  -> call to []
+
+#   22| ...
+#-----|  -> ...
 
 #   22| __synth__0
 #-----|  -> -1
@@ -2914,11 +3967,11 @@ desugar.rb:
 #   26| call to []
 #-----|  -> * ...
 
-#   26| ...
-#-----|  -> ...
-
 #   26| 1
 #-----|  -> call to []
+
+#   26| ...
+#-----|  -> ...
 
 #   26| __synth__0
 #-----|  -> 1
@@ -3119,10 +4172,13 @@ exit.rb:
 #-----|  -> exit m1 (normal)
 
 #    5| self
-#-----|  -> "x <= 2"
+#-----|  -> x <= 2
 
 #    5| "x <= 2"
 #-----|  -> call to puts
+
+#    5| x <= 2
+#-----|  -> "x <= 2"
 
 #    8| enter m2
 #-----|  -> x
@@ -3158,19 +4214,25 @@ exit.rb:
 #-----| exit -> exit m2 (abnormal)
 
 #   10| self
-#-----|  -> "abort!"
+#-----|  -> abort!
 
 #   10| "abort!"
 #-----|  -> call to abort
+
+#   10| abort!
+#-----|  -> "abort!"
 
 #   12| call to puts
 #-----|  -> exit m2 (normal)
 
 #   12| self
-#-----|  -> "x <= 2"
+#-----|  -> x <= 2
 
 #   12| "x <= 2"
 #-----|  -> call to puts
+
+#   12| x <= 2
+#-----|  -> "x <= 2"
 
 heredoc.rb:
 #    1| enter double_heredoc
@@ -3196,13 +4258,27 @@ heredoc.rb:
 #-----|  -> exit double_heredoc (normal)
 
 #    2| self
-#-----|  -> <<A
+#-----|  -> 
+#-----|     hello
+#-----| 
 
 #    2| <<A
-#-----|  -> <<A
+#-----|  -> 
+#-----|    world
+#-----| 
 
 #    2| <<A
 #-----|  -> call to puts
+
+#    2| 
+#    2|     hello
+#    2| 
+#-----|  -> <<A
+
+#    4| 
+#    4|    world
+#    4| 
+#-----|  -> <<A
 
 ifs.rb:
 #    1| enter m1
@@ -3247,10 +4323,13 @@ ifs.rb:
 #-----|  -> then ...
 
 #    3| self
-#-----|  -> "x is greater than 2"
+#-----|  -> x is greater than 2
 
 #    3| "x is greater than 2"
 #-----|  -> call to puts
+
+#    3| x is greater than 2
+#-----|  -> "x is greater than 2"
 
 #    4| elsif ...
 #-----|  -> if ...
@@ -3316,10 +4395,13 @@ ifs.rb:
 #-----|  -> then ...
 
 #    5| self
-#-----|  -> "x is 1"
+#-----|  -> x is 1
 
 #    5| "x is 1"
 #-----|  -> call to puts
+
+#    5| x is 1
+#-----|  -> "x is 1"
 
 #    6| else ...
 #-----|  -> elsif ...
@@ -3328,10 +4410,13 @@ ifs.rb:
 #-----|  -> else ...
 
 #    7| self
-#-----|  -> "I can't guess the number"
+#-----|  -> I can't guess the number
 
 #    7| "I can't guess the number"
 #-----|  -> call to puts
+
+#    7| I can't guess the number
+#-----|  -> "I can't guess the number"
 
 #   11| enter m2
 #-----|  -> b
@@ -3472,10 +4557,10 @@ ifs.rb:
 #-----| return -> exit m4 (normal)
 
 #   29| [false] ( ... )
-#-----| false -> "!b2 || !b3"
+#-----| false -> !b2 || !b3
 
 #   29| [true] ( ... )
-#-----| true -> "b2 || b3"
+#-----| true -> b2 || b3
 
 #   29| ... ? ... : ...
 #-----|  -> return
@@ -3501,8 +4586,14 @@ ifs.rb:
 #   29| "b2 || b3"
 #-----|  -> ... ? ... : ...
 
+#   29| b2 || b3
+#-----|  -> "b2 || b3"
+
 #   29| "!b2 || !b3"
 #-----|  -> ... ? ... : ...
+
+#   29| !b2 || !b3
+#-----|  -> "!b2 || !b3"
 
 #   32| enter m5
 #-----|  -> b1
@@ -3534,10 +4625,10 @@ ifs.rb:
 #-----|  -> exit m5 (normal)
 
 #   33| [false] ( ... )
-#-----| false -> "!b2 || !b4 || !b5"
+#-----| false -> !b2 || !b4 || !b5
 
 #   33| [true] ( ... )
-#-----| true -> "b2 || b4 || b5"
+#-----| true -> b2 || b4 || b5
 
 #   33| [false] if ...
 #-----| false -> [false] ( ... )
@@ -3595,11 +4686,17 @@ ifs.rb:
 #   33| "b2 || b4 || b5"
 #-----|  -> then ...
 
+#   33| b2 || b4 || b5
+#-----|  -> "b2 || b4 || b5"
+
 #   33| else ...
 #-----|  -> if ...
 
 #   33| "!b2 || !b4 || !b5"
 #-----|  -> else ...
+
+#   33| !b2 || !b4 || !b5
+#-----|  -> "!b2 || !b4 || !b5"
 
 #   36| enter conditional_method_def
 #-----|  -> self
@@ -3619,10 +4716,13 @@ ifs.rb:
 #-----|  -> exit conditional_method_def (normal)
 
 #   37| self
-#-----|  -> "bla"
+#-----|  -> bla
 
 #   37| "bla"
 #-----|  -> call to puts
+
+#   37| bla
+#-----|  -> "bla"
 
 #   38| ... == ...
 #-----| false -> conditional_method_def
@@ -3658,7 +4758,7 @@ ifs.rb:
 #-----|  -> b
 
 #   46| empty_else
-#-----|  -> exit ifs.rb (normal)
+#-----|  -> disjunct
 
 #   46| exit empty_else
 
@@ -3672,6 +4772,7 @@ ifs.rb:
 #-----|  -> self
 
 #   47| b
+#-----| false -> else ...
 #-----| true -> self
 
 #   47| then ...
@@ -3681,19 +4782,83 @@ ifs.rb:
 #-----|  -> then ...
 
 #   48| self
-#-----|  -> "true"
+#-----|  -> true
 
 #   48| "true"
 #-----|  -> call to puts
+
+#   48| true
+#-----|  -> "true"
+
+#   49| else ...
+#-----|  -> if ...
 
 #   51| call to puts
 #-----|  -> exit empty_else (normal)
 
 #   51| self
-#-----|  -> "done"
+#-----|  -> done
 
 #   51| "done"
 #-----|  -> call to puts
+
+#   51| done
+#-----|  -> "done"
+
+#   54| enter disjunct
+#-----|  -> b1
+
+#   54| disjunct
+#-----|  -> exit ifs.rb (normal)
+
+#   54| exit disjunct
+
+#   54| exit disjunct (normal)
+#-----|  -> exit disjunct
+
+#   54| b1
+#-----|  -> b2
+
+#   54| b2
+#-----|  -> b1
+
+#   55| if ...
+#-----|  -> exit disjunct (normal)
+
+#   55| [false] ( ... )
+#-----| false -> if ...
+
+#   55| [true] ( ... )
+#-----| true -> self
+
+#   55| [false] ... || ...
+#-----| false -> [false] ( ... )
+
+#   55| [true] ... || ...
+#-----| true -> [true] ( ... )
+
+#   55| b1
+#-----| true -> [true] ... || ...
+#-----| false -> b2
+
+#   55| b2
+#-----| false -> [false] ... || ...
+#-----| true -> [true] ... || ...
+
+#   55| then ...
+#-----|  -> if ...
+
+#   56| call to puts
+#-----|  -> then ...
+
+#   56| self
+#-----|  -> b1 or b2
+
+#   56| "b1 or b2"
+#-----|  -> call to puts
+
+#   56| b1 or b2
+#-----|  -> "b1 or b2"
 
 loops.rb:
 #    1| enter m1
@@ -3864,19 +5029,25 @@ loops.rb:
 #-----|  -> do ...
 
 #   19| self
-#-----|  -> "Iter"
+#-----|  -> Iter
 
 #   19| "Iter"
 #-----|  -> call to puts
+
+#   19| Iter
+#-----|  -> "Iter"
 
 #   21| call to puts
 #-----|  -> exit m2 (normal)
 
 #   21| self
-#-----|  -> "Done"
+#-----|  -> Done
 
 #   21| "Done"
 #-----|  -> call to puts
+
+#   21| Done
+#-----|  -> "Done"
 
 #   24| enter m3
 #-----|  -> Array
@@ -3951,6 +5122,7 @@ loops.rb:
 #-----|  -> exit m4 (normal)
 
 #   31| ... < ...
+#-----| true -> do ...
 #-----| false -> while ...
 
 #   31| x
@@ -3958,6 +5130,9 @@ loops.rb:
 
 #   31| y
 #-----|  -> ... < ...
+
+#   31| do ...
+#-----|  -> x
 
 raise.rb:
 #    1| enter raise.rb
@@ -4014,19 +5189,25 @@ raise.rb:
 #-----| raise -> exit m1 (abnormal)
 
 #    9| self
-#-----|  -> "x > 2"
+#-----|  -> x > 2
 
 #    9| "x > 2"
 #-----|  -> call to raise
+
+#    9| x > 2
+#-----|  -> "x > 2"
 
 #   11| call to puts
 #-----|  -> exit m1 (normal)
 
 #   11| self
-#-----|  -> "x <= 2"
+#-----|  -> x <= 2
 
 #   11| "x <= 2"
 #-----|  -> call to puts
+
+#   11| x <= 2
+#-----|  -> "x <= 2"
 
 #   14| enter m2
 #-----|  -> b
@@ -4053,7 +5234,7 @@ raise.rb:
 #-----| true -> self
 
 #   17| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   17| self
 #-----|  -> ExceptionA
@@ -4062,32 +5243,38 @@ raise.rb:
 #-----|  -> call to raise
 
 #   19| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   19| ExceptionA
 #-----| match -> self
 #-----| raise -> exit m2 (abnormal)
 
 #   19| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   20| call to puts
 #-----|  -> then ...
 
 #   20| self
-#-----|  -> "Rescued"
+#-----|  -> Rescued
 
 #   20| "Rescued"
 #-----|  -> call to puts
+
+#   20| Rescued
+#-----|  -> "Rescued"
 
 #   22| call to puts
 #-----|  -> exit m2 (normal)
 
 #   22| self
-#-----|  -> "End m2"
+#-----|  -> End m2
 
 #   22| "End m2"
 #-----|  -> call to puts
+
+#   22| End m2
+#-----|  -> "End m2"
 
 #   25| enter m3
 #-----|  -> b
@@ -4111,7 +5298,7 @@ raise.rb:
 #-----| true -> self
 
 #   28| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> self
 
 #   28| self
 #-----|  -> ExceptionA
@@ -4123,25 +5310,31 @@ raise.rb:
 #-----|  -> self
 
 #   30| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   31| call to puts
 #-----|  -> then ...
 
 #   31| self
-#-----|  -> "Rescued"
+#-----|  -> Rescued
 
 #   31| "Rescued"
 #-----|  -> call to puts
+
+#   31| Rescued
+#-----|  -> "Rescued"
 
 #   33| call to puts
 #-----|  -> exit m3 (normal)
 
 #   33| self
-#-----|  -> "End m3"
+#-----|  -> End m3
 
 #   33| "End m3"
 #-----|  -> call to puts
+
+#   33| End m3
+#-----|  -> "End m3"
 
 #   36| enter m4
 #-----|  -> b
@@ -4165,7 +5358,7 @@ raise.rb:
 #-----| true -> self
 
 #   39| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   39| self
 #-----|  -> ExceptionA
@@ -4174,31 +5367,37 @@ raise.rb:
 #-----|  -> call to raise
 
 #   41| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   41| e
 #-----|  -> self
 
 #   41| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   42| call to puts
 #-----|  -> then ...
 
 #   42| self
-#-----|  -> "Rescued {e}"
+#-----|  -> Rescued {e}
 
 #   42| "Rescued {e}"
 #-----|  -> call to puts
+
+#   42| Rescued {e}
+#-----|  -> "Rescued {e}"
 
 #   44| call to puts
 #-----|  -> exit m4 (normal)
 
 #   44| self
-#-----|  -> "End m4"
+#-----|  -> End m4
 
 #   44| "End m4"
 #-----|  -> call to puts
+
+#   44| End m4
+#-----|  -> "End m4"
 
 #   47| enter m5
 #-----|  -> b
@@ -4222,7 +5421,7 @@ raise.rb:
 #-----| true -> self
 
 #   50| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> e
 
 #   50| self
 #-----|  -> ExceptionA
@@ -4231,19 +5430,22 @@ raise.rb:
 #-----|  -> call to raise
 
 #   52| rescue ...
-#-----|  -> e
+#-----|  -> self
 
 #   52| e
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   54| call to puts
 #-----|  -> exit m5 (normal)
 
 #   54| self
-#-----|  -> "End m5"
+#-----|  -> End m5
 
 #   54| "End m5"
 #-----|  -> call to puts
+
+#   54| End m5
+#-----|  -> "End m5"
 
 #   57| enter m6
 #-----|  -> b
@@ -4270,7 +5472,7 @@ raise.rb:
 #-----| true -> self
 
 #   60| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #   60| self
 #-----|  -> ExceptionA
@@ -4279,7 +5481,7 @@ raise.rb:
 #-----|  -> call to raise
 
 #   62| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #   62| ExceptionA
 #-----| no-match -> ExceptionB
@@ -4293,25 +5495,31 @@ raise.rb:
 #-----|  -> self
 
 #   62| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #   63| call to puts
 #-----|  -> then ...
 
 #   63| self
-#-----|  -> "Rescued {e}"
+#-----|  -> Rescued {e}
 
 #   63| "Rescued {e}"
 #-----|  -> call to puts
+
+#   63| Rescued {e}
+#-----|  -> "Rescued {e}"
 
 #   65| call to puts
 #-----|  -> exit m6 (normal)
 
 #   65| self
-#-----|  -> "End m6"
+#-----|  -> End m6
 
 #   65| "End m6"
 #-----|  -> call to puts
+
+#   65| End m6
+#-----|  -> "End m6"
 
 #   68| enter m7
 #-----|  -> x
@@ -4348,17 +5556,20 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #   70| self
-#-----|  -> "x > 2"
+#-----|  -> x > 2
 
 #   70| "x > 2"
 #-----|  -> call to raise
+
+#   70| x > 2
+#-----|  -> "x > 2"
 
 #   71| elsif ...
 #-----|  -> if ...
 
 #   71| ... < ...
 #-----| false -> elsif ...
-#-----| true -> "x < 0"
+#-----| true -> x < 0
 #-----| raise -> [ensure: raise] self
 
 #   71| x
@@ -4373,15 +5584,21 @@ raise.rb:
 #   72| "x < 0"
 #-----|  -> return
 
+#   72| x < 0
+#-----|  -> "x < 0"
+
 #   74| call to puts
 #-----|  -> self
 #-----| raise -> [ensure: raise] self
 
 #   74| self
-#-----|  -> "0 <= x <= 2"
+#-----|  -> 0 <= x <= 2
 
 #   74| "0 <= x <= 2"
 #-----|  -> call to puts
+
+#   74| 0 <= x <= 2
+#-----|  -> "0 <= x <= 2"
 
 #   75| ensure ...
 #-----|  -> exit m7 (normal)
@@ -4402,13 +5619,13 @@ raise.rb:
 #-----|  -> [ensure: raise] ensure ...
 
 #   76| self
-#-----|  -> "ensure"
+#-----|  -> ensure
 
 #   76| [ensure: return] self
-#-----|  -> [ensure: return] "ensure"
+#-----|  -> [ensure: return] ensure
 
 #   76| [ensure: raise] self
-#-----|  -> [ensure: raise] "ensure"
+#-----|  -> [ensure: raise] ensure
 
 #   76| "ensure"
 #-----|  -> call to puts
@@ -4418,6 +5635,15 @@ raise.rb:
 
 #   76| [ensure: raise] "ensure"
 #-----|  -> [ensure: raise] call to puts
+
+#   76| ensure
+#-----|  -> "ensure"
+
+#   76| [ensure: return] ensure
+#-----|  -> [ensure: return] "ensure"
+
+#   76| [ensure: raise] ensure
+#-----|  -> [ensure: raise] "ensure"
 
 #   79| enter m8
 #-----|  -> x
@@ -4440,10 +5666,13 @@ raise.rb:
 #-----|  -> x
 
 #   80| self
-#-----|  -> "Begin m8"
+#-----|  -> Begin m8
 
 #   80| "Begin m8"
 #-----|  -> call to puts
+
+#   80| Begin m8
+#-----|  -> "Begin m8"
 
 #   82| if ...
 #-----|  -> self
@@ -4463,17 +5692,20 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #   83| self
-#-----|  -> "x > 2"
+#-----|  -> x > 2
 
 #   83| "x > 2"
 #-----|  -> call to raise
+
+#   83| x > 2
+#-----|  -> "x > 2"
 
 #   84| elsif ...
 #-----|  -> if ...
 
 #   84| ... < ...
 #-----| false -> elsif ...
-#-----| true -> "x < 0"
+#-----| true -> x < 0
 #-----| raise -> [ensure: raise] self
 
 #   84| x
@@ -4488,15 +5720,21 @@ raise.rb:
 #   85| "x < 0"
 #-----|  -> return
 
+#   85| x < 0
+#-----|  -> "x < 0"
+
 #   87| call to puts
 #-----|  -> self
 #-----| raise -> [ensure: raise] self
 
 #   87| self
-#-----|  -> "0 <= x <= 2"
+#-----|  -> 0 <= x <= 2
 
 #   87| "0 <= x <= 2"
 #-----|  -> call to puts
+
+#   87| 0 <= x <= 2
+#-----|  -> "0 <= x <= 2"
 
 #   88| ensure ...
 #-----|  -> self
@@ -4517,13 +5755,13 @@ raise.rb:
 #-----|  -> [ensure: raise] ensure ...
 
 #   89| self
-#-----|  -> "ensure"
+#-----|  -> ensure
 
 #   89| [ensure: return] self
-#-----|  -> [ensure: return] "ensure"
+#-----|  -> [ensure: return] ensure
 
 #   89| [ensure: raise] self
-#-----|  -> [ensure: raise] "ensure"
+#-----|  -> [ensure: raise] ensure
 
 #   89| "ensure"
 #-----|  -> call to puts
@@ -4534,14 +5772,26 @@ raise.rb:
 #   89| [ensure: raise] "ensure"
 #-----|  -> [ensure: raise] call to puts
 
+#   89| ensure
+#-----|  -> "ensure"
+
+#   89| [ensure: return] ensure
+#-----|  -> [ensure: return] "ensure"
+
+#   89| [ensure: raise] ensure
+#-----|  -> [ensure: raise] "ensure"
+
 #   91| call to puts
 #-----|  -> exit m8 (normal)
 
 #   91| self
-#-----|  -> "End m8"
+#-----|  -> End m8
 
 #   91| "End m8"
 #-----|  -> call to puts
+
+#   91| End m8
+#-----|  -> "End m8"
 
 #   94| enter m9
 #-----|  -> x
@@ -4571,10 +5821,13 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #   95| self
-#-----|  -> "Begin m9"
+#-----|  -> Begin m9
 
 #   95| "Begin m9"
 #-----|  -> call to puts
+
+#   95| Begin m9
+#-----|  -> "Begin m9"
 
 #   97| if ...
 #-----|  -> self
@@ -4594,17 +5847,20 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #   98| self
-#-----|  -> "x > 2"
+#-----|  -> x > 2
 
 #   98| "x > 2"
 #-----|  -> call to raise
+
+#   98| x > 2
+#-----|  -> "x > 2"
 
 #   99| elsif ...
 #-----|  -> if ...
 
 #   99| ... < ...
 #-----| false -> elsif ...
-#-----| true -> "x < 0"
+#-----| true -> x < 0
 #-----| raise -> [ensure: raise] self
 
 #   99| x
@@ -4619,15 +5875,21 @@ raise.rb:
 #  100| "x < 0"
 #-----|  -> return
 
+#  100| x < 0
+#-----|  -> "x < 0"
+
 #  102| call to puts
 #-----|  -> self
 #-----| raise -> [ensure: raise] self
 
 #  102| self
-#-----|  -> "0 <= x <= 2"
+#-----|  -> 0 <= x <= 2
 
 #  102| "0 <= x <= 2"
 #-----|  -> call to puts
+
+#  102| 0 <= x <= 2
+#-----|  -> "0 <= x <= 2"
 
 #  103| ensure ...
 #-----|  -> self
@@ -4651,13 +5913,13 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #  104| self
-#-----|  -> "outer ensure"
+#-----|  -> outer ensure
 
 #  104| [ensure: return] self
-#-----|  -> [ensure: return] "outer ensure"
+#-----|  -> [ensure: return] outer ensure
 
 #  104| [ensure: raise] self
-#-----|  -> [ensure: raise] "outer ensure"
+#-----|  -> [ensure: raise] outer ensure
 
 #  104| "outer ensure"
 #-----|  -> call to puts
@@ -4667,6 +5929,15 @@ raise.rb:
 
 #  104| [ensure: raise] "outer ensure"
 #-----|  -> [ensure: raise] call to puts
+
+#  104| outer ensure
+#-----|  -> "outer ensure"
+
+#  104| [ensure: return] outer ensure
+#-----|  -> [ensure: return] "outer ensure"
+
+#  104| [ensure: raise] outer ensure
+#-----|  -> [ensure: raise] "outer ensure"
 
 #  106| if ...
 #-----|  -> self
@@ -4699,13 +5970,13 @@ raise.rb:
 #-----| raise -> [ensure: raise, ensure(1): raise] self
 
 #  107| self
-#-----|  -> "b1 is true"
+#-----|  -> b1 is true
 
 #  107| [ensure: return] self
-#-----|  -> [ensure: return] "b1 is true"
+#-----|  -> [ensure: return] b1 is true
 
 #  107| [ensure: raise] self
-#-----|  -> [ensure: raise] "b1 is true"
+#-----|  -> [ensure: raise] b1 is true
 
 #  107| "b1 is true"
 #-----|  -> call to raise
@@ -4715,6 +5986,15 @@ raise.rb:
 
 #  107| [ensure: raise] "b1 is true"
 #-----|  -> [ensure: raise] call to raise
+
+#  107| b1 is true
+#-----|  -> "b1 is true"
+
+#  107| [ensure: return] b1 is true
+#-----|  -> [ensure: return] "b1 is true"
+
+#  107| [ensure: raise] b1 is true
+#-----|  -> [ensure: raise] "b1 is true"
 
 #  109| ensure ...
 #-----|  -> ensure ...
@@ -4759,22 +6039,22 @@ raise.rb:
 #-----| raise -> [ensure: raise] self
 
 #  110| self
-#-----|  -> "inner ensure"
+#-----|  -> inner ensure
 
 #  110| [ensure(1): raise] self
-#-----|  -> [ensure(1): raise] "inner ensure"
+#-----|  -> [ensure(1): raise] inner ensure
 
 #  110| [ensure: return] self
-#-----|  -> [ensure: return] "inner ensure"
+#-----|  -> [ensure: return] inner ensure
 
 #  110| [ensure: return, ensure(1): raise] self
-#-----|  -> [ensure: return, ensure(1): raise] "inner ensure"
+#-----|  -> [ensure: return, ensure(1): raise] inner ensure
 
 #  110| [ensure: raise] self
-#-----|  -> [ensure: raise] "inner ensure"
+#-----|  -> [ensure: raise] inner ensure
 
 #  110| [ensure: raise, ensure(1): raise] self
-#-----|  -> [ensure: raise, ensure(1): raise] "inner ensure"
+#-----|  -> [ensure: raise, ensure(1): raise] inner ensure
 
 #  110| "inner ensure"
 #-----|  -> call to puts
@@ -4794,15 +6074,36 @@ raise.rb:
 #  110| [ensure: raise, ensure(1): raise] "inner ensure"
 #-----|  -> [ensure: raise, ensure(1): raise] call to puts
 
+#  110| inner ensure
+#-----|  -> "inner ensure"
+
+#  110| [ensure(1): raise] inner ensure
+#-----|  -> [ensure(1): raise] "inner ensure"
+
+#  110| [ensure: return] inner ensure
+#-----|  -> [ensure: return] "inner ensure"
+
+#  110| [ensure: return, ensure(1): raise] inner ensure
+#-----|  -> [ensure: return, ensure(1): raise] "inner ensure"
+
+#  110| [ensure: raise] inner ensure
+#-----|  -> [ensure: raise] "inner ensure"
+
+#  110| [ensure: raise, ensure(1): raise] inner ensure
+#-----|  -> [ensure: raise, ensure(1): raise] "inner ensure"
+
 #  113| call to puts
 #-----|  -> self
 #-----| raise -> [ensure: raise] self
 
 #  113| self
-#-----|  -> "End m9"
+#-----|  -> End m9
 
 #  113| "End m9"
 #-----|  -> call to puts
+
+#  113| End m9
+#-----|  -> "End m9"
 
 #  114| ensure ...
 #-----|  -> exit m9 (normal)
@@ -4823,13 +6124,13 @@ raise.rb:
 #-----|  -> [ensure: raise] b2
 
 #  115| self
-#-----|  -> "method ensure"
+#-----|  -> method ensure
 
 #  115| [ensure: return] self
-#-----|  -> [ensure: return] "method ensure"
+#-----|  -> [ensure: return] method ensure
 
 #  115| [ensure: raise] self
-#-----|  -> [ensure: raise] "method ensure"
+#-----|  -> [ensure: raise] method ensure
 
 #  115| "method ensure"
 #-----|  -> call to puts
@@ -4839,6 +6140,15 @@ raise.rb:
 
 #  115| [ensure: raise] "method ensure"
 #-----|  -> [ensure: raise] call to puts
+
+#  115| method ensure
+#-----|  -> "method ensure"
+
+#  115| [ensure: return] method ensure
+#-----|  -> [ensure: return] "method ensure"
+
+#  115| [ensure: raise] method ensure
+#-----|  -> [ensure: raise] "method ensure"
 
 #  116| if ...
 #-----|  -> ensure ...
@@ -4871,13 +6181,13 @@ raise.rb:
 #-----| raise -> exit m9 (abnormal)
 
 #  117| self
-#-----|  -> "b2 is true"
+#-----|  -> b2 is true
 
 #  117| [ensure: return] self
-#-----|  -> [ensure: return] "b2 is true"
+#-----|  -> [ensure: return] b2 is true
 
 #  117| [ensure: raise] self
-#-----|  -> [ensure: raise] "b2 is true"
+#-----|  -> [ensure: raise] b2 is true
 
 #  117| "b2 is true"
 #-----|  -> call to raise
@@ -4887,6 +6197,15 @@ raise.rb:
 
 #  117| [ensure: raise] "b2 is true"
 #-----|  -> [ensure: raise] call to raise
+
+#  117| b2 is true
+#-----|  -> "b2 is true"
+
+#  117| [ensure: return] b2 is true
+#-----|  -> [ensure: return] "b2 is true"
+
+#  117| [ensure: raise] b2 is true
+#-----|  -> [ensure: raise] "b2 is true"
 
 #  121| enter m10
 #-----|  -> p
@@ -4910,10 +6229,13 @@ raise.rb:
 #-----| raise -> exit m10 (abnormal)
 
 #  121| self
-#-----|  -> "Exception"
+#-----|  -> Exception
 
 #  121| "Exception"
 #-----|  -> call to raise
+
+#  121| Exception
+#-----|  -> "Exception"
 
 #  124| ensure ...
 #-----|  -> exit m10 (normal)
@@ -4922,10 +6244,13 @@ raise.rb:
 #-----|  -> ensure ...
 
 #  125| self
-#-----|  -> "Will not get executed if p is..."
+#-----|  -> Will not get executed if p is not supplied
 
 #  125| "Will not get executed if p is..."
 #-----|  -> call to puts
+
+#  125| Will not get executed if p is not supplied
+#-----|  -> "Will not get executed if p is..."
 
 #  128| enter m11
 #-----|  -> b
@@ -4952,7 +6277,7 @@ raise.rb:
 #-----| true -> self
 
 #  131| call to raise
-#-----| raise -> rescue ...
+#-----| raise -> ExceptionA
 
 #  131| self
 #-----|  -> ExceptionA
@@ -4961,30 +6286,33 @@ raise.rb:
 #-----|  -> call to raise
 
 #  133| rescue ...
-#-----|  -> ExceptionA
+#-----|  -> self
 
 #  133| ExceptionA
-#-----| no-match -> rescue ...
-#-----| match -> self
+#-----| match -> rescue ...
+#-----| no-match -> ExceptionB
 
 #  134| rescue ...
-#-----|  -> ExceptionB
+#-----|  -> self
 
 #  134| ExceptionB
 #-----| match -> self
 #-----| raise -> [ensure: raise] self
 
 #  134| then ...
-#-----|  -> self
+#-----|  -> rescue ...
 
 #  135| call to puts
 #-----|  -> then ...
 
 #  135| self
-#-----|  -> "ExceptionB"
+#-----|  -> ExceptionB
 
 #  135| "ExceptionB"
 #-----|  -> call to puts
+
+#  135| ExceptionB
+#-----|  -> "ExceptionB"
 
 #  136| ensure ...
 #-----|  -> self
@@ -4999,10 +6327,10 @@ raise.rb:
 #-----|  -> [ensure: raise] ensure ...
 
 #  137| self
-#-----|  -> "Ensure"
+#-----|  -> Ensure
 
 #  137| [ensure: raise] self
-#-----|  -> [ensure: raise] "Ensure"
+#-----|  -> [ensure: raise] Ensure
 
 #  137| "Ensure"
 #-----|  -> call to puts
@@ -5010,14 +6338,23 @@ raise.rb:
 #  137| [ensure: raise] "Ensure"
 #-----|  -> [ensure: raise] call to puts
 
+#  137| Ensure
+#-----|  -> "Ensure"
+
+#  137| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] "Ensure"
+
 #  139| call to puts
 #-----|  -> exit m11 (normal)
 
 #  139| self
-#-----|  -> "End m11"
+#-----|  -> End m11
 
 #  139| "End m11"
 #-----|  -> call to puts
+
+#  139| End m11
+#-----|  -> "End m11"
 
 #  142| enter m12
 #-----|  -> b
@@ -5061,8 +6398,19 @@ raise.rb:
 #  147| [ensure: raise] 3
 #-----|  -> [ensure: raise] return
 
+#  150| enter m13
+#-----|  -> ensure ...
+
 #  150| m13
 #-----|  -> m14
+
+#  150| exit m13
+
+#  150| exit m13 (normal)
+#-----|  -> exit m13
+
+#  151| ensure ...
+#-----|  -> exit m13 (normal)
 
 #  154| enter m14
 #-----|  -> element

@@ -2,10 +2,17 @@ import sys
 import os
 import subprocess
 
-
 def run_cmd(cmd, msg="Failed to run command"):
     print('Running ' + ' '.join(cmd))
     if subprocess.check_call(cmd):
+        print(msg)
+        exit(1)
+
+
+def run_cmd_cwd(cmd, cwd, msg):
+    print('Change working directory to: ' + cwd)
+    print('Running ' + ' '.join(cmd))
+    if subprocess.check_call(cmd, cwd=cwd):
         print(msg)
         exit(1)
 

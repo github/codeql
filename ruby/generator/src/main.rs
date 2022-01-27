@@ -3,6 +3,7 @@ mod language;
 mod ql;
 mod ql_gen;
 
+use clap::arg;
 use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
@@ -556,10 +557,8 @@ fn main() -> std::io::Result<()> {
         .version("1.0")
         .author("GitHub")
         .about("CodeQL Ruby dbscheme generator")
-        .args_from_usage(
-            "--dbscheme=<FILE>                  'Path of the generated dbscheme file'
-             --library=<FILE>                   'Path of the generated QLL file'",
-        )
+        .arg(arg!(--dbscheme <FILE>                  "Path of the generated dbscheme file"))
+        .arg(arg!(--library <FILE>                   "Path of the generated QLL file"))
         .get_matches();
     let dbscheme_path = matches.value_of("dbscheme").expect("missing --dbscheme");
     let dbscheme_path = PathBuf::from(dbscheme_path);

@@ -18,7 +18,7 @@ abstract class FlowTest extends InlineExpectationsTest {
       location = toNode.getLocation() and
       tag = this.flowTag() and
       value =
-        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + lineStr(fromNode, toNode) + " -> " +
+        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + this.lineStr(fromNode, toNode) + " -> " +
           prettyNode(toNode).replaceAll("\"", "'") + "\"" and
       element = toNode.toString()
     )

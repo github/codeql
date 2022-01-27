@@ -21,16 +21,16 @@ class ECGenParameterSpec extends RefType {
 /** The `init` method declared in `javax.crypto.KeyGenerator`. */
 class KeyGeneratorInitMethod extends Method {
   KeyGeneratorInitMethod() {
-    getDeclaringType() instanceof KeyGenerator and
-    hasName("init")
+    this.getDeclaringType() instanceof KeyGenerator and
+    this.hasName("init")
   }
 }
 
 /** The `initialize` method declared in `java.security.KeyPairGenerator`. */
 class KeyPairGeneratorInitMethod extends Method {
   KeyPairGeneratorInitMethod() {
-    getDeclaringType() instanceof KeyPairGenerator and
-    hasName("initialize")
+    this.getDeclaringType() instanceof KeyPairGenerator and
+    this.hasName("initialize")
   }
 }
 
@@ -52,7 +52,7 @@ class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(JavaxCryptoKeyGenerator jcg | jcg = source.asExpr())
+    source.asExpr() instanceof JavaxCryptoKeyGenerator
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -68,7 +68,7 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(JavaSecurityKeyPairGenerator jkg | jkg = source.asExpr())
+    source.asExpr() instanceof JavaSecurityKeyPairGenerator
   }
 
   override predicate isSink(DataFlow::Node sink) {

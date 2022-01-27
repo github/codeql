@@ -435,7 +435,7 @@ module FlowVar_internal {
       parameterIsNonConstReference(p) and
       p = v and
       // This definition reaches the exit node of the function CFG
-      getAReachedBlockVarSBB(this).getANode() = p.getFunction()
+      getAReachedBlockVarSBB(this).getEnd() = p.getFunction()
     }
 
     override predicate definedByInitialValue(StackVariable lsv) {

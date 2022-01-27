@@ -203,7 +203,7 @@ class RegExp extends AST::RegExpLiteral {
   }
 
   /** Gets the text of this regex */
-  string getText() { result = this.getValueText() }
+  string getText() { result = this.getConstantValue().getString() }
 
   string getChar(int i) { result = this.getText().charAt(i) }
 
@@ -397,7 +397,7 @@ class RegExp extends AST::RegExpLiteral {
       end = start + 2 and
       this.escapingChar(start) and
       char = this.getText().substring(start, end) and
-      char = ["\\A", "\\Z", "\\z"]
+      char = ["\\A", "\\Z", "\\z", "\\G", "\\b", "\\B"]
     )
   }
 

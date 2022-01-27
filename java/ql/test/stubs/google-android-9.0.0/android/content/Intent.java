@@ -2,10 +2,11 @@
 
 package android.content;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Set;
-import org.xmlpull.v1.XmlPullParser;
+import android.content.ClipData;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -15,6 +16,10 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
+import org.xmlpull.v1.XmlPullParser;
 
 public class Intent implements Cloneable, Parcelable
 {
@@ -149,6 +154,7 @@ public class Intent implements Cloneable, Parcelable
     public static String ACTION_APP_ERROR = null;
     public static String ACTION_ASSIST = null;
     public static String ACTION_ATTACH_DATA = null;
+    public static String ACTION_AUTO_REVOKE_PERMISSIONS = null;
     public static String ACTION_BATTERY_CHANGED = null;
     public static String ACTION_BATTERY_LOW = null;
     public static String ACTION_BATTERY_OKAY = null;
@@ -162,6 +168,7 @@ public class Intent implements Cloneable, Parcelable
     public static String ACTION_CLOSE_SYSTEM_DIALOGS = null;
     public static String ACTION_CONFIGURATION_CHANGED = null;
     public static String ACTION_CREATE_DOCUMENT = null;
+    public static String ACTION_CREATE_REMINDER = null;
     public static String ACTION_CREATE_SHORTCUT = null;
     public static String ACTION_DATE_CHANGED = null;
     public static String ACTION_DEFAULT = null;
@@ -197,6 +204,7 @@ public class Intent implements Cloneable, Parcelable
     public static String ACTION_MANAGED_PROFILE_UNLOCKED = null;
     public static String ACTION_MANAGE_NETWORK_USAGE = null;
     public static String ACTION_MANAGE_PACKAGE_STORAGE = null;
+    public static String ACTION_MANAGE_UNUSED_APPS = null;
     public static String ACTION_MEDIA_BAD_REMOVAL = null;
     public static String ACTION_MEDIA_BUTTON = null;
     public static String ACTION_MEDIA_CHECKING = null;
@@ -236,6 +244,8 @@ public class Intent implements Cloneable, Parcelable
     public static String ACTION_POWER_DISCONNECTED = null;
     public static String ACTION_POWER_USAGE_SUMMARY = null;
     public static String ACTION_PROCESS_TEXT = null;
+    public static String ACTION_PROFILE_ACCESSIBLE = null;
+    public static String ACTION_PROFILE_INACCESSIBLE = null;
     public static String ACTION_PROVIDER_CHANGED = null;
     public static String ACTION_QUICK_CLOCK = null;
     public static String ACTION_QUICK_VIEW = null;
@@ -269,9 +279,11 @@ public class Intent implements Cloneable, Parcelable
     public static String ACTION_VIEW = null;
     public static String ACTION_VIEW_LOCUS = null;
     public static String ACTION_VIEW_PERMISSION_USAGE = null;
+    public static String ACTION_VIEW_PERMISSION_USAGE_FOR_PERIOD = null;
     public static String ACTION_VOICE_COMMAND = null;
     public static String ACTION_WALLPAPER_CHANGED = null;
     public static String ACTION_WEB_SEARCH = null;
+    public static String CATEGORY_ACCESSIBILITY_SHORTCUT_TARGET = null;
     public static String CATEGORY_ALTERNATIVE = null;
     public static String CATEGORY_APP_BROWSER = null;
     public static String CATEGORY_APP_CALCULATOR = null;
@@ -319,6 +331,7 @@ public class Intent implements Cloneable, Parcelable
     public static String EXTRA_ASSIST_INPUT_HINT_KEYBOARD = null;
     public static String EXTRA_ASSIST_PACKAGE = null;
     public static String EXTRA_ASSIST_UID = null;
+    public static String EXTRA_ATTRIBUTION_TAGS = null;
     public static String EXTRA_AUTO_LAUNCH_SINGLE_CHOICE = null;
     public static String EXTRA_BCC = null;
     public static String EXTRA_BUG_REPORT = null;
@@ -339,6 +352,7 @@ public class Intent implements Cloneable, Parcelable
     public static String EXTRA_DONT_KILL_APP = null;
     public static String EXTRA_DURATION_MILLIS = null;
     public static String EXTRA_EMAIL = null;
+    public static String EXTRA_END_TIME = null;
     public static String EXTRA_EXCLUDE_COMPONENTS = null;
     public static String EXTRA_FROM_STORAGE = null;
     public static String EXTRA_HTML_TEXT = null;
@@ -353,6 +367,7 @@ public class Intent implements Cloneable, Parcelable
     public static String EXTRA_NOT_UNKNOWN_SOURCE = null;
     public static String EXTRA_ORIGINATING_URI = null;
     public static String EXTRA_PACKAGE_NAME = null;
+    public static String EXTRA_PERMISSION_GROUP_NAME = null;
     public static String EXTRA_PHONE_NUMBER = null;
     public static String EXTRA_PROCESS_TEXT = null;
     public static String EXTRA_PROCESS_TEXT_READONLY = null;
@@ -375,14 +390,18 @@ public class Intent implements Cloneable, Parcelable
     public static String EXTRA_SHORTCUT_NAME = null;
     public static String EXTRA_SHUTDOWN_USERSPACE_ONLY = null;
     public static String EXTRA_SPLIT_NAME = null;
+    public static String EXTRA_START_TIME = null;
     public static String EXTRA_STREAM = null;
     public static String EXTRA_SUBJECT = null;
     public static String EXTRA_SUSPENDED_PACKAGE_EXTRAS = null;
     public static String EXTRA_TEMPLATE = null;
     public static String EXTRA_TEXT = null;
+    public static String EXTRA_TIME = null;
+    public static String EXTRA_TIMEZONE = null;
     public static String EXTRA_TITLE = null;
     public static String EXTRA_UID = null;
     public static String EXTRA_USER = null;
+    public static String EXTRA_USER_INITIATED = null;
     public static String METADATA_DOCK_HOME = null;
     public static String normalizeMimeType(String p0){ return null; }
     public static int EXTRA_DOCK_STATE_CAR = 0;
@@ -416,6 +435,8 @@ public class Intent implements Cloneable, Parcelable
     public static int FLAG_ACTIVITY_NO_USER_ACTION = 0;
     public static int FLAG_ACTIVITY_PREVIOUS_IS_TOP = 0;
     public static int FLAG_ACTIVITY_REORDER_TO_FRONT = 0;
+    public static int FLAG_ACTIVITY_REQUIRE_DEFAULT = 0;
+    public static int FLAG_ACTIVITY_REQUIRE_NON_BROWSER = 0;
     public static int FLAG_ACTIVITY_RESET_TASK_IF_NEEDED = 0;
     public static int FLAG_ACTIVITY_RETAIN_IN_RECENTS = 0;
     public static int FLAG_ACTIVITY_SINGLE_TOP = 0;

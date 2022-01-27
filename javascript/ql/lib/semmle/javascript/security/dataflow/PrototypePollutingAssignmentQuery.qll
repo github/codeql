@@ -233,7 +233,7 @@ private class IsArrayCheck extends TaintTracking::LabeledSanitizerGuardNode, Dat
   IsArrayCheck() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    e = getArgument(0).asExpr() and
+    e = this.getArgument(0).asExpr() and
     outcome = true and
     label instanceof ObjectPrototype
   }
@@ -260,7 +260,7 @@ private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, In
   IncludesCheck() { this.getContainedNode().mayHaveStringValue("__proto__") }
 
   override predicate sanitizes(boolean outcome, Expr e) {
-    e = getContainerNode().asExpr() and
-    outcome = getPolarity().booleanNot()
+    e = this.getContainerNode().asExpr() and
+    outcome = this.getPolarity().booleanNot()
   }
 }

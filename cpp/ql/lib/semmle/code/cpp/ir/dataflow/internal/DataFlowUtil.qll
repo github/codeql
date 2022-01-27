@@ -452,7 +452,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
   final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
-    hasInputAtRankInBlock(block, rnk, _)
+    this.hasInputAtRankInBlock(block, rnk, _)
   }
 
   /**
@@ -491,19 +491,6 @@ class ExprNode extends InstructionNode {
 }
 
 /**
- * INTERNAL: do not use. Translates a parameter/argument index into a negative
- * number that denotes the index of its side effect (pointer indirection).
- */
-bindingset[index]
-int getArgumentPosOfSideEffect(int index) {
-  // -1 -> -2
-  //  0 -> -3
-  //  1 -> -4
-  // ...
-  result = -3 - index
-}
-
-/**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph. This includes both explicit parameters such as `x` in `f(x)`
  * and implicit parameters such as `this` in `x.f()`.
@@ -525,7 +512,7 @@ class ParameterNode extends InstructionNode {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int pos) { none() } // overridden by subclasses
+  predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
@@ -534,8 +521,8 @@ private class ExplicitParameterNode extends ParameterNode {
 
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(Function f, int pos) {
-    f.getParameter(pos) = instr.getParameter()
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   /** Gets the `Parameter` associated with this node. */
@@ -550,8 +537,8 @@ class ThisParameterNode extends ParameterNode {
 
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(Function f, int pos) {
-    pos = -1 and instr.getEnclosingFunction() = f
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
+    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
   }
 
   override string toString() { result = "this" }
@@ -561,12 +548,12 @@ class ThisParameterNode extends ParameterNode {
 class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
-  override predicate isParameterOf(Function f, int pos) {
+  override predicate isParameterOf(Function f, ParameterPosition pos) {
     exists(int index |
       instr.getEnclosingFunction() = f and
       instr.hasIndex(index)
     |
-      pos = getArgumentPosOfSideEffect(index)
+      pos.(IndirectionPosition).getIndex() = index
     )
   }
 
@@ -806,7 +793,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
   // Flow into, through, and out of store nodes
-  StoreNodeFlow::flowInto(nodeFrom, nodeTo)
+  StoreNodeFlow::flowInto(nodeFrom.asInstruction(), nodeTo)
   or
   StoreNodeFlow::flowThrough(nodeFrom, nodeTo)
   or
@@ -831,23 +818,19 @@ private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
     //Def-use flow
     Ssa::ssaFlow(nodeFrom, nodeTo)
     or
-    exists(Instruction loadAddress | loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) |
-      // Use-use flow through reads
-      exists(Node address |
-        Ssa::addressFlowTC(address.asInstruction(), loadAddress) and
-        Ssa::ssaFlow(address, nodeTo)
-      )
-      or
-      // Use-use flow through stores.
-      exists(Node store |
-        Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
-        Ssa::ssaFlow(store, nodeTo)
-      )
+    // Use-use flow through stores.
+    exists(Instruction loadAddress, Node store |
+      loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) and
+      Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
+      Ssa::ssaFlow(store, nodeTo)
     )
   )
 }
 
-private module ReadNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module ReadNodeFlow {
   /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
   predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
     nodeTo.isInitial() and
@@ -867,7 +850,12 @@ private module ReadNodeFlow {
     )
   }
 
-  /** Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`. */
+  /**
+   * Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`.
+   *
+   * This happens when `readFrom` is _not_ the source of a `readStep`, and `nodeTo` is
+   * the `ReadNode` that represents an address that directly depends on `nodeFrom`.
+   */
   predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
     not readStep(nodeFrom, _, _) and
     nodeFrom.getOuter() = nodeTo
@@ -906,17 +894,25 @@ private module ReadNodeFlow {
   }
 }
 
-private module StoreNodeFlow {
+/**
+ * INTERNAL: Do not use.
+ */
+module StoreNodeFlow {
   /** Holds if the store node `nodeTo` should receive flow from `nodeFrom`. */
-  predicate flowInto(Node nodeFrom, StoreNode nodeTo) {
-    nodeTo.flowInto(Ssa::getDestinationAddress(nodeFrom.asInstruction()))
+  predicate flowInto(Instruction instrFrom, StoreNode nodeTo) {
+    nodeTo.flowInto(Ssa::getDestinationAddress(instrFrom))
   }
 
-  /** Holds if the store node `nodeTo` should receive flow from `nodeFom`. */
-  predicate flowThrough(StoreNode nFrom, StoreNode nodeTo) {
+  /**
+   * Holds if the store node `nodeTo` should receive flow from `nodeFom`.
+   *
+   * This happens when `nodeFrom` is _not_ the source of a `storeStep`, and `nodeFrom` is
+   * the `Storenode` that represents an address that directly depends on `nodeTo`.
+   */
+  predicate flowThrough(StoreNode nodeFrom, StoreNode nodeTo) {
     // Flow through a post update node that doesn't need a store step.
-    not storeStep(nFrom, _, _) and
-    nodeTo.getOuter() = nFrom
+    not storeStep(nodeFrom, _, _) and
+    nodeTo.getOuter() = nodeFrom
   }
 
   /**

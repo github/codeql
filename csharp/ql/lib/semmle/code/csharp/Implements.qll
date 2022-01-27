@@ -4,7 +4,7 @@
  * Provides logic for determining interface member implementations.
  *
  * Do not use the predicates in this library directly; use the methods
- * of the class `Virtualizable` instead.
+ * of the class `Overridable` instead.
  */
 
 import csharp
@@ -35,7 +35,26 @@ private import Conversion
  * `implements(A.M, I.M, B)` and `implements(C.M, I.M, C)`.
  */
 cached
-predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
+predicate implements(Overridable m1, Overridable m2, ValueOrRefType t) {
+  implementsVirtualizable(m1, m2, t)
+  or
+  exists(DeclarationWithAccessors d1, DeclarationWithAccessors d2, int kind |
+    implementsVirtualizable(d1, d2, t) and
+    hasAccessor(d1, m1, pragma[only_bind_into](kind)) and
+    hasAccessor(d2, m2, pragma[only_bind_into](kind))
+  )
+}
+
+pragma[noinline]
+private predicate hasAccessor(DeclarationWithAccessors d, Accessor a, int kind) {
+  a = d.getAnAccessor() and
+  (
+    accessors(a, kind, _, _, _) or
+    event_accessors(a, kind, _, _, _)
+  )
+}
+
+private predicate implementsVirtualizable(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
   exists(Interface i |
     i = m2.getDeclaringType() and
     t.getABaseInterface+() = i and

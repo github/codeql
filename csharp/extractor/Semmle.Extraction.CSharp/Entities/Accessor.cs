@@ -42,7 +42,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var prop = PropertySymbol;
             if (prop is null)
             {
-                Context.ModelError(Symbol, "Unhandled accessor associated symbol");
+                var type = Symbol.AssociatedSymbol?.GetType().ToString() ?? "null";
+                Context.ModelError(Symbol, $"Unhandled accessor associated symbol of type {type}");
                 return;
             }
 
@@ -61,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             else
             {
-                Context.ModelError(Symbol, "Unhandled accessor kind");
+                Context.ModelError(Symbol, $"Unhandled accessor method {Symbol.ToDisplayString()}");
                 return;
             }
 

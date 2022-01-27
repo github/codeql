@@ -48,6 +48,7 @@ string captureSink(TargetAPI api) {
     config.hasFlow(src, sink) and
     sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
+    not kind = "logging" and
     result = asSinkModel(api, asInputArgument(src), kind)
   )
 }

@@ -211,11 +211,9 @@ module ExternalAPIUsedWithUntrustedData {
         node = getNamedParameter(base.getAParameter(), paramName) and
         result = basename + ".[callback].[param '" + paramName + "']"
         or
-        exists(string callbackName, string index |
-          node =
-            getNamedParameter(base.getASuccessor("parameter " + index).getMember(callbackName),
-              paramName) and
-          index != "-1" and // ignore receiver
+        exists(string callbackName, int index |
+          node = getNamedParameter(base.getParameter(index).getMember(callbackName), paramName) and
+          index != -1 and // ignore receiver
           result =
             basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName +
               "']"

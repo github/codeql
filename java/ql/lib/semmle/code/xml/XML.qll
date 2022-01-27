@@ -233,7 +233,7 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   XMLAttribute getAttribute(string name) { result.getElement() = this and result.getName() = name }
 
   /** Holds if this XML element has an attribute with the specified `name`. */
-  predicate hasAttribute(string name) { exists(XMLAttribute a | a = this.getAttribute(name)) }
+  predicate hasAttribute(string name) { exists(this.getAttribute(name)) }
 
   /** Gets the value of the attribute with the specified `name`, if any. */
   string getAttributeValue(string name) { result = this.getAttribute(name).getValue() }

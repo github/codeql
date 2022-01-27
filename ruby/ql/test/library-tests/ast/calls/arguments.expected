@@ -11,6 +11,8 @@ hashSplatExpr
 | calls.rb:274:5:274:9 | ** ... | calls.rb:274:7:274:9 | call to bar |
 | calls.rb:275:5:275:12 | ** ... | calls.rb:275:7:275:12 | call to bar |
 keywordArguments
+| calls.rb:249:3:249:12 | Pair | calls.rb:249:3:249:5 | call to foo | calls.rb:249:10:249:12 | call to bar |
+| calls.rb:249:15:249:30 | Pair | calls.rb:249:15:249:20 | call to foo | calls.rb:249:25:249:30 | call to bar |
 | calls.rb:278:5:278:13 | Pair | calls.rb:278:5:278:8 | :blah | calls.rb:278:11:278:13 | call to bar |
 | calls.rb:279:5:279:16 | Pair | calls.rb:279:5:279:8 | :blah | calls.rb:279:11:279:16 | call to bar |
 keywordArgumentsByKeyword

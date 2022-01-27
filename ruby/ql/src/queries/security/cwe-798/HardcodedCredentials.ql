@@ -18,10 +18,12 @@ import DataFlow::PathGraph
 import codeql.ruby.TaintTracking
 import codeql.ruby.controlflow.CfgNodes
 
+private string getValueText(StringLiteral sl) { result = sl.getConstantValue().getString() }
+
 bindingset[char, fraction]
 predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
   exists(string text, int chars |
-    text = str.getValueText() and
+    text = getValueText(str) and
     chars = count(int i | text.charAt(i) = char)
   |
     /* Allow one character */
@@ -35,17 +37,17 @@ predicate possible_reflective_name(string name) {
   none()
 }
 
-int char_count(StringLiteral str) { result = count(string c | c = str.getValueText().charAt(_)) }
+int char_count(StringLiteral str) { result = count(string c | c = getValueText(str).charAt(_)) }
 
-predicate capitalized_word(StringLiteral str) { str.getValueText().regexpMatch("[A-Z][a-z]+") }
+predicate capitalized_word(StringLiteral str) { getValueText(str).regexpMatch("[A-Z][a-z]+") }
 
-predicate format_string(StringLiteral str) { str.getValueText().matches("%{%}%") }
+predicate format_string(StringLiteral str) { getValueText(str).matches("%{%}%") }
 
 predicate maybeCredential(Expr e) {
   /* A string that is not too short and unlikely to be text or an identifier. */
   exists(StringLiteral str | str = e |
     /* At least 10 characters */
-    str.getValueText().length() > 9 and
+    getValueText(str).length() > 9 and
     /* Not too much whitespace */
     fewer_characters_than(str, " ", 0.05) and
     /* or underscores */
@@ -53,9 +55,9 @@ predicate maybeCredential(Expr e) {
     /* Not too repetitive */
     exists(int chars | chars = char_count(str) |
       chars > 15 or
-      chars * 3 > str.getValueText().length() * 2
+      chars * 3 > getValueText(str).length() * 2
     ) and
-    not possible_reflective_name(str.getValueText()) and
+    not possible_reflective_name(getValueText(str)) and
     not capitalized_word(str) and
     not format_string(str)
   )
@@ -64,7 +66,7 @@ predicate maybeCredential(Expr e) {
   exists(IntegerLiteral lit | lit = e |
     not exists(lit.getValue()) and
     /* Not a set of flags or round number */
-    not lit.getValueText().matches("%00%")
+    not lit.toString().matches("%00%")
   )
 }
 

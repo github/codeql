@@ -42,7 +42,7 @@ private predicate arrayIndexOutOfBoundExceptionCaught(ArrayAccess arrayAccess) {
  */
 class PointlessLoop extends WhileStmt {
   PointlessLoop() {
-    getCondition().(BooleanLiteral).getBooleanValue() = true and
+    this.getCondition().(BooleanLiteral).getBooleanValue() = true and
     // The only `break` must be the last statement.
     forall(BreakStmt break | break.(JumpStmt).getTarget() = this |
       this.getStmt().(BlockStmt).getLastStmt() = break
@@ -65,7 +65,7 @@ class CheckableArrayAccess extends ArrayAccess {
     // Array accesses within loops can make it difficult to verify whether the index is checked
     // prior to access. Ignore "pointless" loops of the sort found in Juliet test cases.
     not exists(LoopStmt loop |
-      loop.getBody().getAChild*() = getEnclosingStmt() and
+      loop.getBody().getAChild*() = this.getEnclosingStmt() and
       not loop instanceof PointlessLoop
     ) and
     // The possible exception is not caught
@@ -76,7 +76,7 @@ class CheckableArrayAccess extends ArrayAccess {
    * Holds if we believe this indexing expression can throw an `ArrayIndexOutOfBoundsException`.
    */
   predicate canThrowOutOfBounds(Expr index) {
-    index = getIndexExpr() and
+    index = this.getIndexExpr() and
     not (
       // There is a condition dominating this expression ensuring that the index is >= 0.
       lowerBound(index) >= 0 and

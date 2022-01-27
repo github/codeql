@@ -1,0 +1,23 @@
+edges
+| ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number |
+| ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) [waitTime] : Number | ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number |
+| ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number |
+| ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number |
+| ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number |
+| ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime |
+nodes
+| ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | semmle.label | getInitParameter(...) : String |
+| ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) [waitTime] : Number | semmle.label | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | semmle.label | delayTime : Number |
+| ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | semmle.label | waitTime : Number |
+| ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number | semmle.label | this [post update] [waitTime] : Number |
+| ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | semmle.label | waitTime : Number |
+| ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number | semmle.label | parameter this [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number | semmle.label | this <.field> [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | semmle.label | waitTime |
+subpaths
+| ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number | ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+#select
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Possible uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) | local user-provided value |

@@ -1,4 +1,0 @@
-name: codeql/csharp-upgrades
-upgrades: .
-version: 0.0.2
-library: true

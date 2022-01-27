@@ -9,27 +9,27 @@ namespace System
             // Generated from `System.Diagnostics.Contracts.Contract` in `System.Diagnostics.Contracts, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Contract
             {
-                public static void Assert(bool condition, string userMessage) => throw null;
                 public static void Assert(bool condition) => throw null;
-                public static void Assume(bool condition, string userMessage) => throw null;
+                public static void Assert(bool condition, string userMessage) => throw null;
                 public static void Assume(bool condition) => throw null;
+                public static void Assume(bool condition, string userMessage) => throw null;
                 public static event System.EventHandler<System.Diagnostics.Contracts.ContractFailedEventArgs> ContractFailed;
                 public static void EndContractBlock() => throw null;
-                public static void Ensures(bool condition, string userMessage) => throw null;
                 public static void Ensures(bool condition) => throw null;
-                public static void EnsuresOnThrow<TException>(bool condition, string userMessage) where TException : System.Exception => throw null;
+                public static void Ensures(bool condition, string userMessage) => throw null;
                 public static void EnsuresOnThrow<TException>(bool condition) where TException : System.Exception => throw null;
-                public static bool Exists<T>(System.Collections.Generic.IEnumerable<T> collection, System.Predicate<T> predicate) => throw null;
+                public static void EnsuresOnThrow<TException>(bool condition, string userMessage) where TException : System.Exception => throw null;
                 public static bool Exists(int fromInclusive, int toExclusive, System.Predicate<int> predicate) => throw null;
-                public static bool ForAll<T>(System.Collections.Generic.IEnumerable<T> collection, System.Predicate<T> predicate) => throw null;
+                public static bool Exists<T>(System.Collections.Generic.IEnumerable<T> collection, System.Predicate<T> predicate) => throw null;
                 public static bool ForAll(int fromInclusive, int toExclusive, System.Predicate<int> predicate) => throw null;
-                public static void Invariant(bool condition, string userMessage) => throw null;
+                public static bool ForAll<T>(System.Collections.Generic.IEnumerable<T> collection, System.Predicate<T> predicate) => throw null;
                 public static void Invariant(bool condition) => throw null;
+                public static void Invariant(bool condition, string userMessage) => throw null;
                 public static T OldValue<T>(T value) => throw null;
-                public static void Requires<TException>(bool condition, string userMessage) where TException : System.Exception => throw null;
-                public static void Requires<TException>(bool condition) where TException : System.Exception => throw null;
-                public static void Requires(bool condition, string userMessage) => throw null;
                 public static void Requires(bool condition) => throw null;
+                public static void Requires(bool condition, string userMessage) => throw null;
+                public static void Requires<TException>(bool condition) where TException : System.Exception => throw null;
+                public static void Requires<TException>(bool condition, string userMessage) where TException : System.Exception => throw null;
                 public static T Result<T>() => throw null;
                 public static T ValueAtReturn<T>(out T value) => throw null;
             }
@@ -95,8 +95,8 @@ namespace System
             public class ContractOptionAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
-                public ContractOptionAttribute(string category, string setting, string value) => throw null;
                 public ContractOptionAttribute(string category, string setting, bool enabled) => throw null;
+                public ContractOptionAttribute(string category, string setting, string value) => throw null;
                 public bool Enabled { get => throw null; }
                 public string Setting { get => throw null; }
                 public string Value { get => throw null; }

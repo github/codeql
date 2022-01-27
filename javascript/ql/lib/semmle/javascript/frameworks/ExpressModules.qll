@@ -16,7 +16,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "x-frame-options" module.
+   * A header produced by a route handler of the "x-frame-options" module.
    */
   class XFrameOptionsRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     XFrameOptionsRouteHandlerHeader() { this instanceof XFrameOptionsRouteHandler }
@@ -29,7 +29,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "x-frame-options" module.
+   * A route handler from the "x-frame-options" module.
    */
   class XFrameOptionsRouteHandler extends HTTP::RouteHandler {
     XFrameOptionsRouteHandler() {
@@ -43,7 +43,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "frameguard" module.
+   * A header produced by a route handler of the "frameguard" module.
    */
   class FrameGuardRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     FrameGuardRouteHandlerHeader() { this instanceof FrameGuardRouteHandler }
@@ -56,7 +56,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "frameguard" module.
+   * A route handler from the "frameguard" module.
    */
   class FrameGuardRouteHandler extends HTTP::RouteHandler {
     FrameGuardRouteHandler() { this = DataFlow::moduleImport("frameguard").getAnInvocation() }
@@ -68,7 +68,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Header produced by a route handler of the "helmet" module.
+   * A header produced by a route handler of the "helmet" module.
    */
   class HelmetRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     HelmetRouteHandlerHeader() { this instanceof HelmetRouteHandler }
@@ -81,7 +81,7 @@ module ExpressLibraries {
   }
 
   /**
-   * Route handler from the "helmet" module.
+   * A route handler from the "helmet" module.
    */
   class HelmetRouteHandler extends HTTP::RouteHandler {
     HelmetRouteHandler() {
@@ -224,5 +224,32 @@ module ExpressLibraries {
      * in user-controlled objects (as opposed to user-controlled strings).
      */
     predicate producesUserControlledObjects() { isJson() or isExtendedUrlEncoded() }
+  }
+}
+
+/**
+ * Provides classes for working with the `express-fileupload` package (https://github.com/richardgirges/express-fileupload);
+ */
+module FileUpload {
+  /** Gets a data flow node referring to `req.files`. */
+  private DataFlow::SourceNode filesRef(Express::RequestSource req, DataFlow::TypeTracker t) {
+    t.start() and
+    result = req.ref().getAPropertyRead("files")
+    or
+    exists(DataFlow::TypeTracker t2 | result = filesRef(req, t2).track(t2, t))
+  }
+
+  /**
+   * A call to `req.files.<name>.mv`
+   */
+  class Move extends FileSystemWriteAccess, DataFlow::MethodCallNode {
+    Move() {
+      exists(DataFlow::moduleImport("express-fileupload")) and
+      this = filesRef(_, DataFlow::TypeTracker::end()).getAPropertyRead().getAMethodCall("mv")
+    }
+
+    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+
+    override DataFlow::Node getADataNode() { none() }
   }
 }

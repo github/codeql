@@ -52,14 +52,15 @@ private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::Ca
   override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override predicate externalEntitiesEnabled() {
-    exists(Pair pair |
-      pair = this.getArgument(1).asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
-      pair.getKey().(Literal).getValueText() = "options" and
+    exists(CfgNodes::ExprNodes::PairCfgNode pair |
+      pair =
+        this.getArgument(1).asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
+      pair.getKey().getConstantValue().isStringOrSymbol("options") and
       pair.getValue() =
         [
           trackEnableFeature(TNOENT()), trackEnableFeature(TDTDLOAD()),
           trackDisableFeature(TNONET())
-        ].asExpr().getExpr()
+        ].asExpr()
     )
   }
 }

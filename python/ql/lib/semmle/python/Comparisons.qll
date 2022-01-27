@@ -514,7 +514,7 @@ class ComparisonControlBlock extends ConditionBlock {
 
   Comparison getTest() { this.getLastNode() = result }
 
-  /** Whether this conditional guard implies that, in block `b`,  the result of `that` is `thatIsTrue` */
+  /** Whether this conditional guard implies that, in block `b`, the result of `that` is `thatIsTrue` */
   predicate impliesThat(BasicBlock b, Comparison that, boolean thatIsTrue) {
     exists(boolean controlSense |
       this.controls(b, controlSense) and

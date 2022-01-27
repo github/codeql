@@ -115,6 +115,8 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     implicitWriteAccess(toGenerated(this))
     or
     this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+    or
+    this = any(HashPattern p).getValue(_)
   }
 
   final override string toString() { result = VariableAccessImpl.super.toString() }

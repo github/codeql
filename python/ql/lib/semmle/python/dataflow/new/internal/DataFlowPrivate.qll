@@ -2,12 +2,34 @@ private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { exists(any(DataFlowCallable c).getParameter(this)) }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { exists(any(DataFlowCall c).getArg(this)) }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, int pos) { p.isParameterOf(c, pos) }
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
+}
 
 //--------
 // Data flow graph
@@ -363,7 +385,7 @@ private Node update(Node node) {
  * ```python
  * f(0, 1, 2, a=3)
  * ```
- * will be modelled as
+ * will be modeled as
  * ```python
  * f(0, 1, [*t], [**d])
  * ```
@@ -376,7 +398,7 @@ private Node update(Node node) {
  * ```python
  * f(0, **{"y": 1, "a": 3})
  * ```
- * no tuple argument is synthesized. It is modelled as
+ * no tuple argument is synthesized. It is modeled as
  * ```python
  * f(0, [y=1], [**d])
  * ```
@@ -927,7 +949,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 private predicate module_export(Module m, string name, CfgNode defn) {
   exists(EssaVariable v |
     v.getName() = name and
-    v.getAUse() = m.getANormalExit()
+    v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
   |
     defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
     or
@@ -1648,18 +1670,6 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
  * the enclosing callable `c` (including the implicit `this` parameter).
  */
 predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-
-//--------
-// Misc
-//--------
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) { none() }
 
 int accessPathLimit() { result = 5 }
 

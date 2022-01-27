@@ -191,3 +191,48 @@ module TS44 {
     
   }
 }
+
+module TS45 {
+  // A = string
+  type A = Awaited<Promise<string>>;
+
+  // B = number
+  type B = Awaited<Promise<Promise<number>>>;
+
+  // C = boolean | number
+  type C = Awaited<boolean | Promise<number>>;
+
+  export interface Success {
+    type: `${string}Success`;
+    body: string;
+  }
+
+  export interface Error {
+      type: `${string}Error`;
+      message: string;
+  }
+
+  export function handler(r: Success | Error) {
+      if (r.type === "HttpSuccess") {
+          // 'r' has type 'Success'
+          let token = r.body;
+      }
+  }
+
+  class Person {
+    #name: string;
+    constructor(name: string) {
+        this.#name = name;
+    }
+
+    equals(other: unknown) {
+        return other &&
+            typeof other === "object" &&
+            #name in other && // <- this is new!
+            this.#name === other.#name; // <- other has type Person here.
+    }
+  }
+}
+
+import * as Foo3 from "./something.json" assert { type: "json" };
+var foo = Foo3.foo;
