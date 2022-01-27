@@ -712,7 +712,7 @@ module Array {
     ElementReferenceRangeReadKnownSummary() {
       mc.getNumberOfArguments() = 2 and
       start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
-      exists(int length | length = mc.getArgument(1).getValueText().toInt() |
+      exists(int length | length = mc.getArgument(1).getConstantValue().getInt() |
         end = (start + length - 1) and
         this = "[](" + start + ", " + length + ")"
       )
@@ -722,14 +722,14 @@ module Array {
         rl = mc.getArgument(0) and
         (
           // Either an explicit, positive beginning index...
-          start = rl.getBegin().getValueText().toInt() and start >= 0
+          start = rl.getBegin().getConstantValue().getInt() and start >= 0
           or
           // Or a begin-less one, since `..n` is equivalent to `0..n`
           not exists(rl.getBegin()) and start = 0
         ) and
         // There must be an explicit end. An end-less range like `2..` is not
         // treated as a known range, since we don't track the length of the array.
-        exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0 |
+        exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0 |
           rl.isInclusive() and end = e
           or
           rl.isExclusive() and end = e - 1
@@ -762,16 +762,16 @@ module Array {
       (
         mc.getNumberOfArguments() = 2 and
         (
-          not exists(mc.getArgument(0).getValueText().toInt()) or
-          not exists(mc.getArgument(1).getValueText().toInt())
+          not exists(mc.getArgument(0).getConstantValue().getInt()) or
+          not exists(mc.getArgument(1).getConstantValue().getInt())
         )
         or
         mc.getNumberOfArguments() = 1 and
         exists(RangeLiteral rl | rl = mc.getArgument(0) |
           exists(rl.getBegin()) and
-          not exists(int b | b = rl.getBegin().getValueText().toInt() and b >= 0)
+          not exists(int b | b = rl.getBegin().getConstantValue().getInt() and b >= 0)
           or
-          not exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0)
+          not exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0)
         )
       )
     }
@@ -1234,7 +1234,7 @@ module Array {
 
     InsertKnownSummary() {
       this = "insert(" + i + ")" and
-      i = mc.getArgument(0).getValueText().toInt()
+      i = mc.getArgument(0).getConstantValue().getInt()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1275,7 +1275,7 @@ module Array {
   private class InsertUnknownSummary extends InsertSummary {
     InsertUnknownSummary() {
       this = "insert(index)" and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1552,7 +1552,7 @@ module Array {
     private int c;
 
     RotateKnownSummary() {
-      c = mc.getArgument(0).getValueText().toInt() and
+      c = mc.getArgument(0).getConstantValue().getInt() and
       this = "rotate(" + c + ")"
       or
       not exists(mc.getArgument(0)) and c = 1 and this = "rotate"
@@ -1580,7 +1580,7 @@ module Array {
     RotateUnknownSummary() {
       this = "rotate(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1608,7 +1608,7 @@ module Array {
     private int c;
 
     RotateBangKnownSummary() {
-      c = mc.getArgument(0).getValueText().toInt() and
+      c = mc.getArgument(0).getConstantValue().getInt() and
       this = "rotate!(" + c + ")"
       or
       not exists(mc.getArgument(0)) and c = 1 and this = "rotate!"
@@ -1635,7 +1635,7 @@ module Array {
     RotateBangUnknownSummary() {
       this = "rotate!(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1701,7 +1701,7 @@ module Array {
     private int n;
 
     ShiftArgKnownSummary() {
-      n = mc.getArgument(0).getValueText().toInt() and
+      n = mc.getArgument(0).getConstantValue().getInt() and
       this = "shift(" + n + ")"
     }
 
@@ -1724,7 +1724,7 @@ module Array {
     ShiftArgUnknownSummary() {
       this = "shift(index)" and
       exists(mc.getArgument(0)) and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -1826,7 +1826,7 @@ module Array {
     SliceBangRangeKnownSummary() {
       mc.getNumberOfArguments() = 2 and
       start = getKnownArrayElementContent(mc.getArgument(0)).getIndex() and
-      exists(int length | length = mc.getArgument(1).getValueText().toInt() |
+      exists(int length | length = mc.getArgument(1).getConstantValue().getInt() |
         end = (start + length - 1) and
         this = "slice!(" + start + ", " + length + ")"
       )
@@ -1835,11 +1835,11 @@ module Array {
       exists(RangeLiteral rl |
         rl = mc.getArgument(0) and
         (
-          start = rl.getBegin().getValueText().toInt() and start >= 0
+          start = rl.getBegin().getConstantValue().getInt() and start >= 0
           or
           not exists(rl.getBegin()) and start = 0
         ) and
-        exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0 |
+        exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0 |
           rl.isInclusive() and end = e
           or
           rl.isExclusive() and end = e - 1
@@ -1883,16 +1883,16 @@ module Array {
       (
         mc.getNumberOfArguments() = 2 and
         (
-          not exists(mc.getArgument(0).getValueText().toInt()) or
-          not exists(mc.getArgument(1).getValueText().toInt())
+          not exists(mc.getArgument(0).getConstantValue().getInt()) or
+          not exists(mc.getArgument(1).getConstantValue().getInt())
         )
         or
         mc.getNumberOfArguments() = 1 and
         exists(RangeLiteral rl | rl = mc.getArgument(0) |
           exists(rl.getBegin()) and
-          not exists(int b | b = rl.getBegin().getValueText().toInt() and b >= 0)
+          not exists(int b | b = rl.getBegin().getConstantValue().getInt() and b >= 0)
           or
-          not exists(int e | e = rl.getEnd().getValueText().toInt() and e >= 0)
+          not exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0)
         )
       )
     }
@@ -1920,7 +1920,7 @@ module Array {
     ValuesAtKnownSummary() {
       this = "values_at(known)" and
       forall(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-        mc.getArgument(i).getValueText().toInt() >= 0
+        mc.getArgument(i).getConstantValue().getInt() >= 0
       )
     }
 
@@ -1932,7 +1932,7 @@ module Array {
         or
         exists(ArrayIndex elementIndex, int argIndex |
           argIndex in [0 .. mc.getNumberOfArguments() - 1] and
-          elementIndex = mc.getArgument(argIndex).getValueText().toInt()
+          elementIndex = mc.getArgument(argIndex).getConstantValue().getInt()
         |
           input = "ArrayElement[" + elementIndex + "] of Receiver" and
           output = "ArrayElement[" + argIndex + "] of ReturnValue"
@@ -1949,7 +1949,7 @@ module Array {
     ValuesAtUnknownSummary() {
       this = "values_at(unknown)" and
       exists(int i | i in [0 .. mc.getNumberOfArguments() - 1] |
-        not exists(int val | val = mc.getArgument(i).getValueText().toInt() and val >= 0)
+        not exists(int val | val = mc.getArgument(i).getConstantValue().getInt() and val >= 0)
       )
     }
 
@@ -2695,7 +2695,7 @@ module Enumerable {
 
     TakeKnownSummary() {
       this = "take(" + i + ")" and
-      i = mc.getArgument(0).getValueText().toInt()
+      i = mc.getArgument(0).getConstantValue().getInt()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -2715,7 +2715,7 @@ module Enumerable {
   private class TakeUnknownSummary extends TakeSummary {
     TakeUnknownSummary() {
       this = "take(index)" and
-      not exists(mc.getArgument(0).getValueText().toInt())
+      not exists(mc.getArgument(0).getConstantValue().getInt())
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
