@@ -613,13 +613,13 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
 /** A class or instance field. */
 class Field extends Member, ExprParent, @field, Variable {
   /** Gets the declared type of this field. */
-  override Type getType() { fields(this, _, result, _, _, _) }
+  override Type getType() { fields(this, _, result, _, _) }
 
   /** Gets the Kotlin type of this field. */
-  override KotlinType getKotlinType() { fields(this, _, _, result, _, _) }
+  override KotlinType getKotlinType() { fieldsKotlinType(this, result) }
 
   /** Gets the type in which this field is declared. */
-  override RefType getDeclaringType() { fields(this, _, _, _, result, _) }
+  override RefType getDeclaringType() { fields(this, _, _, result, _) }
 
   /**
    * Gets the field declaration in which this field is declared.
@@ -649,7 +649,7 @@ class Field extends Member, ExprParent, @field, Variable {
    *
    * For all other fields, the source declaration is the field itself.
    */
-  Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
+  Field getSourceDeclaration() { fields(this, _, _, _, result) }
 
   /** Holds if this field is the same as its source declaration. */
   predicate isSourceDeclaration() { this.getSourceDeclaration() = this }

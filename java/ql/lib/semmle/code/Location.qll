@@ -20,7 +20,7 @@ predicate hasName(Element e, string name) {
   or
   methods(e, name, _, _, _, _, _)
   or
-  fields(e, name, _, _, _, _)
+  fields(e, name, _, _, _)
   or
   packages(e, name)
   or

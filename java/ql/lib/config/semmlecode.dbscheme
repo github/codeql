@@ -399,10 +399,14 @@ fields(
   unique int id: @field,
   string nodeName: string ref,
   int typeid: @type ref,
-  int kttypeid: @kt_type ref,
   int parentid: @reftype ref,
   int sourceid: @field ref
 );
+
+fieldsKotlinType(
+  unique int id: @field ref,
+  int kttypeid: @kt_type ref
+)
 
 constrs(
   unique int id: @constructor,

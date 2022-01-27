@@ -346,7 +346,8 @@ open class KotlinFileExtractor(
                     // here.
                     val instance = useObjectClassInstance(c)
                     val type = useSimpleTypeClass(c, emptyList(), false)
-                    tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, id, instance.id)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
+                    tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                     tw.writeHasLocation(instance.id, locId)
                     addModifiers(instance.id, "public", "static", "final")
                     @Suppress("UNCHECKED_CAST")
@@ -382,7 +383,8 @@ open class KotlinFileExtractor(
                         val instance = useCompanionObjectClassInstance(innerClass)
                         if(instance != null) {
                             val type = useSimpleTypeClass(innerClass, emptyList(), false)
-                            tw.writeFields(instance.id, instance.name, type.javaResult.id, type.kotlinResult.id, innerId, instance.id)
+                            tw.writeFields(instance.id, instance.name, type.javaResult.id, innerId, instance.id)
+                            tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
                             addModifiers(instance.id, "public", "static", "final")
                             @Suppress("UNCHECKED_CAST")
@@ -614,7 +616,8 @@ open class KotlinFileExtractor(
 
     private fun extractField(id: Label<out DbField>, name: String, type: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>, visibility: DescriptorVisibility, errorElement: IrElement, isExternalDeclaration: Boolean): Label<out DbField> {
         val t = useType(type)
-        tw.writeFields(id, name, t.javaResult.id, t.kotlinResult.id, parentId, id)
+        tw.writeFields(id, name, t.javaResult.id, parentId, id)
+        tw.writeFieldsKotlinType(id, t.kotlinResult.id)
         tw.writeHasLocation(id, locId)
 
         extractVisibility(errorElement, id, visibility)
@@ -694,7 +697,8 @@ open class KotlinFileExtractor(
                     logger.warnElement(Severity.ErrorSevere, "Enum entry parent class has type parameters: " + parent.name, ee)
                 } else {
                     val type = useSimpleTypeClass(parent, emptyList(), false)
-                    tw.writeFields(id, ee.name.asString(), type.javaResult.id, type.kotlinResult.id, parentId, id)
+                    tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
+                    tw.writeFieldsKotlinType(id, type.kotlinResult.id)
                     val locId = tw.getLocation(ee)
                     tw.writeHasLocation(id, locId)
                 }

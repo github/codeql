@@ -392,7 +392,8 @@ open class KotlinUsesExtractor(
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
             val intTypeIds = useType(pluginContext.irBuiltIns.intType)
-            tw.writeFields(length, "length", intTypeIds.javaResult.id, intTypeIds.kotlinResult.id, it, length)
+            tw.writeFields(length, "length", intTypeIds.javaResult.id, it, length)
+            tw.writeFieldsKotlinType(length, intTypeIds.kotlinResult.id)
             addModifiers(length, "public", "final")
 
             // Note we will only emit one `clone()` method per Java array type, so we choose `Array<C?>` as its Kotlin

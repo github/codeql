@@ -1,7 +1,8 @@
 import java
 
 predicate badKotlinType(Element e, int i) {
-  e = any(Expr expr | count(expr.getKotlinType()) = i)
+  e = any(Expr expr | count(expr.getKotlinType()) = i) or
+  e = any(Field f | count(f.getKotlinType()) = i)
 }
 
 from Element e, int i
