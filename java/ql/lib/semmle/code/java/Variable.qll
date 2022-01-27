@@ -66,22 +66,22 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
 /** A formal parameter of a callable. */
 class Parameter extends Element, @param, LocalScopeVariable {
   /** Gets the type of this formal parameter. */
-  override Type getType() { params(this, result, _, _, _, _) }
+  override Type getType() { params(this, result, _, _, _) }
 
   /** Gets the Kotlin type of this formal parameter. */
-  override KotlinType getKotlinType() { params(this, _, result, _, _, _) }
+  override KotlinType getKotlinType() { paramsKotlinType(this, result) }
 
   /** Holds if the parameter is never assigned a value in the body of the callable. */
   predicate isEffectivelyFinal() { not exists(this.getAnAssignedValue()) }
 
   /** Gets the (zero-based) index of this formal parameter. */
-  int getPosition() { params(this, _, _, result, _, _) }
+  int getPosition() { params(this, _, result, _, _) }
 
   /** Gets the callable that declares this formal parameter. */
-  override Callable getCallable() { params(this, _, _, _, result, _) }
+  override Callable getCallable() { params(this, _, _, result, _) }
 
   /** Gets the source declaration of this formal parameter. */
-  Parameter getSourceDeclaration() { params(this, _, _, _, _, result) }
+  Parameter getSourceDeclaration() { params(this, _, _, _, result) }
 
   /** Holds if this formal parameter is the same as its source declaration. */
   predicate isSourceDeclaration() { this.getSourceDeclaration() = this }

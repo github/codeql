@@ -440,7 +440,8 @@ open class KotlinFileExtractor(
     private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, paramSourceDeclaration: Label<out DbParam>): TypeResults {
         val substitutedType = typeSubstitution?.let { it(t, TypeContext.OTHER, pluginContext) } ?: t
         val type = useType(substitutedType)
-        tw.writeParams(id, type.javaResult.id, type.kotlinResult.id, idx, parent, paramSourceDeclaration)
+        tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
+        tw.writeParamsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, locId)
         tw.writeParamName(id, name)
         return type

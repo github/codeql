@@ -186,13 +186,13 @@ class Callable extends StmtParent, Member, @callable {
   Parameter getAParameter() { result.getCallable() = this }
 
   /** Gets the formal parameter at the specified (zero-based) position. */
-  Parameter getParameter(int n) { params(result, _, _, n, this, _) }
+  Parameter getParameter(int n) { params(result, _, n, this, _) }
 
   /** Gets the type of the formal parameter at the specified (zero-based) position. */
-  Type getParameterType(int n) { params(_, result, _, n, this, _) }
+  Type getParameterType(int n) { params(_, result, n, this, _) }
 
   /** Gets the type of the formal parameter at the specified (zero-based) position. */
-  KotlinType getParameterKotlinType(int n) { params(_, _, result, n, this, _) }
+  KotlinType getParameterKotlinType(int n) { paramsKotlinType(this.getParameter(n), result) }
 
   /**
    * Gets the signature of this callable, including its name and the types of all

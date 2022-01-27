@@ -440,11 +440,15 @@ methodsKotlinType(
 params(
   unique int id: @param,
   int typeid: @type ref,
-  int kttypeid: @kt_type ref,
   int pos: int ref,
   int parentid: @callable ref,
   int sourceid: @param ref
 );
+
+paramsKotlinType(
+  unique int id: @param ref,
+  int kttypeid: @kt_type ref
+)
 
 paramName(
   unique int id: @param ref,

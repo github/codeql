@@ -29,7 +29,7 @@ predicate hasName(Element e, string name) {
   paramName(e, name)
   or
   exists(int pos |
-    params(e, _, _, pos, _, _) and
+    params(e, _, pos, _, _) and
     not paramName(e, _) and
     name = "p" + pos
   )

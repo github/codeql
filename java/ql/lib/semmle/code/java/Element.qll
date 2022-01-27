@@ -61,7 +61,7 @@ private predicate hasChildElement(Element parent, Element e) {
   or
   constrs(e, _, _, _, parent, _)
   or
-  params(e, _, _, _, parent, _)
+  params(e, _, _, parent, _)
   or
   fields(e, _, _, parent, _)
   or
