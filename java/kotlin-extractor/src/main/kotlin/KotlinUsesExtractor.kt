@@ -402,7 +402,8 @@ open class KotlinUsesExtractor(
             val kotlinCloneReturnTypeLabel = useType(kotlinCloneReturnType).kotlinResult.id
 
             val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
-            tw.writeMethods(clone, "clone", "clone()", it, kotlinCloneReturnTypeLabel, it, clone)
+            tw.writeMethods(clone, "clone", "clone()", it, it, clone)
+            tw.writeMethodsKotlinType(clone, kotlinCloneReturnTypeLabel)
             addModifiers(clone, "public")
         }
 

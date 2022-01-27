@@ -456,7 +456,8 @@ open class KotlinFileExtractor(
             val obinitLabel = getFunctionLabel(c, parentId, "<obinit>", listOf(), pluginContext.irBuiltIns.unitType, extensionReceiverParameter = null, functionTypeParameters = listOf(), classTypeArgsIncludingOuterClasses = listOf())
             val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
             val returnType = useType(pluginContext.irBuiltIns.unitType)
-            tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, returnType.kotlinResult.id, parentId, obinitId)
+            tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
+            tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
 
             val locId = tw.getLocation(c)
             tw.writeHasLocation(obinitId, locId)
@@ -580,12 +581,16 @@ open class KotlinFileExtractor(
                         else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
                     }
                     @Suppress("UNCHECKED_CAST")
-                    tw.writeConstrs(id as Label<DbConstructor>, shortName, "$shortName$paramsSignature", unitType.javaResult.id, unitType.kotlinResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
+                    val constrId = id as Label<DbConstructor>
+                    tw.writeConstrs(constrId, shortName, "$shortName$paramsSignature", unitType.javaResult.id, parentId, sourceDeclaration as Label<DbConstructor>)
+                    tw.writeConstrsKotlinType(constrId, unitType.kotlinResult.id)
                 } else {
                     val returnType = useType(substReturnType, TypeContext.RETURN)
                     val shortName = getFunctionShortName(f)
                     @Suppress("UNCHECKED_CAST")
-                    tw.writeMethods(id as Label<DbMethod>, shortName, "$shortName$paramsSignature", returnType.javaResult.id, returnType.kotlinResult.id, parentId, sourceDeclaration as Label<DbMethod>)
+                    val methodId = id as Label<DbMethod>
+                    tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration as Label<DbMethod>)
+                    tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
                     // TODO: fix `sourceId`. It doesn't always match the method ID.
                 }
 
@@ -2430,7 +2435,8 @@ open class KotlinFileExtractor(
 
         val rt = useType(returnType, TypeContext.RETURN)
         val shortName = OperatorNameConventions.INVOKE.asString()
-        tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", rt.javaResult.id, rt.kotlinResult.id, parentId, methodId)
+        tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", rt.javaResult.id, parentId, methodId)
+        tw.writeMethodsKotlinType(methodId, rt.kotlinResult.id)
         tw.writeHasLocation(methodId, locId)
 
         // Block
@@ -2757,7 +2763,8 @@ open class KotlinFileExtractor(
 
         // Extract constructor
         val unitType = useType(pluginContext.irBuiltIns.unitType)
-        tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, unitType.kotlinResult.id, id, ids.constructor)
+        tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, id, ids.constructor)
+        tw.writeConstrsKotlinType(ids.constructor, unitType.kotlinResult.id)
         tw.writeHasLocation(ids.constructor, locId)
         addModifiers(ids.constructor, "public")
 

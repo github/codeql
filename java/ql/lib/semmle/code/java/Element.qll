@@ -57,9 +57,9 @@ private predicate hasChildElement(Element parent, Element e) {
   not enclInReftype(e, _) and
   e.(Interface).getCompilationUnit() = parent
   or
-  methods(e, _, _, _, _, parent, _)
+  methods(e, _, _, _, parent, _)
   or
-  constrs(e, _, _, _, _, parent, _)
+  constrs(e, _, _, _, parent, _)
   or
   params(e, _, _, _, parent, _)
   or

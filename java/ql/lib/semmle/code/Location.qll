@@ -16,9 +16,9 @@ predicate hasName(Element e, string name) {
   or
   primitives(e, name)
   or
-  constrs(e, name, _, _, _, _, _)
+  constrs(e, name, _, _, _, _)
   or
-  methods(e, name, _, _, _, _, _)
+  methods(e, name, _, _, _, _)
   or
   fields(e, name, _, _, _)
   or

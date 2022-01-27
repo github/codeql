@@ -439,7 +439,7 @@ class RawInterface extends Interface, RawType {
 class GenericCallable extends Callable {
   GenericCallable() {
     exists(Callable srcDecl |
-      methods(this, _, _, _, _, _, srcDecl) or constrs(this, _, _, _, _, _, srcDecl)
+      methods(this, _, _, _, _, srcDecl) or constrs(this, _, _, _, _, srcDecl)
     |
       typeVars(_, _, _, _, srcDecl)
     )

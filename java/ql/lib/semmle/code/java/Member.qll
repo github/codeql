@@ -57,8 +57,8 @@ class Callable extends StmtParent, Member, @callable {
    * constructors).
    */
   Type getReturnType() {
-    constrs(this, _, _, result, _, _, _) or
-    methods(this, _, _, result, _, _, _)
+    constrs(this, _, _, result, _, _) or
+    methods(this, _, _, result, _, _)
   }
 
   /**
@@ -66,8 +66,8 @@ class Callable extends StmtParent, Member, @callable {
    * constructors).
    */
   KotlinType getReturnKotlinType() {
-    constrs(this, _, _, _, result, _, _) or
-    methods(this, _, _, _, result, _, _)
+    constrsKotlinType(this, result) or
+    methodsKotlinType(this, result)
   }
 
   /**
@@ -285,8 +285,8 @@ class Callable extends StmtParent, Member, @callable {
    * For example, method `void m(String s, int i)` has the signature `m(java.lang.String,int)`.
    */
   string getSignature() {
-    constrs(this, _, result, _, _, _, _) or
-    methods(this, _, result, _, _, _, _)
+    constrs(this, _, result, _, _, _) or
+    methods(this, _, result, _, _, _)
   }
 }
 
@@ -328,7 +328,7 @@ predicate overridesIgnoringAccess(Method m1, RefType t1, Method m2, RefType t2) 
 }
 
 private predicate virtualMethodWithSignature(string sig, RefType t, Method m) {
-  methods(m, _, _, _, _, t, _) and
+  methods(m, _, _, _, t, _) and
   sig = m.getSignature() and
   m.isVirtual()
 }
@@ -377,7 +377,7 @@ class Method extends Callable, @method {
     exists(Method m | this.overrides(m) and result = m.getSourceDeclaration())
   }
 
-  override string getSignature() { methods(this, _, result, _, _, _, _) }
+  override string getSignature() { methods(this, _, result, _, _, _) }
 
   /**
    * Holds if this method and method `m` are declared in the same type
@@ -394,7 +394,7 @@ class Method extends Callable, @method {
     not exists(int n | this.getParameterType(n) != m.getParameterType(n))
   }
 
-  override SrcMethod getSourceDeclaration() { methods(this, _, _, _, _, _, result) }
+  override SrcMethod getSourceDeclaration() { methods(this, _, _, _, _, result) }
 
   /**
    * All the methods that could possibly be called when this method
@@ -471,7 +471,7 @@ class Method extends Callable, @method {
 
 /** A method that is the same as its source declaration. */
 class SrcMethod extends Method {
-  SrcMethod() { methods(_, _, _, _, _, _, this) }
+  SrcMethod() { methods(_, _, _, _, _, this) }
 
   /**
    * All the methods that could possibly be called when this method
@@ -557,9 +557,9 @@ class Constructor extends Callable, @constructor {
   /** Holds if this is a default constructor, not explicitly declared in source code. */
   predicate isDefaultConstructor() { isDefConstr(this) }
 
-  override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, _, result) }
+  override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, result) }
 
-  override string getSignature() { constrs(this, _, result, _, _, _, _) }
+  override string getSignature() { constrs(this, _, result, _, _, _) }
 
   override string getAPrimaryQlClass() { result = "Constructor" }
 }

@@ -138,11 +138,11 @@ class AnnotationType extends Interface {
 
   /** Gets the annotation element with the specified `name`. */
   AnnotationElement getAnnotationElement(string name) {
-    methods(result, _, _, _, _, this, _) and result.hasName(name)
+    methods(result, _, _, _, this, _) and result.hasName(name)
   }
 
   /** Gets an annotation element that is a member of this annotation type. */
-  AnnotationElement getAnAnnotationElement() { methods(result, _, _, _, _, this, _) }
+  AnnotationElement getAnAnnotationElement() { methods(result, _, _, _, this, _) }
 
   /** Holds if this annotation type is annotated with the meta-annotation `@Inherited`. */
   predicate isInherited() {
@@ -158,8 +158,8 @@ class AnnotationElement extends Member {
   AnnotationElement() { isAnnotElem(this) }
 
   /** Gets the type of this annotation element. */
-  Type getType() { methods(this, _, _, result, _, _, _) }
+  Type getType() { methods(this, _, _, result, _, _) }
 
   /** Gets the Kotlin type of this annotation element. */
-  KotlinType getKotlinType() { methods(this, _, _, _, result, _, _) }
+  KotlinType getKotlinType() { methodsKotlinType(this, result) }
 }
