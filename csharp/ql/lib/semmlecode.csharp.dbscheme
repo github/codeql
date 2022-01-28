@@ -191,7 +191,7 @@ sourceLocationPrefix(
 
 @attributable = @assembly | @field | @parameter | @operator | @method | @constructor
               | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors
-              | @local_function;
+              | @local_function | @lambda_expr;
 
 /** LOCATIONS, ASEMMBLIES, MODULES, FILES and FOLDERS **/
 

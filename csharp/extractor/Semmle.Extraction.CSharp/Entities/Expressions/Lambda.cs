@@ -28,6 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (Context.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
             {
                 Modifier.ExtractModifiers(Context, info.Context.TrapWriter.Writer, this, symbol);
+                Attribute.ExtractAttributes(Context, symbol, this);
             }
             else
             {
