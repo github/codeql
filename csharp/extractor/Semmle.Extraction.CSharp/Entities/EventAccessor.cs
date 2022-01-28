@@ -52,6 +52,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.event_accessor_location(this, l);
 
             Overrides(trapFile);
+
+            if (Symbol.FromSource() && Block is null)
+            {
+                trapFile.compiler_generated(this);
+            }
         }
 
         public static EventAccessor Create(Context cx, IMethodSymbol symbol, IEventSymbol @event) =>
