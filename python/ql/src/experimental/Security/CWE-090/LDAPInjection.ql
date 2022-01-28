@@ -5,13 +5,13 @@
  * @kind path-problem
  * @problem.severity error
  * @id py/ldap-injection
- * @tags security	
+ * @tags security
  *       external/cwe/cwe-090
  */
 
 // Determine precision above
 import python
-import experimental.semmle.python.security.injection.LDAP
+import semmle.python.security.dataflow.LdapInjection
 import DataFlow::PathGraph
 
 from LDAPInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
