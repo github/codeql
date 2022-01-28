@@ -58,7 +58,10 @@ class Send extends SendRecv instanceof RemoteFlowSinkFunction {
     call.getTarget() = this and
     exists(FunctionInput input, int arg |
       super.hasSocketInput(input) and
-      input.isParameter(arg) and
+      (
+        input.isParameter(arg) or
+        input.isParameterDeref(arg)
+      ) and
       result = call.getArgument(arg)
     )
   }
@@ -81,7 +84,10 @@ class Recv extends SendRecv instanceof RemoteFlowSourceFunction {
     call.getTarget() = this and
     exists(FunctionInput input, int arg |
       super.hasSocketInput(input) and
-      input.isParameter(arg) and
+      (
+        input.isParameter(arg) or
+        input.isParameterDeref(arg)
+      ) and
       result = call.getArgument(arg)
     )
   }
