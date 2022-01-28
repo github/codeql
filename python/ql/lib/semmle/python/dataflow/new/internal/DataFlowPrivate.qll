@@ -1636,7 +1636,7 @@ module MatchUnpacking {
    */
   predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
     exists(MatchAsPattern subject, Name alias | alias = subject.getAlias() |
-      // We make the subject flow to the interior pattern via the alis.
+      // We make the subject flow to the interior pattern via the alias.
       // That way, information can propagate from the interior pattern to the alias.
       //
       // the subject flows to the interior pattern
