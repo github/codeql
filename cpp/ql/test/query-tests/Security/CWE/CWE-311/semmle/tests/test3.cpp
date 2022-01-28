@@ -411,13 +411,13 @@ void test_member_password()
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // BAD: not encrypted [NOT DETECTED]
+		recv(val(), p.password, 256, val()); // BAD: not encrypted
 	}
 
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // GOOD: password is encrypted
+		recv(val(), p.password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
 		decrypt_inplace(p.password); // proof that `password` was in fact encrypted
 	}
 }
