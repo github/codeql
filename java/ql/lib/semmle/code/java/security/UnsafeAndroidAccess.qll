@@ -26,11 +26,9 @@ abstract class UrlResourceSink extends DataFlow::Node {
  */
 private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
   CrossOriginUrlResourceSink() {
-    exists(Variable settings, MethodAccess ma |
-      webViewLoadUrl(this.asExpr(), settings) and
-      ma.getMethod() instanceof CrossOriginAccessMethod and
-      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
-      ma.getQualifier() = settings.getAnAccess()
+    exists(WebViewRef webview |
+      webViewLoadUrl(this.asExpr(), webview.getAnAccess()) and
+      isAllowFileAccessEnabled(webview.getAnAccess())
     )
   }
 
@@ -44,57 +42,75 @@ private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSin
  */
 private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
   JavaScriptEnabledUrlResourceSink() {
-    exists(Variable settings |
-      webViewLoadUrl(this.asExpr(), settings) and
-      isJSEnabled(settings)
+    exists(WebViewRef webview |
+      isJSEnabled(webview.getAnAccess()) and
+      webViewLoadUrl(this.asExpr(), webview.getAnAccess())
     )
   }
 
   override string getSinkType() { result = "user input vulnerable to XSS attacks" }
 }
 
+private class WebViewRef extends Element {
+  WebViewRef() {
+    this.(RefType).getASourceSupertype*() instanceof TypeWebView or
+    this.(Variable).getType().(RefType).getASourceSupertype*() instanceof TypeWebView
+  }
+
+  /** Gets an access to this WebView. */
+  Expr getAnAccess() {
+    exists(ThisAccess t | t.getType() = this and result = t |
+      t.isOwnInstanceAccess() or
+      t.isEnclosingInstanceAccess(this)
+    )
+    or
+    result = this.(Variable).getAnAccess()
+  }
+}
+
+private Expr getUnderlyingExpr(Expr e) {
+  if e instanceof CastExpr or e instanceof UnaryExpr
+  then
+    result = getUnderlyingExpr(e.(CastExpr).getExpr()) or
+    result = getUnderlyingExpr(e.(UnaryExpr).getExpr())
+  else result = e
+}
+
 /**
- * Holds if a `WebViewLoadUrlMethod` method is called with the given `urlArg` on a
- * WebView with settings stored in `settings`.
+ * Holds if `WebViewLoadUrlMethod` is called on `webview`
+ * with `urlArg` as its first argument.
  */
-private predicate webViewLoadUrl(Expr urlArg, Variable settings) {
-  exists(MethodAccess loadUrl, Variable webview, MethodAccess getSettings |
+private predicate webViewLoadUrl(Argument urlArg, Expr webview) {
+  exists(MethodAccess loadUrl |
     loadUrl.getArgument(0) = urlArg and
-    loadUrl.getMethod() instanceof WebViewLoadUrlMethod and
-    loadUrl.getQualifier() = webview.getAnAccess() and
-    getSettings.getMethod() instanceof WebViewGetSettingsMethod and
-    webview.getAnAccess() = getSettings.getQualifier() and
-    settings.getAnAssignedValue() = getSettings
+    loadUrl.getMethod() instanceof WebViewLoadUrlMethod
+  |
+    getUnderlyingExpr(loadUrl.getQualifier()) = webview
+    or
+    // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
+    // so we need to find WebViews that use that specific `WebViewClient`.
+    exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
+      setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
+      setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
+      getUnderlyingExpr(setWebClient.getQualifier()) = webview and
+      getUnderlyingExpr(loadUrl.getQualifier()) = eventMethod.getWebViewParameter().getAnAccess()
+    )
   )
 }
 
-/**
- * A method allowing any-local-file and cross-origin access in the WebSettings class.
- */
-private class CrossOriginAccessMethod extends Method {
-  CrossOriginAccessMethod() {
-    this.getDeclaringType() instanceof TypeWebSettings and
-    this.hasName(["setAllowUniversalAccessFromFileURLs", "setAllowFileAccessFromFileURLs"])
+/** A method of the class `WebViewClient` that handles an event. */
+private class WebViewClientEventMethod extends Method {
+  WebViewClientEventMethod() {
+    this.getDeclaringType().getASupertype*() instanceof TypeWebViewClient and
+    this.hasName([
+        "shouldOverrideUrlLoading", "shouldInterceptRequest", "onPageStarted", "onPageFinished",
+        "onLoadResource", "onPageCommitVisible", "onTooManyRedirects"
+      ])
   }
-}
 
-/**
- * The `setJavaScriptEnabled` method for the webview.
- */
-private class AllowJavaScriptMethod extends Method {
-  AllowJavaScriptMethod() {
-    this.getDeclaringType() instanceof TypeWebSettings and
-    this.hasName("setJavaScriptEnabled")
+  /** Gets a `WebView` parameter of this method. */
+  Parameter getWebViewParameter() {
+    result = this.getAParameter() and
+    result.getType() instanceof TypeWebView
   }
-}
-
-/**
- * Holds if a call to `v.setJavaScriptEnabled(true)` exists.
- */
-private predicate isJSEnabled(Variable v) {
-  exists(MethodAccess jsa |
-    v.getAnAccess() = jsa.getQualifier() and
-    jsa.getMethod() instanceof AllowJavaScriptMethod and
-    jsa.getArgument(0).(BooleanLiteral).getBooleanValue() = true
-  )
 }
