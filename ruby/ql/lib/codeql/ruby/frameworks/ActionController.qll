@@ -28,7 +28,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
         API::getTopLevelMember("ApplicationController")
-      ].getASubclass*().getAUse().asExpr().getExpr()
+      ].getASubclass().getAUse().asExpr().getExpr()
   }
 
   /**

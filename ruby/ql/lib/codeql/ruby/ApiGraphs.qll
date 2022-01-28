@@ -101,9 +101,26 @@ module API {
     DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
 
     /**
-     * Gets a node representing a subclass of the class represented by this node.
+     * Gets a node representing a (direct or indirect) subclass of the class represented by this node.
+     * ```rb
+     * class A; end
+     * class B < A; end
+     * class C < B; end
+     * ```
+     * In the example above, `getMember("A").getASubclass()` will return uses of `A`, `B` and `C`.
      */
-    Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
+    Node getASubclass() { result = this.getAnImmediateSubclass*() }
+
+    /**
+     * Gets a node representing a direct subclass of the class represented by this node.
+     * ```rb
+     * class A; end
+     * class B < A; end
+     * class C < B; end
+     * ```
+     * In the example above, `getMember("A").getAnImmediateSubclass()` will return uses of `B` only.
+     */
+    Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths

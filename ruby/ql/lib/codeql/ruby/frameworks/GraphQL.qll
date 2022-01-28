@@ -71,7 +71,7 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Resolver").getASubclass*().getAUse().asExpr().getExpr()
+      graphQlSchema().getMember("Resolver").getASubclass().getAUse().asExpr().getExpr()
   }
 }
 
@@ -92,7 +92,7 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Object").getASubclass*().getAUse().asExpr().getExpr()
+      graphQlSchema().getMember("Object").getASubclass().getAUse().asExpr().getExpr()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */
