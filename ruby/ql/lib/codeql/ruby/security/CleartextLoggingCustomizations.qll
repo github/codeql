@@ -93,9 +93,7 @@ module CleartextLogging {
    * Gets the name of a  method that would be falsely marked as non-sensitive
    * by `notSensitiveRegexp`.
    */
-  private predicate nonSensitiveMethodNameExclusion(string name) {
-    name = ["[]", "[]="]
-  }
+  private predicate nonSensitiveMethodNameExclusion(string name) { name = ["[]", "[]="] }
 
   /**
    * A call that might obfuscate a password, for example through hashing.
@@ -125,10 +123,8 @@ module CleartextLogging {
             .getStringOrSymbol() = name
         or
         // calling a non-sensitive method
-        (
-          this.(DataFlow::CallNode).getMethodName() = name and
-          not nonSensitiveMethodNameExclusion(name)
-        )
+        this.(DataFlow::CallNode).getMethodName() = name and
+        not nonSensitiveMethodNameExclusion(name)
       )
       or
       // avoid i18n strings
@@ -215,8 +211,7 @@ module CleartextLogging {
         // avoid safe values assigned to presumably unsafe names
         not val instanceof NonCleartextPassword and
         // hash = { name: val }
-        exists(Pair p |
-          this.asExpr().getExpr() = lit and p = lit.getAKeyValuePair() |
+        exists(Pair p | this.asExpr().getExpr() = lit and p = lit.getAKeyValuePair() |
           p.getKey().getConstantValue().getStringOrSymbol() = name and
           p.getValue() = val.asExpr().getExpr()
         )
@@ -234,10 +229,9 @@ module CleartextLogging {
       // avoid safe values assigned to presumably unsafe names
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
-      (
-        exists(Assignment a |
-          this.asExpr().getExpr() = a.getRightOperand() and
-          a.getLeftOperand().getAVariable().getName() = name)
+      exists(Assignment a |
+        this.asExpr().getExpr() = a.getRightOperand() and
+        a.getLeftOperand().getAVariable().getName() = name
       )
     }
 
