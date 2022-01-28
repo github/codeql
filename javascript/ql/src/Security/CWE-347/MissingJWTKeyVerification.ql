@@ -15,6 +15,6 @@ import semmle.javascript.RestrictedLocations
 from DataFlow::CallNode call
 where
   call = DataFlow::moduleMember("jsonwebtoken", "verify").getACall() and
-  unique(boolean b | b = call.getArgument(1).analyze().getABooleanValue()) = false
-select call.asExpr().(FirstLineOf),
-  "does not verify the JWT payload with a cryptographic secret or public key."
+  call.getArgument(1).analyze().getTheBooleanValue() = false
+select call.getArgument(1),
+  "This argument disables the integrity enforcement of the token verification."
