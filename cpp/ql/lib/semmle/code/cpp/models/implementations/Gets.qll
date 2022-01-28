@@ -68,7 +68,7 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
 /**
  * The standard functions `gets`.
  */
-private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
+private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunction,
   SideEffectFunction, LocalFlowSourceFunction {
   GetsFunction() {
     // gets(str)
@@ -78,10 +78,6 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    none()
   }
 
   override predicate parameterNeverEscapes(int index) { none() }
