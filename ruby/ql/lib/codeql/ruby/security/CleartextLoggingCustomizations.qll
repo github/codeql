@@ -13,6 +13,11 @@ private import internal.SensitiveDataHeuristics::HeuristicNames
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * cleartext logging of sensitive information, as well as extension points for
+ * adding your own.
+ */
 module CleartextLogging {
   /**
    * A data flow source for cleartext logging of sensitive information.
