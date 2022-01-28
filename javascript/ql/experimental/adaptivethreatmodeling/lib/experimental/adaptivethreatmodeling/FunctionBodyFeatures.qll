@@ -38,7 +38,9 @@ pragma[inline]
 ASTNode getAnASTNodeToFeaturize(Function f) {
   result.getParent*() = f and
   // Don't featurize the function name as part of the function body tokens
-  not result = f.getIdentifier()
+  not result = f.getIdentifier() and
+  // Don't include nodes with names that are too long (to avoid catastrophic error due to tokenized strings getting too long)
+  result.toString().length() < 500000
 }
 
 /**
