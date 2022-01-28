@@ -15,9 +15,9 @@ Java framework & library support
    `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,136,28,,,3,,,,25
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,728,35,,6,,,,,
    `JSON-java <https://github.com/stleary/JSON-java>`_,``org.json``,,236,,,,,,,,
-   Java Standard Library,``java.*``,3,533,111,28,,,7,,,10
+   Java Standard Library,``java.*``,3,541,111,28,,,7,,,10
    Java extensions,"``javax.*``, ``jakarta.*``",54,552,32,,,4,,1,1,2
    `Spring <https://spring.io/>`_,``org.springframework.*``,29,472,96,,,,19,14,,29
    Others,"``androidx.slice``, ``cn.hutool.core.codec``, ``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.unboundid.ldap.sdk``, ``flexjson``, ``groovy.lang``, ``groovy.util``, ``jodd.json``, ``net.sf.saxon.s9api``, ``ognl``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.logging``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.log4j``, ``org.apache.logging.log4j``, ``org.apache.shiro.codec``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jboss.logging``, ``org.jooq``, ``org.mvel2``, ``org.scijava.log``, ``org.slf4j``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``, ``ratpack.core.form``, ``ratpack.core.handling``, ``ratpack.core.http``, ``ratpack.exec``, ``ratpack.form``, ``ratpack.func``, ``ratpack.handling``, ``ratpack.http``, ``ratpack.util``",44,283,921,,,,14,18,,
-   Totals,,182,6212,1424,106,6,10,107,33,1,81
+   Totals,,182,6220,1424,106,6,10,107,33,1,81
 
