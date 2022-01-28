@@ -2272,6 +2272,12 @@ module PrivateDjango {
    * A parameter that accepts the filename used to upload a file. This is the second
    * parameter in functions used for the `upload_to` argument to a `FileField`.
    *
+   * Note that the value this parameter accepts cannot contain a slash. Even when
+   * forcing the filename to contain a slash when sending the request, django does
+   * something like `input_filename.split("/")[-1]` (so other special characters still
+   * allowed). This also means that although the return value from `upload_to` is used
+   * to construct a path, path injection is not possible.
+   *
    * See
    *  - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
    *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
