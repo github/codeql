@@ -50,6 +50,9 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
     description = "String read by " + this.getName()
+    or
+    output.isReturnValue() and
+    description = "String read by " + this.getName()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
@@ -78,8 +81,7 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(2) and
-    output.isParameterDeref(0)
+    none()
   }
 
   override predicate parameterNeverEscapes(int index) { none() }
@@ -100,6 +102,9 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
 
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
+    description = "String read by " + this.getName()
+    or
+    output.isReturnValue() and
     description = "String read by " + this.getName()
   }
 
