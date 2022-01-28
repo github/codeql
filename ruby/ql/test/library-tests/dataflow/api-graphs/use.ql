@@ -37,9 +37,31 @@ class ApiUseTest extends InlineExpectationsTest {
     exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location) |
       tag = "use" and
       element = n.toString() and
-      value = a.getAPath(_)
+      value = getAPath(a, _)
     )
   }
 }
 
 private int size(AstNode n) { not n instanceof StmtSequence and result = count(n.getAChild*()) }
+
+/**
+ * Gets a path of the given `length` from the root to the given node.
+ * This is a copy of `API::getAPath()` without the restriction on path length,
+ * which would otherwise rule out paths involving `getASubclass()`.
+ */
+string getAPath(API::Node node, int length) {
+  node instanceof API::Root and
+  length = 0 and
+  result = ""
+  or
+  exists(API::Node pred, string lbl, string predpath |
+    pred.getASuccessor(lbl) = node and
+    lbl != "" and
+    predpath = getAPath(pred, length - 1) and
+    exists(string dot | if length = 1 then dot = "" else dot = "." |
+      result = predpath + dot + lbl and
+      // avoid producing strings longer than 1MB
+      result.length() < 1000 * 1000
+    )
+  )
+}
