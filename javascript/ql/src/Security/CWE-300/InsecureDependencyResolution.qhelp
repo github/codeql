@@ -6,10 +6,10 @@
 <overview>
 <p>
 Using an insecure protocol like HTTP or FTP to download build dependencies makes the build process vulnerable to a 
-Man in the Middle (MITM) attack.
+man-in-the-middle (MITM) attack.
 </p>
 <p>
-This can allow attackers to inject malicious code into the downloaded dependencies and thereby 
+This can allow attackers to inject malicious code into the downloaded dependencies, and thereby 
 infect the build artifacts and execute arbitrary code on the machine building the artifacts.
 </p>
 
@@ -46,10 +46,10 @@ The fix is to change the protocol to HTTPS.
   </a>
 </li>
 <li>
-  Wikipedia: <a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack</a>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack.</a>
 </li>
 <li>
-  Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack.</a>
 </li>
 </references>
 </qhelp>

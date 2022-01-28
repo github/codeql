@@ -1,7 +1,7 @@
 /**
  * @name Dependency download using unencrypted communication channel
  * @description Using unencrypted protocols to fetch dependencies can leave an application
- *              open to man in the middle attacks.
+ *              open to man-in-the-middle attacks.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.1
