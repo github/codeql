@@ -168,22 +168,9 @@ module CleartextLogging {
   }
 
   /**
-   * An hash with a value that may contain password information
-   *
-   * This is a source since logging a hash will show the pairs present.
+   * A write to a hash entry with a value that may contain password information.
    */
-  private abstract class HashPasswordSource extends Source {
-    /** Gets the name of the key */
-    abstract string getName();
-
-    /**
-     * Gets the name of the hash variable that this password source is assigned
-     * to, if applicable.
-     */
-    abstract LocalVariable getVariable();
-  }
-
-  private class HashKeyWritePasswordSource extends HashPasswordSource {
+  private class HashKeyWritePasswordSource extends Source {
     private string name;
     private DataFlow::ExprNode recv;
 
@@ -202,18 +189,27 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an write to " + name }
-    override string getName() { result = name }
-    override LocalVariable getVariable() {
+
+    /** Gets the name of the key */
+    string getName() { result = name }
+
+    /**
+     * Gets the name of the hash variable that this password source is assigned
+     * to, if applicable.
+     */
+    LocalVariable getVariable() {
       result = recv.getExprNode().getExpr().(VariableReadAccess).getVariable()
     }
   }
 
-  private class HashLiteralPasswordSource extends HashPasswordSource {
+  /**
+   * A hash literal with an entry that may contain a password
+   */
+  private class HashLiteralPasswordSource extends Source {
     private string name;
-    private HashLiteral lit;
 
     HashLiteralPasswordSource() {
-      exists(DataFlow::Node val |
+      exists(DataFlow::Node val, HashLiteral lit |
         name.regexpMatch(maybePassword()) and
         not name.regexpMatch(notSensitiveRegexp()) and
         // avoid safe values assigned to presumably unsafe names
@@ -228,13 +224,6 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an write to " + name }
-    override string getName() { result = name }
-    override LocalVariable getVariable() {
-      exists(Assignment a |
-        a.getRightOperand() = lit |
-        result = a.getLeftOperand().getAVariable()
-      )
-    }
   }
 
   /** An assignment that may assign a password to a variable */
@@ -295,7 +284,7 @@ module CleartextLogging {
       nodeFrom.(HashKeyWritePasswordSource).getName() = name and
       nodeTo.asExpr().getExpr() = ref and
       ref.getArgument(0).getConstantValue().getStringOrSymbol() = name and
-      nodeFrom.(HashPasswordSource).getVariable() = hashVar and
+      nodeFrom.(HashKeyWritePasswordSource).getVariable() = hashVar and
       ref.getReceiver().(VariableReadAccess).getVariable() = hashVar and
       nodeFrom.asExpr().getASuccessor*() = nodeTo.asExpr()
     )
