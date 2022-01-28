@@ -23,5 +23,5 @@ where
   not isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
   score = getScoreForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "(Experimental) This may be a cross-site scripting vulnerability due to $@. Identified using machine learning."
-    + "a user-provided value", score
+  "(Experimental) This may be a cross-site scripting vulnerability due to $@. Identified using machine learning.",
+  source.getNode(), "a user-provided value", score

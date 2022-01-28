@@ -101,14 +101,21 @@ class ExprNode extends Node, TExprNode_ {
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
-    exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
+    exists(DataFlowCallable c, ParameterPosition ppos |
+      super.isParameterOf(c, ppos) and
+      result = c.getParameter(ppos.getPosition())
+    )
   }
 
   /**
+   * DEPRECATED
+   *
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
+  deprecated predicate isParameterOf(DataFlowCallable c, int i) {
+    super.isParameterOf(c, any(ParameterPosition pos | i = pos.getPosition()))
+  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */

@@ -126,15 +126,14 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
     or
-    exists(CfgNode n, Stmt stmt, CaseExpr c |
-      c = nodeTo.asExpr().getExpr() and
-      n = nodeFrom.asExpr() and
-      n = nodeTo.asExpr().getAPredecessor() and
-      stmt = n.getNode()
+    exists(CfgNodes::AstCfgNode branch |
+      branch = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
     |
-      stmt = c.getElseBranch() or
-      stmt = c.getABranch().(InClause).getBody() or
-      stmt = c.getABranch().(WhenClause).getBody()
+      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
+      or
+      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
+      or
+      nodeFrom.asExpr() = branch
     )
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
@@ -167,14 +166,14 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int i |
       this = call.getArgument(i) and
       not this.getExpr() instanceof BlockArgument and
-      not exists(this.getExpr().(Pair).getKey().getValueText()) and
+      not exists(this.getExpr().(Pair).getKey().getConstantValue().getSymbol()) and
       arg.isPositional(i)
     )
     or
     exists(CfgNodes::ExprNodes::PairCfgNode p |
       p = call.getArgument(_) and
       this = p.getValue() and
-      arg.isKeyword(p.getKey().getValueText())
+      arg.isKeyword(p.getKey().getConstantValue().getSymbol())
     )
     or
     this = call.getReceiver() and arg.isSelf()
@@ -296,7 +295,8 @@ private module Cached {
   cached
   newtype TContent =
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
-    TUnknownArrayElementContent()
+    TUnknownArrayElementContent() or
+    TAnyArrayElementContent()
 }
 
 class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
@@ -736,7 +736,13 @@ predicate storeStep(Node node1, Content c, Node node2) {
 }
 
 predicate readStep(Node node1, Content c, Node node2) {
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+  exists(Content c0 | FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c0, node2) |
+    if c0 = TAnyArrayElementContent()
+    then
+      c instanceof TUnknownArrayElementContent or
+      c instanceof TKnownArrayElementContent
+    else c = c0
+  )
 }
 
 /**

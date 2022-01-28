@@ -88,7 +88,7 @@ class RegexOperation extends Call {
 private class SystemTextRegularExpressionsCaptureCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Text.RegularExpressions;CaptureCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value"
+      "System.Text.RegularExpressions;CaptureCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value"
   }
 }
 
@@ -97,8 +97,8 @@ private class SystemTextRegularExpressionsGroupCollectionFlowModelCsv extends Su
   override predicate row(string row) {
     row =
       [
-        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value",
-        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.String);;Element of Argument[-1];ReturnValue;value",
+        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value",
+        "System.Text.RegularExpressions;GroupCollection;false;get_Item;(System.String);;Element of Argument[Qualifier];ReturnValue;value",
       ]
   }
 }
@@ -107,6 +107,6 @@ private class SystemTextRegularExpressionsGroupCollectionFlowModelCsv extends Su
 private class SystemTextRegularExpressionsMatchCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Text.RegularExpressions;MatchCollection;false;get_Item;(System.Int32);;Element of Argument[-1];ReturnValue;value"
+      "System.Text.RegularExpressions;MatchCollection;false;get_Item;(System.Int32);;Element of Argument[Qualifier];ReturnValue;value"
   }
 }

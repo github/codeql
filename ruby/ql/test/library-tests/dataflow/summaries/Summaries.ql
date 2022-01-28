@@ -67,7 +67,7 @@ class Conf extends TaintTracking::Configuration {
   Conf() { this = "FlowSummaries" }
 
   override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getValueText() = "taint"
+    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
   }
 
   override predicate isSink(DataFlow::Node sink) {

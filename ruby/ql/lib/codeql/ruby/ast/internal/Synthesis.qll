@@ -7,6 +7,7 @@ private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
+private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
@@ -793,14 +794,13 @@ private module ArrayLiteralDesugar {
     exists(ArrayLiteral al |
       parent = al and
       i = -1 and
-      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements() + 1))
+      child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements()))
       or
-      exists(AstNode mc | mc = TMethodCallSynth(al, -1, _, _, _) |
-        parent = mc and
+      parent = TMethodCallSynth(al, -1, _, _, _) and
+      (
         i = 0 and
         child = SynthChild(ConstantReadAccessKind("::Array"))
         or
-        parent = mc and
         child = childRef(al.getElement(i - 1))
       )
     )
@@ -824,10 +824,53 @@ private module ArrayLiteralDesugar {
     final override predicate methodCall(string name, boolean setter, int arity) {
       name = "[]" and
       setter = false and
-      arity = any(ArrayLiteral al).getNumberOfElements() + 1
+      arity = any(ArrayLiteral al).getNumberOfElements()
     }
 
     final override predicate constantReadAccess(string name) { name = "::Array" }
+  }
+}
+
+private module HashLiteralDesugar {
+  pragma[nomagic]
+  private predicate hashLiteralSynthesis(AstNode parent, int i, Child child) {
+    exists(HashLiteral hl |
+      parent = hl and
+      i = -1 and
+      child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
+      or
+      parent = TMethodCallSynth(hl, -1, _, _, _) and
+      (
+        i = 0 and
+        child = SynthChild(ConstantReadAccessKind("::Hash"))
+        or
+        child = childRef(hl.getElement(i - 1))
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * { a: 1, **splat, b: 2 }
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * ::Hash.[](a: 1, **splat, b: 2)
+   * ```
+   */
+  private class HashLiteralSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      hashLiteralSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "[]" and
+      setter = false and
+      arity = any(HashLiteral hl).getNumberOfElements()
+    }
+
+    final override predicate constantReadAccess(string name) { name = "::Hash" }
   }
 }
 
@@ -918,6 +961,38 @@ private module ForLoopDesugar {
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(ForExpr for).getBody()
+    }
+  }
+}
+
+/**
+ * ```rb
+ * { a: }
+ * ```
+ * desugars to,
+ * ```rb
+ * { a: a }
+ * ```
+ */
+private module ImplicitHashValueSynthesis {
+  private Ruby::AstNode keyWithoutValue(HashPattern parent, int i) {
+    exists(Ruby::KeywordPattern pair |
+      result = pair.getKey() and
+      result = toGenerated(parent.getKey(i)) and
+      not exists(pair.getValue())
+    )
+  }
+
+  private class ImplicitHashValueSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      exists(TVariableReal variable |
+        access(keyWithoutValue(parent, i), variable) and
+        child = SynthChild(LocalVariableAccessRealKind(variable))
+      )
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(HashPattern p, int i | n = p.getValue(i) and l = keyWithoutValue(p, i).getLocation())
     }
   }
 }

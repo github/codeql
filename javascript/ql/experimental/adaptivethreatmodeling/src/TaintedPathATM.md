@@ -1,7 +1,7 @@
 # Uncontrolled data used in path expression (experimental)
-This is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
-
 Accessing files using paths constructed from user-controlled data can allow an attacker to access unexpected resources. This can result in sensitive information being revealed or deleted, or an attacker being able to influence behavior by modifying unexpected files.
+
+Note: This CodeQL query is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
 
 
 ## Recommendation

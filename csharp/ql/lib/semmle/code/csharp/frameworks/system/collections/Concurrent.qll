@@ -7,16 +7,16 @@ private class SystemCollectionsConcurrentConcurrentDictionaryFlowModelCsv extend
   override predicate row(string row) {
     row =
       [
-        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];value",
-        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];value",
+        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];value",
+        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;Add;(System.Collections.Generic.KeyValuePair<TKey,TValue>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[0];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Int32,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of ReturnValue;value",
         "System.Collections.Concurrent;ConcurrentDictionary<,>;false;ConcurrentDictionary;(System.Int32,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>);;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[1];Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of ReturnValue;value",
-        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[-1];Element of ReturnValue;value",
-        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[-1];Element of ReturnValue;value",
+        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Keys;();;Property[System.Collections.Generic.KeyValuePair<,>.Key] of Element of Argument[Qualifier];Element of ReturnValue;value",
+        "System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Values;();;Property[System.Collections.Generic.KeyValuePair<,>.Value] of Element of Argument[Qualifier];Element of ReturnValue;value",
       ]
   }
 }
@@ -26,8 +26,8 @@ private class SystemCollectionsConcurrentBlockingCollectionFlowModelCsv extends 
   override predicate row(string row) {
     row =
       [
-        "System.Collections.Concurrent;BlockingCollection<>;false;Add;(T);;Argument[0];Element of Argument[-1];value",
-        "System.Collections.Concurrent;BlockingCollection<>;false;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value",
+        "System.Collections.Concurrent;BlockingCollection<>;false;Add;(T);;Argument[0];Element of Argument[Qualifier];value",
+        "System.Collections.Concurrent;BlockingCollection<>;false;CopyTo;(T[],System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value",
       ]
   }
 }
@@ -36,7 +36,7 @@ private class SystemCollectionsConcurrentBlockingCollectionFlowModelCsv extends 
 private class SystemCollectionsConcurrentIProducerConsumerCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Concurrent;IProducerConsumerCollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[-1];Element of Argument[0];value"
+      "System.Collections.Concurrent;IProducerConsumerCollection<>;true;CopyTo;(T[],System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value"
   }
 }
 
@@ -44,6 +44,6 @@ private class SystemCollectionsConcurrentIProducerConsumerCollectionFlowModelCsv
 private class SystemCollectionsConcurrentConcurrentBagFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Element of Argument[-1];value"
+      "System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Element of Argument[Qualifier];value"
   }
 }

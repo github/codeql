@@ -32,6 +32,6 @@ class SystemNetMailMailMessageClass extends SystemNetMailClass {
 private class SystemNetMailMailAddressCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net.Mail;MailAddressCollection;false;Add;(System.String);;Argument[0];Element of Argument[-1];value"
+      "System.Net.Mail;MailAddressCollection;false;Add;(System.String);;Argument[0];Element of Argument[Qualifier];value"
   }
 }

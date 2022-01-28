@@ -85,6 +85,10 @@ edges
 | test3.cpp:366:8:366:15 | password | test3.cpp:368:15:368:22 | password |
 | test3.cpp:366:8:366:15 | password | test3.cpp:374:3:374:18 | call to SecureZeroBuffer |
 | test3.cpp:366:8:366:15 | password | test3.cpp:374:20:374:27 | password |
+| test3.cpp:386:8:386:15 | password | test3.cpp:388:15:388:22 | password |
+| test3.cpp:398:18:398:25 | password | test3.cpp:400:15:400:23 | & ... |
+| test3.cpp:398:18:398:25 | password | test3.cpp:400:16:400:23 | password |
+| test3.cpp:398:18:398:25 | password | test3.cpp:400:33:400:40 | password |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:21:48:27 | call to encrypt |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:29:48:39 | thePassword |
 | test.cpp:66:23:66:43 | cleartext password! | test.cpp:76:21:76:27 | call to encrypt |
@@ -198,6 +202,12 @@ nodes
 | test3.cpp:368:15:368:22 | password | semmle.label | password |
 | test3.cpp:374:3:374:18 | call to SecureZeroBuffer | semmle.label | call to SecureZeroBuffer |
 | test3.cpp:374:20:374:27 | password | semmle.label | password |
+| test3.cpp:386:8:386:15 | password | semmle.label | password |
+| test3.cpp:388:15:388:22 | password | semmle.label | password |
+| test3.cpp:398:18:398:25 | password | semmle.label | password |
+| test3.cpp:400:15:400:23 | & ... | semmle.label | & ... |
+| test3.cpp:400:16:400:23 | password | semmle.label | password |
+| test3.cpp:400:33:400:40 | password | semmle.label | password |
 | test.cpp:41:23:41:43 | cleartext password! | semmle.label | cleartext password! |
 | test.cpp:48:21:48:27 | call to encrypt | semmle.label | call to encrypt |
 | test.cpp:48:29:48:39 | thePassword | semmle.label | thePassword |
@@ -227,3 +237,4 @@ subpaths
 | test3.cpp:295:2:295:5 | call to send | test3.cpp:308:58:308:66 | password2 | test3.cpp:295:14:295:17 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:308:58:308:66 | password2 | password2 |
 | test3.cpp:300:2:300:5 | call to send | test3.cpp:308:58:308:66 | password2 | test3.cpp:300:14:300:17 | data | This operation transmits 'data', which may contain unencrypted sensitive data from $@ | test3.cpp:308:58:308:66 | password2 | password2 |
 | test3.cpp:341:4:341:7 | call to recv | test3.cpp:339:9:339:16 | password | test3.cpp:341:16:341:23 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:339:9:339:16 | password | password |
+| test3.cpp:388:3:388:6 | call to recv | test3.cpp:386:8:386:15 | password | test3.cpp:388:15:388:22 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:386:8:386:15 | password | password |
