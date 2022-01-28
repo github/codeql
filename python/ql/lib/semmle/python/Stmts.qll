@@ -18,10 +18,15 @@ class Stmt extends Stmt_, AstNode {
   /** Gets an immediate (non-nested) sub-statement of this statement */
   Stmt getASubStatement() { none() }
 
+  /** Gets an immediate (non-nested) sub-pattern of this statement */
+  Pattern getASubPattern() { none() }
+
   override AstNode getAChildNode() {
     result = this.getASubExpression()
     or
     result = this.getASubStatement()
+    or
+    result = this.getASubPattern()
   }
 
   private ControlFlowNode possibleEntryNode() {
@@ -410,6 +415,24 @@ class With extends With_ {
   override Stmt getASubStatement() { result = this.getAStmt() }
 
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
+}
+
+/** A match statement */
+class MatchStmt extends MatchStmt_ {
+  /* syntax: match subject: */
+  override Expr getASubExpression() { result = this.getSubject() }
+
+  override Stmt getASubStatement() { result = this.getCase(_) }
+}
+
+/** A case statement */
+class Case extends Case_ {
+  /* syntax: case pattern if guard: */
+  override Expr getASubExpression() { result = this.getGuard() }
+
+  override Stmt getASubStatement() { result = this.getStmt(_) }
+
+  override Pattern getASubPattern() { result = this.getPattern() }
 }
 
 /** A plain text used in a template is wrapped in a TemplateWrite statement */
