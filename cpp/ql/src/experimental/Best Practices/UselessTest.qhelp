@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Comparisons operation like <code>a==8 && a!=7</code> contains an useless part : the non-equal part. This rule finds any test of this kind within an if or a while statement
+This rule will only find useless comparisons with a right literal operand. </p>
+</overview>
+
+<recommendation>
+<p>Remove the useless comparisons</p>
+</recommendation>
+
+<example>
+<sample src="UselessTest.cpp" />
+</example>
+
+</qhelp>
