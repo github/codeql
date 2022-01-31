@@ -38,9 +38,7 @@ pragma[inline]
 ASTNode getAnASTNodeToFeaturize(Function f) {
   result.getParent*() = f and
   // Don't featurize the function name as part of the function body tokens
-  not result = f.getIdentifier() and
-  // Don't include nodes with names that are too long (to avoid catastrophic error due to tokenized strings getting too long)
-  result.toString().length() < 500000
+  not result = f.getIdentifier()
 }
 
 /**
@@ -129,22 +127,29 @@ ASTNode getAnASTNodeWithAFeature(Function f) {
   result = getAnASTNodeToFeaturize(f)
 }
 
+int getNumCharsInFunction(Function f) {
+    result = strictsum(int i |
+      exists(ASTNode node | node = getAnASTNodeWithAFeature(f) and i = getTokenizedAstNode(node).length()) |
+      i
+    )
+}
+
+// Evaluator string limit is 5395415 characters. We choose a limit lower than this.
+private int getMaxChars() { result = 1000000 }
+
+Function getFeaturizableFunction(Function f) {
+   result = f and getNumCharsInFunction(f) <= getMaxChars()
+}
+
 /**
  * Returns a featurized representation of the function that can be used to populate the
  * `enclosingFunctionBody` feature for an endpoint.
  */
 string getBodyTokensFeature(Function function) {
-  // Performance optimization: If a function has more than 256 body subtokens, then featurize it as
-  // absent. This approximates the behavior of the classifer on non-generic body features where
-  // large body features are replaced by the absent token.
-  //
-  // We count nodes instead of tokens because tokens are often not unique.
-  strictcount(ASTNode node |
-    node = getAnASTNodeToFeaturize(function) and
-    exists(getTokenizedAstNode(node))
-  ) <= 256 and
-  result =
-    strictconcat(Location l, string token |
+  // Performance optimization: If a function has more than getMaxChars() characters in its body subtokens, 
+  // then featurize it as absent.
+  function = getFeaturizableFunction(function) and
+  result = strictconcat(Location l, string token |
       // The use of a nested exists here allows us to avoid duplicates due to two AST nodes in the
       // same location featurizing to the same token. By using a nested exists, we take only unique
       // (location, token) pairs.
