@@ -25,9 +25,7 @@ class SsaPhiNode extends SsaVariable, IR::PhiInstruction {
     )
   }
 
-  BasicBlock getBasicBlock() {
-    result = this.getBlock()
-  }
+  BasicBlock getBasicBlock() { result = this.getBlock() }
 }
 
 /** Gets a basic block in which SSA variable `v` is read. */
