@@ -11,7 +11,7 @@ private import SsaReadPositionCommon
 private import Sign
 
 /** Gets the sign of `e` if this can be directly determined. */
-Sign certainExprSign(Expr e) {
+private Sign certainExprSign(Expr e) {
   exists(int i | e.(ConstantIntegerExpr).getIntValue() = i |
     i < 0 and result = TNeg()
     or
@@ -42,7 +42,7 @@ Sign certainExprSign(Expr e) {
 }
 
 /** Holds if the sign of `e` is too complicated to determine. */
-predicate unknownSign(Expr e) {
+private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
   (
     exists(CastExpr cast, Type fromtyp |
@@ -220,7 +220,7 @@ private Sign guardedSsaSignOk(SsaVariable v, SsaReadPosition pos) {
 }
 
 /** Gets a possible sign for `v` at `pos`. */
-Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
+private Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
   result = unguardedSsaSign(v, pos)
   or
   result = guardedSsaSign(v, pos) and
@@ -229,7 +229,7 @@ Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
 
 /** Gets a possible sign for `v`. */
 pragma[nomagic]
-Sign ssaDefSign(SsaVariable v) {
+private Sign ssaDefSign(SsaVariable v) {
   result = explicitSsaDefSign(v)
   or
   result = implicitSsaDefSign(v)
@@ -262,7 +262,7 @@ private Sign implicitSsaDefSign(SsaVariable v) {
 }
 
 /** Gets a possible sign for `f`. */
-Sign fieldSign(Field f) {
+private Sign fieldSign(Field f) {
   if not fieldWithUnknownSign(f)
   then
     result = exprSign(getAssignedValueToField(f))
@@ -311,7 +311,7 @@ Sign exprSign(Expr e) {
 }
 
 /** Gets a possible sign for `e` from the signs of its child nodes. */
-Sign specificSubExprSign(Expr e) {
+private Sign specificSubExprSign(Expr e) {
   result = exprSign(getASubExprWithSameSign(e))
   or
   exists(DivExpr div | div = e |

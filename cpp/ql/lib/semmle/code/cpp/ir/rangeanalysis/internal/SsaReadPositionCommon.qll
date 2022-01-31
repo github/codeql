@@ -30,7 +30,7 @@ class SsaReadPositionBlock extends SsaReadPosition, TSsaReadPositionBlock {
 
   override predicate hasReadOfVar(SsaVariable v) { this.getBlock() = getAReadBasicBlock(v) }
 
-  override string toString() { result = "block: " + getBlock().toString() }
+  override string toString() { result = "block" }
 }
 
 /**
