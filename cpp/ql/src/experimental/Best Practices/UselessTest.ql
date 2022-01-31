@@ -1,6 +1,6 @@
 /**
  * @name Useless Test
- * @description Find any useless test of kind a==8 && a!=7
+ * @description A boolean condition that is guaranteed to never be evaluated should be deleted.
  * @kind problem
  * @problem.severity warning
  * @id cpp/uselesstest
@@ -9,16 +9,9 @@
  */
 
 import cpp
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-predicate sameStmt(Expr e1, Expr e2) {
-  e1.getNumChild() = e2.getNumChild() and
-  e1.toString() = e2.toString() and
-  (
-    e1.getNumChild() = 0
-    or
-    forall(int i | i in [0 .. e1.getNumChild() - 1] | sameStmt(e1.getChild(i), e2.getChild(i)))
-  )
-}
+predicate sameExpr(Expr e1, Expr e2) { globalValueNumber(e1).getAnExpr() = e2 }
 
 Element nearestParent(Expr e) {
   if
@@ -38,13 +31,13 @@ where
     ne.getParent() instanceof LogicalAndExpr
   ) and
   (
-    eq.getChild(0) instanceof VariableAccess and ne.getChild(0) instanceof VariableAccess
+    eq.getLeftOperand() instanceof VariableAccess and ne.getLeftOperand() instanceof VariableAccess
     or
-    eq.getChild(0) instanceof PointerDereferenceExpr and
-    ne.getChild(0) instanceof PointerDereferenceExpr
+    eq.getLeftOperand() instanceof PointerDereferenceExpr and
+    ne.getLeftOperand() instanceof PointerDereferenceExpr
   ) and
-  eq.getChild(1) instanceof Literal and
-  ne.getChild(1) instanceof Literal and
+  eq.getRightOperand() instanceof Literal and
+  ne.getRightOperand() instanceof Literal and
   nearestParent(eq) = nearestParent(ne) and
-  sameStmt(eq.getChild(0), ne.getChild(0))
+  sameExpr(eq.getLeftOperand(), ne.getLeftOperand())
 select "Useless test", ne

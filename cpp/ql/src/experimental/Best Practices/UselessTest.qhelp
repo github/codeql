@@ -4,8 +4,7 @@
 <qhelp>
 
 <overview>
-<p>Comparisons operation like <code>a==8 && a!=7</code> contains an useless part : the non-equal part. This rule finds any test of this kind within an if or a while statement
-This rule will only find useless comparisons with a right literal operand. </p>
+<p>Comparison operations like <code>a==8 &amp;&amp; a!=7</code> contain a useless part : the non-equal part. This rule finds tests of this kind within an <code>if</code> or a <code>while</code> statement</p>
 </overview>
 
 <recommendation>
