@@ -40,4 +40,4 @@ where
   ne.getRightOperand() instanceof Literal and
   nearestParent(eq) = nearestParent(ne) and
   sameExpr(eq.getLeftOperand(), ne.getLeftOperand())
-select "Useless test", ne
+select  ne,"Useless Test"
