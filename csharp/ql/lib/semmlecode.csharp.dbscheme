@@ -520,8 +520,16 @@ tuple_element(
 
 attributes(
   unique int id: @attribute,
+  int kind: int ref,
   int type_id: @type_or_ref ref,
   int target:  @attributable ref);
+
+case @attribute.kind of
+  0 = @attribute_default
+| 1 = @attribute_return
+| 2 = @attribute_assembly
+| 3 = @attribute_module
+;
 
 attribute_location(
   int id: @attribute ref,

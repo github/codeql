@@ -50,10 +50,10 @@ class Attributable extends @attributable {
  */
 class Attribute extends TopLevelExprParent, @attribute {
   /** Gets the type of this attribute. */
-  Class getType() { attributes(this, getTypeRef(result), _) }
+  Class getType() { attributes(this, _, getTypeRef(result), _) }
 
   /** Gets the element that this attribute is attached to. */
-  Attributable getTarget() { attributes(this, _, result) }
+  Attributable getTarget() { attributes(this, _, _, result) }
 
   /**
    * Gets the `i`th argument of this attribute. This includes both constructor
