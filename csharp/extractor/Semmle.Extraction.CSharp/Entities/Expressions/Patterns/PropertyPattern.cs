@@ -23,17 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        private class AccessStep
-        {
-            public readonly string Identifier;
-            public readonly Microsoft.CodeAnalysis.Location Location;
-
-            public AccessStep(string identifier, Microsoft.CodeAnalysis.Location location)
-            {
-                Identifier = identifier;
-                Location = location;
-            }
-        }
+        private record AccessStep(string Identifier, Microsoft.CodeAnalysis.Location Location);
 
         private class AccessStepPack
         {
@@ -47,37 +37,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return this;
             }
 
-            public AccessStepPack(string identifier, Microsoft.CodeAnalysis.Location location)
-            {
+            public AccessStepPack(string identifier, Microsoft.CodeAnalysis.Location location) =>
                 Last = new AccessStep(identifier, location);
-            }
         }
 
-        private static AccessStepPack GetAccessStepPack(ExpressionSyntax syntax)
-        {
-            switch (syntax)
+        private static AccessStepPack GetAccessStepPack(ExpressionSyntax syntax) =>
+            syntax switch
             {
-                case MemberAccessExpressionSyntax memberAccess:
-                    return GetAccessStepPack(memberAccess.Expression).Add(memberAccess.Name.Identifier.ValueText, memberAccess.Name.Identifier.GetLocation());
-                case IdentifierNameSyntax identifier:
-                    return new AccessStepPack(identifier.Identifier.Text, identifier.GetLocation());
-                default:
-                    throw new InternalError(syntax, "Unexpected expression syntax in property patterns.");
-            }
-        }
-
-        private static AccessStepPack GetAccessStepPack(BaseExpressionColonSyntax syntax)
-        {
-            switch (syntax)
-            {
-                case NameColonSyntax ncs:
-                    return new AccessStepPack(ncs.Name.ToString(), ncs.Name.GetLocation());
-                case ExpressionColonSyntax ecs:
-                    return GetAccessStepPack(ecs.Expression);
-                default:
-                    throw new InternalError(syntax, "Unsupported expression colon in property pattern.");
+                MemberAccessExpressionSyntax memberAccess => GetAccessStepPack(memberAccess.Expression).Add(memberAccess.Name.Identifier.ValueText, memberAccess.Name.Identifier.GetLocation()),
+                IdentifierNameSyntax identifier => new AccessStepPack(identifier.Identifier.Text, identifier.GetLocation()),
+                _ => throw new InternalError(syntax, "Unexpected expression syntax in property patterns."),
             };
-        }
+
+        private static AccessStepPack GetAccessStepPack(BaseExpressionColonSyntax syntax) =>
+            syntax switch
+            {
+                NameColonSyntax ncs => new AccessStepPack(ncs.Name.ToString(), ncs.Name.GetLocation()),
+                ExpressionColonSyntax ecs => GetAccessStepPack(ecs.Expression),
+                _ => throw new InternalError(syntax, "Unsupported expression colon in property pattern."),
+            };
 
         private static Expression CreateSyntheticExp(Context cx, Microsoft.CodeAnalysis.Location location, IExpressionParentEntity parent, int child) =>
             new Expression(new ExpressionInfo(cx, null, cx.CreateLocation(location), ExprKind.PROPERTY_PATTERN, parent, child, false, null));
