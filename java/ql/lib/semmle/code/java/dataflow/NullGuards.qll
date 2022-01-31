@@ -64,9 +64,9 @@ Expr clearlyNotNullExpr(Expr reason) {
   or
   result.(ImplicitCastExpr).getExpr() = clearlyNotNullExpr(reason)
   or
-  result instanceof ImplicitNotNullExpr
+  result instanceof ImplicitNotNullExpr and reason = result
   or
-  result instanceof ImplicitCoercionToUnitExpr
+  result instanceof ImplicitCoercionToUnitExpr and reason = result
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
   or
