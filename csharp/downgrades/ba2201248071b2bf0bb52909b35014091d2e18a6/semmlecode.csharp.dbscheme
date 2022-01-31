@@ -648,7 +648,7 @@ has_modifiers(
   int id: @modifiable_direct ref,
   int mod_id: @modifier ref);
 
-compiler_generated(unique int id: @modifiable ref);
+compiler_generated(unique int id: @modifiable_direct ref);
 
 /** MEMBERS **/
 
