@@ -26,6 +26,26 @@ abstract class CryptographicOperation extends Expr {
 abstract class CryptographicKey extends DataFlow::ValueNode { }
 
 /**
+ * The creation of a cryptographic key.
+ */
+abstract class CryptographicKeyCreation extends DataFlow::Node {
+  /**
+   * Gets the algorithm used to create the key.
+   */
+  abstract CryptographicAlgorithm getAlgorithm();
+
+  /**
+   * Gets the size of the key.
+   */
+  abstract int getSize();
+
+  /**
+   * Gets whether the key is symmetric.
+   */
+  abstract predicate isSymmetricKey();
+}
+
+/**
  * A key used in a cryptographic algorithm, viewed as a `CredentialsExpr`.
  */
 class CryptographicKeyCredentialsExpr extends CredentialsExpr {
@@ -141,19 +161,60 @@ private module NodeJSCrypto {
        *       Also matches `createHash`, `createHmac`, `createSign` instead of `createCipher`.
        */
 
-      exists(DataFlow::SourceNode mod, string createSuffix |
-        createSuffix = "Hash" or
-        createSuffix = "Hmac" or
-        createSuffix = "Sign" or
-        createSuffix = "Cipher"
-      |
+      exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("crypto") and
-        this = mod.getAMemberCall("create" + createSuffix) and
-        algorithm.matchesName(getArgument(0).getStringValue())
+        this = mod.getAMemberCall("create" + ["Hash", "Hmac", "Sign", "Cipher"]) and
+        algorithm.matchesName(this.getArgument(0).getStringValue())
       )
     }
 
     CryptographicAlgorithm getAlgorithm() { result = algorithm }
+  }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    boolean symmetric;
+
+    CreateKey() {
+      // crypto.generateKey(type, options, callback)
+      // crypto.generateKeyPair(type, options, callback)
+      // crypto.generateKeyPairSync(type, options)
+      // crypto.generateKeySync(type, options)
+      exists(DataFlow::SourceNode mod, string keyType |
+        keyType = "Key" and symmetric = true
+        or
+        keyType = "KeyPair" and symmetric = false
+      |
+        mod = DataFlow::moduleImport("crypto") and
+        this = mod.getAMemberCall("generate" + keyType + ["", "Sync"])
+      )
+    }
+
+    override CryptographicAlgorithm getAlgorithm() {
+      result.matchesName(this.getArgument(0).getStringValue())
+    }
+
+    override int getSize() {
+      symmetric = true and
+      result = this.getOptionArgument(1, "length").getIntValue()
+      or
+      symmetric = false and
+      result = this.getOptionArgument(1, "modulusLength").getIntValue()
+    }
+
+    override predicate isSymmetricKey() { symmetric = true }
+  }
+
+  private class CreateDiffieHellmanKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    // require("crypto").createDiffieHellman(prime_length);
+    CreateDiffieHellmanKey() {
+      this = DataFlow::moduleMember("crypto", "createDiffieHellman").getACall()
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { none() }
+
+    override int getSize() { result = this.getArgument(0).getIntValue() }
+
+    override predicate isSymmetricKey() { none() }
   }
 
   private class Apply extends CryptographicOperation, MethodCallExpr {
@@ -163,7 +224,7 @@ private module NodeJSCrypto {
       this = instantiation.getAMethodCall(any(string m | m = "update" or m = "write")).asExpr()
     }
 
-    override Expr getInput() { result = getArgument(0) }
+    override Expr getInput() { result = this.getArgument(0) }
 
     override CryptographicAlgorithm getAlgorithm() { result = instantiation.getAlgorithm() }
   }
@@ -281,6 +342,35 @@ private module CryptoJS {
         this = e.getACall().getArgument(1)
       )
     }
+  }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    string algorithm;
+    int optionArg;
+
+    CreateKey() {
+      // var key = CryptoJS.PBKDF2(password, salt, { keySize: 8 });
+      this =
+        getAlgorithmExpr(any(CryptographicAlgorithm algo | algo.getName() = algorithm)).getACall() and
+      optionArg = 2
+      or
+      // var key = CryptoJS.algo.PBKDF2.create({ keySize: 8 });
+      this =
+        DataFlow::moduleMember("crypto-js", "algo")
+            .getAPropertyRead(algorithm)
+            .getAMethodCall("create") and
+      optionArg = 0
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithm) }
+
+    override int getSize() {
+      result = this.getOptionArgument(optionArg, "keySize").getIntValue() * 32 // size is in words
+      or
+      result = this.getArgument(optionArg).getIntValue() * 32 // size is in words
+    }
+
+    override predicate isSymmetricKey() { any() }
   }
 }
 
@@ -406,11 +496,11 @@ private module Forge {
           // `require('forge').cipher.createCipher("3DES-CBC").update("secret", "key");`
           (createName = "createCipher" or createName = "createDecipher") and
           this = mod.getAPropertyRead("cipher").getAMemberCall(createName) and
-          getArgument(0).asExpr().mayHaveStringValue(cipherName) and
+          this.getArgument(0).asExpr().mayHaveStringValue(cipherName) and
           cipherName = cipherPrefix + "-" + cipherSuffix and
           cipherSuffix = ["CBC", "CFB", "CTR", "ECB", "GCM", "OFB"] and
           algorithmName = cipherPrefix and
-          key = getArgument(1)
+          key = this.getArgument(1)
         )
         or
         // `require("forge").rc2.createEncryptionCipher("key").update("secret");`
@@ -418,7 +508,7 @@ private module Forge {
           createName = "createEncryptionCipher" or createName = "createDecryptionCipher"
         |
           this = mod.getAPropertyRead(algorithmName).getAMemberCall(createName) and
-          key = getArgument(0)
+          key = this.getArgument(0)
         )
       )
     }
@@ -466,6 +556,39 @@ private module Forge {
 
   private class Key extends CryptographicKey {
     Key() { this = any(KeyCipher cipher).getKey() }
+  }
+
+  private class CreateKey extends CryptographicKeyCreation, DataFlow::CallNode {
+    CryptographicAlgorithm algorithm;
+
+    CreateKey() {
+      // var cipher = forge.rc2.createEncryptionCipher(key, 128);
+      this =
+        getAnImportNode()
+            .getAPropertyRead(any(string s | algorithm.matchesName(s)))
+            .getAMemberCall("createEncryptionCipher")
+      or
+      // var key = forge.random.getBytesSync(16);
+      // var cipher = forge.cipher.createCipher('AES-CBC', key);
+      this =
+        getAnImportNode()
+            .getAPropertyRead("cipher")
+            .getAMemberCall(["createCipher", "createDecipher"]) and
+      algorithm.matchesName(this.getArgument(0).getStringValue())
+    }
+
+    override CryptographicAlgorithm getAlgorithm() { result = algorithm }
+
+    override int getSize() {
+      result = this.getArgument(1).getIntValue()
+      or
+      exists(DataFlow::CallNode call | call.getCalleeName() = ["getBytes", "getBytesSync"] |
+        this.getArgument(1).getALocalSource() = call and
+        result = call.getArgument(0).getIntValue() * 8 // bytes to bits
+      )
+    }
+
+    override predicate isSymmetricKey() { any() }
   }
 }
 
@@ -556,13 +679,38 @@ private module Hasha {
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
+}
 
-  /**
-   * Provides classes for working with the `express-jwt` package (https://github.com/auth0/express-jwt);
-   */
-  module ExpressJwt {
-    private class Key extends CryptographicKey {
-      Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
+/**
+ * Provides classes for working with the `express-jwt` package (https://github.com/auth0/express-jwt);
+ */
+private module ExpressJwt {
+  private class Key extends CryptographicKey {
+    Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
+  }
+}
+
+/**
+ * Provides classes for working with the `node-rsa` package (https://www.npmjs.com/package/node-rsa)
+ */
+private module NodeRsa {
+  private class CreateKey extends CryptographicKeyCreation, API::InvokeNode {
+    CryptographicAlgorithm algorithm;
+
+    CreateKey() {
+      this = API::moduleImport("node-rsa").getAnInstantiation()
+      or
+      this = API::moduleImport("node-rsa").getInstance().getMember("generateKeyPair").getACall()
     }
+
+    override CryptographicAlgorithm getAlgorithm() { result.matchesName("rsa") }
+
+    override int getSize() {
+      result = this.getArgument(0).getIntValue()
+      or
+      result = this.getOptionArgument(0, "b").getIntValue()
+    }
+
+    override predicate isSymmetricKey() { none() }
   }
 }

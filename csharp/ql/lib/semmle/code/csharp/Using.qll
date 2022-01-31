@@ -36,6 +36,9 @@ class UsingDirective extends Element, @using_directive {
   }
 
   override Location getALocation() { using_directive_location(this, result) }
+
+  /** Holds if this directive is `global`. */
+  predicate isGlobal() { using_global(this) }
 }
 
 /**

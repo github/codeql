@@ -64,6 +64,10 @@ TRUE
 "foo" "bar#{ 1 * 1 }" 'baz' # concatenated, interpolation
 "foo #{ "bar #{ 2 + 3 } baz" } qux" # interpolation containing string containing interpolation
 "foo #{ blah(); 1+9 }"      # multiple statements in interpolation
+bar = "bar"
+BAR = "bar"
+"foo #{ bar }"              # local variables in interpolation
+"foo #{ BAR }"              # constants in interpolation
 
 # characters
 ?x
@@ -84,8 +88,8 @@ TRUE
 { foo: "bar" }
 %s(wibble)
 %s[wibble wobble]
-:"foo_#{ 2 + 2}"   # interpolation
-:'foo_#{ 1 + 1 }'  # no interpolation
+:"foo_#{ 2 + 2}_#{bar}_#{BAR}"   # interpolation
+:'foo_#{ 2 + 2}_#{bar}_#{BAR}'   # no interpolation
 %s(foo_#{ 3 - 2 }) # no interpolation
 
 # arrays
@@ -98,20 +102,20 @@ TRUE
 %w()
 %w(foo bar baz)
 %w!foo bar baz!
-%W[foo bar#{1+1} baz] # interpolation
-%w[foo bar#{1+1} baz] # no interpolation
+%W[foo bar#{1+1} #{bar} #{BAR} baz] # interpolation
+%w[foo bar#{1+1} #{bar} #{BAR} baz] # no interpolation
 
 # arrays of symbols
 %i()
 %i(foo bar baz)
 %i@foo bar baz@
-%I(foo bar#{ 2 + 4 } baz) # interpolation
-%i(foo bar#{ 2 + 4 } baz) # no interpolation
+%I(foo bar#{ 2 + 4 } #{bar} #{BAR} baz) # interpolation
+%i(foo bar#{ 2 + 4 } #{bar} #{BAR} baz) # no interpolation
 
 # hashes
 {}
 { foo: 1, :bar => 2, 'baz' => 3 }
-{ foo: 7, **bar } # hash-splat argument
+{ foo: 7, **baz } # hash-splat argument
 
 # ranges
 (1..10)
@@ -125,21 +129,21 @@ TRUE
 # subshell
 `ls -l`
 %x(ls -l)
-`du -d #{ 1 + 1 }`   # interpolation
-%x@du -d #{ 5 - 4 }@ # interpolation
+`du -d #{ 1 + 1 } #{bar} #{BAR}`   # interpolation
+%x@du -d #{ 5 - 4 }@               # interpolation
 
 # regular expressions
 //
 /foo/
 /foo/i
 /foo+\sbar\S/
-/foo#{ 1 + 1 }bar/    # interpolation
+/foo#{ 1 + 1 }bar#{bar}#{BAR}/    # interpolation
 /foo/oxm
 %r[]
 %r(foo)
 %r:foo:i
 %r{foo+\sbar\S}
-%r{foo#{ 1 + 1 }bar}  # interpolation
+%r{foo#{ 1 + 1 }bar#{bar}#{BAR}}  # interpolation
 %r:foo:mxo
 
 # long strings

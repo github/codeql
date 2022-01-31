@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 case SyntaxKind.CasePatternSwitchLabel:
                     return CasePattern.Create(cx, (CasePatternSwitchLabelSyntax)node, parent, child);
                 default:
-                    throw new InternalError(node, "Unhandled case label");
+                    throw new InternalError(node, $"Unhandled case label of kind {node.Kind()}");
             }
         }
     }

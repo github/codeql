@@ -13,6 +13,7 @@ calls.rb:
 #   97| Object
 #-----| include -> Kernel
 #-----| super -> BasicObject
+#-----| prepend -> A
 
 #  106| Array
 #-----| super -> Object
@@ -49,12 +50,10 @@ calls.rb:
 
 #   15| M
 
-private.rb:
-#    1| C
+#   29| C
 #-----| super -> Object
 #-----| include -> M
 
-calls.rb:
 #   51| D
 #-----| super -> C
 
@@ -66,6 +65,8 @@ calls.rb:
 
 #  150| A
 #-----| super -> S
+#-----| super -> B
+#-----| prepend -> A::B
 
 #  155| B
 #-----| super -> S
@@ -110,6 +111,13 @@ modules.rb:
 
 #  115| XX
 
+private.rb:
+#    1| E
+#-----| super -> Object
+
+#   42| F
+
+modules.rb:
 #    5| Foo::Bar
 
 #   19| Foo::ClassInFoo
@@ -134,6 +142,14 @@ modules.rb:
 
 #   71| Test::Foo2::Foo2
 
+modules_rec.rb:
+#    1| B::A
+#-----| super -> Object
+
+#    4| A::B
+#-----| super -> Object
+
+modules.rb:
 #  108| MM::MM
 
 #   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar

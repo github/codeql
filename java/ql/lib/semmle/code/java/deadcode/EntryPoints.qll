@@ -262,7 +262,7 @@ class ManagedBeanImplEntryPoint extends EntryPoint, RegisteredManagedBeanImpl {
     // Find the method that will be called for each method on each managed bean that this class
     // implements.
     this.inherits(result) and
-    result.(Method).overrides(this.getAnImplementedManagedBean().getAMethod())
+    result.overrides+(this.getAnImplementedManagedBean().getAMethod())
   }
 }
 

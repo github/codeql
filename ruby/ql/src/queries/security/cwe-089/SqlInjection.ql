@@ -9,7 +9,6 @@
  * @id rb/sql-injection
  * @tags security
  *       external/cwe/cwe-089
- *       external/owasp/owasp-a1
  */
 
 import ruby

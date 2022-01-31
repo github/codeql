@@ -7,7 +7,14 @@ private import internal.TreeSitter
 /** A parameter. */
 class Parameter extends AstNode, TParameter {
   /** Gets the callable that this parameter belongs to. */
-  final Callable getCallable() { result.getAParameter() = this }
+  final Callable getCallable() {
+    result.getAParameter() = this
+    or
+    exists(DestructuredParameter parent |
+      this = parent.getAnElement() and
+      result = parent.getCallable()
+    )
+  }
 
   /** Gets the zero-based position of this parameter. */
   final int getPosition() { this = any(Callable c).getParameter(result) }
@@ -23,21 +30,63 @@ class Parameter extends AstNode, TParameter {
 }
 
 /**
+ * A parameter defined using destructuring. For example
+ *
+ * ```rb
+ * def tuples((a,b))
+ *   puts "#{a} #{b}"
+ * end
+ * ```
+ */
+class DestructuredParameter extends Parameter, TDestructuredParameter {
+  private DestructuredParameterImpl getImpl() { result = toGenerated(this) }
+
+  private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
+
+  /** Gets the `i`th element in this destructured parameter. */
+  final AstNode getElement(int i) {
+    exists(Ruby::AstNode c | c = this.getChild(i) | toGenerated(result) = c)
+  }
+
+  /** Gets an element in this destructured parameter. */
+  final AstNode getAnElement() { result = this.getElement(_) }
+
+  override LocalVariable getAVariable() {
+    result = this.getAnElement().(LocalVariableWriteAccess).getVariable()
+    or
+    result = this.getAnElement().(DestructuredParameter).getAVariable()
+  }
+
+  override string toString() { result = "(..., ...)" }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getElement" and result = this.getElement(_)
+  }
+
+  final override string getAPrimaryQlClass() { result = "DestructuredParameter" }
+}
+
+/**
+ * DEPRECATED
+ *
  * A parameter defined using a pattern.
  *
  * This includes both simple parameters and tuple parameters.
  */
-class PatternParameter extends Parameter, Pattern, TPatternParameter {
+deprecated class PatternParameter extends Parameter, Pattern, TPatternParameter {
   override LocalVariable getAVariable() { result = Pattern.super.getAVariable() }
 }
 
-/** A parameter defined using a tuple pattern. */
-class TuplePatternParameter extends PatternParameter, TuplePattern, TTuplePatternParameter {
+/**
+ * DEPRECATED
+ *
+ * A parameter defined using a tuple pattern.
+ */
+deprecated class TuplePatternParameter extends PatternParameter, TuplePattern,
+  TDestructuredParameter {
   final override LocalVariable getAVariable() { result = TuplePattern.super.getAVariable() }
-
-  final override string getAPrimaryQlClass() { result = "TuplePatternParameter" }
-
-  override AstNode getAChild(string pred) { result = TuplePattern.super.getAChild(pred) }
 }
 
 /** A named parameter. */
@@ -57,7 +106,11 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
 
   /** Gets the access that defines the underlying local variable. */
-  final VariableAccess getDefiningAccess() { result = this.getVariable().getDefiningAccess() }
+  final VariableAccess getDefiningAccess() {
+    result = this.getVariable().getDefiningAccess()
+    or
+    result = this.(SimpleParameterSynthImpl).getDefininingAccess()
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -68,14 +121,12 @@ class NamedParameter extends Parameter, TNamedParameter {
 }
 
 /** A simple (normal) parameter. */
-class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern, TSimpleParameter {
-  private Ruby::Identifier g;
+class SimpleParameter extends NamedParameter, TSimpleParameter instanceof SimpleParameterImpl {
+  final override string getName() { result = SimpleParameterImpl.super.getNameImpl() }
 
-  SimpleParameter() { this = TSimpleParameter(g) }
-
-  final override string getName() { result = g.getValue() }
-
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g) }
+  final override LocalVariable getVariable() {
+    result = SimpleParameterImpl.super.getVariableImpl()
+  }
 
   final override LocalVariable getAVariable() { result = this.getVariable() }
 
@@ -127,6 +178,23 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
   final override string toString() { result = "**" + this.getName() }
 
   final override string getName() { result = g.getName().getValue() }
+}
+
+/**
+ * A `nil` hash splat (`**nil`) indicating that there are no keyword parameters or keyword patterns.
+ * For example:
+ * ```rb
+ * def foo(bar, **nil)
+ *   case bar
+ *   in { x:, **nil } then puts x
+ *   end
+ * end
+ * ```
+ */
+class HashSplatNilParameter extends Parameter, THashSplatNilParameter {
+  final override string getAPrimaryQlClass() { result = "HashSplatNilParameter" }
+
+  final override string toString() { result = "**nil" }
 }
 
 /**

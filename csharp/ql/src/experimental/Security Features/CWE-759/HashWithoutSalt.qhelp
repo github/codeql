@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>In cryptography, a salt is some random data used as an additional input to a one-way function that hashes a password or pass-phrase. It makes dictionary attacks more difficult.</p>
+
+    <p>Without a salt, it is much easier for attackers to pre-compute the hash value using dictionary attack techniques such as rainbow tables to crack passwords.</p>
+  </overview>
+
+  <recommendation>
+    <p>Use a long random salt of at least 32 bytes then use the combination of password and salt to hash a password or password phrase.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows two ways of hashing. In the 'BAD' cases, no salt is provided. In the 'GOOD' cases, a salt is provided.</p>
+    <sample src="HashWithoutSalt.cs" />
+  </example>
+
+  <references>
+    <li>
+      DZone:
+      <a href="https://dzone.com/articles/a-look-at-java-cryptography">A Look at Java Cryptography</a>
+    </li>
+    <li>
+      CWE:
+      <a href="https://cwe.mitre.org/data/definitions/759.html">CWE-759: Use of a One-Way Hash without a Salt</a>
+    </li>
+  </references>
+</qhelp>

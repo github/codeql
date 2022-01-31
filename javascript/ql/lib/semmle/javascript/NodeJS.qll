@@ -21,10 +21,10 @@ class NodeModule extends Module {
   }
 
   /** Gets the `module` variable of this module. */
-  Variable getModuleVariable() { result = getScope().getVariable("module") }
+  Variable getModuleVariable() { result = this.getScope().getVariable("module") }
 
   /** Gets the `exports` variable of this module. */
-  Variable getExportsVariable() { result = getScope().getVariable("exports") }
+  Variable getExportsVariable() { result = this.getScope().getVariable("exports") }
 
   /** Gets the scope induced by this module. */
   override ModuleScope getScope() { result.getScopeElement() = this }
@@ -35,7 +35,7 @@ class NodeModule extends Module {
    */
   pragma[noinline]
   DefiniteAbstractValue getAModuleExportsValue() {
-    result = getAModuleExportsProperty().getAValue()
+    result = this.getAModuleExportsProperty().getAValue()
   }
 
   pragma[noinline]
@@ -51,14 +51,14 @@ class NodeModule extends Module {
    */
   DataFlow::AnalyzedNode getAModuleExportsNode() {
     result = getAModuleExportsCandidate() and
-    result.getAValue() = getAModuleExportsValue()
+    result.getAValue() = this.getAModuleExportsValue()
   }
 
   /** Gets a symbol exported by this module. */
   override string getAnExportedSymbol() {
     result = super.getAnExportedSymbol()
     or
-    result = getAnImplicitlyExportedSymbol()
+    result = this.getAnImplicitlyExportedSymbol()
     or
     // getters and the like.
     exists(DataFlow::PropWrite pwn |
@@ -70,12 +70,12 @@ class NodeModule extends Module {
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
     exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
-      pwn.getBase() = getAModuleExportsNode() and
+      pwn.getBase() = this.getAModuleExportsNode() and
       name = pwn.getPropertyName()
     )
     or
     // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
-    exists(ObjectExpr obj | obj = getAModuleExportsNode().asExpr() |
+    exists(ObjectExpr obj | obj = this.getAModuleExportsNode().asExpr() |
       result =
         obj.getAProperty()
             .(SpreadProperty)
@@ -92,16 +92,16 @@ class NodeModule extends Module {
     or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | result = DataFlow::valueNode(pacc) |
-      pacc.getBase() = getAModuleExportsNode().asExpr() and
+      pacc.getBase() = this.getAModuleExportsNode().asExpr() and
       name = pacc.getPropertyName() and
-      isExterns() and
+      this.isExterns() and
       exists(pacc.getDocumentation())
     )
   }
 
   override DataFlow::Node getABulkExportedNode() {
     exists(DataFlow::PropWrite write |
-      write.getBase().asExpr() = getModuleVariable().getAnAccess() and
+      write.getBase().asExpr() = this.getModuleVariable().getAnAccess() and
       write.getPropertyName() = "exports" and
       result = write.getRhs()
     )
@@ -109,7 +109,7 @@ class NodeModule extends Module {
 
   /** Gets a symbol that the module object inherits from its prototypes. */
   private string getAnImplicitlyExportedSymbol() {
-    exists(ExternalConstructor ec | ec = getPrototypeOfExportedExpr() |
+    exists(ExternalConstructor ec | ec = this.getPrototypeOfExportedExpr() |
       result = ec.getAMember().getName()
       or
       ec instanceof FunctionExternal and result = "prototype"
@@ -121,7 +121,7 @@ class NodeModule extends Module {
 
   /** Gets an externs declaration of the prototype object of a value exported by this module. */
   private ExternalConstructor getPrototypeOfExportedExpr() {
-    exists(AbstractValue exported | exported = getAModuleExportsValue() |
+    exists(AbstractValue exported | exported = this.getAModuleExportsValue() |
       result instanceof ObjectExternal
       or
       exported instanceof AbstractFunction and result instanceof FunctionExternal
@@ -136,7 +136,7 @@ class NodeModule extends Module {
       // paths starting with `./` or `../` are resolved relative to the importing
       // module's folder
       pathval.regexpMatch("\\.\\.?(/.*)?") and
-      (searchRoot = getFile().getParentContainer() and priority = 0)
+      (searchRoot = this.getFile().getParentContainer() and priority = 0)
       or
       // paths starting with `/` are resolved relative to the file system root
       pathval.matches("/%") and
@@ -145,7 +145,7 @@ class NodeModule extends Module {
       // paths that do not start with `./`, `../` or `/` are resolved relative
       // to `node_modules` folders
       not pathval.regexpMatch("\\.\\.?(/.*)?|/.*") and
-      findNodeModulesFolder(getFile().getParentContainer(), searchRoot, priority)
+      findNodeModulesFolder(this.getFile().getParentContainer(), searchRoot, priority)
     )
   }
 }
@@ -277,16 +277,16 @@ private predicate isRequire(DataFlow::Node nd) {
  * ```
  */
 class Require extends CallExpr, Import {
-  Require() { isRequire(getCallee().flow()) }
+  Require() { isRequire(this.getCallee().flow()) }
 
-  override PathExpr getImportedPath() { result = getArgument(0) }
+  override PathExpr getImportedPath() { result = this.getArgument(0) }
 
   override Module getEnclosingModule() { this = result.getAnImport() }
 
   override Module resolveImportedPath() {
-    moduleInFile(result, load(min(int prio | moduleInFile(_, load(prio)))))
+    moduleInFile(result, this.load(min(int prio | moduleInFile(_, this.load(prio)))))
     or
-    not exists(Module mod | moduleInFile(mod, load(_))) and
+    not exists(Module mod | moduleInFile(mod, this.load(_))) and
     result = Import.super.resolveImportedPath()
   }
 
@@ -296,7 +296,7 @@ class Require extends CallExpr, Import {
    * The result can be a JavaScript file, a JSON file or a `.node` file.
    * Externs files are not treated differently from other files by this predicate.
    */
-  File getImportedFile() { result = load(min(int prio | exists(load(prio)))) }
+  File getImportedFile() { result = this.load(min(int prio | exists(this.load(prio)))) }
 
   /**
    * Gets the file that this `require` refers to (which may not be a JavaScript file),
@@ -354,7 +354,7 @@ class Require extends CallExpr, Import {
    * `.js`, `.json` and `.node`.
    */
   private File load(int priority) {
-    exists(int r | getEnclosingModule().searchRoot(getImportedPath(), _, r) |
+    exists(int r | this.getEnclosingModule().searchRoot(this.getImportedPath(), _, r) |
       result = loadAsFile(this, r, priority - prioritiesPerCandidate() * r) or
       result =
         loadAsDirectory(this, r,
@@ -382,27 +382,27 @@ private class RequirePath extends PathExprCandidate {
 private class ConstantRequirePathElement extends PathExpr, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
-  override string getValue() { result = getStringValue() }
+  override string getValue() { result = this.getStringValue() }
 }
 
 /** A `__dirname` path expression. */
 private class DirNamePath extends PathExpr, VarAccess {
   DirNamePath() {
-    getName() = "__dirname" and
-    getVariable().getScope() instanceof ModuleScope
+    this.getName() = "__dirname" and
+    this.getVariable().getScope() instanceof ModuleScope
   }
 
-  override string getValue() { result = getFile().getParentContainer().getAbsolutePath() }
+  override string getValue() { result = this.getFile().getParentContainer().getAbsolutePath() }
 }
 
 /** A `__filename` path expression. */
 private class FileNamePath extends PathExpr, VarAccess {
   FileNamePath() {
-    getName() = "__filename" and
-    getVariable().getScope() instanceof ModuleScope
+    this.getName() = "__filename" and
+    this.getVariable().getScope() instanceof ModuleScope
   }
 
-  override string getValue() { result = getFile().getAbsolutePath() }
+  override string getValue() { result = this.getFile().getAbsolutePath() }
 }
 
 /**

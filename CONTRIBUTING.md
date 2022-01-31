@@ -4,6 +4,9 @@ We welcome contributions to our CodeQL libraries and queries. Got an idea for a 
 
 There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
+## Change notes
+
+Any nontrivial user-visible change to a query pack or library pack should have a change note. For details on how to add a change note for your change, see [this guide](docs/change-notes.md).
 
 ## Submitting a new experimental query
 
@@ -11,13 +14,14 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 1. **Directory structure**
 
-    There are five language-specific query directories in this repository:
+    There are six language-specific query directories in this repository:
 
       * C/C++: `cpp/ql/src`
       * C#: `csharp/ql/src`
       * Java: `java/ql/src`
       * JavaScript: `javascript/ql/src`
       * Python: `python/ql/src`
+      * Ruby: `ruby/ql/src`
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
     - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/github/codeql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.

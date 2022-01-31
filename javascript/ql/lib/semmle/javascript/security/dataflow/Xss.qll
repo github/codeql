@@ -33,12 +33,12 @@ module Shared {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      isGlobal() and
+      this.isGlobal() and
       (
-        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+        RegExp::alwaysMatchesMetaCharacter(this.getRegExp().getRoot(), ["<", "'", "\""])
         or
         // or it's like a wild-card.
-        RegExp::isWildcardLike(getRegExp().getRoot())
+        RegExp::isWildcardLike(this.getRegExp().getRoot())
       )
     }
   }
@@ -91,13 +91,13 @@ module Shared {
   class ContainsHTMLGuard extends SanitizerGuard, StringOps::RegExpTest {
     ContainsHTMLGuard() {
       exists(RegExpCharacterClass regExp |
-        regExp = getRegExp() and
+        regExp = this.getRegExp() and
         forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
+      outcome = this.getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
     }
   }
 
@@ -229,7 +229,7 @@ module DomBasedXss {
       exists(JQuery::MethodCall call |
         call.interpretsArgumentAsHtml(this) and
         call.interpretsArgumentAsSelector(this) and
-        pragma[only_bind_out](analyze()).getAType() = TTString()
+        pragma[only_bind_out](this.analyze()).getAType() = TTString()
       )
     }
 
@@ -246,7 +246,7 @@ module DomBasedXss {
   class JQueryHtmlOrSelectorSink extends Sink, JQueryHtmlOrSelectorArgument {
     JQueryHtmlOrSelectorSink() {
       // If a prefix of the string is known, it must start with '<' or be an empty string
-      forall(string strval | strval = getAPrefix() | strval.regexpMatch("(?s)\\s*<.*|"))
+      forall(string strval | strval = this.getAPrefix() | strval.regexpMatch("(?s)\\s*<.*|"))
     }
   }
 
@@ -526,9 +526,7 @@ module ReflectedXss {
    * ```
    */
   predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
-    exists(ReachableBasicBlock headerBlock |
-      headerBlock = header.getBasicBlock().(ReachableBasicBlock)
-    |
+    exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
       1 =
         strictcount(HTTP::ResponseSendArgument sender |
           sender.getRouteHandler() = header.getRouteHandler() and

@@ -106,7 +106,7 @@ module TaintedPath {
       /** Holds if this path may contain `../` components. */
       predicate canContainDotDotSlash() {
         // Absolute normalized path is the only combination that cannot contain `../`.
-        not (isNormalized() and isAbsolute())
+        not (this.isNormalized() and this.isAbsolute())
       }
     }
 
@@ -133,7 +133,7 @@ module TaintedPath {
 
     NormalizingPathCall() {
       this = NodeJSLib::Path::moduleMember("normalize").getACall() and
-      input = getArgument(0) and
+      input = this.getArgument(0) and
       output = this
     }
 
@@ -157,16 +157,16 @@ module TaintedPath {
 
     ResolvingPathCall() {
       this = NodeJSLib::Path::moduleMember("resolve").getACall() and
-      input = getAnArgument() and
+      input = this.getAnArgument() and
       output = this
       or
       this = NodeJSLib::FS::moduleMember("realpathSync").getACall() and
-      input = getArgument(0) and
+      input = this.getArgument(0) and
       output = this
       or
       this = NodeJSLib::FS::moduleMember("realpath").getACall() and
-      input = getArgument(0) and
-      output = getCallback(1).getParameter(1)
+      input = this.getArgument(0) and
+      output = this.getCallback(1).getParameter(1)
     }
 
     /**
@@ -189,7 +189,7 @@ module TaintedPath {
 
     NormalizingRelativePathCall() {
       this = NodeJSLib::Path::moduleMember("relative").getACall() and
-      input = getAnArgument() and
+      input = this.getAnArgument() and
       output = this
     }
 
@@ -214,12 +214,12 @@ module TaintedPath {
     PreservingPathCall() {
       this =
         NodeJSLib::Path::moduleMember(["dirname", "toNamespacedPath", "parse", "format"]).getACall() and
-      input = getAnArgument() and
+      input = this.getAnArgument() and
       output = this
       or
       // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
       this instanceof StringReplaceCall and
-      input = getReceiver() and
+      input = this.getReceiver() and
       output = this and
       not exists(RegExpLiteral literal, RegExpTerm term |
         this.(StringReplaceCall).getRegExp().asExpr() = literal and
@@ -252,10 +252,10 @@ module TaintedPath {
     DataFlow::Node output;
 
     DotDotSlashPrefixRemovingReplace() {
-      input = getReceiver() and
+      input = this.getReceiver() and
       output = this and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getRegExp().asExpr() = literal and
+        this.getRegExp().asExpr() = literal and
         (term instanceof RegExpStar or term instanceof RegExpPlus) and
         term.getChild(0) = getADotDotSlashMatcher()
       |
@@ -302,11 +302,11 @@ module TaintedPath {
     DataFlow::Node output;
 
     DotRemovingReplaceCall() {
-      input = getReceiver() and
+      input = this.getReceiver() and
       output = this and
-      isGlobal() and
+      this.isGlobal() and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getRegExp().asExpr() = literal and
+        this.getRegExp().asExpr() = literal and
         literal.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
@@ -445,17 +445,25 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends BarrierGuardNode {
-    StringOps::Includes contains;
-
-    ContainsDotDotSanitizer() {
-      this = contains and
-      isDotDotSlashPrefix(contains.getSubstring())
-    }
+  class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
+    ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      e = contains.getBaseString().asExpr() and
-      outcome = contains.getPolarity().booleanNot() and
+      e = super.getBaseString().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
+      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+    }
+  }
+
+  /**
+   * An expression of form `x.matches(/\.\./)` or similar.
+   */
+  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
+    ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      e = super.getStringOperand().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
     }
   }

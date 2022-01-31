@@ -9,16 +9,16 @@ namespace System
             // Generated from `System.Net.Mail.AlternateView` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AlternateView : System.Net.Mail.AttachmentBase
             {
-                public AlternateView(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public AlternateView(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
-                public AlternateView(string fileName) : base(default(System.IO.Stream)) => throw null;
-                public AlternateView(System.IO.Stream contentStream, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public AlternateView(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
                 public AlternateView(System.IO.Stream contentStream) : base(default(System.IO.Stream)) => throw null;
+                public AlternateView(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public AlternateView(System.IO.Stream contentStream, string mediaType) : base(default(System.IO.Stream)) => throw null;
+                public AlternateView(string fileName) : base(default(System.IO.Stream)) => throw null;
+                public AlternateView(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public AlternateView(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
                 public System.Uri BaseUri { get => throw null; set => throw null; }
-                public static System.Net.Mail.AlternateView CreateAlternateViewFromString(string content, System.Text.Encoding contentEncoding, string mediaType) => throw null;
-                public static System.Net.Mail.AlternateView CreateAlternateViewFromString(string content, System.Net.Mime.ContentType contentType) => throw null;
                 public static System.Net.Mail.AlternateView CreateAlternateViewFromString(string content) => throw null;
+                public static System.Net.Mail.AlternateView CreateAlternateViewFromString(string content, System.Net.Mime.ContentType contentType) => throw null;
+                public static System.Net.Mail.AlternateView CreateAlternateViewFromString(string content, System.Text.Encoding contentEncoding, string mediaType) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public System.Net.Mail.LinkedResourceCollection LinkedResources { get => throw null; }
             }
@@ -36,16 +36,16 @@ namespace System
             // Generated from `System.Net.Mail.Attachment` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Attachment : System.Net.Mail.AttachmentBase
             {
-                public Attachment(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public Attachment(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
-                public Attachment(string fileName) : base(default(System.IO.Stream)) => throw null;
-                public Attachment(System.IO.Stream contentStream, string name, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public Attachment(System.IO.Stream contentStream, string name) : base(default(System.IO.Stream)) => throw null;
                 public Attachment(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public Attachment(System.IO.Stream contentStream, string name) : base(default(System.IO.Stream)) => throw null;
+                public Attachment(System.IO.Stream contentStream, string name, string mediaType) : base(default(System.IO.Stream)) => throw null;
+                public Attachment(string fileName) : base(default(System.IO.Stream)) => throw null;
+                public Attachment(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public Attachment(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
                 public System.Net.Mime.ContentDisposition ContentDisposition { get => throw null; }
-                public static System.Net.Mail.Attachment CreateAttachmentFromString(string content, string name, System.Text.Encoding contentEncoding, string mediaType) => throw null;
-                public static System.Net.Mail.Attachment CreateAttachmentFromString(string content, string name) => throw null;
                 public static System.Net.Mail.Attachment CreateAttachmentFromString(string content, System.Net.Mime.ContentType contentType) => throw null;
+                public static System.Net.Mail.Attachment CreateAttachmentFromString(string content, string name) => throw null;
+                public static System.Net.Mail.Attachment CreateAttachmentFromString(string content, string name, System.Text.Encoding contentEncoding, string mediaType) => throw null;
                 public string Name { get => throw null; set => throw null; }
                 public System.Text.Encoding NameEncoding { get => throw null; set => throw null; }
             }
@@ -53,12 +53,12 @@ namespace System
             // Generated from `System.Net.Mail.AttachmentBase` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class AttachmentBase : System.IDisposable
             {
-                protected AttachmentBase(string fileName, string mediaType) => throw null;
-                protected AttachmentBase(string fileName, System.Net.Mime.ContentType contentType) => throw null;
-                protected AttachmentBase(string fileName) => throw null;
-                protected AttachmentBase(System.IO.Stream contentStream, string mediaType) => throw null;
-                protected AttachmentBase(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) => throw null;
                 protected AttachmentBase(System.IO.Stream contentStream) => throw null;
+                protected AttachmentBase(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) => throw null;
+                protected AttachmentBase(System.IO.Stream contentStream, string mediaType) => throw null;
+                protected AttachmentBase(string fileName) => throw null;
+                protected AttachmentBase(string fileName, System.Net.Mime.ContentType contentType) => throw null;
+                protected AttachmentBase(string fileName, string mediaType) => throw null;
                 public string ContentId { get => throw null; set => throw null; }
                 public System.IO.Stream ContentStream { get => throw null; }
                 public System.Net.Mime.ContentType ContentType { get => throw null; set => throw null; }
@@ -92,15 +92,15 @@ namespace System
             public class LinkedResource : System.Net.Mail.AttachmentBase
             {
                 public System.Uri ContentLink { get => throw null; set => throw null; }
-                public static System.Net.Mail.LinkedResource CreateLinkedResourceFromString(string content, System.Text.Encoding contentEncoding, string mediaType) => throw null;
-                public static System.Net.Mail.LinkedResource CreateLinkedResourceFromString(string content, System.Net.Mime.ContentType contentType) => throw null;
                 public static System.Net.Mail.LinkedResource CreateLinkedResourceFromString(string content) => throw null;
-                public LinkedResource(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public LinkedResource(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
-                public LinkedResource(string fileName) : base(default(System.IO.Stream)) => throw null;
-                public LinkedResource(System.IO.Stream contentStream, string mediaType) : base(default(System.IO.Stream)) => throw null;
-                public LinkedResource(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public static System.Net.Mail.LinkedResource CreateLinkedResourceFromString(string content, System.Net.Mime.ContentType contentType) => throw null;
+                public static System.Net.Mail.LinkedResource CreateLinkedResourceFromString(string content, System.Text.Encoding contentEncoding, string mediaType) => throw null;
                 public LinkedResource(System.IO.Stream contentStream) : base(default(System.IO.Stream)) => throw null;
+                public LinkedResource(System.IO.Stream contentStream, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public LinkedResource(System.IO.Stream contentStream, string mediaType) : base(default(System.IO.Stream)) => throw null;
+                public LinkedResource(string fileName) : base(default(System.IO.Stream)) => throw null;
+                public LinkedResource(string fileName, System.Net.Mime.ContentType contentType) : base(default(System.IO.Stream)) => throw null;
+                public LinkedResource(string fileName, string mediaType) : base(default(System.IO.Stream)) => throw null;
             }
 
             // Generated from `System.Net.Mail.LinkedResourceCollection` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -121,13 +121,13 @@ namespace System
                 public override bool Equals(object value) => throw null;
                 public override int GetHashCode() => throw null;
                 public string Host { get => throw null; }
-                public MailAddress(string address, string displayName, System.Text.Encoding displayNameEncoding) => throw null;
-                public MailAddress(string address, string displayName) => throw null;
                 public MailAddress(string address) => throw null;
+                public MailAddress(string address, string displayName) => throw null;
+                public MailAddress(string address, string displayName, System.Text.Encoding displayNameEncoding) => throw null;
                 public override string ToString() => throw null;
-                public static bool TryCreate(string address, string displayName, out System.Net.Mail.MailAddress result) => throw null;
-                public static bool TryCreate(string address, string displayName, System.Text.Encoding displayNameEncoding, out System.Net.Mail.MailAddress result) => throw null;
                 public static bool TryCreate(string address, out System.Net.Mail.MailAddress result) => throw null;
+                public static bool TryCreate(string address, string displayName, System.Text.Encoding displayNameEncoding, out System.Net.Mail.MailAddress result) => throw null;
+                public static bool TryCreate(string address, string displayName, out System.Net.Mail.MailAddress result) => throw null;
                 public string User { get => throw null; }
             }
 
@@ -158,10 +158,10 @@ namespace System
                 public System.Collections.Specialized.NameValueCollection Headers { get => throw null; }
                 public System.Text.Encoding HeadersEncoding { get => throw null; set => throw null; }
                 public bool IsBodyHtml { get => throw null; set => throw null; }
-                public MailMessage(string from, string to, string subject, string body) => throw null;
-                public MailMessage(string from, string to) => throw null;
-                public MailMessage(System.Net.Mail.MailAddress from, System.Net.Mail.MailAddress to) => throw null;
                 public MailMessage() => throw null;
+                public MailMessage(System.Net.Mail.MailAddress from, System.Net.Mail.MailAddress to) => throw null;
+                public MailMessage(string from, string to) => throw null;
+                public MailMessage(string from, string to, string subject, string body) => throw null;
                 public System.Net.Mail.MailPriority Priority { get => throw null; set => throw null; }
                 public System.Net.Mail.MailAddress ReplyTo { get => throw null; set => throw null; }
                 public System.Net.Mail.MailAddressCollection ReplyToList { get => throw null; }
@@ -196,20 +196,20 @@ namespace System
                 protected void OnSendCompleted(System.ComponentModel.AsyncCompletedEventArgs e) => throw null;
                 public string PickupDirectoryLocation { get => throw null; set => throw null; }
                 public int Port { get => throw null; set => throw null; }
-                public void Send(string from, string recipients, string subject, string body) => throw null;
                 public void Send(System.Net.Mail.MailMessage message) => throw null;
-                public void SendAsync(string from, string recipients, string subject, string body, object userToken) => throw null;
+                public void Send(string from, string recipients, string subject, string body) => throw null;
                 public void SendAsync(System.Net.Mail.MailMessage message, object userToken) => throw null;
+                public void SendAsync(string from, string recipients, string subject, string body, object userToken) => throw null;
                 public void SendAsyncCancel() => throw null;
                 public event System.Net.Mail.SendCompletedEventHandler SendCompleted;
-                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body, System.Threading.CancellationToken cancellationToken) => throw null;
-                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body) => throw null;
-                public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message) => throw null;
+                public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message, System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body) => throw null;
+                public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Net.ServicePoint ServicePoint { get => throw null; }
-                public SmtpClient(string host, int port) => throw null;
-                public SmtpClient(string host) => throw null;
                 public SmtpClient() => throw null;
+                public SmtpClient(string host) => throw null;
+                public SmtpClient(string host, int port) => throw null;
                 public string TargetName { get => throw null; set => throw null; }
                 public int Timeout { get => throw null; set => throw null; }
                 public bool UseDefaultCredentials { get => throw null; set => throw null; }
@@ -233,14 +233,14 @@ namespace System
             // Generated from `System.Net.Mail.SmtpException` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpException : System.Exception, System.Runtime.Serialization.ISerializable
             {
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-                public SmtpException(string message, System.Exception innerException) => throw null;
-                public SmtpException(string message) => throw null;
-                public SmtpException(System.Net.Mail.SmtpStatusCode statusCode, string message) => throw null;
-                public SmtpException(System.Net.Mail.SmtpStatusCode statusCode) => throw null;
+                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public SmtpException() => throw null;
                 protected SmtpException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+                public SmtpException(System.Net.Mail.SmtpStatusCode statusCode) => throw null;
+                public SmtpException(System.Net.Mail.SmtpStatusCode statusCode, string message) => throw null;
+                public SmtpException(string message) => throw null;
+                public SmtpException(string message, System.Exception innerException) => throw null;
                 public System.Net.Mail.SmtpStatusCode StatusCode { get => throw null; set => throw null; }
             }
 
@@ -248,28 +248,28 @@ namespace System
             public class SmtpFailedRecipientException : System.Net.Mail.SmtpException, System.Runtime.Serialization.ISerializable
             {
                 public string FailedRecipient { get => throw null; }
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-                public SmtpFailedRecipientException(string message, string failedRecipient, System.Exception innerException) => throw null;
-                public SmtpFailedRecipientException(string message, System.Exception innerException) => throw null;
-                public SmtpFailedRecipientException(string message) => throw null;
-                public SmtpFailedRecipientException(System.Net.Mail.SmtpStatusCode statusCode, string failedRecipient, string serverResponse) => throw null;
-                public SmtpFailedRecipientException(System.Net.Mail.SmtpStatusCode statusCode, string failedRecipient) => throw null;
+                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public SmtpFailedRecipientException() => throw null;
                 protected SmtpFailedRecipientException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SmtpFailedRecipientException(System.Net.Mail.SmtpStatusCode statusCode, string failedRecipient) => throw null;
+                public SmtpFailedRecipientException(System.Net.Mail.SmtpStatusCode statusCode, string failedRecipient, string serverResponse) => throw null;
+                public SmtpFailedRecipientException(string message) => throw null;
+                public SmtpFailedRecipientException(string message, System.Exception innerException) => throw null;
+                public SmtpFailedRecipientException(string message, string failedRecipient, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Net.Mail.SmtpFailedRecipientsException` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class SmtpFailedRecipientsException : System.Net.Mail.SmtpFailedRecipientException, System.Runtime.Serialization.ISerializable
             {
-                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+                void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public System.Net.Mail.SmtpFailedRecipientException[] InnerExceptions { get => throw null; }
-                public SmtpFailedRecipientsException(string message, System.Net.Mail.SmtpFailedRecipientException[] innerExceptions) => throw null;
-                public SmtpFailedRecipientsException(string message, System.Exception innerException) => throw null;
-                public SmtpFailedRecipientsException(string message) => throw null;
                 public SmtpFailedRecipientsException() => throw null;
                 protected SmtpFailedRecipientsException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SmtpFailedRecipientsException(string message) => throw null;
+                public SmtpFailedRecipientsException(string message, System.Exception innerException) => throw null;
+                public SmtpFailedRecipientsException(string message, System.Net.Mail.SmtpFailedRecipientException[] innerExceptions) => throw null;
             }
 
             // Generated from `System.Net.Mail.SmtpStatusCode` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -308,8 +308,8 @@ namespace System
             // Generated from `System.Net.Mime.ContentDisposition` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ContentDisposition
             {
-                public ContentDisposition(string disposition) => throw null;
                 public ContentDisposition() => throw null;
+                public ContentDisposition(string disposition) => throw null;
                 public System.DateTime CreationDate { get => throw null; set => throw null; }
                 public string DispositionType { get => throw null; set => throw null; }
                 public override bool Equals(object rparam) => throw null;
@@ -328,8 +328,8 @@ namespace System
             {
                 public string Boundary { get => throw null; set => throw null; }
                 public string CharSet { get => throw null; set => throw null; }
-                public ContentType(string contentType) => throw null;
                 public ContentType() => throw null;
+                public ContentType(string contentType) => throw null;
                 public override bool Equals(object rparam) => throw null;
                 public override int GetHashCode() => throw null;
                 public string MediaType { get => throw null; set => throw null; }

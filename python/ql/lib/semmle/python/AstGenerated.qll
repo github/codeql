@@ -218,6 +218,26 @@ library class Call_ extends @py_Call, Expr {
   override string toString() { result = "Call" }
 }
 
+/** INTERNAL: See the class `Case` for further information. */
+library class Case_ extends @py_Case, Stmt {
+  /** Gets the pattern of this case statement. */
+  Pattern getPattern() { py_patterns(result, _, this, 1) }
+
+  /** Gets the guard of this case statement. */
+  Expr getGuard() { py_exprs(result, _, this, 2) }
+
+  /** Gets the body of this case statement. */
+  StmtList getBody() { py_stmt_lists(result, this, 3) }
+
+  /** Gets the nth statement of this case statement. */
+  Stmt getStmt(int index) { result = this.getBody().getItem(index) }
+
+  /** Gets a statement of this case statement. */
+  Stmt getAStmt() { result = this.getBody().getAnItem() }
+
+  override string toString() { result = "Case" }
+}
+
 /** INTERNAL: See the class `Class` for further information. */
 library class Class_ extends @py_Class {
   /** Gets the name of this class. */
@@ -232,6 +252,7 @@ library class Class_ extends @py_Class {
   /** Gets a statement of this class. */
   Stmt getAStmt() { result = this.getBody().getAnItem() }
 
+  /** Gets a parent of this class */
   ClassExpr getParent() { py_Classes(this, result) }
 
   /** Gets a textual representation of this element. */
@@ -513,6 +534,7 @@ library class Function_ extends @py_Function {
   /** Whether the async property of this function is true. */
   predicate isAsync() { py_bools(this, 6) }
 
+  /** Gets a parent of this function */
   FunctionParent getParent() { py_Functions(this, result) }
 
   /** Gets a textual representation of this element. */
@@ -575,6 +597,14 @@ library class Gt_ extends @py_Gt, Cmpop {
 /** INTERNAL: See the class `GtE` for further information. */
 library class GtE_ extends @py_GtE, Cmpop {
   override string toString() { result = "GtE" }
+}
+
+/** INTERNAL: See the class `Guard` for further information. */
+library class Guard_ extends @py_Guard, Expr {
+  /** Gets the test of this guard expression. */
+  Expr getTest() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "Guard" }
 }
 
 /** INTERNAL: See the class `If` for further information. */
@@ -788,6 +818,172 @@ library class LtE_ extends @py_LtE, Cmpop {
 /** INTERNAL: See the class `MatMult` for further information. */
 library class MatMult_ extends @py_MatMult, Operator {
   override string toString() { result = "MatMult" }
+}
+
+/** INTERNAL: See the class `MatchStmt` for further information. */
+library class MatchStmt_ extends @py_MatchStmt, Stmt {
+  /** Gets the subject of this match statement. */
+  Expr getSubject() { py_exprs(result, _, this, 1) }
+
+  /** Gets the cases of this match statement. */
+  StmtList getCases() { py_stmt_lists(result, this, 2) }
+
+  /** Gets the nth case of this match statement. */
+  Stmt getCase(int index) { result = this.getCases().getItem(index) }
+
+  /** Gets a case of this match statement. */
+  Stmt getACase() { result = this.getCases().getAnItem() }
+
+  override string toString() { result = "MatchStmt" }
+}
+
+/** INTERNAL: See the class `MatchAsPattern` for further information. */
+library class MatchAsPattern_ extends @py_MatchAsPattern, Pattern {
+  /** Gets the pattern of this matchaspattern pattern. */
+  Pattern getPattern() { py_patterns(result, _, this, 2) }
+
+  /** Gets the alias of this matchaspattern pattern. */
+  Expr getAlias() { py_exprs(result, _, this, 3) }
+
+  override string toString() { result = "MatchAsPattern" }
+}
+
+/** INTERNAL: See the class `MatchCapturePattern` for further information. */
+library class MatchCapturePattern_ extends @py_MatchCapturePattern, Pattern {
+  /** Gets the variable of this matchcapturepattern pattern. */
+  Expr getVariable() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "MatchCapturePattern" }
+}
+
+/** INTERNAL: See the class `MatchClassPattern` for further information. */
+library class MatchClassPattern_ extends @py_MatchClassPattern, Pattern {
+  /** Gets the class of this matchclasspattern pattern. */
+  Expr getClass() { py_exprs(result, _, this, 2) }
+
+  /** Gets the class_name of this matchclasspattern pattern. */
+  Expr getClassName() { py_exprs(result, _, this, 3) }
+
+  /** Gets the positional of this matchclasspattern pattern. */
+  PatternList getPositional() { py_pattern_lists(result, this, 4) }
+
+  /** Gets the nth positional of this matchclasspattern pattern. */
+  Pattern getPositional(int index) { result = this.getPositional().getItem(index) }
+
+  /** Gets a positional of this matchclasspattern pattern. */
+  Pattern getAPositional() { result = this.getPositional().getAnItem() }
+
+  /** Gets the keyword of this matchclasspattern pattern. */
+  PatternList getKeyword() { py_pattern_lists(result, this, 5) }
+
+  /** Gets the nth keyword of this matchclasspattern pattern. */
+  Pattern getKeyword(int index) { result = this.getKeyword().getItem(index) }
+
+  /** Gets a keyword of this matchclasspattern pattern. */
+  Pattern getAKeyword() { result = this.getKeyword().getAnItem() }
+
+  override string toString() { result = "MatchClassPattern" }
+}
+
+/** INTERNAL: See the class `MatchDoubleStarPattern` for further information. */
+library class MatchDoubleStarPattern_ extends @py_MatchDoubleStarPattern, Pattern {
+  /** Gets the target of this matchdoublestarpattern pattern. */
+  Pattern getTarget() { py_patterns(result, _, this, 2) }
+
+  override string toString() { result = "MatchDoubleStarPattern" }
+}
+
+/** INTERNAL: See the class `MatchKeyValuePattern` for further information. */
+library class MatchKeyValuePattern_ extends @py_MatchKeyValuePattern, Pattern {
+  /** Gets the key of this matchkeyvaluepattern pattern. */
+  Pattern getKey() { py_patterns(result, _, this, 2) }
+
+  /** Gets the value of this matchkeyvaluepattern pattern. */
+  Pattern getValue() { py_patterns(result, _, this, 3) }
+
+  override string toString() { result = "MatchKeyValuePattern" }
+}
+
+/** INTERNAL: See the class `MatchKeywordPattern` for further information. */
+library class MatchKeywordPattern_ extends @py_MatchKeywordPattern, Pattern {
+  /** Gets the attribute of this matchkeywordpattern pattern. */
+  Expr getAttribute() { py_exprs(result, _, this, 2) }
+
+  /** Gets the value of this matchkeywordpattern pattern. */
+  Pattern getValue() { py_patterns(result, _, this, 3) }
+
+  override string toString() { result = "MatchKeywordPattern" }
+}
+
+/** INTERNAL: See the class `MatchLiteralPattern` for further information. */
+library class MatchLiteralPattern_ extends @py_MatchLiteralPattern, Pattern {
+  /** Gets the literal of this matchliteralpattern pattern. */
+  Expr getLiteral() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "MatchLiteralPattern" }
+}
+
+/** INTERNAL: See the class `MatchMappingPattern` for further information. */
+library class MatchMappingPattern_ extends @py_MatchMappingPattern, Pattern {
+  /** Gets the mappings of this matchmappingpattern pattern. */
+  PatternList getMappings() { py_pattern_lists(result, this, 2) }
+
+  /** Gets the nth mapping of this matchmappingpattern pattern. */
+  Pattern getMapping(int index) { result = this.getMappings().getItem(index) }
+
+  /** Gets a mapping of this matchmappingpattern pattern. */
+  Pattern getAMapping() { result = this.getMappings().getAnItem() }
+
+  override string toString() { result = "MatchMappingPattern" }
+}
+
+/** INTERNAL: See the class `MatchOrPattern` for further information. */
+library class MatchOrPattern_ extends @py_MatchOrPattern, Pattern {
+  /** Gets the patterns of this matchorpattern pattern. */
+  PatternList getPatterns() { py_pattern_lists(result, this, 2) }
+
+  /** Gets the nth pattern of this matchorpattern pattern. */
+  Pattern getPattern(int index) { result = this.getPatterns().getItem(index) }
+
+  /** Gets a pattern of this matchorpattern pattern. */
+  Pattern getAPattern() { result = this.getPatterns().getAnItem() }
+
+  override string toString() { result = "MatchOrPattern" }
+}
+
+/** INTERNAL: See the class `MatchSequencePattern` for further information. */
+library class MatchSequencePattern_ extends @py_MatchSequencePattern, Pattern {
+  /** Gets the patterns of this matchsequencepattern pattern. */
+  PatternList getPatterns() { py_pattern_lists(result, this, 2) }
+
+  /** Gets the nth pattern of this matchsequencepattern pattern. */
+  Pattern getPattern(int index) { result = this.getPatterns().getItem(index) }
+
+  /** Gets a pattern of this matchsequencepattern pattern. */
+  Pattern getAPattern() { result = this.getPatterns().getAnItem() }
+
+  override string toString() { result = "MatchSequencePattern" }
+}
+
+/** INTERNAL: See the class `MatchStarPattern` for further information. */
+library class MatchStarPattern_ extends @py_MatchStarPattern, Pattern {
+  /** Gets the target of this matchstarpattern pattern. */
+  Pattern getTarget() { py_patterns(result, _, this, 2) }
+
+  override string toString() { result = "MatchStarPattern" }
+}
+
+/** INTERNAL: See the class `MatchValuePattern` for further information. */
+library class MatchValuePattern_ extends @py_MatchValuePattern, Pattern {
+  /** Gets the value of this matchvaluepattern pattern. */
+  Expr getValue() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "MatchValuePattern" }
+}
+
+/** INTERNAL: See the class `MatchWildcardPattern` for further information. */
+library class MatchWildcardPattern_ extends @py_MatchWildcardPattern, Pattern {
+  override string toString() { result = "MatchWildcardPattern" }
 }
 
 /** INTERNAL: See the class `Mod` for further information. */
@@ -1073,6 +1269,7 @@ library class StringPart_ extends @py_StringPart {
   /** Gets the location of this implicitly concatenated part. */
   Location getLocation() { py_locations(result, this) }
 
+  /** Gets a parent of this implicitly concatenated part */
   StringPartList getParent() { py_StringParts(this, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1081,6 +1278,7 @@ library class StringPart_ extends @py_StringPart {
 
 /** INTERNAL: See the class `StringPartList` for further information. */
 library class StringPartList_ extends @py_StringPart_list {
+  /** Gets a parent of this implicitly concatenated part list */
   BytesOrStr getParent() { py_StringPart_lists(this, result) }
 
   /** Gets an item of this implicitly concatenated part list */
@@ -1288,6 +1486,7 @@ library class Alias_ extends @py_alias {
   /** Gets the name of this alias. */
   Expr getAsname() { py_exprs(result, _, this, 1) }
 
+  /** Gets a parent of this alias */
   AliasList getParent() { py_aliases(this, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1296,6 +1495,7 @@ library class Alias_ extends @py_alias {
 
 /** INTERNAL: See the class `AliasList` for further information. */
 library class AliasList_ extends @py_alias_list {
+  /** Gets a parent of this alias list */
   Import getParent() { py_alias_lists(this, result) }
 
   /** Gets an item of this alias list */
@@ -1352,6 +1552,7 @@ library class Arguments_ extends @py_arguments {
   /** Gets a keyword-only annotation of this parameters definition. */
   Expr getAKwAnnotation() { result = this.getKwAnnotations().getAnItem() }
 
+  /** Gets a parent of this parameters definition */
   ArgumentsParent getParent() { py_arguments(this, result) }
 
   /** Gets a textual representation of this element. */
@@ -1378,6 +1579,7 @@ library class BoolParent_ extends @py_bool_parent {
 
 /** INTERNAL: See the class `Boolop` for further information. */
 library class Boolop_ extends @py_boolop {
+  /** Gets a parent of this boolean operator */
   BoolExpr getParent() { py_boolops(this, _, result) }
 
   /** Gets a textual representation of this element. */
@@ -1386,6 +1588,7 @@ library class Boolop_ extends @py_boolop {
 
 /** INTERNAL: See the class `Cmpop` for further information. */
 library class Cmpop_ extends @py_cmpop {
+  /** Gets a parent of this comparison operator */
   CmpopList getParent() { py_cmpops(this, _, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1394,6 +1597,7 @@ library class Cmpop_ extends @py_cmpop {
 
 /** INTERNAL: See the class `CmpopList` for further information. */
 library class CmpopList_ extends @py_cmpop_list {
+  /** Gets a parent of this comparison operator list */
   Compare getParent() { py_cmpop_lists(this, result) }
 
   /** Gets an item of this comparison operator list */
@@ -1426,6 +1630,7 @@ library class Comprehension_ extends @py_comprehension {
   /** Gets a condition of this comprehension. */
   Expr getAnIf() { result = this.getIfs().getAnItem() }
 
+  /** Gets a parent of this comprehension */
   ComprehensionList getParent() { py_comprehensions(this, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1434,6 +1639,7 @@ library class Comprehension_ extends @py_comprehension {
 
 /** INTERNAL: See the class `ComprehensionList` for further information. */
 library class ComprehensionList_ extends @py_comprehension_list {
+  /** Gets a parent of this comprehension list */
   ListComp getParent() { py_comprehension_lists(this, result) }
 
   /** Gets an item of this comprehension list */
@@ -1448,6 +1654,7 @@ library class ComprehensionList_ extends @py_comprehension_list {
 
 /** INTERNAL: See the class `DictItem` for further information. */
 library class DictItem_ extends @py_dict_item {
+  /** Gets a parent of this dict_item */
   DictItemList getParent() { py_dict_items(this, _, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1456,6 +1663,7 @@ library class DictItem_ extends @py_dict_item {
 
 /** INTERNAL: See the class `DictItemList` for further information. */
 library class DictItemList_ extends @py_dict_item_list {
+  /** Gets a parent of this dict_item list */
   DictItemListParent getParent() { py_dict_item_lists(this, result) }
 
   /** Gets an item of this dict_item list */
@@ -1482,6 +1690,7 @@ library class Expr_ extends @py_expr {
   /** Whether the parenthesised property of this expression is true. */
   predicate isParenthesised() { py_bools(this, 1) }
 
+  /** Gets a parent of this expression */
   ExprParent getParent() { py_exprs(this, _, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1490,6 +1699,7 @@ library class Expr_ extends @py_expr {
 
 /** INTERNAL: See the class `ExprContext` for further information. */
 library class ExprContext_ extends @py_expr_context {
+  /** Gets a parent of this expression context */
   ExprContextParent getParent() { py_expr_contexts(this, _, result) }
 
   /** Gets a textual representation of this element. */
@@ -1504,6 +1714,7 @@ library class ExprContextParent_ extends @py_expr_context_parent {
 
 /** INTERNAL: See the class `ExprList` for further information. */
 library class ExprList_ extends @py_expr_list {
+  /** Gets a parent of this expression list */
   ExprListParent getParent() { py_expr_lists(this, result, _) }
 
   /** Gets an item of this expression list */
@@ -1556,6 +1767,7 @@ library class LocationParent_ extends @py_location_parent {
 
 /** INTERNAL: See the class `Operator` for further information. */
 library class Operator_ extends @py_operator {
+  /** Gets a parent of this operator */
   BinaryExpr getParent() { py_operators(this, _, result) }
 
   /** Gets a textual representation of this element. */
@@ -1566,6 +1778,48 @@ library class Operator_ extends @py_operator {
 library class Parameter_ extends @py_parameter {
   /** Gets a textual representation of this element. */
   string toString() { result = "Parameter" }
+}
+
+/** INTERNAL: See the class `Pattern` for further information. */
+library class Pattern_ extends @py_pattern {
+  /** Gets the location of this pattern. */
+  Location getLocation() { py_locations(result, this) }
+
+  /** Whether the parenthesised property of this pattern is true. */
+  predicate isParenthesised() { py_bools(this, 1) }
+
+  /** Gets a parent of this pattern */
+  PatternParent getParent() { py_patterns(this, _, result, _) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "Pattern" }
+}
+
+/** INTERNAL: See the class `PatternList` for further information. */
+library class PatternList_ extends @py_pattern_list {
+  /** Gets a parent of this pattern list */
+  PatternListParent getParent() { py_pattern_lists(this, result, _) }
+
+  /** Gets an item of this pattern list */
+  Pattern getAnItem() { py_patterns(result, _, this, _) }
+
+  /** Gets the nth item of this pattern list */
+  Pattern getItem(int index) { py_patterns(result, _, this, index) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternList" }
+}
+
+/** INTERNAL: See the class `PatternListParent` for further information. */
+library class PatternListParent_ extends @py_pattern_list_parent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternListParent" }
+}
+
+/** INTERNAL: See the class `PatternParent` for further information. */
+library class PatternParent_ extends @py_pattern_parent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "PatternParent" }
 }
 
 /** INTERNAL: See the class `Scope` for further information. */
@@ -1579,6 +1833,7 @@ library class Stmt_ extends @py_stmt {
   /** Gets the location of this statement. */
   Location getLocation() { py_locations(result, this) }
 
+  /** Gets a parent of this statement */
   StmtList getParent() { py_stmts(this, _, result, _) }
 
   /** Gets a textual representation of this element. */
@@ -1587,6 +1842,7 @@ library class Stmt_ extends @py_stmt {
 
 /** INTERNAL: See the class `StmtList` for further information. */
 library class StmtList_ extends @py_stmt_list {
+  /** Gets a parent of this statement list */
   StmtListParent getParent() { py_stmt_lists(this, result, _) }
 
   /** Gets an item of this statement list */
@@ -1607,6 +1863,7 @@ library class StmtListParent_ extends @py_stmt_list_parent {
 
 /** INTERNAL: See the class `StringList` for further information. */
 library class StringList_ extends @py_str_list {
+  /** Gets a parent of this string list */
   StrListParent getParent() { py_str_lists(this, result) }
 
   /** Gets an item of this string list */
@@ -1633,6 +1890,7 @@ library class StrParent_ extends @py_str_parent {
 
 /** INTERNAL: See the class `Unaryop` for further information. */
 library class Unaryop_ extends @py_unaryop {
+  /** Gets a parent of this unary operation */
   UnaryExpr getParent() { py_unaryops(this, _, result) }
 
   /** Gets a textual representation of this element. */

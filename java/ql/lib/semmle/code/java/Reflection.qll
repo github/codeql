@@ -75,7 +75,7 @@ class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, M
   /**
    * If the argument to this call is a `StringLiteral`, then return that string.
    */
-  string getTypeName() { result = this.getArgument(0).(StringLiteral).getRepresentedString() }
+  string getTypeName() { result = this.getArgument(0).(StringLiteral).getValue() }
 
   override RefType getReflectivelyIdentifiedClass() {
     // We only handle cases where the class is specified as a string literal to this call.
@@ -150,7 +150,7 @@ private Type parameterForSubTypes(ParameterizedType type) {
       lowerBound = arg.(Wildcard).getLowerBoundType()
     |
       // `T super Foo` implies that `Foo`, or any super-type of `Foo`, may be represented.
-      lowerBound.(RefType).getAnAncestor() = result
+      lowerBound.getAnAncestor() = result
     )
   )
 }
@@ -360,7 +360,7 @@ class ReflectiveMethodAccess extends ClassMethodAccess {
         this.getInferredClassType().inherits(result)
     ) and
     // Only consider instances where the method name is provided as a `StringLiteral`.
-    result.hasName(this.getArgument(0).(StringLiteral).getRepresentedString())
+    result.hasName(this.getArgument(0).(StringLiteral).getValue())
   }
 }
 
@@ -400,6 +400,6 @@ class ReflectiveFieldAccess extends ClassMethodAccess {
         this.getInferredClassType().inherits(result)
       )
     ) and
-    result.hasName(this.getArgument(0).(StringLiteral).getRepresentedString())
+    result.hasName(this.getArgument(0).(StringLiteral).getValue())
   }
 }

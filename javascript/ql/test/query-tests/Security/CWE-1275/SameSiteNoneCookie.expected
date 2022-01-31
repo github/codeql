@@ -1,0 +1,8 @@
+| tst-sameSite.js:4:3:8:4 | Cookies ... OK\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:20:3:25:4 | cookies ... OK\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:38:19:43:4 | cookie. ... ",\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:58:3:63:4 | res.coo ... OK\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:76:3:82:4 | session ... OK\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:98:3:106:4 | express ... },\\n  }) | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:126:33:126:70 | "authKe ... Secure" | Sensitive cookie with SameSite set to 'None' |
+| tst-sameSite.js:134:3:134:17 | document.cookie | Sensitive cookie with SameSite set to 'None' |

@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Constructing a regular expression with unsanitized user input is dangerous,
+since a malicious user may be able to modify the meaning of the expression. In
+particular, such a user may be able to provide a regular expression fragment
+that takes exponential time in the worst case, and use that to perform a Denial
+of Service attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Before embedding user input into a regular expression, use a sanitization
+function such as <code>Regexp.escape</code> to escape meta-characters that have
+special meaning.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples construct regular expressions from an HTTP request
+parameter without sanitizing it first:
+</p>
+<sample src="examples/regexp_injection_bad.rb" />
+<p>
+Instead, the request parameter should be sanitized first. This ensures that the
+user cannot insert characters that have special meanings in regular expressions.
+</p>
+<sample src="examples/regexp_injection_good.rb" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.
+</li>
+<li>
+Ruby: <a href="https://ruby-doc.org/core-3.0.2/Regexp.html#method-c-escape">Regexp.escape</a>.
+</li>
+</references>
+</qhelp>

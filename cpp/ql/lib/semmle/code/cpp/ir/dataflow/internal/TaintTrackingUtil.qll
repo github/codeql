@@ -44,8 +44,6 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
     fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
   )
-  or
-  toOperand.(LoadOperand).getAnyDef() = fromInstr
 }
 
 /**
@@ -83,8 +81,6 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
-  or
-  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Flow from an element to an array or union that contains it.
   instrTo.(ChiInstruction).getPartialOperand() = opFrom and
@@ -163,6 +159,12 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+
+/**
+ * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 /**
  * Holds if taint can flow from `instrIn` to `instrOut` through a call to a

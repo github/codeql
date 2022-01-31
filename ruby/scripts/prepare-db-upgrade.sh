@@ -73,7 +73,7 @@ check_hash_valid()
 }
 
 # Get the hash of the previous and current DB Schema files
-prev_hash="$(git show "${prev_hash}:${scheme_file}" | git hash-object --stdin)"
+prev_hash="$(git show "${prev_hash}:ruby/${scheme_file}" | git hash-object --stdin)"
 check_hash_valid previous "${prev_hash}"
 current_hash="$(git hash-object "${scheme_file}")"
 check_hash_valid current "${current_hash}"

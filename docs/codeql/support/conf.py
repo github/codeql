@@ -43,10 +43,10 @@ project = u'Supported languages and frameworks for LGTM Enterprise'
 # The short X.Y version.
 
 # LGTM Enterprise release
-release = u'1.28'
+release = u'1.30'
 
 # CodeQL CLI version used by LGTM Enterprise release
-version = u'2.5.9'
+version = u'2.7.6'
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 

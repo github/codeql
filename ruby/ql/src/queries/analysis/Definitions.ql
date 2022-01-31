@@ -35,7 +35,9 @@ select src, target, kind
  */
 newtype DefLoc =
   /** A constant, module or class. */
-  ConstantDefLoc(ConstantReadAccess read, ConstantWriteAccess write) { write = definitionOf(read) } or
+  ConstantDefLoc(ConstantReadAccess read, ConstantWriteAccess write) {
+    write = definitionOf(resolveConstant(read))
+  } or
   /** A method call. */
   MethodLoc(MethodCall call, Method meth) { meth = call.getATarget() } or
   /** A local variable. */
@@ -71,11 +73,16 @@ newtype DefLoc =
  *  files. In these cases we arbitrarily pick the definition with the lexicographically least
  *  location.
  */
-ConstantWriteAccess definitionOf(ConstantReadAccess r) {
+pragma[noinline]
+ConstantWriteAccess definitionOf(string fqn) {
+  fqn = resolveConstant(_) and
   result =
-    min(ConstantWriteAccess w |
-      w.getQualifiedName() = resolveConstant(r)
+    min(ConstantWriteAccess w, Location l |
+      w.getAQualifiedName() = fqn and l = w.getLocation()
     |
-      w order by w.getLocation().toString()
+      w
+      order by
+        l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+        l.getEndColumn()
     )
 }

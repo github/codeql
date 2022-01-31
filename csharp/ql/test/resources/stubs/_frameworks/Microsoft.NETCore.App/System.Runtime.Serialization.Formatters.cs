@@ -43,8 +43,8 @@ namespace System
             // Generated from `System.Runtime.Serialization.FormatterConverter` in `System.Runtime.Serialization.Formatters, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FormatterConverter : System.Runtime.Serialization.IFormatterConverter
             {
-                public object Convert(object value, System.TypeCode typeCode) => throw null;
                 public object Convert(object value, System.Type type) => throw null;
+                public object Convert(object value, System.TypeCode typeCode) => throw null;
                 public FormatterConverter() => throw null;
                 public bool ToBoolean(object value) => throw null;
                 public System.Byte ToByte(object value) => throw null;
@@ -69,8 +69,8 @@ namespace System
                 public static void CheckTypeSecurity(System.Type t, System.Runtime.Serialization.Formatters.TypeFilterLevel securityLevel) => throw null;
                 public static object[] GetObjectData(object obj, System.Reflection.MemberInfo[] members) => throw null;
                 public static object GetSafeUninitializedObject(System.Type type) => throw null;
-                public static System.Reflection.MemberInfo[] GetSerializableMembers(System.Type type, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public static System.Reflection.MemberInfo[] GetSerializableMembers(System.Type type) => throw null;
+                public static System.Reflection.MemberInfo[] GetSerializableMembers(System.Type type, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public static System.Runtime.Serialization.ISerializationSurrogate GetSurrogateForCyclicalReference(System.Runtime.Serialization.ISerializationSurrogate innerSurrogate) => throw null;
                 public static System.Type GetTypeFromAssembly(System.Reflection.Assembly assem, string name) => throw null;
                 public static object GetUninitializedObject(System.Type type) => throw null;
@@ -122,10 +122,10 @@ namespace System
                 public virtual void RecordArrayElementFixup(System.Int64 arrayToBeFixed, int index, System.Int64 objectRequired) => throw null;
                 public virtual void RecordDelayedFixup(System.Int64 objectToBeFixed, string memberName, System.Int64 objectRequired) => throw null;
                 public virtual void RecordFixup(System.Int64 objectToBeFixed, System.Reflection.MemberInfo member, System.Int64 objectRequired) => throw null;
-                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info, System.Int64 idOfContainingObj, System.Reflection.MemberInfo member, int[] arrayIndex) => throw null;
-                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info, System.Int64 idOfContainingObj, System.Reflection.MemberInfo member) => throw null;
-                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info) => throw null;
                 public virtual void RegisterObject(object obj, System.Int64 objectID) => throw null;
+                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info) => throw null;
+                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info, System.Int64 idOfContainingObj, System.Reflection.MemberInfo member) => throw null;
+                public void RegisterObject(object obj, System.Int64 objectID, System.Runtime.Serialization.SerializationInfo info, System.Int64 idOfContainingObj, System.Reflection.MemberInfo member, int[] arrayIndex) => throw null;
             }
 
             // Generated from `System.Runtime.Serialization.SerializationBinder` in `System.Runtime.Serialization.Formatters, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -192,8 +192,8 @@ namespace System
                     public class BinaryFormatter : System.Runtime.Serialization.IFormatter
                     {
                         public System.Runtime.Serialization.Formatters.FormatterAssemblyStyle AssemblyFormat { get => throw null; set => throw null; }
-                        public BinaryFormatter(System.Runtime.Serialization.ISurrogateSelector selector, System.Runtime.Serialization.StreamingContext context) => throw null;
                         public BinaryFormatter() => throw null;
+                        public BinaryFormatter(System.Runtime.Serialization.ISurrogateSelector selector, System.Runtime.Serialization.StreamingContext context) => throw null;
                         public System.Runtime.Serialization.SerializationBinder Binder { get => throw null; set => throw null; }
                         public System.Runtime.Serialization.StreamingContext Context { get => throw null; set => throw null; }
                         public object Deserialize(System.IO.Stream serializationStream) => throw null;

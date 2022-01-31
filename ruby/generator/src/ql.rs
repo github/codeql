@@ -4,20 +4,35 @@ use std::fmt;
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub enum TopLevel<'a> {
     Class(Class<'a>),
-    Import(&'a str),
+    Import(Import<'a>),
     Module(Module<'a>),
 }
 
 impl<'a> fmt::Display for TopLevel<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TopLevel::Import(x) => write!(f, "private import {}", x),
+            TopLevel::Import(imp) => write!(f, "{}", imp),
             TopLevel::Class(cls) => write!(f, "{}", cls),
             TopLevel::Module(m) => write!(f, "{}", m),
         }
     }
 }
 
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub struct Import<'a> {
+    pub module: &'a str,
+    pub alias: Option<&'a str>,
+}
+
+impl<'a> fmt::Display for Import<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "import {}", &self.module)?;
+        if let Some(name) = &self.alias {
+            write!(f, " as {}", name)?;
+        }
+        Ok(())
+    }
+}
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Class<'a> {
     pub qldoc: Option<String>,

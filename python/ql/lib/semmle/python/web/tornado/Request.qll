@@ -41,10 +41,7 @@ class TornadoRequestSource extends HttpRequestTaintSource {
 class TornadoExternalInputSource extends HttpRequestTaintSource {
   TornadoExternalInputSource() {
     exists(string name |
-      name = "get_argument" or
-      name = "get_query_argument" or
-      name = "get_body_argument" or
-      name = "decode_argument"
+      name in ["get_argument", "get_query_argument", "get_body_argument", "decode_argument"]
     |
       this = callToNamedTornadoRequestHandlerMethod(name)
     )

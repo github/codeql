@@ -36,7 +36,7 @@ private module Cached {
     result = scopeAppend(namespaceDeclaration(n.getEnclosingModule()), n.getName())
     or
     exists(string container |
-      TResolved(container) = resolveScopeExpr(n.getScopeExpr()) and
+      TResolved(container) = resolveConstantReadAccess(n.getScopeExpr()) and
       result = scopeAppend(container, n.getName())
     )
   }
@@ -58,14 +58,24 @@ private module Cached {
     (
       exists(ClassDeclaration d |
         d = cls.getADeclaration() and
-        result = resolveScopeExpr(d.getSuperclassExpr())
+        result = resolveConstantReadAccess(d.getSuperclassExpr())
       )
       or
       result = TResolved("Object") and
       forex(ClassDeclaration d | d = cls.getADeclaration() |
-        not exists(resolveScopeExpr(d.getSuperclassExpr()))
+        not exists(resolveConstantReadAccess(d.getSuperclassExpr()))
       )
     )
+  }
+
+  private Module getACludedModule(IncludeOrPrependCall c, Module m) {
+    (
+      m = resolveConstantReadAccess(c.getReceiver())
+      or
+      m = enclosingModule(c).getModule() and
+      c.getReceiver() instanceof Self
+    ) and
+    result = resolveConstantReadAccess(c.getAnArgument())
   }
 
   cached
@@ -74,13 +84,7 @@ private module Cached {
     or
     exists(IncludeOrPrependCall c |
       c.getMethodName() = "include" and
-      (
-        m = resolveScopeExpr(c.getReceiver())
-        or
-        m = enclosingModule(c).getModule() and
-        c.getReceiver() instanceof Self
-      ) and
-      result = resolveScopeExpr(c.getAnArgument())
+      result = getACludedModule(c, m)
     )
   }
 
@@ -88,13 +92,7 @@ private module Cached {
   Module getAPrependedModule(Module m) {
     exists(IncludeOrPrependCall c |
       c.getMethodName() = "prepend" and
-      (
-        m = resolveScopeExpr(c.getReceiver())
-        or
-        m = enclosingModule(c).getModule() and
-        c.getReceiver() instanceof Self
-      ) and
-      result = resolveScopeExpr(c.getAnArgument())
+      result = getACludedModule(c, m)
     )
   }
 
@@ -102,14 +100,23 @@ private module Cached {
    * Resolve class or module read access to a qualified module name.
    */
   cached
-  TResolved resolveScopeExpr(ConstantReadAccess r) {
+  TResolved resolveConstantReadAccess(ConstantReadAccess r) {
     exists(string qname | qname = resolveConstant(r) and result = TResolved(qname))
+  }
+
+  pragma[nomagic]
+  private string constantWriteAccess1(ConstantReadAccess r) {
+    exists(ConstantWriteAccess w | result = resolveConstantWriteAccess(w) |
+      r = w.getScopeExpr()
+      or
+      r = w.(ClassDeclaration).getSuperclassExpr()
+    )
   }
 
   /**
    * Resolve constant access (class, module or otherwise) to a qualified module name.
-   * `resolveScopeExpr/1` picks the best (lowest priority number) result of
-   * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
+   * `resolveConstantReadAccess/1` picks the best (lowest priority number) result of
+   * `resolveConstantReadAccess/2` that resolves to a constant definition. If the constant
    * definition is a Namespace then it is returned, if it's a constant assignment then
    * the right-hand side of the assignment is resolved.
    */
@@ -118,14 +125,10 @@ private module Cached {
     exists(string qname |
       qname =
         min(string qn, int p |
-          isDefinedConstant(qn) and
-          qn = resolveScopeExpr(r, p) and
+          qn = isDefinedConstant(_, _) and
+          qn = resolveConstantReadAccess(r, p) and
           // prevent classes/modules that contain/extend themselves
-          not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
-            r = w.getScopeExpr()
-            or
-            r = w.(ClassDeclaration).getSuperclassExpr()
-          )
+          not qn = constantWriteAccess1(r)
         |
           qn order by p
         )
@@ -133,7 +136,7 @@ private module Cached {
       result = qname
       or
       exists(ConstantAssignment a |
-        qname = constantDefinition0(a) and
+        qname = resolveConstantWriteAccess(a) and
         result = resolveConstant(a.getParent().(Assignment).getRightOperand())
       )
     )
@@ -149,7 +152,7 @@ private module Cached {
     exists(AssignExpr ae, ConstantWriteAccess w |
       w = ae.getLeftOperand() and
       w.getName() = name and
-      m = resolveScopeExpr(w.getScopeExpr()) and
+      m = resolveConstantReadAccess(w.getScopeExpr()) and
       result = ae.getRightOperand()
     )
   }
@@ -166,140 +169,312 @@ private predicate isToplevel(ConstantAccess n) {
   )
 }
 
-private predicate isDefinedConstant(string qualifiedModuleName) {
-  qualifiedModuleName = [builtin(), constantDefinition0(_)]
-}
-
-private int maxDepth() { result = 1 + max(int level | exists(enclosing(_, level))) }
-
-private ModuleBase enclosing(ModuleBase m, int level) {
-  result = m and level = 0
-  or
-  result = enclosing(m.getEnclosingModule(), level - 1)
-}
-
-pragma[noinline]
-private Namespace enclosingNameSpaceConstantReadAccess(
-  ConstantReadAccess c, int priority, string name
-) {
-  result = enclosing(c.getEnclosingModule(), priority) and
-  name = c.getName()
-}
-
-/**
- * Resolve constant read access (typically a scope expression) to a qualified name. The
- * `priority` value indicates the precedence of the solution with respect to the lookup order.
- * A constant name without scope specifier is resolved against its enclosing modules (inner-most first);
- * if the constant is not found in any of the enclosing modules, then the constant will be resolved
- * with respect to the ancestors (prepends, includes, super classes, and their ancestors) of the
- * directly enclosing module.
- */
-private string resolveScopeExpr(ConstantReadAccess c, int priority) {
-  c.hasGlobalScope() and result = c.getName() and priority = 0
-  or
-  exists(string name |
-    result = qualifiedModuleName(resolveScopeExprConstantReadAccess(c, priority, name), name)
-  )
-  or
-  not exists(c.getScopeExpr()) and
-  not c.hasGlobalScope() and
-  (
-    exists(string name |
-      exists(Namespace n |
-        n = enclosingNameSpaceConstantReadAccess(c, priority, name) and
-        result = qualifiedModuleName(constantDefinition0(n), name)
-      )
-      or
-      result =
-        qualifiedModuleName(ancestors(qualifiedModuleNameConstantReadAccess(c, name),
-            priority - maxDepth()), name)
-    )
-    or
-    priority = maxDepth() + 4 and
-    qualifiedModuleNameConstantReadAccess(c, result) != "BasicObject"
-  )
-}
-
-pragma[nomagic]
-private string resolveScopeExprConstantReadAccess(ConstantReadAccess c, int priority, string name) {
-  result = resolveScopeExpr(c.getScopeExpr(), priority) and
-  name = c.getName()
-}
-
 bindingset[qualifier, name]
 private string scopeAppend(string qualifier, string name) {
   if qualifier = "Object" then result = name else result = qualifier + "::" + name
 }
 
-private string qualifiedModuleName(ModuleBase m) {
-  result = "Object" and m instanceof Toplevel
-  or
-  result = constantDefinition0(m)
-}
-
-pragma[noinline]
-private string qualifiedModuleNameConstantWriteAccess(ConstantWriteAccess c, string name) {
-  result = qualifiedModuleName(c.getEnclosingModule()) and
-  name = c.getName()
-}
-
-pragma[noinline]
-private string qualifiedModuleNameConstantReadAccess(ConstantReadAccess c, string name) {
-  result = qualifiedModuleName(c.getEnclosingModule()) and
-  name = c.getName()
-}
-
 /**
- * Get a qualified name for a constant definition. May return multiple qualified
- * names because we over-approximate when resolving scope resolutions and ignore
- * lookup order precedence. Taking lookup order into account here would lead to
- * non-monotonic recursion.
+ * Provides predicates for resolving constant reads and writes to qualified names.
+ *
+ * Predicates suffixed with `NonRec` means that they do not depend recursively on
+ * `resolveConstantReadAccess`, while predicates suffixed with `Rec` do. This serves
+ * both as a performance optimization (minimize non-linear recursion), and as a way
+ * to prevent infinite recursion.
  */
-private string constantDefinition0(ConstantWriteAccess c) {
-  c.hasGlobalScope() and result = c.getName()
-  or
-  result = scopeAppend(resolveScopeExpr(c.getScopeExpr(), _), c.getName())
-  or
-  not exists(c.getScopeExpr()) and
-  not c.hasGlobalScope() and
-  exists(string name | result = scopeAppend(qualifiedModuleNameConstantWriteAccess(c, name), name))
-}
-
-/**
- * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
- * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
- * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
- * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
- * computing the precise order is tricky because it depends on the evaluation/file loading order.
- */
-// TODO: the order of super classes can be determined more precisely even without knowing the evaluation
-// order, so we should be able to make this more precise.
-private string ancestors(string qname, int priority) {
-  result = ancestors(prepends(qname), _) and priority = 0
-  or
-  result = qname and priority = 1 and isDefinedConstant(qname)
-  or
-  result = ancestors(includes(qname), _) and priority = 2
-  or
-  result = ancestors(superclass(qname), _) and priority = 3
-}
-
-private class IncludeOrPrependCall extends MethodCall {
-  IncludeOrPrependCall() { this.getMethodName() = ["include", "prepend"] }
-
-  string getAModule() { result = resolveScopeExpr(this.getAnArgument(), _) }
-
-  string getTarget() {
-    result = resolveScopeExpr(this.getReceiver(), _)
+private module ResolveImpl {
+  private ModuleBase enclosing(ModuleBase m, int level) {
+    result = m and level = 0
     or
-    result = qualifiedModuleName(enclosingModule(this)) and
-    (
-      this.getReceiver() instanceof Self
+    result = enclosing(m.getEnclosingModule(), level - 1)
+  }
+
+  private int maxDepth() { result = 1 + max(int level | exists(enclosing(_, level))) }
+
+  pragma[noinline]
+  private Namespace constantReadAccessEnclosingNameSpace(
+    ConstantReadAccess c, int priority, string name
+  ) {
+    not exists(c.getScopeExpr()) and
+    not c.hasGlobalScope() and
+    result = enclosing(c.getEnclosingModule(), priority) and
+    name = c.getName()
+  }
+
+  pragma[nomagic]
+  private string enclosingQualifiedModuleNameNonRec(ConstantReadAccess c, string name) {
+    result = qualifiedModuleNameNonRec(c.getEnclosingModule(), _, _) and
+    name = c.getName() and
+    not exists(c.getScopeExpr()) and
+    not c.hasGlobalScope()
+  }
+
+  pragma[nomagic]
+  private string enclosingQualifiedModuleNameRec(ConstantReadAccess c, string name) {
+    result = qualifiedModuleNameRec(c.getEnclosingModule(), _, _) and
+    name = c.getName() and
+    not exists(c.getScopeExpr()) and
+    not c.hasGlobalScope()
+  }
+
+  pragma[nomagic]
+  private string resolveConstantReadAccessScopeNonRec(
+    ConstantReadAccess c, int priority, string name
+  ) {
+    result = resolveConstantReadAccessNonRec(c.getScopeExpr(), priority) and
+    name = c.getName()
+  }
+
+  pragma[nomagic]
+  private string resolveConstantReadAccessScopeRec(ConstantReadAccess c, int priority, string name) {
+    result = resolveConstantReadAccessRec(c.getScopeExpr(), priority) and
+    name = c.getName()
+  }
+
+  pragma[nomagic]
+  private string resolveConstantReadAccessNonRec(ConstantReadAccess c, int priority) {
+    c.hasGlobalScope() and result = c.getName() and priority = 0
+    or
+    exists(string name, string s | result = isDefinedConstantNonRec(s, name) |
+      s = resolveConstantReadAccessScopeNonRec(c, priority, name)
+    )
+    or
+    exists(string name |
+      exists(Namespace n, string qname |
+        n = constantReadAccessEnclosingNameSpace(c, priority, name) and
+        qname = resolveConstantWriteAccessNonRec(n, _, _) and
+        result = isDefinedConstantNonRec(qname, name)
+      )
+    )
+    or
+    priority = maxDepth() + 4 and
+    enclosingQualifiedModuleNameNonRec(c, result) != "BasicObject"
+  }
+
+  pragma[nomagic]
+  private string resolveConstantReadAccessRec(ConstantReadAccess c, int priority) {
+    exists(string name, string s |
+      result = isDefinedConstantRec(s, name) and
+      s = resolveConstantReadAccessScopeNonRec(c, priority, name)
       or
-      not exists(this.getReceiver())
+      result = isDefinedConstant(s, name) and
+      s = resolveConstantReadAccessScopeRec(c, priority, name)
+    )
+    or
+    exists(string name |
+      exists(Namespace n, string qname |
+        n = constantReadAccessEnclosingNameSpace(c, priority, name)
+      |
+        qname = resolveConstantWriteAccess(n) and
+        result = isDefinedConstantRec(qname, name)
+        or
+        qname = resolveConstantWriteAccessRec(n, _, _) and
+        result = isDefinedConstantNonRec(qname, name)
+      )
+      or
+      exists(string encl | result = qualifiedModuleNameAncestors(encl, name, priority) |
+        encl = enclosingQualifiedModuleNameNonRec(c, name)
+        or
+        encl = enclosingQualifiedModuleNameRec(c, name)
+      )
+    )
+    or
+    priority = maxDepth() + 4 and
+    enclosingQualifiedModuleNameRec(c, result) != "BasicObject"
+  }
+
+  /**
+   * Resolve constant read access (typically a scope expression) to a qualified name. The
+   * `priority` value indicates the precedence of the solution with respect to the lookup order.
+   * A constant name without scope specifier is resolved against its enclosing modules (inner-most first);
+   * if the constant is not found in any of the enclosing modules, then the constant will be resolved
+   * with respect to the ancestors (prepends, includes, super classes, and their ancestors) of the
+   * directly enclosing module.
+   */
+  string resolveConstantReadAccess(ConstantReadAccess c, int priority) {
+    result = resolveConstantReadAccessNonRec(c, priority)
+    or
+    result = resolveConstantReadAccessRec(c, priority)
+  }
+
+  pragma[nomagic]
+  private string qualifiedModuleNameNonRec(ModuleBase m, string container, string name) {
+    result = "Object" and
+    m instanceof Toplevel and
+    container = "" and
+    name = result
+    or
+    result = resolveConstantWriteAccessNonRec(m, container, name)
+  }
+
+  pragma[nomagic]
+  private string qualifiedModuleNameRec(ModuleBase m, string container, string name) {
+    result = resolveConstantWriteAccessRec(m, container, name)
+  }
+
+  pragma[nomagic]
+  private string qualifiedModuleNameResolveConstantWriteAccessNonRec(
+    ConstantWriteAccess c, string name
+  ) {
+    result = qualifiedModuleNameNonRec(c.getEnclosingModule(), _, _) and
+    name = c.getName()
+  }
+
+  pragma[nomagic]
+  private string qualifiedModuleNameResolveConstantWriteAccessRec(ConstantWriteAccess c, string name) {
+    result = qualifiedModuleNameRec(c.getEnclosingModule(), _, _) and
+    name = c.getName()
+  }
+
+  pragma[nomagic]
+  private string resolveConstantWriteAccessNonRec(
+    ConstantWriteAccess c, string container, string name
+  ) {
+    c.hasGlobalScope() and
+    result = c.getName() and
+    container = "" and
+    name = result
+    or
+    result = scopeAppend(container, name) and
+    (
+      container = resolveConstantReadAccessNonRec(c.getScopeExpr(), _) and name = c.getName()
+      or
+      not exists(c.getScopeExpr()) and
+      not c.hasGlobalScope() and
+      container = qualifiedModuleNameResolveConstantWriteAccessNonRec(c, name)
     )
   }
+
+  pragma[nomagic]
+  private string resolveConstantWriteAccessRec(ConstantWriteAccess c, string container, string name) {
+    result = scopeAppend(container, name) and
+    (
+      container = resolveConstantReadAccessRec(c.getScopeExpr(), _) and name = c.getName()
+      or
+      not exists(c.getScopeExpr()) and
+      not c.hasGlobalScope() and
+      container = qualifiedModuleNameResolveConstantWriteAccessRec(c, name)
+    )
+  }
+
+  /**
+   * Get a qualified name for a constant definition. May return multiple qualified
+   * names because we over-approximate when resolving scope resolutions and ignore
+   * lookup order precedence. Taking lookup order into account here would lead to
+   * non-monotonic recursion.
+   */
+  pragma[inline]
+  string resolveConstantWriteAccess(ConstantWriteAccess c) {
+    result = resolveConstantWriteAccessNonRec(c, _, _)
+    or
+    result = resolveConstantWriteAccessRec(c, _, _)
+  }
+
+  pragma[nomagic]
+  private string isDefinedConstantNonRec(string container, string name) {
+    result = resolveConstantWriteAccessNonRec(_, container, name)
+    or
+    result = builtin() and
+    name = result and
+    container = "Object"
+  }
+
+  pragma[nomagic]
+  private string isDefinedConstantRec(string container, string name) {
+    result = resolveConstantWriteAccessRec(_, container, name)
+  }
+
+  pragma[inline]
+  string isDefinedConstant(string container, string name) {
+    result = isDefinedConstantNonRec(container, name)
+    or
+    result = isDefinedConstantRec(container, name)
+  }
+
+  /**
+   * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
+   * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
+   * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
+   * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
+   * computing the precise order is tricky because it depends on the evaluation/file loading order.
+   */
+  // TODO: the order of super classes can be determined more precisely even without knowing the evaluation
+  // order, so we should be able to make this more precise.
+  private string ancestors(string qname, int priority) {
+    result = ancestors(prepends(qname), _) and priority = 0
+    or
+    result = qname and priority = 1 and qname = isDefinedConstant(_, _)
+    or
+    result = ancestors(includes(qname), _) and priority = 2
+    or
+    result = ancestors(superclass(qname), _) and priority = 3
+  }
+
+  pragma[nomagic]
+  private string qualifiedModuleNameAncestors(string encl, string name, int priority) {
+    result = isDefinedConstantNonRec(encl, name) and
+    priority = 1
+    or
+    // avoid infinite recursion
+    not exists(isDefinedConstantNonRec(encl, name)) and
+    result = isDefinedConstant(ancestors(encl, priority - maxDepth()), name)
+  }
+
+  class IncludeOrPrependCall extends MethodCall {
+    IncludeOrPrependCall() { this.getMethodName() = ["include", "prepend"] }
+
+    string getAModule() { result = resolveConstantReadAccess(this.getAnArgument(), _) }
+
+    string getTarget() {
+      result = resolveConstantReadAccess(this.getReceiver(), _)
+      or
+      exists(ModuleBase encl |
+        encl = enclosingModule(this) and
+        result = [qualifiedModuleNameNonRec(encl, _, _), qualifiedModuleNameRec(encl, _, _)]
+      |
+        this.getReceiver() instanceof Self
+        or
+        not exists(this.getReceiver())
+      )
+    }
+  }
+
+  pragma[nomagic]
+  private string prepends(string qname) {
+    exists(IncludeOrPrependCall m |
+      m.getMethodName() = "prepend" and
+      qname = m.getTarget() and
+      result = m.getAModule()
+    )
+  }
+
+  pragma[nomagic]
+  private string includes(string qname) {
+    qname = "Object" and
+    result = "Kernel"
+    or
+    exists(IncludeOrPrependCall m |
+      m.getMethodName() = "include" and
+      qname = m.getTarget() and
+      result = m.getAModule()
+    )
+  }
+
+  private Expr superexpr(string qname) {
+    exists(ClassDeclaration c |
+      qname = resolveConstantWriteAccess(c) and result = c.getSuperclassExpr()
+    )
+  }
+
+  pragma[nomagic]
+  private string superclass(string qname) {
+    qname = "Object" and result = "BasicObject"
+    or
+    result = resolveConstantReadAccess(superexpr(qname), _)
+  }
 }
+
+import ResolveImpl
 
 /**
  * A variant of AstNode::getEnclosingModule that excludes
@@ -316,45 +491,6 @@ private AstNode parent(AstNode n) {
   result = n.getParent() and
   not result instanceof ModuleBase and
   not result instanceof Block
-}
-
-private string prepends(string qname) {
-  exists(IncludeOrPrependCall m |
-    m.getMethodName() = "prepend" and
-    qname = m.getTarget() and
-    result = m.getAModule()
-  )
-}
-
-private string includes(string qname) {
-  qname = "Object" and
-  result = "Kernel"
-  or
-  exists(IncludeOrPrependCall m |
-    m.getMethodName() = "include" and
-    qname = m.getTarget() and
-    result = m.getAModule()
-  )
-}
-
-private Expr superexpr(string qname) {
-  exists(ClassDeclaration c | qname = constantDefinition0(c) and result = c.getSuperclassExpr())
-}
-
-private string superclass(string qname) {
-  qname = "Object" and result = "BasicObject"
-  or
-  result = resolveScopeExpr(superexpr(qname), _)
-}
-
-private string qualifiedModuleName(string container, string name) {
-  isDefinedConstant(result) and
-  (
-    container = result.regexpCapture("(.+)::([^:]+)", 1) and
-    name = result.regexpCapture("(.+)::([^:]+)", 2)
-    or
-    container = "Object" and name = result
-  )
 }
 
 private Module getAncestors(Module m) {

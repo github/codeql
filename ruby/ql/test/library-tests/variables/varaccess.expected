@@ -73,9 +73,9 @@ variableAccess
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:1:9:5:3 | do ... end |
 | parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y | parameters.rb:1:9:5:3 | do ... end |
 | parameters.rb:2:4:2:4 | y | parameters.rb:1:18:1:18 | y | parameters.rb:1:9:5:3 | do ... end |
-| parameters.rb:3:4:3:9 | self | parameters.rb:1:1:58:1 | self | parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:3:4:3:9 | self | parameters.rb:1:1:62:1 | self | parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:3:9:3:9 | x | parameters.rb:1:14:1:14 | x | parameters.rb:1:9:5:3 | do ... end |
-| parameters.rb:4:4:4:9 | self | parameters.rb:1:1:58:1 | self | parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:4:4:4:9 | self | parameters.rb:1:1:62:1 | self | parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:4:9:4:9 | y | parameters.rb:1:18:1:18 | y | parameters.rb:1:9:5:3 | do ... end |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:7:1:13:3 | order_pizza |
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:1:13:3 | order_pizza |
@@ -108,7 +108,7 @@ variableAccess
 | parameters.rb:31:11:31:15 | first | parameters.rb:30:15:30:19 | first | parameters.rb:30:1:32:3 | key_param |
 | parameters.rb:31:20:31:25 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:30:1:32:3 | key_param |
 | parameters.rb:31:30:31:33 | last | parameters.rb:30:36:30:39 | last | parameters.rb:30:1:32:3 | key_param |
-| parameters.rb:34:1:34:1 | b | parameters.rb:34:1:34:1 | b | parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:34:1:34:1 | b | parameters.rb:34:1:34:1 | b | parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:35:1:38:3 | multi |
 | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | multi |
 | parameters.rb:37:3:37:18 | self | parameters.rb:35:1:38:3 | self | parameters.rb:35:1:38:3 | multi |
@@ -127,13 +127,20 @@ variableAccess
 | parameters.rb:50:3:50:18 | self | parameters.rb:49:1:51:3 | self | parameters.rb:49:1:51:3 | tuples |
 | parameters.rb:50:11:50:11 | a | parameters.rb:49:13:49:13 | a | parameters.rb:49:1:51:3 | tuples |
 | parameters.rb:50:16:50:16 | b | parameters.rb:49:15:49:15 | b | parameters.rb:49:1:51:3 | tuples |
-| parameters.rb:53:1:53:1 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:53:1:53:1 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:54:9:57:3 | do ... end |
-| parameters.rb:54:19:54:19 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:58:1 | parameters.rb |
-| parameters.rb:55:4:55:9 | self | parameters.rb:1:1:58:1 | self | parameters.rb:1:1:58:1 | parameters.rb |
-| parameters.rb:55:9:55:9 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:58:1 | parameters.rb |
-| parameters.rb:56:4:56:9 | self | parameters.rb:1:1:58:1 | self | parameters.rb:1:1:58:1 | parameters.rb |
+| parameters.rb:54:19:54:19 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:62:1 | parameters.rb |
+| parameters.rb:55:4:55:9 | self | parameters.rb:1:1:62:1 | self | parameters.rb:1:1:62:1 | parameters.rb |
+| parameters.rb:55:9:55:9 | x | parameters.rb:53:1:53:1 | x | parameters.rb:1:1:62:1 | parameters.rb |
+| parameters.rb:56:4:56:9 | self | parameters.rb:1:1:62:1 | self | parameters.rb:1:1:62:1 | parameters.rb |
 | parameters.rb:56:9:56:9 | y | parameters.rb:54:14:54:14 | y | parameters.rb:54:9:57:3 | do ... end |
+| parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:59:25:59:25 | c | parameters.rb:59:25:59:25 | c | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:60:3:60:23 | self | parameters.rb:59:1:61:3 | self | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:60:11:60:11 | a | parameters.rb:59:20:59:20 | a | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:60:16:60:16 | b | parameters.rb:59:23:59:23 | b | parameters.rb:59:1:61:3 | tuples_nested |
+| parameters.rb:60:21:60:21 | c | parameters.rb:59:25:59:25 | c | parameters.rb:59:1:61:3 | tuples_nested |
 | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x | scopes.rb:2:9:6:3 | do ... end |
 | scopes.rb:3:4:3:9 | self | scopes.rb:1:1:49:4 | self | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:3:9:3:9 | self | scopes.rb:1:1:49:4 | self | scopes.rb:1:1:49:4 | scopes.rb |
@@ -316,6 +323,7 @@ explicitWrite
 | ssa.rb:10:5:10:5 | i | ssa.rb:10:5:10:9 | ... = ... |
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... -= ... |
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... = ... |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:3:28:5 | ... = ... |
 | ssa.rb:40:3:40:4 | m3 | ssa.rb:40:3:40:9 | ... = ... |
 | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:7 | ... = ... |
 | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |
@@ -353,11 +361,15 @@ implicitWrite
 | parameters.rb:49:13:49:13 | a |
 | parameters.rb:49:15:49:15 | b |
 | parameters.rb:54:14:54:14 | y |
+| parameters.rb:59:20:59:20 | a |
+| parameters.rb:59:23:59:23 | b |
+| parameters.rb:59:25:59:25 | c |
 | scopes.rb:2:14:2:14 | x |
 | scopes.rb:9:14:9:14 | x |
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:8:25:15 | elements |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:33:20:33:20 | x |
 | ssa.rb:44:8:44:8 | b |
@@ -450,6 +462,10 @@ readAccess
 | parameters.rb:55:9:55:9 | x |
 | parameters.rb:56:4:56:9 | self |
 | parameters.rb:56:9:56:9 | y |
+| parameters.rb:60:3:60:23 | self |
+| parameters.rb:60:11:60:11 | a |
+| parameters.rb:60:16:60:16 | b |
+| parameters.rb:60:21:60:21 | c |
 | scopes.rb:3:4:3:9 | self |
 | scopes.rb:3:9:3:9 | self |
 | scopes.rb:5:4:5:9 | self |
@@ -502,6 +518,7 @@ readAccess
 | ssa.rb:20:5:20:10 | self |
 | ssa.rb:20:10:20:10 | x |
 | ssa.rb:21:5:21:5 | x |
+| ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:27:5:27:13 | self |
 | ssa.rb:27:10:27:13 | elem |

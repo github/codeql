@@ -718,6 +718,12 @@ class FormattedValue extends FormattedValue_ {
   }
 }
 
+/** A guard in a case statement */
+class Guard extends Guard_ {
+  /* syntax: if Expr */
+  override Expr getASubExpression() { result = this.getTest() }
+}
+
 /* Expression Contexts */
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }

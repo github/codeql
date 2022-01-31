@@ -73,8 +73,8 @@ class ComparisonOperation extends BinaryExpr, @cil_comparison_operation {
 class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation {
   override Type getType() {
     exists(Type t0, Type t1 |
-      t0 = this.getOperand(0).getType().getUnderlyingType() and
-      t1 = this.getOperand(1).getType().getUnderlyingType()
+      t0 = this.getOperandType(0).getUnderlyingType() and
+      t1 = this.getOperandType(1).getUnderlyingType()
     |
       t0 = t1 and result = t0
       or
@@ -241,6 +241,9 @@ class Return extends Instruction, @cil_ret {
 /** A `throw` statement. */
 class Throw extends Instruction, DotNet::Throw, @cil_throw_any {
   override Expr getExpr() { result = this.getOperand(0) }
+
+  /** Gets the type of the exception being thrown. */
+  Type getExceptionType() { result = this.getOperandType(0) }
 
   override predicate canFlowNext() { none() }
 }

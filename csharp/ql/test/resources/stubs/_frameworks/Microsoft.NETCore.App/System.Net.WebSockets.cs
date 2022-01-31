@@ -12,8 +12,8 @@ namespace System
                 public int Count { get => throw null; }
                 public bool EndOfMessage { get => throw null; }
                 public System.Net.WebSockets.WebSocketMessageType MessageType { get => throw null; }
-                public ValueWebSocketReceiveResult(int count, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage) => throw null;
                 // Stub generator skipped constructor 
+                public ValueWebSocketReceiveResult(int count, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage) => throw null;
             }
 
             // Generated from `System.Net.WebSockets.WebSocket` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -32,11 +32,11 @@ namespace System
                 public abstract void Dispose();
                 public static bool IsApplicationTargeting45() => throw null;
                 protected static bool IsStateTerminal(System.Net.WebSockets.WebSocketState state) => throw null;
-                public virtual System.Threading.Tasks.ValueTask<System.Net.WebSockets.ValueWebSocketReceiveResult> ReceiveAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken) => throw null;
                 public abstract System.Threading.Tasks.Task<System.Net.WebSockets.WebSocketReceiveResult> ReceiveAsync(System.ArraySegment<System.Byte> buffer, System.Threading.CancellationToken cancellationToken);
+                public virtual System.Threading.Tasks.ValueTask<System.Net.WebSockets.ValueWebSocketReceiveResult> ReceiveAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static void RegisterPrefixes() => throw null;
-                public virtual System.Threading.Tasks.ValueTask SendAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage, System.Threading.CancellationToken cancellationToken) => throw null;
                 public abstract System.Threading.Tasks.Task SendAsync(System.ArraySegment<System.Byte> buffer, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage, System.Threading.CancellationToken cancellationToken);
+                public virtual System.Threading.Tasks.ValueTask SendAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage, System.Threading.CancellationToken cancellationToken) => throw null;
                 public abstract System.Net.WebSockets.WebSocketState State { get; }
                 public abstract string SubProtocol { get; }
                 protected static void ThrowOnInvalidState(System.Net.WebSockets.WebSocketState state, params System.Net.WebSockets.WebSocketState[] validStates) => throw null;
@@ -97,20 +97,20 @@ namespace System
                 public override int ErrorCode { get => throw null; }
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public System.Net.WebSockets.WebSocketError WebSocketErrorCode { get => throw null; }
-                public WebSocketException(string message, System.Exception innerException) => throw null;
-                public WebSocketException(string message) => throw null;
-                public WebSocketException(int nativeError, string message) => throw null;
-                public WebSocketException(int nativeError, System.Exception innerException) => throw null;
-                public WebSocketException(int nativeError) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, string message, System.Exception innerException) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, string message) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, string message, System.Exception innerException) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, string message) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, System.Exception innerException) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error, System.Exception innerException) => throw null;
-                public WebSocketException(System.Net.WebSockets.WebSocketError error) => throw null;
                 public WebSocketException() => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, System.Exception innerException) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, System.Exception innerException) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, string message) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, int nativeError, string message, System.Exception innerException) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, string message) => throw null;
+                public WebSocketException(System.Net.WebSockets.WebSocketError error, string message, System.Exception innerException) => throw null;
+                public WebSocketException(int nativeError) => throw null;
+                public WebSocketException(int nativeError, System.Exception innerException) => throw null;
+                public WebSocketException(int nativeError, string message) => throw null;
+                public WebSocketException(string message) => throw null;
+                public WebSocketException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Net.WebSockets.WebSocketMessageType` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -129,8 +129,8 @@ namespace System
                 public int Count { get => throw null; }
                 public bool EndOfMessage { get => throw null; }
                 public System.Net.WebSockets.WebSocketMessageType MessageType { get => throw null; }
-                public WebSocketReceiveResult(int count, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage, System.Net.WebSockets.WebSocketCloseStatus? closeStatus, string closeStatusDescription) => throw null;
                 public WebSocketReceiveResult(int count, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage) => throw null;
+                public WebSocketReceiveResult(int count, System.Net.WebSockets.WebSocketMessageType messageType, bool endOfMessage, System.Net.WebSockets.WebSocketCloseStatus? closeStatus, string closeStatusDescription) => throw null;
             }
 
             // Generated from `System.Net.WebSockets.WebSocketState` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -8,9 +8,9 @@ class ResolveCall extends CallExpr {
   string getExpectation() { result = this.getArgument(1).getStringValue() }
 
   string getDeclaredValue() {
-    result = getVariable().getAnAssignedExpr().getStringValue()
+    result = this.getVariable().getAnAssignedExpr().getStringValue()
     or
-    exists(NamespaceDeclaration decl | decl.getIdentifier() = getVariable().getADeclaration() |
+    exists(NamespaceDeclaration decl | decl.getIdentifier() = this.getVariable().getADeclaration() |
       result = getNamespaceName(decl)
     )
   }

@@ -11,9 +11,9 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
-import experimental.semmle.code.java.Logging
 import DataFlow
 import PathGraph
 
@@ -36,9 +36,7 @@ class LoggerConfiguration extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(LoggingCall c | sink.asExpr() = c.getALogArgument())
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     TaintTracking::localTaintStep(node1, node2)

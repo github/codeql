@@ -14,9 +14,7 @@ private import semmle.code.java.controlflow.internal.GuardsLogic
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
-  exists(CastExpr cast | cast.getAChildExpr() = exp |
-    numType.widerThanOrEqualTo(cast.getType().(NumType))
-  )
+  exists(CastExpr cast | cast.getAChildExpr() = exp | numType.widerThanOrEqualTo(cast.getType()))
 }
 
 private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {

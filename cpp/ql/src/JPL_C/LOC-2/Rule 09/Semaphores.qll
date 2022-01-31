@@ -22,7 +22,7 @@ abstract class LockOperation extends FunctionCall {
   ControlFlowNode getAReachedNode() {
     result = this
     or
-    exists(ControlFlowNode mid | mid = getAReachedNode() |
+    exists(ControlFlowNode mid | mid = this.getAReachedNode() |
       not mid != this.getMatchingUnlock() and
       result = mid.getASuccessor()
     )

@@ -33,30 +33,30 @@ class ClassObject extends Object {
   }
 
   /** Gets the short (unqualified) name of this class */
-  string getName() { result = theClass().getName() }
+  string getName() { result = this.theClass().getName() }
 
   /**
    * Gets the qualified name for this class.
    * Should return the same name as the `__qualname__` attribute on classes in Python 3.
    */
   string getQualifiedName() {
-    result = theClass().getBuiltin().getName()
+    result = this.theClass().getBuiltin().getName()
     or
-    result = theClass().(PythonClassObjectInternal).getScope().getQualifiedName()
+    result = this.theClass().(PythonClassObjectInternal).getScope().getQualifiedName()
   }
 
   /** Gets the nth base class of this class */
-  Object getBaseType(int n) { result = Types::getBase(theClass(), n).getSource() }
+  Object getBaseType(int n) { result = Types::getBase(this.theClass(), n).getSource() }
 
   /** Gets a base class of this class */
   Object getABaseType() { result = this.getBaseType(_) }
 
   /** Whether this class has a base class */
-  predicate hasABase() { exists(Types::getBase(theClass(), _)) }
+  predicate hasABase() { exists(Types::getBase(this.theClass(), _)) }
 
   /** Gets a super class of this class (includes transitive super classes) */
   ClassObject getASuperType() {
-    result = Types::getMro(theClass()).getTail().getAnItem().getSource()
+    result = Types::getMro(this.theClass()).getTail().getAnItem().getSource()
   }
 
   /** Gets a super class of this class (includes transitive super classes) or this class */
@@ -66,13 +66,13 @@ class ClassObject extends Object {
    * Whether this class is a new style class.
    * A new style class is one that implicitly or explicitly inherits from `object`.
    */
-  predicate isNewStyle() { Types::isNewStyle(theClass()) }
+  predicate isNewStyle() { Types::isNewStyle(this.theClass()) }
 
   /**
    * Whether this class is an old style class.
    * An old style class is one that does not inherit from `object`.
    */
-  predicate isOldStyle() { Types::isOldStyle(theClass()) }
+  predicate isOldStyle() { Types::isOldStyle(this.theClass()) }
 
   /**
    * Whether this class is a legal exception class.
@@ -92,14 +92,14 @@ class ClassObject extends Object {
   /** Returns an attribute declared on this class (not on a super-class) */
   Object declaredAttribute(string name) {
     exists(ObjectInternal val |
-      Types::declaredAttribute(theClass(), name, val, _) and
+      Types::declaredAttribute(this.theClass(), name, val, _) and
       result = val.getSource()
     )
   }
 
   /** Returns an attribute declared on this class (not on a super-class) */
   predicate declaresAttribute(string name) {
-    theClass().getClassDeclaration().declaresAttribute(name)
+    this.theClass().getClassDeclaration().declaresAttribute(name)
   }
 
   /**
@@ -108,18 +108,18 @@ class ClassObject extends Object {
    */
   Object lookupAttribute(string name) {
     exists(ObjectInternal val |
-      theClass().lookup(name, val, _) and
+      this.theClass().lookup(name, val, _) and
       result = val.getSource()
     )
   }
 
-  ClassList getMro() { result = Types::getMro(theClass()) }
+  ClassList getMro() { result = Types::getMro(this.theClass()) }
 
   /** Looks up an attribute by searching this class' MRO starting at `start` */
   Object lookupMro(ClassObject start, string name) {
     exists(ClassObjectInternal other, ClassObjectInternal decl, ObjectInternal val |
       other.getSource() = start and
-      decl = Types::getMro(theClass()).startingAt(other).findDeclaringClass(name) and
+      decl = Types::getMro(this.theClass()).startingAt(other).findDeclaringClass(name) and
       Types::declaredAttribute(decl, name, val, _) and
       result = val.getSource()
     )
@@ -133,7 +133,7 @@ class ClassObject extends Object {
   /** Whether the named attribute refers to the object, class and origin */
   predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      theClass().lookup(name, val, valorig) and
+      this.theClass().lookup(name, val, valorig) and
       obj = val.getSource() and
       cls = val.getClass().getSource() and
       origin = valorig.toCfgNode()
@@ -141,7 +141,7 @@ class ClassObject extends Object {
   }
 
   /** Whether this class has a attribute named `name`, either declared or inherited. */
-  predicate hasAttribute(string name) { theClass().hasAttribute(name) }
+  predicate hasAttribute(string name) { this.theClass().hasAttribute(name) }
 
   /**
    * Whether it is impossible to know all the attributes of this class. Usually because it is
@@ -162,7 +162,7 @@ class ClassObject extends Object {
 
   /** Gets the metaclass for this class */
   ClassObject getMetaClass() {
-    result = theClass().getClass().getSource() and
+    result = this.theClass().getClass().getSource() and
     not this.failedInference()
   }
 
@@ -182,7 +182,7 @@ class ClassObject extends Object {
   ControlFlowNode declaredMetaClass() { result = this.getPyClass().getMetaClass().getAFlowNode() }
 
   /** Has type inference failed to compute the full class hierarchy for this class for the reason given. */
-  predicate failedInference(string reason) { Types::failedInference(theClass(), reason) }
+  predicate failedInference(string reason) { Types::failedInference(this.theClass(), reason) }
 
   /** Has type inference failed to compute the full class hierarchy for this class */
   predicate failedInference() { this.failedInference(_) }
@@ -205,7 +205,7 @@ class ClassObject extends Object {
 
   /** This class is only instantiated at one place in the code */
   private predicate hasStaticallyUniqueInstance() {
-    strictcount(SpecificInstanceInternal inst | inst.getClass() = theClass()) = 1
+    strictcount(SpecificInstanceInternal inst | inst.getClass() = this.theClass()) = 1
   }
 
   ImportTimeScope getImportTimeScope() { result = this.getPyClass() }
@@ -221,7 +221,7 @@ class ClassObject extends Object {
   ClassObject nextInMro(ClassObject sup) {
     exists(ClassObjectInternal other |
       other.getSource() = sup and
-      result = Types::getMro(theClass()).startingAt(other).getTail().getHead().getSource()
+      result = Types::getMro(this.theClass()).startingAt(other).getTail().getHead().getSource()
     ) and
     not this.failedInference()
   }

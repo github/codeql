@@ -5,18 +5,18 @@ namespace System
     // Generated from `System.DataMisalignedException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DataMisalignedException : System.SystemException
     {
-        public DataMisalignedException(string message, System.Exception innerException) => throw null;
-        public DataMisalignedException(string message) => throw null;
         public DataMisalignedException() => throw null;
+        public DataMisalignedException(string message) => throw null;
+        public DataMisalignedException(string message, System.Exception innerException) => throw null;
     }
 
     // Generated from `System.DllNotFoundException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DllNotFoundException : System.TypeLoadException
     {
-        public DllNotFoundException(string message, System.Exception inner) => throw null;
-        public DllNotFoundException(string message) => throw null;
         public DllNotFoundException() => throw null;
         protected DllNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+        public DllNotFoundException(string message) => throw null;
+        public DllNotFoundException(string message, System.Exception inner) => throw null;
     }
 
     namespace IO
@@ -46,23 +46,23 @@ namespace System
             public System.UInt16 ReadUInt16(System.Int64 position) => throw null;
             public System.UInt32 ReadUInt32(System.Int64 position) => throw null;
             public System.UInt64 ReadUInt64(System.Int64 position) => throw null;
-            public UnmanagedMemoryAccessor(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 capacity, System.IO.FileAccess access) => throw null;
-            public UnmanagedMemoryAccessor(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 capacity) => throw null;
             protected UnmanagedMemoryAccessor() => throw null;
-            public void Write<T>(System.Int64 position, ref T structure) where T : struct => throw null;
-            public void Write(System.Int64 position, int value) => throw null;
-            public void Write(System.Int64 position, float value) => throw null;
-            public void Write(System.Int64 position, double value) => throw null;
+            public UnmanagedMemoryAccessor(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 capacity) => throw null;
+            public UnmanagedMemoryAccessor(System.Runtime.InteropServices.SafeBuffer buffer, System.Int64 offset, System.Int64 capacity, System.IO.FileAccess access) => throw null;
             public void Write(System.Int64 position, bool value) => throw null;
-            public void Write(System.Int64 position, System.UInt64 value) => throw null;
-            public void Write(System.Int64 position, System.UInt32 value) => throw null;
-            public void Write(System.Int64 position, System.UInt16 value) => throw null;
-            public void Write(System.Int64 position, System.SByte value) => throw null;
-            public void Write(System.Int64 position, System.Int64 value) => throw null;
-            public void Write(System.Int64 position, System.Int16 value) => throw null;
-            public void Write(System.Int64 position, System.Decimal value) => throw null;
-            public void Write(System.Int64 position, System.Char value) => throw null;
             public void Write(System.Int64 position, System.Byte value) => throw null;
+            public void Write(System.Int64 position, System.Char value) => throw null;
+            public void Write(System.Int64 position, System.Decimal value) => throw null;
+            public void Write(System.Int64 position, double value) => throw null;
+            public void Write(System.Int64 position, float value) => throw null;
+            public void Write(System.Int64 position, int value) => throw null;
+            public void Write(System.Int64 position, System.Int64 value) => throw null;
+            public void Write(System.Int64 position, System.SByte value) => throw null;
+            public void Write(System.Int64 position, System.Int16 value) => throw null;
+            public void Write(System.Int64 position, System.UInt32 value) => throw null;
+            public void Write(System.Int64 position, System.UInt64 value) => throw null;
+            public void Write(System.Int64 position, System.UInt16 value) => throw null;
+            public void Write<T>(System.Int64 position, ref T structure) where T : struct => throw null;
             public void WriteArray<T>(System.Int64 position, T[] array, int offset, int count) where T : struct => throw null;
         }
 
@@ -99,10 +99,10 @@ namespace System
             {
                 public static bool operator !=(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
                 public static bool operator ==(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
-                public ArrayWithOffset(object array, int offset) => throw null;
                 // Stub generator skipped constructor 
-                public override bool Equals(object obj) => throw null;
+                public ArrayWithOffset(object array, int offset) => throw null;
                 public bool Equals(System.Runtime.InteropServices.ArrayWithOffset obj) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public object GetArray() => throw null;
                 public override int GetHashCode() => throw null;
                 public int GetOffset() => throw null;
@@ -118,8 +118,8 @@ namespace System
             // Generated from `System.Runtime.InteropServices.BStrWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BStrWrapper
             {
-                public BStrWrapper(string value) => throw null;
                 public BStrWrapper(object value) => throw null;
+                public BStrWrapper(string value) => throw null;
                 public string WrappedObject { get => throw null; }
             }
 
@@ -134,11 +134,11 @@ namespace System
             // Generated from `System.Runtime.InteropServices.COMException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class COMException : System.Runtime.InteropServices.ExternalException
             {
-                public COMException(string message, int errorCode) => throw null;
-                public COMException(string message, System.Exception inner) => throw null;
-                public COMException(string message) => throw null;
                 public COMException() => throw null;
                 protected COMException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public COMException(string message) => throw null;
+                public COMException(string message, System.Exception inner) => throw null;
+                public COMException(string message, int errorCode) => throw null;
                 public override string ToString() => throw null;
             }
 
@@ -196,8 +196,8 @@ namespace System
                 public ComAwareEventInfo(System.Type type, string eventName) => throw null;
                 public override System.Type DeclaringType { get => throw null; }
                 public override System.Reflection.MethodInfo GetAddMethod(bool nonPublic) => throw null;
-                public override object[] GetCustomAttributes(bool inherit) => throw null;
                 public override object[] GetCustomAttributes(System.Type attributeType, bool inherit) => throw null;
+                public override object[] GetCustomAttributes(bool inherit) => throw null;
                 public override System.Collections.Generic.IList<System.Reflection.CustomAttributeData> GetCustomAttributesData() => throw null;
                 public override System.Reflection.MethodInfo[] GetOtherMethods(bool nonPublic) => throw null;
                 public override System.Reflection.MethodInfo GetRaiseMethod(bool nonPublic) => throw null;
@@ -280,11 +280,11 @@ namespace System
             // Generated from `System.Runtime.InteropServices.ComSourceInterfacesAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComSourceInterfacesAttribute : System.Attribute
             {
-                public ComSourceInterfacesAttribute(string sourceInterfaces) => throw null;
-                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2, System.Type sourceInterface3, System.Type sourceInterface4) => throw null;
-                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2, System.Type sourceInterface3) => throw null;
-                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2) => throw null;
                 public ComSourceInterfacesAttribute(System.Type sourceInterface) => throw null;
+                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2) => throw null;
+                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2, System.Type sourceInterface3) => throw null;
+                public ComSourceInterfacesAttribute(System.Type sourceInterface1, System.Type sourceInterface2, System.Type sourceInterface3, System.Type sourceInterface4) => throw null;
+                public ComSourceInterfacesAttribute(string sourceInterfaces) => throw null;
                 public string Value { get => throw null; }
             }
 
@@ -348,8 +348,8 @@ namespace System
             // Generated from `System.Runtime.InteropServices.CurrencyWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CurrencyWrapper
             {
-                public CurrencyWrapper(object obj) => throw null;
                 public CurrencyWrapper(System.Decimal obj) => throw null;
+                public CurrencyWrapper(object obj) => throw null;
                 public System.Decimal WrappedObject { get => throw null; }
             }
 
@@ -444,9 +444,9 @@ namespace System
             public class ErrorWrapper
             {
                 public int ErrorCode { get => throw null; }
-                public ErrorWrapper(object errorCode) => throw null;
-                public ErrorWrapper(int errorCode) => throw null;
                 public ErrorWrapper(System.Exception e) => throw null;
+                public ErrorWrapper(int errorCode) => throw null;
+                public ErrorWrapper(object errorCode) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.GuidAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -461,8 +461,8 @@ namespace System
             {
                 public void Add() => throw null;
                 public int Count { get => throw null; }
-                public HandleCollector(string name, int initialThreshold, int maximumThreshold) => throw null;
                 public HandleCollector(string name, int initialThreshold) => throw null;
+                public HandleCollector(string name, int initialThreshold, int maximumThreshold) => throw null;
                 public int InitialThreshold { get => throw null; }
                 public int MaximumThreshold { get => throw null; }
                 public string Name { get => throw null; }
@@ -473,8 +473,8 @@ namespace System
             public struct HandleRef
             {
                 public System.IntPtr Handle { get => throw null; }
-                public HandleRef(object wrapper, System.IntPtr handle) => throw null;
                 // Stub generator skipped constructor 
+                public HandleRef(object wrapper, System.IntPtr handle) => throw null;
                 public static System.IntPtr ToIntPtr(System.Runtime.InteropServices.HandleRef value) => throw null;
                 public object Wrapper { get => throw null; }
                 public static explicit operator System.IntPtr(System.Runtime.InteropServices.HandleRef value) => throw null;
@@ -533,19 +533,19 @@ namespace System
             // Generated from `System.Runtime.InteropServices.InvalidComObjectException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidComObjectException : System.SystemException
             {
-                public InvalidComObjectException(string message, System.Exception inner) => throw null;
-                public InvalidComObjectException(string message) => throw null;
                 public InvalidComObjectException() => throw null;
                 protected InvalidComObjectException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public InvalidComObjectException(string message) => throw null;
+                public InvalidComObjectException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.InvalidOleVariantTypeException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidOleVariantTypeException : System.SystemException
             {
-                public InvalidOleVariantTypeException(string message, System.Exception inner) => throw null;
-                public InvalidOleVariantTypeException(string message) => throw null;
                 public InvalidOleVariantTypeException() => throw null;
                 protected InvalidOleVariantTypeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public InvalidOleVariantTypeException(string message) => throw null;
+                public InvalidOleVariantTypeException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.LCIDConversionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -568,61 +568,61 @@ namespace System
             {
                 public static int AddRef(System.IntPtr pUnk) => throw null;
                 public static System.IntPtr AllocCoTaskMem(int cb) => throw null;
-                public static System.IntPtr AllocHGlobal(int cb) => throw null;
                 public static System.IntPtr AllocHGlobal(System.IntPtr cb) => throw null;
+                public static System.IntPtr AllocHGlobal(int cb) => throw null;
                 public static bool AreComObjectsAvailableForCleanup() => throw null;
                 public static object BindToMoniker(string monikerName) => throw null;
                 public static void ChangeWrapperHandleStrength(object otp, bool fIsWeak) => throw null;
                 public static void CleanupUnusedObjectsInCurrentContext() => throw null;
-                public static void Copy(int[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(float[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(double[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(System.IntPtr[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(System.IntPtr source, int[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, float[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, double[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, System.IntPtr[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, System.Int64[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, System.Int16[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, System.Char[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.IntPtr source, System.Byte[] destination, int startIndex, int length) => throw null;
-                public static void Copy(System.Int64[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(System.Int16[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static void Copy(System.Char[] source, int startIndex, System.IntPtr destination, int length) => throw null;
                 public static void Copy(System.Byte[] source, int startIndex, System.IntPtr destination, int length) => throw null;
-                public static System.IntPtr CreateAggregatedObject<T>(System.IntPtr pOuter, T o) => throw null;
+                public static void Copy(System.Char[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(double[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(System.Int16[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(int[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(System.Int64[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(System.IntPtr source, System.Byte[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, System.Char[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, double[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, System.Int16[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, int[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, System.Int64[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, System.IntPtr[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr source, float[] destination, int startIndex, int length) => throw null;
+                public static void Copy(System.IntPtr[] source, int startIndex, System.IntPtr destination, int length) => throw null;
+                public static void Copy(float[] source, int startIndex, System.IntPtr destination, int length) => throw null;
                 public static System.IntPtr CreateAggregatedObject(System.IntPtr pOuter, object o) => throw null;
+                public static System.IntPtr CreateAggregatedObject<T>(System.IntPtr pOuter, T o) => throw null;
                 public static object CreateWrapperOfType(object o, System.Type t) => throw null;
                 public static TWrapper CreateWrapperOfType<T, TWrapper>(T o) => throw null;
-                public static void DestroyStructure<T>(System.IntPtr ptr) => throw null;
                 public static void DestroyStructure(System.IntPtr ptr, System.Type structuretype) => throw null;
+                public static void DestroyStructure<T>(System.IntPtr ptr) => throw null;
                 public static int FinalReleaseComObject(object o) => throw null;
                 public static void FreeBSTR(System.IntPtr ptr) => throw null;
                 public static void FreeCoTaskMem(System.IntPtr ptr) => throw null;
                 public static void FreeHGlobal(System.IntPtr hglobal) => throw null;
                 public static System.Guid GenerateGuidForType(System.Type type) => throw null;
                 public static string GenerateProgIdForType(System.Type type) => throw null;
-                public static System.IntPtr GetComInterfaceForObject<T, TInterface>(T o) => throw null;
-                public static System.IntPtr GetComInterfaceForObject(object o, System.Type T, System.Runtime.InteropServices.CustomQueryInterfaceMode mode) => throw null;
                 public static System.IntPtr GetComInterfaceForObject(object o, System.Type T) => throw null;
+                public static System.IntPtr GetComInterfaceForObject(object o, System.Type T, System.Runtime.InteropServices.CustomQueryInterfaceMode mode) => throw null;
+                public static System.IntPtr GetComInterfaceForObject<T, TInterface>(T o) => throw null;
                 public static object GetComObjectData(object obj, object key) => throw null;
-                public static TDelegate GetDelegateForFunctionPointer<TDelegate>(System.IntPtr ptr) => throw null;
                 public static System.Delegate GetDelegateForFunctionPointer(System.IntPtr ptr, System.Type t) => throw null;
+                public static TDelegate GetDelegateForFunctionPointer<TDelegate>(System.IntPtr ptr) => throw null;
                 public static int GetEndComSlot(System.Type t) => throw null;
                 public static int GetExceptionCode() => throw null;
-                public static System.Exception GetExceptionForHR(int errorCode, System.IntPtr errorInfo) => throw null;
                 public static System.Exception GetExceptionForHR(int errorCode) => throw null;
+                public static System.Exception GetExceptionForHR(int errorCode, System.IntPtr errorInfo) => throw null;
                 public static System.IntPtr GetExceptionPointers() => throw null;
-                public static System.IntPtr GetFunctionPointerForDelegate<TDelegate>(TDelegate d) => throw null;
                 public static System.IntPtr GetFunctionPointerForDelegate(System.Delegate d) => throw null;
+                public static System.IntPtr GetFunctionPointerForDelegate<TDelegate>(TDelegate d) => throw null;
                 public static System.IntPtr GetHINSTANCE(System.Reflection.Module m) => throw null;
                 public static int GetHRForException(System.Exception e) => throw null;
                 public static int GetHRForLastWin32Error() => throw null;
                 public static System.IntPtr GetIDispatchForObject(object o) => throw null;
                 public static System.IntPtr GetIUnknownForObject(object o) => throw null;
                 public static int GetLastWin32Error() => throw null;
-                public static void GetNativeVariantForObject<T>(T obj, System.IntPtr pDstNativeVariant) => throw null;
                 public static void GetNativeVariantForObject(object obj, System.IntPtr pDstNativeVariant) => throw null;
+                public static void GetNativeVariantForObject<T>(T obj, System.IntPtr pDstNativeVariant) => throw null;
                 public static object GetObjectForIUnknown(System.IntPtr pUnk) => throw null;
                 public static object GetObjectForNativeVariant(System.IntPtr pSrcNativeVariant) => throw null;
                 public static T GetObjectForNativeVariant<T>(System.IntPtr pSrcNativeVariant) => throw null;
@@ -635,41 +635,41 @@ namespace System
                 public static object GetUniqueObjectForIUnknown(System.IntPtr unknown) => throw null;
                 public static bool IsComObject(object o) => throw null;
                 public static bool IsTypeVisibleFromCom(System.Type t) => throw null;
-                public static System.IntPtr OffsetOf<T>(string fieldName) => throw null;
                 public static System.IntPtr OffsetOf(System.Type t, string fieldName) => throw null;
+                public static System.IntPtr OffsetOf<T>(string fieldName) => throw null;
                 public static void Prelink(System.Reflection.MethodInfo m) => throw null;
                 public static void PrelinkAll(System.Type c) => throw null;
-                public static string PtrToStringAnsi(System.IntPtr ptr, int len) => throw null;
                 public static string PtrToStringAnsi(System.IntPtr ptr) => throw null;
-                public static string PtrToStringAuto(System.IntPtr ptr, int len) => throw null;
+                public static string PtrToStringAnsi(System.IntPtr ptr, int len) => throw null;
                 public static string PtrToStringAuto(System.IntPtr ptr) => throw null;
+                public static string PtrToStringAuto(System.IntPtr ptr, int len) => throw null;
                 public static string PtrToStringBSTR(System.IntPtr ptr) => throw null;
-                public static string PtrToStringUTF8(System.IntPtr ptr, int byteLen) => throw null;
                 public static string PtrToStringUTF8(System.IntPtr ptr) => throw null;
-                public static string PtrToStringUni(System.IntPtr ptr, int len) => throw null;
+                public static string PtrToStringUTF8(System.IntPtr ptr, int byteLen) => throw null;
                 public static string PtrToStringUni(System.IntPtr ptr) => throw null;
-                public static void PtrToStructure<T>(System.IntPtr ptr, T structure) => throw null;
-                public static void PtrToStructure(System.IntPtr ptr, object structure) => throw null;
+                public static string PtrToStringUni(System.IntPtr ptr, int len) => throw null;
                 public static object PtrToStructure(System.IntPtr ptr, System.Type structureType) => throw null;
+                public static void PtrToStructure(System.IntPtr ptr, object structure) => throw null;
                 public static T PtrToStructure<T>(System.IntPtr ptr) => throw null;
+                public static void PtrToStructure<T>(System.IntPtr ptr, T structure) => throw null;
                 public static int QueryInterface(System.IntPtr pUnk, ref System.Guid iid, out System.IntPtr ppv) => throw null;
                 public static System.IntPtr ReAllocCoTaskMem(System.IntPtr pv, int cb) => throw null;
                 public static System.IntPtr ReAllocHGlobal(System.IntPtr pv, System.IntPtr cb) => throw null;
-                public static System.Byte ReadByte(object ptr, int ofs) => throw null;
-                public static System.Byte ReadByte(System.IntPtr ptr, int ofs) => throw null;
                 public static System.Byte ReadByte(System.IntPtr ptr) => throw null;
-                public static System.Int16 ReadInt16(object ptr, int ofs) => throw null;
-                public static System.Int16 ReadInt16(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Byte ReadByte(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Byte ReadByte(object ptr, int ofs) => throw null;
                 public static System.Int16 ReadInt16(System.IntPtr ptr) => throw null;
-                public static int ReadInt32(object ptr, int ofs) => throw null;
-                public static int ReadInt32(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Int16 ReadInt16(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Int16 ReadInt16(object ptr, int ofs) => throw null;
                 public static int ReadInt32(System.IntPtr ptr) => throw null;
-                public static System.Int64 ReadInt64(object ptr, int ofs) => throw null;
-                public static System.Int64 ReadInt64(System.IntPtr ptr, int ofs) => throw null;
+                public static int ReadInt32(System.IntPtr ptr, int ofs) => throw null;
+                public static int ReadInt32(object ptr, int ofs) => throw null;
                 public static System.Int64 ReadInt64(System.IntPtr ptr) => throw null;
-                public static System.IntPtr ReadIntPtr(object ptr, int ofs) => throw null;
-                public static System.IntPtr ReadIntPtr(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Int64 ReadInt64(System.IntPtr ptr, int ofs) => throw null;
+                public static System.Int64 ReadInt64(object ptr, int ofs) => throw null;
                 public static System.IntPtr ReadIntPtr(System.IntPtr ptr) => throw null;
+                public static System.IntPtr ReadIntPtr(System.IntPtr ptr, int ofs) => throw null;
+                public static System.IntPtr ReadIntPtr(object ptr, int ofs) => throw null;
                 public static int Release(System.IntPtr pUnk) => throw null;
                 public static int ReleaseComObject(object o) => throw null;
                 public static System.IntPtr SecureStringToBSTR(System.Security.SecureString s) => throw null;
@@ -678,10 +678,10 @@ namespace System
                 public static System.IntPtr SecureStringToGlobalAllocAnsi(System.Security.SecureString s) => throw null;
                 public static System.IntPtr SecureStringToGlobalAllocUnicode(System.Security.SecureString s) => throw null;
                 public static bool SetComObjectData(object obj, object key, object data) => throw null;
-                public static int SizeOf<T>(T structure) => throw null;
-                public static int SizeOf<T>() => throw null;
-                public static int SizeOf(object structure) => throw null;
                 public static int SizeOf(System.Type t) => throw null;
+                public static int SizeOf(object structure) => throw null;
+                public static int SizeOf<T>() => throw null;
+                public static int SizeOf<T>(T structure) => throw null;
                 public static System.IntPtr StringToBSTR(string s) => throw null;
                 public static System.IntPtr StringToCoTaskMemAnsi(string s) => throw null;
                 public static System.IntPtr StringToCoTaskMemAuto(string s) => throw null;
@@ -690,32 +690,32 @@ namespace System
                 public static System.IntPtr StringToHGlobalAnsi(string s) => throw null;
                 public static System.IntPtr StringToHGlobalAuto(string s) => throw null;
                 public static System.IntPtr StringToHGlobalUni(string s) => throw null;
-                public static void StructureToPtr<T>(T structure, System.IntPtr ptr, bool fDeleteOld) => throw null;
                 public static void StructureToPtr(object structure, System.IntPtr ptr, bool fDeleteOld) => throw null;
+                public static void StructureToPtr<T>(T structure, System.IntPtr ptr, bool fDeleteOld) => throw null;
                 public static int SystemDefaultCharSize;
                 public static int SystemMaxDBCSCharSize;
-                public static void ThrowExceptionForHR(int errorCode, System.IntPtr errorInfo) => throw null;
                 public static void ThrowExceptionForHR(int errorCode) => throw null;
-                public static System.IntPtr UnsafeAddrOfPinnedArrayElement<T>(T[] arr, int index) => throw null;
+                public static void ThrowExceptionForHR(int errorCode, System.IntPtr errorInfo) => throw null;
                 public static System.IntPtr UnsafeAddrOfPinnedArrayElement(System.Array arr, int index) => throw null;
-                public static void WriteByte(object ptr, int ofs, System.Byte val) => throw null;
-                public static void WriteByte(System.IntPtr ptr, int ofs, System.Byte val) => throw null;
+                public static System.IntPtr UnsafeAddrOfPinnedArrayElement<T>(T[] arr, int index) => throw null;
                 public static void WriteByte(System.IntPtr ptr, System.Byte val) => throw null;
-                public static void WriteInt16(object ptr, int ofs, System.Int16 val) => throw null;
-                public static void WriteInt16(object ptr, int ofs, System.Char val) => throw null;
-                public static void WriteInt16(System.IntPtr ptr, int ofs, System.Int16 val) => throw null;
-                public static void WriteInt16(System.IntPtr ptr, int ofs, System.Char val) => throw null;
-                public static void WriteInt16(System.IntPtr ptr, System.Int16 val) => throw null;
+                public static void WriteByte(System.IntPtr ptr, int ofs, System.Byte val) => throw null;
+                public static void WriteByte(object ptr, int ofs, System.Byte val) => throw null;
                 public static void WriteInt16(System.IntPtr ptr, System.Char val) => throw null;
-                public static void WriteInt32(object ptr, int ofs, int val) => throw null;
+                public static void WriteInt16(System.IntPtr ptr, int ofs, System.Char val) => throw null;
+                public static void WriteInt16(System.IntPtr ptr, int ofs, System.Int16 val) => throw null;
+                public static void WriteInt16(System.IntPtr ptr, System.Int16 val) => throw null;
+                public static void WriteInt16(object ptr, int ofs, System.Char val) => throw null;
+                public static void WriteInt16(object ptr, int ofs, System.Int16 val) => throw null;
                 public static void WriteInt32(System.IntPtr ptr, int val) => throw null;
                 public static void WriteInt32(System.IntPtr ptr, int ofs, int val) => throw null;
-                public static void WriteInt64(object ptr, int ofs, System.Int64 val) => throw null;
+                public static void WriteInt32(object ptr, int ofs, int val) => throw null;
                 public static void WriteInt64(System.IntPtr ptr, int ofs, System.Int64 val) => throw null;
                 public static void WriteInt64(System.IntPtr ptr, System.Int64 val) => throw null;
-                public static void WriteIntPtr(object ptr, int ofs, System.IntPtr val) => throw null;
-                public static void WriteIntPtr(System.IntPtr ptr, int ofs, System.IntPtr val) => throw null;
+                public static void WriteInt64(object ptr, int ofs, System.Int64 val) => throw null;
                 public static void WriteIntPtr(System.IntPtr ptr, System.IntPtr val) => throw null;
+                public static void WriteIntPtr(System.IntPtr ptr, int ofs, System.IntPtr val) => throw null;
+                public static void WriteIntPtr(object ptr, int ofs, System.IntPtr val) => throw null;
                 public static void ZeroFreeBSTR(System.IntPtr s) => throw null;
                 public static void ZeroFreeCoTaskMemAnsi(System.IntPtr s) => throw null;
                 public static void ZeroFreeCoTaskMemUTF8(System.IntPtr s) => throw null;
@@ -744,10 +744,10 @@ namespace System
             // Generated from `System.Runtime.InteropServices.MarshalDirectiveException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MarshalDirectiveException : System.SystemException
             {
-                public MarshalDirectiveException(string message, System.Exception inner) => throw null;
-                public MarshalDirectiveException(string message) => throw null;
                 public MarshalDirectiveException() => throw null;
                 protected MarshalDirectiveException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public MarshalDirectiveException(string message) => throw null;
+                public MarshalDirectiveException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.NativeLibrary` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -759,8 +759,8 @@ namespace System
                 public static System.IntPtr Load(string libraryName, System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportSearchPath? searchPath) => throw null;
                 public static void SetDllImportResolver(System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportResolver resolver) => throw null;
                 public static bool TryGetExport(System.IntPtr handle, string name, out System.IntPtr address) => throw null;
-                public static bool TryLoad(string libraryPath, out System.IntPtr handle) => throw null;
                 public static bool TryLoad(string libraryName, System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportSearchPath? searchPath, out System.IntPtr handle) => throw null;
+                public static bool TryLoad(string libraryPath, out System.IntPtr handle) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.OptionalAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -805,28 +805,28 @@ namespace System
             public class SEHException : System.Runtime.InteropServices.ExternalException
             {
                 public virtual bool CanResume() => throw null;
-                public SEHException(string message, System.Exception inner) => throw null;
-                public SEHException(string message) => throw null;
                 public SEHException() => throw null;
                 protected SEHException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SEHException(string message) => throw null;
+                public SEHException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.SafeArrayRankMismatchException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeArrayRankMismatchException : System.SystemException
             {
-                public SafeArrayRankMismatchException(string message, System.Exception inner) => throw null;
-                public SafeArrayRankMismatchException(string message) => throw null;
                 public SafeArrayRankMismatchException() => throw null;
                 protected SafeArrayRankMismatchException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SafeArrayRankMismatchException(string message) => throw null;
+                public SafeArrayRankMismatchException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.SafeArrayTypeMismatchException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeArrayTypeMismatchException : System.SystemException
             {
-                public SafeArrayTypeMismatchException(string message, System.Exception inner) => throw null;
-                public SafeArrayTypeMismatchException(string message) => throw null;
                 public SafeArrayTypeMismatchException() => throw null;
                 protected SafeArrayTypeMismatchException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public SafeArrayTypeMismatchException(string message) => throw null;
+                public SafeArrayTypeMismatchException(string message, System.Exception inner) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.StandardOleMarshalObject` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -840,8 +840,8 @@ namespace System
             {
                 public string Identifier { get => throw null; }
                 public string Scope { get => throw null; }
-                public TypeIdentifierAttribute(string scope, string identifier) => throw null;
                 public TypeIdentifierAttribute() => throw null;
+                public TypeIdentifierAttribute(string scope, string identifier) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibFuncAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1822,8 +1822,8 @@ namespace System
             public int Length { get => throw null; }
             public void MakeReadOnly() => throw null;
             public void RemoveAt(int index) => throw null;
-            unsafe public SecureString(System.Char* value, int length) => throw null;
             public SecureString() => throw null;
+            unsafe public SecureString(System.Char* value, int length) => throw null;
             public void SetAt(int index, System.Char c) => throw null;
         }
 

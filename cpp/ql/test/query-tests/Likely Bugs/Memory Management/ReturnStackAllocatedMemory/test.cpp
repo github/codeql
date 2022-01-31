@@ -38,7 +38,7 @@ MyClass *test4()
 	MyClass mc;
 	MyClass &ref = mc;
 
-	return &ref; // BAD [NOT DETECTED]
+	return &ref; // BAD
 }
 
 MyClass &test5()
@@ -134,7 +134,7 @@ char *testArray4()
 	ptr = arr + 1;
 	ptr++;
 
-	return ptr; // BAD [NOT DETECTED]
+	return ptr; // BAD
 }
 
 char *testArray5()
@@ -174,20 +174,20 @@ void *conversionBeforeDataFlow() {
 void *arrayConversionBeforeDataFlow() {
   int localArray[4];
   int *pointerToLocal = localArray; // has conversion
-  return pointerToLocal; // BAD [NOT DETECTED]
+  return pointerToLocal; // BAD
 }
 
 int &dataFlowThroughReference() {
   int myLocal;
   int &refToLocal = myLocal; // has conversion
-  return refToLocal; // BAD [NOT DETECTED]
+  return refToLocal; // BAD
 }
 
 int *&conversionInFlow() {
   int myLocal;
   int *p = &myLocal;
   int *&pRef = p; // has conversion in the middle of data flow
-  return pRef; // BAD [NOT DETECTED]
+  return pRef; // BAD
 }
 
 namespace std {
@@ -215,4 +215,9 @@ auto make_read_port()
   auto port = std::shared_ptr<int>(new int);
   auto ptr = port.get();
   return ptr; // GOOD
+}
+
+void* get_sp() {
+	int p;
+	return (void*)&p; // GOOD: The function name makes it sound like the programmer intended to get the value of the stack pointer.
 }

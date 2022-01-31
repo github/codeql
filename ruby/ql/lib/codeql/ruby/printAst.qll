@@ -7,14 +7,8 @@
  */
 
 private import AST
-private import codeql.ruby.regexp.RegExpTreeView as RETV
-
-/** Holds if `n` appears in the desugaring of some other node. */
-predicate isDesugared(AstNode n) {
-  n = any(AstNode sugar).getDesugared()
-  or
-  isDesugared(n.getParent())
-}
+private import codeql.ruby.security.performance.RegExpTreeView as RETV
+private import codeql.ruby.ast.internal.Synthesis
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -25,19 +19,7 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) {
-    not isDesugared(n)
-    or
-    not n.isSynthesized()
-    or
-    n.isSynthesized() and
-    not n = any(AstNode sugar).getDesugared() and
-    exists(AstNode parent |
-      parent = n.getParent() and
-      not parent.isSynthesized() and
-      not n = parent.getDesugared()
-    )
-  }
+  predicate shouldPrintNode(AstNode n) { not isDesugarNode(n) }
 
   predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
     child = parent.getAChild(edgeName) and

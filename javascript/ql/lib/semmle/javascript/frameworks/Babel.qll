@@ -49,7 +49,7 @@ module Babel {
   }
 
   /**
-   * Configuration object for a Babel plugin.
+   * A configuration object for a Babel plugin.
    */
   class Plugin extends JSONValue {
     Config cfg;

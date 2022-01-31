@@ -138,8 +138,8 @@ class Value extends TObject {
    * The result can be `none()`, but never both `true` and `false`.
    */
   boolean getDefiniteBooleanValue() {
-    result = getABooleanValue() and
-    not (getABooleanValue() = true and getABooleanValue() = false)
+    result = this.getABooleanValue() and
+    not (this.getABooleanValue() = true and this.getABooleanValue() = false)
   }
 }
 
@@ -147,9 +147,7 @@ class Value extends TObject {
  * Class representing modules in the Python program
  * Each `ModuleValue` represents a module object in the Python program.
  */
-class ModuleValue extends Value {
-  ModuleValue() { this instanceof ModuleObjectInternal }
-
+class ModuleValue extends Value instanceof ModuleObjectInternal {
   /**
    * Holds if this module "exports" name.
    * That is, does it define `name` in `__all__` or is
@@ -159,7 +157,7 @@ class ModuleValue extends Value {
   predicate exports(string name) { PointsTo::moduleExports(this, name) }
 
   /** Gets the scope for this module, provided that it is a Python module. */
-  ModuleScope getScope() { result = this.(ModuleObjectInternal).getSourceModule() }
+  ModuleScope getScope() { result = super.getSourceModule() }
 
   /**
    * Gets the container path for this module. Will be the file for a Python module,
@@ -181,7 +179,7 @@ class ModuleValue extends Value {
   predicate isPackage() { this instanceof PackageObjectInternal }
 
   /** Whether the complete set of names "exported" by this module can be accurately determined */
-  predicate hasCompleteExportInfo() { this.(ModuleObjectInternal).hasCompleteExportInfo() }
+  predicate hasCompleteExportInfo() { super.hasCompleteExportInfo() }
 
   /** Get a module that this module imports */
   ModuleValue getAnImportedModule() { result.importedAs(this.getScope().getAnImportedModuleName()) }
@@ -199,7 +197,7 @@ class ModuleValue extends Value {
 
   /** When used (exclusively) as a script (will not include normal modules that can also be run as a script) */
   predicate isUsedAsScript() {
-    not isUsedAsModule() and
+    not this.isUsedAsModule() and
     (
       not this.getPath().getExtension() = "py"
       or
@@ -452,23 +450,21 @@ class CallableValue extends Value {
  * Class representing bound-methods, such as `o.func`, where `o` is an instance
  * of a class that has a callable attribute `func`.
  */
-class BoundMethodValue extends CallableValue {
-  BoundMethodValue() { this instanceof BoundMethodObjectInternal }
-
+class BoundMethodValue extends CallableValue instanceof BoundMethodObjectInternal {
   /**
    * Gets the callable that will be used when `this` is called.
    * The actual callable for `func` in `o.func`.
    */
-  CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
+  CallableValue getFunction() { result = super.getFunction() }
 
   /**
    * Gets the value that will be used for the `self` parameter when `this` is called.
    * The value for `o` in `o.func`.
    */
-  Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
+  Value getSelf() { result = super.getSelf() }
 
   /** Gets the parameter node that will be used for `self`. */
-  NameNode getSelfParameter() { result = this.(BoundMethodObjectInternal).getSelfParameter() }
+  NameNode getSelfParameter() { result = super.getSelfParameter() }
 }
 
 /**
@@ -831,12 +827,10 @@ class BuiltinMethodValue extends FunctionValue {
 /**
  * A class representing sequence objects with a length and tracked items.
  */
-class SequenceValue extends Value {
-  SequenceValue() { this instanceof SequenceObjectInternal }
+class SequenceValue extends Value instanceof SequenceObjectInternal {
+  Value getItem(int n) { result = super.getItem(n) }
 
-  Value getItem(int n) { result = this.(SequenceObjectInternal).getItem(n) }
-
-  int length() { result = this.(SequenceObjectInternal).length() }
+  int length() { result = super.length() }
 }
 
 /** A class representing tuple objects */
@@ -887,14 +881,12 @@ class NumericValue extends Value {
  * https://docs.python.org/3/howto/descriptor.html#properties
  * https://docs.python.org/3/library/functions.html#property
  */
-class PropertyValue extends Value {
-  PropertyValue() { this instanceof PropertyInternal }
+class PropertyValue extends Value instanceof PropertyInternal {
+  CallableValue getGetter() { result = super.getGetter() }
 
-  CallableValue getGetter() { result = this.(PropertyInternal).getGetter() }
+  CallableValue getSetter() { result = super.getSetter() }
 
-  CallableValue getSetter() { result = this.(PropertyInternal).getSetter() }
-
-  CallableValue getDeleter() { result = this.(PropertyInternal).getDeleter() }
+  CallableValue getDeleter() { result = super.getDeleter() }
 }
 
 /** A method-resolution-order sequence of classes */

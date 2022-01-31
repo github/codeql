@@ -6,6 +6,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
+private import codeql.ruby.ast.internal.Control
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl
 private import NonReturning
@@ -14,7 +15,6 @@ private import SuccessorTypes
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b in [false, true] } or
-  TEmptinessCompletion(boolean isEmpty) { isEmpty in [false, true] } or
   TMatchingCompletion(boolean isMatch) { isMatch in [false, true] } or
   TReturnCompletion() or
   TBreakCompletion() or
@@ -23,9 +23,13 @@ private newtype TCompletion =
   TRetryCompletion() or
   TRaiseCompletion() or // TODO: Add exception type?
   TExitCompletion() or
-  TNestedCompletion(Completion inner, Completion outer, int nestLevel) {
+  TNestedCompletion(TCompletion inner, TCompletion outer, int nestLevel) {
     inner = TBreakCompletion() and
     outer instanceof NonNestedNormalCompletion and
+    nestLevel = 0
+    or
+    inner instanceof TBooleanCompletion and
+    outer instanceof TMatchingCompletion and
     nestLevel = 0
     or
     inner instanceof NormalCompletion and
@@ -33,7 +37,7 @@ private newtype TCompletion =
   }
 
 pragma[noinline]
-private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
+private predicate nestedEnsureCompletion(TCompletion outer, int nestLevel) {
   (
     outer = TReturnCompletion()
     or
@@ -54,9 +58,6 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n = TForIn(_) and
-  c instanceof EmptinessCompletion
-  or
   n instanceof BreakStmt and
   c = TBreakCompletion()
   or
@@ -85,8 +86,9 @@ private predicate mayRaise(Call c) {
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
-  /** Holds if this completion is valid for node `n`. */
-  predicate isValidFor(AstNode n) {
+  private predicate isValidForSpecific(AstNode n) {
+    exists(AstNode other | n = other.getDesugared() and this.isValidForSpecific(other))
+    or
     this = n.(NonReturningCall).getACompletion()
     or
     completionIsValidForStmt(n, this)
@@ -102,15 +104,22 @@ abstract class Completion extends TCompletion {
     mustHaveMatchingCompletion(n) and
     this = TMatchingCompletion(_)
     or
-    n = any(RescueModifierExpr parent).getBody() and this = TRaiseCompletion()
+    n = any(RescueModifierExpr parent).getBody() and
+    this = [TSimpleCompletion().(TCompletion), TRaiseCompletion()]
     or
     mayRaise(n) and
-    this = TRaiseCompletion()
+    (
+      this = TRaiseCompletion()
+      or
+      this = TSimpleCompletion() and not n instanceof NonReturningCall
+    )
+  }
+
+  /** Holds if this completion is valid for node `n`. */
+  predicate isValidFor(AstNode n) {
+    this.isValidForSpecific(n)
     or
-    not n instanceof NonReturningCall and
-    not completionIsValidForStmt(n, _) and
-    not mustHaveBooleanCompletion(n) and
-    not mustHaveMatchingCompletion(n) and
+    not any(Completion c).isValidForSpecific(n) and
     this = TSimpleCompletion()
   }
 
@@ -176,6 +185,8 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(ConditionalLoop parent).getCondition()
   or
+  n = any(InClause parent).getCondition()
+  or
   exists(LogicalAndExpr parent |
     n = parent.getLeftOperand()
     or
@@ -194,9 +205,9 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(StmtSequence parent | inBooleanContext(parent)).getLastStmt()
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     not exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
 }
@@ -216,11 +227,15 @@ private predicate mustHaveMatchingCompletion(AstNode n) {
 private predicate inMatchingContext(AstNode n) {
   n = any(RescueClause r).getException(_)
   or
-  exists(CaseExpr c, WhenExpr w |
+  exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
-    c.getAWhenBranch() = w and
+    c.getABranch() = w and
     w.getPattern(_) = n
   )
+  or
+  n instanceof CasePattern
+  or
+  n = any(VariableReferencePattern p).getVariableAccess()
   or
   n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
@@ -242,10 +257,10 @@ class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
 
 /**
  * A completion that represents evaluation of an expression, whose value determines
- * the successor. Either a Boolean completion (`BooleanCompletion`), an emptiness
- * completion (`EmptinessCompletion`), or a matching completion (`MatchingCompletion`).
+ * the successor. Either a Boolean completion (`BooleanCompletion`), or a matching
+ * completion (`MatchingCompletion`).
  */
-abstract class ConditionalCompletion extends NonNestedNormalCompletion {
+abstract class ConditionalCompletion extends NormalCompletion {
   boolean value;
 
   bindingset[value]
@@ -259,7 +274,7 @@ abstract class ConditionalCompletion extends NonNestedNormalCompletion {
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
+class BooleanCompletion extends ConditionalCompletion, NonNestedNormalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
   /** Gets the dual Boolean completion. */
@@ -281,25 +296,19 @@ class FalseCompletion extends BooleanCompletion {
 }
 
 /**
- * A completion that represents evaluation of an emptiness test, for example
- * a test in a `for in` statement.
- */
-class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
-  EmptinessCompletion() { this = TEmptinessCompletion(value) }
-
-  override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
-
-  override string toString() { if value = true then result = "empty" else result = "non-empty" }
-}
-
-/**
  * A completion that represents evaluation of a matching test, for example
  * a test in a `rescue` statement.
  */
-class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
-  MatchingCompletion() { this = TMatchingCompletion(value) }
+class MatchingCompletion extends ConditionalCompletion {
+  MatchingCompletion() {
+    this = TMatchingCompletion(value)
+    or
+    this = TNestedCompletion(_, TMatchingCompletion(value), _)
+  }
 
-  override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+  override ConditionalSuccessor getAMatchingSuccessorType() {
+    this = TMatchingCompletion(result.(MatchingSuccessor).getValue())
+  }
 
   override string toString() { if value = true then result = "match" else result = "no-match" }
 }
@@ -456,7 +465,9 @@ abstract class NestedCompletion extends Completion, TNestedCompletion {
   NestedCompletion() { this = TNestedCompletion(inner, outer, nestLevel) }
 
   /** Gets a completion that is compatible with the inner completion. */
-  abstract Completion getAnInnerCompatibleCompletion();
+  Completion getAnInnerCompatibleCompletion() {
+    result.getOuterCompletion() = this.getInnerCompletion()
+  }
 
   /** Gets the level of this nested completion. */
   final int getNestLevel() { result = nestLevel }
@@ -499,9 +510,39 @@ class NestedEnsureCompletion extends NestedCompletion {
 
   override Completion getOuterCompletion() { result = outer }
 
-  override Completion getAnInnerCompatibleCompletion() {
-    result.getOuterCompletion() = this.getInnerCompletion()
+  override SuccessorType getAMatchingSuccessorType() { none() }
+}
+
+/**
+ * A completion used for conditions in pattern matching:
+ *
+ * ```rb
+ * in x if x == 5 then puts "five"
+ * in x unless x == 4 then puts "not four"
+ * ```
+ *
+ * The outer (Matching) completion indicates whether there is a match, and
+ * the inner (Boolean) completion indicates what the condition evaluated
+ * to.
+ *
+ * For the condition `x == 5` above, `TNestedCompletion(true, true, 0)` and
+ * `TNestedCompletion(false, false, 0)` are both valid completions, while
+ * `TNestedCompletion(true, false, 0)` and `TNestedCompletion(false, true, 0)`
+ * are valid completions for `x == 4`.
+ */
+class NestedMatchingCompletion extends NestedCompletion, MatchingCompletion {
+  NestedMatchingCompletion() {
+    inner instanceof TBooleanCompletion and
+    outer instanceof TMatchingCompletion
   }
 
-  override SuccessorType getAMatchingSuccessorType() { none() }
+  override BooleanCompletion getInnerCompletion() { result = inner }
+
+  override MatchingCompletion getOuterCompletion() { result = outer }
+
+  override BooleanSuccessor getAMatchingSuccessorType() {
+    result.getValue() = this.getInnerCompletion().getValue()
+  }
+
+  override string toString() { result = NestedCompletion.super.toString() }
 }

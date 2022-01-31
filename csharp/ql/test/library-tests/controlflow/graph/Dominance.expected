@@ -2505,6 +2505,8 @@ dominance
 | Initializers.cs:15:42:15:61 | object creation of type Initializers | Initializers.cs:15:37:15:63 | { ..., ... } |
 | Initializers.cs:15:59:15:60 | "" | Initializers.cs:15:42:15:61 | object creation of type Initializers |
 | Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:20:18:20 | 1 |
+| Initializers.cs:18:16:18:16 | exit H (normal) | Initializers.cs:18:16:18:16 | exit H |
+| Initializers.cs:18:16:18:20 | ... = ... | Initializers.cs:18:16:18:16 | exit H (normal) |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:22:23:22:23 | this access |
 | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | Initializers.cs:20:11:20:23 | exit NoConstructor |
@@ -4225,18 +4227,18 @@ dominance
 | cflow.cs:234:13:236:13 | {...} | cflow.cs:235:17:235:22 | break; |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:241:5:259:5 | {...} |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | exit Goto |
-| cflow.cs:241:5:259:5 | {...} | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:16:242:45 | if (...) ... |
-| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:23:242:27 | this access |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:43:242:45 | {...} |
-| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:242:23:242:27 | access to field Field | cflow.cs:242:23:242:34 | access to property Length |
-| cflow.cs:242:23:242:27 | this access | cflow.cs:242:23:242:27 | access to field Field |
-| cflow.cs:242:23:242:34 | access to property Length | cflow.cs:242:39:242:39 | 0 |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:39:242:39 | 0 | cflow.cs:242:23:242:39 | ... == ... |
+| cflow.cs:241:5:259:5 | {...} | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:12:242:41 | if (...) ... |
+| cflow.cs:242:12:242:41 | if (...) ... | cflow.cs:242:19:242:23 | this access |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:39:242:41 | {...} |
+| cflow.cs:242:17:242:36 | [false] !... | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:17:242:36 | [true] !... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:242:19:242:23 | access to field Field | cflow.cs:242:19:242:30 | access to property Length |
+| cflow.cs:242:19:242:23 | this access | cflow.cs:242:19:242:23 | access to field Field |
+| cflow.cs:242:19:242:30 | access to property Length | cflow.cs:242:35:242:35 | 0 |
+| cflow.cs:242:19:242:35 | ... == ... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:19:242:35 | ... == ... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:35:242:35 | 0 | cflow.cs:242:19:242:35 | ... == ... |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:13:244:17 | this access |
 | cflow.cs:244:13:244:17 | access to field Field | cflow.cs:244:13:244:24 | access to property Length |
 | cflow.cs:244:13:244:17 | this access | cflow.cs:244:13:244:17 | access to field Field |
@@ -4326,6 +4328,17 @@ dominance
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:61:300:64 | null |
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:56:300:64 | ... != ... |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor |
+| cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:306:60:310:5 | exit get__getter (normal) |
+| cflow.cs:306:60:310:5 | enter (...) => ... | cflow.cs:307:5:310:5 | {...} |
+| cflow.cs:306:60:310:5 | enter get__getter | cflow.cs:306:60:310:5 | (...) => ... |
+| cflow.cs:306:60:310:5 | exit (...) => ... (normal) | cflow.cs:306:60:310:5 | exit (...) => ... |
+| cflow.cs:306:60:310:5 | exit get__getter (normal) | cflow.cs:306:60:310:5 | exit get__getter |
+| cflow.cs:307:5:310:5 | {...} | cflow.cs:308:9:308:21 | ... ...; |
+| cflow.cs:308:9:308:21 | ... ...; | cflow.cs:308:20:308:20 | access to parameter o |
+| cflow.cs:308:16:308:20 | Object x = ... | cflow.cs:309:16:309:16 | access to local variable x |
+| cflow.cs:308:20:308:20 | access to parameter o | cflow.cs:308:16:308:20 | Object x = ... |
+| cflow.cs:309:9:309:17 | return ...; | cflow.cs:306:60:310:5 | exit (...) => ... (normal) |
+| cflow.cs:309:16:309:16 | access to local variable x | cflow.cs:309:9:309:17 | return ...; |
 postDominance
 | AccessorCalls.cs:5:23:5:25 | exit get_Item | AccessorCalls.cs:5:23:5:25 | exit get_Item (normal) |
 | AccessorCalls.cs:5:23:5:25 | exit get_Item (normal) | AccessorCalls.cs:5:30:5:30 | access to parameter i |
@@ -6631,6 +6644,8 @@ postDominance
 | Initializers.cs:15:39:15:39 | access to local variable i | Initializers.cs:15:18:15:63 | array creation of type Initializers[] |
 | Initializers.cs:15:42:15:61 | object creation of type Initializers | Initializers.cs:15:59:15:60 | "" |
 | Initializers.cs:15:59:15:60 | "" | Initializers.cs:15:39:15:39 | access to local variable i |
+| Initializers.cs:18:16:18:16 | exit H | Initializers.cs:18:16:18:16 | exit H (normal) |
+| Initializers.cs:18:16:18:16 | exit H (normal) | Initializers.cs:18:16:18:20 | ... = ... |
 | Initializers.cs:18:16:18:20 | ... = ... | Initializers.cs:18:20:18:20 | 1 |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:16 | enter H |
 | Initializers.cs:20:11:20:23 | exit NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) |
@@ -8281,20 +8296,20 @@ postDominance
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:252:17:252:22 | break; |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:257:17:257:22 | break; |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:240:10:240:13 | enter Goto |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:241:5:259:5 | {...} |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:244:31:244:41 | goto ...; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:254:17:254:27 | goto ...; |
-| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:23:242:27 | access to field Field | cflow.cs:242:23:242:27 | this access |
-| cflow.cs:242:23:242:27 | this access | cflow.cs:242:16:242:45 | if (...) ... |
-| cflow.cs:242:23:242:34 | access to property Length | cflow.cs:242:23:242:27 | access to field Field |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:39:242:39 | 0 |
-| cflow.cs:242:39:242:39 | 0 | cflow.cs:242:23:242:34 | access to property Length |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:241:5:259:5 | {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:244:31:244:41 | goto ...; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:254:17:254:27 | goto ...; |
+| cflow.cs:242:12:242:41 | if (...) ... | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:242:16:242:36 | [false] !... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:19:242:23 | access to field Field | cflow.cs:242:19:242:23 | this access |
+| cflow.cs:242:19:242:23 | this access | cflow.cs:242:12:242:41 | if (...) ... |
+| cflow.cs:242:19:242:30 | access to property Length | cflow.cs:242:19:242:23 | access to field Field |
+| cflow.cs:242:19:242:35 | ... == ... | cflow.cs:242:35:242:35 | 0 |
+| cflow.cs:242:35:242:35 | 0 | cflow.cs:242:19:242:30 | access to property Length |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:244:13:244:17 | access to field Field | cflow.cs:244:13:244:17 | this access |
 | cflow.cs:244:13:244:17 | this access | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:244:13:244:24 | access to property Length | cflow.cs:244:13:244:17 | access to field Field |
@@ -8379,6 +8394,17 @@ postDominance
 | cflow.cs:300:56:300:64 | ... != ... | cflow.cs:300:61:300:64 | null |
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:56:300:56 | access to parameter s |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:44:300:64 | ... && ... |
+| cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:306:60:310:5 | enter get__getter |
+| cflow.cs:306:60:310:5 | exit (...) => ... | cflow.cs:306:60:310:5 | exit (...) => ... (normal) |
+| cflow.cs:306:60:310:5 | exit (...) => ... (normal) | cflow.cs:309:9:309:17 | return ...; |
+| cflow.cs:306:60:310:5 | exit get__getter | cflow.cs:306:60:310:5 | exit get__getter (normal) |
+| cflow.cs:306:60:310:5 | exit get__getter (normal) | cflow.cs:306:60:310:5 | (...) => ... |
+| cflow.cs:307:5:310:5 | {...} | cflow.cs:306:60:310:5 | enter (...) => ... |
+| cflow.cs:308:9:308:21 | ... ...; | cflow.cs:307:5:310:5 | {...} |
+| cflow.cs:308:16:308:20 | Object x = ... | cflow.cs:308:20:308:20 | access to parameter o |
+| cflow.cs:308:20:308:20 | access to parameter o | cflow.cs:308:9:308:21 | ... ...; |
+| cflow.cs:309:9:309:17 | return ...; | cflow.cs:309:16:309:16 | access to local variable x |
+| cflow.cs:309:16:309:16 | access to local variable x | cflow.cs:308:16:308:20 | Object x = ... |
 blockDominance
 | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:23:5:25 | enter get_Item |
 | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | enter set_Item |
@@ -13052,12 +13078,12 @@ blockDominance
 | cflow.cs:234:13:236:13 | {...} | cflow.cs:234:13:236:13 | {...} |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:240:10:240:13 | enter Goto |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:240:10:240:13 | exit Goto (normal) |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:240:10:240:13 | enter Goto | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:244:31:244:41 | goto ...; |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:246:9:258:9 | switch (...) {...} |
@@ -13068,31 +13094,31 @@ blockDominance
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:254:17:254:27 | goto ...; |
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:255:13:255:20 | default: |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | exit Goto (normal) |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:240:10:240:13 | exit Goto (normal) |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:43:242:45 | {...} |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:244:9:244:41 | if (...) ... |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:244:31:244:41 | goto ...; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:246:9:258:9 | switch (...) {...} |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:249:17:249:29 | goto default; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:250:13:250:19 | case ...: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:251:17:251:37 | ...; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:253:13:253:19 | case ...: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:254:17:254:27 | goto ...; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:255:13:255:20 | default: |
-| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:43:242:45 | {...} |
-| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:43:242:45 | {...} |
-| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:240:10:240:13 | exit Goto (normal) |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:39:242:41 | {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:244:9:244:41 | if (...) ... |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:244:31:244:41 | goto ...; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:246:9:258:9 | switch (...) {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:249:17:249:29 | goto default; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:250:13:250:19 | case ...: |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:251:17:251:37 | ...; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:253:13:253:19 | case ...: |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:254:17:254:27 | goto ...; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:255:13:255:20 | default: |
+| cflow.cs:242:16:242:36 | [false] !... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:39:242:41 | {...} |
+| cflow.cs:242:17:242:36 | [false] !... | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:17:242:36 | [false] !... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:17:242:36 | [false] !... | cflow.cs:242:39:242:41 | {...} |
+| cflow.cs:242:17:242:36 | [true] !... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:242:17:242:36 | [true] !... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:240:10:240:13 | exit Goto (normal) |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:31:244:41 | goto ...; |
@@ -13146,6 +13172,8 @@ blockDominance
 | cflow.cs:300:44:300:51 | [true] !... | cflow.cs:300:56:300:56 | access to parameter s |
 | cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:44:300:64 | ... && ... |
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:56:300:56 | access to parameter s |
+| cflow.cs:306:60:310:5 | enter (...) => ... | cflow.cs:306:60:310:5 | enter (...) => ... |
+| cflow.cs:306:60:310:5 | enter get__getter | cflow.cs:306:60:310:5 | enter get__getter |
 postBlockDominance
 | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:23:5:25 | enter get_Item |
 | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | enter set_Item |
@@ -16341,12 +16369,12 @@ postBlockDominance
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:240:10:240:13 | enter Goto |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | enter Goto |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | exit Goto (normal) |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:244:31:244:41 | goto ...; |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:246:9:258:9 | switch (...) {...} |
@@ -16356,37 +16384,37 @@ postBlockDominance
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:253:13:253:19 | case ...: |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:254:17:254:27 | goto ...; |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:255:13:255:20 | default: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:240:10:240:13 | enter Goto |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:244:31:244:41 | goto ...; |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:254:17:254:27 | goto ...; |
-| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:240:10:240:13 | enter Goto |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:244:31:244:41 | goto ...; |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:254:17:254:27 | goto ...; |
+| cflow.cs:242:16:242:36 | [false] !... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:242:16:242:36 | [false] !... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:16:242:36 | [true] !... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:17:242:36 | [false] !... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:17:242:36 | [true] !... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:240:10:240:13 | enter Goto |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:31:244:41 | goto ...; |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:254:17:254:27 | goto ...; |
 | cflow.cs:244:31:244:41 | goto ...; | cflow.cs:244:31:244:41 | goto ...; |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:240:10:240:13 | enter Goto |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:9:242:13 | Label: |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:20:242:40 | [false] !... |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:20:242:40 | [true] !... |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:21:242:40 | [false] !... |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:21:242:40 | [true] !... |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:43:242:45 | {...} |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:5:242:9 | Label: |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:16:242:36 | [false] !... |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:16:242:36 | [true] !... |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:17:242:36 | [false] !... |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:17:242:36 | [true] !... |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:242:39:242:41 | {...} |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:244:9:244:41 | if (...) ... |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:244:31:244:41 | goto ...; |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:246:9:258:9 | switch (...) {...} |
@@ -16422,3 +16450,5 @@ postBlockDominance
 | cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:56:300:56 | access to parameter s |
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:44:300:51 | [true] !... |
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:56:300:56 | access to parameter s |
+| cflow.cs:306:60:310:5 | enter (...) => ... | cflow.cs:306:60:310:5 | enter (...) => ... |
+| cflow.cs:306:60:310:5 | enter get__getter | cflow.cs:306:60:310:5 | enter get__getter |

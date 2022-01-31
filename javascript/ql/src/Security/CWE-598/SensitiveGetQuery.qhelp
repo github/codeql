@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Sensitive information such as user passwords should not be transmitted within the query string of the requested URL. 
+Sensitive information within URLs may be logged in various locations, including the user's browser, the web server, 
+and any forward or reverse proxy servers between the two endpoints. URLs may also be displayed on-screen, bookmarked  
+or emailed around by users. They may be disclosed to third parties via the Referer header when any off-site links are 
+followed. Placing sensitive information into the URL therefore increases the risk that it will be captured by an attacker.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use HTTP POST to send sensitive information as part of the request body; for example, as form data.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows two route handlers that both receive a username and a password. 
+The first receives this sensitive information from the query parameters of a GET request, which is
+transmitted in the URL. The second receives this sensitive information from the request body of a POST request.
+</p>
+<sample src="examples/SensitiveGet.js" />
+</example>
+
+<references>
+  <li>
+    CWE:
+    <a href="https://cwe.mitre.org/data/definitions/598.html">CWE-598: Use of GET Request Method with Sensitive Query Strings</a>
+  </li>
+  <li>
+    PortSwigger (Burp):
+    <a href="https://portswigger.net/kb/issues/00400300_password-submitted-using-get-method">Password Submitted using GET Method</a>
+  </li>
+  <li>
+    OWASP:
+    <a href="https://owasp.org/www-community/vulnerabilities/Information_exposure_through_query_strings_in_url">Information Exposure through Query Strings in URL</a>
+  </li>
+</references>
+</qhelp>

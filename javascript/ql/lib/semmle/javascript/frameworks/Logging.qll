@@ -45,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
+    result = any(ConsoleGlobalEntry e).getNode()
   }
 
   /**
@@ -186,7 +186,7 @@ private module Fancylog {
 }
 
 /**
- * A class modelling [debug](https://npmjs.org/package/debug) as a logging mechanism.
+ * A class modeling [debug](https://npmjs.org/package/debug) as a logging mechanism.
  */
 private class DebugLoggerCall extends LoggerCall, API::CallNode {
   DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }

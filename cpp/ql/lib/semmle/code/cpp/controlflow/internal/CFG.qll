@@ -231,7 +231,7 @@ private class PostOrderInitializer extends Initializer {
       or
       this.getDeclaration() = for.getRangeVariable()
       or
-      this.getDeclaration() = for.getBeginEndDeclaration().(DeclStmt).getADeclaration()
+      this.getDeclaration() = for.getBeginEndDeclaration().getADeclaration()
     )
   }
 }
@@ -1143,7 +1143,7 @@ private class ExceptionSource extends Node {
       this.reachesParent(mid) and
       not mid = any(TryStmt try).getStmt() and
       not mid = any(MicrosoftTryStmt try).getStmt() and
-      parent = mid.(Node).getParentNode()
+      parent = mid.getParentNode()
     )
   }
 

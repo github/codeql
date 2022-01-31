@@ -37,7 +37,7 @@ Running the query
 
       import cpp
 
-      from IfStmt ifstmt, Block block
+      from IfStmt ifstmt, BlockStmt block
       where ifstmt.getThen() = block and
         block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant."
@@ -81,10 +81,10 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +===============================================================+===================================================================================================================+========================================================================================================================+
 | ``import cpp``                                                | Imports the standard CodeQL libraries for C/C++.                                                                  | Every query begins with one or more ``import`` statements.                                                             |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| ``from IfStmt ifstmt, Block block``                           | Defines the variables for the query.                                                                              | We use:                                                                                                                |
+| ``from IfStmt ifstmt, BlockStmt block``                       | Defines the variables for the query.                                                                              | We use:                                                                                                                |
 |                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |
 |                                                               | ``<type> <variable name>``                                                                                        | - an ``IfStmt`` variable for ``if`` statements                                                                         |
-|                                                               |                                                                                                                   | - a ``Block`` variable for the statement block                                                                         |
+|                                                               |                                                                                                                   | - a ``BlockStmt`` variable for the statement block                                                                     |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``where ifstmt.getThen() = block and block.getNumStmt() = 0`` | Defines a condition on the variables.                                                                             | ``ifstmt.getThen() = block`` relates the two variables. The block must be the ``then`` branch of the ``if`` statement. |
 |                                                               |                                                                                                                   |                                                                                                                        |
