@@ -8,6 +8,7 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import com.semmle.util.files.FileUtil
+import com.semmle.util.unicode.UTF8Util
 import kotlin.system.exitProcess
 
 class KotlinExtractorExtension(
@@ -116,6 +117,10 @@ class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblem
 }
 
 fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
+
+const val MAX_STRLEN = 1.shl(20) // 1 megabyte
+
+fun truncateString(str: String) = str.substring(0, UTF8Util.encodablePrefixLength(str, MAX_STRLEN))
 
 private fun equivalentTrap(f1: File, f2: File): Boolean {
     f1.bufferedReader().use { bw1 ->
