@@ -51,4 +51,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		data, _ = ioutil.ReadFile(filepath.Join("/home/user/", path))
 		w.Write(data)
 	}
+
+	// GOOD: Sanitized by filepath.Clean with a prepended '/' forcing interpretation
+	// as an absolute path, so that Clean will throw away any leading `..` components.
+	data, _ = ioutil.ReadFile(filepath.Clean("/" + path))
+	w.Write(data)
 }
