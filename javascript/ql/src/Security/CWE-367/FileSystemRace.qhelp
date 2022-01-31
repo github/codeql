@@ -24,14 +24,14 @@ Use file descriptors instead of file names whenever possible.
 
 <example>
 <p>
-The following example shows a case where it is checked whether a file inside the <code>/tmp/</code> folder exists, 
-and if it didn't exist the file is written to.
+The following example shows a case where the code checks whether a file inside the <code>/tmp/</code> folder exists, 
+and if it doesn't, the file is written to that location.
 </p>
 
 <sample src="examples/file-race-bad.js" />
 
 <p>
-However, in a multi-user environment the file might be created by another user in between the existence check and the write. 
+However, in a multi-user environment the file might be created by another user between the existence check and the write. 
 </p>
 
 <p>
@@ -44,7 +44,7 @@ This can be avoided by using <code>fs.open</code> to get a file descriptor, and 
 
 <references>
 <li>
-Wikipedia: <a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use">Time-of-check to time-of-use</a>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use">Time-of-check to time-of-use.</a>
 </li>
 
 <li>
@@ -55,7 +55,7 @@ Wikipedia: <a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use">
 </li>
 <li>
 NodeJS: 
-  <a href="https://nodejs.org/api/fs.html">The FS module</a>
+  <a href="https://nodejs.org/api/fs.html">The FS module</a>.
 </li>
 </references>
 </qhelp>
