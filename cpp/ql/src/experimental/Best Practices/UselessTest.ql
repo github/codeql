@@ -15,7 +15,7 @@ predicate sameExpr(Expr e1, Expr e2) { globalValueNumber(e1).getAnExpr() = e2 }
 
 Element nearestParent(Expr e) {
   if
-    e.getParent().(Expr).getFullyConverted() instanceof ParenthesisExpr or
+    e.getParent().(Expr).getConversion*() instanceof ParenthesisExpr or
     e.getParent() instanceof IfStmt or
     e.getParent() instanceof WhileStmt
   then result = e.getParent()
