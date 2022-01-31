@@ -248,6 +248,33 @@ attributes.cs:
 #   80|             1: [TypeofExpr] typeof(...)
 #   80|               0: [TypeAccess] access to type Int32
 #   80|                 0: [TypeMention] int
+#   81|       2: [Attribute] [Args(...)]
+#   81|         -1: [TypeMention] ArgsAttribute
+#   81|         0: [AddExpr] ... + ...
+#   81|           0: [IntLiteral] 42
+#   81|           1: [IntLiteral] 0
+#   81|         1: [ArrayCreation] array creation of type Int32[]
+#   81|           -2: [TypeMention] Int32[]
+#   81|             1: [TypeMention] int
+#   81|           -1: [ArrayInitializer] { ..., ... }
+#   81|             0: [IntLiteral] 1
+#   81|             1: [IntLiteral] 2
+#   81|             2: [IntLiteral] 3
+#   81|         2: [NullLiteral] null
+#   81|         3: [CastExpr] (...) ...
+#   81|           0: [TypeAccess] access to type E
+#   81|             0: [TypeMention] E
+#   81|           1: [IntLiteral] 12
+#   81|         4: [NullLiteral] null
+#   81|         5: [ArrayCreation] array creation of type Object[]
+#   81|           -2: [TypeMention] Object[]
+#   81|             1: [TypeMention] object
+#   81|           -1: [ArrayInitializer] { ..., ... }
+#   81|             0: [CastExpr] (...) ...
+#   81|               1: [IntLiteral] 1
+#   81|             1: [TypeofExpr] typeof(...)
+#   81|               0: [TypeAccess] access to type Int32
+#   81|                 0: [TypeMention] int
 #   82|     4: [BlockStmt] {...}
 #   82|       0: [ReturnStmt] return ...;
 #   82|         0: [IntLiteral] 1

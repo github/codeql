@@ -17,6 +17,7 @@
 | attributes.cs:59:10:59:11 | M2 | attributes.cs:58:6:58:8 | [My2(...)] | My2Attribute |
 | attributes.cs:78:14:78:14 | X | attributes.cs:77:2:77:5 | [Args(...)] | ArgsAttribute |
 | attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:80:6:80:9 | [Args(...)] | ArgsAttribute |
+| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:81:14:81:17 | [Args(...)] | ArgsAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
