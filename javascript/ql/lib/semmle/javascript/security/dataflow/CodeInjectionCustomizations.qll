@@ -172,13 +172,6 @@ module CodeInjection {
           or
           callName = "setImmediate" and index = 0
         )
-        or
-        exists(DataFlow::GlobalVarRefNode wasm, string methodName |
-          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName)
-        |
-          methodName = "compile" or
-          methodName = "compileStreaming"
-        )
       |
         this = c.getArgument(index)
       )
@@ -196,9 +189,6 @@ module CodeInjection {
       exists(ReactNative::WebViewElement webView |
         // `injectedJavaScript` property of React Native `WebView`
         this = webView.getAPropertyWrite("injectedJavaScript").getRhs()
-        or
-        // argument to `injectJavascript` method of React Native `WebView`
-        this = webView.getAMethodCall("injectJavaScript").getArgument(0)
       )
     }
   }
@@ -254,16 +244,6 @@ module CodeInjection {
   }
 
   /**
-   * A value interpreted as as template by the `pug` library.
-   */
-  class PugTemplateSink extends TemplateSink {
-    PugTemplateSink() {
-      this =
-        DataFlow::moduleImport(["pug", "jade"]).getAMemberCall(["compile", "render"]).getArgument(0)
-    }
-  }
-
-  /**
    * A value interpreted as a template by the `handlebars` library.
    */
   class HandlebarsTemplateSink extends TemplateSink {
@@ -278,40 +258,6 @@ module CodeInjection {
   class MustacheTemplateSink extends TemplateSink {
     MustacheTemplateSink() {
       this = DataFlow::moduleMember("mustache", "render").getACall().getArgument(0)
-    }
-  }
-
-  /**
-   * A value interpreted as a template by the `hogan.js` library.
-   */
-  class HoganTemplateSink extends TemplateSink {
-    HoganTemplateSink() {
-      this = DataFlow::moduleMember("hogan.js", "compile").getACall().getArgument(0)
-    }
-  }
-
-  /**
-   * A value interpreted as a template by the `eta` library.
-   */
-  class EtaTemplateSink extends TemplateSink {
-    EtaTemplateSink() { this = DataFlow::moduleMember("eta", "render").getACall().getArgument(0) }
-  }
-
-  /**
-   * A value interpreted as a template by the `squirrelly` library.
-   */
-  class SquirrelTemplateSink extends TemplateSink {
-    SquirrelTemplateSink() {
-      this = DataFlow::moduleMember("squirrelly", "render").getACall().getArgument(0)
-    }
-  }
-
-  /**
-   * A value interpreted as a template by the `whiskers` library.
-   */
-  class WhiskersTemplateSink extends TemplateSink {
-    WhiskersTemplateSink() {
-      this = DataFlow::moduleMember("whiskers", "render").getACall().getArgument(0)
     }
   }
 
