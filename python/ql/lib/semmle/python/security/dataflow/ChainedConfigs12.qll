@@ -30,9 +30,11 @@ private newtype TCustomPathNode =
   CrossoverNode(DataFlow::Node node) { crossoverNode(node) }
 
 /**
+ * DEPRECATED: Use flow state instead
+ *
  * A class representing the set of all the path nodes in either config.
  */
-class CustomPathNode extends TCustomPathNode {
+deprecated class CustomPathNode extends TCustomPathNode {
   /** Gets the PathNode if it is in Config1. */
   DataFlow::PathNode asNode1() {
     this = Config1Node(result) or this = CrossoverNode(result.getNode())
@@ -66,8 +68,12 @@ class CustomPathNode extends TCustomPathNode {
   }
 }
 
-/** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-query predicate edges(CustomPathNode a, CustomPathNode b) {
+/**
+ * DEPRECATED: Use flow state instead
+ *
+ * Holds if `(a,b)` is an edge in the graph of data flow path explanations.
+ */
+deprecated query predicate edges(CustomPathNode a, CustomPathNode b) {
   // Edge is in Config1 graph
   DataFlow::PathGraph::edges(a.asNode1(), b.asNode1())
   or
@@ -75,8 +81,12 @@ query predicate edges(CustomPathNode a, CustomPathNode b) {
   DataFlow2::PathGraph::edges(a.asNode2(), b.asNode2())
 }
 
-/** Holds if `n` is a node in the graph of data flow path explanations. */
-query predicate nodes(CustomPathNode n, string key, string val) {
+/**
+ * DEPRECATED: Use flow state instead
+ *
+ * Holds if `n` is a node in the graph of data flow path explanations.
+ */
+deprecated query predicate nodes(CustomPathNode n, string key, string val) {
   // Node is in Config1 graph
   DataFlow::PathGraph::nodes(n.asNode1(), key, val)
   or
