@@ -1698,7 +1698,8 @@ private module LocalFlowBigStep {
   private class FlowCheckNode extends NodeEx {
     FlowCheckNode() {
       castNode(this.asNode()) or
-      clearsContentCached(this.asNode(), _)
+      clearsContentCached(this.asNode(), _) or
+      nodeIsShown(this.asNode())
     }
   }
 
