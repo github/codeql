@@ -1,3 +1,8 @@
+/**
+ * An IR taint tracking library that uses an IR DataFlow configuration to track
+ * taint from user inputs as defined by `semmle.code.cpp.security.Security`.
+ */
+
 import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
@@ -471,6 +476,25 @@ module TaintedWithPath {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       none()
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  module Private {
+    /** Gets a predecessor `PathNode` of `pathNode`, if any. */
+    PathNode getAPredecessor(PathNode pathNode) { edges(result, pathNode) }
+
+    /** Gets the element that `pathNode` wraps, if any. */
+    Element getElementFromPathNode(PathNode pathNode) {
+      exists(DataFlow::Node node | node = pathNode.(WrapPathNode).inner().getNode() |
+        result = node.asInstruction().getAST()
+        or
+        result = node.asOperand().getDef().getAST()
+      )
+      or
+      result = pathNode.(EndpointPathNode).inner()
     }
   }
 

@@ -279,7 +279,7 @@ private predicate formatStringFragment(Expr fmt) {
 private predicate formatStringValue(Expr e, string fmtvalue) {
   formatStringFragment(e) and
   (
-    e.(StringLiteral).getRepresentedString() = fmtvalue
+    e.(StringLiteral).getValue() = fmtvalue
     or
     e.getType() instanceof IntegralType and fmtvalue = "1" // dummy value
     or
@@ -318,7 +318,7 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
       getprop.hasName("getProperty") and
       getprop.getDeclaringType().hasQualifiedName("java.lang", "System") and
       getprop.getNumberOfParameters() = 1 and
-      ma.getAnArgument().(StringLiteral).getRepresentedString() = prop and
+      ma.getAnArgument().(StringLiteral).getValue() = prop and
       (prop = "line.separator" or prop = "file.separator" or prop = "path.separator") and
       fmtvalue = "x" // dummy value
     )

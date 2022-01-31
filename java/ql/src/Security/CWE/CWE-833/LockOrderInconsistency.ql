@@ -15,7 +15,7 @@ import java
 /** A variable of type `ReentrantLock`. */
 class LockVariable extends Variable {
   LockVariable() {
-    getType().(RefType).hasQualifiedName("java.util.concurrent.locks", "ReentrantLock")
+    this.getType().(RefType).hasQualifiedName("java.util.concurrent.locks", "ReentrantLock")
   }
 
   /** An access to method `lock` on this variable. */
@@ -159,7 +159,7 @@ predicate badMethodAccessLockOrder(
   MethodAccess outerAccess, MethodAccess innerAccess, MethodAccess other
 ) {
   exists(Synched outer, Synched inner |
-    inner.(MethodAccess) = innerAccess and
+    inner = innerAccess and
     inner = outer.getInnerSynch() and
     inner.getLockType() = outer.getLockType() and
     exists(Parameter p, int i | outer.(Method).getAParameter() = p and p.getPosition() = i |

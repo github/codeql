@@ -9,6 +9,8 @@
  * @id js/sql-injection
  * @tags security
  *       external/cwe/cwe-089
+ *       external/cwe/cwe-090
+ *       external/cwe/cwe-943
  */
 
 import javascript

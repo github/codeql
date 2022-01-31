@@ -31,15 +31,15 @@ abstract class SystemData extends Element {
    */
   Expr getAnExprIndirect() {
     // direct SystemData
-    result = getAnExpr() or
+    result = this.getAnExpr() or
     // flow via global or member variable (conservative approximation)
-    result = getAnAffectedVar().getAnAccess() or
+    result = this.getAnAffectedVar().getAnAccess() or
     // flow via stack variable
-    definitionUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, getAnExprIndirect(), result) or
-    useUsePair(_, result, getAnExprIndirect()) or
+    definitionUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, this.getAnExprIndirect(), result) or
+    useUsePair(_, result, this.getAnExprIndirect()) or
     // flow from assigned value to assignment expression
-    result.(AssignExpr).getRValue() = getAnExprIndirect()
+    result.(AssignExpr).getRValue() = this.getAnExprIndirect()
   }
 
   /**
@@ -324,10 +324,8 @@ abstract class DataOutput extends Element {
 /**
  * Data that is output via standard output or standard error.
  */
-class StandardOutput extends DataOutput {
-  StandardOutput() { this instanceof OutputWrite }
-
-  override Expr getASource() { result = this.(OutputWrite).getASource() }
+class StandardOutput extends DataOutput instanceof OutputWrite {
+  override Expr getASource() { result = OutputWrite.super.getASource() }
 }
 
 private predicate socketCallOrIndirect(FunctionCall call) {
@@ -378,5 +376,5 @@ class SocketOutput extends DataOutput {
 from SystemData sd, DataOutput ow
 where
   sd.getAnExprIndirect() = ow.getASource() or
-  sd.getAnExprIndirect() = ow.getASource().(Expr).getAChild*()
+  sd.getAnExprIndirect() = ow.getASource().getAChild*()
 select ow, "This operation exposes system data from $@.", sd, sd.toString()

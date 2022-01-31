@@ -10,7 +10,7 @@ class Conf extends DataFlow::Configuration {
   Conf() { this = "Conf" }
 
   override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getValueText() = "taint"
+    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
   }
 
   override predicate isSink(DataFlow::Node sink) {

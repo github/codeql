@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Modern encryption relies on it being computationally infeasible to break the cipher and decode a message without the key.
+As computational power increases, the ability to break ciphers grows and keys need to become larger.
+</p>
+</overview>
+
+<recommendation>
+<p>
+An encryption key should be at least 2048-bit long when using RSA encryption, and 128-bit long when using 
+symmetric encryption.
+</p>
+</recommendation>
+
+<references>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA</a>.
+</li>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.
+</li>
+<li>
+NodeJS: 
+<a href="https://nodejs.org/api/crypto.html">Crypto</a>.
+</li>
+<li>
+NIST:
+<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">
+Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.
+</li>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Key_size">Key size</a>
+</li>
+</references>
+</qhelp>

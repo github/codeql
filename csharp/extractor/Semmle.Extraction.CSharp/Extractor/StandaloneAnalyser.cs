@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp
         {
             compilation = compilationIn;
             layout = new Layout();
-            extractor = new StandaloneExtractor(Logger, PathTransformer);
+            extractor = new StandaloneExtractor(Logger, PathTransformer, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();

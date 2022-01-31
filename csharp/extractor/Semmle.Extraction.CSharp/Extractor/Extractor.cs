@@ -86,9 +86,9 @@ namespace Semmle.Extraction.CSharp
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), args);
+            var options = Options.CreateWithEnvironment(args);
+            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
 
-            var options = Options.CreateWithEnvironment(Entities.Compilation.Settings.Args);
             var fileLogger = new FileLogger(options.Verbosity, GetCSharpLogPath());
             using var logger = options.Console
                 ? new CombinedLogger(new ConsoleLogger(options.Verbosity), fileLogger)

@@ -21,6 +21,14 @@ private class TStageOperand =
   TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
+ * A known location. Testing `loc instanceof KnownLocation` will account for non existing locations, as
+ * opposed to testing `not loc isntanceof UnknownLocation`
+ */
+private class KnownLocation extends Language::Location {
+  KnownLocation() { not this instanceof Language::UnknownLocation }
+}
+
+/**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
  * (the defining instruction) in another instruction (the use instruction)
  */
@@ -45,8 +53,10 @@ class Operand extends TStageOperand {
 
   /**
    * Gets the location of the source code for this operand.
+   * By default this is where the operand is used, but some subclasses may override this
+   * using `getAnyDef()` if it makes more sense.
    */
-  final Language::Location getLocation() { result = this.getUse().getLocation() }
+  Language::Location getLocation() { result = this.getUse().getLocation() }
 
   /**
    * Gets the function that contains this operand.
@@ -269,6 +279,10 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
   final override string toString() { result = tag.toString() }
 
+  // most `RegisterOperands` have a more meaningful location at the definition
+  // the only exception are specific cases of `ThisArgumentOperand`
+  override Language::Location getLocation() { result = this.getAnyDef().getLocation() }
+
   final override Instruction getAnyDef() { result = defInstr }
 
   final override Overlap getDefinitionOverlap() {
@@ -293,7 +307,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
   final override string toString() { result = tag.toString() }
 
   final override Instruction getAnyDef() {
-    result = unique(Instruction defInstr | hasDefinition(defInstr, _))
+    result = unique(Instruction defInstr | this.hasDefinition(defInstr, _))
   }
 
   final override Overlap getDefinitionOverlap() { this.hasDefinition(_, result) }
@@ -401,11 +415,19 @@ class ArgumentOperand extends RegisterOperand {
 }
 
 /**
- * An operand representing the implicit 'this' argument to a member function
+ * An operand representing the implicit `this` argument to a member function
  * call.
  */
 class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
+
+  // in most cases the def location makes more sense, but in some corner cases it
+  // has an unknown location: in those cases we fall back to the use location
+  override Language::Location getLocation() {
+    if this.getAnyDef().getLocation() instanceof KnownLocation
+    then result = this.getAnyDef().getLocation()
+    else result = this.getUse().getLocation()
+  }
 }
 
 /**

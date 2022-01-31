@@ -67,6 +67,14 @@ class AndroidActivity extends ExportableAndroidComponent {
   AndroidActivity() { getASuperTypeStar(this).hasQualifiedName("android.app", "Activity") }
 }
 
+/** The method `setResult` of the class `android.app.Activity`. */
+class ActivitySetResultMethod extends Method {
+  ActivitySetResultMethod() {
+    this.getDeclaringType().hasQualifiedName("android.app", "Activity") and
+    this.hasName("setResult")
+  }
+}
+
 /** An Android service. */
 class AndroidService extends ExportableAndroidComponent {
   AndroidService() { getASuperTypeStar(this).hasQualifiedName("android.app", "Service") }

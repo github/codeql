@@ -23,7 +23,7 @@ import codeql.ruby.dataflow.RemoteFlowSources
 import DataFlow::PathGraph
 
 /**
- * Method calls that have a suggested replacement.
+ * A method call that has a suggested replacement.
  */
 abstract class Replacement extends DataFlow::CallNode {
   abstract string getFrom();

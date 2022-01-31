@@ -179,15 +179,7 @@ module PrototypePollution {
       call = DataFlow::moduleImport(id).getACall() or
       call = DataFlow::moduleImport(id).getAMemberCall(_)
     ) and
-    (
-      id = "deep"
-      or
-      id = "extend2"
-      or
-      id = "js-extend"
-      or
-      id = "smart-extend"
-    )
+    id = ["deep", "extend2", "js-extend", "smart-extend"]
     or
     call.isDeep() and
     call = AngularJS::angular().getAMemberCall("merge") and

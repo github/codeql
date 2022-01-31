@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Cross-site request forgery (CSRF) is a type of vulnerability in which an
+      attacker is able to force a user carry out an action that the user did
+      not intend.
+    </p>
+
+    <p>
+      The attacker tricks an authenticated user into submitting a request to the
+      web application. Typically this request will result in a state change on
+      the server, such as changing the user's password. The request can be
+      initiated when the user visits a site controlled by the attacker. If the
+      web application relies only on cookies for authentication, or on other
+      credentials that are automatically included in the request, then this
+      request will appear as legitimate to the server.
+    </p>
+
+    <p>
+      A common countermeasure for CSRF is to generate a unique token to be
+      included in the HTML sent from the server to a user. This token can be
+      used as a hidden field to be sent back with requests to the server, where
+      the server can then check that the token is valid and associated with the
+      relevant user session.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      In many web frameworks, CSRF protection is enabled by default. In these
+      cases, using the default configuration is sufficient to guard against most
+      CSRF attacks.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example shows a case where CSRF protection is disabled by
+      skipping token verification.
+    </p>
+
+    <sample src="examples/UsersController.rb"/>
+
+    <p>
+      Verification can be re-enabled by removing the call to
+      <code>skip_before_action</code>.
+    </p>
+
+    <p>
+      Care should be taken when using the Rails
+      <code>protect_from_forgery</code> method to prevent CSRF. The default
+      behaviour of this method is to null the session when an invalid CSRF token
+      is provided. This may not be sufficient to avoid a CSRF vulnerability -
+      for example if parts of the session are memoized. Calling
+      <code>protect_from_forgery with: :exception</code> can help to avoid this
+      by raising an exception on an invalid CSRF token instead.
+    </p>
+
+  </example>
+
+  <references>
+    <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-site request forgery</a></li>
+    <li>OWASP: <a href="https://owasp.org/www-community/attacks/csrf">Cross-site request forgery</a></li>
+    <li>Securing Rails Applications: <a href="https://guides.rubyonrails.org/security.html#cross-site-request-forgery-csrf">Cross-Site Request Forgery (CSRF)</a></li>
+    <li>Veracode: <a href="https://www.veracode.com/blog/managing-appsec/when-rails-protectfromforgery-fails">When Rails' protect_from_forgery Fails</a>.</li>
+  </references>
+
+</qhelp>

@@ -1,4 +1,6 @@
 name: codeql/python-examples
-version: 0.0.2
+groups: 
+  - python
+  - examples
 dependencies:
-    codeql/python-all: "*"
+  codeql/python-all: "*"

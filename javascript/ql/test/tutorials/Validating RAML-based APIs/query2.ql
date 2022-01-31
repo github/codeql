@@ -1,11 +1,6 @@
 import javascript
 
-string httpVerb() {
-  result = "get" or
-  result = "put" or
-  result = "post" or
-  result = "delete"
-}
+string httpVerb() { result = ["get", "put", "post", "delete"] }
 
 /** A RAML specification. */
 class RAMLSpec extends YAMLDocument, YAMLMapping {

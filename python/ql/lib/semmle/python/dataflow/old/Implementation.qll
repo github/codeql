@@ -503,7 +503,7 @@ class TaintTrackingImplementation extends string {
     TaintKind kind, string edgeLabel
   ) {
     exists(PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
-      instantiationCall(node.asCfgNode(), src, init, context, callee) and
+      this.instantiationCall(node.asCfgNode(), src, init, context, callee) and
       this.(EssaTaintTracking).taintedDefinition(_, self.getDefinition(), callee, path, kind) and
       self.getSourceVariable().(Variable).isSelf() and
       BaseFlow::reaches_exit(self) and
@@ -789,9 +789,9 @@ private class EssaTaintTracking extends string {
     TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    taintedPiNodeOneway(src, defn, context, path, kind)
+    this.taintedPiNodeOneway(src, defn, context, path, kind)
     or
-    taintedPiNodeBothways(src, defn, context, path, kind)
+    this.taintedPiNodeBothways(src, defn, context, path, kind)
   }
 
   pragma[noinline]
@@ -802,7 +802,7 @@ private class EssaTaintTracking extends string {
     exists(DataFlow::Node srcnode, ControlFlowNode use |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
-      defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
+      defn.getSense() = this.testEvaluates(defn, defn.getTest(), use, src)
     )
   }
 
@@ -898,7 +898,7 @@ private class EssaTaintTracking extends string {
       )
     )
     or
-    result = testEvaluates(defn, not_operand(test), use, src).booleanNot()
+    result = this.testEvaluates(defn, not_operand(test), use, src).booleanNot()
   }
 
   /**
@@ -911,7 +911,7 @@ private class EssaTaintTracking extends string {
       use = test
       or
       exists(ControlFlowNode notuse |
-        boolean_filter(test, notuse) and
+        this.boolean_filter(test, notuse) and
         use = not_operand(notuse)
       )
     )

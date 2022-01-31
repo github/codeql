@@ -66,6 +66,9 @@ class RawCall extends ActionViewContextCall {
 // A call to the `params` method within the context of a template.
 private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
 
+// A call to the `cookies` method within the context of a template.
+private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCall { }
+
 /**
  * A call to a `render` method that will populate the response body with the
  * rendered content.
@@ -78,7 +81,9 @@ abstract class RenderCall extends MethodCall {
     result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
   }
 
-  private string getTemplatePathValue() { result = this.getTemplatePathArgument().getValueText() }
+  private string getTemplatePathValue() {
+    result = this.getTemplatePathArgument().getConstantValue().getStringOrSymbol()
+  }
 
   // everything up to and including the final slash, but ignoring any leading slash
   private string getSubPath() {

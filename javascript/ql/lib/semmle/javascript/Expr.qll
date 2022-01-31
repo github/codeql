@@ -20,22 +20,22 @@ class ExprOrType extends @expr_or_type, Documentable {
   Stmt getEnclosingStmt() { enclosing_stmt(this, result) }
 
   /** Gets the function in which this expression or type appears, if any. */
-  Function getEnclosingFunction() { result = getContainer() }
+  Function getEnclosingFunction() { result = this.getContainer() }
 
   /**
    * Gets the JSDoc comment associated with this expression or type or its parent statement, if any.
    */
   override JSDoc getDocumentation() {
-    result = getOwnDocumentation()
+    result = this.getOwnDocumentation()
     or
     // if there is no JSDoc for the expression itself, check the enclosing property or statement
-    not exists(getOwnDocumentation()) and
+    not exists(this.getOwnDocumentation()) and
     (
-      exists(Property prop | prop = getParent() | result = prop.getDocumentation())
+      exists(Property prop | prop = this.getParent() | result = prop.getDocumentation())
       or
-      exists(MethodDeclaration decl | decl = getParent() | result = decl.getDocumentation())
+      exists(MethodDeclaration decl | decl = this.getParent() | result = decl.getDocumentation())
       or
-      exists(VariableDeclarator decl | decl = getParent() | result = decl.getDocumentation())
+      exists(VariableDeclarator decl | decl = this.getParent() | result = decl.getDocumentation())
       or
       exists(DeclStmt stmt | this = stmt.getDecl(0) | result = stmt.getDocumentation())
       or
@@ -89,7 +89,8 @@ class ExprOrType extends @expr_or_type, Documentable {
    *
    * Also see `getUnderlyingReference` and `stripParens`.
    */
-  Expr getUnderlyingValue() { result = this }
+  cached
+  Expr getUnderlyingValue() { Stages::Ast::ref() and result = this }
 }
 
 /**
@@ -119,7 +120,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Holds if this expression is pure, that is, its evaluation is guaranteed
    * to be side-effect free.
    */
-  predicate isPure() { not isImpure() }
+  predicate isPure() { not this.isImpure() }
 
   /**
    * Gets the kind of this expression, which is an integer value representing the expression's
@@ -151,22 +152,22 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Holds if this expression accesses the global variable `g`, either directly
    * or through the `window` object.
    */
-  predicate accessesGlobal(string g) { flow().accessesGlobal(g) }
+  predicate accessesGlobal(string g) { this.flow().accessesGlobal(g) }
 
   /**
    * Holds if this expression may evaluate to `s`.
    */
-  predicate mayHaveStringValue(string s) { flow().mayHaveStringValue(s) }
+  predicate mayHaveStringValue(string s) { this.flow().mayHaveStringValue(s) }
 
   /**
    * Holds if this expression may evaluate to `b`.
    */
-  predicate mayHaveBooleanValue(boolean b) { flow().mayHaveBooleanValue(b) }
+  predicate mayHaveBooleanValue(boolean b) { this.flow().mayHaveBooleanValue(b) }
 
   /**
    * Holds if this expression may refer to the initial value of parameter `p`.
    */
-  predicate mayReferToParameter(Parameter p) { flow().mayReferToParameter(p) }
+  predicate mayReferToParameter(Parameter p) { this.flow().mayReferToParameter(p) }
 
   /**
    * Gets the static type of this expression, as determined by the TypeScript type system.
@@ -248,9 +249,9 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    */
   pragma[inline]
   DataFlow::Node getExceptionTarget() {
-    result = getCatchParameterFromStmt(getRawEnclosingStmt(this))
+    result = getCatchParameterFromStmt(this.getRawEnclosingStmt(this))
     or
-    not exists(getCatchParameterFromStmt(getRawEnclosingStmt(this))) and
+    not exists(getCatchParameterFromStmt(this.getRawEnclosingStmt(this))) and
     result =
       any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
   }
@@ -274,7 +275,11 @@ private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
  */
 class Identifier extends @identifier, ExprOrType {
   /** Gets the name of this identifier. */
-  string getName() { literals(result, _, this) }
+  cached
+  string getName() {
+    Stages::Ast::ref() and
+    literals(result, _, this)
+  }
 
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
@@ -340,15 +345,15 @@ class ParExpr extends @par_expr, Expr {
   /** Gets the expression within parentheses. */
   Expr getExpression() { result = this.getChildExpr(0) }
 
-  override Expr stripParens() { result = getExpression().stripParens() }
+  override Expr stripParens() { result = this.getExpression().stripParens() }
 
-  override int getIntValue() { result = getExpression().getIntValue() }
+  override int getIntValue() { result = this.getExpression().getIntValue() }
 
-  override predicate isImpure() { getExpression().isImpure() }
+  override predicate isImpure() { this.getExpression().isImpure() }
 
-  override Expr getUnderlyingValue() { result = getExpression().getUnderlyingValue() }
+  override Expr getUnderlyingValue() { result = this.getExpression().getUnderlyingValue() }
 
-  override Expr getUnderlyingReference() { result = getExpression().getUnderlyingReference() }
+  override Expr getUnderlyingReference() { result = this.getExpression().getUnderlyingReference() }
 
   override string getAPrimaryQlClass() { result = "ParExpr" }
 }
@@ -391,10 +396,10 @@ class BooleanLiteral extends @boolean_literal, Literal { }
  */
 class NumberLiteral extends @number_literal, Literal {
   /** Gets the integer value of this literal. */
-  override int getIntValue() { result = getValue().toInt() }
+  override int getIntValue() { result = this.getValue().toInt() }
 
   /** Gets the floating point value of this literal. */
-  float getFloatValue() { result = getValue().toFloat() }
+  float getFloatValue() { result = this.getValue().toFloat() }
 }
 
 /**
@@ -411,13 +416,13 @@ class BigIntLiteral extends @bigint_literal, Literal {
    * Gets the integer value of this literal if it can be represented
    * as a QL integer value.
    */
-  override int getIntValue() { result = getValue().toInt() }
+  override int getIntValue() { result = this.getValue().toInt() }
 
   /**
    * Gets the floating point value of this literal if it can be represented
    * as a QL floating point value.
    */
-  float getFloatValue() { result = getValue().toFloat() }
+  float getFloatValue() { result = this.getValue().toFloat() }
 }
 
 /**
@@ -459,19 +464,19 @@ class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
   RegExpTerm getRoot() { this = result.getParent() }
 
   /** Gets the flags of this regular expression. */
-  string getFlags() { result = getValue().regexpCapture(".*/(\\w*)$", 1) }
+  string getFlags() { result = this.getValue().regexpCapture(".*/(\\w*)$", 1) }
 
   /** Holds if this regular expression has an `m` flag. */
-  predicate isMultiline() { RegExp::isMultiline(getFlags()) }
+  predicate isMultiline() { RegExp::isMultiline(this.getFlags()) }
 
   /** Holds if this regular expression has a `g` flag. */
-  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
+  predicate isGlobal() { RegExp::isGlobal(this.getFlags()) }
 
   /** Holds if this regular expression has an `i` flag. */
-  predicate isIgnoreCase() { RegExp::isIgnoreCase(getFlags()) }
+  predicate isIgnoreCase() { RegExp::isIgnoreCase(this.getFlags()) }
 
   /** Holds if this regular expression has an `s` flag. */
-  predicate isDotAll() { RegExp::isDotAll(getFlags()) }
+  predicate isDotAll() { RegExp::isDotAll(this.getFlags()) }
 
   override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 }
@@ -492,16 +497,16 @@ class ThisExpr extends @this_expr, Expr {
    * Gets the function whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function.
    */
-  Function getBinder() { result = getEnclosingFunction().getThisBinder() }
+  Function getBinder() { result = this.getEnclosingFunction().getThisBinder() }
 
   /**
    * Gets the function or top-level whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function or top-level.
    */
   StmtContainer getBindingContainer() {
-    result = getContainer().(Function).getThisBindingContainer()
+    result = this.getContainer().(Function).getThisBindingContainer()
     or
-    result = getContainer().(TopLevel)
+    result = this.getContainer().(TopLevel)
   }
 
   override string getAPrimaryQlClass() { result = "ThisExpr" }
@@ -534,14 +539,14 @@ class ArrayExpr extends @array_expr, Expr {
 
   /** Holds if the `i`th element of this array literal is omitted. */
   predicate elementIsOmitted(int i) {
-    i in [0 .. getSize() - 1] and
-    not exists(getElement(i))
+    i in [0 .. this.getSize() - 1] and
+    not exists(this.getElement(i))
   }
 
   /** Holds if this array literal has an omitted element. */
-  predicate hasOmittedElement() { elementIsOmitted(_) }
+  predicate hasOmittedElement() { this.elementIsOmitted(_) }
 
-  override predicate isImpure() { getAnElement().isImpure() }
+  override predicate isImpure() { this.getAnElement().isImpure() }
 
   override string getAPrimaryQlClass() { result = "ArrayExpr" }
 }
@@ -583,7 +588,7 @@ class ObjectExpr extends @obj_expr, Expr {
    */
   predicate hasTrailingComma() { this.getLastToken().getPreviousToken().getValue() = "," }
 
-  override predicate isImpure() { getAProperty().isImpure() }
+  override predicate isImpure() { this.getAProperty().isImpure() }
 
   override string getAPrimaryQlClass() { result = "ObjectExpr" }
 }
@@ -626,9 +631,9 @@ class Property extends @property, Documentable {
 
   /** Gets the name of this property. */
   string getName() {
-    not isComputed() and result = getNameExpr().(Identifier).getName()
+    not this.isComputed() and result = this.getNameExpr().(Identifier).getName()
     or
-    result = getNameExpr().(Literal).getValue()
+    result = this.getNameExpr().(Literal).getValue()
   }
 
   /** Holds if the name of this property is computed. */
@@ -638,30 +643,30 @@ class Property extends @property, Documentable {
   predicate isMethod() { is_method(this) }
 
   /** Holds if this property is defined using shorthand syntax. */
-  predicate isShorthand() { getNameExpr().getLocation() = getInit().getLocation() }
+  predicate isShorthand() { this.getNameExpr().getLocation() = this.getInit().getLocation() }
 
   /** Gets the object literal this property belongs to. */
   ObjectExpr getObjectExpr() { properties(this, result, _, _, _) }
 
   /** Gets the (0-based) index at which this property appears in its enclosing literal. */
-  int getIndex() { this = getObjectExpr().getProperty(result) }
+  int getIndex() { this = this.getObjectExpr().getProperty(result) }
 
   /**
    * Holds if this property is impure, that is, the evaluation of its name or
    * its initializer expression could have side effects.
    */
   predicate isImpure() {
-    isComputed() and getNameExpr().isImpure()
+    this.isComputed() and this.getNameExpr().isImpure()
     or
-    getInit().isImpure()
+    this.getInit().isImpure()
   }
 
   override string toString() { properties(this, _, _, _, result) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getNameExpr().getFirstControlFlowNode()
+    result = this.getNameExpr().getFirstControlFlowNode()
     or
-    not exists(getNameExpr()) and result = getInit().getFirstControlFlowNode()
+    not exists(this.getNameExpr()) and result = this.getInit().getFirstControlFlowNode()
   }
 
   /**
@@ -677,7 +682,7 @@ class Property extends @property, Documentable {
    * For example, the property `@A @B x: 42` has
    * `@A` as its 0th decorator, and `@B` as its first decorator.
    */
-  Decorator getDecorator(int i) { result = getChildExpr(-(i + 1)) }
+  Decorator getDecorator(int i) { result = this.getChildExpr(-(i + 1)) }
 
   /**
    * Gets a decorator applied to this property.
@@ -685,7 +690,7 @@ class Property extends @property, Documentable {
    * For example, the property `@A @B x: 42` has
    * decorators `@A` and `@B`.
    */
-  Decorator getADecorator() { result = getDecorator(_) }
+  Decorator getADecorator() { result = this.getDecorator(_) }
 
   override string getAPrimaryQlClass() { result = "Property" }
 }
@@ -774,7 +779,7 @@ class PropertySetter extends PropertyAccessor, @property_setter { }
  * ```
  */
 class SpreadProperty extends Property {
-  SpreadProperty() { not exists(getNameExpr()) }
+  SpreadProperty() { not exists(this.getNameExpr()) }
 }
 
 /**
@@ -834,7 +839,9 @@ class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
 
   override predicate isImpure() { none() }
 
-  override Function getThisBinder() { result = getEnclosingContainer().(Function).getThisBinder() }
+  override Function getThisBinder() {
+    result = this.getEnclosingContainer().(Function).getThisBinder()
+  }
 
   override string getAPrimaryQlClass() { result = "ArrowFunctionExpr" }
 }
@@ -850,20 +857,20 @@ class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
  */
 class SeqExpr extends @seq_expr, Expr {
   /** Gets the `i`th expression in this sequence. */
-  Expr getOperand(int i) { result = getChildExpr(i) }
+  Expr getOperand(int i) { result = this.getChildExpr(i) }
 
   /** Gets an expression in this sequence. */
-  Expr getAnOperand() { result = getOperand(_) }
+  Expr getAnOperand() { result = this.getOperand(_) }
 
   /** Gets the number of expressions in this sequence. */
-  int getNumOperands() { result = count(getOperand(_)) }
+  int getNumOperands() { result = count(this.getOperand(_)) }
 
   /** Gets the last expression in this sequence. */
-  Expr getLastOperand() { result = getOperand(getNumOperands() - 1) }
+  Expr getLastOperand() { result = this.getOperand(this.getNumOperands() - 1) }
 
-  override predicate isImpure() { getAnOperand().isImpure() }
+  override predicate isImpure() { this.getAnOperand().isImpure() }
 
-  override Expr getUnderlyingValue() { result = getLastOperand().getUnderlyingValue() }
+  override Expr getUnderlyingValue() { result = this.getLastOperand().getUnderlyingValue() }
 
   override string getAPrimaryQlClass() { result = "SeqExpr" }
 }
@@ -879,20 +886,20 @@ class SeqExpr extends @seq_expr, Expr {
  */
 class ConditionalExpr extends @conditional_expr, Expr {
   /** Gets the condition expression of this conditional. */
-  Expr getCondition() { result = getChildExpr(0) }
+  Expr getCondition() { result = this.getChildExpr(0) }
 
   /** Gets the 'then' expression of this conditional. */
-  Expr getConsequent() { result = getChildExpr(1) }
+  Expr getConsequent() { result = this.getChildExpr(1) }
 
   /** Gets the 'else' expression of this conditional. */
-  Expr getAlternate() { result = getChildExpr(2) }
+  Expr getAlternate() { result = this.getChildExpr(2) }
 
   /** Gets either the 'then' or the 'else' expression of this conditional. */
-  Expr getABranch() { result = getConsequent() or result = getAlternate() }
+  Expr getABranch() { result = this.getConsequent() or result = this.getAlternate() }
 
   override predicate isImpure() {
-    getCondition().isImpure() or
-    getABranch().isImpure()
+    this.getCondition().isImpure() or
+    this.getABranch().isImpure()
   }
 
   override string getAPrimaryQlClass() { result = "ConditionalExpr" }
@@ -917,7 +924,7 @@ class InvokeExpr extends @invokeexpr, Expr {
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() {
-    exists(Expr callee | callee = getCallee().getUnderlyingValue() |
+    exists(Expr callee | callee = this.getCallee().getUnderlyingValue() |
       result = callee.(Identifier).getName() or
       result = callee.(PropAccess).getPropertyName()
     )
@@ -927,25 +934,25 @@ class InvokeExpr extends @invokeexpr, Expr {
   Expr getArgument(int i) { i >= 0 and result = this.getChildExpr(i) }
 
   /** Gets an argument of this invocation. */
-  Expr getAnArgument() { result = getArgument(_) }
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the last argument of this invocation, if any. */
-  Expr getLastArgument() { result = getArgument(getNumArgument() - 1) }
+  Expr getLastArgument() { result = this.getArgument(this.getNumArgument() - 1) }
 
   /** Gets the number of arguments of this invocation. */
-  int getNumArgument() { result = count(getAnArgument()) }
+  int getNumArgument() { result = count(this.getAnArgument()) }
 
   /** Gets the `i`th type argument of this invocation. */
   TypeExpr getTypeArgument(int i) { i >= 0 and result = this.getChildTypeExpr(-i - 2) }
 
   /** Gets a type argument of this invocation. */
-  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+  TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
 
   /** Gets the number of type arguments of this invocation. */
-  int getNumTypeArgument() { result = count(getATypeArgument()) }
+  int getNumTypeArgument() { result = count(this.getATypeArgument()) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getCallee().getFirstControlFlowNode()
+    result = this.getCallee().getFirstControlFlowNode()
   }
 
   /** Holds if the argument list of this function has a trailing comma. */
@@ -953,7 +960,7 @@ class InvokeExpr extends @invokeexpr, Expr {
     // check whether the last token of this invocation is a closing
     // parenthesis, which itself is preceded by a comma
     exists(PunctuatorToken rparen | rparen.getValue() = ")" |
-      rparen = getLastToken() and
+      rparen = this.getLastToken() and
       rparen.getPreviousToken().getValue() = ","
     )
   }
@@ -961,7 +968,7 @@ class InvokeExpr extends @invokeexpr, Expr {
   /**
    * Holds if the `i`th argument of this invocation is a spread element.
    */
-  predicate isSpreadArgument(int i) { getArgument(i).stripParens() instanceof SpreadElement }
+  predicate isSpreadArgument(int i) { this.getArgument(i).stripParens() instanceof SpreadElement }
 
   /**
    * Holds if the `i`th argument of this invocation is an object literal whose property
@@ -970,7 +977,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    * This predicate is an approximation, computed using only local data flow.
    */
   predicate hasOptionArgument(int i, string name, Expr value) {
-    value = flow().(DataFlow::InvokeNode).getOptionArgument(i, name).asExpr()
+    value = this.flow().(DataFlow::InvokeNode).getOptionArgument(i, name).asExpr()
   }
 
   /**
@@ -1004,7 +1011,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
-  Function getResolvedCallee() { result = getResolvedCalleeName().getImplementation() }
+  Function getResolvedCallee() { result = this.getResolvedCalleeName().getImplementation() }
 }
 
 /**
@@ -1036,7 +1043,7 @@ class CallExpr extends @call_expr, InvokeExpr {
    * Gets the expression specifying the receiver on which the function
    * is invoked, if any.
    */
-  Expr getReceiver() { result = getCallee().(PropAccess).getBase() }
+  Expr getReceiver() { result = this.getCallee().(PropAccess).getBase() }
 
   override string getAPrimaryQlClass() { result = "CallExpr" }
 }
@@ -1052,25 +1059,25 @@ class CallExpr extends @call_expr, InvokeExpr {
  * ```
  */
 class MethodCallExpr extends CallExpr {
-  MethodCallExpr() { getCallee().stripParens() instanceof PropAccess }
+  MethodCallExpr() { this.getCallee().stripParens() instanceof PropAccess }
 
   /**
    * Gets the property access referencing the method to be invoked.
    */
-  private PropAccess getMethodRef() { result = getCallee().stripParens() }
+  private PropAccess getMethodRef() { result = this.getCallee().stripParens() }
 
   /**
    * Gets the receiver expression of this method call.
    */
-  override Expr getReceiver() { result = getMethodRef().getBase() }
+  override Expr getReceiver() { result = this.getMethodRef().getBase() }
 
   /**
    * Gets the name of the invoked method, if it can be determined.
    */
-  string getMethodName() { result = getMethodRef().getPropertyName() }
+  string getMethodName() { result = this.getMethodRef().getPropertyName() }
 
   /** Holds if this invocation calls method `m` on expression `base`. */
-  predicate calls(Expr base, string m) { getMethodRef().accesses(base, m) }
+  predicate calls(Expr base, string m) { this.getMethodRef().accesses(base, m) }
 
   override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 }
@@ -1088,14 +1095,14 @@ class MethodCallExpr extends CallExpr {
  */
 class PropAccess extends @propaccess, Expr {
   /** Gets the base expression on which the property is accessed. */
-  Expr getBase() { result = getChildExpr(0) }
+  Expr getBase() { result = this.getChildExpr(0) }
 
   /**
    * Gets the expression specifying the name of the property being
    * read or written. For dot expressions, this is an identifier; for
    * index expressions it can be an arbitrary expression.
    */
-  Expr getPropertyNameExpr() { result = getChildExpr(1) }
+  Expr getPropertyNameExpr() { result = this.getChildExpr(1) }
 
   /** Gets the name of the accessed property, if it can be determined. */
   string getPropertyName() { none() }
@@ -1103,21 +1110,21 @@ class PropAccess extends @propaccess, Expr {
   /** Gets the qualified name of the accessed property, if it can be determined. */
   string getQualifiedName() {
     exists(string basename |
-      basename = getBase().(Identifier).getName() or
-      basename = getBase().(PropAccess).getQualifiedName()
+      basename = this.getBase().(Identifier).getName() or
+      basename = this.getBase().(PropAccess).getQualifiedName()
     |
-      result = basename + "." + getPropertyName()
+      result = basename + "." + this.getPropertyName()
     )
   }
 
   /** Holds if this property name accesses property `p` on expression `base`. */
   predicate accesses(Expr base, string p) {
-    base = getBase() and
-    p = getPropertyName()
+    base = this.getBase() and
+    p = this.getPropertyName()
   }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getBase().getFirstControlFlowNode()
+    result = this.getBase().getFirstControlFlowNode()
   }
 
   override Expr getUnderlyingReference() { result = this }
@@ -1133,12 +1140,12 @@ class PropAccess extends @propaccess, Expr {
  * ```
  */
 class DotExpr extends @dot_expr, PropAccess {
-  override string getPropertyName() { result = getProperty().getName() }
+  override string getPropertyName() { result = this.getProperty().getName() }
 
   /** Gets the identifier specifying the name of the accessed property. */
-  Identifier getProperty() { result = getChildExpr(1) }
+  Identifier getProperty() { result = this.getChildExpr(1) }
 
-  override predicate isImpure() { getBase().isImpure() }
+  override predicate isImpure() { this.getBase().isImpure() }
 
   override string getAPrimaryQlClass() { result = "DotExpr" }
 }
@@ -1154,13 +1161,13 @@ class DotExpr extends @dot_expr, PropAccess {
  */
 class IndexExpr extends @index_expr, PropAccess {
   /** Gets the expression specifying the name of the accessed property. */
-  Expr getIndex() { result = getChildExpr(1) }
+  Expr getIndex() { result = this.getChildExpr(1) }
 
-  override string getPropertyName() { result = getIndex().(Literal).getValue() }
+  override string getPropertyName() { result = this.getIndex().(Literal).getValue() }
 
   override predicate isImpure() {
-    getBase().isImpure() or
-    getIndex().isImpure()
+    this.getBase().isImpure() or
+    this.getIndex().isImpure()
   }
 
   override string getAPrimaryQlClass() { result = "IndexExpr" }
@@ -1178,15 +1185,15 @@ class IndexExpr extends @index_expr, PropAccess {
  */
 class UnaryExpr extends @unaryexpr, Expr {
   /** Gets the operand of this unary operator. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   /** Gets the operator of this expression. */
   string getOperator() { none() }
 
-  override predicate isImpure() { getOperand().isImpure() }
+  override predicate isImpure() { this.getOperand().isImpure() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getOperand().getFirstControlFlowNode()
+    result = this.getOperand().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "UnaryExpr" }
@@ -1204,7 +1211,7 @@ class UnaryExpr extends @unaryexpr, Expr {
 class NegExpr extends @neg_expr, UnaryExpr {
   override string getOperator() { result = "-" }
 
-  override int getIntValue() { result = -getOperand().getIntValue() }
+  override int getIntValue() { result = -this.getOperand().getIntValue() }
 }
 
 /**
@@ -1316,28 +1323,28 @@ class SpreadElement extends @spread_element, UnaryExpr {
  */
 class BinaryExpr extends @binaryexpr, Expr {
   /** Gets the left operand of this binary operator. */
-  Expr getLeftOperand() { result = getChildExpr(0) }
+  Expr getLeftOperand() { result = this.getChildExpr(0) }
 
   /** Gets the right operand of this binary operator. */
-  Expr getRightOperand() { result = getChildExpr(1) }
+  Expr getRightOperand() { result = this.getChildExpr(1) }
 
   /** Gets an operand of this binary operator. */
-  Expr getAnOperand() { result = getAChildExpr() }
+  Expr getAnOperand() { result = this.getAChildExpr() }
 
   /** Holds if `e` and `f` (in either order) are the two operands of this expression. */
   predicate hasOperands(Expr e, Expr f) {
-    e = getAnOperand() and
-    f = getAnOperand() and
+    e = this.getAnOperand() and
+    f = this.getAnOperand() and
     e != f
   }
 
   /** Gets the operator of this expression. */
   string getOperator() { none() }
 
-  override predicate isImpure() { getAnOperand().isImpure() }
+  override predicate isImpure() { this.getAnOperand().isImpure() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getLeftOperand().getFirstControlFlowNode()
+    result = this.getLeftOperand().getFirstControlFlowNode()
   }
 
   /**
@@ -1348,7 +1355,7 @@ class BinaryExpr extends @binaryexpr, Expr {
    */
   int getWhitespaceAroundOperator() {
     exists(Token lastLeft, Token operator, Token firstRight, int l, int c1, int c2, int c3, int c4 |
-      lastLeft = getLeftOperand().getLastToken() and
+      lastLeft = this.getLeftOperand().getLastToken() and
       operator = lastLeft.getNextToken() and
       firstRight = operator.getNextToken() and
       lastLeft.getLocation().hasLocationInfo(_, _, _, l, c1) and
@@ -1559,6 +1566,14 @@ class URShiftExpr extends @urshift_expr, BinaryExpr {
  */
 class AddExpr extends @add_expr, BinaryExpr {
   override string getOperator() { result = "+" }
+
+  /**
+   * Gets the value of this string concatenation parsed as a regular expression, if possible.
+   *
+   * All string literals have an associated regular expression tree, provided they can
+   * be parsed without syntax errors.
+   */
+  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**
@@ -1881,15 +1896,17 @@ class ShiftExpr extends BinaryExpr {
  */
 class Assignment extends @assignment, Expr {
   /** Gets the left hand side of this assignment. */
-  Expr getLhs() { result = getChildExpr(0) }
+  Expr getLhs() { result = this.getChildExpr(0) }
 
   /** Gets the right hand side of this assignment. */
-  Expr getRhs() { result = getChildExpr(1) }
+  Expr getRhs() { result = this.getChildExpr(1) }
 
   /** Gets the variable or property this assignment writes to, if any. */
-  Expr getTarget() { result = getLhs().stripParens() }
+  Expr getTarget() { result = this.getLhs().stripParens() }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getLhs().getFirstControlFlowNode() }
+  override ControlFlowNode getFirstControlFlowNode() {
+    result = this.getLhs().getFirstControlFlowNode()
+  }
 }
 
 /**
@@ -1902,7 +1919,7 @@ class Assignment extends @assignment, Expr {
  * ```
  */
 class AssignExpr extends @assign_expr, Assignment {
-  override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
+  override Expr getUnderlyingValue() { result = this.getRhs().getUnderlyingValue() }
 
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
@@ -2118,7 +2135,7 @@ class AssignNullishCoalescingExpr extends @assignnullishcoalescingexpr, Compound
  */
 class UpdateExpr extends @updateexpr, Expr {
   /** Gets the operand of this update. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   /** Holds if this is a prefix increment or prefix decrement expression. */
   predicate isPrefix() { none() }
@@ -2127,7 +2144,7 @@ class UpdateExpr extends @updateexpr, Expr {
   string getOperator() { none() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getOperand().getFirstControlFlowNode()
+    result = this.getOperand().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "UpdateExpr" }
@@ -2200,7 +2217,7 @@ class PostDecExpr extends @postdec_expr, UpdateExpr {
  */
 class YieldExpr extends @yield_expr, Expr {
   /** Gets the operand of this `yield` expression. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   /** Holds if this is a `yield*` expression. */
   predicate isDelegating() { is_delegating(this) }
@@ -2208,9 +2225,9 @@ class YieldExpr extends @yield_expr, Expr {
   override predicate isImpure() { any() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getOperand().getFirstControlFlowNode()
+    result = this.getOperand().getFirstControlFlowNode()
     or
-    not exists(getOperand()) and result = this
+    not exists(this.getOperand()) and result = this
   }
 
   override string getAPrimaryQlClass() { result = "YieldExpr" }
@@ -2231,45 +2248,47 @@ class ComprehensionExpr extends @comprehension_expr, Expr {
   /** Gets the `n`th comprehension block in this comprehension. */
   ComprehensionBlock getBlock(int n) {
     exists(int idx |
-      result = getChildExpr(idx) and
+      result = this.getChildExpr(idx) and
       idx > 0 and
       n = idx - 1
     )
   }
 
   /** Gets a comprehension block in this comprehension. */
-  ComprehensionBlock getABlock() { result = getBlock(_) }
+  ComprehensionBlock getABlock() { result = this.getBlock(_) }
 
   /** Gets the number of comprehension blocks in this comprehension. */
-  int getNumBlock() { result = count(getABlock()) }
+  int getNumBlock() { result = count(this.getABlock()) }
 
   /** Gets the `n`th filter expression in this comprehension. */
   Expr getFilter(int n) {
     exists(int idx |
-      result = getChildExpr(idx) and
+      result = this.getChildExpr(idx) and
       idx < 0 and
       n = -idx - 1
     )
   }
 
   /** Gets a filter expression in this comprehension. */
-  Expr getAFilter() { result = getFilter(_) }
+  Expr getAFilter() { result = this.getFilter(_) }
 
   /** Gets the number of filter expressions in this comprehension. */
-  int getNumFilter() { result = count(getAFilter()) }
+  int getNumFilter() { result = count(this.getAFilter()) }
 
   /** Gets the body expression of this comprehension. */
-  Expr getBody() { result = getChildExpr(0) }
+  Expr getBody() { result = this.getChildExpr(0) }
 
   override predicate isImpure() {
-    getABlock().isImpure() or
-    getAFilter().isImpure() or
-    getBody().isImpure()
+    this.getABlock().isImpure() or
+    this.getAFilter().isImpure() or
+    this.getBody().isImpure()
   }
 
   /** Holds if this is a legacy postfix comprehension expression. */
   predicate isPostfix() {
-    exists(Token tk | tk = getFirstToken().getNextToken() | not tk.getValue().regexpMatch("if|for"))
+    exists(Token tk | tk = this.getFirstToken().getNextToken() |
+      not tk.getValue().regexpMatch("if|for")
+    )
   }
 
   override string getAPrimaryQlClass() { result = "ComprehensionExpr" }
@@ -2316,14 +2335,14 @@ class GeneratorExpr extends @generator_expr, ComprehensionExpr { }
  */
 class ComprehensionBlock extends @comprehension_block, Expr {
   /** Gets the iterating variable or pattern of this comprehension block. */
-  BindingPattern getIterator() { result = getChildExpr(0) }
+  BindingPattern getIterator() { result = this.getChildExpr(0) }
 
   /** Gets the domain over which this comprehension block iterates. */
-  Expr getDomain() { result = getChildExpr(1) }
+  Expr getDomain() { result = this.getChildExpr(1) }
 
   override predicate isImpure() {
-    getIterator().isImpure() or
-    getDomain().isImpure()
+    this.getIterator().isImpure() or
+    this.getDomain().isImpure()
   }
 
   override string getAPrimaryQlClass() { result = "ComprehensionBlock" }
@@ -2482,17 +2501,17 @@ class RelationalComparison extends Comparison {
    */
   Expr getLesserOperand() {
     (this instanceof LTExpr or this instanceof LEExpr) and
-    result = getLeftOperand()
+    result = this.getLeftOperand()
     or
     (this instanceof GTExpr or this instanceof GEExpr) and
-    result = getRightOperand()
+    result = this.getRightOperand()
   }
 
   /**
    * Gets the greater operand of this comparison, that is, the right operand for
    * a `<` or `<=` comparison, and the left operand for `>=` or `>`.
    */
-  Expr getGreaterOperand() { result = getAnOperand() and result != getLesserOperand() }
+  Expr getGreaterOperand() { result = this.getAnOperand() and result != this.getLesserOperand() }
 
   /**
    * Holds if this is a comparison with `<=` or `>=`.
@@ -2542,13 +2561,13 @@ class DecExpr extends UpdateExpr {
  */
 class LegacyLetExpr extends Expr, @legacy_letexpr {
   /** Gets the `i`th declarator in this `let` expression. */
-  VariableDeclarator getDecl(int i) { result = getChildExpr(i) and i >= 0 }
+  VariableDeclarator getDecl(int i) { result = this.getChildExpr(i) and i >= 0 }
 
   /** Gets a declarator in this declaration expression. */
-  VariableDeclarator getADecl() { result = getDecl(_) }
+  VariableDeclarator getADecl() { result = this.getDecl(_) }
 
   /** Gets the expression this `let` expression scopes over. */
-  Expr getBody() { result = getChildExpr(-1) }
+  Expr getBody() { result = this.getChildExpr(-1) }
 
   override string getAPrimaryQlClass() { result = "LegacyLetExpr" }
 }
@@ -2625,11 +2644,11 @@ class ImmediatelyInvokedFunctionExpr extends Function {
    */
   predicate argumentPassing(Parameter p, Expr arg) {
     exists(int parmIdx, int argIdx |
-      p = getParameter(parmIdx) and
+      p = this.getParameter(parmIdx) and
       not p.isRestParameter() and
-      argIdx = parmIdx + getArgumentOffset() and
-      arg = getArgument(argIdx) and
-      not isSpreadArgument([0 .. argIdx])
+      argIdx = parmIdx + this.getArgumentOffset() and
+      arg = this.getArgument(argIdx) and
+      not this.isSpreadArgument([0 .. argIdx])
     )
   }
 }
@@ -2645,12 +2664,12 @@ class ImmediatelyInvokedFunctionExpr extends Function {
  */
 class AwaitExpr extends @await_expr, Expr {
   /** Gets the operand of this `await` expression. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   override predicate isImpure() { any() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getOperand().getFirstControlFlowNode()
+    result = this.getOperand().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "AwaitExpr" }
@@ -2703,10 +2722,10 @@ class Decorator extends @decorator, Expr {
    * For example, the decorator `@A` has expression `A`,
    * and `@testable(true)` has expression `testable(true)`.
    */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpression() { result = this.getChildExpr(0) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getExpression().getFirstControlFlowNode()
+    result = this.getExpression().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "Decorator" }
@@ -2766,15 +2785,15 @@ class FunctionBindExpr extends @bind_expr, Expr {
    * Gets the object of this function bind expression; undefined for
    * expressions of the form `::b.f`.
    */
-  Expr getObject() { result = getChildExpr(0) }
+  Expr getObject() { result = this.getChildExpr(0) }
 
   /** Gets the callee of this function bind expression. */
-  Expr getCallee() { result = getChildExpr(1) }
+  Expr getCallee() { result = this.getChildExpr(1) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getObject().getFirstControlFlowNode()
+    result = this.getObject().getFirstControlFlowNode()
     or
-    not exists(getObject()) and result = getCallee().getFirstControlFlowNode()
+    not exists(this.getObject()) and result = this.getCallee().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "FunctionBindExpr" }
@@ -2791,15 +2810,15 @@ class FunctionBindExpr extends @bind_expr, Expr {
  */
 class DynamicImportExpr extends @dynamic_import, Expr, Import {
   /** Gets the expression specifying the path of the imported module. */
-  Expr getSource() { result = getChildExpr(0) }
+  Expr getSource() { result = this.getChildExpr(0) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = getSource().getFirstControlFlowNode()
+    result = this.getSource().getFirstControlFlowNode()
   }
 
-  override PathExpr getImportedPath() { result = getSource() }
+  override PathExpr getImportedPath() { result = this.getSource() }
 
-  override Module getEnclosingModule() { result = getTopLevel() }
+  override Module getEnclosingModule() { result = this.getTopLevel() }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
 
@@ -2812,7 +2831,7 @@ private class LiteralDynamicImportPath extends PathExpr, ConstantString {
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }
 
-  override string getValue() { result = getStringValue() }
+  override string getValue() { result = this.getStringValue() }
 }
 
 /**
@@ -2850,7 +2869,7 @@ class OptionalChainRoot extends ChainElem {
   OptionalUse optionalUse;
 
   OptionalChainRoot() {
-    getChainBase*() = optionalUse and
+    this.getChainBase*() = optionalUse and
     not exists(ChainElem other | this = other.getChainBase())
   }
 

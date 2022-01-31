@@ -25,6 +25,7 @@ public class ResolveInfo implements Parcelable
     public ServiceInfo serviceInfo = null;
     public String resolvePackageName = null;
     public String toString(){ return null; }
+    public boolean isCrossProfileIntentForwarderActivity(){ return false; }
     public boolean isDefault = false;
     public boolean isInstantAppAvailable = false;
     public final int getIconResource(){ return 0; }

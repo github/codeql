@@ -33,7 +33,7 @@ namespace My.Qltest
 
         void M5()
         {
-            this.StepFieldSetter(new object());
+            Sink(((D)this.StepFieldSetter(new object()).Field2).Field);
             Sink(this.Field);
         }
 
@@ -102,7 +102,14 @@ namespace My.Qltest
                 Sink(d);
             }, d1, d2);
             Sink(d1.Field);
-            Sink(d2.Field2); // SPURIOUS FLOW
+            Sink(d2.Field2);
+        }
+
+        void M16()
+        {
+            var f = new F();
+            f.MyProp = new object();
+            Sink(f.MyProp);
         }
 
         object StepArgRes(object x) { return null; }
@@ -120,7 +127,7 @@ namespace My.Qltest
 
         object StepFieldGetter() => throw null;
 
-        void StepFieldSetter(object value) => throw null;
+        D StepFieldSetter(object value) => throw null;
 
         object Property { get; set; }
 
@@ -141,5 +148,25 @@ namespace My.Qltest
         static void Parse(string s, out int i) => throw null;
 
         static void Sink(object o) { }
+    }
+
+    public class E
+    {
+        object MyField;
+
+        public virtual object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
+    }
+
+    public class F : E
+    {
+        public override object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
     }
 }

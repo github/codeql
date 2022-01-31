@@ -8,6 +8,7 @@ import semmle.python.dataflow.new.TypeTracker
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /**
  * IPA type for data flow nodes.
@@ -24,13 +25,25 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
+  TCfgNode(ControlFlowNode node) {
+    isExpressionNode(node)
+    or
+    node.getNode() instanceof Pattern
+  } or
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
   /** A synthetic node representing the value of an object after a state change. */
   TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
+  TModuleVariableNode(Module m, GlobalVariable v) {
+    v.getScope() = m and
+    (
+      v.escapes()
+      or
+      isAccessedThroughImportStar(m) and
+      ImportStar::globalNameDefinedInModule(v.getId(), m)
+    )
+  } or
   /**
    * A node representing the overflow positional arguments to a call.
    * That is, `call` contains more positional arguments than there are
@@ -70,7 +83,11 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  /**
+   * A synthetic node representing element content in a star pattern.
+   */
+  TStarPatternElementNode(MatchStarPattern target)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -346,6 +363,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
     result.asCfgNode() = var.getALoad().getAFlowNode() and
     // Ignore reads that happen when the module is imported. These are only executed once.
     not result.getScope() = mod
+    or
+    this = import_star_read(result)
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
@@ -356,6 +375,13 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
 
   override Location getLocation() { result = mod.getLocation() }
+}
+
+private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
+
+private ModuleVariableNode import_star_read(Node n) {
+  ImportStar::importStarResolvesTo(n.asCfgNode(), result.getModule()) and
+  n.asCfgNode().(NameNode).getId() = result.getVariable().getId()
 }
 
 /**
@@ -452,6 +478,21 @@ class IterableElementNode extends Node, TIterableElementNode {
   IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
 
   override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing element content of a star pattern.
+ */
+class StarPatternElementNode extends Node, TStarPatternElementNode {
+  CfgNode consumer;
+
+  StarPatternElementNode() { this = TStarPatternElementNode(consumer.getNode().getNode()) }
+
+  override string toString() { result = "StarPatternElement" }
 
   override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
 

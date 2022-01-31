@@ -9,14 +9,14 @@ namespace System
             // Generated from `System.Security.Cryptography.AsnEncodedData` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsnEncodedData
             {
-                public AsnEncodedData(string oid, System.ReadOnlySpan<System.Byte> rawData) => throw null;
-                public AsnEncodedData(string oid, System.Byte[] rawData) => throw null;
-                public AsnEncodedData(System.Security.Cryptography.Oid oid, System.ReadOnlySpan<System.Byte> rawData) => throw null;
-                public AsnEncodedData(System.Security.Cryptography.Oid oid, System.Byte[] rawData) => throw null;
-                public AsnEncodedData(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
-                public AsnEncodedData(System.ReadOnlySpan<System.Byte> rawData) => throw null;
-                public AsnEncodedData(System.Byte[] rawData) => throw null;
                 protected AsnEncodedData() => throw null;
+                public AsnEncodedData(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
+                public AsnEncodedData(System.Byte[] rawData) => throw null;
+                public AsnEncodedData(System.Security.Cryptography.Oid oid, System.Byte[] rawData) => throw null;
+                public AsnEncodedData(System.Security.Cryptography.Oid oid, System.ReadOnlySpan<System.Byte> rawData) => throw null;
+                public AsnEncodedData(System.ReadOnlySpan<System.Byte> rawData) => throw null;
+                public AsnEncodedData(string oid, System.Byte[] rawData) => throw null;
+                public AsnEncodedData(string oid, System.ReadOnlySpan<System.Byte> rawData) => throw null;
                 public virtual void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                 public virtual string Format(bool multiLine) => throw null;
                 public System.Security.Cryptography.Oid Oid { get => throw null; set => throw null; }
@@ -24,11 +24,11 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.AsnEncodedDataCollection` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class AsnEncodedDataCollection : System.Collections.IEnumerable, System.Collections.ICollection
+            public class AsnEncodedDataCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public int Add(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
-                public AsnEncodedDataCollection(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                 public AsnEncodedDataCollection() => throw null;
+                public AsnEncodedDataCollection(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public void CopyTo(System.Security.Cryptography.AsnEncodedData[] array, int index) => throw null;
                 public int Count { get => throw null; }
@@ -50,15 +50,15 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.FromBase64Transform` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class FromBase64Transform : System.Security.Cryptography.ICryptoTransform, System.IDisposable
+            public class FromBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public bool CanTransformMultipleBlocks { get => throw null; }
                 public void Clear() => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
-                public FromBase64Transform(System.Security.Cryptography.FromBase64TransformMode whitespaces) => throw null;
                 public FromBase64Transform() => throw null;
+                public FromBase64Transform(System.Security.Cryptography.FromBase64TransformMode whitespaces) => throw null;
                 public int InputBlockSize { get => throw null; }
                 public int OutputBlockSize { get => throw null; }
                 public int TransformBlock(System.Byte[] inputBuffer, int inputOffset, int inputCount, System.Byte[] outputBuffer, int outputOffset) => throw null;
@@ -79,15 +79,15 @@ namespace System
                 public string FriendlyName { get => throw null; set => throw null; }
                 public static System.Security.Cryptography.Oid FromFriendlyName(string friendlyName, System.Security.Cryptography.OidGroup group) => throw null;
                 public static System.Security.Cryptography.Oid FromOidValue(string oidValue, System.Security.Cryptography.OidGroup group) => throw null;
-                public Oid(string value, string friendlyName) => throw null;
-                public Oid(string oid) => throw null;
-                public Oid(System.Security.Cryptography.Oid oid) => throw null;
                 public Oid() => throw null;
+                public Oid(System.Security.Cryptography.Oid oid) => throw null;
+                public Oid(string oid) => throw null;
+                public Oid(string value, string friendlyName) => throw null;
                 public string Value { get => throw null; set => throw null; }
             }
 
             // Generated from `System.Security.Cryptography.OidCollection` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class OidCollection : System.Collections.IEnumerable, System.Collections.ICollection
+            public class OidCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public int Add(System.Security.Cryptography.Oid oid) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -96,8 +96,8 @@ namespace System
                 public System.Security.Cryptography.OidEnumerator GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public bool IsSynchronized { get => throw null; }
-                public System.Security.Cryptography.Oid this[string oid] { get => throw null; }
                 public System.Security.Cryptography.Oid this[int index] { get => throw null; }
+                public System.Security.Cryptography.Oid this[string oid] { get => throw null; }
                 public OidCollection() => throw null;
                 public object SyncRoot { get => throw null; }
             }
@@ -148,7 +148,7 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.ToBase64Transform` in `System.Security.Cryptography.Encoding, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ToBase64Transform : System.Security.Cryptography.ICryptoTransform, System.IDisposable
+            public class ToBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public bool CanTransformMultipleBlocks { get => throw null; }

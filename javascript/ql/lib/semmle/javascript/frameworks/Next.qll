@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modelling [Next.js](https://www.npmjs.com/package/next).
+ * Provides classes and predicates modeling [Next.js](https://www.npmjs.com/package/next).
  */
 module NextJS {
   /**
@@ -44,7 +44,7 @@ module NextJS {
   }
 
   /**
-   * User defined path parameter in `Next.js`.
+   * A user defined path parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {
@@ -124,7 +124,7 @@ module NextJS {
   }
 
   /**
-   * A step modelling the flow from the server-computed props object to the default exported function that renders the page.
+   * A step modeling the flow from the server-computed props object to the default exported function that renders the page.
    */
   class NextJSStaticPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -138,7 +138,7 @@ module NextJS {
   }
 
   /**
-   * A step modelling the flow from the server-computed props object to the default exported React component that renders the page.
+   * A step modeling the flow from the server-computed props object to the default exported React component that renders the page.
    */
   class NextJSStaticReactComponentPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {

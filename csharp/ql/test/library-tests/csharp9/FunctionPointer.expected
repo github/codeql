@@ -9,6 +9,7 @@ type
 | file://:0:0:0:0 | delegate* default<T,Int32> | int | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | int* | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | Void | CallingConvention |
 unmanagedCallingConvention
 parameter
 | file://:0:0:0:0 | delegate* default<A,B> | 0 | file://:0:0:0:0 |  | A |
@@ -27,6 +28,8 @@ parameter
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 0 | file://:0:0:0:0 |  | ref int! |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 1 | file://:0:0:0:0 | `1 | out object? |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 2 | file://:0:0:0:0 | `2 | T |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 0 | file://:0:0:0:0 |  | char*! |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 1 | file://:0:0:0:0 | `1 | IntPtr! |
 invocation
 | FunctionPointer.cs:17:21:17:43 | function pointer call |
 | FunctionPointer.cs:23:13:23:44 | function pointer call |

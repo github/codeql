@@ -1,9 +1,9 @@
-/** Provides classes and predicates modelling aspects of the `d3` library. */
+/** Provides classes and predicates modeling aspects of the `d3` library. */
 
 private import javascript
 private import semmle.javascript.security.dataflow.Xss
 
-/** Provides classes and predicates modelling aspects of the `d3` library. */
+/** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {
   /** The global variable `d3` as an entry point for API graphs. */
   private class D3GlobalEntry extends API::EntryPoint {
@@ -23,7 +23,7 @@ module D3 {
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
     or
-    result = API::root().getASuccessor(any(D3GlobalEntry i))
+    result = any(D3GlobalEntry i).getNode()
   }
 
   /**

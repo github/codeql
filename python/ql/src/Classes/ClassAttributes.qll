@@ -85,7 +85,7 @@ class CheckClass extends ClassObject {
 
   predicate interestingUndefined(SelfAttributeRead a) {
     exists(string name | name = a.getName() |
-      interestingContext(a, name) and
+      this.interestingContext(a, name) and
       not this.definedInBlock(a.getAFlowNode().getBasicBlock(), name)
     )
   }
@@ -98,7 +98,7 @@ class CheckClass extends ClassObject {
     not a.guardedByHasattr() and
     a.getScope().isPublic() and
     not this.monkeyPatched(name) and
-    not attribute_assigned_in_method(lookupAttribute("setUp"), name)
+    not attribute_assigned_in_method(this.lookupAttribute("setUp"), name)
   }
 
   private predicate probablyAbstract() {
@@ -127,7 +127,7 @@ class CheckClass extends ClassObject {
     // so we can push the context in from there, which must apply to a
     // SelfAttributeRead in the same scope
     exists(SelfAttributeRead a | a.getScope() = b.getScope() and name = a.getName() |
-      interestingContext(a, name)
+      this.interestingContext(a, name)
     ) and
     this.definitionInBlock(b, name)
     or

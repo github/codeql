@@ -79,6 +79,12 @@ module CallGraph {
       cls.getAClassReference(t.continue()) = result
     )
     or
+    exists(DataFlow::SourceNode object, string prop |
+      function = object.getAPropertySource(prop) and
+      result = getAnAllocationSiteRef(object).getAPropertyRead(prop) and
+      t.start()
+    )
+    or
     exists(DataFlow::FunctionNode outer |
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
@@ -197,11 +203,44 @@ module CallGraph {
     )
     or
     exists(DataFlow::ObjectLiteralNode object, string name |
-      ref = object.getAPropertyRead(name) and
+      ref = getAnAllocationSiteRef(object).getAPropertyRead(name) and
       result = object.getPropertyGetter(name)
       or
-      ref = object.getAPropertyWrite(name) and
+      ref = getAnAllocationSiteRef(object).getAPropertyWrite(name) and
       result = object.getPropertySetter(name)
     )
+  }
+
+  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
+    (
+      (
+        node instanceof DataFlow::ObjectLiteralNode
+        or
+        node instanceof DataFlow::FunctionNode
+      ) and
+      node.getAPropertySource() instanceof DataFlow::FunctionNode
+      or
+      exists(node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_))
+      or
+      exists(node.(DataFlow::ObjectLiteralNode).getPropertySetter(_))
+    ) and
+    not node.getTopLevel().isExterns()
+  }
+
+  /**
+   * Gets a step summary for tracking object literals.
+   *
+   * To avoid false flow from callbacks passed in via "named parameters", we only track object
+   * literals out of returns, not into calls.
+   */
+  private StepSummary objectWithMethodsStep() { result = LevelStep() or result = ReturnStep() }
+
+  /** Gets a node that refers to the given object, via a limited form of type tracking. */
+  cached
+  DataFlow::SourceNode getAnAllocationSiteRef(DataFlow::SourceNode node) {
+    shouldTrackObjectWithMethods(node) and
+    result = node
+    or
+    StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
   }
 }

@@ -172,6 +172,9 @@ class ImportSpecifier extends Expr, @import_specifier {
   VarDecl getLocal() { result = getChildExpr(1) }
 
   override string getAPrimaryQlClass() { result = "ImportSpecifier" }
+
+  /** Holds if this is declared with the `type` keyword, so only types are imported. */
+  predicate isTypeOnly() { has_type_keyword(this) }
 }
 
 /**
@@ -658,7 +661,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   cached
   Module getReExportedModule() {
     Stages::Imports::ref() and
-    result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
+    result.getFile() = getEnclosingModule().resolve(getImportedPath())
     or
     result = resolveFromTypeRoot()
   }
