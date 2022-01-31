@@ -40,6 +40,30 @@ module API {
     }
 
     /**
+     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
+     * component represented by this node.
+     *
+     * For example, in the property write `foo.bar = x`, variable `x` is the the right-hand side
+     * of a write to the `bar` property of `foo`.
+     *
+     * Note that for parameters, it is the arguments flowing into that parameter that count as
+     * right-hand sides of the definition, not the declaration of the parameter itself.
+     * Consequently, in :
+     * ```python
+     * from mypkg import foo;
+     * foo.bar(x)
+     * ```
+     * `x` is the right-hand side of a definition of the first parameter of `bar` from the `mypkg.foo` module.
+     */
+    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+
+    /**
+     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
+     * of the API component represented by this node.
+     */
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+
+    /**
      * Gets an immediate use of the API component represented by this node.
      *
      * For example, `import re; re.escape` is a an immediate use of the `escape` member
@@ -55,7 +79,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    DataFlow::CallCfgNode getACall() { result = this.getReturn().getAnImmediateUse() } // TODO: Make a API::CallNode.
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -91,6 +115,27 @@ module API {
      * Consider using `getACall()` if there is a need to distinguish between individual calls.
      */
     Node getReturn() { result = this.getASuccessor(Label::return()) }
+
+    /**
+     * Gets a node representing the `i`th parameter of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     */
+    Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
+
+    /**
+     * Gets the number of parameters of the function represented by this node.
+     */
+    int getNumParameter() { result = max(int s | exists(this.getParameter(s))) + 1 }
+
+    /**
+     * Gets a node representing the last parameter of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getACall()` if there is a need to distingiush between individual calls.
+     */
+    Node getLastParameter() { result = this.getParameter(this.getNumParameter() - 1) }
 
     /**
      * Gets a node representing a subclass of the class represented by this node.
@@ -137,7 +182,7 @@ module API {
     /**
      * Gets the data-flow node that gives rise to this node, if any.
      */
-    DataFlow::Node getInducingNode() { this = Impl::MkUse(result) }
+    DataFlow::Node getInducingNode() { this = Impl::MkUse(result) or this = Impl::MkDef(result) }
 
     /**
      * Holds if this element is at the specified location.
@@ -203,6 +248,17 @@ module API {
         or
         this = Impl::MkModuleImport(_) and type = "ModuleImport "
       |
+        result = type + this.getPath()
+        or
+        not exists(this.getPath()) and result = type + "with no path"
+      )
+    }
+  }
+
+  /** A node corresponding to the rhs of an API component. */
+  class Def extends Node, Impl::TDef {
+    override string toString() {
+      exists(string type | this = Impl::MkDef(_) and type = "Def " |
         result = type + this.getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
@@ -325,9 +381,12 @@ module API {
         name = "builtins"
       } or
       /** A use of an API member at the node `nd`. */
-      MkUse(DataFlow::Node nd) { use(_, _, nd) }
+      MkUse(DataFlow::Node nd) { use(_, _, nd) } or
+      MkDef(DataFlow::Node nd) { rhs(_, _, nd) }
 
     class TUse = MkModuleImport or MkUse;
+
+    class TDef = MkDef;
 
     /**
      * Holds if the dotted module name `sub` refers to the `member` member of `base`.
@@ -382,6 +441,77 @@ module API {
     }
 
     /**
+     * Holds if `rhs` is the right-hand side of a definition of a node that should have an
+     * incoming edge from `base` labeled `lbl` in the API graph.
+     */
+    cached
+    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      /*
+       * exists(string m, string prop | // TODO: Figure out module exports in Python
+       *        base = MkModuleExport(m) and
+       *        lbl = Label::member(prop) and
+       *        exports(m, prop, rhs)
+       *      )
+       *      or
+       */
+
+      exists(DataFlow::Node def, DataFlow::LocalSourceNode pred |
+        rhs(base, def) and pred = trackDefNode(def)
+      |
+        // from `x` to a definition of `x.prop`
+        exists(DataFlow::AttrWrite pw | pw = pred.getAnAttributeWrite() |
+          lbl = Label::memberFromRef(pw) and
+          rhs = pw.getValue()
+        )
+        // or
+        // special case: from `require('m')` to an export of `prop` in `m`
+        // TODO: Figure out if this is needed.
+        /*
+         * exists(Import imp, Module m, string prop |
+         *          pred = imp.getImportedModuleNode() and
+         *          m = imp.getImportedModule() and
+         *          lbl = Label::member(prop) and
+         *          rhs = m.getAnExportedValue(prop)
+         *        )
+         *        or
+         *        // TODO:
+         *        exists(DataFlow::FunctionNode fn | fn = pred |
+         *          not fn.getFunction().isAsync() and
+         *          lbl = Label::return() and
+         *          rhs = fn.getAReturn()
+         *        )
+         *        or
+         *        lbl = Label::promised() and
+         *        PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+         */
+
+        )
+      or
+      /*
+       * or // TODO:
+       *      exists(DataFlow::FunctionNode f |
+       *        base = MkAsyncFuncResult(f) and
+       *        lbl = Label::promised() and
+       *        rhs = f.getAReturn()
+       *      )
+       */
+
+      exists(int i |
+        lbl = Label::parameter(i) and
+        argumentPassing(base, i, rhs)
+      )
+      /*
+       * or // TODO:
+       *      exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
+       *        use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
+       *      |
+       *        lbl = Label::memberFromRef(pw)
+       *      )
+       */
+
+      }
+
+    /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
      */
@@ -418,6 +548,21 @@ module API {
           pred.flowsTo(awaitedValue)
         )
       )
+      or
+      exists(DataFlow::Node def, CallableExpr fn |
+        rhs(base, def) and fn = trackDefNode(def).asExpr()
+      |
+        exists(int i |
+          lbl = Label::parameter(i) and
+          ref.asExpr() = fn.getInnerScope().getArg(i)
+        )
+        /*
+         * or // TODO: Figure out self.
+         *        lbl = Label::receiver() and
+         *        ref = fn.getReceiver()
+         */
+
+        )
       or
       // Built-ins, treated as members of the module `builtins`
       base = MkModuleImport("builtins") and
@@ -467,6 +612,53 @@ module API {
     }
 
     /**
+     * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
+     * full invocation, or in a partial function application.
+     *
+     * The receiver is considered to be argument -1.
+     */
+    private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
+      exists(DataFlow::Node use, DataFlow::LocalSourceNode pred |
+        use(base, use) and pred = trackUseNode(use, _)
+      |
+        arg = pred.getACall().getArg(i)
+        /*
+         * or // TODO: Figure out self in argument.
+         *        arg = pred.getACall().getReceiver() and
+         *        i = -1
+         */
+
+        )
+    }
+
+    /**
+     * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
+     */
+    cached
+    DataFlow::LocalSourceNode trackDefNode(DataFlow::Node nd) {
+      result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
+    }
+
+    private DataFlow::LocalSourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
+      t.start() and
+      rhs(_, nd) and
+      result = nd.getALocalSource()
+      or
+      // TODO: Figure out module exports in Python, and if this thing is needed.
+      // additional backwards step from `require('m')` to `exports` or `module.exports` in m
+      /*
+       * exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
+       *        result = DataFlow::exportsVarNode(imp.getImportedModule())
+       *        or
+       *        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
+       *      )
+       *      or
+       */
+
+      exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
+    }
+
+    /**
      * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
      *
      * The flow from `src` to that node may be inter-procedural.
@@ -475,6 +667,16 @@ module API {
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
       not result instanceof DataFlow::ModuleVariableNode
+    }
+
+    /**
+     * Holds if `rhs` is the right-hand side of a definition of node `nd`.
+     */
+    cached
+    predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+      // exists(string m | nd = MkModuleExport(m) | exports(m, rhs)) // TODO: Figure out module exported in Py.
+      // or
+      nd = MkDef(rhs)
     }
 
     /**
@@ -502,6 +704,11 @@ module API {
       exists(DataFlow::LocalSourceNode ref |
         use(pred, lbl, ref) and
         succ = MkUse(ref)
+      )
+      or
+      exists(DataFlow::Node rhs |
+        rhs(pred, lbl, rhs) and
+        succ = MkDef(rhs)
       )
     }
 
@@ -539,7 +746,9 @@ module API {
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
-          none() // TODO: Fill in when adding def nodes
+          exists(any(DataFlow::CallCfgNode c).getArg(i))
+          or
+          i = [-1 .. 10] // TODO: Def nodes, figure out how to make this prettier.
         } or
         MkLabelReturn() or
         MkLabelSubclass() or
@@ -582,6 +791,7 @@ module API {
 
         LabelParameter() { this = MkLabelParameter(i) }
 
+        // TODO: Named parameters, spread arguments.
         override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
@@ -626,6 +836,9 @@ module API {
       not exists(ref.getAttributeName()) and
       result = unknownMember()
     }
+
+    /** Gets the `parameter` edge label for parameter `i`. */
+    LabelParameter parameter(int i) { result.getIndex() = i }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
