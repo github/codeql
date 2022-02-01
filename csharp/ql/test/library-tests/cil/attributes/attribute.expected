@@ -11,10 +11,6 @@ attrNoArg
 | Interop.Sys.FileStatusFlags | [FlagsAttribute(...)] |
 | Interop.Sys.OpenFlags | [FlagsAttribute(...)] |
 | Interop.Sys.Permissions | [FlagsAttribute(...)] |
-| Interop.libproc.proc_bsdinfo.<pbi_comm>e__FixedBuffer | [CompilerGeneratedAttribute(...)] |
-| Interop.libproc.proc_bsdinfo.<pbi_comm>e__FixedBuffer | [UnsafeValueTypeAttribute(...)] |
-| Interop.libproc.proc_bsdinfo.<pbi_name>e__FixedBuffer | [CompilerGeneratedAttribute(...)] |
-| Interop.libproc.proc_bsdinfo.<pbi_name>e__FixedBuffer | [UnsafeValueTypeAttribute(...)] |
 | InteropErrorExtensions | [ExtensionAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [CompilerGeneratedAttribute(...)] |
 | Microsoft.CodeAnalysis.EmbeddedAttribute | [EmbeddedAttribute(...)] |
@@ -808,8 +804,6 @@ attrNoArg
 | System.Threading.AsyncLocalValueChangedArgs`1.<PreviousValue>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Threading.AsyncLocalValueChangedArgs`1.<ThreadContextChanged>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Threading.AsyncLocalValueMap.<Empty>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Threading.AutoreleasePool.<EnableAutoreleasePool>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Threading.AutoreleasePool.s_AutoreleasePoolInstance | [ThreadStaticAttribute(...)] |
 | System.Threading.CancellationToken | [IsReadOnlyAttribute(...)] |
 | System.Threading.CancellationToken.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Threading.CancellationTokenRegistration | [IsReadOnlyAttribute(...)] |
@@ -1452,10 +1446,6 @@ attrArgPositional
 | Internal.Runtime.InteropServices.IClassFactory | [InterfaceTypeAttribute(...)] | 0 | 1 |
 | Internal.Runtime.InteropServices.IClassFactory | [NullableContextAttribute(...)] | 0 | 2 |
 | Interop.Sys.MountPointFound | [UnmanagedFunctionPointerAttribute(...)] | 0 | 2 |
-| Interop.libproc.proc_bsdinfo.pbi_comm | [FixedBufferAttribute(...)] | 0 | System.Byte |
-| Interop.libproc.proc_bsdinfo.pbi_comm | [FixedBufferAttribute(...)] | 1 | 16 |
-| Interop.libproc.proc_bsdinfo.pbi_name | [FixedBufferAttribute(...)] | 0 | System.Byte |
-| Interop.libproc.proc_bsdinfo.pbi_name | [FixedBufferAttribute(...)] | 1 | 32 |
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableAttribute(...)] | 0 | 0 |
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableContextAttribute(...)] | 0 | 2 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle System.Threading.RegisteredWaitHandle.UserUnregisterWaitHandle | [NullableAttribute(...)] | 0 | 2 |
